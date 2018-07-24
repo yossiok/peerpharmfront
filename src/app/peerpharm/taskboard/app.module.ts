@@ -1,7 +1,8 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common'; 
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http'; 
+ 
 
 import {MatSelectModule} from '@angular/material/select';
 import {
@@ -19,7 +20,7 @@ import {
   MatFormFieldModule,
   MatNativeDateModule
 } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DndModule } from 'ng2-dnd';
 import { DatepickerModule } from 'angular2-material-datepicker';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
@@ -48,13 +49,12 @@ import { SubTaskCardComponent } from './board/shared//sub-task-card/sub-task-car
     SubTaskCardComponent,
   ],
   imports: [
-    RouterModule.forRoot([
+    CommonModule,
+    RouterModule.forChild([
       {path:"" , component:ContentComponent },
       {path:"subcard" , component:SubTaskCardComponent }
-    ]), 
-    BrowserModule,
-    FormsModule,
-    HttpModule,
+    ]),   
+    FormsModule, 
     MatDialogModule,
     MatGridListModule,
     MatMenuModule,
@@ -67,15 +67,14 @@ import { SubTaskCardComponent } from './board/shared//sub-task-card/sub-task-car
     MatTabsModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule,
-    BrowserAnimationsModule,
+    MatNativeDateModule, 
     DndModule.forRoot(),
     DatepickerModule,
     Ng2FilterPipeModule,
     MatSelectModule
   ],
   exports: [DndModule],
-  providers: [] 
+  providers: [HttpClientModule] 
    
 })
 export class TaskModule {}
