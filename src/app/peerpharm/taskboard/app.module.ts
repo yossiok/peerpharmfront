@@ -34,6 +34,8 @@ import { CreateBoardComponent } from './board/create-board/create-board.componen
 import { SubtaskComponent } from './subtask/subtask.component';
 import { SubTaskCardComponent } from './board/shared//sub-task-card/sub-task-card.component';
 
+ 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +75,7 @@ import { SubTaskCardComponent } from './board/shared//sub-task-card/sub-task-car
     MatSelectModule
   ],
   exports: [DndModule],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [] 
+   
 })
 export class TaskModule {}
