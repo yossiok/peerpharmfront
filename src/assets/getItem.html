@@ -1,0 +1,2160 @@
+<html>
+    <head><title>Hello</title></head>
+    
+    
+<style>
+
+
+.header{
+	height: 45px;
+	position: relative;
+	background: #6E6E6E url(img03.jpg) top left no-repeat;
+	padding: 45px;
+	color: #FFFFFF;
+	width: 1330px;
+	border: solid 1px #7E7E7E;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	overflow: hidden;
+	margin-left:20px
+	
+
+}
+
+.header a1 {
+	position: absolute;
+    text-decoration: none;
+	color: #FFFFFF;
+	text-shadow: 0 1px 1px #3E3E3E;
+	font-size:50px;
+	align: right;
+	bottom: 10;
+    left: 15;
+	
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(#209D9D, #497676) ;
+	width: 1422px;
+	margin-left:20px
+}	
+
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+body{
+display:flex;
+min-height:100vh;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+}
+
+#uploader{
+-webkit-appearance: none;
+appearance: none;
+width:50%;
+margin-bottom:10px;
+color:blue;
+}
+
+.headDiv{
+
+	background: linear-gradient( #313131 10%,#209D9D ) ;
+    border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	
+
+}
+
+
+
+.footerDiv{
+
+	background: linear-gradient(#209D9D, #313131 ) ;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
+	
+}
+input[type=text]
+		{
+		display: inline-block;
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+		float: none;
+		z-index: auto;
+		width: 158px;
+		height: auto;
+		position: static;
+		opacity: 1;
+		margin: 0;
+		//padding: 10px 20px;
+		overflow: visible;
+		border: 1px solid #b7b7b7;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		font: normal medium/normal Arial, Helvetica, sans-serif;
+		color: rgba(0,142,198,1);
+		-o-text-overflow: clip;
+		text-overflow: clip;
+		background: rgba(252,252,252,1);
+		-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+		-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-webkit-transform: none;
+		transform: none;
+		-webkit-transform-origin: 50% 50% 0;
+		transform-origin: 50% 50% 0;
+}
+
+textarea{
+display: inline-block;
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+		float: none;
+		z-index: auto;
+		width: 258px;
+		height: auto;
+		position: static;
+		opacity: 1;
+		margin: 0;
+		//padding: 10px 20px;
+		overflow: visible;
+		border: 1px solid #b7b7b7;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		font: normal medium/normal Arial, Helvetica, sans-serif;
+		color: rgba(0,142,198,1);
+		-o-text-overflow: clip;
+		text-overflow: clip;
+		background: rgba(252,252,252,1);
+		-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+		-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-webkit-transform: none;
+		transform: none;
+		-webkit-transform-origin: 50% 50% 0;
+		transform-origin: 50% 50% 0;
+
+}
+
+input[type=file] {
+   content: 'browse';
+  display: inline-block;
+  background: -webkit-linear-gradient(top, #8EC1E1, #ABBFCC);
+  border: 1px solid #999;
+  border-radius: 3px;
+ width:244px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+
+
+.btn {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  text-shadow: 1px 2px 0px #666666;
+  -webkit-box-shadow: 0px 3px 0px #666666;
+  -moz-box-shadow: 0px 3px 0px #666666;
+  box-shadow: 0px 1.5x 0px #666666;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 5px 20px 5px 20px;
+  border: solid #134499 2px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #076ca6;
+  background-image: -webkit-linear-gradient(top, #076ca6, #5287a8);
+  background-image: -moz-linear-gradient(top, #076ca6, #5287a8);
+  background-image: -ms-linear-gradient(top, #076ca6, #5287a8);
+  background-image: -o-linear-gradient(top, #076ca6, #5287a8);
+  background-image: linear-gradient(to bottom, #076ca6, #5287a8);
+  text-decoration: none;
+}
+
+#extraTdId{
+	display:none;
+}
+
+#sealTdId{
+	display:none;
+}
+
+.expandBtn{
+   background: #424242;
+  background-image: -webkit-linear-gradient(top, #424242, #9e9e9e);
+  background-image: -moz-linear-gradient(top, #424242, #9e9e9e);
+  background-image: -ms-linear-gradient(top, #424242, #9e9e9e);
+  background-image: -o-linear-gradient(top, #424242, #9e9e9e);
+  background-image: linear-gradient(to bottom, #424242, #9e9e9e);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 23px;
+  padding: 3px 9px 3px 9px;
+  border: solid #000000 0px;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.expandBtn:hover{
+
+opacity: 1;
+}
+
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+</style>
+<script src="_js/JsBarcode.all.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
+ 
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+
+		<script src="_js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+<script>
+ var dataArived={};
+$(document).ready(()=>{
+	let itemID= getParameterByName("id", location.href);
+	//get item by itemNumber
+	 $.getJSON("/item?itemNumber="+itemID , (data)=>{
+		 //debugger;
+
+				console.log(data);
+				dataArived=data[0];
+				loadItemData();		
+	 });
+
+})
+
+  
+   // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  
+  firebase.initializeApp(config);
+    var firebaseRef = firebase.database().ref();
+	var itemsRef= firebaseRef.child('items/')
+	var componentRef = firebaseRef.child("components");
+	var sickersRef =firebaseRef.child("stickers");
+	
+	
+	var itemId;
+	var ha;
+	var update, name_of_updating, version, sticker, box, barcode, sticker_language, volume, netWeight, grossUnitWeight, cartonNo, pcs_carton, pump_direction, palette_type, item_type;
+	var item1W, item1S, item2W, item2S, item3W, item3S, item4W, item4S, itemStickerW, itemStickerS, itemBoxW, itemBoxS, itemCtnW, itemCtnS;
+	var layer_carton_palette, total_cartonPalette, firstItemImg, secondItemImg, thirdItemImg, forthItemImg,  stickerType, boxType, bottleNo, capNo, pumpNo;
+	var mainTitle, subTitle, matinTitle, subTitle, productDiscription, item1text, item2text, item3text, item1text2, item2text2, item3text2, productRemarks, extraTxt1, extraTxt2, importantRemarks;
+	var sealN, sealTxt;
+	var storageRef, itemImgRef;
+	var itemImgBottle, itemImgCap, itemImgPump, itemImgLaser1, itemImgLaser2, itemImgMain1, itemImgMain2, itemImgMain3, extraImg1, extraImg2, sealImg;
+	
+	
+	function searchForItem2(){
+		itemID= document.getElementById('id_item').value;
+		$.getJSON("/item?itemNumber="+itemID , (data)=>{
+		 //debugger;
+		 dataArived=data;
+		 dataArived=data[0];
+		 loadItemData();	
+	 });
+	}
+	
+	function searchForItem(){
+				storageRef = firebase.storage().ref();
+				itemId= document.getElementById('id_item').value;
+				
+				
+				getElementsValue();
+				
+				itemsRef.child(itemId).on('value', snap=>{
+				
+				var s_mainTitle = snap.child("name").val();
+				var s_subName = snap.child("subName").val();
+				var s_discriptionK = snap.child("discriptionK").val();
+				var s_proRemarks = snap.child("proRemarks").val();
+				var s_impRemarks = snap.child("impRemarks").val();
+				var s_updateDate = snap.child("updateDate").val();
+				var s_nameOfupdating = snap.child("nameOfupdating").val();
+				var s_versionNumber = snap.child("versionNumber").val();
+				var s_stickerNumber = snap.child("stickerNumber").val();
+				var s_stickerTypeK = snap.child("stickerTypeK").val();
+				var s_boxNumber = snap.child("boxNumber").val();
+				var s_boxTypeK = snap.child("boxTypeK").val();
+				var s_barcodeK = snap.child("barcodeK").val();
+				var s_StickerLanguageK = snap.child("StickerLanguageK").val();
+				var s_volumeKey = snap.child("volumeKey").val();
+				var s_netWeightK = snap.child("netWeightK").val();
+				var s_grossUnitWeightK = snap.child("grossUnitWeightK").val();
+				
+				var s_grossCtnK = snap.child("grossCtnWeightK").val();
+				var s_netCtnK = snap.child("netCtnWeightK").val();
+				
+				var s_licsensNumber = snap.child("licsensNumber").val();
+				var s_licsensDate = snap.child("licsensDate").val();
+				var s_country = snap.child("country").val();
+				
+				var s_cartonNumber = snap.child("cartonNumber").val();
+				var s_PcsCarton = snap.child("PcsCarton").val();
+				var s_pumpDirection = snap.child("pumpDirection").val();
+				var s_paletteType = snap.child("paletteType").val();
+				var s_st1layerCarton = snap.child("st1layerCarton").val();
+				var s_totalCartonPalette = snap.child("totalCartonPalette").val();
+				var s_cbm = snap.child("cbm").val();
+				var s_motherP = snap.child("motherP").val();
+				var s_itemType = snap.child("itemType").val();
+				var s_bottleNumber = snap.child("bottleNumber").val();
+				var s_capNumber = snap.child("capNumber").val();
+				var s_pumpNumber = snap.child("pumpNumber").val();
+				
+							
+				var s_sealNumber = snap.child("sealNumber").val();
+				var s_bottleTube = snap.child("bottleTube").val();
+				var s_capTube = snap.child("capTube").val();
+				var s_pumpTube = snap.child("pumpTube").val();
+				var s_sealTube = snap.child("sealTube").val();
+				var s_extraText1 = snap.child("extraText1").val();
+				var s_extraText2 = snap.child("extraText2").val();
+				
+				var s_bottleImage = snap.child("bottleImage").val();
+				var s_capImage = snap.child("capImage").val();
+				var s_pumpImage = snap.child("pumpImage").val();
+				var s_laserImage1 = snap.child("laserImage1").val();
+				var s_laserImage2 = snap.child("laserImage2").val();
+				var s_imgMain1 = snap.child("imgMain1").val();
+				var s_imgMain2 = snap.child("imgMain2").val();
+				var s_imgMain3 = snap.child("imgMain3").val();
+				var s_extraImage1 = snap.child("extraImage1").val();
+				var s_extraImage2 = snap.child("extraImage2").val();
+				var s_sealImage = snap.child("sealImage").val();
+			
+				var s_item1w = snap.child("item1w").val();
+				var s_item1s = snap.child("item1s").val();
+				var s_item2w = snap.child("item2w").val();
+				var s_item2s = snap.child("item2s").val();
+				var s_item3w = snap.child("item3w").val();
+				var s_item3s = snap.child("item3s").val();
+				var s_item4w = snap.child("item4w").val();
+				var s_item4s = snap.child("item4s").val();		
+				var s_itemStickerW = snap.child("itemStickerW").val();
+				var s_itemStickerS = snap.child("itemStickerS").val();
+				var s_itemBoxW = snap.child("itemBoxW").val();
+				var s_itemBoxS = snap.child("itemBoxS").val();
+				var s_itemCtnW = snap.child("itemCtnW").val();
+				var s_itemCtnS = snap.child("itemCtnS").val();
+				
+			
+		document.getElementById('id_name_of_updating').value=s_nameOfupdating;
+		document.getElementById('id_version').value=s_versionNumber;
+		document.getElementById('id_stickerNumber').value=s_stickerNumber;
+		document.getElementById('id_stickerType').value=s_stickerTypeK;
+		document.getElementById('id_boxNumber').value=s_boxNumber;
+		document.getElementById('id_boxType').value=s_boxTypeK;
+		document.getElementById('id_barcode').value=s_barcodeK;
+		document.getElementById('id_stickerLanguge').value=s_StickerLanguageK;
+		document.getElementById('id_volume').value=s_volumeKey;
+		document.getElementById('id_netWeight').value=s_netWeightK;
+		document.getElementById('id_grossUnitInput').value=s_grossUnitWeightK;
+		
+		document.getElementById('id_grossCtnInput').value=s_grossCtnK;
+		document.getElementById('id_netCtnInput').value=s_netCtnK;
+		
+		document.getElementById('id_licsensNumber').value=s_licsensNumber;
+		document.getElementById('id_licsensDate').value=s_licsensDate;
+		document.getElementById('id_country').value=s_country;
+		
+		document.getElementById('id_cartonNo').value=s_cartonNumber;
+		document.getElementById('id_pcsCarton').value=s_PcsCarton;
+		document.getElementById('id_pumpDirection').value=s_pumpDirection;
+		document.getElementById('id_Palette').value=s_paletteType;
+		document.getElementById('id_layerCartonPalette').value=s_st1layerCarton;
+		document.getElementById('id_totalCarton').value=s_totalCartonPalette;
+	
+		document.getElementById('id_cbm').value=s_cbm;
+		document.getElementById('id_motherP').value=s_motherP;
+		document.getElementById('id_itemType').value=s_itemType;
+		
+		
+		document.getElementById('id_bottleNo').value=s_bottleNumber;
+		document.getElementById('id_capNo').value=s_capNumber;
+		document.getElementById('id_pumpNo').value=s_pumpNumber;		
+		document.getElementById('id_sealNo').value=s_sealNumber;		
+		document.getElementById('id_item1text').value=s_bottleTube;
+		document.getElementById('id_item2text').value=s_capTube;
+		document.getElementById('id_item3text').value=s_pumpTube;
+		document.getElementById('id_sealText').value=s_sealTube;
+		
+	
+		
+		
+		document.getElementById('id_item1weight').value =s_item1w;
+		document.getElementById('id_item1select').value =s_item1s;
+		document.getElementById('id_item2weight').value =s_item2w;
+		document.getElementById('id_item2select').value =s_item2s;
+		document.getElementById('id_item3weight').value =s_item3w;
+		document.getElementById('id_item3select').value =s_item3s;
+		document.getElementById('id_item4weight').value =s_item4w;
+		document.getElementById('id_item4select').value =s_item4s;
+		document.getElementById('id_stickerWeight').value =s_itemStickerW;
+		document.getElementById('id_stickerSelect').value =s_itemStickerS;
+		document.getElementById('id_boxWeight').value =s_itemBoxW;
+		document.getElementById('id_boxSelect').value =s_itemBoxS;
+		document.getElementById('id_cartonWeight').value =s_itemCtnW;
+		document.getElementById('id_cartonSelect').value =s_itemCtnS;
+		
+		
+		
+		
+		document.getElementById('id_productTitle').value=s_mainTitle;
+		document.getElementById('id_subTitle').value= s_subName;
+		document.getElementById('id_discrip').value=s_discriptionK;
+		document.getElementById('id_mainRemarks').value=s_proRemarks;
+		document.getElementById('id_impRemarks').value=s_impRemarks;
+		document.getElementById('id_extraTextOne').value=s_extraText1;
+		document.getElementById('id_extraTextTow').value=s_extraText2;
+		
+		
+		//	alert(s_bottleImage);			
+			
+			
+		document.getElementById('id_img1').src=s_bottleImage;		
+		document.getElementById('id_img2').src=s_capImage;		
+		document.getElementById('id_img3').src=s_pumpImage;		
+		document.getElementById('id_img4').src=s_laserImage1;		
+		document.getElementById('id_img5').src=s_laserImage2;		
+		
+		document.getElementById('id_img6').src=s_extraImage1;		
+		document.getElementById('id_img7').src=s_extraImage2;		
+		document.getElementById('id_img8').src=s_sealImage;		
+		
+		document.getElementById('id_imgMain1').src=s_imgMain1;		
+		document.getElementById('id_imgMain2').src=s_imgMain2;		
+		document.getElementById('id_imgMain3').src=s_imgMain3;
+			
+		document.getElementById('id_img1').style.width="80px";
+		document.getElementById('id_img2').style.width="80px";
+		document.getElementById('id_img3').style.width="80px";
+		document.getElementById('id_img4').style.width="80px";
+		document.getElementById('id_img5').style.width="80px";
+		
+		document.getElementById('id_img6').style.width="80px";
+		document.getElementById('id_img7').style.width="80px";
+		document.getElementById('id_img8').style.width="80px";
+		
+		document.getElementById('id_imgMain1').style.width="80px";
+		document.getElementById('id_imgMain2').style.width="80px";
+		document.getElementById('id_imgMain3').style.width="80px";	
+		
+		
+		
+		itemImgBottle=s_bottleImage
+		itemImgCap=s_capImage
+		itemImgPump=s_pumpImage
+		itemImgLaser1=s_laserImage1
+		itemImgLaser2=s_laserImage2
+		itemImgMain1=s_imgMain1
+		itemImgMain2=s_imgMain2
+		itemImgMain3=s_imgMain3
+		
+		extraImg1=s_extraImage1
+		extraImg2=s_extraImage2
+		sealImg=s_sealImage
+		
+		if(s_impRemarks!="" && s_impRemarks!=null && s_impRemarks!="undefined"){
+				document.getElementById('impAlert').style.display="block";
+				document.getElementById('impAlert').innerHTML=s_impRemarks;
+
+			}
+			
+		var  drinktCtn=0, ctn= 0,totalCtn=0, transperentGlassAmount=0, colorGlassAmount=0, totalGlassAmount=0, petA=0, hdpe=0, ldpe=0, pp=0, ps=0, op=0, totalPlasticAmount=0, metalA=0, woodA=0, otherMaterial=0;
+		
+		
+		var cmptType= [s_item1s,s_item2s , s_item3s, s_item4s, s_itemStickerS,s_itemBoxS ] ;
+		var cmptWeight = [ s_item1w, s_item2w,s_item3w ,s_item4w ,s_itemStickerW ,s_itemBoxW];
+		for(var c=0; c<cmptType.length; c++){
+			console.log(cmptType[c])
+			if(cmptType[c].toUpperCase()=="PET" || cmptType[c].toUpperCase()=="HDPE" || cmptType[c].toUpperCase()=="LDPE" || cmptType[c].toUpperCase()=="PP" || cmptType[c].toUpperCase()=="PS" || cmptType[c].toUpperCase()=="OTHERPLASTIC"){
+				totalPlasticAmount=totalPlasticAmount+parseFloat(cmptWeight[c]);
+				if(cmptType[c].toUpperCase()=="PET"){
+					petA=petA+parseFloat(cmptWeight[c]);
+				}else if(cmptType[c].toUpperCase()=="HDPE"){
+					hdpe=hdpe+parseFloat(cmptWeight[c]);
+				}else if(cmptType[c].toUpperCase()=="LDPE"){
+					ldpe=ldpe+parseFloat(cmptWeight[c]);
+				}else if(cmptType[c].toUpperCase()=="PP"){
+					pp=pp+parseFloat(cmptWeight[c]);
+				}else if(cmptType[c].toUpperCase()=="PS"){
+					ps=ps+parseFloat(cmptWeight[c]);
+				}else if(cmptType[c].toUpperCase()=="OTHERPLASTIC"){
+					op=op+parseFloat(cmptWeight[c]);
+				}
+			}
+			if(cmptType[c].toUpperCase()=="TRANSPERENTGLASS" || cmptType[c].toUpperCase()=="COLORGLASS"){
+				totalGlassAmount=totalGlassAmount+parseFloat(cmptWeight[c]);
+				if(cmptType[c].toUpperCase()=="TRANSPERENTGLASS"){
+					transperentGlassAmount=transperentGlassAmount+parseFloat(cmptWeight[c]);
+				}else if(cmptType[c].toUpperCase()=="COLORGLASS"){
+					colorGlassAmount=colorGlassAmount+parseFloat(cmptWeight[c]);
+				}
+			}								
+			if(cmptType[c].toUpperCase()=="PAPERCARTON" || cmptType[c].toUpperCase()=="DRINKCARTON"){
+				totalCtn=totalCtn+parseFloat(cmptWeight[c]);
+				if(cmptType[c].toUpperCase()=="DRINKCARTON"){
+					drinktCtn=drinktCtn+parseFloat(cmptWeight[c]);
+				}else if(cmptType[c].toUpperCase()=="PAPERCARTON"){
+					ctn=ctn+parseFloat(cmptWeight[c]);
+				}
+			}
+			if(cmptType[c].toUpperCase()=="METAL" ){
+				metalA=metalA+parseFloat(cmptWeight[c]);
+			}
+			if(cmptType[c].toUpperCase()=="WOOD" ){
+				woodA=woodA+parseFloat(cmptWeight[c]);
+			}
+			if(cmptType[c].toUpperCase()=="OTHERMATERIAL" ){
+				otherMaterial=otherMaterial+parseFloat(cmptWeight[c]);
+			}
+			
+		}
+		
+			console.log("ctn: " + totalCtn +  ", glass: "  + totalGlassAmount  + "  ,plastic: " + totalPlasticAmount);					
+		
+		var typeCode="";
+		var t = checkType(s_bottleNumber);
+		
+		var t2 = checkTypeCarton(s_cartonNumber);
+		
+		
+//\"" +refParent+ "\"
+		
+		
+		if(t=="tube"){
+			typeCode="5";
+		}else if(t=="bottle_Glass"){
+			typeCode="2";
+		}else{
+			typeCode="4";
+		}
+		
+		console.log("t2 " +t2);
+		if(t2!=""){
+			t2=t2;
+		}
+		
+		
+		
+			document.getElementById('pk_itemNUmber').innerHTML="101018";		
+			document.getElementById('pk_personalPackage').innerHTML=itemId;		
+			document.getElementById('pk_itemName').innerHTML=s_mainTitle + "  "  + s_subName + " " +s_discriptionK ;		
+			document.getElementById('pk_packageCode').innerHTML=typeCode ;		
+			document.getElementById('pk_netWeight').innerHTML=s_netWeightK.replace(/\D/g,'') ;		
+			document.getElementById('pk_singlePackageVolume').innerHTML=s_volumeKey.replace(/\D/g,'') ;		
+			document.getElementById('pk_packageGroupPcs').innerHTML=s_PcsCarton.replace(/\D/g,'') ;		
+			
+
+			if(ctn==0){
+				ctn="";
+			}if(drinktCtn==0){
+				drinktCtn="";
+			}if(totalCtn==0){
+				totalCtn="";
+			}if(transperentGlassAmount==0){
+				transperentGlassAmount="";
+			}if(colorGlassAmount==0){
+				colorGlassAmount="";
+			}if(totalGlassAmount==0){
+				totalGlassAmount="";
+			}if(petA==0){
+				petA="";
+			}if(hdpe==0){
+				hdpe="";
+			}if(ldpe==0){
+				ldpe="";
+			}if(pp==0){
+				pp="";
+			}if(ps==0){
+				ps="";
+			}if(op==0){
+				op="";
+			}if(totalPlasticAmount==0){
+				totalPlasticAmount="";
+			}if(metalA==0){
+				metalA="";
+			}if(woodA==0){
+				woodA="";
+			}if(otherMaterial==0){
+				otherMaterial="";
+			}
+			//-----Carton:
+			document.getElementById('pk_ot_paper').innerHTML=ctn;		
+			document.getElementById('pk_ot_drink').innerHTML=drinktCtn;		
+			document.getElementById('pk_ot_totalCtn').innerHTML=totalCtn;		
+			//-----Glass:
+			document.getElementById('pk_ot_transperentGlass').innerHTML=transperentGlassAmount;		
+			document.getElementById('pk_ot_colorGlass').innerHTML=colorGlassAmount;		
+			document.getElementById('pk_ot_totalGlass').innerHTML=totalGlassAmount;
+			//-----Plastic:
+			document.getElementById('pk_ot_pet').innerHTML=petA;
+			document.getElementById('pk_ot_hdpe').innerHTML=hdpe;
+			document.getElementById('pk_ot_ldpe').innerHTML=ldpe;
+			document.getElementById('pk_ot_pp').innerHTML=pp;
+			document.getElementById('pk_ot_ps').innerHTML=ps;
+			document.getElementById('pk_ot_otherPlastic').innerHTML=op;
+			document.getElementById('pk_ot_totalPlastic').innerHTML=totalPlasticAmount;
+			//------Metal:
+			document.getElementById('pk_ot_metal').innerHTML=metalA;
+			//------Wood:
+			document.getElementById('pk_ot_wood').innerHTML=woodA;
+			//------OtherMaterial:
+			document.getElementById('pk_ot_otherMatrial').innerHTML=otherMaterial;
+				});
+				
+			
+			document.getElementById('pk_tr_paper').innerHTML=t2;
+			document.getElementById('pk_tr_totalCtn').innerHTML=t2;
+			//setPackageValues(itemId);
+		
+			
+	}
+
+
+	function loadItemData(){
+		var s_mainTitle = dataArived.name;
+				var s_subName = dataArived.subName;
+				var s_discriptionK = dataArived.discriptionK;
+				var s_proRemarks = dataArived.proRemarks;
+				var s_impRemarks = dataArived.impRemarks;
+				var s_updateDate = dataArived.updateDate;
+				var s_nameOfupdating = dataArived.nameOfupdating;
+				var s_versionNumber = dataArived.versionNumber;
+				var s_stickerNumber = dataArived.stickerNumber;
+				var s_stickerTypeK = dataArived.stickerTypeK;
+				var s_boxNumber = dataArived.boxNumber;
+				var s_boxTypeK = dataArived.boxTypeK;
+				var s_barcodeK = dataArived.barcodeK;
+				var s_StickerLanguageK = dataArived.StickerLanguageK;
+				var s_volumeKey = dataArived.volumeKey;
+				var s_netWeightK = dataArived.netWeightK;
+				var s_grossUnitWeightK = dataArived.grossUnitWeightK;
+				
+				var s_grossCtnK = dataArived.grossCtnWeightK;
+				var s_netCtnK = dataArived.netCtnWeightK;
+				
+				var s_licsensNumber = dataArived.licsensNumber;
+				var s_licsensDate = dataArived.licsensDate;
+				var s_country = dataArived.country;
+				
+				var s_cartonNumber = dataArived.cartonNumber;
+				var s_PcsCarton = dataArived.PcsCarton;
+				var s_pumpDirection = dataArived.pumpDirection;
+				var s_paletteType = dataArived.paletteType;
+				var s_st1layerCarton = dataArived.st1layerCarton;
+				var s_totalCartonPalette = dataArived.totalCartonPalette;
+				var s_cbm = dataArived.cbm;
+				var s_motherP = dataArived.motherP;
+				var s_itemType = dataArived.itemType;
+				var s_bottleNumber = dataArived.bottleNumber;
+				var s_capNumber = dataArived.capNumber;
+				var s_pumpNumber = dataArived.pumpNumber;
+				
+							
+				var s_sealNumber = dataArived.sealNumber;
+				var s_bottleTube = dataArived.bottleTube;
+				var s_capTube = dataArived.capTube;
+				var s_pumpTube = dataArived.pumpTube;
+				var s_sealTube = dataArived.sealTube;
+				var s_extraText1 = dataArived.extraText1;
+				var s_extraText2 = dataArived.extraText2;
+				
+				var s_bottleImage = dataArived.bottleImage;
+				var s_capImage = dataArived.capImage;
+				var s_pumpImage = dataArived.pumpImage;
+				var s_laserImage1 = dataArived.laserImage1;
+				var s_laserImage2 = dataArived.laserImage2;
+				var s_imgMain1 = dataArived.imgMain1;
+				var s_imgMain2 = dataArived.imgMain2;
+				var s_imgMain3 = dataArived.imgMain3;
+				var s_extraImage1 = dataArived.extraImage1;
+				var s_extraImage2 = dataArived.extraImage2;
+				var s_sealImage = dataArived.sealImage;
+			
+				var s_item1w = dataArived.item1w;
+				var s_item1s = dataArived.item1s;
+				var s_item2w = dataArived.item2w;
+				var s_item2s = dataArived.item2s;
+				var s_item3w = dataArived.item3w;
+				var s_item3s = dataArived.item3s;
+				var s_item4w = dataArived.item4w;
+				var s_item4s = dataArived.item4s;	
+				var s_itemStickerW = dataArived.itemStickerW;
+				var s_itemStickerS = dataArived.itemStickerS;
+				var s_itemBoxW = dataArived.itemBoxW;
+				var s_itemBoxS = dataArived.itemBoxS;
+				var s_itemCtnW = dataArived.itemCtnW;
+				var s_itemCtnS = dataArived.itemCtnS;
+
+		document.getElementById('id_name_of_updating').value=s_nameOfupdating;
+		document.getElementById('id_version').value=s_versionNumber;
+		document.getElementById('id_stickerNumber').value=s_stickerNumber;
+		document.getElementById('id_stickerType').value=s_stickerTypeK;
+		document.getElementById('id_boxNumber').value=s_boxNumber;
+		document.getElementById('id_boxType').value=s_boxTypeK;
+		document.getElementById('id_barcode').value=s_barcodeK;
+		document.getElementById('id_stickerLanguge').value=s_StickerLanguageK;
+		document.getElementById('id_volume').value=s_volumeKey;
+		document.getElementById('id_netWeight').value=s_netWeightK;
+		document.getElementById('id_grossUnitInput').value=s_grossUnitWeightK;
+		
+		document.getElementById('id_grossCtnInput').value=s_grossCtnK;
+		document.getElementById('id_netCtnInput').value=s_netCtnK;
+		
+		document.getElementById('id_licsensNumber').value=s_licsensNumber;
+		document.getElementById('id_licsensDate').value=s_licsensDate;
+		document.getElementById('id_country').value=s_country;
+		
+		document.getElementById('id_cartonNo').value=s_cartonNumber;
+		document.getElementById('id_pcsCarton').value=s_PcsCarton;
+		document.getElementById('id_pumpDirection').value=s_pumpDirection;
+		document.getElementById('id_Palette').value=s_paletteType;
+		document.getElementById('id_layerCartonPalette').value=s_st1layerCarton;
+		document.getElementById('id_totalCarton').value=s_totalCartonPalette;
+	
+		document.getElementById('id_cbm').value=s_cbm;
+		document.getElementById('id_motherP').value=s_motherP;
+		document.getElementById('id_itemType').value=s_itemType;
+		
+		
+		document.getElementById('id_bottleNo').value=s_bottleNumber;
+		document.getElementById('id_capNo').value=s_capNumber;
+		document.getElementById('id_pumpNo').value=s_pumpNumber;		
+		document.getElementById('id_sealNo').value=s_sealNumber;		
+		document.getElementById('id_item1text').value=s_bottleTube;
+		document.getElementById('id_item2text').value=s_capTube;
+		document.getElementById('id_item3text').value=s_pumpTube;
+		document.getElementById('id_sealText').value=s_sealTube;
+		
+	
+		
+		
+		document.getElementById('id_item1weight').value =s_item1w;
+		document.getElementById('id_item1select').value =s_item1s;
+		document.getElementById('id_item2weight').value =s_item2w;
+		document.getElementById('id_item2select').value =s_item2s;
+		document.getElementById('id_item3weight').value =s_item3w;
+		document.getElementById('id_item3select').value =s_item3s;
+		document.getElementById('id_item4weight').value =s_item4w;
+		document.getElementById('id_item4select').value =s_item4s;
+		document.getElementById('id_stickerWeight').value =s_itemStickerW;
+		document.getElementById('id_stickerSelect').value =s_itemStickerS;
+		document.getElementById('id_boxWeight').value =s_itemBoxW;
+		document.getElementById('id_boxSelect').value =s_itemBoxS;
+		document.getElementById('id_cartonWeight').value =s_itemCtnW;
+		document.getElementById('id_cartonSelect').value =s_itemCtnS;
+		
+		
+		
+		
+		document.getElementById('id_productTitle').value=s_mainTitle;
+		document.getElementById('id_subTitle').value= s_subName;
+		document.getElementById('id_discrip').value=s_discriptionK;
+		document.getElementById('id_mainRemarks').value=s_proRemarks;
+		document.getElementById('id_impRemarks').value=s_impRemarks;
+		document.getElementById('id_extraTextOne').value=s_extraText1;
+		document.getElementById('id_extraTextTow').value=s_extraText2;
+		
+		
+		//	alert(s_bottleImage);			
+			
+			
+		document.getElementById('id_img1').src=s_bottleImage;		
+		document.getElementById('id_img2').src=s_capImage;		
+		document.getElementById('id_img3').src=s_pumpImage;		
+		document.getElementById('id_img4').src=s_laserImage1;		
+		document.getElementById('id_img5').src=s_laserImage2;		
+		
+		document.getElementById('id_img6').src=s_extraImage1;		
+		document.getElementById('id_img7').src=s_extraImage2;		
+		document.getElementById('id_img8').src=s_sealImage;		
+		
+		document.getElementById('id_imgMain1').src=s_imgMain1;		
+		document.getElementById('id_imgMain2').src=s_imgMain2;		
+		document.getElementById('id_imgMain3').src=s_imgMain3;
+			
+		document.getElementById('id_img1').style.width="80px";
+		document.getElementById('id_img2').style.width="80px";
+		document.getElementById('id_img3').style.width="80px";
+		document.getElementById('id_img4').style.width="80px";
+		document.getElementById('id_img5').style.width="80px";
+		
+		document.getElementById('id_img6').style.width="80px";
+		document.getElementById('id_img7').style.width="80px";
+		document.getElementById('id_img8').style.width="80px";
+		
+		document.getElementById('id_imgMain1').style.width="80px";
+		document.getElementById('id_imgMain2').style.width="80px";
+		document.getElementById('id_imgMain3').style.width="80px";
+	}
+	
+	function checkType(cmpt){
+		console.log( " hi " + cmpt);
+		componentRef.orderByChild("componentN").equalTo(cmpt).on("child_added", snap=>{
+				var type= snap.child("componentType").val();
+				console.log(type);	
+			return type;
+	 });
+
+	}
+	
+	
+	function checkTypeCarton(cmpt){
+		console.log( " hi2 " + cmpt);
+		sickersRef.orderByChild("componentN").equalTo(cmpt).on("child_added", snap=>{
+				var weight= snap.child("packageWeight").val();
+				console.log("weight " + weight);	
+		//	return weight;
+			document.getElementById('pk_tr_paper').innerHTML=snap.child("packageWeight").val();
+			document.getElementById('pk_tr_totalCtn').innerHTML=weight;
+	 });
+	}
+	
+	function setPackageValues(itemId2){
+	
+		document.getElementById('pk_itemNUmber').innerHTML=itemId2;		
+		
+	}
+	
+	function init(){
+	 
+		document.getElementById("id_update").value = new Date().toDateInputValue();
+		
+		$("#id_item").keyup(function(event){
+						if(event.keyCode == 13){
+							$("#id_img_item").click();
+				}
+				})
+
+  }
+  function uploadImg2(itemImgID, imgID){
+			storageRef = firebase.storage().ref();
+			var img= document.getElementById(itemImgID);
+			var file;
+			if (img) {file= img.files[0];}
+			itemImgRef = storageRef.child('items/' + file.name);
+			var put = itemImgRef.put(file);
+			
+			if (img==id_itemImgMain1 || img==id_itemImgMain2 ||img ==id_itemImgMain3)
+			{console.log(img);} //if i want to change to itemRef/pruductss
+			
+			itemImgRef.getDownloadURL().then(function(url){
+				
+		
+			console.log(itemImgID, imgID);
+			document.getElementById(imgID).style.width="80px";
+			document.getElementById(imgID).src=url;
+			temp= url;
+			console.log(temp, imgID);
+			if (imgID=="id_img1") {itemImgBottle=temp;}
+			else if (imgID=="id_img2") {itemImgCap=temp;}
+			else if (imgID=="id_img3") {itemImgPump=temp;}
+			else if (imgID=="id_img4") {itemImgLaser1=temp;}
+			else if (imgID=="id_img5") {itemImgLaser2=temp;}
+			else if (imgID=="id_imgMain1"){itemImgMain1=temp;}
+			else if (imgID=="id_imgMain2"){itemImgMain2=temp;}
+			else if (imgID=="id_imgMain3"){itemImgMain3=temp;}
+			else if (imgID=="id_img6") {extraImg1=temp;}
+			else if (imgID=="id_img7") {extraImg2=temp;}
+			else if (imgID=="id_img8") {sealImg=temp;}
+				})
+
+		
+  
+  }
+  
+  function uploadImg(itemImgID, imgID){
+			storageRef = firebase.storage().ref();
+			var img= document.getElementById(itemImgID);
+			var file;
+			if (img) {file= img.files[0];}
+			itemImgRef = storageRef.child('items/' + file.name);
+			var put = itemImgRef.put(file).then(function(url){
+			
+			if (img==id_itemImgMain1 || img==id_itemImgMain2 ||img ==id_itemImgMain3)
+			{console.log(img);} //if i want to change to itemRef/pruductss
+			
+			
+			
+			showImage(imgID);
+			
+				
+		
+			
+				})
+
+		
+  
+  }
+  
+  function showImage(imgID){
+
+			itemImgRef.getDownloadURL().then(function(url){
+			console.log("url2: "+url);
+			
+			document.getElementById(imgID).style.width="80px";
+			document.getElementById(imgID).src=url;
+			temp= url;
+			if (imgID=="id_img1") {itemImgBottle=temp;}
+			else if (imgID=="id_img2") {itemImgCap=temp;}
+			else if (imgID=="id_img3") {itemImgPump=temp;}
+			else if (imgID=="id_img4") {itemImgLaser1=temp;}
+			else if (imgID=="id_img5") {itemImgLaser2=temp;}
+			else if (imgID=="id_imgMain1"){itemImgMain1=temp;}
+			else if (imgID=="id_imgMain2"){itemImgMain2=temp;}
+			else if (imgID=="id_imgMain3"){itemImgMain3=temp;}
+			else if (imgID=="id_img6") {extraImg1=temp;}
+			else if (imgID=="id_img7") {extraImg2=temp;}
+			else if (imgID=="id_img8") {sealImg=temp;}
+			
+			
+			tempImgUrl = url;
+			document.getElementById('imgID').style.width="180px";
+			document.getElementById('imgID').src=url;
+			
+			uploader.value= 0;
+		
+		});
+		}
+  
+  
+	function getElementsValue(){
+	
+		itemId= document.getElementById('id_item').value;
+		
+		
+		update = document.getElementById('id_update').value;
+		name_of_updating= document.getElementById('id_name_of_updating').value;
+		version= document.getElementById('id_version').value;
+		sticker = document.getElementById('id_stickerNumber').value;
+		stickerType= document.getElementById('id_stickerType').value;
+		box= document.getElementById('id_boxNumber').value;
+		boxType=  document.getElementById('id_boxType').value;
+		barcode= document.getElementById('id_barcode').value;
+		sticker_language=  document.getElementById('id_stickerLanguge').value;
+		volume= document.getElementById('id_volume').value;
+		netWeight= document.getElementById('id_netWeight').value;
+		grossUnitWeight=  document.getElementById('id_grossUnitInput').value;
+		
+		netCtnWeightK=  document.getElementById('id_netCtnInput').value;
+		grossCtnWeightK=  document.getElementById('id_grossCtnInput').value;
+		
+		licsensNumberK=  document.getElementById('id_licsensNumber').value;
+		licsensDateK=  document.getElementById('id_licsensDate').value;
+		countryK = document.getElementById('id_country').value;
+		
+		cartonNo= document.getElementById('id_cartonNo').value;
+		pcs_carton= document.getElementById('id_pcsCarton').value;
+		pump_direction= document.getElementById('id_pumpDirection').value;
+		palette_type= document.getElementById('id_Palette').value;
+		layer_carton_palette= document.getElementById('id_layerCartonPalette').value;
+		total_cartonPalette= document.getElementById('id_totalCarton').value;
+		mother= document.getElementById('id_motherP').value;
+		cbm= document.getElementById('id_cbm').value;
+		item_type= document.getElementById('id_itemType').value;
+		
+		
+		item1w = document.getElementById('id_item1weight').value;
+		item1S = document.getElementById('id_item1select').value;
+		item2w = document.getElementById('id_item2weight').value;
+		item2S = document.getElementById('id_item2select').value;
+		item3w = document.getElementById('id_item3weight').value;
+		item3S = document.getElementById('id_item3select').value;
+		item4w = document.getElementById('id_item4weight').value;
+		item4S = document.getElementById('id_item4select').value;
+		itemStickerW = document.getElementById('id_stickerWeight').value;
+		itemStickerS = document.getElementById('id_stickerSelect').value;
+		itemBoxW = document.getElementById('id_boxWeight').value;
+		itemBoxS = document.getElementById('id_boxSelect').value;
+		itemCtnW = document.getElementById('id_cartonWeight').value;
+		itemCtnS = document.getElementById('id_cartonSelect').value;
+			
+		
+		bottleNo=document.getElementById('id_bottleNo').value;
+		capNo=document.getElementById('id_capNo').value;
+		pumpNo=document.getElementById('id_pumpNo').value;		
+		sealN=document.getElementById('id_sealNo').value;		
+		item1text= document.getElementById('id_item1text').value;
+		item2text= document.getElementById('id_item2text').value;
+		item3text= document.getElementById('id_item3text').value;
+		sealTxt= document.getElementById('id_sealText').value;
+		
+		//item1text2= document.getElementById('id_item1text2').value;
+		//item2text2= document.getElementById('id_item2text2').value;
+		//item3text2= document.getElementById('id_item3text2').value;
+		
+		mainTitle= document.getElementById('id_productTitle').value;
+		subTitle= document.getElementById('id_subTitle').value;
+		productDiscription= document.getElementById('id_discrip').value;
+		productRemarks = document.getElementById('id_mainRemarks').value;
+		importantRemarks = document.getElementById('id_impRemarks').value;
+		extraTxt1 = document.getElementById('id_extraTextOne').value;
+		extraTxt2 = document.getElementById('id_extraTextTow').value;
+		id_item= document.getElementById('id_item').value;
+	}
+  
+  function writeItemData(){
+	
+		console.log(itemImgBottle);
+		
+		getElementsValue();
+		
+		var newItem= {
+			itemNumber:id_item,
+			name: ''+mainTitle,
+			subName: ''+subTitle,
+			discriptionK: ''+productDiscription,
+			proRemarks: '' + productRemarks,
+			impRemarks: '' + importantRemarks,
+			
+			updateDate: ''+ update,
+			nameOfupdating:''+name_of_updating,
+			versionNumber: version,
+			
+			stickerNumber: ''+ sticker,
+			stickerTypeK: ''+stickerType,
+			boxNumber: ''+ box,
+			boxTypeK: ''+ boxType,
+			barcodeK: ''+ barcode,
+			StickerLanguageK: ''+ sticker_language,
+			volumeKey:   volume,
+			netWeightK:  netWeight,
+			grossUnitWeightK:  grossUnitWeight,
+			
+			licsensNumber:''+licsensNumberK,
+			licsensDate:''+licsensDateK,
+			country:''+countryK,
+			
+			netCtnWeightK:  netCtnWeightK,
+			grossCtnWeightK: grossCtnWeightK,
+			
+			cartonNumber: ''+ cartonNo,
+			PcsCarton: ''+ pcs_carton,
+			pumpDirection:''+ pump_direction,
+			paletteType: ''+ palette_type, 
+			st1layerCarton:  layer_carton_palette, 
+			totalCartonPalette:  total_cartonPalette,
+			
+			cbm:  cbm,
+			motherP: ''+ mother,
+			itemType: ''+ item_type,
+			
+			item1w: ''+ item1w,
+			item1s: ''+ item1S,
+			item2w: ''+ item2w,
+			item2s: ''+ item2S,
+			item3w: ''+ item3w,
+			item3s: ''+ item3S,
+			item4w: ''+ item4w,
+			item4s: ''+ item4S,
+			itemStickerW: ''+itemStickerW,
+			itemStickerS: ''+itemStickerS,
+			itemBoxS : '' +itemBoxS,
+			itemBoxW : '' + itemBoxW,
+			itemCtnW : ''+itemCtnW,
+			itemCtnS : '' +itemCtnS, 
+			
+			bottleNumber:''+bottleNo,
+			capNumber:''+capNo,
+			pumpNumber:''+pumpNo,
+			sealNumber: '' +sealN,
+			
+			bottleTube: ''+item1text,
+			capTube: '' +item2text,
+			pumpTube:''+ item3text,
+			sealTube:''+sealTxt,
+			
+			extraText1: '' + extraTxt1,
+			extraText2: '' + extraTxt2,
+			
+			bottleImage: ''+itemImgBottle,
+			capImage: ''+ itemImgCap,
+			pumpImage: ''+itemImgPump,
+			laserImage1: ''+ itemImgLaser1,
+			laserImage2: ''+ itemImgLaser2,
+			imgMain1: ''+ itemImgMain1,
+			imgMain2: ''+ itemImgMain2,
+			imgMain3: ''+ itemImgMain3,
+			
+			extraImage1: ''+ extraImg1,
+			extraImage2: ''+ extraImg2,
+			sealImage: '' + sealImg,
+			
+		}
+ 
+
+			$.post('/item/add', 
+			 newItem,
+			  function(data){				
+				//	$("#formulaId").val(data);
+				debugger;
+			}
+		
+		)
+      
+  }
+  
+  function loadOackagDetails(id_val, id_weight, id_select){
+	var obj = document.getElementById(id_val).value;
+	console.log(obj);
+	componentRef.orderByChild("componentN").equalTo(obj).on("child_added", snap=>{
+		var wgt = snap.child("packageWeight").val();
+		var pType = snap.child("packageType").val();
+		console.log(obj + " , " + wgt + " , " + pType);
+		$("#"+id_weight).val(wgt);
+		$("#"+id_select).val(pType);
+	});
+  
+  }
+  
+  function loadOackagDetails2(id_val, id_weight, id_select){
+	var obj = document.getElementById(id_val).value;
+	console.log(obj);
+	sickersRef.orderByChild("componentN").equalTo(obj).on("child_added", snap=>{
+		var wgt = snap.child("packageWeight").val();
+		var pType = snap.child("packageType").val();
+		console.log(obj + " , " + wgt + " , " + pType);
+		$("#"+id_weight).val(wgt);
+		$("#"+id_select).val(pType);
+	});
+  
+  }
+  
+  function checkNetWgt(){
+		var netWgtN = document.getElementById('id_netWeight').value.replace(/\D/g,'');
+		var untCtnN = document.getElementById('id_pcsCarton').value.replace(/\D/g,'');
+		var a = (parseInt(netWgtN)*parseInt(untCtnN))/1000;
+		var rounded = Math.round( a * 10 ) / 10;
+		$("#id_netCtnInput").val(rounded);
+		
+	
+  }
+  
+  function checkGrossWgt(){
+		var grossWgtN = document.getElementById('id_grossUnitInput').value.replace(/\D/g,'');
+		var untCtnN = document.getElementById('id_pcsCarton').value.replace(/\D/g,'');
+		var ctnWgt = document.getElementById('id_cartonWeight').value.replace(/\D/g,'');
+		var a = (parseInt(grossWgtN)*parseInt(untCtnN)+parseInt(ctnWgt))/1000;
+		var rounded = Math.round( a * 10 ) / 10;
+		$("#id_grossCtnInput").val(rounded);
+		
+	
+  }
+  //set defult date:
+	Date.prototype.toDateInputValue = (function() {
+		var local = new Date(this);
+		local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+		return local.toJSON().slice(0,10);
+	});
+
+	
+	
+
+function textToBase64Barcode(text){
+  //var canvas = document.createElement("canvas");
+ // JsBarcode(canvas, text, {format: "CODE39"});
+  //return canvas.toDataURL("image/png");
+ // JsBarcode("#barcode", text);
+  //$("#barcode").JsBarcode(text);
+  
+  JsBarcode("#barcode", "1234", {
+		format: "pharmacode",
+		//lineColor: "#0aa",
+		width: 4,
+		height: 40,
+		displayValue: false
+		});
+}
+  </script>
+  
+  
+
+<body onLoad="init()" background='bg3.jpg' style='padding-top:20px'>
+
+
+		<a>
+      
+		    
+        <div class='header' style="width: 1330px ; height: 70px"><a1>	Orders List </a1> <img src="peerpharm.png"  width='270px' align='right'></div>
+		<ul>
+			  <li><a href="#home">Home</a></li>
+			  <li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Orders</a>
+					<div class="dropdown-content">
+					  <a href="openOrders.html">Open Orders</a>
+					  <a href="newOrder.html">New Order</a>
+					  <a href="showOrder.html">Search Order</a>
+					  <a href="ordersList.html">All Orders</a>
+					  
+					</div>
+			  </li>
+			  <li class="dropdown"><a href="workShift.html">Work Schedule</a><li>
+			  <li class="dropdown">
+			  <a href="javascript:void(0)" class="dropbtn">Product Tree</a>
+			  <div class="dropdown-content">
+				<a href="itemsList.html">Items List</a>
+				<a href="getItem.html">Product Tree</a>
+				</div>
+				</li>
+			  <li><a href="costumers.html">Costumers</a></li>
+			  <li><a href="needToBuild.html">No-form List</a></li>
+			  <li><a href="batchesList.html">Batch List</a></li>
+		</ul>
+		</a>
+		<br><br>
+<div style="background-color: lightblue; width: 1084px ; height: 70px" class='headDiv'><h1 style='color:white'><i>Create new products</i></h1></div>
+<table border = 0 background='bg112.jpg' style=" background-size: cover" >
+
+<form>
+</form>
+<tr><td colspan='2'>
+<div class="alert" id='impAlert' style='display:none'>
+  <span class="closebtn" onclick="this.parentElement.style.display='none';" >&times;</span> 
+</div>
+</td></tr>
+        <tr>
+            <td colspan='2' align='center'>
+               <br>
+            </td>
+        </tr>
+	<tr>
+		<td>
+			<table border= 0>
+				<tr>
+					<td>
+						Update Date:
+					</td>
+					<td>
+						<input type=date id="id_update" style="width:158px"><img src='pkg.png' style='width:35px;' onclick='textToBase64Barcode("1233334")'>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Name of Updataing:
+					</td>
+					<td>
+						<input type="text"id="id_name_of_updating">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Version Number:---------
+					</td>
+					<td>
+						<input type="text"id="id_version">
+					</td>
+				</tr>
+			</table>
+		</td>
+                <td rowspan="3" align=" center">
+				 <b> Enter Product Title:</b><br>    <input type="text" id="id_productTitle" style="width:325px"><br><br>
+                   <b> Enter Sub title:</b><br>
+                     <input type="text" id="id_subTitle">
+                     <br><br>
+					<b> Enter discription:</b><br>
+					 <input type = "text" id="id_discrip" style="width:280px">
+					 <br><br>
+                     <input type="file" id="id_itemImgMain1"><button onclick= "uploadImg('id_itemImgMain1', 'id_imgMain1')">>></button><br><img id="id_imgMain1">
+                     <br><br>
+                     <input type="file" id="id_itemImgMain2"><button onclick= "uploadImg('id_itemImgMain2', 'id_imgMain2')">>></button><br><img id="id_imgMain2">
+                     <br><br>
+                     <input type="file" id="id_itemImgMain3"><button onclick= "uploadImg('id_itemImgMain3', 'id_imgMain3')">>></button><br><img id="id_imgMain3">
+					 <br><br>
+					<b> Enter Remarks:</b><br>
+					
+					 <textarea rows="3" cols="30" id="id_mainRemarks"> </textarea>
+					 <br><br>
+					<b> Enter Important note:</b><br>
+					
+					 <textarea rows="3" cols="30" id="id_impRemarks"> </textarea>
+                </td>
+	</tr>
+        
+        <tr>
+		<td>
+                    <table border =0>
+								<tr >
+									<td>
+										<b>ITEM   #</b>
+									</td>
+									<td colspan="2">
+										 <input type= "text" id="id_item"></td><td><img id="id_img_item" onClick='searchForItem()' title="search" src='/images/searchA2.png' style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'><img id="id_img_item2" onClick='searchForItem2()' title="search" src='/images/searchA2.png' style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
+									</td>
+								</tr>
+                                <tr>
+                                    <td ><b>Sticker</b></td>
+                                    <td><input type="text" style='width: 77px' id="id_stickerNumber"  onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')"></td>
+                                    <td><input type ="text" style='width: 77px' id="id_stickerType"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Box</td>
+                                    <td><input type="text" style='width: 77px' id="id_boxNumber"  onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')"></td>
+                                    <td><input type ="text" style='width: 77px' id="id_boxType"></td>
+                                </tr>
+                                <tr >
+									<td>
+                                            <b>Barcode</b>
+									</td>
+									<td colspan="2">
+											<input type= "text" id="id_barcode">
+									</td>
+								
+                                <tr>
+                                    <td><b>Sticker Language</td>
+                                    <td colspan="2"><input type="text" id="id_stickerLanguge"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Volume</td>
+                                    <td colspan="2"><input type="text" id="id_volume"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Net Weight</td>
+                                    <td colspan="2"><input type="text" id="id_netWeight"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Gross unit Weight------</td>
+                                    <td colspan="2"><input type="text" id="id_grossUnitInput"></td>
+                                </tr>
+							</table>
+					<br>
+						<table border =0>
+							<tr>
+                                    <td>
+										<b>Sticker Wgt/Type-----</b>
+									</td>
+										<td><input type="text" id="id_stickerWeight" style='width:40px; margin-left:10px' value="0.0">
+										
+										<select id='id_stickerSelect'>
+										PET	HDPE	LDPE	PP	PS	פלסטיק אחר	סה"כ פלסטיק	מתכת	עץ	חומר אחר
+
+											<option value='paperCarton'>נייר/קרטון</option>
+											<option value='drinkCarton'>קרטוניות משקה</option>
+											<option value='totalCarton'>סה"כ קרטון</option>
+											<option value='transperentGlass'>זכוכית שקופה</option>
+											<option value='colorGlass'>זכוכית צבעונית</option>
+											<option value='totalGlass'>סה"כ זכוכית</option>
+											
+											<option value='pet'>PET</option>
+											<option value='hdpe'>HDPE</option>
+											<option value='ldpe'>LDPE</option>
+											<option value='pp' selected>PP</option>
+											<option value='ps'>PS</option>
+											<option value='otherPlastic'>פלסטיק אחר</option>
+											<option value='totalPlastic'>סה"כ פלסטיק</option>
+											<option value='metal'>מתכת</option>
+											<option value='wood'>עץ</option>
+											<option value='otherMaterial'>חומר אחר</option>
+										</select>
+									</td>
+                                </tr>
+								<tr>
+                                    <td>
+										<b>Box Wgt/Type</b></td><td><input type="text" id="id_boxWeight" style='width:40px; margin-left:10px' value=8>
+										<select id='id_boxSelect'>
+										PET	HDPE	LDPE	PP	PS	פלסטיק אחר	סה"כ פלסטיק	מתכת	עץ	חומר אחר
+
+											<option value='paperCarton'>נייר/קרטון</option>
+											<option value='drinkCarton'>קרטוניות משקה</option>
+											<option value='totalCarton'>סה"כ קרטון</option>
+											<option value='transperentGlass'>זכוכית שקופה</option>
+											<option value='colorGlass'>זכוכית צבעונית</option>
+											<option value='totalGlass'>סה"כ זכוכית</option>
+											
+											<option value='pet'>PET</option>
+											<option value='hdpe'>HDPE</option>
+											<option value='ldpe'>LDPE</option>
+											<option value='pp'>PP</option>
+											<option value='ps'>PS</option>
+											<option value='otherPlastic'>פלסטיק אחר</option>
+											<option value='totalPlastic'>סה"כ פלסטיק</option>
+											<option value='metal'>מתכת</option>
+											<option value='wood'>עץ</option>
+											<option value='otherMaterial'>חומר אחר</option>
+										</select>
+									</td>
+                                </tr>
+								<tr>
+                                    <td>
+										<b>Carton Wgt/Type</b></td><td><input type="text" id="id_cartonWeight" style='width:40px; margin-left:10px'>
+										<select id='id_cartonSelect'>
+										PET	HDPE	LDPE	PP	PS	פלסטיק אחר	סה"כ פלסטיק	מתכת	עץ	חומר אחר
+
+											<option value='paperCarton'>נייר/קרטון</option>
+											<option value='drinkCarton'>קרטוניות משקה</option>
+											<option value='totalCarton'>סה"כ קרטון</option>
+											<option value='transperentGlass'>זכוכית שקופה</option>
+											<option value='colorGlass'>זכוכית צבעונית</option>
+											<option value='totalGlass'>סה"כ זכוכית</option>
+											
+											<option value='pet'>PET</option>
+											<option value='hdpe'>HDPE</option>
+											<option value='ldpe'>LDPE</option>
+											<option value='pp'>PP</option>
+											<option value='ps'>PS</option>
+											<option value='otherPlastic'>פלסטיק אחר</option>
+											<option value='totalPlastic'>סה"כ פלסטיק</option>
+											<option value='metal'>מתכת</option>
+											<option value='wood'>עץ</option>
+											<option value='otherMaterial'>חומר אחר</option>
+										</select>
+									</td>
+                                </tr>
+								<tr><td>--------------</td>
+								</tr>
+								<tr>
+                                    <td><b>Net Ctn Weight</td>
+                                    <td colspan="2"><input type="text" id="id_netCtnInput" style='margin-left:10px' onfocusout='checkNetWgt()'></td>
+                                </tr>
+								<tr>
+                                    <td><b>Gross Ctn Weight</td>
+                                    <td colspan="2"><input type="text" id="id_grossCtnInput" style='margin-left:10px' onfocusout='checkGrossWgt()'></td>
+                                </tr>
+								<tr>
+									<td>
+										<b>Licsens Number</b>
+									</td>
+									<td>
+										<input type="text" id="id_licsensNumber" style='margin-left:10px'>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Licsens Exp Date</b>
+									</td>
+									<td>
+										<input type="date" id="id_licsensDate" style="width:158px;margin-left:10px">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Export Counrty</b>
+									</td>
+									<td>
+										<input type='text' id='id_country' style='margin-left:10px'>
+									</td>
+								</tr>
+									
+                        </table>
+                </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <table border=0>
+                    <tr>
+                        <td><b>Carton no'</td>
+                        <td><input type = text id="id_cartonNo" onfocusout="loadOackagDetails2(this.id, 'id_cartonWeight','id_cartonSelect')"></td>
+                    </tr>
+                     <tr>
+                        <td><b>PCS/carton</td>
+                        <td><input type = text id="id_pcsCarton"></td>
+                    </tr>
+                     <tr>
+                        <td><b>Pump direction</td>
+                        <td><select id="id_pumpDirection" style="width:158px"><option value="-">-</option><option value="Right">Right</option><option value="Left">Left</option></select></td>  
+                    </tr>
+                     <tr>
+                         <td><b>Palette</td>
+                        <td><input type = text id="id_Palette"></td>
+                    </tr>
+                     <tr>
+                        <td><b>1st layer carton/palette</td>
+                        <td><input type = text id="id_layerCartonPalette"></td>
+                    </tr>
+                     <tr>
+                        <td><b>Total Cartons/palette</td>
+                        <td><input type = text id="id_totalCarton"></td>
+                    </tr>
+					 <tr>
+                        <td><b>Cbm</td>
+                        <td><input type = text id="id_cbm"></td>
+                    </tr>
+					 <tr>
+                        <td><b>Mother Product</td>
+                        <td><input type = text id="id_motherP"></td>
+                    </tr>
+					<tr>
+                        <td><b>Item Type</td>
+                        <td><select id="id_itemType" style="width:158px"><option value="-"></option><option value="bodyCare">Body Care</option><option value="faceCare">Face Care</option><option value="hairCare">Hair Care</option><option value="hairCare">Make Up</option></select></td>  
+                    </tr>
+                </table>
+                
+                
+                
+            </td>
+        </tr>
+        <tr >
+            <td colspan="2">
+                <table border=1 style='outline-color:blue;'>
+                    <tr>
+                        <td>
+                             <table border="0" width="200px" >
+                                <tr>
+                                    <td align='center'><input type="file" id="id_itemImg1"><button onclick= "uploadImg('id_itemImg1', 'id_img1')">>></button><br><img id="id_img1"></td>
+                                </tr>
+                                <tr>
+                                    <td><b><b>Bottle no' </b><input type="text" id="id_bottleNo" onfocusout="loadOackagDetails(this.id, 'id_item1weight','id_item1select')"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Details : </b><input type="text" id="id_item1text" style='margin-left:10px'></td>
+                                </tr>
+								<tr>
+                                    <td>
+										<b>Weight (gr)</b><input type="text" id="id_item1weight" style='width:40px; margin-left:8px'>
+										<select id='id_item1select'>
+										PET	HDPE	LDPE	PP	PS	פלסטיק אחר	סה"כ פלסטיק	מתכת	עץ	חומר אחר
+
+											<option value='paperCarton'>נייר/קרטון</option>
+											<option value='drinkCarton'>קרטוניות משקה</option>
+											<option value='totalCarton'>סה"כ קרטון</option>
+											<option value='transperentGlass'>זכוכית שקופה</option>
+											<option value='colorGlass'>זכוכית צבעונית</option>
+											<option value='totalGlass'>סה"כ זכוכית</option>
+											
+											<option value='pet'>PET</option>
+											<option value='hdpe'>HDPE</option>
+											<option value='ldpe'>LDPE</option>
+											<option value='pp'>PP</option>
+											<option value='ps'>PS</option>
+											<option value='otherPlastic'>פלסטיק אחר</option>
+											<option value='totalPlastic'>סה"כ פלסטיק</option>
+											<option value='metal'>מתכת</option>
+											<option value='wood'>עץ</option>
+											<option value='otherMaterial'>חומר אחר</option>
+										</select>
+									</td>
+                                </tr>
+								
+                             </table>
+                        </td>
+                         <td>
+                             <table border="0" width="200px">
+                                <tr>
+                                    <td align='center'><input type="file" id="id_itemImg2"><button onclick= "uploadImg('id_itemImg2', 'id_img2')">>></button><br><img id="id_img2"></td>
+                                </tr>
+                                <tr>
+                                    <td><b><b>CAP no'</b><input type="text" id="id_capNo" onfocusout="loadOackagDetails(this.id, 'id_item2weight','id_item2select')"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Details :</b><input type="text" id="id_item2text"></td>
+                                </tr>
+								<tr>
+                                    <td>
+										<b>Weight (gr)</b><input type="text" id="id_item2weight" style='width:40px; margin-left:8px'>
+										<select id='id_item2select'>
+										PET	HDPE	LDPE	PP	PS	פלסטיק אחר	סה"כ פלסטיק	מתכת	עץ	חומר אחר
+
+											<option value='paperCarton'>נייר/קרטון</option>
+											<option value='drinkCarton'>קרטוניות משקה</option>
+											<option value='totalCarton'>סה"כ קרטון</option>
+											<option value='transperentGlass'>זכוכית שקופה</option>
+											<option value='colorGlass'>זכוכית צבעונית</option>
+											<option value='totalGlass'>סה"כ זכוכית</option>
+											
+											<option value='pet'>PET</option>
+											<option value='hdpe'>HDPE</option>
+											<option value='ldpe'>LDPE</option>
+											<option value='pp'>PP</option>
+											<option value='ps'>PS</option>
+											<option value='otherPlastic'>פלסטיק אחר</option>
+											<option value='totalPlastic'>סה"כ פלסטיק</option>
+											<option value='metal'>מתכת</option>
+											<option value='wood'>עץ</option>
+											<option value='otherMaterial'>חומר אחר</option>
+										</select>
+									</td>
+                                </tr>
+                             </table>
+                        </td>
+                         <td>
+                             <table border="0" width="200px">
+                                <tr>
+                                    <td align='center'><input type="file" id="id_itemImg3"><button onclick= "uploadImg('id_itemImg3', 'id_img3')">>></button><br><img id="id_img3"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>PUMP no'</b><input type="text" id="id_pumpNo" onfocusout="loadOackagDetails(this.id, 'id_item3weight','id_item3select')"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Details : </b><input type="text" id="id_item3text"  style='margin-left:10px'></td>
+                                </tr>
+								<tr>
+                                    <td>
+										<b>Weight (gr)</b><input type="text" id="id_item3weight" style='width:40px; margin-left:8px'>
+										<select id='id_item3select'>
+										PET	HDPE	LDPE	PP	PS	פלסטיק אחר	סה"כ פלסטיק	מתכת	עץ	חומר אחר
+
+											<option value='paperCarton'>נייר/קרטון</option>
+											<option value='drinkCarton'>קרטוניות משקה</option>
+											<option value='totalCarton'>סה"כ קרטון</option>
+											<option value='transperentGlass'>זכוכית שקופה</option>
+											<option value='colorGlass'>זכוכית צבעונית</option>
+											<option value='totalGlass'>סה"כ זכוכית</option>
+											
+											<option value='pet'>PET</option>
+											<option value='hdpe'>HDPE</option>
+											<option value='ldpe'>LDPE</option>
+											<option value='pp'>PP</option>
+											<option value='ps'>PS</option>
+											<option value='otherPlastic'>פלסטיק אחר</option>
+											<option value='totalPlastic'>סה"כ פלסטיק</option>
+											<option value='metal'>מתכת</option>
+											<option value='wood'>עץ</option>
+											<option value='otherMaterial'>חומר אחר</option>
+										</select>
+									</td>
+                                </tr>
+                             </table>
+                        </td>
+						<td class='extraTd' id="extraTdId">
+                             <table border="0" width="200px">
+                                <tr>
+                                    <td align='center'><input type="file" id="id_itemImg6"><button onclick= "uploadImg('id_itemImg6', 'id_img6')">>></button><br><img id="id_img6"></td>
+                                </tr>
+								<tr>
+                                    <td><input type="text" id="id_extraTextOne"></td>
+                                </tr>
+								<tr>
+                                    <td align='center'><input type="file" id="id_itemImg7"><button onclick= "uploadImg('id_itemImg7', 'id_img7')">>></button><br><img id="id_img7"></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td><input type="text" id="id_extraTextTow"></td>
+                                </tr>
+								
+                             </table>
+                        </td>
+						<td class='sealTd' id="sealTdId">
+                             <table border="0" width="200px">
+                                <tr>
+                                    <td align='center'><input type="file" id="id_itemImg8"><button onclick= "uploadImg('id_itemImg8', 'id_img8')">>></button><br><img id="id_img8"></td>
+                                </tr>
+								<tr>
+                                    <td><b>Seal no'</b><input type="text" id="id_sealNo" onfocusout="loadOackagDetails(this.id, 'id_item4weight','id_item4select')"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>_ Details : </b><input type="text" id="id_sealText"></td>
+								</tr>
+								<tr>
+                                    <td>
+										<b>Weight (gr)</b><input type="text" id="id_item4weight" style='width:40px; margin-left:8px'>
+										<select id='id_item4select'>
+										PET	HDPE	LDPE	PP	PS	פלסטיק אחר	סה"כ פלסטיק	מתכת	עץ	חומר אחר
+
+											<option value='paperCarton'>נייר/קרטון</option>
+											<option value='drinkCarton'>קרטוניות משקה</option>
+											<option value='totalCarton'>סה"כ קרטון</option>
+											<option value='transperentGlass'>זכוכית שקופה</option>
+											<option value='colorGlass'>זכוכית צבעונית</option>
+											<option value='totalGlass'>סה"כ זכוכית</option>
+											
+											<option value='pet'>PET</option>
+											<option value='hdpe'>HDPE</option>
+											<option value='ldpe'>LDPE</option>
+											<option value='pp'>PP</option>
+											<option value='ps'>PS</option>
+											<option value='otherPlastic'>פלסטיק אחר</option>
+											<option value='totalPlastic'>סה"כ פלסטיק</option>
+											<option value='metal'>מתכת</option>
+											<option value='wood'>עץ</option>
+											<option value='otherMaterial'>חומר אחר</option>
+										</select>
+									</td>
+                                </tr>
+                             </table>
+                        </td>
+                         <td>
+                             <table border="0" width="300px">
+								<tr>
+									<td>
+										<button class='expandBtn' onClick="expandExtraTable()" id='expandBtnId'>E</button><button class='expandBtn' onClick="expandSealTable()" id='expandSealBtnId'>S</button>
+									</td>
+								</tr>
+					
+                                <tr>
+                                    <td align='center'><input type="file" id="id_itemImg4"><button onclick= "uploadImg('id_itemImg4', 'id_img4')">>></button><br><img id="id_img4"></td>
+                                </tr>
+								<tr>
+                                    <td align='center'><input type="file" id="id_itemImg5"><button onclick= "uploadImg('id_itemImg5', 'id_img5')">>></button><br><img id="id_img5"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>LASER</b></td>
+                                </tr>
+                                
+                             </table>
+                        </td>   
+                    </tr>
+                </table>
+               
+            </td>
+            
+        </tr>
+	
+</table>
+<div style="background-color: lightblue; width: 1084px ; height: 70px" class='footerDiv'><br>
+<button onclick="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
+<button type='reset' style=' position: absolute; left:57%'class="btn">Reset</button>
+
+</div>
+
+<form>
+</form>
+<br>
+				
+<table><tr><td><button onclick="calculate()">חשב</button></td><td><input type="text" placeholder="כמות"></td></tr></table>
+<table border=1 dir=rtl>
+	<tr>
+		<td>
+			<span id='pk_itemNUmber'></span>
+		</td>
+		<td>
+			<span id="pk_personalPackage"></span>
+		</td>
+		<td>
+			<span id="pk_itemName"></span>
+		</td>
+		<td>
+			<span id="pk_itemCode">D.1</span>
+		</td>
+		<td>
+			<span id="pk_packageCode"></span>
+		</td>
+		<td>
+			<span id="pk_dangerItem">No</span>
+		</td>
+		<td>
+			<span id="pk_netWeight"></span>
+		</td>
+		<td>
+			<span id="pk_singlePackageVolume" ></span>
+		</td>
+		<td>
+			<span id="pk_packageType" >Yes</span>
+		</td>
+		<td>
+			<span id="pk_packageGroup" >No</span>
+		</td>
+		<td>
+			<span id="pk_packageGroupPcs" ></span>
+		</td>
+		<td>
+			<span id="pk_deposit" >No</span>
+		</td>
+		<td>
+			<span>gr</span>
+		</td>
+		
+		<td>
+			<span id="pk_ot_paper" ></span>
+		</td><td>
+			<span id="pk_ot_drink" ></span>
+		</td><td>
+			<span id="pk_ot_totalCtn" ></span>
+		</td><td>
+			<span id="pk_ot_transperentGlass" ></span>
+		</td><td>
+			<span id="pk_ot_colorGlass" ></span>
+		</td><td>
+			<span id="pk_ot_totalGlass" ></span>
+		</td><td>
+			<span id="pk_ot_pet" ></span>
+		</td><td>
+			<span id="pk_ot_hdpe" ></span>
+		</td><td>
+			<span id="pk_ot_ldpe" ></span>
+		</td><td>
+			<span id="pk_ot_pp" ></span>
+		</td><td>
+			<span id="pk_ot_ps" ></span>
+		</td><td>
+			<span id="pk_ot_otherPlastic" ></span>
+		</td><td>
+			<span id="pk_ot_totalPlastic" ></span>
+		</td><td>
+			<span id="pk_ot_metal" ></span>
+		</td><td>
+			<span id="pk_ot_wood" ></span>
+		</td><td>
+			<span id="pk_ot_otherMatrial" ></span>
+		</td>
+	
+		<td>
+			<span id="pk_gp_paper" ></span>
+		</td><td>
+			<span id="pk_gp_drink" ></span>
+		</td><td>
+			<span id="pk_gp_totalCtn" ></span>
+		</td><td>
+			<span id="pk_gp_transperentGlass" ></span>
+		</td><td>
+			<span id="pk_gp_colorGlass" ></span>
+		</td><td>
+			<span id="pk_gp_totalGlass" ></span>
+		</td><td>
+			<span id="pk_gp_pet" ></span>
+		</td><td>
+			<span id="pk_gp_hdpe" ></span>
+		</td><td>
+			<span id="pk_gp_ldpe" ></span>
+		</td><td>
+			<span id="pk_gp_pp" ></span>
+		</td><td>
+			<span id="pk_gp_ps" ></span>
+		</td><td>
+			<span id="pk_gp_otherPlastic" ></span>
+		</td><td>
+			<span id="pk_gp_totalPlastic" ></span>
+		</td><td>
+			<span id="pk_gp_metal" ></span>
+		</td><td>
+			<span id="pk_gp_wood" ></span>
+		</td><td>
+			<span id="pk_gp_otherMatrial" ></span>
+		</td>
+	
+		<td>
+			<span id="pk_tr_paper" ></span>
+		</td><td>
+			<span id="pk_tr_drink" ></span>
+		</td><td>
+			<span id="pk_tr_totalCtn" ></span>
+		</td><td>
+			<span id="pk_tr_transperentGlass" ></span>
+		</td><td>
+			<span id="pk_tr_colorGlass" ></span>
+		</td><td>
+			<span id="pk_tr_totalGlass" ></span>
+		</td><td>
+			<span id="pk_tr_pet" ></span>
+		</td><td>
+			<span id="pk_tr_hdpe" ></span>
+		</td><td>
+			<span id="pk_tr_ldpe" ></span>
+		</td><td>
+			<span id="pk_tr_pp" ></span>
+		</td><td>
+			<span id="pk_tr_ps" ></span>
+		</td><td>
+			<span id="pk_tr_otherPlastic" ></span>
+		</td><td>
+			<span id="pk_tr_totalPlastic" ></span>
+		</td><td>
+			<span id="pk_tr_metal" ></span>
+		</td><td>
+			<span id="pk_tr_wood" ></span>
+		</td><td>
+			<span id="pk_tr_otherMatrial" ></span>
+		</td>
+	</tr>
+</table>
+
+<table border=1 dir=rtl>
+	<tr>
+		<td>
+			<span id='pk_itemNUmber2'></span>
+		</td>
+		<td>
+			<span id="pk_personalPackage2"></span>
+		</td>
+		<td>
+			<span id="pk_itemName2"></span>
+		</td>
+		<td>
+			<span id="pk_itemCode2">D.1</span>
+		</td>
+		<td>
+			<span id="pk_packageCode2"></span>
+		</td>
+		<td>
+			<span id="pk_dangerItem2">No</span>
+		</td>
+		<td>
+			<span id="pk_netWeight2"></span>
+		</td>
+		<td>
+			<span id="pk_singlePackageVolume2" ></span>
+		</td>
+		<td>
+			<span id="pk_packageType2" >Yes</span>
+		</td>
+		<td>
+			<span id="pk_packageGroup2" >No</span>
+		</td>
+		<td>
+			<span id="pk_packageGroupPcs2" ></span>
+		</td>
+		<td>
+			<span id="pk_deposit2" >No</span>
+		</td>
+		<td>
+			<span>gr</span>
+		</td>
+		
+		<td>
+			<span id="pk_ot_paper2" ></span>
+		</td><td>
+			<span id="pk_ot_drink2" ></span>
+		</td><td>
+			<span id="pk_ot_totalCtn2" ></span>
+		</td><td>
+			<span id="pk_ot_transperentGlass2" ></span>
+		</td><td>
+			<span id="pk_ot_colorGlass2" ></span>
+		</td><td>
+			<span id="pk_ot_totalGlass2" ></span>
+		</td><td>
+			<span id="pk_ot_pet2" ></span>
+		</td><td>
+			<span id="pk_ot_hdpe2" ></span>
+		</td><td>
+			<span id="pk_ot_ldpe2" ></span>
+		</td><td>
+			<span id="pk_ot_pp2" ></span>
+		</td><td>
+			<span id="pk_ot_ps2" ></span>
+		</td><td>
+			<span id="pk_ot_otherPlastic2" ></span>
+		</td><td>
+			<span id="pk_ot_totalPlastic2" ></span>
+		</td><td>
+			<span id="pk_ot_metal2" ></span>
+		</td><td>
+			<span id="pk_ot_wood2" ></span>
+		</td><td>
+			<span id="pk_ot_otherMatrial2" ></span>
+		</td>
+	
+		<td>
+			<span id="pk_gp_paper2" ></span>
+		</td><td>
+			<span id="pk_gp_drink2" ></span>
+		</td><td>
+			<span id="pk_gp_totalCtn2" ></span>
+		</td><td>
+			<span id="pk_gp_transperentGlass2" ></span>
+		</td><td>
+			<span id="pk_gp_colorGlass2" ></span>
+		</td><td>
+			<span id="pk_gp_totalGlass2" ></span>
+		</td><td>
+			<span id="pk_gp_pet2" ></span>
+		</td><td>
+			<span id="pk_gp_hdpe2" ></span>
+		</td><td>
+			<span id="pk_gp_ldpe2" ></span>
+		</td><td>
+			<span id="pk_gp_pp2" ></span>
+		</td><td>
+			<span id="pk_gp_ps2" ></span>
+		</td><td>
+			<span id="pk_gp_otherPlastic2" ></span>
+		</td><td>
+			<span id="pk_gp_totalPlastic2" ></span>
+		</td><td>
+			<span id="pk_gp_metal2" ></span>
+		</td><td>
+			<span id="pk_gp_wood2" ></span>
+		</td><td>
+			<span id="pk_gp_otherMatrial2" ></span>
+		</td>
+	
+		<td>
+			<span id="pk_tr_paper2" ></span>
+		</td><td>
+			<span id="pk_tr_drink2" ></span>
+		</td><td>
+			<span id="pk_tr_totalCtn2" ></span>
+		</td><td>
+			<span id="pk_tr_transperentGlass2" ></span>
+		</td><td>
+			<span id="pk_tr_colorGlass2" ></span>
+		</td><td>
+			<span id="pk_tr_totalGlass2" ></span>
+		</td><td>
+			<span id="pk_tr_pet2" ></span>
+		</td><td>
+			<span id="pk_tr_hdpe2" ></span>
+		</td><td>
+			<span id="pk_tr_ldpe2" ></span>
+		</td><td>
+			<span id="pk_tr_pp2" ></span>
+		</td><td>
+			<span id="pk_tr_ps2" ></span>
+		</td><td>
+			<span id="pk_tr_otherPlastic2" ></span>
+		</td><td>
+			<span id="pk_tr_totalPlastic2" ></span>
+		</td><td>
+			<span id="pk_tr_metal2" ></span>
+		</td><td>
+			<span id="pk_tr_wood2" ></span>
+		</td><td>
+			<span id="pk_tr_otherMatrial2" ></span>
+		</td>
+	</tr>
+</table>
+<script>
+function expandExtraTable2() {
+    document.getElementById("extraTdId").style.display = "none";
+   
+}
+
+
+  function expandExtraTable(){
+  
+  
+   
+	
+	if(document.getElementById("extraTdId").style.display === "block")
+	{
+		document.getElementById("extraTdId").style.display = "none";
+		 document.getElementById("expandBtnId").textContent ="E";
+		 document.getElementById("expandBtnId").style.width="31px";
+		// document.getElementById("expandBtnId").style.paddingRight="9px";
+	}
+	else{
+		document.getElementById("extraTdId").style.display = "block";
+		document.getElementById("expandBtnId").textContent ="-";
+		document.getElementById("expandBtnId").style.width="31px";
+		
+	}
+    
+  
+  }
+  
+  
+    function expandSealTable(){
+  
+  
+   
+	
+	if(document.getElementById("sealTdId").style.display === "block")
+	{
+		document.getElementById("sealTdId").style.display = "none";
+		 document.getElementById("expandSealBtnId").textContent ="S";
+		 document.getElementById("expandSealBtnId").style.width="31px";
+		// document.getElementById("expandBtnId").style.paddingRight="9px";
+	}
+	else{
+		document.getElementById("sealTdId").style.display = "block";
+		document.getElementById("expandSealBtnId").textContent ="-";
+		document.getElementById("expandSealBtnId").style.width="31px";
+		
+	}
+    
+  
+  }
+
+
+
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+</script>

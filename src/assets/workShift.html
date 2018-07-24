@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Work Shift</title>
+        <meta charset="windows-1255">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+    <style>
+	
+	
+
+.header{
+	height: 45px;
+	position: relative;
+	background: #6E6E6E url(/images/img03.jpg) top left no-repeat;
+	padding: 45px;
+	color: #FFFFFF;
+	width: 1330px;
+	border: solid 1px #7E7E7E;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	overflow: hidden;
+	margin-left:20px
+	
+
+}
+
+input[type=checkbox]{
+
+	 transform: scale(1);
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1.7);
+    padding: 10px;
+}
+
+.header a1 {
+	position: absolute;
+    text-decoration: none;
+	color: #FFFFFF;
+	text-shadow: 0 1px 1px #3E3E3E;
+	font-size:50px;
+	align: right;
+	bottom: 10;
+    left: 15;
+	
+}
+
+.ulMenu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(#209D9D, #497676) ;
+	width: 1422px;
+	margin-left:20px
+}	
+
+ul{
+	background-color:white;
+	cursor:pointer;
+}
+li {
+   
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+	float: left;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+
+body{
+	display:flex;
+		min-height:30vh;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+}
+
+#uploader{
+	-webkit-appearance: none;
+	appearance: none;
+	width:50%;
+	margin-bottom:10px;
+	color:blue;
+}
+
+button{
+	background-color:red;
+	color: white;
+	display: inline-block;
+	font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+		 border: none;
+}
+
+.updateDateBtn{
+  width: 120px;
+  height: 24px;
+  padding: 5px 16px 3px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border: 2px solid #ccc;
+  position: relative;
+	
+  /* Label */
+  font-family: Lucida Sans, Helvetica, sans-serif;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: rgba(10, 10, 10, 0.5) 1px 2px 2px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  overflow: hidden;
+
+
+}
+
+tr{
+	text-align:center;
+}
+
+
+ th {
+    background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    border-left: 1px solid #555;
+    border-right: 1px solid #777;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #333;
+    box-shadow: inset 0 1px 0 #999;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    position: relative;
+    text-shadow: 0 1px 0 #000;  
+}
+.button2{
+
+  height: 24px;
+  padding: 5px 16px 3px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border: 2px solid #ccc;
+  position: relative;
+	
+  /* Label */
+  font-family: Lucida Sans, Helvetica, sans-serif;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: rgba(10, 10, 10, 0.5) 1px 2px 2px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  overflow: hidden;
+  cursor :pointer ;
+  
+}
+.aqua{
+  background-color: rgba(60, 132, 198, 0.8);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 90%, from(rgba(28, 91, 155, 0.8)), to(rgba(108, 191, 255, .9)));
+  border-top-color: #8ba2c1;
+  border-right-color: #5890bf;
+  border-bottom-color: #4f93ca;
+  border-left-color: #768fa5;	
+  -webkit-box-shadow: rgba(66, 140, 240, 0.5) 0px 10px 16px;
+  -moz-box-shadow: rgba(66, 140, 240, 0.5) 0px 10px 16px; /* FF 3.5+ */
+}
+.button2 .glare {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  height: 1px;
+  width: 142px;
+  padding: 8px 0;
+  background-color: rgba(255, 255, 255, 0.25);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 95%, from(rgba(255, 255, 255, 0.7)), to(rgba(255, 255, 255, 0)));
+  
+}
+
+.button{
+	background-color:green;
+	color: white;
+	display: inline-block;
+	font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+		 border: none;
+}
+
+
+td {
+    border-right: 1px solid #fff;
+    border-left: 1px solid #e8e8e8;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+    transition: all 300ms;
+}
+
+
+
+
+input[type=text] ,input[type=date], textarea
+		{
+		display: inline-block;
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+		float: none;
+		z-index: auto;
+		width: 158px;
+		height: auto;
+		position: static;
+		opacity: 1;
+		margin: 0;
+		//padding: 10px 20px;
+		overflow: visible;
+		border: 1px solid #b7b7b7;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		font: normal medium/normal Arial, Helvetica, sans-serif;
+		color: rgba(0,142,198,1);
+		-o-text-overflow: clip;
+		text-overflow: clip;
+		background: rgba(252,252,252,1);
+		-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+		-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-webkit-transform: none;
+		transform: none;
+		-webkit-transform-origin: 50% 50% 0;
+		transform-origin: 50% 50% 0;
+}
+.btnImage{
+	 width:25px;
+	 height:25px;
+	 float: right; 
+	 cursor:pointer; 
+	 margin:0	
+	 
+
+
+}
+
+@media print
+{
+  .printlessTd{display:none}
+  table { page-break-after:auto }
+  tr    { page-break-inside:avoid; page-break-after:auto }
+  td    { page-break-inside:avoid; page-break-after:auto }
+  thead { display:table-header-group }
+  tfoot { display:table-footer-group }
+}
+
+
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+  
+  
+  
+  firebase.firestore().enablePersistence()
+  .then(function() {
+      // Initialize Cloud Firestore through firebase
+      var db = firebase.firestore();
+  })
+  .catch(function(err) {
+      if (err.code == 'failed-precondition') {
+          // Multiple tabs open, persistence can only be enabled
+          // in one tab at a a time.
+          // ...
+      } else if (err.code == 'unimplemented') {
+          // The current browser does not support all of the
+          // features required to enable persistence
+          // ...
+      }
+  });
+</script>
+        
+        <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+		<script src="_js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+		<script>
+		
+		var firebaseRef = firebase.database().ref();
+		var scheduleRef= firebaseRef.child("schedule3");
+		var ordersRef =firebaseRef.child("orders");
+		var itemsRef = firebaseRef.child("items");
+		var orderScheduleRef;
+		var orderNumber, itemNumber, costumerName, nameOfProduct, packageType, quantity, batchN, reMakrs, wichShift, dateIs, abv;
+		var dateShowen;
+		var i;
+		i=0;
+		var dayTime = "all";
+		var tomorrw = new Date();
+		var tempDay = new Date();
+		var itemsArray=[];
+		var otherDate=0;
+			//scheduleRef.on("child_added", snap=>{
+
+
+		$(document).ready(function() {
+			console.log( "ready!" );
+			let dateShowen;
+			if (otherDate==0){
+				document.getElementById("selectShowenDate").value = new Date().toDateInputValue();
+				dateShowen= new Date();
+				var _dt2 = new Date(dateShowen);
+				dateShowen=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+				
+			}
+			else{
+				document.getElementById("selectShowenDate").value = tempDay.toDateInputValue();
+			}
+			
+			getSchdeule(dateShowen);
+		});
+
+
+
+		function getSchdeule(dateShowen){
+			$("#table_body").html("<tr></tr>"); // to reset the table
+			$("#table_body2").html("<tr></tr>"); // to reset the table
+			$("#table_body3").html("<tr></tr>"); // to reset the table
+			$.getJSON("/schedule?date="+dateShowen , (data)=>{
+					console.log(data);
+					for(let i=0; i<data.length; i++){
+						var refParent = data[i]._id;
+						var pstn = data[i].positionN;
+						var Qty = data[i].qty;
+						var date = data[i].date;
+						var item  = data[i].item;
+						var orderN = data[i].orderN;
+						var costumer = data[i].costumer;
+						var productName = data[i].productName;
+						var batchNumber = data[i].batch;
+						var packageP = data[i].packageP;
+						var qtyProduced = data[i].qtyProduced;
+						var mkpV = data[i].mkp;
+						
+						var marks = data[i].marks;
+						var shift = data[i].shift;
+						var status = data[i].status;
+						
+						var statusColor="white";
+						if(status=="filled"){
+							statusColor="#00FFA2";
+						}
+						else if (status=="beingFilled"){
+							statusColor="yellow";
+						}
+						else if (status=="problem"){
+							statusColor="red";
+						}
+						else if (status=="nonScheduled"){
+							statusColor="red";
+						}
+						else if (status=="pasted"){
+							statusColor="#749FFF";
+						}
+						else{
+							statusColor="white";
+						}
+						
+						
+						if(qtyProduced=="" || qtyProduced==null){
+							qtyProduced="";
+						
+						}
+						var tableNumber="";
+						if(mkpV=="true"){
+							tableNumber="2";
+						}
+						else if(mkpV=="4"){
+							tableNumber="3";
+						}
+						else if(mkpV=="2"){ 
+							tableNumber="";
+						}
+						if(mkpV=="true"){
+							mkpV="&#x2713"
+						}
+						else{
+							mkpV="2";
+						}
+						if(shift==dayTime || dayTime=="all"){
+						
+									$("#table_body"+tableNumber).append("<tr id='id_tr"+i+"' style='background-color:"+statusColor+"'><td><input type='text' id='inputPstnId"+i+"'  value='"+pstn+"' style='width:22px; text-align:center;' onfocusout='updatePosition("+i+ ", \"" +refParent+ "\")'></td><td><input type='checkbox' id='id_checkBox"+i+"'> &nbsp" + orderN +	 "</td><td>"+ item + "</td><td>" + costumer + "</td><td>" + productName + 
+											"</td><td>"+batchNumber+"</td><td>" + packageP + "</td><td>"+ Qty + "</td><td>"+ qtyProduced + "</td><td>"+date+"</td><td>"+ marks + "</td><td>"+ shift + "</td><td>"+mkpV+"</td><td><img src='/images/deleteBtn.png' style='width:40px' class='imgEd' onClick='deleteData(\"" +refParent+ "\")'><img id='editData"+i+"' src='/images/editBtn.png' style='width:40px; background-color:none' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'><img id='editData"+i+"' src='/images/aproved.png' style='width:30px; background-color:none; margin-bottom:6px' class='imgEd' onClick='doneFilling(\"" +refParent+ "\")'></td></tr>");
+													//	"</td><td></td><td>" + packageP + "</td><td>"+ Qty + "</td><td>"+date+"</td><td>"+ marks + "</td><td>"+ shift + "</td><td></images/deleteBtn.png' style='width:40px' class='imgEd' onClick='deleteData(" +itmNUM + " , " + i +")' id='btnD"+i+"'><img id='editData"+i+"' /images/editBtn.png' style='width:40px; background-color:none' class='imgEd' onClick='editData("+i+ ", \""+ itmNUM + "\")'></td></td></tr>");
+
+						}
+					}
+			});	
+		}
+					
+		function setDayTime(shift){
+				dayTime=shift;
+				init();
+		}
+		//consider adding date to both the item number and the order number and then take the order and re open it.
+		
+		//orderScheduleRef.child
+		
+		function checkStatus(){
+			var yesterday= new Date();
+			yesterday.setDate(yesterday.getDate()-1)
+			var temp = new Date(yesterday);
+			yesterday= [temp.getDate(), temp.getMonth()+1, temp.getFullYear()].join('/');
+			console.log("yesterday" + yesterday);
+			
+			scheduleRef.orderByChild("date").equalTo(yesterday).on("child_added", snap=>{
+				var statusKey = snap.key;
+				var status = data[i].status;
+				//console.log(statusKey + " ,"+ status)
+				if (status=='open'){
+				console.log(statusKey + " : is "+ status)
+				onDayMore(statusKey);
+				}
+			});
+		
+		}
+		
+		function onDayMore(key){
+				
+				today= new Date();
+				var _dt2 = new Date(today);
+				today=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+				console.log(today);
+				scheduleRef.child(key).update({
+				
+				date:''+today,
+			
+				});
+		
+		}
+
+	
+		
+		function init2(){
+			$("#input_item").keyup(function(event){
+				if(event.keyCode == 13){
+					$("#searchBtnImg").click();
+				}
+			});
+			
+			$("#input_marks").keyup(function(event){
+				if(event.keyCode == 13){
+					$("#addBtn").click();
+				}
+			});
+			
+			
+			
+			
+			console.log(tomorrw);
+			console.log(tempDay);
+			$("#table_body").html("<tr></tr>"); // to reset the table
+			$("#table_body2").html("<tr></tr>"); // to reset the table
+			$("#table_body3").html("<tr></tr>"); // to reset the table
+			if (otherDate==0){
+				document.getElementById("selectShowenDate").value = new Date().toDateInputValue();
+				dateShowen= new Date();
+				var _dt2 = new Date(dateShowen);
+				dateShowen=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+				
+			}
+			else{
+				document.getElementById("selectShowenDate").value = tempDay.toDateInputValue();
+			}
+			
+			
+			scheduleRef.orderByChild("date").equalTo(dateShowen).on("child_added", snap=>{
+				var refParent = snap.key;
+				var pstn = data[i].positionN;
+				var Qty = data[i].Qty;
+				var date = data[i].date;
+				var item  = data[i].item;
+				var orderN = data[i].orderN;
+				var costumer = data[i].costumer;
+				var productName = data[i].productName;
+				var batchNumber = data[i].batch;
+				var packageP = data[i].packageP;
+				var qtyProduced = data[i].qtyProduced;
+				var mkpV = data[i].mkp;
+				
+				var marks = data[i].marks;
+				var shift = data[i].shift;
+				var status = data[i].status;
+				
+				var statusColor="white";
+				if(status=="filled"){
+					statusColor="#00FFA2";
+				}
+				else if (status=="beingFilled"){
+					statusColor="yellow";
+				}
+				else if (status=="problem"){
+					statusColor="red";
+				}
+				else if (status=="nonScheduled"){
+					statusColor="red";
+				}
+				else if (status=="pasted"){
+					statusColor="#749FFF";
+				}
+				else{
+					statusColor="white";
+				}
+				
+				
+				if(qtyProduced=="" || qtyProduced==null){
+					qtyProduced="";
+				
+				}
+				var tableNumber="";
+				if(mkpV=="true"){
+					tableNumber="2";
+				}
+				else if(mkpV=="4"){
+					tableNumber="3";
+				}
+				else{
+					tableNumber="";
+				}
+				if(mkpV=="true"){
+					mkpV="&#x2713"
+				}
+				else{
+					mkpV="";
+				}
+				if(shift==dayTime || dayTime=="all"){
+				
+							$("#table_body"+tableNumber).append("<tr id='id_tr"+i+"' style='background-color:"+statusColor+"'><td><input type='text' id='inputPstnId"+i+"'  value='"+pstn+"' style='width:22px; text-align:center;' onfocusout='updatePosition("+i+ ", \"" +refParent+ "\")'></td><td><input type='checkbox' id='id_checkBox"+i+"'> &nbsp" + orderN +	 "</td><td>"+ item + "</td><td>" + costumer + "</td><td>" + productName + 
+									"</td><td>"+batchNumber+"</td><td>" + packageP + "</td><td>"+ Qty + "</td><td>"+ qtyProduced + "</td><td>"+date+"</td><td>"+ marks + "</td><td>"+ shift + "</td><td>"+mkpV+"</td><td><img /images//images/deleteBtn.png' style='width:40px' class='imgEd' onClick='deleteData(\"" +refParent+ "\")'><img id='editData"+i+"' /images/editBtn.png' style='width:40px; background-color:none' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'><img id='editData"+i+"' /images//images/aproved.png' style='width:30px; background-color:none; margin-bottom:6px' class='imgEd' onClick='doneFilling(\"" +refParent+ "\")'></td></tr>");
+											//	"</td><td></td><td>" + packageP + "</td><td>"+ Qty + "</td><td>"+date+"</td><td>"+ marks + "</td><td>"+ shift + "</td><td></images/deleteBtn.png' style='width:40px' class='imgEd' onClick='deleteData(" +itmNUM + " , " + i +")' id='btnD"+i+"'><img id='editData"+i+"' /images/editBtn.png' style='width:40px; background-color:none' class='imgEd' onClick='editData("+i+ ", \""+ itmNUM + "\")'></td></td></tr>");
+
+				}
+				
+				
+				
+				
+			
+
+				i++;
+			});
+			
+			itemsRef.on("child_added", snap=> {
+					
+					var key= snap.key;
+					itemsArray.push(key);
+					//console.log(key);
+					
+				});
+			
+		}
+		
+		
+		function allItems(item){
+			$("#table_body").html("");
+			$("#table_body2").html("");
+			$("#table_body3").html("");
+			$.getJSON("/schedule?mkp="+item+"&status=open", (data)=>{
+				for(let i=0; i<data.length; i++){
+					var refParent = data[i]._id;
+						var pstn = data[i].positionN;
+						var Qty = data[i].Qty;
+						var date = data[i].date;
+						var item  = data[i].item;
+						var orderN = data[i].orderN;
+						var costumer = data[i].costumer;
+						var productName = data[i].productName;
+						var batchNumber = data[i].batch;
+						var packageP = data[i].packageP;
+						var qtyProduced = data[i].qtyProduced;
+						var mkpV = data[i].mkp;
+						
+						var marks = data[i].marks;
+						var shift = data[i].shift;
+						var status = data[i].status;
+						
+						var statusColor="white";
+					
+					
+					
+						if(mkpV=="4"){		
+							$("#table_body3").append("<tr id='id_tr"+i+"' style='background-color:"+statusColor+"'><td><input type='text' id='inputPstnId"+i+"'  value='"+pstn+"' style='width:22px; text-align:center;' onfocusout='updatePosition("+i+ ", \"" +refParent+ "\")'></td><td><input type='checkbox' id='id_checkBox"+i+"'> &nbsp" + orderN +	 "</td><td>"+ item + "</td><td>" + costumer + "</td><td>" + productName + 
+											"</td><td>"+batchNumber+"</td><td>" + packageP + "</td><td>"+ Qty + "</td><td>"+ qtyProduced + "</td><td>"+date+"</td><td>"+ marks + "</td><td>"+ shift + "</td><td>"+mkpV+"</td><td></images/deleteBtn.png' style='width:40px' class='imgEd' onClick='deleteData(\"" +refParent+ "\")'><img id='editData"+i+"' src='/images/editBtn.png' style='width:40px; background-color:none' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'><img id='editData"+i+"' /images//images/aproved.png' style='width:30px; background-color:none; margin-bottom:6px' class='imgEd' onClick='doneFilling(\"" +refParent+ "\")'></td></tr>");
+						}	
+						else if(mkpV=="2"){		
+							$("#table_body").append("<tr id='id_tr"+i+"' style='background-color:"+statusColor+"'><td><input type='text' id='inputPstnId"+i+"'  value='"+pstn+"' style='width:22px; text-align:center;' onfocusout='updatePosition("+i+ ", \"" +refParent+ "\")'></td><td><input type='checkbox' id='id_checkBox"+i+"'> &nbsp" + orderN +	 "</td><td>"+ item + "</td><td>" + costumer + "</td><td>" + productName + 
+											"</td><td>"+batchNumber+"</td><td>" + packageP + "</td><td>"+ Qty + "</td><td>"+ qtyProduced + "</td><td>"+date+"</td><td>"+ marks + "</td><td>"+ shift + "</td><td>"+mkpV+"</td><td></images/deleteBtn.png' style='width:40px' class='imgEd' onClick='deleteData(\"" +refParent+ "\")'><img id='editData"+i+"' src='/images/editBtn.png' style='width:40px; background-color:none' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'><img id='editData"+i+"' /images//images/aproved.png' style='width:30px; background-color:none; margin-bottom:6px' class='imgEd' onClick='doneFilling(\"" +refParent+ "\")'></td></tr>");
+						}	
+				}
+							
+				});
+		}		
+		$( function() {
+			$("#input_item").autocomplete({
+			  source: itemsArray
+			});
+		  } );
+		  
+		  
+			
+		function doneFilling(key){
+		
+			var tempItem, tempOrderN;
+			var a=confirm("Filling process is done ?");
+			if (a==true){
+
+				var schedule={
+					schedulUpdateKey:key,
+					status:'filled',
+				}
+
+				$.post('/schedule/update', 
+					schedule,
+						function(data){				
+				})	
+
+		/*	scheduleRef.child(key).update({
+				
+				status:'filled',
+			
+			});
+				
+				
+				/////
+				
+				scheduleRef.child(key).on('value', snap=>{
+					tempItem  = snap.child("item").val();
+					tempOrderN = snap.child("orderN").val();
+					});
+				
+			ordersRef.child(tempOrderN).child(tempItem).update({
+						fillingStatus: 'Filled up',
+			})	
+				
+				
+				init();
+				*/	
+					
+					
+				}
+		
+		
+		}
+		
+		
+		function updatePosition(i,key){			
+			//console.log(i + " , "  +key + "  , " + value);
+			var pstnNewValue = document.getElementById("inputPstnId"+i).value;
+			pstnNewValue = pstnNewValue.replace(/\s/g, '');  //remove sapcing
+			$("#inputPstnId"+i).val(pstnNewValue);
+
+				var schedule={
+					schedulUpdateKey:key,
+					positionN:''+pstnNewValue,
+				}
+
+				$.post('/schedule/update', 
+					schedule,
+						function(data){				
+				});
+			
+		}
+		
+		function editData( i, id){
+			var img = document.getElementById("editData"+i);
+			if(img.style.width=='40px'){		
+				
+				$.getJSON("/schedule?_id="+id , (data)=>{			
+						var tempKey= '';
+						var pstnK = data[i].positionN;
+						var Qty = data[i].Qty;
+						var date = data[i].date;
+						var item  = data[i].item;
+						var orderN = data[i].orderN;
+						var costumer = data[i].costumer;
+						var productName = data[i].productName;
+						var batch = data[i].batch;
+						var packageP = data[i].packageP;
+						var marks = data[i].marks;
+						var shift = data[i].shift;
+						var mkp = data[i].mkp;
+						
+						var checkB="", checkT="", checkMkp="";
+						if(mkp=="true"){
+							checkMkp='checked';
+						}
+						else if(mkp=="4"){
+							checkT='checked';
+						}
+						else if(mkp=="2"){
+							checkB='checked';
+						}
+						
+						console.log(checkMkp + " , " +checkT + " , " +checkB);
+					$("#id_tr"+i).after("<tr id='editTr"+i+"'><td><input type='text'  id='edit_pstn' value='"+pstnK+"' style='width:15px'></td><td><input type='text' value='"+orderN+"'	 id='edit_orderN' style='width:110px'></td><td><input type='text'  value='"+item+"'	 	 id='edit_item_Number' style='width:110px'></td><td><input type='text' 	value='"+costumer+"'	 id='edit_costumer' style='width:110px'></td><td><input type='text'	value='"+productName+"' id='edit_productName' style='width:110px'></td><td><input type='text' value='"+batch+"'	 id='edit_batchN' style='width:110px'></td><td><textarea rows='4' cols='30' id='edit_package'  style='width:150px'>" + packageP+ " </textarea></td><td><input type='text' value='"+Qty+"' + id='edit_qty' style='width:110px'></td><td></td><td><input type='text'  value='"+date+"' id='edit_date' style='width:110px'></td><td><input type='text'   value='"+marks+"'  id='edit_marks' style='width:140px'></td><td><input type='text'  value='"+shift+"'  id='edit_shift' style='width:110px'></td><td><input type='radio'  name='type2' name='input_checkBox_tube'  value='basic'  "+checkB+">Basic<br><input type='radio'  name='type2' name='input_checkBox_tube'  value='tube' "+checkT+">Tube<br><input type='radio'  name='type2' name='input_checkBox_mkup'  value='mkp'  "+checkMkp+">Mkp<br></td><td><button class='button' onclick='updateSchedule(\""+id+"\")'>Update</button></td></tr>");
+					});
+				
+					img.style.width='39px'
+				
+			}
+			else{
+					$("#editTr"+i).closest("tr").remove();
+					//$("#editTr"+i).closest("tr").remove();
+					img.style.width='40px'
+				}
+		}
+		
+		
+		
+		function updateSchedule(scheduleKey){
+			_pstnK = document.getElementById('edit_pstn').value;			
+			_orderNumber = document.getElementById('edit_orderN').value;			
+			_itemNumber = document.getElementById('edit_item_Number').value;			
+			_costumer = document.getElementById('edit_costumer').value;			
+			_productName = document.getElementById('edit_productName').value;			
+			_batchN = document.getElementById('edit_batchN').value;			
+			_package = document.getElementById('edit_package').value;			
+			_qty = document.getElementById('edit_qty').value;			
+			_date = document.getElementById('edit_date').value;			
+			_marks = document.getElementById('edit_marks').value;			
+			_shift = document.getElementById('edit_shift').value;			
+			//_mkp = document.getElementById('edit_checkBox_mkup').checked;			
+			_mkp = $('input[name="type2"]:checked').val();
+			
+				if(_mkp=='tube'){
+					_mkp="4";
+				}
+				else if(_mkp=='mkp'){
+					_mkp='true';
+				}
+				else{
+					_mkp="2";
+				}
+
+				var schedule={
+							scheduleId:''+scheduleKey,
+							positionN:'',
+							orderN: ''+_orderNumber,
+							item: ''+_itemNumber,
+							costumer:''+_costumer,
+							productName:''+_productName,
+							batch:''+_batchN,
+							packageP:''+_package,
+							qty:''+_qty,
+							marks: ''+ _marks,
+							shift:''+_shift,
+							date: ''+ _date,
+							mkp: ''+ _mkp,
+							status:'open',
+						}
+
+						$.post('/schedule/update', 
+							schedule,
+								function(data){				
+							})							
+
+				console.log("_mkp " + _mkp);
+		}
+		
+		
+		
+		function updateDate(){
+			dateShowen= document.getElementById('selectShowenDate').value;
+			var _dt2 = new Date(dateShowen);
+			dateShowen=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+			otherDate=1;
+			$("#table_body").html("");
+			$("#table_body2").html("");
+			$("#table_body3").html("");
+			//console.log(dateDMY, _dt);
+			i=0;
+			getSchdeule(dateShowen);
+		}
+		      
+		
+		function writeScheduleData(){
+			position =  document.getElementById('input_position').value;
+			orderNumber =  document.getElementById('input_order').value;
+			itemNumber = document.getElementById('input_item').value;
+			costumerName=document.getElementById('input_costumer').value;
+			nameOfProduct =  document.getElementById('input_productName').value;
+			packageType =  document.getElementById('input_package').value;
+			quantity =  document.getElementById('input_Qty').value;
+			batchN =  document.getElementById('input_batchN').value;
+			reMakrs =  document.getElementById('input_marks').value;
+			wichShift =  document.getElementById('select_shift').value;
+			dateIs =  document.getElementById('input_Date').value;
+			typeIs = $('input[name="type"]:checked').val();
+				if(typeIs=='tube'){
+					typeIs="4";
+				}
+				else if(typeIs=='mkp'){
+					typeIs='true';
+				}
+				else{
+					typeIs="2";
+				}
+		//	mkpIs =  document.getElementById('input_checkBox_mkup').checked;
+			
+			if (dateIs==""){
+				alert("Please Insert Date");
+			}
+			
+			else{
+				var batchLow= batchN.toLowerCase();
+					var _dt = new Date(dateIs);
+					dateDMY=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+					console.log("date is: "  + dateDMY, _dt);
+					
+					//scheduleRef.push().set({
+						var newSchedule={
+							positionN:''+position,
+							orderN: ''+orderNumber,
+							item: ''+itemNumber,
+							costumer:''+costumerName,
+							productName:''+nameOfProduct,
+							batch:''+batchLow,
+							packageP:''+packageType,
+							qty:''+quantity,
+							marks: ''+ reMakrs,
+							shift:''+wichShift,
+							date: ''+ dateDMY,
+							mkp: ''+ typeIs,
+							status:'open',
+						}
+
+						$.post('/schedule/addSchedule', 
+							newSchedule,
+								function(data){				
+							})
+							
+					}
+				
+					console.log(orderNumber + " , " + itemNumber);
+					console.log("radio "  + $('input[name="type"]:checked').val());
+					//TODO add this:
+				/*	if(orderNumber!="" && itemNumber!=""){
+						console.log("hi");
+						var itemOrderRef=ordersRef.child(orderNumber);
+						
+						itemOrderRef.child(itemNumber).update({
+								
+							fillingStatus: 'Scheduled to '+ dateDMY,
+						})
+				}*/
+			$('#input_position').val("");
+			$('#input_order').val("");
+			$('#input_item').val("");
+			$('#input_costumer').val("");
+			$('#input_productName').val("");
+			$('#input_package').val("");
+			$('#input_Qty').val("");
+			$('#input_batchN').val("");
+			$('#input_marks').val("");
+			$('#select_shift').val("Day");
+			$('#input_Date').val(""); 
+			
+			init(); 
+			}
+				
+		//}
+		
+		function deleteData(key){
+			
+				var a=confirm("Delete order " +key + "?");
+					if (a==true){
+						var schedule={
+							schedulUpdateKey:key,
+						}
+						$.post('/schedule/delete', 
+							schedule,
+								function(data){				
+							})		
+				}
+			i=0;
+			init();
+		}
+		
+		Date.prototype.toDateInputValue = (function() {
+		var local = new Date(this);
+		local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+		return local.toJSON().slice(0,10);
+			});
+		
+		
+		function pasteNumber(){
+			var number= localStorage.getItem("rememberNumber");
+			console.log(number);
+			$("#input_item").val(number);
+			searchItem();
+			localStorage.setItem("rememberNumber", "");
+		}
+		
+		
+		function searchItem(){
+				var title, subTitle, discriptionGet, volumeKi;
+				
+				_itemNumber = document.getElementById('input_item').value;
+				_discription = document.getElementById('input_productName');
+				_packageD= document.getElementById('input_package');
+				
+				$.getJSON("/item?itemNumber="+_itemNumber , (data)=>{
+					title=data[0].name;
+					subTitle=data[0].subName;
+					discriptionGet=data[0].discriptionK;
+					volumeKi=data[0].volumeKey;
+					_pcsCarton=data[0].PcsCarton;
+					//_package.value=data[0].packageSchedule;
+					bottleN = data[0].bottleTube;
+					capN = data[0].capTube;
+					pumpN = data[0].pumpTube;
+					sealN = data[0].sealTube;
+					extra1 = data[0].extraText1;
+					extra2 = data[0].extraText2;
+					stickerN = data[0].stickerNumber;
+					impRmk = data[0].impRemarks;
+
+					_discription.value= title + " " + subTitle + " " +discriptionGet;
+				//	_unit_measure.value= volumeKi;
+					//_packageD.value=_package
+					
+					let packageList="";
+					var componetsArray = [ bottleN ,capN , pumpN, sealN ,extra1 ,extra2 ,stickerN];
+					var componetsArrayName = ["bottle" ,"cap" , "pump", "seal" ,"extra1" ,"extra2" ,"sticker"];
+					var i;	
+					for (i = 0; i <componetsArray.length; i++) {
+						if (componetsArray[i]!="" && componetsArray[i]!=null){
+								console.log(i);
+								i= parseInt(i);
+								
+								if (i==0){
+									packageList+= " bottle: " + componetsArray[i];
+								}
+								else if (i==1){
+									packageList+= " cap: " + componetsArray[i];
+								}
+								else if (i==2){
+									packageList+= " pump: " + componetsArray[i];
+								}
+								else if (i==3){
+									packageList+= " seal: " + componetsArray[i];
+								}
+								else if (i==4){
+									packageList+= ", " + componetsArray[i];
+								}
+								else if (i==5){
+									packageList+= ", " + componetsArray[i];
+								}
+								else if (i==6){
+									packageList+= " sticker: " + componetsArray[i];
+								}					
+							}
+						}
+								
+						_packageD.value= packageList;
+				}); 
+				
+			
+		}
+		
+		function print2(){
+		
+		
+		
+			//$("#headerDiv").css('display','none');
+			//$("#ulBox").css('display','none');
+			//$("#btnsDiv").css('display','none');
+			
+			//	window.print();
+		}
+		
+		$(function() {
+			$("#printBtn").click(function() {
+			
+			$("#body").css('padding-top','0px');
+			$("#spaceTr").css('display','none');
+			$("#inputTr").css('visibility','hidden');
+			$("#headerDiv").css('display','none');
+			$("#ulBox").css('display','none');
+			$("#btnsDiv").css('display','none');
+				window.print();
+				
+		
+			});
+		});
+		
+		function nextTime(){
+				
+			
+			tomorrw.setDate(tomorrw.getDate()+1)
+			tempDay=tomorrw;
+			dateShowen=  [tomorrw.getDate(), tomorrw.getMonth()+1, tomorrw.getFullYear()].join('/');
+			$("#selectShowenDate").val(tomorrw.toDateInputValue());
+			console.log(tomorrw);
+			console.log(dateShowen);
+			otherDate=1;
+			i=0;
+			getSchdeule(dateShowen);
+		}
+		
+		function backTime(){
+				
+			
+			tomorrw.setDate(tomorrw.getDate()-1)
+			tempDay=tomorrw;
+			
+			dateShowen=  [tomorrw.getDate(), tomorrw.getMonth()+1, tomorrw.getFullYear()].join('/');
+			$("#selectShowenDate").val(tomorrw.toDateInputValue());
+			console.log(tomorrw);
+			console.log(dateShowen);
+			otherDate=1;
+			i=0;
+			getSchdeule(dateShowen);
+		}
+
+		function setCostumer(){
+			_orderNumber = document.getElementById('input_order').value;						
+			_costumer = document.getElementById('input_costumer').value;		
+			
+			console.log("hi");
+			
+			ordersRef.child(_orderNumber).on('value', snap=>{
+			
+			var costumer  = data[i].costumerName;
+				$("#input_costumer").val(costumer);
+				
+			});
+		
+		}
+		
+		function setItemDetails(){
+			_orderNumber =  document.getElementById('input_order').value;
+			_itemNumber = document.getElementById('input_item').value;
+			_nameOfProduct =  document.getElementById('input_productName').value;
+			_quantity =  document.getElementById('input_Qty').value;
+			_batchN =  document.getElementById('input_batchN').value;
+				
+							
+		ordersRef.child(_orderNumber).child(_itemNumber).on('value', snap=>{
+			
+			var discription  = data[i].discription;
+			var batchN  = data[i].formulaBatch;
+			var quantity  = data[i].quantity;
+			var impRmk  = data[i].impRemarks;
+		
+			$("#input_productName").val(discription);
+			$("#input_Qty").val(quantity);
+			$("#input_batchN").val(batchN);
+			$("#input_marks").val(impRmk);
+		
+		});
+		
+		
+		}
+		
+		function displayRows(){
+			let checkBox;
+			//let table = $("#table_body");
+			let table = document.getElementById("table_body");
+			let rows = table.getElementsByTagName("TR");
+			console.log(table);
+			for (let a=0; a<rows.length; a++){
+				checkBox = document.getElementById("id_checkBox"+a).checked;
+				console.log(a + " , " + checkBox);
+				
+					if (checkBox==false){
+						$("#id_tr"+a).css('display','none');
+						console.log("not true");
+				}
+			}
+		
+		
+		}
+		
+	
+		function clearRow(){
+			$('#input_position').val("");
+			$('#input_order').val("");
+			$('#input_item').val("");
+			$('#input_costumer').val("");
+			$('#input_productName').val("");
+			$('#input_package').val("");
+			$('#input_Qty').val("");
+			$('#input_batchN').val("");
+			$('#input_marks').val("");
+			$('#select_shift').val("Day");
+			$('#input_Date').val(""); 
+		}
+
+		
+		function sortTable(tableSrc){
+		  var table, rows, switching, i, x, y, shouldSwitch;
+		  //table = document.getElementById("table_body");
+		  table = document.getElementById(tableSrc);
+		  switching = true;
+		 
+		  while (switching) {
+			
+			switching = false;
+			rows = table.getElementsByTagName("TR");
+			
+			for (i = 1; i < (rows.length - 1); i++) {
+			 
+			  shouldSwitch = false;
+			 
+			  x = rows[i].getElementsByTagName("input")[0];
+			  y = rows[i + 1].getElementsByTagName("input")[0];
+			 console.log(x.value + " , " + y.value);
+			 var needToReset=false;
+				if(x.value=="" || x.value=="null" || x.value==null){
+					
+					x.value="99NA"; //** this line is in order that that the non-number lines will come out last and not first 
+					needToReset=true;
+				}
+				
+			var a= parseInt(x.value);
+			var b= parseInt(y.value);
+				
+			  if (a > b) {
+				
+				shouldSwitch= true;
+				if(needToReset){
+					x.value=""; //** this line is in order that that the non-number lines will come out last and not first 
+					
+				}
+				break;
+				
+			  }
+			  if(needToReset){
+					x.value=""; //** this line is in order that that the non-number lines will come out last and not first 
+					
+				}
+			}
+			if (shouldSwitch) {
+			  rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+			  switching = true;
+				
+			}
+		  }
+		}
+
+		
+		
+		
+	
+		
+</script>
+   <body onload="init()" id='body' style='padding-top:20px'> 
+    
+  	
+		 <a>
+         
+        <div class='header' style="width: 1330px ; height: 70px" id='headerDiv'><a1>	Work Shift </a1> <img src="/images/peerpharm.png"  width='270px' align='right'></div>
+		<ul class="ulMenu">
+			  <li style='float: left;'><a href="#home">Home</a></li>
+			  <li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Orders</a>
+					<div class="dropdown-content">
+					  <a href="openOrders.html">Open Orders</a>
+					  <a href="newOrder.html">New Order</a>
+					  <a href="showOrder.html">Search Order</a>
+					  <a href="ordersList.html">All Orders</a>
+					  
+					</div>
+			  </li>
+			  <li class="dropdown"><a href="workShift.html">Work Schedule</a><li>
+			  <li class="dropdown">
+			  <a href="javascript:void(0)" class="dropbtn">Product Tree</a>
+			  <div class="dropdown-content">
+				<a href="itemsList.html">Items List</a>
+				<a href="getItem.html">Product Tree</a>
+				</div>
+				</li>
+			  <li style='float: left;'><a href="costumers.html">Costumers</a></li>
+			  <li style='float: left;'><a href="needToBuild.html">No-form List</a></li>
+			  <li style='float: left;'><a href="batchesList.html">Batch List</a></li>
+			  <li style='float: left;'><a href="forms.html">Forms</a></li>
+			  
+			  
+		</ul>
+		</a>
+		<br><br>
+
+		<div  style="width:1380px;" id='btnsDiv'>
+			
+				<div style='float:left;' >
+						 <table><tr><td style='border:0px'><img style='width:40px; cursor:pointer; margin-top:20px' src='/images/back.png' id="allBtn" onClick=backTime()></td><td style='border:0px'><input  style=" align:left; margin-top:17px" type ='date' id="selectShowenDate"></td><td style='border:0px'><img style='width:40px; cursor:pointer; margin-top:20px' src='/images/next.png' id="allBtn" onClick=nextTime()></td></tr></table>
+				</div>
+				<div style='float:left; margin:10px; margin-top:25px' >
+						<div class="button2 aqua" onClick='updateDate()'>	
+							<div class="glare"></div>
+							update
+						</div>
+				</div>
+				  <table style='margin-top:10px'><tr><td style='border:0px'><img style='width:60px; cursor:pointer;' src='/images/24h.jpg' id="allBtn" onClick=setDayTime("all")></td><td style='border:0px'><img  style='width:60px; cursor:pointer;' src='/images/sun.png'  id="dayBtn" onClick=setDayTime("Day")></td><td style='border:0px'><img  style='width:50px; cursor:pointer;' src='/images/moon.png'  id="nightBtn" onClick=setDayTime("Night")></td><td style='padding-left:420px; border:0px'><img src='/images/print.jpg'  style='width:180px; cursor:pointer;' id='printBtn'><td style='border:0px'></images/24more.png' onClick = "checkStatus()" style='width:50px; cursor:pointer;'></td><td style='border:0px'><img src='/images/filter.png' onClick = "displayRows()" style='width:50px; cursor:pointer;'></td><td style='border:0px'><img src='/images/missedItems.gif' onClick = "allItems(2)" style='width:50px; cursor:pointer;'><img  style='width:50px; cursor:pointer;' src='/images/sort19.png'  id="dayBtn" onClick='sortTable("table_body")')></td></tr></table>
+		
+		</div>
+		
+		</div><br>
+		
+        <table border="1">
+            <thead>
+            <tr align='center' bgcolor="silver">
+                <th><b>P</b></th>
+                <th><b>Order no'</b></th>
+                <th><b>Item</b></th>
+                <th><b>Costumer</b></th>
+                <th><b>Name of product</b></th>
+                <th><b>Batch number</b></th>
+                <th><b>Package</b></th>
+                <th colspan=2><b>Qty</b></th>
+                <th><b>Date</b></th>
+                <th><b>Remarks</b></th>
+                <th class='printlessTd'><b>shift</b></th>
+                <th class='printlessTd'><b>Mkp</b></th>
+				<th class='printlessTd'></th>
+            </tr> 
+			
+            </thead>
+            
+            <tr id='inputTr'>
+                <td><input type='text' id="input_position" style='width:20px'	></td>
+                <td><input type='text' id="input_order" style='width:90px' onfocusout="setCostumer()"></td>
+                 <td><input type='text' id="input_item" style='width:90px' onfocusout="setItemDetails()"><image class="btnImage" src= '/images/search.png' onClick='searchItem()' id='searchBtnImg'><image class="btnImage" src= '/images/paste.png' onClick='pasteNumber()' ></td>
+                 <td><input type='text' id="input_costumer"></td>
+                 <td><input type='text' id="input_productName"></td>
+                 <td><input type='text' id="input_batchN"></td>
+                 <td><textarea rows='4' cols='30' id='input_package'  style='width:180px'></textarea></td>
+                 <td  colspan=2><input type='text' id="input_Qty" style='width:90px'></td>
+                 <td><input type='date' id="input_Date" style='width:120px; font-size:13px'></td>			 
+                 <td><textarea rows='4' cols='30' id='input_marks'  style='width:180px'></textarea></td>
+                 <td class='printlessTd'><select id="select_shift"><option value="Day">Day</option><option value="Night">Night</option></select></td>
+				 <td class='printlessTd'>
+						<input type="radio"  name="type" name="input_checkBox_tube"  value='basic' checked>Basic<br>
+						<input type="radio"  name="type" name="input_checkBox_tube"  value='tube'>Tube<br>
+						<input type="radio"  name="type" name="input_checkBox_mkup"  value='mkp'>Mkp<br></td>
+				 <td class='printlessTd'><button class="button" onclick="writeScheduleData()"  style='width:110px'	id='addBtn'>Add</button><br>
+						<button onclick='clearRow()' style='width:110px; background-color:red'>Clear</button>
+				</td>
+            </tr>
+			<tr bgcolor="lightblue"  id='spaceTr'>
+			<td colspan=14 style="height:20px"></td></tr>
+            <tbody id="table_body">
+                
+            </tbody>
+        </table>
+			<br><br><h2>Make Up: </h2><br>
+			<table border=1 style='width:100%'	>
+			<thead>
+				<tr align='center' bgcolor="silver">
+					<th><b>P</b></th>
+					<th><b>Order no'</b></th>
+					<th><b>Item</b></th>
+					<th><b>Costumer</b></th>
+					<th><b>Name of product</b></th>
+					<th><b>Batch number</b></th>
+					<th><b>Package</b></th>
+					<th colspan=2><b>Qty</b></th>
+					<th><b>Date</b></th>
+					<th><b>Remarks</b></th>
+					<th><b>shift</b></th>
+					<th><b>Mkp</b></th>
+					<th></th>
+				</tr> 
+				
+				</thead>
+				<tr>
+					<td>
+						<tbody id="table_body2">
+					</td>
+				</tr>
+			</table>
+			<br><br><h2>Tube: <img  style='width:50px; cursor:pointer;' src='/images/sort19.png'  id="dayBtn" onClick='sortTable("table_body3")')></h2><br>
+			<table border=1  style='width:100%'	>
+				<thead>
+				<tr align='center' bgcolor="silver">
+					<th><b>P</b></th>
+					<th><b>Order no'</b></th>
+					<th><b>Item</b></th>
+					<th><b>Costumer</b></th>
+					<th><b>Name of product</b></th>
+					<th><b>Batch number</b></th>
+					<th><b>Package</b></th>
+					<th colspan=2><b>Qty</b></th>
+					<th><b>Date</b></th>
+					<th><b>Remarks</b></th>
+					<th><b>shift</b></th>
+					<th><b>Mkp</b></th>
+					<th><img src='/images/missed.png' width='40px' style='cursor:pointer;' onclick='allItems(4)'></th>
+				</tr> 
+				
+				</thead>
+				<tr>
+					<td>
+						<tbody id="table_body3">
+					</td>
+				</tr>
+			</table>
+            </body><br><br>
+            
+            
+</html>

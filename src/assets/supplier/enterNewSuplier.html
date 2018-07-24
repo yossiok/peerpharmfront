@@ -1,0 +1,43 @@
+<html>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+<script>
+    
+    $(document).ready(()=>{
+
+        $("#enterBtn").click(()=>{
+            let suplier = { 
+                suplierId:$("#suplierId").val(),
+                suplierName:$("#suplierNameId").val(),
+                location:$("#suplierLocationId").val(),
+                phone:$("#contactPhoneId").val(),
+                mail:$("#contactMailId").val(),
+                remarks:$("#remarksId").val(),  
+            }
+
+            $.post('/supplier/add', 
+                    suplier,
+					  function(data){	 
+                        console.log(data._id);
+                      }
+                    )
+    
+        })
+    })
+</script>
+<body>
+
+    
+    <h1>Enter New Suplier</h1>
+    suplier Id :  <input type="text" id='suplierId'><br><br>
+    suplier name :  <input type="text" id='suplierNameId'><br><br>
+    Location :  <input type="text" id='suplierLocationId'><br><br>
+    Contact Phone : <input type="text" id='contactPhoneId'><br><br>
+    Contact Mail : <input type="email" id='contactMailId'><br><br>
+    Remarks : <input type="remarks" id='remarksId'><br><br>
+    to do  : add contacts, fax
+
+    <button id='enterBtn' >Enter</button>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+<script>
+    $(document).ready(function() {
+        getWh();
+       $("#update").click(function(){
+           console.log("Good morning...");
+            let wH=$("#wh").val();
+            let shell=$("#shell").val();
+            let item=$("#item").val();
+            let amount=$("#amount").val();
+            let itemAmount={
+                whareHouse:wH,
+                shell: shell,
+                amount: amount,
+                item: item,
+            }
+          $.post('/itemShell/add', 
+                        itemAmount,
+			  		    function(data){	 
+                          console.log(data);
+                          var reslut='';
+                                if(data=='false'){
+                                    result='WhereHouse Or Shell Isn`t Exist     &#10007;';
+                                    $("#resultDiv").css('color', 'red');
+                                }else if(data=='item false'){
+                                    result='Item Isn`t Exist     &#10007;';
+                                    $("#resultDiv").css('color', 'red');
+                                }
+                                else {
+                                    result='Item Amount Uploaded Sucsesfully... &#10004;';
+                                    $("#resultDiv").css('color', '#38C32A');
+                                    }
+                                 $(resultDiv).html(result);
+                        });
+
+       })
+
+        $("#updateSWh").click(function(){
+                let wH=$("#wh").val();
+                let shell=$("#shell").val();
+                let shellWh={
+                    position:shell,
+                    whareHouse:wH,
+                }
+                $.post('/shell/add', 
+                                shellWh,
+                                function(data){	 
+                                console.log(data._id);
+                                console.log(data);
+                                var reslut='';
+                                if(data=='false whare house'){
+                                    result='WhareHouse Is Not Exist     &#10007;';
+                                    $("#resultDiv").css('color', 'red');
+                                }
+                                else {
+                                    result='Shell Uploaded Sucsesfully... &#10004;';
+                                    $("#resultDiv").css('color', 'Lime');
+                                    }
+                                 $(resultDiv).html(result);
+                                });
+                
+        })
+
+        $("#updateWh").click(function(){
+                let wH=$("#wh").val();
+                let whareHouse={ 
+				            name:wH,
+                          }
+                $.post('/whareHouse/add', 
+                     whareHouse,
+			  		function(data){	 
+                          console.log(data._id);
+                        });
+                
+        })
+    });
+
+
+        function getWh(){
+            $.getJSON("/whareHouse" , (data)=>{
+						
+							
+					for(let i=0; i<data.length;i++){	
+                        console.log("wharehouses " + data[i].name);				
+                        $("#whareHousesDiv").append(data[i].name + "<br>");
+                    }
+        });
+}
+</script>
+
+<body>
+    WhareHouse: <input type=text id='wh' placeholder="Select WhareHouse"> <br>
+    Shell: <input type=text id='shell' placeholder="Chose shell"><br>
+    Item: <input type=text id='item' placeholder="Enter item"> <br>
+    Quantity: <input type=text id='amount' placeholder="Amount to enter"><br><br>
+    <button id='update'>Update Stock</button><br><br>
+    <button id='updateWh'>Update New WhareHouse</button><br><br>
+    <button id='updateSWh'>Update Shell in WhareHouse</button><br><br>
+
+    <div id='resultDiv' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+
+    </div>
+    <div id='whareHousesDiv' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+        <u>WhareHouses</u> <br>
+    </div>
+    <div id='shell_wh_div' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,21 @@
+<mat-tab-group class="content">
+
+
+
+  <mat-tab *ngFor="let board of boards" class="board-tabs">
+    <ng-template mat-tab-label><span class="board-title">{{board.title}}</span></ng-template>
+    <app-board [boardTitle]="board.title"> Loading...</app-board>
+    
+    <!-- {{ title}}    [style.bg]="bgcolor"   [childText]="fathertxt" -->
+  </mat-tab>
+  <a href="/subcard">sub card</a>
+  <mat-tab>
+    <ng-template mat-tab-label><span style="font-size: 25px">&#43;</span></ng-template>
+    
+    <app-create-board></app-create-board>
+  </mat-tab>
+ 
+</mat-tab-group>
+
+
+

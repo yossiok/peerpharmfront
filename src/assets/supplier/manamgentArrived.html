@@ -1,0 +1,552 @@
+<html>
+    <head>
+        <title>Show Orders</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+<style>
+	
+.invoice{
+  display:none;
+}
+
+button{
+	background-color:green;
+	color: white;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 16px;
+	border: 3px solid #E1E1E1;
+}
+
+
+body {
+
+  background: url(http://3.bp.blogspot.com/-zIjBf8BUEDg/Uh9c6M8FM2I/AAAAAAAAEgc/Es2xgUNtTrc/s1600/Background-Gray6.jpg) no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  font-family: Tahoma, Arial, sans-serif;
+  color: #06D85F;
+  margin: 80px 0;
+}
+
+.box {
+  width: 40%;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.2);
+  padding: 35px;
+  border: 2px solid #fff;
+  border-radius: 20px/50px;
+  background-clip: padding-box;
+  text-align: center;
+}
+
+.button {
+  font-size: 1em;
+  padding: 10px;
+  color: #black;
+  border: 2px solid #06D85F;
+  border-radius: 20px/50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.button {
+  font-size: 1em;
+  padding: 10px;
+  color: #black;
+  border: 2px solid #06D85F;
+  border-radius: 20px/50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.button:hover {
+  background: #06D85F;
+   color: #fff;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #06D85F;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+@media screen and (max-width: 700px){
+  .box{
+    width: 70%;
+  }
+  .popup{
+    width: 70%;
+  }
+}
+
+.span { color:font-family: 'Raleway',sans-serif; font-size: 15px; font-weight: 800; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase; cursor:pointer}
+
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+		<script>
+
+		
+		var firebaseRef = firebase.database().ref();
+		var suplierOrdersRef =firebaseRef.child("supliersOrders");
+		var componentsRef = firebaseRef.child("components");
+		var itemOrderRef;
+		var orderNumber, costumer_Name, orderDate, deliveryDate, orderRemarks;
+		var _itemNumber, _discription, _unit_measure,	_quantity, _kg, _price, _discount, _totalPrice;
+		var currentOrderNumber="";
+		var currentNoItemNumber=1;
+		var noItemN=false;
+		var i=0;
+		var sum=0;
+	
+	
+
+		$(document).ready(()=>{
+		
+		$("#table_body").html("");
+		orderId= getParameterByName("id", location.href);
+		getOrderDetails(orderId);
+		console.log("getParameterByName "  + orderId);
+		// $.getJSON("/order?orderNumber="+orderNumber , (data)=>{
+		$.getJSON("/supplierOrderItem?orderId="+orderId, (data) => {
+			console.log(data);
+			for (let index = 0; index < data.length; index++) {	
+
+
+				console.log(data[index].type);
+				var key= data[index]._id;
+				var componentNumber =  data[index].componentNumber;
+				var cmpntSplrNumber =  data[index].cmpntSplrNumber;
+				var cmpntName =  data[index].cmpntName;
+				var quantity =  data[index].quantity;
+				var qtyReady =  data[index].qtyReady;
+				var price =  data[index].price;
+				var totalPrice =  data[index].totalPrice;
+				var status =  data[index].status;
+						
+						var color='white';
+						if (i%2==1){
+							color='silver';
+						}
+						console.log(quantity);
+						
+						i++;
+						console.log(key + " , "  +  componentNumber  + " , "  + cmpntSplrNumber  + " , "  + cmpntName  + " , "  + quantity);	
+						console.log(qtyReady + " , "  +  price  + " , "  + totalPrice  + " , "  + status);	
+						$("#table_body").append("<tr  style='background-color:"+color+"'><td>" + index + "</td><td>" + componentNumber +	 "</td><td>"+ cmpntSplrNumber + "</td><td>" + cmpntName + "</td><td>" + quantity + " Pcs</td><td>" + qtyReady + " Pcs</td></tr>");
+				
+					}
+
+
+
+
+
+			});
+
+		});
+	
+		function showOrder(){
+
+		}
+		
+		function showInvoice(){
+		
+		suplierOrdersRef.child(orderNumber).on("value", snap=>{
+						var invoiceN = snap.child("invoiceN").val();
+						var invoiceDate = snap.child("invoiceDate").val();
+						$("#invoiceP").html("Invoice Number: " + invoiceN + "<br>Invoice Date: " + invoiceDate);
+
+			});
+		}
+		
+		
+		//function showComponents(){}
+		
+		function updatePrice(key, j){
+		console.log(key + " , " + j );
+			var newPrice = document.getElementById("tempPriceId"+j).value;
+			console.log(newPrice);
+			suplierOrdersRef.child(orderNumber).child(key).update({
+						price: ''+newPrice,
+					});
+					
+					showComponents();
+						
+		}
+		
+		function updateReady(key, price){
+		
+
+				 var number="";
+				 var qtyReady = prompt("Please enter the ready quantity:", "Quantitiy");
+				 var total = parseInt(qtyReady)*parseInt(price);
+					if (qtyReady == null || qtyReady == "") {
+						
+					} else {
+						let updateReady={
+							itemId: key,
+							qtyReady: qtyReady,
+							status: 'ready',
+							req:'updatePrice'
+					//	totalPrice:''+total
+						}
+						console.log(updateReady);
+						$.post('/supplierOrderItem/update',
+							updateReady,
+							function (data) {
+								console.log(data);
+							});
+	
+			//	showComponents();
+				}
+				console.log(price + " , " + qtyReady + " , " + total);
+			
+		}
+		
+		function sendMail() {
+		var mailBody = $("#mailBody").val();
+		var link = "mailto:peerpharm@barak.net.il"
+				// + "?cc=peerpharm@barak.net.il"
+				+ "&subject=" + escape("Peer Pharm placed new order")
+				+ "&body=" + escape(document.getElementById('cmptOrderID').value)
+		;
+
+		window.location.href = link;
+	}
+		
+		
+		function sumerize(){
+				sum=0;
+				suplierOrdersRef.child(orderNumber).on("child_added", snap=>{
+				var componentTempNumber = snap.val()["componentNumber"]; 
+				
+				if (componentTempNumber!=undefined){
+					
+						var totalPrice = snap.child("totalPrice").val();
+						if(totalPrice=="" || totalPrice==null || totalPrice=="undefined"){
+							totalPrice="0";
+						}
+						var tempPrice = parseInt(totalPrice);
+						
+						sum+=tempPrice;
+					}
+					
+				})
+			console.log(sum);
+			$("#table_body").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td  style='background-color:lightblue'><b>Total Order Price: </b></td><td  style='background-color:lightblue'><b>"+sum+" $</b></td><td></td>");
+		}
+		
+		function setInvoice(){
+		
+			
+			 document.getElementById("trIvoice1").style.display = "block";
+			 document.getElementById("trIvoice2").style.display = "block";
+			 document.getElementById("trIvoice3").style.display = "block";
+		
+		}
+		
+		function saveInvoice(){
+			var invoiceNumber = document.getElementById("invoiceN").value;
+			var invoiceDate = document.getElementById("invoiceDate").value;
+			suplierOrdersRef.child(orderNumber).update({
+						invoiceN: ''+invoiceNumber,
+						invoiceDate: ''+invoiceDate,
+					});
+		
+		}
+		
+		
+		function addNewItemToOrder(){
+		var existItem, _productT;
+		
+			
+			_componentNumber = document.getElementById('cmpntID').value;
+			_cmpntSplrNumber = document.getElementById('cmpntSplrID').value;
+			_cmpntName = document.getElementById('cmpntNameID').value;
+			_quantity = document.getElementById('qtyID').value;
+			_price = document.getElementById('priceID').value;
+			_totalPrice = document.getElementById('total_price').value;
+		
+			var searchComponengtRef = componentsRef.child(_componentNumber);
+			
+		//	searchItemRef.on('value', snap =>{
+		//			existItem= snap.exists();
+					
+		//	});
+			
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; 
+			var yyyy = today.getFullYear();
+			today = dd+'/'+mm+'/'+yyyy;
+			
+
+			suplierOrdersRef.child(orderNumber).child(_componentNumber).set({
+					componentNumber: ''+_componentNumber,
+					cmpntSplrNumber: ''+_cmpntSplrNumber, 
+					cmpntName: ''+_cmpntName,
+					quantity:''+ _quantity,
+					qtyReady:'',
+					price:''+_price,	
+					totalPrice:''+_totalPrice,
+					status:'open',
+				
+			})	
+		
+		//ordersRef.child(orderNumber).child(_itemNumber).on("child_added", snap=>{
+		
+		suplierOrdersRef.child(orderNumber).orderByChild("componentNumber").equalTo(_componentNumber).on("child_added", snap=>{
+			console.log("a, "+ snap.key);
+			var componentNumber = snap.child("componentNumber").val();
+			var cmpntSplrNumber = snap.child("cmpntSplrNumber").val();
+			var cmpntName = snap.child("cmpntName").val();
+			var quantity = snap.child("quantity").val();
+			var price = snap.child("price").val();
+			var totalPrice = snap.child("totalPrice").val();
+			var status = snap.child("status").val();
+			console.log("a, "+ componentNumber + "  ,  " + quantity);
+			i++;
+			console.log("a, "+ componentNumber + "  ,  " + i);
+	//		$("#table_body").append("<tr id='idTR"+i+"'><td>" + i + "</td><td>" + componentNumber +	 "</td><td>"+ cmpntSplrNumber + "</td><td>" + cmpntName + "</td><td>" + quantity + " Pcs</td><td>"+ price +" kg</td><td>" + totalPrice + "</td><td><Button class='buttonDelete' onClick='deleteData(\""+ componentNumber + "\", "+i+")'>Delete</td></tr>");
+		
+	//		$("#mailBody").append("Item "+ cmpntSplrNumber + " , " + cmpntName + " , " + quantity + " pcs \n");
+		})
+		
+		
+	
+			$('#cmpntID').val("");
+			$('#cmpntSplrID').val("");
+			$('#cmpntNameID').val("");
+			$('#qtyID').val("");
+			$('#priceID').val("");
+			$('#total_price').val("");
+		
+		}	
+		
+		
+		function update(){
+		 firebase.auth().onAuthStateChanged(function(user){
+			if(user){
+			
+			var name = document.getElementById('name').value;
+		   // Updates the user attributes:
+			user.updateProfile({
+			  displayName: ''+name,
+			 // photoURL: "https://example.com/jane-q-user/profile.jpg"
+			}).then(function() {
+			  // Profile updated successfully!
+			  // "Jane Q. User"
+			  var displayName = user.displayName;
+			  // "https://example.com/jane-q-user/profile.jpg"
+			//  var photoURL = user.photoURL;
+			}, function(error) {
+			  // An error happened.
+			});
+			}		
+		});
+		}
+		
+		function showStatusOptions(){
+				let images = ['graphicw', 'wait' , 'stockUpdate' , 'shipped', 'npay', 'an'];
+				let messages = ['Waiting Graphic Approval', 'Waiting Approval', 'Approved', 'Shipped', 'Waiting payment', 'Details Not-Clear']
+				for (let index = 0; index < images.length; index++) {
+					$("#status_tbodyId").append("<tr><td><img src='/images/"+images[index]+".png' style='width:50px; cursor:pointer' onclick='setStatus("+messages[index]+")'></td><td><span class='span' onclick='setStatus(\""+messages[index]+"\")'> "+messages[index]+"</span></td></tr>");
+				}
+		}
+
+		function setStatus(statusMessage){
+			$("#popup1").css('display', 'none');
+			orderId= getParameterByName("id", location.href);
+			let status={
+				orderId:orderId,
+				status:statusMessage,
+				req:'setStatus'
+			}
+			$.post('/supplierOrder/update',
+			status,
+			function (data) {
+				console.log(data);
+			});
+		}
+
+		function getOrderDetails(orderId){
+			$.getJSON("/supplierOrder?orderId="+orderId, (data) => {
+				console.log("aaa "  + data[0].status);
+				$("#h3_suplierStatus").html(data[0].status);
+			});
+		}
+        
+        
+        let ia=0;
+        function addArrivedCmpt(){
+            ia++;
+            $("#arrived_table_body").append("<tr><td>"+ia+"</td><td><input type=text id='sm"+ia+"' style='width:90px'></td><td><input type=text id='sm"+ia+"' style='width:90px'></td><td><span type=text id='sm"+ia+"' style='width:290px'></span></td><td><input type=text id='sm"+ia+"'></td></tr>");
+        }
+
+
+        function doneReceiption(){
+            let receivingStation =  $("#recStation").val();
+            let cmptsToUpdate=[];
+            table = document.getElementById("arrived_table_body");
+		    tr = table.getElementsByTagName("tr");
+                for (i = 1; i < tr.length; i++) {
+                    td1 = tr[i].getElementsByTagName("td")[1];
+                    td2 = tr[i].getElementsByTagName("td")[2];
+                    td4 = tr[i].getElementsByTagName("td")[4];
+                    console.log(td1 + " ,  " + td2 + " ,  " + td4);
+                    if (td1) {
+                        cmptN = td1.getElementsByTagName("input")[0].value;
+                        cmptNS = td2.getElementsByTagName("input")[0].value;
+                       // console.log(tr[i].getElementsByTagName("td")[3].innerText);
+                        qty=  td4.getElementsByTagName("input")[0].value;
+                        let cmptArrived =  {
+                            cmptN:cmptN,
+                            qtyArrived: qty
+                        }
+                        cmptsToUpdate.push(cmptArrived);
+                    }
+                    
+                    }
+                    console.log(cmptsToUpdate);
+                    let dataTosend = { req:'updateArrived',receivingStation: receivingStation, cmptToUpdate: cmptsToUpdate };
+                    $.ajax({
+                        url: '/supplierOrderItem/update',
+                        type: "POST",
+                        data: JSON.stringify(dataTosend),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                        }
+                    })
+        }
+		function getParameterByName(name, url) {
+			if (!url) url = window.location.href;
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+				results = regex.exec(url);
+			if (!results) return null;
+			if (!results[2]) return '';
+			return decodeURIComponent(results[2].replace(/\+/g, " "));
+		 }
+
+
+</script>
+<body>
+<br><br><br>
+<div style='text-align: right; padding-right: 350px'>
+The Receiving Station : 
+ <select id='recStation'>
+     <option value="office">
+        פארק אפק- משרדים
+     </option>
+     <option value='kasem'>
+         מחסן קאסם
+     </option>
+ </select>
+</div><br>
+<table border=1>
+    <tr>
+        <td style='padding-left:50px'>
+
+                <table id="cmptOrderID" >
+                        <thead>
+                            <tr >
+                                <th>Row</th>
+                                <th>Component Id</th>
+                                <th>Suplier N</th>
+                                <th>Component Name</th>
+                                <th>Quantity Ordered</th>
+                                <th>Quantity Ready</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="table_body">
+                            </tbody>
+                        </table>
+        </td>
+        <td>
+                <table id="cmptArrivedID"  style='padding-left:200px'>
+                        <thead>
+                            <tr>
+                                <th>Row</th>
+                                <th>Component Id</th>
+                                <th>Supplier N</th>
+                                <th>Component Name</th>
+                                <th>Quantity Arrived</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="arrived_table_body">
+                                <tr><td><img src='/images/add.png' style='width:30px' onclick="addArrivedCmpt()"><button onclick="doneReceiption()">אישור</button></button></td></tr>
+                            </tbody>
+                        </table>
+        </td>
+    </tr>
+</table>
+
+</body>

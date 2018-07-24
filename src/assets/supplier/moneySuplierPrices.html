@@ -1,0 +1,273 @@
+<html>
+<style>
+    td {
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: linear-gradient(#209D9D, #497676);
+        margin-left: 20px
+    }
+
+    #pricesTableId td {
+        border-bottom: 1px solid #ddd;
+    }
+
+    #pricesTableId tr:hover {
+        background-color: #f5f5f5;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    var lastMaxPrice;
+    var suplierID;
+    $(document).ready(() => {
+        $("#vendorBtn").click(() => { chooseVendor() });
+        $("#enterPriceBtn").click(() => { addPrice() });
+        $.getJSON("/supplier", (data) => {
+            console.log(data);
+            loadSuppliers(data);
+        });
+    })
+
+
+    function loadSuppliers(data) {
+        console.log(data);
+        $("#suplierNameID").autocomplete({
+            source: data
+        });
+    }
+
+
+    function chooseVendor() {
+        vendor = $("#suplierNameID").val();
+        $("#enterNewPriceTableId").css('display', 'block');
+        $("#pricesTableId").css('display', 'block');
+        $.getJSON("/supplier?suplierName=" + vendor, (data) => {
+            console.log(data);
+            suplierID = data[0]._id;
+            vendor = data[0].suplierName;
+            loadVendorPrices(suplierID);
+        });
+    }
+
+    function getCmptName() {
+        let componentN = $("#cmptId").val();
+        $.getJSON("/component?componentN=" + componentN, (data) => {
+            console.log(data[0].componentName);
+            $("#cmptName").val(data[0].componentName);
+        });
+    }
+
+    function loadVendorPrices(id) {
+        $.getJSON("/suplierPriceList?suplierId=" + id, (data) => {
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                vendor = data[i].suplierName;
+                componentN = data[i].componentN;
+                componentNS = data[i].componentNS;
+                cmptName = data[i].cmptName;
+                priceObj = data[i].price;
+                let price="";
+                for (let j = 0; j < priceObj.length; j++) {
+                    let maxInf = priceObj[j].max;
+                    if(maxInf=="1000000000000000000") maxInf='&infin;';
+                    if(priceObj.length==1){
+                        price=priceObj[j].price;
+                    }
+                    else{
+                        price+="["+priceObj[j].min + "-" +maxInf+"]: "+priceObj[j].price+ " ,";
+                    }
+                    
+                }
+                currency = data[i].currency;
+                $("#id_tbody").append("<tr><td>" + i + "</td><td>" + componentN + " </td><td>" + componentNS + "</td><td>" + cmptName + "</td><td style='bold; color:blue'>" + price + " " + currency + "</td><td><img src='../images/delete.png' style='width:27px;padding-bottom:4px'><img src='../images/editBtn.png' style='width:34px'></tr>");
+            }
+
+        });
+    }
+    function addPrice() {
+
+        let componentN = $("#cmptId").val();
+        let componentNS = $("#cmptSupplierNumberId").val();
+        let cmptName = $("#cmptName").val();
+        let price = $("#priceId").val();
+        let currency = $("#currencyId").val();
+        let priceQty = [];
+        let priceType =$("input[name='fix']:checked").val();
+        
+        
+        if(priceType=='fixed'){ priceQty.push({ min: 0, max: 1000000000000000000, price: price }); }
+        else{
+            $('#tbody_qty_id tr').each(function () {
+            let price, min, max;
+            $(this).find("td input").each(function () {
+                var cellText = $(this).val();
+                var type = $(this).attr('placeholder');
+                if (type == 'min') min = cellText;
+                if (type == 'max') max = cellText;
+                if (type == 'price') price = cellText;
+            });
+            let newPriceQty = { min: min, max: max, price: price };
+            priceQty.push(newPriceQty);
+            console.log(priceQty);
+
+        });
+        }
+        
+
+        let newCmptPrice = {
+            suplierId: suplierID,
+            suplierName: vendor,
+            componentNS: componentNS,
+            componentN: componentN,
+            cmptName: cmptName,
+            price: priceQty,
+            currency: currency,
+        }
+
+        console.log(newCmptPrice);
+        $.ajax({
+            url: '/suplierPriceList/add',
+            type: "POST",
+            data: JSON.stringify(newCmptPrice),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                orderId = data._id;
+                $("#resultDiv").css('display', 'block');
+                if (!data) {
+                    $("#resultDiv").html("The Component is alredy exist for the vendor");
+                    $("#resultDiv").css('color', 'red');
+                } else {
+                    $("#resultDiv").html("Component <span style='color:blue'>" + data.componentN + "</span> has been updeted successfully");
+                    $("#resultDiv").css('color', 'green');
+                }
+            }
+        })
+    }
+
+    function openQtyPrices(src) {
+        console.log('a');
+        if (src == 'qty') {
+            $("#addQtyPriceBtn").css('display', 'block');
+            $("#priceId").css('display', 'none');
+        }
+        else if (src == 'fixed') {
+
+            $("#addQtyPriceBtn").css('display', 'none');
+            $("#priceId").css('display', 'block');
+        }
+    }
+    var i = 0;
+
+
+    function addQtyPriceLine() {
+        if (i > 0) {
+            lastRow = $('#tbody_qty_id tr:last ').index();
+            table = document.getElementById("tbody_qty_id");
+            tr = table.getElementsByTagName("tr");
+            td = tr[lastRow].getElementsByTagName("td")[1].getElementsByTagName("input")[0].value;
+            lastMaxPrice = td;
+        } else {
+            lastMaxPrice = 0;
+        }
+        lastMaxPrice++;
+        console.log("lastMaxPrice" + lastMaxPrice);
+        $("#tbody_qty_id").append("<tr><td><input type='number' placeholder='min' value='" + lastMaxPrice + "'  ></td><td><input type='number' placeholder='max' pattern='([0-9]|&#8734;)+'></td><td><input type='number' placeholder='price'></td><td><span style='font-size:28px; cursor:pointer'  onclick='setInfinty(this)'>&infin;</span></td></tr>")
+        i++;
+    }
+
+    function setInfinty(elem){
+        tr =elem.parentNode.parentNode.rowIndex-3;
+        console.log(tr); 
+        
+        //$('#tbody_qty_id  tr:eq('+tr+') td.eq(1)').val('red');
+       // $('#tbody_qty_id  tr:eq('+tr+')').find('td:eq(1) input').css('padding','5px');
+        $('#tbody_qty_id  tr:eq('+tr+')').find('td:eq(1) input').val('&#8734;');
+    }
+
+</script>
+
+<body>
+    <h2>Vendor Price List</h2>
+    <span>Choose Vendor</span>
+    <br>
+    <input type='text' id="suplierNameID">
+    <br>
+    <button id='vendorBtn'>Choose</button>
+    <br>
+    <br>
+    <br>
+
+    <table id='enterNewPriceTableId' style='display: none;'>
+        <tr>
+            <td>Component</td>
+            <td>Supplier Cmpt</td>
+            <td>Discription</td>
+            <td>Price &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="fix" value="fixed" checked onclick="openQtyPrices('fixed')"> Fixed
+                <br> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                <input type="radio" name="fix" value="byQty" onclick="openQtyPrices('qty')"> By Qty </td>
+            <td>Currecy</td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="text" id='cmptId' onfocusout='getCmptName()'>
+            </td>
+            <td>
+                <input type="text" id='cmptSupplierNumberId'>
+            </td>
+            <td>
+                <input type="text" id='cmptName'>
+            </td>
+            <td>
+                <input type='number' id='priceId'>
+                <img src='/images/add.png' style='margin-left:30px; width:30px; display:none; cursor: pointer;' id='addQtyPriceBtn' onclick="addQtyPriceLine()">
+            </td>
+            <td>
+                <select id='currencyId'>
+                    <option>₪</option>
+                    <option>$</option>
+                    <option>€</option>
+                    <option>£</option>
+                </select>
+            </td>
+            <td>
+                <button id='enterPriceBtn'>Enter</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <div id='resultDiv' style='color:red; font-weight: bold; border-style: groove; border-radius: 3px; padding: 10px;display: none'></div>
+            </td>
+
+        </tr>
+        <tbody id='tbody_qty_id'>
+
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <table id='pricesTableId' style='display:none;'>
+        <thead style='font-weight: bold; color:#209D9D'>
+            <tr>
+                <td></td>
+                <td style='padding:20px'>Component</td>
+                <td style='padding:20px'>Supplier Component</td>
+                <td style='padding:20px'>Discription</td>
+                <td style='padding:20px'>price</td>
+            </tr>
+        </thead>
+        <tbody id='id_tbody'></tbody>
+    </table>
+</body>
+
+</html>

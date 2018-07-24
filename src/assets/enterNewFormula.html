@@ -1,0 +1,94 @@
+<html>
+<style>
+    body {}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script>
+    var i = 0;
+    $(document).ready(() => {
+        $("#addBtn").click(() => {
+            i++;
+
+            lastRow = $('#formula_tbody tr:last ').index() + 2;
+            // lastRow = $('#formula_tbody tr:last');
+            // lastFaza = lastRow.find('td').eq(1).val();
+            // console.log(lastFaza);
+            $("#formula_tbody").append("<tr><td><input type='number' style='width:55px' value='" + i + "'></td><td><input type='text' style='width:55px'></td><td><input type='text' style='width:255px'></td><td><input type='text' style='width:55px'></td><td><input type='text' style='width:55px'></td><td><input type='text'></td><td><img src='/images/up.png' style='width:20px;height:15px; margin-right:4px'><img src='/images/down.png' style='width:15px'></td></tr>");
+
+        });
+
+        $("#enterFormula").click(() => {
+
+            $('#formula_tbody td').each(function () {
+                var cellText = $(this).html();
+              //  console.log(cellText);
+            });
+            $('#formula_tbody tr td').each(function () {
+                var keval = $(this).find("input").val();
+                console.log(keval);
+            });
+
+            var input, filter, table, tr, td, i;
+            let formulaData = [];
+            table = document.getElementById("formula_tbody");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    let newFormulaLine = {
+                        processNumber: td.getElementsByTagName("input")[0].value,
+                        faza: tr[i].getElementsByTagName("td")[1].getElementsByTagName("input")[0].value,
+                        material: tr[i].getElementsByTagName("td")[2].getElementsByTagName("input")[0].value,
+                        percentage: tr[i].getElementsByTagName("td")[3].getElementsByTagName("input")[0].value,
+                        temp: tr[i].getElementsByTagName("td")[4].getElementsByTagName("input")[0].value,
+                        remarks: tr[i].getElementsByTagName("td")[5].getElementsByTagName("input")[0].value,
+                    }
+                    console.log(newFormulaLine);
+
+                    formulaData.push(newFormulaLine);
+
+                }
+                console.log(formulaData);
+            }
+
+            let dataTosend = { formulaData: formulaData, req: 'formulaData' };
+            /*$.ajax({
+                url: '/supplierOrderItem/add',
+                type: "POST",
+                data: JSON.stringify(dataTosend),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                }
+            })*/
+        })
+
+    });
+</script>
+
+<body>
+    <center>
+        <h1>Enter New Formula</h1>
+        <img src='/images/add.png' style='width:50px' id='addBtn'>
+        <table>
+            <tr>
+                <td>Process</td>
+                <td class='faza'>Faza</td>
+                <td>Material</td>
+                <td>%</td>
+                <td>temp</td>
+                <td>Process</td>
+                <td></td>
+            </tr>
+            <tbody id='formula_tbody'>
+
+            </tbody>
+        </table>
+        <br>
+        <button id="enterFormula">Enter</button>
+    </center>
+</body>
+
+</html>

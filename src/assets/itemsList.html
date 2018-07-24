@@ -1,0 +1,403 @@
+<html>
+    <head>
+        <title>Items List</title>
+        <meta charset="windows-1255">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+	    
+<style>
+	
+
+.header{
+	height: 45px;
+	position: relative;
+	background: #6E6E6E url(img03.jpg) top left no-repeat;
+	padding: 45px;
+	color: #FFFFFF;
+	width: 1330px;
+	border: solid 1px #7E7E7E;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	overflow: hidden;
+	margin-left:20px
+	
+
+}
+
+.header a1 {
+	position: absolute;
+    text-decoration: none;
+	color: #FFFFFF;
+	text-shadow: 0 1px 1px #3E3E3E;
+	font-size:50px;
+	align: right;
+	bottom: 10;
+    left: 15;
+	
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(#209D9D, #497676) ;
+	width: 1422px;
+	margin-left:20px
+}	
+
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+	
+body{
+	display:flex;
+		min-height:30vh;
+	align-items:center;
+	
+	flex-direction:column;
+}
+th {
+    background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    border-left: 1px solid #555;
+    border-right: 1px solid #777;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #333;
+    box-shadow: inset 0 1px 0 #999;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    position: relative;
+    text-shadow: 0 1px 0 #000;  
+}
+
+td {
+    border-right: 1px solid #fff;
+    border-left: 1px solid #e8e8e8;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+    transition: all 300ms;
+	font-size:17px;
+	padding:10px;
+	
+}
+tr{
+	text-align:center;
+	
+}
+tr:hover{
+	background-color:#F9F9F9	;
+
+}
+
+.searchItem_input {
+  background-image: url("search.gif");
+  background-size: 20px 20px;
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+</style>
+	
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+	
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+ 
+ 
+ <script>
+	var firebaseRef = firebase.database().ref();
+	var itemsRef = firebaseRef.child("items");
+	var componentsRef =firebaseRef.child("components");
+	var i;
+	i=0;
+	var serverPassword="";
+	componentsRef.on("value", snap=>{
+		serverPassword = snap.child("password").val();
+	});
+	
+	$(document).ready(()=>
+	{
+		$.getJSON( "/item", (data) =>{
+		 for (let index = 0; index < data.length; index++) {
+			var itemNumber = data[index].itemNumber; 
+		var title =  data[index].name;
+		var subTitle =  data[index].subName
+		var discriptionGet =  data[index].discriptionK;
+		var itemName= title + " " + subTitle + " " + discriptionGet;
+		var sticker =  data[index].stickerNumber;
+		var barcode =   data[index].barcodeK;
+		
+		i++;
+		$("#table_body").append("<tr><td>"+i+"</td><td><a href='getItem.html?id="+itemNumber+"' style='color:blue' target='_blank' onClick='setRef(\""+itemNumber+"\")'>" + itemNumber + "</a></td><td>"+ itemName+	 "</td><td>" +sticker+	 "</td><td>" +barcode+	 "</td><td><img src='/images/copy.png' style='width:25px;cursor:pointer;' onClick='remember("+itemNumber+")'><img src='/images/delete.png' style='width:25px;cursor:pointer;' onClick='deleteItem("+itemNumber+")'></td></tr>");
+		
+		  }
+		});
+	});
+	itemsRef.on("child_added", snap=>{
+	
+	
+		});
+		
+		
+		function setRef(itemNumber){
+		
+			localStorage.setItem("productNumber", itemNumber);
+		
+		
+		}
+	
+		function deleteItem(itemNumber){
+			var a=confirm("למחוק פריט?");
+			if (a==true){
+				var password = prompt("הכנס סיסמא:", "password");
+					if(password==serverPassword){
+						itemsRef.child(itemNumber).remove();
+					}
+				
+			}
+		}
+	
+		function remember(itemNumber){
+		
+			localStorage.setItem("rememberNumber", itemNumber);
+			$("#spanNumber").html(itemNumber+ " Copy to clipboard");
+			$("#itemNumberDiv").css('display', 'block')
+			setInterval(disapre, 3000);
+		}
+		
+		function disapre(){
+			console.log('hi');
+				$("#itemNumberDiv").css('display', 'none')
+		}
+		
+		
+		function searchItem3() {
+		  var input, filter, table, tr, td, i;
+		  input = document.getElementById("searchItem_input");
+		  filter = input.value.toUpperCase();
+		  table = document.getElementById("table_body");
+		  tr = table.getElementsByTagName("tr");
+		  for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[2];
+			if (td) {
+			  if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+					
+				tr[i].style.display = "";
+			  } else {
+				tr[i].style.display = "none";
+			  }
+			}       
+		  }
+		}
+		
+		
+		
+		
+		function searchItem() {
+		
+		 var j=0;
+		 var check;
+		 var input, filter, table, tr, td, i, tr2;
+		  input = document.getElementById("searchItem_input");
+		  check = input.value.toUpperCase();
+		  table = document.getElementById("table_body");
+		  tr = table.getElementsByTagName("tr");
+		  for (i = 0; i < tr.length; i++) {
+			//td = tr[i].getElementsByTagName("td")[2];
+			td = tr[i].innerHTML;
+						if (td) {
+						console.log("hi");
+						 // if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+							var checkId= 0;
+							//var str = td.innerHTML.toUpperCase(); 
+							var str = td.toUpperCase(); 
+							console.log(str);
+							var j=0;
+							var checkId= 0;
+							for (var z=0; z<check.length; z++){
+								
+								   if(check[z]==' '){
+									 n = check.substring(j,z);
+									 console.log("first " +str);
+									 console.log("first n " +n);
+									 j=z
+									 if(str.search(n)==-1)
+									 {
+									  checkId++; 
+									 }
+								   }
+							   
+							}
+							  n = check.substring(j,str.length);
+							  console.log("last " + n);
+							  if(str.search(n)==-1)
+								 {
+								 checkId++; 
+								 }
+								 console.log(checkId);
+								 
+								if (checkId==0) {
+										
+									tr[i].style.display = "";
+								  } else {
+									tr[i].style.display = "none";
+								  }
+						}  
+						
+		  }
+		}
+		
+		function searchItem2(){
+		
+		 var searchText = $("#searchItem_input2").val().toLowerCase();
+			// Show only matching TR, hide rest of them
+			$.each($("#orderDetailsID tbody tr"), function() {
+				if($(this).text().toLowerCase().indexOf(searchText) === -1)
+				   $(this).hide();
+				else
+				   $(this).show();                
+			});
+		}
+		
+
+
+		
+	/*var check= document.getElementById("check").value;
+	var checkId= 0;
+    var str = "visit aa W3Schools!"; 
+    var j=0;
+    for (var i=0; i<=check.length; i++){
+       if(check[i]==' '){
+         n = check.substring(j,i);
+         j=i
+         if(str.search(n)!=-1)
+         {
+         	 document.getElementById("demo").innerHTML += "true ";
+         }
+         else{
+             document.getElementById("demo").innerHTML += "false ";
+			 checkId++; 
+         }
+       }
+    }
+  	  n = check.substring(j,str.length);
+	  console.log("last " + n);
+	  if(str.search(n)!=-1)
+         {
+         	 document.getElementById("demo").innerHTML += "true ";
+         }
+         else{
+             document.getElementById("demo").innerHTML += "false ";
+			 checkId++; 
+         }
+		if (checkId>0){
+			//alert("Not Found");
+		}
+	*/
+ </script>
+<body style='padding-top:20px'>
+		<a>
+      
+		    
+        <div class='header' style="width: 1330px ; height: 70px"><a1>	Items List </a1> <img src="/images/peerpharm.png"  width='270px' align='right'></div>
+		<ul>
+			  <li><a href="#home">Home</a></li>
+			  <li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Orders</a>
+					<div class="dropdown-content">
+					  <a href="openOrders.html">Open Orders</a>
+					  <a href="newOrder.html">New Order</a>
+					  <a href="showOrder.html">Search Order</a>
+					  <a href="ordersList.html">All Orders</a>
+					  
+					</div>
+			  </li>
+			  <li class="dropdown"><a href="workShift.html">Work Schedule</a><li>
+			  <li class="dropdown">
+			  <a href="javascript:void(0)" class="dropbtn">Product Tree</a>
+			  <div class="dropdown-content">
+				<a href="itemsList.html">Items List</a>
+				<a href="getItem.html">Product Tree</a>
+				</div>
+				</li>
+			  <li><a href="costumers.html">Costumers</a></li>
+			  <li><a href="needToBuild.html">No-form List</a></li>
+			  <li><a href="batchesList.html">Batch List</a></li>
+		</ul>
+		</a>
+		<br><br>
+		<table><tr><td style="border-left: 0px solid #fff;"><input style="width:250px; margin-right:30px; display:none" type="text" id="searchItem_input2" onkeyup="searchItem2()" placeholder="Search For Item" class="searchItem_input"></td><td style="border-left: 0px solid #fff;"><input style="width:450px" type="text" id="searchItem_input" onkeyup="searchItem()"  class="searchItem_input" placeholder="Search For Item"></td></tr></table>
+	<table border =1 style='width:1100px' id="orderDetailsID" >
+			<thead>
+			
+				<tr style="background-color:white; ">
+					<th></td>
+					<th style="padding:5px"><h3>Item number</h3></th>
+					<th style="padding:5px"><h3>Name</h3></th>
+					<th style="padding:5px"><h3>Sticker</h3></th>
+					<th style="padding:5px"><h3>Barcode</h3></th>
+					<th></td>
+				</tr>
+			</thead>
+			<tbody id= "table_body">
+			</tbody>
+		</table>
+		
+		<div id='itemNumberDiv'><span id='spanNumber'></span>
+		</div>

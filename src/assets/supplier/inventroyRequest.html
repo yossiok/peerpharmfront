@@ -1,0 +1,160 @@
+<html>
+<style>
+	td{
+		text-align:center;
+	}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+<script>
+
+    $(document).ready(()=>{
+        $("#newOrderBtn").click(function () {writeNewOrder()});       
+        $("#newItemBtn").click(function ()  {addNewItemToOrder()});
+    })
+
+    function writeNewOrder(){
+						orderNumber= document.getElementById('orderNumberId').value;
+						deliveryDate = document.getElementById('deliveryDateId').value;
+						orderRemarks = document.getElementById('orderRemeraksId').value;
+						
+						
+						var _dt = new Date();
+						orderDate=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+						_dt = new Date(deliveryDate);
+						deliveryDate=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+						console.log(orderDate, deliveryDate);
+
+
+						
+
+						  let newOrder={
+							orderN: orderNumber,
+							dateOfOrder: orderDate,
+							dateOfDelivery: deliveryDate,
+							remarks: orderRemarks,
+							status: 'open',
+							}
+
+						console.log(newOrder);
+						$.post('/requestSupplierOrder/add', 
+						newOrder,
+			  			function(data){	 
+							console.log(data);
+							orderId=data._id;
+						});
+                        
+    }
+
+    function addNewItemToOrder(){
+		var existItem, _productT;
+		
+			
+			_componentNumber = document.getElementById('cmpntID').value;
+			_cmpntName = document.getElementById('cmpntNameID').value;
+			_quantity = document.getElementById('qtyID').value;
+			_type = document.getElementById('cmptType').value;
+
+
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; 
+			var yyyy = today.getFullYear();
+			today = dd+'/'+mm+'/'+yyyy;
+			
+			let newItem={
+					componentNumber:_componentNumber,
+					cmpntSplrNumber:'',
+					supplierName:'', 
+					type:_type,
+					cmpntName:_cmpntName,
+					quantity:_quantity,
+					qtyReady:0,
+					price:'',	
+					currency:'',
+					totalPrice:'',
+					status:'requested',
+					orderId:orderId,				
+					}
+					console.log(newItem);
+				$.post('/requestSupplierOrderItem/add', 
+						newItem,
+			  			function(data){	 
+							  i=0;
+							console.log(data);
+							$("#table_body").append("<tr id='idTR"+i+"'><td>" +  i + "</td><td>" +  data.componentNumber +	 "</td><td>" +  data.cmpntName + "</td><td>" +  data.quantity + " Pcs</td><td></td><td><Button class='buttonDelete' onClick='deleteData(\""+  data.componentNumber + "\", "+i+")'>Delete</td></tr>");
+						});
+			$('#cmpntID').val("");
+			$('#cmpntSplrID').val("");
+			$('#cmpntNameID').val("");
+			$('#qtyID').val("");
+			$('#priceID').val("");
+			$('#total_price').val("");
+		
+		}
+
+
+		function searchComponent(){
+			cmpt = $('#cmpntID').val();
+		}	
+</script>
+<body>
+
+
+
+
+
+
+    
+<h1>Enter your wish list</h1>
+<table>
+    <tr>
+        <td> Order Number:</td>
+        <td><input type='number' id='orderNumberId'></td>
+    </tr>
+    <tr>
+        <td>Who Are You?</td>
+        <td><input type='text' id='orderInviterId'></td>
+    </tr>
+    <tr>
+        <td>When you need it</td>
+        <td><input type='date' id='deliveryDateId'></td>
+    </tr>
+    <tr>
+            <td>Any remarks?</td>
+            <td><input type='text' id='orderRemeraksId'></td>
+        </tr>
+  <tr><td>  <button id='newOrderBtn'>Enter</button></td></tr>
+</table>
+<br><br>
+
+<table id="cmptOrderID" style='display:block; border:0px'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Component Id</th>
+            <th>Component Name</th>
+            <th>Quantity</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type='text' id="cmpntID" onfocusout="searchComponent()">
+                <select id='cmptType'>
+                        <option>Packing</option>
+                        <option>Sticker</option>
+                        <option>Material</option>
+                </select>
+            </td>
+            <td><input type='text' id="cmpntNameID" style='width:380px'></td>
+            <td><input type='text' id="qtyID" style='width:80px'></td>
+            <td></td>
+            <td><button id='newItemBtn'>Enter</button></td>
+        </tr>
+        </thead>
+        <tbody id="table_body">
+        </tbody>
+</table>
+</body>
+</html>

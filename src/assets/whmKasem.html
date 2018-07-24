@@ -1,0 +1,1511 @@
+
+
+<html dir=rtl>
+    <head>
+        <title>wareHouseMain</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+    <style>
+	
+	
+
+.header {
+	height: 100px;
+	background: #bdbdbd;
+	position: fixed;
+	width: 100%;
+	z-index: 10;
+}
+
+.header a1 {
+	position: absolute;
+    text-decoration: none;
+	color: #FFFFFF;
+	text-shadow: 0 1px 1px #3E3E3E;
+	font-size:50px;
+	
+	bottom: 10;
+   
+	
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(#6495ED, #3C4EF5) ;
+	width: 1422px;
+	margin-left:20px
+}	
+
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+
+body{
+	display:flex;
+	min-height:30vh;
+	align-items:center;
+	
+	flex-direction:column;
+}
+
+#uploader{
+	-webkit-appearance: none;
+	appearance: none;
+	width:50%;
+	margin-bottom:10px;
+	color:blue;
+}
+
+button{
+	background-color:red;
+	color: white;
+	display: inline-block;
+	font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+		 border: none;
+}
+
+.updateDateBtn{
+  width: 120px;
+  height: 24px;
+  padding: 5px 16px 3px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border: 2px solid #ccc;
+  position: relative;
+	
+  /* Label */
+  font-family: Lucida Sans, Helvetica, sans-serif;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: rgba(10, 10, 10, 0.5) 1px 2px 2px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  overflow: hidden;
+
+
+}
+
+tr{
+	text-align:center;
+}
+
+
+ th {
+    background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    border-left: 1px solid #555;
+    border-right: 1px solid #777;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #333;
+    box-shadow: inset 0 1px 0 #999;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    position: relative;
+    text-shadow: 0 1px 0 #000;  
+}
+.button2{
+
+  height: 24px;
+  padding: 5px 16px 3px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border: 2px solid #ccc;
+  position: relative;
+	
+  /* Label */
+  font-family: Lucida Sans, Helvetica, sans-serif;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: rgba(10, 10, 10, 0.5) 1px 2px 2px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  overflow: hidden;
+  cursor :pointer ;
+  
+}
+.aqua{
+  background-color: rgba(60, 132, 198, 0.8);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 90%, from(rgba(28, 91, 155, 0.8)), to(rgba(108, 191, 255, .9)));
+  border-top-color: #8ba2c1;
+  border-right-color: #5890bf;
+  border-bottom-color: #4f93ca;
+  border-left-color: #768fa5;	
+  -webkit-box-shadow: rgba(66, 140, 240, 0.5) 0px 10px 16px;
+  -moz-box-shadow: rgba(66, 140, 240, 0.5) 0px 10px 16px; /* FF 3.5+ */
+}
+
+
+
+
+
+td {
+    border-right: 0px solid #fff;
+    border-left: 0px solid #e8e8e8;
+    border-top: 0px solid #fff;
+    border-bottom: 0px solid #e8e8e8;
+    position: relative;
+    transition: all 300ms;
+}
+
+
+
+
+input[type=text] ,input[type=number]
+		{
+		display: inline-block;
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+		float: none;
+		z-index: auto;
+		width: 158px;
+		height: auto;
+		position: static;
+		opacity: 1;
+		margin: 0;
+		//padding: 10px 20px;
+		overflow: visible;
+		border: 1px solid #b7b7b7;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		font: normal medium/normal Arial, Helvetica, sans-serif;
+		color: rgba(0,142,198,1);
+		-o-text-overflow: clip;
+		text-overflow: clip;
+		background: rgba(252,252,252,1);
+		-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+		-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-webkit-transform: none;
+		transform: none;
+		-webkit-transform-origin: 50% 50% 0;
+		transform-origin: 50% 50% 0;
+}
+.btnImage{
+	 width:25px;
+	 height:25px;
+	 float: right; 
+	 cursor:pointer; 
+	 margin:0	
+	 
+
+
+}
+
+
+
+
+.button {
+  
+  
+    display: inline-block;
+    margin-left: 30 auto;
+    
+    -webkit-border-radius: 10px;
+    
+    -webkit-box-shadow: 
+        0px 3px rgba(128,128,128,1), /* gradient effects */
+        0px 4px rgba(118,118,118,1),
+        0px 5px rgba(108,108,108,1),
+        0px 6px rgba(98,98,98,1),
+        0px 7px rgba(88,88,88,1),
+        0px 8px rgba(78,78,78,1),
+        0px 14px 6px -1px rgba(128,128,128,1); /* shadow */
+    
+    -webkit-transition: -webkit-box-shadow .1s ease-in-out;
+} 
+
+.button span {
+    background-color: #E8E8E8;
+    
+    background-image: 
+        /* gloss gradient */
+        -webkit-gradient(
+            linear, 
+            left bottom, 
+            left top, 
+            color-stop(50%,rgba(255,255,255,0)), 
+            color-stop(50%,rgba(255,255,255,0.3)), 
+            color-stop(100%,rgba(255,255,255,0.2))),
+        
+        /* dark outside gradient */
+        -webkit-gradient(
+            linear, 
+            left top, 
+            right top, 
+            color-stop(0%,rgba(210,210,210,0.3)), 
+            color-stop(20%,rgba(210,210,210,0)), 
+            color-stop(80%,rgba(210,210,210,0)), 
+            color-stop(100%,rgba(210,210,210,0.3))),
+        
+        /* light inner gradient */
+        -webkit-gradient(
+            linear, 
+            left top, 
+            right top, 
+            color-stop(0%,rgba(255,255,255,0)), 
+            color-stop(20%,rgba(255,255,255,0.5)), 
+            color-stop(80%,rgba(255,255,255,0.5)), 
+            color-stop(100%,rgba(255,255,255,0))),        
+        
+        /* diagonal line pattern */
+        -webkit-gradient(
+            linear, 
+            0% 100%, 
+            100% 0%, 
+            color-stop(0%,rgba(255,255,255,0)), 
+            color-stop(40%,rgba(255,255,255,0)), 
+            color-stop(40%,#D2D2D1), 
+            color-stop(60%,#D2D2D1), 
+            color-stop(60%,rgba(255,255,255,0)), 
+            color-stop(100%,rgba(255,255,255,0)));
+    
+        -webkit-box-shadow:
+            0px -1px #fff, /* top highlight */
+            0px 1px 1px #FFFFFF; /* bottom edge */
+    
+    -webkit-background-size: 100%, 100%, 100%, 4px 4px;
+    
+    -webkit-border-radius: 10px;
+    -webkit-transition: -webkit-transform .1s ease-in-out;
+    
+    display: inline-block;
+    padding: 10px 40px 10px 40px;
+    
+    color: #3A474D;
+    text-transform: uppercase;
+    font-family: 'TradeGothicLTStd-BdCn20','PT Sans Narrow';
+    font-weight: 700;
+    font-size: 32px;
+    
+    text-shadow: 0px 1px #fff, 0px -1px #262F33;
+}
+
+        .button span:hover {
+            color: #AEBF3B;
+            text-shadow: 0px -1px #97A63A;
+            cursor: pointer;
+        }
+
+        .button:active {
+            -webkit-box-shadow: 
+                0px 3px rgba(128,128,128,1),
+                0px 4px rgba(118,118,118,1),
+                0px 5px rgba(108,108,108,1),
+                0px 6px rgba(98,98,98,1),
+                0px 7px rgba(88,88,88,1),
+                0px 8px rgba(78,78,78,1),
+                0px 10px 2px 0px rgba(128,128,128,.6); /* shadow */
+        }
+
+        .button:active span{
+            -webkit-transform: translate(0, 5px); /* depth of button press */
+        }
+
+    .button span:after {
+        content: ">";
+        display: block;
+        width: 10px;
+        height: 10px;
+    
+        position: absolute;
+        right: 14px;
+        top: 12px;    
+        
+        font-family: 'Cabin';
+        font-weight: 700;
+        color: #AEBF3B;
+        text-shadow: 0px 1px #fff, 0px -1px #97A63A;
+        font-size: 26px;
+    }
+
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 80px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: lightblue;
+    color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: lightblue;
+    color: white;
+}
+
+.orderInput{
+
+	display: none;
+}
+
+
+
+
+
+
+@media print {
+
+	
+  
+	.orderInput{
+		display: none;
+	}.newShellClass{
+		display: none;
+	}
+	
+	.hContent{
+		display: none;
+	}
+
+	input[type=text] ,input[type=number]
+		{
+		width: 178px;
+		height: auto;
+		font-size:31px;
+		color: black;
+		}
+	.header{
+		display:none;	
+	}
+	.container{
+		display:none;	
+	}
+	#certificate{
+	  font-size:31px;
+	}
+	.modal-content {
+		border: 0px;
+		box-shadow: 0 0px 0px 0 rgba(0,0,0,0),0 0px 0px 0 rgba(0,0,0,0);
+		width:850px;
+	
+	}
+	#div_h3{
+		font-size:37px;
+	}
+	
+	.headerImg{
+		display: none;
+	}
+	
+	#dateRepesent{
+	 font-size:31px;
+	}
+
+	@page {
+	size: portrait;
+	}
+	
+	
+	
+		
+		
+}
+
+
+
+header, .full-width {
+  width: 100%;
+  background: linear-gradient( #313131 10%,#209D9D ) ;
+}
+
+#containerT {width: 400px; margin: 30px auto; text-align: center; padding: 100px 0; background: #EEEEEE;}
+	/* The important bit */
+	.h2H {position: relative; margin: 0 -25px; font-size: 40px; background: #0088AA; color: #FFFFFF; text-shadow: 1px 1px 0px #1A5D6E; box-shadow: 0 0 10px #AAA; border-radius:20px 20px 0px 0px}
+	.h2H:after,
+	.h2H:before {content: ""; display: block; position: absolute; bottom: -25px; width: 0; height: 0; border-style: solid; border-color: #1A5D6E transparent;}
+	.h2H:before {border-width: 25px 0 0 25px; left: 0;}
+	.h2H:after  {border-width: 25px 25px 0 0; right: 0;}
+</style>
+	
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+ 
+ <script>
+		
+		var firebaseRef = firebase.database().ref();
+		var ordersRef =firebaseRef.child("orders");
+		var componentsRef =firebaseRef.child("components");
+		var orderWhRef =firebaseRef.child("WhareHouseOrders");
+		var i;
+		var color= "white";
+		var fColor= "black";
+		var date;
+		var tempDir;
+		var today= new Date();
+		var temp = new Date(today);
+		today= [temp.getDate(), temp.getMonth()+1, temp.getFullYear()].join('/');
+		console.log(temp +"today " + today);
+		var a=0;
+		var c=0;
+		var checkAllShells=0;
+		var directionSrc="";
+		
+		function init(){
+			i=0;
+			j=0;
+			orderWhRef.on("child_added", snap=>{
+				var key= snap.key;
+				
+				console.log("key " + key);
+					getComponents(key);		
+			});
+		
+		}
+		
+		function getComponents(key){
+			orderWhRef.child(key).on("child_added", snap=>{
+				var orderNumber = snap.child("order").val();
+				var componentNumber= snap.child("componentNumber").val();
+				var quantity= snap.child("quantity").val();
+				var componenetDate = snap.child("componenetDate").val();
+				var status = snap.child("status").val();
+				var destination = "";
+				destination=snap.child("destination").val();
+				color="#F1F1F1"
+				var color3="#F1F1F1";
+				if(componenetDate=="immediately"){
+					componenetDate="מיידי"
+					color3="red";
+				}
+				if(destination=="print"){
+					color="#19FF70";
+				}
+				if(status=="open"){
+					
+					$("#table_body").append("<tr id='id_tr"+i+"'   style='background-color:"+color+"'><td>"+i+"</td><td><a href='showOrder.html'  style='color:blue'  onClick='ref(\""+orderNumber	+"\")'><b>" + orderNumber + "</b></a></td><td>"+ componentNumber+	 "</td><td>" +quantity+	 "</td><td  style='background-color:"+color3+"'><font color='"+componenetDate+"' ><b>"+componenetDate+"</b></font></td><td>"+key+"</td><td><input type='checkBox' id='check"+i+"'></td></tr>");
+					i++;
+				}
+				else if (status=='allotment'){
+					
+					$("#table_body2").append("<tr id='id_tr"+j+"'   style='background-color:"+color+"'><td>"+j+"</td><td><a href='showOrder.html'  style='color:blue'  onClick='ref(\""+orderNumber	+"\")'><b>" + orderNumber + "</b></a></td><td>"+ componentNumber+	 "</td><td>" +quantity+	 "</td><td  style='background-color:"+color3+"'><font color='"+componenetDate+"' ><b>"+componenetDate+"</b></font></td><td>"+key+"</td><td><input type='checkBox' id='checkB"+j+"'></td><td></td></tr>");
+					j++;
+				}
+				
+			});
+		}
+
+		
+		
+		function checkBoxChecked2(){
+		var trueN=0;
+		console.log("checkBoxChecked2");
+			var table = document.getElementById("table_body2");
+			var rows = table.getElementsByTagName("TR");
+			//console.log("checkBoxChecked    2" +  table.innerText  + " , " + rows.length);
+				for (var i=0;i<=rows.length - 1;i++){
+						checkBox = document.getElementById("checkB"+i).checked;
+						console.log(i +". "+ checkBox + " , " + rows[i].getElementsByTagName("TD")[2].innerText);
+						if(checkBox==true){
+							trueN++;
+							console.log(checkBox + " , " + rows[i].getElementsByTagName("TD")[2].innerText);
+							direction="production";
+							directionSrc='alt';
+							var x = rows[i].getElementsByTagName("TD")[1];
+							var y = rows[i].getElementsByTagName("TD")[2];
+						//	var q = rows[i].getElementsByTagName("TD")[5];
+							var k = rows[i].getElementsByTagName("TD")[5];
+							var orderToAppend = x.innerText;
+							var itemToAppend = y.innerText;
+						//	var shellsToAppend = q.innerText;
+							var itemKey = k.innerText;
+							if(trueN==1){ //since the first time i have this row from HTML TABLE and i don't need to append it
+								k=0;
+							}else{
+								addItemChange2(itemKey);
+							}
+							$("#orderIdChange"+k).val(orderToAppend);
+							$("#itemIdChange"+k).val(itemToAppend);							
+							$("#itemKey"+k).html(itemKey);							
+							
+							componentsRef.orderByChild("componentN").equalTo(itemToAppend).on("child_added", snap=>{
+									console.log(snap.key);
+									appendShells(snap.key, k)
+									
+							}); 
+					}
+			
+			
+			}
+		
+		}
+		
+		function addItemChange2(itemKey){
+		
+				console.log("itemKey: " + itemKey);
+				k++;
+				console.log("hi");
+				$("#div_table_body").append("<tr id='id_tr_form"+k+"'><td>"+(k+1)+"</td><td><img src='add.png' style='width:20px; cursor:pointer' onclick='addItemChange()'></td><td class='orderInput'><input type=text id='orderIdChange"+k+"'   placeholder='הזמנה'></td><td><input type=number id='itemIdChange"+k+"'   placeholder='מס פריט'  onfocusout='showShells("+k+")'></td><td id ='td_shells_list"+k+"'></td><td><img src='addShell.png' style='width:20px; cursor:pointer' onclick='addShellChange("+k+")'></td><td id='itemKey"+k+"'></td></tr>");
+							//	<td><input type=number id='itemIdChange' style='width:80px; '  placeholder="מס' פריט"></td><td><input type=number id='amountChange' style='width:150px'  placeholder="כמות"></td><td><img src="add.png" style='width:20px; cursor:pointer' onclick='addItemChange()'></td></tr>
+				
+				if(tempDir=='filling' || tempDir=='allotment'){
+					$(".orderInput").css('display', 'table-cell');
+				//	$(".productInput").css('display', 'table-cell');
+				}
+		}
+		
+		function loadShells(){
+			var table = document.getElementById("div_table_body");
+			var rows = table.getElementsByTagName("TR");
+			console.log("loadShells: " +  " , " + rows.length);
+				for (var i=0;i< rows.length;i++){
+					console.log("var" + i)
+							
+							var input = document.getElementById("itemIdChange"+i);
+							console.log("td: " + input.value )
+							
+							componentsRef.orderByChild("componentN").equalTo(input.value).on("child_added", snap=>{
+									console.log(snap.key);
+									appendShells(snap.key, i)
+							});	
+		
+		 }
+		}
+		function appendShells(key, k){
+		
+			console.log(key + " ,  "  + k  + "APPENDED");
+			componentsRef.child(key).on("child_added", snap=>{
+				//	console.log(snap.key);
+					if(snap.key.includes("orderK")){
+					
+						console.log(snap.key+ ": " + snap.val());
+						addShellChangeForProduction(k, snap.key, snap.val());
+					}
+			});
+		
+		}
+		
+		
+		
+		function addShellChangeForProduction(k, shellA, val){
+			
+			var valueItemId = document.getElementById("itemIdChange"+k).value;
+			//var valueProductId = document.getElementById("productIdChange"+k).value;
+			var valueOrderId = document.getElementById("orderIdChange"+k).value;
+			var itemKeyShell = document.getElementById("itemKey"+k).innerText;
+			//var valueidType = document.getElementById("idType"+k).value;
+			console.log(k);
+			console.log(valueItemId);
+			m++;
+			$("#id_tr_form"+k).after("<tr id='id_tr_update"+m+"'><td></td><td>["+(m)+"]</td><td class='orderInput'><input type=text id='orderIdChange_shell"+m+"'  value='"+valueOrderId+"'  placeholder='הזמנה'></td></td><td><input type=number id='itemIdShell"+m+"'  value='"+valueItemId+"' placeholder='מספר' style='visibility:show'></td><td><input type='text' id='id_shell"+m+"' value="+shellA+" placeholder='מדף' onkeyup='checkIfShellExict(\"" +valueItemId+ "\", \"" +m+"\")'></td><td><input value="+val+" type=number id='amountShell"+m+"'   placeholder='כמות' value='0' onkeyup='checkIfAmoutExist(\"" +valueItemId+ "\", \"" +m+"\")'></td><td class='newShellClass' style='display:none'><input type='text' id='id_shell_new"+m+"' placeholder='מדף חדש' onfocusout='checkNewShell(\"" +valueItemId+ "\", \"" +m+"\")'></td><td id='itemKeyShell"+m+"'>"+itemKeyShell+"</td></tr>");
+			if(direction=="shellChange"){
+				$(".newShellClass").css('display', 'table-cell');
+			}
+			
+		}
+		
+		
+		
+		////////////////////////////////////////////////////////////
+		var componentClass={};
+		
+	
+				
+				
+		$(document).ready(function(){
+				$("#closeId").click(function(){
+					$("#myModal").css('display', 'none');
+					$(".orderInput").css('display', 'none');
+				//	$(".productInput").css('display', 'none');
+					$(".newShellClass").css('display', 'none');
+					$("#div_table_body").html("<tr><td></td></tr>");
+					k=0;
+				});
+			});
+
+			
+		var direction;	
+		
+		function updateStcok(dir){
+		
+			document.getElementById("printBtn").disabled=true;
+			document.getElementById("printBtn").style.backgroundColor="silver";
+			document.getElementById("printBtn").style.cursor="no-drop";
+		
+		
+			console.log("dir " + dir);
+			tempDir = dir;
+			$("#myModal").css('display', 'block');
+			if(dir=="out"){
+				$("#div_h3").html("תעודת משלוח");
+				$("#tbody_check").html("<tr style='font-weight: bold'><td>הוצאת סחורה</td><td colspan=2>" + today +"</td></tr><tr style='font-weight: bold'><td>פריט</td><td>כמות</td><td>מדף</td></tr>");
+			}
+			else if(dir=="in"){
+				$("#div_h3").html("קבלת סחורה");
+				$("#tbody_check").html("<tr style='font-weight: bold'><td>הכנסת סחורה</td><td colspan=2>" + today +"</td></tr><tr style='font-weight: bold'><td>פריט</td><td>כמות</td><td>מדף</td></tr>");
+			}
+			else if(dir=="filling"){
+				
+				$(".orderInput").css('display', 'table-cell');
+			//	$(".productInput").css('display', 'table-cell');
+				$("#div_h3").html("הוצאה לייצור");
+			}
+			else if(dir=="allotment"){
+				
+				$(".orderInput").css('display', 'table-cell');
+			//	$(".productInput").css('display', 'table-cell');
+				$("#div_h3").html("הקצאה לייצור");
+			}
+			else if(dir=="shellChange"){
+				//$(".newShellClass").css('display', 'table-cell');
+				$("#div_h3").html("החלפה בין מדפים");
+				$("#tbody_check").html("<tr style='font-weight: bold'><td>שינוי מדף</td><td colspan=3>" + today +"</td></tr><tr style='font-weight: bold'><td>פריט</td><td>כמות</td><td>מדף ישן</td><td>מדף חדש</td></tr>");
+			}
+			//	window.open("", "", "width=600, height=600");
+				direction=dir;
+				
+				$("#dateRepesent").css('visibility', 'visible');
+				$("#dateRepesent").html(today);
+		}
+		
+		
+		var k=0;
+		function addItemChange(itemKey){
+		
+				
+				k++;
+				console.log("hi");
+				$("#div_table_body").append("<tr id='id_tr_form"+k+"'><td>"+(k+1)+"</td><td><img src='add.png' style='width:20px; cursor:pointer' onclick='addItemChange()'></td><td class='orderInput'><input type=text id='orderIdChange"+k+"'   placeholder='הזמנה'></td></td><td><input type=number id='itemIdChange"+k+"'   placeholder='מס פריט'  onfocusout='showShells("+k+")'></td><td id ='td_shells_list"+k+"'></td><td><img src='addShell.png' style='width:20px; cursor:pointer' onclick='addShellChange("+k+")'></td><td id='itemKey"+k+"'></td></tr>");
+							//	<td><input type=number id='itemIdChange' style='width:80px; '  placeholder="מס' פריט"></td><td><input type=number id='amountChange' style='width:150px'  placeholder="כמות"></td><td><img src="add.png" style='width:20px; cursor:pointer' onclick='addItemChange()'></td></tr>
+				
+				if(tempDir=='filling' || tempDir=='allotment'){
+					$(".orderInput").css('display', 'table-cell');
+				//	$(".productInput").css('display', 'table-cell');
+				}
+		}
+		
+	var m=0;
+
+
+		function addShellChange(k){
+			
+			var valueItemId = document.getElementById("itemIdChange"+k).value;
+			//var valueProductId = document.getElementById("productIdChange"+k).value;
+			var valueOrderId = document.getElementById("orderIdChange"+k).value;
+			//var valueidType = document.getElementById("idType"+k).value;
+			var itemKeyShell = document.getElementById("itemKey"+k).innerText;
+			console.log(k);
+			console.log(valueItemId);
+			m++;
+			//$("#id_tr_form"+k).after("<tr id='id_tr_update"+m+"'><td></td><td>["+(m)+"]</td><td class='orderInput'><input type=text id='orderIdChange_shell"+m+"'  value='"+valueOrderId+"'  placeholder='הזמנה'></td></td><td><input type=number id='itemIdShell"+m+"'  value='"+valueItemId+"' placeholder='מספר' style='visibility:hidden'></td><td><input type='text' id='id_shell"+m+"' placeholder='מדף' onkeyup='checkIfShellExict(\"" +valueItemId+ "\", \"" +m+"\")'></td><td><input type=number id='amountShell"+m+"'   placeholder='כמות' value='0' onkeyup='checkIfAmoutExist(\"" +valueItemId+ "\", \"" +m+"\")'></td><td class='newShellClass' style='display:none'><input type='text' id='id_shell_new"+m+"' placeholder='מדף חדש' onfocusout='checkNewShell(\"" +valueItemId+ "\", \"" +m+"\")'></td><td class='orderInput'><input type=text id='idType_shell"+m+"'  value='"+valueidType+"'  placeholder='סוג פריט'></td></tr>");
+			$("#id_tr_form"+k).after("<tr id='id_tr_update"+m+"'><td></td><td>["+(m)+"]</td><td class='orderInput'><input type=text id='orderIdChange_shell"+m+"'  value='"+valueOrderId+"'  placeholder='הזמנה'></td></td><td><input type=number id='itemIdShell"+m+"'  value='"+valueItemId+"' placeholder='מספר' style='visibility:hidden'></td><td><input type='text' id='id_shell"+m+"' placeholder='מדף' onkeyup='checkIfShellExict(\"" +valueItemId+ "\", \"" +m+"\")'></td><td><input type=number id='amountShell"+m+"'   placeholder='כמות' value='0' onkeyup='checkIfAmoutExist(\"" +valueItemId+ "\", \"" +m+"\")'></td><td class='newShellClass' style='display:none'><input type='text' id='id_shell_new"+m+"' placeholder='מדף חדש' onfocusout='checkNewShell(\"" +valueItemId+ "\", \"" +m+"\")'></td><td id='itemKeyShell"+m+"'>"+itemKeyShell+"</td></tr>");
+			if(direction=="shellChange"){
+				$(".newShellClass").css('display', 'table-cell');
+			}
+			
+		}
+		
+		
+
+		function updateStockChange(callBack){
+			
+				console.log(direction);
+				console.log(callBack);
+			var itemIdTemp, amountTemp;
+			var parsAmount, intAmount, newAmount;
+			var totalAmountChangeInOrder=0;
+			var itemAmount=0; // sum the all amount from on item that collected for allotment/filling and report this number in the showOrder
+			let itemsObject=new Array();
+			for (var i=1; i<=m; i++){
+				
+						itemIdTemp= document.getElementById("itemIdShell"+i).value;
+						shellTemp= document.getElementById("id_shell"+i).value;//.toUpperCase();
+						newShellTemp= document.getElementById("id_shell_new"+i).value;//.toUpperCase();
+						shellAmountTemp = document.getElementById("amountShell"+i).value;
+						//itemKeyShell = document.getElementById("itemKeyShell"+i).innerText;
+						itemAmount=0;
+						let itemData={
+									item:itemIdTemp,
+									shell:shellTemp,
+									amount:shellAmountTemp,
+									newShelf:newShellTemp,
+									actionType:direction,
+									whareHouse:"Main",
+									};
+						console.log(itemData);
+						itemsObject.push(itemData);
+						console.log(itemsObject);
+						debugger;
+			}
+						var dataTosend={dataArr: itemsObject};
+						$.ajax({
+							url: '/itemShell/updateMulti',
+						type:"POST",
+						data:JSON.stringify(dataTosend),
+						contentType:"application/json; charset=utf-8",
+						dataType:"json",
+						success: function(){
+						
+						}
+						});
+
+
+
+					//	$.post('/itemShell/updateMulti', 
+					//	JSON.stringify(dataTosend),
+
+			  			//function(data){	 
+					//		console.log(data);
+					//	});
+				/*componentsRef.orderByChild("componentN").equalTo(itemIdTemp).on("child_added", snap=>{
+						
+						
+						var shellPosition ="shell_kasem_position"+shellTemp
+						var newShellPosition ="shell_kasem_position"+newShellTemp
+						var key = snap.key;
+						var componentNTemp = snap.child("componentN").val();
+						var amountKasemA = snap.child("amountKasem").val();
+						var shellKasemAP = snap.child("shellKasem").val();
+						var amountShellPositon = snap.child(shellPosition).val();
+						var newAmountShellPositon = snap.child(newShellPosition).val();
+						
+						//console.log("add: " + amountRHa + " , " +  parsAmount + " , " +itemIdTemp + " , " +key + " , " + i);	
+						console.log("shell position: " + shellPosition  + " ,Amount: " + amountShellPositon);
+						
+						var intShellAmount = parseInt(amountShellPositon);
+						var intNewShellAmount = parseInt(newAmountShellPositon);
+						var intAmountShellChanged = parseInt(shellAmountTemp);
+						var intTotalAmountRh = parseInt(amountKasemA);
+						if(!Number.isInteger(intShellAmount)){
+							intShellAmount=0;
+							//shellKasemAP+= " ,"+shellTemp;
+							if(direction!="shellChange"){
+								shellKasemAP+= " ,"+shellTemp;
+							}
+						}
+						
+						if(!Number.isInteger(intNewShellAmount)){
+							intNewShellAmount=0;
+							if(newShellTemp!=""  && !shellKasemAP.includes(newShellTemp.trim())){
+								shellKasemAP+= " ,"+newShellTemp;
+							}
+						}
+						else{
+							if(newShellTemp!=""  && !shellKasemAP.includes(newShellTemp.trim())){
+								shellKasemAP+= " ,"+newShellTemp;
+							}
+						}
+						if(!Number.isInteger(intTotalAmountRh)){
+							intTotalAmountRh=0;
+						}
+						var newShellAmount=0;
+						var newTotalAmount=0;
+						
+						if(direction=="shellChange"){
+							newShellAmount = intShellAmount-intAmountShellChanged;
+							newShellNewAmount = intNewShellAmount+intAmountShellChanged;
+							//newTotalAmount = intTotalAmountRh + intAmountShellChanged;
+							componentsRef.child(key).update({
+								[shellPosition]:''+newShellAmount,
+								[newShellPosition]:''+newShellNewAmount,
+							//	amountKasem:''+newTotalAmount,
+								shellKasem:''+shellKasemAP,
+							}, function(error){
+									if(error){
+										alert("מידע לא נשמר");
+									}else{
+										console.log("Data saved succsesfully");
+									//	callBack();
+										$("#tbody_check").append("<tr><td>"+componentNTemp+"</td><td>"+intAmountShellChanged+"</td><td>"+shellPosition.substring(20,28)+"</td><td>"+newShellPosition.substring(20,28)+"</td></tr>");
+									}
+								
+								});	
+						
+						}
+						if(direction=="in"){
+							newShellAmount = intShellAmount+intAmountShellChanged;
+							newTotalAmount = intTotalAmountRh + intAmountShellChanged;
+							componentsRef.child(key).update({
+								[shellPosition]:''+newShellAmount,
+								amountKasem:''+newTotalAmount,
+								shellKasem:''+shellKasemAP,
+							}, function(error){
+									if(error){
+										alert("מידע לא נשמר");
+									}else{
+										console.log("Data saved succsesfully");
+										console.log("c is: " + c);
+									//	callBack();
+										$("#tbody_check").append("<tr><td>"+componentNTemp+"</td><td>"+intAmountShellChanged+"</td><td>"+shellPosition.substring(20,28)+"</td></tr>");
+									}
+								
+								});
+							
+						}
+						if(direction=="out"){
+							newShellAmount = intShellAmount-intAmountShellChanged;
+							newTotalAmount = intTotalAmountRh - intAmountShellChanged;
+							componentsRef.child(key).update({
+								[shellPosition]:''+newShellAmount,
+								amountKasem:''+newTotalAmount,
+								shellKasem:''+shellKasemAP,
+							}, function(error){
+									if(error){
+										alert("מידע לא נשמר");
+									}else{
+										console.log("Data saved succsesfully");
+									//	callBack();
+										$("#tbody_check").append("<tr><td>"+componentNTemp+"</td><td>"+intAmountShellChanged+"</td><td>"+shellPosition.substring(20,28)+"</td></tr>");
+									}
+								
+								});
+							
+						
+						}
+							
+						
+						if(direction=="filling"){
+									console.log(" hi filling " );															
+									var orderNumberTemp=document.getElementById("orderIdChange_shell"+i).value;							
+									if(directionSrc="alt"){
+										shellPosition=document.getElementById("id_shell"+i).value;									
+										var oldOrderShellAmount=snap.child(shellPosition).val();
+										newShellAmount = parseInt(oldOrderShellAmount)-intAmountShellChanged;
+										console.log("old : " + shellPosition + " , "  + oldOrderShellAmount);
+										componentsRef.child(key).update({
+												[shellPosition]:''+newShellAmount,
+										});
+									}
+									else{
+										newShellAmount = intShellAmount-intAmountShellChanged;
+										newTotalAmount = intTotalAmountRh - intAmountShellChanged;
+										componentsRef.child(key).update({
+												[shellPosition]:''+newShellAmount,
+												amountKasem:''+newTotalAmount,
+												shellKasem:''+shellKasemAP,
+										});
+									}
+									
+									directionSrc="";
+							}
+							
+							if(direction=="allotment"){
+
+						
+								console.log(" hi allotment " );	
+								var orderNumberTemp=document.getElementById("orderIdChange_shell"+i).value;							
+								var orderPosition ="orderK"+orderNumberTemp+"_"+shellTemp;
+								newShellAmount = intShellAmount-intAmountShellChanged;
+								//newTotalAmount = intTotalAmountRh - intAmountShellChanged;
+								newTotalAmount = intTotalAmountRh;
+								componentsRef.child(key).update({
+										[orderPosition]:''+intAmountShellChanged,
+										[shellPosition]:''+newShellAmount,
+										amountKasem:''+newTotalAmount,
+										shellKasem:''+shellKasemAP,
+								});
+								totalAmountChangeInOrder=totalAmountChangeInOrder+intAmountShellChanged;
+								updateOrderStatus(totalAmountChangeInOrder);
+								itemAmount+=intAmountShellChanged;
+								console.log("itemAmount: " + itemAmount);
+								orderWhRef.child(itemKeyShell).child(itemIdTemp).update({
+									status:'allotment',
+								});
+							}
+							
+						updateComponentNotes(itemIdTemp, direction, intAmountShellChanged, shellTemp, newTotalAmount);
+						
+				});			
+						direction=="none";
+						
+						//$("#div_table_body").html("<tr><td></td></tr>");
+						if(i==m){
+								callBack();
+						}
+				}
+				*/
+				
+		}
+		
+		function updateOrderStatus(numberChange){
+			console.log(numberChange);
+			for (var i=1; i<=m; i++){
+					var orderNumberTemp=document.getElementById("orderIdChange_shell"+i).value;
+					//var productIdTemp=document.getElementById("productIdChange_shell"+i).value;							
+				//	var componentType= document.getElementById("idType_shell"+i).value;
+				//	var componentTypeLC= componentType.toLowerCase();
+					/*ordersRef.child(orderNumberTemp).child(productIdTemp).update({
+						[componentTypeLC+"Status"]:''+numberChange,
+					});*/
+					}
+		}
+		
+		function updateComponentNotes(cmptN, dir, qty, shell, newTotalAmount){
+				console.log("update notes");
+				var _dt = new Date();
+				dateC=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+				console.log(cmptN + dir +  qty +    shell);
+				var lastChange=0;
+				var keyN;
+				componentsRef.orderByChild("componentN").equalTo(cmptN).on("child_added", snap=>{
+					 if(snap.hasChild("notes")){
+						lastChange=snap.child("notes").child("lastChange").val();
+					 }
+					 
+					 keyN=snap.key;
+					 console.log("update notes key" + keyN);
+					 
+					 
+					 
+				});
+				
+				// dir=enter/exit
+				if(lastChange=="20"){
+					lastChange=0;			
+				}
+				var newChange=1+parseInt(lastChange);
+				var stringDir;
+				if(dir=='in'){
+					//stringDir="enterd to ";	
+					stringDir="הוכנסו ל";	
+				}else if(dir=='out'  || dir=='filling'){
+					//stringDir="taken from ";
+					stringDir="הוצאו מ";
+				}else if(dir=='allotment'){
+					//stringDir="taken from ";
+					stringDir="הוקצאו ל";
+					}
+				
+				componentsRef.child(keyN).child("notes").update({
+					//["changeType"+newChange]:''+ dir,
+					//["changeQty"+newChange]:''+ qty,
+					//["changeShell"+newChange]:''+ shell,
+					//["change"+newChange]:''+ qty + ' pcs were '+ stringDir + 'shell number:'+shell,
+					["change"+newChange]:'['+dateC+'] ' +qty +' פריטים '+ stringDir + 'מדף מספר ' + shell  + ' סה"כ במדף: ' +newTotalAmount ,
+					lastChange:''+newChange,
+				});
+			
+			
+		}	
+		
+		function printDoc(){
+				console.log(document.getElementById('tbody_check'));
+				console.log("print");
+				if(c<2){
+							//if(direction!="shellChange")
+							if(1==1)
+							{
+								setTimeout(function(){ 
+									window.print();
+								}, 500);
+								//window.print();
+								$("#myModal").css('display', 'none');
+							}else{
+								alert("מדפים עודכנו בהצלחה");
+								$("#myModal").css('display', 'none');
+							}	
+							c++;
+				}
+				//$("#tbody_check").html("");			
+
+		}
+		$(function() {
+			$("#printBtn").click(function() {
+					updateStockChange(printDoc);
+					//$("#tbody_check").html("");
+					c=1;
+			});
+		});
+		
+		
+		var direction='expand';
+		
+		
+		function changeDivSize(){
+			if(direction=='expand'){
+				$("#ordersDiv").css('height', '500px');
+				$("#changeSizeImg").attr('src', 'minimize.png');
+				direction='minimize';
+			}
+			else{
+				$("#ordersDiv").css('height', '230px');
+				$("#changeSizeImg").attr('src', 'expand.png');
+				direction='expand';
+			}
+		
+		
+		}
+	
+		function checkBoxChecked(){
+			var trueN=0;
+			var table = document.getElementById("table_body");
+			var rows = table.getElementsByTagName("TR");
+			for (var i=0;i<rows.length ;i++){
+			checkBox = document.getElementById("check"+i).checked;
+				if(checkBox==true){
+					trueN++;
+					console.log(checkBox);
+					//$(".productInput").css('display', 'block');
+					
+					direction="allotment";
+					var x = rows[i].getElementsByTagName("TD")[1];
+					var y = rows[i].getElementsByTagName("TD")[2];
+					var z = rows[i].getElementsByTagName("TD")[3];
+					var q = rows[i].getElementsByTagName("TD")[5];
+					var orderToAppend = x.innerText;
+					var itemToAppend = y.innerText;
+					var itemKey = q.innerText;
+					if(trueN==1){
+						k=0;
+					}
+					else{
+						addItemChange(q.innerText);
+					}
+					$("#orderIdChange"+k).val(orderToAppend);
+					$("#itemIdChange"+k).val(itemToAppend);
+					$("#itemKey"+k).html(itemKey);
+					console.log(k);
+					console.log(x.innerText);
+					
+				}
+			
+			
+			}
+		
+		}
+		
+		
+		
+		
+		function showShells(a){
+		console.log(a);
+			var itemIdT = "itemIdChange" + a;
+			var b = document.getElementById(itemIdT).value;
+			console.log(b);
+			componentsRef.orderByChild("componentN").equalTo(b).on("value", snap=>{
+				console.log(snap.exists());
+					if(!snap.exists()){
+						document.getElementById(itemIdT).style.backgroundColor='orangered';
+					}else{
+						document.getElementById(itemIdT).style.backgroundColor='white';
+					}
+			});
+			componentsRef.orderByChild("componentN").equalTo(b).on("child_added", snap=>{
+				
+				console.log(snap.child("shellKasem").val());
+				$("#td_shells_list"+a).html(snap.child("shellKasem").val());
+			
+			});
+			
+		
+		}
+		function checkNewShell(){
+		var checkShell=0;
+			for (var i=1; i<=m; i++){
+			
+					if (document.getElementById("id_shell_new"+i).value==''){
+							checkShell++;
+							document.getElementById("id_shell_new"+i).style.backgroundColor='OrangeRed';
+					}
+					else{
+						document.getElementById("id_shell_new"+i).style.backgroundColor='LawnGreen';
+					}
+					console.log("checkShell " + checkShell);
+			}
+				{
+					if(checkShell>0){
+							document.getElementById("printBtn").disabled=true;
+							document.getElementById("printBtn").style.backgroundColor="silver";
+							document.getElementById("printBtn").style.cursor="no-drop";
+					}
+					else{
+							document.getElementById("printBtn").disabled=false;
+							document.getElementById("printBtn").style.backgroundColor="LawnGreen";
+							document.getElementById("printBtn").style.cursor="pointer";
+							
+					}	
+			}
+		}
+		
+		function checkIfShellExict(key, shellC){
+			var shellV  = document.getElementById("id_shell"+shellC).value;
+			shellV=shellV.toUpperCase();
+			var shellS  = document.getElementById("id_shell"+shellC);
+			var exist=false;
+			componentsRef.orderByChild("componentN").equalTo(key).on("child_added", snap=>{
+					if(snap.hasChild("shell_kasem_position"+shellV)){
+						var amountExist = snap.child("shell_kasem_position"+shellV).val();
+						console.log("amount2 " + amountExist);
+						shellS.style.backgroundColor='LawnGreen';
+						console.log("true " + shellS);
+						//document.getElementById("updateBtn").disabled=false;
+					//	document.getElementById("updateBtn").style.backgroundColor="LawnGreen";
+					//	document.getElementById("updateBtn").style.cursor="pointer";
+						checkAllShells++;
+					}
+					else{
+						shellS.style.backgroundColor='OrangeRed';
+						console.log("false");
+						
+					//	document.getElementById("updateBtn").disabled=true;
+					//	document.getElementById("updateBtn").style.backgroundColor="silver";
+					//	document.getElementById("updateBtn").style.cursor="no-drop";
+						checkAllShells--;
+						
+					}
+					
+				console.log("Result "  + checkIfReady());
+				if((checkIfReady()==false) && tempDir=="out"){
+						document.getElementById("printBtn").disabled=true;
+						document.getElementById("printBtn").style.backgroundColor="silver";
+						document.getElementById("printBtn").style.cursor="no-drop";
+				}
+				else{
+						document.getElementById("printBtn").disabled=false;
+						document.getElementById("printBtn").style.backgroundColor="LawnGreen";
+						document.getElementById("printBtn").style.cursor="pointer";
+				}
+					
+			});
+			
+			
+			
+			
+
+		}
+		
+		
+		
+		
+		//onkeyup
+		function checkIfAmoutExist(key, shellC){
+		var shellV  = document.getElementById("id_shell"+shellC).value;
+			shellV=shellV.toUpperCase();
+			var shellS  = document.getElementById("id_shell"+shellC);
+			var shellAmount  = document.getElementById("amountShell"+shellC).value;
+			var shellAmountS  = document.getElementById("amountShell"+shellC);
+			var shellInt = parseInt(shellAmount);
+			var exist=false;
+			componentsRef.orderByChild("componentN").equalTo(key).on("child_added", snap=>{
+					if(snap.hasChild("shell_kasem_position"+shellV)){
+						var amountExist = snap.child("shell_kasem_position"+shellV).val();
+						console.log("amount2 " + amountExist);
+						var amountExistInt = parseInt(amountExist);
+						if(amountExistInt<shellInt){
+							console.log("now allow ");
+							shellAmountS.style.backgroundColor='OrangeRed';
+						}
+						else{
+							shellAmountS.style.backgroundColor='LawnGreen';
+						}
+					}
+					
+				console.log("Result "  + checkIfReady());
+				if((checkIfReady()==false) && tempDir=="out"){
+						document.getElementById("printBtn").disabled=true;
+						document.getElementById("printBtn").style.backgroundColor="silver";
+						document.getElementById("printBtn").style.cursor="no-drop";
+				}
+				else{
+						document.getElementById("printBtn").disabled=false;
+						document.getElementById("printBtn").style.backgroundColor="LawnGreen";
+						document.getElementById("printBtn").style.cursor="pointer";
+				}
+					
+			});
+
+		}
+		
+		
+		function checkIfReady(){
+			
+			
+			var tempCheck=true;
+			for (var i=1; i<=m; i++){
+					if (document.getElementById("id_shell"+i).style.backgroundColor=='orangered'){
+						tempCheck=false;			
+					}
+			}
+			
+			for (var i=1; i<=m; i++){
+					if (document.getElementById("amountShell"+i).style.backgroundColor=='orangered'){
+						tempCheck=false;			
+					}
+			}
+			
+			return tempCheck;
+		
+		}
+		
+		
+		function updateStockChange2() {
+			var e = document.getElementById('divValidColor');
+			if (!e) {
+				e = document.createElement('div');
+				e.id = 'divValidColor';
+			}
+			e.style.borderColor = '';
+			e.style.borderColor = color;
+			var tmpcolor = e.style.borderColor;
+			if (tmpcolor.length == 0) {
+				return false;
+			}
+			return true;
+}
+</script>
+
+
+<body onload="init()" id='body' style='padding-top:00px; background-image:url("11.jpg");background-repeat: no-repeat; background-size: cover;'> 
+    
+  	
+		<header>
+		  <div class="wrap">
+			<img src="peerpharm.png"  width='270px' align='left' class="headerImg">
+		  </div>
+		</header>
+
+
+
+		<div class='checkContent'>
+				<table border=1 style='background-color:silver;width:400px; font-size:18px;'>
+							<tbody id='tbody_check'></tbody>
+						</table>
+		</div>
+		<div  class='hContent'>
+		
+		</a>
+		<button onclick=checkBoxChecked()>בדוק מק"טים שהוזמנו</button>
+		<button onclick=checkBoxChecked2()>בדוק מק"טים מוקצים</button>
+		<table border=0 id="mainTable1">
+			<tr>
+					<td width='250px'  class='container'>
+			
+						<a class="button"  onClick='updateStcok("out")'>
+							<span style='width:160px'>הוצאת סחורה</span>
+						</a><br><br><br>
+						<a class="button"  onClick='updateStcok("in")'>
+							<span style='width:160px'>קבלת סחורה</span>
+						</a><br><br><br>
+						<a class="button"  onClick='updateStcok("filling")'>
+							<span style='width:160px'>העברה ליצור</span>
+						</a><br><br><br>
+						<a class="button"  onClick='updateStcok("allotment")'>
+							<span style='width:160px'>הקצאה ליצור</span>
+						</a><br><br><br>
+						<a class="button"  onClick='updateStcok("shellChange")'>
+							<span style='width:160px'>שינוי מדף</span>
+						</a><br><br><br>
+						
+						<a class="button"   href='stock3rd.html'>
+							<span style='width:160px'>מלאי</span>
+						</a><br><br>
+					
+					
+				
+					</td>
+					<td style='vertical-align: top;'>
+							<div class='container' id='ordersDiv' style="  overflow:scroll;width: 1422px ; height: 230px; background-color:#7E7E7E; margin-left:20px; overflow:auto; margin-bottom:20px" id='headerDiv'>
+								
+								<img src= 'expand.png' id='changeSizeImg' width='30px' style='display:inherit' onclick='changeDivSize()'>
+								
+								<table border =1 style=" width:1300px; " id="orderDetailsID" align="center" >
+									<thead>
+										<tr style="background-color:white; ">
+											<tr><td colspan=7><h2 class=h2H>מוצרים שהזומנו</h2></td></tr>
+											<th></td>
+											<th style="padding:5px">מספר הזמנה</th>
+											<th style="padding:5px">מק"ט</th>
+											<th style="padding:5px">כמות</th>
+											<th style="padding:5px">תאריך</th>
+											<th style="padding:5px">סוג פריט</th>
+											<th></td>
+										</tr>
+									</thead>
+									<tbody id= "table_body">
+									</tbody>
+								</table>
+								
+							</div>
+					</td>	
+		</tr>
+		
+		<tr>
+			<td></td>
+			<td>
+		
+				<table border =1 style=" width:1300px" id="orderDetailsID" align="center" >
+					<thead>
+					<tr><td colspan=8><h2 class=h2H>מוצרים מוקצים להזמנות</h2></td></tr>
+						<tr style="background-color:white; ">
+							<th></td>
+							<th style="padding:5px">מספר הזמנה</th>
+							<th style="padding:5px">מק"ט</th>
+							<th style="padding:5px">כמות</th>
+							<th style="padding:5px">תאריך</th>
+							<th style="padding:5px">מדפים</th>
+							<th style="padding:5px">סוג פריט</th>
+							<th></td>
+						</tr>
+					</thead>
+					<tbody id= "table_body2">
+					</tbody>
+				</table>
+				</td>
+			</tr>
+		
+		</table>
+		
+		
+	<div id="myModal" class="modal" >
+	<!-- Modal content -->
+		  <div class="modal-content" style='width:650px' id='modelC'>
+			<div class="modal-header">
+			  <span class="close" id="closeId">&times;</span>
+			  <img src="peerpharm.png"  width='140px' align='left'>
+			  <h2 id='div_h3'>עדכן סחורה</h2>
+			</div>
+			<div class="modal-body">
+			<br>
+			<table>
+				<tr><td style='border:0px'><span id='certificate'>לכבוד </span></td> <td colspan=2 style='border:0px'>____________________________</td></tr>
+				<tr><td style='border:0px'><span id='certificate'>כתובת </span></td> <td colspan=2 style='border:0px'><button onclick='loadShells()'>טען מדפים</button></td></tr>
+			
+				<tr style='visibility:hidden'><td>a	</td></tr>
+				<tr style='visibility:hidden'><td>a	</td></tr>
+				<tr style='visibility:hidden'><td>a	</td></tr>
+				<tr><td></td><td></td><td class='orderInput'>מספר הזמנה</td><td>מק"ט פריט</td><td>מדפים</td></tr>
+				<tr id="id_tr_form0">
+					<td style='width:20px'>1</td><td><img src="add.png" style='width:20px; cursor:pointer' onclick='addItemChange("")'></td><td class='orderInput'><input type=text id='orderIdChange0'   placeholder='הזמנה' ></td><td><input type=number id='itemIdChange0'   placeholder="מס' פריט" onfocusout="showShells(0)"></td><td id ="td_shells_list0"></td><td><img id='addShellBtn' src="addShell.png" style='width:20px; cursor:pointer' onclick="addShellChange(0)"></td><td id='itemKey0'></td></tr>
+				<tbody id= "div_table_body">
+			</tbody>
+			<tr style='visibility:hidden'><td>a	</td></tr>
+			<tr style='visibility:hidden'><td>a	</td></tr>
+			<tr style='visibility:hidden'><td>a	</td></tr>
+
+			<tr><td style='border:0px'><span id='certificate'>תאריך </span></td><td colspan=1 style='border:0px'><span style='width:70px; border-bottom: 1px solid black; '><span style='visibility:hidden'	id='dateRepesent'>a</span></span></td><td style='border:0px'><span id='certificate'>חתימה ____________ </span></td></tr>
+			</table>
+
+			  
+					
+			</div>
+			<div class="modal-footer">
+				<button id="updateBtn" onClick="updateStockChange2()" style='display:none'>עדכן מידע</button><button id="printBtn">עדכן מידע</button>
+			</div>
+		  </div>		
+	</div>	
+	</div>
+		

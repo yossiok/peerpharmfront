@@ -1,0 +1,330 @@
+<html>
+<style>
+	td {
+		text-align: center;
+	}
+
+	span {
+		text-decoration: underline;
+		cursor: pointer;
+		color: blue;
+		background-color: #ffc583;
+		padding: 10px;
+		padding-bottom: 2px;
+		border: 1px;
+		border-radius: 3em 3em 0em 0em;
+	}
+
+	.modal {
+		display: none;
+		/* Hidden by default */
+		position: fixed;
+		/* Stay in place */
+		z-index: 1;
+		/* Sit on top */
+		padding-top: 80px;
+		/* Location of the box */
+		left: 0;
+		top: 0;
+		width: 100%;
+		/* Full width */
+		height: 100%;
+		/* Full height */
+		overflow: auto;
+		/* Enable scroll if needed */
+		background-color: rgb(0, 0, 0);
+		/* Fallback color */
+		background-color: rgba(0, 0, 0, 0.4);
+		/* Black w/ opacity */
+	}
+
+	/* Modal Content */
+
+	.modal-content {
+		position: relative;
+		background-color: #fefefe;
+		margin: auto;
+		padding: 0;
+		border: 1px solid #888;
+		width: 80%;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		-webkit-animation-name: animatetop;
+		-webkit-animation-duration: 0.4s;
+		animation-name: animatetop;
+		animation-duration: 0.4s
+	}
+
+	.prices {
+		border-bottom: 1px solid #ddd;
+	}
+
+	.pricesTr:hover {
+		background-color: aqua;
+		cursor: pointer;
+	}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script>
+	var usdToIlsC, eurToIlsC, gbpToIlsC;
+	$(document).ready(() => {
+		$("#allOrdersBtn").click(function () { showOrderList() });
+		$("#allItemsBtn").click(function () { showItems() });
+		$("#closeId").click(function () {
+			$("#myModal").css('display', 'none')
+		});
+		showOrderList();
+		var exchangeRateURL = "http://data.fixer.io/api/latest?access_key=7ebfb6e184d8ee7daf473475eef53e3b&format=1"
+
+		$.getJSON(exchangeRateURL, function (data) {
+			console.log(data);
+			console.log(data.rates);
+			eurToIlsC = parseFloat(data.rates.ILS);
+			usdToIlsC = 1 / parseFloat(data.rates.USD) * eurToIlsC;
+			gbpToIlsC = 1 / parseFloat(data.rates.GBP) * eurToIlsC;
+			console.log("EUR TO ILS " + eurToIlsC + " , USD TO ILS " + usdToIlsC + " ,  GPB TO ILS " + gbpToIlsC);
+		});
+	})
+
+
+	function showOrderList() {
+		$("#table_body").html("");
+		$("#table_body_items").html("");
+		$.getJSON('/requestSupplierOrder/', (data) => {
+			console.log(data);
+			for (let index = 0; index < data.length; index++) {
+				var refId = data[index]._id;
+				var orderNumber = data[index].orderN;
+				var suplierName = data[index].suplierName;
+				var orderDate = data[index].dateOfOrder;
+				var deliveryDate = data[index].dateOfDelivery;
+				var orderRemarks = data[index].remarks;
+
+
+				if (index % 2 == 0) {
+					color = "#eff5f5"
+
+				}
+
+				$("#table_body").append("<tr id='id_tr" + index + "'  style='background-color:" + color + "'><td>" + index + "</td><td><a href='showSuplierOrder.html?id=" + refId + "''   target='_blank' style='color:blue'>" + orderNumber + "</a></td><td>" + suplierName + "</td><td>" + orderDate + "</td><td>" + deliveryDate + "</td><td>" + orderRemarks + "</td></tr>");
+				color = "white";
+			}
+		});
+
+	}
+
+	function showItems() {
+		$("#table_body").html("");
+		$("#table_body_items").html("");
+		// $.getJSON("/order?orderNumber="+orderNumber , (data)=>{
+		$.getJSON("/requestSupplierOrderItem?show=true", (data) => {
+			console.log(data);
+			for (let index = 0; index < data.length; index++) {
+
+
+				console.log(data[index].type);
+				var key = data[index]._id;
+				var componentNumber = data[index].componentNumber;
+				var cmpntSplrNumber = data[index].cmpntSplrNumber;
+				var cmpntName = data[index].cmpntName;
+				var quantity = data[index].quantity;
+				var qtyReady = data[index].qtyReady;
+				var price = data[index].price;
+				var totalPrice = data[index].totalPrice;
+				var status = data[index].status;
+				var currency = data[index].currency;
+				var suppleir = data[index].supplierName;
+				var totalILS = "";
+				if (currency == "$") { totalILS = (parseFloat(totalPrice) * usdToIlsC); }
+				if (currency == "€") { totalILS = (parseFloat(totalPrice) * eurToIlsC); }
+				if (currency == "£") { totalILS = (parseFloat(totalPrice) * gbpToIlsC); }
+				if (currency != null && currency != "₪" && currency != "") { totalILS = totalILS.toFixed(2) }
+				var color = 'white';
+				var color2 = 'white';
+				if (index % 2 == 0) {
+					color = "#eff5f5"
+				}
+				if (status == 'approved') color2 = '#64F141';
+				else if (status == 'ordered') color2 = 'lightblue';
+				else color2 = color;
+
+
+				console.log(quantity);
+
+				i = 0;
+				console.log(key + " , " + componentNumber + " , " + cmpntSplrNumber + " , " + cmpntName + " , " + quantity);
+				console.log(qtyReady + " , " + price + " , " + totalPrice + " , " + status);
+				//	$("#table_body_items").append("<tr  style='background-color:" + color + "'><td>" + index + "</td><td>" + componentNumber + "</td><td>" + cmpntSplrNumber + "</td><td>" + cmpntName + "</td><td>" + suppleir + "<td>" + quantity + " Pcs</td><td>" + qtyReady + " Pcs</td><td> <input type=text id = 'tempPriceId" + i + "' value='" + price + "' style='width:50px;margin-bottom:5px'> " + currency + " <img src='/images/checkprice.png' style='width:20px;height:20px; padding-top:0px; cursor:pointer' onclick='getPriceByVendor(\"" + componentNumber + "\", " + index + ")'></td><td>" + totalPrice + " " + currency + " [" + totalILS + "] ?</td><td></td><td><Button class='buttonDelete' onClick='updateReady(\"" + componentNumber + "\", \"" + price + "\")'>Ready</td></tr>");
+				$("#table_body_items").append("<tr  style='background-color:" + color + "'><td>" + index + "</td><td>" + componentNumber + "</td><td style='background-color:" + color2 + "'>" + cmpntSplrNumber + "</td><td style='background-color:" + color2 + "'>" + cmpntName + "</td><td style='background-color:" + color2 + "'>" + suppleir + "<td style='background-color:" + color2 + "'>" + quantity + " Pcs</td><td>" + qtyReady + " Pcs</td><td> <input type=text id = 'tempPriceId" + i + "' value='" + price + "' style='width:50px;margin-bottom:5px'> " + currency + " <img src='/images/checkprice.png' style='width:20px;height:20px; padding-top:0px; cursor:pointer' onclick='getPriceByVendor(\"" + componentNumber + "\",\"" + key + "\",\"" + quantity + "\", " + index + ")'></td><td>" + totalPrice + " " + currency + " [" + totalILS + " ₪] ?</td><td></td><td><Button class='buttonDelete' onClick='updateStatus(\"" + key + "\")'>Aproved</td></tr>");
+			}
+
+
+
+
+
+		});
+	}
+
+	function getPriceByVendor(componentN, requestKey, qty, i) {
+		console.log(componentN);
+		$.getJSON("/suplierPriceList?componentN=" + componentN +"&qty="+qty, (data) => {
+			console.log(data);
+			if (data) {
+				$("#prices_tbody").html("");
+				$("#myModal").css('display', 'block');
+				for (let index = 0; index < data.length; index++) {
+					console.log(data[index]);
+					var key = data[index]._id;
+					var componentN = data[index].componentN;
+					var componentNS = data[index].componentNS;
+					var suplierName = data[index].suplierName;
+					var price = data[index].price[0].price;
+					var currency = data[index].currency;
+					$("#prices_tbody").append("<tr class='pricesTr' onclick='choosePriceVendor(\"" + key + "\", \"" + requestKey + "\",\"" + qty + "\", \"" + currency + "\")'><td class='prices'>" + suplierName + "</td><td class='prices'>" + price + "</td><td class='prices'>" + currency + "</td></tr>");
+				}
+			}
+
+		})
+	}
+
+	function choosePriceVendor(key, requestKey, qty, currency) {
+		console.log(key);
+		let supplierChoosed = {
+			priceId: key,
+			requestItemId:requestKey,
+			qunatity:qty,
+			req:'supplierChoosed'
+		}
+		console.log(status);
+		$.post('/requestSupplierOrderItem/update',
+			supplierChoosed,
+			function (data) {
+				console.log(data);
+				orderId = data._id;
+				$("#myModal").css('display', 'none')
+			});
+	}
+
+	function updateStatus(key) {
+		console.log(key);
+		let status = {
+			requestItemId: key,
+			status: 'approved',
+			req: 'status'
+		}
+		console.log(status);
+		$.post('/requestSupplierOrderItem/update',
+			status,
+			function (data) {
+				console.log(data);
+				orderId = data._id;
+			});
+	}
+</script>
+
+<body>
+
+	<center>
+		<br>
+		<br>
+		<span id='allOrdersBtn'>Show All Requests </span> &nbsp;&nbsp;&nbsp;
+		<span id='allItemsBtn'>Show all Requested Items </span> &nbsp;&nbsp;&nbsp;
+		<span>Sort Items by vendor</span>
+		<br>
+		<br>
+		<table border=0 style=" width:1100px" id="orderDetailsID">
+			<thead>
+				<tr style="background-color:white; ">
+					<th>
+						</td>
+						<th style="padding:5px">
+							Order Number
+						</th>
+						<th style="padding:5px">
+							Costumer
+						</th>
+						<th style="padding:5px">
+							Order date
+						</th>
+						<th style="padding:5px">
+							Delivery
+						</th>
+						<th style="padding:5px">
+							Remarks
+						</th>
+
+				</tr>
+			</thead>
+			<tbody id="table_body">
+			</tbody>
+		</table>
+		<table id="cmptOrderID">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Component Id</th>
+					<th>Component Supplier Id</th>
+					<th>Component Name</th>
+					<th>Supplier</th>
+					<th>Quantity Ordered</th>
+					<th>Quantity Ready</th>
+					<th>Pcs/Usd</th>
+					<th>Total Price</th>
+					<th>Image</th>
+					<th></th>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input type='text' id="cmpntID">
+					</td>
+					<td>
+						<input type='text' id="cmpntSplrID">
+					</td>
+					<td>
+						<input type='text' id="cmpntNameID" style="width:350px">
+					</td>
+					<td>
+						<input type='text' id="splrID">
+					</td>
+					<td>
+						<input type='text' id="qtyID">
+					</td>
+					<td>
+						<input type='text' id="qtyReadyID">
+					</td>
+					<td>
+						<input type='text' id="priceID">
+					</td>
+					<td>
+						<input type='text' id="total_price">
+					</td>
+					<td>
+						<button onclick="addNewItemToOrder()" class="buttonEnter">Enter</button>
+					</td>
+				</tr>
+			</thead>
+			<tbody id="table_body_items">
+			</tbody>
+		</table>
+
+
+
+
+		<div id="myModal" class="modal">
+
+			<!-- Modal content -->
+			<div class="modal-content" style='width:200px'>
+				<div class="modal-header">
+					<span class="close" id="closeId">&times;</span>
+					<h3>בחר ספק להזמנה</h3>
+				</div>
+				<div class="modal-body" align="center">
+					<table>
+						<tbody id='prices_tbody'></tbody>
+					</table>
+
+				</div>
+			</div>
+
+		</div>
+</body>

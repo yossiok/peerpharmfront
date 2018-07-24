@@ -1,0 +1,17 @@
+<form #CreateBoard="ngForm" (ngSubmit)="onSubmit(CreateBoard)">
+<div class="form-container">
+  <mat-form-field>
+      <input matInput   [(ngModel)]="board.title" name="title"  placeholder="Departemnt">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput   [(ngModel)]="board.manager" name="manager"  placeholder="Manager">
+
+  </mat-form-field>
+
+  <button md-button class="submit-btn" type="submit" [disabled]="!CreateBoard.form.valid">Add Department!</button>
+
+ 
+</div>
+
+</form>

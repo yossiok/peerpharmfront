@@ -1,0 +1,1881 @@
+	<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html dir=rtl>
+    <head>
+        <title>Component Stockt</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+    <style>
+	
+	
+	
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+	background-color:gray;
+	color:white;
+}
+input[type=checkbox]{
+
+	 transform: scale(1);
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1.5);
+    padding: 10px;
+}
+.header{
+	height: 45px;
+	position: relative;
+	background: #6E6E6E url(/images/img03.jpg) top left no-repeat;
+	padding: 45px;
+	color: #FFFFFF;
+	width: 1330px;
+	border: solid 1px #7E7E7E;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	overflow: hidden;
+	margin-left:20px
+	
+
+}
+
+.header a1 {
+	position: absolute;
+    text-decoration: none;
+	color: #FFFFFF;
+	text-shadow: 0 1px 1px #3E3E3E;
+	font-size:50px;
+	align: right;
+	bottom: 0;
+    left: 15;
+	
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(#209D9D, #497676) ;
+	width: 1422px;
+	margin-left:20px
+}	
+
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+
+body{
+	display:flex;
+		min-height:30vh;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+}
+
+#uploader{
+	-webkit-appearance: none;
+	appearance: none;
+	width:50%;
+	margin-bottom:10px;
+	color:blue;
+}
+
+button{
+	background-color:red;
+	color: white;
+	display: inline-block;
+	font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+		 border: none;
+}
+
+.updateDateBtn{
+  width: 120px;
+  height: 24px;
+  padding: 5px 16px 3px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border: 2px solid #ccc;
+  position: relative;
+	
+  /* Label */
+  font-family: Lucida Sans, Helvetica, sans-serif;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: rgba(10, 10, 10, 0.5) 1px 2px 2px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  overflow: hidden;
+
+
+}
+
+tr{
+	text-align:center;
+}
+
+
+ th {
+    background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    border-left: 1px solid #555;
+    border-right: 1px solid #777;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #333;
+    box-shadow: inset 0 1px 0 #999;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    position: relative;
+    text-shadow: 0 1px 0 #000;  
+}
+.button2{
+
+  height: 24px;
+  padding: 5px 16px 3px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border: 2px solid #ccc;
+  position: relative;
+	
+  /* Label */
+  font-family: Lucida Sans, Helvetica, sans-serif;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: rgba(10, 10, 10, 0.5) 1px 2px 2px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  overflow: hidden;
+  cursor :pointer ;
+  
+}
+.aqua{
+  background-color: rgba(60, 132, 198, 0.8);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 90%, from(rgba(28, 91, 155, 0.8)), to(rgba(108, 191, 255, .9)));
+  border-top-color: #8ba2c1;
+  border-right-color: #5890bf;
+  border-bottom-color: #4f93ca;
+  border-left-color: #768fa5;	
+  -webkit-box-shadow: rgba(66, 140, 240, 0.5) 0px 10px 16px;
+  -moz-box-shadow: rgba(66, 140, 240, 0.5) 0px 10px 16px; /* FF 3.5+ */
+}
+.button2 .glare {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  height: 1px;
+  width: 142px;
+  padding: 8px 0;
+  background-color: rgba(255, 255, 255, 0.25);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 95%, from(rgba(255, 255, 255, 0.7)), to(rgba(255, 255, 255, 0)));
+  
+}
+
+.button{
+	background-color:green;
+	color: white;
+	display: inline-block;
+	font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+		 border: none;
+}
+
+
+td {
+    border-right: 1px solid #fff;
+    border-left: 1px solid #e8e8e8;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+    transition: all 300ms;
+}
+
+
+
+
+input[type=text] ,input[type=date], select, 
+		{
+		display: inline-block;
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+		float: none;
+		z-index: auto;
+		width: 158px;
+		height: auto;
+		position: static;
+		opacity: 1;
+		margin: 0;
+		//padding: 10px 20px;
+		overflow: visible;
+		border: 1px solid #b7b7b7;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		font: normal medium/normal Arial, Helvetica, sans-serif;
+		color: rgba(0,142,198,1);
+		-o-text-overflow: clip;
+		text-overflow: clip;
+		background: rgba(252,252,252,1);
+		-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+		-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-webkit-transform: none;
+		transform: none;
+		-webkit-transform-origin: 50% 50% 0;
+		transform-origin: 50% 50% 0;
+}
+.btnImage{
+	 width:25px;
+	 height:25px;
+	 float: right; 
+	 cursor:pointer; 
+	 margin:0	
+	 
+
+
+}
+
+.modal2{
+	border:1px;
+	border-radius:10px;
+	z-index: 1; 
+	 position: fixed;
+	  left: 0;
+    top: 0;
+	padding-top: 80px; 
+	padding-left: 400px; 
+	display:none;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 80px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: lightblue;
+    color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: lightblue;
+    color: white;
+}
+
+
+.btnNew {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  text-shadow: 5px 3px 3px #666666;
+  -webkit-box-shadow: 2px 4px 20px #666666;
+  -moz-box-shadow: 2px 4px 20px #666666;
+  box-shadow: 2px 4px 20px #666666;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btnNew:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+.tabDiv{
+	display:inline;
+	background: brown;
+	padding: 10px 12px 1px 15px;
+	margin-left: 0px;
+	border-radius:  10px 10px 0px 0px;
+	border:  2px solid #888;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 15px;
+	cursor:pointer;
+	}
+	
+#dTag{
+	display:inline;
+	background: silver;
+	padding: 10px 12px 1px 15px;
+	margin-left: 0px;
+	border-radius:  10px 10px 0px 0px;
+	border:  2px solid #888;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 15px;
+	cursor:pointer;
+
+}
+
+.tooltip {
+    position: relative;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+
+  <script src="_js/jquery.table2excel.js"></script>
+<script>
+		var firebaseRef = firebase.database().ref();
+		var componentsRef =firebaseRef.child("components");
+		var componentsRef2 =firebaseRef.child("components_2");
+		var formRef =firebaseRef.child("fillingForms");
+		var formRef2 =firebaseRef.child("fillingForms_close");
+		
+		var scheduleRef =firebaseRef.child("schedulePrint");
+		var i;
+		var color= "white";
+		var tempImgUrl="", tempImgPaletUrl="";
+		var cmptPrintNumber="", cmptPrintName="";
+		var englishName=[];		 
+			englishName.push("bottle_Glass","bottle_Plastic","jar_Glass", "jar_Plastic", "cap", "cover", "pump", "cosmetic_pump", "over_cap",
+			"tube", "colons", "hair_life", "compacts", "personal_package", "master_carton", "newsletter", "irosol_valve", "irosol_bottle", "irosol_hectotor");
+		var hebrewName=[];
+			hebrewName.push("בקבוק זכוכית", "בקבוק פלסטיק", "צנצנת זכוכית","צנצנת פלסטיק", "פקק","מכסה", "משאבה", "משאבה קוסמטית",
+			"מכסה עילי", "שפורפרת", "קולונים" , "היירלייפ", "קומפקטים", "אריזות אישיות", "קרטוני מאסטר", "עלון לצרכן", "אירוסול- שסתום", "איירוסול- בקבוק", "אירוסול- הקטאטור");
+		var ctgry=[];
+		var serverPassword="";
+			
+		//console.log(hebrewName);	
+		//console.log(englishName);	
+		
+		function init(){
+		//moveFbRecordmoveFbRecord(formRef.child("-KijGIoxMDjgRsRhjTRg").child("amountKasem"), componentsRef2.child("-KijOXhcMvK__U7eBcl4"));
+		
+			var editStatus="";
+			$("#table_body").html("<tr></tr>"); // to reset the table
+				i=0;
+				
+				
+				componentsRef.on("value", snap=>{
+					editStatus = snap.child("editS").val();
+					serverPassword = snap.child("password").val();
+				//	console.log(editStatus);
+					loadData(editStatus);
+					if(editStatus=='close'){
+						$("#btnNewC").css('display', 'none');
+					//	$("#newCbtn").css('display', 'none');
+						$("#updateDataBtn").css('display', 'none');
+					}
+					
+				});
+		
+		}
+		
+		function loadData(editStatus){
+		//componentsRef.on("child_added", snap=>{
+			
+			if(i==0){
+				$("#table_body").html("");
+			}
+				//	console.log(editStatus);
+				$.getJSON("/component" , (data)=>{
+						console.log("data");
+						console.log(data);		
+					for(let i=0; i<data.length;i++){				
+						var refParent=data[i]._id;
+						var componentN =data[i].componentN;
+						var componentName=data[i].componentName;
+						var componentNs =data[i].componentNs;
+						var suplierN =data[i].suplierN;
+						var suplierName =data[i].suplierName;
+						var componentType =data[i].componentType;
+						var componentCategory =data[i].componentCategory;
+						var imgUl =data[i].img;
+						var importFrom =data[i].importFrom;
+						var lastModified =data[i].lastModified;
+						var minimumStock =data[i].minimumStock;
+						var needPrint =data[i].needPrint;
+						var packageType =data[i].packageType;
+						var packageWeight =data[i].packageWeight;
+						var remarks =data[i].remarks;
+						var amountKasem =data[i].amountKasem;
+						var amountRH =data[i].amountRH;
+						var orderStatus="";
+						var shellRH="";
+						var shellKasem="";
+						var category="";
+
+						if (i % 2 == 0){color="#eff5f5"}
+						else{color='white'}
+
+						var index = englishName.indexOf(componentType);
+						var tempType = hebrewName[index];
+
+						var arraycontainsturtles = (ctgry.indexOf(category) > -1);
+						if (arraycontainsturtles==false && category!=null){
+							ctgry.push(componentType);
+							console.log(arraycontainsturtles +  "componentType " + category);
+							var x = document.getElementById("selectCategory");
+							var c = document.createElement("option");
+							c.text = componentType;
+							x.options.add(c, 0);
+						}
+
+
+						$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td class='tooltip'>"+i+" <span class='tooltiptext'>"+refParent+"</span></td><td ><a style='color:blue; cursor:pointer;'  onClick='showDetails(\""+refParent+"\")'>" + componentN + "</a></td><td>"+ componentNs+	 "</td><td>"+ componentName+	 "</td><td>" +tempType+"</td><td>" +amountRH+	 "</td><td>" +shellRH+	 "</td><td>" +amountKasem+	 "</td><td>"+shellKasem+"</td><td><img src='"+imgUl+"' style='width:70px; cursor:pointer;' class='imgEd' onclick='view(\""+imgUl+"\")'></td><td>"+orderStatus+"</td><td><img src='/images/deleteBtn.png' style='cursor:pointer' width='40px' onClick='deleteData(\"" +refParent+ "\")'  class='imgEd' ><img id='editData"+i+"' src='/images/stockUpdate.png' style='width:40px; background-color:none; cursor:pointer' class='imgEd' onClick='openUpdateData(\""+refParent+"\", \""+componentN+"\")'></td><td style='display:none' class='dataEd'>"+componentType+ "  "  +tempType+"</td></tr>");
+					}
+				});
+			
+			/*	var refParent= snap.key;
+				
+				var componentNumber = snap.child("componentN").val();
+				var componentNumberS = snap.child("componentNs").val();
+				var componentName= snap.child("componentName").val();
+				var type= snap.child("componentType").val();
+				var category= snap.child("componentCategory").val();
+				var amountRHa = snap.child("amountRH").val();
+				var shellRHa= snap.child("shellRH").val();
+				var amountKasekm= snap.child("amountKasem").val();
+				var shellKasekm= snap.child("shellKasem").val();
+				var lastModified= snap.child("lastModified").val();
+				var suplierN= snap.child("suplierN").val();
+				var suplierName= snap.child("suplierName").val();
+				var importFrom= snap.child("importFrom").val();
+				var remarks= snap.child("remarks").val();
+				var imgUl= snap.child("img").val();				
+				var orderQty1=snap.child("orderQty1").val();
+				var orderDate1=snap.child("orderDate1").val();
+				var orderSuplier1=snap.child("orderSuplier1").val();
+				var orderStatus="";
+					
+				if (orderQty1!="" && orderQty1!=null && orderDate1!="" && orderDate1!=null){
+					orderStatus=orderQty1 + "pcs was orderd on " + orderDate1;
+					if(orderSuplier1!="" && orderSuplier1!=null){
+						orderStatus=orderStatus+ " from " +orderSuplier1;
+					}
+				}
+			
+				var index = englishName.indexOf(type);
+				var tempType = hebrewName[index];
+				
+				
+			//	console.log(tempType);	
+				
+				
+				var arraycontainsturtles = (ctgry.indexOf(category) > -1);
+				if (arraycontainsturtles==false && category!=null){
+					ctgry.push(category);
+					console.log(arraycontainsturtles +  "category " + category);
+					var x = document.getElementById("selectCategory");
+					var c = document.createElement("option");
+					c.text = category;
+					x.options.add(c, 0);
+				}
+				
+				
+				
+				
+				i++;
+				if (i % 2 == 0){
+				color="#eff5f5"
+				
+				}
+			//	console.log(i);
+			if(snap.hasChildren()){	// to remove 'null' lines that caused because of values in the main key;
+				if(editStatus=='open'){
+		
+			//		$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a style='color:blue; cursor:pointer;'  onClick='showDetails(\""+refParent+"\")'>" + componentNumber + "</a></td><td>"+ componentNumberS+	 "</td><td>"+ componentName+	 "</td><td>"+tempType+"</td><td>" +amountRHa+	 "</td><td>" +shellRHa+	 "</td><td>" +amountKasekm+	 "</td><td>"+shellKasekm+"</td><td><img src='"+imgUl+"' style='width:70px; cursor:pointer;'  onclick='view(\""+imgUl+"\")'></td><td><button onClick='openUpdateData("+amountRHa+ ","+amountKasekm+ ",\""+refParent+"\", \""+shellRHa+"\",\""+shellKasekm+"\")'>עדכן</button></td></tr>");
+				}
+				else if (editStatus=='close'){
+			
+		//			$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a style='color:blue; cursor:pointer;'  onClick='showDetails(\""+refParent+"\")'>" + componentNumber + "</a></td><td>"+ componentNumberS+	 "</td><td>"+ componentName+	 "</td><td>"+tempType+"</td><td>" +amountRHa+	 "</td><td>" +shellRHa+	 "</td><td>" +amountKasekm+	 "</td><td>"+shellKasekm+"</td><td><img src='"+imgUl+"' style='width:70px; cursor:pointer;'  onclick='view(\""+imgUl+"\")' ></td><td></td></tr>");
+				}
+									$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a style='color:blue; cursor:pointer;'  onClick='showDetails(\""+refParent+"\")'>" + componentNumber + "</a></td><td>"+ componentNumberS+	 "</td><td>"+ componentName+	 "</td><td>" +tempType+"</td><td>" +amountRHa+	 "</td><td>" +shellRHa+	 "</td><td>" +amountKasekm+	 "</td><td>"+shellKasekm+"</td><td><img src='"+imgUl+"' style='width:70px; cursor:pointer;' class='imgEd' onclick='view(\""+imgUl+"\")'></td><td>"+orderStatus+"</td><td class='dataEd' >"+refParent+"</td><td><img src='deleteBtn.png' style='cursor:pointer' width='40px' onClick='deleteData(\"" +refParent+ "\")'  class='imgEd' ><img id='editData"+i+"' src='stockUpdate.png' style='width:40px; background-color:none; cursor:pointer' class='imgEd' onClick='openUpdateData("+amountRHa+ ","+amountKasekm+ ",\""+refParent+"\", \""+shellRHa+"\",\""+shellKasekm+"\")'></td><td style='display:none' class='dataEd'>"+category+ "  "  +tempType+"</td></tr>");
+				
+			color= "white";
+			}
+			});
+			i=0;*/
+		}
+		
+		
+		var finalKey="";
+		function showDetails(key){
+			
+			console.log(key);
+			tempImgUrl="";
+		//	$("#newCbtn").css('display', 'none');	
+			$("#myModal2").css('display', 'block');	
+			$("#updateDataBtn").css('display', 'block');	
+			var tempImg;
+			$.getJSON("/component?id="+key , (data)=>{
+						console.log(data);		
+						var refParent=data.item._id;
+						var componentN =data.item.componentN;
+						var componentName=data.item.componentName;
+					//	var componentNs =data.item.componentNs;
+					//	var suplierN =data.item.suplierN;
+					//	var suplierName =data.item.suplierName;
+						var componentType =data.item.componentType;
+						var componentCategory =data.item.componentCategory;
+						var imgUl =data.item.img;
+						var importFrom =data.item.importFrom;
+						var minimumStock =data.item.minimumStock;
+						var needPrint =data.item.needPrint;
+						var packageType =data.item.packageType;
+						var packageWeight =data.item.packageWeight;
+						var remarks =data.item.remarks;
+						var componentNs="";
+						var suplierN="";
+						var suplierName="";
+						data.dataArr.forEach(element => {
+							console.log(element.index);
+							suplierName+=element.suplierName + "/ ";
+							suplierN+=element.suplierN + "/ ";
+							componentNs+=element.componentNS + "/ ";
+						});
+						console.log(componentNs);
+				tempImg=imgUl;
+				//console.log(componentNumber);
+				console.log(imgUl);
+				
+				$("#input_componentNumber").val(componentN);
+				$("#input_idSuplierNumber").val(componentNs);
+				$("#input_componentName").val(componentName);
+				$("#input_componentType").val(componentType);
+				$("#input_componentCategory").val(componentCategory);
+				$("#input_packageType").val(packageType);
+				$("#input_packageWeight").val(packageWeight);
+				$("#input_suplierN").val(suplierN);
+				$("#input_suplierName").val(suplierName);
+				$("#input_minimumStock").val(minimumStock);
+				$("#input_import").val(importFrom);
+				$("#input_remarks").val(remarks);
+				$("#tempHiddenImgSrc").val(imgUl); //the reason for puting it in hidden input is because attribute cant send into firebase fucntion
+				$("#imgID").attr("src",imgUl);
+				$("#imgIDtext").val(imgUl);
+				$("#imgID").attr("width","180px");
+				if(needPrint=="true"){   $("#checkBox_need_print").prop('checked', true);   }
+				else{   $("#checkBox_need_print").prop('checked', false);   }
+				});
+				
+				finalKey="";
+				finalKey=key;
+				$("#updateDataBtn").off();
+				
+				$("#updateDataBtn").click(function(){
+				
+				/*	if(tempImgUrl=="" || tempImgUrl==null){
+						tempImgUrl=imgUl;
+						//tempImgUrl=tempImg;
+					}
+					if(imgUl==null){
+						tempImgUrl="";
+					} 
+					else 
+					{ 
+						tempImgUrl==imgUl;
+					}*/
+					var c_id =  document.getElementById('input_componentNumber').value;
+					var c_ids =  document.getElementById('input_idSuplierNumber').value;
+					var c_name = document.getElementById('input_componentName').value;
+					var c_type = document.getElementById('input_componentType').value;
+					var c_category = document.getElementById('input_componentCategory').value;
+					var c_packageType = document.getElementById('input_packageType').value;
+					var c_packageWeight = document.getElementById('input_packageWeight').value;
+					var c_import =  document.getElementById('input_import').value;
+					var s_number =  document.getElementById('input_suplierN').value;
+					var c_minimums =  document.getElementById('input_minimumStock').value;
+					var s_name =  document.getElementById('input_suplierName').value;
+					var c_remarks =  document.getElementById('input_remarks').value;
+					var checkBox = document.getElementById("checkBox_need_print").checked;
+					var needPrint;
+					needPrint=checkBox+"";
+					var c_img;
+					if (tempImgUrl=="" || tempImgUrl==null){
+						
+						c_img =  document.getElementById('tempHiddenImgSrc').value;
+					}
+					else{
+						c_img=tempImgUrl;
+					}
+
+					let updateComponent={
+						componentN:c_id,
+						componentName:c_name,
+						componentNs:c_ids,
+						suplierN: s_number,
+						suplierName: s_name,
+						componentType:c_type,
+						componentCategory:c_category,
+						img: tempImg,
+						importFrom: c_import,
+						lastModified:'',
+						minimumStock:c_minimums,
+						needPrint:needPrint,
+						packageType: c_packageType,
+						packageWeight: c_packageWeight,
+						remarks: c_remarks,
+						cmptId:key,
+					}
+					console.log(updateComponent);
+						$.post('/component/update', 
+						updateComponent,
+			  			function(data){	 
+							console.log(data);
+						//	showItems2(); // because table is deleted;
+						});
+					
+					$("#myModal2").css('display', 'none');
+					$("#updateDataBtn").css('display', 'none');	
+					$("#newCbtn").css('display', 'block');	
+				//init();
+				});
+	
+		}	
+			
+		function writeNewComponent(){
+				var c_id =  document.getElementById('input_componentNumber').value;
+				var c_ids =  document.getElementById('input_idSuplierNumber').value;
+				var c_minimums =  document.getElementById('input_minimumStock').value;
+				var c_name = document.getElementById('input_componentName').value;
+				var c_type = document.getElementById('input_componentType').value;
+				var c_category = document.getElementById('input_componentCategory').value;
+				var c_packageType = document.getElementById('input_packageType').value;
+				var c_packageWeight = document.getElementById('input_packageWeight').value;
+				var c_import =  document.getElementById('input_import').value;
+				var s_number =  document.getElementById('input_suplierN').value;
+				var s_name =  document.getElementById('input_suplierName').value;
+				var c_remarks =  document.getElementById('input_remarks').value;
+				var checkBox = document.getElementById("checkBox_need_print").checked;
+				var imgURL= document.getElementById('imgIDtext').value;
+				var needPrint="false";
+				needPrint=checkBox+"";
+				
+				let newComponent={
+					componentN:c_id,
+					componentName:c_name,
+					componentNs:c_ids,
+					suplierN: s_number,
+					suplierName: s_name,
+					componentType:c_type,
+					componentCategory:c_category,
+					img: imgURL,
+					importFrom: c_import,
+					lastModified:'',
+					minimumStock:c_minimums,
+					needPrint:needPrint,
+					packageType: c_packageType,
+					packageWeight: c_packageWeight,
+					remarks: c_remarks,
+					amountKasem: 0,
+					amountRH: 0,
+				}
+				$.post('/component/add', 
+					newComponent,
+			  		function(data){	 
+                          console.log(data._id);
+						});
+						
+
+				$("#myModal2").css('display', 'none');
+				$("#updateDataBtn").css('display', 'none');	
+				$("#newCbtn").css('display', 'block');	
+				init();
+				
+				console.log(checkBox + " , "  +needPrint)
+		}
+		
+		function closeDate(){
+		
+			$("#myModal2").css('display', 'none');
+			$("#updateDataBtn").css('display', 'none');	
+			$("#newCbtn").css('display', 'block');	
+			$("#input_componentNumber").val("");
+				$("#input_idSuplierNumber").val("");
+				$("#input_componentName").val("");
+				$("#input_componentType").val("");
+				$("#input_packageType").val("");
+				$("#input_packageWeight").val("");
+				$("#input_suplierN").val("");
+				$("#input_suplierName").val("");
+				$("#input_import").val("");
+				$("#input_remarks").val("");
+				$("#imgID").attr("src","exit.jpg");
+				$("#imgID").attr("width","350px");
+				tempImgUrl="";
+		}
+			$(document).ready(function(){
+				$("#closeId").click(function(){
+					$("#myModal").css('display', 'none');
+					$("#rh_amount_table").html("");
+					$("#kasem_amount_table").html("");
+					$("#orderK_amount_table").html("");
+				});
+				
+				$("#closeId3").click(function(){
+					$("#myModal3").css('display', 'none');
+				});
+				 $("#id_GlofaImg").change(function() {
+					uploadImgPlate();
+				});
+			});
+			
+		function openUpdateData(key, cmptNumber){
+				//	$("#input_shellRH").val(shellRh);
+				//	$("#input_shellKasem").val(shellKKsm);
+			$("#myModal").css('display', 'block');	
+			appendShellData(cmptNumber);	
+			
+			
+			$("#updateBtn").off();
+			$("#updateBtn").click(function(){
+				console.log("Good morning...");
+					//let wH=$("#wh").val();
+					let wH='Main';
+					let shell=$("#shellChange").val();
+					let item=cmptNumber;
+					let amount=$("#amountChange").val();
+					let dir=$("#dirSelect").val();
+					
+					let itemAmount={
+						whareHouse:wH,
+						shell: shell,
+						amount: amount,
+						item: item,
+						direction:dir,
+					}
+						console.log(itemAmount);
+					$.post('/itemShell/update2', 
+									itemAmount,
+									function(data){	 
+										console.log(data);
+										appendShellData(cmptNumber);
+									}); 
+							});  
+					
+		}
+
+		function appendShellData(cmpt){
+			$("#rh_amount_table").html("");
+			$("#kasem_amount_table").html("");
+
+					$.getJSON("/itemShell?item="+cmpt , (data)=>{
+					console.log(data);	
+					for(let i=0; i<data.length;i++){				
+						var refParent=data[i]._id;
+						var shell =data[i].shell;
+						var amount= data[i].amount;
+						var wh=data[i].wh;
+						switch(wh) {
+							case "Main":
+								$("#kasem_amount_table").append("<tr><td style='padding-left:20px'><b>" + shell  + "   </b></td><td> " + amount + " </td><td><img src='/images/delete.png' style='width:15px; padding-right:20px'></td></tr>");
+								break;
+							case "Secondery":
+								$("#rh_amount_table").append("<tr><td style='padding-left:20px'><b>" + shell  + "   </b></td><td> " + amount + " </td><td><img src='/images/delete.png' style='width:15px; padding-right:20px'></td></tr>");
+								break;
+							
+							default:
+						}
+					}
+				});
+		}
+
+		function openUpdateData2(aRh, aK, key, shellRh, shellKKsm){
+			$("#input_shellRH").val(shellRh);
+			$("#input_shellKasem").val(shellKKsm);
+			$("#myModal").css('display', 'block');
+			var update = document.getElementById('updateBtn');
+			var j=0;
+			var intARh = parseInt(aRh);
+			var intShellRh;
+			var intShellKasem;
+			var intAKt = parseInt(aK);
+			var shellsNumber=1;
+			
+			
+			
+			var tempShellRh="";
+			var tempShellKasem="";
+			var tempItemAmountRh= 0  ;
+			var tempItemAmountKasem= 0  ;
+			
+			$("#rh_amount_table").html("");
+			componentsRef.child(key).on("child_added", snap=>{
+				console.log("key123 -  " + snap.key.substring(0,6));
+				var tempShellPosition, tempShellAmount;	
+				
+				if((snap.key).substring(0,17)=="shell_rh_position"){
+					console.log("key ################## 1");
+					tempShellAmount = snap.val();
+					tempShellPosition = (snap.key).substring(17,27);
+					tempShellRh = tempShellRh + " ," + tempShellPosition;
+					tempItemAmountRh=tempItemAmountRh+parseInt(tempShellAmount);
+			
+					$("#rh_amount_table").append("<tr><td style='padding-left:20px'><b>" + tempShellPosition  + "   </b></td><td> " + tempShellAmount + " </td><td><img src='/images/delete4.png' style='width:15px; padding-right:20px'></td></tr>");
+
+				}
+				
+				
+				if((snap.key).substring(0,20)=="shell_kasem_position"){
+					console.log("key ################## 2");
+					tempShellAmount = snap.val();
+					tempShellPosition = (snap.key).substring(20,30);
+					tempShellKasem = tempShellKasem + " ," + tempShellPosition;
+					tempItemAmountKasem=tempItemAmountKasem+parseInt(tempShellAmount);
+					var checkAmount = parseInt(tempShellAmount);
+					if(checkAmount==0){
+						$("#kasem_amount_table").append("<tr><td style='padding-left:20px'><b>" + tempShellPosition  + "   </b></td><td> " + tempShellAmount + " </td><td><img src='/images/delete.png' style='width:20px; cursor:pointer' onclick='deleteShell(\""+key+"\", \""+tempShellPosition+"\")'></td></tr>");
+					}
+					else{
+						$("#kasem_amount_table").append("<tr><td style='padding-left:20px'><b>" + tempShellPosition  + "   </b></td><td> " + tempShellAmount + " </td></tr>");
+					}
+					
+				}
+				
+				if((snap.key).substring(0,6)=="orderK"){
+					console.log("orderK ################## 2");
+					tempShellAmount = snap.val();
+					tempShellPosition = (snap.key).substring(6,20);
+					tempShellKasem = tempShellKasem + " ," + tempShellPosition;
+					tempItemAmountKasem=tempItemAmountKasem+parseInt(tempShellAmount);
+					var checkAmount = parseInt(tempShellAmount);
+					if(checkAmount==0){
+						$("#orderK_amount_table").append("<tr><td style='padding-left:20px'><b>" + tempShellPosition  + "   </b></td><td> " + tempShellAmount + " </td><td><img src='/images/delete.png' style='width:20px; cursor:pointer' onclick='deleteShell(\""+key+"\", \""+tempShellPosition+"\")'></td></tr>");
+					}
+					else{
+						$("#orderK_amount_table").append("<tr><td style='padding-left:20px'><b>" + tempShellPosition  + "   </b></td><td> " + tempShellAmount + " </td></tr>");
+					}
+					
+				}
+				
+				
+			});
+				
+			componentsRef.child(key).on("child_changed", snap=>{
+				console.log("key123 -  " + snap.key);
+				var tempShellPosition, tempShellAmount;	
+				
+				if((snap.key).substring(0,17)=="shell_rh_position"){
+					console.log("key ################## 3");
+					tempShellAmount = snap.val();
+					tempShellPosition = (snap.key).substring(17,27);
+					tempShellRh = tempShellRh + " ," + tempShellPosition;
+					tempItemAmountRh=tempItemAmountRh+parseInt(tempShellAmount);
+			
+					$("#rh_amount_table").append("<tr><td style='padding-left:20px;background-color:red'><b>" + tempShellPosition  + "   </b></td><td> " + tempShellAmount + " </td><td><img src='/images/delete4.png' style='width:15px; padding-right:20px'></td></tr>");
+
+				}
+				if((snap.key).substring(0,20)=="shell_kasem_position"){
+					console.log("key ################## 4");
+					var tempShellAmount2 = snap.val();
+					var tempShellPosition2 = (snap.key).substring(20,30);
+					//tempShellKasem = tempShellKasem + " ," + tempShellPosition;
+					//tempItemAmountKasem=tempItemAmountKasem+parseInt(tempShellAmount);
+			
+					$("#kasem_amount_table").append("<tr><td style='padding-left:20px'><b>" + tempShellPosition2  + "   </b></td><td> " + tempShellAmount2 + " </td><td><img src='/images/delete4.png' style='width:15px; padding-right:20px'></td></tr>");
+
+				}
+				
+			});
+		
+			update.onclick =function(){
+				var password = prompt("הכנס סיסמא:", "password");
+				if(password==serverPassword){
+				
+				var location = document.getElementById('dirSelect').value;
+				var amount  = document.getElementById("amountChange").value;
+				var shellG  = document.getElementById("shellChange").value;
+				var shell = shellG.toUpperCase();
+				
+				componentsRef.child(key).on("child_added", snap=>{
+				console.log(" key  rh "  + snap.key);
+					if(((snap.key).substring(17,27))==shell){
+						console.log(" key 2 rh" + snap.key  +  " EQUALE" );
+						intShellRh=parseInt(snap.val());
+						console.log(" val 2 rh " + intShellRh );
+					}
+					if(((snap.key).substring(20,30))==shell){
+						console.log(" key 3 kasem" + snap.key  +  " EQUALE" );
+						intShellKasem=parseInt(snap.val());
+						console.log(" val 3 kasem" + intShellKasem );
+					}
+				});
+			
+				
+				
+				var intAmount = parseInt(amount);
+				var tempAmount;
+				
+				if(!Number.isInteger(intShellRh)){
+					intShellRh=0;
+				}
+				if(!Number.isInteger(intShellKasem)){
+					intShellKasem=0;
+				}
+				console.log(shellsNumber + " L ");
+				if(location=='e_rh' && amount!=""){
+					tempItemAmountRh= tempItemAmountRh  + intAmount;
+					tempAmount= intShellRh+intAmount;
+					tempShellRh=tempShellRh+ " , " + shell; // this row isn't needed in the taking OUT component since it doesn't required to add shells;
+					componentsRef.child(key).update({
+						["shell_rh_position"+shell]:''+tempAmount,
+						amountRH:''+tempItemAmountRh,
+						shellRH:''+tempShellRh,
+					});
+					
+					console.log("tempItemAmountRh " + tempItemAmountRh  + " , intAmount "  + intAmount  + " , intShellRh "  + intShellRh + " , tempAmount "  + tempAmount);
+				}
+				else if (location=='l_rh' && amount!=""){
+					tempItemAmountRh= tempItemAmountRh  - intAmount;
+					tempAmount= intShellRh-intAmount;
+					componentsRef.child(key).update({
+						["shell_rh_position"+shell]:''+tempAmount,
+						amountRH:''+tempItemAmountRh,
+						shellRH:''+tempShellRh,
+					});
+				}
+				else if(location=='e_k' && amount!=""){
+					tempItemAmountKasem= tempItemAmountKasem  + intAmount;
+					tempAmount= intShellKasem+intAmount;
+					tempShellKasem=tempShellKasem+ " , " +shell;
+					componentsRef.child(key).update({
+						["shell_kasem_position"+shell]:''+tempAmount,
+						amountKasem:''+tempItemAmountKasem,
+						shellKasem:''+tempShellKasem,
+					});
+				}
+				else if (location=='l_k' && amount!=""){
+					tempItemAmountKasem= tempItemAmountKasem  - intAmount;
+					tempAmount= intShellKasem-intAmount;
+					componentsRef.child(key).update({
+						["shell_kasem_position"+shell]:''+tempAmount,
+						amountKasem:''+tempItemAmountKasem,
+						shellKasem:''+tempShellKasem,
+					});
+				}
+
+				console.log(aRh + " ,  "  + aK);
+				console.log(shellRh + " ,  "  + shellKKsm);
+				
+				tempItemAmountKasem=0;
+				tempItemAmountRh=0	;
+				
+				//var s_RH =  document.getElementById('input_shellRH').value;
+			//	var s_RH =  document.getElementById('input_shellRH').value;
+			//	var s_Kasem =  document.getElementById('input_shellKasem').value;
+			//	componentsRef.child(key).update({
+			//			shellRH:''+s_RH,
+			//			shellKasem:''+s_Kasem,
+			//	});
+				
+				console.log("new amount is: " + tempAmount);
+				
+					$("#rh_amount_table").html("");
+					$("#kasem_amount_table").html("");
+					$("#orderK_amount_table").html("");
+					
+				console.log(key + " , " + location + " , " + amount);
+				tempAmount=0;
+				//amount.clear;
+				$("#myModal").css('display', 'none');
+				//init();
+			}
+			}
+		}
+		
+		
+		 function uploadImg(){
+			storageRef = firebase.storage().ref();
+			var img= document.getElementById('input_itemImgID');
+			var uploadBar = document.getElementById('uploader');
+			var file;
+			console.log("img is:" + img.value);
+			if (img) {file= img.files[0];}
+			componentImgRef = storageRef.child('component/' + file.name);
+			var put = componentImgRef.put(file).then(function(snapshot){
+			
+				var presntege = (snapshot.bytesTransferred / snapshot.totalBytes)*100;
+				uploader.value= presntege;
+				console.log("snapshot: "+snapshot);
+				showImage(componentImgRef);
+				
+			});
+			
+			//	componentImgRef.getDownloadURL().then(function(url){
+				//console.log("url2: "+url);
+			//	document.getElementById('imgID').style.width="180px";
+			//	document.getElementById('imgID').src=url;
+			//});
+	}
+	
+		function showImage(componentImgRef){
+			componentImgRef.getDownloadURL().then(function(url){
+			console.log("url2: "+url);
+			tempImgUrl = url;
+			document.getElementById('imgID').style.width="180px";
+			document.getElementById('imgID').src=url;
+			
+			uploader.value= 0;
+		
+		});
+		}
+		
+		function newItem(){
+		$("#myModal2").css('display', 'block');
+		
+		}
+		
+		function view(imgsrc) {
+		  viewwin = window.open(imgsrc,'viewwin', 'width=800,height=600'); 
+	   }
+	   
+	   function searchItemInputType() {
+	//	var input2 = document.getElementById("input_componentType").value;
+	//	console.log(input2);
+		 var j=0;
+		 var check;
+		 var input, filter, table, tr, td, i;
+		  input = document.getElementById("input_componentType2").value;
+		  //check = input.value.toUpperCase();
+		  table = document.getElementById("table_body");
+		  tr = table.getElementsByTagName("tr");
+		  for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[4];
+				console.log(td);
+						if (td) {
+						console.log("hi");
+						 
+							var checkId= 0;
+							var str = td.innerHTML; 
+							console.log(str);
+							var j=0;
+							var checkId= 0;
+						
+							  if(str.search(input)==-1)
+								 {
+								 checkId++; 
+								 }
+								 console.log(checkId);
+								 
+								if (checkId==0) {
+										
+									tr[i].style.display = "";
+								  } else {
+									tr[i].style.display = "none";
+								  }
+						}  
+						
+		  }
+		}
+		
+		 function searchCatgory() {
+		 var j=0;
+		 var check;
+		 var input, filter, table, tr, td, i, a, b;
+		  a = document.getElementById("selectCategory").value;
+		  b = document.getElementById("input_componentType2").value;
+		  console.log(a + b);
+		  input = a+ "  " +b;
+		  console.log(input);
+		  check = input;
+		  console.log(check);
+		  table = document.getElementById("table_body");
+		  tr = table.getElementsByTagName("tr");
+		  for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[12];
+						if (td) {
+						console.log("hi");
+						 // if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+							var checkId= 0;
+							var str = td.innerHTML; 
+							console.log(str);
+							var j=0;
+							var checkId= 0;
+							for (var z=0; z<check.length; z++){
+								
+								   if(check[z]==' '){
+									 n = check.substring(j,z);
+									 console.log("first " +str);
+									 console.log("first n " +n);
+									 j=z
+									 if(str.search(n)==-1)
+									 {
+									  checkId++; 
+									 }
+								   }
+							   
+							}
+							  n = check.substring(j,str.length);
+							  console.log("last " + n);
+							  if(str.search(n)==-1)
+								 {
+								 checkId++; 
+								 }
+								 console.log(checkId);
+								 
+								if (checkId==0) {
+										
+									tr[i].style.display = "";
+								  } else {
+									tr[i].style.display = "none";
+								  }
+						}  
+						
+		  }
+		}
+		
+		
+		function deleteData(key){
+			var a=confirm("למחוק פריט?");
+			if (a==true){
+				var password = prompt("הכנס סיסמא:", "password");
+					if(password==serverPassword){
+						componentsRef.child(key).remove();
+					}
+				
+			}
+			init();
+		
+		}
+		
+		function deleteShell(key, shell){
+			console.log(key +  " ,  " + shell);
+			var a=confirm("למחוק מדף?");
+			if (a==true){		
+					componentsRef.child(key).child("shell_kasem_position"+shell).remove();
+					/*componentsRef.child(key).update({
+						shellKasem:
+					
+					});*/
+			}
+			updateShellList(key);
+			init();
+		
+		}
+		
+		
+		function updateShellList(key){
+			var shellKasem="";
+			componentsRef.child(key).on("child_added", snap=>{
+				//	console.log("key123 -  " + snap.key);
+					var shellRh,  tempShellPosition , tempShellPosition2;	
+					
+					if((snap.key).substring(0,17)=="shell_rh_position"){
+						tempShellPosition = (snap.key).substring(17,27);
+						shellRh = shellRh+tempShellPosition;
+						//console.log("tempShellPosition -  " + tempShellPosition);
+					}
+					if((snap.key).substring(0,20)=="shell_kasem_position"){
+						tempShellPosition2 = (snap.key).substring(20,30);
+						shellKasem = shellKasem+ " ," + tempShellPosition2;
+						//console.log("tempShellPosition2 -  " + tempShellPosition2);
+					}
+					//console.log("shellKasem1 -  " + shellKasem);
+					});
+					componentsRef.child(key).update({
+						shellKasem:''+shellKasem,
+					});
+			console.log("shellKasem2 -  " + shellKasem);
+		}
+		
+		
+		function showNoPrint(){
+			$("#table_body").html("");
+			componentsRef.orderByChild("needPrint").equalTo("true").on("child_added", snap=>{
+
+				var refParent= snap.key;
+				
+				var componentNumber = snap.child("componentN").val();
+				var componentNumberS = snap.child("componentNs").val();
+				var componentName= snap.child("componentName").val();
+				var type= snap.child("componentType").val();
+				var category= snap.child("componentCategory").val();
+				var amountRHa = snap.child("amountRH").val();
+				var shellRHa= snap.child("shellRH").val();
+				var amountKasekm= snap.child("amountKasem").val();
+				var shellKasekm= snap.child("shellKasem").val();
+				var lastModified= snap.child("lastModified").val();
+				var suplierN= snap.child("suplierN").val();
+				var suplierName= snap.child("suplierName").val();
+				var importFrom= snap.child("importFrom").val();
+				var remarks= snap.child("remarks").val();
+				var imgUl= snap.child("img").val();
+				
+				var index = englishName.indexOf(type);
+				var tempType = hebrewName[index];
+				console.log(tempType);	
+				
+				i++;
+				if (i % 2 == 0){
+				color="#eff5f5"
+				
+				}
+
+					$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a style='color:blue; cursor:pointer;'  onClick='showDetails(\""+refParent+"\")'>" + componentNumber + "</a></td><td>"+ componentNumberS+	 "</td><td>"+ componentName+	 "</td><td>"+tempType+"</td><td>" +amountRHa+	 "</td><td>" +shellRHa+	 "</td><td>" +amountKasekm+	 "</td><td>"+shellKasekm+"</td><td><img src="+imgUl+"' style='width:70px; cursor:pointer;'  onclick='view(\""+imgUl+"\")'></td><td><button onClick='openPrintSchduele(\""+componentNumber+"\", \""+componentName+"\")'>שלח להדפסה</button></td></tr>");
+
+			});
+		}
+		
+		
+		
+		
+		function checkMinimumInventory(){
+		
+		$("#table_body").html("");
+		componentsRef.on("child_added", snap=>{
+
+				var refParent= snap.key;
+				
+				var componentNumber = snap.child("componentN").val();
+				var componentNumberS = snap.child("componentNs").val();
+				var componentName= snap.child("componentName").val();
+				var type= snap.child("componentType").val();
+				var amountRHa = snap.child("amountRH").val();
+				var shellRHa= snap.child("shellRH").val();
+				var amountKasekm= snap.child("amountKasem").val();
+				var shellKasekm= snap.child("shellKasem").val();
+				var lastModified= snap.child("lastModified").val();
+				var suplierN= snap.child("suplierN").val();
+				var suplierName= snap.child("suplierName").val();
+				var importFrom= snap.child("importFrom").val();
+				var remarks= snap.child("remarks").val();
+				var imgUl= snap.child("img").val();
+				var minimum = snap.child("minimumStock").val();
+				var index = englishName.indexOf(type);
+				var tempType = hebrewName[index];
+				console.log(tempType);	
+				
+				i++;
+				if (i % 2 == 0){
+				color="#eff5f5"
+				
+				}
+
+				var miniminI = parseInt(minimum);
+				var rhAmount = parseInt(amountRHa);
+				var kesemAmount = parseInt(amountKasekm);
+				console.log(miniminI);
+				console.log(rhAmount + " , " + kesemAmount);
+				if((rhAmount+kesemAmount)<=miniminI){
+					$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a style='color:blue; cursor:pointer;'  onClick='showDetails(\""+refParent+"\")'>" + componentNumber + "</a></td><td>"+ componentNumberS+	 "</td><td>"+ componentName+	 "</td><td>"+tempType+"</td><td>" +amountRHa+	 "</td><td>" +shellRHa+	 "</td><td>" +amountKasekm+	 "</td><td>"+shellKasekm+"</td><td><img src='"+imgUl+"' style='width:70px; cursor:pointer;'  onclick='view(\""+imgUl+"\")'></td><td><button onClick='openUpdateData("+amountRHa+ ","+amountKasekm+ ",\""+refParent+"\", \""+shellRHa+"\",\""+shellKasekm+"\")'>עדכן</button></td></tr>");
+				console.log("hi");
+				}
+
+
+			color= "white";
+			});
+		
+		
+		}
+		
+		
+		function openPrintSchduele(number, name){
+			cmptPrintNumber=number;
+			cmptPrintName=name;
+			console.log(name + number);
+			$("#myModal3").css('display', 'block');	
+			
+		}
+		
+		
+		function uploadImgPlate(){
+			storageRef = firebase.storage().ref();
+			var img= document.getElementById('id_GlofaImg');
+			var file;
+			if (img) {file= img.files[0];}
+			var plateImgRef = storageRef.child('plate/' + file.name);
+			var put = plateImgRef.put(file).then(function(snapshot){
+				showImagePlate(plateImgRef);
+				
+			});
+
+	}
+	
+		function showImagePlate(plateImgRef){
+			plateImgRef.getDownloadURL().then(function(url){
+			tempImgUrl = url;
+			tempImgPaletUrl = url;
+			document.getElementById('imagePreview').src=url;
+
+		
+		});
+		}
+	   
+	   function setPrintSchedule(){
+	   
+	   
+	   
+	   
+			
+			img=document.getElementById('id_GlofaImg').value;
+			nextStation =  document.getElementById('stationSelecet').value;
+			quantityPrint =  document.getElementById('amountToPrint').value;
+			color =  document.getElementById('colorToPrint').value;
+			printing_remakrs =  document.getElementById('input_priniting_remarks').value;
+			dateIs =  document.getElementById('input_dateToBePrint').value;
+			printType =  document.getElementById('printType_slect').value;
+			
+			
+			
+			console.log("img" + img + " , nextStation: " + nextStation + " , " + quantityPrint + " , " + color+ " , " + printing_remakrs+ " , " + dateIs+ " , " + cmptPrintNumber+ " , " + cmptPrintName);
+			if (dateIs==""){
+				alert("Please Insert Date");
+			}
+			
+			else{
+				//var batchLow= batchN.toLowerCase();
+					  var _dt = new Date(dateIs);
+					dateDMY=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+					console.log("date is: "  + dateDMY, _dt);
+					
+					scheduleRef.push().set({
+						orderN: '',
+						itemN: '',
+						componenetN: ''+cmptPrintNumber,
+						costumer:'',
+						cmptName:''+cmptPrintName,
+						qty:''+quantityPrint,
+						qtyProduced:'',
+						block:''+tempImgPaletUrl,
+						color:''+color,
+						printType:''+printType,
+						nextStation:''+nextStation,
+						marks: ''+ printing_remakrs,
+						date: ''+ dateDMY,
+						cmptAmount: '0',
+						status:'open', 
+						}); 
+	   }}
+	   	
+		function searchItem() {
+		
+		 var j=0;
+		 var check;
+		 var input, filter, table, tr, td, i;
+		  input = document.getElementById("searchCmptName");
+		  check = input.value.toUpperCase();
+		  table = document.getElementById("table_body");
+		  tr = table.getElementsByTagName("tr");
+		  for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[3];
+						if (td) {
+						console.log("hi");
+						 // if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+							var checkId= 0;
+							var str = td.innerHTML.toUpperCase(); 
+							console.log(str);
+							var j=0;
+							var checkId= 0;
+							for (var z=0; z<check.length; z++){
+								
+								   if(check[z]==' '){
+									 n = check.substring(j,z);
+									 console.log("first " +str);
+									 console.log("first n " +n);
+									 j=z
+									 if(str.search(n)==-1)
+									 {
+									  checkId++; 
+									 }
+								   }
+							   
+							}
+							  n = check.substring(j,str.length);
+							  console.log("last " + n);
+							  if(str.search(n)==-1)
+								 {
+								 checkId++; 
+								 }
+								 console.log(checkId);
+								 
+								if (checkId==0) {
+										
+									tr[i].style.display = "";
+								  } else {
+									tr[i].style.display = "none";
+								  }
+						}  
+						
+		  }
+		}
+		
+		
+	function moveFbRecord(oldRef, newRef) {    
+		 oldRef.once('value', function(snap)  {
+			  newRef.child("amountKasem").update( snap.val(), function(error) {
+				console.log(oldRef + " , " + newRef);
+				console.log(snap.val());
+				//   if( !error ) {  oldRef.remove(); }
+				//   else if( typeof(console) !== 'undefined' && console.error ) {  console.error(error); }
+			  });
+		 });
+	 }
+		 
+		 
+		 
+		 function changeTag(src){
+		 $("#changesTbody").html("");
+			if(src=='details'){
+				$("#detailsTbody").css('display', 'block');
+				$("#changesTbody").css('display', 'none');
+				$("#dTag").css('background-color', 'silver');
+				$("#cTag").css('background-color', 'brown');
+				$("#cTag").css('padding-left', ' 5px');
+				$("#cTag").css('padding-right', ' 5px');
+				$("#cTag").css('font-size', ' 12px');
+				$("#dTag").css('padding-left', ' 8px');
+				$("#dTag").css('padding-right', ' 8px');
+				$("#dTag").css('font-size', ' 16px');
+				}
+			
+			if(src=='changes'){
+				var cmptN=$("#input_componentNumber").val();
+				$("#detailsTbody").css('display', 'none');
+				$("#changesTbody").css('display', 'block');
+				$("#dTag").css('background-color', 'brown');
+				$("#cTag").css('background-color', 'silver');
+				$("#dTag").css('padding-left', ' 5px');
+				$("#dTag").css('padding-right', ' 5px');
+				$("#dTag").css('font-size', ' 12px');
+				$("#cTag").css('padding-left', ' 8px');
+				$("#cTag").css('padding-right', ' 8px');
+				$("#cTag").css('font-size', ' 16px');
+				componentsRef.orderByChild("componentN").equalTo(cmptN).on("child_added", snap=>{
+				 keyN=snap.key;
+				});
+				
+				componentsRef.child(keyN).child('notes').on("child_added", snap=>{
+						console.log(snap.val());
+						//if(snap.val().includes("to")){
+						if(snap.val().includes("הוכנסו")){
+							$("#changesTbody").append("<img src='/images/greenArrow.png' style='width:20px'> " +snap.val()+"<br>");
+						//}else if(snap.val().includes("from")){
+						}else if(snap.val().includes("הוצאו") || snap.val().includes("הוקצאו")){
+							$("#changesTbody").append("<img src='/images/redArrow.jpg' style='width:20px'> " +snap.val()+"<br>");
+						}
+						
+				});
+				}
+		
+			
+			
+			}
+		 
+		function exportExcel(){
+		 $(".imgEd").remove();
+		 $(".dataEd").remove();
+		 $("#cmptTable").table2excel({
+				// exclude CSS class
+				exclude: ".noExl",
+				name: "Worksheet Name",
+				filename: "packingList" //do not include extension
+			  });
+		}
+		
+
+</script>
+
+
+<body onload="init()">
+
+<audio id='alarm' controls>
+<source src='/images/alarm.mp3'></audio>
+        <div class='header' style="width: 1330px ; height: 70px" id='headerDiv'><a1>מלאי</a1> <img src="/images/peerpharm.png"  width='270px' align='left'></div>
+		
+ <table border="0"  style="width: 1427px ; margin-left:23px" id='cmptTable'>
+            <thead>
+			<tr>
+				<td colspan=3><button class='btnNew' onclick="newItem()" id='btnNewC'>פריט חדש</button></td>
+				<td><input type='text' id='searchCmptName' style='width:400px' placeholder='חפש פריט' onkeyup="searchItem()"></td>
+				<td><select id='input_componentType2'  onchange="searchItemInputType()">
+												 <option value='בקבוק זכוכית'>בקבוק זכוכית</option><option value='בקבוק פלסטיק'>בקבוק פלסטיק</option>
+												 <option value='צנצנת זכוכית'>צנצנת זכוכית</option><option value='צנצנת פלסטיק'>צנצנת פלסטיק</option>
+												 <option value='פקק'>פקק</option><option value='מכסה'>מכסה</option>
+												 <option value='משאבה'>משאבה</option><option value='משאבה קוסמטית'>משאבה קוסמטית</option>
+												 <option value='מכסה עילי'>מכסה עילי</option><option value='שפורפרת'>שפורפרת</option>
+												 <option value='קולונים'>קולונים</option><option value='היירלייפ'>היירלייפ</option>
+												 <option value='קומפקטים'>קומפקטים</option><option value='אריזות אישיות'>אריזות אישיות</option>
+												 <option value='קרטוני מאסטר'>קרטוני מאסטר</option><option value='עלון לצרכן'>עלון לצרכן</option>
+												 <option value='אירוסול- שסתום'>אירוסול- שסתום</option><option value='איירוסול- בקבוק'>איירוסול- בקבוק</option>
+												 <option value='אירוסול- הקטאטור'>אירוסול- הקטאטור</option><option value='איירוסול- בקבוק'>איירוסול- בקבוק</option>
+				 
+							</select></th>
+				
+				<td colspan=3><select id='selectCategory' onchange="searchCatgory()"></select></th>
+				<td><img src='/images/showTime.png' style='width:40px; cursor:pointer' onclick= 'init()'></td><td><img src='/images/reportinventory.png' style='width:40px; cursor:pointer' onclick= 'checkMinimumInventory()'</td><td><img src='/images/noprint.png' style='width:40px; cursor:pointer' onclick= 'showNoPrint()'</td>
+			
+			</tr>
+            <tr align='center' bgcolor="silver">
+				
+                <th></th>
+                <th><b>מספר פריט</b></th>
+                <th><b>מק"ט פריט/ספק</b></th>
+                <th><b>שם</b></th>
+                <th><b>סוג</b></th>
+                <th><b>כמות - ראש העין</b></th>
+                <th style="width:60px"><b>מיקום- ראש העין</b></th>
+                <th><b> כמות - קאסם</b></th>
+                <th style="width:60px"><b> מיקום - קאסם</b></th> 
+                <th><b>תמונה</b></th>
+                <th style="width:160px"><b>הזמנה במערכת</b></th>
+				
+                
+				<th style="width:60px"><img src="/images/excel.png" width="35px"  class="exportCsv" id="excelExport" onclick="exportExcel()"></th>
+            </tr> 
+			
+            </thead>
+            
+           
+            <tbody id="table_body">
+                
+            </tbody>
+        </table>
+			<br><br><br>
+		
+		
+		<div id="myModal" class="modal">
+
+		  <!-- Modal content -->
+		  <div class="modal-content" style='width:200px'>
+			<div class="modal-header">
+			  <span class="close" id="closeId">&times;</span>
+			  <h3>עדכן סחורה</h3>
+			</div>
+			<div class="modal-body" align="center">
+
+			<br>
+			<input type=number id='amountChange' style='width:150px'  placeholder="כמות"><br>
+			<input type=text id='shellChange' style='width:150px'  placeholder="מדף">
+			
+			  <select id='dirSelect' style='width:150px'>
+						<option value='enter'>כניסה</option>
+						<option value='exit'>יציאה</option>
+						
+					</select>
+					<br><br>
+					<font color="red" style="font-weight:bold" > מלאי ראש העין</font><br>
+					<table><tr><td style='padding-left:25px'><u><b>מדף</b></u></td><td><b><u>כמות</u></b></td></tr>
+					<tbody id="rh_amount_table"></tbody>
+					</table><br>
+					<br><font color="red" style="font-weight:bold" > מלאי קאסם</font><br>
+					<table><tr><td style='padding-left:25px'><u><b>מדף</b></u></td><td><b><u>כמות</u></b></td></tr>
+					<tbody id="kasem_amount_table"></tbody>
+					</table>
+					<br><font color="red" style="font-weight:bold" >שמור להזמנות- קאסם</font><br>
+					<table><tr><td style='padding-left:25px'><u><b>מדף</b></u></td><td><b><u>כמות</u></b></td></tr>
+					<tbody id="orderK_amount_table"></tbody>
+					</table>
+					</div>
+			<div class="modal-footer">
+				<button id="updateBtn">עדכן מידע</button>
+			</div>
+		  </div>
+
+</div>
+
+
+	
+	<div id="myModal2" class="modal2" style='border:1px; border-radius:5px'>
+	<!-- Modal content -->
+		  <div class="modal-content" style='width:650px' id='modelC'>
+			<div class="modal-header">
+			  <span class="close" id="closeId2" onclick='closeDate()'>&times;</span>
+			  <img src="peerpharm.png"  width='140px' align='left'>
+			  <h2 id='div_h3'>יצירת פריט חדש</h2><br>
+			  <div class='tabDiv' id='dTag' onclick=changeTag("details") >פרטים</div><div  class='tabDiv' id='cTag' onclick=changeTag("changes")>רשימת תנועות</div>
+			</div>
+			<div class="modal-body">
+		
+						
+					
+			 
+			  <table id='detailsTable'>
+					<tbody id='detailsTbody'>
+					<tr>
+						<th>מספר פריט</th><td><input type='text' id="input_componentNumber" ></th><th>מק"ט ספק</th><td align='right'><input type='text'  id="input_idSuplierNumber"></td>	
+					</tr>
+					<tr>
+						<th>שם פריט</th><td><textarea rows='4' cols='30'   style='width:150px'  id='input_componentName'></textarea></td> <th>מלאי מינימום</th><td align='right'><input type='number'  id="input_minimumStock"></td>	
+					</tr>
+					
+					<tr>
+						<th>סוג</th>
+						<td>
+							<select id='input_componentType'>
+												 <option value='bottle_Glass'>בקבוק זכוכית</option><option value='bottle_Plastic'>בקבוק פלסטיק</option>
+												 <option value='jar_Glass'>צנצנת זכוכית</option><option value='jar_Plastic'>צנצנת פלסטיק</option>
+												 <option value='cap'>פקק</option><option value='cover'>מכסה</option>
+												 <option value='pump'>משאבה</option><option value='cosmetic_pump'>משאבה קוסמטית</option>
+												 <option value='over_cap'>מכסה עילי</option><option value='tube'>שפורפרת</option>
+												 <option value='colons'>קולונים</option><option value='hair_life'>היירלייפ</option>
+												 <option value='compacts'>קומפקטים</option><option value='personal_package'>אריזות אישיות</option>
+												 <option value='master_carton'>קרטוני מאסטר</option><option value='newsletter'>עלון לצרכן</option>
+												 <option value='irosol_valve'>אירוסול- שסתום</option><option value='irosol_bottle'>איירוסול- בקבוק</option>
+												 <option value='irosol_hectotor'>אירוסול- הקטאטור</option><option value='irosol_bottle'>איירוסול- בקבוק</option>
+				 
+							</select>
+						</td>
+						<th>משקל/סוג</td>
+						<td>
+										<input type="text" id="input_packageWeight" style='width:55px; margin-left:5px' placeholder='גרם'>
+										<select id='input_packageType'>
+
+											<option value='paperCarton'>נייר/קרטון</option>
+											<option value='drinkCarton'>קרטוניות משקה</option>
+											<option value='transperentGlass'>זכוכית שקופה</option>
+											<option value='colorGlass'>זכוכית צבעונית</option>	
+											<option value='pet'>PET</option>
+											<option value='hdpe'>HDPE</option>
+											<option value='ldpe'>LDPE</option>
+											<option value='pp'>PP</option>
+											<option value='ps'>PS</option>
+											<option value='otherPlastic'>פלסטיק אחר</option>
+											<option value='metal'>מתכת</option>
+											<option value='wood'>עץ</option>
+											<option value='otherMaterial'>חומר אחר</option>
+										</select>
+									</td>
+					</tr>
+					<tr>
+					<th>קטגוריה</th>
+						<td><input type='text' id="input_componentCategory" ></th>			
+					</tr>
+					<tr>
+						<th>אספקה</th>
+						<td><input type='text' placeholder="מקומי/חול"  id='input_import'></td>
+						<th>תמונה</th> <td><input type='file' id="input_itemImgID" onchange='uploadImg()' style='display:block'><input type='text' id='tempHiddenImgSrc' style='display:none'></td>
+					</tr>
+					<tr>
+						<th>מספר ספק</th>
+						<td><input type='text'  id='input_suplierN'></td>
+												<td colspan='2' rowspan='5'><img src='/images/exit.jpg' width="350px" style='margin-top:20px; max-height: 420px;' id='imgID'><span id='imgIDtext'></span>s</span><br><progress value="0" max="100" id="uploader" style='width:300px' id="uploader">0%</progress></td>
+
+					</tr>
+					<tr>
+						<th>שם ספק</th>
+						<td><input type='text'  id='input_suplierName'></td>
+					</tr>
+					</tr>
+						<th>הערות</th>
+						<td><textarea rows='4' cols='30'   style='width:150px'  id='input_remarks'></textarea><br>
+						<input type="checkbox" name="printed" value="printed" id='checkBox_need_print'> דרושה הדפסה </td>
+					</tr>
+					</tbody>
+					<tbody id='changesTbody' dir='rtl'>
+					
+					</tbody>
+				</table>
+		
+	
+			  
+					
+			</div>
+			<div class="modal-footer">
+				<button id="newCbtn" onClick="writeNewComponent()">הקם מוצר</button>
+				<button id="updateDataBtn" style='display:none'>עדכן מידע</button>
+			</div>
+		  </div>		
+	</div>	
+	
+	
+	<div id="myModal3" class="modal">
+
+		  <!-- Modal content -->
+		  <div class="modal-content" style='width:400px'>
+			<div class="modal-header">
+			  <span class="close" id="closeId3">&times;</span>
+			  <h3>עדכן סחורה</h3>
+			</div>
+			<div class="modal-body">
+			<br>
+			כמות להדפסה: &nbsp;
+			<input type=number id='amountToPrint' style='width:140px'  placeholder="כמות"><br><br>
+			הדפסה בתאריך:
+			<input type='date' id='input_dateToBePrint'>
+					<br><br>
+					מועבר למחלקת:
+					<select id='stationSelecet' style='width:144px; height:24px'>
+						<option value='prd'>ייצור</option>
+						<option value='mkp'>איפור</option>						
+						<option value='pkg'>אריזה</option>						
+					</select>
+					
+			<br><br>
+			צבע: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type=text id='colorToPrint' style='width:140px'><br><br>
+			הדפסה:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<select id='printType_slect'><option value='flat'>חלק</option><option value='round'>מעגלי</option></select><br><br>
+			הערות: <br> <textarea rows='4' cols='30' id='input_priniting_remarks'  style='width:228px'></textarea>
+			
+			</div>
+			<div class="modal-image">
+			<center>
+			<br><input type="file" id="id_GlofaImg">
+			<label for="id_GlofaImg" class="custom-file-upload">
+				
+				<i class="fa fa-cloud-upload"></i> בחר גלופה
+				<img src='/images/openFile.png' style='width:20px'>
+				<br>
+			</label>
+			
+				<img src="" alt="תצוגה מקדימה של גלופה להדפסה" id="imagePreview" class="img-thumb" style="width:400px; height:200px">
+				</center>
+			</div>
+			<div class="modal-footer">
+				<button id="print_updateBtn" onclick="setPrintSchedule()">עדכן מידע</button>
+			</div>
+		  </div>
+
+</div>

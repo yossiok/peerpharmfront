@@ -1,0 +1,567 @@
+<html>
+
+<head>
+	<title>Orders List</title>
+	<meta charset="windows-1255">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<style>
+	.header {
+		height: 45px;
+		position: relative;
+		background: #6E6E6E url(img03.jpg) top left no-repeat;
+		padding: 45px;
+		color: #FFFFFF;
+		width: 1330px;
+		border: solid 1px #7E7E7E;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+		overflow: hidden;
+		margin-left: 20px
+	}
+
+
+
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		background: linear-gradient(#209D9D, #497676);
+		margin-left: 20px
+	}
+
+
+
+	li a,
+	.dropbtn {
+		display: inline-block;
+		color: white;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+	}
+
+	li a:hover,
+	.dropdown:hover .dropbtn {
+		background-color: red;
+	}
+
+	li.dropdown {
+		display: inline-block;
+	}
+
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: #f9f9f9;
+		min-width: 160px;
+		box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+		z-index: 1;
+	}
+
+	.dropdown-content a {
+		color: black;
+		padding: 12px 16px;
+		text-decoration: none;
+		display: block;
+		text-align: left;
+	}
+
+	.dropdown-content a:hover {
+		background-color: #f1f1f1
+	}
+
+	.dropdown:hover .dropdown-content {
+		display: block;
+	}
+
+
+	tr:hover {
+		background-color: #F9F9F9;
+
+	}
+
+
+	td {
+		border-bottom: 1px solid #e8e8e8;
+		padding: 2px;
+		font-size: 17px;
+	}
+
+	tr {
+		text-align: center;
+
+	}
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+
+<script>
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+		authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+		databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+		storageBucket: "qualitycontrol-e60d4.appspot.com",
+		messagingSenderId: "428562253132"
+	};
+	firebase.initializeApp(config);
+</script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<script>
+	var firebaseRef = firebase.database().ref();
+	var suplierOrdersRef = firebaseRef.child("supliersOrders");
+	var componentsRef = firebaseRef.child("components");
+	var itemOrderRef;
+	var orderNumber, costumer_Name, deliveryDate, orderRemarks;
+	var _itemNumber, _discription, _unit_measure, _quantity, _kg, _price, _discount, _totalPrice;
+	var currentOrderNumber = "";
+	var currentNoItemNumber = 1;
+	var noItemN = false;
+	var i = 0;
+	var orderId = "";
+
+	var usdToIlsC, eurToIlsC, gbpToIlsC;
+	$(document).ready(() => {
+
+		$.getJSON("/supplier", (data) => {
+
+			console.log(data);
+			loadSuppliers(data);
+		});
+		var exchangeRateURL = "http://data.fixer.io/api/latest?access_key=7ebfb6e184d8ee7daf473475eef53e3b&format=1"
+
+		$.getJSON(exchangeRateURL, function (data) {
+			console.log(data);
+			console.log(data.rates);
+			eurToIlsC = parseFloat(data.rates.ILS);
+			usdToIlsC = 1 / parseFloat(data.rates.USD) * eurToIlsC;
+			gbpToIlsC = 1 / parseFloat(data.rates.GBP) * eurToIlsC;
+			console.log("EUR TO ILS " + eurToIlsC + " , USD TO ILS " + usdToIlsC + " ,  GPB TO ILS " + gbpToIlsC);
+		});
+
+
+	})
+
+
+	function loadSuppliers(data) {
+		//let suppliersNameList = [];
+		//suppliersNameList.push(data);
+		//console.log("suppliers Name List "  +  suppliersNameList);
+		$("#suplierNameID").autocomplete({
+			source: data
+		});
+	}
+
+	//function getApprovedComponents(){
+	function writeNewOrder() {
+
+		document.getElementById("cmptOrderID").style.display = "block";
+		let vendor = $("#suplierNameID").val();
+		$.getJSON('/requestSupplierOrderItem?supplier=' + vendor + "&status=approved", (data) => {
+
+			console.log(data);
+			for (let index = 0; index < data.length; index++) {
+				console.log(data[index].type);
+				var key = data[index]._id;
+				var componentNumber = data[index].componentNumber;
+				var cmpntSplrNumber = data[index].cmpntSplrNumber;
+				var cmpntName = data[index].cmpntName;
+				var quantity = data[index].quantity;
+				var qtyReady = data[index].qtyReady;
+				var price = data[index].price;
+				var totalPrice = data[index].totalPrice;
+				var status = data[index].status;
+				var currency = data[index].currency;
+				var suppleir = data[index].supplierName;
+				var totalILS = "";
+				if (currency == "$") { totalILS = (parseFloat(totalPrice) * usdToIlsC); }
+				if (currency == "€") { totalILS = (parseFloat(totalPrice) * eurToIlsC); }
+				if (currency == "£") { totalILS = (parseFloat(totalPrice) * gbpToIlsC); }
+				if (currency != null && currency != "₪" && currency != "") { totalILS = totalILS.toFixed(2) }
+				var color = 'white';
+				var color2 = 'white';
+				if (index % 2 == 0) {
+					color = "#eff5f5"
+				}
+				color2 = color;
+
+				console.log(quantity);
+
+				i = 0;
+				console.log(key + " , " + componentNumber + " , " + cmpntSplrNumber + " , " + cmpntName + " , " + quantity);
+				console.log(qtyReady + " , " + price + " , " + totalPrice + " , " + status);
+				//	$("#table_body_items").append("<tr  style='background-color:" + color + "'><td>" + index + "</td><td>" + componentNumber + "</td><td>" + cmpntSplrNumber + "</td><td>" + cmpntName + "</td><td>" + suppleir + "<td>" + quantity + " Pcs</td><td>" + qtyReady + " Pcs</td><td> <input type=text id = 'tempPriceId" + i + "' value='" + price + "' style='width:50px;margin-bottom:5px'> " + currency + " <img src='/images/checkprice.png' style='width:20px;height:20px; padding-top:0px; cursor:pointer' onclick='getPriceByVendor(\"" + componentNumber + "\", " + index + ")'></td><td>" + totalPrice + " " + currency + " [" + totalILS + "] ?</td><td></td><td><Button class='buttonDelete' onClick='updateReady(\"" + componentNumber + "\", \"" + price + "\")'>Ready</td></tr>");
+				$("#table_body_items").append("<tr  style='background-color:" + color + "'><td><input type='checkbox'  checked><input type='hidden' value='" + key + "'></td><td>" + index + "</td><td>" + componentNumber + "</td><td style='background-color:" + color2 + "'>" + cmpntSplrNumber + "</td><td style='background-color:" + color2 + "'>" + cmpntName + "</td><td style='background-color:" + color2 + "'>" + suppleir + "<td style='background-color:" + color2 + "'>" + quantity + " Pcs</td><td> " + price + " " + currency + "</td><td>" + totalPrice + " " + currency + " [" + totalILS + " ₪] ?</td><td></td><td><Button class='buttonDelete' onClick='delete(\"" + key + "\")'>Delete</td></tr>");
+
+			}
+
+			//appendOrder();
+		});
+	}
+	function appendOrder() {
+		orderNumber = document.getElementById('orderNumberID').value;
+		suplierName = document.getElementById('suplierNameID').value;
+		deliveryDate = document.getElementById('deliveryDateID').value;
+		orderRemarks = document.getElementById('orderRemeraks').value;
+
+
+		var _dt = new Date();
+		var today = [_dt.getDate(), _dt.getMonth() + 1, _dt.getFullYear()].join('/');
+		_dt = new Date(deliveryDate);
+		deliveryDate = [_dt.getDate(), _dt.getMonth() + 1, _dt.getFullYear()].join('/');
+
+
+		let newOrder = {
+			orderN: orderNumber,
+			suplierName: suplierName,
+			dateOfOrder: today,
+			dateOfDelivery: deliveryDate,
+			remarks: orderRemarks,
+			status: 'open',
+		}
+
+		console.log(newOrder);
+		$.post('/supplierOrder/add',
+			newOrder,
+			function (data) {
+				console.log(data);
+				orderId = data._id;
+				appendOrderItems(orderId);
+			});
+
+		document.getElementById("orderDetailsID").style.visibility = "visible";
+		document.getElementById("cmptOrderID").style.display = "block";
+
+
+		$("#mailBody").append(" order number: " + orderNumber + "\n");
+
+
+		$("#h3_orderNumber").append(orderNumber);
+		$("#h3_suplierName").append(suplierName);
+		$("#h3_date").append(today);
+		$("#h3_delivery").append(deliveryDate);
+		$("#h3_remarks").append();
+
+		//document.getElementById("newOrderTable").remove();
+	}
+	function appendOrderItems(orderId) {
+		var input, filter, table, tr, td, i;
+		let cmptOrderArr = [];
+		let cmptOrderUpdate = [];
+		table = document.getElementById("table_body_items");
+		tr = table.getElementsByTagName("tr");
+		for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[0];
+			if (td) {
+				console.log(td.getElementsByTagName("input")[0].checked);
+				console.log(td.getElementsByTagName("input")[1].value);
+				if (td.getElementsByTagName("input")[0].checked) {
+
+					cmptOrderUpdate.push(td.getElementsByTagName("input")[1].value);
+
+					let quantity = parseInt(tr[i].getElementsByTagName("td")[6].innerText.replace(/\D/g, ''));
+					let price = parseInt(tr[i].getElementsByTagName("td")[7].innerText.replace(/\D/g, ''));
+					let currency = tr[i].getElementsByTagName("td")[7].innerText.replace(/[0-9]/g, '');
+					let totalPrice = parseInt(tr[i].getElementsByTagName("td")[8].innerText.replace(/\D/g, ''));
+					let newItem = {
+						componentNumber: td = tr[i].getElementsByTagName("td")[2].innerText,
+						cmpntSplrNumber: tr[i].getElementsByTagName("td")[3].innerText,
+						type: '_type',
+						cmpntName: tr[i].getElementsByTagName("td")[4].innerText,
+						quantity: quantity,
+						qtyReady: 0,
+						price: price,
+						currency: currency,
+						totalPrice: totalPrice,
+						status: 'open',
+						supplierStatus: 'open',
+						orderId: orderId,
+
+					}
+					console.log(newItem);
+					cmptOrderArr.push(newItem);
+				}
+			}
+		}
+		console.log(cmptOrderArr);
+		let dataTosend = { cmpt: cmptOrderArr, cmptToUpdate: cmptOrderUpdate };
+		/*  $.post('/supplierOrderItem/add', 
+						c,
+						function(data){	 
+						console.log(data);
+					});
+		}*/
+		$.ajax({
+			url: '/supplierOrderItem/add',
+			type: "POST",
+			data: JSON.stringify(dataTosend),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (data) {
+				console.log(data);
+			}
+		})
+	}
+
+	function validateFinish() {
+		if (confirm("Done placing the order?")) {
+			//	writeNewOr der2
+			appendOrder();
+		}
+	}
+
+	function writeNewOrder2() {
+
+	}
+
+
+
+
+	function addNewItemToOrder() {
+		var existItem, _productT;
+
+
+		_componentNumber = document.getElementById('cmpntID').value;
+		_cmpntSplrNumber = document.getElementById('cmpntSplrID').value;
+		_cmpntName = document.getElementById('cmpntNameID').value;
+		_quantity = document.getElementById('qtyID').value;
+		_price = document.getElementById('priceID').value;
+		_totalPrice = document.getElementById('total_price').value;
+		_type = document.getElementById('cmptType').value;
+		_currency = document.getElementById('currencyId').value;
+
+		var searchComponengtRef = componentsRef.child(_componentNumber);
+
+
+
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth() + 1;
+		var yyyy = today.getFullYear();
+		today = dd + '/' + mm + '/' + yyyy;
+
+		let newItem = {
+			componentNumber: _componentNumber,
+			cmpntSplrNumber: _cmpntSplrNumber,
+			type: _type,
+			cmpntName: _cmpntName,
+			quantity: _quantity,
+			qtyReady: '',
+			price: _price,
+			currency: _currency,
+			totalPrice: _totalPrice,
+			status: 'open',
+			orderId: orderId,
+		}
+		console.log(newItem);
+		$.post('/requestSupplierOrderItem/add',
+			newItem,
+			function (data) {
+				i = 0;
+				console.log(data);
+				$("#table_body").append("<tr id='idTR" + i + "'><td>" + i + "</td><td>" + data.componentNumber + "</td><td>" + data.cmpntSplrNumber + "</td><td>" + data.cmpntName + "</td><td>" + data.quantity + " Pcs</td><td>" + data.price + " </td><td>" + data.currency + "</td><td>" + data.totalPrice + "</td><td><Button class='buttonDelete' onClick='deleteData(\"" + data.componentNumber + "\", " + i + ")'>Delete</td></tr>");
+				$("#mailBody").append("Item " + data.cmpntSplrNumber + " , " + data.cmpntName + " , " + data.quantity + " pcs \n");
+			});
+		$('#cmpntID').val("");
+		$('#cmpntSplrID').val("");
+		$('#cmpntNameID').val("");
+		$('#qtyID').val("");
+		$('#priceID').val("");
+		$('#total_price').val("");
+
+	}
+
+
+	function sendMail() {
+		var mailBody = $("#mailBody").val();
+		var link = "mailto:marketing5@peerpharm.com"
+			// + "?cc=peerpharm@barak.net.il"
+			+ "&subject=" + escape("Peer Pharm placed new order")
+			+ "&body=" + escape(document.getElementById('mailBody').value)
+			;
+
+		window.location.href = link;
+	}
+
+
+	function searchComponent() {
+		var cmptSearch = document.getElementById("cmpntID").value;
+
+
+		componentsRef.orderByChild("componentN").equalTo(cmptSearch).on("child_added", snap => {
+			var cmptN = snap.child("componentN").val();
+			var cmptSplrN = snap.child("componentNs").val();
+			var componentName = snap.child("componentName").val();
+
+			console.log(cmptN + " , " + cmptSplrN + " , " + componentName);
+			$("#cmpntSplrID").val(cmptSplrN);
+			$("#cmpntNameID").val(componentName);
+		});
+
+	}
+
+
+	function deleteData(cmpt, i) {
+		console.log("a, " + cmpt + "  ,  " + i);
+		var a = confirm("Delete Component " + cmpt + "?");
+		if (a == true) {
+			suplierOrdersRef.child(orderNumber).child(cmpt).remove();
+			$("#idTR" + i).remove();
+		}
+
+
+	}
+
+	function logout() {
+		firebase.auth().signOut().then(function () {
+
+		}, function (error) {
+		});
+	}
+</script>
+
+<body onbeforeunload="logout()">
+
+
+	<div style='background-image:url("../images/suppliers.jpg"); width:1300px; height:150px; background-repeat:no-repeat; -webkit-filter: blur(4px); position: fixed;left: 275; right: 0;z-index: -1;margin-left: 20px;margin-right: 20px;'></div>
+	<table id="newOrderTable">
+		<tr>
+			<td class="td">Order Number</td>
+			<td>
+				<input type='text' id="orderNumberID">
+			</td>
+		</tr>
+		<tr>
+			<td class="td">Suplier</td>
+			<td>
+				<input type='text' id="suplierNameID">
+			</td>
+		</tr>
+		<tr>
+			<td class="td">Expected date</td>
+			<td>
+				<input type='date' id="deliveryDateID">
+			</td>
+		</tr>
+		<tr>
+			<td class="td">Remarks</td>
+			<td>
+				<input type='text' id="orderRemeraks">
+			</td>
+		</tr>
+		<tr></tr>
+		<td class="td"></td>
+		</tr>
+		<tr>
+			<td>
+				<img src='/images/search.png' style='width:35px;height:30px;' onClick="writeNewOrder()">
+			</td>
+			<td>
+				<button onclick='validateFinish()' style='background-color: #209D9D; padding: 10px 30px 10px 30px ; color:#f1f1f1; font-size: 12px'>Place Order</button>
+			</td>
+		</tr>
+	</table>
+	<table style="margin-left:10px ; visibility: hidden" id="orderDetailsID">
+		<tr>
+
+			<td style="padding:5px">
+				<h3 style="color:brown">Order Number:</h3>
+			</td>
+			<td style="padding-right:40px">
+				<h3 id="h3_orderNumber"></h3>
+			</td>
+			<td style="padding:5px">
+				<h3 style="color:brown">Costumer:</h3>
+			</td>
+			<td style="padding-right:40px">
+				<h3 id="h3_suplierName"></h3>
+			</td>
+			<td style="padding:5px">
+				<h3 style="color:brown">Order date</h3>
+			</td>
+			<td style="padding-right:40px">
+				<h3 id="h3_date"></h3>
+			</td>
+			<td style="padding:5px">
+				<h3 style="color:brown">Delivery date</h3>
+			</td>
+			<td style="padding-right:40px">
+				<h3 id="h3_delivery"></h3>
+			</td>
+			<td style="padding:5px">
+				<h3 style="color:brown">Remarks</h3>
+			</td>
+			<td style="padding-right:40px">
+				<h3 id="h3_remarks"></h3>
+			</td>
+		</tr>
+	</table>
+
+	<table id="cmptOrderID" style='display:none; border:0px; '>
+		<thead>
+			<tr>
+				<th></th>
+				<th>Row</th>
+				<th>Component Id</th>
+				<th>Component Suplier Id</th>
+				<th>Component Name</th>
+				<th>Vendor</th>
+				<th>Quantity</th>
+				<th style='width:220px'>Offerd Price/Unit</th>
+				<th>Total Price</th>
+				<th></th>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td>
+					<input type='text' id="cmpntID" style='width:120px'>
+					<select id='cmptType'>
+						<option>Packing</option>
+						<option>Sticker</option>
+						<option>Material</option>
+					</select>
+				</td>
+				<td>
+					<input type='text' id="cmpntSplrID">
+				</td>
+				<td>
+					<input type='text' id="cmpntNameID" style='width:280px'>
+				</td>
+				<td></td>
+				<td>
+					<input type='text' id="qtyID" style='width:80px'>
+				</td>
+				<td>
+					<input type='text' id="priceID" style='width:80px'>
+
+					<select id='currencyId'>
+						<option>₪</option>
+						<option>$</option>
+						<option>€</option>
+						<option>£</option>
+						<option>¥</option>
+					</select>
+				</td>
+				<td>
+					<input type='text' id="total_price">
+				</td>
+				<td>
+					<button onclick="addNewItemToOrder()" class="buttonEnter">Enter</button>
+				</td>
+			</tr>
+		</thead>
+		<tbody id='table_body_items'></tbody>
+		<tbody id="table_body">
+		</tbody>
+	</table>
+
+	<textarea id="mailBody" style="width:500px; visibility:hidden">
+PeerPharm
+</textarea>

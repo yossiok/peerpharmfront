@@ -1,0 +1,558 @@
+<html dir=rtl>
+    <head>
+        <title>Pallets</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+    <style>
+	
+	
+
+.header{
+	height: 45px;
+	position: relative;
+	background: #6E6E6E url(img03.jpg) top left no-repeat;
+	padding: 45px;
+	color: #FFFFFF;
+	width: 1330px;
+	border: solid 1px #7E7E7E;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	overflow: hidden;
+	margin-left:20px
+	
+
+}
+
+input[type=checkbox]{
+
+	 transform: scale(1);
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1.7);
+    padding: 10px;
+}
+
+.header a1 {
+	position: absolute;
+    text-decoration: none;
+	color: #FFFFFF;
+	text-shadow: 0 1px 1px #3E3E3E;
+	font-size:50px;
+	bottom: 10;
+    left: 15;
+	
+}
+
+.ulMenu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(#209D9D, #497676) ;
+	width: 1422px;
+	margin-left:20px
+}	
+
+ul{
+	background-color:white;
+	cursor:pointer;
+}
+
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+	float: left;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+
+body{
+	display:flex;
+		min-height:30vh;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+}
+
+#uploader{
+	-webkit-appearance: none;
+	appearance: none;
+	width:50%;
+	margin-bottom:10px;
+	color:blue;
+}
+
+
+
+
+
+input[type=text] ,input[type=date], textarea
+		{
+		display: inline-block;
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+		float: none;
+		z-index: auto;
+		width: 158px;
+		height: auto;
+		position: static;
+		opacity: 1;
+		margin: 0;
+		
+		overflow: visible;
+		border: 1px solid #b7b7b7;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		font: normal medium/normal Arial, Helvetica, sans-serif;
+		color: rgba(0,142,198,1);
+		-o-text-overflow: clip;
+		text-overflow: clip;
+		background: rgba(252,252,252,1);
+		-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+		-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-webkit-transform: none;
+		transform: none;
+		-webkit-transform-origin: 50% 50% 0;
+		transform-origin: 50% 50% 0;
+}
+
+.btnImage{
+	 width:25px;
+	 height:25px;
+	 float: right; 
+	 cursor:pointer; 
+	 margin:0	
+	 
+
+
+}
+
+.palletList{
+	text-align:left;
+	cursor:pointer; 
+	width:300px;	
+}
+
+.palletList:hover{
+    background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#2A9BBF, #444);
+}
+
+
+.button {
+	background-color:#2A9BBF;
+	padding:10px;
+	position:relative;
+	font-family: 'Open Sans', sans-serif;
+	font-size:12px;
+	text-decoration:none;
+	color:#fff;
+	border: solid 1px #831212;
+	background-image: linear-gradient(bottom, rgb(171,27,27) 0%, rgb(212,51,51) 100%);
+	border-radius: 5px;
+}
+
+.button:active {
+	padding-bottom:9px;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:11px;
+	top:1px;
+	background-image: linear-gradient(bottom, rgb(171,27,27) 100%, rgb(212,51,51) 0%);
+}
+
+.button:before {
+	background-color:#ccd0d5;
+	display:block;
+	position:absolute;
+	width:100%;
+	height:100%;
+	padding:8px;
+	left:-8px;
+	top:-8px;
+	z-index:-1;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 1px #909193, 0px 1px 0px #fff;
+}
+
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 2px 8px;
+    cursor: pointer;
+	color:2A9BBF;
+	width:140px;
+}
+
+th {
+    background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    border-left: 1px solid #555;
+    border-right: 1px solid #777;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #333;
+    box-shadow: inset 0 1px 0 #999;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    position: relative;
+    text-shadow: 0 1px 0 #000;  
+}
+
+header, .full-width {
+  width: 100%;
+  background: linear-gradient( #313131 10%,#209D9D ) ;
+}
+
+#containerT {width: 400px; margin: 30px auto; text-align: center; padding: 100px 0; background: #EEEEEE;}
+	/* The important bit */
+	.h2H {position: relative; margin: 0 -25px; font-size: 40px; background: #0088AA; color: #FFFFFF; text-shadow: 1px 1px 0px #1A5D6E; box-shadow: 0 0 10px #AAA; border-radius:20px 20px 0px 0px}
+	.h2H:after,
+	.h2H:before {content: ""; display: block; position: absolute; bottom: -25px; width: 0; height: 0; border-style: solid; border-color: #1A5D6E transparent;}
+	.h2H:before {border-width: 25px 0 0 25px; left: 0;}
+	.h2H:after  {border-width: 25px 25px 0 0; right: 0;}
+	
+@media print
+{
+  table { page-break-after:auto }
+  tr    { page-break-inside:avoid; page-break-after:auto }
+  td    { page-break-inside:avoid; page-break-after:auto }
+  thead { display:table-header-group }
+  tfoot { display:table-footer-group }
+}
+
+
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+		<script>
+		var firebaseRef = firebase.database().ref();
+		var palletRef =firebaseRef.child("pallets");
+		
+		$(document).ready(function(){
+				 $("#id_GlofaImg").change(function() {
+					uploadImgPlate();
+
+					
+			});
+		//	$.getJSON("/pallet?itemNumber="+itemID , (data)=>{
+				$.getJSON("/pallet", (data)=>{
+					console.log(data);
+					for (let i=0; i<data.length; i++){
+						var key=data[i]._id;
+						var img = data[i].palletImg;
+						var palletNumber = data[i].palletNumber;
+						var palletItemName = data[i].palletItemName;
+						var palletItemBrand = data[i].palletItemBrand;
+						var palleRemarks = data[i].palleRemarks;
+						var lastUpdate = data[i].lastUpdate;
+						$("#palletsTbody").append("<tr><th class='palletList'><span onclick='bigImage(\""+key+"\", \""+img+"\",\""+palletNumber+"\", \""+palletItemName+"\",\""+palletItemBrand+"\",\""+palleRemarks+"\",\""+lastUpdate+"\",\""+lastUpdate+"\")'>"+palletItemBrand+ "  " +palletItemName+"</span></td></tr>");
+			
+					}
+				});
+		});
+		
+		
+		
+		function bigImage(ky, src, num, name, brand, remarks, date){
+				console.log(ky);
+				$("#imgTbody").html("<img src='"+src+"'>");
+				$("#palletNumber").val(num);
+				$("#itemName").val(name);
+				$("#itemBrand").val(brand);
+				$("#pallet_remarks").val(remarks);
+				$("#palletImg").val(src);
+				$("#palletKey").val(ky);
+				$("#lastUpdate").val(date);
+		}
+		
+		
+		function newPallet(src){
+			debugger
+			var palletNumber = document.getElementById('palletNumber').value;
+			var itemName = document.getElementById('itemName').value;
+			var itemBrand = document.getElementById('itemBrand').value;
+			var palletImg = document.getElementById('palletImg').value;
+			var pallet_remarks = document.getElementById('pallet_remarks').value;			
+			var _dt = new Date();
+			updateDate=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+			console.log(src);
+			let pallet={
+			
+				palletNumber:''+palletNumber,
+				palletItemName:''+itemName,
+				palletItemBrand:''+itemBrand,
+				palletImg:''+palletImg,
+				palleRemarks:''+pallet_remarks,
+				lastUpdate:''+updateDate
+			}
+			if(src=='new'){
+			$.post('/pallet/add', 
+					pallet,
+			  		function(data){
+						  console.log(data);
+					  } );
+					}
+						
+				
+					
+			else if(src=='update'){
+				debugger
+				console.log(src);
+				var palletKey = document.getElementById('palletKey').value;
+				pallet.palletId=palletKey;
+				$.post('/pallet/update', 
+					pallet,
+			  		function(data){
+						  console.log(data);
+					  } );
+					}
+			}
+					
+		
+		
+		
+		function uploadImgPlate(){
+			storageRef = firebase.storage().ref();
+			var img= document.getElementById('id_GlofaImg');
+			var file;
+			if (img) {file= img.files[0];}
+			var plateImgRef = storageRef.child('plate/' + file.name);
+			var put = plateImgRef.put(file).then(function(snapshot){
+				showImagePlate(plateImgRef);
+				
+			});
+
+	}
+	
+		function showImagePlate(plateImgRef){
+			plateImgRef.getDownloadURL().then(function(url){
+			tempImgUrl = url;
+			tempImgPaletUrl = url;
+			document.getElementById('palletImg').value=url;
+			//document.getElementById('img').src=url;
+
+		
+		});
+		}
+		
+		
+		function searchPallet() {
+		  var input, filter, table, tr, td, i;
+		  input = document.getElementById("searchPallet_input");
+		  filter = input.value.toUpperCase();
+		  table = document.getElementById("palletsTbody");
+		  tr = table.getElementsByTagName("tr");
+		  for (i = 1; i <= tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[0];
+			console.log(td);
+			if (td) {
+			  if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+					
+				tr[i].style.display = "";
+			  } else {
+				tr[i].style.display = "none";
+			  }
+			}       
+		  }
+		}
+		
+		
+		function searchItem2(){
+		
+		 var searchText = $("#searchPallet_input").val().toLowerCase();
+			// Show only matching TR, hide rest of them
+			console.log(searchText);
+			$.each($("#palletsTbody  tr"), function() {
+			console.log(searchText);
+				if($(this).text().toLowerCase().indexOf(searchText) === -1)
+				   $(this).hide();
+				else
+				   $(this).show();                
+			});
+		}
+		</script>
+		
+<body onload="init()" id='body' style='padding-top:0px; background-size: cover;'> 
+    
+  	
+		 <a>
+         
+        <div class='header'>
+			<a1>Pallets</a1> <img src="peerpharm.png"  width='270px' align='right'>
+		</div>
+		<ul class="ulMenu">
+			  <li style='float: left;'><a href="#home">Home</a></li>
+			  <li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Orders</a>
+					<div class="dropdown-content">
+					  <a href="openOrders.html">Open Orders</a>
+					  <a href="newOrder.html">New Order</a>
+					  <a href="showOrder.html">Search Order</a>
+					  <a href="ordersList.html">All Orders</a>
+					  
+					</div>
+			  </li>
+			  <li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Schedule</a>
+					<div class="dropdown-content">
+					  <a href="workShift.html">Work Schedule</a>
+					  <a href="printing.html">Print Schedule</a>
+					  
+					</div>
+			  </li>
+			  <li class="dropdown">
+			  <a href="javascript:void(0)" class="dropbtn">Items</a>
+			  <div class="dropdown-content">
+				<a href="itemsList.html">Items List</a>
+				<a href="getItem.html">Product Tree</a>
+				<a href="needToBuild.html">No Data List</a>
+				</div>
+				</li>
+			  <li style='float: left;'><a href="costumers.html">Costumers</a></li>
+			  <li style='float: left;'><a href="needToBuild.html">No Data List</a></li>
+			  <li class="dropdown">
+					<a href="javascript:void(0)" class="dropbtn">Batches</a>
+					<div class="dropdown-content">
+						<a href="batchesList.html">Cosmetics</a>
+						<a href="batchesList_makeUp.html">Make Up</a>
+					</div>
+			  </li>
+			  <li style='float: left;'><a href="forms.html">Forms</a></li>
+			  
+			  
+		</ul>
+		</a>
+		<br><br>
+		
+	
+	<table border=0 style='width:100%'>
+		<tr>
+			<td style='width:25%'>
+				<div border=5 style='height:500px; overflow:scroll; overflow:auto; margin-bottom:20px'>
+				<input type='text' placeholder='חפש גלופה' id='searchPallet_input' onkeyup="searchItem2()">
+					<table>
+						<tbody id='palletsTbody'>	
+						</tbody>
+					</table>
+				</div>
+			</td>
+			<td><table><tbody id='imgTbody'><tr><td></td></tr></tbody></table></td>
+			<td align='left'>  
+		
+				<table style='background:-webkit-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px)'>
+					<tr>
+						<td colspan=2>
+							<h2 style='color: #09C; font-family:arial, verdana, sans-serif'>פרטי גלופה</h2>
+						</td>
+					</tr>
+					<tr>
+						<td style='padding:10px'>גלופה מספר</td>
+						<td align='right'><input type='text' id='palletNumber'></td>
+					</tr>
+					<tr>
+						<td style='padding:10px'>מותגים</td>
+						<td align='right'><textarea rows='3' cols='30' id='itemBrand'  style='width:200px'></textarea></td>
+					</tr>
+					<tr>
+						<td style='padding:10px'>שם פריט</td>
+						<td align='right'><textarea rows='7' cols='30' id='itemName'  style='width:200px'></textarea></td>
+					</tr>
+					<tr>
+						<td style='padding:10px'>מפתח</td>
+						<td align='right'><input type='text' id='palletKey'></td>
+					</tr><tr>
+						<td style='padding:10px'>קישור לתמונה</td>
+						<td align='right'><input type='text' id='palletImg'></td>
+					</tr>
+					<tr>
+						<td style='padding:10px'>תמונה חדשה</td>
+						<td align='right'>
+						<input type="file" id="id_GlofaImg" style='display:none'>
+						<label for="id_GlofaImg" class="custom-file-upload">
+							
+							<i class="fa fa-cloud-upload"></i> בחר גלופה
+							<img src='openFile.png' style='width:20px'>
+							<br>
+						</label>
+						</td>
+					</tr>
+					<tr>
+						<td style='padding:20px'>הערות חשובות</td>
+						<td><textarea rows='7' cols='30' id='pallet_remarks'  style='width:200px'></textarea></td>
+					</tr>
+					<tr>
+						<td style='padding:10px'>עדכון אחרון</td>
+						<td align='right'><input type='text' id='lastUpdate' disabled style='background-color:#DCDCDC'></td>
+					</tr>
+					<tr>
+						<td colspan=2>
+							<button class="button" onclick='newPallet("update")'>עדכן גלופה</button>
+							<button class="button" onclick='newPallet("new")'>הקם גלופה</button>
+							<input type='reset' value='אפס'  class="button"	>
+						</td>
+					
+					</tr>
+				</table>
+				
+			
+			</td>
+		</tr>
+	</table>
+			
+			
+			
+	

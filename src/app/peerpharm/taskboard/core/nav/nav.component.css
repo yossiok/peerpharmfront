@@ -1,0 +1,11 @@
+.nav-spacer{
+    flex: 1 1 auto;
+}
+.nav-title{
+    font-size: 2rem;
+    width: 200px;
+}
+h5{
+    margin-left: 60px;
+    font-size: 0.6em;
+}

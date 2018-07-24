@@ -1,0 +1,541 @@
+<html>
+    <head>
+        <title>Orders List</title>
+        <meta charset="windows-1255">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+	    
+<style>
+	
+
+.header{
+	height: 45px;
+	position: relative;
+	background: #6E6E6E url(img03.jpg) top left no-repeat;
+	padding: 45px;
+	color: #FFFFFF;
+	width: 1330px;
+	border: solid 1px #7E7E7E;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	overflow: hidden;
+	margin-left:20px
+	
+
+}
+
+.header a1 {
+	position: absolute;
+    text-decoration: none;
+	color: #FFFFFF;
+	text-shadow: 0 1px 1px #3E3E3E;
+	font-size:50px;
+	align: right;
+	bottom: 10;
+    left: 15;
+	
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(#209D9D, #497676) ;
+	width: 1422px;
+	margin-left:20px
+}	
+
+li {
+    float: left;
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+	
+body{
+	display:flex;
+		min-height:30vh;
+	align-items:center;
+	
+	flex-direction:column;
+}
+th {
+    background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    border-left: 1px solid #555;
+    border-right: 1px solid #777;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #333;
+    box-shadow: inset 0 1px 0 #999;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    position: relative;
+    text-shadow: 0 1px 0 #000;  
+}
+
+td {
+    border-right: 1px solid #fff;
+    border-left: 1px solid #e8e8e8;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+    transition: all 300ms;
+	font-size:17px;
+	padding:10px;
+	
+}
+tr{
+	text-align:center;
+	
+}
+tr:hover{
+	background-color:#F9F9F9	;
+
+}
+.trBtn:hover{
+	background-color:white	;
+}
+
+.searchItem_input {
+  background-image: url("search.gif");
+  background-size: 20px 20px;
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+</style>
+	
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+ 
+ 
+ <script>
+		
+		var firebaseRef = firebase.database().ref();
+		var ordersRef =firebaseRef.child("orders");
+		var i;
+		var color= "white";
+		var typeShown="all";
+		
+		
+		
+		function setShown(type){
+			console.log(type);
+			typeShown=type;
+			init();
+		}
+		function init(){
+		
+		$("#table_body").html(""); // to reset the table
+		$("#table_body2").html(""); // to reset the table
+			
+			$.getJSON("/order?status=open" , (data)=>{
+				console.log("data");
+				console.log(data);		
+			for(let i=0; i<data.length;i++){				
+				var refParent=data[i]._id;
+				var orderNumber =data[i].orderNumber;
+				var costumer=data[i].costumer;
+				var orderDate =data[i].orderDate;
+				var deliveryDate=data[i].deliveryDate;
+				var orderRemarks=data[i].orderRemarks;
+				var orderType=data[i].orderType;
+				var status=data[i].status;
+
+				var dateAlert=false;
+				if(orderType =="cosmetic"){
+					orderType="Cosmetic";
+				}
+				else if(orderType=="mkp"){
+					orderType="Make Up";
+				}
+				else if(orderType=="c_mkp"){
+					orderType="Cosmetic & MakeUp"	
+				}
+				else{
+					orderType="";
+				}
+			
+				var now = new Date();
+				now.setHours(0,0,0,0);
+				var dateToCheck = new Date(stringToDate(deliveryDate, "dd/MM/yyyy","/"));
+			//	var dateToCheck = new Date();
+				dateToCheck = addDays(dateToCheck, -7)
+				if(now> dateToCheck){
+					//console.log("bigger" + dateToCheck);
+					dateAlert=true;
+				}
+				
+				console.log(orderNumber +  " , " + orderType);
+			//	console.log(typeShown + " , " +orderType);
+				
+				//if (orderType==typeShown && typeShown!='all'){
+				if (orderType==typeShown && typeShown!='all' || orderType=="Cosmetic & MakeUp" && typeShown!='all'){
+					i++;
+					if (i % 2 == 0){
+					color="#eff5f5";}
+					
+						$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a href='showOrder.html?orderNumber="+ orderNumber+"''   target='_blank' style='color:blue'  onClick='ref(\""+orderNumber+"\")'>" + orderNumber + "</a></td><td>"+ costumer+	 "</td><td>" +orderDate+	 "</td><td>" +deliveryDate+	 "</td><td>" +orderRemarks+	 "</td><td>" +orderType+	 "</td><td><img src='/images/status_green.png' style='cursor:pointer' width='33px' onClick='setDoneOrder(\"" +orderNumber+ "\")'><img src='/images/deleteBtn.png' style='cursor:pointer' width='30px' onClick='deleteData(\"" +orderNumber+ "\")'><img id='editData"+i+"' src='/images/editBtn.png' style='width:30px; background-color:none; cursor:pointer' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'></td></tr>");
+						color= "white";
+						console.log("type");
+				}
+				
+				
+				else if(typeShown=='all'){
+				//	i++;
+					if (i % 2 == 0){
+					color="#eff5f5";}
+						if(dateAlert==true){
+							color="red";
+							$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a href='showOrder.html?orderNumber="+ orderNumber+"'   target='_blank' style='color:blue'  onClick='ref(\""+orderNumber+"\")'>" + orderNumber + "</a></td><td>"+ costumer+	 "</td><td>" +orderDate+	 "</td><td>" +deliveryDate+	 "</td><td>" +orderRemarks+	 "</td><td>" +orderType+	 "</td><td><img src='/images/status_green.png' style='cursor:pointer' width='33px' onClick='setDoneOrder(\"" +orderNumber+ "\")'><img src='/images/deleteBtn.png' style='cursor:pointer' width='30px' onClick='deleteData(\"" +orderNumber+ "\")'><img id='editData"+i+"' src='/images/editBtn.png' style='width:30px; background-color:none; cursor:pointer' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'></td></tr>");
+						}
+						else{
+							$("#table_body2").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a href='showOrder.html?orderNumber="+ orderNumber+"''   target='_blank' style='color:blue'  onClick='ref(\""+orderNumber+"\")'>" + orderNumber + "</a></td><td>"+ costumer+	 "</td><td>" +orderDate+	 "</td><td>" +deliveryDate+	 "</td><td>" +orderRemarks+	 "</td><td>" +orderType+	 "</td><td><img src='/images/status_green.png' style='cursor:pointer' width='33px' onClick='setDoneOrder(\"" +orderNumber+ "\")'><img src='/images/deleteBtn.png' style='cursor:pointer' width='30px' onClick='deleteData(\"" +orderNumber+ "\")'><img id='editData"+i+"' src='/images/editBtn.png' style='width:30px; background-color:none; cursor:pointer' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'></td></tr>");
+							console.log("all 2");
+						}
+						dateAlert=false;
+						color= "white";
+				
+				}
+			}
+				
+			});
+
+			//ordersRef.on("child_added", snap=>{
+			ordersRef.orderByChild("status2").equalTo("open").on("child_added", snap=>{
+			
+				var refParent= snap.key;
+				var orderNumber = snap.child("orderN").val();
+				var costumer= snap.child("costumerName").val();
+				var orderDate = snap.child("dateOfOrder").val();
+				var deliveryDate= snap.child("dateOfDelivery").val();
+				var orderRemarks= snap.child("remarks").val();
+				var orderType= snap.child("type").val();
+				var dateAlert=false;
+				if(orderType =="cosmetic"){
+					orderType="Cosmetic";
+				}
+				else if(orderType=="mkp"){
+					orderType="Make Up";
+				}
+				else if(orderType=="c_mkp"){
+					orderType="Cosmetic & MakeUp"	
+				}
+				else{
+					orderType="";
+				}
+			
+				var now = new Date();
+				now.setHours(0,0,0,0);
+				var dateToCheck = new Date(stringToDate(deliveryDate, "dd/MM/yyyy","/"));
+				dateToCheck = addDays(dateToCheck, -7)
+				if(now> dateToCheck){
+					//console.log("bigger" + dateToCheck);
+					dateAlert=true;
+				}
+
+				console.log(typeShown + " , " +orderType);
+				
+				//if (orderType==typeShown && typeShown!='all'){
+				if (orderType==typeShown && typeShown!='all' || orderType=="Cosmetic & MakeUp" && typeShown!='all'){
+					i++;
+					if (i % 2 == 0){
+					color="#eff5f5";}
+					
+						$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a href='showOrder.html'   target='_blank' style='color:blue'  onClick='ref(\""+orderNumber+"\")'>" + orderNumber + "</a></td><td>"+ costumer+	 "</td><td>" +orderDate+	 "</td><td>" +deliveryDate+	 "</td><td>" +orderRemarks+	 "</td><td>" +orderType+	 "</td><td><img src='/images/status_green.png' style='cursor:pointer' width='33px' onClick='setDoneOrder(\"" +orderNumber+ "\")'><img src='/images/deleteBtn.png' style='cursor:pointer' width='30px' onClick='deleteData(\"" +orderNumber+ "\")'><img id='editData"+i+"' src='editBtn.png' style='width:30px; background-color:none; cursor:pointer' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'></td></tr>");
+						color= "white";
+						console.log("type");
+				}
+				
+				
+				else if(typeShown=='all'){
+					i++;
+					if (i % 2 == 0){
+					color="#eff5f5";}
+						if(dateAlert==true){
+							color="red";
+							$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a href='showOrder.html'   target='_blank' style='color:blue'  onClick='ref(\""+orderNumber+"\")'>" + orderNumber + "</a></td><td>"+ costumer+	 "</td><td>" +orderDate+	 "</td><td>" +deliveryDate+	 "</td><td>" +orderRemarks+	 "</td><td>" +orderType+	 "</td><td><img src='/images/status_green.png' style='cursor:pointer' width='33px' onClick='setDoneOrder(\"" +orderNumber+ "\")'><img src='/images/deleteBtn.png' style='cursor:pointer' width='30px' onClick='deleteData(\"" +orderNumber+ "\")'><img id='editData"+i+"' src='editBtn.png' style='width:30px; background-color:none; cursor:pointer' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'></td></tr>");
+						}
+						else{
+							$("#table_body2").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a href='showOrder.html'   target='_blank' style='color:blue'  onClick='ref(\""+orderNumber+"\")'>" + orderNumber + "</a></td><td>"+ costumer+	 "</td><td>" +orderDate+	 "</td><td>" +deliveryDate+	 "</td><td>" +orderRemarks+	 "</td><td>" +orderType+	 "</td><td><img src='/images/status_green.png' style='cursor:pointer' width='33px' onClick='setDoneOrder(\"" +orderNumber+ "\")'><img src='/images/deleteBtn.png' style='cursor:pointer' width='30px' onClick='deleteData(\"" +orderNumber+ "\")'><img id='editData"+i+"' src='editBtn.png' style='width:30px; background-color:none; cursor:pointer' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'></td></tr>");
+							console.log("all 2");
+						}
+						dateAlert=false;
+						color= "white";
+				
+				}
+			//	if (orderType=='c_mkp' || orderType==''){
+		//				$("#table_body").append("<tr id='id_tr"+i+"'  style='background-color:"+color+"'><td>"+i+"</td><td><a href='showOrder.html'   target='_blank' style='color:blue'  onClick='ref(\""+orderNumber+"\")'>" + orderNumber + "</a></td><td>"+ costumer+	 "</td><td>" +orderDate+	 "</td><td>" +deliveryDate+	 "</td><td>" +orderRemarks+	 "</td><td>" +orderType+	 "</td><td><img src='status_green.png' style='cursor:pointer' width='33px' onClick='setDoneOrder(\"" +orderNumber+ "\")'><img src='deleteBtn.png' style='cursor:pointer' width='30px' onClick='deleteData(\"" +orderNumber+ "\")'><img id='editData"+i+"' src='editBtn.png' style='width:30px; background-color:none; cursor:pointer' class='imgEd' onClick='editData("+i+ ", \"" +refParent+ "\")'></td></tr>");
+			//		color= "white";
+				//}
+				
+			});
+		}
+		
+		
+		
+		
+		function ref(number){
+		
+			localStorage.setItem("storageName", number);
+		}
+		
+		function deleteData(orderNumber){
+		
+			var a=confirm("Delete order " +orderNumber + "?");
+			if (a==true){
+			ordersRef.child(orderNumber).remove();
+			}
+			init();
+		
+		}
+		
+		
+		
+		function editData( i, orderRefNum){
+			var img = document.getElementById("editData"+i);
+			if(img.style.width=='30px'){		
+			
+				ordersRef.child(orderRefNum).on('value', snap=>{
+						
+					var tempKey= snap.key;
+					
+					var orderNumber = snap.child("orderN").val();
+					var costumer= snap.child("costumerName").val();
+					var orderDate = snap.child("dateOfOrder").val();
+					var deliveryDate= snap.child("dateOfDelivery").val();
+					var orderRemarks= snap.child("remarks").val();
+					var orderType= snap.child("type").val();
+					
+					
+					
+				//console.log(edit_itmNUM + " , " + edit_discrip + " , " + edit_unitMsr + " , " + edit_qty + " , " + edit_qtyKg);
+				
+				$("#id_tr"+i).after("<tr id='editTr"+i+"'><td></td><td><input type='text' value='"+orderNumber+"'	 id='edit_orderN' style='width:110px'></td><td><input type='text'  value='"+costumer+"'	 	 id='edit_costumer' style='width:110px'></td><td><input type='text' 	value='"+orderDate+"'	 id='edit_orderDate' style='width:110px'></td><td><input type='text'	value='"+deliveryDate+"' id='edit_deliveryDate' style='width:110px'></td><td><input type='text' value='"+orderRemarks+"'	 id='edit_orderRemarks' style='width:110px'></td><td><select id='edit_type'><option value='cosmetic'>Cosmetic</option><option value='mkp'>MakeUp</option><option value='c_mkp'>C & Mkp</option></select></td><td><button class='button' onclick='updateSchedule(\""+tempKey+"\")'>Update</button></td></tr>");
+					
+				var element = document.getElementById('edit_type');
+				console.log("hi" + element.value);
+				element.value = orderType;
+				});
+				
+				
+				
+				
+				img.style.width='29px'
+				
+			}
+			else{
+					$("#editTr"+i).closest("tr").remove();
+					//$("#editTr"+i).closest("tr").remove();
+					img.style.width='30px'
+				}
+		}
+		
+		
+		
+		function updateSchedule(orderKey){
+		
+			_orderNumber = document.getElementById('edit_orderN').value;			
+						
+			_costumer = document.getElementById('edit_costumer').value;			
+			_orderDate = document.getElementById('edit_orderDate').value;	
+			
+			_deliveryDate = document.getElementById('edit_deliveryDate').value;			
+			_orderRemarks = document.getElementById('edit_orderRemarks').value;			
+			_orderType = document.getElementById('edit_type').value;			
+			
+		
+		 ordersRef.child(orderKey).update({
+			
+				orderN: ''+_orderNumber,
+				costumerName: '' +_costumer,
+				dateOfOrder: ''+_orderDate,
+				dateOfDelivery: ''+_deliveryDate,
+				remarks: ''+_orderRemarks,
+				type: ''+_orderType,
+				status: 'open',
+		});
+		
+			init();
+		}
+		
+		function setDoneOrder(orderKey){
+		
+			var a=confirm("Order " +orderKey + " is done?");
+			if (a==true){
+		
+			ordersRef.child(orderKey).update({
+				status: 'close',
+			});
+			}
+		}
+		
+		
+		function stringToDate(_date,_format,_delimiter)
+		{
+            var formatLowerCase=_format.toLowerCase();
+            var formatItems=formatLowerCase.split(_delimiter);
+            var dateItems=_date.split(_delimiter);
+            var monthIndex=formatItems.indexOf("mm");
+            var dayIndex=formatItems.indexOf("dd");
+            var yearIndex=formatItems.indexOf("yyyy");
+            var month=parseInt(dateItems[monthIndex]);
+            month-=1;
+            var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+            return formatedDate;
+		}
+		
+		function addDays(dateObj, numDays) {
+		   dateObj.setDate(dateObj.getDate() + numDays);
+		   return dateObj;
+		}
+		
+	function searchOrder(){
+		
+		 var searchText = $("#searchItem_input2").val().toLowerCase();
+			// Show only matching TR, hide rest of them
+			$.each($("#orderDetailsID tbody tr"), function() {
+				if($(this).text().toLowerCase().indexOf(searchText) === -1)
+				   $(this).hide();
+				else
+				   $(this).show();                
+			});
+		}
+</script>
+
+
+<body style='padding-top:20px' onLoad="init()">
+		<a>
+      
+		    
+        <div class='header' style="width: 1330px ; height: 70px"><a1>	Orders List </a1> <img src="/images/peerpharm.png"  width='270px' align='right'></div>
+		<ul>
+			  <li><a href="#home">Home</a></li>
+			  <li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Orders</a>
+					<div class="dropdown-content">
+					  <a href="openOrders.html">Open Orders</a>
+					  <a href="newOrder.html">New Order</a>
+					  <a href="showOrder.html">Search Order</a>
+					  <a href="ordersList.html">All Orders</a>
+					  
+					</div>
+			  </li>
+			  <li class="dropdown"><a href="workShift.html">Work Schedule</a><li>
+			  <li class="dropdown">
+			  <a href="javascript:void(0)" class="dropbtn">Product Tree</a>
+			  <div class="dropdown-content">
+				<a href="itemsList.html">Items List</a>
+				<a href="getItem.html">Product Tree</a>
+				</div>
+				</li>
+			  <li><a href="costumers.html">Costumers</a></li>
+			  <li><a href="needToBuild.html">No-form List</a></li>
+			  <li><a href="batchesList.html">Batch List</a></li>
+		</ul>
+		</a>
+		<br><br>
+		
+		<table>
+			<tr class="trBtn">
+				<td style="border-left: 0px solid #fff;"><input style="width:250px; margin-right:30px;" type="text" id="searchItem_input2" onkeyup="searchOrder()" placeholder="Search" class="searchItem_input"></td>
+				<td><img src ='/images/cosmeticsOrder.png' style="width:60px; cursor:pointer;" onclick="setShown('Cosmetic')"></td>
+				<td><img src ='/images/makeupOrder.png'  style="width:60px; cursor:pointer;"   onclick="setShown('Make Up')"></td>
+				<td><img src ='/images/combineOrder.png'  style="width:60px; cursor:pointer;"   onclick="setShown('Cosmetic & MakeUp')"></td>
+				<td><img src ='/images/allOrder.png'  style="width:60px; cursor:pointer;"  onclick="setShown('all')"></td>
+			</tr>
+		</table>
+		
+	<table border =1 style=" width:1100px" id="orderDetailsID" >
+			<thead>
+				<tr style="background-color:white; ">
+					<th></td>
+					<th style="padding:5px"><h3 style="color:gold">Order Number</h3></th>
+					<th style="padding:5px"><h3 style="color:gold">Costumer</h3></th>
+					<th style="padding:5px"><h3 style="color:gold">Order date</h3></th>
+					<th style="padding:5px"><h3 style="color:gold">Delivery</h3></th>
+					<th style="padding:5px"><h3 style="color:gold">Remarks</h3></th>
+					<th style="padding:5px; width:100px"><h3 style="color:gold">Type</h3></th>
+					<th></td>
+				</tr>
+			</thead>
+			<tbody id= "table_body">
+			</tbody>
+			<tbody id= "table_body2">
+			</tbody>
+		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

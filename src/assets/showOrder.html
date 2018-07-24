@@ -1,0 +1,2703 @@
+﻿<html>
+    <head>
+        <title>Show Orders</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+	<style>
+	
+
+		.header{
+			height: 45px;
+			position: relative;
+			background: #6E6E6E url(img03.jpg) top left no-repeat;
+			padding: 45px;
+			color: #FFFFFF;
+			width: 1330px;
+			border: solid 1px #7E7E7E;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			overflow: hidden;
+			margin-left:20px
+			
+		
+		}
+		
+		input[type=checkbox]{
+		
+			 transform: scale(1);
+			-ms-transform: scale(1);
+			-webkit-transform: scale(1.7);
+			padding: 10px;
+		}
+		
+		.header a1 {
+			position: absolute;
+			text-decoration: none;
+			color: #FFFFFF;
+			text-shadow: 0 1px 1px #3E3E3E;
+			font-size:50px;
+			align: right;
+			bottom: 10;
+			left: 15;
+			
+		}
+		
+		.ulMenu {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background: linear-gradient(#209D9D, #497676) ;
+			width: 1422px;
+			margin-left:20px
+		}	
+		
+		ul{
+			background-color:white;
+			cursor:pointer;
+			width:100px
+		}
+		
+		li a, .dropbtn {
+			display: inline-block;
+			color: white;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+		
+		li a:hover, .dropdown:hover .dropbtn {
+			background-color: red;
+		}
+		
+		li.dropdown {
+			display: inline-block;
+			float: left;
+		}
+		
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
+		}
+		
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+			text-align: left;
+		}
+		
+		.dropdown-content a:hover {background-color: #f1f1f1}
+		
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+		
+		#uploader{
+			-webkit-appearance: none;
+			appearance: none;
+			width:50%;
+			margin-bottom:10px;
+			color:blue;
+		}
+		
+		button{
+			background-color:red;
+			color: white;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border: none;
+			
+			
+		}
+		
+		.expand{
+			background-color:green;
+		
+			font-size: 14px;
+			border-radius: 16px;
+			border: 3px solid #E1E1E1;
+		}
+		
+		.delete{
+		background-color: #D12B2B;
+		}
+		.delete:hover{
+			background-color: red;
+		
+		}
+		
+		button:hover {
+			background-color: #4CAF50;
+			color: white;
+			 box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+		}
+		
+		.button{
+			background-color:green;
+			color: white;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border: 2px solid #555555;
+			 border-radius: 4px;
+			
+			
+		}
+		
+		
+		.button span {
+		  cursor: pointer;
+		  display: inline-block;
+		  position: relative;
+		  transition: 0.5s;
+		}
+		
+		.button span:after {
+		  content: '\00bb';
+		  position: absolute;
+		  opacity: 0;
+		  top: 0;
+		  right: -20px;
+		  transition: 0.5s;
+		}
+		
+		.button:hover span {
+		  padding-right: 25px;
+		}
+		
+		.button:hover span:after {
+		  opacity: 1;
+		  right: 0;
+		}
+		
+		
+		tr{
+			text-align:center;
+		}
+		
+		tr:hover{
+		 
+			background-color:#F9F9F9	;
+		 
+		 
+		 }
+		 th {
+			background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+			border-left: 1px solid #555;
+			border-right: 1px solid #777;
+			border-top: 1px solid #555;
+			border-bottom: 1px solid #333;
+			box-shadow: inset 0 1px 0 #999;
+			color: #fff;
+			font-weight: bold;
+			padding: 10px 15px;
+			position: relative;
+			text-shadow: 0 1px 0 #000;  
+		}
+		
+		td {
+			border-right: 1px solid #fff;
+			border-left: 1px solid #e8e8e8;
+			border-top: 1px solid #fff;
+			border-bottom: 1px solid #e8e8e8;
+			position: relative;
+			transition: all 300ms;
+			
+		}
+		.tdSticker{
+			border-right: 0px solid #fff;
+			border-left: 0px solid #e8e8e8;
+			border-top: 0px solid #fff;
+			border-bottom: 0px solid #e8e8e8;
+		
+		}
+		
+		
+		.innerTd{
+				border:0px ;
+				font: normal 13px/30px , Helvetica, sans-serif;
+				color: black;
+				
+			
+		}
+		.innerLeftTd{
+				border:0px;
+				font: normal 13px/30px , Helvetica, sans-serif;
+				color: black;
+		
+		}
+		
+		input[type=text] ,input[type=date], select
+				{
+				display: inline-block;
+				-webkit-box-sizing: content-box;
+				-moz-box-sizing: content-box;
+				box-sizing: content-box;
+				float: none;
+				z-index: auto;
+				width: auto;
+				height: auto;
+				position: static;
+				cursor:grab;
+				opacity: 1;
+				margin: 0;
+				overflow: visible;
+				border: 1px solid #b7b7b7;
+				-webkit-border-radius: 3px;
+				border-radius: 3px;
+				font: normal medium/normal Arial, Helvetica, sans-serif;
+				color: rgba(0,142,198,1);
+				-o-text-overflow: clip;
+				text-overflow: clip;
+				background: rgba(252,252,252,1);
+				-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+				box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+				text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+				-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+				-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+				-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+				transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+				-webkit-transform: none;
+				transform: none;
+				-webkit-transform-origin: 50% 50% 0;
+				transform-origin: 50% 50% 0;
+		}
+		
+		.select{
+		display: inline-block;
+				-webkit-box-sizing: content-box;
+				-moz-box-sizing: content-box;
+				box-sizing: content-box;
+				float: none;
+				z-index: auto;
+				width: auto;
+				height: auto;
+				position: static;
+				cursor: default;
+				opacity: 1;
+				margin: 0;
+				overflow: visible;
+				border: 1px solid #b7b7b7;
+				-webkit-border-radius: 3px;
+				border-radius: 3px;
+				font: normal medium/normal Arial, Helvetica, sans-serif;
+				color: rgba(0,142,198,1);
+				-o-text-overflow: clip;
+				text-overflow: clip;
+				background: rgba(252,252,252,1);
+				-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+				box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+				text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+				-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+				-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+				-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+				transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+				-webkit-transform: none;
+				transform: none;
+				-webkit-transform-origin: 50% 50% 0;
+				transform-origin: 50% 50% 0;
+		
+		
+		}
+		.checkItemTemp{
+		display: none;
+		}
+		.checkItem{
+				display: block;
+				-webkit-box-sizing: content-box;
+				-moz-box-sizing: content-box;
+				box-sizing: content-box;
+				float: none;
+				z-index: auto;
+				width: 130px;
+				height: 18px;
+				position: static;
+				cursor: pointer;
+				opacity: 1;
+				margin: 0 auto;
+				padding-right: 10px;
+				padding-left: 10px;
+				overflow: visible;
+				border: 2px solid rgb(30,205,151);
+				-webkit-border-radius: 40px;
+				border-radius: 40px;
+				font: normal 13px/30px , Helvetica, sans-serif;
+				color: #5594E3;
+				text-align: center;
+				-o-text-overflow: clip;
+				text-overflow: clip;
+				letter-spacing: 1px;
+				background: rgba(0,0,0,0);
+				-webkit-box-shadow: none;
+				box-shadow: none;
+				text-shadow: none;
+				-webkit-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+				-moz-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+				-o-transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+				transition: background-color 0.3s cubic-bezier(0, 0, 0, 0), color 0.3s cubic-bezier(0, 0, 0, 0), width 0.3s cubic-bezier(0, 0, 0, 0), border-width 0.3s cubic-bezier(0, 0, 0, 0), border-color 0.3s cubic-bezier(0, 0, 0, 0);
+				-webkit-transform: none;
+				transform: none;
+				-webkit-transform-origin: 50% 50% 0;
+				transform-origin: 50% 50% 0;
+		}
+		
+		
+		.updateSelfItem{
+			background-color:#5594E3;
+			position:relative;
+			font-family: 'Open Sans', sans-serif;
+			font-size:12px;
+			text-decoration:none;
+			color:#fff;
+			border: solid 1px #831212;
+			background-image: linear-gradient(bottom, rgb(171,27,27) 0%, rgb(212,51,51) 100%);
+			border-radius: 5px;
+			
+		}
+		
+		
+		.imgSearch{
+			margin-left:15px;
+			
+		}
+		.imgSearch:hover{
+			-webkit-filter: invert(100%);filter: invert(100%);
+		
+		}
+		.imgEd:hover{
+			-webkit-filter: invert(100%);filter: invert(100%);
+		
+		}
+		.btnImage{
+			 width:25px;
+			 height:25px;
+			 float: right; 
+			 cursor:pointer; 
+			 margin:0;
+			 display:inline;
+		
+		}
+		a{
+		
+		color:blue;
+		}
+		
+		.priceClass{
+			display:none;
+		}
+		
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			padding-top: 80px; /* Location of the box */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+		
+		/* Modal Content */
+		.modal-content {
+			position: relative;
+			background-color: #fefefe;
+			margin: auto;
+			padding: 0;
+			border: 1px solid #888;
+			width: 80%;
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+			-webkit-animation-name: animatetop;
+			-webkit-animation-duration: 0.4s;
+			animation-name: animatetop;
+			animation-duration: 0.4s
+		}
+		
+		/* Add Animation */
+		@-webkit-keyframes animatetop {
+			from {top:-300px; opacity:0} 
+			to {top:0; opacity:1}
+		}
+		
+		@keyframes animatetop {
+			from {top:-300px; opacity:0}
+			to {top:0; opacity:1}
+		}
+		
+		/* The Close Button */
+		.close {
+			color: white;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+		
+		.close:hover,
+		.close:focus {
+			color: #000;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		
+		.modal-header {
+			padding: 2px 16px;
+			background-color: lightblue;
+			color: white;
+		}
+		
+		.modal-body {padding: 2px 16px;}
+		
+		.modal-footer {
+			padding: 2px 16px;
+			background-color: lightblue;
+			color: white;
+		}
+		#isMkp{
+		display:none;
+		}
+		
+		.stripes1 {
+		 color: black;
+		  background: repeating-linear-gradient(
+			45deg,
+			transparent,
+			transparent 10px,
+			#FF0000 10px,
+			#FFF 17px
+		  ),
+		  linear-gradient(
+			to bottom,
+			#FFF,
+			#FFF
+		  )
+		}
+		
+		@media print {
+		
+			#body_id{
+				padding-top:0px;
+				margin-top:0px;
+				
+			}
+			#mainDiv{
+				display:none;
+			}
+		
+			 body {margin-top:0}
+			#center_id{
+				 display:absolute;
+				 justify-content:center;
+				 align-items:center;
+				 height:100%;
+			
+			 }
+			html, body{
+			  height:100%;
+			  width:100%;
+			}
+		
+			
+		}
+		
+		
+		.tdPrint{ 
+			border-bottom: 2px solid #000 text;
+			text-align: center;
+			font-size: 23px;
+			height: 100%;
+			margin:0; 
+			padding-top:22px;
+		}
+		body {
+		  -webkit-print-color-adjust: exact;
+		}
+		@page { 
+		size: auto;  
+		margin: 0mm; 
+		}
+		
+		table {
+		page-break-after : always;
+		}
+		</style>
+
+
+<script src="_js/JsBarcode.all.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+		<script src="_js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+		<script>
+		
+		var firebaseRef = firebase.database().ref();
+		var ordersRef =firebaseRef.child("orders");
+		var componentsRef =firebaseRef.child("components");
+		var costumersRef= firebaseRef.child("costumers");
+		var schedulePrintRef =firebaseRef.child("schedulePrint");
+		var componentsRef =firebaseRef.child("components");
+		var orderWhRef =firebaseRef.child("WhareHouseOrders");
+		var palletRef =firebaseRef.child("pallets");
+		var cmptStatusRef="";
+		var itemOrderRef;
+		var itemsRef = firebaseRef.child("items");
+		var orderNumber, costumer_Name="", orderDate;
+		var _itemNumber, _discription, _unit_measure,	_quantity, _price, _discount, _totalPrice, _remarks, _licsens, colorE;
+		var _pcsCarton, _grossWt, _netWt, _cbm;
+		var currentNoItemNumber="";
+		var noItemN;
+		var leftToCompile;
+		var itemsArray=[];
+		var cmptPrintNumber="", cmptPrintName="", tempImgPaletUrl="";
+		var s_barcodeK, s_PcsCarton, formulaB, s_grossW, s_netW, dateOfDelivery;
+		var qqty;
+		var dataArived;
+		_pcsCarton="", _grossWt="", _netWt="", _cbm="";
+		var orderNumber="", orderN, orderGeneratedId;
+		
+		console.log(orderNumber);
+		
+		$(document).ready(()=>{
+		orderN= getParameterByName("orderNumber", location.href);
+			showOrder(orderN);
+		});
+
+		function printSticker(src, itemNum, name, val, ttlPcs){
+			if(src=="tj"){
+				var dCountry;
+				var dAdress;
+				var dc = prompt("Please enter DC:", "");
+				if(dc!="" && dc!=null){
+					console.log(dc);
+						costumersRef.orderByChild("id").equalTo(dc).on("child_added", snap=>{
+							dAdress = snap.child("deliveryAdress").val();
+							dCountry = snap.child("deliveryCountry").val();
+							var adress = prompt("Please enter adress:", dAdress);
+							var dateDelivery = prompt("Please enter adress:", dateOfDelivery);
+							var po = prompt("Please enter PO:", "");
+							var invoice = prompt("Please enter Invoice:", "");
+							console.log(dAdress);
+							console.log(snap.key);
+							check(src, itemNum, name, val, ttlPcs, dc, adress, po, invoice, dateDelivery, dCountry)
+						});
+					}
+				}
+				else{
+					check(src, itemNum, name, val, ttlPcs, "", "", "", "")
+				}
+			}
+			function check(src, itemNum, name, val, ttlPcs, dc, dAdress, po, invoice, dateDelivery, dCountry){
+			
+			console.log(src);
+			ordersRef.child(orderNumber).child(itemNum).on('value', snap=>{
+					 formulaB =  snap.child("formulaBatch").val(); 
+			});
+			itemsRef.child(itemNum).on('value', snap=>{
+				console.log(snap.key);
+			 s_barcodeK = snap.child("barcodeK").val();
+			 s_PcsCarton = snap.child("PcsCarton").val();
+			 s_netW = snap.child("netCtnWeightK").val();
+			 s_grossW = snap.child("grossCtnWeightK").val();
+			 console.log(s_barcodeK);
+			
+		});
+		
+		var stQty = prompt("Amount to print: ", "1")
+		 for(var i=0; i<stQty; i++){
+				duplicateTable(src, i, itemNum, name, s_PcsCarton, val, s_barcodeK, formulaB, s_netW, s_grossW, dc, dAdress, po, invoice, dateDelivery, dCountry);
+				console.log(itemNum + " , " + name + " , " + s_PcsCarton + " , " + val +  " , " + s_barcodeK + " , " +formulaB);
+			}	
+			$("#body_id").css('margin-top','0px');
+			window.print();
+			$("#center_id").html("");
+		}
+		
+		
+		function duplicateTable(src, p, itemNum, name, s_PcsCarton, val, s_barcodeK, formulaB, s_netW, s_grossW,  dc, dAdress, po, invoice, dateDelivery, dCountry){
+	
+			var table = document.createElement("table");
+			table.setAttribute("id", "create_table"+p);
+			table.setAttribute("dir", "ltr");
+			table.setAttribute("border", "0");
+			table.style.margin="0px";
+			table.style.width="360px";
+			table.style.maxHeight="360px";
+			table.style.fontSize= "24px"; 
+			if(src=="tj"){
+				table.style.fontSize= "12px"; 
+				table.style.fontWeight = "900"; 
+			}
+			table.style.fontFamily="arial";
+		
+			document.getElementById("center_id").appendChild(table);
+			
+			
+			
+			appendTrTitels(src, p, itemNum, name, s_PcsCarton, val, s_barcodeK, formulaB, s_netW, s_grossW,  dc, dAdress, po, invoice, dateDelivery, dCountry)
+		}
+		
+		function appendTrTitels(src, i, itemNum, name, s_PcsCarton, val, s_barcodeK, formulaB, s_netW, s_grossW,  dc, dAdress, po, invoice, dateDelivery, dCountry){
+	
+
+			var pcCt = s_PcsCarton.replace(/\D/g,'');
+			var _dt = new Date(Date());
+			var pdate=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+			if (src=="b"){
+						$("#center_id").find("#create_table"+i).append("<tr><td valign=top>"+costumer_Name+"</td></tr><tr><td>"+itemNum+"</td></tr><tr><td>"+name+"</td></tr><tr><td>"+val+"</td></tr><tr><td>"+s_PcsCarton+"</td></tr><tr><td><svg id='barcode"+i+"' ></svg></td></tr>");
+			}
+			else if(src=="bt"){
+						$("#center_id").find("#create_table"+i).append("<tr><td valign=top>"+costumer_Name+"</td></tr><tr><td>"+itemNum+"</td></tr><tr><td>"+name+"</td></tr><tr><td>"+val+"</td></tr><tr><td>"+s_PcsCarton+"</td></tr><tr><td>"+formulaB+"</td></tr><tr><td><svg id='barcode"+i+"' ></svg></td></tr>");
+			}
+			else if(src=="tj"){
+			
+						$("#center_id").find("#create_table"+i).append("<tr><td class=tdSticker colspan=2>Delivery Address: "+dAdress+"</td></tr><tr><td class=tdSticker >"+dCountry+"</td><td  class=tdSticker rowspan=6 ><svg style='max-width:130px' id='barcode"+i+"' ></svg></td></tr><tr><td class=tdSticker >Date: "+dateDelivery+"</td></tr><tr><td class=tdSticker >Country of origin - Israel</td></tr><tr><td class=tdSticker >DC #: "+dc+"</td></tr><tr><td class=tdSticker >PO #: "+po+"</td></tr><tr><td colspan=2 class=tdSticker >Invoice #: "+invoice+"</td></tr><tr><td class=tdSticker  colspan=2>"+name+"</td></tr><tr><td colspan=2 class=tdSticker >"+val+"</td></tr><tr><td  class=tdSticker colspan=2>Vendor Style -#"+itemNum+"</td></tr><tr><td  class=tdSticker colspan=2>"+s_PcsCarton.replace(/\D/g,'')+" Unit/Ctn</td></tr><tr><td class=tdSticker  colspan=2>MADE IN ISRAEL</td></tr><tr><td  class=tdSticker  colspan=2 style='font-size:12px'>NET WET- "+ s_netW+"  GROSS WET  "+ s_grossW +"</td></tr><tr><td class=tdSticker  colspan=2>Vendor:Peer Pharm Ltd</td></tr><tr><td   class=tdSticker colspan=2 style='font-size:12px'>17 Amal Str. Rosh Ha'ayn 48092 Israel</td></tr><tr><td class=tdSticker  colspan=2 style='font-size:12px'>Tel: 972-3-9024055  Fax:972-3-9024015</td></tr>");
+						}
+			//JsBarcode("#barcode"+i, s_barcodeK);
+			JsBarcode("#barcode"+i, s_barcodeK, {
+			  format: "ean13",
+			  width: 2.3,
+			  height: 150,
+			  fontSize: 28,
+			//  displayValue: false
+			});
+	}
+	
+	
+	
+		$(function() {
+			$(".printSticker").click(function() {
+			
+			
+				
+				
+				
+				
+			$("#body_id").css('margin-top','0px');
+			//$("#mainDiv").css('display','none');
+			//	$("#div").css('display','none');
+			//$("#1stTable").css('display','none');
+				window.print();
+				$("#center_id").html("");	
+		
+		
+			});
+		});
+		
+		$( function() {
+			$("#item_Number").autocomplete({
+			  source: itemsArray
+			});
+		  } );	
+		  
+		 function init(){
+				 $("#orderNumberID").keyup(function(event){
+						if(event.keyCode == 13){
+							$("#enter_btn").click();
+					}
+				})
+			//	showOrder();
+		
+		 
+		 }
+		
+		
+		
+		
+		//ordersRef.child(orderNumber).child(_itemNumber).on("child_added", snap=>{
+		function showOrder(orderNumber){
+			
+			showComponents(orderNumber);
+			console.log(orderNumber);
+			if(!orderNumber){
+				orderNumber= document.getElementById('orderNumberID').value;
+				orderN=orderNumber;
+			}			
+			 $.getJSON("/order?orderNumber="+orderNumber , (data)=>{
+				console.log(data);
+				dataArived=data[0];	
+				orderGeneratedId=data[0]._id;
+				document.title = "Order " +orderNumber;
+				console.log(dataArived);
+				orderNumber = dataArived.orderNumber;
+				costumer_Name = dataArived.costumer;
+				dateOfDelivery = dataArived.dateOfDelivery;
+				cmptStatusRef = dataArived.whKey;
+				document.getElementById("orderDetailsID").style.visibility = "visible";
+				document.getElementById("itemOrderID").style.visibility = "visible";
+				
+				$("#h3_orderNumber").html(orderNumber);
+				$("#h3_costumer").html(costumer_Name);
+				$("#h3_date").html(dateOfDelivery);
+				
+				document.getElementById("newOrderTable").remove();
+				showItems2();
+			});
+		
+		/*	document.title = "Order " +orderNumber;
+			console.log(dataArived);
+			orderNumber = dataArived.orderNumber;
+			costumer_Name = dataArived.costumer_Name;
+			dateOfDelivery = dataArived.dateOfDelivery;
+			cmptStatusRef = dataArived.whKey;
+			debugger;
+			document.getElementById("orderDetailsID").style.visibility = "visible";
+			document.getElementById("itemOrderID").style.visibility = "visible";
+			
+			$("#h3_orderNumber").html(orderNumber);
+			$("#h3_costumer").html(costumer_Name);
+			$("#h3_date").html(dateOfDelivery);
+			
+			document.getElementById("newOrderTable").remove();
+			showItems2();*/
+		}
+		
+		function showItems2(){
+			$.getJSON("/orderItem?orderId="+dataArived._id, (data)=>{
+				console.log(data);	
+				for(let i=0; i<data.length; i++){
+					var itmNUM = data[i].itemNumber;
+					var discrip = data[i].discription;
+					var unitMsr = data[i].unitMeasure;
+					var qty = data[i].quantity;
+					var qtyKg = data[i].qtyKg;
+					var priceItem = data[i].price;
+					var dcnt = data[i].discount;
+					var ttlPrice = data[i].totalPrice; 
+				//	var compileS = data[i].compileStatus; 
+					var remarks = data[i].itemRemarks; 
+				//	var licsensS = data[i].licsens;
+					var color='white';
+					var color2 = color;
+					var color3 = "red";
+					var clas="";
+					// status built:
+				//	var compileS = data[i].compileStatus; 
+				//	var formulaS = data[i].formulaStatus;
+				//	var fillingS = data[i].fillingStatus;
+					var qtyProduced ="";
+				//	qtyProduced = data[i].qtyProduced;
+					qtyProduced=qtyProduced+"";
+					var tempStatus="";
+				//	console.log(fillingS);
+					var temp="";
+					var status="";
+					$("#table_body").append("<tr  style='background-color:"+color+";' id='id_tr"+i+"'></td><td><Button class='expand' onClick='showDetails("+i+ ",\""+  temp + "\", \""+ itmNUM + "\", \""+ remarks + "\")' id='btn"+i+"'>+</td><td >" + i + "</td><td class='"+clas+"'><a href='showProduct.html' style='color:blue' target='_blank' onClick='setRef("+itmNUM+")'>" + itmNUM +	 "</a></td><td>"+ discrip + "</td><td>" + unitMsr + "</td><td>" + qty + 
+								" Pcs</td><td>"+ qtyKg +" kg</td>				<td class='priceClass'>" + priceItem + "</td><td class='priceClass'>"+ dcnt + "</td><td class='priceClass'>"+ ttlPrice + "</td><td style='color:"+color3+";background-color:"+color2+"'>"+status+"</td><td><img src='/images/deleteBtn.png' style='width:40px' class='imgEd' onClick='deleteData(\""+ itmNUM + "\" , " + i +")' id='btnD"+i+"'><img id='editData"+i+"' src='/images/editBtn.png' style='width:40px; background-color:none' class='imgEd' onClick='editData("+i+ ", \""+ data[i]._id + "\")'></td><td><div class='dropdown' style-'display:inline-table'><img class='printSticker' id='print"+i+"' src='/images/print.png' style='width:40px; background-color:none' class='imgEd'> <div class='dropdown-content'><button onClick='printSticker(\"b\" ,\""+ itmNUM + "\", \""+ discrip + "\", \""+ unitMsr + "\")'>Basic</button><button onClick='printSticker(\"bt\" ,\""+ itmNUM + "\", \""+ discrip + "\", \""+ unitMsr + "\")'>Batch</button><button onClick='printSticker(\"tj\" ,\""+ itmNUM + "\", \""+ discrip + "\", \""+ unitMsr + "\")'>TJ</button></div></td></tr>");
+				
+				}
+				
+			});
+
+		}
+		
+		function showComponents(orderNum){
+			/*orderWhRef.child(cmptStatusRef).on('child_added', snap=>{	
+				console.log(snap.key + snap.val())
+				var qtyNeeded = snap.child("quantity").val();
+				var status = snap.child("status").val();
+				
+				console.log("11 : " +snap.key + ": " +exist);
+				$("#table_body_cmptSatus").append("<tr><td>"+snap.key+"</td><td id='required"+snap.key+"'>"+qtyNeeded+"</td><td id='cmpt_"+snap.key+"'></td><td id='allotment_"+snap.key+"'></td><td id='lack"+snap.key+"'></td></tr>");
+				var exist = getComponentAmount(snap.key);
+				getAllotmentAmount(snap.key);
+			});*/
+			console.log("hi");
+			$.getJSON("/itemsDemand?orderNumber="+orderNum, (data)=>{
+				console.log(data);
+				for (let i =0; i< data.length; i++){
+					console.log(data[0]);
+					$("#table_body_cmptSatus").append("<tr><td>"+data[i].componentN+"</td><td>"+data[i].quantity+"</td><td>"+data[i].amountExist+"</td><td>"+data[i].allocation+"</td><td>"+data[i].lack+"</td></tr>");
+									
+				}
+				
+				
+			});
+		}
+		
+		function getAllotmentAmount(cmptNumber){
+		var bottleE;
+					componentsRef.orderByChild("componentN").equalTo(cmptNumber).on("child_added", snap=>{
+						
+						sumAllotmentAmount(snap.key, cmptNumber);
+					});	
+		}
+		
+		function sumAllotmentAmount(key, cmptNumber){
+			var cmptAmount=0;
+			componentsRef.child(key).on("child_added", snap=>{
+				
+				if(snap.key.includes("orderK") && snap.key.includes(orderNumber))
+					{
+						cmptAmount+=parseInt(snap.val());
+					}
+			});
+			
+			$("#allotment_"+cmptNumber).html(cmptAmount);
+			var rqr = document.getElementById("required"+cmptNumber).innerText;
+			var lack = parseInt(rqr.replace(/\D/g,''))  - cmptAmount;
+			console.log("cmptNumber  cmptNumber " + lack);
+			$("#lack"+cmptNumber).html(lack);
+			if(lack>0){
+				$("#lack"+cmptNumber).css('background-color', 'red');
+			}
+			
+		}
+		
+		
+		function showItems(){
+		var i=0;
+		var temp="";
+		//ordersRef.child(orderNumber).on("child_added", snap=>{
+		
+		//ordersRef.child(orderNumber).orderByChild("itemNumber").equalTo("123").on("child_added", snap=>{
+		//ordersRef.child(orderNumber).orderByKey().on("child_added", snap=>{
+		
+		
+		
+		
+		ordersRef.child(orderNumber).on("child_added", snap=>{
+		//console.log(snap.val());
+		//console.log(snap.val()["itemNumber"]);
+		var itemTempNumber = snap.val()["itemNumber"];   //return the value contain this key=itemNumber;
+		
+		if (itemTempNumber!=undefined){
+			
+				var itmNUM = snap.child("itemNumber").val();
+				var discrip = snap.child("discription").val();
+				var unitMsr = snap.child("unitMeasure").val();
+				var qty = snap.child("quantity").val();
+				var qtyKg = snap.child("qtyKg").val();
+				var priceItem = snap.child("price").val();
+				var dcnt = snap.child("discount").val();
+				var ttlPrice = snap.child("totalPrice").val(); 
+				var compileS = snap.child("compileStatus").val(); 
+				var remarks = snap.child("itemRemarks").val(); 
+				var licsensS = snap.child("licsens").val();
+				var color='white';
+				var color2 = color;
+				var color3 = "red";
+				var clas="";
+				// status built:
+				var compileS = snap.child("compileStatus").val(); 
+				var formulaS = snap.child("formulaStatus").val();
+				var fillingS = snap.child("fillingStatus").val();
+				var qtyProduced = snap.child("qtyProduced").val();
+				qtyProduced=qtyProduced+"";
+				var tempStatus="";
+				console.log(fillingS);
+				var status="";
+				if (remarks!="undefined" && remarks!=null && tempStatus!="done"){
+					status=status+remarks+ ",   ";
+				}
+				console.log("remarks " + remarks);
+				
+				if(licsensS!="" && licsensS!="undefined" && licsensS!=null){
+					clas="";
+				}else{
+					clas="stripes1";
+				}
+				
+				
+				console.log(itmNUM + ttlPrice)
+				leftToCompile=intQty-intCompileS;
+				
+				console.log("left"+leftToCompile);
+				
+				if (compileS!="undefined" && compileS!=null){
+					var intQty = parseInt(qty.replace(/\D/g,''));
+					var intCompileS = parseInt(compileS.replace(/\D/g,''));
+					status=status+compileS + " Items Collected";
+					//if(intCompileS>=intQty && qty!=null && qty!="undefined" && qty!="" && compileS!="checking"){
+					if(qty!=null && qty!="undefined" && qty!="" && compileS!="checking"){
+						if(intCompileS>=intQty){
+							status="ALL ("+compileS+") ITEMS COLLECTED";
+							tempStatus="done";
+							color='#71F19D'
+							color2=color;
+						}
+						else{
+							status=""+compileS+" ITEMS COLLECTED";
+							tempStatus="done";
+							color="#71F19D";
+							color2="red";
+							color3="black";
+						}
+					}
+				}
+				
+				
+				/////////////////////
+				if(remarks.includes("printed")){
+						color="#749FFF";
+						color2=color;
+						color3="black";
+						console.log('itmNUM ' + itmNUM);
+
+				} 
+
+				if (formulaS!="undefined" && formulaS!=null && tempStatus!="done"){
+					status=status+", "+formulaS;
+					color="yellow";
+					color2=color;
+				}
+			
+				if (fillingS!="undefined" && fillingS!=null && tempStatus!="done"){
+					status=status+", "+fillingS;
+					color="yellow";
+					color2=color;
+					
+					if(fillingS.includes("Stickers pasted") || remarks.includes("printed")){
+						color="#749FFF";
+						color2=color;
+						//color3="black";
+						console.log('itmNUM ' + itmNUM);
+
+					}
+					if(fillingS=="filled" || fillingS=="filledup" || fillingS=="Filled up" || fillingS=="Filled"){
+					color="#F597F5";
+					color2=color;
+					}
+					if(fillingS=="problem"){
+						color="red";
+						color2=color;
+					}
+					
+					if(fillingS=="partFilled"){
+						color="#F597F5";
+						color2="red";
+						color3="black";
+					//	status= staus +  " ( " + qtyProduced + " pcs ) " ;
+						status=status + " (" + qtyProduced + " pcs)";
+						console.log('qty' + qtyProduced);
+					}
+					
+				}
+				
+				/////////////////////
+				var rdy="Meterial Produced";
+				if (status.includes(rdy)){
+					color='#71F19D'
+					color2=color;
+				}
+				i++;	
+				tempor= ttlPrice;
+				console.log(itmNUM + ttlPrice);
+				$("#table_body").append("<tr  style='background-color:"+color+";' id='id_tr"+i+"'></td><td><Button class='expand' onClick='showDetails("+i+ ",\""+  temp + "\", \""+ itmNUM + "\", \""+ remarks + "\")' id='btn"+i+"'>+</td><td >" + i + "</td><td class='"+clas+"'><a href='showProduct.html' style='color:blue' target='_blank' onClick='setRef("+itmNUM+")'>" + itmNUM +	 "</a></td><td>"+ discrip + "</td><td>" + unitMsr + "</td><td>" + qty + 
+							" Pcs</td><td>"+ qtyKg +" kg</td>				<td class='priceClass'>" + priceItem + "</td><td class='priceClass'>"+ dcnt + "</td><td class='priceClass'>"+ ttlPrice + "</td><td style='color:"+color3+";background-color:"+color2+"'>"+status+"</td><td><img src='/images/deleteBtn.png' style='width:40px' class='imgEd' onClick='deleteData(\""+ itmNUM + "\" , " + i +")' id='btnD"+i+"'><img id='editData"+i+"' src='/images/editBtn.png' style='width:40px; background-color:none' class='imgEd' onClick='editData("+i+ ", \""+ itmNUM + "\")'></td><td><div class='dropdown' style-'display:inline-table'><img class='printSticker' id='print"+i+"' src='/images/print.png' style='width:40px; background-color:none' class='imgEd'> <div class='dropdown-content'><button onClick='printSticker(\"b\" ,\""+ itmNUM + "\", \""+ discrip + "\", \""+ unitMsr + "\")'>Basic</button><button onClick='printSticker(\"bt\" ,\""+ itmNUM + "\", \""+ discrip + "\", \""+ unitMsr + "\")'>Batch</button><button onClick='printSticker(\"tj\" ,\""+ itmNUM + "\", \""+ discrip + "\", \""+ unitMsr + "\")'>TJ</button></div></td></tr>");
+							//" Pcs</td><td>"+ qtyKg +" kg</td><td>" + priceItem + "</td><td>"+ dcnt + "</td><td>"+ ttlPrice + "</td><td><Button class='delete' onClick='deleteData(" +itmNUM + " , " + i +")' id='btnD"+i+"'>Delete</Button><img src='editBtn.png' style='width:40px; background-color:none' onClick='editData("+i+ ", \""+ itmNUM + "\")'></td></tr>");
+						
+				
+				//	("+i+ ",\""+  temp + "\")
+				
+				
+					//console.log(document.getElementById("id_tr" +i).innerHTML + i);
+					//console.log(document.getElementById("orderDetailsID").innerHTML + i);
+			}
+			})
+			
+			
+			itemsRef.on("child_added", snap=> {
+					
+					var key= snap.key;
+					itemsArray.push(key);
+					//console.log(key);
+					
+				});
+		}
+			
+			
+		
+		  
+		
+		  
+		function setRef(itemNumber){
+		
+			localStorage.setItem("productNumber", itemNumber);
+		
+		
+		}
+		
+		function setPackingListRef(){
+		
+			localStorage.setItem("orderNumberPack", orderNumber);
+		}
+		
+		
+		
+		
+		function showDetails(i, a, iNumber, mrks){
+		
+			//alert(iNumber);
+			
+			var com, existItem;
+			var bottleN, capN, pumpN, extra1, extra2, boxN, boxT, stickerN, stickerT, sealN, impRemarks;
+			var bottleExist, capExist, pumpExist, sealExist;
+			
+			
+			//get details from product tree:
+			$.getJSON("/item?itemNumber="+iNumber, (data)=>{
+				console.log(data);	
+				title=data[0].name;
+				bottleN = data[0].bottleNumber;
+				capN = data[0].capNumber;
+				pumpN = data[0].pumpNumber;
+				sealN = data[0].sealNumber;
+				extra1 = data[0].extraText1;
+				extra2 = data[0].extraText2;
+				boxN = data[0].boxNumber;
+				boxT = data[0].boxTypeK;
+				stickerN = data[0].stickerNumber;
+				stickerT = data[0].stickerTypeK;
+				impRemarks = data[0].impRemarks;
+				console.log( bottleN + " , " + sealN + " , "  + capN + " , " + pumpN  + " , " + extra1  + " , " + extra2+ " , " +   boxN+ " , " +boxT+ " , " +stickerN+ " , " + stickerT);
+			
+
+					var compileS,bottleS ,capS , sealS, pumpS ,boxS ,stickerS, fillingS, formulaS, formulaBatchS; 
+
+				var btn = document.getElementById("btn"+i); 
+					if(btn.innerHTML=="+"){
+							//to enter all  row define table with className as innetTd, put it in tr with collspan
+							console.log("hi");
+							console.log(bottleN);
+							if (bottleN!=null && bottleN!=""){        
+								
+								com="bottle";	
+								$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'><img src = '/images/treeLine.jpg' style='height:35px' align='right'></td><td class='innerTd'><img src = '/images/printer.jpg' style='width:33px;' align='left' class='imgSearch'  onClick='openPrintSchduele(\""+bottleN+"\", \""+iNumber+"\", \"bottle\")'><b>Bottle <font color='#A98000'>" + bottleN + "</font></td> </tr>");
+
+							}
+							if (capN!=null && capN!=""){                                                                                                         
+								console.log(capN);
+								com="cap";	
+								$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'><img src = '/images/treeLine.jpg' style='height:35px' align='right'></td><td class='innerTd'><img src = '/images/printer.jpg' style='width:33px;' align='left' class='imgSearch' onClick='openPrintSchduele(\""+bottleN+"\", \""+iNumber+"\", \"cap\")'><b>Cap <font color='#A98000'>" + capN + " </font></td></tr>");
+
+							}
+							
+							/*if (sealN!=null && sealN!=""){                                                                                                         
+								console.log(sealN);
+								com="seal";	
+								$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'><img src = '/images/treeLine.jpg' style='height:35px' align='right'></td><td class='innerTd'><img src = '/images/import.png' style='width:33px;' align='left' class='imgSearch' onClick='sendOrderedComponet(\""+  iNumber + "\", \""+com+"\")'><img src = '/images/search2.png' style='width:33px;' align='left' class='imgSearch' onClick='sendCheckComponet(\""+  iNumber + "\", \""+com+"\", \""+sealN+"\")'><b>Seal <font color='#A98000'>" + sealN + " </font> collected: </b><qtyCheckComponet id='qtyCheckComponet"+iNumber+com+"' style='color:#CF00C6'>" + sealS + "</qtyCheckComponet><b> Exist: </b>" + sealExist + "</td><td class='innerTd'><input type='text' id='selfComponentCheck"+ iNumber+com+ "' style='width:70px; margin:5px'><button class='updateSelfItem' onClick='updateSelfComponent(\""+  iNumber + "\", \""+com+"\")'>Add</button></tr>");
+
+							}
+							
+							if (pumpN!=null && pumpN!=""){                                                                                                         
+								console.log(pumpN);
+								com="pump";	
+								$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'><img src = '/images/treeLine.jpg' style='height:35px' align='right'></td><td class='innerTd'><img src = '/images/import.png' style='width:33px;' align='left' class='imgSearch' onClick='sendOrderedComponet(\""+  iNumber + "\", \""+com+"\")'><img src = '/images/search2.png' style='width:33px;' align='left' class='imgSearch' onClick='sendCheckComponet(\""+  iNumber + "\", \""+com+"\", \""+pumpN+"\")'><b>Pump  <font color='#A98000'>" + pumpN + " </font> collected: </b><qtyCheckComponet id='qtyCheckComponet"+iNumber+com+"' style='color:#CF00C6'>" + pumpS + "</qtyCheckComponet><b> Exist: </b>" + pumpExist + "</td><td class='innerTd'><input type='text' id='selfComponentCheck"+ iNumber+com+ "' style='width:70px; margin:5px'><button class='updateSelfItem' onClick='updateSelfComponent(\""+  iNumber + "\", \""+com+"\")'>Add</button></tr>");
+
+							}
+							if (boxN!=null && boxN!=""){                                                                                                         
+								console.log(boxN);
+								com="box";	
+								$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'><img src = '/images/treeLine.jpg' style='height:35px' align='right'></td><td class='innerTd'><img src = '/images/import.png' style='width:33px;' align='left' class='imgSearch' onClick='sendOrderedComponet(\""+  iNumber + "\", \""+com+"\")'><img src = '/images/search2.png' style='width:33px;' align='left' class='imgSearch' onClick='sendCheckComponet(\""+  iNumber + "\", \""+com+"\",\""+boxN+"\")'><b>Box <font color='#A98000'>" + boxN + " </font> collected: </b><qtyCheckComponet id='qtyCheckComponet"+iNumber+com+"' style='color:#CF00C6'>" + boxS + "</qtyCheckComponet></td><td class='innerTd'><input type='text' id='selfComponentCheck"+ iNumber+com+ "' style='width:70px; margin:5px'><button class='updateSelfItem' onClick='updateSelfComponent(\""+  iNumber + "\", \""+com+"\")'>Add</button></tr>");
+
+							}
+							if (stickerN!=null && stickerN!="" && stickerN!="Built-in"){                                                                                                         
+								console.log(stickerN);
+								com="sticker";	
+								$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'><img src = '/images/treeLine.jpg' style='height:35px' align='right'></td><td class='innerTd'><img src = '/images/import.png' style='width:33px;' align='left' class='imgSearch' onClick='sendOrderedComponet(\""+  iNumber + "\", \""+com+"\")'><img src = '/images/search2.png' style='width:33px;' align='left' class='imgSearch' onClick='sendCheckComponet(\""+  iNumber + "\", \""+com+"\",\""+stickerN+"\" )'><b>Sticker  <font color='#A98000'>" + stickerN + " </font> collected: </b><qtyCheckComponet id='qtyCheckComponet"+iNumber+com+"' style='color:#CF00C6'>" + stickerS + "</qtyCheckComponet></td><td class='innerTd'><input type='text' id='selfComponentCheck"+ iNumber+com+ "' style='width:70px; margin:5px'><button class='updateSelfItem' onClick='updateSelfComponent(\""+  iNumber + "\", \""+com+"\")'>Add</button></tr>");
+
+							}*/	
+						
+						$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'  style='border-bottom: 0.5px solid #BFC2C4;'><Button class='checkItem' onClick='sendCheckItem(\""+  iNumber + "\")'>Check Item</Button></td><td class='innerTd' style='border-bottom: 0.5px solid #BFC2C4;'><b>Items  collected: </b><qtyChecItem style='color:blue' id='qtyChecItem"+iNumber +"'>" + compileS + "</qtyChecItem></td><td class='innerTd' style='border-bottom: 0.5px solid #BFC2C4;'><input type='text' id='selfItemCheck"+ iNumber+ "' style='width:70px; margin:5px'><button class='updateSelfItem' onClick='updateSelfItem(\""+  iNumber + "\")'>Add</button></tr>");
+						
+						
+							
+						$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'  style='border-bottom: 0.5px solid #BFC2C4;'></td><td class='innerTd' style='border-bottom: 0.5px solid #BFC2C4;'><b>Production Status: </b><checkFormula style='color:blue' id='checkFormula"+iNumber +"'>" + formulaS + " " + formulaBatchS+ "</checkFormula></td><td class='innerTd' style='border-bottom: 0.5px solid #BFC2C4;'><select class='select' id='produceStatus' style='width:158px'><option value='-'></option><option value='Formula Sent'>Formula Sent</option><option value='Metrials Exist'>Metrials Exist</option><option value='Missing Metrials'>Missing Metrials</option><option value='Metrials was ordered'>Metrials was ordered</option><option value='Metrials Expected'>Metrials Expected</option><option value='Waiting for production'>Waiting for production</option><option value='Formula Produced'>Formula Produced</option></select></td><td class='innerLeftTd'	><button class='updateSelfItem' id='btnAddFormula' onClick='updateForumulaStatus(\""+  iNumber + "\")'>Add</button><input type='date' style='display:none; width:130px; font-size:13px' id='metrialExpected'><input type='text' style='display:none; width:130px;' id='formulaBatch' placeholder='Batch number'><input type='text' style='display:none; width:130px;' id='formulaBatch2' placeholder='Batch number'><input type='text' style='display:none; width:130px;' id='formulaBatch3' placeholder='Batch number'></td><td class='innerLeftTd'	><img src='/images/showTime.png' id='updateTime' style='display:none; width:25px;cursor:pointer' onClick='updateForumulaTime(\""+  iNumber + "\")'><img src='/images/showTime.png' id='updateBatch' style='display:none; width:25px;cursor:pointer' onClick='updateForumulaBatch(\""+  iNumber + "\")'></td></tr>");
+						
+						
+						$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'  style='border-bottom: 0.5px solid #BFC2C4;'><Button class='checkItem' onClick='openSchduale()'>Set Schduale</button></td><td class='innerTd' style='border-bottom: 0.5px solid #BFC2C4;'><b>Filling status: </b><fillingStatus id='fillingStatus' style='color:#CF00C6'>" + fillingS + "</fillingStatus></td><td class='innerLeftTd'  style='border-bottom: 0.5px solid #BFC2C4;'><input type='date' style='display:none; width:157px; font-size:13px' id='scheduleDate'></td><td class='innerLeftTd'><select class='select' id='selectShift' style='width:88px;display:none'><option value='Day'>day</option><option value='Night'>night</option></select></td><td class='innerLeftTd'><input type='text' id='scheduleRemarks' value='"+mrks+"' placeholder='Remarks' style='display:none' value='"+impRemarks+"'></td><td id='isMkp' class='innerLeftTd' ><input class='isMkp' type='radio'  name='type' name='input_checkBox_tube'  value='basic' checked>Basic <input type='radio'  class='isMkp' name='type' name='input_checkBox_tube'  value='tube'>Tube <input type='radio'  class='isMkp' name='type' name='input_checkBox_mkup'  value='mkp'>Mkp</td><td class='innerLeftTd'><img src='/images/showTime.png' id='updateSchedule' style='display:none; width:25px;cursor:pointer' onClick='setFillingSchedule(\""+  iNumber + "\")'></td></tr>");
+						
+					//	$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'  style='border-bottom: 0.5px solid #BFC2C4;'></td><td class='innerTd' style='border-bottom: 0.5px solid #BFC2C4;'><b>Product Tree: </b><fillingStatus id='fillingStatus' style='color:#CF00C6'>" + productTree + "</fillingStatus></td><td class='innerLeftTd'  style='border-bottom: 0.5px solid #BFC2C4;'><input type='date' style='display:none; width:157px; font-size:13px' id='scheduleDate'></td><td class='innerLeftTd'><select class='select' id='selectShift' style='width:88px;display:none'><option value='day'>day</option><option value='night'>night</option></select></td><td class='innerLeftTd'><input type='text' id='scheduleRemarks' placeholder='Remarks' style='display:none'></td><td class='innerLeftTd'><img src='showTime.png' id='updateSchedule' style='display:none; width:25px;cursor:pointer' onClick='setFillingSchedule(\""+  iNumber + "\")'></td></tr>");
+					//	$("#id_tr" +i).after("<tr id='tempTr"+i+"'><td class='innerLeftTd'></td><td class='innerLeftTd'	></td><td class='innerTd'  style='border-bottom: 0.5px solid #BFC2C4;'></td><td class='innerTd' style='border-bottom: 0.5px solid #BFC2C4;'><b>Product Tree: </b><fillingStatus id='fillingStatus' style='color:#CF00C6'>" + productTree + "</fillingStatus></td></tr>");
+						
+						
+						
+							
+							$("#btn"+i).html("-");
+							$("#btn"+i).css('background-color', 'red');
+							$("#btn"+i).css('padding-left', '8px');
+							$("#btn"+i).css('padding-right', '8px');
+						
+					
+					}
+					else if(btn.innerHTML=="-"){
+						$("#btn"+i).html("+");
+						$("#tempTr"+i).closest("tr").remove();
+						$("#tempTr"+i).closest("tr").remove();
+						$("#tempTr"+i).closest("tr").remove();
+						$("#tempTr"+i).closest("tr").remove();
+						$("#tempTr"+i).closest("tr").remove();
+						$("#tempTr"+i).closest("tr").remove();
+						$("#tempTr"+i).closest("tr").remove();
+						$("#tempTr"+i).closest("tr").remove();
+						$("#tempTr"+i).closest("tr").remove();
+						$("#btn"+i).css('background-color', 'green');
+						$("#btn"+i).css('padding-left', '6px');
+						$("#btn"+i).css('padding-right', '6px');
+						
+						//$("#id_tr" +i).remove();
+						//$("tr").after("$("#id_tr" +i)").remove();
+						// $(this).parent().parent().remove();
+						
+					}
+			});
+
+		/*searchItemRef.on('value', snap =>{
+					existItem= snap.exists();
+					
+			});
+			ordersRef.child(orderNumber).child(iNumber).update({
+			
+				productTree: ''+existItem,
+			
+				});
+			
+			
+				
+			bottleExist=getComponentAmount(bottleN);
+			capExist=getComponentAmount(capN);
+			pumpExistm=getComponentAmount(pumpN);
+			sealExist=getComponentAmount(sealN);
+			
+			
+			console.log( bottleN + " , " + sealN + " , "  + capN + " , " + pumpN  + " , " + extra1  + " , " + extra2+ " , " +   boxN+ " , " +boxT+ " , " +stickerN+ " , " + stickerT);
+			
+			
+			var valueRef= ordersRef.child(orderNumber).child(iNumber);
+			
+			ordersRef.child(orderNumber).child(iNumber).on('value', snap=>{
+			//	var itemTempNumber = snap.val()["itemNumber"];   //return the value contain this key=itemNumber;
+			//	if (itemTempNumber!=undefined){
+					 compileS = snap.child("compileStatus").val();
+					 bottleS = snap.child("bottleStatus").val();
+					 capS = snap.child("capStatus").val();
+					 sealS = snap.child("sealStatus").val();
+					 pumpS = snap.child("pumpStatus").val();
+					 boxS = snap.child("boxStatus").val();
+					 stickerS = snap.child("stickerStatus").val();
+					 fillingS = snap.child("fillingStatus").val();
+					 formulaS = snap.child("formulaStatus").val();
+					 formulaBatchS =  snap.child("formulaBatch").val();
+					 productTree =  snap.child("productTree").val();
+			//		}
+						
+					
+					});
+			*/
+		
+				
+		}
+		
+			///// TODO: add item number for each $("#qtyChecItem) so it will ave a unic id (including in original one), send quantitiy, and mark red if it's less the quantitiy
+		
+		
+		// set checking staus for item
+		function sendCheckItem(itemNumber){
+			
+				itemOrderRef=ordersRef.child(orderNumber);
+				itemOrderRef.child(itemNumber).update({
+				
+					compileStatus: 'checking',
+				
+				})
+				$("#qtyChecItem"+ itemNumber).html('checking');
+				$("#qtyChecItem"+ itemNumber).css('color', 'red');
+			}
+		
+		
+		
+		
+		// set amount staus for item
+		function updateSelfItem(itemNumber){
+			var itemCollected = $('#selfItemCheck'+itemNumber).val();
+			itemOrderRef=ordersRef.child(orderNumber);
+			
+			if(itemCollected==""){
+				alert("Enter Value");
+			}
+			else{
+			itemOrderRef.child(itemNumber).update({
+				
+				
+				compileStatus: ''+ itemCollected,
+				
+			})
+		
+			$("#qtyChecItem"+ itemNumber).html(itemCollected);
+			$("#qtyChecItem"+ itemNumber).css('color', '#5594E3');
+		}}
+		
+		
+			
+		
+		// set checking staus for component
+		//function sendCheckComponet(itemNumber, componetType){
+		function sendCheckComponet(itemNumber, componetType, componentNumber){
+			itemOrderRef=ordersRef.child(orderNumber);
+			
+				if (componetType=="bottle"){
+					itemOrderRef.child(itemNumber).update({
+						bottleStatus: 'checking',
+						bottleNumber:''+componentNumber,
+					})	
+				}
+				else if (componetType=="cap"){
+						itemOrderRef.child(itemNumber).update({
+						capStatus: 'checking',
+						capNumber:''+componentNumber,
+					})	
+				}
+				else if (componetType=="pump"){
+						itemOrderRef.child(itemNumber).update({
+						pumpStatus: 'checking',
+						pumpNumber:''+componentNumber,
+					})	
+				}
+				else if (componetType=="seal"){
+						itemOrderRef.child(itemNumber).update({
+						sealStatus: 'checking',
+						sealNumber:''+componentNumber,
+					})	
+				}				
+				else if (componetType=="box"){
+						itemOrderRef.child(itemNumber).update({
+						boxStatus: 'checking',
+						boxNumber:''+componentNumber,
+					})	
+				}
+				else if (componetType=="sticker"){
+						itemOrderRef.child(itemNumber).update({
+						stickerStatus: 'checking',
+						stickerNumber:''+componentNumber,
+					})	
+				}		
+			
+			
+			
+			$("#qtyCheckComponet"+ itemNumber + componetType).html('checking');
+			$("#qtyCheckComponet"+ itemNumber + componetType).css('color', 'red');
+			}
+		
+		
+		
+		function sendOrderedComponet(itemNumber, componetType){
+			itemOrderRef=ordersRef.child(orderNumber);
+			
+				if (componetType=="bottle"){
+					itemOrderRef.child(itemNumber).update({
+						bottleStatus: 'Ordered',
+					})	
+				}
+				else if (componetType=="cap"){
+						itemOrderRef.child(itemNumber).update({
+						capStatus: 'Ordered',
+					})	
+				}
+				else if (componetType=="pump"){
+						itemOrderRef.child(itemNumber).update({
+						pumpStatus: 'Ordered',
+					})	
+				}
+				else if (componetType=="seal"){
+						itemOrderRef.child(itemNumber).update({
+						sealStatus: 'Ordered',
+					})	
+				}				
+				else if (componetType=="box"){
+						itemOrderRef.child(itemNumber).update({
+						boxStatus: 'Ordered',
+					})	
+				}
+				else if (componetType=="sticker"){
+						itemOrderRef.child(itemNumber).update({
+						stickerStatus: 'Ordered',
+					})	
+				}		
+			
+			
+			
+			$("#qtyCheckComponet"+ itemNumber + componetType).html('Ordered');
+			$("#qtyCheckComponet"+ itemNumber + componetType).css('color', 'red');
+			}
+		
+		
+		
+		
+		
+		// set amount staus for component
+		function updateSelfComponent(itemNumber, componetType){
+		console.log(componetType);
+			var componentCollected = $('#selfComponentCheck'+itemNumber + componetType).val();
+			itemOrderRef=ordersRef.child(orderNumber);
+			
+			if(componentCollected==""){
+				alert("Enter Value");
+			}
+			else{
+				console.log(componetType);
+				if (componetType=="bottle"){
+					itemOrderRef.child(itemNumber).update({
+						bottleStatus: ''+ componentCollected,
+					})	
+				}
+				else if (componetType=="cap"){
+						itemOrderRef.child(itemNumber).update({
+						capStatus: ''+ componentCollected,
+					})	
+				}
+				else if (componetType=="pump"){
+						itemOrderRef.child(itemNumber).update({
+						pumpStatus: ''+ componentCollected,
+					})	
+				}	
+				else if (componetType=="seal"){
+						itemOrderRef.child(itemNumber).update({
+						sealStatus: ''+ componentCollected,
+					})	
+				}
+				else if (componetType=="box"){
+						itemOrderRef.child(itemNumber).update({
+						boxStatus: ''+ componentCollected,
+					})	
+				}
+				else if (componetType=="sticker"){
+						itemOrderRef.child(itemNumber).update({
+						stickerStatus: ''+ componentCollected,
+					})	
+				}					
+				$("#qtyCheckComponet"+ itemNumber + componetType).html(componentCollected);
+				$("#qtyCheckComponet"+ itemNumber + componetType).css('color', '#5594E3');
+			}
+		}
+		
+		function getComponentAmount(cmptNumber){
+		var bottleE;
+		console.log(cmptNumber + "bottleExist");
+					componentsRef.orderByChild("componentN").equalTo(cmptNumber).on("child_added", snap=>{
+						bottleE = snap.child("amountKasem").val();
+						console.log(cmptNumber + "bottleExist " + bottleE.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+						bottleE=bottleE.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+						$("#cmpt_"+cmptNumber).html(bottleE);
+					});
+				
+					
+					return bottleE;
+		}
+		
+		const numberWithCommas = (x) => {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		function updateForumulaStatus(itemNumber){
+			console.log(itemNumber);
+			var produceFormulaStatus=$('#produceStatus').val();
+			console.log(produceFormulaStatus);
+			itemOrderRef=ordersRef.child(orderNumber);
+			itemOrderRef.child(itemNumber).update({
+						formulaStatus: ''+ produceFormulaStatus,
+			})	
+			if (produceFormulaStatus=='Metrials Expected'){
+				
+					$('#metrialExpected').css('display', 'inline');
+					$('#btnAddFormula').css('display', 'none');
+					$('#updateTime').css('display', 'inline');
+			
+			
+			}
+			else if(produceFormulaStatus=='Formula Produced'){
+			
+			formulaBatch
+					$('#formulaBatch').css('display', 'inline');
+					$('#formulaBatch2').css('display', 'inline');
+					$('#formulaBatch3').css('display', 'inline');
+					$('#btnAddFormula').css('display', 'none');
+					$('#updateBatch').css('display', 'inline');
+			
+			}
+				$("#checkFormula"+ itemNumber).html(produceFormulaStatus);
+				$("#checkFormula"+ itemNumber).css('color', '#5594E3');
+		}
+		
+		
+		
+		
+		function updateForumulaTime(itemNumber){
+		
+			var arrivdExpected= $('#metrialExpected').val();
+			itemOrderRef.child(itemNumber).update({
+						formulaStatus: 'Metrials Expected to '+ arrivdExpected,
+			})	
+				$("#checkFormula"+ itemNumber).html('Metrials Expected to '+ arrivdExpected);
+				$("#checkFormula"+ itemNumber).css('color', '#5594E3');
+				$('#metrialExpected').css('display', 'none');
+				$('#btnAddFormula').css('display', 'inline');
+				$('#updateTime').css('display', 'none');
+		}
+		
+		
+		
+		function updateForumulaBatch(itemNumber){
+		
+			var batchNum= $('#formulaBatch').val();
+			var batchNum2= $('#formulaBatch2').val();
+			var batchNum3= $('#formulaBatch3').val();
+			if(batchNum2!=""){
+				batchNum=batchNum+ " + " + batchNum2;
+			}
+			if(batchNum3!=""){
+				batchNum=batchNum+ " + " + batchNum3;
+			}
+			
+			var batchLow = batchNum.toLowerCase();
+			itemOrderRef.child(itemNumber).update({
+						formulaBatch: ''+ batchLow,
+			})
+			$("#checkFormula"+ itemNumber).html('Formula Produced, batch number: '+ batchNum);
+			$("#checkFormula"+ itemNumber).css('color', '#5594E3');
+			$('#formulaBatch').css('display', 'none');
+			$('#formulaBatch2').css('display', 'none');
+			$('#formulaBatch3').css('display', 'none');
+			$('#btnAddFormula').css('display', 'inline');
+			$('#updateBatch').css('display', 'none');
+			
+		
+		}
+		
+		function setFillingSchedule(itemNumber){
+			var bottleN, capN, pumpN, extra1, extra2, boxN, boxT, stickerN, stickerT, sealN;
+			var formulaBatchS, itemDiscription, qnttyKg;
+			
+			var searchItemRef = itemsRef.child(itemNumber);
+				
+			var scheduleToDate= $('#scheduleDate').val();
+			var scheduleRemarks= $('#scheduleRemarks').val();
+			var scheduleShift= $('#selectShift').val();
+			//var scheduleMkp = $('#isMkp').prop('checked');	
+			
+			var _dt = new Date(scheduleToDate);
+			var scheduleDateDMY=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+			var scheduleMkp =  $('input[name="type"]:checked').val();
+				if(scheduleMkp=='tube'){
+					scheduleMkp="4";
+				}
+				else if(scheduleMkp=='mkp'){
+					scheduleMkp='true';
+				}
+				else{
+					scheduleMkp="";
+				}
+			
+			//get details from product tree:
+			searchItemRef.on('value', snap =>{
+			
+				bottleN = snap.child("bottleTube").val();
+				capN = snap.child("capTube").val();
+				pumpN = snap.child("pumpTube").val();
+				sealN = snap.child("sealTube").val();
+				extra1 = snap.child("extraText1").val();
+				extra2 = snap.child("extraText2").val();
+				stickerN = snap.child("stickerNumber").val();
+
+				
+				});
+				
+				
+				
+				var packageList="";
+				var componetsArray = [ bottleN ,capN , pumpN, sealN ,extra1 ,extra2 ,stickerN];
+				var i;	
+				for (i = 0; i <componetsArray.length; i++) {
+					if (componetsArray[i]!="" && componetsArray[i]!=null){
+						
+						i= parseInt(i);
+						
+						if (i==0){
+							packageList+= " bottle: " + componetsArray[i];
+						}
+						else if (i==1){
+							packageList+= " cap: " + componetsArray[i];
+						}
+						else if (i==2){
+							packageList+= " pump: " + componetsArray[i];
+						}
+						else if (i==3){
+							packageList+= " seal: " + componetsArray[i];
+						}
+						else if (i==4){
+							packageList+= ", " + componetsArray[i];
+						}
+						else if (i==5){
+							packageList+= ", " + componetsArray[i];
+						}
+						else if (i==6){
+							packageList+= " sticker: " + componetsArray[i];
+						}
+			
+					}
+				}
+				console.log(componetsArray);
+			console.log(packageList);
+			
+			
+			ordersRef.child(orderNumber).child(itemNumber).on('value', snap=>{
+				 formulaBatchS =  snap.child("formulaBatch").val();
+				 itemDiscription =  snap.child("discription").val();
+				 qnttyKg =  snap.child("quantity").val();
+				 
+				});
+				
+			console.log(orderNumber + " ,  " + itemNumber  + " ,  " + costumer_Name   + " ,  " + itemDiscription + " ,  " + formulaBatchS+ " ,  " +packageList + " ,  " +qnttyKg + " ,  " +scheduleRemarks + " ,  " + scheduleShift + " ,  " +scheduleDateDMY);
+			var scheduleRef= firebaseRef.child("schedule2");
+		
+			scheduleRef.push().set({
+	
+
+				orderN: ''+orderNumber,
+				item: ''+itemNumber,
+				costumer:''+costumer_Name,
+				productName:''+itemDiscription,
+				batch: ''+formulaBatchS,
+				packageP:''+packageList,
+				Qty:''+qnttyKg,
+				marks: ''+ scheduleRemarks,
+				shift:''+scheduleShift,
+				date: ''+ scheduleDateDMY,
+				mkp: ''+ scheduleMkp,
+				positionN: '',
+				status:'open',
+			})
+			
+			
+			var fillingDate= $("#scheduleDate").val(); 
+			itemOrderRef.child(itemNumber).update({
+						fillingStatus: 'Scheduled to '+ fillingDate,
+			})
+			$("#fillingStatus").html('Scheduled to '+fillingDate);
+		//	$("#fillingS").css('display', 'inline');
+		}
+		
+		
+		
+		function openSchduale(){
+			$("#scheduleDate").css('display', 'inline');
+			$("#selectShift").css('display', 'inline');
+			$("#isMkp").css('display', 'inline');
+			$("#mkp_cb").css('display', 'inline');
+			$("#scheduleRemarks").css('display', 'inline');
+			$("#updateSchedule").css('display', 'inline');
+			
+			
+		
+		
+			
+			
+		}
+		
+		
+	
+
+
+		function searchItem(){
+		var title, subTitle, discriptionGet, volumeKi;
+		var existItem;
+		_itemNumber = document.getElementById('item_Number').value;
+		_discription = document.getElementById('item_discription');
+		_unit_measure = document.getElementById('unit_measure');
+		
+		
+
+		
+		var searchItemRef = itemsRef.child(_itemNumber);
+			var title, subTitle, discriptionGet, volumeKi;
+				
+				_itemNumber = document.getElementById('item_Number').value;
+				_discription = document.getElementById('item_discription');
+				_unit_measure = document.getElementById('unit_measure');
+				
+				var searchItemRef = itemsRef.child(_itemNumber);
+				console.log("a" + _itemNumber + " " + searchItemRef);
+
+				$.getJSON("/item?itemNumber="+_itemNumber , (data)=>{
+					title=data[0].name;
+					subTitle=data[0].subName;
+					discriptionGet=data[0].discriptionK;
+					volumeKi=data[0].volumeKey;
+					_pcsCarton=data[0].PcsCarton;
+					_netWt=data[0].netWeightK;
+					_grossWt=data[0].grossUnitWeightK;
+					_cbm=data[0].cbm;
+
+					_discription.value= title + " " + subTitle + " " +discriptionGet;
+					_unit_measure.value= volumeKi;
+
+				});	
+		}
+		
+		
+		
+		
+		
+		
+		function setItemNumber(){		
+
+				
+			ordersRef.child(orderNumber).on("value", snap=>{
+			
+				currentNoItemNumber=snap.child("noItemNumber").val();
+				
+				
+				$('#item_Number').val("itemNo "+currentNoItemNumber);
+				noItemN=true;
+
+			});
+		
+		//		return currentOrderNumber
+		//}
+		}
+		
+		function addNewItemToOrder(){
+		let i=document.getElementById("table_body").rows.length;
+
+		var existItem, _productT, bottleN, sitckerN, cbm, ctnNet, ctnGross;
+		
+		_itemNumber = document.getElementById('item_Number').value;
+		_discription = document.getElementById('item_discription').value;
+		_unit_measure = document.getElementById('unit_measure').value;
+		_quantity = document.getElementById('itemQty').value;
+		_kg = document.getElementById('itemKg').value;
+		_remarks = document.getElementById('itemRemarks').value;
+		_price = document.getElementById('item_price').value;
+		_discount = document.getElementById('item_discount').value;
+		_totalPrice = document.getElementById('total_price').value;
+		
+		var itemType = $('input[name="type"]:checked').val()
+		
+		
+
+				let orderItem={
+					itemNumber: _itemNumber,
+					discription:_discription,
+					unitMeasure: _unit_measure,
+					quantity:_quantity,
+					qtyKg:_kg,
+					price:_price,
+					discount:_discount,
+					totalPrice:_totalPrice,
+					itemRemarks:_remarks,
+					batch:'',
+					orderId:orderGeneratedId, 
+					orderNumber:orderNumber,
+				}
+					$.post('/orderitem/add', 
+					orderItem,
+					  function(data){	 
+						console.log(data._id);
+						$("#table_body").append("<tr><td></td><td>" + i + "</td><td>" + _itemNumber +	 "</td><td>"+ _discription + "</td><td>" + _unit_measure + "</td><td>" + _quantity + 
+						" Pcs</td><td>"+ _kg +" kg</td><td style='display:none'>" + _price + "</td><td style='display:none'>"+ _discount + "</td><td style='display:none'>"+ _totalPrice + "</td><td>"+_remarks+"</td><td><Button onClick='deleteData(\""+ _itemNumber + "\")'>Delete</td></tr>");
+
+					});
+
+
+
+		/*var searchItemRef = itemsRef.child(_itemNumber);
+		searchItemRef.on('value', snap =>{
+				existItem= snap.exists();
+				bottleN = snap.child("bottleTube").val();
+				stickerN = snap.child("stickerNumber").val();
+				
+				cbm = snap.child("cbm").val();
+				ctnNet = snap.child("netCtnWeightK").val();
+				ctnGross = snap.child("grossCtnWeightK").val();
+				
+				
+				if(bottleN!=null && bottleN!="undefine"){
+					packageList+=bottleN;
+				}
+				if(stickerN!=null && stickerN!="undefine"){
+					packageList+=stickerN;
+				}
+		});
+		*/
+
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; 
+		var yyyy = today.getFullYear();
+		today = dd+'/'+mm+'/'+yyyy;
+		
+
+		/*
+		// exist "no items list"
+		_productT=existItem;
+		console.log(existItem);
+		if (existItem="false"){
+			var noItemRef = firebaseRef.child("noItemDetails");
+			noItemRef.push().set({
+				itemN:''+  _itemNumber ,
+				productName:''+ _discription ,
+				labeledBy:'',
+				netWeight:''   ,
+				grossWeight:''   ,
+				personalPackageN:''   ,
+				masterCartonN:''   ,
+				cartonUnitNumber:'' ,
+				date: 'order '+today,
+			
+			});
+		}
+		
+		//take out all letters
+		if(_grossWt!="" && _grossWt!=null){_grossWt = _grossWt.replace(/\D/g,'');}
+		if(_netWt!="" && _netWt!=null){_netWt = _netWt.replace(/\D/g,'');}
+		if(_pcsCarton!="" && _pcsCarton!=null){_pcsCarton = _pcsCarton.replace(/\D/g,'');}
+		
+		
+		
+		
+		itemOrderRef= ordersRef.child(orderNumber);
+		
+		if (noItemN==true){
+		
+			console.log(currentNoItemNumber);
+			currentNoItemNumber++;
+			itemOrderRef.update({
+			
+				noItemNumber:''+currentNoItemNumber,
+			});
+			noItemN=false;
+		}
+		
+
+	ordersRef.child(orderNumber).orderByChild("itemNumber").equalTo(_itemNumber).on("child_added", snap=>{
+	var itmNUM = snap.child("itemNumber").val();
+	var discrip = snap.child("discription").val();
+	var unitMsr = snap.child("unitMeasure").val();
+	var qty = snap.child("quantity").val();
+	var qtyKg = snap.child("qtyKg").val();
+	var priceItem = snap.child("price").val();
+	var dcnt = snap.child("discount").val();
+	var ttlPrice = snap.child("totalPrice").val();
+	var itemRemarks = snap.child("itemRemarks").val();
+
+	i++;
+	$("#table_body").append("<tr><td>" + i + "</td><td>" + itmNUM +	 "</td><td>"+ discrip + "</td><td>" + unitMsr + "</td><td>" + qty + 
+						" Pcs</td><td>"+ qtyKg +" kg</td><td style='display:none'>" + priceItem + "</td><td style='display:none'>"+ dcnt + "</td><td style='display:none'>"+ ttlPrice + "</td><td>"+itemRemarks+"</td><td><Button onClick='deleteData(\""+ itmNUM + "\")'>Delete</td></tr>");
+						
+					
+	})
+	*/
+	
+
+		$('#item_Number').val("");
+		$('#item_discription').val("");
+		$('#unit_measure').val("");
+		$('#itemQty').val("");
+		$('#itemKg').val("");
+	
+	}		
+	
+		
+		function deleteData(itemNumber, trId){
+		console.log(itemNumber + " , " + orderNumber);
+			var a=confirm("Delete order " +itemNumber + "?");
+			if (a==true){
+				ordersRef.child(orderNumber).child(itemNumber).remove();
+				$("#id_tr"+trId).css('background-color', 'red');
+				// if want can remove instand of mark in red:
+				//$("#id_tr"+trId).remove();
+							
+			}
+		}
+		
+		
+		function editData( i, itemNumber){
+			console.log(itemNumber);
+			var img = document.getElementById("editData"+i);
+			if(img.style.width=='40px'){	
+				$.getJSON("/orderItem?itemId="+itemNumber, (data)=>{
+						console.log(data);
+						i=i+1;
+						var edit_itmNUM = data[0].itemNumber;
+						var edit_discrip = data[0].discription;
+						var edit_unitMsr = data[0].unitMeasure;
+						var edit_qty = data[0].quantity;
+						var edit_qtyKg = data[0].qtyKg;
+						var edit_priceItem = data[0].price;
+						var edit_dcnt = data[0].discount;
+						var edit_ttlPrice = data[0].totalPrice; 
+						var edit_compileSts = "";
+						var edit_remarks = data[0].itemRemarks; 
+						i=i-1;
+						$("#id_tr"+i).after("<tr id='editTr"+i+"'><td></td><td></td><td><input type='text' value='"+edit_itmNUM+"' id='edit_item_Number' style='width:110px'></td><td><input type='text' value='" + edit_discrip+"'  id='edit_item_discription' style='width:450px'></td><td><input type='text' value='" + edit_unitMsr+"'  id='edit_unit_measure' style='width:100px'></td><td><input type='text'  value='" + edit_qty+"' id='edit_itemQty' style='width:80px; margin-right:5px;' placeholder='Pcs'></td><td><input type='text' id='edit_itemKg'  value='" + edit_qtyKg+"' style='width:80px' placeholder='Kg'></td><td class='priceClass'><input type='text' id='edit_item_price' style='width:100px'></td><td class='priceClass'><input type='text' id='edit_item_discount' style='width:100px'></td><td class='priceClass'><input type='text' id='edit_total_price' style='width:120px'></td><td><input type='text' value='"+edit_remarks+"' id='edit_remarks' style='width:200px'></td><td ><input id='edit_key' value='"+ data[0]._id+"' style='display:none'><button class='button' onclick='updateItemToOrder("+i+")'>Update</button></td></tr>");
+					
+				});	
+
+				img.style.width='39px'		
+			}
+			else{
+					$("#editTr"+i).closest("tr").remove();
+					//$("#editTr"+i).closest("tr").remove();
+					img.style.width='40px'
+				}
+		}
+		
+		
+		
+		
+		function updateItemToOrder(i){
+			_itemNumber = document.getElementById('edit_item_Number').value;
+			_discription = document.getElementById('edit_item_discription').value;
+			_unit_measure = document.getElementById('edit_unit_measure').value;
+			_quantity = document.getElementById('edit_itemQty').value;
+			_kg = document.getElementById('edit_itemKg').value;
+			_price = document.getElementById('edit_item_price').value;
+			_discount = document.getElementById('edit_item_discount').value;
+			_totalPrice = document.getElementById('edit_total_price').value;
+			_remarksE = document.getElementById('edit_remarks').value;	
+			_edit_key = document.getElementById('edit_key').value;	
+			let orderItem={
+						itemNumber: _itemNumber,
+						discription:_discription,
+						unitMeasure: _unit_measure,
+						quantity:_quantity,
+						qtyKg:_kg,
+						price:_price,
+						discount:_discount,
+						totalPrice:_totalPrice,
+						itemRemarks:_remarks,
+						orderItemId:_edit_key
+					}
+						$.post('/orderitem/update', 
+						orderItem,
+			  			function(data){	 
+							console.log(data);
+							showItems2(); // because table is deleted;
+						});
+				
+		/*	ordersRef.child(orderNumber).orderByChild("itemNumber").equalTo(_itemNumber).on("child_added", snap=>{
+			var itmNUM = snap.child("itemNumber").val();
+			var discrip = snap.child("discription").val();
+			var unitMsr = snap.child("unitMeasure").val();
+			var qty = snap.child("quantity").val();
+			var qtyKg = snap.child("qtyKg").val();
+			var priceItem = snap.child("price").val();
+			var dcnt = snap.child("discount").val();
+			var ttlPrice = snap.child("totalPrice").val();
+			
+			$("#editTr"+i).closest("tr").remove();		
+			$("#id_tr"+i).html("<td></td><td>" + i + "</td><td style='padding-top:10px; padding-bottom:10px'>" + itmNUM +	 "</td><td>"+ discrip + "</td><td>" + unitMsr + "</td><td>" + qty + 
+								" Pcs</td><td>"+ qtyKg +" kg</td><td>" + priceItem + "</td><td>"+ dcnt + "</td><td>"+ ttlPrice + "</td><td></td></tr>");
+								
+			$("#id_tr"+i).css('background-color', 'orange');
+			
+			setInterval(function() {
+					$("#id_tr"+i).css({'background-color':'white'});
+					}, 5000);
+			
+			
+		//	$("#btn"+i).css('padding-left', '8px');			
+					
+			})
+			
+		$("#editTr"+i).closest("tr").remove();		 // doing this again since it from unknown reason duplicate the edit bars
+*/
+		$("#table_body").html("");
+			showItems();	
+			
+		}		
+		
+		function openDate(){
+			$("#myModal").css('display', 'block');
+		
+		}
+		
+		
+		function closeDate(){
+		
+			$("#myModal").css('display', 'none');
+		}
+		
+		function closePrint(){
+		
+			$("#myModal3").css('display', 'none');
+		}
+		
+		//not working from unknown reason
+		/* $(document).ready(function(){
+				$("#closeId").click(function(){
+					$("#myModal").css('display', 'none');
+					});
+			}); */
+				
+				
+				
+				
+		function orderComponents(){
+		
+		
+			var radioI= document.getElementById('rbI').checked;
+			var radioD= document.getElementById('rbD').checked;
+			var cDate;
+			if (radioD==true){
+				cDate= document.getElementById('input_componentDate').value;
+				var _dt2 = new Date(cDate);
+				cDate=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+			}
+			else if (radioI==true){
+				cDate='immediately';
+			}	
+			console.log(radioI+ " , " + cDate + " , " + radioD);
+			
+			ordersRef.child(orderNumber).on("child_added", snap=>{
+				var itemTempNumber = snap.val()["itemNumber"];  
+				if (itemTempNumber!=undefined && itemTempNumber!=null){
+					console.log(orderNumber + " , " + itemTempNumber);
+					checkComponents(orderNumber, itemTempNumber);
+						
+				}
+				ordersRef.child(orderNumber).update	({	
+				        componenetDate:''+cDate,
+				});
+			});
+		}
+		
+		
+		var cmptArray=[];
+		
+		
+		function orderComponents2(){
+		var qtyToCollect;
+		var compileStatus=0;
+		var bottleClt=0;
+		var capClt=0;
+		cmpt={cmptN:"0", quantity:"0"};
+	    cmptArray.push(cmpt);
+			var radioI= document.getElementById('rbI').checked;
+			var radioD= document.getElementById('rbD').checked;
+			var cDate;
+			if (radioD==true){
+				cDate= document.getElementById('input_componentDate').value;
+				var _dt2 = new Date(cDate);
+				cDate=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+			}
+			else if (radioI==true){
+				cDate='immediately';
+			}	
+			console.log(radioI+ " , " + cDate + " , " + radioD);
+			
+			console.log("order number is : " + orderN);
+			$.post('/orderItem/updateComponents', 
+									{
+										orderId:dataArived._id,
+										getComponent:true,
+										orderNumber:orderN,
+										date:cDate
+									},
+									function(data){	 
+										console.log(data._id);
+			});
+
+			ordersRef.child(orderNumber).on("child_added", snap=>{
+				var itemTempNumber = snap.val()["itemNumber"];  
+				var qtyOrdered = snap.child("quantity").val();
+				
+				if(snap.hasChild("compileStatus")){
+					compileStatus = snap.child("compileStatus").val();
+					qtyToCollect = parseInt(qtyOrdered) - parseInt(compileStatus);
+					console.log("qtyToCollect: " + qtyToCollect);
+				}else{
+					qtyToCollect=qtyOrdered;
+				}
+				
+				if(snap.hasChild("bottleStatus")){
+					bottleClt= snap.child("bottleStatus").val();   // if i send it to print, it move to bottleStatus:'qty to print' , and take it off;
+				}
+				if(snap.hasChild("capStatus")){
+					capClt= snap.child("capStatus").val();
+				}
+				console.log(" qtyOrdered " + qtyOrdered);
+				if (itemTempNumber!=undefined && itemTempNumber!=null){
+					console.log(orderNumber + " , " + itemTempNumber);
+					checkCmpt2(orderNumber, itemTempNumber, qtyToCollect, bottleClt, capClt);
+					bottleClt=0;
+					capClt=0;	
+				}
+			});
+			
+			//orderWhRef.push().set({
+			
+			//});
+			
+		
+		}
+
+		function printArray(){
+			var radioI= document.getElementById('rbI').checked;
+			var radioD= document.getElementById('rbD').checked;
+			var cDate;
+			var name;
+			if (radioD==true){
+				cDate= document.getElementById('input_componentDate').value;
+				var _dt2 = new Date(cDate);
+				cDate=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+			}
+			else if (radioI==true){
+				cDate='immediately';
+			}	
+					var newRef = orderWhRef.push();
+					console.log('newRef ' + newRef.key);
+					
+					ordersRef.child(orderNumber).update({
+						whKey:''+newRef.key,
+					});
+					for(var i=1; i<cmptArray.length; i++){
+					console.log(i+ " , " + cmptArray.length + " , " );
+					newRef.child(cmptArray[i].cmptN).set({
+								order:''+orderNumber,
+								componenetDate:''+cDate,
+								componentNumber:''+ cmptArray[i].cmptN,
+								quantity:''+ cmptArray[i].quantity,
+								status:'open',
+								
+					});
+
+					console.log("ARRAY " + cmptArray[i].cmptN + " , " +  cmptArray[i].quantity);	
+				}
+				
+			   /*	orderWhRef.push().set({
+					cmptArray
+				}); */
+		}
+		
+		function checkCmpt2(orderN, itemN, qtyToOrder, bottleClt, capClt){
+			console.log(itemN +" , "  +cmptType + " , b: "  + bottleClt + " , c: " + capClt + " , q: "  +qtyToOrder);
+			
+			var cmptType=[];
+			var cmpt={};
+			var bottleN, capN, pumpN, extra1, extra2, boxN, boxT, stickerN, stickerT, sealN;
+			var searchItemRef = itemsRef.child(itemN);
+			searchItemRef.on('value', snap =>{
+			
+				bottleN = snap.child("bottleNumber").val();
+				capN = snap.child("capNumber").val();
+				pumpN = snap.child("pumpNumber").val();
+				sealN = snap.child("sealNumber").val();
+				extra1 = snap.child("extraText1").val();
+				extra2 = snap.child("extraText2").val();
+				boxN = snap.child("boxNumber").val();
+				stickerN = snap.child("stickerNumber").val();
+			
+			cmptType.push(bottleN, capN, pumpN, sealN, extra1,extra2 , boxN);
+			//console.log(itemN +" , "  +cmptType);
+			
+			for(var t=0; t<cmptType.length; t++){
+			var qtyToOrderNew=qtyToOrder;
+			//	console.log("cmptType T: "  + cmptType[t]);
+				if (cmptType[t]!=null && cmptType[t]!=""){ 
+			//		console.log("cmptType t: "  + cmptType[t]);
+					if(t==0){
+						qtyToOrderNew=parseInt(qtyToOrderNew)-parseInt(bottleClt);  // this line check if somthing sent to print erlaier and take it off from the total qty since it was allready collected
+					}
+					if(t==1){
+						qtyToOrderNew=parseInt(qtyToOrderNew)-parseInt(capClt);// this line check if somthing sent to print erlaier and take it off from the total qty since it was allready collected
+					}
+						//console.log("ARRAY " + cmptArray.indexOf(cmpt.cmptN));
+					//	console.log("ARR ");
+						//console.log(cmptArray[0].cmptN + " , , " + bottleN);
+						
+						var cmptExist=false;
+						for(var i=0; i<cmptArray.length; i++){
+						
+						//	console.log("check: " + i + " , "  + cmptArray[i].cmptN + " , , " + bottleN + " , " + cmptArray.length);
+							if (cmptArray[i].cmptN == cmptType[t]) {
+						//		console.log("if");
+						//		console.log("cmptN " + cmptArray[i].cmptN);
+								var tempQty=  cmptArray[i].quantity;
+								//var newQty = parseInt(tempQty.replace(/\D/g,'')) + parseInt(qtyToOrderNew.replace(/\D/g,''));
+								var newQty = parseInt(tempQty) + parseInt(qtyToOrderNew);
+						//												console.log("tempQty " + tempQty + " , newQty " + newQty );
+								cmpt={cmptN:cmptType[t], quantity:newQty};
+								cmptArray[i] = cmpt;
+								cmptExist=true;
+								break;
+							}
+							else{
+								
+							}
+							
+						}
+						
+						if(cmptExist==false){
+							//	console.log("else")
+								cmpt={cmptN:cmptType[t], quantity:qtyToOrderNew};
+								cmptArray.push(cmpt);
+							//	console.log("A " + cmpt.cmptN);
+							//	console.log("B " + cmpt.quantity);
+						}
+						/*cmpt={cmptN:bottleN, quantity:qtyToOrderNew};
+						cmptArray.push(cmpt);
+						console.log("A " + cmpt.quantity);
+						console.log("B " + cmpt.cmptN); */
+						
+						
+					}
+				}
+				
+		    });
+			
+
+		}
+		
+		function checkComponents(orderN, itemN){
+		
+			
+			
+			
+			
+		var itemsArray=[];
+		var item={};
+			var bottleN, capN, pumpN, extra1, extra2, boxN, boxT, stickerN, stickerT, sealN;
+			var searchItemRef = itemsRef.child(itemN);
+			searchItemRef.on('value', snap =>{
+			
+				bottleN = snap.child("bottleNumber").val();
+				capN = snap.child("capNumber").val();
+				pumpN = snap.child("pumpNumber").val();
+				sealN = snap.child("sealNumber").val();
+				extra1 = snap.child("extraText1").val();
+				extra2 = snap.child("extraText2").val();
+				boxN = snap.child("boxNumber").val();
+				boxT = snap.child("boxTypeK").val();
+				stickerN = snap.child("stickerNumber").val();
+				stickerT = snap.child("stickerTypeK").val();
+				
+						//ordersRef.child(orderN).child(itemN).update	({	
+						//leftToCompileN:''+leftToCompile,
+						//});
+				
+							console.log( bottleN + " , " + sealN + " , "  + capN + " , " + pumpN  + " , " + extra1  + " , " + extra2+ " , " +   boxN+ " , " +boxT+ " , " +stickerN+ " , " + stickerT);
+						if (bottleN!=null && bottleN!=""){                                                                                                         
+						       ordersRef.child(orderN).child(itemN).update	({				
+										bottleStatus:'checking',
+										bottleNumber:''+bottleN,
+					           });			
+							item.bottleStatus="checking";
+						}
+						if (capN!=null && capN!=""){                                                                                                         
+							ordersRef.child(orderN).child(itemN).update	({				
+										capStatus:'checking',
+										capNumber:''+capN,
+					           });
+							item.capStatus="checking";
+						}
+						
+						if (sealN!=null && sealN!=""){                                                                                                         
+								ordersRef.child(orderN).child(itemN).update	({				
+										sealStatus:'checking',
+										sealNumber:''+sealN,
+					           });
+							item.sealStatus="checking";
+						}
+						
+						if (pumpN!=null && pumpN!=""){                                                                                                         
+								ordersRef.child(orderN).child(itemN).update	({				
+										pumpStatus:'checking',
+										pumpNumber:''+pumpN,
+					           });
+							item.pumpStatus="checking";
+						}
+						if (boxN!=null && boxN!=""){                                                                                                         
+								ordersRef.child(orderN).child(itemN).update	({				
+										boxStatus:'checking',
+										boxNumber:''+boxN,
+					           });
+							item.boxStatus="checking";
+						}
+						if (stickerN!=null && stickerN!="" && stickerN!="Built-in"){                                                                                                         
+								ordersRef.child(orderN).child(itemN).update	({				
+										stickerStatus:'checking',
+										stickerNumber:''+stickerN,
+					           });
+							item.stickerStatus="checking";
+						}
+						
+						console.log(itemN);
+						console.log(item);
+				});
+				
+				}
+				
+				
+				
+				//ordersRef.child(orderN).child(itemN).update	({				
+						
+					//	});			
+		
+		function openPrintSchduele(number, itemNumberP, src){
+			console.log(src);
+			cmptPrintNumber=number;
+			itemPrintName=itemNumberP;
+			itemPrintSrc=src;
+			componentsRef.orderByChild("componentN").equalTo(number).on("child_added", snap=>{
+				cmptPrintName=snap.child("componentName").val();
+			});
+			
+			console.log("1 " +number);
+			console.log("2 " +itemNumberP);
+			$("#myModal3").css('display', 'block');	
+			
+		}
+		
+		function setPrintSchedule(){
+			
+			img=document.getElementById('imagePreview').value;
+			glufeN=document.getElementById('id_glufeN').innerText;
+			nextStation =  document.getElementById('stationSelecet').value;
+			quantityPrint =  document.getElementById('amountToPrint').value;
+			color =  document.getElementById('colorToPrint').value;
+			printing_remakrs =  document.getElementById('input_priniting_remarks').value;
+			dateIs =  document.getElementById('input_dateToBePrint').value;
+			printType =  document.getElementById('printType_slect').value;
+			
+			
+			var existRequestToCompile=false;
+			console.log("orderNumber " + orderNumber +"itemPrintName " + itemPrintName +"componenetN " + cmptPrintNumber +"cmptPrintNumber " + cmptPrintName + " , nextStation: " + nextStation + " , " + quantityPrint + " , " + color+ " , " + printing_remakrs+ " , " + dateIs+ " , " + cmptPrintNumber+ " , " + cmptPrintName);
+			if (dateIs==""){
+				alert("Please Insert Date");
+			}
+			
+			else{
+				//var batchLow= batchN.toLowerCase();
+					  var _dt = new Date(dateIs);
+					dateDMY=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+					console.log("date is: "  + dateDMY, _dt);
+					
+						let printCmpt={ 
+								position:'',
+								orderN: ''+orderN,
+								itemN: ''+itemPrintName,
+								componentN: ''+cmptPrintNumber,
+								costumer:''+costumer_Name,
+								cmptName:''+cmptPrintName,
+								qty:''+quantityPrint,
+								qtyProduced:'0',
+								block:''+glufeN,
+								color:''+color,
+								printType:''+printType,
+								nextStation:''+nextStation,
+								marks: ''+ printing_remakrs,
+								date: ''+ dateDMY,
+								cmptAmount: '0',
+								status:'open', 
+							}
+							console.log(printCmpt);
+								$.post('/printSchedule/add', 
+									printCmpt,
+									function(data){	 
+										console.log(data._id);
+								});
+
+						
+						var itemToPrint=itemPrintSrc+"Status";
+						console.log("itemPrintSrc: " + itemPrintSrc);
+						
+						ordersRef.child(orderNumber).child(itemPrintName).update({   //set compileStatus for bottle/cap so when calling to collect ALL cmpt from wharehouse it will minimize this;
+								[itemPrintSrc+"Status"]:''+quantityPrint,  
+						});
+						
+						
+						if(cmptStatusRef!="" && cmptStatusRef!="undefined" && cmptStatusRef!=null){
+							/*var newRef = orderWhRef.push();
+							console.log('newRef ' + newRef.key);
+							
+							ordersRef.child(orderNumber).update({
+								whKey:''+newRef.key,
+							});
+							for(var i=1; i<cmptArray.length; i++){
+							console.log(i+ " , " + cmptArray.length + " , " );*/
+							
+							
+							/*orderWhRef.child(cmptStatusRef).on("child_added", snap=>{
+								if(snap.hasChild(cmptPrintNumber)){
+									existRequestToCompile=true;
+								});
+								else{
+									existRequestToCompile=false;
+								}
+							console.log(existRequestToCompile);*/
+								
+							orderWhRef.child(cmptStatusRef).child(cmptPrintNumber).set({
+							
+										order:''+orderNumber,
+										componenetDate:''+dateDMY,
+										componentNumber:''+ cmptPrintNumber,
+										quantity:''+ quantityPrint,
+										status:'open',
+										destination:'print',
+										
+							});
+						}else{
+							var newRef = orderWhRef.push();							
+							ordersRef.child(orderNumber).update({
+								whKey:''+newRef.key,
+							});
+							newRef.child(cmptPrintNumber).set({
+							
+										order:''+orderNumber,
+										componenetDate:''+dateDMY,
+										componentNumber:''+ cmptPrintNumber,
+										quantity:''+ quantityPrint,
+										status:'open',
+										destination:'print',
+										
+							});
+						}
+			}
+		closePrint();
+	   }
+	   
+			function setDoneOrder(){
+		
+			var a=confirm("Order " +orderNumber + " is done?");
+			if (a==true){
+		
+			ordersRef.child(orderNumber).update({
+				status: 'close',
+			});
+			}
+		}
+		
+		function showImagePlate(plateImgRef){
+			plateImgRef.getDownloadURL().then(function(url){
+			tempImgUrl = url;
+			tempImgPaletUrl = url;
+			document.getElementById('imagePreview').src=url;
+
+		
+		});
+		}
+		
+		function loadPallets(){
+			palletRef.on("child_added", snap=>{
+				var key=snap.key;
+				var img = snap.child('palletImg').val();
+				var palletNumber = snap.child('palletNumber').val();
+				var palletItemName = snap.child('palletItemName').val();
+				var palletItemBrand = snap.child('palletItemBrand').val();
+				var palleRemarks = snap.child('palleRemarks').val();
+				var lastUpdate = snap.child('lastUpdate').val();
+				$("#palletsTbody").append("<tr><td align='left' style='cursor:pointer; width:370px'><span onclick='bigImage(\""+key+"\", \""+img+"\",\""+palletNumber+"\", \""+palletItemName+"\",\""+palletItemBrand+"\",\""+palleRemarks+"\",\""+lastUpdate+"\",\""+lastUpdate+"\")'>"+palletItemBrand+ "  " +palletItemName+ " , ["  + palletNumber+"]</span></td></tr>");
+			});
+		
+		}
+		
+		function bigImage(ky, src, num, name, brand, remarks, date){
+				console.log(ky);
+				$("#imagePreview").attr("src",src);
+				$("#id_glufeN").html(num);
+				
+		}
+		
+		function searchItem2(){
+		
+		 var searchText = $("#searchPallet_input").val().toLowerCase();
+			console.log(searchText);
+			$.each($("#palletsTbody  tr"), function() {
+			console.log(searchText);
+				if($(this).text().toLowerCase().indexOf(searchText) === -1)
+				   $(this).hide();
+				else
+				   $(this).show();                
+			});
+		}
+
+
+		 function getParameterByName(name, url) {
+			if (!url) url = window.location.href;
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+				results = regex.exec(url);
+			if (!results) return null;
+			if (!results[2]) return '';
+			return decodeURIComponent(results[2].replace(/\+/g, " "));
+		 }
+</script>
+	<body style='padding-top:20px' onload="init()" id='body_id'>
+		<a>
+		<div id='mainDiv'>
+		    
+        <div class='header' style="width: 1330px ; height: 70px"><a1>	Search order </a1> <img src="/images/peerpharm.png"  width='270px' align='right'></div>
+		<ul class="ulMenu">
+			  <li style='float: left;'><a href="#home">Home</a></li>
+			  <li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Orders</a>
+					<div class="dropdown-content">
+					  <a href="openOrders.html">Open Orders</a>
+					  <a href="newOrder.html">New Order</a>
+					  <a href="showOrder.html">Search Order</a>
+					  <a href="ordersList.html">All Orders</a>
+					  
+					</div>
+			  </li>
+			  <li class="dropdown"><a href="workShift.html">Work Schedule</a><li>
+			  <li class="dropdown">
+			  <a href="javascript:void(0)" class="dropbtn">Product Tree</a>
+			  <div class="dropdown-content">
+				<a href="itemsList.html">Items List</a>
+				<a href="getItem.html">Product Tree</a>
+				</div>
+				</li>
+			  <li style='float: left;'><a href="costumers.html">Costumers</a></li>
+			  <li style='float: left;'><a href="needToBuild.html">No-form List</a></li>
+			  <li style='float: left;'><a href="batchesList.html">Batch List</a></li>
+			  <li style='float: left;'><a href="forms.html">Forms</a></li>
+			  
+		</ul>
+		</a>
+		<br><br>
+        <table border="0" width='200px' style="margin-left:19px" id="newOrderTable">
+			<thead>
+				<tr align='center' bgcolor="Gainsboro">
+					<th>
+						<b>Order Number</b>
+					</th>
+					
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type='text' id="orderNumberID"></td>
+					
+					<td><button class="button" onclick="showOrder()" id="enter_btn"><span>Enter</span></button></td>
+				</tr>
+			</tbody>
+		</table>	
+		<br>
+			
+		<table style="margin-left:10px ; visibility: hidden" id="orderDetailsID">
+			<tr style="background-color:white"><td><button onclick='openDate()'>check all</button><br><button onclick='printArray()'>print array</button></td>
+				
+				<td style="padding:5px"><h3 style="color:brown">Order Number:</h3></td><td style="border-left: 0px solid #fff;padding-right:40px"><h3 id="h3_orderNumber"></h3></td>
+				<td style="padding:5px"><h3 style="color:brown">Costumer:</h3></td><td style="border-left: 0px solid #fff;padding-right:40px"><h3 id="h3_costumer"></h3></td>
+				<td style="padding:5px"><h3 style="color:brown">Delivery date</h3></td><td style="border-left: 0px solid #fff;padding-right:40px"><h3 id="h3_date"></h3></td>
+				<td style="border-left: 0px solid #fff;"><img src='/images/status_green.png' style='cursor:pointer' width='73px' onClick='setDoneOrder()'></td>
+				<td style="border-left: 0px solid #fff;"><a  style='margin-left:100px; ' target='_blank' class="button" onClick='setPackingListRef()' href='packingList.html'>Packing List</a></td>
+				<td style="border-left: 0px solid #fff;"><img src='/images/colorsExplain2.jpg' style='width:520px'></td>
+			</tr>
+		</table>
+		
+		<table border=0><tr><td>
+			<table border="0"  style="margin-left:10px ; width:1450px;  visibility: hidden " id= "itemOrderID">
+			<thead>
+				<tr align='center' bgcolor="Gainsboro ">
+				<th></th>
+					<th class='details-control'><b>Row</b></th>
+					<th style="width:200px">
+						<b>Item Number</b>
+					</th>
+					<th style="width:450px">
+						<b>Discription</b>
+					</th>
+					<th style="width:100px">
+						<b>Unit/measure</b>
+					</th>
+					<th style="width:100px">
+						<b>Quantity</b>
+					</th>
+					<th style="width:120px">
+						<b>Weight</b>
+					</th>
+					<th style="width:100px" class='priceClass'>
+						<b>Price</b>
+					</th>
+					<th style="width:100px" class='priceClass'>
+						<b>Discount%</b>
+					</th>
+					<th style="width:120px" class='priceClass'>
+						<b>Total Price</b>
+					</th>
+					<th style="width:220px">
+						<b>Status</b>
+					</th>
+					<th style="width:220px">
+						<b>Rearks</b>
+					</th>
+					<th style="width:45px"></th>
+					
+				</tr>
+			
+			
+				<tr style="background-color:white">
+				<td></td>
+					<td></td>
+					<td><input type='text' id="item_Number" style="width:90px;  float: left; margin-top:2px;"><image class="btnImage" src= '/images/search.png' onClick='searchItem()'	  ><img src = '/images/noNumber.png'  onClick="setItemNumber()" style='width:20px; cursor:pointer'></td>
+					<td><input type='text' id="item_discription" style="width:450px"></td>
+					<td><input type='text' id="unit_measure" style="width:100px"></td>
+					<td><input type='text' id="itemQty" style="width:80px; margin-right:5px;" placeholder='Pcs'></td>
+					<td><input type='text' id="itemKg" style="width:80px" placeholder='Kg'></td>
+					<td class='priceClass'><input type='text' id="item_price" style="width:100px"></td>
+					<td class='priceClass'><input type='text' id="item_discount" style="width:100px"></td>
+					<td class='priceClass'><input type='text' id="total_price" style="width:100px"></td>
+					<td><input type='text' id="itemRemarks" style="width:220px" placeholder='Remarks'></td>
+					
+					<td ><button class="button" onclick="addNewItemToOrder()">Add</button></td>
+				</tr>
+				<tr bgcolor="lightblue">
+					<td colspan="12" style="height:20px"></td></tr>
+			</thead>		
+			<tbody id= "table_body">
+			</tbody>
+		</table>
+	</td>
+		<td>
+		 
+		 
+		 <table>
+			<thead>
+				<tr style='background-color:lightblue'>
+					<td>Item</td>
+					<td>Required</td>
+					<td>Exist</td>
+					<td>Allotment</td>
+					<td>Lack</td>
+				</tr>
+			</thead>
+			<tbody id='table_body_cmptSatus'>
+				
+			</tbody>
+		 
+		</td>
+		
+		</tr>
+	</table>
+
+
+		
+		<div id="myModal" class="modal" align='center'>
+	<!-- Modal content -->
+		  <div class="modal-content" style='width:250px' id='modelC'>
+			<div class="modal-header">
+			<span class="close" id="closeId" onClick="closeDate()">&times;</span>
+			  <h2 id='div_h3'>תאריך אספקת רכיבים</h2>
+			</div>
+			<div class="modal-body">
+			<br>
+			
+			<input type="radio" id="rbI" name='date' value="immediately">מיידי<br><br>
+			<input type="radio" id="rbD" name='date'  value="date"><input type='date' id='input_componentDate'>
+			  
+					
+			</div>
+			<div class="modal-footer">
+				<button id="updateBtn" onClick="orderComponents2()">עדכן מידע</button>
+			</div>
+		  </div>		
+	</div>	
+	
+	
+	<div id="myModal3" class="modal">
+
+		  <!-- Modal content -->
+		  <div class="modal-content" style='width:400px'>
+			<div class="modal-header">
+			  <span class="close" id="closeId3" onclick="closePrint()">&times;</span>
+			  <h3>עדכן סחורה</h3>
+			</div>
+			<div class="modal-body">
+			<br>
+			כמות להדפסה: &nbsp;
+			<input type=number id='amountToPrint' style='width:140px'  placeholder="כמות"><br><br>
+			הדפסה בתאריך:
+			<input type='date' id='input_dateToBePrint'>
+					<br><br>
+					מועבר למחלקת:
+					<select id='stationSelecet' style='width:144px; height:24px'>
+						<option value='prd'>ייצור</option>
+						<option value='mkp'>איפור</option>						
+						<option value='pkg'>אריזה</option>						
+					</select>
+					
+			<br><br>
+			צבע: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type=text id='colorToPrint' style='width:140px'><br><br>
+			הדפסה:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<select id='printType_slect'><option value='flat'>חלק</option><option value='round'>מעגלי</option></select><br><br>
+			הערות: <br> <textarea rows='4' cols='30' id='input_priniting_remarks'  style='width:228px'></textarea>
+			
+			</div>
+			<div class="modal-image">
+			<center>
+			
+				<button onclick='loadPallets()'>טען רשימת גלופות</button><br>
+				
+				<div border=1 style='max-height:250px; overflow:scroll; overflow:auto; margin-bottom:10px'>
+				<input type='text' placeholder='חפש גלופה' id='searchPallet_input' onkeyup="searchItem2()">
+					<table>
+						<tbody id='palletsTbody'>	
+						</tbody>
+					</table>
+				</div>
+				
+				
+				
+				
+			
+				<img src="" alt="תצוגה מקדימה של גלופה להדפסה" id="imagePreview" class="img-thumb" style="width:400px; height:200px"><br>
+				<span id='id_glufeN' style='display:none'></span>
+				</center>
+			</div>
+			<div class="modal-footer">
+				<button id="print_updateBtn" onclick="setPrintSchedule()">עדכן מידע</button>
+			</div>
+		  </div>
+
+	</div>
+	
+	
+</div>
+	<center id="center_id">
+	 </center>
+</body>	
+		
+		</html>
+		
+		
+				
+			
+					
+					
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

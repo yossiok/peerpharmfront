@@ -1,0 +1,764 @@
+<html>
+    <head>
+        <title>New Order</title>
+        <meta charset="windows-1255">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+<style>
+	
+	
+.header{
+	height: 45px;
+	position: relative;
+	background: #6E6E6E url(img03.jpg) top left no-repeat;
+	padding: 45px;
+	color: #FFFFFF;
+	width: 1330px;
+	border: solid 1px #7E7E7E;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	overflow: hidden;
+	margin-left:20px
+	
+
+}
+
+.header a1 {
+	position: absolute;
+    text-decoration: none;
+	color: #FFFFFF;
+	text-shadow: 0 1px 1px #3E3E3E;
+	font-size:50px;
+	align: right;
+	bottom: 10;
+    left: 15;
+	
+}
+
+.ulMenu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: linear-gradient(#209D9D, #497676) ;
+	width: 1422px;
+	margin-left:20px
+}	
+
+ul{
+	background-color:white;
+	cursor:pointer;
+	width:100px
+}
+li {
+   
+}
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+li.dropdown {
+    display: inline-block;
+	float: left;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+#uploader{
+	-webkit-appearance: none;
+	appearance: none;
+	width:50%;
+	margin-bottom:10px;
+	color:blue;
+}
+
+button{
+	background-color:red;
+	color: white;
+	display: inline-block;
+	font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+	 border: none;
+
+}
+tr{
+	text-align:center;
+}
+
+.button{
+		background-color:green;
+		color: white;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+		cursor: pointer;
+		 border: none;
+		 
+}
+
+ 
+ th {
+    background: url(http://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    border-left: 1px solid #555;
+    border-right: 1px solid #777;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #333;
+    box-shadow: inset 0 1px 0 #999;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    position: relative;
+    text-shadow: 0 1px 0 #000;  
+}
+
+td {
+    border-right: 1px solid #fff;
+    border-left: 1px solid #e8e8e8;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+    transition: all 300ms;
+}
+input[type=text]
+		{
+		display: inline-block;
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+		float: none;
+		z-index: auto;
+		width: auto;
+		height: auto;
+		position: static;
+		opacity: 1;
+		margin: 0;
+		//padding: 10px 20px;
+		overflow: visible;
+		border: 1px solid #b7b7b7;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		font: normal medium/normal Arial, Helvetica, sans-serif;
+		color: rgba(0,142,198,1);
+		-o-text-overflow: clip;
+		text-overflow: clip;
+		background: rgba(252,252,252,1);
+		-webkit-box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+		text-shadow: 1px 1px 0 rgba(255,255,255,0.66) ;
+		-webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+		-webkit-transform: none;
+		transform: none;
+		-webkit-transform-origin: 50% 50% 0;
+		transform-origin: 50% 50% 0;
+}
+
+.btnImage{
+	 width:25px;
+	 height:25px;
+	 float: right; 
+	 cursor:pointer; 
+	 margin:0	
+
+
+}
+
+
+
+
+
+
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+		<script src="_js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+		<script>
+		
+		var firebaseRef = firebase.database().ref();
+		var ordersRef =firebaseRef.child("orders");
+		var itemsRef = firebaseRef.child("items");
+		var scheduleRef= firebaseRef.child("schedule2");
+		var itemOrderRef;
+		var orderNumber, costumer_Name, orderDate, deliveryDate, orderRemarks;
+		var _itemNumber, _discription, _unit_measure,	_quantity, _kg, _price, _discount, _totalPrice;
+		var currentOrderNumber="";
+		var currentNoItemNumber=1;
+		var noItemN=false;
+		var itemsArray=[];
+		var packageList="";
+		var _pcsCarton, _grossWt, _netWt, _cbm;
+		_pcsCarton="", _grossWt="", _netWt="", _cbm="";
+		
+		var orderGeneratedId;
+		
+		function init(){
+			document.getElementById("orderDateID").value = new Date().toDateInputValue();
+			
+		}
+		  
+		  checkOrderNumber();
+		function checkOrderNumber(){
+			ordersRef.on("value", snap=>{
+			
+				currentOrderNumber=snap.child("currentOrderNumber").val();
+				$("#orderNumberTag").html(currentOrderNumber);
+			});
+			
+			itemsRef.on("child_added", snap=> {
+					
+					var key= snap.key;
+					itemsArray.push(key);
+					console.log(key);
+					
+				});
+			}
+			
+			
+			
+		//		return currentOrderNumber
+		//}
+		
+		  
+		  
+	
+		function writeNewOrder(){
+						orderNumber= document.getElementById('orderNumberID').value;
+                        costumer_Name = document.getElementById('CostumerID').value;
+                        orderDate = document.getElementById('orderDateID').value;
+						deliveryDate = document.getElementById('deliveryDateID').value;
+						orderRemarks = document.getElementById('orderRemeraks').value;
+						orderType = document.getElementById('orderType').value;
+						
+						if (deliveryDate==""){
+							alert("Please Insert Delivery Date");
+						}
+						else{
+							var _dt = new Date(orderDate);
+							orderDate=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+							_dt = new Date(deliveryDate);
+							deliveryDate=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+							
+							let order={ 
+								    orderNumber: orderNumber,
+									costumer:costumer_Name,
+									orderDate: orderDate,
+									deliveryDate:deliveryDate,
+									orderRemarks:orderRemarks,
+									status:'open',
+							}
+								$.post('/order/add', 
+								order,
+			  					function(data){	 
+									  console.log(data._id);
+									  orderGeneratedId=data._id;
+								});
+
+						 
+							/*
+							ordersRef.update({
+							
+								currentOrderNumber:''+ orderNumber,
+							});
+							*/
+							document.getElementById("orderDetailsID").style.visibility = "visible";
+							document.getElementById("itemOrderID").style.visibility = "visible";
+							
+							//document.getElementById("h3_orderNumber").innerHTML=orderNumber;
+							//document.getElementById("h3_costumer").innerHTML=costumer_Name;
+							//document.getElementById("h3_date").innerHTML=orderDate;
+							
+							$("#h3_orderNumber").append(orderNumber);
+							$("#h3_costumer").append(costumer_Name);
+							$("#h3_date").append(orderDate);
+							$("#h3_delivery").append(deliveryDate);
+							$("#h3_remarks").append(orderRemarks);
+							$("#h3_type").append(orderType);
+							//document.getElementById("newOrderTable").style.visibility = "hidden";
+							//$("newOrderTable").remove();
+							document.getElementById("newOrderTable").remove();
+			 ;
+		 }
+		}
+		
+		
+		  
+		var i= 0	;
+
+		function addNewItemToOrder(){
+		
+		var existItem, _productT, bottleN, sitckerN, cbm, ctnNet, ctnGross;
+		
+			_itemNumber = document.getElementById('item_Number').value;
+			_discription = document.getElementById('item_discription').value;
+			_unit_measure = document.getElementById('unit_measure').value;
+			_quantity = document.getElementById('itemQty').value;
+			_kg = document.getElementById('itemKg').value;
+			_remarks = document.getElementById('itemRemarks').value;
+			_price = document.getElementById('item_price').value;
+			_discount = document.getElementById('item_discount').value;
+			_totalPrice = document.getElementById('total_price').value;
+			
+			var itemType = $('input[name="type"]:checked').val()
+			
+			if(orderGeneratedId==""){
+				console.log("No order");
+			}
+
+					let orderItem={
+						itemNumber: _itemNumber,
+						discription:_discription,
+						unitMeasure: _unit_measure,
+						quantity:_quantity,
+						qtyKg:_kg,
+						price:_price,
+						discount:_discount,
+						totalPrice:_totalPrice,
+						itemRemarks:_remarks,
+						batch:'',
+						orderId:orderGeneratedId, 
+						orderNumber:orderNumber,
+					}
+						$.post('/orderitem/add', 
+						orderItem,
+			  			function(data){	 
+						    console.log(data._id);
+						 //   orderGeneratedId=data._id;
+						});
+
+
+
+			var searchItemRef = itemsRef.child(_itemNumber);
+			searchItemRef.on('value', snap =>{
+					existItem= snap.exists();
+					bottleN = snap.child("bottleTube").val();
+					stickerN = snap.child("stickerNumber").val();
+					
+					cbm = snap.child("cbm").val();
+					ctnNet = snap.child("netCtnWeightK").val();
+					ctnGross = snap.child("grossCtnWeightK").val();
+					
+					
+					if(bottleN!=null && bottleN!="undefine"){
+						packageList+=bottleN;
+					}
+					if(stickerN!=null && stickerN!="undefine"){
+						packageList+=stickerN;
+					}
+			});
+			
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; 
+			var yyyy = today.getFullYear();
+			today = dd+'/'+mm+'/'+yyyy;
+			
+			
+			// if the item is Tube type we want it to be automatic schedule to date:
+		/*	if(itemType=='tube'){
+				scheduleRef.push().set({
+	
+
+				orderN: ''+orderNumber,
+				item: ''+_itemNumber,
+				costumer:''+costumer_Name,
+				productName:''+_discription,
+				batch: '',
+				packageP:''+packageList,
+				Qty:''+_quantity,
+				marks: '',
+				shift:'Day',
+				date: '24/10/2016',
+				mkp: '4',
+				positionN: '',
+				status:'open',
+				cbm:''+cbm,
+				ttlNetCtn:''+ctnNet,
+				ttlGrossCtn:''+ctnGross,
+			})
+			
+			}*/
+			
+			// exist "no items list"
+			_productT=existItem;
+			console.log(existItem);
+			if (existItem="false"){
+				var noItemRef = firebaseRef.child("noItemDetails");
+				noItemRef.push().set({
+					itemN:''+  _itemNumber ,
+					productName:''+ _discription ,
+					labeledBy:'',
+					netWeight:''   ,
+					grossWeight:''   ,
+					personalPackageN:''   ,
+					masterCartonN:''   ,
+					cartonUnitNumber:'' ,
+					date: 'order '+today,
+				
+				});
+			}
+			
+			//take out all letters
+			if(_grossWt!="" && _grossWt!=null){_grossWt = _grossWt.replace(/\D/g,'');}
+			if(_netWt!="" && _netWt!=null){_netWt = _netWt.replace(/\D/g,'');}
+			if(_pcsCarton!="" && _pcsCarton!=null){_pcsCarton = _pcsCarton.replace(/\D/g,'');}
+			
+			
+			
+			
+			itemOrderRef= ordersRef.child(orderNumber);
+			
+			if (noItemN==true){
+			
+				console.log(currentNoItemNumber);
+				currentNoItemNumber++;
+				itemOrderRef.update({
+				
+					noItemNumber:''+currentNoItemNumber,
+				});
+				noItemN=false;
+			}
+			
+			/*
+			ordersRef.child(orderNumber).child(_itemNumber).set({
+					itemNumber: ''+_itemNumber,
+					discription: ''+_discription, 
+					unitMeasure: ''+_unit_measure,
+					quantity:''+ _quantity,
+					qtyKg: '' + _kg,
+					itemRemarks: '' + _remarks,
+					price:''+_price,
+					discount:''+_discount,
+					totalPrice:''+_totalPrice,
+					pcsCarton: ''+_pcsCarton,
+					grossWt: ''+_grossWt,
+					netWt: ''+_netWt,
+					cbm: ''+_cbm,
+					productTree: ''+_productT,
+					palletNo: '',
+				
+			})
+			*/
+		//ordersRef.child(orderNumber).child(_itemNumber).on("child_added", snap=>{
+		
+		ordersRef.child(orderNumber).orderByChild("itemNumber").equalTo(_itemNumber).on("child_added", snap=>{
+		var itmNUM = snap.child("itemNumber").val();
+		var discrip = snap.child("discription").val();
+		var unitMsr = snap.child("unitMeasure").val();
+		var qty = snap.child("quantity").val();
+		var qtyKg = snap.child("qtyKg").val();
+		var priceItem = snap.child("price").val();
+		var dcnt = snap.child("discount").val();
+		var ttlPrice = snap.child("totalPrice").val();
+		var itemRemarks = snap.child("itemRemarks").val();
+
+		i++;
+		$("#table_body").append("<tr><td>" + i + "</td><td>" + itmNUM +	 "</td><td>"+ discrip + "</td><td>" + unitMsr + "</td><td>" + qty + 
+							" Pcs</td><td>"+ qtyKg +" kg</td><td style='display:none'>" + priceItem + "</td><td style='display:none'>"+ dcnt + "</td><td style='display:none'>"+ ttlPrice + "</td><td>"+itemRemarks+"</td><td><Button onClick='deleteData(\""+ itmNUM + "\")'>Delete</td></tr>");
+							
+						
+		})
+		
+		
+	
+			$('#item_Number').val("");
+			$('#item_discription').val("");
+			$('#unit_measure').val("");
+			$('#itemQty').val("");
+			$('#itemKg').val("");
+		
+		}		
+		
+		$( function() {
+			$("#item_Number").autocomplete({
+			  source: itemsArray
+			});
+		  } );	
+		
+		
+		function searchItem(){
+		var title, subTitle, discriptionGet, volumeKi;
+		
+		_itemNumber = document.getElementById('item_Number').value;
+		_discription = document.getElementById('item_discription');
+		_unit_measure = document.getElementById('unit_measure');
+		
+		var searchItemRef = itemsRef.child(_itemNumber);
+		console.log("a" + _itemNumber + " " + searchItemRef);
+
+		 $.getJSON("/item?itemNumber="+_itemNumber , (data)=>{
+			title=data[0].name;
+			subTitle=data[0].subName;
+			discriptionGet=data[0].discriptionK;
+			volumeKi=data[0].volumeKey;
+			_pcsCarton=data[0].PcsCarton;
+			_netWt=data[0].netWeightK;
+			_grossWt=data[0].grossUnitWeightK;
+			_cbm=data[0].cbm;
+
+			_discription.value= title + " " + subTitle + " " +discriptionGet;
+			_unit_measure.value= volumeKi;
+
+	 	});
+		
+		
+		
+		}
+		
+		
+		function deleteData(itemNumber){
+		
+			var a=confirm("Delete order " +itemNumber + "?");
+			if (a==true){
+			ordersRef.child(orderNumber).child(itemNumber).remove();
+			}
+			
+		
+		}
+		
+		
+		function hover(element){
+		
+				 element.setAttribute('src', 'searchB.png');	
+		}
+		
+		function leave(element){
+		
+				 element.setAttribute('src', 'searchA.png');	
+		}
+		
+		function setItemNumber(){		
+
+				$('#item_Number').val("itemNo "+currentNoItemNumber);
+				noItemN=true;
+				console.log(noItemN);
+		//		return currentOrderNumber
+		//}
+		}
+		
+		
+		Date.prototype.toDateInputValue = (function() {
+		var local = new Date(this);
+		local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+		return local.toJSON().slice(0,10);
+		});
+</script>
+        
+	
+<body style='padding-top:20px' onload='init()'>
+		<a>
+      
+		    
+        <div class='header' style="width: 1330px ; height: 70px"><a1>	New Order </a1> <img src="peerpharm.png"  width='270px' align='right'></div>
+		<ul class="ulMenu">
+			  <li style='float: left;'><a href="#home">Home</a></li>
+			  <li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">Orders</a>
+					<div class="dropdown-content">
+					  <a href="openOrders.html">Open Orders</a>
+					  <a href="newOrder.html">New Order</a>
+					  <a href="showOrder.html">Search Order</a>
+					  <a href="ordersList.html">All Orders</a>
+					  
+					</div>
+			  </li>
+			  <li class="dropdown"><a href="workShift.html">Work Schedule</a><li>
+			  <li class="dropdown">
+			  <a href="javascript:void(0)" class="dropbtn">Product Tree</a>
+			  <div class="dropdown-content">
+				<a href="itemsList.html">Items List</a>
+				<a href="getItem.html">Product Tree</a>
+				</div>
+				</li>
+			  <li style='float: left;'><a href="costumers.html">Costumers</a></li>
+			  <li style='float: left;'><a href="needToBuild.html">No-form List</a></li>
+			  <li style='float: left;'><a href="batchesList.html">Batch List</a></li>
+			  <li style='float: left;'><a href="forms.html">Forms</a></li>
+			  
+		</ul>
+		</a>
+		<br><br>
+		
+		<font style="margin-left:20px"> Last Order Number: </font><b><i><font id='orderNumberTag' color="#209D9D" style="margin-left:5px"></font></i></b>
+        <table border="0" width='600px' style="margin-left:20px" id="newOrderTable">
+			<thead>
+				<tr align='center' bgcolor="Gainsboro">
+					<th>
+						<b>Order Number</b>
+					</th>
+					<th>
+						<b>Costumer</b>
+					</th>
+					<th>
+						<b>Date of order</b>
+					</th>
+					<th>
+						<b>Delivery date</b>
+					</th>
+					<th>
+						<b>Remarks</b>
+					</th>
+					<th>
+						<b>Type</b>
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type='text' id="orderNumberID"></td>
+					<td><input type='text' id="CostumerID"></td>
+					
+					<td><input type='date' id="orderDateID" style="width:165px; height:20px"></td>
+					<td><input type='date' id="deliveryDateID" style="width:165px; height:20px"></td>
+					<td><input type='text' id="orderRemeraks" style="width:465px;"></td>
+					<td><select id="orderType"><option value="cosmetic">Cosmetics</option><option value="mkp">Make Up</option><option value="c_mkp">Cosmetic & Mkp</option></select></td>
+					<td><button class="button" onclick="writeNewOrder()">Enter</button></td>
+				</tr>
+			</tbody>
+		</table>	
+		<br>
+			
+		<table style="margin-left:100px ; visibility: hidden" id="orderDetailsID" >
+			<tr>
+				
+				<td style="padding:5px"><h3 style="color:brown">Order Number:</h3></td><td style="padding-right:40px"><h3 id="h3_orderNumber"></h3></td>
+				<td style="padding:5px"><h3 style="color:brown">Costumer:</h3></td><td style="padding-right:40px"><h3 id="h3_costumer"></h3></td>
+				<td style="padding:5px"><h3 style="color:brown">Order date</h3></td><td style="padding-right:40px"><h3 id="h3_date"></h3></td>
+				<td style="padding:5px"><h3 style="color:brown">Delivery date</h3></td><td style="padding-right:40px"><h3 id="h3_delivery"></h3></td>
+				<td style="padding:5px"><h3 style="color:brown">Remarks</h3></td><td style="padding-right:40px"><h3 id="h3_remarks"></h3></td>
+				<td style="padding:5px"><h3 style="color:brown">Type</h3></td><td style="padding-right:40px"><h3 id="h3_type"></h3></td>
+			</tr>
+		</table>
+		
+		
+			<table border="0"  style="margin-left:100px ; width:1350px;  " id= "itemOrderID">
+			<thead>
+				<tr align='center' bgcolor="Gainsboro ">
+					<th><b>Row</b></th>
+					<th style="width:200px">
+						<b>Item Number</b>
+					</th>
+					<th style="width:450px">
+						<b>Discription</b>
+					</th>
+					<th style="width:100px">
+						<b>Unit/measure</b>
+					</th>
+					<th style="width:120px">
+						<b>Quantity</b>
+					</th>
+					<th style="width:120px">
+						<b>Weight</b>
+					</th>
+					<th style="width:120px">
+						<b>Remarks</b>
+					</th>
+					<th style="width:120px">
+						<b>Type</b>
+					</th>
+					<th style="width:100px ;display:none">
+						<b>Price</b>
+					</th>
+					<th style="width:50px ;display:none">
+						<b>Dis</b>
+					</th>
+					<th style="width:70px ;display:none">
+						<b>Total Price</b>
+					</th>
+					<th style="width:45px"></th>
+					
+				</tr>
+			
+			
+				<tr>
+					<td></td>
+					<td><input type='text' id="item_Number" style="width:119px;  float: left; margin-top:2px;"><image class="btnImage" src= 'search.png' onClick='searchItem()' onmouseover='hover(this)' onmouseleave='leave(this)' ><img src = 'noNumber.png'  onClick="setItemNumber()" style='width:20px; cursor:pointer'></td>
+					<td><input type='text' id="item_discription" style="width:450px"></td>
+					<td><input type='text' id="unit_measure" style="width:100px"></td>
+					<td><input type='text' id="itemQty" style="width:80px; margin-right:5px;" placeholder='Pcs'></td>
+					<td><input type='text' id="itemKg" style="width:80px" placeholder='Kg'></td>
+					<td><input type='text' id="itemRemarks" style="width:300px" placeholder='Remarks'></td>
+					<td>
+						<input type="radio"  name="type" name="input_checkBox_tube"  value='basic' checked>Basic<br>
+						<input type="radio"  name="type" name="input_checkBox_tube"  value='tube'>Tube<br>
+						<input type="radio"  name="type" name="input_checkBox_mkup"  value='mkp'>Mkp<br>
+					</td>
+					<td style="display:none"><input type='text' id="item_price" style="width:50px; display:none"></td>
+					<td style="display:none"><input type='text' id="item_discount" style="width:40px; display:none"></td>
+					<td style="display:none"><input type='text' id="total_price" style="width:70px; display:none"></td>
+					<td ><button class="button" onclick="addNewItemToOrder()">Add</button></td>
+				</tr>
+				<tr bgcolor="lightblue">
+					<td colspan="10" style="height:20px"></td></tr>
+			</thead>		
+			<tbody id= "table_body">
+			</tbody>
+		</table>
+					
+		
+		
+		
+				
+			
+					
+					
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

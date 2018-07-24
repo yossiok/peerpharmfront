@@ -1,0 +1,544 @@
+﻿<html>
+    <head>
+        <title>Batch Tracker</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+   
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<link rel="stylesheet" href="_js/jquery-ui-1.12.1.custom/jquery-ui.css">
+<style>
+.ui-autocomplete {
+    max-height: 100px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+ }
+@media print {
+	#div{
+		display:none;
+	}
+	#body_id{
+		padding-top:0px;
+		margin-top:0px;
+		
+	}
+	#mainDiv{
+		display:none;
+	}
+	#stickerId{
+		display:none;
+	}
+
+	
+
+
+}
+
+.tdPrint{
+border-bottom: 2px solid #000 text;
+text-align: center;
+font-size: 23px;
+height: 100%;
+margin:0; 
+padding-top:22px;
+}
+body {
+  -webkit-print-color-adjust: exact;
+}
+@page { 
+size: auto;  margin: 0mm; 
+}
+
+table {
+page-break-after : always;
+}
+  </style>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+    authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+    databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+    storageBucket: "qualitycontrol-e60d4.appspot.com",
+    messagingSenderId: "428562253132"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" ></script>
+<script>
+		
+	var firebaseRef = firebase.database().ref();
+	var ordersRef =firebaseRef.child("orders");	
+	var batchRef =firebaseRef.child("batches");	
+	var ordersArray= [];
+	var itemsArray= [];
+	var temp1=true;
+	var tempOrderN="";
+	
+	function init(){
+		document.getElementById("input_date").value = new Date().toDateInputValue();
+		
+		ordersRef.on("child_added", snap=> {
+			
+			var key= snap.key;
+			ordersArray.push(key);
+			//console.log(ordersArray);
+			
+		});
+	}
+	
+	// check if it allready download all numbers:
+	function checkItems(){
+		var orderN = document.getElementById('order0').value;
+		if(tempOrderN==orderN){
+			temp1=false;
+		}
+		else{
+			temp1=true;
+		}
+		if(temp1==true){
+			
+			ordersRef.child(orderN).on("child_added", snap=> {
+				
+				var key= snap.key;
+				itemsArray.push(key);
+				console.log(itemsArray);
+				tempOrderN=orderN;
+			});	
+		}
+	}
+	
+
+	function checkItemName2(){
+	
+		var orderN = document.getElementById('order0').value;
+		var itemNumber = document.getElementById('item0').value;
+		
+		console.log(orderN + " , "  + itemNumber);
+		
+		
+		ordersRef.child(orderN).child(itemNumber).on("value", snap=>{
+		
+			var productName= snap.child("discription").val();
+			console.log(snap);
+			$("#input_itemName").val(productName);
+		
+			});
+		
+		}
+		/*
+		let checkBatch = function(){
+			var keyCheck="";
+			var btc = document.getElementById('input_batchN').value;
+			batchRef.orderByChild("batchNumber").equalTo(btc).on("child_added", snap=>{
+				console.log(snap.val());
+				keyCheck=snap.child("batchNumber").val();
+					
+					return keyCheck;
+				});			
+		}
+		
+		let setOk = function(){
+		
+			return "OK";
+		}
+		
+		let checkB = function(callback){
+		
+			return callback();
+		}
+		function checkIfBatch2(){
+			console.log("hi:" + checkB(checkBatch));
+		} */
+		
+		
+		var generalKey="";
+		
+		function checkIfBatch(){
+			//console.log(checkIfBatch2().then(console.log()));
+			var btc = document.getElementById('input_batchN').value;
+			
+			if (btc == null || btc == "") {
+				alert("Please enter batch");
+			} 
+			else {
+				var orderN="";
+				var itemN,itemNameK , batchNL,produceDate , expDate1, drums, weight, phN;
+				itemN = document.getElementById('item0').value;
+				itemNameK = document.getElementById('input_itemName').value;
+				batchNL = document.getElementById('input_batchN').value;
+				produceDate = document.getElementById('input_date').value;
+				expDate1 = document.getElementById('input_eDate').value;
+				drums = document.getElementById('input_drums').value;
+				weight = document.getElementById('input_weight').value;
+				phN = document.getElementById('input_ph').value;
+
+	
+				var listOfOrderAndItems=checkIfOrder();
+
+				console.log(orderN);
+			
+				var _dt2 = new Date(produceDate);
+				produceDate=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+				expDate=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()+parseInt(expDate1)].join('/');
+
+				var batchN= batchNL.toLowerCase();
+							let batch={ 
+								batchNumber:''+ batchN,
+								batchStatus:'open',
+								batchfillingStatus: 'waiting',
+								drumsN:''+drums,
+								expration:''+expDate,
+								item:''+listOfOrderAndItems.itemN,
+								itemName:''+itemNameK,
+								order:''+listOfOrderAndItems.orderN,
+								ph:''+phN,
+								produced:''+produceDate,
+    							qtyLeft:''+ weight,
+								weightKg:''+weight,
+							}
+
+							
+								$.post('/batch/add', 
+								batch,
+			  					function(data){	 
+									console.log(data);
+									  if(data.err[0]) {
+										  //add for err[i] loop
+										  $("#updateResult").html(data.err[0].orderNumber + " , " + data.err[0].itemNumber + " doesn't exsit");
+										  $("#updateResult").css("background-color", "red");
+									  }
+									  else{
+											console.log("hi");
+											$("#updateResult").html("Data added succsesfully");
+											$("#updateResult").css("background-color", "green");
+										
+									$("#tbody_id").html("<tr><td>"+batchN+"</td><td>"+orderN+"</td><td>"+itemN+"</td><td>"+itemNameK+"</td><td>"+produceDate+"</td><td>"+expDate+"</td><td>"+drums+"</td><td>"+weight+"</td><td>"+phN+"</td><tr>");
+			
+									for(var i=0; i<drums; i++){
+										
+									//	duplicateTable(i);
+										console.log(i +  " times " + drums);
+										if((i+1)==drums){
+										//	deleteOrders();
+										}
+									}
+									  }
+								
+
+								});
+
+					
+				/*	batchRef.orderByChild("batchNumber").equalTo(btc).on("child_added", snap=>{
+						console.log(snap.val());
+						generalKey=snap.child("batchNumber").val();
+					});		
+					setTimeout(function(){
+						console.log(generalKey);
+						if(generalKey==btc){
+							alert("This batch is allready EXIST, PLEASE ENTER a New One");
+						}
+						else{
+							checkIfOrder();
+							generalKey=""
+						}
+					},1000);*/
+				}
+		}
+		
+		function checkIfBatch2(){
+			//FIREBASE PROMSISE
+				var btc = document.getElementById('input_batchN').value;
+				return batchRef.orderByChild("batchNumber").equalTo(btc).once("child_added");
+		
+		
+		}
+
+	function checkIfOrder(){
+	let orderN=[], itemN=[];  
+		for(var j=0; j<7; j++){
+				let orderExtra = document.getElementById('order'+j).value;
+				let itemExtra = document.getElementById('item'+j).value;
+				
+				if(orderExtra!="" && itemExtra!=""){ 
+						itemN.push(itemExtra);
+						orderN.push(orderExtra);
+				}
+			} 
+		return {orderN: orderN, itemN:itemN} ;
+		
+
+
+	 /*	var _dt2 = new Date(produceDate);
+		produceDate=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()].join('/');
+		
+		expDate=  [_dt2.getDate(), _dt2.getMonth()+1, _dt2.getFullYear()+parseInt(expDate1)].join('/');
+		
+			console.log(batchN+expDate);
+			
+		$("#tbody_id").html("<tr><td>"+batchN+"</td><td>"+orderN+"</td><td>"+itemN+"</td><td>"+itemNameK+"</td><td>"+produceDate+"</td><td>"+expDate+"</td><td>"+drums+"</td><td>"+weight+"</td><td>"+phN+"</td><tr>");
+			
+			for(var i=0; i<drums; i++){
+				
+				duplicateTable(i);
+				console.log(i +  " times " + drums);
+				if((i+1)==drums){
+					deleteOrders();
+				}
+			}*/
+			
+
+		/*$("#in_batch").append(batchN);
+		$("#in_exp").append(expDate1+'YEARS');
+		$("#in_itemN").append(itemN);
+		$("#in_prod").append(produceDate);
+		$("#in_order").append(orderN);
+		$("#in_ph").append(phN);
+		$("#in_name").append(itemNameK);
+		$("#in_weight").append(weight+ '     ק"ג      ');
+		$("#in_durm").append('1/'+drums);
+		
+		batchRef.push().set({
+			
+			batchNumber:''+ batchN,
+			produced:''+produceDate,
+			expration:''+expDate,
+			drumsN:''+drums,
+			weightKg:''+weight,
+			ph:''+phN,
+			item:''+itemN,
+			itemName:''+itemNameK,
+			order:''+orderN,
+		    batchfillingStatus: 'waiting',
+		
+		}); 
+		
+		*/
+		
+			
+			
+		/*	ordersRef.child(orderN).on("value", snap=> {
+		
+			if(snap.hasChild(itemN)){
+				console.log("true");
+				updateBatch(orderN, itemN, batchN);
+			}
+			});*/
+			
+
+	/*	temp1="";
+		itemsArray=[];
+		
+		
+		$("#input_orderN").val("");
+		$("#input_itemN").val("");
+		$("#input_itemName").val("");
+		$("#input_batchN").val("");
+		$("#input_eDate").val("");
+		$("#input_drums").val("");
+		$("#input_weight").val("");
+		$("#input_ph").val("");*/
+		
+	
+		
+	
+	}
+    
+	function updateBatch(orderN, itemN, batchN){
+			
+		ordersRef.child(orderN).child(itemN).update({
+		
+		 	formulaBatch:''+batchN,
+		 	formulaStatus:'Formula Produced',
+		//	//formulaDate:''+date,
+		
+		});
+	
+	}
+	
+	
+    
+    Date.prototype.toDateInputValue = (function() {
+					var local = new Date(this);
+					local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+					return local.toJSON().slice(0,10);
+						});
+
+
+		 $( function() {
+			$("#input_orderN").autocomplete({
+			  source: ordersArray
+			});
+		  } );
+		  
+		   $( function() {
+			$( "#input_itemN" ).autocomplete({
+			  source: itemsArray
+			});
+		  } );
+		  
+		  
+		  
+		  
+	$(function() {
+			$("#updateBtn").click(function() {
+			
+			
+				
+				
+				
+				
+			$("#body_id").css('margin-top','0px');
+			//$("#mainDiv").css('display','none');
+			//	$("#div").css('display','none');
+			//$("#1stTable").css('display','none');
+				//window.print();
+				$("#center_id").html("");	
+		
+		
+			});
+		});
+		
+		
+	function duplicateTable(p){
+	
+		var table = document.createElement("table");
+		table.setAttribute("id", "create_table"+p);
+		table.setAttribute("dir", "rtl");
+		table.setAttribute("border", "1");
+		table.style.margin="0px";
+		table.style.width="370px";
+		table.style.fontSize= "24px"; 
+		table.style.fontFamily="arial";
+	
+		document.getElementById("center_id").appendChild(table.innerHtml);
+		
+		appendTrTitels(p);
+	}
+	
+	function appendTrTitels(p){
+	
+		var name= document.getElementById('input_itemName').value;
+		var batch= document.getElementById('input_batchN').value;
+		var pdate= document.getElementById('input_date').value;	
+		var item= document.getElementById('item0').value;		
+		var order="";
+		for(var q=0; q<7; q++){
+			var orderV =$("#order"+q).val();
+			if($("#order"+q).val()!=""){
+				if(!order.includes(orderV)){
+					order=order+" ,"+ $("#order"+q).val();
+				}
+						
+			}
+				
+		}
+
+		var ph= document.getElementById('input_ph').value;	
+		var exp= document.getElementById('input_eDate').value;	
+		var wgt= document.getElementById('input_weight').value;	
+		var durm= document.getElementById('input_drums').value;	
+		
+		var num=1+parseInt(p);
+		console.log(name + "  , , ,  "   + batch);
+		var _dt = new Date(pdate);
+		pdate=  [_dt.getDate(), _dt.getMonth()+1, _dt.getFullYear()].join('/');
+		$("#center_id").find("#create_table"+p).append("<tr><td valign=top style='width:140px; height:70px'>שם החומר:</td><td style='width:300px; text-align:left;font-size:20px ' colspan=3 vw='2'>"+name+"</td></tr><tr><td style='padding-top:10px'>אצווה:</td><td  class='tdPrint'   colspan=3>"+batch+"</td></tr><tr><td style='padding-top:10px'>ת. ייצור:</td><td  class='tdPrint' >"+pdate+"</td><td   style='padding-top:25px;'>מק''ט:</td><td   style=' width:120px'  class='tdPrint' >"+item+"</td></tr><tr><td  style='padding-top:10px'>תאריך תפוגה</td><td  style=' width:90px'  class='tdPrint'>"+exp+"YEARS</td><td class='tdPrint'><font  style='background-color:#000; color:white; width:30px; padding-top:10px; padding-right:10px;padding-left:10px; padding-bottom:2px' >pH</font> </td><td   class='tdPrint' >"+ph+"</td></tr><tr><td style='padding-top:10px'>מס' הזמנה</td><td   colspan=3  class='tdPrint'>"+order+"</td></tr><tr><td style='padding-top:10px'>משקל:</td><td  class='tdPrint'  colspan='1'>"+wgt+"     ק''ג          </td><td style='padding-top:10px'>חבית:</td><td id='in_durm' class='tdPrint'  colspan='1'>"+num+"/"+durm+"</td></tr>");
+		
+
+				
+									
+			
+	}
+	
+	function deleteOrders(){
+		for(var j=0; j<7; j++){
+			$("#order"+j).val("");
+			$("#item"+j).val("");
+				
+		
+		}
+		}
+		
+	
+</script>
+<body style='margin-top: 100px' onload="init()" id="body_id">
+<center>
+<div id="div">
+<table border="1" style="width:900px" id='1stTable'>
+		<tr>
+			<td><b>last batch</b></td>
+			<td><b>order</b></td>
+			<td><b>item</b></td>
+			<td><b>name</b></td>
+			<td><b>production date</b></td>
+			<td><b>expration date</b></td>
+			<td><b>amount drums</b></td>
+			<td><b>amount KG</b></td>
+			<td><b>Ph</b></td>
+		</tr>
+	<tbody id='tbody_id'></table><br><br>
+	<table>
+		<tr>
+			<td>
+				<div  id='mainDiv' align='left' style='background-color: lightcyan; width: 400px; height: 425px; padding-top: 10px'>
+				
+						<h2>Enter Batch</h2>
+						<span>Order number: </span><input type="text" placeholder="номер заказа" id='order0' >
+						<br><br>
+						<span>Item number: </span><input type="text" placeholder="номер товара" id='item0' onfocus='checkItems()'>
+						<br><br>
+						 <span>Name: </span><input type="text" placeholder="название продукта" id='input_itemName' onfocus='checkItemName2()' style='width:340px'>
+						<br><br>
+						<span>Production Date: </span><input type="date" id='input_date'>
+						<br><br>
+						<span>Expration Date: </span><input type="number" id='input_eDate' style="width:60px"> Years
+						<br><br>
+						<span>Amount: </span><input type="number" id='input_drums' style='width:70px' placeholder='бочки'> <input type="number" id='input_weight' placeholder="Total Weight Kg">
+						<br><br>
+						<span>Ph: </span><input type="number" id='input_ph' >
+						<br><br>
+						<span>Batch: </span><input type="text" placeholder="Batch" id='input_batchN'>
+						<br><br>
+						<button onclick="checkIfBatch()" id='updateBtn'>Update</button>
+				</div>
+				</td>
+				<td>
+						<table border=1>
+							<tr>
+								<td>
+									<div id='updateResult'></div>
+								</td>
+							</tr>
+							<tr>
+								<td><input type='text' id='order1' placeholder='order'></td><td><input type='text' id='item1' placeholder='item'></td>
+							</tr>
+							<tr>
+								<td><input type='text' id='order2' placeholder='order'></td><td><input type='text' id='item2' placeholder='item'></td>
+							</tr>
+							<tr>
+								<td><input type='text' id='order3' placeholder='order'></td><td><input type='text' id='item3' placeholder='item'></td>
+							</tr>
+							<tr>
+								<td><input type='text' id='order4' placeholder='order'></td><td><input type='text' id='item4' placeholder='item'></td>
+							</tr>
+							<tr>
+								<td><input type='text' id='order5' placeholder='order'></td><td><input type='text' id='item5' placeholder='item'></td>
+							</tr>
+							<tr>
+								<td><input type='text' id='order6' placeholder='order'></td><td><input type='text' id='item6' placeholder='item'></td>
+							</tr>
+						</table>
+				</td>
+		</tr>
+	</table>
+    <br><br>
+	</div>
+	
+
+   <br>
+   </center>
+	<center id="center_id">
+	 </center>
