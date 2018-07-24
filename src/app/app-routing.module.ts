@@ -23,6 +23,10 @@ export const Approutes: Routes = [
       {
         path: 'formules',
         loadChildren: './peerpharm/formules/formules.module#FormulesModule'
+      },
+      {
+        path: 'taskboard',
+        loadChildren: './peerpharm/taskboard/app.module#TaskModule'
       }
     ]
   },

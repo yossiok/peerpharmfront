@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserInfo } from '../../models/UserInfo';
 
 @Component({
-  moduleId: module.id,
+  moduleId: "mID",
   selector: 'app-nav',
   providers: [AuthService],
   templateUrl: './nav.component.html',

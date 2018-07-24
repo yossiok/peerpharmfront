@@ -43,12 +43,12 @@ export class TasksService {
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
-  updateTask(_id: string, list: string, boardid: string): Observable<TaskModel> {
+  updateTask(_id: string, list: string, boardid: string): any{
 
     const url = this.boardUrl + boardid + '/tasks/' + _id;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(url, JSON.stringify({ list: list }), options)
+    return   this.http.post(url, JSON.stringify({ list: list }), options)
       .map((res: Response) => console.log(res.json()))
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
@@ -87,7 +87,7 @@ export class TasksService {
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
-  createSubTask(mainTaskId: string, name: string, dueDate: Date, priority: string, depId: string, userId: string): Observable<SubTaskModel> {
+  createSubTask(mainTaskId: string, name: string, dueDate: Date, priority: string, depId: string, userId: string):  any {
     const url = this.baseUrl2 + 'subtasks/add';
     debugger;
     var d = new Date(dueDate);
@@ -124,7 +124,7 @@ export class TasksService {
       .map((res: Response) => console.log(res.json()))
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
-  createBoard(board: BoardModel): Observable<BoardModel> {
+  createBoard(board: BoardModel): any{
     console.log('post');
     console.log(board);
     const url = this.addDepUrl;

@@ -76,4 +76,4 @@ import { SubTaskCardComponent } from './board/shared//sub-task-card/sub-task-car
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class TaskModule {}
