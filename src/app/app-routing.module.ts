@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { AddFormuleComponent } from './peerpharm/formules/add-formule/add-formule.component';
+import {OrdersComponent} from './peerpharm/allorders/orders/orders.component'
 
 export const Approutes: Routes = [
   {

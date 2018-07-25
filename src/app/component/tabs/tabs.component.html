@@ -1,4 +1,84 @@
 <div class="row">
+
+
+    <div class="col-md-13">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Default Tabset</h3>
+            <h6 class="card-subtitle">This is basic Default pagination</h6>
+            <ngb-tabset>
+              <ngb-tab>
+                  <ng-template ngbTabTitle>
+                      <b>Open</b>
+                    </ng-template>
+                <ng-template ngbTabContent>
+                    <table>
+                      <thead class=" bg-info text-white">
+                          <tr>
+                              <td>#</td>
+                              <td>Order Number</td>
+                              <td>Costumer</td>
+                              <td>Order date</td>
+                              <td>Delivery Date</td>
+                              <td>Reamrks</td>
+                              <td>Type</td>
+                              <td></td>
+                            </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let order of orders">
+                              <td></td>
+                              <td>
+                                <a routerLink="/orderitems/{{order._id}}">
+                                <!--<a  [routerLink]=['orderitems/{{order._id}}']>-->
+                                  {{order.orderNumber}}
+                                </a>
+                              </td>
+                              <td>{{order.costumer}}</td>
+                              <td>{{order.orderDate}}</td>
+                              <td>{{order.deliveryDate}}</td>
+                              <td>{{order.orderRemarks}}</td>
+                              <td>
+                                  <img src='deleteBtn.png' style='width:40px'>
+                                  <img src='editBtn.png' style='width:40px'>
+                              </td>
+                              <!--<td>{{order.type}}</td>-->
+                            </tr>
+                      </tbody>
+                    </table>
+
+
+                </ng-template>
+              </ngb-tab>
+
+              <ngb-tab>
+                <ng-template ngbTabTitle>
+                  <b>Close</b>
+                </ng-template>
+                <ng-template ngbTabContent>
+                  <p class="p-t-20">Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table
+                    craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco
+                    ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica
+                    VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit,
+                    sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown,
+                    tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Disabled" [disabled]="true">
+                <ng-template ngbTabContent>
+                  <p class="p-t-20">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+                    master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+                    keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+                    salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+          </div>
+        </div>
+      </div>
+
+
+
   <div class="col-md-6">
     <div class="card">
       <div class="card-body">

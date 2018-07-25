@@ -25,6 +25,68 @@ export const ROUTES: RouteInfo[] = [
     extralink: true,
     submenu: []
   },
+
+  {
+    path: '',
+    title: 'Orders',
+    icon: 'fas fa-shopping-cart',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: 'peerpharm/allorders/orders',
+        title: 'Open Orders',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '/component/accordion',
+        title: 'New Order',
+        icon: 'far fa-newspaper',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '/component/accordion',
+        title: 'Search Order',
+        icon: 'mdi mdi-adjust',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '/component/accordion',
+        title: 'All Orders',
+        icon: 'mdi mdi-adjust',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
+    
+    
+    ]
+
+  },
+  {
+    path: '',
+    title: 'Formulas',
+    icon: '  fab fa-hubspot',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: '/component/furmula',
+        title: 'Add formula',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
+    ]
+    },
   {
     path: '',
     title: 'Component',

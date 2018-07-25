@@ -10,7 +10,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
-
+//
+import {NeworderComponent} from './peerpharm/allorders/neworder/neworder.component'
+import {OrderdetailsComponent} from './peerpharm/allorders/orderdetails/orderdetails.component'
+import {OrdersComponent} from './peerpharm/allorders/orders/orders.component'
+//
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FullComponent } from './layouts/full/full.component';

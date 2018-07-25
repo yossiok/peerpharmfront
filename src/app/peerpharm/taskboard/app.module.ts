@@ -50,6 +50,7 @@ import { SubTaskCardComponent } from './board/shared//sub-task-card/sub-task-car
   ],
   imports: [
     CommonModule,
+    
     RouterModule.forChild([
       {path:"" , component:ContentComponent },
       {path:"subcard" , component:SubTaskCardComponent }
