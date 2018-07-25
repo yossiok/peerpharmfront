@@ -1,11 +1,10 @@
-import { FormulesModule } from './peerpharm/formules/formules.module';
+import { PeerPharmModule } from './peerpharm/peerpharmmodule';
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
-import { BlankComponent } from './layouts/blank/blank.component';
-import { AddFormuleComponent } from './peerpharm/formules/add-formule/add-formule.component';
-import {OrdersComponent} from './peerpharm/allorders/orders/orders.component'
+
 
 export const Approutes: Routes = [
   {
@@ -22,8 +21,8 @@ export const Approutes: Routes = [
         loadChildren: './component/component.module#ComponentsModule'
       },
       {
-        path: 'formules',
-        loadChildren: './peerpharm/formules/formules.module#FormulesModule'
+        path: 'peerpharm',
+        loadChildren: './peerpharm/peerpharmmodule#PeerPharmModule'
       },
       {
         path: 'taskboard',

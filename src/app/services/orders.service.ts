@@ -7,9 +7,7 @@ import { map } from 'rxjs/operators';
 //import 'rxjs/add/operator/map';
 //import 'rxjs/add/operator/catch';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OrdersService {
   
   private headers = new Headers({ 'Content-Type': 'application/json' });

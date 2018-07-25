@@ -34,7 +34,7 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: 'peerpharm/allorders/orders',
+        path: '/peerpharm/allorders/orders',
         title: 'Open Orders',
         icon: ' fab fa-page4',
         class: '',
@@ -78,7 +78,7 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: '/component/furmula',
+        path: '/formules/add',
         title: 'Add formula',
         icon: ' fab fa-page4',
         class: '',
