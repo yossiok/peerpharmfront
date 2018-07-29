@@ -1,0 +1,28 @@
+<p>
+  itemslist works!
+</p>
+
+<table class='table'   >
+    <thead class='bg-info text-white'>
+    
+      <tr>
+        <th></th>
+        <th style="padding:5px">Item number</th>
+        <th style="padding:5px">Name</th>
+        <th style="padding:5px">Sticker</th>
+        <th style="padding:5px">Barcode</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id= "table_body">
+      <tr *ngFor="let item of items">
+        <td></td>
+        <td>
+          <a routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+          {{item.itemNumber}}
+          </a>
+        </td>
+        <td>{{item.name}} {{item.subName}} {{item.discriptionK}}</td><td>{{item.stickerNumber}}</td><td>{{item.barcodeK}}</td><td></td>
+      </tr>
+    </tbody>
+  </table>

@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
 import { DEFAULT_VALUE_ACCESSOR } from '@angular/forms/src/directives/default_value_accessor';
 
+
 @Component({
   selector: 'app-orderdetails',
   templateUrl: './orderdetails.component.html',
@@ -16,6 +17,7 @@ export class OrderdetailsComponent implements OnInit {
   chosenType:string;
   detailsArr:any[];
   components:any[];
+
   itemData:any={
     itemNumber:'',
     discription:'',

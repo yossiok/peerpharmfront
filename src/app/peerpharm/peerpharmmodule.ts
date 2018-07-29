@@ -10,7 +10,13 @@ import { AddFormuleComponent } from './formules/add-formule/add-formule.componen
 import { AddFormuleItemComponent } from './formules/add-formule-item/add-formule-item.component';
 import { PeerPharmRputs } from './peerpharm.routing';
 import { OrdersComponent } from './allorders/orders/orders.component';
-
+import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
+import {ScheduleComponent} from './schedule/schedule.component'
+import {ItemslistComponent} from './items/itemslist/itemslist.component'
+import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
+import {PlateComponent} from './plate/plate.component'
+import {StockComponent} from './inventory/stock/stock.component'
+import {NeworderComponent} from './allorders/neworder/neworder.component'
 
 @NgModule({
   imports: [
@@ -19,12 +25,20 @@ import { OrdersComponent } from './allorders/orders/orders.component';
     ReactiveFormsModule,
     JsonpModule, 
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   declarations: [
     AddFormuleComponent,
     OrdersComponent,
-    AddFormuleItemComponent
+    OrderdetailsComponent,
+    NeworderComponent,
+    AddFormuleItemComponent,
+    ScheduleComponent,
+    ItemslistComponent,
+    ItemdetaisComponent,
+    PlateComponent,
+    StockComponent
   ],
   providers:[HttpClientModule, OrdersService]
 })

@@ -1,0 +1,144 @@
+<p>
+  stock works!
+</p>
+
+{{openModal}}
+<button (click)="showDialog = !showDialog" class="btn">Open</button>
+
+<table class='table'>
+  <thead class='bg-info text-white'>
+<tr align='center'>
+				
+    <th></th>
+    <th><b>מספר פריט</b></th>
+    <th><b>מק"ט פריט/ספק</b></th>
+    <th><b>שם</b></th>
+    <th><b>סוג</b></th>
+    <th><b>כמות - ראש העין</b></th>
+    <th style="width:60px"><b>מיקום- ראש העין</b></th>
+    <th><b> כמות - קאסם</b></th>
+    <th style="width:60px"><b> מיקום - קאסם</b></th> 
+    <th><b>תמונה</b></th>
+    <th style="width:160px"><b>הזמנה במערכת</b></th>
+
+    
+<th style="width:60px"><img src="excel.png" width="35px"  class="exportCsv" id="excelExport" onclick="exportExcel()"></th>
+</tr> 
+
+</thead>
+
+
+<tbody id="table_body">
+   <tr *ngFor="let component of components">
+     <td></td>
+     <td (click)="openData(component.componentN)"> {{component.componentN}}</td>
+     <td>{{component.componentNS}}</td>
+     <td>{{component.componentName}}</td>
+     <td>{{component.componentType}}</td>
+     <td></td>
+     <td></td>
+     <td></td>
+     <td></td>
+     <td><img [src]=component.img style='width:50px'></td>
+     <td></td>
+     <td></td>
+   </tr> 
+</tbody>
+</table>
+
+<div  *ngIf="openModal==true"  id="myModal2" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:230px;top:130px; background-color:lightskyblue'>
+
+  	<!-- Modal content -->
+    <div class="modal-content" style='width:650px' id='modelC'>
+        <div class="modal-header">
+          <span class="close" id="closeId2" (click)='openModal=false'>&times;</span>
+          <img src="peerpharm.png"  width='140px' align='left'>
+          <h2 id='div_h3'>יצירת פריט חדש</h2><br>
+          <div class='tabDiv' id='dTag' onclick="changeTag(details)" >פרטים</div><div  class='tabDiv' id='cTag' onclick="changeTag(changes)">רשימת תנועות</div>
+        </div>
+        <div class="modal-body">
+          <table id='detailsTable'>
+            <tbody id='detailsTbody'>
+            <tr>
+              <th>מספר פריט</th><td><input type='text' [value]="resCmpt.componentN" id="input_componentNumber" ></td><th>מק"ט ספק</th><td align='right'><input [value]="resCmpt.componentNs" type='text'  id="input_idSuplierNumber"></td>	
+            </tr>
+            <tr>
+              <th>שם פריט</th><td><textarea rows='4' cols='30' [value]="resCmpt.componentName"  style='width:150px'  id='input_componentName'></textarea></td> <th>מלאי מינימום</th><td align='right'><input type='number'  id="input_minimumStock"></td>	
+            </tr>
+            
+            <tr>
+              <th>סוג</th>
+              <td>
+                <select id='input_componentType'>
+                          <option value='bottle_Glass'>בקבוק זכוכית</option><option value='bottle_Plastic'>בקבוק פלסטיק</option>
+                          <option value='jar_Glass'>צנצנת זכוכית</option><option value='jar_Plastic'>צנצנת פלסטיק</option>
+                          <option value='cap'>פקק</option><option value='cover'>מכסה</option>
+                          <option value='pump'>משאבה</option><option value='cosmetic_pump'>משאבה קוסמטית</option>
+                          <option value='over_cap'>מכסה עילי</option><option value='tube'>שפורפרת</option>
+                          <option value='colons'>קולונים</option><option value='hair_life'>היירלייפ</option>
+                          <option value='compacts'>קומפקטים</option><option value='personal_package'>אריזות אישיות</option>
+                          <option value='master_carton'>קרטוני מאסטר</option><option value='newsletter'>עלון לצרכן</option>
+                          <option value='irosol_valve'>אירוסול- שסתום</option><option value='irosol_bottle'>איירוסול- בקבוק</option>
+                          <option value='irosol_hectotor'>אירוסול- הקטאטור</option><option value='irosol_bottle'>איירוסול- בקבוק</option>
+                </select>
+              </td>
+              <th>משקל/סוג</th>
+              <td>
+                      <input type="text" id="input_packageWeight" style='width:55px; margin-left:5px' placeholder='גרם'>
+                      <select id='input_packageType'>
+
+                        <option value='paperCarton'>נייר/קרטון</option>
+                        <option value='drinkCarton'>קרטוניות משקה</option>
+                        <option value='transperentGlass'>זכוכית שקופה</option>
+                        <option value='colorGlass'>זכוכית צבעונית</option>	
+                        <option value='pet'>PET</option>
+                        <option value='hdpe'>HDPE</option>
+                        <option value='ldpe'>LDPE</option>
+                        <option value='pp'>PP</option>
+                        <option value='ps'>PS</option>
+                        <option value='otherPlastic'>פלסטיק אחר</option>
+                        <option value='metal'>מתכת</option>
+                        <option value='wood'>עץ</option>
+                        <option value='otherMaterial'>חומר אחר</option>
+                      </select>
+                    </td>
+            </tr>
+            <tr>
+            <th>קטגוריה</th>
+              <td><input type='text' id="input_componentCategory" ></td>			
+            </tr>
+            <tr>
+              <th>אספקה</th>
+              <td><input type='text' placeholder="מקומי/חול"  id='input_import'></td>
+              <th>תמונה</th> <td><input type='file' id="input_itemImgID" onchange='uploadImg()' style='display:block'><input type='text' id='tempHiddenImgSrc' style='display:none'></td>
+            </tr>
+            <tr>
+              <th>מספר ספק</th>
+              <td><input type='text'  id='input_suplierN'></td>
+                          <td colspan='2' rowspan='5'><img [src]='resCmpt.img' width="350px" style='margin-top:20px; max-height: 420px;' id='imgID'><br><progress value="0" max="100" id="uploader" style='width:300px' id="uploader">0%</progress></td>
+
+            </tr>
+            <tr>
+              <th>שם ספק</th>
+              <td><input type='text'  id='input_suplierName'></td>
+            </tr>
+            <tr>
+              <th>הערות</th>
+              <td><textarea rows='4' cols='30'   style='width:150px'  id='input_remarks'></textarea><br>
+              <input type="checkbox" name="printed" value="printed" id='checkBox_need_print'> דרושה הדפסה </td>
+            </tr>
+            </tbody>
+            <tbody id='changesTbody' dir='rtl'>
+            
+            </tbody>
+          </table>
+      
+    
+          
+            
+        </div>
+        <div class="modal-footer">
+          <button id="newCbtn" onClick="writeNewComponent()">הקם מוצר</button>
+          <button id="updateDataBtn" style='display:none'>עדכן מידע</button>
+        </div>
+		  </div>		

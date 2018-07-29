@@ -29,7 +29,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '',
     title: 'Orders',
-    icon: 'fas fa-shopping-cart',
+    icon: 'fas fa-chart-line',
     class: 'has-arrow',
     extralink: false,
     submenu: [
@@ -42,7 +42,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
-        path: '/component/accordion',
+        path: '/peerpharm/allorders/neworder',
         title: 'New Order',
         icon: 'far fa-newspaper',
         class: '',
@@ -52,7 +52,7 @@ export const ROUTES: RouteInfo[] = [
       {
         path: '/component/accordion',
         title: 'Search Order',
-        icon: 'mdi mdi-adjust',
+        icon: 'icon-magnifier',
         class: '',
         extralink: false,
         submenu: []
@@ -72,6 +72,48 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '',
+    title: 'Schedule',
+    icon: ' far fa-calendar-alt',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: '/peerpharm/schedule/fillschedule',
+        title: 'Filling',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      }]
+  },
+  {
+    path: '',
+    title: ' Items',
+    icon: ' fas fa-sitemap',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: '/peerpharm/items/itemslist',
+        title: 'Item List',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+       {
+        path: '/peerpharm/schedule/fillschedule',
+        title: 'Item Tree',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
+    
+    ]
+  },
+  {
+    path: '',
     title: 'Formulas',
     icon: '  fab fa-hubspot',
     class: 'has-arrow',
@@ -87,6 +129,161 @@ export const ROUTES: RouteInfo[] = [
       }
     ]
     },
+    {
+      path: '',
+      title: 'Costumers',
+      icon: ' fas fa-address-card',
+      class: 'has-arrow',
+      extralink: false,
+      submenu: [
+        {
+          path: '/peerpharm/schedule/fillschedule',
+          title: 'Item List',
+          icon: 'fas fa-address-book',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+         {
+          path: '/peerpharm/schedule/fillschedule',
+          title: 'Item Tree',
+          icon: 'fas fa-tree',
+          class: '',
+          extralink: false,
+          submenu: []
+        }
+      
+      ]
+    },
+    
+  {
+    path: '',
+    title: ' Batches',
+    icon: '  fas fa-vial',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: '/peerpharm/schedule/fillschedule',
+        title: 'Item List',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+       {
+        path: '/peerpharm/schedule/fillschedule',
+        title: 'Item Tree',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
+    
+    ]
+  },
+  
+  {
+    path: '',
+    title: 'Procurement',
+    icon: ' icon-plane',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: '/peerpharm/schedule/fillschedule',
+        title: 'Item List',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+       {
+        path: '/peerpharm/schedule/fillschedule',
+        title: 'Item Tree',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
+    
+    ]
+  },
+  
+  
+  {
+    path: '',
+    title: 'plate',
+    icon: ' fas fa-inbox',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: '/peerpharm/plates/plates',
+        title: 'Plates List',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      }   
+    ]
+  },
+    {
+      path: '',
+      title: ' Inevntory',
+      icon: ' fas fa-dolly',
+      class: 'has-arrow',
+      extralink: false,
+      submenu: [
+        {
+          path: '/peerpharm/inventory/inventory',
+          title: 'Item List',
+          icon: 'fas fa-address-book',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+         {
+          path: '/peerpharm/schedule/fillschedule',
+          title: 'Item Tree',
+          icon: 'fas fa-tree',
+          class: '',
+          extralink: false,
+          submenu: []
+        }
+      
+      ]
+    },
+
+  
+    {
+      path: '',
+      title: 'Forms',
+      icon: ' fab fa-wpforms',
+      class: 'has-arrow',
+      extralink: false,
+      submenu: [
+        {
+          path: '/peerpharm/schedule/fillschedule',
+          title: 'Item List',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+         {
+          path: '/peerpharm/schedule/fillschedule',
+          title: 'Item Tree',
+          icon: 'fas fa-tree',
+          class: '',
+          extralink: false,
+          submenu: []
+        }
+      
+      ]
+    },
+
+
   {
     path: '',
     title: 'Component',

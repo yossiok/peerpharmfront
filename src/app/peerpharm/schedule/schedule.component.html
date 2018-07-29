@@ -1,0 +1,79 @@
+<p>
+  schedule works!
+</p>
+
+
+<input  type ='date' #date (change)="dateChanged(date.value)">
+
+<ngb-tabset #t="ngbTabset">
+    <ngb-tab id="tab-selectbyid1" title="General">
+      <ng-template ngbTabContent>
+            gdfbgbgfjhnyj6
+        </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Tube">
+            <ng-template ngbTabContent>
+              12312312312
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Make Up">
+              <ng-template ngbTabContent>
+                mamkdakdmasmlplp
+              </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+<table class='table'>
+  <thead class='bg-success text-white'>
+  <tr align='center'>
+      <th><b>P</b></th>
+      <th><b>Order no'</b></th>
+      <th><b>Item</b></th>
+      <th><b>Costumer</b></th>
+      <th><b>Name of product</b></th>
+      <th><b>Batch number</b></th>
+      <th><b>Package</b></th>
+      <th colspan=2><b>Qty</b></th>
+      <th><b>Date</b></th>
+      <th><b>Remarks</b></th>
+      <th class='printlessTd'><b>shift</b></th>
+      <th class='printlessTd'><b>Mkp</b></th>
+<th class='printlessTd'></th>
+  </tr> 
+
+  </thead>
+  
+  <tr id='inputTr'>
+    <td><input type='text' id="input_position" [(ngModel)]="scheduleLine.positionN" style='width:20px'	></td>
+    <td><input type='text' id="input_order"  [(ngModel)]="scheduleLine.orderN" style='width:90px' onfocusout="setCostumer()"></td>
+     <td><input type='text' id="input_item" style='width:90px' [(ngModel)]="scheduleLine.item" onfocusout="setItemDetails()"><img class="btnImage" src= '/images/search.png' onClick='searchItem()' id='searchBtnImg'><img class="btnImage" src= '/images/paste.png' onClick='pasteNumber()' ></td>
+     <td><input type='text' id="input_costumer" [(ngModel)]="scheduleLine.costumer" ></td>
+     <td><input type='text' id="input_productName" [(ngModel)]="scheduleLine.productName"></td>
+     <td><input type='text' id="input_batchN" [(ngModel)]="scheduleLine.batch"></td>
+     <td><textarea rows='4' cols='30' id='input_package'  style='width:180px' [(ngModel)]="scheduleLine.packageP" ></textarea></td>
+     <td  colspan=2><input type='text' id="input_Qty" style='width:90px' [(ngModel)]="scheduleLine.qty"></td>
+     <td><input type='date' id="input_Date" style='width:120px; font-size:13px' [(ngModel)]="scheduleLine.date"></td>			 
+     <td><textarea rows='4' cols='30' id='input_marks'  style='width:180px' [(ngModel)]="scheduleLine.marks"></textarea></td>
+     <td class='printlessTd'><select id="select_shift"  [(ngModel)]="scheduleLine.shift"><option value="Day">Day</option><option value="Night">Night</option></select></td>
+      <td class='printlessTd'>
+      <input type="radio"  name="type"   value='basic' checked  [(ngModel)]="scheduleLine.mkp" >Basic<br>
+      <input type="radio"  name="type"   value='tube' [(ngModel)]="scheduleLine.mkp">Tube<br>
+      <input type="radio"  name="type"   value='mkp' [(ngModel)]="scheduleLine.mkp">Mkp<br></td>
+      <td class='printlessTd'><button class="button" (click)="writeScheduleData()"  style='width:110px'	id='addBtn'>Add</button><br>
+      <button onclick='clearRow()' style='width:110px; background-color:red'>Clear</button>
+      </td>
+</tr>
+
+<tbody id="table_body">
+    <tr *ngFor = "let line of scheduleData">
+      <td></td>
+        <td>{{line.orderN}}</td>
+        <td>{{line.item}}</td>
+        <td></td>
+        <td>{{line.productName}}</td>
+        <td>{{line.batch}}</td>
+        <td>{{line.packageP}}</td>
+        <td>{{line.qty}}</td>
+      <td></td>
+    </tr>
+</tbody>
+</table>

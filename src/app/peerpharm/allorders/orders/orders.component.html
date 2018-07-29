@@ -2,36 +2,40 @@
   orders works!
 </p>
 <br>
-<table>
-  <tr>
-    <td></td>
-    <td>Order Number</td>
-    <td>Costumer</td>
-    <td>Order date</td>
-    <td>Delivery Date</td>
-    <td>Reamrks</td>
-    <td>Type</td>
-    <td></td>
-  </tr>
-  <tr *ngFor="let order of orders">
-    <td></td>
-    <td>
-      <a routerLink="/orderitems/{{order._id}}">
-      <!--<a  [routerLink]=['orderitems/{{order._id}}']>-->
-        {{order.orderNumber}}
-      </a>
-    </td>
-    <td>{{order.costumer}}</td>
-    <td>{{order.orderDate}}</td>
-    <td>{{order.deliveryDate}}</td>
-    <td>{{order.orderRemarks}}</td>
-    <td>
+<table class='table'>
+  <thead class='bg-info text-white'>
+    <tr>
+      <td></td>
+      <td>Order Number</td>
+      <td>Costumer</td>
+      <td>Order date</td>
+      <td>Delivery Date</td>
+      <td>Reamrks</td>
+      <td>Type</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody class='table-hover'>
+    <tr *ngFor="let order of orders">
+      <td></td>
+      <td>
+        <a routerLink='/peerpharm/allorders/orderitems/{{order._id}}'>
+        <!-- <a routerLink="/orderitems/{{order._id}}">-->
+          <!--<a  [routerLink]=['orderitems/{{order._id}}']>-->
+          {{order.orderNumber}}
+        </a>
+      </td>
+      <td>{{order.costumer}}</td>
+      <td>{{order.orderDate}}</td>
+      <td>{{order.deliveryDate}}</td>
+      <td>{{order.orderRemarks}}</td>
+      <td>
         <img src='deleteBtn.png' style='width:40px'>
         <img src='editBtn.png' style='width:40px'>
-    </td>
-    <!--<td>{{order.type}}</td>-->
-  </tr>
-
+      </td>
+      <!--<td>{{order.type}}</td>-->
+    </tr>
+  </tbody>
 </table>
 <ul class="cert-result">
 </ul>
