@@ -1,9 +1,71 @@
 <p>
   neworder works!
 </p>
-
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Order Assigning</h4>
+            </div>
+            <hr>
+            <form class="form-horizontal" [formGroup]="orderForm"  (ngSubmit)='addNewOrder(orderForm.value)'>
+                <div class="card-body" *ngIf="order!=submited">
+                    <h4 class="card-title">Order Info</h4>
+                    <div class="form-group row">
+                        <label for="fname" class="col-sm-3 text-right control-label col-form-label">Order Number</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="Order Number"  formControlName="orderN">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lname" class="col-sm-3 text-right control-label col-form-label">Costumer</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email1" class="col-sm-3 text-right control-label col-form-label">Date of order</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 text-right control-label col-form-label">Type</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" formControlName="type">
+                                <option>Cosmetic</option>
+                                <option>Make Up</option>
+                                <option>Cosmetic & MakeUp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group m-b-0 text-right">
+                            <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
+                            <button type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </form>
+        </div>
+    </div>
+</div>
+<!--
 <form [formGroup]="orderForm" (ngSubmit)='addNewOrder(orderForm.value)'>
-<table>
+<table class="table">
   <tr>
       <th>Order Number	</th> <th>Costumer		</th> <th>Date of order		</th> <th>Delivery date		</th> <th>Remarks		</th> <th>Type		</th>
   </tr>
@@ -12,10 +74,32 @@
   </tr>
 </table>
 <input type="submit" class="button expanded" value="Submit Form">
+</form> 
+<form [formGroup]="orderForm" (ngSubmit)='addNewOrder(orderForm.value)'>
+  <table class="table col-mid-6 bg-info text-white">
+    <tr>
+      <td>Order Number</td><td><input  formControlName="orderN"></td>
+    </tr>
+    <tr>
+      <td>Costumer</td><td><input formControlName="costumer"></td>
+    </tr>
+    <tr>
+      <td>Date of order</td><td><input formControlName="orderdate" type="date"></td>
+    </tr>
+    <tr>
+      <td>Delivery date	</td><td><input formControlName="delivery" type="date"></td>
+    </tr>
+    <tr>
+      <td>Remarks	</td><td><input formControlName="remarks"></td>
+    </tr>
+    <tr>
+      <td>type</td><td><input></td>
+    </tr>
+    </table>
+
 </form>
-
-
-<form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)'>
+-->
+<form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)' >
 
   <table>
     <thead>

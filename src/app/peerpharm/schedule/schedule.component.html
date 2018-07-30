@@ -65,6 +65,7 @@
 
 <tbody id="table_body">
     <tr *ngFor = "let line of scheduleData">
+      <ng-container  *ngIf='line.item==4601'>
       <td></td>
         <td>{{line.orderN}}</td>
         <td>{{line.item}}</td>
@@ -74,6 +75,7 @@
         <td>{{line.packageP}}</td>
         <td>{{line.qty}}</td>
       <td></td>
+    </ng-container>
     </tr>
 </tbody>
 </table>

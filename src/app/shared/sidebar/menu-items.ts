@@ -88,6 +88,32 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '',
+    title: 'Task-Board',
+    icon: '  fas fa-thumbtack',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: '/peerpharm/schedule/fillschedule',
+        title: 'Personal',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      }, 
+      {
+        path: '/peerpharm/schedule/fillschedule',
+        title: 'Department',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
+    
+    ]
+  },
+  {
+    path: '',
     title: ' Items',
     icon: ' fas fa-sitemap',
     class: 'has-arrow',

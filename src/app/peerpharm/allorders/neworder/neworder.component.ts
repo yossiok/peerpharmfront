@@ -26,6 +26,7 @@ export class NeworderComponent implements OnInit {
       costumer:[null, Validators.required],
       orderdate:[null, Validators.required],
       remarks:[null, Validators.required],
+      type:[null, Validators.required],
     });
 
     this.orderItemForm = fb.group({
