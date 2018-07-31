@@ -94,7 +94,7 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: '/peerpharm/schedule/fillschedule',
+        path: '/peerpharm/taskboard/main',
         title: 'Personal',
         icon: ' fab fa-page4',
         class: '',
@@ -146,7 +146,7 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: '/formules/add',
+        path: '/peerpharm/formule/addnewformule',
         title: 'Add formula',
         icon: ' fab fa-page4',
         class: '',

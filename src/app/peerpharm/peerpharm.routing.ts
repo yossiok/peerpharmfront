@@ -8,7 +8,8 @@ import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
 import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
-
+import {AddFormuleComponent} from './formules/add-formule/add-formule.component'
+import {ContentComponent} from './taskboard/core/content/content.component'
 export const PeerPharmRputs: Routes =[
   {
     path: 'allorders/orders',
@@ -65,6 +66,21 @@ export const PeerPharmRputs: Routes =[
       title: 'inventory' 
     },
     component: StockComponent
+  },
+  {
+    path: 'taskboard/main',
+    data: {
+      title: 'task-board' 
+    },
+    component: ContentComponent
+  },
+  {
+    path: 'formule/addnewformule',
+    data: {
+      title: 'task-board' 
+    },
+    component: AddFormuleComponent
   }
   
 ];
+

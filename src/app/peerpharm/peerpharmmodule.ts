@@ -17,7 +17,37 @@ import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
 import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
+import {ContentComponent} from './taskboard/core/content/content.component'
 
+
+
+
+import {MatSelectModule} from '@angular/material/select';
+import {
+  MatDialogModule,
+  MatGridListModule,
+  MatMenuModule,
+  MatButtonModule,
+  MatTooltipModule,
+  MatIconModule,
+  MatCardModule,
+  MatToolbarModule,
+  MatTabsModule,
+  MatInputModule,
+  MatDatepickerModule,
+  MatFormFieldModule,
+  MatNativeDateModule
+} from '@angular/material';
+import { NavComponent } from './taskboard/core/nav/nav.component';
+import { BoardComponent } from './taskboard/board/board.component';
+import { TaskCardComponent } from './taskboard/board/shared/task-card/task-card.component';
+import { CreateBoardComponent } from './taskboard/board/create-board/create-board.component';
+import { SubtaskComponent } from './taskboard/subtask/subtask.component';
+import { SubTaskCardComponent } from './taskboard/board/shared//sub-task-card/sub-task-card.component';
+
+import { DndModule } from 'ng2-dnd';
+import { DatepickerModule } from 'angular2-material-datepicker';
+import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +56,24 @@ import {NeworderComponent} from './allorders/neworder/neworder.component'
     JsonpModule, 
     HttpClientModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule, 
+    MatSelectModule,
+    DndModule.forRoot(),
+    DatepickerModule,
+    Ng2FilterPipeModule,
   ],
   declarations: [
     AddFormuleComponent,
@@ -38,7 +85,15 @@ import {NeworderComponent} from './allorders/neworder/neworder.component'
     ItemslistComponent,
     ItemdetaisComponent,
     PlateComponent,
-    StockComponent
+    StockComponent,
+    ContentComponent,
+    NavComponent,
+    BoardComponent,
+    TaskCardComponent,
+    CreateBoardComponent,
+    SubtaskComponent,
+    SubTaskCardComponent,
+    
   ],
   providers:[HttpClientModule, OrdersService]
 })
