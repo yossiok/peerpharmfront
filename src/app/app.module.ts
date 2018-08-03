@@ -1,3 +1,5 @@
+import { SignupComponent } from './shared/auth/signup.component';
+import { LoginComponent } from './shared/auth/login.component';
 import * as $ from 'jquery';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -47,7 +49,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BlankComponent, 
     NavigationComponent,
     BreadcrumbComponent,  
-    SidebarComponent 
+    SidebarComponent , 
+    LoginComponent, 
+    SignupComponent
   ],
   imports: [
     CommonModule,

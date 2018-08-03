@@ -1,4 +1,4 @@
-import { OrdersService } from './../services/orders.service';
+import { OrdersService } from '../services/orders.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -43,7 +43,7 @@ import { BoardComponent } from './taskboard/board/board.component';
 import { TaskCardComponent } from './taskboard/board/shared/task-card/task-card.component';
 import { CreateBoardComponent } from './taskboard/board/create-board/create-board.component';
 import { SubtaskComponent } from './taskboard/subtask/subtask.component';
-import { SubTaskCardComponent } from './taskboard/board/shared//sub-task-card/sub-task-card.component';
+import { SubTaskCardComponent } from './taskboard/board/shared/sub-task-card/sub-task-card.component';
 
 import { DndModule } from 'ng2-dnd';
 import { DatepickerModule } from 'angular2-material-datepicker';

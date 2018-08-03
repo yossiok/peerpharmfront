@@ -1,15 +1,18 @@
+import { LoginComponent } from './shared/auth/login.component';
 import { PeerPharmModule } from './peerpharm/peerpharmmodule';
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
+import { UserloggedinGuard } from './guards/userloggedin.guard';
 
 
 export const Approutes: Routes = [
   {
     path: '',
     component: FullComponent,
+    canActivate:[UserloggedinGuard],
     children: [
       { path: '', redirectTo: '/starter', pathMatch: 'full' },
       {
@@ -33,5 +36,9 @@ export const Approutes: Routes = [
   {
     path: '**',
     redirectTo: '/starter'
+  },
+  {
+    path: 'login',
+    component:LoginComponent
   }
 ];
