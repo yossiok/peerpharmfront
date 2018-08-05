@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
@@ -5,9 +6,12 @@ import { BoardModel } from '../peerpharm/taskboard/models/board-model';
 import { TaskModel } from '../peerpharm/taskboard/models/task-model';
 import { SubTaskModel } from '../peerpharm/taskboard/models/subtask-model'
 import { UserInfo } from '../peerpharm/taskboard/models/UserInfo';
-import { HttpClient } from '../../../node_modules/@angular/common/http';
+import { HttpClient } from '@angular/common/http'; 
+ 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root' 
+})
 export class AuthService {
  
   private baseUrl = 'http://localhost/';  
@@ -18,13 +22,14 @@ export class AuthService {
   constructor(private http: Http, private httpClient:HttpClient) { }
 
   getLoggedInUser(): Observable<any> {
-    return this.http.get(this.authURL)
-      .map((res: Response) => res.json())
+    return this.http.get(this.authURL).pipe(
+      map((res: Response) => res.json()))
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
   isUserLoggedIn():Observable<boolean>
   {
+  
     return   <Observable<boolean>> this.httpClient.get(this.baseUrl+"verifysession");
   }
 

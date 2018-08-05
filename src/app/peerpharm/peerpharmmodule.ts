@@ -21,7 +21,6 @@ import {ContentComponent} from './taskboard/core/content/content.component'
 
 
 
-
 import {MatSelectModule} from '@angular/material/select';
 import {
   MatDialogModule,
@@ -48,6 +47,7 @@ import { SubTaskCardComponent } from './taskboard/board/shared/sub-task-card/sub
 import { DndModule } from 'ng2-dnd';
 import { DatepickerModule } from 'angular2-material-datepicker';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
+import { AuthService } from '../services/auth.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -73,7 +73,7 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
     MatSelectModule,
     DndModule.forRoot(),
     DatepickerModule,
-    Ng2FilterPipeModule,
+    Ng2FilterPipeModule , HttpClientModule
   ],
   declarations: [
     AddFormuleComponent,
@@ -93,8 +93,13 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
     CreateBoardComponent,
     SubtaskComponent,
     SubTaskCardComponent,
+    ContentComponent, BoardComponent,
+    TaskCardComponent,
+    SubTaskCardComponent,
+    CreateBoardComponent
+
     
   ],
-  providers:[HttpClientModule, OrdersService]
+  providers:[ OrdersService, HttpClientModule]
 })
 export class PeerPharmModule {}

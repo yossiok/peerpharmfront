@@ -1,3 +1,5 @@
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
 import { SignupComponent } from './shared/auth/signup.component';
 import { LoginComponent } from './shared/auth/login.component';
 import * as $ from 'jquery';
@@ -33,6 +35,7 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'; 
+import { ContentComponent } from './peerpharm/taskboard/core/content/content.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -51,12 +54,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbComponent,  
     SidebarComponent , 
     LoginComponent, 
-    SignupComponent
+    SignupComponent  
+   
   ],
   imports: [
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     FormsModule, 
     HttpModule,
     NgbModule.forRoot(),
@@ -64,6 +69,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule
   ],
   providers: [
+    AuthService,HttpClientModule,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
