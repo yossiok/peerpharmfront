@@ -7,12 +7,17 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
 import { UserloggedinGuard } from './guards/userloggedin.guard';
+import { SignupComponent } from './shared/auth/signup.component';
 
 
 export const Approutes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'signup',
+    component: SignupComponent
   },
   {
     path: '',

@@ -21,7 +21,7 @@ export class UserloggedinGuard implements CanActivate {
           {
             this.router.navigate([ '/login' ]); 
           }
-          debugger; return response;
+         return response;
         })) ; 
   }
 }

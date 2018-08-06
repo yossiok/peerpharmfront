@@ -1,3 +1,5 @@
+<link href="https://unpkg.com/@angular/material/prebuilt-themes/deeppurple-amber.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <mat-tab-group class="content">
 
 
@@ -5,6 +7,7 @@
   <mat-tab *ngFor="let board of boards" class="board-tabs">
     <ng-template mat-tab-label><span class="board-title">{{board.title}}</span></ng-template>
     <app-board [boardTitle]="board.title"> Loading...</app-board>
+
     
     <!-- {{ title}}    [style.bg]="bgcolor"   [childText]="fathertxt" -->
   </mat-tab>
