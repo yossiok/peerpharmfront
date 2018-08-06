@@ -1,4 +1,4 @@
-import { AuthService } from './../../services/auth.service';
+import { AuthService } from '../../../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { UserInfo } from '../../models/UserInfo';
 
@@ -15,7 +15,7 @@ export class NavComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.verifyLogIn().subscribe(data => {
+    this.authService.getLoggedInUser().subscribe(data => {
   
       if (data.msg != null) {
        console.log(data.msg);

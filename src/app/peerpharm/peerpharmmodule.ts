@@ -1,4 +1,4 @@
-import { OrdersService } from './../services/orders.service';
+import { OrdersService } from '../services/orders.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -18,7 +18,6 @@ import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
-
 
 
 
@@ -43,11 +42,12 @@ import { BoardComponent } from './taskboard/board/board.component';
 import { TaskCardComponent } from './taskboard/board/shared/task-card/task-card.component';
 import { CreateBoardComponent } from './taskboard/board/create-board/create-board.component';
 import { SubtaskComponent } from './taskboard/subtask/subtask.component';
-import { SubTaskCardComponent } from './taskboard/board/shared//sub-task-card/sub-task-card.component';
+import { SubTaskCardComponent } from './taskboard/board/shared/sub-task-card/sub-task-card.component';
 
 import { DndModule } from 'ng2-dnd';
 import { DatepickerModule } from 'angular2-material-datepicker';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
+import { AuthService } from '../services/auth.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -73,7 +73,7 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
     MatSelectModule,
     DndModule.forRoot(),
     DatepickerModule,
-    Ng2FilterPipeModule,
+    Ng2FilterPipeModule , HttpClientModule
   ],
   declarations: [
     AddFormuleComponent,
@@ -93,8 +93,13 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
     CreateBoardComponent,
     SubtaskComponent,
     SubTaskCardComponent,
+    ContentComponent, BoardComponent,
+    TaskCardComponent,
+    SubTaskCardComponent,
+    CreateBoardComponent
+
     
   ],
-  providers:[HttpClientModule, OrdersService]
+  providers:[ OrdersService, HttpClientModule]
 })
 export class PeerPharmModule {}

@@ -1,6 +1,6 @@
 import { OrdersComponent } from './allorders/orders/orders.component';
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
-import { PeerPharmModule } from './peerpharmmodule';
+//import { PeerPharmModule } from './peerpharmmodule';
 import { Routes } from '@angular/router';
 import {ScheduleComponent} from './schedule/schedule.component'
 import {ItemslistComponent} from './items/itemslist/itemslist.component'
