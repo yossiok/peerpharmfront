@@ -17,7 +17,7 @@
   </thead>
   <tbody class='table-hover'>
     <tr *ngFor="let order of orders">
-      <td></td>
+      <td><input type="checkbox" [(ngModel)]="order.isSelected" > </td>
       <td>
         <a routerLink='/peerpharm/allorders/orderitems/{{order._id}}'>
         <!-- <a routerLink="/orderitems/{{order._id}}">-->

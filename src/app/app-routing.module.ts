@@ -24,10 +24,10 @@ export const Approutes: Routes = [
         path: 'peerpharm',
         loadChildren: './peerpharm/peerpharmmodule#PeerPharmModule'
       },
-      {
+   /*   {
         path: 'taskboard',
         loadChildren: './peerpharm/taskboard/app.module#TaskModule'
-      }
+      }*/
     ]
   },
   {

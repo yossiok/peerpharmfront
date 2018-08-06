@@ -7,21 +7,26 @@
 
 <ngb-tabset #t="ngbTabset">
     <ngb-tab id="tab-selectbyid1" title="General">
-      <ng-template ngbTabContent>
-            gdfbgbgfjhnyj6
+       <ng-template ngbTabContent>
+          ngfmjuy hgdeg
         </ng-template>
         </ngb-tab>
-        <ngb-tab title="Tube">
-            <ng-template ngbTabContent>
-              12312312312
+      <ngb-tab title="Tube" activeId="tube" >
+            <ng-template ngbTabContent >
+              <span (click)="setType()">1131233  </span>12312312312  {{typeShown}}
             </ng-template>
-          </ngb-tab>
-          <ngb-tab title="Make Up">
+      </ngb-tab>
+      <ngb-tab title="Make Up" activeId="mkp">
               <ng-template ngbTabContent>
                 mamkdakdmasmlplp
               </ng-template>
-            </ngb-tab>
-        </ngb-tabset>
+       </ngb-tab>
+  </ngb-tabset>
+<br><br>
+    <div (click)='setType("basic")'>General</div>
+    <div (click)='setType("tube")'>Tubes</div>
+    <div (click)='setType("mkp")'>Make Up</div>
+ 
 <table class='table'>
   <thead class='bg-success text-white'>
   <tr align='center'>
@@ -65,15 +70,20 @@
 
 <tbody id="table_body">
     <tr *ngFor = "let line of scheduleData">
-      <ng-container  *ngIf='line.item==4601'>
-      <td></td>
+      <ng-container  *ngIf='line.mkp===typeShown'>
+        <td>{{line.positionN}}</td>
         <td>{{line.orderN}}</td>
         <td>{{line.item}}</td>
-        <td></td>
+        <td>{{line.costumer}}</td>
         <td>{{line.productName}}</td>
         <td>{{line.batch}}</td>
         <td>{{line.packageP}}</td>
         <td>{{line.qty}}</td>
+        <td></td>
+        <td>{{line.date}}</td>
+        <td>{{line.marks}}</td>
+        <td>{{line.shift}}</td>
+        <td>{{line.mkp}}</td>
       <td></td>
     </ng-container>
     </tr>
