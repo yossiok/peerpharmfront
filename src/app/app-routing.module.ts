@@ -12,9 +12,18 @@ import { SignupComponent } from './shared/auth/signup.component';
 
 export const Approutes: Routes = [
   {
-<<<<<<< HEAD
+    path: 'login',
+    component: LoginComponent
+    },
+    {
+      path: 'signup',
+      component: SignupComponent
+    },
+    
+  {
     path: '',
     component: FullComponent,
+
     children: [
       { path: '', redirectTo: '/starter', pathMatch: 'full' },
       {
@@ -34,39 +43,9 @@ export const Approutes: Routes = [
         loadChildren: './peerpharm/taskboard/app.module#TaskModule'
       }*/
     ]
-=======
-    path: 'login',
-    component: LoginComponent
->>>>>>> 05d924919c01c27af3d43c578fce7340b3bc3faa
+  
   },
-  {
-    path: 'signup',
-    component: SignupComponent
-  },
-  {
-    path: '',
-    component: FullComponent
-    ,
  
-  canActivate: [UserloggedinGuard],
-
-
-  children: [
-    { path: '', redirectTo: '/starter', pathMatch: 'full' },
-    {
-      path: 'starter',
-      loadChildren: './starter/starter.module#StarterModule'
-    },
-    {
-      path: 'component',
-      loadChildren: './component/component.module#ComponentsModule'
-    },
-    {
-      path: 'peerpharm',
-      loadChildren: './peerpharm/peerpharmmodule#PeerPharmModule'
-    }
-  ]
-  },
 {
   path: '**',
     redirectTo: '/starter'
