@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ScheduleService} from "../../services/schedule.service"
+import {NgbTabChangeEvent} from '../../tabset'
+
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
@@ -23,8 +25,10 @@ export class ScheduleComponent implements OnInit {
     mkp:'',
     status:'open'
   }
-  constructor(private scheduleService:ScheduleService) { }
+  typeShown:String="basic";
+  constructor(private scheduleService:ScheduleService ) { }
 
+  
   ngOnInit() {
     this.getAllSchedule();
   }
@@ -42,4 +46,11 @@ export class ScheduleComponent implements OnInit {
   getAllSchedule(){
     this.scheduleService.getSchedule().subscribe(res=>this.scheduleData=res);
   }
+  
+  setType(type){
+    console.log("hi " +type);
+    this.typeShown=type;
+  }
+
+
 }

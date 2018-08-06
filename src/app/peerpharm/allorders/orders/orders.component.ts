@@ -18,8 +18,11 @@ export class OrdersComponent implements OnInit {
   getOrders(){
     this.ordersService.getOrders()
     .subscribe(orders=>{
-      this.orders=orders;
-      console.log(orders);
+      this.orders= orders.map(order => Object.assign({isSelected:false}, order));
+      //let x= this.orders.filter(x=> x.isSelected==false);
+      //let yy= x.map(y=> {orderN:y.orderN});
+      //debugger;
+      //console.log(x);
     })
   }
 }

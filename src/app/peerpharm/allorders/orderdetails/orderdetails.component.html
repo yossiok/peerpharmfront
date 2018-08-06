@@ -37,8 +37,8 @@
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td>
           <td *ngIf="item._id===EditRowId"><input  #itemRemarks type='text' [value]=item.itemRemarks   style='width:130px'/></td>
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
-          <td><button (click)="deleteItem(item)">Delete</button></td>
-          <td  *ngIf="item._id===EditRowId"><img src='editBtn.png' style='width:40px; cursor: pointer' (click)="saveEdit()"></td>
+          <td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>
+          <td ></td>
       </tr>
       <tr *ngIf="expand===true && item._id===EditRowId2nd">
          <td></td> <td colspan="1" *ngFor="let det of detailsArr">{{det}} <button>print</button></td><td></td>
