@@ -23,12 +23,17 @@ export class ScheduleService {
   }
  
   getScheduleByDate(date){
-    let url = this.baseUrl + "schedule?date" +date;
+    let url = this.baseUrl + "schedule?date=" +date;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getSchedule(){
     let url = this.baseUrl + "schedule";
     debugger
     return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  editSchedule(schedule):Observable<any>{
+    let url = this.baseUrl + "schedule/update";
+    return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()));
   }
 }

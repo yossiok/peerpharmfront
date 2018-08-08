@@ -11,3 +11,7 @@ div{
 div::selection{
     background-color: blue;
 }
+.btnImg{
+    width:30px;
+    cursor: pointer;
+}
