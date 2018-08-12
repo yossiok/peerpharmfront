@@ -308,7 +308,35 @@ export const ROUTES: RouteInfo[] = [
       
       ]
     },
+    ,
 
+  
+    {
+      path: '',
+      title: 'Production',
+      icon: ' fas fa-diagnoses',
+      class: 'has-arrow',
+      extralink: false,
+      submenu: [
+        {
+          path: '/peerpharm/production/lines',
+          title: 'Lines',
+          icon: 'fas fa-i-cursor',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+         {
+          path: '/peerpharm/schedule/fillschedule',
+          title: 'Assignment',
+          icon: 'fas fa-tree',
+          class: '',
+          extralink: false,
+          submenu: []
+        }
+      
+      ]
+    },
 
   {
     path: '',

@@ -17,6 +17,7 @@ import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
 import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
+import {LinesComponent} from './production/lines/lines.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
 
 
@@ -80,6 +81,7 @@ import { AuthService } from '../services/auth.service';
     OrdersComponent,
     OrderdetailsComponent,
     NeworderComponent,
+    LinesComponent,
     AddFormuleItemComponent,
     ScheduleComponent,
     ItemslistComponent,
