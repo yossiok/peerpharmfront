@@ -63,7 +63,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   getComponents(orderNumber):void{
-   // debugger;
+    debugger;
     this.orderService.getComponentsSum(orderNumber).subscribe(components=>
       {
     //    debugger;
@@ -95,6 +95,7 @@ export class OrderdetailsComponent implements OnInit {
 
   saveEdit(a){
     let itemToUpdate={
+      
       'orderItemId':this.id.nativeElement.value,
       'itemN':this.itemN.nativeElement.value,
       "unitMeasure":this.unitMeasure.nativeElement.value,

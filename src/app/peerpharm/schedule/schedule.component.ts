@@ -11,7 +11,7 @@ import * as moment from 'moment';
 export class ScheduleComponent implements OnInit {
   scheduleData:any[];
   EditRowId:any="";
-
+  buttonColor:string='silver';
   @ViewChild('positionN') positionN:ElementRef; 
   @ViewChild('orderN') orderN:ElementRef; 
   @ViewChild('item') item:ElementRef; 
@@ -81,9 +81,12 @@ export class ScheduleComponent implements OnInit {
     });
   }
   
-  setType(type){
+  setType(type, elem){
     console.log("hi " +type);
+    console.log("hi " +elem);
+   // elem.style.backgroundColor = "red";
     this.typeShown=type;
+
   }
 
 

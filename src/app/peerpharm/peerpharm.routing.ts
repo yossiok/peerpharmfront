@@ -47,9 +47,16 @@ export const PeerPharmRputs: Routes =[
     component: ItemslistComponent
   },
   {
+    path: 'items/itemDetails',
+    data: {
+      title: 'Item Tree' 
+    },
+    component: ItemdetaisComponent
+  },
+  {
     path: 'items/itemDetails/:itemNumber',
     data: {
-      title: 'Items Tree' 
+      title: 'Item Tree' 
     },
     component: ItemdetaisComponent
   },

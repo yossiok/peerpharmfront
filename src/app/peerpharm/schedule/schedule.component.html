@@ -23,9 +23,9 @@
        </ngb-tab>
   </ngb-tabset>
 <br><br>
-    <div (click)='setType("basic")'>General</div>
-    <div (click)='setType("tube")'>Tubes</div>
-    <div (click)='setType("mkp")'>Make Up</div>
+    <div (click)='setType("basic", this)' [ngStyle]="{'background-color': buttonColor}">General</div>
+    <div (click)='setType("tube")' [ngStyle]="{'background-color': buttonColor}">Tubes</div>
+    <div (click)='setType("mkp")' [ngStyle]="{'background-color': buttonColor}">Make Up</div>
  
 <table class='table'>
   <thead class='bg-success text-white'>
