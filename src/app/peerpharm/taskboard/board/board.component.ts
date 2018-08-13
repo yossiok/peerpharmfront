@@ -68,8 +68,9 @@ public tiles = [
 
 
   shome(ev):void{
-  debugger;
+    debugger;
   }
+
   simpleDrop($event: any, tileText: string) {
     if ($event.dragData.list !== tileText) {
       this.UpdateTask($event.dragData._id, tileText, $event.dragData.boardId);

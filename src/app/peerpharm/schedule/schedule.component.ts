@@ -127,4 +127,8 @@ updateSchedule(){
   this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
   */
 }
+
+setDone(){
+}
+
 }

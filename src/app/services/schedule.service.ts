@@ -36,4 +36,14 @@ export class ScheduleService {
     let url = this.baseUrl + "schedule/update";
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()));
   }
+
+  updateScheduleLine(scheduleId, newLine):Observable<any>{
+    let url = this.baseUrl + "schedule/update";
+    var schedule={
+      schedulUpdateKey:scheduleId,
+      productionLine:''+newLine,
+    }
+    debugger;
+    return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  }
 }

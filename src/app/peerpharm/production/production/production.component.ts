@@ -37,4 +37,22 @@ export class ProductionComponent implements OnInit {
     
     });
   }
+
+  updateSchedule(scheduleId, newLine){
+    console.log("a");
+    this.scheduleService.updateScheduleLine(scheduleId, newLine).subscribe(res=>{
+      console.log(res);
+      this.getAllSchedule();
+    });
+  }
+
+
+  simpleDrop($event: any, lineNumber: string) {
+    console.log($event.dragData);
+    console.log($event.dragData.productionLine);
+    console.log(lineNumber);
+    if ($event.dragData.productionLine !== lineNumber) {
+      this.updateSchedule($event.dragData._id, lineNumber);
+    }
+  }
 }

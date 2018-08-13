@@ -96,7 +96,7 @@
         <td *ngIf="line._id===EditRowId"><input #shift type='text' [value]="line.shift"  style='width:50px'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.mkp}}</td>
         <td *ngIf="line._id===EditRowId"><input #mkp type='text' [value]="line.mkp"  style='width:50px'></td>
-        <td *ngIf="line._id!==EditRowId"><img src='assets/images/deleteBtn.png' class='btnImg'> <img src='assets/images/aprroved.png' class='btnImg'></td>
+        <td *ngIf="line._id!==EditRowId"><img src='assets/images/deleteBtn.png' class='btnImg'> <img src='assets/images/aprroved.png' (click)='setDone()' class='btnImg'></td>
         <td *ngIf="line._id===EditRowId"><img src='assets/images/update2.png' (click)="updateSchedule()" class='btnImg'></td>
     </ng-container>
     </tr>
