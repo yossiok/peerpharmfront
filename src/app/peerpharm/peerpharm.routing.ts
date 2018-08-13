@@ -10,6 +10,7 @@ import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
 import {AddFormuleComponent} from './formules/add-formule/add-formule.component'
 import {LinesComponent} from './production/lines/lines.component'
+import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
 export const PeerPharmRputs: Routes =[
   {
@@ -95,6 +96,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Production Lines'
     },
     component:LinesComponent
+  },
+  {
+    path :'production/productionHall',
+    data :{
+      title : 'Production Hall'
+    },
+    component:ProductionComponent
   }
   
 ];

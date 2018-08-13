@@ -7,6 +7,7 @@ import {ProductionService} from '../../../services/production.service'
 })
 export class LinesComponent implements OnInit {
 
+  pLines=[];
   lineObj= {
     number:'',
     discription:'',
@@ -22,7 +23,7 @@ export class LinesComponent implements OnInit {
   }
 
   getAllLines(){
-    this.productionSer.getAllLines().subscribe(res=>console.log(res));
+    this.productionSer.getAllLines().subscribe(res=>this.pLines=res);
   }
 
   addLine(){

@@ -39,7 +39,9 @@ export class ScheduleComponent implements OnInit {
     marks:'',
     shift:'',
     mkp:'',
-    status:'open'
+    status:'open', 
+    productionLine:'', 
+    pLinePositionN:99,
   }
   typeShown:String="basic";
   constructor(private scheduleService:ScheduleService ) { }

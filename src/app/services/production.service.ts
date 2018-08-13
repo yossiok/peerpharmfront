@@ -17,7 +17,6 @@ export class ProductionService {
 
   addNewProductionLine(line):Observable<any>{
     let url = this.baseUrl + "productionLine/add";
-    debugger;
     return this.http.post(url, JSON.stringify(line), this.options).pipe(map(res => res.json()))
   }
  
@@ -28,7 +27,6 @@ export class ProductionService {
 
   getAllLines(){
     let url = this.baseUrl + "productionLine";
-    debugger
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

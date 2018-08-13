@@ -9,4 +9,10 @@
   Location <input [(ngModel)]="lineObj.location" >
   Image <input  type='file'>
   <button (click)='addLine()'>Add/Change</button>
+<br><br>
 
+  <ul>
+    <li *ngFor="let line of pLines">
+        {{line.number}}, {{line.discription}}, {{line.type}} ,  {{line.location}}
+    </li>
+  </ul>

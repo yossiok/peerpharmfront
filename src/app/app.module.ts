@@ -36,7 +36,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'; 
 import { ContentComponent } from './peerpharm/taskboard/core/content/content.component';
-import { ProductionComponent } from './peerpharm/production/production/production.component';
+import { ScheduleCardComponent } from './peerpharm/production/production/schedule-card/schedule-card.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -55,7 +55,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbComponent,  
     SidebarComponent , 
     LoginComponent, 
-    SignupComponent, ProductionComponent  
+    SignupComponent, ScheduleCardComponent,  
    
   ],
   imports: [

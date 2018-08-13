@@ -327,8 +327,8 @@ export const ROUTES: RouteInfo[] = [
           submenu: []
         },
          {
-          path: '/peerpharm/schedule/fillschedule',
-          title: 'Assignment',
+          path: '/peerpharm/production/productionHall',
+          title: 'Production Hall',
           icon: 'fas fa-tree',
           class: '',
           extralink: false,
