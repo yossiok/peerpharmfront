@@ -55,4 +55,10 @@ export class ProductionComponent implements OnInit {
       this.updateSchedule($event.dragData._id, lineNumber);
     }
   }
+
+  setPriorty(scheduleId, newPosition){
+    console.log(scheduleId);
+    console.log(newPosition);
+    this.scheduleService.updateScheduleLinePosition(scheduleId, newPosition).subscribe(res=>{console.log(res)})
+  }
 }

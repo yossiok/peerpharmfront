@@ -43,7 +43,15 @@ export class ScheduleService {
       schedulUpdateKey:scheduleId,
       productionLine:''+newLine,
     }
-    debugger;
+    return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  }
+
+  updateScheduleLinePosition(scheduleId, newPosition){
+    let url = this.baseUrl + "schedule/update";
+    var schedule={
+      schedulUpdateKey:scheduleId,
+      productionLinePosition:''+newPosition,
+    }
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
 }

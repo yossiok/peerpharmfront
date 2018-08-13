@@ -21,8 +21,6 @@ import {LinesComponent} from './production/lines/lines.component'
 import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
 
-
-
 import {MatSelectModule} from '@angular/material/select';
 import {
   MatDialogModule,
@@ -51,6 +49,9 @@ import { DatepickerModule } from 'angular2-material-datepicker';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { AuthService } from '../services/auth.service';
 @NgModule({
+  exports: [
+    MatInputModule
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(PeerPharmRputs),
