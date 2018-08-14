@@ -33,4 +33,9 @@ export class ItemsService {
     let url = this.baseUrl + "item?itemNumber="+itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  addorUpdateItem(itemObj){
+    let url = this.baseUrl + "item/add";
+    return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json))
+  }
 }

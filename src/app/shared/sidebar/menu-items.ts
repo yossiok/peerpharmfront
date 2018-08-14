@@ -128,7 +128,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
        {
-        path: '/peerpharm/schedule/fillschedule',
+        path: '/peerpharm/items/itemDetails',
         title: 'Item Tree',
         icon: 'fas fa-tree',
         class: '',
@@ -239,7 +239,7 @@ export const ROUTES: RouteInfo[] = [
   
   {
     path: '',
-    title: 'plate',
+    title: 'Plates',
     icon: ' fas fa-inbox',
     class: 'has-arrow',
     extralink: false,
@@ -308,7 +308,35 @@ export const ROUTES: RouteInfo[] = [
       
       ]
     },
+    ,
 
+  
+    {
+      path: '',
+      title: 'Production',
+      icon: ' fas fa-diagnoses',
+      class: 'has-arrow',
+      extralink: false,
+      submenu: [
+        {
+          path: '/peerpharm/production/lines',
+          title: 'Lines',
+          icon: 'fas fa-i-cursor',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+         {
+          path: '/peerpharm/production/productionHall',
+          title: 'Production Hall',
+          icon: 'fas fa-tree',
+          class: '',
+          extralink: false,
+          submenu: []
+        }
+      
+      ]
+    },
 
   {
     path: '',

@@ -17,9 +17,9 @@ import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
 import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
+import {LinesComponent} from './production/lines/lines.component'
+import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
-
-
 
 import {MatSelectModule} from '@angular/material/select';
 import {
@@ -49,6 +49,9 @@ import { DatepickerModule } from 'angular2-material-datepicker';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { AuthService } from '../services/auth.service';
 @NgModule({
+  exports: [
+    MatInputModule
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(PeerPharmRputs),
@@ -80,6 +83,8 @@ import { AuthService } from '../services/auth.service';
     OrdersComponent,
     OrderdetailsComponent,
     NeworderComponent,
+    LinesComponent,
+    ProductionComponent,
     AddFormuleItemComponent,
     ScheduleComponent,
     ItemslistComponent,

@@ -1,0 +1,22 @@
+.machineBoard{
+    background: rgb(250, 255, 238);
+    display: inline-table;
+    margin: 12px;
+    padding: 10px;
+    width:20%;
+    min-height: 400px;
+}
+
+.schedule-card{
+    background: aqua;
+    box-shadow: 3px 3px gray;
+    margin-bottom: 15px;
+    width:270px;
+}
+
+.lineheader{
+    background: cornflowerblue;
+    margin: 12px;
+    padding: 10px;
+    color: white;
+}

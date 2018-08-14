@@ -9,6 +9,8 @@ import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
 import {AddFormuleComponent} from './formules/add-formule/add-formule.component'
+import {LinesComponent} from './production/lines/lines.component'
+import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
 export const PeerPharmRputs: Routes =[
   {
@@ -47,9 +49,16 @@ export const PeerPharmRputs: Routes =[
     component: ItemslistComponent
   },
   {
+    path: 'items/itemDetails',
+    data: {
+      title: 'Item Tree' 
+    },
+    component: ItemdetaisComponent
+  },
+  {
     path: 'items/itemDetails/:itemNumber',
     data: {
-      title: 'Items Tree' 
+      title: 'Item Tree' 
     },
     component: ItemdetaisComponent
   },
@@ -80,6 +89,20 @@ export const PeerPharmRputs: Routes =[
       title: 'task-board' 
     },
     component: AddFormuleComponent
+  },
+  {
+    path :'production/lines',
+    data :{
+      title : 'Production Lines'
+    },
+    component:LinesComponent
+  },
+  {
+    path :'production/productionHall',
+    data :{
+      title : 'Production Hall'
+    },
+    component:ProductionComponent
   }
   
 ];

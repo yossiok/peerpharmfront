@@ -1,0 +1,34 @@
+<p>
+  production works!
+</p>
+
+<div>
+  <div class='machineBoard' dnd-droppable  *ngFor="let line of pLines"   (onDropSuccess)="simpleDrop($event, line.number)">
+
+     <div class='lineheader'>  {{line.number}}  - {{line.discription}} Line</div>
+      <br><br>
+      <div  *ngFor="let schedule of scheduleData" class="schedule-card"  [dragData]="schedule"  dnd-draggable [dragEnabled]="true">     
+        <ng-container  *ngIf='schedule.productionLine == line.number'>
+            {{schedule.item}}, {{schedule.batch}}<br>
+            {{schedule.productName}}
+          <br>
+          <mat-form-field class="example" style='margin-left: 250px'>
+              <input matInput placeholder="__" #pr (keyup)='setPriorty(schedule._id, pr.value)' [value]="schedule.pLinePositionN">
+            </mat-form-field>
+          </ng-container>
+      </div>
+
+  </div>
+  <div class='machineBoard' dnd-droppable  (onDropSuccess)="simpleDrop($event, '999')" >
+      <div class='lineheader'> Not assigned</div> <br><Br>
+      <div  *ngFor="let schedule of scheduleData" class="schedule-card" [dragData]="schedule"  dnd-draggable [dragEnabled]="true">
+      <ng-container  *ngIf='schedule.productionLine =="" || schedule.productionLine =="999"'>
+          {{schedule.item}}, {{schedule.batch}}<br>  
+          {{schedule.productName}}
+        </ng-container>
+        
+      </div><br>
+
+  </div>
+
+</div>
