@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import {
   NgbModal,
@@ -14,12 +15,14 @@ declare var $: any;
 })
 export class NavigationComponent implements AfterViewInit {
   @Output() toggleSidebar = new EventEmitter<void>();
+  username: string;
+  email: string;
 
   public config: PerfectScrollbarConfigInterface = {};
 
   public showSearch = false;
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal, private authService: AuthService) { }
 
   // This is for Notifications
   notifications: Object[] = [
@@ -85,5 +88,13 @@ export class NavigationComponent implements AfterViewInit {
     }
   ];
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+
+    this.authService.getLoggedInUser().subscribe((user) => {
+      debugger;
+      this.username = user.username;
+      this.email = user.email;
+    });
+
+  }
 }

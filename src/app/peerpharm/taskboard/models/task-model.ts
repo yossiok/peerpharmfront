@@ -5,6 +5,7 @@ export class TaskModel {
         public list: string,
         public dueDate: Date,
         public priority: number,
+        public isArchived:boolean,
         public departments: [string]
     ){}
 }

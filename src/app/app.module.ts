@@ -36,7 +36,12 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'; 
 import { ContentComponent } from './peerpharm/taskboard/core/content/content.component';
+<<<<<<< HEAD
+import { MatSnackBar } from '@angular/material';
+import { OVERLAY_PROVIDERS } from '../../node_modules/@angular/cdk/overlay';
+=======
 import { ScheduleCardComponent } from './peerpharm/production/production/schedule-card/schedule-card.component';
+>>>>>>> 8b19ab9c1cfd7502f7c0482842245d7979a12531
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -70,7 +75,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule
   ],
   providers: [
-    AuthService,HttpClientModule,
+    AuthService,HttpClientModule,MatSnackBar,OVERLAY_PROVIDERS,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

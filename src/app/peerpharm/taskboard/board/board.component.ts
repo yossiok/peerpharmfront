@@ -6,6 +6,7 @@ import { BoardModel } from '../models/board-model';
 import { TaskModel } from '../models/task-model';
 import { MatDialog, MatDialogRef, MatDatepicker } from '@angular/material';
 import { SubTaskModel } from '../models/subtask-model';
+import { NgbModal } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-board',
@@ -53,11 +54,13 @@ public tiles = [
 
   @Input() boardTitle: string;
   newTaskId:true;
-  getNewTaskId:string;
+  getNewTaskId:string; 
+  modalTitle:string="";
 
   constructor(
     private tasksService: TasksService,
     public dialog: MatDialog,
+    private modalService: NgbModal,
 
   ) { }
 
@@ -81,7 +84,7 @@ public tiles = [
     this.tasksService.getTasks(_boardid)
       .subscribe(
       tasks => {
-        this.tasks = tasks;
+        this.tasks = tasks;  
         this.tiles.forEach(tile => {
           tile.rows = tasks.length * 0.4;
         });
@@ -158,11 +161,21 @@ public tiles = [
   }
 
 
-  showTaskDetails(id){
+  showTaskDetails(id, content, index){
     console.log(id);
     this.tasksService.getSubTasks(id).subscribe(subTasks=>{
       this.subTasksArr = subTasks;
       console.log(subTasks);
+      this.modalTitle=this.tasks[index].name;
+      
+    this.modalService.open(content).result.then(
+     /* result => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      reason => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }*/
+    );
     })
   }
   clearForm() {
@@ -185,4 +198,5 @@ public tiles = [
       return +new Date(a.dueDate) - +new Date(b.dueDate);
     });
   }
+
 }

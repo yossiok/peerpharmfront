@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { trigger, state, animate, keyframes, style, transition } from '@angular/animations';
 import { TaskModel } from '../../../models/task-model';
 
@@ -19,7 +19,14 @@ import { TaskModel } from '../../../models/task-model';
   ])
 ]
 })
-export class TaskCardComponent {
+export class TaskCardComponent   implements OnInit{
+ 
   @Input() task: TaskModel;
   @Input() tileName: string;
+ 
+
+
+  ngOnInit(): void {
+  
+  }
 }
