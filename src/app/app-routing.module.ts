@@ -23,6 +23,7 @@ export const Approutes: Routes = [
   {
     path: '',
     component: FullComponent,
+    canActivate:[UserloggedinGuard],
 
     children: [
       { path: '', redirectTo: '/starter', pathMatch: 'full' },
