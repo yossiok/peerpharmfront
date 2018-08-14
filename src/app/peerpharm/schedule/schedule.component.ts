@@ -12,7 +12,7 @@ export class ScheduleComponent implements OnInit {
   scheduleData:any[];
   EditRowId:any="";
   buttonColor:string='silver';
-  @ViewChild('positionN') positionN:ElementRef; 
+  @ViewChild('position') positionN:ElementRef; 
   @ViewChild('orderN') orderN:ElementRef; 
   @ViewChild('item') item:ElementRef; 
   @ViewChild('costumer') costumer:ElementRef; 
@@ -20,12 +20,14 @@ export class ScheduleComponent implements OnInit {
   @ViewChild('batch') batch:ElementRef; 
   @ViewChild('packageP') packageP:ElementRef; 
   @ViewChild('qty') qty:ElementRef; 
-  @ViewChild('date') date:ElementRef; 
+  @ViewChild('aaaa') date:ElementRef; 
   @ViewChild('marks') marks:ElementRef;
   @ViewChild('shift') shift:ElementRef;
   @ViewChild('mkp') mkp:ElementRef; 
+  @ViewChild('id') id:ElementRef; 
 
   scheduleLine = {
+    scheduleId:'',
     positionN:'',
     orderN:'',
     item:'',
@@ -75,7 +77,9 @@ export class ScheduleComponent implements OnInit {
      
       res.map(sced=>
       {
-        sced.date= moment(sced.date).format("DD/MM/YY"); 
+      //  sced.date= moment(sced.date).format("DD/MM/YY"); 
+        sced.date2= moment(sced.date).format("DD/MM/YY"); 
+        sced.date3= moment(sced.date).format("YYYY-MM-DD"); 
       });
     
       this.scheduleData=res;
@@ -98,18 +102,13 @@ export class ScheduleComponent implements OnInit {
 
 
 updateSchedule(){
-  let dateSend= this.date.nativeElement.value
   console.log(this.date.nativeElement.value);
-  let b=0;
-  var idx = dateSend.indexOf("/");
-  while (idx != -1) {
-    
-    idx = dateSend.indexOf("/", idx + 1);
-    console.log(idx);
-  }
-  /*
+  console.log(this.orderN.nativeElement.value);
+  console.log(this.item.nativeElement.value);
+  
   let scheduleToUpdate={
-    'positionN':this.positionN.nativeElement.value,
+    scheduleId:this.id.nativeElement.value,
+    positionN:this.positionN.nativeElement.value,
     orderN:this.orderN.nativeElement.value,
     item:this.item.nativeElement.value,
     costumer:this.costumer.nativeElement.value,
@@ -123,9 +122,8 @@ updateSchedule(){
     shift:this.shift.nativeElement.value,
     mkp:this.mkp.nativeElement.value
   }
-  console.log(a);
   this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
-  */
+
 }
 
 setDone(){
