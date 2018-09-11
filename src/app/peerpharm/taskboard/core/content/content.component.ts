@@ -3,6 +3,7 @@ import { TasksService } from '../../services/tasks.service';
 
 import { BoardModel } from '../../models/board-model';
 import { MatTabGroup } from '../../../../../../node_modules/@angular/material';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-content',
@@ -15,18 +16,35 @@ export class ContentComponent implements OnInit {
 
   boards: BoardModel[];
 
-  constructor( private taskService: TasksService ) {}
+  constructor( private taskService: TasksService,private  authService:AuthService ) {}
 
   ngOnInit(){
-    this.getBoards();
+    if(this.authService.loggedInUser)
+    {
+      this.getBoardsByPermissions();
+    }
+    else{
+      this.authService.userEventEmitter.subscribe((data)=>
+      { 
+        this.getBoardsByPermissions();
+      });
+    }
+   
+ 
+  
   }
 
-  getBoards() {
-    this.taskService.getBoards()
+  
+
+  getBoardsByPermissions() {
+    debugger;
+    this.taskService.getBoardsByDepartments(this.authService.loggedInUser.userDepartments)
     .subscribe(
       boards => {
+        debugger;
         this.boards = boards; 
- setTimeout(()=>      this.tabGroup.selectedIndex = 0, 600);
+
+ setTimeout(()=>      this.tabGroup.selectedIndex = 0, 300);
   
      },
       err => console.log(err)

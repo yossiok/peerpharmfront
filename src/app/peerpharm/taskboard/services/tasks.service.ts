@@ -22,8 +22,10 @@ export class TasksService {
   // Resolve HTTP using the constructor
   constructor(private http: Http) { }
 
-  getBoards(): Observable<BoardModel[]> {
-    return this.http.get(this.boardUrl)
+  getBoardsByDepartments(departments:Array<string>): Observable<BoardModel[]> {
+    var str = departments.join(); 
+    let boardUrl=this.boardUrl+str;
+    return this.http.get(boardUrl)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }

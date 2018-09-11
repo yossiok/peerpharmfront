@@ -89,12 +89,22 @@ export class NavigationComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit() {
-
-    this.authService.getLoggedInUser().subscribe((user) => {
-      debugger;
-      this.username = user.username;
-      this.email = user.email;
-    });
-
+    if(!this.authService.loggedInUser)
+    {
+    this.authService.userEventEmitter.subscribe(user=>  
+      {
+        if(user.userName)
+        {
+        this.username = user.userName;
+        this.email = user.userEmail;
+        this.authService.loggedInUser=user;
+        this.authService.isLoggedIn=true;
+        }
+      }); 
+    }
+    else{
+      this.username = this.authService.loggedInUser.userName;
+      this.email = this.authService.loggedInUser.userEmail;
+    }
   }
 }

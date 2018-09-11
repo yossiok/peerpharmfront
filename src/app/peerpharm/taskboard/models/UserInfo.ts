@@ -3,6 +3,7 @@ export class UserInfo
     userName:string;
     firstName:string;
     lastName:string;
-    userDepartment:number;
+    userDepartments:string[];
     userEmail:string;
+    modules:string[];
 }
