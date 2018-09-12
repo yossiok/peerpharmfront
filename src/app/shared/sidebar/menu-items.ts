@@ -190,8 +190,8 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: '/peerpharm/schedule/fillschedule',
-        title: 'Item List',
+        path: '/peerpharm/batches/batchesList',
+        title: 'Batches List',
         icon: 'fas fa-list-ol',
         class: '',
         extralink: false,

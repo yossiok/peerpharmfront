@@ -12,6 +12,7 @@ import {AddFormuleComponent} from './formules/add-formule/add-formule.component'
 import {LinesComponent} from './production/lines/lines.component'
 import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
+import { BatchesComponent } from './batches/batches.component';
 export const PeerPharmRputs: Routes =[
   {
     path: 'allorders/orders',
@@ -103,6 +104,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Production Hall'
     },
     component:ProductionComponent
+  },
+  {
+    path :'batches/batchesList',
+    data :{
+      title : 'Batches List'
+    },
+    component:BatchesComponent
   }
   
 ];

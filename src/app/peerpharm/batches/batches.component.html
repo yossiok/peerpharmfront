@@ -1,0 +1,25 @@
+<p>
+  batches works!
+</p>
+
+
+<table class='table'>
+    <thead class='bg-info text-white'>
+        <tr>
+          <td></td>
+          <td>Batch Number</td>
+          <td>Production Date</td>
+          <td>Item Name</td>
+          <td>P.h</td>
+          <td>Produced/Left</td>
+          <td>Durms</td>
+          <td>Order</td>
+          <td>Item</td>
+        </tr>
+      </thead>
+  <tr *ngFor="let batch of batches; let i = index">
+    <td>{{i}}</td>
+    <td>{{batch.batchNumber}}</td><td>{{batch.produced}}</td><td>{{batch.itemName}}</td><td>{{batch.ph}}</td><td>{{batch.weightKg}} / {{batch.qtyLeft}}</td><td>{{batch.drumsN}}</td>
+    <td>{{batch.order}}</td><td>{{batch.item}}</td>
+  </tr>
+</table>

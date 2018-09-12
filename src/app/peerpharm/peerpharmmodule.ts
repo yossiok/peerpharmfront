@@ -20,6 +20,7 @@ import {NeworderComponent} from './allorders/neworder/neworder.component'
 import {LinesComponent} from './production/lines/lines.component'
 import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
+import {BatchesComponent} from './batches/batches.component'
 
 import {MatSelectModule} from '@angular/material/select';
 import {
@@ -101,7 +102,8 @@ import { AuthService } from '../services/auth.service';
     ContentComponent, BoardComponent,
     TaskCardComponent,
     SubTaskCardComponent,
-    CreateBoardComponent
+    CreateBoardComponent,
+    BatchesComponent
 
     
   ],
