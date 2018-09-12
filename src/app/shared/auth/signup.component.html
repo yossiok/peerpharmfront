@@ -47,6 +47,9 @@
                                 Already have an account? <a [routerLink]="'/login'" class="text-info m-l-5 "><b>Sign In</b></a>
                             </div>
                         </div>
+
+                        <label for="imageUpload">Image Upload</label>
+  <input type="file" (change)="fileEvent($event)" name="imageUpload" id="imageUpload"/>
                     </form>
                 </div>
             </div>

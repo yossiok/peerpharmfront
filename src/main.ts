@@ -10,3 +10,5 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));
+  // Add global to window, assigning the value of window itself.
+(window as any).global = window;

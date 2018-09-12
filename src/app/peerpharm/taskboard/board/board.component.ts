@@ -66,7 +66,7 @@ public tiles = [
 
   ngOnInit() {
     this.getTasks(this.boardTitle);
-    this.getDepartments();
+  //  this.getDepartments();
   }
 
 
@@ -95,9 +95,9 @@ public tiles = [
         console.log(err);
       });
   }
-
+/*
   getDepartments(){
-    this.tasksService.getBoards()
+    this.tasksService.getBoardsByDepartments()
     .subscribe(
       deps=>{
         this.departemnts=deps;
@@ -110,6 +110,7 @@ public tiles = [
       }
     )
   }
+  */
 
   UpdateTask(_id, tList, boardTitle) {
     debugger;

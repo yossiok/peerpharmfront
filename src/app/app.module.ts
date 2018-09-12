@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { SignupComponent } from './shared/auth/signup.component';
 import { LoginComponent } from './shared/auth/login.component';
-import * as $ from 'jquery';
+ 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -14,11 +14,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
-//
-import {NeworderComponent} from './peerpharm/allorders/neworder/neworder.component'
-import {OrderdetailsComponent} from './peerpharm/allorders/orderdetails/orderdetails.component'
-import {OrdersComponent} from './peerpharm/allorders/orders/orders.component'
-//
+ 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FullComponent } from './layouts/full/full.component';
@@ -35,9 +31,7 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'; 
-import { ContentComponent } from './peerpharm/taskboard/core/content/content.component';
-
-
+ 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,

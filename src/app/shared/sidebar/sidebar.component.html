@@ -8,16 +8,14 @@
                 </div>
                 <div class="user-content hide-menu m-l-10" ngbDropdown placement="bottom-right">
                     <a ngbDropdownToggle href="javascript:void(0)" id="Userdd">
-                        <h5 class="m-b-0 user-name font-medium">Steave Jobs
+                        <h5 class="m-b-0 user-name font-medium">{{user?.firstName +" "+ user?.lastName}}
                             <i class="fa fa-angle-down"></i>
                         </h5>
-                        <span class="op-5 user-email">steve@gmail.com</span>
+                        <span class="op-5 user-email">{{user?.userEmail}}</span>
                     </a>
                     <div class="dropdown-menu-right" aria-labelledby="Userdd" ngbDropdownMenu>
                         <a class="dropdown-item" href="javascript:void(0)">
-                            <i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
-                        <a class="dropdown-item" href="javascript:void(0)">
-                            <i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
+                            <i class="ti-user m-r-5 m-l-5"></i> My Profile</a> 
                         <a class="dropdown-item" href="javascript:void(0)">
                             <i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
                         <div class="dropdown-divider"></div>

@@ -16,7 +16,7 @@ export class NavComponent implements OnInit {
 
   ngOnInit() {
     this.authService.getLoggedInUser().subscribe(data => {
-  
+  debugger;
       if (data.msg != null) {
        console.log(data.msg);
        this.username="Guest";

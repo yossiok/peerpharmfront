@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TasksService } from '../../services/tasks.service';
 import { BoardModel } from '../../models/board-model';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-create-board',
@@ -12,7 +13,7 @@ export class CreateBoardComponent implements OnInit {
   boards: BoardModel[];
   board= new BoardModel("","");
    newBoard:BoardModel;
-  constructor(private tasksService:TasksService) { }
+  constructor(private tasksService:TasksService, private authService:AuthService) { }
 
   ngOnInit() {
   }
@@ -31,7 +32,7 @@ export class CreateBoardComponent implements OnInit {
 
 
     getBoards() {
-      this.tasksService.getBoards()
+      this.tasksService.getBoardsByDepartments(this.authService.loggedInUser.userDepartments)
       .subscribe(
         boards => this.boards = boards,
         err => console.log(err)
