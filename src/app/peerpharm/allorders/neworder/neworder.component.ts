@@ -14,13 +14,14 @@ export class NeworderComponent implements OnInit {
   orderId:string;
   itemName:string;
   volume:Number;
+  lastOrderNumber:Number;
   items:any[]=[];
+  submited:boolean=false;
   titleAlert:string = 'This field is required';
 
   constructor(private fb: FormBuilder, private orderSer:OrdersService) { 
 
     this.orderForm = fb.group({
-      orderN: [null, Validators.required],
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
       delivery: [null, Validators.required],
       costumer:[null, Validators.required],
@@ -42,7 +43,6 @@ export class NeworderComponent implements OnInit {
 
   addNewOrder(post){
     let newOrderObj = {
-      orderNumber:post.orderN,
       costumer:post.costumer,
       orderDate:post.orderdate,
       deliveryDate:post.delivery,
@@ -52,6 +52,7 @@ export class NeworderComponent implements OnInit {
     this.orderSer.addNewOrder(newOrderObj).subscribe(res=>{
         this.orderId=res._id;
         this.orderNumber = res.orderNumber;
+        this.submited=true;
         console.log(res)
     });
     console.log(newOrderObj);
@@ -89,7 +90,13 @@ export class NeworderComponent implements OnInit {
       })
       
   }
+
+  getLastOrderNumber(){
+      this.orderSer.getLastOrderNumber().subscribe();
+  }
   ngOnInit() {
+    //this.getLastOrderNumber();
+
    /* this.rForm.get('validate').valueChanges.subscribe(
 
       (validate) => {

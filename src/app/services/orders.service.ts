@@ -29,6 +29,21 @@ export class OrdersService {
       //.catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
+  //edit  order
+  editOrder(order): Observable<any> {
+    let url = this.baseUrl + "order/update";
+    return this.http.post(url,JSON.stringify(order) , this.options).pipe(map(res => res.json()))
+  }
+
+  deleteOrder(order){  
+    let url = this.baseUrl + "order/remove";
+    return this.http.post(url,JSON.stringify(order) , this.options).pipe(map(res => res.json()))
+  }
+
+  getLastOrderNumber(){
+    let url = this.baseUrl + "order?lastOrderNumber=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getOrderById(id):Observable<any>{
     let url = this.baseUrl + 'orderitem?orderId=' +id;
     return this.http.get(url).pipe(

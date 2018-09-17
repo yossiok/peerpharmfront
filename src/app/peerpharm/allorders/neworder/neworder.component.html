@@ -9,14 +9,9 @@
             </div>
             <hr>
             <form class="form-horizontal" [formGroup]="orderForm"  (ngSubmit)='addNewOrder(orderForm.value)'>
-                <div class="card-body" *ngIf="order!=submited">
+                <div class="card-body" *ngIf="!submited">
                     <h4 class="card-title">Order Info</h4>
-                    <div class="form-group row">
-                        <label for="fname" class="col-sm-3 text-right control-label col-form-label">Order Number</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="Order Number"  formControlName="orderN">
-                        </div>
-                    </div>
+
                     <div class="form-group row">
                         <label for="lname" class="col-sm-3 text-right control-label col-form-label">Costumer</label>
                         <div class="col-sm-9">

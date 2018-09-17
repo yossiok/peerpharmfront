@@ -1,0 +1,13 @@
+.cellDiv{
+	background-color:lightblue;
+	border:3px;
+    border-style: inset;
+    border-color:silver;
+    border-radius: 30px;
+    color:blue;
+    width:55px;
+    height: 55px;
+	display:inline-flex;
+	margin:3px;
+    padding:14px;
+}

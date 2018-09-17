@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute, ChildrenOutletContexts } from '@angular/router'
 import { ItemsService } from '../../../services/items.service'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -9,76 +9,83 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./itemdetais.component.css']
 })
 export class ItemdetaisComponent implements OnInit {
-  newItem:FormGroup;
+
+  @ViewChild('rows') rows: ElementRef;
+  @ViewChild('colums') colums: ElementRef;
+  @ViewChild('container')
+  private container: ElementRef;
+  mainDivArr: any = [];
+  dataDiv: any = [];
+  newItem: FormGroup;
   item: any = {};
-  itemShown= {
-    itemNumber:'',
+  itemShown = {
+    itemNumber: '',
     name: '',
     subName: '',
     discriptionK: '',
-    proRemarks: '' ,
-    impRemarks: '' ,
-    
+    proRemarks: '',
+    impRemarks: '',
+
     updateDate: '',
-    nameOfupdating:'31232',
-    versionNumber:'',
-    
+    nameOfupdating: '31232',
+    versionNumber: '',
+
     stickerNumber: '',
     stickerTypeK: '',
     boxNumber: '',
     boxTypeK: '',
     barcodeK: '',
     StickerLanguageK: '',
-    volumeKey:'',
+    volumeKey: '',
     netWeightK: '',
-    grossUnitWeightK:'',
-    
-    licsensNumber:'',
-    licsensDate:'',
-    country:'',
-    
+    grossUnitWeightK: '',
+
+    licsensNumber: '',
+    licsensDate: '',
+    country: '',
+
     netCtnWeightK: '',
-    grossCtnWeightK:'' ,
-    
-    cartonNumber: '' ,
+    grossCtnWeightK: '',
+
+    cartonNumber: '',
     PcsCarton: '',
-    pumpDirection:'' ,
-    paletteType: '' , 
-    st1layerCarton:  '', 
-    totalCartonPalette: '' ,
-    
-    cbm:''  ,
-    motherP: '' ,
-    itemType: '' ,
-    
+    pumpDirection: '',
+    paletteType: '',
+    st1layerCarton: '',
+    totalCartonPalette: '',
+
+    cbm: '',
+    motherP: '',
+    itemType: '',
+
     item1w: '',
-    item1s: '' ,
-    item2w: '' ,
-    item2s: '' ,
-    item3w: '' ,
-    item3s: '' ,
-    item4w: '' ,
-    item4s: '' ,
+    item1s: '',
+    item2w: '',
+    item2s: '',
+    item3w: '',
+    item3s: '',
+    item4w: '',
+    item4s: '',
     itemStickerW: '',
     itemStickerS: '',
-    itemBoxS : '' ,
-    itemBoxW : ''  ,
-    itemCtnW : '',
-    itemCtnS : '' , 
-    
-    bottleNumber:'',
-    capNumber:'',
-    pumpNumber:'',
-    sealNumber: '' ,
-    
+    itemBoxS: '',
+    itemBoxW: '',
+    itemCtnW: '',
+    itemCtnS: '',
+
+    bottleNumber: '',
+    capNumber: '',
+    pumpNumber: '',
+    sealNumber: '',
+
     bottleTube: '',
-    capTube: '' ,
-    pumpTube:'',
-    sealTube:'',
-    
-    extraText1: '' ,
-    extraText2: '' ,
-    
+    capTube: '',
+    pumpTube: '',
+    sealTube: '',
+
+    extraText1: '',
+    extraText2: '',
+
     bottleImage: '',
     capImage: '',
     pumpImage: '',
@@ -87,14 +94,14 @@ export class ItemdetaisComponent implements OnInit {
     imgMain1: '',
     imgMain2: '',
     imgMain3: '',
-    
+
     extraImage1: '',
     extraImage2: '',
-    sealImage: '' ,
-    
+    sealImage: '',
+
   }
-  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder) { 
-    
+  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2) {
+
     this.newItem = fb.group({
       itemNumber: [null, Validators.required],
       name: [null, Validators.required],
@@ -116,7 +123,7 @@ export class ItemdetaisComponent implements OnInit {
       volumeKey: [null, Validators.required],
       netWeightK: [null, Validators.required],
       grossUnitWeightK: [null, Validators.required],
-      
+
       licsensNumber: [null, Validators.required],
       licsensDate: [null, Validators.required],
       country: [null, Validators.required],
@@ -179,8 +186,97 @@ export class ItemdetaisComponent implements OnInit {
     });
   }
 
+  showGoddet() {
+    // this.container.nativeElement.removeChild();
+
+    const childElements = this.container.nativeElement.children;
+    for (let child of childElements) {
+      this.renderer.removeChild(this.container.nativeElement, child);
+    }
+
+    const r = this.rows.nativeElement.value;
+    const c = this.colums.nativeElement.value;
+
+    for (let i = 0; i < r; i++) {
+      const rowDiv = this.renderer.createElement('div');
+      this.renderer.setStyle(rowDiv, 'display', 'block');
+      this.renderer.appendChild(this.container.nativeElement, rowDiv);
+      for (let j = 1; j <= c; j++) {
+        let cell = j + c * i;
+        const columnDiv = this.renderer.createElement('div');
+        const text = this.renderer.createText('[' + cell + ']');
+        this.renderer.appendChild(columnDiv, text);
+        this, this.renderer.setAttribute(columnDiv, "class", "cellDiv");
+        /*this.renderer.setStyle(columnDiv, 'color', 'blue');*/
+        this.renderer.listen(columnDiv, 'click', () => {
+          let color;
+          let setColor = prompt("Enter Color", "");
+          if (setColor == null || setColor == "") {
+            color = "N/A";
+          } else {
+            color = setColor;
+          }
+          console.log(color);
+          console.log(cell);
+          columnDiv.innerHTML = color;
+        });
+        this.renderer.appendChild(this.container.nativeElement, columnDiv);
+      }
+    }
+  }
+
+  getGoddetData() {
+    let div = this.container.nativeElement;
+    this.mainDivArr = [];
+    let divArr = [];
+    for (let innerDiv of div.getElementsByTagName('div')) {
+      if (innerDiv.innerHTML) {
+        divArr.push(innerDiv.innerHTML);
+      }
+      else {
+        this.mainDivArr.push(divArr);
+        divArr = [];
+      }
+    }
+    this.mainDivArr.push(divArr);
+    this.mainDivArr.shift();
+    console.log(this.mainDivArr);
+    this.itemShown['goddet'] = this.mainDivArr;
+  }
+
+  showGoddetData() {
+    const r = this.dataDiv.length;
+    const c = this.dataDiv[0].length;
+    for (let i = 0; i < r; i++) {
+      const rowDiv = this.renderer.createElement('div');
+      this.renderer.setStyle(rowDiv, 'display', 'block');
+      this.renderer.appendChild(this.container.nativeElement, rowDiv);
+      for (let j = 0; j < c; j++) {
+        let cell = j + c * i;
+        const columnDiv = this.renderer.createElement('div');
+        const text = this.renderer.createText(this.dataDiv[i][j]);
+        this.renderer.appendChild(columnDiv, text);
+        this, this.renderer.setAttribute(columnDiv, "class", "cellDiv");
+        /*this.renderer.setStyle(columnDiv, 'color', 'blue');*/
+        this.renderer.listen(columnDiv, 'click', () => {
+          let color;
+          let setColor = prompt("Enter Color", "");
+          if (setColor == null || setColor == "") {
+            color = "N/A";
+          } else {
+            color = setColor;
+          }
+          console.log(color);
+          console.log(cell);
+          columnDiv.innerHTML = color;
+        });
+        this.renderer.appendChild(this.container.nativeElement, columnDiv);
+      }
+    }
+  }
   ngOnInit() {
     this.getItemData();
+    //  this.showGoddetData();
   }
 
   getItemData() {
@@ -189,13 +285,16 @@ export class ItemdetaisComponent implements OnInit {
       this.itemsService.getItemData(number).subscribe(res => {
         console.log(res);
         this.item = res[0];
-        this.itemShown= res[0];
+        this.itemShown = res[0];
+        this.dataDiv = res[0].goddet;
+        this.showGoddetData();
       });
     }
   }
 
-  writeItemData(){
+  writeItemData() {
     console.log(this.itemShown)
-    this.itemsService.addorUpdateItem(this.itemShown).subscribe(res=>console.log(res));
+    this.getGoddetData();
+    this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => console.log(res));
   }
 }

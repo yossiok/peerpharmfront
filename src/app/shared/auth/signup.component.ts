@@ -1,7 +1,7 @@
 declare const Buffer;
 
 import { Component } from '@angular/core';
-import * as AWS from 'aws-sdk';
+//import * as AWS from 'aws-sdk';
 
 @Component({
   selector: 'app-signup',
@@ -10,7 +10,7 @@ import * as AWS from 'aws-sdk';
 export class SignupComponent {
   image:string;
   constructor() {}
-
+/*
 
 
   fileEvent(fileInput: any) {
@@ -39,5 +39,5 @@ export class SignupComponent {
      }
    });
   }
-
+*/
 }

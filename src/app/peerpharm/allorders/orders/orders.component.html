@@ -1,9 +1,33 @@
+
+
 <p>
   orders works!
 </p>
 <br>
+<div class='mainDiv'>
+    <div class='subContainer'>
+      <div class='subHeader'>Ordered Last 7-Days</div>
+      <div class='subMain'> 17 </div>
+      <div class='subHeader'><br></div>
+    </div>
+
+    
+    <div class='subContainer'>
+        <div class='subHeader'>Orders Closed Last Month</div>
+        <div class='subMain'> 12 </div>
+        <div class='subHeader'><br></div>
+    </div>
+
+
+    <div class='subContainer'>
+          <div class='subHeader'>Panding Orders</div>
+          <div class='subMain'> 5  </div>
+          <div class='subHeader'><br></div>
+    </div>
+</div>
+<br><br>
 <table class='table'>
-  <thead class='bg-info text-white'>
+  <thead class='bg-info text-white'  (click)="edit(' ')">
     <tr>
       <td></td>
       <td>Order Number</td>
@@ -16,23 +40,42 @@
     </tr>
   </thead>
   <tbody class='table-hover'>
-    <tr *ngFor="let order of orders">
-      <td><input type="checkbox" [(ngModel)]="order.isSelected" > </td>
-      <td>
+    <tr *ngFor="let order of orders" >
+      <td (click)="edit('')">
+        <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
+      <td (click)="edit('')">
         <a routerLink='/peerpharm/allorders/orderitems/{{order._id}}'>
-        <!-- <a routerLink="/orderitems/{{order._id}}">-->
+          <!-- <a routerLink="/orderitems/{{order._id}}">-->
           <!--<a  [routerLink]=['orderitems/{{order._id}}']>-->
           {{order.orderNumber}}
+
         </a>
       </td>
-      <td>{{order.costumer}}</td>
-      <td>{{order.orderDate}}</td>
-      <td>{{order.deliveryDate}}</td>
-      <td>{{order.orderRemarks}}</td>
-      <td>
-        <img src='deleteBtn.png' style='width:40px'>
-        <img src='editBtn.png' style='width:40px'>
+      <td *ngIf="order._id===EditRowId">
+        <input #costumer type='text' [value]="order.costumer" style='width:170px'>
+        <input [value]='order._id' #id type='hidden'>
+        <input [value]='order.orderNumber' #orderNumber type='hidden'>
       </td>
+      <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.costumer}}</td>
+      <td *ngIf="order._id===EditRowId">
+        <input #orderDate type='text' [value]="order.orderDate" style='width:170px'>
+      </td>
+      <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderDate}}</td>
+      <td *ngIf="order._id===EditRowId">
+        <input #deliveryDate type='text' [value]="order.deliveryDate" style='width:170px'>
+      </td>
+      <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.deliveryDate}}</td>
+      <td *ngIf="order._id===EditRowId">
+        <input #orderRemarks type='text' [value]="order.orderRemarks" style='width:170px'>
+      </td>
+      <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
+      <td></td>
+      <td>
+        <img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
+        <img *ngIf="order._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, order._id)">
+        <img *ngIf="order._id===EditRowId" src='/assets/images/update2.png' style='width:30px; cursor: pointer' (click)="saveEdit()">
+      </td>
+      <td></td>
       <!--<td>{{order.type}}</td>-->
     </tr>
   </tbody>
