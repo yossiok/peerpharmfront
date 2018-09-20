@@ -100,7 +100,13 @@
       <textarea rows="3" cols="30" id="id_impRemarks"> </textarea>
       <br>
       <input #rows style='width:30px' (focusout)="showGoddet()">&nbsp;
-      <input #colums style='width:30px' (focusout)="showGoddet()">
+      <input #colums style='width:30px' (focusout)="showGoddet()">&nbsp;
+      <select class="selectpicker" [(ngModel)]=itemShown.goddetShape>
+        <option value=''></option>
+        <option value='round'>Round</option>
+        <option value='sqaure'>Square</option>
+        <option value='rectangle'>Rectangle</option>
+      </select>
       <img src = 'assets/images/goddet2.png' (click)="showGoddet()" style='width:40px; display:none'><!--Button if the focusout is not the option-->
       <div #container>
 

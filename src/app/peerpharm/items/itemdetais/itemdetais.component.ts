@@ -99,6 +99,8 @@ export class ItemdetaisComponent implements OnInit {
     extraImage2: '',
     sealImage: '',
 
+    goddetShape:'',
+
   }
   constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2) {
 
@@ -189,6 +191,7 @@ export class ItemdetaisComponent implements OnInit {
   showGoddet() {
     // this.container.nativeElement.removeChild();
 
+    
     const childElements = this.container.nativeElement.children;
     for (let child of childElements) {
       this.renderer.removeChild(this.container.nativeElement, child);
@@ -257,7 +260,15 @@ export class ItemdetaisComponent implements OnInit {
         const text = this.renderer.createText(this.dataDiv[i][j]);
         this.renderer.appendChild(columnDiv, text);
         this, this.renderer.setAttribute(columnDiv, "class", "cellDiv");
-        /*this.renderer.setStyle(columnDiv, 'color', 'blue');*/
+        if(this.itemShown.goddetShape=='sqaure' || this.itemShown.goddetShape=='rectangle'){
+          this.renderer.setStyle(columnDiv, 'border-radius','0px');
+          if(this.itemShown.goddetShape=='rectangle'){
+            this.renderer.setStyle(columnDiv, 'height','83px');
+            this.renderer.setStyle(columnDiv, 'width','47px');
+            this.renderer.setStyle(columnDiv, 'text-align','left');
+            this.renderer.setStyle(columnDiv, 'padding','0px');
+          } 
+        }
         this.renderer.listen(columnDiv, 'click', () => {
           let color;
           let setColor = prompt("Enter Color", "");

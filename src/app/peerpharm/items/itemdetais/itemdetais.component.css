@@ -9,5 +9,6 @@
     height: 55px;
 	display:inline-flex;
 	margin:3px;
-    padding:14px;
+    padding-top:14px;
+    padding-left: 4px;
 }

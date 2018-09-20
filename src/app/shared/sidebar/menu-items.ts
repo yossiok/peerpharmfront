@@ -84,7 +84,16 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
-      }]
+      },
+      {
+        path: '/peerpharm/schedule/printschedule',
+        title: 'Printing',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+    ]
   },
   {
     path: '',
@@ -156,29 +165,20 @@ export const ROUTES: RouteInfo[] = [
     ]
     },
     {
-      path: '',
+      path: '/peerpharm/costumers/costumers_list',
       title: 'Costumers',
       icon: ' fas fa-address-card',
       class: 'has-arrow',
       extralink: false,
       submenu: [
         {
-          path: '/peerpharm/schedule/fillschedule',
-          title: 'Item List',
+          path: '/peerpharm/costumers/costumers_list',
+          title: 'Costumers List',
           icon: 'fas fa-address-book',
           class: '',
           extralink: false,
           submenu: []
-        },
-         {
-          path: '/peerpharm/schedule/fillschedule',
-          title: 'Item Tree',
-          icon: 'fas fa-tree',
-          class: '',
-          extralink: false,
-          submenu: []
         }
-      
       ]
     },
     
