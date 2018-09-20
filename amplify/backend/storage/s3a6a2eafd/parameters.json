@@ -1,0 +1,9 @@
+{
+    "bucketName": "peerpharmfrontba2e05da2e5a46118faace19d0c314d3",
+    "authPolicyName": "s3_amplify_a6a2eafd",
+    "unauthPolicyName": "s3_amplify_a6a2eafd",
+    "authRoleName": "peerpharmfront-20180920005744-authRole",
+    "unauthRoleName": "peerpharmfront-20180920005744-unauthRole",
+    "authPermissions": "rw",
+    "unauthPermissions": "rw"
+}

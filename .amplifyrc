@@ -1,0 +1,14 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "peerpharmfront-20180920005744-authRole",
+            "UnauthRoleArn": "arn:aws:iam::164254358930:role/peerpharmfront-20180920005744-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::164254358930:role/peerpharmfront-20180920005744-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "peerpharmfront-20180920005744-deployment",
+            "UnauthRoleName": "peerpharmfront-20180920005744-unauthRole",
+            "StackName": "peerpharmfront-20180920005744",
+            "StackId": "arn:aws:cloudformation:us-east-1:164254358930:stack/peerpharmfront-20180920005744/0ab411f0-bc57-11e8-944e-500c2864aa35"
+        }
+    }
+}
