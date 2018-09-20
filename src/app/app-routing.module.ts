@@ -8,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { UserloggedinGuard } from './guards/userloggedin.guard';
 import { SignupComponent } from './shared/auth/signup.component';
+import { MyiframeComponent } from './myiframe/myiframe.component';
 
 
 export const Approutes: Routes = [
@@ -23,8 +24,7 @@ export const Approutes: Routes = [
   {
     path: '',
     component: FullComponent,
-    canActivate:[UserloggedinGuard],
-
+    canActivate:[UserloggedinGuard], 
     children: [
       { path: '', redirectTo: '/starter', pathMatch: 'full' },
       {
@@ -43,6 +43,11 @@ export const Approutes: Routes = [
         path: 'taskboard',
         loadChildren: './peerpharm/taskboard/app.module#TaskModule'
       }*/
+
+      {
+        path: 'batch',
+        component: MyiframeComponent
+      },
     ]
   
   },

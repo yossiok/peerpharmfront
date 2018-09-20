@@ -3,6 +3,7 @@
 </p>
 
 
+
 <div style="background-color: lightblue; width: 1084px ; height: 70px" class='headDiv'>
   <h1 style='color:white'>
     <i>Create new products</i>
@@ -33,14 +34,13 @@
           </td>
           <td>
             <input type=date id="id_update" style="width:158px">
-            <img src='pkg.png' style='width:35px;' onclick='textToBase64Barcode("1233334")'>
           </td>
         </tr>
         <tr>
           <td>
             Name of Updataing:
           </td>
-          <td> 
+          <td>
             <input type="text" [(ngModel)]=itemShown.nameOfupdating id="id_name_of_updating">
           </td>
         </tr>
@@ -77,7 +77,7 @@
       <br>
       <br>
       <input type="file" id="id_itemImgMain2">
-      <button onclick="uploadImg('id_itemImgMain2', 'id_imgMain2')" >>></button>
+      <button onclick="uploadImg('id_itemImgMain2', 'id_imgMain2')">>></button>
       <br>
       <img id="id_imgMain2" [src]=item.imgMain2 style="width:150px">
       <br>
@@ -85,7 +85,7 @@
       <input type="file" id="id_itemImgMain3">
       <button onclick="uploadImg('id_itemImgMain3', 'id_imgMain3')">>></button>
       <br>
-      <img id="id_imgMain3"  [src]=item.imgMain3 style="width:150px">
+      <img id="id_imgMain3" [src]=item.imgMain3 style="width:150px">
       <br>
       <br>
       <b> Enter Remarks:</b>
@@ -98,6 +98,19 @@
       <br>
 
       <textarea rows="3" cols="30" id="id_impRemarks"> </textarea>
+      <br>
+      <input #rows style='width:30px' (focusout)="showGoddet()">&nbsp;
+      <input #colums style='width:30px' (focusout)="showGoddet()">&nbsp;
+      <select class="selectpicker" [(ngModel)]=itemShown.goddetShape>
+        <option value=''></option>
+        <option value='round'>Round</option>
+        <option value='sqaure'>Square</option>
+        <option value='rectangle'>Rectangle</option>
+      </select>
+      <img src = 'assets/images/goddet2.png' (click)="showGoddet()" style='width:40px; display:none'><!--Button if the focusout is not the option-->
+      <div #container>
+
+      </div>
     </td>
   </tr>
 
@@ -112,8 +125,7 @@
             <input type="text" [(ngModel)]=itemShown.itemNumber id="id_item">
           </td>
           <td>
-            <img id="id_img_item" onClick='searchForItem()' title="search" src='/images/searchA2.png' style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
-            <img id="id_img_item2" onClick='searchForItem2()' title="search" src='/images/searchA2.png' style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
+            <img id="id_img_item" onClick='searchForItem()' title="search" src='/assets/images/searchA2.png' style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
           </td>
         </tr>
         <tr>
@@ -186,7 +198,7 @@
             <b>Sticker Wgt/Type-----</b>
           </td>
           <td>
-            <input type="text" id="id_stickerWeight" style='width:40px; margin-left:10px' value="0.0"  [(ngModel)]=itemShown.itemStickerW>
+            <input type="text" id="id_stickerWeight" style='width:40px; margin-left:10px' value="0.0" [(ngModel)]=itemShown.itemStickerW>
 
             <select id='id_stickerSelect' [(ngModel)]=itemShown.itemStickerS>
               PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
@@ -216,7 +228,7 @@
             <b>Box Wgt/Type</b>
           </td>
           <td>
-            <input type="text" id="id_boxWeight" style='width:40px; margin-left:10px' placeholder=8  [(ngModel)]=itemShown.itemBoxW>
+            <input type="text" id="id_boxWeight" style='width:40px; margin-left:10px' placeholder=8 [(ngModel)]=itemShown.itemBoxW>
             <select id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS>
               PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
@@ -285,7 +297,7 @@
             <b>Gross Ctn Weight</b>
           </td>
           <td colspan="2">
-            <input type="text" id="id_grossCtnInput" style='margin-left:10px' onfocusout='checkGrossWgt()'  [(ngModel)]=itemShown.grossCtnWeightK>
+            <input type="text" id="id_grossCtnInput" style='margin-left:10px' onfocusout='checkGrossWgt()' [(ngModel)]=itemShown.grossCtnWeightK>
           </td>
         </tr>
         <tr>
@@ -293,7 +305,7 @@
             <b>Licsens Number</b>
           </td>
           <td>
-            <input type="text" id="id_licsensNumber" style='margin-left:10px'  [(ngModel)]=itemShown.licsensNumber>
+            <input type="text" id="id_licsensNumber" style='margin-left:10px' [(ngModel)]=itemShown.licsensNumber>
           </td>
         </tr>
         <tr>
@@ -301,7 +313,7 @@
             <b>Licsens Exp Date</b>
           </td>
           <td>
-            <input type="date" id="id_licsensDate" style="width:158px;margin-left:10px"  [(ngModel)]=itemShown.licsensDate>
+            <input type="date" id="id_licsensDate" style="width:158px;margin-left:10px" [(ngModel)]=itemShown.licsensDate>
           </td>
         </tr>
         <tr>
@@ -325,7 +337,7 @@
               <b>Carton no'</b>
             </td>
             <td>
-              <input type=t ext id="id_cartonNo" onfocusout="loadOackagDetails2(this.id, 'id_cartonWeight','id_cartonSelect')"  [(ngModel)]=itemShown.cartonNumber>
+              <input type=t ext id="id_cartonNo" onfocusout="loadOackagDetails2(this.id, 'id_cartonWeight','id_cartonSelect')" [(ngModel)]=itemShown.cartonNumber>
             </td>
           </tr>
           <tr>
@@ -393,7 +405,7 @@
               <b>Item Type</b>
             </td>
             <td>
-              <select id="id_itemType" style="width:158px"  [(ngModel)]=itemShown.itemType>
+              <select id="id_itemType" style="width:158px" [(ngModel)]=itemShown.itemType>
                 <option value="-"></option>
                 <option value="bodyCare">Body Care</option>
                 <option value="faceCare">Face Care</option>
@@ -438,7 +450,7 @@
                   <td>
                     <b>Weight (gr)</b>
                     <input type="text" id="id_item1weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item1w>
-                    <select id='id_item1select'  [(ngModel)]=itemShown.item1s>
+                    <select id='id_item1select' [(ngModel)]=itemShown.item1s>
                       PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
                       <option value='paperCarton'>נייר/קרטון</option>
@@ -478,20 +490,20 @@
                   <td>
 
                     <b>CAP no'</b>
-                    <input type="text" id="id_capNo" [(ngModel)]=itemShown.capNumber onfocusout="loadOackagDetails(this.id, 'id_item2weight','id_item2select')" >
+                    <input type="text" id="id_capNo" [(ngModel)]=itemShown.capNumber onfocusout="loadOackagDetails(this.id, 'id_item2weight','id_item2select')">
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <b>Details :</b>
-                    <input type="text" id="id_item2text"  [(ngModel)]=itemShown.capTube >
+                    <input type="text" id="id_item2text" [(ngModel)]=itemShown.capTube>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <b>Weight (gr)</b>
                     <input type="text" id="id_item2weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item2w>
-                    <select id='id_item2select'  [(ngModel)]=itemShown.item2s>
+                    <select id='id_item2select' [(ngModel)]=itemShown.item2s>
                       PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
                       <option value='paperCarton'>נייר/קרטון</option>
@@ -587,7 +599,7 @@
                     <input type="file" id="id_itemImg7">
                     <button onclick="uploadImg('id_itemImg7', 'id_img7')">>></button>
                     <br>
-                    <img id="id_img7"[src]=item.extraImage2>
+                    <img id="id_img7" [src]=item.extraImage2>
                   </td>
                 </tr>
 
@@ -612,7 +624,7 @@
                 <tr>
                   <td>
                     <b>Seal no'</b>
-                    <input type="text" id="id_sealNo"  [(ngModel)]=itemShown.sealNumber onfocusout="loadOackagDetails(this.id, 'id_item4weight','id_item4select')">
+                    <input type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber onfocusout="loadOackagDetails(this.id, 'id_item4weight','id_item4select')">
                   </td>
                 </tr>
                 <tr>
@@ -693,7 +705,7 @@
 </table>
 <div style="background-color: lightblue; width: 1084px ; height: 70px" class='footerDiv'>
   <br>
-  <button  class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
+  <button class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
   <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>
 
 </div>-->

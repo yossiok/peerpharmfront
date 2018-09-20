@@ -16,7 +16,7 @@ export class UserloggedinGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean { 
     return this.auth.isUserLoggedIn().pipe(
         map((response) => { 
-
+ 
          
           if(!response)
           {

@@ -11,7 +11,7 @@ import { AddFormuleItemComponent } from './formules/add-formule-item/add-formule
 import { PeerPharmRputs } from './peerpharm.routing';
 import { OrdersComponent } from './allorders/orders/orders.component';
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
-import {ScheduleComponent} from './schedule/schedule.component'
+import {ScheduleComponent} from './schedule/filling/schedule.component'
 import {ItemslistComponent} from './items/itemslist/itemslist.component'
 import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
 import {PlateComponent} from './plate/plate.component'
@@ -21,6 +21,8 @@ import {LinesComponent} from './production/lines/lines.component'
 import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
 import {BatchesComponent} from './batches/batches.component'
+import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component';
+import {PrintingComponent} from './schedule/printing/printing.component'
 
 import {MatSelectModule} from '@angular/material/select';
 import {
@@ -103,8 +105,9 @@ import { AuthService } from '../services/auth.service';
     TaskCardComponent,
     SubTaskCardComponent,
     CreateBoardComponent,
-    BatchesComponent
-
+    BatchesComponent,
+    CostumersListComponent,
+    PrintingComponent
     
   ],
   providers:[ OrdersService, HttpClientModule]

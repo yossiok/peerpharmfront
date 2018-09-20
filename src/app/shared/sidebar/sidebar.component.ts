@@ -48,7 +48,7 @@ export class SidebarComponent implements OnInit {
       this.user = this.authService.loggedInUser
     });
 
-
+ 
     if (!this.authService.loggedInUser) {
       this.authService.getLoggedInUser().subscribe(data => {
         this.user = this.authService.loggedInUser;
@@ -67,6 +67,6 @@ export class SidebarComponent implements OnInit {
     else {
       this.sidebarnavItems = [];
     }
-
+ 
   }
 }

@@ -54,4 +54,15 @@ export class ScheduleService {
     }
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
+
+  
+  getOpenPrintSchedule(){
+    let url = this.baseUrl + "printSchedule";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  setNewPrintSchedule(schedule):Observable<any>{
+    let url = this.baseUrl + "printSchedule/add";
+    return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  }
 }

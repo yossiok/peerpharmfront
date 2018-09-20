@@ -2,7 +2,8 @@ import { OrdersComponent } from './allorders/orders/orders.component';
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
 //import { PeerPharmModule } from './peerpharmmodule';
 import { Routes } from '@angular/router';
-import {ScheduleComponent} from './schedule/schedule.component'
+import {ScheduleComponent} from './schedule/filling/schedule.component'
+import {PrintingComponent} from './schedule/printing/printing.component'
 import {ItemslistComponent} from './items/itemslist/itemslist.component'
 import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
 import {PlateComponent} from './plate/plate.component'
@@ -13,6 +14,8 @@ import {LinesComponent} from './production/lines/lines.component'
 import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
 import { BatchesComponent } from './batches/batches.component';
+import {CostumersListComponent} from './costumers/costumers-list/costumers-list.component'
+
 export const PeerPharmRputs: Routes =[
   {
     path: 'allorders/orders',
@@ -41,6 +44,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Fill Schedule' 
     },
     component: ScheduleComponent
+  },
+  {
+    path: 'schedule/printschedule',
+    data: {
+      title: 'Print Schedule' 
+    },
+    component: PrintingComponent
   },
   {
     path: 'items/itemslist',
@@ -111,6 +121,14 @@ export const PeerPharmRputs: Routes =[
       title : 'Batches List'
     },
     component:BatchesComponent
+  }
+  ,
+  {
+    path :'costumers/costumers_list',
+    data :{
+      title : 'Costumers'
+    },
+    component:CostumersListComponent
   }
   
 ];
