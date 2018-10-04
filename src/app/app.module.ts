@@ -58,7 +58,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbComponent,  
     SidebarComponent , 
     LoginComponent, 
-    SignupComponent, ScheduleCardComponent, MyiframeComponent,  
+    SignupComponent, ScheduleCardComponent, MyiframeComponent,
    
   ],
   imports: [

@@ -11,9 +11,9 @@
       </tr>
     </thead>
     <tbody id= "table_body">
-      <tr *ngFor="let costumer of costumers">
-        <td></td>
-        <td>{{costumer.costumerId}}</td><td>{{costumer.costumerName}}</td><td>{{costumer.invoice}}</td><td></td>
+      <tr *ngFor="let costumer of costumers; let i=index">
+        <td>{{i}}</td>
+        <td (click)='openDetails(content, i)'>{{costumer.costumerId}}</td><td>{{costumer.costumerName}}</td><td>{{costumer.invoice}}</td><td></td>
       </tr>
     </tbody>
   </table>
@@ -32,11 +32,13 @@
 
 
 
-  <ng-template #content let-modal>
+  <ng-template #content let-modal  let-c="close" let-d="dismiss">
 
      <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Add Costumer</h4>
+    <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
       <span aria-hidden="true">&times;</span>
     </button>
   </div>

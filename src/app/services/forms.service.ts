@@ -3,11 +3,12 @@ import { Http,  Headers, RequestOptions, Jsonp } from '@angular/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
+import { CDK_DESCRIBEDBY_HOST_ATTRIBUTE } from '@angular/cdk/a11y';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CostumersService {
+export class FormsService {
 
   constructor(private http:Http) { }
 
@@ -17,13 +18,14 @@ export class CostumersService {
   private baseUrl = 'http://localhost/';
 
  
-  getAllCostumers(){
-    let url = this.baseUrl + "costumers";
+  getAllForms(){
+    debugger;
+    let url = this.baseUrl + "forms";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getCostumerData(CostumerNumber){
-    let url = this.baseUrl + "costumers?CostumerNumber="+CostumerNumber;
+  getFormData(formId){
+    let url = this.baseUrl + "formDetails?fhID="+formId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

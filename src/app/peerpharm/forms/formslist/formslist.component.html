@@ -1,0 +1,30 @@
+<input style="width:150px" type="text" id="searchItem_input" onkeyup="searchItem()" placeholder="Search For Batch">
+
+<table class='table'>
+  <thead>
+    <tr style="background-color:white; ">
+      <th></th>
+      <th>Form Id</th>
+      <th>ItemN</th>
+      <th>Filling date</th>
+      <th>Batch</th>
+      <th>Costumer</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let form of forms; let i=index">
+      <td>{{i}}</td>
+      <td>
+        <a routerLink="/peerpharm/forms/formDetails/{{form._id}}">
+          {{form._id}}
+        </a>
+      </td>
+      <td>{{form.itemN}}</td>
+      <td>{{form.fillingDate}}</td>
+      <td>{{form.batchN}}</td>
+      <td>{{form.costumerName}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
