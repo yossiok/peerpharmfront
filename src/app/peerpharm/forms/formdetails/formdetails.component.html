@@ -1,0 +1,418 @@
+<!--<table  dir="rtl"   border='0' style='font-size:17px; width:800px;height:620px; font-family:Arial; border-collapse: collapse;' id="table_q"  >-->
+  <table  dir='rtl'>
+    <thead  >
+      <tr>
+        <td colspan="4">טופס בקרת איכות</td>
+      </tr>
+    </thead>
+    <tr>
+      <td>
+        שם המוצר
+      </td>
+      <td colspan='3'>
+        <input type='text' [(ngModel)]=form.productName id='div_productName' style='width:550px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        שם הלקוח
+      </td>
+      <td>
+        <input id='div_costumerName'  [(ngModel)]=form.costumerName   style='width:100px'>
+      </td>
+      <td>
+        מק"ט
+      </td>
+      <td>
+        <input id='div_itemN'  [(ngModel)]=form.itemN class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        מס' אצווה
+      </td>
+      <td>
+        <input type='text'  [(ngModel)]=form.batchN id='div_batchN' style='width:100px'>
+      </td>
+      <td>
+        כמות חביות
+      </td>
+      <td>
+        <input id='div_durms'  [(ngModel)]=form.drumsAmount class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        תאריך ייצור
+      </td>
+      <td>
+        <input id='div_productionDate' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        תאריך תפוגה
+      </td>
+      <td>
+        <input id='div_expirationDate' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>	
+    <tr>
+      <td>
+        תאריך מילוי
+      </td>
+      <td>
+        <input id='div_fillDate' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        מילוי ע"י
+      </td>
+      <td>
+        <input id='div_fillingBy' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>		
+    <tr>
+      <td>
+        שעת התחלת מילוי
+      </td>
+      <td>
+        <input id='div_fillingStart' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        שעת סיום מילוי
+      </td>
+      <td>
+        <input id='div_fillingEnd' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        טווח סטיה
+      </td>
+      <td>
+        <input id='div_weightRange' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        משקל נטו
+      </td>
+      <td>
+        <input id='div_netoWeight' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>		
+    <tr>
+      <td>
+        הדבקה ע"י
+      </td>
+      <td>
+        <input id='div_lableldBy' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        אריזה ע"י
+      </td>
+      <td>
+        <input id='div_packegeBy' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>	
+    <tr style='background-color:50D7FF'>
+      <td colspan='4'>
+      בדיקות לפני מילוי
+      </td>
+    </tr>
+    <tr>
+      <td>
+        בדיקה סנטורית של המוצר
+      </td>
+      <td align=center>
+         <input type="checkbox" id='sentoric'>
+      </td>
+      <td>
+        זיהוי וניקוי מיכלים
+      </td>
+      <td align=center> 
+         <input type="checkbox" id='cleanContainer'>
+      </td>
+    </tr>	
+    <tr>
+      <td>
+        זיהוי תוויות
+      </td>
+      <td align=center>
+         <input type="checkbox" id='label'>
+      </td>
+      <td>
+        זיהוי קרטון/<br>מכסה/משאבה
+      </td>
+      <td align=center> 
+         <input type="checkbox" id='ccc'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        אישור כיוון ונקיון מכונה
+      </td>
+      <td align=center>
+         <input type="checkbox" id='cleanMachine'>
+      </td>
+      <td>
+        חתימת מנהל מאשר
+      </td>
+      <td align=center> 
+         <input id='div_mangaerSign' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr style='background-color:50D7FF'>
+      <td colspan='4'>
+      בקרה במהלך מילוי
+      </td>
+    </tr>
+    <tr>
+      <td>
+        שעת בדיקה
+      </td>
+      <td colspan='3'>
+        <input id='div_checkTime1' class='inputDiv' style='width:100px; margin:10px'>
+        <input id='div_checkTime2' class='inputDiv' style='width:100px; margin:10px'>
+        <input id='div_checkTime3' class='inputDiv' style='width:100px; margin:10px'>
+        <input id='div_checkTime4' class='inputDiv' style='width:100px; margin:10px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        נקיון מכלים
+      </td>
+      <td colspan='3'>
+        <input type="checkbox" id='clean1'  style='margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px'>
+        <input type="checkbox" id='clean2'  style='margin-left:100px'>
+        <input type="checkbox" id='clean3'  style='margin-left:100px'>
+        <input type="checkbox" id='clean4'  style='margin-left:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        משקל נטו
+      </td>
+      <td colspan='3'>
+        <input id='div_netWeight1' class='inputDiv' style='width:100px; margin:10px'>
+        <input id='div_netWeight2' class='inputDiv' style='width:100px; margin:10px'>
+        <input id='div_netWeight3' class='inputDiv' style='width:100px; margin:10px'>
+        <input id='div_netWeight4' class='inputDiv' style='width:100px; margin:10px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        סגירה ואיטום
+      </td>
+      <td colspan='3'>
+        <input type="checkbox"  id='div_seeling1' style='margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px'>
+        <input type="checkbox"  id='div_seeling2' style='margin-left:100px'>
+        <input type="checkbox"  id='div_seeling3' style='margin-left:100px'>
+        <input type="checkbox"  id='div_seeling4' style='margin-left:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        תקינות הדבקת התוויות
+      </td>
+      <td colspan='3'>
+        <input type="checkbox"  id='div_lables1' style='margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px'>
+        <input type="checkbox"  id='div_lables2' style='margin-left:100px'>
+        <input type="checkbox"  id='div_lables3' style='margin-left:100px'>
+        <input type="checkbox"  id='div_lables4' style='margin-left:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        בדיקת מס' אצוות
+      </td>
+      <td colspan='3'>
+        <input type="checkbox"  id='div_batch1' style='margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px'>
+        <input type="checkbox"  id='div_batch2' style='margin-left:100px'>
+        <input type="checkbox"  id='div_batch3' style='margin-left:100px'>
+        <input type="checkbox"  id='div_batch4' style='margin-left:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        תקינות אריזה סופית
+      </td>
+      <td colspan='3'>
+        <input type="checkbox"  id='div_finalPackage1' style='margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px'>
+        <input type="checkbox"  id='div_finalPackage2' style='margin-left:100px'>
+        <input type="checkbox"  id='div_finalPackage3' style='margin-left:100px'>
+        <input type="checkbox"  id='div_finalPackage4' style='margin-left:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        כמות שיוצרה
+      </td>
+      <td>
+        
+        <input type='text' id='div_qty' style='width:100px'><button onClick='update()'>עדכן</button>
+      </td>
+      <td>
+        אישור נקיון מכונה לאחר מילוי
+      </td>
+      <td>
+        <input id='div_cleanFinal' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>	
+    <tr>
+      <td colspan='4'  style='border-bottom:0px solid;'>
+        <input id='div_qualityRemarks' class='inputDiv' style='width:500px'>
+      </td>
+    </tr>
+    <tr>
+      <td  style='border-bottom:0px solid;'>
+        <button onclick='rotateYDIV("table_q")'>טופס אריזה</button>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  <br><br><br>
+  <table border='0' style='font-size:18px; width:800px;height:600px; font-family:Arial; border-collapse: collapse; display:none'  id="table_p" class='post' >
+    <tr>
+      <td>
+        שם המוצר
+      </td>
+      <td colspan='3'>
+        <input id='div_productName2' class='inputDiv'>
+      </td>
+    </tr>
+  <tr>
+      <td>
+         ייצור
+      </td>
+      <td>
+        <input id='div_fillingDate2' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        מספר אצווה
+      </td>
+      <td>
+        <input id='div_batchN2' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>		
+  
+    <tr>
+      <td>
+        כמות מוזמנת
+      </td>
+      <td>
+        <input id='div_orderQty' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        שם הלקוח
+      </td>
+      <td>
+        <input id='div_costumerName2' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        תחילת עבודה
+      </td>
+      <td>
+        <input id='div_packageStartDate' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        סוף עבודה
+      </td>
+      <td>
+        <input id='div_packageEndDate' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        מק"ט מוצר
+      </td>
+      <td>
+        <input id='div_itemN2' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        מק"ט אריזה אישית
+      </td>
+      <td>
+        <input id='div_personalPackageN' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        מק"ט קרטון מאסטר
+      </td>
+      <td>
+        <input id='div_masterCtn' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        מס' יחידות בקרטון
+      </td>
+      <td>
+        <input id='div_untCtn' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        שם האורז
+      </td>
+      <td>
+        <input id='div_packageName' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        סה"כ קרטונים
+      </td>
+      <td>
+        <input type='text' id='div_totalCtn' style='width:100px'><button onClick='update()'>עדכן</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        סה"כ יחידות פריט
+      </td>
+      <td>
+        <input type='text' id='div_totalItemsN' style='width:100px'><button onClick='update()'>עדכן</button>
+      </td>
+      <td>
+        משקל ברוטו
+      </td>
+      <td>
+        <input id='div_brotoWeight' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td colspan='2'>
+          <input type="radio" name="gender" id='delivery'>יוצא למשלוח
+          <input type="radio" name="gender" id='wareHouse' style='margin-right:35px'> עבר למחסן מלאי<br>
+      </td>
+    </tr>
+    <tr>
+      <td style='border-bottom:0px solid;'>
+        הערות:
+      </td>
+    </tr>
+    <tr>
+      <td colspan='4'>
+        <input id='div_remarks' class='inputDiv' style='width:500px'>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        שם ותחימת מבקר איכות
+      </td>
+      <td>
+        <input id='div_qualtySign' class='inputDiv' style='width:100px'>
+      </td>
+      <td>
+        שם וחתימת מנהל
+      </td>
+      <td>
+        <input id='div_managerSign' class='inputDiv' style='width:100px'>
+      </td>
+    </tr>
+    <tr>
+      <td  style='border-bottom:0px solid;'>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <button onclick='rotateYDIV("table_p")'>חזרה</button>
+      </td>
+    </tr>
+  </table>

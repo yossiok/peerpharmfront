@@ -15,6 +15,8 @@ import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
 import { BatchesComponent } from './batches/batches.component';
 import {CostumersListComponent} from './costumers/costumers-list/costumers-list.component'
+import { FormslistComponent } from './forms/formslist/formslist.component';
+import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -129,6 +131,24 @@ export const PeerPharmRputs: Routes =[
       title : 'Costumers'
     },
     component:CostumersListComponent
+  }
+  
+  ,
+  {
+    path :'forms/forms_list',
+    data :{
+      title : 'Forms'
+    },
+    component:FormslistComponent
+  }
+  
+  ,
+  {
+    path :'forms/formDetails/:id',
+    data :{
+      title : 'Forms'
+    },
+    component:FormdetailsComponent
   }
   
 ];

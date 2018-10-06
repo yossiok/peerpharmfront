@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http,  Headers, RequestOptions, Jsonp } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 
@@ -12,8 +12,11 @@ export class OrdersService {
   
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-
   private baseUrl = 'http://localhost/';
+
+  arr:any=[];
+  private orderSrc = new BehaviorSubject<Array<string>>([]);
+  ordersArr = this.orderSrc.asObservable();
 
   constructor(private http:Http) { }
 
@@ -50,6 +53,11 @@ export class OrdersService {
       map(reponse => reponse.json())
     )}
 
+  getMultiOrdersIds(idsArray):Observable<any>{
+    let url = this.baseUrl + 'orderitem?multiOrdersIds=' +idsArray;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    )}
     //get item details (can move it to item service)
    getItemByNumber(itemNumber):Observable<any>{
       let url = this.baseUrl + "item?itemNumber="+itemNumber;
@@ -90,5 +98,9 @@ export class OrdersService {
     debugger;
     let item= {id:itemId}
     return this.http.post(url,JSON.stringify(item) , this.options).pipe(map(res => res.json()))
+  }
+
+  sendOrderData(tempArr : Array<string>){ 
+    this.orderSrc.next(tempArr);
   }
 }

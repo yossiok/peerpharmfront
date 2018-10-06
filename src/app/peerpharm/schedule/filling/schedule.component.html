@@ -24,8 +24,8 @@
   </ngb-tabset>
 <br><br>
     <div (click)='setType("basic", this)' [ngStyle]="{'background-color': buttonColor}">General</div>
-    <div (click)='setType("tube")' [ngStyle]="{'background-color': buttonColor}">Tubes</div>
-    <div (click)='setType("mkp")' [ngStyle]="{'background-color': buttonColor}">Make Up</div>
+    <div (click)='setType("tube", this)' [ngStyle]="{'background-color': buttonColor2}">Tubes</div>
+    <div (click)='setType("mkp", this)' [ngStyle]="{'background-color': buttonColor3}">Make Up</div>
  
 <table class='table'>
   <thead class='bg-success text-white'>
@@ -54,8 +54,8 @@
      <td><input type='text' id="input_costumer" style='width:80px' [(ngModel)]="scheduleLine.costumer" ></td>
      <td><input type='text' id="input_productName" [(ngModel)]="scheduleLine.productName"></td>
      <td><input type='text' id="input_batchN" [(ngModel)]="scheduleLine.batch" style='width:110px'></td>
-     <td><textarea rows='1' cols='10' id='input_package'   [(ngModel)]="scheduleLine.packageP" ></textarea></td>
-     <td  colspan=2><input type='text' id="input_Qty" style='width:90px' [(ngModel)]="scheduleLine.qty"></td>
+     <td><textarea rows='1' cols='20' id='input_package'   [(ngModel)]="scheduleLine.packageP" ></textarea></td>
+     <td  colspan=2><input type='text' id="input_Qty" style='width:60px' [(ngModel)]="scheduleLine.qty"></td>
      <td><input type='date' id="input_Date" style='width:140px; font-size:13px' [(ngModel)]="scheduleLine.date"></td>			 
      <td><textarea rows='1' cols='30' id='input_marks'  style='width:150px' [(ngModel)]="scheduleLine.marks"></textarea></td>
      <td class='printlessTd'><select id="select_shift"  [(ngModel)]="scheduleLine.shift"><option value="Day">Day</option><option value="Night">Night</option></select></td>
@@ -72,21 +72,22 @@
     <tr *ngFor = "let line of scheduleData">
       <ng-container  *ngIf='line !== undefined  && line.mkp===typeShown'>
         <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.positionN}}</td>
-        <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:50px'></td>
+        <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:30px'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.orderN}}</td>
         <td *ngIf="line._id===EditRowId"><input #orderN type='text' [value]="line.orderN"  style='width:50px'></td>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.item}}</td>
-        <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.item"  style='width:50px'></td>
+        <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.item"  style='width:80px'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
         <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer"  style='width:50px'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.productName}}</td>
-        <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.productName"  style='width:110px'></td>
+        <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.productName"  style='width:150px'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.batch}}</td>
-        <td *ngIf="line._id===EditRowId"><input #batch type='text' [value]="line.batch"  style='width:110px'></td>
+        <td *ngIf="line._id===EditRowId"><input #batch type='text' [value]="line.batch"  style='width:90px'></td>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.packageP}}</td>
-        <td *ngIf="line._id===EditRowId"><input #packageP type='text' [value]="line.packageP"  style='width:50px'></td>
+        <!--<td *ngIf="line._id===EditRowId"><input #packageP type='text' [value]="line.packageP"  style='width:150px'></td>-->
+        <td *ngIf="line._id===EditRowId"><textarea rows='1' cols='30' id='input_marks' #packageP style='width:150px' [value]="line.packageP"></textarea></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.qty}}</td>
-        <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty"  style='width:50px'></td>
+        <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty"  style='width:60px'></td>
         <td></td>
 
         

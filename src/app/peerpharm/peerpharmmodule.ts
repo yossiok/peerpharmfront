@@ -24,6 +24,8 @@ import {ContentComponent} from './taskboard/core/content/content.component'
 import {BatchesComponent} from './batches/batches.component'
 import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component';
 import {PrintingComponent} from './schedule/printing/printing.component'
+import { FormslistComponent } from './forms/formslist/formslist.component';
+import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 
 import {MatSelectModule} from '@angular/material/select';
 import {
@@ -108,8 +110,9 @@ import { AuthService } from '../services/auth.service';
     CreateBoardComponent,
     BatchesComponent,
     CostumersListComponent,
-    PrintingComponent
-    
+    PrintingComponent,
+    FormslistComponent,
+    FormdetailsComponent
   ],
   providers:[ OrdersService, HttpClientModule]
 })

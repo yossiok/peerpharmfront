@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service'
+import {BehaviorSubject} from 'rxjs/BehaviorSubject'
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-orders',
@@ -8,9 +11,14 @@ import { OrdersService } from '../../../services/orders.service'
 })
 export class OrdersComponent implements OnInit {
 
-  constructor(private ordersService: OrdersService) { }
+  constructor(private ordersService: OrdersService, private router: Router) { }
   orders: any[];
   EditRowId: any = "";
+
+
+
+  //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
+  //private orderSrc = new BehaviorSubject<string>("");
 
   @ViewChild('orderRemarks') orderRemarks: ElementRef;
   //  @ViewChild('type') type:ElementRef; 
@@ -46,6 +54,7 @@ export class OrdersComponent implements OnInit {
 
   saveEdit(a, orderId) {
     let itemToUpdate = {};
+    // a - is if the request is to set order - ready
     if (!a) {
       itemToUpdate = {
         'orderId': this.id.nativeElement.value,
@@ -75,5 +84,14 @@ export class OrdersComponent implements OnInit {
       let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
       delete this.orders[i];
     });
+  }
+
+  loadOrders(){
+    console.log(this.orders);
+    let tempArr = this.orders.filter(e=>e.isSelected==true).map(e=>e=e._id);
+    this.ordersService.sendOrderData(tempArr);
+    this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
+    console.log(tempArr);
+    //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
   }
 }

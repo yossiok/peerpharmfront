@@ -31,7 +31,7 @@ import { BreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component';
 import { Approutes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
-import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular'
+//import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular'
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -59,9 +59,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbComponent,  
     SidebarComponent , 
     LoginComponent, 
-    SignupComponent, 
-    MyiframeComponent
- 
+    
+    SignupComponent, ScheduleCardComponent, MyiframeComponent,
    
   ],
   imports: [
@@ -70,16 +69,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,    
-     AmplifyAngularModule   ,
+   // AmplifyAngularModule   ,
     HttpModule,
     NgbModule.forRoot(),
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule
   ],
   providers: [
-    AmplifyService,
-    MatSnackBar, 
-    OVERLAY_PROVIDERS,
+   // AmplifyService,
     AuthService,HttpClientModule,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

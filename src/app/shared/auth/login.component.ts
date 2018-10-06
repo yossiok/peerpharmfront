@@ -27,7 +27,7 @@ export class LoginComponent {
     this.auth.login(loginfrm).subscribe((resp) => {
       if(resp)
       {
-        this.router.navigate(['/']);
+        this.router.navigate(['/#/peerpharm/allorders/orders']);
       }
       else{
         let snackBarRef = this.snackBar.open('Login failed please try again');
