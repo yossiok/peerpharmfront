@@ -46,10 +46,10 @@ export class BoardComponent implements OnInit {
   
 
 public tiles = [
-    { text: 'New', cols: 1, rows: 1, color: '#CFD8DC', titlecolor: '#03A9F4', add: false },
-    { text: 'On-Hold', cols: 1, rows: 1, color: '#CFD8DC', titlecolor: '#f5c942', add: false },
-    { text: 'In-Progress', cols: 1, rows: 1, color: '#CFD8DC', titlecolor: '#d066e2', add: false },
-    { text: 'Done', cols: 1, rows: 1, color: '#CFD8DC', titlecolor: '#ff6b68', add: false },
+    { text: 'Not Started', cols: 1, rows: 1, color: '#CFD8DC', titlecolor: '#82b3c9', add: false },
+    { text: 'In-Progress', cols: 1, rows: 1, color: '#CFD8DC', titlecolor: '#0093c4', add: false },
+    { text: 'Late', cols: 1, rows: 1, color: '#CFD8DC', titlecolor: '#bb002f', add: false },
+    { text: 'Done', cols: 1, rows: 1, color: '#CFD8DC', titlecolor: '#003300', add: false },
   ];
 
   @Input() boardTitle: string;
@@ -71,7 +71,7 @@ public tiles = [
 
 
   shome(ev):void{
-    debugger;
+
   }
 
   simpleDrop($event: any, tileText: string) {
@@ -162,23 +162,6 @@ public tiles = [
   }
 
 
-  showTaskDetails(id, content, index){
-    console.log(id);
-    this.tasksService.getSubTasks(id).subscribe(subTasks=>{
-      this.subTasksArr = subTasks;
-      console.log(subTasks);
-      this.modalTitle=this.tasks[index].name;
-      
-    this.modalService.open(content).result.then(
-     /* result => {
-        this.closeResult = `Closed with: ${result}`;
-      },
-      reason => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      }*/
-    );
-    })
-  }
   clearForm() {
     this.data = {
       'description': '',

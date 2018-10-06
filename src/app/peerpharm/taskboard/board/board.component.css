@@ -27,3 +27,7 @@
     font-size: 11px;
     font-family: Roboto,"Helvetica Neue",sans-serif;
 }
+.board-list
+{
+    height: 500px;
+}

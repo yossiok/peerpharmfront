@@ -1,5 +1,7 @@
+import { TasksService } from './../../../services/tasks.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { SubTaskModel } from '../../../models/subtask-model';
+import { UserInfo } from '../../../models/UserInfo';
 
 @Component({
   selector: 'app-sub-task-card',
@@ -8,9 +10,18 @@ import { SubTaskModel } from '../../../models/subtask-model';
 })
 export class SubTaskCardComponent implements OnInit {
 @Input() subTask:SubTaskModel;
-  constructor() { }
-
-  ngOnInit() {
+user:UserInfo;
+  constructor(private taskservice:TasksService) { 
+  
   }
+
+  ngOnInit() { 
+    this.taskservice.getAvatarImagesByUserId(this.subTask.userId).subscribe(user=>{  
+      
+        this.user=user;
+    });
+  }
+
+ 
 
 }

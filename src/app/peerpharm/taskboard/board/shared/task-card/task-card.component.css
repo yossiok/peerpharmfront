@@ -5,4 +5,35 @@
 .card-desc{
     padding-left: 8px;
     font-size: 16px;
+    color: #003c8f;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
 }
+.maincard
+{
+    background-color: #e5ffff;
+}
+
+.user {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+  
+  .one {
+    background-image: url('http://placehold.it/400x200');
+  }
+  
+  .two {
+    background-image: url('http://placehold.it/200x200');
+  }
+  
+  .three {
+    background-image: url('http://placehold.it/200x400');
+  }

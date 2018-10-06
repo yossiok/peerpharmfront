@@ -5,7 +5,7 @@ export class SubTaskModel {
         public name: string,
         public dueDate: Date,
         public departments: [string],
-        public users: [string],
+        public userId: string,
         public status:string
     ){}
 }

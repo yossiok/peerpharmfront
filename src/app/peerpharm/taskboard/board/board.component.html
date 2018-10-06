@@ -53,8 +53,8 @@
 
           </form>
         </div>
-        <app-board-task-card *ngFor="let task of tasks | filterBy: taskFilter; let i = index" [tileName]="tile.text" [task]="task"
-          (click)='showTaskDetails(task._id,content,i)'></app-board-task-card>
+        <app-board-task-card *ngFor="let task of tasks | filterBy: taskFilter; let i = index" [tileName]="tile.text" [task]="task" [subTasksArr]="subTasksArr"
+        ></app-board-task-card>
 
       </div>
 
