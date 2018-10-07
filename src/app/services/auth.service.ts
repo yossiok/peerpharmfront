@@ -30,34 +30,7 @@ export class AuthService {
 
   // Resolve HTTP using the constructor
   constructor(private http: Http, private httpClient:HttpClient) { 
-
-    this.loggedInUser= {
-      userName: "sima",
-      firstName: "sima",
-      lastName: "testuser",
-      userDepartments: [
-         "5b3203f74fd9bb3950083aef"
-      ],
-      userEmail: "sima@gmail.com",
-      role: "admin",
-      modules: [
-         "Orders",
-         "Schedule",
-         "Task-Board"
-      ],
-    appPermissions: [
-         "app1",
-         "app2",
-         "app3"
-      ],
-      allowedIPS: [
-         "*.*",
-         "192.168.100.2"
-      ],
-      phone: "+972507704231",
-      twoway: false,
-      picture:""
-   }
+ 
   }
 
   getLoggedInUser(): Observable<any> {
