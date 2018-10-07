@@ -25,6 +25,8 @@ import { CostumersListComponent } from './costumers/costumers-list/costumers-lis
 import {PrintingComponent} from './schedule/printing/printing.component'
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
+import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
+import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 
 import {MatSelectModule} from '@angular/material/select';
 import {
@@ -111,7 +113,9 @@ import { AuthService } from '../services/auth.service';
     CostumersListComponent,
     PrintingComponent,
     FormslistComponent,
-    FormdetailsComponent
+    FormdetailsComponent,
+    ItemDetailsTabComponent,
+    ItemDocumentsComponent
   ],
   providers:[ OrdersService, HttpClientModule]
 })

@@ -18,8 +18,8 @@ export class AuthService {
   public userEventEmitter:EventEmitter<UserInfo>= new EventEmitter<UserInfo>();
  
  
-  //private baseUrl = 'http://localhost/';  
-  private authURL =  "/auth/";
+  private baseUrl = 'http://localhost/';  
+  private authURL = this.baseUrl + "auth/";
   public isLoggedIn=false;
   httpOptions = {
     headers: new HttpHeaders({
@@ -42,7 +42,7 @@ export class AuthService {
   isUserLoggedIn():Observable<boolean>
   {
   
-    return   <Observable<boolean>> this.httpClient.get("/verifysession");
+    return   <Observable<boolean>> this.httpClient.get(this.baseUrl+"verifysession");
   }
 
 
@@ -50,7 +50,7 @@ export class AuthService {
   login(userObj):Observable<boolean>
   {
   debugger;
-    return   <Observable<boolean>> this.httpClient.post(("/login"), userObj,this.httpOptions);
+    return   <Observable<boolean>> this.httpClient.post((this.baseUrl+"login"), userObj,this.httpOptions);
   }
 
 

@@ -5,6 +5,7 @@ import { LoginComponent } from './shared/auth/login.component';
 import * as $ from 'jquery';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
   CommonModule,
   LocationStrategy,
@@ -87,7 +88,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
-    }
+    },
   ],
   bootstrap: [AppComponent]
 })

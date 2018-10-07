@@ -1,0 +1,224 @@
+<!--<div style='width:50%'>
+  <br>
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="customFile">
+    <label class="custom-file-label" for="customFile">MSDS - Choose file</label>
+    <a href='google.co.il'>Open MSDS File</a>
+  </div>
+  <hr>
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="customFile">
+    <label class="custom-file-label" for="customFile">LICENCE - Choose file</label>
+    <a href='google.co.il'>Open Licence File</a>
+    <br>
+    <br>
+    <b>Exp:</b>
+    <input type='date' class="form-control">
+    <br>
+    <b>Number:</b>
+    <input type='text' class="form-control">
+  </div>
+  <hr>
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="customFile">
+    <label class="custom-file-label" for="customFile">Plate - Choose file</label>
+    <a href='google.co.il'>Open Plate File</a>
+  </div>
+  <hr>
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="customFile">
+    <label class="custom-file-label" for="customFile">LABEL - Choose file</label>
+    <a href='google.co.il'>Open Label File</a>
+  </div>
+  <hr>
+</div>-->
+<table class='table'>
+  <thead class='bg-info text-white'>
+    <tr>
+      <td></td>
+      <td>File</td>
+      <td>Expiration Date</td>
+      <td>Update Date</td>
+      <td>Update By</td>
+      <td>Upload File</td>
+      <td>Notification</td>
+      <td>Inform</td>
+    </tr>
+  </thead>
+  <tr>
+    <td>
+      MSDS
+    </td>
+    <td>
+      <a href='google.co.il'>Open</a>
+    </td>
+    <td>
+    </td>
+    <td>
+      <span>14/07/2018</span>
+    </td>
+    <td>
+      Sima
+    </td>
+    <td>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">MSDS - Choose file</label>
+      </div>
+    </td>
+    <td>
+      <img class='notification' src='../../../../assets/images/alert2.png'>
+    </td>
+    <td>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Licence
+    </td>
+    <td>
+      <a href='google.co.il'>Open</a>
+    </td>
+    <td>
+      <input type='date' class='form-control'>
+    </td>
+    <td>
+      <span>14/07/2018</span>
+    </td>
+    <td>
+      Sima
+    </td>
+    <td>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Licence - Choose file</label>
+      </div>
+    </td>
+    <td>
+      <img class='notification' src='../../../../assets/images/alert2.png'>
+    </td>
+    <td>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Plate
+    </td>
+    <td>
+      <a href='google.co.il'>Open</a>
+    </td>
+    <td>
+      <span><b>Status</b></span>&nbsp;&nbsp;<span>......</span>
+    </td>
+    <td>
+      <span>14/07/2018</span>
+    </td>
+    <td>
+      Sima
+    </td>
+    <td>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Plate - Choose file</label>
+      </div>
+    </td>
+    <td>
+      <img class='notification' src='../../../../assets/images/alert2.png'>
+    </td>
+    <td>
+      <button class='btn btn-danger'  (click)='notifyDialog("plate")'>Notifty</button>
+      <button class='btn btn-success' (click)='dismiss("plate")'>Dismiss</button>
+      <button class='btn btn-info'>Arrived</button><br>
+      <textarea rows='4' cols='50' class='form-control' *ngIf='plateText' style='margin-top: 20px'></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Label
+    </td>
+    <td>
+      <a href='google.co.il'>Open</a>
+    </td>
+    <td>
+        <span><b>Status</b></span>&nbsp;&nbsp;<span>......</span>
+    </td>
+    <td>
+      <span>14/07/2018</span>
+    </td>
+    <td>
+      Sima
+    </td>
+    <td>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Label - Choose file</label>
+      </div>
+    </td>
+    <td>
+      <img class='notification' src='../../../../assets/images/alert2.png'>
+    </td>
+    <td>
+      <button class='btn btn-danger'  (click)='notifyDialog("label")'>Notifty</button>
+      <button class='btn btn-success' (click)='dismiss("label")'>Dismiss</button><br>
+      <textarea rows='4' cols='50' class='form-control' *ngIf='labelText' style='margin-top: 20px'></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Word-Label
+    </td>
+    <td>
+      <a href='google.co.il'>Open</a>
+    </td>
+    <td>
+      <textarea rows='1' cols='50' class='form-control' #txt placeholder="Text (changes)"></textarea>
+    </td>
+    <td>
+      <span>14/07/2018</span>
+    </td>
+    <td>
+      Sima
+    </td>
+    <td>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Word-Label - Choose file</label>
+      </div>
+    </td>
+    <td>
+    </td>
+    <td>
+      <button class='btn btn-danger'  (click)='notify("wordLabel" ,txt.value)'>Notifty</button>
+      <button class='btn btn-success' (click)='dismiss("wordLabel")'>Dismiss</button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      COA
+    </td>
+    <td>
+      <a href='google.co.il'>Open</a>
+    </td>
+    <td>
+    </td>
+    <td>
+      <span>14/07/2018</span>
+    </td>
+    <td>
+      Sima
+    </td>
+    <td>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">COA - Choose file</label>
+      </div>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+  </tr>
+
+
+
+</table>

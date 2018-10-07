@@ -17,6 +17,8 @@ import { BatchesComponent } from './batches/batches.component';
 import {CostumersListComponent} from './costumers/costumers-list/costumers-list.component'
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
+import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
+import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -66,14 +68,15 @@ export const PeerPharmRputs: Routes =[
     data: {
       title: 'Item Tree' 
     },
-    component: ItemdetaisComponent
+    component: ItemDetailsTabComponent
   },
   {
     path: 'items/itemDetails/:itemNumber',
     data: {
       title: 'Item Tree' 
     },
-    component: ItemdetaisComponent
+   // component: ItemdetaisComponent
+    component: ItemDetailsTabComponent
   },
   {
     path: 'plates/plates',
