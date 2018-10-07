@@ -1,6 +1,9 @@
+import { Depatment } from './../../../models/depatment.model';
+import { TasksService } from '../../../services/tasks.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { trigger, state, animate, keyframes, style, transition } from '@angular/animations';
 import { TaskModel } from '../../../models/task-model';
+import { SubTaskModel } from '../../../models/subtask-model';
 
 @Component({
   selector: 'app-board-task-card',
@@ -23,10 +26,52 @@ export class TaskCardComponent   implements OnInit{
  
   @Input() task: TaskModel;
   @Input() tileName: string;
+  @Input() subTasksArr:SubTaskModel[];
+  depatments:Depatment[]=[];
+  taskUserPics:string[];
+  isClosed:boolean=true;
+ 
+  constructor(
+    private tasksService: TasksService 
+
+  ) { }
+
  
 
 
   ngOnInit(): void {
+  this.tasksService.getAllDepartments().subscribe(deps=>{  
+    deps.forEach(dep => {
+    
+      if(this.task.departments && this.task.departments.includes(dep._id))
+      {
+      
+        this.depatments.push(dep);
+      }
+    });
+ 
+  })
+
+
+
+
+  }
+
   
+  showTaskDetails(id ){
+
+    if(this.isClosed)
+    { 
+    this.tasksService.getSubTasks(id).subscribe(subTasks=>{  
+      this.subTasksArr = subTasks;
+      this.isClosed=false; 
+      
+    })
+  }
+  else{
+    this.subTasksArr =[];
+    this.isClosed=true;
+
+  }
   }
 }

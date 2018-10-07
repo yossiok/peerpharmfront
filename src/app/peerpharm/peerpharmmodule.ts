@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrdersService } from '../services/orders.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -64,7 +65,7 @@ import { AuthService } from '../services/auth.service';
     RouterModule.forChild(PeerPharmRputs),
     ReactiveFormsModule,
     JsonpModule, 
-    HttpClientModule,
+    HttpClientModule, 
     NgbModule,
     FormsModule,
     MatDialogModule,

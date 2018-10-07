@@ -5,6 +5,7 @@ import { BoardModel } from '../models/board-model';
 import { TaskModel } from '../models/task-model';
 import { SubTaskModel } from '../models/subtask-model'
 import * as moment from 'moment';
+import { HttpParams } from '@angular/common/http';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -15,6 +16,7 @@ export class TasksService {
   private baseUrl = 'http://localhost:3001/';
   private baseUrl2 = 'http://localhost/';
   private boardUrl = 'http://localhost/dep/';
+  private tasksUrl = 'http://localhost/tasks/';
   ///dep/sales/tasks
   //private taskUrl = 'http://localhost/tasks/';
   private addDepUrl = this.baseUrl2 + "dep/add/";
@@ -22,9 +24,9 @@ export class TasksService {
   // Resolve HTTP using the constructor
   constructor(private http: Http) { }
 
-  getBoardsByDepartments(departments:Array<string>): Observable<BoardModel[]> {
-    var str = departments.join(); 
-    let boardUrl=this.boardUrl+str;
+  getBoardsByDepartments(departments: Array<string>): Observable<BoardModel[]> {
+    var str = departments.join();
+    let boardUrl = this.boardUrl + str;
     return this.http.get(boardUrl)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
@@ -39,18 +41,18 @@ export class TasksService {
 
   getSubTasks(mainTaskId: string): Observable<SubTaskModel[]> {
     //const url = this.baseUrl2 + 'subtasks/&mainTaskId='+mainTaskId;
-    const url = this.baseUrl2 + 'subtasks/'+mainTaskId;
+    const url = this.baseUrl2 + 'subtasks/' + mainTaskId;
     console.log(url);
-      return this.http.get(url)
+    return this.http.get(url)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
-  updateTask(_id: string, list: string, boardid: string): any{
+  updateTask(_id: string, list: string, boardid: string): any {
 
     const url = this.boardUrl + boardid + '/tasks/' + _id;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return   this.http.post(url, JSON.stringify({ list: list }), options)
+    return this.http.post(url, JSON.stringify({ list: list }), options)
       .map((res: Response) => console.log(res.json()))
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
@@ -61,14 +63,14 @@ export class TasksService {
 
     var d = new Date(dueDate);
     //dueDate= moment(d).format("DDMMYYY");
-/*    const taskobj = {
-      'board': boardid,
-      'list': list,
-      'name': name,
-      'dueDate': d,
-      'priority': priority
-    } */
-    
+    /*    const taskobj = {
+          'board': boardid,
+          'list': list,
+          'name': name,
+          'dueDate': d,
+          'priority': priority
+        } */
+
 
     const taskobj = {
       'list': list,
@@ -89,9 +91,9 @@ export class TasksService {
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
-  createSubTask(mainTaskId: string, name: string, dueDate: Date, priority: string, depId: string, userId: string):  any {
+  createSubTask(mainTaskId: string, name: string, dueDate: Date, priority: string, depId: string, userId: string): any {
     const url = this.baseUrl2 + 'subtasks/add';
- 
+
     var d = new Date(dueDate);
 
     const subTaskObj = {
@@ -117,16 +119,16 @@ export class TasksService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
-    let updateObj= {
-        _id:mainTaskId, 
-        depId: depId, 
-        req: 'addDep'
+    let updateObj = {
+      _id: mainTaskId,
+      depId: depId,
+      req: 'addDep'
     }
     return this.http.post(url, JSON.stringify(updateObj), options)
       .map((res: Response) => console.log(res.json()))
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
-  createBoard(board: BoardModel): any{
+  createBoard(board: BoardModel): any {
     console.log('post');
     console.log(board);
     const url = this.addDepUrl;
@@ -134,7 +136,27 @@ export class TasksService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.post(url, JSON.stringify(board), options)
-      .map((res: Response) => {  console.log(res.json) })
+      .map((res: Response) => { console.log(res.json) })
+      .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
+  }
+
+  getAvatarImagesByUserId(userId: string): any {
+ 
+    const url = this.tasksUrl + 'getAvatarsByUserId?id='+userId;
+    return this.http.get(url)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
+  }
+
+
+
+  
+  getAllDepartments( ): any {
+ 
+    const url = this.tasksUrl + 'getAllDepartments';
+      
+    return this.http.get(url )
+      .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 

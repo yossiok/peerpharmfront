@@ -80,6 +80,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatSnackBar,
     OVERLAY_PROVIDERS,
    // AmplifyService,
+   MatSnackBar,
+   OVERLAY_PROVIDERS,
+
     AuthService,HttpClientModule,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

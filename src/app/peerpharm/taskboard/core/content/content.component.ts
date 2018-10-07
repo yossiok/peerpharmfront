@@ -37,11 +37,11 @@ export class ContentComponent implements OnInit {
   
 
   getBoardsByPermissions() {
-    debugger;
+
     this.taskService.getBoardsByDepartments(this.authService.loggedInUser.userDepartments)
     .subscribe(
       boards => {
-        debugger;
+
         this.boards = boards; 
 
  setTimeout(()=>      this.tabGroup.selectedIndex = 0, 300);
