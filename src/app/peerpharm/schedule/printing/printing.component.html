@@ -9,7 +9,6 @@
   <table class='table'>
       <thead class='bg-info text-white'>
     <tr align='center'>
-        <th></th>
         <th><b>P</b></th>
         <th><b>Order</b></th>
         <th><b>Item N</b></th>
@@ -30,7 +29,6 @@
     </thead>
     
     <tr id='inputTr'>
-       <td></td>
        <td></td>
        <td><input   [(ngModel)]="scheduleLine.orderN" style='width:60px' onfocusout="setCostumer()"></td>
        <td><input   [(ngModel)]="scheduleLine.itemN"  style='width:90px' onfocusout="setItemDetails()"></td>
@@ -68,22 +66,24 @@
           <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.orderN}}</td>
           <td *ngIf="line._id===EditRowId"><input #orderN type='text' [value]="line.orderN"  style='width:50px'></td>
           <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.itemN}}</td>
-          <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.item"  style='width:50px'></td>
+          <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.itemN"  style='width:50px'></td>
           <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
           <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer"  style='width:50px'></td>
+          <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.cmptN}}</td>
+          <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.cmptN"  style='width:110px'></td>
           <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.cmptName}}</td>
-          <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.productName"  style='width:110px'></td>
+          <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.cmptName"  style='width:110px'></td>
           <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.color}}</td>
-          <td *ngIf="line._id===EditRowId"><input #batch type='text' [value]="line.batch"  style='width:110px'></td>
-          <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.nextStation}}</td>
-          <td *ngIf="line._id===EditRowId"><input #packageP type='text' [value]="line.packageP"  style='width:50px'></td>
+          <td *ngIf="line._id===EditRowId"><input #batch type='text' [value]="line.color"  style='width:110px'></td>
           <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.qty}}</td>
           <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty"  style='width:50px'></td>
-          <td></td>
+          <td>{{line.qtyProduced}}</td>
   
           
           <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.date}}</td>
           <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date3"  style='width:140px'></td>
+          <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.nextStation}}</td>
+          <td *ngIf="line._id===EditRowId"><input #packageP type='text' [value]="line.nextStation"  style='width:50px'></td>
   
   
           <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.marks}}</td>
@@ -92,8 +92,11 @@
           <td *ngIf="line._id===EditRowId"><input #shift type='text' [value]="line.shift"  style='width:50px'></td>
           <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.block}}</td>
           <td *ngIf="line._id===EditRowId"><input #mkp type='text' [value]="line.mkp"  style='width:50px'></td>
-          <td *ngIf="line._id!==EditRowId"><img src='assets/images/deleteBtn.png' class='btnImg' style='width:10px;height: 10px'> <img  style='width:10px;height: 10px' src='assets/images/aprroved.png' (click)='setDone()' class='btnImg'></td>
-          <td *ngIf="line._id===EditRowId"><img src='assets/images/update2.png' (click)="updateSchedule()" class='btnImg' style='width:10px;height: 10px'></td>
+          <td *ngIf="line._id!==EditRowId">
+             <img src='assets/images/deleteBtn.png' class='btnImg' style='width:30px;height: 30px'>
+             <img  style='width:30px;height: 30px' src='assets/images/aprroved.png' (click)='setDone(line._id)' class='btnImg'>
+            </td>
+          <td *ngIf="line._id===EditRowId"><img src='assets/images/update2.png' (click)="updateSchedule()" class='btnImg' style='width:30px;height: 30px'></td>
   
       </tr>
   </tbody>

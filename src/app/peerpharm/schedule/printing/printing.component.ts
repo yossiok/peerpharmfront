@@ -126,11 +126,32 @@
       shift:this.shift.nativeElement.value,
       mkp:this.mkp.nativeElement.value
     }
-    this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
+    console.log(scheduleToUpdate);
+    this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
   
   }
   
-  setDone(){
+  setDone(id){
+    let today = new Date();
+    //var _dt2 = new Date(today);
+    //today = [_dt2.getDate(), _dt2.getMonth() + 1, _dt2.getFullYear()].join('/');
+    var amountPrinted = prompt("Enter Amount Printed", "");
+    var amountPckgs = prompt("Enter Amount pf packages", "");  //for print sticker later
+    if (amountPrinted == null || amountPrinted == "" || amountPckgs == null || amountPckgs == "") {
+    }else {
+      console.log(amountPckgs + " , " + amountPrinted);
+    }
+    var tempItem, tempOrderN, itemRemarks = "";
+    var a = confirm("Print process is done ?");
+    if (a == true) {
+      let scheduleToUpdate={
+        scheduleId:id,
+        qtyProduced:amountPrinted,
+        status:'print'
+      }
+      console.log(scheduleToUpdate);
+      this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
+    }
   }
   
   }

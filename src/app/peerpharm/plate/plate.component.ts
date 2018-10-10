@@ -9,13 +9,14 @@ import { PlateService } from '../../services/plate.service'
 export class PlateComponent implements OnInit {
   showPlateData;
   plates: any[];
-  plate: {
+  plate= {
     palletNumber: '',
-    palletItemName:'' ,
-    palletItemBrand:'' ,
-    palletImg:'' ,
-    palleRemarks:'' ,
+    palletItemName: '',
+    palletItemBrand: '',
+    palletImg: '',
+    palletRemarks: '',
     lastUpdate: '',
+    lastUpdateUser: ''
   };
   constructor(private plateService: PlateService) { }
 
@@ -34,9 +35,11 @@ export class PlateComponent implements OnInit {
   showPlate(plate) {
     console.log(this.plates.find(res => res == plate));
     this.showPlateData = this.plates.find(res => res == plate);
+    this.plate= this.showPlateData;
   }
 
   addNewPallet() {
-
+    console.log(this.plate);
+    this.plateService.addNewPlate(this.plate).subscribe(res=>console.log(res));
   }
 }

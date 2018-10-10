@@ -12,7 +12,7 @@ export class OrdersService {
   
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private baseUrl = 'http://localhost/';
+  private baseUrl = '/';
 
   arr:any=[];
   private orderSrc = new BehaviorSubject<Array<string>>([]);

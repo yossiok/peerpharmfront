@@ -6,14 +6,14 @@
 <table class='table' >
   <thead class='bg-info text-white'>
     <tr >
-        <th> #</th><th *ngIf="multi==true">Order Number</th><th>Item Number	</th> <th>Description		</th> <th>Volume	</th> <th>Quantity		</th> <th>Weight		</th> <th>Remarks		</th><th></th>
+        <th> #</th><th *ngIf="multi==true">Order Number</th><th>Item Number	</th> <th>Description		</th> <th>Volume	</th> <th>Quantity		</th> <th>Weight		</th> <th>Remarks		</th><th>Status</th><th></th>
     </tr>
     </thead>
       
   <tbody>
     <tr *ngIf="multi==false">
         
-         <td></td><td><input class="form-control form-control-sm" [(ngModel)]="itemData.itemNumber"></td> <td><input class="form-control form-control-sm" [(ngModel)]="itemData.discription" style='width:350px'  class="form-control form-control-sm"></td> <td><input type="text"  class="form-control form-control-sm" [(ngModel)]="itemData.unitMeasure"></td> <td><input [(ngModel)]="itemData.quantity"  class="form-control form-control-sm"></td> <td><input  class="form-control form-control-sm" [(ngModel)]="itemData.qtyKg"></td> <td><input #type  class="form-control form-control-sm"></td><td><button (click)="addItemOrder()" class='btn btn-success'>Add</button></td>
+         <td></td><td><input class="form-control form-control-sm" [(ngModel)]="itemData.itemNumber"></td> <td><input class="form-control form-control-sm" [(ngModel)]="itemData.discription" style='width:350px'  class="form-control form-control-sm"></td> <td><input type="text"  class="form-control form-control-sm" [(ngModel)]="itemData.unitMeasure"></td> <td><input [(ngModel)]="itemData.quantity"  class="form-control form-control-sm"></td> <td><input  class="form-control form-control-sm" [(ngModel)]="itemData.qtyKg"></td> <td><input #type  class="form-control form-control-sm"></td><td></td><td><button (click)="addItemOrder()" class='btn btn-success'>Add</button></td>
     
       </tr>  
   <tr>
@@ -38,6 +38,7 @@
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td>
           <td *ngIf="item._id===EditRowId"><input  #itemRemarks type='text' [value]=item.itemRemarks   style='width:130px'/></td>
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
+          <td>{{item.status}}</td>
           <td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>
           <td ></td>
       </tr>

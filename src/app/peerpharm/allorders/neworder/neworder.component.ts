@@ -12,7 +12,7 @@ export class NeworderComponent implements OnInit {
   orderForm:FormGroup;
   orderNumber:string;
   orderId:string;
-  itemName:string;
+  itemName:String;
   volume:Number;
   lastOrderNumber:Number;
   items:any[]=[];
@@ -60,6 +60,9 @@ export class NeworderComponent implements OnInit {
 
   addNewItemOrder(post){
     console.log(post);
+    // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
+    if(post.discription==null || post.discription!=this.itemName) post.discription=this.itemName;
+    if(post.unitmeasure==null   || post.unitmeasure!=this.volume) post.unitmeasure=this.volume;
     let newOrderItemObj={
       itemNumber: post.itemN,
       discription:post.discription,
@@ -74,6 +77,7 @@ export class NeworderComponent implements OnInit {
       orderNumber:this.orderNumber
     }
     console.log(newOrderItemObj);
+    this.orderItemForm.reset();1
     this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res=>this.items.push(res));
   //  orderId:this.orderId
   }

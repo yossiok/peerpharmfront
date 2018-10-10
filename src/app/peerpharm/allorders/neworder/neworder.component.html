@@ -1,158 +1,135 @@
 <p>
-  neworder works!
-</p>
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Order Assigning</h4>
-            </div>
-            <hr>
-            <form class="form-horizontal" [formGroup]="orderForm"  (ngSubmit)='addNewOrder(orderForm.value)'>
-                <div class="card-body" *ngIf="!submited">
-                    <h4 class="card-title">Order Info</h4>
-
-                    <div class="form-group row">
-                        <label for="lname" class="col-sm-3 text-right control-label col-form-label">Costumer</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="email1" class="col-sm-3 text-right control-label col-form-label">Date of order</label>
-                        <div class="col-sm-9">
-                            <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate" >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
-                        <div class="col-sm-9">
-                            <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 text-right control-label col-form-label">Type</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" formControlName="type">
-                                <option>Cosmetic</option>
-                                <option>Make Up</option>
-                                <option>Cosmetic & MakeUp</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group m-b-0 text-right">
-                            <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
-                            <button type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-            </form>
-        </div>
-    </div>
-</div>
-<!--
-<form [formGroup]="orderForm" (ngSubmit)='addNewOrder(orderForm.value)'>
-<table class="table">
-  <tr>
-      <th>Order Number	</th> <th>Costumer		</th> <th>Date of order		</th> <th>Delivery date		</th> <th>Remarks		</th> <th>Type		</th>
-  </tr>
-  <tr>
-      <td><input  formControlName="orderN"></td> <td><input formControlName="costumer"></td> <td><input type="date" formControlName="orderdate"></td> <td><input type="date" formControlName="delivery"></td> <td><input formControlName="remarks"></td> <td><input #type></td>
-  </tr>
-</table>
-<input type="submit" class="button expanded" value="Submit Form">
-</form> 
-<form [formGroup]="orderForm" (ngSubmit)='addNewOrder(orderForm.value)'>
-  <table class="table col-mid-6 bg-info text-white">
-    <tr>
-      <td>Order Number</td><td><input  formControlName="orderN"></td>
-    </tr>
-    <tr>
-      <td>Costumer</td><td><input formControlName="costumer"></td>
-    </tr>
-    <tr>
-      <td>Date of order</td><td><input formControlName="orderdate" type="date"></td>
-    </tr>
-    <tr>
-      <td>Delivery date	</td><td><input formControlName="delivery" type="date"></td>
-    </tr>
-    <tr>
-      <td>Remarks	</td><td><input formControlName="remarks"></td>
-    </tr>
-    <tr>
-      <td>type</td><td><input></td>
-    </tr>
+    neworder works!
+  </p>
+  <div class="row">
+      <div class="col-12">
+          <div class="card">
+              <div class="card-body">
+                  <h4 class="card-title">Order Assigning</h4>
+              </div>
+              <hr>
+              <form class="form-horizontal" [formGroup]="orderForm"  (ngSubmit)='addNewOrder(orderForm.value)'>
+                  <div class="card-body" *ngIf="!submited">
+                      <h4 class="card-title">Order Info</h4>
+  
+                      <div class="form-group row">
+                          <label for="lname" class="col-sm-3 text-right control-label col-form-label">Costumer</label>
+                          <div class="col-sm-9">
+                              <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="email1" class="col-sm-3 text-right control-label col-form-label">Date of order</label>
+                          <div class="col-sm-9">
+                              <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate" >
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
+                          <div class="col-sm-9">
+                              <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
+                          <div class="col-sm-9">
+                              <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label class="col-sm-3 text-right control-label col-form-label">Type</label>
+                          <div class="col-sm-9">
+                              <select class="form-control" formControlName="type">
+                                  <option>Cosmetic</option>
+                                  <option>Make Up</option>
+                                  <option>Cosmetic & MakeUp</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="card-body">
+                          <div class="form-group m-b-0 text-right">
+                              <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
+                              <button type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
+                          </div>
+                      </div>
+                  </div>
+                  <hr>
+              </form>
+          </div>
+      </div>
+  </div>
+  
+  <div class="row"   *ngIf="submited">
+      <div class="col-12">
+          <div class="card">
+              <div class="card-body">
+                  <h4 class="card-title">Items Assigning</h4>
+              </div>
+              <hr>
+  <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)' >
+  
+    <table>
+      <thead>
+      <tr>
+        <th>Row</th><th>Item Number	</th><th>Discription	</th><th>Unit/measure	</th><th>Quantity</th><th>Weight</th><th>Remarks</th><th>Type</th><th></th>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input formControlName="itemN" #itemN  (focusout)="searchItem(itemN.value)"  class="form-control" ></td><td><input formControlName="discription"  class="form-control"  ([value])="itemName" style='width:370px'></td><td><input formControlName="unitmeasure"  class="form-control"  ([value])="volume"></td><td><input formControlName="quantity"  class="form-control" ></td>
+        <td><input   class="form-control"  formControlName="qtyKg"></td><td><input  class="form-control"  formControlName="remarks"></td><td></td>
+        <td><input type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items; let i = index">
+        <td>{{i+1}}</td><td>{{item.itemNumber}}</td><td>{{item.discription}}</td><td>{{item.unitMeasure}}</td><td>{{item.quantity}}</td>
+        <td>{{item.qtyKg}}</td><td></td><td></td>
+      </tr>
+    </tbody>
     </table>
-
-</form>
--->
-<form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)' >
-
-  <table>
-    <thead>
-    <tr>
-      <th>Row</th><th>Item Number	</th><th>Discription	</th><th>Unit/measure	</th><th>Quantity</th><th>Weight</th><th>Remarks</th><th>Type</th><th></th>
-    </tr>
-    <tr>
-      <td></td>
-      <td><input formControlName="itemN" #itemN  (focusout)="searchItem(itemN.value)"></td><td><input formControlName="discription"  [value]="itemName" style='width:370px'></td><td><input formControlName="unitmeasure" [value]="volume"></td><td><input formControlName="quantity"></td>
-      <td><input formControlName="qtyKg"></td><td><input formControlName="remarks"></td><td></td><td><input type="submit" class="button expanded" value="Submit Form"></td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of items; let i = index">
-      <td>{{i+1}}</td><td>{{item.itemNumber}}</td><td>{{item.discription}}</td><td>{{item.unitMeasure}}</td><td>{{item.quantity}}</td>
-      <td>{{item.qtyKg}}</td><td></td><td></td>
-    </tr>
-  </tbody>
-  </table>
-
-</form>
-<!--
-
-
-
-<form [formGroup]="rForm" (ngSubmit)="addPost(rForm.value)">
-    <div *ngIf="!name; else forminfo">
-        <form [formGroup]="rForm" (ngSubmit)="addPost(rForm.value)">
+  
+  </form>
+  <br>
+  </div>
+  </div>
+  </div>
+  <!--
+  
+  
+  
+  <form [formGroup]="rForm" (ngSubmit)="addPost(rForm.value)">
+      <div *ngIf="!name; else forminfo">
+          <form [formGroup]="rForm" (ngSubmit)="addPost(rForm.value)">
+            <div class="form-container">
+              <div class="row columns">
+                <h1>My Reactive Form</h1>
+                <label>Name
+                  <input type="text" formControlName="name">
+                </label>
+        
+                <label>Description
+                  <textarea  formControlName="description"></textarea>
+                </label>
+        
+                <label for="validate">Minimum of 3 Characters</label>
+                <input type="checkbox" name="validate" formControlName="validate" value="1"> On
+                
+                <input type="submit" class="button expanded" value="Submit Form" [disabled]="!rForm.valid">
+              </div>
+            </div>
+          </form>
+        </div>
+        
+  <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{ titleAlert }}</div>
+  
+  <div class="alert" *ngIf="!rForm.controls['description'].valid && rForm.controls['description'].touched">You must specify a description that's between 30 and 500 characters.</div>
+        <ng-template #forminfo>
           <div class="form-container">
             <div class="row columns">
-              <h1>My Reactive Form</h1>
-              <label>Name
-                <input type="text" formControlName="name">
-              </label>
-      
-              <label>Description
-                <textarea  formControlName="description"></textarea>
-              </label>
-      
-              <label for="validate">Minimum of 3 Characters</label>
-              <input type="checkbox" name="validate" formControlName="validate" value="1"> On
-              
-              <input type="submit" class="button expanded" value="Submit Form" [disabled]="!rForm.valid">
+                <h1>{{ name }}</h1>
+        
+                <p>{{ description }}</p>
             </div>
           </div>
-        </form>
-      </div>
-      
-<div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{ titleAlert }}</div>
-
-<div class="alert" *ngIf="!rForm.controls['description'].valid && rForm.controls['description'].touched">You must specify a description that's between 30 and 500 characters.</div>
-      <ng-template #forminfo>
-        <div class="form-container">
-          <div class="row columns">
-              <h1>{{ name }}</h1>
-      
-              <p>{{ description }}</p>
-          </div>
-        </div>
-      </ng-template>
--->
+        </ng-template>
+  -->
