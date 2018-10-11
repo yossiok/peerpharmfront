@@ -65,7 +65,7 @@ export class PlateComponent implements OnInit {
     this.progress.percentage = 0;
 
     this.currentFileUpload = this.selectedFiles.item(0);
-    this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
+    this.uploadService.pushFileToStorage(this.currentFileUpload,"", "").subscribe(event => {
       console.log(event);
       
       if (event.type === HttpEventType.UploadProgress) {

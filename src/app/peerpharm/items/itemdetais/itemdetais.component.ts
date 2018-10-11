@@ -101,6 +101,13 @@ export class ItemdetaisComponent implements OnInit {
 
     goddetShape:'',
 
+    msdsFileLink:'',
+    licenceFileLink:'',
+    plateFileLink:'',
+    labelFileLink:'',
+    wordLabelFileLink:'',
+    coaFileLink:'',
+
   }
   constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2) {
 

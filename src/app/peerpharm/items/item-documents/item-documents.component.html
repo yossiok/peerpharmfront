@@ -1,37 +1,4 @@
-<!--<div style='width:50%'>
-  <br>
-  <div class="custom-file">
-    <input type="file" class="custom-file-input" id="customFile">
-    <label class="custom-file-label" for="customFile">MSDS - Choose file</label>
-    <a href='google.co.il'>Open MSDS File</a>
-  </div>
-  <hr>
-  <div class="custom-file">
-    <input type="file" class="custom-file-input" id="customFile">
-    <label class="custom-file-label" for="customFile">LICENCE - Choose file</label>
-    <a href='google.co.il'>Open Licence File</a>
-    <br>
-    <br>
-    <b>Exp:</b>
-    <input type='date' class="form-control">
-    <br>
-    <b>Number:</b>
-    <input type='text' class="form-control">
-  </div>
-  <hr>
-  <div class="custom-file">
-    <input type="file" class="custom-file-input" id="customFile">
-    <label class="custom-file-label" for="customFile">Plate - Choose file</label>
-    <a href='google.co.il'>Open Plate File</a>
-  </div>
-  <hr>
-  <div class="custom-file">
-    <input type="file" class="custom-file-input" id="customFile">
-    <label class="custom-file-label" for="customFile">LABEL - Choose file</label>
-    <a href='google.co.il'>Open Label File</a>
-  </div>
-  <hr>
-</div>-->
+
 <table class='table'>
   <thead class='bg-info text-white'>
     <tr>
@@ -50,7 +17,7 @@
       MSDS
     </td>
     <td>
-      <a href='google.co.il'>Open</a>
+      <a href='{{item.msdsFileLink}}'  target="_blank">Open</a>
     </td>
     <td>
     </td>
@@ -58,16 +25,17 @@
       <span>14/07/2018</span>
     </td>
     <td>
-      Sima
+      Sima 
     </td>
     <td>
-      <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
-        <label class="custom-file-label" for="customFile">MSDS - Choose file</label>
+      <div class="custom-file" >
+        <input type="file" class="custom-file-input" id="customFile"  (change)="selectFile($event, 'msds')">
+        <label class="custom-file-label" for="customFile" style='display: inline-flex'>MSDS - Choose file </label>
+        <button class="btn" [disabled]="!selectedFiles" (click)="upload('msds')" *ngIf='msdsFile' >Upload</button>
       </div>
     </td>
     <td>
-      <img class='notification' src='../../../../assets/images/alert2.png'>
+      <img class='notification' *ngIf='item.msdsFileLink==null || item.msdsFileLink=="" ' src='../../../../assets/images/alert2.png'>
     </td>
     <td>
     </td>
@@ -90,12 +58,13 @@
     </td>
     <td>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
+        <input type="file" class="custom-file-input" id="customFile"   (change)="selectFile($event, 'licence')">
         <label class="custom-file-label" for="customFile">Licence - Choose file</label>
+        <button class="btn" [disabled]="!selectedFiles" (click)="upload('licence')" *ngIf='licenceFile'>Upload</button>
       </div>
     </td>
     <td>
-      <img class='notification' src='../../../../assets/images/alert2.png'>
+      <img class='notification' *ngIf=' item.licenceFileLink==null || item.licenceFileLink=="" '  src='../../../../assets/images/alert2.png'> 
     </td>
     <td>
     </td>
@@ -118,8 +87,9 @@
     </td>
     <td>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
+        <input type="file" class="custom-file-input" id="customFile"  (change)="selectFile($event, 'plate')">
         <label class="custom-file-label" for="customFile">Plate - Choose file</label>
+        <button class="btn" [disabled]="!selectedFiles" (click)="upload('plate')" *ngIf='plateFile'>Upload</button>
       </div>
     </td>
     <td>
@@ -150,8 +120,9 @@
     </td>
     <td>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
+        <input type="file" class="custom-file-input" id="customFile"   (change)="selectFile($event, 'label')">
         <label class="custom-file-label" for="customFile">Label - Choose file</label>
+        <button class="btn" [disabled]="!selectedFiles" (click)="upload('label')" *ngIf='labelFile' >Upload</button>
       </div>
     </td>
     <td>
@@ -181,8 +152,9 @@
     </td>
     <td>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
+        <input type="file" class="custom-file-input" id="customFile"  (change)="selectFile($event, 'wordlabel')">
         <label class="custom-file-label" for="customFile">Word-Label - Choose file</label>
+        <button class="btn" [disabled]="!selectedFiles" (click)="upload('wordlabel')" *ngIf='wordlabelFile' >Upload</button>
       </div>
     </td>
     <td>
@@ -209,8 +181,9 @@
     </td>
     <td>
       <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
+        <input type="file" class="custom-file-input" id="customFile"  (change)="selectFile($event, 'coa')">
         <label class="custom-file-label" for="customFile">COA - Choose file</label>
+        <button class="btn" [disabled]="!selectedFiles" (click)="upload('coa')" *ngIf='coaFile' >Upload</button>
       </div>
     </td>
     <td>
@@ -222,3 +195,5 @@
 
 
 </table>
+
+   
