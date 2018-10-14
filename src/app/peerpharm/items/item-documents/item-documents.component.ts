@@ -3,6 +3,8 @@ import { ItemsService } from '../../../services/items.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpEventType } from '@angular/common/http';
 import { UploadFileService } from '../../../services/helpers/upload-file.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-item-documents',
@@ -22,7 +24,8 @@ export class ItemDocumentsComponent implements OnInit {
 
   
   item: any = {};
-  constructor(private itemsService: ItemsService, private route: ActivatedRoute, private uploadService: UploadFileService) { }
+  itemDocLock;
+  constructor(private itemsService: ItemsService, private route: ActivatedRoute, private uploadService: UploadFileService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getItemData();
@@ -118,10 +121,16 @@ export class ItemDocumentsComponent implements OnInit {
       } else if (event instanceof HttpResponse) {
         console.log('File is completely uploaded!');
         console.log(event.body);
-
+        this.showSuccess();
       }
     });
 
     this.selectedFiles = undefined;
   }
+
+
+  showSuccess() {
+    this.toastr.success('Hello world!', 'Toastr fun!');
+  }
+
 }

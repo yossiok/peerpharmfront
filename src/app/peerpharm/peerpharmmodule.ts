@@ -29,6 +29,7 @@ import { FormdetailsComponent } from './forms/formdetails/formdetails.component'
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 
+import { ToastrModule } from 'ngx-toastr';
 import {MatSelectModule} from '@angular/material/select';
 import {
   MatDialogModule,
@@ -82,6 +83,7 @@ import { AuthService } from '../services/auth.service';
     MatDatepickerModule,
     MatNativeDateModule, 
     MatSelectModule,
+    ToastrModule.forRoot(),
     DndModule.forRoot(),
     DatepickerModule,
     Ng2FilterPipeModule , HttpClientModule
