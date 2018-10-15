@@ -77,7 +77,7 @@
       <a href='google.co.il'>Open</a>
     </td>
     <td>
-      <span><b>Status</b></span>&nbsp;&nbsp;<span>......</span>
+      <span><b>Status</b></span>&nbsp;&nbsp;<span>{{item.plateStatus}}</span>
     </td>
     <td>
       <span>14/07/2018</span>
@@ -93,13 +93,16 @@
       </div>
     </td>
     <td>
-      <img class='notification' src='../../../../assets/images/alert2.png'>
+    <img class='notification' *ngIf='item.plateNotifaction=="notifiy"' src='../../../../assets/images/alert2.png'>
     </td>
     <td>
       <button class='btn btn-danger'  (click)='notifyDialog("plate")'>Notifty</button>
       <button class='btn btn-success' (click)='dismiss("plate")'>Dismiss</button>
       <button class='btn btn-info'>Arrived</button><br>
-      <textarea rows='4' cols='50' class='form-control' *ngIf='plateText' style='margin-top: 20px'></textarea>
+      <div  *ngIf='plateText'>
+      <textarea rows='4' cols='50' class='form-control' #textPlate style='margin-top: 20px'></textarea>
+      <button class='btn btn-info' (click)="notify('plate', textPlate.value)">Update</button>
+    </div>
     </td>
   </tr>
   <tr>
@@ -110,7 +113,7 @@
       <a href='google.co.il'>Open</a>
     </td>
     <td>
-        <span><b>Status</b></span>&nbsp;&nbsp;<span>......</span>
+        <span><b>Status</b></span>&nbsp;&nbsp;<span>{{item.labelStatus}}</span>
     </td>
     <td>
       <span>14/07/2018</span>
@@ -126,12 +129,15 @@
       </div>
     </td>
     <td>
-      <img class='notification' src='../../../../assets/images/alert2.png'>
+      <img class='notification' *ngIf='item.labelNotifaction=="notifiy"' src='../../../../assets/images/alert2.png'>
     </td>
     <td>
       <button class='btn btn-danger'  (click)='notifyDialog("label")'>Notifty</button>
       <button class='btn btn-success' (click)='dismiss("label")'>Dismiss</button><br>
-      <textarea rows='4' cols='50' class='form-control' *ngIf='labelText' style='margin-top: 20px'></textarea>
+      <div *ngIf='labelText'>
+        <textarea rows='4' cols='50' class='form-control'   #txtlabel style='margin-top: 20px'></textarea>
+        <button class='btn btn-info'  (click)='notify("label" ,txtlabel.value)'>Update</button>
+      </div>
     </td>
   </tr>
   <tr>
@@ -142,7 +148,7 @@
       <a href='google.co.il'>Open</a>
     </td>
     <td>
-      <textarea rows='1' cols='50' class='form-control' #txt placeholder="Text (changes)"></textarea>
+      <textarea rows='1' cols='50' class='form-control' #txt placeholder="Text (changes)" [value]="item.wordLabelChangeText"></textarea>
     </td>
     <td>
       <span>14/07/2018</span>

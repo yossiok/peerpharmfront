@@ -22,7 +22,9 @@ export class ItemDocumentsComponent implements OnInit {
   labelText: boolean = false;
   plateText: boolean = false;
 
-  
+  labelStatus:string = '';
+  plateStatus:string = '';
+
   item: any = {};
   itemDocLock;
   constructor(private itemsService: ItemsService, private route: ActivatedRoute, private uploadService: UploadFileService, private toastr: ToastrService) { }
@@ -45,115 +47,134 @@ export class ItemDocumentsComponent implements OnInit {
     if (src == 'plate') { this.plateText = true; this.labelText = false; }
     else if (src == 'label') { this.plateText = false; this.labelText = true; }
   }
-  
+
   notify(src, txt) {
     console.log(src, txt);
     const number = this.route.snapshot.paramMap.get('itemNumber');
+    let docObj={};
     if (src == 'wordLabel') {
-      let docObj = {
+      docObj = {
         itemNumber: number,
         wordLabelChangeText: txt,
         plateNotifaction: "notifiy",
         labelNotifaction: "notifiy",
       }
-      console.log(docObj);
-      this.itemsService.updateDocuments(docObj).subscribe(res => console.log(res));
     }
-  }
-
-  dismiss(src) {
-    if (src == 'plate' || src == 'label') { this.plateText = false; this.labelText = false; }
-    const number = this.route.snapshot.paramMap.get('itemNumber');
-    let typeTochange = src + "Notifaction";
-    let docObj = {
-      itemNumber: number,
-      [typeTochange]: 'dismiss'
+    if (src == 'label') {
+      docObj = {
+        itemNumber: number,
+        labelStatus: txt,
+        plateNotifaction: "clear",
+        labelNotifaction: "clear"
+      }
+      this.labelText=false;
     }
+    if (src == 'plate') {
+      docObj = {
+        itemNumber: number,
+        plateStatus: txt,
+        plateNotifaction: "clear",
+        labelNotifaction: "clear"
+      }
+      this.plateText=false;
+    }
+    console.log(docObj);
     this.itemsService.updateDocuments(docObj).subscribe(res => console.log(res));
   }
-  selectedFiles: FileList;
-  currentFileUpload: File;
-  progress: { percentage: number } = { percentage: 0 };
-  docPath;
 
-  selectFile(event, src) {
-    switch (src) {
-      case 'msds':
-        this.msdsFile = true;
-        break;
-      case 'licence':
-        this.licenceFile = true;
-        break;
-      case 'plate':
-        this.plateFile = true;
-        break;
-      case 'label':
-        this.labelFile = true;
-        break;
-      case 'wordlabel':
-        this.wordlabelFile = true;
-        break;
-      case 'coa':
-        this.coaFile = true;
-        break;
-      default:
-        break;
-    }
-    console.log(event.target.value);
-    let path = event.target.value;
-    let indexFileName = path.lastIndexOf("\\") + 1;
-    console.log(indexFileName);
-    let fileName = path.substring(indexFileName, 999);
-    this.docPath = fileName;
-    console.log(fileName);
-    this.selectedFiles = event.target.files;
+dismiss(src) {
+  if (src == 'plate' || src == 'label') { this.plateText = false; this.labelText = false; }
+  const number = this.route.snapshot.paramMap.get('itemNumber');
+  let typeTochange = src + "Notifaction";
+  let docObj = {
+    itemNumber: number,
+    [typeTochange]: 'clear'
   }
-
-  upload(src) {
-
-    const number = this.route.snapshot.paramMap.get('itemNumber');
-    this.progress.percentage = 0;
-    this.currentFileUpload = this.selectedFiles.item(0);
-    this.uploadService.pushFileToStorage(this.currentFileUpload, src, number).subscribe(event => {
-      console.log(event);
-
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round(100 * event.loaded / event.total);
-      } else if (event instanceof HttpResponse) {
-        console.log('File is completely uploaded!');
-        console.log(event.body);
-        this.showSuccess();
-        switch (src) {
-          case 'msds':
-            this.msdsFile = false;
-            break;
-          case 'licence':
-            this.licenceFile = false;
-            break;
-          case 'plate':
-            this.plateFile = false;
-            break;
-          case 'label':
-            this.labelFile = false;
-            break;
-          case 'wordlabel':
-            this.wordlabelFile = false;
-            break;
-          case 'coa':
-            this.coaFile = false;
-            break;
-          default:
-            break;
-        }
-      }
-    });
-
-    this.selectedFiles = undefined;
-  }
-
-
-  showSuccess() {
-    this.toastr.info('Hello world!', 'Toastr fun!');
-  }
-
+  this.itemsService.updateDocuments(docObj).subscribe(res => console.log(res));
 }
+selectedFiles: FileList;
+currentFileUpload: File;
+progress: { percentage: number } = { percentage: 0 };
+docPath;
+
+selectFile(event, src) {
+  switch (src) {
+    case 'msds':
+      this.msdsFile = true;
+      break;
+    case 'licence':
+      this.licenceFile = true;
+      break;
+    case 'plate':
+      this.plateFile = true;
+      break;
+    case 'label':
+      this.labelFile = true;
+      break;
+    case 'wordlabel':
+      this.wordlabelFile = true;
+      break;
+    case 'coa':
+      this.coaFile = true;
+      break;
+    default:
+      break;
+  }
+  console.log(event.target.value);
+  let path = event.target.value;
+  let indexFileName = path.lastIndexOf("\\") + 1;
+  console.log(indexFileName);
+  let fileName = path.substring(indexFileName, 999);
+  this.docPath = fileName;
+  console.log(fileName);
+  this.selectedFiles = event.target.files;
+}
+
+upload(src) {
+
+  const number = this.route.snapshot.paramMap.get('itemNumber');
+  this.progress.percentage = 0;
+  this.currentFileUpload = this.selectedFiles.item(0);
+  this.uploadService.pushFileToStorage(this.currentFileUpload, src, number).subscribe(event => {
+    console.log(event);
+
+    if (event.type === HttpEventType.UploadProgress) {
+      this.progress.percentage = Math.round(100 * event.loaded / event.total);
+    } else if (event instanceof HttpResponse) {
+      console.log('File is completely uploaded!');
+      console.log(event.body);
+      this.showSuccess();
+      switch (src) {
+        case 'msds':
+          this.msdsFile = false;
+          break;
+        case 'licence':
+          this.licenceFile = false;
+          break;
+        case 'plate':
+          this.plateFile = false;
+          break;
+        case 'label':
+          this.labelFile = false;
+          break;
+        case 'wordlabel':
+          this.wordlabelFile = false;
+          break;
+        case 'coa':
+          this.coaFile = false;
+          break;
+        default:
+          break;
+      }
+    }
+  });
+
+  this.selectedFiles = undefined;
+}
+
+
+showSuccess() {
+  this.toastr.info('Hello world!', 'Toastr fun!');
+}
+
+    }
