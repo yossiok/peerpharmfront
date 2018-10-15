@@ -45,6 +45,7 @@ export class ItemDocumentsComponent implements OnInit {
     if (src == 'plate') { this.plateText = true; this.labelText = false; }
     else if (src == 'label') { this.plateText = false; this.labelText = true; }
   }
+  
   notify(src, txt) {
     console.log(src, txt);
     const number = this.route.snapshot.paramMap.get('itemNumber');
@@ -122,6 +123,28 @@ export class ItemDocumentsComponent implements OnInit {
         console.log('File is completely uploaded!');
         console.log(event.body);
         this.showSuccess();
+        switch (src) {
+          case 'msds':
+            this.msdsFile = false;
+            break;
+          case 'licence':
+            this.licenceFile = false;
+            break;
+          case 'plate':
+            this.plateFile = false;
+            break;
+          case 'label':
+            this.labelFile = false;
+            break;
+          case 'wordlabel':
+            this.wordlabelFile = false;
+            break;
+          case 'coa':
+            this.coaFile = false;
+            break;
+          default:
+            break;
+        }
       }
     });
 
@@ -130,7 +153,7 @@ export class ItemDocumentsComponent implements OnInit {
 
 
   showSuccess() {
-    this.toastr.success('Hello world!', 'Toastr fun!');
+    this.toastr.info('Hello world!', 'Toastr fun!');
   }
 
 }

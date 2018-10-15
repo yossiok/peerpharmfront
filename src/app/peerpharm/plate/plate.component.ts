@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlateService } from '../../services/plate.service'
 import { HttpResponse, HttpEventType } from '@angular/common/http';
 import { UploadFileService } from '../../services/helpers/upload-file.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-plate',
@@ -21,7 +22,7 @@ export class PlateComponent implements OnInit {
     lastUpdate: '',
     lastUpdateUser: ''
   };
-  constructor(private plateService: PlateService, private uploadService: UploadFileService) { }
+  constructor(private plateService: PlateService, private uploadService: UploadFileService, private toastSrv:ToastrService) { }
 
   ngOnInit() {
     this.getAllPlates();
@@ -75,8 +76,12 @@ export class PlateComponent implements OnInit {
         this.plate.palletImg=''+event.body; //save the url to the image
       }
     });
-
+    this.showSuccess();
     this.selectedFiles = undefined;
   }
 
+
+  showSuccess(){
+    this.toastSrv.success("Plate Added", "Good Luck")
+  }
 }

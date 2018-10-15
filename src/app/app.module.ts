@@ -42,6 +42,7 @@ import { MatSnackBar } from '@angular/material';
 import { OVERLAY_PROVIDERS } from '../../node_modules/@angular/cdk/overlay';
 import { ScheduleCardComponent } from './peerpharm/production/production/schedule-card/schedule-card.component';
 import { MyiframeComponent } from './myiframe/myiframe.component';
+import { ToastrModule } from 'ngx-toastr';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -67,14 +68,15 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   imports: [
     CommonModule,
     BrowserModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot(), 
     HttpClientModule,
     FormsModule,    
    // AmplifyAngularModule   ,
     HttpModule,
     NgbModule.forRoot(),
     RouterModule.forRoot(Approutes, { useHash: false }),
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
   ],
   providers: [
     MatSnackBar,
