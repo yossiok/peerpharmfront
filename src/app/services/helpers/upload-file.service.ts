@@ -16,7 +16,7 @@ export class UploadFileService {
     formdata.append('src', src);
     formdata.append('itemN', itemNumber);
     //const req = new HttpRequest('POST', 'http://localhost:8080/api/files/upload', formdata, {
-    const req = new HttpRequest('POST', 'http://localhost/upload/api/files/upload', formdata, {
+    const req = new HttpRequest('POST', '/upload/api/files/upload', formdata, {
       reportProgress: true,
       responseType: 'text'
     });
@@ -26,6 +26,6 @@ export class UploadFileService {
 
   getFiles(): Observable<any> {
     //return this.http.get('http://localhost:8080/api/files/all');
-    return this.http.get('http://localhost/upload/api/files/all');
+    return this.http.get('/upload/api/files/all');
   }
 }

@@ -11,7 +11,7 @@ import 'rxjs/add/operator/catch';
 })
 export class FormulesService {
 
-  url: any = "http://localhost/formules/add";
+  url: any = "/formules/add";
 
   constructor(private http: Http) { }
 

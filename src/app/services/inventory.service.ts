@@ -15,7 +15,7 @@ export class InventoryService {
   
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private baseUrl = 'http://localhost/';
+  private baseUrl = '/';
 
   getAllComponents(){
     let url = this.baseUrl + "component";

@@ -13,7 +13,6 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class TasksService {
   // private instance variable to hold base url
-  private baseUrl = 'http://localhost:3001/';
   private baseUrl2 = '/';
   private boardUrl = '/dep/';
   private tasksUrl = '/tasks/';

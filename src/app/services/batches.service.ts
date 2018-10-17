@@ -12,7 +12,7 @@ export class BatchesService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
 
-  private baseUrl = 'http://localhost/';
+  private baseUrl = '/';
 
   constructor(private http:Http) { }
 

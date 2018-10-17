@@ -10,7 +10,7 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class UsersService {
-  private baseUrl2 = 'http://localhost/';
+  private baseUrl2 = '/';
 
   constructor(private http:Http) { }
 
