@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FormdetailsComponent implements OnInit {
 
-  form: {};
+  form:any= {};
   constructor(private formsService: FormsService, private route: ActivatedRoute) { }
 
   ngOnInit() {

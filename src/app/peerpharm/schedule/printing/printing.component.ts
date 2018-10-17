@@ -1,6 +1,6 @@
   import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
   import {ScheduleService} from "../../../services/schedule.service"
-  import {NgbTabChangeEvent} from '../../../tabset'
+  //import {NgbTabChangeEvent} from '../../../tabset'
   import * as moment from 'moment';
   
   @Component({
@@ -27,6 +27,7 @@
     @ViewChild('id') id:ElementRef; 
   
     scheduleLine = {
+      itemN:'',
       itemImg:'',
       positionN:'',
       orderN:'',

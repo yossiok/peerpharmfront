@@ -30,4 +30,9 @@ export class StockComponent implements OnInit {
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber)
   }
+
+  showDialog()
+  {
+    
+  }
 }

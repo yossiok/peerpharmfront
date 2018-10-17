@@ -14,6 +14,7 @@ import { DEFAULT_VALUE_ACCESSOR } from '@angular/forms/src/directives/default_va
 })
 export class OrderdetailsComponent implements OnInit {
   ordersItems;
+  item:any;
   chosenType: string;
   detailsArr: any[];
   components: any[];

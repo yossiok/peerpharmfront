@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-formule-item.component.css']
 })
 export class AddFormuleItemComponent implements OnInit {
-
+  formuleItem:any;
+  phValue:any;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  
+  onSubmit()
+  {
+
   }
 
 }

@@ -11,6 +11,7 @@ import { FormulesService } from '../../../services/formules.service';
 export class AddFormuleComponent implements OnInit {
 
   formulesForm: FormGroup;
+  phValue:string;
 
 
   constructor(private formuleService:FormulesService) { }

@@ -14,6 +14,7 @@ export class PlateComponent implements OnInit {
   imgPath;
   plates: any[];
   plate= {
+    _id:"",
     palletNumber: '',
     palletItemName: '',
     palletItemBrand: '',
