@@ -18,7 +18,7 @@ export class AuthService {
   public userEventEmitter:EventEmitter<UserInfo>= new EventEmitter<UserInfo>();
  
  
-  private baseUrl = 'http://localhost/';  
+  private baseUrl = '/';  
   private authURL = this.baseUrl + "auth/";
   public isLoggedIn=false;
   httpOptions = {

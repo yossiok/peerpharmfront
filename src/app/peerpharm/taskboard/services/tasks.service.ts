@@ -14,11 +14,10 @@ import 'rxjs/add/operator/catch';
 export class TasksService {
   // private instance variable to hold base url
   private baseUrl = 'http://localhost:3001/';
-  private baseUrl2 = 'http://localhost/';
-  private boardUrl = 'http://localhost/dep/';
-  private tasksUrl = 'http://localhost/tasks/';
-  ///dep/sales/tasks
-  //private taskUrl = 'http://localhost/tasks/';
+  private baseUrl2 = '/';
+  private boardUrl = '/dep/';
+  private tasksUrl = '/tasks/';
+  ///dep/sales/tasks 
   private addDepUrl = this.baseUrl2 + "dep/add/";
 
   // Resolve HTTP using the constructor
