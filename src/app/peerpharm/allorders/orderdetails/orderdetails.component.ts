@@ -8,6 +8,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
 import { DEFAULT_VALUE_ACCESSOR } from '@angular/forms/src/directives/default_value_accessor';
 import { Observable, of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { Observable, of } from 'rxjs';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ])]
 })
-export class OrderdetailsComponent implements OnInit  {
+export class OrderdetailsComponent implements OnInit {
   ordersItems;
   item: any;
   chosenType: string;
@@ -47,7 +48,7 @@ export class OrderdetailsComponent implements OnInit  {
   @ViewChild('quantity') quantity: ElementRef;
   @ViewChild('unitmeasure') unitMeasure: ElementRef;
   @ViewChild('itemname') itemName: ElementRef;
-  @ViewChild('itemnumber') itemN: ElementRef;
+  @ViewChild('itemNumber') itemN: ElementRef;
   @ViewChild('id') id: ElementRef;
 
   @ViewChild('date') date: ElementRef;
@@ -55,7 +56,7 @@ export class OrderdetailsComponent implements OnInit  {
   @ViewChild('marks') marks: ElementRef;
   // @ViewChild('type') type:ElementRef; 
 
-  constructor(private route: ActivatedRoute, private orderService: OrdersService, private scheduleService: ScheduleService, private location: Location) { }
+  constructor(private route: ActivatedRoute, private orderService: OrdersService, private scheduleService: ScheduleService, private location: Location, private toastSrv: ToastrService) { }
 
   ngOnInit() {
     console.log('hi');
@@ -65,7 +66,7 @@ export class OrderdetailsComponent implements OnInit  {
       if (res.length > 0) {
         this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
           this.ordersItems = orderItems;
-          this.ordersItems=this.ordersItems.map(elem=> Object.assign({ expand: false }, elem));
+          this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
           this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
           console.log(orderItems)
@@ -84,7 +85,7 @@ export class OrderdetailsComponent implements OnInit  {
     const id = this.route.snapshot.paramMap.get('id');
     this.orderService.getOrderById(id).subscribe(orderItems => {
       this.ordersItems = orderItems;
-      this.ordersItems=this.ordersItems.map(elem=> Object.assign({ expand: false }, elem));
+      this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
     });
@@ -102,35 +103,37 @@ export class OrderdetailsComponent implements OnInit  {
 
   getDetails(itemNumber, itemId): void {
     this.EditRowId2nd = itemId;
-   // if (this.expand === true) {this.expand = false;}
+    // if (this.expand === true) {this.expand = false;}
     //else {this.expand = true;}
 
-   /* this.ordersItems.forEach(element => {
-      element.expand=false;
-    });
-    this.ordersItems.filter(elem=>elem.itemNumber==itemNumber).map(elem=>elem.expand=true);
-    
-    console.log(this.ordersItems.filter(elem=>elem.itemNumber==itemNumber));
-    this.ordersItems.forEach(element => {
-      console.log(element.itemNumber + " , "  + element.expand);
-    });*/
-    console.log(itemNumber + " , " + itemId); 
+    /* this.ordersItems.forEach(element => {
+       element.expand=false;
+     });
+     this.ordersItems.filter(elem=>elem.itemNumber==itemNumber).map(elem=>elem.expand=true);
+     
+     console.log(this.ordersItems.filter(elem=>elem.itemNumber==itemNumber));
+     this.ordersItems.forEach(element => {
+       console.log(element.itemNumber + " , "  + element.expand);
+     });*/
+    console.log(itemNumber + " , " + itemId);
     this.orderService.getItemByNumber(itemNumber).subscribe(
       itemDetais => {
         console.log(itemDetais);
         this.detailsArr = [];
         itemDetais.forEach(element => {
-          if (element.bottleNumber != null && element.bottleNumber != "") this.detailsArr.push({type:"bottle", number:element.bottleNumber});
-          if (element.capNumber != null && element.capNumber != "") this.detailsArr.push({type:"cap", number:element.capNumber});
+          if (element.bottleNumber != null && element.bottleNumber != "") this.detailsArr.push({ type: "bottle", number: element.bottleNumber });
+          if (element.capNumber != null && element.capNumber != "") this.detailsArr.push({ type: "cap", number: element.capNumber });
           console.log(this.detailsArr);
         });
-          if (this.expand === true) {this.expand = false;}
-          else {this.expand = true;}
+        if (this.expand === true) { this.expand = false; }
+        else { this.expand = true; }
       })
   }
 
   edit(id) {
-    this.EditRowId = id;
+    if (this.EditRowId == id) this.EditRowId = '';
+    else this.EditRowId = id;
+
   }
 
   saveEdit(a) {
@@ -147,13 +150,23 @@ export class OrderdetailsComponent implements OnInit  {
     console.log(a);
     // console.log("edit " + itemToUpdate.orderItemId );
 
-    this.orderService.editItemOrder(itemToUpdate).subscribe(res => console.log(res));
-
+    this.orderService.editItemOrder(itemToUpdate).subscribe(res => {
+      
+      console.log(res)
+      if(res!="error") {
+        debugger
+        this.toastSrv.success(itemToUpdate.itemN, "Changes Saved");
+        this.EditRowId="";
+      }
+      
+    });
   }
 
   deleteItem(item) {
     console.log(item._id);
-    this.orderService.deleteOrderItem(item._id).subscribe(res => console.log(res));
+    this.orderService.deleteOrderItem(item._id).subscribe(res => {
+      this.toastSrv.error(item.itemN, "Item Has Been Deleted");
+      console.log(res)});
   }
 
   addItemOrder() {
@@ -188,7 +201,13 @@ export class OrderdetailsComponent implements OnInit  {
     console.log(scheduleLine);
   }
 
-} /*
+
+
+
+  showSuccess() {
+  }
+}
+/*
 displayedColumns = ['position', 'name', 'weight'];
 dataSource = new ExampleDataSource();
 

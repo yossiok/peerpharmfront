@@ -2,7 +2,7 @@
 
 <p>
   orders works!
-</p>
+</p><i class="ti-save text-success m-r-10"></i>
 <br>
 <div class='mainDiv'>
     <div class='subContainer'>
@@ -72,9 +72,12 @@
       <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
       <td></td>
       <td>
-        <img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
+        <!--<img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
         <img *ngIf="order._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, order._id)">
-        <img *ngIf="order._id===EditRowId" src='/assets/images/update2.png' style='width:30px; cursor: pointer' (click)="saveEdit()">
+        <img *ngIf="order._id===EditRowId" src='/assets/images/update2.png' style='width:30px; cursor: pointer' (click)="saveEdit()">-->
+        <i class="ti-trash text-danger m-r-10" *ngIf="order._id!==EditRowId"  (click)="deleteOrder(order)"></i>&nbsp;
+        <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId"  (click)="saveEdit(true, order._id)"></i>
+        <i class="ti-save text-success m-r-10" *ngIf="order._id===EditRowId"  (click)="saveEdit()"></i>
       </td>
       <td></td>
       <!--<td>{{order.type}}</td>-->

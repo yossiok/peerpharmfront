@@ -22,3 +22,6 @@ th, td {
 .mainDiv{
     display:inline-flex;
 }
+i{
+    font-size: 20px;
+}

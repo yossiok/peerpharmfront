@@ -9,6 +9,9 @@ th, td {
 .detilasTable tr td{
   border-radius: 0px;
 }
+i{
+    font-size: 20px;
+}
 .example-container {
     display: flex;
     flex-direction: column;

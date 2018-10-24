@@ -21,15 +21,14 @@
     <tr >
 
 
-          <td *ngIf="item._id===EditRowId" ><input #id type='hidden' [value]="item._id"  style='width:370px'>{{i}}</td>
+          <td *ngIf="item._id===EditRowId" ><input #id type='hidden' [value]="item._id"  style='width:370px'><input #itemNumber type='hidden' [value]="item.itemNumber" >{{i}}</td>
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i}}</b></td>
       
           <td *ngIf="multi==true">{{item.orderNumber}}</td>
-      
-          <td><span #itemnumber (click)="getDetails(item.itemNumber , item._id)">{{item.itemNumber}}</span></td> 
+          <td><span (click)="getDetails(item.itemNumber , item._id)">{{item.itemNumber}}</span></td>
           <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription"  style='width:370px'></td>
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
-          <td *ngIf="item._id===EditRowId"><input #unitmeasure type='text' [value]="item.unitMeasure"  style='width:70px'></td>
+          <td *ngIf="item._id===EditRowId"><input #unitmeasure type='text' [value]="item.unitMeasure"  style='width:70px' ></td>
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.unitMeasure}}</td>
           <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity  style='width:70px'></td>
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
@@ -38,7 +37,11 @@
           <td *ngIf="item._id===EditRowId"><input  #itemRemarks type='text' [value]=item.itemRemarks   style='width:130px'/></td>
           <td  *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
           <td>{{item.status}}</td>
-          <td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>
+          <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->
+          <td>
+                  <i class="ti-trash text-danger m-r-10"  *ngIf="item._id!=EditRowId"    (click)="deleteItem(item)" ></i>
+                  <i class="ti-save text-success m-r-10"  *ngIf="item._id===EditRowId"    (click)="saveEdit()"></i>
+          </td>
           <td ></td>
       </tr>
       <tr *ngIf="item._id== EditRowId2nd && expand==true;">
