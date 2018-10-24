@@ -3,18 +3,27 @@ import { OrdersService } from '../../../services/orders.service';
 import { ScheduleService } from '../../../services/schedule.service'
 import { ActivatedRoute } from '@angular/router'
 import { Location } from '@angular/common';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DataSource } from '@angular/cdk/collections';
 import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
 import { DEFAULT_VALUE_ACCESSOR } from '@angular/forms/src/directives/default_value_accessor';
+import { Observable, of } from 'rxjs';
 
 
 @Component({
   selector: 'app-orderdetails',
   templateUrl: './orderdetails.component.html',
-  styleUrls: ['./orderdetails.component.css']
+  styleUrls: ['./orderdetails.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ])]
 })
-export class OrderdetailsComponent implements OnInit {
+export class OrderdetailsComponent implements OnInit  {
   ordersItems;
-  item:any;
+  item: any;
   chosenType: string;
   detailsArr: any[];
   components: any[];
@@ -56,6 +65,7 @@ export class OrderdetailsComponent implements OnInit {
       if (res.length > 0) {
         this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
           this.ordersItems = orderItems;
+          this.ordersItems=this.ordersItems.map(elem=> Object.assign({ expand: false }, elem));
           this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
           console.log(orderItems)
@@ -74,6 +84,7 @@ export class OrderdetailsComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.orderService.getOrderById(id).subscribe(orderItems => {
       this.ordersItems = orderItems;
+      this.ordersItems=this.ordersItems.map(elem=> Object.assign({ expand: false }, elem));
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
     });
@@ -88,21 +99,34 @@ export class OrderdetailsComponent implements OnInit {
     })
   }
 
+
   getDetails(itemNumber, itemId): void {
     this.EditRowId2nd = itemId;
-    console.log(itemNumber + " , " + itemId);
+   // if (this.expand === true) {this.expand = false;}
+    //else {this.expand = true;}
+
+   /* this.ordersItems.forEach(element => {
+      element.expand=false;
+    });
+    this.ordersItems.filter(elem=>elem.itemNumber==itemNumber).map(elem=>elem.expand=true);
+    
+    console.log(this.ordersItems.filter(elem=>elem.itemNumber==itemNumber));
+    this.ordersItems.forEach(element => {
+      console.log(element.itemNumber + " , "  + element.expand);
+    });*/
+    console.log(itemNumber + " , " + itemId); 
     this.orderService.getItemByNumber(itemNumber).subscribe(
       itemDetais => {
         console.log(itemDetais);
         this.detailsArr = [];
         itemDetais.forEach(element => {
-          if (element.bottleNumber != null && element.bottleNumber != "") this.detailsArr.push(element.bottleNumber);
-          if (element.capNumber != null && element.capNumber != "") this.detailsArr.push(element.capNumber);
+          if (element.bottleNumber != null && element.bottleNumber != "") this.detailsArr.push({type:"bottle", number:element.bottleNumber});
+          if (element.capNumber != null && element.capNumber != "") this.detailsArr.push({type:"cap", number:element.capNumber});
           console.log(this.detailsArr);
         });
+          if (this.expand === true) {this.expand = false;}
+          else {this.expand = true;}
       })
-    if (this.expand === true) this.expand = false;
-    else this.expand = true;
   }
 
   edit(id) {
@@ -163,4 +187,56 @@ export class OrderdetailsComponent implements OnInit {
     this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
     console.log(scheduleLine);
   }
+
+} /*
+displayedColumns = ['position', 'name', 'weight'];
+dataSource = new ExampleDataSource();
+
+isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
+expandedElement: any;
 }
+
+export interface Element {
+name: string;
+position: number;
+weight: number;
+symbol: string;
+}
+
+const data: Element[] = [
+{ position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+{ position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+{ position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+{ position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+{ position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+{ position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+{ position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+{ position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+{ position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+{ position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na' },
+{ position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg' },
+{ position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al' },
+{ position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si' },
+{ position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P' },
+{ position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S' },
+{ position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl' },
+{ position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar' },
+{ position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K' },
+{ position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
+];
+
+
+
+export class ExampleDataSource extends DataSource<any> {
+connect(): Observable<Element[]> {
+  const rows = [];
+  data.forEach(element => rows.push(element, { detailRow: true, element }));
+  console.log(rows);
+  return of(rows);
+}
+
+disconnect() { }
+}
+*/
+

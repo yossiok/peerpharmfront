@@ -133,3 +133,40 @@
           </div>
         </ng-template>
   -->
+<script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+      authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+      databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+      storageBucket: "qualitycontrol-e60d4.appspot.com",
+      messagingSenderId: "428562253132"
+    };
+    firebase.initializeApp(config);
+  </script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   
+   <script>
+          alert("hi");
+          var firebaseRef = firebase.database().ref();
+          var ordersRef =firebaseRef.child("orders");
+          var i;
+          var color= "white";
+          var typeShown="all";
+
+              //ordersRef.on("child_added", snap=>{
+              ordersRef.orderByChild("status").equalTo("open").on("child_added", snap=>{
+              
+                  var refParent= snap.key;
+                  var orderNumber = snap.child("orderN").val();
+                  var costumer= snap.child("costumerName").val();
+                  var orderDate = snap.child("dateOfOrder").val();
+                  var deliveryDate= snap.child("dateOfDelivery").val();
+                  var orderRemarks= snap.child("remarks").val();
+                  var orderType= snap.child("type").val();
+
+                  console.log(refParent+" , "+ orderNumber+" , "+ costumer);
+              })
+            
+
+            </script>

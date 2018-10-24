@@ -31,6 +31,7 @@ import { ItemDocumentsComponent } from './items/item-documents/item-documents.co
 import {MatSelectModule} from '@angular/material/select';
 import {
   MatDialogModule,
+  MatTableModule,
   MatGridListModule,
   MatMenuModule,
   MatButtonModule,
@@ -75,6 +76,7 @@ import { AuthService } from '../services/auth.service';
     MatIconModule,
     MatFormFieldModule,
     MatCardModule,
+    MatTableModule,
     MatToolbarModule,
     MatTabsModule,
     MatInputModule,

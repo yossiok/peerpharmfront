@@ -1,27 +1,10 @@
 <p>
   schedule works!
 </p>
+<br>
+{{today}}<br>
+<input  type ='date' #date [(ngModel)]='today'  (change)="dateChanged(date.value)">
 
-
-<input  type ='date' #date (change)="dateChanged(date.value)">
-
-<ngb-tabset #t="ngbTabset">
-    <ngb-tab id="tab-selectbyid1" title="General">
-       <ng-template ngbTabContent>
-          ngfmjuy hgdeg
-        </ng-template>
-        </ngb-tab>
-      <ngb-tab title="Tube" activeId="tube" >
-            <ng-template ngbTabContent >
-              <span (click)="setType()">1131233  </span>12312312312  {{typeShown}}
-            </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Make Up" activeId="mkp">
-              <ng-template ngbTabContent>
-                mamkdakdmasmlplp
-              </ng-template>
-       </ngb-tab>
-  </ngb-tabset>
 <br><br>
     <div (click)='setType("basic", this)' [ngStyle]="{'background-color': buttonColor}">General</div>
     <div (click)='setType("tube", this)' [ngStyle]="{'background-color': buttonColor2}">Tubes</div>
@@ -69,9 +52,9 @@
 </tr>
 
 <tbody id="table_body">
-    <tr *ngFor = "let line of scheduleData">
+    <tr *ngFor = "let line of scheduleData"  [style.background-color]="line.color" >
       <ng-container  *ngIf='line !== undefined  && line.mkp===typeShown'>
-        <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.positionN}}</td>
+        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.positionN}}</td>
         <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:30px'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.orderN}}</td>
         <td *ngIf="line._id===EditRowId"><input #orderN type='text' [value]="line.orderN"  style='width:50px'></td>
@@ -91,8 +74,8 @@
         <td></td>
 
         
-        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.date3}}</td>
-        <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date3"  style='width:140px'></td>
+        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.date | date: 'dd/MM/yyyy'}}</td>
+        <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date3 "  style='width:140px'></td>
 
 
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.marks}}</td>

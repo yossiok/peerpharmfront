@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ScheduleService } from "../../../services/schedule.service"
 //import { NgbTabChangeEvent } from '../../../tabset'
 import * as moment from 'moment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-schedule',
@@ -14,6 +15,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor: string = 'white';
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
+  today: Date;
   @ViewChild('position') positionN: ElementRef;
   @ViewChild('orderN') orderN: ElementRef;
   @ViewChild('item') item: ElementRef;
@@ -53,6 +55,8 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.getAllSchedule();
+    this.today = new Date();
+
   }
 
   writeScheduleData() {
@@ -63,13 +67,17 @@ export class ScheduleComponent implements OnInit {
   dateChanged(date) {
     console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
-
       res.map(sced => {
-        sced.date = moment(sced.date).format("DD/MM/YY");
+        if(sced.status=='filled') sced.color='Aquamarine';
+        if(sced.status=='beingFilled') sced.color='yellow';
+        if(sced.status=='packed') sced.color='orange';
+        if(sced.status=='problem') sced.color='red';
+        sced.date3 = moment(sced.date).format("YYYY-MM-DD");
+
+        //let pipe = new DatePipe('en-US'); // Use your own locale
+        //  sced.date3 = pipe.transform(sced.date, 'short');
       });
-
       this.scheduleData = res;
-
     });
   }
 
@@ -78,6 +86,11 @@ export class ScheduleComponent implements OnInit {
 
       res.map(sced => {
         //  sced.date= moment(sced.date).format("DD/MM/YY"); 
+    //    sced.color='white';
+        if(sced.status=='filled') sced.color='Aquamarine';
+        if(sced.status=='beingFilled') sced.color='yellow';
+        if(sced.status=='packed') sced.color='orange';
+        if(sced.status=='problem') sced.color='red';
         sced.date2 = moment(sced.date).format("DD/MM/YY");
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");
       });
@@ -138,7 +151,10 @@ export class ScheduleComponent implements OnInit {
       shift: this.shift.nativeElement.value,
       mkp: this.mkp.nativeElement.value
     }
-    this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => console.log(res));
+    this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res =>{
+      this.EditRowId=0;
+      this.scheduleData[this.scheduleData.findIndex(sced=>sced._id==scheduleToUpdate.scheduleId)] = scheduleToUpdate;  
+    });
 
   }
 

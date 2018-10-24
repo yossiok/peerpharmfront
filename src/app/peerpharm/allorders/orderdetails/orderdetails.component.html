@@ -1,8 +1,6 @@
 <p>
   order details works!
 </p>
-"show" : {{show}}
-
 <table class='table' >
   <thead class='bg-info text-white'>
     <tr >
@@ -19,7 +17,8 @@
   <tr>
 
   </tr>
-    <tr *ngFor="let item of ordersItems; let i = index">
+  <ng-container *ngFor="let item of ordersItems; let i = index">
+    <tr >
 
 
           <td *ngIf="item._id===EditRowId" ><input #id type='hidden' [value]="item._id"  style='width:370px'>{{i}}</td>
@@ -42,19 +41,25 @@
           <td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>
           <td ></td>
       </tr>
-      <tr *ngIf="expand===true && item._id===EditRowId2nd">
-         <td></td> <td colspan="1" *ngFor="let det of detailsArr">{{det}} <button>print</button></td><td></td>
-      </tr>
-      <tr *ngIf="expand===true && item._id===EditRowId2nd">
-        <td></td><td><input #date type='date'></td><td><input #shift type='text'></td><td><input #marks type='marks'></td>
-        <td>
-          	<input type="radio"  name="type" #type value='basic' [(ngModel)]="chosenType">Basic<br>
-						<input type="radio"  name="type"  #type value='tube' [(ngModel)]="chosenType">Tube<br>
-						<input type="radio"  name="type"   #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
-        </td>
-        <td><button (click)='setSchedule(item ,type.value)'>Set</button></td>
-      </tr>
-  
+      <tr *ngIf="item._id== EditRowId2nd && expand==true;">
+        <td colspan="5">
+              <table class='detilasTable'>
+              <tr *ngFor="let det of detailsArr">
+                <td></td><td></td> <td >{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button  class='btn btn-info'>print</button></td><td></td><td></td><td></td><td></td>
+              </tr>
+              <tr >
+                <td></td><td><h4>Set Schedule: </h4></td><td><input #date type='date'></td><td><input #shift type='text'></td><td><input #marks type='marks'></td>
+                <td>
+                    <input type="radio"  name="type" #type value='basic' [(ngModel)]="chosenType">Basic<br>
+                    <input type="radio"  name="type"  #type value='tube' [(ngModel)]="chosenType">Tube<br>
+                    <input type="radio"  name="type"   #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
+                </td>
+                <td><button (click)='setSchedule(item ,type.value)'  class='btn btn-success'>Set</button></td>
+              </tr> 
+            </table>
+  </td>
+  </tr>
+</ng-container>
 </tbody>
 
 
@@ -66,3 +71,45 @@ Components:
       <td>{{cmpt.componentN}}</td><td>{{cmpt.quantity}}</td><td>{{cmpt.amountExist}}</td><td>{{cmpt.allocation}}</td><td>{{cmpt.lack}}</td>
   </tr>
 </table>
+<!--
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="weight">
+      <mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
+    </ng-container>
+
+   
+    <ng-container matColumnDef="expandedDetail">
+      <mat-cell *matCellDef="let detail"> 
+        The symbol for {{detail.element.name}} is {{detail.element.symbol}}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+            matRipple 
+            class="element-row" 
+            [class.expanded]="expandedElement == row"
+            (click)="expandedElement === row? expandedElement = null : expandedElement = row"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+            [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
+            style="overflow: hidden"> 
+    </mat-row>
+  </mat-table>
+</div>
+-->
