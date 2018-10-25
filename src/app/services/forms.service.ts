@@ -20,12 +20,12 @@ export class FormsService {
  
   getAllForms(){
     debugger;
-    let url = this.baseUrl + "forms";
+    let url = this.baseUrl + "formDetails";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   getFormData(formId){
-    let url = this.baseUrl + "formDetails?fhID="+formId;
+    let url = this.baseUrl + "formDetails?idForTitle="+formId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

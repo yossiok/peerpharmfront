@@ -87,9 +87,9 @@ export class ScheduleComponent implements OnInit {
       res.map(sced => {
         //  sced.date= moment(sced.date).format("DD/MM/YY"); 
     //    sced.color='white';
-        if(sced.status=='filled') sced.color='Aquamarine';
+        if(sced.status=='filled') sced.color='#CE90FF';
         if(sced.status=='beingFilled') sced.color='yellow';
-        if(sced.status=='packed') sced.color='orange';
+        if(sced.status=='packed') sced.color='Aquamarine';
         if(sced.status=='problem') sced.color='red';
         sced.date2 = moment(sced.date).format("DD/MM/YY");
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");

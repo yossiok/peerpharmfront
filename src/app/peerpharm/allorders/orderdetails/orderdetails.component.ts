@@ -84,17 +84,29 @@ export class OrderdetailsComponent implements OnInit {
   getOrderItems(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.orderService.getOrderById(id).subscribe(orderItems => {
+     
+      orderItems.map(ordersItem => {
+        if (ordersItem.fillingStatus == 'filled') ordersItem.color = '#CE90FF';
+        if (ordersItem.fillingStatus == 'beingFilled') ordersItem.color = 'yellow';
+        if (ordersItem.fillingStatus == 'problem') ordersItem.color = 'red';
+        if (ordersItem.quantityProduced != "" && ordersItem.quantityProduced != null && ordersItem.quantityProduced != undefined) {
+          if (parseInt(ordersItem.quantity) >= parseInt(ordersItem.quantityProduced)){   
+            let lackAmount = parseInt(ordersItem.quantity) - parseInt(ordersItem.quantityProduced);
+            ordersItem.itemRemarks += ", " + lackAmount + " lack";
+             ordersItem.infoColor = 'red';        
+          }
+          else ordersItem.color = '#CE90FF';
+      }
+      if (ordersItem.fillingStatus == 'packed') ordersItem.color = '#FFC058';
+      });
       this.ordersItems = orderItems;
-      this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
     });
   }
 
   getComponents(orderNumber): void {
-    debugger;
     this.orderService.getComponentsSum(orderNumber).subscribe(components => {
-      //    debugger;
       this.components = components;
       console.log("a" + components);
     })
@@ -151,14 +163,14 @@ export class OrderdetailsComponent implements OnInit {
     // console.log("edit " + itemToUpdate.orderItemId );
 
     this.orderService.editItemOrder(itemToUpdate).subscribe(res => {
-      
+
       console.log(res)
-      if(res!="error") {
+      if (res != "error") {
         debugger
         this.toastSrv.success(itemToUpdate.itemN, "Changes Saved");
-        this.EditRowId="";
+        this.EditRowId = "";
       }
-      
+
     });
   }
 
@@ -166,7 +178,8 @@ export class OrderdetailsComponent implements OnInit {
     console.log(item._id);
     this.orderService.deleteOrderItem(item._id).subscribe(res => {
       this.toastSrv.error(item.itemN, "Item Has Been Deleted");
-      console.log(res)});
+      console.log(res)
+    });
   }
 
   addItemOrder() {

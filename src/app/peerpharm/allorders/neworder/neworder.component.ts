@@ -13,7 +13,7 @@ export class NeworderComponent implements OnInit {
   orderNumber: string;
   orderId: string;
   itemName: String;
-  volume: Number;
+  volume: Number=0;
   lastOrderNumber: Number;
   items: any[] = [];
   submited: boolean = false;
@@ -61,8 +61,10 @@ export class NeworderComponent implements OnInit {
   addNewItemOrder(post) {
     console.log(post);
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
-    if (post.discription == null || post.discription != this.itemName) post.discription = this.itemName;
-    if (post.unitmeasure == null || post.unitmeasure != this.volume) post.unitmeasure = this.volume;
+   // if (post.discription == null || post.discription != this.itemName) post.discription = this.itemName;
+  //  if (post.unitmeasure == null || post.unitmeasure != this.volume) post.unitmeasure = this.volume;
+  if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
+  if(this.volume!=0 && this.volume!=null) post.unitmeasure = this.volume;
     let newOrderItemObj = {
       itemNumber: post.itemN,
       discription: post.discription,
@@ -78,18 +80,24 @@ export class NeworderComponent implements OnInit {
     }
     console.log(newOrderItemObj);
     this.orderItemForm.reset(); 1
-    this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => this.items.push(res));
+    this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
+      this.items.push(res)
+      this.itemName="";
+      this.volume=0;
+      alert(this.itemName +  " , "  + this.volume);
+    })
     //  orderId:this.orderId
   }
 
 
   searchItem(itemNumber) {
     this.itemName = "";
-    console.log(itemNumber);
+//console.log(itemNumber);
     this.orderSer.getItemByNumber(itemNumber).subscribe(res => {
-      console.log(res[0]);
+     // console.log(res[0]);
       this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
       this.volume = res[0].volumeKey;
+      console.log(this.itemName +  ",  " + this.volume);
     })
 
   }
