@@ -2,14 +2,14 @@
     neworder works!
   </p>
   <div class="row">
-      <div class="col-12">
+      <div class="col-12"  *ngIf="!submited">
           <div class="card">
               <div class="card-body">
                   <h4 class="card-title">Order Assigning</h4>
               </div>
               <hr>
               <form class="form-horizontal" [formGroup]="orderForm"  (ngSubmit)='addNewOrder(orderForm.value)'>
-                  <div class="card-body" *ngIf="!submited">
+                  <div class="card-body">
                       <h4 class="card-title">Order Info</h4>
   
                       <div class="form-group row">
@@ -60,6 +60,7 @@
   </div>
   
   <div class="row"   *ngIf="submited">
+      <h3>Order Number : &nbsp;{{orderNumber}}</h3>
       <div class="col-12">
           <div class="card">
               <div class="card-body">
@@ -71,12 +72,17 @@
     <table>
       <thead>
       <tr>
-        <th>Row</th><th>Item Number	</th><th>Discription	</th><th>Unit/measure	</th><th>Quantity</th><th>Weight</th><th>Remarks</th><th>Type</th><th></th>
+        <th>#</th><th>Item</th><th>Discription	</th><th>Unit/measure	</th><th>Quantity</th><th>Weight</th><th>Remarks</th><th>Type</th><th></th>
       </tr>
       <tr>
         <td></td>
-        <td><input formControlName="itemN" #itemN  (focusout)="searchItem(itemN.value)"  class="form-control" ></td><td><input formControlName="discription"  class="form-control"  ([value])="itemName" style='width:370px'></td><td><input formControlName="unitmeasure"  class="form-control"  ([value])="volume"></td><td><input formControlName="quantity"  class="form-control" ></td>
-        <td><input   class="form-control"  formControlName="qtyKg"></td><td><input  class="form-control"  formControlName="remarks"></td><td></td>
+        <td><input formControlName="itemN"        class="form-control" #itemN  (focusout)="searchItem(itemN.value)"  ></td>
+        <td><input formControlName="discription"  class="form-control"  ([value])="itemName" style='width:370px'></td>
+        <td><input formControlName="unitmeasure"  class="form-control"  ([value])="volume"></td>
+        <td><input formControlName="quantity"     class="form-control" ></td>
+        <td><input formControlName="qtyKg"        class="form-control" ></td>
+        <td><input formControlName="remarks"      class="form-control" ></td>
+        <td></td>
         <td><input type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
       </tr>
     </thead>
@@ -133,3 +139,40 @@
           </div>
         </ng-template>
   -->
+<script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
+      authDomain: "qualitycontrol-e60d4.firebaseapp.com",
+      databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
+      storageBucket: "qualitycontrol-e60d4.appspot.com",
+      messagingSenderId: "428562253132"
+    };
+    firebase.initializeApp(config);
+  </script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   
+   <script>
+          alert("hi");
+          var firebaseRef = firebase.database().ref();
+          var ordersRef =firebaseRef.child("orders");
+          var i;
+          var color= "white";
+          var typeShown="all";
+
+              //ordersRef.on("child_added", snap=>{
+              ordersRef.orderByChild("status").equalTo("open").on("child_added", snap=>{
+              
+                  var refParent= snap.key;
+                  var orderNumber = snap.child("orderN").val();
+                  var costumer= snap.child("costumerName").val();
+                  var orderDate = snap.child("dateOfOrder").val();
+                  var deliveryDate= snap.child("dateOfDelivery").val();
+                  var orderRemarks= snap.child("remarks").val();
+                  var orderType= snap.child("type").val();
+
+                  console.log(refParent+" , "+ orderNumber+" , "+ costumer);
+              })
+            
+
+            </script>

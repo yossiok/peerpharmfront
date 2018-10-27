@@ -61,6 +61,11 @@ export class ScheduleService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getPrintScheduleByDate(date){
+    let url = this.baseUrl + "printSchedule?date="+date;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   setNewPrintSchedule(schedule):Observable<any>{
     let url = this.baseUrl + "printSchedule/add";
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))

@@ -63,30 +63,19 @@
     }
   
     dateChanged(date){
-      console.log(date);
-      this.scheduleService.getScheduleByDate(date).subscribe(res=>{
-       
-        res.map(sced=>
-        {
-          sced.date= moment(sced.date).format("DD/MM/YY"); 
-        });
-      
-        this.scheduleData=res;
-      
-      });
+
+      this.scheduleService.getPrintScheduleByDate(date).subscribe(
+        res=>{
+          res.map(elem=>{if(elem.status=="printed") elem.color="Aquamarine"})
+          this.scheduleData=res;
+        }
+      )
+
     }
   
     getAllSchedule(){
       this.scheduleService.getOpenPrintSchedule().subscribe(res=>{
-        console.log(res);
-       /*
-        res.map(sced=>
-        {
-        //  sced.date= moment(sced.date).format("DD/MM/YY"); 
-          sced.date2= moment(sced.date).format("DD/MM/YY"); 
-          sced.date3= moment(sced.date).format("YYYY-MM-DD"); 
-        });*/
-      
+        console.log(res);      
         this.scheduleData=res;
       
       });
@@ -132,8 +121,9 @@
   
   }
   
-  setDone(id){
+  setDone(id, orderN, itemN){
     let today = new Date();
+    today.setHours(3,0,0,0);
     //var _dt2 = new Date(today);
     //today = [_dt2.getDate(), _dt2.getMonth() + 1, _dt2.getFullYear()].join('/');
     var amountPrinted = prompt("Enter Amount Printed", "");
@@ -148,7 +138,11 @@
       let scheduleToUpdate={
         scheduleId:id,
         qtyProduced:amountPrinted,
-        status:'print'
+        amountPckgs:amountPckgs,
+        printDate:today,
+        orderN:orderN,
+        itemN:itemN,
+        status:'printed'
       }
       console.log(scheduleToUpdate);
       this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>console.log(res));

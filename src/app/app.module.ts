@@ -43,6 +43,7 @@ import { OVERLAY_PROVIDERS } from '../../node_modules/@angular/cdk/overlay';
 import { ScheduleCardComponent } from './peerpharm/production/production/schedule-card/schedule-card.component';
 import { MyiframeComponent } from './myiframe/myiframe.component';
 import { ToastrModule } from 'ngx-toastr';
+import { MakeupComponent } from './peerpharm/schedule/makeup/makeup.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -62,7 +63,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent , 
     LoginComponent, 
     
-    SignupComponent, ScheduleCardComponent, MyiframeComponent,
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, MakeupComponent,
    
   ],
   imports: [
