@@ -1,5 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ScheduleService } from "../../../services/schedule.service"
+import { ItemsService } from "../../../services/items.service"
+import { OrdersService } from "../../../services/orders.service"
 //import { NgbTabChangeEvent } from '../../../tabset'
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
@@ -50,7 +52,7 @@ export class ScheduleComponent implements OnInit {
     pLinePositionN: 99,
   }
   typeShown: String = "basic";
-  constructor(private scheduleService: ScheduleService) { }
+  constructor(private scheduleService: ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService) { }
 
 
   ngOnInit() {
@@ -68,10 +70,10 @@ export class ScheduleComponent implements OnInit {
     console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
-        if(sced.status=='filled') sced.color='Aquamarine';
-        if(sced.status=='beingFilled') sced.color='yellow';
-        if(sced.status=='packed') sced.color='orange';
-        if(sced.status=='problem') sced.color='red';
+        if (sced.status == 'filled') sced.color = 'Aquamarine';
+        if (sced.status == 'beingFilled') sced.color = 'yellow';
+        if (sced.status == 'packed') sced.color = 'orange';
+        if (sced.status == 'problem') sced.color = 'red';
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");
 
         //let pipe = new DatePipe('en-US'); // Use your own locale
@@ -86,11 +88,11 @@ export class ScheduleComponent implements OnInit {
 
       res.map(sced => {
         //  sced.date= moment(sced.date).format("DD/MM/YY"); 
-    //    sced.color='white';
-        if(sced.status=='filled') sced.color='#CE90FF';
-        if(sced.status=='beingFilled') sced.color='yellow';
-        if(sced.status=='packed') sced.color='Aquamarine';
-        if(sced.status=='problem') sced.color='red';
+        //    sced.color='white';
+        if (sced.status == 'filled') sced.color = '#CE90FF';
+        if (sced.status == 'beingFilled') sced.color = 'yellow';
+        if (sced.status == 'packed') sced.color = 'Aquamarine';
+        if (sced.status == 'problem') sced.color = 'red';
         sced.date2 = moment(sced.date).format("DD/MM/YY");
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");
       });
@@ -151,14 +153,33 @@ export class ScheduleComponent implements OnInit {
       shift: this.shift.nativeElement.value,
       mkp: this.mkp.nativeElement.value
     }
-    this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res =>{
-      this.EditRowId=0;
-      this.scheduleData[this.scheduleData.findIndex(sced=>sced._id==scheduleToUpdate.scheduleId)] = scheduleToUpdate;  
+    this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
+      this.EditRowId = 0;
+      this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
     });
 
   }
 
-  setDone() {
+  setItemDetails(itemNumber) {
+    console.log(itemNumber);
+    this.itemSer.getItemData(itemNumber).subscribe(res => {
+       console.log(res[0]);
+      let itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
+      let packageP = res[0].bottleTube+  " "  +  res[0].capTube + " "  + res[0].pumpTube +  " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+      this.scheduleLine.productName= itemName;
+      this.scheduleLine.packageP = packageP;
+    })
   }
 
+  setOrderDetails(orderNumber){
+    console.log(orderNumber);
+    this.orderSer.getOrderByNumber(orderNumber).subscribe(res=>{
+      let costumer = res[0].costumer;
+      this.scheduleLine.costumer = costumer;
+    })
+  }
+
+  setDone() {
+  }
 }
+

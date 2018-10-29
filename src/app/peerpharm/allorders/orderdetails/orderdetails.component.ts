@@ -210,6 +210,7 @@ export class OrderdetailsComponent implements OnInit {
       mkp: this.chosenType,
       status: 'open'
     }
+    debugger
     this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
     console.log(scheduleLine);
   }
