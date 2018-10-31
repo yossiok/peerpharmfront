@@ -6,7 +6,8 @@ import { BoardModel } from '../models/board-model';
 import { TaskModel } from '../models/task-model';
 import { MatDialog, MatDialogRef, MatDatepicker } from '@angular/material';
 import { SubTaskModel } from '../models/subtask-model';
-import { NgbModal } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import { Depatment } from '../models/depatment.model';
 
 @Component({
   selector: 'app-board',
@@ -18,13 +19,15 @@ export class BoardComponent implements OnInit {
   // Local Properties
   board: BoardModel;
 
-  departemnts: any = [];
   tasks: TaskModel[];
   subTasksArr: SubTaskModel[];
   taskFilter: any = { name: '' };
   updatedTask: TaskModel;
   newTask: TaskModel;
   animateFlag = 'in';
+  isClosed: boolean = true;
+  taskUserPics: string[];
+
 
   data: any = {
     'description': '',
@@ -74,6 +77,7 @@ export class BoardComponent implements OnInit {
   newTaskId: true;
   getNewTaskId: string;
   modalTitle: string = "";
+  closeResult: string;
 
   constructor(
     private tasksService: TasksService,
@@ -160,7 +164,7 @@ export class BoardComponent implements OnInit {
         this.newTask = newtask;
         this.getTasks(this.boardTitle);
         console.log("aaaaa   " + newtask._id);
-        console.log(this.departemnts);
+
         //this.newTaskId=this.newTask.name;
         this.newTaskId = true;
       },
@@ -206,4 +210,44 @@ export class BoardComponent implements OnInit {
     this.selectedUser = user;
   }
 
+
+  showTaskDetails(id, content) {
+    if (this.isClosed) {
+      this.tasksService.getSubTasks(id).subscribe(subTasks => {
+        this.subTasksArr = subTasks;
+        setTimeout(()=>{
+          debugger;
+          let mypopup:any=  document.getElementsByClassName("modal-dialog")[0];
+          mypopup.style.maxWidth="1100px"
+        },500);
+        this.modalService.open(content).result.then(
+          result => {
+            this.closeResult = `Closed with: ${result}`;
+          },
+          reason => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          }
+        );
+        this.isClosed = false;
+      })
+    }
+    else {
+      this.subTasksArr = [];
+      this.isClosed = true;
+    }
+  }
+
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
 }
+
+ 

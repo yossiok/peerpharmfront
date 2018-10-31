@@ -1,5 +1,5 @@
 <mat-card [@flyInOut]="'in'" class="card maincard" *ngIf="task.list == tileName  && !task.isArchived" dnd-draggable
-    [dragEnabled]="true" [dragData]="task"    (click)='showTaskDetails(task._id)' > 
+    [dragEnabled]="true" [dragData]="task"    > 
     <span class="card-desc" style="width:100%; display:block">{{task.name}}</span>
     <mat-card-header>
             
@@ -12,15 +12,15 @@
     </mat-card-header>
     <mat-card-content>
         
-        <app-sub-task-card *ngFor="let sb of subTasksArr" [subTask]="sb" >
+   <!--      <app-sub-task-card *ngFor="let sb of subTasksArr" [subTask]="sb" >
             
-<!--   
+  
 
 
            
 
--->
-</app-sub-task-card>
+
+</app-sub-task-card>-->
       
     </mat-card-content>
 
