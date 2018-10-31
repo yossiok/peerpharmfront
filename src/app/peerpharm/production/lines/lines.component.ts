@@ -33,7 +33,7 @@ export class LinesComponent implements OnInit {
   loginUser = "Gabi Barak";
   
   public users = [
-    { name: 'Gabi Barak', avtar: "https://images.spot.im/v1/production/kvx9xrcrfiiwekaolx6s", lastTaskVisit: "23-05-2018" },
+    { name: 'Gabi Barak', avtar: "https://images.spot.im/v1/production/kvx9xrcrfiiwekaolx6s", lastTaskVisit: "23-05-2018" },  
     { name: 'Rabbi Nuchi', avtar: "assets/images/user.jpg", lastTaskVisit: "14-02-2018" },
     { name: 'Josh Luri', avtar: "assets/images/user1.jpg", lastTaskVisit: "03-12-2018" }
   ]

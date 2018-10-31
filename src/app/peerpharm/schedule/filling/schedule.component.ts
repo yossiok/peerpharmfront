@@ -1,8 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ScheduleService } from "../../../services/schedule.service"
 import { ItemsService } from "../../../services/items.service"
-import { OrdersService } from "../../../services/orders.service"
-//import { NgbTabChangeEvent } from '../../../tabset'
+import { OrdersService } from "../../../services/orders.service" 
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
 
@@ -17,7 +16,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor: string = 'white';
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
-  today: Date;
+  today: any;
   @ViewChild('position') positionN: ElementRef;
   @ViewChild('orderN') orderN: ElementRef;
   @ViewChild('item') item: ElementRef;
@@ -58,6 +57,7 @@ export class ScheduleComponent implements OnInit {
   ngOnInit() {
     this.getAllSchedule();
     this.today = new Date();
+    this.today= moment( this.today).format("YYYY-MM-DD");
 
   }
 
@@ -67,6 +67,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   dateChanged(date) {
+    debugger;
     console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
