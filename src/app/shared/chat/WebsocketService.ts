@@ -46,7 +46,7 @@ export class WebsocketService {
   }
 
   joinroom(taskid: string): any {
-   this.socket.emit
+   this.socket.emit('room', taskid)
   }
 
 }

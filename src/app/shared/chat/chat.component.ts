@@ -36,27 +36,11 @@ export class ChatComponent implements OnInit {
     this.getAllSavedMessages();
     this.getOnlineMessage();
     this.chat.joinroom(this.taskid);
-    /* this.chat.messages.subscribe(msg => {
-       debugger;
-       console.log(msg);
-     })
- 
-     this.auth.getLoggedInUser().subscribe(data => {
-       debugger
-        if(data!=null){
-         this.message.user = data.userName;
-         this.message.avtar = data.picture;
-        }
-        else{
-         this.message.user="sima";
-         this.message.avtar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRfccBW5b0OHS5GyBncIES08yjxPnZ8GOtgUrniHPgXxK6m5DH";
-        }
-     });*/
   }
 
   sendMessage() {
     this.today = moment(new Date()).format("YYYY-MM-DD");
-    this.message.user=this.user.userName;
+    this.message.user = this.user.userName;
     this.message.avtar = this.user.picture;
     this.message.time = this.today;
     this.message.taskId = this.taskid;
@@ -76,18 +60,23 @@ export class ChatComponent implements OnInit {
   }
 
   getUserInfo() {
-    this.user.userName=this.authService.loggedInUser.userName;
-    this.user.picture = this.authService.loggedInUser.picture;
-      /*this.authService.userEventEmitter.subscribe(user => {
+    debugger
+      this.authService.userEventEmitter.subscribe(user => {
+      this.user=user.loggedInUser;
+    })
+    debugger
+    if (!this.authService.loggedInUser) {
+      this.authService.userEventEmitter.subscribe(user => {
         if (user.userName) {
-          debugger
-          this.user.userName = user.userName;
-          this.user.picture = user.picture;
-          this.authService.loggedInUser = user;
-          this.authService.isLoggedIn = true;
+          this.user = user;
         }
-      });*/
-    
+      });
+    }
+    else {
+      this.user = this.authService.loggedInUser;
+    }
   }
 
 }
+
+
