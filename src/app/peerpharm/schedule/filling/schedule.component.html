@@ -30,19 +30,19 @@
 
   </thead>
   
-  <tr id='inputTr'>
-    <td><input type='text' id="input_position" [(ngModel)]="scheduleLine.positionN" style='width:20px'	></td>
-    <td><input type='text' id="input_order"  [(ngModel)]="scheduleLine.orderN" style='width:60px' onfocusout="setCostumer()"></td>
-     <td><input type='text' id="input_item" style='width:90px' [(ngModel)]="scheduleLine.item" onfocusout="setItemDetails()"><img class="btnImage" src= '/images/search.png' onClick='searchItem()' id='searchBtnImg'><img class="btnImage" src= '/images/paste.png' onClick='pasteNumber()' ></td>
-     <td><input type='text' id="input_costumer" style='width:80px' [(ngModel)]="scheduleLine.costumer" ></td>
-     <td><input type='text' id="input_productName" [(ngModel)]="scheduleLine.productName"></td>
-     <td><input type='text' id="input_batchN" [(ngModel)]="scheduleLine.batch" style='width:110px'></td>
-     <td><textarea rows='1' cols='20' id='input_package'   [(ngModel)]="scheduleLine.packageP" ></textarea></td>
-     <td  colspan=2><input type='text' id="input_Qty" style='width:60px' [(ngModel)]="scheduleLine.qty"></td>
-     <td><input type='date' id="input_Date" style='width:140px; font-size:13px' [(ngModel)]="scheduleLine.date"></td>			 
-     <td><textarea rows='1' cols='30' id='input_marks'  style='width:150px' [(ngModel)]="scheduleLine.marks"></textarea></td>
+  <tr id='inputTr' (click)="EditRowId=0">
+    <td><input type='text' id="input_position" [(ngModel)]="scheduleLine.positionN" style='width:20px'	 class='form-control'></td>
+    <td><input type='text' id="input_order"  [(ngModel)]="scheduleLine.orderN" style='width:60px' #orderN  (focusout)="setOrderDetails(orderN.value)"   class='form-control'></td>
+     <td><input type='text' id="input_item" style='width:90px' [(ngModel)]="scheduleLine.item" #itemN (focusout)="setItemDetails(itemN.value)" class='form-control'></td>
+     <td><input type='text' id="input_costumer" style='width:80px' [(ngModel)]="scheduleLine.costumer" class='form-control' ></td>
+     <td><input type='text' id="input_productName" class='form-control' style='width:340px' [(ngModel)]="scheduleLine.productName"></td>
+     <td><input type='text' id="input_batchN" [(ngModel)]="scheduleLine.batch" style='width:110px' class='form-control'></td>
+     <td><textarea rows='1' cols='20' id='input_package'   [(ngModel)]="scheduleLine.packageP"  class='form-control'></textarea></td>
+     <td  colspan=2><input type='text' id="input_Qty" style='width:60px' [(ngModel)]="scheduleLine.qty" class='form-control'></td>
+     <td><input type='date' id="input_Date" style='width:150px; font-size:13px' [(ngModel)]="scheduleLine.date" class='form-control'></td>			 
+     <td><textarea rows='1' cols='30' id='input_marks'  style='width:150px' [(ngModel)]="scheduleLine.marks" class='form-control'></textarea></td>
      <td class='printlessTd'><select id="select_shift"  [(ngModel)]="scheduleLine.shift"><option value="Day">Day</option><option value="Night">Night</option></select></td>
-      <td class='printlessTd'>
+      <td class='printlessTd' style='width:107px'>
       <input type="radio"  name="type"   value='basic' checked  [(ngModel)]="scheduleLine.mkp" >Basic<br>
       <input type="radio"  name="type"   value='tube' [(ngModel)]="scheduleLine.mkp">Tube<br>
       <input type="radio"  name="type"   value='mkp' [(ngModel)]="scheduleLine.mkp">Mkp<br></td>
@@ -55,35 +55,35 @@
     <tr *ngFor = "let line of scheduleData"  [style.background-color]="line.color" >
       <ng-container  *ngIf='line !== undefined  && line.mkp===typeShown'>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.positionN}}</td>
-        <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:30px'></td>
+        <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:30px' class='form-control'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.orderN}}</td>
-        <td *ngIf="line._id===EditRowId"><input #orderN type='text' [value]="line.orderN"  style='width:50px'></td>
+        <td *ngIf="line._id===EditRowId"><input #orderN type='text' [value]="line.orderN"  style='width:50px' class='form-control'></td>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.item}}</td>
-        <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.item"  style='width:80px'></td>
+        <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.item"  style='width:80px' class='form-control'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
-        <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer"  style='width:50px'></td>
+        <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer"  style='width:50px' class='form-control'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.productName}}</td>
-        <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.productName"  style='width:150px'></td>
+        <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.productName"  style='width:340px' class='form-control'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.batch}}</td>
-        <td *ngIf="line._id===EditRowId"><input #batch type='text' [value]="line.batch"  style='width:90px'></td>
+        <td *ngIf="line._id===EditRowId"><input #batch type='text' [value]="line.batch"  style='width:90px' class='form-control'></td>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.packageP}}</td>
         <!--<td *ngIf="line._id===EditRowId"><input #packageP type='text' [value]="line.packageP"  style='width:150px'></td>-->
-        <td *ngIf="line._id===EditRowId"><textarea rows='1' cols='30' id='input_marks' #packageP style='width:150px' [value]="line.packageP"></textarea></td>
+        <td *ngIf="line._id===EditRowId"><textarea rows='1' cols='30' id='input_marks' #packageP style='width:160px' [value]="line.packageP" class='form-control'></textarea></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.qty}}</td>
-        <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty"  style='width:60px'></td>
+        <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty"  style='width:60px' class='form-control'></td>
         <td></td>
 
         
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.date | date: 'dd/MM/yyyy'}}</td>
-        <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date3 "  style='width:140px'></td>
+        <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date3 "  style='width:140px' class='form-control'></td>
 
 
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.marks}}</td>
-        <td *ngIf="line._id===EditRowId"><input #marks type='text' [value]="line.marks"  style='width:50px'></td>
+        <td *ngIf="line._id===EditRowId"><textarea rows='1' cols='30'  #marks type='text' [value]="line.marks"  style='width:150px' class='form-control'></textarea></td>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.shift}}</td>
-        <td *ngIf="line._id===EditRowId"><input #shift type='text' [value]="line.shift"  style='width:50px'></td>
+        <td *ngIf="line._id===EditRowId"><input #shift type='text' [value]="line.shift"  style='width:50px' class='form-control'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.mkp}}</td>
-        <td *ngIf="line._id===EditRowId"><input #mkp type='text' [value]="line.mkp"  style='width:50px'></td>
+        <td *ngIf="line._id===EditRowId"><input #mkp type='text' [value]="line.mkp"  style='width:50px' class='form-control'></td>
         <td *ngIf="line._id!==EditRowId"><img src='assets/images/deleteBtn.png' class='btnImg'> <img src='assets/images/aprroved.png' (click)='setDone()' class='btnImg'></td>
         <td *ngIf="line._id===EditRowId"><img src='assets/images/update2.png' (click)="updateSchedule()" class='btnImg'></td>
     </ng-container>

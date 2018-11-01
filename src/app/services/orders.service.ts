@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http,  Headers, RequestOptions, Jsonp } from '@angular/http';
+import { Http, Headers, RequestOptions, Jsonp } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
@@ -9,98 +9,114 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class OrdersService {
-  
+
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = 'http://localhost/';
 
-  arr:any=[];
+  arr: any = [];
   private orderSrc = new BehaviorSubject<Array<string>>([]);
   ordersArr = this.orderSrc.asObservable();
 
-  constructor(private http:Http) { }
+  constructor(private http: Http) { }
 
-  getOrders():Observable<any>{
+  getOrders(): Observable<any> {
     let url = this.baseUrl + 'order'
     //debugger;
-   // this.http.get(url).subscribe(res=>console.log(res));
+    // this.http.get(url).subscribe(res=>console.log(res));
     debugger;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
     );
-      //.map((res: Response) => res.json())
-      //.catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
+    //.map((res: Response) => res.json())
+    //.catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
   //edit  order
   editOrder(order): Observable<any> {
     let url = this.baseUrl + "order/update";
-    return this.http.post(url,JSON.stringify(order) , this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify(order), this.options).pipe(map(res => res.json()))
   }
 
-  deleteOrder(order){  
+  deleteOrder(order) {
     let url = this.baseUrl + "order/remove";
-    return this.http.post(url,JSON.stringify(order) , this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify(order), this.options).pipe(map(res => res.json()))
   }
 
-  getLastOrderNumber(){
+  getLastOrderNumber() {
     let url = this.baseUrl + "order?lastOrderNumber=yes";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  getOrderById(id):Observable<any>{
-    let url = this.baseUrl + 'orderitem?orderId=' +id;
+  getOrderById(id): Observable<any> {
+    let url = this.baseUrl + 'orderitem?orderId=' + id;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
-    )}
+    )
+  }
 
-  getMultiOrdersIds(idsArray):Observable<any>{
-    let url = this.baseUrl + 'orderitem?multiOrdersIds=' +idsArray;
+  getOpenOrdersItems():Observable<any>{
+    let url = this.baseUrl + 'order?openOrdersItems=open';
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
-    )}
-    //get item details (can move it to item service)
-   getItemByNumber(itemNumber):Observable<any>{
-      let url = this.baseUrl + "item?itemNumber="+itemNumber;
-      return this.http.get(url).pipe(map(reponse => reponse.json())
-      )}
+    )
+  }
+  getOrderByNumber(orderNumber): Observable<any> {
+    let url = this.baseUrl + 'order?orderNumber=' + orderNumber;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    )
+  }
+
+  getMultiOrdersIds(idsArray): Observable<any> {
+    let url = this.baseUrl + 'orderitem?multiOrdersIds=' + idsArray;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    )
+  }
+  //get item details (can move it to item service)
+  getItemByNumber(itemNumber): Observable<any> {
+    let url = this.baseUrl + "item?itemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json())
+    )
+  }
 
 
- //edit item in order
+  //edit item in order
   editItemOrder(orderItem): Observable<any> {
     let url = this.baseUrl + "orderitem/update";
     debugger;
-    return this.http.post(url,JSON.stringify(orderItem) , this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
 
-  
+
   //add new order
-  addNewOrder(order):Observable<any>{
+  addNewOrder(order): Observable<any> {
     let url = this.baseUrl + "order/add";
     return this.http.post(url, JSON.stringify(order), this.options).pipe(map(res => res.json()))
   }
 
   //add new item to order
-  addNewOrderItem(orderItem):Observable<any>{
+  addNewOrderItem(orderItem): Observable<any> {
     let url = this.baseUrl + "orderitem/add";
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
 
   //get list of sum of all components needed to the order
-  getComponentsSum(orderNumber){
-  let url = this.baseUrl + "itemsDemand?orderNumber="+orderNumber;
- // debugger
-  return this.http.get(url).pipe(map(reponse => reponse.json()));
+  getComponentsSum(orderNumber) {
+    let url = this.baseUrl + "itemsDemand?orderNumber=" + orderNumber;
+    // debugger
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  deleteOrderItem(itemId){
-    
+  deleteOrderItem(itemId) {
+
     let url = this.baseUrl + "orderitem/remove";
     debugger;
-    let item= {id:itemId}
-    return this.http.post(url,JSON.stringify(item) , this.options).pipe(map(res => res.json()))
+    let item = { id: itemId }
+    return this.http.post(url, JSON.stringify(item), this.options).pipe(map(res => res.json()))
   }
 
-  sendOrderData(tempArr : Array<string>){ 
+  sendOrderData(tempArr: Array<string>) {
     this.orderSrc.next(tempArr);
   }
 }

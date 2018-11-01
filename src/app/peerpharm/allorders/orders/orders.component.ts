@@ -94,4 +94,8 @@ export class OrdersComponent implements OnInit {
     console.log(tempArr);
     //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
   }
+
+  loadOrdersItems(){
+    
+  }
 }

@@ -32,10 +32,12 @@ export class CostumersListComponent implements OnInit {
     delivery :'',
     country:'',
     contact:''}
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => { 
+      debugger;
       this.closeResult = `Closed with: ${result}`;
       console.log(this.closeResult);
     }, (reason) => {
+      debugger;
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
@@ -44,6 +46,7 @@ export class CostumersListComponent implements OnInit {
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
     this.modalService.open(content).result.then((result)=>{
+      debugger;
     })
   }
   

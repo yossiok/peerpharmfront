@@ -1,0 +1,25 @@
+
+.containerLeftDiv
+{
+    float: left;
+    width: 29%;
+    height: 100%;
+    display: block;
+}
+
+.containerRightDiv
+{
+    float: right;
+    width: 70%;
+    height: 100%;
+    display: block;
+}
+
+.modal-content
+{
+    background: lightgray;
+}
+.modal-dialog
+{
+    max-width: 1100px;
+}

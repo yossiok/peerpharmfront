@@ -29,6 +29,7 @@ import { FormdetailsComponent } from './forms/formdetails/formdetails.component'
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import {MatSelectModule} from '@angular/material/select';
+import { ChatComponent } from './../shared/chat/chat.component';
 import {
   MatDialogModule,
   MatTableModule,
@@ -117,7 +118,8 @@ import { AuthService } from '../services/auth.service';
     FormslistComponent,
     FormdetailsComponent,
     ItemDetailsTabComponent,
-    ItemDocumentsComponent
+    ItemDocumentsComponent,
+    ChatComponent
   ],
   providers:[ OrdersService, HttpClientModule]
 })
