@@ -27,7 +27,7 @@ export class BoardComponent implements OnInit {
   animateFlag = 'in';
   isClosed: boolean = true;
   taskUserPics: string[];
-
+  taskid:string='check';
 
   data: any = {
     'description': '',
@@ -212,6 +212,7 @@ export class BoardComponent implements OnInit {
 
 
   showTaskDetails(id, content) {
+    this.taskid = id;
     if (this.isClosed) {
       this.tasksService.getSubTasks(id).subscribe(subTasks => {
         this.subTasksArr = subTasks;
@@ -219,7 +220,7 @@ export class BoardComponent implements OnInit {
           debugger;
           let mypopup:any=  document.getElementsByClassName("modal-dialog")[0];
           mypopup.style.maxWidth="1100px"
-        },500);
+        },700);
         this.modalService.open(content).result.then(
           result => {
             this.closeResult = `Closed with: ${result}`;
