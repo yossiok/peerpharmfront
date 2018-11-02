@@ -44,7 +44,7 @@ export class AuthService {
   isUserLoggedIn():Observable<boolean>
   {
   
-    return   <Observable<boolean>> this.httpClient.get(this.baseUrl+"verifysession");
+    return   <Observable<boolean>> this.httpClient.get(this.baseUrl+"api/verifysession");
   }
 
 

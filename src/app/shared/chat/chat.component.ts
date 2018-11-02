@@ -49,6 +49,7 @@ export class ChatComponent implements OnInit {
 
   getOnlineMessage() {
     this.chat.messages.subscribe(msg => {
+      debugger;
       console.log(msg);
       this.messages.push(msg);
     })

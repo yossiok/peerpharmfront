@@ -8,8 +8,8 @@
 
 <div>
   <mat-grid-list cols="4" style="margin:8px;" gutterSize="20px">
-    <mat-grid-tile class="board-list" *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color"
-      dnd-droppable (onDropSuccess)="simpleDrop($event, tile.text, tile.boardid)">
+    <mat-grid-tile class="board-list" *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows"
+      [style.background]="tile.color" dnd-droppable (onDropSuccess)="simpleDrop($event, tile.text, tile.boardid)">
       <mat-grid-tile-header class="board-list-header" [style.background]="tile.titlecolor">
         <span class="list-header-text">{{tile.text}}</span>
         <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Sort">
@@ -31,30 +31,29 @@
         </mat-menu>
       </mat-grid-tile-header>
       <div class="task-card">
-        <div class="new-task-card" *ngIf="tile.add === true">
-
+        <div class="new-task-card mat-card" *ngIf="tile.add === true">
+          <h3>Add new task</h3>
           <form #newTaskForm="ngForm">
-            <mat-form-field style="width: 75px">
-              <input matInput placeholder="Priority" type="number" name="priority" [(ngModel)]="data.priority" min=1 max=50 required />
+             <mat-form-field style="width: 60px">
+              <input matInput placeholder="Priority" type="number" name="priority" [(ngModel)]="data.priority" min=1
+                max=50 required />
             </mat-form-field>
             <!-- <material-datepicker class="duedate" placeholder="Due Date" [(date)]="data.duedate" name="duedate" dateFormat="DD-MM-YYYY"></material-datepicker> -->
-            <mat-form-field>
+            &nbsp; <mat-form-field>
               <input matInput [matDatepicker]="picker" placeholder="Due date" [(ngModel)]="data.duedate" name="duedate" />
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+            </mat-form-field>  
             <div class="error" [hidden]="data.duedate !== ''">Due date required</div>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Description" name="description" [(ngModel)]="data.description" maxlength="75" required/>
-            </mat-form-field>
-
-
-            <button mat-raised-button [disabled]="!newTaskForm.form.valid" (click)="addNewTask(tile.text)">Create</button>
+            <mat-form-field class="example-full-width">&nbsp;
+              <input matInput placeholder="Description" name="description" [(ngModel)]="data.description" maxlength="75"
+                required />
+            </mat-form-field>&nbsp;  <button mat-raised-button [disabled]="!newTaskForm.form.valid" (click)="addNewTask(tile.text)">Create</button>
 
           </form>
         </div>
-        <app-board-task-card *ngFor="let task of tasks | filterBy: taskFilter; let i = index" [tileName]="tile.text" [task]="task"
-          (click)='showTaskDetails(task._id, content)'></app-board-task-card>
+        <app-board-task-card *ngFor="let task of tasks | filterBy: taskFilter; let i = index" [tileName]="tile.text"
+          [task]="task" (click)='showTaskDetails(task._id, content)'></app-board-task-card>
 
       </div>
 
@@ -63,13 +62,13 @@
         <form #newTaskForm="ngForm">
           <div *ngIf="getNewTaskId">
             <mat-form-field>
-              <input matInput placeholder="Department" name="mainTaskId" [(ngModel)]="subData.mainTaskId" maxlength="75" required [value]="getNewTaskId"
-              />
+              <input matInput placeholder="Department" name="mainTaskId" [(ngModel)]="subData.mainTaskId" maxlength="75"
+                required [value]="getNewTaskId" />
             </mat-form-field>
           </div>
           <mat-form-field style="width: 75px">
-            <input matInput placeholder="Priority" type="number" name="priority" [(ngModel)]="subData.priority" min=1 max=50 required
-            />
+            <input matInput placeholder="Priority" type="number" name="priority" [(ngModel)]="subData.priority" min=1
+              max=50 required />
           </mat-form-field>
           <!-- <material-datepicker class="duedate" placeholder="Due Date" [(date)]="subData.duedate" name="duedate" dateFormat="DD-MM-YYYY"></material-datepicker> -->
           <mat-form-field>
@@ -79,11 +78,12 @@
           </mat-form-field>
           <div class="error" [hidden]="data.duedate !== ''">Due date required</div>
           <mat-form-field>
-            <input matInput placeholder="Description" name="description" [(ngModel)]="subData.name" maxlength="275" required/>
+            <input matInput placeholder="Description" name="description" [(ngModel)]="subData.name" maxlength="275"
+              required />
           </mat-form-field>
           <br>
           <mat-form-field>
-            <input matInput placeholder="Department" name="dep" [(ngModel)]="subData.depId" maxlength="75" required/>
+            <input matInput placeholder="Department" name="dep" [(ngModel)]="subData.depId" maxlength="75" required />
           </mat-form-field>
           <br>
           <mat-form-field>
@@ -94,7 +94,7 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="User" name="user" [(ngModel)]="subData.userId" maxlength="75" required/>
+            <input matInput placeholder="User" name="user" [(ngModel)]="subData.userId" maxlength="75" required />
           </mat-form-field>
           <br>
 
@@ -105,7 +105,7 @@
     </mat-grid-tile>
   </mat-grid-list>
 
-  <ng-template #content let-c="close" let-d="dismiss" class="boardmodal"  >
+  <ng-template #content let-c="close" let-d="dismiss" class="boardmodal">
     <div class="modal-header">
       <h4 class="modal-title">{{modalTitle}}</h4>
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -143,16 +143,16 @@
             <ul class="mailbox list-style-none">
               <li>
                 <div class="message-center" style="height: calc(100vh - 215px);">-->
-                  <!--<div class="message-center" style="height: calc(100vh - 215px);" [perfectScrollbar]="config">-->
-                  <!-- <a (click)="onSelect(user)" *ngFor="let user of users" href="javascript:void(0)" class="message-item" id='chat_user_1'>
+        <!--<div class="message-center" style="height: calc(100vh - 215px);" [perfectScrollbar]="config">-->
+        <!-- <a (click)="onSelect(user)" *ngFor="let user of users" href="javascript:void(0)" class="message-item" id='chat_user_1'>
                     <span class="user-img">
                       <img src="{{user.avtar}}" alt="user" class="rounded-circle">
                       <span class="profile-status {{user.status}} pull-right"></span>
                     </span>
                     <div class="mail-contnet">
                       <h5 class="message-title">{{user.name}}</h5>-->
-                      <!--<span class="mail-desc">{{user.lastmsg}}</span>-->
-                    <!--   <span class="time">{{user.lastTaskVisit}}</span>
+        <!--<span class="mail-desc">{{user.lastmsg}}</span>-->
+        <!--   <span class="time">{{user.lastTaskVisit}}</span>
                     </div>
                   </a>
                 </div>
@@ -167,20 +167,20 @@
         <!-- Right Part  Mail Compose -->
         <!-- ============================================================== -->
         <div class="right-part">
-              <app-chat [taskid]="taskid" ></app-chat>
+          <app-chat [taskid]="taskid"></app-chat>
         </div>
 
       </div>
     </div>
 
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
   </ng-template>
- 
+
 </div>
 
 
 
-  <!-- New task window -->
+<!-- New task window -->
