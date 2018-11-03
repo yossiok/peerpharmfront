@@ -65,5 +65,7 @@ h2{
   padding: 0 15px;
   margin: 0 8px;
 }
-
-
+.mat-figure
+{
+overflow: auto !important;
+}

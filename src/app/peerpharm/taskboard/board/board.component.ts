@@ -1,3 +1,5 @@
+import { Depatment } from './../models/depatment.model'; 
+import { AuthService } from './../../../services/auth.service';
 import { Component, OnInit, Input } from '@angular/core';
 import * as Moment from 'moment';
 
@@ -6,8 +8,8 @@ import { BoardModel } from '../models/board-model';
 import { TaskModel } from '../models/task-model';
 import { MatDialog, MatDialogRef, MatDatepicker } from '@angular/material';
 import { SubTaskModel } from '../models/subtask-model';
-import { NgbModal, ModalDismissReasons } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
-import { Depatment } from '../models/depatment.model';
+import { NgbModal, ModalDismissReasons } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap'; 
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-board',
@@ -26,8 +28,9 @@ export class BoardComponent implements OnInit {
   newTask: TaskModel;
   animateFlag = 'in';
   isClosed: boolean = true;
-  taskUserPics: string[];
-  taskid:string='check';
+  taskUserPics: string[]; 
+  taskid: string = 'check';
+  departments:Depatment[];
 
   data: any = {
     'description': '',
@@ -36,15 +39,7 @@ export class BoardComponent implements OnInit {
     'list': ''
   };
 
-  subData: any = {
-    'mainTaskId': '',
-    'name': '',
-    'dueDate': '',
-    'priority': '',
-    'depId': '',
-    'userId': '',
-    'status': ''
-  };
+
 
   selectedUser: any = {
     name: '',
@@ -79,26 +74,27 @@ export class BoardComponent implements OnInit {
   modalTitle: string = "";
   closeResult: string;
 
+
   constructor(
     private tasksService: TasksService,
     public dialog: MatDialog,
     private modalService: NgbModal,
+    private userService: UsersService,
+    private authService: AuthService
 
   ) { }
 
   ngOnInit() {
     this.getTasks(this.boardTitle);
-    //  this.getDepartments();
+
+      this.getDepartments();
   }
 
 
-  shome(ev): void {
-
-  }
 
   simpleDrop($event: any, tileText: string) {
     if ($event.dragData.list !== tileText) {
-      this.UpdateTask($event.dragData._id, tileText, $event.dragData.boardId);
+      this.UpdateTask($event.dragData._id, tileText);
     }
   }
 
@@ -117,30 +113,24 @@ export class BoardComponent implements OnInit {
           console.log(err);
         });
   }
-  /*
+ 
     getDepartments(){
-      this.tasksService.getBoardsByDepartments()
+      this.tasksService.getAllDepartments()
       .subscribe(
         deps=>{
-          this.departemnts=deps;
-          console.log("dep "   +  this.departemnts);
-          //deps.forEach(dep=>{
-            
-            //console.log(dep);
-        //    this.departemnts.push(dep);
-          //})
+          this.departments=deps; 
         }
       )
     }
-    */
+  
 
-  UpdateTask(_id, tList, boardTitle) {
+  UpdateTask(_id, tList) {
     debugger;
-    this.tasksService.updateTask(_id, tList, boardTitle)
+    this.tasksService.updateTask(_id, tList, this.boardTitle)
       .subscribe(
         updatedTask => {
           this.updatedTask = updatedTask;
-          this.getTasks(boardTitle);
+          this.getTasks(this.boardTitle);
         },
         err => {
           console.log(err);
@@ -166,7 +156,7 @@ export class BoardComponent implements OnInit {
         console.log("aaaaa   " + newtask._id);
 
         //this.newTaskId=this.newTask.name;
-        this.newTaskId = true;
+        //  this.newTaskId = true;
       },
         err => {
           console.log(err);
@@ -174,14 +164,19 @@ export class BoardComponent implements OnInit {
     this.showAddtask(_tiletext);
   }
 
-  addNewSubTask(getNewTaskId) {
-    this.subData.mainTaskId = getNewTaskId;
-    this.subData.status = 'open';
-    console.log(this.subData);
-    let dataArrived = {};
-    this.tasksService.createSubTask(this.subData.mainTaskId, this.subData.name, this.subData.dueDate, this.subData.priority, this.subData.depId, this.subData.userId)
-      .subscribe(newSubTask => console.log(newSubTask));
-  }
+
+  subData: any = {
+    mainTaskId: '',
+    name: '',
+    dueDate: '',
+    priority: '',
+    depId: '',
+    userId: '',
+    status: '',
+    users: []
+  };
+
+
 
 
   clearForm() {
@@ -211,16 +206,11 @@ export class BoardComponent implements OnInit {
   }
 
 
-  showTaskDetails(id, content) {
-    this.taskid = id;
+  showTaskDetails(task, content) {
+    this.taskid = task._id;
     if (this.isClosed) {
-      this.tasksService.getSubTasks(id).subscribe(subTasks => {
+      this.tasksService.getSubTasks(task._id).subscribe(subTasks => {
         this.subTasksArr = subTasks;
-        setTimeout(()=>{
-          debugger;
-          let mypopup:any=  document.getElementsByClassName("modal-dialog")[0];
-          mypopup.style.maxWidth="1100px"
-        },700);
         this.modalService.open(content).result.then(
           result => {
             this.closeResult = `Closed with: ${result}`;
@@ -230,6 +220,17 @@ export class BoardComponent implements OnInit {
           }
         );
         this.isClosed = false;
+
+        setTimeout(() => {
+          let mypopup: any = document.getElementsByClassName("modal-dialog")[0];
+          mypopup.style.maxWidth = "1100px";
+
+
+          this.userService.getUsersByDep(this.boardTitle).subscribe(users => {
+            this.subData.users = users;
+          }); 
+
+        }, 700)
       })
     }
     else {
@@ -249,6 +250,17 @@ export class BoardComponent implements OnInit {
     }
   }
 
+
+  addNewSubTask(getNewTaskId) {
+    debugger;
+    this.subData.mainTaskId = getNewTaskId;
+    this.subData.status = 'open';
+    console.log(this.subData);
+    let dataArrived = {};
+    this.tasksService.createSubTask(this.subData.mainTaskId, this.subData.name, this.subData.dueDate, this.subData.priority, this.subData.depId, this.subData.userId)
+      .subscribe(newSubTask => console.log(newSubTask));
+  }
+
+
 }
 
- 

@@ -1,10 +1,10 @@
-<div style="margin:1em">
+<!--<div style="margin:1em">
   <label class="board-label">To Do!</label>
   <a [routerLink]="['/subcard']">sub card</a>
   <mat-form-field style="float:right">
     <input matInput placeholder="Search Tasks" type="search" [(ngModel)]="taskFilter.name" />
   </mat-form-field>
-</div>
+</div>-->
 
 <div>
   <mat-grid-list cols="4" style="margin:8px;" gutterSize="20px">
@@ -34,7 +34,7 @@
         <div class="new-task-card mat-card" *ngIf="tile.add === true">
           <h3>Add new task</h3>
           <form #newTaskForm="ngForm">
-             <mat-form-field style="width: 60px">
+            <mat-form-field style="width: 60px">
               <input matInput placeholder="Priority" type="number" name="priority" [(ngModel)]="data.priority" min=1
                 max=50 required />
             </mat-form-field>
@@ -43,65 +43,28 @@
               <input matInput [matDatepicker]="picker" placeholder="Due date" [(ngModel)]="data.duedate" name="duedate" />
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>  
+            </mat-form-field>
             <div class="error" [hidden]="data.duedate !== ''">Due date required</div>
             <mat-form-field class="example-full-width">&nbsp;
               <input matInput placeholder="Description" name="description" [(ngModel)]="data.description" maxlength="75"
                 required />
-            </mat-form-field>&nbsp;  <button mat-raised-button [disabled]="!newTaskForm.form.valid" (click)="addNewTask(tile.text)">Create</button>
+            </mat-form-field>
+            <div style="width:100%;">
+                <mat-checkbox *ngFor="let dep of departments"   >{{dep.title}}</mat-checkbox>
+            </div> 
+               <button mat-raised-button [disabled]="!newTaskForm.form.valid" (click)="addNewTask(tile.text)">Create</button>
 
           </form>
         </div>
         <app-board-task-card *ngFor="let task of tasks | filterBy: taskFilter; let i = index" [tileName]="tile.text"
-          [task]="task" (click)='showTaskDetails(task._id, content)'></app-board-task-card>
+          [task]="task" [boardTitle]="boardTitle"  (click)='showTaskDetails(task, content)'></app-board-task-card>
+
+
 
       </div>
 
 
-      <div *ngIf="newTaskId">
-        <form #newTaskForm="ngForm">
-          <div *ngIf="getNewTaskId">
-            <mat-form-field>
-              <input matInput placeholder="Department" name="mainTaskId" [(ngModel)]="subData.mainTaskId" maxlength="75"
-                required [value]="getNewTaskId" />
-            </mat-form-field>
-          </div>
-          <mat-form-field style="width: 75px">
-            <input matInput placeholder="Priority" type="number" name="priority" [(ngModel)]="subData.priority" min=1
-              max=50 required />
-          </mat-form-field>
-          <!-- <material-datepicker class="duedate" placeholder="Due Date" [(date)]="subData.duedate" name="duedate" dateFormat="DD-MM-YYYY"></material-datepicker> -->
-          <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Due date" [(ngModel)]="subData.dueDate" name="duedate" />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          <div class="error" [hidden]="data.duedate !== ''">Due date required</div>
-          <mat-form-field>
-            <input matInput placeholder="Description" name="description" [(ngModel)]="subData.name" maxlength="275"
-              required />
-          </mat-form-field>
-          <br>
-          <mat-form-field>
-            <input matInput placeholder="Department" name="dep" [(ngModel)]="subData.depId" maxlength="75" required />
-          </mat-form-field>
-          <br>
-          <mat-form-field>
-            <mat-select placeholder="Department" maxlength="75" (change)="shome($event);" required>
-              <mat-option *ngFor="let dep of departemnts" [value]="dep._id">
-                {{dep.title}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput placeholder="User" name="user" [(ngModel)]="subData.userId" maxlength="75" required />
-          </mat-form-field>
-          <br>
 
-          <button (click)="addNewSubTask(getNewTaskId)">Add</button>
-          <br>
-        </form>
-      </div>
     </mat-grid-tile>
   </mat-grid-list>
 
@@ -114,8 +77,58 @@
     </div>
     <div class="modal-body" style=' display: inline-table'>
       <div class='containerLeftDiv'>
+
+
+
+    
+  
+  
+
+
+
+
         <app-sub-task-card *ngFor="let sb of subTasksArr" [subTask]="sb">
         </app-sub-task-card>
+        
+        <mat-card  class="new-task-card mat-card" style="overflow:auto; margin-bottom: 10px;" >
+            <form #newTaskForm="ngForm">
+  
+              <h5>Add Sub-Task</h5>
+  
+              <mat-form-field style="width: 75px">
+                <input matInput placeholder="Priority" type="number" name="priority" [(ngModel)]="subData.priority" min=1
+                  max=50 required />
+              </mat-form-field>
+              <!-- <material-datepicker class="duedate" placeholder="Due Date" [(date)]="subData.duedate" name="duedate" dateFormat="DD-MM-YYYY"></material-datepicker> -->
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Due date"   [(ngModel)]="subData.dueDate" name="duedate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"   ></mat-datepicker-toggle>
+                <mat-datepicker #picker   ></mat-datepicker>
+              </mat-form-field>
+              <div class="error" [hidden]="subData.dueDate !== ''">Due date required</div>
+              <mat-form-field>
+                <input matInput placeholder="Description" name="description" [(ngModel)]="subData.name" maxlength="275"
+                  required />
+              </mat-form-field>
+  
+              <br>
+              <mat-form-field>
+                <mat-select placeholder="User" maxlength="75" required>
+                  <mat-option *ngFor="let user of subData.users" [value]="user._id">
+                    <div><img src={{user.picture}} width="25" alt="user" class="rounded-circle"> {{user.firstName}} {{"
+                      "+user.lastName}}</div>
+                  </mat-option>
+                </mat-select>
+  
+  
+              </mat-form-field>
+  
+              <br>
+  
+              <button mat-raised-button (click)="addNewSubTask(getNewTaskId)">Add</button>
+              <br>
+            </form>
+          </mat-card>
       </div>
       <div class="containerRightDiv">
         <!--Chat Div Content-->
@@ -166,7 +179,7 @@
         <!-- ============================================================== -->
         <!-- Right Part  Mail Compose -->
         <!-- ============================================================== -->
-        <div class="right-part">
+        <div class="right-part" style="margin:0px; width: 100%">
           <app-chat [taskid]="taskid"></app-chat>
         </div>
 

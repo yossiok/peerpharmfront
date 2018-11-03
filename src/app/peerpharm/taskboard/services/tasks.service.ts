@@ -57,6 +57,7 @@ export class TasksService {
 
   createTask(boardid: string, list: string, name: string, dueDate: Date, priority: string): Observable<any> {
     console.log('post');
+    debugger;
     const url = this.boardUrl + boardid + '/tasks';
 
     var d = new Date(dueDate);

@@ -8,8 +8,7 @@
 }
 .task-card{
     padding-top: 120px;
-    height: inherit;
-    margin: 10px;
+    height: inherit; 
     width: 85%;
 }
 .list-header-text{
@@ -29,7 +28,8 @@
 }
 .board-list
 {
-    height: 500px;
+    height: 580px;
+    overflow: auto;
 }
 
 .boardmodal
@@ -39,7 +39,7 @@
 .containerLeftDiv
 {
     float: left;
-    width: 29%;
+    width: 49%;
     height: 100%;
     display: block;
 }
@@ -47,7 +47,7 @@
 .containerRightDiv
 {
     float: right;
-    width: 70%;
+    width: 49%;
     height: 100%;
     display: block;
 }
@@ -63,7 +63,7 @@
 .new-task-card
 {
     width: 100%;
-    height: 200px;
+    height:350px;
     background-color: #f0f0f0;
     border-radius: 5px;
     padding: 10px;
@@ -73,3 +73,26 @@
 {
     height: 600px;
 }
+
+
+::ng-deep .cdk-overlay-container {
+    position: fixed !important;
+    z-index: 100000 !important; /* set value you need */
+}
+md-backdrop.md-select-backdrop {
+    z-index:103;
+    }
+    
+    .md-select-menu-container {
+    z-index:104;
+    }
+    .cdk-overlay-container {
+        z-index:1127;
+        }
+
+        .cdk-global-overlay-wrapper, .cdk-overlay-container {
+            z-index: 99999 !important;
+         }
+
+
+      

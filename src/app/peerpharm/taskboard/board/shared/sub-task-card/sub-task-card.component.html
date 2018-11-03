@@ -1,4 +1,4 @@
-<mat-card [@flyInOut]="'in'" class="card"    >
+<mat-card   class="card"    >
  
     <span class="card-desc">{{subTask.name}}</span>
     <mat-card-subtitle>Due date: {{ subTask.dueDate }}</mat-card-subtitle> 
@@ -7,7 +7,7 @@
           <div class="user" *ngIf="user" [ngStyle]="{ 'background-image': 'url(' + user.picture + ')'}">
             </div>
       </mat-card-subtitle>
- 
+      <mat-checkbox >Done</mat-checkbox>
  
 </mat-card>
  <!--

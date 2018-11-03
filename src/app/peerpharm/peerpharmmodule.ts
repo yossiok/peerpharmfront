@@ -1,5 +1,4 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { OrdersService } from '../services/orders.service';
+ import { OrdersService } from '../services/orders.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -29,9 +28,11 @@ import { FormdetailsComponent } from './forms/formdetails/formdetails.component'
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import {MatSelectModule} from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ChatComponent } from './../shared/chat/chat.component';
 import {
   MatDialogModule,
+  
   MatTableModule,
   MatGridListModule,
   MatMenuModule,
@@ -67,10 +68,11 @@ import { AuthService } from '../services/auth.service';
     ReactiveFormsModule,
     JsonpModule, 
     HttpClientModule, 
+    MatCheckboxModule,
     NgbModule,
     FormsModule,
     MatDialogModule,
-    MatGridListModule,
+    MatGridListModule, 
     MatMenuModule,
     MatButtonModule,
     MatTooltipModule,

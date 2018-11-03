@@ -4,6 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { trigger, state, animate, keyframes, style, transition } from '@angular/animations';
 import { TaskModel } from '../../../models/task-model';
 import { SubTaskModel } from '../../../models/subtask-model';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-board-task-card',
@@ -26,11 +27,13 @@ export class TaskCardComponent implements OnInit {
 
   @Input() task: TaskModel;
   @Input() tileName: string;
-  
+  @Input() boardTitle:string;
+
+ 
   depatments: Depatment[] = [];
  
   constructor(
-    private tasksService: TasksService
+    private tasksService: TasksService, private userService:UsersService
 
   ) { }
 
@@ -47,12 +50,14 @@ export class TaskCardComponent implements OnInit {
         }
       });
 
+
     })
 
-
+    
 
 
   }
+
 
 
 }

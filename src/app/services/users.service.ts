@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 
-@Injectable()
+@Injectable({providedIn:'root'})
 export class UsersService {
   private baseUrl2 = '/';
 
@@ -23,6 +23,14 @@ export class UsersService {
     return this.http.post(url, JSON.stringify(user), options)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
+  }
+
+  getUsersByDep(department:string):Observable<UserInfo[]>
+  {
+    let url = this.baseUrl2 + 'users/getusersbydep?dep='+department;
+    return this.http.get(url)
+    .map((res: Response) => res.json())
+    .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
 }
