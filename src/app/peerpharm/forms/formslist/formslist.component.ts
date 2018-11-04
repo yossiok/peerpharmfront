@@ -18,7 +18,7 @@ export class FormslistComponent implements OnInit {
   getForms(){
     this.formsService.getAllForms().subscribe(res=>{
       console.log(res) ;
-      debugger;
+      
        this.forms=res});
   }
 }

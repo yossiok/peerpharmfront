@@ -60,7 +60,7 @@ export class SidebarComponent implements OnInit {
             newArr.push(tempArr[0]);
         });
         this.sidebarnavItems = newArr;
-        debugger;
+        
 
       });
     }

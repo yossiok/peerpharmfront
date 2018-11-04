@@ -22,9 +22,9 @@ export class OrdersService {
 
   getOrders(): Observable<any> {
     let url = this.baseUrl + 'order'
-    //debugger;
+    //
     // this.http.get(url).subscribe(res=>console.log(res));
-    debugger;
+    
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
     );
@@ -84,7 +84,7 @@ export class OrdersService {
   //edit item in order
   editItemOrder(orderItem): Observable<any> {
     let url = this.baseUrl + "orderitem/update";
-    debugger;
+    
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
 
@@ -111,7 +111,7 @@ export class OrdersService {
   deleteOrderItem(itemId) {
 
     let url = this.baseUrl + "orderitem/remove";
-    debugger;
+    
     let item = { id: itemId }
     return this.http.post(url, JSON.stringify(item), this.options).pipe(map(res => res.json()))
   }

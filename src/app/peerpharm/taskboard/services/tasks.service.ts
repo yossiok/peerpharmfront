@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
@@ -55,9 +56,21 @@ export class TasksService {
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
-  createTask(boardid: string, list: string, name: string, dueDate: Date, priority: string): Observable<any> {
+
+  updateSubTask(subtask:SubTaskModel): any {
+    const url = this.baseUrl2 + 'subtasks/updateSubTask';
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(url, JSON.stringify( subtask ), options)
+      .map((res: Response) => console.log(res.json()))
+      .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
+  }
+
+
+
+  createTask(boardid: string, list: string, name: string, dueDate: Date, priority: string, deps:any): Observable<any> {
     console.log('post');
-    debugger;
+    
     const url = this.boardUrl + boardid + '/tasks';
 
     var d = new Date(dueDate);
@@ -69,13 +82,15 @@ export class TasksService {
           'dueDate': d,
           'priority': priority
         } */
+        let departments=deps.map(d=>d.id );
 
 
     const taskobj = {
       'list': list,
       'name': name,
       'dueDate': d,
-      'priority': priority
+      'priority': priority,
+      'departments':departments
     }
     console.log(taskobj);
 
@@ -90,7 +105,8 @@ export class TasksService {
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
-  createSubTask(mainTaskId: string, name: string, dueDate: Date, priority: string, depId: string, userId: string): any {
+  createSubTask(mainTaskId: string, name: string, dueDate: Date, priority: string, depId: string, userId: string, status:string): any {
+     
     const url = this.baseUrl2 + 'subtasks/add';
 
     var d = new Date(dueDate);
@@ -101,6 +117,7 @@ export class TasksService {
       'dueDate': d,
       'priority': priority,
       'depId': depId,
+      'status':status,
       'userId': userId
     }
 

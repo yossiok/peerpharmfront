@@ -308,7 +308,7 @@ $(document).ready(()=>{
 	let itemID= getParameterByName("id", location.href);
 	//get item by itemNumber
 	 $.getJSON("/item?itemNumber="+itemID , (data)=>{
-		 //debugger;
+		 //
 
 				console.log(data);
 				dataArived=data[0];
@@ -348,7 +348,7 @@ $(document).ready(()=>{
 	function searchForItem2(){
 		itemID= document.getElementById('id_item').value;
 		$.getJSON("/item?itemNumber="+itemID , (data)=>{
-		 //debugger;
+		 //
 		 dataArived=data;
 		 dataArived=data[0];
 		 loadItemData();	
@@ -1189,7 +1189,7 @@ $(document).ready(()=>{
 			 newItem,
 			  function(data){				
 				//	$("#formulaId").val(data);
-				debugger;
+				
 			}
 		
 		)

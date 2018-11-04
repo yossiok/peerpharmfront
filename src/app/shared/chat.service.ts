@@ -17,7 +17,7 @@ export class ChatService {
     this.messages = <Subject<any>>wsService
       .connect()
       .map((response: any): any => {
-        debugger;
+        
         return response;
       })
    }
@@ -25,7 +25,7 @@ export class ChatService {
   // Our simplified interface for sending
   // messages back to our socket.io server
   sendMsg(msg) {
-    debugger;
+    
     this.messages.next(msg);
   }
   

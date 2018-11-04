@@ -40,7 +40,7 @@ export class OrdersComponent implements OnInit {
         this.orders = orders.map(order => Object.assign({ isSelected: false }, order));
         //let x= this.orders.filter(x=> x.isSelected==false);
         //let yy= x.map(y=> {orderN:y.orderN});
-        //debugger;
+        //
         //console.log(x);
       })
   }

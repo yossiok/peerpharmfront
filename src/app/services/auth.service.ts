@@ -35,7 +35,7 @@ export class AuthService {
 
   getLoggedInUser(): Observable<any> {
     return this.httpClient.get(this.authURL ).pipe(map((data) =>  {
-      debugger;
+      
       this.loggedInUser=<UserInfo> data; this.userEventEmitter.emit(<UserInfo>data)})
       );
      
@@ -51,7 +51,7 @@ export class AuthService {
 
   login(userObj):Observable<boolean>
   {
-  debugger;
+  
     return   <Observable<boolean>> this.httpClient.post((this.baseUrl+"login"), userObj,this.httpOptions);
   }
 
