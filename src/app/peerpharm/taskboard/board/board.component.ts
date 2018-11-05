@@ -69,6 +69,7 @@ export class BoardComponent implements OnInit {
     { body: "hi all, how are you, ready to begin?", user: "Gabi Barak", date: "23-05-2018 ,  13:05", avatar: "assets/images/user.jpg" }
   ]
   @Input() boardTitle: string;
+  @Input() boardID: string;
   newTaskId: true;
   getNewTaskId: string;
   modalTitle: string = "";
@@ -85,7 +86,7 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getTasks(this.boardTitle);
+    this.getTasks(this.boardID);
 
     this.getDepartments();
   }

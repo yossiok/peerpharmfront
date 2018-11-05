@@ -6,7 +6,7 @@
 
   <mat-tab *ngFor="let board of boards" class="board-tabs">
     <ng-template mat-tab-label><span class="board-title">{{board.title}}</span></ng-template>
-    <app-board [boardTitle]="board.title"> Loading...</app-board>
+    <app-board [boardTitle]="board.title"  [boardID]="board._id" > Loading...</app-board>
  
   </mat-tab>
 <!--  <a href="/subcard">sub card</a> -->

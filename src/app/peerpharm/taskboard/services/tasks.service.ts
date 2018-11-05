@@ -24,6 +24,7 @@ export class TasksService {
   constructor(private http: Http) { }
 
   getBoardsByDepartments(departments: Array<string>): Observable<BoardModel[]> {
+    debugger;
     var str = departments.join();
     let boardUrl = this.boardUrl + str;
     return this.http.get(boardUrl)
@@ -32,7 +33,7 @@ export class TasksService {
   }
 
   getTasks(boardid: string): Observable<TaskModel[]> {
-    const url = this.boardUrl + boardid + '/tasks';
+    const url = this.tasksUrl + 'tasks?boardID='+boardid;
     return this.http.get(url)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');

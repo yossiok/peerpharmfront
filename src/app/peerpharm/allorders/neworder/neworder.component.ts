@@ -60,11 +60,10 @@ export class NeworderComponent implements OnInit {
 
   addNewItemOrder(post) {
     console.log(post);
+    debugger
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
-   // if (post.discription == null || post.discription != this.itemName) post.discription = this.itemName;
-  //  if (post.unitmeasure == null || post.unitmeasure != this.volume) post.unitmeasure = this.volume;
-  if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
-  if(this.volume!=0 && this.volume!=null) post.unitmeasure = this.volume;
+  //if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
+ // if(this.volume!=0 && this.volume!=null) post.unitmeasure = this.volume;
     let newOrderItemObj = {
       itemNumber: post.itemN,
       discription: post.discription,
@@ -95,8 +94,10 @@ export class NeworderComponent implements OnInit {
 //console.log(itemNumber);
     this.orderSer.getItemByNumber(itemNumber).subscribe(res => {
      // console.log(res[0]);
-      this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-      this.volume = res[0].volumeKey;
+     this.orderItemForm.controls.discription.setValue( res[0].name + " " + res[0].subName + " " + res[0].discriptionK);
+     this.orderItemForm.controls.unitmeasure.setValue(res[0].volumeKey);
+   //   this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
+   //   this.volume = res[0].volumeKey;
       console.log(this.itemName +  ",  " + this.volume);
     })
 
