@@ -17,6 +17,7 @@ export class NavigationComponent implements AfterViewInit {
   @Output() toggleSidebar = new EventEmitter<void>();
   username: string;
   email: string;
+  picture:string;
 
   public config: PerfectScrollbarConfigInterface = {};
 
@@ -97,6 +98,7 @@ export class NavigationComponent implements AfterViewInit {
         {
         this.username = user.userName;
         this.email = user.userEmail;
+        this.picture = user.picture;
         this.authService.loggedInUser=user;
         this.authService.isLoggedIn=true;
         }
@@ -105,6 +107,7 @@ export class NavigationComponent implements AfterViewInit {
     else{
       this.username = this.authService.loggedInUser.userName;
       this.email = this.authService.loggedInUser.userEmail;
+      this.picture = this.authService.loggedInUser.picture;
     }
   }
 }

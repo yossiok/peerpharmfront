@@ -103,13 +103,13 @@
       <b> Enter Remarks:</b>
       <br>
 
-      <textarea rows="3" cols="30" id="id_mainRemarks"> </textarea>
+      <textarea rows="3" cols="30" id="id_mainRemarks" [(ngModel)]=itemShown.proRemarks> </textarea>
       <br>
       <br>
       <b> Enter Important note:</b>
       <br>
 
-      <textarea rows="3" cols="30" id="id_impRemarks"> </textarea>
+      <textarea rows="3" cols="30" id="id_impRemarks" [(ngModel)]=itemShown.impRemarks> </textarea>
       <br>
       <input #rows style='width:30px' (focusout)="showGoddet()">&nbsp;
       <input #colums style='width:30px' (focusout)="showGoddet()">&nbsp;

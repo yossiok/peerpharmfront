@@ -180,6 +180,10 @@ export class ScheduleComponent implements OnInit {
     })
   }
 
+  deleteLine(id){
+      this.scheduleService.deleteSchedule(id).subscribe(res=>console.log(res));
+  }
+
   setDone() {
   }
 }
