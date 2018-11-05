@@ -15,7 +15,7 @@ export class SignupComponent {
 
  
   fileEvent(fileInput: any) {
-    debugger;
+    
     const AWSService = AWS;
     const region = 'us-east-2';
     const bucketName = 'peerpharmfront-20180920005744-deployment';
@@ -51,7 +51,7 @@ export class SignupComponent {
     };
      
     bucket.upload(params, function (err, data) {
-      debugger;
+      
     });
 
 /*

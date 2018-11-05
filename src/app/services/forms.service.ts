@@ -19,7 +19,7 @@ export class FormsService {
 
  
   getAllForms(){
-    debugger;
+    
     let url = this.baseUrl + "formDetails";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

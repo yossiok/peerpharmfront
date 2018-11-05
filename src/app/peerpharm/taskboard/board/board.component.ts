@@ -1,4 +1,4 @@
-import { Depatment } from './../models/depatment.model'; 
+import { Depatment } from './../models/depatment.model';
 import { AuthService } from './../../../services/auth.service';
 import { Component, OnInit, Input } from '@angular/core';
 import * as Moment from 'moment';
@@ -8,7 +8,7 @@ import { BoardModel } from '../models/board-model';
 import { TaskModel } from '../models/task-model';
 import { MatDialog, MatDialogRef, MatDatepicker } from '@angular/material';
 import { SubTaskModel } from '../models/subtask-model';
-import { NgbModal, ModalDismissReasons } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap'; 
+import { NgbModal, ModalDismissReasons } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -28,9 +28,9 @@ export class BoardComponent implements OnInit {
   newTask: TaskModel;
   animateFlag = 'in';
   isClosed: boolean = true;
-  taskUserPics: string[]; 
+  taskUserPics: string[];
   taskid: string = 'check';
-  departments:Depatment[];
+  departments: any[] = [];
 
   data: any = {
     'description': '',
@@ -87,7 +87,7 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
     this.getTasks(this.boardTitle);
 
-      this.getDepartments();
+    this.getDepartments();
   }
 
 
@@ -113,19 +113,23 @@ export class BoardComponent implements OnInit {
           console.log(err);
         });
   }
- 
-    getDepartments(){
-      this.tasksService.getAllDepartments()
+
+  getDepartments() {
+    this.tasksService.getAllDepartments()
       .subscribe(
-        deps=>{
-          this.departments=deps; 
+        deps => {
+          
+          deps.forEach(d => {
+            this.departments.push({ checked: false, id: d._id, title: d.title });
+          });
+
         }
       )
-    }
-  
+  }
+
 
   UpdateTask(_id, tList) {
-    debugger;
+    
     this.tasksService.updateTask(_id, tList, this.boardTitle)
       .subscribe(
         updatedTask => {
@@ -148,13 +152,16 @@ export class BoardComponent implements OnInit {
   addNewTask(_tiletext) {
     // Moment(this.data.duedate).format('DD/MM/YYYY')
     this.tasksService.createTask(this.boardTitle, _tiletext, this.data.description,
-      new Date(this.data.duedate), this.data.priority)
+      new Date(this.data.duedate), this.data.priority, this.departments.filter(x=>x.checked))
       .subscribe(newtask => {
-        debugger;
+        
         this.newTask = newtask;
         this.getTasks(this.boardTitle);
         console.log("aaaaa   " + newtask._id);
 
+        this.departments.forEach(d => {
+          d.checked = false;
+        });
         //this.newTaskId=this.newTask.name;
         //  this.newTaskId = true;
       },
@@ -175,6 +182,7 @@ export class BoardComponent implements OnInit {
     status: '',
     users: []
   };
+  userselected:string="select user";
 
 
 
@@ -207,6 +215,7 @@ export class BoardComponent implements OnInit {
 
 
   showTaskDetails(task, content) {
+    
     this.taskid = task._id;
     if (this.isClosed) {
       this.tasksService.getSubTasks(task._id).subscribe(subTasks => {
@@ -228,7 +237,7 @@ export class BoardComponent implements OnInit {
 
           this.userService.getUsersByDep(this.boardTitle).subscribe(users => {
             this.subData.users = users;
-          }); 
+          });
 
         }, 700)
       })
@@ -252,12 +261,13 @@ export class BoardComponent implements OnInit {
 
 
   addNewSubTask(getNewTaskId) {
-    debugger;
+    
     this.subData.mainTaskId = getNewTaskId;
     this.subData.status = 'open';
+    this.subData.userId=this.userselected;
     console.log(this.subData);
     let dataArrived = {};
-    this.tasksService.createSubTask(this.subData.mainTaskId, this.subData.name, this.subData.dueDate, this.subData.priority, this.subData.depId, this.subData.userId)
+    this.tasksService.createSubTask(this.subData.mainTaskId, this.subData.name, this.subData.dueDate, this.subData.priority, this.subData.depId, this.subData.userId,  this.subData.status)
       .subscribe(newSubTask => console.log(newSubTask));
   }
 

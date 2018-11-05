@@ -50,7 +50,7 @@
                 required />
             </mat-form-field>
             <div style="width:100%;">
-                <mat-checkbox *ngFor="let dep of departments"   >{{dep.title}}</mat-checkbox>
+                <mat-checkbox *ngFor="let dep of departments" [(ngModel)]="dep.checked" name={{dep.title}}  >{{dep.title}}</mat-checkbox>
             </div> 
                <button mat-raised-button [disabled]="!newTaskForm.form.valid" (click)="addNewTask(tile.text)">Create</button>
 
@@ -113,7 +113,7 @@
   
               <br>
               <mat-form-field>
-                <mat-select placeholder="User" maxlength="75" required>
+                <mat-select placeholder="User" maxlength="75" required  [(value)]="userselected"  >
                   <mat-option *ngFor="let user of subData.users" [value]="user._id">
                     <div><img src={{user.picture}} width="25" alt="user" class="rounded-circle"> {{user.firstName}} {{"
                       "+user.lastName}}</div>
@@ -125,7 +125,7 @@
   
               <br>
   
-              <button mat-raised-button (click)="addNewSubTask(getNewTaskId)">Add</button>
+              <button mat-raised-button (click)="addNewSubTask(taskid)">Add</button>
               <br>
             </form>
           </mat-card>

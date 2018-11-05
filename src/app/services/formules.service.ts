@@ -16,7 +16,7 @@ export class FormulesService {
   constructor(private http: Http) { }
 
   addFormule(formule: Formule): Observable<Formule> {
-    debugger;
+    
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.url, formule, options)
@@ -31,7 +31,7 @@ export class FormulesService {
     let body = res.json();
     // map data function
     var data = body;
-debugger;
+
     return data || {};
   }
 

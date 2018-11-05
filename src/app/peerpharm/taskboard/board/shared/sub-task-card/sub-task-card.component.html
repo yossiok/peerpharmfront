@@ -2,12 +2,18 @@
  
     <span class="card-desc">{{subTask.name}}</span>
     <mat-card-subtitle>Due date: {{ subTask.dueDate }}</mat-card-subtitle> 
-    <mat-card-subtitle>Status {{ subTask.status }}</mat-card-subtitle>
+    <mat-form-field>
+        <mat-select placeholder="Status" maxlength="75" required  [(value)]="subTask.status"  (selectionChange)="updatetask($event.value)" >
+          <mat-option *ngFor="let stat of statuses"  [value]="stat" >
+         {{stat}}
+          </mat-option>
+        </mat-select> 
+      </mat-form-field>
       <mat-card-subtitle  > 
           <div class="user" *ngIf="user" [ngStyle]="{ 'background-image': 'url(' + user.picture + ')'}">
             </div>
       </mat-card-subtitle>
-      <mat-checkbox >Done</mat-checkbox>
+ 
  
 </mat-card>
  <!--

@@ -47,7 +47,7 @@ export class TasksService {
     const url = this.boardUrl + boardid + '/tasks/' + _id;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    debugger;
+    
     return this.http.post(url, JSON.stringify({ list: list }), options)
       .map((res: Response) => console.log(res.json()))
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
@@ -89,7 +89,7 @@ export class TasksService {
 
   createSubTask(mainTaskId: string, name: string, dueDate: Date, priority: string, depId: string, userId: string, list: string): Observable<any> {
     const url = this.baseUrl2 + 'subtasks/add';
-    debugger;
+    
     var d = new Date(dueDate);
 
     const subTaskObj = {
@@ -122,7 +122,7 @@ export class TasksService {
       req: 'addDep'
     }
 
-    debugger;
+    
     return this.http.post(url, JSON.stringify(updateObj), options)
       .map((res: Response) => console.log(res.json()))
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
@@ -135,7 +135,7 @@ export class TasksService {
     let options = new RequestOptions({ headers: headers });
 
     return this.http.post(url, JSON.stringify(board), options)
-      .map((res: Response) => { debugger; console.log(res.json) })
+      .map((res: Response) => {  console.log(res.json) })
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 

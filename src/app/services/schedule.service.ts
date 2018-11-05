@@ -18,7 +18,7 @@ export class ScheduleService {
 
   setNewProductionSchedule(schedule): Observable<any> {
     let url = this.baseUrl + "schedule/addSchedule";
-    debugger;
+    
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
 

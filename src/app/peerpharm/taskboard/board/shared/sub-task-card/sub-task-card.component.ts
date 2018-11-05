@@ -10,6 +10,8 @@ import { UserInfo } from '../../../models/UserInfo';
 })
 export class SubTaskCardComponent implements OnInit {
 @Input() subTask:SubTaskModel;
+statuses:string[]=['open', 'close', 'on-hold'];
+ 
 user:UserInfo;
   constructor(private taskservice:TasksService) { 
   
@@ -20,6 +22,15 @@ user:UserInfo;
       
         this.user=user;
     });
+   
+  }
+  updatetask(data)
+  {
+    
+    this.subTask.status=data;
+    this.taskservice.updateSubTask(this.subTask).subscribe(subtask => {
+      console.log(subtask);
+      });
   }
 
  
