@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-item-details-tab',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemDetailsTabComponent implements OnInit {
 
-  constructor() { }
+  constructor( private route: ActivatedRoute) { }
 
   ngOnInit() {
+    const number = this.route.snapshot.paramMap.get('itemNumber');
+    document.title = "Item " +number;
   }
 
 }

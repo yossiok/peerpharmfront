@@ -53,6 +53,13 @@ export class OrdersService {
       map(reponse => reponse.json())
     )
   }
+  
+  getOrderItemsByNumber(orderNumber): Observable<any> {
+    let url = this.baseUrl + 'orderitem?orderNumber=' + orderNumber;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    )
+  }
 
   getOpenOrdersItems():Observable<any>{
     let url = this.baseUrl + 'order?openOrdersItems=open';

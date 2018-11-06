@@ -7,6 +7,7 @@ import {ItemsService} from '../../../services/items.service'
   styleUrls: ['./itemslist.component.css']
 })
 export class ItemslistComponent implements OnInit {
+  itemsCopy:any=[];
 
   items:any[];
   constructor(private itemsService:ItemsService) { }
@@ -17,6 +18,26 @@ export class ItemslistComponent implements OnInit {
 
   getAllItems(){
 
-    this.itemsService.getAllItems().subscribe(items => this.items=items);
+    this.itemsService.getAllItems().subscribe(items => {
+      items.map(item=>{
+        item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
+      })
+      this.items=items;
+      this.itemsCopy=items;
+    });
+  
+  }
+
+  changeText(ev)
+  {
+    let word= ev.target.value;
+    if(word=="")
+    {
+      this.items=this.itemsCopy.slice();
+    }
+    else
+    { 
+      this.items= this.items.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
+    }
   }
 }

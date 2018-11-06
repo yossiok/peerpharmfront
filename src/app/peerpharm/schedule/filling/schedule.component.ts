@@ -18,7 +18,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor3: string = '#B8ECF1';
   today: any;
   @ViewChild('position') positionN: ElementRef;
-  @ViewChild('orderN') orderN: ElementRef;
+  @ViewChild('orderNum') orderN: ElementRef;
   @ViewChild('item') item: ElementRef;
   @ViewChild('costumer') costumer: ElementRef;
   @ViewChild('productName') productName: ElementRef;

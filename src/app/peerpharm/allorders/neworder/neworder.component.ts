@@ -83,7 +83,6 @@ export class NeworderComponent implements OnInit {
       this.items.push(res)
       this.itemName="";
       this.volume=0;
-      alert(this.itemName +  " , "  + this.volume);
     })
     //  orderId:this.orderId
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service'
-import {BehaviorSubject} from 'rxjs/BehaviorSubject'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
 
 
@@ -13,6 +13,7 @@ export class OrdersComponent implements OnInit {
 
   constructor(private ordersService: OrdersService, private router: Router) { }
   orders: any[];
+  ordersCopy: any[];
   EditRowId: any = "";
 
 
@@ -37,11 +38,13 @@ export class OrdersComponent implements OnInit {
   getOrders() {
     this.ordersService.getOrders()
       .subscribe(orders => {
-        this.orders = orders.map(order => Object.assign({ isSelected: false }, order));
-        //let x= this.orders.filter(x=> x.isSelected==false);
-        //let yy= x.map(y=> {orderN:y.orderN});
-        //
-        //console.log(x);
+        //  this.orders = 
+        orders.map(order => {
+          Object.assign({ isSelected: false }, order);
+          order.NumberCostumer = order.orderNumber + " " + order.costumer;
+        })
+        this.orders = orders;
+        this.ordersCopy = orders;
       })
   }
 
@@ -53,30 +56,31 @@ export class OrdersComponent implements OnInit {
 
 
   saveEdit(a, orderId) {
-    let itemToUpdate = {};
-    // a - is if the request is to set order - ready
-    if (!a) {
-      itemToUpdate = {
-        'orderId': this.id.nativeElement.value,
-        'orderNumber': this.orderNumber.nativeElement.value,
-        "orderDate": this.orderDate.nativeElement.value,
-        "costumer": this.costumer.nativeElement.value,
-        "deliveryDate": this.deliveryDate.nativeElement.value,
-        "orderRemarks": this.orderRemarks.nativeElement.value,
+    if (confirm("Close Order?")) {
+      let orderToUpdate = {};
+      // a - is if the request is to set order - ready
+      if (!a) {
+        orderToUpdate = {
+          'orderId': this.id.nativeElement.value,
+          'orderNumber': this.orderNumber.nativeElement.value,
+          "orderDate": this.orderDate.nativeElement.value,
+          "costumer": this.costumer.nativeElement.value,
+          "deliveryDate": this.deliveryDate.nativeElement.value,
+          "orderRemarks": this.orderRemarks.nativeElement.value,
+        }
       }
+
+
+      else orderToUpdate = { status: 'close', orderId: orderId }
+      console.log(orderToUpdate);
+      this.ordersService.editOrder(orderToUpdate).subscribe(res => {
+        let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
+        orderToUpdate['status'] = "";
+        this.orders[i] = orderToUpdate;
+        this.EditRowId = '';
+        console.log(res)
+      });
     }
-
-
-    else itemToUpdate = { status: 'close', orderId: orderId }
-    console.log(itemToUpdate);
-    this.ordersService.editOrder(itemToUpdate).subscribe(res => {
-      let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
-      itemToUpdate['status']="";
-      this.orders[i] = itemToUpdate;
-      this.EditRowId='';
-      console.log(res)
-    });
-
   }
 
   deleteOrder(order) {
@@ -86,16 +90,26 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  loadOrders(){
+  loadOrders() {
     console.log(this.orders);
-    let tempArr = this.orders.filter(e=>e.isSelected==true).map(e=>e=e._id);
+    let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
     this.ordersService.sendOrderData(tempArr);
     this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
     console.log(tempArr);
     //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
   }
 
-  loadOrdersItems(){
-    
+  loadOrdersItems() {
+
+  }
+
+  changeText(ev) {
+    let word = ev.target.value;
+    if (word == "") {
+      this.orders = this.ordersCopy.slice();
+    }
+    else {
+      this.orders = this.orders.filter(x => x.NumberCostumer.toLowerCase().includes(word.toLowerCase()));
+    }
   }
 }

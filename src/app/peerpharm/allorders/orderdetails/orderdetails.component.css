@@ -39,3 +39,31 @@ i{
   .element-row.expanded {
     border-bottom-color: transparent;
   }
+  .spanTitle{
+      font-size: 18px;
+      color: black;
+      margin-left: 30px
+  }
+
+
+
+  @media print {
+    .table{
+      color:black;
+    }
+    .orderHeader {
+      display: none;
+    }
+    .inputTr{    
+      display: none;
+    }
+    i{
+      display: none;
+    }
+    .left-sidebar{
+      display: none;
+    }
+    .printTd{
+      display: none;
+    }
+}

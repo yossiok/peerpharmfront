@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service';
 import { ScheduleService } from '../../../services/schedule.service'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Location } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DataSource } from '@angular/cdk/collections';
@@ -25,6 +25,7 @@ import { ToastrService } from 'ngx-toastr';
 export class OrderdetailsComponent implements OnInit {
   ordersItems;
   item: any;
+  number; orderDate; deliveryDate; costumer; remarks; orderId;
   chosenType: string;
   detailsArr: any[];
   components: any[];
@@ -56,7 +57,7 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('marks') marks: ElementRef;
   // @ViewChild('type') type:ElementRef; 
 
-  constructor(private route: ActivatedRoute, private orderService: OrdersService, private scheduleService: ScheduleService, private location: Location, private toastSrv: ToastrService) { }
+  constructor(private route: ActivatedRoute,  private router:Router, private orderService: OrdersService, private scheduleService: ScheduleService, private location: Location, private toastSrv: ToastrService) { }
 
   ngOnInit() {
     console.log('hi');
@@ -73,6 +74,7 @@ export class OrderdetailsComponent implements OnInit {
         });
       }
       else {
+        this.getOrderDetails();
         this.getOrderItems();
         this.show = true;
         this.multi = false;
@@ -80,24 +82,41 @@ export class OrderdetailsComponent implements OnInit {
     });
   }
 
+  getOrderDetails(){
+    this.number = this.route.snapshot.paramMap.get('id');
+    this.orderService.getOrderByNumber(this.number).subscribe(res=>{
+        this.number = res[0].orderNumber;
+        this.costumer = res[0].costumer;
+        this.orderDate = res[0].orderDate;
+        this.deliveryDate = res[0].deliveryDate;
+        this.remarks = res[0].orderRemarks;
+        this.orderId = res[0]._id;
+    });
 
+  }
   getOrderItems(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.orderService.getOrderById(id).subscribe(orderItems => {
+    this.number = this.route.snapshot.paramMap.get('id');
+    document.title = "Order " +this.number;
+    // const id = this.route.snapshot.paramMap.get('id');
+    //this.orderService.getOrderById(id).subscribe(orderItems => {
+    this.orderService.getOrderItemsByNumber(this.number).subscribe(orderItems => {
 
       orderItems.map(ordersItem => {
-        if (ordersItem.fillingStatus.toLowerCase() == 'filled' || ordersItem.fillingStatus.toLowerCase() == 'partfilled') ordersItem.color = '#CE90FF';
-        if (ordersItem.fillingStatus.toLowerCase() == 'beingfilled' || ordersItem.fillingStatus.toLowerCase().includes("scheduled")  || ordersItem.fillingStatus.toLowerCase() == 'formula porduced') ordersItem.color = 'yellow';
-        if (ordersItem.fillingStatus.toLowerCase() == 'problem') ordersItem.color = 'red';
-        if (ordersItem.quantityProduced != "" && ordersItem.quantityProduced != null && ordersItem.quantityProduced != undefined) {
-          if (parseInt(ordersItem.quantity) >= parseInt(ordersItem.quantityProduced)) {
-            let lackAmount = parseInt(ordersItem.quantity) - parseInt(ordersItem.quantityProduced);
-            ordersItem.fillingStatus += ", " + lackAmount + " lack";
-            ordersItem.infoColor = 'red';
+        if (orderItems.fillingStatus != null) {
+          if (ordersItem.fillingStatus.toLowerCase() == 'filled' || ordersItem.fillingStatus.toLowerCase() == 'partfilled') ordersItem.color = '#CE90FF';
+          if (ordersItem.fillingStatus.toLowerCase() == 'beingfilled' || ordersItem.fillingStatus.toLowerCase().includes("scheduled") || ordersItem.fillingStatus.toLowerCase() == 'formula porduced') ordersItem.color = 'yellow';
+          if (ordersItem.fillingStatus.toLowerCase() == 'problem') ordersItem.color = 'red';
+          if (ordersItem.quantityProduced != "" && ordersItem.quantityProduced != null && ordersItem.quantityProduced != undefined) {
+            if (parseInt(ordersItem.quantity) >= parseInt(ordersItem.quantityProduced)) {
+              let lackAmount = parseInt(ordersItem.quantity) - parseInt(ordersItem.quantityProduced);
+              ordersItem.fillingStatus += ", " + lackAmount + " lack";
+              ordersItem.infoColor = 'red';
+            }
+            else ordersItem.color = '#CE90FF';
           }
-          else ordersItem.color = '#CE90FF';
+          if (ordersItem.fillingStatus == 'packed') ordersItem.color = '#FFC058';
         }
-        if (ordersItem.fillingStatus == 'packed') ordersItem.color = '#FFC058';
+
       });
       this.ordersItems = orderItems;
       this.getComponents(this.ordersItems[0].orderNumber);
@@ -152,14 +171,14 @@ export class OrderdetailsComponent implements OnInit {
     let itemToUpdate = {
 
       'orderItemId': this.id.nativeElement.value,
-      'itemN': this.itemN.nativeElement.value,
+      'itemNumber': this.itemN.nativeElement.value,
       "unitMeasure": this.unitMeasure.nativeElement.value,
       "discription": this.itemName.nativeElement.value,
       "quantity": this.quantity.nativeElement.value,
       "qtyKg": this.weight.nativeElement.value,
       "itemRemarks": this.itemRemarks.nativeElement.value,
     }
-    console.log(a);
+    console.log(itemToUpdate);
     // console.log("edit " + itemToUpdate.orderItemId );
 
     this.orderService.editItemOrder(itemToUpdate).subscribe(res => {
@@ -167,8 +186,11 @@ export class OrderdetailsComponent implements OnInit {
       console.log(res)
       if (res != "error") {
         debugger
-        this.toastSrv.success(itemToUpdate.itemN, "Changes Saved");
+        this.toastSrv.success(itemToUpdate.itemNumber, "Changes Saved");
         this.EditRowId = "";
+        let index = this.ordersItems.findIndex(order => order._id == itemToUpdate.orderItemId);
+        this.ordersItems[2] = itemToUpdate;
+        this.ordersItems[2]._id = itemToUpdate.orderItemId;
       }
 
     });
@@ -216,60 +238,32 @@ export class OrderdetailsComponent implements OnInit {
   }
 
 
+  setBatch(item, batch) {
+    let batchObj = { orderItemId: item._id, batch: batch };
+    console.log(batchObj);
+    this.orderService.editItemOrder(batchObj).subscribe(res => {
+      console.log(res);
+    })
+  }
 
 
-  showSuccess() {
+  searchItem(itemNumber) {
+    this.orderService.getItemByNumber(itemNumber).subscribe(res => {
+      this.itemData.discription=res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
+      this.itemData.unitMeasure= res[0].volumeKey;
+    })
+  }
+
+  closeOrder() {
+    if (confirm("Close Order?")) {
+      let orderToUpdate = {};
+      orderToUpdate = { status: 'close', orderId: this.orderId }
+      console.log(orderToUpdate);
+      this.orderService.editOrder(orderToUpdate).subscribe(res => {
+        console.log(res);
+        this.router.navigate([ '/' ]); 
+      });
+    }
   }
 }
-/*
-displayedColumns = ['position', 'name', 'weight'];
-dataSource = new ExampleDataSource();
-
-isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
-expandedElement: any;
-}
-
-export interface Element {
-name: string;
-position: number;
-weight: number;
-symbol: string;
-}
-
-const data: Element[] = [
-{ position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-{ position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-{ position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-{ position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-{ position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-{ position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-{ position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-{ position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-{ position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-{ position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na' },
-{ position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg' },
-{ position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al' },
-{ position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si' },
-{ position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P' },
-{ position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S' },
-{ position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl' },
-{ position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar' },
-{ position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K' },
-{ position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
-];
-
-
-
-export class ExampleDataSource extends DataSource<any> {
-connect(): Observable<Element[]> {
-  const rows = [];
-  data.forEach(element => rows.push(element, { detailRow: true, element }));
-  console.log(rows);
-  return of(rows);
-}
-
-disconnect() { }
-}
-*/
 

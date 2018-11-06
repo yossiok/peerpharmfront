@@ -35,6 +35,7 @@ export class ItemDocumentsComponent implements OnInit {
 
   getItemData() {
     const number = this.route.snapshot.paramMap.get('itemNumber');
+    document.title = "Item " +number;
     if (number) {
       this.itemsService.getItemData(number).subscribe(res => {
         this.item = res[0];

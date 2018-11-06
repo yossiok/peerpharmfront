@@ -1,8 +1,6 @@
 
 
-<p>
-  orders works!
-</p><i class="ti-save text-success m-r-10"></i>
+
 <br>
 <div class='mainDiv'>
     <div class='subContainer'>
@@ -28,6 +26,7 @@
     <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Show Items </button>
 </div>
 <br><br>
+<input matInput  placeholder="Search order" (keyup)="changeText($event)" />
 <table class='table'>
   <thead class='bg-info text-white'  (click)="edit(' ')">
     <tr>
@@ -46,7 +45,7 @@
       <td (click)="edit('')">
         <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
       <td (click)="edit('')">
-        <a routerLink='/peerpharm/allorders/orderitems/{{order._id}}'>
+        <a routerLink='/peerpharm/allorders/orderitems/{{order.orderNumber}}'>
           <!-- <a routerLink="/orderitems/{{order._id}}">-->
           <!--<a  [routerLink]=['orderitems/{{order._id}}']>-->
           {{order.orderNumber}}

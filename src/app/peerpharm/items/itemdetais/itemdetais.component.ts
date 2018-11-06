@@ -310,6 +310,17 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
+  searchForItem(item){
+  
+    this.itemsService.getItemData(item).subscribe(res=>{
+      this.item = res[0];
+      this.itemShown = res[0];
+      console.log(res[0]);
+      this.dataDiv = res[0].goddet;
+      this.showGoddetData();
+    })
+  }
+
   writeItemData() {
     console.log(this.itemShown)
     this.getGoddetData();
