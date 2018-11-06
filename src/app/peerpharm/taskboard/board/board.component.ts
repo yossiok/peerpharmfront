@@ -135,7 +135,7 @@ export class BoardComponent implements OnInit {
       .subscribe(
         updatedTask => {
           this.updatedTask = updatedTask;
-          this.getTasks(this.boardTitle);
+          this.getTasks(this.boardID);
         },
         err => {
           console.log(err);
@@ -157,7 +157,7 @@ export class BoardComponent implements OnInit {
       .subscribe(newtask => {
         
         this.newTask = newtask;
-        this.getTasks(this.boardTitle);
+        this.getTasks(this.boardID);
         console.log("aaaaa   " + newtask._id);
 
         this.departments.forEach(d => {
