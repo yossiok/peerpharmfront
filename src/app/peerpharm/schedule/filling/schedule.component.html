@@ -1,10 +1,7 @@
-<p>
-  schedule works!
-</p>
-<br>
+
 {{today}}<br>
 <input  type ='date' #date [(ngModel)]='today'  (change)="dateChanged(date.value)">
-
+<button class='btn btn-info' (click)="filterSchedule()">Filter</button>
 <br><br>
     <div (click)='setType("basic", this)' [ngStyle]="{'background-color': buttonColor}">General</div>
     <div (click)='setType("tube", this)' [ngStyle]="{'background-color': buttonColor2}">Tubes</div>
@@ -83,10 +80,16 @@
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.shift}}</td>
         <td *ngIf="line._id===EditRowId"><input #shift type='text' [value]="line.shift"  style='width:50px' class='form-control'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.mkp}}</td>
-        <td *ngIf="line._id===EditRowId"><input #mkp type='text' [value]="line.mkp"  style='width:50px' class='form-control'></td>
+        <!--<td *ngIf="line._id===EditRowId"><input #mkp type='text' [value]="line.mkp"  style='width:50px' class='form-control'></td>-->
+        <td *ngIf="line._id===EditRowId">
+            <input type="radio"  name="typeEdit"   value='basic' checked='checked'  [(ngModel)]="editRadioBtnType" >Basic<br>
+            <input type="radio"  name="typeEdit"   value='tube' [(ngModel)]="editRadioBtnType">Tube<br>
+            <input type="radio"  name="typeEdit"   value='mkp' [(ngModel)]="editRadioBtnType">Mkp<br>
+        </td>
         <td *ngIf="line._id!==EditRowId">
             <i class="ti-trash text-danger m-r-10"   (click)="deleteLine(line._id)"></i>&nbsp;
             <i class="ti-check text-success m-r-10"  (click)='setDone()' ></i>
+            <input type="checkbox" [(ngModel)]="line.isSelected" *ngIf="line._id!==EditRowId">
         </td>
         <td *ngIf="line._id===EditRowId"> <i class="ti-save text-success m-r-10"   (click)="updateSchedule()"></i></td>
     </ng-container>

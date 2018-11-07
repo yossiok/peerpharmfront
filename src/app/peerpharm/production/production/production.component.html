@@ -1,13 +1,12 @@
-<p>
-  production works!
-</p>
+{{today}}<br>
+<input  type ='date' #date [(ngModel)]='today'  (change)="dateChanged(date.value)">
 
 <div>
   <div class='machineBoard' dnd-droppable  *ngFor="let line of pLines"   (onDropSuccess)="simpleDrop($event, line.number)">
 
      <div class='lineheader'>  {{line.number}}  - {{line.discription}} Line</div>
       <br><br>
-      <div  *ngFor="let schedule of scheduleData" class="schedule-card"  [dragData]="schedule"  dnd-draggable [dragEnabled]="true">     
+      <div  *ngFor="let schedule of scheduleData" class="schedule-card"  [dragData]="schedule"  dnd-draggable [dragEnabled]="true" [style.background-color]="schedule.color" >     
         <ng-container  *ngIf='schedule.productionLine == line.number'>
             {{schedule.item}}, {{schedule.batch}}<br>
             {{schedule.productName}}

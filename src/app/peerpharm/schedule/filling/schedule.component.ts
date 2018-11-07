@@ -17,6 +17,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
   today: any;
+  editRadioBtnType:string="";
   @ViewChild('position') positionN: ElementRef;
   @ViewChild('orderNum') orderN: ElementRef;
   @ViewChild('item') item: ElementRef;
@@ -55,10 +56,10 @@ export class ScheduleComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getAllSchedule();
+    
     this.today = new Date();
     this.today= moment( this.today).format("YYYY-MM-DD");
-
+    this.getAllSchedule(this.today);
   }
 
   writeScheduleData() {
@@ -84,20 +85,23 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  getAllSchedule() {
-    this.scheduleService.getSchedule().subscribe(res => {
-
+  getAllSchedule(today) {
+    //this.scheduleService.getSchedule().subscribe(res => {
+    this.scheduleService.getScheduleByDate(today).subscribe(res=>{
       res.map(sced => {
         //  sced.date= moment(sced.date).format("DD/MM/YY"); 
-        //    sced.color='white';
+        sced.color='white';
         if (sced.status == 'filled') sced.color = '#CE90FF';
         if (sced.status == 'beingFilled') sced.color = 'yellow';
         if (sced.status == 'packed') sced.color = 'Aquamarine';
         if (sced.status == 'problem') sced.color = 'red';
         sced.date2 = moment(sced.date).format("DD/MM/YY");
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");
+       
       });
-
+      res.map(sced => {
+        Object.assign({ isSelected: false }, sced);
+      });
       this.scheduleData = res;
 
     });
@@ -152,11 +156,12 @@ export class ScheduleComponent implements OnInit {
       date: this.date.nativeElement.value,
       marks: this.marks.nativeElement.value,
       shift: this.shift.nativeElement.value,
-      mkp: this.mkp.nativeElement.value
+      mkp: this.editRadioBtnType
     }
     this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
       this.EditRowId = 0;
       this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
+      this.editRadioBtnType="";
     });
 
   }
@@ -184,6 +189,10 @@ export class ScheduleComponent implements OnInit {
       this.scheduleService.deleteSchedule(id).subscribe(res=>console.log(res));
   }
 
+
+  filterSchedule(){
+    this.scheduleData=this.scheduleData.filter(e => e.isSelected == true);
+  }
   setDone() {
   }
 }

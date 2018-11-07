@@ -36,7 +36,8 @@ export class OrderdetailsComponent implements OnInit {
     unitMeasure: '',
     quantity: '',
     qtyKg: '',
-    orderId: ''
+    orderId: '',
+    orderNumber:''
   };
   show: boolean;
   EditRowId: any = "";
@@ -189,8 +190,8 @@ export class OrderdetailsComponent implements OnInit {
         this.toastSrv.success(itemToUpdate.itemNumber, "Changes Saved");
         this.EditRowId = "";
         let index = this.ordersItems.findIndex(order => order._id == itemToUpdate.orderItemId);
-        this.ordersItems[2] = itemToUpdate;
-        this.ordersItems[2]._id = itemToUpdate.orderItemId;
+        this.ordersItems[index] = itemToUpdate;
+        this.ordersItems[index]._id = itemToUpdate.orderItemId;
       }
 
     });
@@ -206,8 +207,9 @@ export class OrderdetailsComponent implements OnInit {
 
   addItemOrder() {
 
-    console.log(1 + " , " + this.itemData.qtyKg);
-    this.itemData.orderId = this.route.snapshot.paramMap.get('id');
+   // console.log(1 + " , " + this.itemData.qtyKg);
+    this.itemData.orderId = this.orderId;
+    this.itemData.orderNumber = this.number;
     console.log(this.itemData.orderId);
     this.orderService.addNewOrderItem(this.itemData).subscribe(item => this.ordersItems.push(item));
   }
@@ -248,7 +250,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   searchItem(itemNumber) {
-    this.orderService.getItemByNumber(itemNumber).subscribe(res => {
+      this.orderService.getItemByNumber(itemNumber).subscribe(res => {
       this.itemData.discription=res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
       this.itemData.unitMeasure= res[0].volumeKey;
     })

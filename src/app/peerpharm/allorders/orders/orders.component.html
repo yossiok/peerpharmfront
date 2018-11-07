@@ -22,7 +22,7 @@
           <div class='subMain'> 5  </div>
           <div class='subHeader'><br></div>
     </div>
-    <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Load </button>
+    <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Load </button> &nbsp;&nbsp;&nbsp;
     <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Show Items </button>
 </div>
 <br><br>
@@ -30,6 +30,7 @@
 <table class='table'>
   <thead class='bg-info text-white'  (click)="edit(' ')">
     <tr>
+      <td></td>
       <td></td>
       <td>Order Number</td>
       <td>Costumer</td>
@@ -41,7 +42,8 @@
     </tr>
   </thead>
   <tbody class='table-hover'>
-    <tr *ngFor="let order of orders" >
+    <tr *ngFor="let order of orders; let i = index" >
+      <td>{{i}}</td>
       <td (click)="edit('')">
         <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
       <td (click)="edit('')">

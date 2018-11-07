@@ -11,10 +11,13 @@ import * as moment from 'moment';
 export class ProductionComponent implements OnInit {
   pLines=[];
   scheduleData:any[];
+  today: any;
   constructor(private productionSer:ProductionService, private scheduleService:ScheduleService ) { }
 
  
-  ngOnInit() {
+  ngOnInit() {    
+    this.today = new Date();
+    this.today= moment( this.today).format("YYYY-MM-DD");
     this.getAllLines();
   }
 
@@ -26,11 +29,15 @@ export class ProductionComponent implements OnInit {
   }
 
   getAllSchedule(){
-    this.scheduleService.getSchedule().subscribe(res=>{
+    this.scheduleService.getScheduleByDate(this.today).subscribe(res => {
      
       res.map(sced=>
       {
         sced.date= moment(sced.date).format("DD/MM/YY"); 
+        if (sced.status == 'filled') sced.color = 'Aquamarine';
+        if (sced.status == 'beingFilled') sced.color = 'yellow';
+        if (sced.status == 'packed') sced.color = 'orange';
+        if (sced.status == 'problem') sced.color = 'red';
       });
     
       this.scheduleData=res;
@@ -60,5 +67,21 @@ export class ProductionComponent implements OnInit {
     console.log(scheduleId);
     console.log(newPosition);
     this.scheduleService.updateScheduleLinePosition(scheduleId, newPosition).subscribe(res=>{console.log(res)})
+  }
+
+
+  dateChanged(date) {
+    
+    console.log(date);
+    this.scheduleService.getScheduleByDate(date).subscribe(res => {
+      res.map(sced => {
+        sced.date= moment(sced.date).format("DD/MM/YY"); 
+        if (sced.status == 'filled') sced.color = 'Aquamarine';
+        if (sced.status == 'beingFilled') sced.color = 'yellow';
+        if (sced.status == 'packed') sced.color = 'orange';
+        if (sced.status == 'problem') sced.color = 'red';
+      });
+      this.scheduleData = res;
+    });
   }
 }
