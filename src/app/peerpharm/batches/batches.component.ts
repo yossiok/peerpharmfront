@@ -16,9 +16,9 @@ export class BatchesComponent implements OnInit {
       console.log(res);
       this.batches=res;
       this.batches.map(batch=>{
-        if(batch.weightKg!=null && batch.qtyLeft!=null){
-          if(batch.qtyLeft==0) batch.color='#FFC058';
-          else if(batch.qtyLeft<batch.weightKg) batch.color="yellow";
+        if(batch.weightKg!=null && batch.weightQtyLeft!=null){
+          if(batch.weightQtyLeft==0) batch.color='Aquamarine';
+          else if(batch.weightQtyLeft<batch.weightKg) batch.color="yellow";
         }
       })
     });

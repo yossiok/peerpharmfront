@@ -101,21 +101,21 @@ export class OrderdetailsComponent implements OnInit {
     // const id = this.route.snapshot.paramMap.get('id');
     //this.orderService.getOrderById(id).subscribe(orderItems => {
     this.orderService.getOrderItemsByNumber(this.number).subscribe(orderItems => {
-
-      orderItems.map(ordersItem => {
-        if (orderItems.fillingStatus != null) {
-          if (ordersItem.fillingStatus.toLowerCase() == 'filled' || ordersItem.fillingStatus.toLowerCase() == 'partfilled') ordersItem.color = '#CE90FF';
-          if (ordersItem.fillingStatus.toLowerCase() == 'beingfilled' || ordersItem.fillingStatus.toLowerCase().includes("scheduled") || ordersItem.fillingStatus.toLowerCase() == 'formula porduced') ordersItem.color = 'yellow';
-          if (ordersItem.fillingStatus.toLowerCase() == 'problem') ordersItem.color = 'red';
-          if (ordersItem.quantityProduced != "" && ordersItem.quantityProduced != null && ordersItem.quantityProduced != undefined) {
-            if (parseInt(ordersItem.quantity) >= parseInt(ordersItem.quantityProduced)) {
-              let lackAmount = parseInt(ordersItem.quantity) - parseInt(ordersItem.quantityProduced);
-              ordersItem.fillingStatus += ", " + lackAmount + " lack";
-              ordersItem.infoColor = 'red';
+      debugger
+      orderItems.map(item => {
+        if (item.fillingStatus != null) {
+          if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
+          if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase() == 'formula porduced') item.color = 'yellow';
+          if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+          if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+            if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
+              let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
+              item.fillingStatus += ", " + lackAmount + " lack";
+              item.infoColor = 'red';
             }
-            else ordersItem.color = '#CE90FF';
+            else item.color = '#CE90FF';
           }
-          if (ordersItem.fillingStatus == 'packed') ordersItem.color = '#FFC058';
+          if (item.fillingStatus == 'packed') item.color = '#FFC058';
         }
 
       });
