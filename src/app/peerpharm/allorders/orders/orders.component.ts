@@ -56,23 +56,18 @@ export class OrdersComponent implements OnInit {
 
 
   saveEdit(a, orderId) {
-    if (confirm("Close Order?")) {
-      let orderToUpdate = {};
-      // a - is if the request is to set order - ready
-      if (!a) {
-        orderToUpdate = {
-          'orderId': this.id.nativeElement.value,
-          'orderNumber': this.orderNumber.nativeElement.value,
-          "orderDate": this.orderDate.nativeElement.value,
-          "costumer": this.costumer.nativeElement.value,
-          "deliveryDate": this.deliveryDate.nativeElement.value,
-          "orderRemarks": this.orderRemarks.nativeElement.value,
-        }
+    debugger
+    let orderToUpdate = {};
+    // a - is if the request is to set order - ready
+    if (!a) {
+      orderToUpdate = {
+        'orderId': this.id.nativeElement.value,
+        'orderNumber': this.orderNumber.nativeElement.value,
+        "orderDate": this.orderDate.nativeElement.value,
+        "costumer": this.costumer.nativeElement.value,
+        "deliveryDate": this.deliveryDate.nativeElement.value,
+        "orderRemarks": this.orderRemarks.nativeElement.value,
       }
-
-
-      else orderToUpdate = { status: 'close', orderId: orderId }
-      console.log(orderToUpdate);
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
         let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
         orderToUpdate['status'] = "";
@@ -80,14 +75,31 @@ export class OrdersComponent implements OnInit {
         this.EditRowId = '';
         console.log(res)
       });
+
+    }
+    else {
+      orderToUpdate = { status: 'close', orderId: orderId }
+      if (confirm("Close Order?")) {
+        console.log(orderToUpdate);
+        this.ordersService.editOrder(orderToUpdate).subscribe(res => {
+          let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
+          orderToUpdate['status'] = "";
+          this.orders[i] = orderToUpdate;
+          this.EditRowId = '';
+          console.log(res)
+        });
+      }
     }
   }
 
+
   deleteOrder(order) {
-    this.ordersService.deleteOrder(order).subscribe(res => {
-      let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
-      delete this.orders[i];
-    });
+    if (confirm("Delete Order?")) {
+      this.ordersService.deleteOrder(order).subscribe(res => {
+        let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
+        delete this.orders[i];
+      });
+    }
   }
 
   loadOrders() {

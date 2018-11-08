@@ -42,7 +42,6 @@ export class SidebarComponent implements OnInit {
   // End open close
   ngOnInit() {
     this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
-
     this.authService.userEventEmitter.subscribe(data => {
       
       this.user = this.authService.loggedInUser

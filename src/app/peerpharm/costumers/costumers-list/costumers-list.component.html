@@ -1,22 +1,27 @@
 <img src='assets/images/add.png' style='width:50px; cursor: pointer;' (click)="open(content)"><br><br>
-<table class='table'   >
-    <thead class='bg-info text-white'>
-    
-      <tr>
-        <th></th>
-        <th style="padding:5px">Costumer Id</th>
-        <th style="padding:5px">Name</th>
-        <th style="padding:5px">Adress</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id= "table_body">
-      <tr *ngFor="let costumer of costumers; let i=index">
-        <td>{{i}}</td>
-        <td (click)='openDetails(content, i)'>{{costumer.costumerId}}</td><td>{{costumer.costumerName}}</td><td>{{costumer.invoice}}</td><td></td>
-      </tr>
-    </tbody>
-  </table>
+
+
+<table class='table'>
+  <thead class='bg-info text-white'>
+
+    <tr>
+      <th></th>
+      <th style="padding:5px">Costumer Id</th>
+      <th style="padding:5px">Name</th>
+      <th style="padding:5px">Adress</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="table_body">
+    <tr *ngFor="let costumer of costumers; let i=index">
+      <td>{{i}}</td>
+      <td (click)='openDetails(content, i)'>{{costumer.costumerId}}</td>
+      <td>{{costumer.costumerName}}</td>
+      <td>{{costumer.invoice}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
 
 
@@ -31,10 +36,9 @@
 
 
 
+<ng-template #content let-c="close" let-d="dismiss">
 
-  <ng-template #content let-c="close" let-d="dismiss">
-
-     <div class="modal-header">
+  <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Add Costumer</h4>
     <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
     <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
@@ -43,55 +47,66 @@
     </button>
   </div>
   <div class="modal-body">
-        <div class="form-group">
-          <label for="a">Id</label>
-          <div class="input-group">
-            <input class="form-control mb-4" placeholder="Id" [(ngModel)]="costumer.costumerId">
-          </div>
-        </div>
-        
-      <div class="form-group">
-          <label for="a">Name</label>
-          <div class="input-group">
-            <input class="form-control mb-4" placeholder="Name" [(ngModel)]="costumer.costumerName">
-          </div>
-        </div>
+    <div class="form-group">
+      <label for="a">Id (internal)</label>
+      <div class="input-group">
+        <input class="form-control mb-4" placeholder="Id" [(ngModel)]="costumer.costumerId">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="a">Name</label>
+      <div class="input-group">
+        <input class="form-control mb-4" placeholder="Name" [(ngModel)]="costumer.costumerName">
+      </div>
+    </div>
 
 
-        <div class="form-group">
-            <label for="a">Vendor Fax	</label>
-            <div class="input-group">
-              <input class="form-control mb-4" placeholder="Vendor Fax" [(ngModel)]="costumer.fax">
-            </div>
-          </div>
-          
 
-        <div class="form-group">
-            <label for="a">Invoice adress		</label>
-            <div class="input-group">
-              <input class="form-control mb-4" placeholder="Invoice Adress" [(ngModel)]="costumer.invoice">
-            </div>
-          </div>
-          
 
-        <div class="form-group">
-            <label for="a">Delivery adress		</label>
-            <div class="input-group">
-              <input class="form-control mb-8" placeholder="Delivery Adress	" [(ngModel)]="costumer.delivery"><br>
-              <input class="form-control mb-2" placeholder="Delivery Country" [(ngModel)]="costumer.country">
-            </div>
-          </div>
-            
-          <div class="form-group">
-              <label for="a">Contcat  <img src='assets/images/add.png' style='width:20px; height:20px; cursor: pointer;'></label>
-              <div class="input-group" id='contact-conatiner'>
-                <input class="form-control" placeholder="Name"> <input class="form-control" placeholder="Phone"> 
-                <input class="form-control" placeholder="E-Mail" type="email">
-              </div>
-            </div>
+    <div class="form-group">
+      <label for="a">Invoice adress </label>
+      <div class="input-group">
+        <input class="form-control mb-4" placeholder="Invoice Adress" [(ngModel)]="costumer.invoice">
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="a">Delivery adress </label>
+      <div class="input-group">
+        <input class="form-control mb-8" placeholder="Delivery Adress	" [(ngModel)]="costumer.delivery">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="a">Vendor Fax </label>
+      <div class="input-group">
+        <input class="form-control mb-4" placeholder="Vendor Fax" [(ngModel)]="costumer.fax"><br>
+        <input class="form-control mb-2" placeholder="Delivery Country" [(ngModel)]="costumer.country">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="a">Contcat <img src='assets/images/add.png' (click)='addContact()' style='width:20px; height:20px; cursor: pointer;'></label>
+      <div class="input-group" id='contact-conatiner'>
+        <input class="form-control" placeholder="Name" [(ngModel)]="contact.name"> <input class="form-control"
+          placeholder="Phone" [(ngModel)]="contact.phone">
+        <input class="form-control" placeholder="E-Mail" type="email" [(ngModel)]="contact.mail">
+      </div>
+
+      <div #container>
+
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="a">Remarks </label>
+      <div class="input-group">
+        <textarea [(ngModel)]="costumer.marks" class="form-control"></textarea>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="addNewCostumer()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
   </div>
-  
-  </ng-template>
+
+</ng-template>
