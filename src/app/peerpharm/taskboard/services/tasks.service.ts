@@ -39,6 +39,14 @@ export class TasksService {
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
+  getTasksByUserID(userid: string): Observable<TaskModel[]> {
+    debugger;
+    const url = this.tasksUrl + 'tasks?userID='+userid;
+    return this.http.get(url)
+      .map((res: Response) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
+  }
+
   getSubTasks(mainTaskId: string): Observable<SubTaskModel[]> {
     //const url = this.baseUrl2 + 'subtasks/&mainTaskId='+mainTaskId;
     const url = this.baseUrl2 + 'subtasks/' + mainTaskId;
@@ -69,7 +77,7 @@ export class TasksService {
 
 
 
-  createTask(boardid: string, list: string, name: string, dueDate: Date, priority: string, deps:any): Observable<any> {
+  createTask(boardid: string, list: string, name: string, dueDate: Date, priority: string): Observable<any> {
     console.log('post');
     
     const url = this.boardUrl + boardid + '/tasks';
@@ -83,15 +91,15 @@ export class TasksService {
           'dueDate': d,
           'priority': priority
         } */
-        let departments=deps.map(d=>d.id );
+      
 
 
     const taskobj = {
       'list': list,
       'name': name,
       'dueDate': d,
-      'priority': priority,
-      'departments':departments
+      'priority': priority, 
+      'participants':[]
     }
     console.log(taskobj);
 

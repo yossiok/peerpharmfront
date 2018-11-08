@@ -43,11 +43,12 @@ export class TaskCardComponent implements OnInit {
   ngOnInit(): void {
     this.tasksService.getAllDepartments().subscribe(deps => {
       deps.forEach(dep => {
-
+/*
         if (this.task.departments && this.task.departments.includes(dep._id)) {
 
           this.depatments.push(dep);
-        }
+        }*/
+        
       });
 
 

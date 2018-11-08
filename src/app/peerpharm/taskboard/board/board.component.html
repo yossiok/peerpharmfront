@@ -46,12 +46,10 @@
             </mat-form-field>
             <div class="error" [hidden]="data.duedate !== ''">Due date required</div>
             <mat-form-field class="example-full-width">&nbsp;
-              <input matInput placeholder="Description" name="description" [(ngModel)]="data.description" maxlength="75"
+              <input matInput placeholder="Title" name="description" [(ngModel)]="data.description" maxlength="75"
                 required />
             </mat-form-field>
-            <div style="width:100%;">
-                <mat-checkbox *ngFor="let dep of departments" [(ngModel)]="dep.checked" name={{dep.title}}  >{{dep.title}}</mat-checkbox>
-            </div> 
+            
                <button mat-raised-button [disabled]="!newTaskForm.form.valid" (click)="addNewTask(tile.text)">Create</button>
 
           </form>
@@ -114,7 +112,7 @@
               <br>
               <mat-form-field>
                 <mat-select placeholder="User" maxlength="75" required  [(value)]="userselected"  >
-                  <mat-option *ngFor="let user of subData.users" [value]="user._id">
+                  <mat-option *ngFor="let user of allUsers" [value]="user._id">
                     <div><img src={{user.picture}} width="25" alt="user" class="rounded-circle"> {{user.firstName}} {{"
                       "+user.lastName}}</div>
                   </mat-option>
@@ -131,6 +129,7 @@
           </mat-card>
       </div>
       <div class="containerRightDiv">
+        <h5>Chat</h5>
         <!--Chat Div Content-->
         <!-- ============================================================== -->
         <!-- Left Part  -->

@@ -1,6 +1,8 @@
+ 
+import { UserInfo } from './../models/UserInfo';
 import { Depatment } from './../models/depatment.model';
 import { AuthService } from './../../../services/auth.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import * as Moment from 'moment';
 
 import { TasksService } from '../services/tasks.service';
@@ -20,6 +22,8 @@ import { UsersService } from 'src/app/services/users.service';
 export class BoardComponent implements OnInit {
   // Local Properties
   board: BoardModel;
+  @ViewChild("content") content: TemplateRef<any>;;
+
 
   tasks: TaskModel[];
   subTasksArr: SubTaskModel[];
@@ -30,6 +34,7 @@ export class BoardComponent implements OnInit {
   isClosed: boolean = true;
   taskUserPics: string[];
   taskid: string = 'check';
+  allUsers:UserInfo[];
   departments: any[] = [];
 
   data: any = {
@@ -86,7 +91,8 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getTasks(this.boardID);
+   // debugger;
+    this.getTasks(this.authService.loggedInUser._id)
 
     this.getDepartments();
   }
@@ -99,8 +105,8 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  getTasks(_boardid) {
-    this.tasksService.getTasks(_boardid)
+  getTasks(userid) {
+    this.tasksService.getTasksByUserID(userid)
       .subscribe(
         tasks => {
           this.tasks = tasks;
@@ -135,7 +141,7 @@ export class BoardComponent implements OnInit {
       .subscribe(
         updatedTask => {
           this.updatedTask = updatedTask;
-          this.getTasks(this.boardID);
+          this.getTasks(this.authService.loggedInUser._id);
         },
         err => {
           console.log(err);
@@ -153,16 +159,14 @@ export class BoardComponent implements OnInit {
   addNewTask(_tiletext) {
     // Moment(this.data.duedate).format('DD/MM/YYYY')
     this.tasksService.createTask(this.boardTitle, _tiletext, this.data.description,
-      new Date(this.data.duedate), this.data.priority, this.departments.filter(x=>x.checked))
+      new Date(this.data.duedate), this.data.priority)
       .subscribe(newtask => {
-        
+        debugger;
+        this.showTaskDetails(newtask,this.content);
         this.newTask = newtask;
-        this.getTasks(this.boardID);
+        this.getTasks(this.authService.loggedInUser._id);
         console.log("aaaaa   " + newtask._id);
-
-        this.departments.forEach(d => {
-          d.checked = false;
-        });
+ 
         //this.newTaskId=this.newTask.name;
         //  this.newTaskId = true;
       },
@@ -216,7 +220,7 @@ export class BoardComponent implements OnInit {
 
 
   showTaskDetails(task, content) {
-    
+    this.modalTitle= task.name;
     this.taskid = task._id;
     if (this.isClosed) {
       this.tasksService.getSubTasks(task._id).subscribe(subTasks => {
@@ -236,8 +240,8 @@ export class BoardComponent implements OnInit {
           mypopup.style.maxWidth = "1100px";
 
 
-          this.userService.getUsersByDep(this.boardTitle).subscribe(users => {
-            this.subData.users = users;
+          this.userService.getAllUsers().subscribe(users => {
+            this.allUsers = users;
           });
 
         }, 700)

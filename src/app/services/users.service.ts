@@ -25,6 +25,16 @@ export class UsersService {
       .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
 
+
+
+  getAllUsers():Observable<UserInfo[]>
+  {
+    let url = this.baseUrl2 + 'users';
+    return this.http.get(url)
+    .map((res: Response) => res.json())
+    .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
+
+  }
   getUsersByDep(department:string):Observable<UserInfo[]>
   {
     let url = this.baseUrl2 + 'users/getusersbydep?dep='+department;

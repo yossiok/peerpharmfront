@@ -1,5 +1,6 @@
 export class UserInfo
 {
+    _id:string;
     userName:string;
     firstName:string;
     lastName:string;

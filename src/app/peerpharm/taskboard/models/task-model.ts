@@ -1,3 +1,5 @@
+import { UserInfo } from "./UserInfo";
+
 export class TaskModel {
     constructor(
         public _id: string,
@@ -6,6 +8,6 @@ export class TaskModel {
         public dueDate: Date,
         public priority: number,
         public isArchived:boolean,
-        public departments: [string]
+        public participants: [string]
     ){}
 }
