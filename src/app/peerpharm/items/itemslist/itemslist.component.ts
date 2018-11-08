@@ -19,11 +19,13 @@ export class ItemslistComponent implements OnInit {
   getAllItems(){
 
     this.itemsService.getAllItems().subscribe(items => {
-      items.map(item=>{
-        item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
-      })
+      
       this.items=items;
       this.itemsCopy=items;
+      this.items.map(item=>{
+        item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
+      })
+      
     });
   
   }
