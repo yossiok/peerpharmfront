@@ -1,178 +1,156 @@
 <p>
     neworder works!
-  </p>
-  <div class="row">
-      <div class="col-12"  *ngIf="!submited">
-          <div class="card">
-              <div class="card-body">
-                  <h4 class="card-title">Order Assigning</h4>
-              </div>
-              <hr>
-              <form class="form-horizontal" [formGroup]="orderForm"  (ngSubmit)='addNewOrder(orderForm.value)'>
-                  <div class="card-body">
-                      <h4 class="card-title">Order Info</h4>
-  
-                      <div class="form-group row">
-                          <label for="lname" class="col-sm-3 text-right control-label col-form-label">Costumer</label>
-                          <div class="col-sm-9">
-                              <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
-                          </div>
-                      </div>
-                      <div class="form-group row">
-                          <label for="email1" class="col-sm-3 text-right control-label col-form-label">Date of order</label>
-                          <div class="col-sm-9">
-                              <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate" >
-                          </div>
-                      </div>
-                      <div class="form-group row">
-                          <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
-                          <div class="col-sm-9">
-                              <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
-                          </div>
-                      </div>
-                      <div class="form-group row">
-                          <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
-                          <div class="col-sm-9">
-                              <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
-                          </div>
-                      </div>
-                      <div class="form-group row">
-                          <label class="col-sm-3 text-right control-label col-form-label">Type</label>
-                          <div class="col-sm-9">
-                              <select class="form-control" formControlName="type">
-                                  <option>Cosmetic</option>
-                                  <option>Make Up</option>
-                                  <option>Cosmetic & MakeUp</option>
-                              </select>
-                          </div>
-                      </div>
-                      <div class="card-body">
-                          <div class="form-group m-b-0 text-right">
-                              <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
-                              <button type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
-                          </div>
-                      </div>
-                  </div>
-                  <hr>
-              </form>
-          </div>
-      </div>
-  </div>
-  
-  <div class="row"   *ngIf="submited">
-      <h3>Order Number : &nbsp;{{orderNumber}}</h3>
-      <div class="col-12">
-          <div class="card">
-              <div class="card-body">
-                  <h4 class="card-title">Items Assigning</h4>
-              </div>
-              <hr>
-  <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)' >
-  
-    <table>
-      <thead>
-      <tr>
-        <th>#</th><th>Item</th><th>Discription	</th><th>Unit/measure	</th><th>Quantity</th><th>Weight</th><th>Remarks</th><th>Type</th><th></th>
-      </tr>
-      <tr>
-        <td></td>
-        <td><input formControlName="itemN"        class="form-control" #itemN  (focusout)="searchItem(itemN.value)"  ></td>
-        <td><input formControlName="discription"  class="form-control"   style='width:370px'></td>
-        <td><input formControlName="unitmeasure"  class="form-control"  ></td>
-        <td><input formControlName="quantity"     class="form-control" ></td>
-        <td><input formControlName="qtyKg"        class="form-control" ></td>
-        <td><input formControlName="remarks"      class="form-control" ></td>
-        <td></td>
-        <td><input type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of items; let i = index">
-        <td>{{i+1}}</td><td>{{item.itemNumber}}</td><td>{{item.discription}}</td><td>{{item.unitMeasure}}</td><td>{{item.quantity}}</td>
-        <td>{{item.qtyKg}}</td><td></td><td></td>
-      </tr>
-    </tbody>
-    </table>
-  
-  </form>
-  <br>
-  </div>
-  </div>
-  </div>
-  <!--
-  
-  
-  
-  <form [formGroup]="rForm" (ngSubmit)="addPost(rForm.value)">
-      <div *ngIf="!name; else forminfo">
-          <form [formGroup]="rForm" (ngSubmit)="addPost(rForm.value)">
-            <div class="form-container">
-              <div class="row columns">
-                <h1>My Reactive Form</h1>
-                <label>Name
-                  <input type="text" formControlName="name">
-                </label>
-        
-                <label>Description
-                  <textarea  formControlName="description"></textarea>
-                </label>
-        
-                <label for="validate">Minimum of 3 Characters</label>
-                <input type="checkbox" name="validate" formControlName="validate" value="1"> On
-                
-                <input type="submit" class="button expanded" value="Submit Form" [disabled]="!rForm.valid">
-              </div>
+</p>
+<div class="row">
+    <div class="col-12" *ngIf="!submited">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Order Assigning</h4>
             </div>
-          </form>
+            <hr>
+            <form class="form-horizontal" [formGroup]="orderForm" (ngSubmit)='addNewOrder(orderForm.value)'>
+                <div class="card-body">
+                    <h4 class="card-title">Order Info</h4>
+
+                    <div class="form-group row">
+                        <label for="lname" class="col-sm-3 text-right control-label col-form-label">Costumer</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
+                            <input type='hidden' formControlName="costumerInternalId">
+                            <!--<mat-form-field class="example-full-width">
+                                <input type="text"  aria-label="Assignee" matInput formControlName="costumer" [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete">
+                                  <mat-option *ngFor="let option of filterCostumers | async" [value]="option">
+                                    {{option.costumerName}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>-->
+                            <!---->
+                        </div>
+                        <button (click)="openSearch(content);  submited=false;" class='btn btn-info'>List</button>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email1" class="col-sm-3 text-right control-label col-form-label">Date of order</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 text-right control-label col-form-label">Type</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" formControlName="type">
+                                <option>Cosmetic</option>
+                                <option>Make Up</option>
+                                <option>Cosmetic & MakeUp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group m-b-0 text-right">
+                            <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
+                            <button type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </form>
         </div>
-        
-  <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{ titleAlert }}</div>
-  
-  <div class="alert" *ngIf="!rForm.controls['description'].valid && rForm.controls['description'].touched">You must specify a description that's between 30 and 500 characters.</div>
-        <ng-template #forminfo>
-          <div class="form-container">
-            <div class="row columns">
-                <h1>{{ name }}</h1>
-        
-                <p>{{ description }}</p>
+    </div>
+</div>
+
+<div class="row" *ngIf="submited">
+    <h3>Order Number : &nbsp;{{orderNumber}}</h3>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Items Assigning</h4>
+            </div>
+            <hr>
+            <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)'>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Item</th>
+                            <th>Discription </th>
+                            <th>Unit/measure </th>
+                            <th>Quantity</th>
+                            <th>Weight</th>
+                            <th>Remarks</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input formControlName="itemN" class="form-control" #itemN (focusout)="searchItem(itemN.value)"></td>
+                            <td><input formControlName="discription" class="form-control" style='width:370px'></td>
+                            <td><input formControlName="unitmeasure" class="form-control"></td>
+                            <td><input formControlName="quantity" class="form-control"></td>
+                            <td><input formControlName="qtyKg" class="form-control"></td>
+                            <td><input formControlName="remarks" class="form-control"></td>
+                            <td></td>
+                            <td><input type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of items; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{item.itemNumber}}</td>
+                            <td>{{item.discription}}</td>
+                            <td>{{item.unitMeasure}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.qtyKg}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Add Costumer</h4>
+          <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+          <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+            <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="input-group">
+              <input class="form-control mb-8" #costumerSearch placeholder="Search Costumer"  (keyup)="searchCostumer(costumerSearch.value)">
             </div>
           </div>
-        </ng-template>
-  -->
-<script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyDEsyNWFfPRXgrJonRwFc_1IZbHw3_7lxI",
-      authDomain: "qualitycontrol-e60d4.firebaseapp.com",
-      databaseURL: "https://qualitycontrol-e60d4.firebaseio.com",
-      storageBucket: "qualitycontrol-e60d4.appspot.com",
-      messagingSenderId: "428562253132"
-    };
-    firebase.initializeApp(config);
-  </script>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-   
-   <script>
-          alert("hi");
-          var firebaseRef = firebase.database().ref();
-          var ordersRef =firebaseRef.child("orders");
-          var i;
-          var color= "white";
-          var typeShown="all";
-
-              //ordersRef.on("child_added", snap=>{
-              ordersRef.orderByChild("status").equalTo("open").on("child_added", snap=>{
-              
-                  var refParent= snap.key;
-                  var orderNumber = snap.child("orderN").val();
-                  var costumer= snap.child("costumerName").val();
-                  var orderDate = snap.child("dateOfOrder").val();
-                  var deliveryDate= snap.child("dateOfDelivery").val();
-                  var orderRemarks= snap.child("remarks").val();
-                  var orderType= snap.child("type").val();
-
-                  console.log(refParent+" , "+ orderNumber+" , "+ costumer);
-              })
-            
-
-            </script>
+        </div>
+        <div>
+            <ul *ngFor="let costumer of costumers">
+                <li (click)="c('Saved'); choosedCostumer = costumer">{{costumer.costumerName}}</li>
+            </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
+        </div>
+      
+      </ng-template>

@@ -82,22 +82,30 @@
       <input type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:280px">
       <br>
       <br>
-      <input type="file" id="id_itemImgMain1">
-      <button onclick="uploadImg('id_itemImgMain1', 'id_imgMain1')">>></button>
+
+      <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+      <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
       <br>
-      <img id="id_imgMain1" [src]=item.imgMain1 style="width:150px">
-      <br>
-      <br>
-      <input type="file" id="id_itemImgMain2">
-      <button onclick="uploadImg('id_itemImgMain2', 'id_imgMain2')">>></button>
-      <br>
-      <img id="id_imgMain2" [src]=item.imgMain2 style="width:150px">
+      <img id="id_img1" [src]=item.main1File>
+
       <br>
       <br>
-      <input type="file" id="id_itemImgMain3">
-      <button onclick="uploadImg('id_itemImgMain3', 'id_imgMain3')">>></button>
+
+      
+      <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
+      <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')" *ngIf='main2File'>>></button>
       <br>
-      <img id="id_imgMain3" [src]=item.imgMain3 style="width:150px">
+      <img id="id_img2" [src]=item.main2File>
+
+      <br>
+      <br>
+
+    
+      <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
+      <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
+      <br>
+      <img id="id_img3" [src]=item.main3File>
+
       <br>
       <br>
       <b> Enter Remarks:</b>
@@ -119,7 +127,8 @@
         <option value='sqaure'>Square</option>
         <option value='rectangle'>Rectangle</option>
       </select>
-      <img src = 'assets/images/goddet2.png' (click)="showGoddet()" style='width:40px; display:none'><!--Button if the focusout is not the option-->
+      <img src='assets/images/goddet2.png' (click)="showGoddet()" style='width:40px; display:none'>
+      <!--Button if the focusout is not the option-->
       <div #container>
 
       </div>
@@ -137,7 +146,8 @@
             <input type="text" [(ngModel)]=itemShown.itemNumber #itemNum id="id_item">
           </td>
           <td>
-            <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search" src='/assets/images/searchA2.png' style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
+            <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search" src='/assets/images/searchA2.png'
+              style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
           </td>
         </tr>
         <tr>
@@ -170,38 +180,38 @@
             <input type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
           </td>
 
-          <tr>
-            <td>
-              <b>Sticker Language</b>
-            </td>
-            <td colspan="2">
-              <input type="text" id="id_stickerLanguge" [(ngModel)]=itemShown.StickerLanguageK>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Volume</b>
-            </td>
-            <td colspan="2">
-              <input type="text" id="id_volume" [(ngModel)]=itemShown.volumeKey>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Net Weight</b>
-            </td>
-            <td colspan="2">
-              <input type="text" id="id_netWeight" [(ngModel)]=itemShown.netWeightK>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Gross unit Weight------</b>
-            </td>
-            <td colspan="2">
-              <input type="text" id="id_grossUnitInput" [(ngModel)]=itemShown.grossUnitWeightK>
-            </td>
-          </tr>
+        <tr>
+          <td>
+            <b>Sticker Language</b>
+          </td>
+          <td colspan="2">
+            <input type="text" id="id_stickerLanguge" [(ngModel)]=itemShown.StickerLanguageK>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Volume</b>
+          </td>
+          <td colspan="2">
+            <input type="text" id="id_volume" [(ngModel)]=itemShown.volumeKey>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Net Weight</b>
+          </td>
+          <td colspan="2">
+            <input type="text" id="id_netWeight" [(ngModel)]=itemShown.netWeightK>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Gross unit Weight------</b>
+          </td>
+          <td colspan="2">
+            <input type="text" id="id_grossUnitInput" [(ngModel)]=itemShown.grossUnitWeightK>
+          </td>
+        </tr>
       </table>
       <br>
       <table border=0>
@@ -339,380 +349,382 @@
 
       </table>
     </td>
-    </tr>
+  </tr>
 
-    <tr>
-      <td>
-        <table border=0>
-          <tr>
-            <td>
-              <b>Carton no'</b>
-            </td>
-            <td>
-              <input type=t ext id="id_cartonNo" onfocusout="loadOackagDetails2(this.id, 'id_cartonWeight','id_cartonSelect')" [(ngModel)]=itemShown.cartonNumber>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>PCS/carton</b>
-            </td>
-            <td>
-              <input type=t ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Pump direction</b>
-            </td>
-            <td>
-              <select id="id_pumpDirection" style="width:158px" [(ngModel)]=itemShown.pumpDirection>
-                <option value="-">-</option>
-                <option value="Right">Right</option>
-                <option value="Left">Left</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Palette</b>
-            </td>
-            <td>
-              <input type=t ext id="id_Palette" [(ngModel)]=itemShown.paletteType>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>1st layer carton/palette</b>
-            </td>
-            <td>
-              <input type=t ext id="id_layerCartonPalette" [(ngModel)]=itemShown.st1layerCarton>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Total Cartons/palette</b>
-            </td>
-            <td>
-              <input type=t ext id="id_totalCarton" [(ngModel)]=itemShown.totalCartonPalette>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Cbm</b>
-            </td>
-            <td>
-              <input type=t ext id="id_cbm" [(ngModel)]=itemShown.cbm>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Mother Product</b>
-            </td>
-            <td>
-              <input type=t ext id="id_motherP">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Item Type</b>
-            </td>
-            <td>
-              <select id="id_itemType" style="width:158px" [(ngModel)]=itemShown.itemType>
-                <option value="-"></option>
-                <option value="bodyCare">Body Care</option>
-                <option value="faceCare">Face Care</option>
-                <option value="hairCare">Hair Care</option>
-                <option value="hairCare">Make Up</option>
-              </select>
-            </td>
-          </tr>
-        </table>
+  <tr>
+    <td>
+      <table border=0>
+        <tr>
+          <td>
+            <b>Carton no'</b>
+          </td>
+          <td>
+            <input type=t ext id="id_cartonNo" onfocusout="loadOackagDetails2(this.id, 'id_cartonWeight','id_cartonSelect')"
+              [(ngModel)]=itemShown.cartonNumber>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>PCS/carton</b>
+          </td>
+          <td>
+            <input type=t ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Pump direction</b>
+          </td>
+          <td>
+            <select id="id_pumpDirection" style="width:158px" [(ngModel)]=itemShown.pumpDirection>
+              <option value="-">-</option>
+              <option value="Right">Right</option>
+              <option value="Left">Left</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Palette</b>
+          </td>
+          <td>
+            <input type=t ext id="id_Palette" [(ngModel)]=itemShown.paletteType>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>1st layer carton/palette</b>
+          </td>
+          <td>
+            <input type=t ext id="id_layerCartonPalette" [(ngModel)]=itemShown.st1layerCarton>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Total Cartons/palette</b>
+          </td>
+          <td>
+            <input type=t ext id="id_totalCarton" [(ngModel)]=itemShown.totalCartonPalette>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Cbm</b>
+          </td>
+          <td>
+            <input type=t ext id="id_cbm" [(ngModel)]=itemShown.cbm>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Mother Product</b>
+          </td>
+          <td>
+            <input type=t ext id="id_motherP">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>Item Type</b>
+          </td>
+          <td>
+            <select id="id_itemType" style="width:158px" [(ngModel)]=itemShown.itemType>
+              <option value="-"></option>
+              <option value="bodyCare">Body Care</option>
+              <option value="faceCare">Face Care</option>
+              <option value="hairCare">Hair Care</option>
+              <option value="hairCare">Make Up</option>
+            </select>
+          </td>
+        </tr>
+      </table>
 
 
 
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <table border=1 style='outline-color:blue;'>
-          <tr>
-            <td>
-              <table border="0" width="200px">
-                <tr>
-                  <td align='center'>
-                    <input type="file" id="id_itemImg1">
-                    <button onclick="uploadImg('id_itemImg1', 'id_img1')">>></button>
-                    <br>
-                    <img id="id_img1" [src]=item.bottleImage>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Bottle no' </b>
-                    <input type="text" id="id_bottleNo" onfocusout="loadOackagDetails(this.id, 'id_item1weight','id_item1select')" [(ngModel)]=itemShown.bottleNumber>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Details : </b>
-                    <input type="text" id="id_item1text" style='margin-left:10px' [(ngModel)]=itemShown.bottleTube>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Weight (gr)</b>
-                    <input type="text" id="id_item1weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item1w>
-                    <select id='id_item1select' [(ngModel)]=itemShown.item1s>
-                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <table border=1 style='outline-color:blue;'>
+        <tr>
+          <td>
+            <table border="0" width="200px">
+              <tr>
+                <td align='center'>
+                  <input type="file" id="id_itemImg1" (change)="selectFile($event, 'bottle')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('bottle')" *ngIf='bottleFile'>>></button>
+                  <br>
+                  <img id="id_img1" [src]=item.bottleImage>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Bottle no' </b>
+                  <input type="text" id="id_bottleNo" onfocusout="loadOackagDetails(this.id, 'id_item1weight','id_item1select')"
+                    [(ngModel)]=itemShown.bottleNumber>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Details : </b>
+                  <input type="text" id="id_item1text" style='margin-left:10px' [(ngModel)]=itemShown.bottleTube>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Weight (gr)</b>
+                  <input type="text" id="id_item1weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item1w>
+                  <select id='id_item1select' [(ngModel)]=itemShown.item1s>
+                    PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
-                      <option value='paperCarton'>נייר/קרטון</option>
-                      <option value='drinkCarton'>קרטוניות משקה</option>
-                      <option value='totalCarton'>סה"כ קרטון</option>
-                      <option value='transperentGlass'>זכוכית שקופה</option>
-                      <option value='colorGlass'>זכוכית צבעונית</option>
-                      <option value='totalGlass'>סה"כ זכוכית</option>
+                    <option value='paperCarton'>נייר/קרטון</option>
+                    <option value='drinkCarton'>קרטוניות משקה</option>
+                    <option value='totalCarton'>סה"כ קרטון</option>
+                    <option value='transperentGlass'>זכוכית שקופה</option>
+                    <option value='colorGlass'>זכוכית צבעונית</option>
+                    <option value='totalGlass'>סה"כ זכוכית</option>
 
-                      <option value='pet'>PET</option>
-                      <option value='hdpe'>HDPE</option>
-                      <option value='ldpe'>LDPE</option>
-                      <option value='pp'>PP</option>
-                      <option value='ps'>PS</option>
-                      <option value='otherPlastic'>פלסטיק אחר</option>
-                      <option value='totalPlastic'>סה"כ פלסטיק</option>
-                      <option value='metal'>מתכת</option>
-                      <option value='wood'>עץ</option>
-                      <option value='otherMaterial'>חומר אחר</option>
-                    </select>
-                  </td>
-                </tr>
+                    <option value='pet'>PET</option>
+                    <option value='hdpe'>HDPE</option>
+                    <option value='ldpe'>LDPE</option>
+                    <option value='pp'>PP</option>
+                    <option value='ps'>PS</option>
+                    <option value='otherPlastic'>פלסטיק אחר</option>
+                    <option value='totalPlastic'>סה"כ פלסטיק</option>
+                    <option value='metal'>מתכת</option>
+                    <option value='wood'>עץ</option>
+                    <option value='otherMaterial'>חומר אחר</option>
+                  </select>
+                </td>
+              </tr>
 
-              </table>
-            </td>
-            <td>
-              <table border="0" width="200px">
-                <tr>
-                  <td align='center'>
-                    <input type="file" id="id_itemImg2">
-                    <button onclick="uploadImg('id_itemImg2', 'id_img2')">>></button>
-                    <br>
-                    <img id="id_img2" [src]=item.capImage>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
+            </table>
+          </td>
+          <td>
+            <table border="0" width="200px">
+              <tr>
+                <td align='center'>
+                  <input type="file" id="id_itemImg2" (change)="selectFile($event, 'cap')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('cap')" *ngIf='capFile'>>></button>
+                  <br>
+                  <img id="id_img2" [src]=item.capImage>
+                </td>
+              </tr>
+              <tr>
+                <td>
 
-                    <b>CAP no'</b>
-                    <input type="text" id="id_capNo" [(ngModel)]=itemShown.capNumber onfocusout="loadOackagDetails(this.id, 'id_item2weight','id_item2select')">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Details :</b>
-                    <input type="text" id="id_item2text" [(ngModel)]=itemShown.capTube>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Weight (gr)</b>
-                    <input type="text" id="id_item2weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item2w>
-                    <select id='id_item2select' [(ngModel)]=itemShown.item2s>
-                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+                  <b>CAP no'</b>
+                  <input type="text" id="id_capNo" [(ngModel)]=itemShown.capNumber onfocusout="loadOackagDetails(this.id, 'id_item2weight','id_item2select')">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Details :</b>
+                  <input type="text" id="id_item2text" [(ngModel)]=itemShown.capTube>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Weight (gr)</b>
+                  <input type="text" id="id_item2weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item2w>
+                  <select id='id_item2select' [(ngModel)]=itemShown.item2s>
+                    PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
-                      <option value='paperCarton'>נייר/קרטון</option>
-                      <option value='drinkCarton'>קרטוניות משקה</option>
-                      <option value='totalCarton'>סה"כ קרטון</option>
-                      <option value='transperentGlass'>זכוכית שקופה</option>
-                      <option value='colorGlass'>זכוכית צבעונית</option>
-                      <option value='totalGlass'>סה"כ זכוכית</option>
+                    <option value='paperCarton'>נייר/קרטון</option>
+                    <option value='drinkCarton'>קרטוניות משקה</option>
+                    <option value='totalCarton'>סה"כ קרטון</option>
+                    <option value='transperentGlass'>זכוכית שקופה</option>
+                    <option value='colorGlass'>זכוכית צבעונית</option>
+                    <option value='totalGlass'>סה"כ זכוכית</option>
 
-                      <option value='pet'>PET</option>
-                      <option value='hdpe'>HDPE</option>
-                      <option value='ldpe'>LDPE</option>
-                      <option value='pp'>PP</option>
-                      <option value='ps'>PS</option>
-                      <option value='otherPlastic'>פלסטיק אחר</option>
-                      <option value='totalPlastic'>סה"כ פלסטיק</option>
-                      <option value='metal'>מתכת</option>
-                      <option value='wood'>עץ</option>
-                      <option value='otherMaterial'>חומר אחר</option>
-                    </select>
-                  </td>
-                </tr>
-              </table>
-            </td>
-            <td>
-              <table border="0" width="200px">
-                <tr>
-                  <td align='center'>
-                    <input type="file" id="id_itemImg3">
-                    <button onclick="uploadImg('id_itemImg3', 'id_img3')">>></button>
-                    <br>
-                    <img id="id_img3" [src]=item.pumpImage>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>PUMP no'</b>
-                    <input type="text" id="id_pumpNo" [(ngModel)]=itemShown.pumpNumber onfocusout="loadOackagDetails(this.id, 'id_item3weight','id_item3select')">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Details : </b>
-                    <input type="text" id="id_item3text" style='margin-left:10px' [(ngModel)]=itemShown.pumpTube>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Weight (gr)</b>
-                    <input type="text" id="id_item3weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item3w>
-                    <select id='id_item3select' [(ngModel)]=itemShown.item3s>
-                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+                    <option value='pet'>PET</option>
+                    <option value='hdpe'>HDPE</option>
+                    <option value='ldpe'>LDPE</option>
+                    <option value='pp'>PP</option>
+                    <option value='ps'>PS</option>
+                    <option value='otherPlastic'>פלסטיק אחר</option>
+                    <option value='totalPlastic'>סה"כ פלסטיק</option>
+                    <option value='metal'>מתכת</option>
+                    <option value='wood'>עץ</option>
+                    <option value='otherMaterial'>חומר אחר</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table border="0" width="200px">
+              <tr>
+                <td align='center'>
+                  <input type="file" id="id_itemImg3">
+                  <button onclick="uploadImg('id_itemImg3', 'id_img3')">>></button>
+                  <br>
+                  <img id="id_img3" [src]=item.pumpImage>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>PUMP no'</b>
+                  <input type="text" id="id_pumpNo" [(ngModel)]=itemShown.pumpNumber onfocusout="loadOackagDetails(this.id, 'id_item3weight','id_item3select')">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Details : </b>
+                  <input type="text" id="id_item3text" style='margin-left:10px' [(ngModel)]=itemShown.pumpTube>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Weight (gr)</b>
+                  <input type="text" id="id_item3weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item3w>
+                  <select id='id_item3select' [(ngModel)]=itemShown.item3s>
+                    PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
-                      <option value='paperCarton'>נייר/קרטון</option>
-                      <option value='drinkCarton'>קרטוניות משקה</option>
-                      <option value='totalCarton'>סה"כ קרטון</option>
-                      <option value='transperentGlass'>זכוכית שקופה</option>
-                      <option value='colorGlass'>זכוכית צבעונית</option>
-                      <option value='totalGlass'>סה"כ זכוכית</option>
+                    <option value='paperCarton'>נייר/קרטון</option>
+                    <option value='drinkCarton'>קרטוניות משקה</option>
+                    <option value='totalCarton'>סה"כ קרטון</option>
+                    <option value='transperentGlass'>זכוכית שקופה</option>
+                    <option value='colorGlass'>זכוכית צבעונית</option>
+                    <option value='totalGlass'>סה"כ זכוכית</option>
 
-                      <option value='pet'>PET</option>
-                      <option value='hdpe'>HDPE</option>
-                      <option value='ldpe'>LDPE</option>
-                      <option value='pp'>PP</option>
-                      <option value='ps'>PS</option>
-                      <option value='otherPlastic'>פלסטיק אחר</option>
-                      <option value='totalPlastic'>סה"כ פלסטיק</option>
-                      <option value='metal'>מתכת</option>
-                      <option value='wood'>עץ</option>
-                      <option value='otherMaterial'>חומר אחר</option>
-                    </select>
-                  </td>
-                </tr>
-              </table>
-            </td>
-            <td class='extraTd' id="extraTdId" *ngIf="(item.extraImage1!='' && item.extraImage1!='undefined') || itemShown.extraText1!='' || (item.extraImage2!='' && item.extraImage2!='undefined') || itemShown.extraText2!=''">
-              <table border="0" width="200px">
-                <tr>
-                  <td align='center'>
-                    <input type="file" id="id_itemImg6">
-                    <button onclick="uploadImg('id_itemImg6', 'id_img6')">>></button>
-                    <br>
-                    <img id="id_img6" [src]=item.extraImage1>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="text" id="id_extraTextOne" [(ngModel)]=itemShown.extraText1>
-                  </td>
-                </tr>
-                <tr>
-                  <td align='center'>
-                    <input type="file" id="id_itemImg7">
-                    <button onclick="uploadImg('id_itemImg7', 'id_img7')">>></button>
-                    <br>
-                    <img id="id_img7" [src]=item.extraImage2>
-                  </td>
-                </tr>
+                    <option value='pet'>PET</option>
+                    <option value='hdpe'>HDPE</option>
+                    <option value='ldpe'>LDPE</option>
+                    <option value='pp'>PP</option>
+                    <option value='ps'>PS</option>
+                    <option value='otherPlastic'>פלסטיק אחר</option>
+                    <option value='totalPlastic'>סה"כ פלסטיק</option>
+                    <option value='metal'>מתכת</option>
+                    <option value='wood'>עץ</option>
+                    <option value='otherMaterial'>חומר אחר</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td class='extraTd' id="extraTdId" *ngIf="(item.extraImage1!='' && item.extraImage1!='undefined') || itemShown.extraText1!='' || (item.extraImage2!='' && item.extraImage2!='undefined') || itemShown.extraText2!=''">
+            <table border="0" width="200px">
+              <tr>
+                <td align='center'>
+                  <input type="file" id="id_itemImg6">
+                  <button onclick="uploadImg('id_itemImg6', 'id_img6')">>></button>
+                  <br>
+                  <img id="id_img6" [src]=item.extraImage1>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="text" id="id_extraTextOne" [(ngModel)]=itemShown.extraText1>
+                </td>
+              </tr>
+              <tr>
+                <td align='center'>
+                  <input type="file" id="id_itemImg7">
+                  <button onclick="uploadImg('id_itemImg7', 'id_img7')">>></button>
+                  <br>
+                  <img id="id_img7" [src]=item.extraImage2>
+                </td>
+              </tr>
 
-                <tr>
-                  <td>
-                    <input type="text" id="id_extraTextTow" [(ngModel)]=itemShown.extraText2>
-                  </td>
-                </tr>
+              <tr>
+                <td>
+                  <input type="text" id="id_extraTextTow" [(ngModel)]=itemShown.extraText2>
+                </td>
+              </tr>
 
-              </table>
-            </td>
-            <td class='sealTd' id="sealTdId"  *ngIf="(item.sealImage!='' && item.sealImage!='undefined') || itemShown.sealTube!='' || itemShown.sealNumber!=''">
-              <table border="0" width="200px">
-                <tr>
-                  <td align='center'>
-                    <input type="file" id="id_itemImg8">
-                    <button onclick="uploadImg('id_itemImg8', 'id_img8')">>></button>
-                    <br>
-                    <img id="id_img8" [src]=item.sealImage>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Seal no'</b>
-                    <input type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber onfocusout="loadOackagDetails(this.id, 'id_item4weight','id_item4select')">
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>_ Details : </b>
-                    <input type="text" id="id_sealText" [(ngModel)]=itemShown.sealTube>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>Weight (gr)</b>
-                    <input type="text" id="id_item4weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item4w>
-                    <select id='id_item4select' [(ngModel)]=itemShown.item4s>
-                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+            </table>
+          </td>
+          <td class='sealTd' id="sealTdId" *ngIf="(item.sealImage!='' && item.sealImage!='undefined') || itemShown.sealTube!='' || itemShown.sealNumber!=''">
+            <table border="0" width="200px">
+              <tr>
+                <td align='center'>
+                  <input type="file" id="id_itemImg8">
+                  <button onclick="uploadImg('id_itemImg8', 'id_img8')">>></button>
+                  <br>
+                  <img id="id_img8" [src]=item.sealImage>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Seal no'</b>
+                  <input type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber onfocusout="loadOackagDetails(this.id, 'id_item4weight','id_item4select')">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>_ Details : </b>
+                  <input type="text" id="id_sealText" [(ngModel)]=itemShown.sealTube>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Weight (gr)</b>
+                  <input type="text" id="id_item4weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item4w>
+                  <select id='id_item4select' [(ngModel)]=itemShown.item4s>
+                    PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
-                      <option value='paperCarton'>נייר/קרטון</option>
-                      <option value='drinkCarton'>קרטוניות משקה</option>
-                      <option value='totalCarton'>סה"כ קרטון</option>
-                      <option value='transperentGlass'>זכוכית שקופה</option>
-                      <option value='colorGlass'>זכוכית צבעונית</option>
-                      <option value='totalGlass'>סה"כ זכוכית</option>
+                    <option value='paperCarton'>נייר/קרטון</option>
+                    <option value='drinkCarton'>קרטוניות משקה</option>
+                    <option value='totalCarton'>סה"כ קרטון</option>
+                    <option value='transperentGlass'>זכוכית שקופה</option>
+                    <option value='colorGlass'>זכוכית צבעונית</option>
+                    <option value='totalGlass'>סה"כ זכוכית</option>
 
-                      <option value='pet'>PET</option>
-                      <option value='hdpe'>HDPE</option>
-                      <option value='ldpe'>LDPE</option>
-                      <option value='pp'>PP</option>
-                      <option value='ps'>PS</option>
-                      <option value='otherPlastic'>פלסטיק אחר</option>
-                      <option value='totalPlastic'>סה"כ פלסטיק</option>
-                      <option value='metal'>מתכת</option>
-                      <option value='wood'>עץ</option>
-                      <option value='otherMaterial'>חומר אחר</option>
-                    </select>
-                  </td>
-                </tr>
-              </table>
-            </td>
-            <td>
-              <table border="0" width="300px">
-                <tr>
-                  <td>
-                    <button class='expandBtn' onClick="expandExtraTable()" id='expandBtnId'>E</button>
-                    <button class='expandBtn' onClick="expandSealTable()" id='expandSealBtnId'>S</button>
-                  </td>
-                </tr>
+                    <option value='pet'>PET</option>
+                    <option value='hdpe'>HDPE</option>
+                    <option value='ldpe'>LDPE</option>
+                    <option value='pp'>PP</option>
+                    <option value='ps'>PS</option>
+                    <option value='otherPlastic'>פלסטיק אחר</option>
+                    <option value='totalPlastic'>סה"כ פלסטיק</option>
+                    <option value='metal'>מתכת</option>
+                    <option value='wood'>עץ</option>
+                    <option value='otherMaterial'>חומר אחר</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table border="0" width="300px">
+              <tr>
+                <td>
+                  <button class='expandBtn' onClick="expandExtraTable()" id='expandBtnId'>E</button>
+                  <button class='expandBtn' onClick="expandSealTable()" id='expandSealBtnId'>S</button>
+                </td>
+              </tr>
 
-                <tr>
-                  <td align='center'>
-                    <input type="file" id="id_itemImg4">
-                    <button onclick="uploadImg('id_itemImg4', 'id_img4')">>></button>
-                    <br>
-                    <img id="id_img4" [src]=item.laserImage1>
-                  </td>
-                </tr>
-                <tr>
-                  <td align='center'>
-                    <input type="file" id="id_itemImg5">
-                    <button onclick="uploadImg('id_itemImg5', 'id_img5')">>></button>
-                    <br>
-                    <img id="id_img5" [src]=item.laserImage2>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <b>LASER</b>
-                  </td>
-                </tr>
+              <tr>
+                <td align='center'>
+                  <input type="file" id="id_itemImg4">
+                  <button onclick="uploadImg('id_itemImg4', 'id_img4')">>></button>
+                  <br>
+                  <img id="id_img4" [src]=item.laserImage1>
+                </td>
+              </tr>
+              <tr>
+                <td align='center'>
+                  <input type="file" id="id_itemImg5">
+                  <button onclick="uploadImg('id_itemImg5', 'id_img5')">>></button>
+                  <br>
+                  <img id="id_img5" [src]=item.laserImage2>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>LASER</b>
+                </td>
+              </tr>
 
-              </table>
-            </td>
-          </tr>
-        </table>
+            </table>
+          </td>
+        </tr>
+      </table>
 
-      </td>
+    </td>
 
-    </tr>
+  </tr>
 
 </table>
 <div style="background-color: lightblue; width: 1084px ; height: 70px" class='footerDiv'>

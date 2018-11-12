@@ -19,13 +19,14 @@
 
   </div>
   <div class='machineBoard' dnd-droppable  (onDropSuccess)="simpleDrop($event, '999')" >
-      <div class='lineheader'> Not assigned</div> <br><Br>
-      <div  *ngFor="let schedule of scheduleData" class="schedule-card" [dragData]="schedule"  dnd-draggable [dragEnabled]="true">
-      <ng-container  *ngIf='schedule.productionLine =="" || schedule.productionLine =="999"'>
-          {{schedule.item}}, {{schedule.batch}}<br>  
+      <div class='lineheader' > Not assigned</div> <br><Br>
+        <div  style=' overflow: scroll; height: 650px'>
+      <div  *ngFor="let schedule of scheduleData" class="schedule-card" [dragData]="schedule"  dnd-draggable [dragEnabled]="true" >
+      <ng-container   *ngIf='schedule.productionLine =="" || schedule.productionLine =="999"'>
+        <span style='background-color:wheat; font-weight:bold'>{{schedule.positionN}}, &nbsp; </span>{{schedule.item}}, {{schedule.batch}},<br>  
           {{schedule.productName}}
         </ng-container>
-        
+      </div>
       </div><br>
 
   </div>

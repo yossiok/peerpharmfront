@@ -52,7 +52,7 @@
     <tr *ngFor = "let line of scheduleData"  [style.background-color]="line.color" >
       <ng-container  *ngIf='line !== undefined  && line.mkp===typeShown'>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.positionN}}</td>
-        <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:30px' class='form-control'></td>
+        <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:50px' class='form-control'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.orderN}}</td>
         <td *ngIf="line._id===EditRowId"><input #orderNum type='text' [value]="line.orderN"  style='width:50px' class='form-control'></td>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.item}}</td>
@@ -72,7 +72,7 @@
 
         
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.date | date: 'dd/MM/yyyy'}}</td>
-        <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date"  style='width:140px' class='form-control'></td>
+        <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date3"  style='width:140px' class='form-control'></td>
 
 
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.marks}}</td>
@@ -82,9 +82,9 @@
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.mkp}}</td>
         <!--<td *ngIf="line._id===EditRowId"><input #mkp type='text' [value]="line.mkp"  style='width:50px' class='form-control'></td>-->
         <td *ngIf="line._id===EditRowId">
-            <input type="radio"  name="typeEdit"   value='basic' checked='checked'  [(ngModel)]="editRadioBtnType" >Basic<br>
-            <input type="radio"  name="typeEdit"   value='tube' [(ngModel)]="editRadioBtnType">Tube<br>
-            <input type="radio"  name="typeEdit"   value='mkp' [(ngModel)]="editRadioBtnType">Mkp<br>
+            <input type="radio"  name="typeEdit"   value='basic' [checked]="line.mkp === 'basic'"    >Basic<br>
+            <input type="radio"  name="typeEdit"   value='tube'  [checked]="line.mkp === 'tube'" >Tube<br>
+            <input type="radio"  name="typeEdit"   value='mkp'   [checked]="line.mkp === 'mkp'" >Mkp<br>
         </td>
         <td *ngIf="line._id!==EditRowId">
             <i class="ti-trash text-danger m-r-10"   (click)="deleteLine(line._id)"></i>&nbsp;

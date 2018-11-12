@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { JsonpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddFormuleComponent } from './formules/add-formule/add-formule.component';
@@ -32,7 +33,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ChatComponent } from './../shared/chat/chat.component';
 import {
   MatDialogModule,
-  
   MatTableModule,
   MatGridListModule,
   MatMenuModule,
@@ -78,7 +78,7 @@ import { AuthService } from '../services/auth.service';
     MatTooltipModule,
     MatIconModule,
     MatFormFieldModule,
-    MatCardModule,
+    MatCardModule,MatAutocompleteModule,
     MatTableModule,
     MatToolbarModule,
     MatTabsModule,

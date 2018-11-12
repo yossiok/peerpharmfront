@@ -156,13 +156,13 @@ export class ScheduleComponent implements OnInit {
       date: this.date.nativeElement.value,
       marks: this.marks.nativeElement.value,
       shift: this.shift.nativeElement.value,
-      mkp: this.editRadioBtnType
+      mkp: this.mkp.nativeElement.value
     }
-    this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
+   /* this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
       this.EditRowId = 0;
       this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
       this.editRadioBtnType="";
-    });
+    });*/
 
   }
 

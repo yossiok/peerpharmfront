@@ -2,6 +2,9 @@ import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, ChildrenOutletContexts } from '@angular/router'
 import { ItemsService } from '../../../services/items.service'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-itemdetais',
@@ -99,17 +102,18 @@ export class ItemdetaisComponent implements OnInit {
     extraImage2: '',
     sealImage: '',
 
-    goddetShape:'',
+    goddetShape: '',
 
-    msdsFileLink:'',
-    licenceFileLink:'',
-    plateFileLink:'',
-    labelFileLink:'',
-    wordLabelFileLink:'',
-    coaFileLink:'',
+    msdsFileLink: '',
+    licenceFileLink: '',
+    plateFileLink: '',
+    labelFileLink: '',
+    wordLabelFileLink: '',
+    coaFileLink: '',
 
   }
-  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2) {
+  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2,
+    private uploadService: UploadFileService, private toastr: ToastrService) {
 
     this.newItem = fb.group({
       itemNumber: [null, Validators.required],
@@ -198,7 +202,7 @@ export class ItemdetaisComponent implements OnInit {
   showGoddet() {
     // this.container.nativeElement.removeChild();
 
-    
+
     const childElements = this.container.nativeElement.children;
     for (let child of childElements) {
       this.renderer.removeChild(this.container.nativeElement, child);
@@ -267,14 +271,14 @@ export class ItemdetaisComponent implements OnInit {
         const text = this.renderer.createText(this.dataDiv[i][j]);
         this.renderer.appendChild(columnDiv, text);
         this, this.renderer.setAttribute(columnDiv, "class", "cellDiv");
-        if(this.itemShown.goddetShape=='sqaure' || this.itemShown.goddetShape=='rectangle'){
-          this.renderer.setStyle(columnDiv, 'border-radius','0px');
-          if(this.itemShown.goddetShape=='rectangle'){
-            this.renderer.setStyle(columnDiv, 'height','83px');
-            this.renderer.setStyle(columnDiv, 'width','47px');
-            this.renderer.setStyle(columnDiv, 'text-align','left');
-            this.renderer.setStyle(columnDiv, 'padding','0px');
-          } 
+        if (this.itemShown.goddetShape == 'sqaure' || this.itemShown.goddetShape == 'rectangle') {
+          this.renderer.setStyle(columnDiv, 'border-radius', '0px');
+          if (this.itemShown.goddetShape == 'rectangle') {
+            this.renderer.setStyle(columnDiv, 'height', '83px');
+            this.renderer.setStyle(columnDiv, 'width', '47px');
+            this.renderer.setStyle(columnDiv, 'text-align', 'left');
+            this.renderer.setStyle(columnDiv, 'padding', '0px');
+          }
         }
         this.renderer.listen(columnDiv, 'click', () => {
           let color;
@@ -310,9 +314,9 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
-  searchForItem(item){
-  
-    this.itemsService.getItemData(item).subscribe(res=>{
+  searchForItem(item) {
+
+    this.itemsService.getItemData(item).subscribe(res => {
       this.item = res[0];
       this.itemShown = res[0];
       console.log(res[0]);
@@ -325,5 +329,144 @@ export class ItemdetaisComponent implements OnInit {
     console.log(this.itemShown)
     this.getGoddetData();
     this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => console.log(res));
+  }
+
+
+  selectedFiles: FileList;
+  currentFileUpload: File;
+  progress: { percentage: number } = { percentage: 0 };
+  docPath;
+  bottleFile: boolean = false;
+  pumpFile: boolean = false;
+  sealFile: boolean = false;
+  capFile: boolean = false;
+
+  extra1File: boolean = false;
+  extra2File: boolean = false;
+
+  main1File: boolean = false;
+  main2File: boolean = false;
+  main3File: boolean = false;
+
+  labelText: boolean = false;
+  plateText: boolean = false;
+
+
+
+  selectFile(event, src) {
+    switch (src) {
+      case 'bottle':
+        this.bottleFile = true;
+        break;
+      case 'pump':
+        this.pumpFile = true;
+        break;
+      case 'seal':
+        this.sealFile = true;
+        break;
+      case 'cap':
+        this.capFile = true;
+        break;
+      case 'extra1':
+        this.extra1File = true;
+        break;
+      case 'extra2':
+        this.extra2File = true;
+        break;
+      case 'main1':
+        this.main1File = true;
+        break;
+      case 'main2':
+        this.main2File = true;
+        break;
+      case 'main3':
+        this.main3File = true;
+        break;
+      default:
+        break;
+    }
+    console.log(event.target.value);
+    let path = event.target.value;
+    let indexFileName = path.lastIndexOf("\\") + 1;
+    console.log(indexFileName);
+    let fileName = path.substring(indexFileName, 999);
+    this.docPath = fileName;
+    console.log(fileName);
+    this.selectedFiles = event.target.files;
+  }
+
+
+  upload(src) {
+
+    const number = this.route.snapshot.paramMap.get('itemNumber');
+    this.progress.percentage = 0;
+    this.currentFileUpload = this.selectedFiles.item(0);
+    this.uploadService.pushFileToStorage(this.currentFileUpload, src, number).subscribe(event => {
+      console.log(event);
+
+      if (event.type === HttpEventType.UploadProgress) {
+        this.progress.percentage = Math.round(100 * event.loaded / event.total);
+      } else if (event instanceof HttpResponse) {
+        console.log('File is completely uploaded!');
+        console.log(event.body);
+        this.showSuccess();
+        switch (src) {
+          case 'bottle':
+            this.bottleFile = false;
+            this.item.bottleImage = '' + event.body;
+            this.itemShown.bottleImage = '' + event.body;
+            break;
+          case 'cap':
+            this.capFile = false;
+            this.item.capImage = '' + event.body;
+            this.itemShown.capImage = '' + event.body;
+            break;
+          case 'pump':
+            this.pumpFile = false;
+            this.item.pumpImage = '' + event.body;
+            this.itemShown.pumpImage = '' + event.body;
+            break;
+          case 'seal':
+            this.sealFile = false;
+            this.item.sealImage = '' + event.body;
+            this.itemShown.sealImage = '' + event.body;
+            break;
+          case 'extra1':
+            this.extra1File = false;
+            this.item.extraImage1 = '' + event.body;
+            this.itemShown.extraImage1 = '' + event.body;
+            break;
+          case 'extra2':
+            this.extra2File = false;
+            this.item.extraImage2 = '' + event.body;
+            this.itemShown.extraImage2 = '' + event.body;
+            break;
+          case 'main1':
+            this.main1File = false;
+            this.item.imgMain1 = '' + event.body;
+            this.itemShown.imgMain1 = '' + event.body;
+            break;
+          case 'main2':
+            this.main2File = false;
+            this.item.imgMain2 = '' + event.body;
+            this.itemShown.imgMain2 = '' + event.body;
+            break;
+          case 'main3':
+            this.main3File = false;
+            this.item.imgMain3 = '' + event.body;
+            this.itemShown.imgMain3 = '' + event.body;
+            break;
+          default:
+            break;
+        }
+      }
+    });
+
+    this.selectedFiles = undefined;
+  }
+
+
+  showSuccess() {
+    this.toastr.info('Hello world!', 'Toastr fun!');
   }
 }
