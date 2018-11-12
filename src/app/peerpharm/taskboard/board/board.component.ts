@@ -255,6 +255,8 @@ export class BoardComponent implements OnInit {
 
 
   private getDismissReason(reason: any): string {
+    this.getTasks(this.authService.loggedInUser._id);
+ 
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -262,6 +264,8 @@ export class BoardComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+
+  
   }
 
 
@@ -274,6 +278,10 @@ export class BoardComponent implements OnInit {
     let dataArrived = {};
     this.tasksService.createSubTask(this.subData.mainTaskId, this.subData.name, this.subData.dueDate, this.subData.priority, this.subData.depId, this.subData.userId,  this.subData.status)
       .subscribe(newSubTask => console.log(newSubTask));
+      this.tasksService.getSubTasks(this.subData.mainTaskId).subscribe(subTasks => {
+        this.subTasksArr = subTasks;
+      });
+
   }
 
 
