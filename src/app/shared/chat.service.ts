@@ -35,10 +35,10 @@ export class ChatService {
   
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private baseUrl = 'http://18.221.58.99/';
+  private baseUrl = '/';
 
   getAllChatMessages(taskid){
-    debugger;
+     
     let url = this.baseUrl + "chatmessages?taskid="+taskid;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
