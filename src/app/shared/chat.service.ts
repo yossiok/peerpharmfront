@@ -35,7 +35,7 @@ export class ChatService {
   
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
-  private baseUrl = 'http://localhost/';
+  private baseUrl = '/';
 
   getAllChatMessages(taskid){
     let url = this.baseUrl + "chatmessages?taskid="+taskid;
