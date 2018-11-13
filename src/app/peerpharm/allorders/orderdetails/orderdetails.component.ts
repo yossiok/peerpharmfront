@@ -9,6 +9,7 @@ import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
 import { DEFAULT_VALUE_ACCESSOR } from '@angular/forms/src/directives/default_value_accessor';
 import { Observable, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { ItemsService } from 'src/app/services/items.service';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class OrderdetailsComponent implements OnInit {
     quantity: '',
     qtyKg: '',
     orderId: '',
-    orderNumber:''
+    orderNumber: ''
   };
   show: boolean;
   EditRowId: any = "";
@@ -58,14 +59,14 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('marks') marks: ElementRef;
   // @ViewChild('type') type:ElementRef; 
 
-  constructor(private route: ActivatedRoute,  private router:Router, private orderService: OrdersService, private scheduleService: ScheduleService, private location: Location, private toastSrv: ToastrService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService, private scheduleService: ScheduleService, private location: Location, private toastSrv: ToastrService) { }
 
   ngOnInit() {
     console.log('hi');
 
     this.orderService.ordersArr.subscribe(res => {
       console.log(res)
-      if (res.length > 0) {
+      if (res.length > 0) { // if the request is for few orders:
         this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
           this.ordersItems = orderItems;
           this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
@@ -74,7 +75,7 @@ export class OrderdetailsComponent implements OnInit {
           console.log(orderItems)
         });
       }
-      else {
+      else {  //one order:
         this.getOrderDetails();
         this.getOrderItems();
         this.show = true;
@@ -83,23 +84,23 @@ export class OrderdetailsComponent implements OnInit {
     });
   }
 
-  getOrderDetails(){
+  getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
-    this.orderService.getOrderByNumber(this.number).subscribe(res=>{
-        this.number = res[0].orderNumber;
-        this.costumer = res[0].costumer;
-        this.orderDate = res[0].orderDate;
-        this.deliveryDate = res[0].deliveryDate;
-        this.remarks = res[0].orderRemarks;
-        this.orderId = res[0]._id;
+    this.orderService.getOrderByNumber(this.number).subscribe(res => {
+      this.number = res[0].orderNumber;
+      this.costumer = res[0].costumer;
+      this.orderDate = res[0].orderDate;
+      this.deliveryDate = res[0].deliveryDate;
+      this.remarks = res[0].orderRemarks;
+      this.orderId = res[0]._id;
     });
 
   }
   getOrderItems(): void {
     this.number = this.route.snapshot.paramMap.get('id');
-    document.title = "Order " +this.number;
+    document.title = "Order " + this.number;
     // const id = this.route.snapshot.paramMap.get('id');
-    //this.orderService.getOrderById(id).subscribe(orderItems => {
+    //this.orderService.getOrderById(id).subscribe(orderItems => {    
     this.orderService.getOrderItemsByNumber(this.number).subscribe(orderItems => {
       debugger
       orderItems.map(item => {
@@ -117,7 +118,8 @@ export class OrderdetailsComponent implements OnInit {
           }
           if (item.fillingStatus == 'packed') item.color = '#FFC058';
         }
-
+        item.isExpand = '+';
+        item.colorBtn = '#33FFE0';
       });
       this.ordersItems = orderItems;
       this.getComponents(this.ordersItems[0].orderNumber);
@@ -135,18 +137,6 @@ export class OrderdetailsComponent implements OnInit {
 
   getDetails(itemNumber, itemId): void {
     this.EditRowId2nd = itemId;
-    // if (this.expand === true) {this.expand = false;}
-    //else {this.expand = true;}
-
-    /* this.ordersItems.forEach(element => {
-       element.expand=false;
-     });
-     this.ordersItems.filter(elem=>elem.itemNumber==itemNumber).map(elem=>elem.expand=true);
-     
-     console.log(this.ordersItems.filter(elem=>elem.itemNumber==itemNumber));
-     this.ordersItems.forEach(element => {
-       console.log(element.itemNumber + " , "  + element.expand);
-     });*/
     console.log(itemNumber + " , " + itemId);
     this.orderService.getItemByNumber(itemNumber).subscribe(
       itemDetais => {
@@ -159,7 +149,18 @@ export class OrderdetailsComponent implements OnInit {
         });
         if (this.expand === true) { this.expand = false; }
         else { this.expand = true; }
+        
       })
+    this.ordersItems.filter(item => item.itemNumber == itemNumber).map(item => {
+      if (item.isExpand == "+") {
+        item.isExpand = "-";
+        item.colorBtn = '#F7866A';
+      }
+      else {
+        item.isExpand = "+";
+        item.colorBtn = '#33FFE0';
+      }
+    });
   }
 
   edit(id) {
@@ -207,7 +208,7 @@ export class OrderdetailsComponent implements OnInit {
 
   addItemOrder() {
 
-   // console.log(1 + " , " + this.itemData.qtyKg);
+    // console.log(1 + " , " + this.itemData.qtyKg);
     this.itemData.orderId = this.orderId;
     this.itemData.orderNumber = this.number;
     console.log(this.itemData.orderId);
@@ -218,11 +219,16 @@ export class OrderdetailsComponent implements OnInit {
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
+    this.itemSer.getItemData(item.itemNumber).subscribe(res => {
+      let packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+
+
+    });
     let scheduleLine = {
       positionN: '',
       orderN: item.orderNumber,
       item: item.itemNumber,
-      costumer: '',
+      costumer: this.costumer,
       productName: item.discription,
       batch: item.batch,
       packageP: '',
@@ -250,9 +256,9 @@ export class OrderdetailsComponent implements OnInit {
 
 
   searchItem(itemNumber) {
-      this.orderService.getItemByNumber(itemNumber).subscribe(res => {
-      this.itemData.discription=res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-      this.itemData.unitMeasure= res[0].volumeKey;
+    this.orderService.getItemByNumber(itemNumber).subscribe(res => {
+      this.itemData.discription = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
+      this.itemData.unitMeasure = res[0].volumeKey;
     })
   }
 
@@ -263,7 +269,7 @@ export class OrderdetailsComponent implements OnInit {
       console.log(orderToUpdate);
       this.orderService.editOrder(orderToUpdate).subscribe(res => {
         console.log(res);
-        this.router.navigate([ '/' ]); 
+        this.router.navigate(['/']);
       });
     }
   }

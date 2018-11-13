@@ -17,6 +17,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
   today: any;
+  currentType:string="";
   editRadioBtnType:string="";
   @ViewChild('position') positionN: ElementRef;
   @ViewChild('orderNum') orderN: ElementRef;
@@ -28,8 +29,8 @@ export class ScheduleComponent implements OnInit {
   @ViewChild('qty') qty: ElementRef;
   @ViewChild('aaaa') date: ElementRef;
   @ViewChild('marks') marks: ElementRef;
-  @ViewChild('shift') shift: ElementRef;
-  @ViewChild('mkp') mkp: ElementRef;
+  @ViewChild('shiftA') shift: ElementRef;
+  @ViewChild('mkpA') mkp: ElementRef;
   @ViewChild('id') id: ElementRef;
 
   scheduleLine = {
@@ -132,8 +133,9 @@ export class ScheduleComponent implements OnInit {
   }
 
 
-  edit(id) {
+  edit(id, type) {
     this.EditRowId = id;
+    this.currentType = type;
   }
 
 
@@ -141,9 +143,17 @@ export class ScheduleComponent implements OnInit {
     console.log(this.date.nativeElement.value);
     console.log(this.orderN.nativeElement.value);
     console.log(this.item.nativeElement.value);
+    console.log(this.positionN.nativeElement.value);
+    console.log(this.costumer.nativeElement.value);
+    console.log(this.batch.nativeElement.value);
+    console.log(this.packageP.nativeElement.value);
+    console.log(this.marks.nativeElement.value);
+    console.log(this.shift.nativeElement.value);
+    console.log(this.mkp.nativeElement.value);
+    console.log(this.qty.nativeElement.value);
 
-    let scheduleToUpdate = {
-      scheduleId: this.id.nativeElement.value,
+    let scheduleToUpdate:any = {
+      _id: this.id.nativeElement.value,
       positionN: this.positionN.nativeElement.value,
       orderN: this.orderN.nativeElement.value,
       item: this.item.nativeElement.value,
@@ -156,13 +166,15 @@ export class ScheduleComponent implements OnInit {
       date: this.date.nativeElement.value,
       marks: this.marks.nativeElement.value,
       shift: this.shift.nativeElement.value,
-      mkp: this.mkp.nativeElement.value
+      mkp: this.currentType
     }
-   /* this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
+    console.log(scheduleToUpdate);
+    this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
       this.EditRowId = 0;
-      this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
+      scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format("YYYY-MM-DD");
+      this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate._id)] = scheduleToUpdate;
       this.editRadioBtnType="";
-    });*/
+    });
 
   }
 
@@ -192,6 +204,10 @@ export class ScheduleComponent implements OnInit {
 
   filterSchedule(){
     this.scheduleData=this.scheduleData.filter(e => e.isSelected == true);
+  }
+
+  handleChange(type){
+      this.currentType=type;
   }
   setDone() {
   }

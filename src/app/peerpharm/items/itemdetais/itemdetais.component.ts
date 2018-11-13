@@ -313,9 +313,12 @@ export class ItemdetaisComponent implements OnInit {
       });
     }
   }
-
+  search(event, item) {
+    if (event.key === "Enter") {
+      this.searchForItem(item)
+    }
+  }
   searchForItem(item) {
-
     this.itemsService.getItemData(item).subscribe(res => {
       this.item = res[0];
       this.itemShown = res[0];

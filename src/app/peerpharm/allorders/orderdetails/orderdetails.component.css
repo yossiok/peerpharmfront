@@ -1,3 +1,8 @@
+.table{
+  color:black;
+  font-size: 15px;
+}
+
 th, td {
     border-bottom: 1px solid #ddd;
 }
@@ -44,12 +49,16 @@ i{
       color: black;
       margin-left: 30px
   }
-
+.expendBtn{
+  border: 0;
+  border-radius: 13px 13px 13px 13px;
+}
 
 
   @media print {
     .table{
       color:black;
+      font-size: 15px;
     }
     .inputTr{    
       display: none;

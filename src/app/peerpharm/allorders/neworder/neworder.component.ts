@@ -89,6 +89,7 @@ export class NeworderComponent implements OnInit {
       price: '',
       discount: '',
       totalPrice: '',
+      itemRemarks:post.remarks,
       orderId: this.orderId,
       orderNumber: this.orderNumber
     }
@@ -173,6 +174,7 @@ export class NeworderComponent implements OnInit {
       price: '',
       discount: '',
       totalPrice: '',
+      itemRemarks:post.remarks,
       orderId: this.orderId,
       orderNumber: this.orderNumber
     }

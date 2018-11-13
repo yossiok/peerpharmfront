@@ -86,25 +86,25 @@
       <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
       <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
       <br>
-      <img id="id_img1" [src]=item.main1File>
+      <img id="id_img1" [src]=item.imgMain1>
 
       <br>
       <br>
 
-      
+
       <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
       <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')" *ngIf='main2File'>>></button>
       <br>
-      <img id="id_img2" [src]=item.main2File>
+      <img id="id_img2" [src]=item.imgMain2>
 
       <br>
       <br>
 
-    
+
       <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
       <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
       <br>
-      <img id="id_img3" [src]=item.main3File>
+      <img id="id_img3" [src]=item.imgMain3>
 
       <br>
       <br>
@@ -143,7 +143,7 @@
             <b>ITEM #</b>
           </td>
           <td colspan="2">
-            <input type="text" [(ngModel)]=itemShown.itemNumber #itemNum id="id_item">
+            <input type="text" [(ngModel)]=itemShown.itemNumber #itemNum id="id_item" (keydown)='search($event,itemNum.value )'>
           </td>
           <td>
             <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search" src='/assets/images/searchA2.png'
@@ -556,8 +556,8 @@
             <table border="0" width="200px">
               <tr>
                 <td align='center'>
-                  <input type="file" id="id_itemImg3">
-                  <button onclick="uploadImg('id_itemImg3', 'id_img3')">>></button>
+                  <input type="file" id="id_itemImg1" (change)="selectFile($event, 'pump')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('pump')" *ngIf='pumpFile'>>></button>
                   <br>
                   <img id="id_img3" [src]=item.pumpImage>
                 </td>
@@ -607,8 +607,8 @@
             <table border="0" width="200px">
               <tr>
                 <td align='center'>
-                  <input type="file" id="id_itemImg6">
-                  <button onclick="uploadImg('id_itemImg6', 'id_img6')">>></button>
+                  <input type="file" id="id_itemImg1" (change)="selectFile($event, 'extra1')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra1')" *ngIf='extra1File'>>></button>
                   <br>
                   <img id="id_img6" [src]=item.extraImage1>
                 </td>
@@ -620,8 +620,8 @@
               </tr>
               <tr>
                 <td align='center'>
-                  <input type="file" id="id_itemImg7">
-                  <button onclick="uploadImg('id_itemImg7', 'id_img7')">>></button>
+                  <input type="file" id="id_itemImg1" (change)="selectFile($event, 'extra2')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra2')" *ngIf='extra2File'>>></button>
                   <br>
                   <img id="id_img7" [src]=item.extraImage2>
                 </td>
@@ -639,10 +639,10 @@
             <table border="0" width="200px">
               <tr>
                 <td align='center'>
-                  <input type="file" id="id_itemImg8">
-                  <button onclick="uploadImg('id_itemImg8', 'id_img8')">>></button>
-                  <br>
-                  <img id="id_img8" [src]=item.sealImage>
+                    <input type="file" id="id_itemImg1" (change)="selectFile($event, 'seal')"><br>
+                    <button class="btn" [disabled]="!selectedFiles" (click)="upload('seal')" *ngIf='sealFile'>>></button>
+                    <br>
+                   <img id="id_img8" [src]=item.sealImage>
                 </td>
               </tr>
               <tr>
