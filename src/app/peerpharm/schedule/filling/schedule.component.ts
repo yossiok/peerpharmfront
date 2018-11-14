@@ -153,7 +153,7 @@ export class ScheduleComponent implements OnInit {
     console.log(this.qty.nativeElement.value);
 
     let scheduleToUpdate:any = {
-      _id: this.id.nativeElement.value,
+      scheduleId: this.id.nativeElement.value,
       positionN: this.positionN.nativeElement.value,
       orderN: this.orderN.nativeElement.value,
       item: this.item.nativeElement.value,
@@ -172,7 +172,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
       this.EditRowId = 0;
       scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format("YYYY-MM-DD");
-      this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate._id)] = scheduleToUpdate;
+      this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
       this.editRadioBtnType="";
     });
 
