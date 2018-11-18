@@ -123,7 +123,7 @@
   
   setDone(id, orderN, itemN){
     let today = new Date();
-    today.setHours(3,0,0,0);
+    today.setHours(2,0,0,0);
     //var _dt2 = new Date(today);
     //today = [_dt2.getDate(), _dt2.getMonth() + 1, _dt2.getFullYear()].join('/');
     var amountPrinted = prompt("Enter Amount Printed", "");

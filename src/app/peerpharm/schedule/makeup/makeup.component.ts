@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ScheduleService } from '../../../services/schedule.service';
+import { ItemsService } from 'src/app/services/items.service';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-makeup',
@@ -12,66 +14,62 @@ export class MakeupComponent implements OnInit {
   buttonColor:string='silver';
   @ViewChild('position') positionN:ElementRef; 
   @ViewChild('orderN') orderN:ElementRef; 
-  @ViewChild('item') item:ElementRef; 
+  @ViewChild('itemN') item:ElementRef; 
   @ViewChild('costumer') costumer:ElementRef; 
   @ViewChild('productName') productName:ElementRef; 
-  @ViewChild('batch') batch:ElementRef; 
-  @ViewChild('packageP') packageP:ElementRef; 
   @ViewChild('qty') qty:ElementRef; 
+  @ViewChild('volume') volume:ElementRef; 
   @ViewChild('aaaa') date:ElementRef; 
   @ViewChild('marks') marks:ElementRef;
-  @ViewChild('shift') shift:ElementRef;
-  @ViewChild('mkp') mkp:ElementRef; 
   @ViewChild('id') id:ElementRef; 
 
   scheduleLine = {
-    itemN:'',
-    itemImg:'',
-    positionN:'',
-    orderN:'',
-    cmptN:'',
-    cmptName:'',
-    costumer:'',
-    productName:'',
-    color:'',
-    packageP:'',
-    qty:'',
-    qtyRdy:'',
-    date:'',
-    dateRdy:'',
-    marks:'',
-    mkp:'',
-    nextStation:'',
-    printType:'',
-    palletN:'',
+    positionN: '',
+    orderN: '',
+    itemN: '',
+    productName: '',
+    volume: '',
+    costumer:'' ,
+    qty: '',
+    qtyProduced:'' ,
+    date: '',
+    dateRdy: '',
+    marks: '',
     status:'open',
   }
-  constructor(private scheduleService:ScheduleService ) { }
+  constructor(private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService ) { }
 
   ngOnInit() {
+    this.getAllSchedule(); 
   }
 
 
   
   writeScheduleData(){
     console.log(this.scheduleLine);
-    this.scheduleService.setNewPrintSchedule(this.scheduleLine).subscribe(res=>console.log(res));
+    this.scheduleService.setNewMkpSchedule(this.scheduleLine).subscribe(res=>console.log(res));
   }
 
   dateChanged(date){
 
-    this.scheduleService.getPrintScheduleByDate(date).subscribe(
+    this.scheduleService.getMkpScheduleByDate(date).subscribe(
       res=>{
-        res.map(elem=>{if(elem.status=="printed") elem.color="Aquamarine"})
+        res.map(sced => {
+          if (sced.qtyProduced!=null && sced.qtyProduced!="" && sced.qtyProduced>0) sced.color = 'Aquamarine'; 
+         });
         this.scheduleData=res;
       }
     )
 
   }
 
+  edit(id, type) {
+    this.EditRowId = id;
+  }
   getAllSchedule(){
-    this.scheduleService.getOpenPrintSchedule().subscribe(res=>{
-      console.log(res);      
+    this.scheduleService.getOpenMkpSchedule().subscribe(res=>{
+      console.log(res);     
+       
       this.scheduleData=res;
     
     });
@@ -88,26 +86,26 @@ export class MakeupComponent implements OnInit {
       scheduleId:this.id.nativeElement.value,
       positionN:this.positionN.nativeElement.value,
       orderN:this.orderN.nativeElement.value,
-      item:this.item.nativeElement.value,
+      itemN:this.item.nativeElement.value,
       costumer:this.costumer.nativeElement.value,
       productName:this.productName.nativeElement.value,
-      batch:this.batch.nativeElement.value,
-      packageP:this.packageP.nativeElement.value,
+      volume:this.volume.nativeElement.value,
       qty:this.qty.nativeElement.value,
-      qtyRdy:'',
       date:this.date.nativeElement.value,
       marks:this.marks.nativeElement.value,
-      shift:this.shift.nativeElement.value,
-      mkp:this.mkp.nativeElement.value
     }
     console.log(scheduleToUpdate);
-    this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
+    this.scheduleService.updateMkpSchedule(scheduleToUpdate).subscribe(res=>{
+        console.log(res);
+        this.EditRowId='';
+        this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
+    });
   
   }
   
   setDone(id, orderN, itemN){
     let today = new Date();
-    today.setHours(3,0,0,0);
+    today.setHours(2,0,0,0);
     //var _dt2 = new Date(today);
     //today = [_dt2.getDate(), _dt2.getMonth() + 1, _dt2.getFullYear()].join('/');
     var amountPrinted = prompt("Enter Amount Printed", "");
@@ -117,19 +115,38 @@ export class MakeupComponent implements OnInit {
       console.log(amountPckgs + " , " + amountPrinted);
     }
     var tempItem, tempOrderN, itemRemarks = "";
-    var a = confirm("Print process is done ?");
+    var a = confirm("Fill process is done ?");
     if (a == true) {
       let scheduleToUpdate={
         scheduleId:id,
         qtyProduced:amountPrinted,
         amountPckgs:amountPckgs,
-        printDate:today,
+        dateRdy:today,
         orderN:orderN,
         itemN:itemN,
-        status:'printed'
+        status:'done'
       }
       console.log(scheduleToUpdate);
-      this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
+      this.scheduleService.updateMkpDoneSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
     }
+  }
+
+  
+  setItemDetails(itemNumber) {
+    console.log(itemNumber);
+    this.itemSer.getItemData(itemNumber).subscribe(res => {
+       console.log(res[0]);
+       let itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
+       this.scheduleLine.productName= itemName;
+       this.scheduleLine.volume= res[0].volumeKey;
+    })
+  }
+
+  setOrderDetails(orderNumber){
+    console.log(orderNumber);
+    this.orderSer.getOrderByNumber(orderNumber).subscribe(res=>{
+      let costumer = res[0].costumer;
+      this.scheduleLine.costumer = costumer;
+    })
   }
 }

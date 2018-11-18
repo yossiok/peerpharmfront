@@ -437,6 +437,21 @@
             </select>
           </td>
         </tr>
+   
+<tr>
+                        <td><b>Pallet 1</b></td>
+                        <td><input type = text [(ngModel)]="itemShown.pallet" style='width:80px' ondblclick='openPalletImg(this.value, this.id)'> <input [(ngModel)]="itemShown.pallet1x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet1y" disabled style='width:40px'></td>
+					</tr>
+					<tr>
+                        <td><b>Pallet 2</b></td>
+                        <td><input type = text [(ngModel)]="itemShown.pallet2" style='width:80px' ondblclick='openPalletImg(this.value  ,  this.id)'> <input [(ngModel)]="itemShown.pallet2x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet2y" disabled style='width:40px'></td>
+					</tr>
+					<tr>
+                        <td><b>Pallet 3</b></td>
+                        <td><input type = text [(ngModel)]="itemShown.pallet3" style='width:80px' ondblclick='openPalletImg(this.value ,  this.id)'> <input [(ngModel)]="itemShown.pallet3x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet3y" disabled style='width:40px'></td>
+					</tr>
+
+    
       </table>
 
 
@@ -697,16 +712,16 @@
 
               <tr>
                 <td align='center'>
-                  <input type="file" id="id_itemImg4">
-                  <button onclick="uploadImg('id_itemImg4', 'id_img4')">>></button>
+                  <input type="file" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')" *ngIf='laser1File'>>></button>
                   <br>
                   <img id="id_img4" [src]=item.laserImage1>
                 </td>
               </tr>
               <tr>
                 <td align='center'>
-                  <input type="file" id="id_itemImg5">
-                  <button onclick="uploadImg('id_itemImg5', 'id_img5')">>></button>
+                  <input type="file" id="id_itemImg2" (change)="selectFile($event, 'laser2')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser2')" *ngIf='laser2File'>>></button>
                   <br>
                   <img id="id_img5" [src]=item.laserImage2>
                 </td>

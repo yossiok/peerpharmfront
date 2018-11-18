@@ -24,4 +24,11 @@ table{
 
 table tr:hover {
     background-color: lightblue;
+} 
+
+@media print {
+   table{
+      color:black;
+      font-size: 15px;
+    }
 }

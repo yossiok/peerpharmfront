@@ -38,7 +38,8 @@ export class OrderdetailsComponent implements OnInit {
     quantity: '',
     qtyKg: '',
     orderId: '',
-    orderNumber: ''
+    orderNumber: '',
+    batch:''
   };
   show: boolean;
   EditRowId: any = "";
@@ -238,7 +239,9 @@ export class OrderdetailsComponent implements OnInit {
       marks: this.marks.nativeElement.value,
       shift: this.shift.nativeElement.value,
       mkp: this.chosenType,
-      status: 'open'
+      status: 'open',
+      productionLine:'', 
+      pLinePositionN:999
     }
     debugger
     this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));

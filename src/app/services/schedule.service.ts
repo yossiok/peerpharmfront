@@ -79,4 +79,30 @@ export class ScheduleService {
     let url = this.baseUrl + "printSchedule/update";
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
+
+
+
+  getOpenMkpSchedule() {
+    let url = this.baseUrl + "mkpSchedule";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getMkpScheduleByDate(date) {
+    let url = this.baseUrl + "mkpSchedule?date=" + date;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  setNewMkpSchedule(schedule): Observable<any> {
+    let url = this.baseUrl + "mkpSchedule/add";
+    return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  }
+  updateMkpSchedule(schedule): Observable<any> {
+    let url = this.baseUrl + "mkpSchedule/update";
+    return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  }
+
+  updateMkpDoneSchedule(schedule): Observable<any> {
+    let url = this.baseUrl + "mkpSchedule/updateDone";
+    return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  }
 }

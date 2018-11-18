@@ -1,6 +1,6 @@
 <div class='orderHeader'>
-  <span  class='spanTitle'>Order: </span><span>{{number}} </span><i class="ti-check text-success m-r-10"  (click)="closeOrder()"></i><br>
-  <span class='spanTitle'> Order Date:</span><span> {{orderDate}} </span><span class='spanTitle'> Delivery Date: </span><span>{{deliveryDate}}</span><br>
+  <span  class='spanTitle'>Order: </span><span>{{number}} </span><i class="ti-check text-success m-r-10"  (click)="closeOrder()"></i>
+  <span class='spanTitle'> Order Date:</span><span> {{orderDate}} </span><span class='spanTitle'> Delivery Date: </span><span>{{deliveryDate}}</span>
   <span class='spanTitle'> Costumer :</span><span> {{costumer}} </span><span class='spanTitle'> Remarks:</span><span> {{remarks}}</span>
 </div>
 <table class='table'>
@@ -81,7 +81,7 @@
                 <h5>Batch</h5>
               </td>
               <td>{{item.batch}}</td>
-              <td><input #inputBatch  *ngIf='item.batch==""' ></td>
+              <td><input #inputBatch   ></td>
               <td><button class='btn btn-success' *ngIf='item.batch==""' (click)="setBatch(item, inputBatch.value)">set</button></td>
               <td></td>
               <td></td>

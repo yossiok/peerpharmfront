@@ -18,6 +18,7 @@ import {CostumersListComponent} from './costumers/costumers-list/costumers-list.
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
+import { MakeupComponent } from './schedule/makeup/makeup.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 
 export const PeerPharmRputs: Routes =[
@@ -55,6 +56,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Print Schedule' 
     },
     component: PrintingComponent
+  },
+  {
+    path: 'schedule/makeupschedule',
+    data: {
+      title: 'Make Up Schedule' 
+    },
+    component: MakeupComponent
   },
   {
     path: 'items/itemslist',

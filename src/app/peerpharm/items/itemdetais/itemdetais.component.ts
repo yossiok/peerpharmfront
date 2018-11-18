@@ -101,6 +101,16 @@ export class ItemdetaisComponent implements OnInit {
     extraImage1: '',
     extraImage2: '',
     sealImage: '',
+    
+    pallet: '',
+    pallet1x: '',
+    pallet1y: '',
+    pallet2: '',
+    pallet2x: '',
+    pallet2y: '',
+    pallet3: '',
+    pallet3x: '',
+    pallet3y: '',
 
     goddetShape: '',
 
@@ -196,6 +206,15 @@ export class ItemdetaisComponent implements OnInit {
       extraImage2: [null, Validators.required],
       sealImage: [null, Validators.required],
 
+      pallet: [null, Validators.required],
+      pallet1x: [null, Validators.required],
+      pallet1y: [null, Validators.required],
+      pallet2: [null, Validators.required],
+      pallet2x: [null, Validators.required],
+      pallet2y: [null, Validators.required],
+      pallet3: [null, Validators.required],
+      pallet3x:[null, Validators.required],
+      pallet3y: [null, Validators.required],
     });
   }
 
@@ -344,8 +363,11 @@ export class ItemdetaisComponent implements OnInit {
   sealFile: boolean = false;
   capFile: boolean = false;
 
+
   extra1File: boolean = false;
   extra2File: boolean = false;
+  laser1File: boolean = false;
+  laser2File: boolean = false;
 
   main1File: boolean = false;
   main2File: boolean = false;
@@ -375,6 +397,12 @@ export class ItemdetaisComponent implements OnInit {
         break;
       case 'extra2':
         this.extra2File = true;
+        break;
+      case 'laser1':
+        this.laser1File = true;
+        break;
+      case 'laser2':
+        this.laser2File = true;
         break;
       case 'main1':
         this.main1File = true;
@@ -443,6 +471,16 @@ export class ItemdetaisComponent implements OnInit {
             this.extra2File = false;
             this.item.extraImage2 = '' + event.body;
             this.itemShown.extraImage2 = '' + event.body;
+            break;
+          case 'laser1':
+            this.laser1File = false;
+            this.item.laserImage1 = '' + event.body;
+            this.itemShown.laserImage1 = '' + event.body;
+            break;
+          case 'laser2':
+            this.laser2File = false;
+            this.item.laserImage2 = '' + event.body;
+            this.itemShown.laserImage2 = '' + event.body;
             break;
           case 'main1':
             this.main1File = false;

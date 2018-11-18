@@ -50,7 +50,7 @@ export class ScheduleComponent implements OnInit {
     mkp: '',
     status: 'open',
     productionLine: '',
-    pLinePositionN: 99,
+    pLinePositionN: 999,
   }
   typeShown: String = "basic";
   constructor(private scheduleService: ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService) { }
@@ -87,10 +87,8 @@ export class ScheduleComponent implements OnInit {
   }
 
   getAllSchedule(today) {
-    //this.scheduleService.getSchedule().subscribe(res => {
     this.scheduleService.getScheduleByDate(today).subscribe(res=>{
       res.map(sced => {
-        //  sced.date= moment(sced.date).format("DD/MM/YY"); 
         sced.color='white';
         if (sced.status == 'filled') sced.color = '#CE90FF';
         if (sced.status == 'beingFilled') sced.color = 'yellow';

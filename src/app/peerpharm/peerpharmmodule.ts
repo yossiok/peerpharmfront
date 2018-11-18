@@ -23,7 +23,8 @@ import {ProductionComponent} from './production/production/production.component'
 import {ContentComponent} from './taskboard/core/content/content.component'
 import {BatchesComponent} from './batches/batches.component'
 import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component';
-import {PrintingComponent} from './schedule/printing/printing.component'
+import {PrintingComponent} from './schedule/printing/printing.component';
+import { MakeupComponent } from './schedule/makeup/makeup.component';
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
@@ -117,6 +118,7 @@ import { AuthService } from '../services/auth.service';
     BatchesComponent,
     CostumersListComponent,
     PrintingComponent,
+    MakeupComponent,
     FormslistComponent,
     FormdetailsComponent,
     ItemDetailsTabComponent,

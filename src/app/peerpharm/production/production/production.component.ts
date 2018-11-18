@@ -30,9 +30,10 @@ export class ProductionComponent implements OnInit {
 
   getAllSchedule(){
     this.scheduleService.getScheduleByDate(this.today).subscribe(res => {
-     
+     debugger
       res.map(sced=>
       {
+
         sced.date= moment(sced.date).format("DD/MM/YY"); 
         if (sced.status == 'filled') sced.color = 'Aquamarine';
         if (sced.status == 'beingFilled') sced.color = 'yellow';
