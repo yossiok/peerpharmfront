@@ -21,6 +21,7 @@ export class ItemdetaisComponent implements OnInit {
   dataDiv: any = [];
   newItem: FormGroup;
   item: any = {};
+  itemCopy:any = {};
   itemShown = {
     itemNumber: '',
     name: '',
@@ -122,9 +123,11 @@ export class ItemdetaisComponent implements OnInit {
     coaFileLink: '',
 
   }
+
+
   constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2,
     private uploadService: UploadFileService, private toastr: ToastrService) {
-
+    this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
       itemNumber: [null, Validators.required],
       name: [null, Validators.required],
@@ -339,11 +342,20 @@ export class ItemdetaisComponent implements OnInit {
   }
   searchForItem(item) {
     this.itemsService.getItemData(item).subscribe(res => {
-      this.item = res[0];
-      this.itemShown = res[0];
-      console.log(res[0]);
-      this.dataDiv = res[0].goddet;
-      this.showGoddetData();
+      console.log(res.length)
+      if(res.length==0){
+        this.toastr.error(item, "Item Not found");
+        this.itemShown = Object.assign({}, this.itemCopy);
+        this.dataDiv = ["", ""];
+        this.showGoddet();
+      }
+      else{
+        this.item = res[0];
+        this.itemShown = res[0];
+        console.log(res[0]);
+        this.dataDiv = res[0].goddet;
+        this.showGoddetData();
+      }
     })
   }
 

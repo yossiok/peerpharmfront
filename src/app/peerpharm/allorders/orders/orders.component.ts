@@ -96,8 +96,9 @@ export class OrdersComponent implements OnInit {
   deleteOrder(order) {
     if (confirm("Delete Order?")) {
       this.ordersService.deleteOrder(order).subscribe(res => {
-        let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
-        delete this.orders[i];
+      //  let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
+      //  delete this.orders[i];
+        this.orders=this.orders.filter(elem=>elem._id!=order._id);
       });
     }
   }
@@ -106,12 +107,15 @@ export class OrdersComponent implements OnInit {
     console.log(this.orders);
     let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
     this.ordersService.sendOrderData(tempArr);
+    this.ordersService.getAllOpenOrdersItems(false);
     this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
     console.log(tempArr);
     //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
   }
 
   loadOrdersItems() {
+    this.ordersService.getAllOpenOrdersItems(true);
+    this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
 
   }
 

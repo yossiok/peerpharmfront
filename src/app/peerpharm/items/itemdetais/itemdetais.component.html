@@ -86,7 +86,7 @@
       <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
       <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
       <br>
-      <img id="id_img1" [src]=item.imgMain1>
+      <img id="id_img1" [src]=itemShown.imgMain1>
 
       <br>
       <br>
@@ -95,7 +95,7 @@
       <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
       <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')" *ngIf='main2File'>>></button>
       <br>
-      <img id="id_img2" [src]=item.imgMain2>
+      <img id="id_img2" [src]=itemShown.imgMain2>
 
       <br>
       <br>
@@ -104,7 +104,7 @@
       <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
       <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
       <br>
-      <img id="id_img3" [src]=item.imgMain3>
+      <img id="id_img3" [src]=itemShown.imgMain3>
 
       <br>
       <br>
@@ -469,7 +469,7 @@
                   <input type="file" id="id_itemImg1" (change)="selectFile($event, 'bottle')"><br>
                   <button class="btn" [disabled]="!selectedFiles" (click)="upload('bottle')" *ngIf='bottleFile'>>></button>
                   <br>
-                  <img id="id_img1" [src]=item.bottleImage>
+                  <img id="id_img1" [src]=itemShown.bottleImage>
                 </td>
               </tr>
               <tr>
@@ -522,7 +522,7 @@
                   <input type="file" id="id_itemImg2" (change)="selectFile($event, 'cap')"><br>
                   <button class="btn" [disabled]="!selectedFiles" (click)="upload('cap')" *ngIf='capFile'>>></button>
                   <br>
-                  <img id="id_img2" [src]=item.capImage>
+                  <img id="id_img2" [src]=itemShown.capImage>
                 </td>
               </tr>
               <tr>
@@ -574,7 +574,7 @@
                   <input type="file" id="id_itemImg1" (change)="selectFile($event, 'pump')"><br>
                   <button class="btn" [disabled]="!selectedFiles" (click)="upload('pump')" *ngIf='pumpFile'>>></button>
                   <br>
-                  <img id="id_img3" [src]=item.pumpImage>
+                  <img id="id_img3" [src]=itemShown.pumpImage>
                 </td>
               </tr>
               <tr>
@@ -625,7 +625,7 @@
                   <input type="file" id="id_itemImg1" (change)="selectFile($event, 'extra1')"><br>
                   <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra1')" *ngIf='extra1File'>>></button>
                   <br>
-                  <img id="id_img6" [src]=item.extraImage1>
+                  <img id="id_img6" [src]=itemShown.extraImage1>
                 </td>
               </tr>
               <tr>
@@ -638,7 +638,7 @@
                   <input type="file" id="id_itemImg1" (change)="selectFile($event, 'extra2')"><br>
                   <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra2')" *ngIf='extra2File'>>></button>
                   <br>
-                  <img id="id_img7" [src]=item.extraImage2>
+                  <img id="id_img7" [src]=itemShown.extraImage2>
                 </td>
               </tr>
 
@@ -715,7 +715,7 @@
                   <input type="file" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
                   <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')" *ngIf='laser1File'>>></button>
                   <br>
-                  <img id="id_img4" [src]=item.laserImage1>
+                  <img id="id_img4" [src]=itemShown.laserImage1>
                 </td>
               </tr>
               <tr>
@@ -723,7 +723,7 @@
                   <input type="file" id="id_itemImg2" (change)="selectFile($event, 'laser2')"><br>
                   <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser2')" *ngIf='laser2File'>>></button>
                   <br>
-                  <img id="id_img5" [src]=item.laserImage2>
+                  <img id="id_img5" [src]=itemShown.laserImage2>
                 </td>
               </tr>
               <tr>

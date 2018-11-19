@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ScheduleService } from '../../../services/schedule.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { OrdersService } from 'src/app/services/orders.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-makeup',
@@ -37,7 +38,7 @@ export class MakeupComponent implements OnInit {
     marks: '',
     status:'open',
   }
-  constructor(private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService ) { }
+  constructor(private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
     this.getAllSchedule(); 
@@ -47,7 +48,11 @@ export class MakeupComponent implements OnInit {
   
   writeScheduleData(){
     console.log(this.scheduleLine);
-    this.scheduleService.setNewMkpSchedule(this.scheduleLine).subscribe(res=>console.log(res));
+    this.scheduleService.setNewMkpSchedule(this.scheduleLine).subscribe(res=>{
+
+      console.log(res)
+      this.scheduleData.push(res);
+    })
   }
 
   dateChanged(date){
@@ -99,6 +104,7 @@ export class MakeupComponent implements OnInit {
         console.log(res);
         this.EditRowId='';
         this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
+        this.toastSrv.success("Item " + scheduleToUpdate.itemN, "Updated Successfully");
     });
   
   }
@@ -109,10 +115,9 @@ export class MakeupComponent implements OnInit {
     //var _dt2 = new Date(today);
     //today = [_dt2.getDate(), _dt2.getMonth() + 1, _dt2.getFullYear()].join('/');
     var amountPrinted = prompt("Enter Amount Printed", "");
-    var amountPckgs = prompt("Enter Amount pf packages", "");  //for print sticker later
-    if (amountPrinted == null || amountPrinted == "" || amountPckgs == null || amountPckgs == "") {
+    if (amountPrinted == null || amountPrinted == "" ) {
     }else {
-      console.log(amountPckgs + " , " + amountPrinted);
+      console.log( " , " + amountPrinted);
     }
     var tempItem, tempOrderN, itemRemarks = "";
     var a = confirm("Fill process is done ?");
@@ -120,14 +125,17 @@ export class MakeupComponent implements OnInit {
       let scheduleToUpdate={
         scheduleId:id,
         qtyProduced:amountPrinted,
-        amountPckgs:amountPckgs,
         dateRdy:today,
         orderN:orderN,
         itemN:itemN,
         status:'done'
       }
       console.log(scheduleToUpdate);
-      this.scheduleService.updateMkpDoneSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
+      this.scheduleService.updateMkpDoneSchedule(scheduleToUpdate).subscribe(res=>{
+        console.log(res)
+        this.toastSrv.info("Item " + scheduleToUpdate.itemN, "Is ready");
+        
+      });
     }
   }
 
@@ -147,6 +155,13 @@ export class MakeupComponent implements OnInit {
     this.orderSer.getOrderByNumber(orderNumber).subscribe(res=>{
       let costumer = res[0].costumer;
       this.scheduleLine.costumer = costumer;
+    })
+  }
+
+  deleteSchedule(id, itemN){
+    this.scheduleService.deleteMkpSchedule(id).subscribe(res=>{
+      this.toastSrv.error("Item " + itemN , "Deleted")
+      this.scheduleData=this.scheduleData.filter(elem=>elem._id!=id);
     })
   }
 }

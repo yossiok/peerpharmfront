@@ -63,11 +63,11 @@
             <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.marks}}</td>
             <td *ngIf="line._id===EditRowId"><input #marks type='text' [value]="line.marks"  style='width:50px'></td>
             <td *ngIf="line._id!==EditRowId"> 
-                <img src='assets/images/deleteBtn.png' class='btnImg' style='width:30px;height: 30px' *ngIf="line.status!='printed'">
+                <i class="ti-trash text-danger m-r-10"   (click)="deleteSchedule(line._id, line.itemN)"  *ngIf="line.status!='printed'"></i>&nbsp;
                 <img src='assets/images/mkpDone.png'  (click)='setDone(line._id, line.orderN, line.itemN)' class='btnImg' style='width:30px;height: 30px' *ngIf="line.status!='printed'">
             </td>
             <td *ngIf="line._id===EditRowId">
-                <img src='assets/images/update2.png' (click)="updateSchedule()" class='btnImg' style='width:30px;height: 30px'  *ngIf="line.status!='printed'">
+                <i class="ti-save text-success m-r-10"   (click)="updateSchedule()" *ngIf="line.status!='printed'"></i>
             </td>
         </tr>
     </tbody>
