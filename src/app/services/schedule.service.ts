@@ -105,4 +105,9 @@ export class ScheduleService {
     let url = this.baseUrl + "mkpSchedule/updateDone";
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
+  deleteMkpSchedule(id): Observable<any> {
+    let sced={_id:id};
+    let url = this.baseUrl + "mkpSchedule/delete";
+    return this.http.post(url, JSON.stringify(sced), this.options).pipe(map(res => res.json()));
+  }
 }

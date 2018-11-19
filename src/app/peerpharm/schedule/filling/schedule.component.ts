@@ -196,7 +196,9 @@ export class ScheduleComponent implements OnInit {
   }
 
   deleteLine(id){
-      this.scheduleService.deleteSchedule(id).subscribe(res=>console.log(res));
+      this.scheduleService.deleteSchedule(id).subscribe(res=>{
+        this.scheduleData = this.scheduleData.filter(elem=>elem._id!=id);
+      });
   }
 
 

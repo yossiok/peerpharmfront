@@ -18,6 +18,9 @@ export class OrdersService {
   private orderSrc = new BehaviorSubject<Array<string>>([]);
   ordersArr = this.orderSrc.asObservable();
 
+  private openOrdersSrc = new BehaviorSubject<Boolean>(false);
+  openOrdersValidate = this.openOrdersSrc.asObservable();
+
   constructor(private http: Http) { }
 
   getOrders(): Observable<any> {
@@ -62,7 +65,7 @@ export class OrdersService {
   }
 
   getOpenOrdersItems():Observable<any>{
-    let url = this.baseUrl + 'order?openOrdersItems=open';
+    let url = this.baseUrl + 'orderitem?openOrdersItems=open';
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
     )
@@ -125,5 +128,9 @@ export class OrdersService {
 
   sendOrderData(tempArr: Array<string>) {
     this.orderSrc.next(tempArr);
+  }
+
+  getAllOpenOrdersItems(status:boolean){
+    this.openOrdersSrc.next(status);
   }
 }

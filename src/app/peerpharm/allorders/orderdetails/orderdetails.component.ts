@@ -25,12 +25,14 @@ import { ItemsService } from 'src/app/services/items.service';
 })
 export class OrderdetailsComponent implements OnInit {
   ordersItems;
+  ordersItemsCopy;
   item: any;
   number; orderDate; deliveryDate; costumer; remarks; orderId;
   chosenType: string;
   detailsArr: any[];
   components: any[];
   multi: boolean = false;
+  loadData: boolean = false;
   itemData: any = {
     itemNumber: '',
     discription: '',
@@ -39,7 +41,8 @@ export class OrderdetailsComponent implements OnInit {
     qtyKg: '',
     orderId: '',
     orderNumber: '',
-    batch:''
+    batch:'',
+    itemRemarks:'',
   };
   show: boolean;
   EditRowId: any = "";
@@ -65,24 +68,48 @@ export class OrderdetailsComponent implements OnInit {
   ngOnInit() {
     console.log('hi');
 
-    this.orderService.ordersArr.subscribe(res => {
-      console.log(res)
-      if (res.length > 0) { // if the request is for few orders:
-        this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
+ 
+    this.orderService.openOrdersValidate.subscribe(res=>{
+      if(res==true){
+        this.loadData=true;
+        this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
+          this.loadData=false;
           this.ordersItems = orderItems;
-          this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
-          this.getComponents(this.ordersItems[0].orderNumber);
+          this.ordersItemsCopy = orderItems; 
+          this.ordersItems.map(item=>{
+            item.itemFullName = item.itemNumber + " "  +item.discription;
+          })
+          //this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
+          //this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
           console.log(orderItems)
+        })
+          
+      }
+      else{
+        this.orderService.ordersArr.subscribe(res => {
+          console.log(res)
+          if (res.length > 0) { // if the request is for few orders:
+            this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
+              this.ordersItems = orderItems;
+             // this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
+             // this.getComponents(this.ordersItems[0].orderNumber);
+              this.multi = true;
+              console.log(orderItems)
+            });
+          }
+          else {  //one order:
+            this.getOrderDetails();
+            this.getOrderItems();
+            this.show = true;
+            this.multi = false;
+          }
         });
+
       }
-      else {  //one order:
-        this.getOrderDetails();
-        this.getOrderItems();
-        this.show = true;
-        this.multi = false;
-      }
-    });
+    })
+
+    
   }
 
   getOrderDetails() {
@@ -202,7 +229,8 @@ export class OrderdetailsComponent implements OnInit {
   deleteItem(item) {
     console.log(item._id);
     this.orderService.deleteOrderItem(item._id).subscribe(res => {
-      this.toastSrv.error(item.itemN, "Item Has Been Deleted");
+      this.toastSrv.error("Item Has Been Deleted", item.itemNumber);
+      this.ordersItems = this.ordersItems.filter(elem=>elem._id!=item._id);
       console.log(res)
     });
   }
@@ -274,6 +302,20 @@ export class OrderdetailsComponent implements OnInit {
         console.log(res);
         this.router.navigate(['/']);
       });
+    }
+  }
+
+
+  changeText(ev)
+  {
+    let word= ev.target.value;
+    if(word=="")
+    {
+      this.ordersItems=this.ordersItemsCopy.slice();
+    }
+    else
+    { 
+      this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
     }
   }
 }

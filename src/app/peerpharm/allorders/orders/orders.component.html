@@ -47,7 +47,7 @@
       <td (click)="edit('')">
         <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
       <td (click)="edit('')">
-        <a routerLink='/peerpharm/allorders/orderitems/{{order.orderNumber}}'>
+        <a target="_blank"  routerLink='/peerpharm/allorders/orderitems/{{order.orderNumber}}'>
           <!-- <a routerLink="/orderitems/{{order._id}}">-->
           <!--<a  [routerLink]=['orderitems/{{order._id}}']>-->
           {{order.orderNumber}}
