@@ -19,6 +19,7 @@ import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
 import { MakeupComponent } from './schedule/makeup/makeup.component';
+import {  WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 
 export const PeerPharmRputs: Routes =[
@@ -99,6 +100,13 @@ export const PeerPharmRputs: Routes =[
       title: 'inventory' 
     },
     component: StockComponent
+  },
+  {
+    path: 'inventory/wharehouse',
+    data: {
+      title: 'WhareHouse' 
+    },
+    component: WharehouseComponent
   },
   {
     path: 'taskboard/main',

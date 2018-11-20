@@ -45,12 +45,12 @@
             Update Date:
           </td>
           <td>
-            <input type=date id="id_update" style="width:158px">
+            <input type=date id="id_update" style="width:158px" class="form-control">
           </td>
         </tr>
         <tr>
           <td>
-            Name of Updataing:
+            Name of Updataing:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </td>
           <td>
             <input type="text" [(ngModel)]=itemShown.nameOfupdating id="id_name_of_updating">
@@ -58,54 +58,66 @@
         </tr>
         <tr>
           <td>
-            Version Number:---------
+            Version Number:
           </td>
           <td>
-            <input type="text" id="id_version">
+            <input type="number " id="id_version" c>
           </td>
         </tr>
       </table>
     </td>
-    <td rowspan="3" align=" center">
+    <td rowspan="2" align=" center">
       <b> Enter Product Title:</b>
       <br>
-      <input type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:325px">
+      <input type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
       <br>
       <br>
       <b> Enter Sub title:</b>
       <br>
-      <input type="text" [(ngModel)]=itemShown.subName id="id_subTitle">
+      <input type="text" [(ngModel)]=itemShown.subName id="id_subTitle" style="width:480px">
       <br>
       <br>
       <b> Enter discription:</b>
       <br>
-      <input type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:280px">
+      <input type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:480px">
       <br>
       <br>
 
-      <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
-      <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
-      <br>
-      <img id="id_img1" [src]=itemShown.imgMain1>
+      <div class="imgContainer">
+        <div style='display: inline-table'>
+            <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+            <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
+            <br>
+            <img id="id_img1" [src]=itemShown.imgMain1>
+        </div>
+        <div style='display: inline-table'>
+            <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
+            <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')" *ngIf='main2File'>>></button>
+            <br>
+            <img id="id_img2" [src]=itemShown.imgMain2>
+        </div>
+        <div style='display: inline-table'>
+          <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
+          <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
+          <br>
+          <img id="id_img3" [src]=itemShown.imgMain3>
+    
+          
+        </div>
+      </div>
+     
 
       <br>
       <br>
 
 
-      <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
-      <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')" *ngIf='main2File'>>></button>
-      <br>
-      <img id="id_img2" [src]=itemShown.imgMain2>
+     
 
       <br>
       <br>
 
 
-      <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
-      <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
-      <br>
-      <img id="id_img3" [src]=itemShown.imgMain3>
-
+      
       <br>
       <br>
       <b> Enter Remarks:</b>
@@ -118,6 +130,28 @@
       <br>
 
       <textarea rows="3" cols="30" id="id_impRemarks" [(ngModel)]=itemShown.impRemarks> </textarea>
+      <br>
+      <table  align=center>
+        <tr>
+          <td><b>Pallet 1</b></td>
+          <td><input type=text [(ngModel)]="itemShown.pallet" style='width:80px' ondblclick='openPalletImg(this.value, this.id)'>
+            <input [(ngModel)]="itemShown.pallet1x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet1y"
+              disabled style='width:40px'></td>
+        </tr>
+        <tr>
+          <td><b>Pallet 2</b></td>
+          <td><input type=text [(ngModel)]="itemShown.pallet2" style='width:80px' ondblclick='openPalletImg(this.value  ,  this.id)'>
+            <input [(ngModel)]="itemShown.pallet2x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet2y"
+              disabled style='width:40px'></td>
+        </tr>
+        <tr>
+          <td><b>Pallet 3</b></td>
+          <td><input type=text [(ngModel)]="itemShown.pallet3" style='width:80px' ondblclick='openPalletImg(this.value ,  this.id)'>
+            <input [(ngModel)]="itemShown.pallet3x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet3y"
+              disabled style='width:40px'></td>
+        </tr>
+      </table>
+
       <br>
       <input #rows style='width:30px' (focusout)="showGoddet()">&nbsp;
       <input #colums style='width:30px' (focusout)="showGoddet()">&nbsp;
@@ -190,26 +224,26 @@
         </tr>
         <tr>
           <td>
-            <b>Volume</b>
+            <b>Volume [ml] </b>
           </td>
           <td colspan="2">
-            <input type="text" id="id_volume" [(ngModel)]=itemShown.volumeKey>
+            <input type="number" id="id_volume" [(ngModel)]=itemShown.volumeKey>
           </td>
         </tr>
         <tr>
           <td>
-            <b>Net Weight</b>
+            <b>Net Weight [gr] </b>
           </td>
           <td colspan="2">
-            <input type="text" id="id_netWeight" [(ngModel)]=itemShown.netWeightK>
+            <input type="number" id="id_netWeight" [(ngModel)]=itemShown.netWeightK>
           </td>
         </tr>
         <tr>
           <td>
-            <b>Gross unit Weight------</b>
+            <b>Gross unit Weight [gr] </b>
           </td>
           <td colspan="2">
-            <input type="text" id="id_grossUnitInput" [(ngModel)]=itemShown.grossUnitWeightK>
+            <input type="number" id="id_grossUnitInput" [(ngModel)]=itemShown.grossUnitWeightK>
           </td>
         </tr>
       </table>
@@ -217,12 +251,12 @@
       <table border=0>
         <tr>
           <td>
-            <b>Sticker Wgt/Type-----</b>
+            <b>Sticker Wgt/Type &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
           </td>
           <td>
-            <input type="text" id="id_stickerWeight" style='width:40px; margin-left:10px' value="0.0" [(ngModel)]=itemShown.itemStickerW>
+            <input type="text" id="id_stickerWeight" style='width:40px; margin-left:0px' value="0.0" [(ngModel)]=itemShown.itemStickerW>
 
-            <select id='id_stickerSelect' [(ngModel)]=itemShown.itemStickerS>
+            <select id='id_stickerSelect' [(ngModel)]=itemShown.itemStickerS style='margin-left:10px'>
               PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
               <option value='paperCarton'>נייר/קרטון</option>
@@ -250,8 +284,8 @@
             <b>Box Wgt/Type</b>
           </td>
           <td>
-            <input type="text" id="id_boxWeight" style='width:40px; margin-left:10px' placeholder=8 [(ngModel)]=itemShown.itemBoxW>
-            <select id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS>
+            <input type="text" id="id_boxWeight" style='width:40px; margin-left:0px' placeholder=8 [(ngModel)]=itemShown.itemBoxW>
+            <select id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS style='margin-left:10px'>
               PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
               <option value='paperCarton'>נייר/קרטון</option>
@@ -279,8 +313,8 @@
             <b>Carton Wgt/Type</b>
           </td>
           <td>
-            <input type="text" id="id_cartonWeight" [(ngModel)]=itemShown.itemCtnW style='width:40px; margin-left:10px'>
-            <select id='id_cartonSelect' [(ngModel)]=itemShown.itemCtnS>
+            <input type="text" id="id_cartonWeight" [(ngModel)]=itemShown.itemCtnW style='width:40px; margin-left:0px'>
+            <select id='id_cartonSelect' [(ngModel)]=itemShown.itemCtnS style='margin-left:10px'>
               PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
               <option value='paperCarton'>נייר/קרטון</option>
@@ -311,7 +345,7 @@
             <b>Net Ctn Weight</b>
           </td>
           <td colspan="2">
-            <input type="text" id="id_netCtnInput" style='margin-left:10px' onfocusout='checkNetWgt()' [(ngModel)]=itemShown.netCtnWeightK>
+            <input type="number" id="id_netCtnInput" style='margin-left:10px' onfocusout='checkNetWgt()' [(ngModel)]=itemShown.netCtnWeightK>
           </td>
         </tr>
         <tr>
@@ -319,7 +353,8 @@
             <b>Gross Ctn Weight</b>
           </td>
           <td colspan="2">
-            <input type="text" id="id_grossCtnInput" style='margin-left:10px' onfocusout='checkGrossWgt()' [(ngModel)]=itemShown.grossCtnWeightK>
+            <input type="number" id="id_grossCtnInput" style='margin-left:10px' onfocusout='checkGrossWgt()'
+              [(ngModel)]=itemShown.grossCtnWeightK>
           </td>
         </tr>
         <tr>
@@ -368,7 +403,7 @@
             <b>PCS/carton</b>
           </td>
           <td>
-            <input type=t ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
+            <input type=number ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
           </td>
         </tr>
         <tr>
@@ -393,10 +428,10 @@
         </tr>
         <tr>
           <td>
-            <b>1st layer carton/palette</b>
+            <b>1st layer carton/palette &nbsp;&nbsp;</b>
           </td>
           <td>
-            <input type=t ext id="id_layerCartonPalette" [(ngModel)]=itemShown.st1layerCarton>
+            <input type="number" ext id="id_layerCartonPalette" [(ngModel)]=itemShown.st1layerCarton>
           </td>
         </tr>
         <tr>
@@ -404,7 +439,7 @@
             <b>Total Cartons/palette</b>
           </td>
           <td>
-            <input type=t ext id="id_totalCarton" [(ngModel)]=itemShown.totalCartonPalette>
+            <input type="number" ext id="id_totalCarton" [(ngModel)]=itemShown.totalCartonPalette>
           </td>
         </tr>
         <tr>
@@ -412,7 +447,7 @@
             <b>Cbm</b>
           </td>
           <td>
-            <input type=t ext id="id_cbm" [(ngModel)]=itemShown.cbm>
+            <input type="number" ext id="id_cbm" [(ngModel)]=itemShown.cbm>
           </td>
         </tr>
         <tr>
@@ -437,21 +472,10 @@
             </select>
           </td>
         </tr>
-   
-<tr>
-                        <td><b>Pallet 1</b></td>
-                        <td><input type = text [(ngModel)]="itemShown.pallet" style='width:80px' ondblclick='openPalletImg(this.value, this.id)'> <input [(ngModel)]="itemShown.pallet1x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet1y" disabled style='width:40px'></td>
-					</tr>
-					<tr>
-                        <td><b>Pallet 2</b></td>
-                        <td><input type = text [(ngModel)]="itemShown.pallet2" style='width:80px' ondblclick='openPalletImg(this.value  ,  this.id)'> <input [(ngModel)]="itemShown.pallet2x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet2y" disabled style='width:40px'></td>
-					</tr>
-					<tr>
-                        <td><b>Pallet 3</b></td>
-                        <td><input type = text [(ngModel)]="itemShown.pallet3" style='width:80px' ondblclick='openPalletImg(this.value ,  this.id)'> <input [(ngModel)]="itemShown.pallet3x" disabled style='width:40px'><input [(ngModel)]="itemShown.pallet3y" disabled style='width:40px'></td>
-					</tr>
 
-    
+   
+
+
       </table>
 
 
@@ -654,10 +678,10 @@
             <table border="0" width="200px">
               <tr>
                 <td align='center'>
-                    <input type="file" id="id_itemImg1" (change)="selectFile($event, 'seal')"><br>
-                    <button class="btn" [disabled]="!selectedFiles" (click)="upload('seal')" *ngIf='sealFile'>>></button>
-                    <br>
-                   <img id="id_img8" [src]=item.sealImage>
+                  <input type="file" id="id_itemImg1" (change)="selectFile($event, 'seal')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('seal')" *ngIf='sealFile'>>></button>
+                  <br>
+                  <img id="id_img8" [src]=item.sealImage>
                 </td>
               </tr>
               <tr>
@@ -742,9 +766,6 @@
   </tr>
 
 </table>
-<div style="background-color: lightblue; width: 1084px ; height: 70px" class='footerDiv'>
   <br>
   <button class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
   <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>
-
-</div>-->

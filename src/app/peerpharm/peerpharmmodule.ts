@@ -28,6 +28,7 @@ import { MakeupComponent } from './schedule/makeup/makeup.component';
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
+import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -123,6 +124,7 @@ import { AuthService } from '../services/auth.service';
     FormdetailsComponent,
     ItemDetailsTabComponent,
     ItemDocumentsComponent,
+    WharehouseComponent,
     ChatComponent
   ],
   providers:[ OrdersService, HttpClientModule]

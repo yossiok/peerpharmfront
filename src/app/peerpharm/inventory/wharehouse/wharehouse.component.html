@@ -1,0 +1,75 @@
+
+  <span (click)="changeCurentWh()">{{curentWhareHouseName}}</span><br>
+  <select #wh *ngIf='changeWh' (change)="setWhareHouse(wh.value)"> 
+        <option></option>
+        <option  *ngFor="let wh of whareHouses;">{{wh.name}}</option>
+  </select> 
+<table>
+  <tr>
+    <td>
+      <button (click)="dirSet('in')">קבלת סחורה</button>
+    </td>
+    <td>
+      <button (click)="dirSet('out')">הוצאת סחורה</button>
+    </td>
+    <td>
+      <button (click)="dirSet('shellChange')">שינוי מדף</button>
+    </td>
+    <td>
+      <button>הקצאת סחורה</button>
+    </td>
+    <td>
+      <button>העברה לייצור</button>
+    </td>
+    <td>
+      <button (click)="dirSet('managment')">ניהול מחסן</button>
+    </td>
+  </tr>
+</table>
+
+<div>
+
+    {{dir}}
+
+
+</div>
+
+<br>
+
+<div *ngIf="dir!='' && dir!='managment'">
+  <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add item</button>
+  <button class="btn btn-info" (click)="getFormData()">Submit</button>
+</div>
+<br><br>
+
+<div #container style='display: inline-table' *ngIf="dir!=''">
+
+</div>
+
+<div style='display: inline-table' *ngIf="dir=='managment'">
+  <input type=text id='wh' #whName placeholder="WhareHouse Name"> 
+  <button id='updateWh' class='btn btn-info' (click)="addNewWhareHouse(whName.value)">Add New WhareHouse</button><br><br>
+
+  <div id='resultDiv' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+
+  </div>
+    <u>WhareHouses</u> <br>
+
+    <select #wh class="form-control" (change)="getShelfsList(wh.value)"> 
+      <option></option>
+      <option  *ngFor="let wh of whareHouses;">{{wh.name}}</option>
+    </select> 
+    
+  <div id='whareHousesDiv' style='background-color: rgb(223, 255, 194)  ;width:300px; font-weight: bold;'>
+    <input #shelf><button class='btn btn-success' (click)="addNewShelf(shelf.value)">Add Shelf</button><input #searchS (keyup)="searchShelf(searchS.value)" placeholder="חפש מדף">
+    <div  [style.background-color]="response.color">{{response.body}}</div>
+    <table>
+        <tr *ngFor="let shelf of shelfs;">
+          <td>{{shelf._id}}</td><td>{{shelf.position}}</td>
+        </tr>
+      </table>
+  </div>
+  <div id='shell_wh_div' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+
+  </div>
+</div>

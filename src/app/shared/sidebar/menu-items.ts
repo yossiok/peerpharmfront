@@ -278,8 +278,8 @@ export const ROUTES: RouteInfo[] = [
           submenu: []
         },
          {
-          path: '/peerpharm/schedule/fillschedule',
-          title: 'Item Tree',
+          path: '/peerpharm/inventory/wharehouse',
+          title: 'Whare House',
           icon: 'fas fa-tree',
           class: '',
           extralink: false,

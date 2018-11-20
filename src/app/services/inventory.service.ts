@@ -21,4 +21,29 @@ export class InventoryService {
     let url = this.baseUrl + "component";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  updateInventoryChanges(qtyObj){
+    var dataTosend={dataArr: qtyObj};
+    let url = this.baseUrl + "itemShell/updateMulti";
+    return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
+  }
+
+  getWhareHousesList(){
+    let url = this.baseUrl + "whareHouse";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getWhareHouseShelfList(whareHouseId){
+    let url = this.baseUrl + "shell?whareHouseId="+whareHouseId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  addNewShelf(shellObj){
+    let url = this.baseUrl + "shell/add";
+    return this.http.post(url, JSON.stringify(shellObj), this.options).pipe(map(res => res.json()))
+  }
+  addNewWhareHouse(whareHouseName){
+    let url = this.baseUrl + "whareHouse/add";
+    return this.http.post(url, JSON.stringify({name:whareHouseName}), this.options).pipe(map(res => res.json()))
+  }
 }
