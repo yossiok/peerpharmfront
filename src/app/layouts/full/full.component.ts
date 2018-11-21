@@ -36,7 +36,7 @@ export class FullComponent implements OnInit {
   };
 
   Logo() {
-    this.expandLogo = !this.expandLogo;
+   /* this.expandLogo = !this.expandLogo;
     if(this.expandLogo)
     {
       $(".sidebar-link , .sidebar-item").css("width","250px");
@@ -45,7 +45,7 @@ export class FullComponent implements OnInit {
     else{
       $(".sidebar-link , .sidebar-item").css("width","65px");
     }
-    
+    */
   }
 
   ngOnInit() {
