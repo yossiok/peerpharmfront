@@ -46,4 +46,15 @@ export class InventoryService {
     let url = this.baseUrl + "whareHouse/add";
     return this.http.post(url, JSON.stringify({name:whareHouseName}), this.options).pipe(map(res => res.json()))
   }
+
+  getShelfListForItemInWhareHouse(itemNumber, whareHouseId){
+    let url = this.baseUrl + "itemShell?itemNumber="+itemNumber +"&whareHouseId="+whareHouseId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getInventoryDemandsList(){
+    let url = this.baseUrl + "itemsDemand";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+
+  }
 }

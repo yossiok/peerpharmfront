@@ -10,3 +10,6 @@ input:focus {
     background-color: wheat;
     border: 1px solid rgb(131, 212, 233);
 }
+td{
+    padding: 5px;
+}

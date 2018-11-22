@@ -1,0 +1,13 @@
+.cmptTh{
+    background-color: rgb(145, 111, 69);
+    font-weight: bolder;
+    padding: 3px;
+    color: white;
+}
+.imgBtn{
+    width:40px;
+    cursor: pointer;
+}
+.imgBtn:hover{
+    width:45px;
+}

@@ -38,7 +38,6 @@ export class OrdersComponent implements OnInit {
   getOrders() {
     this.ordersService.getOrders()
       .subscribe(orders => {
-        //  this.orders = 
         orders.map(order => {
           Object.assign({ isSelected: false }, order);
           order.NumberCostumer = order.orderNumber + " " + order.costumer;

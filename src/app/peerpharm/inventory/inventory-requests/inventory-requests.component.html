@@ -1,0 +1,41 @@
+<table class='table'>
+  <thead class='bg-info text-white'>
+    <tr>
+      <th>#</th>
+      <th>Order</th>
+      <th>date</th>
+      <th>WharreHouse</th>
+      <th></th>
+      <th>
+        <img src='assets/images/move.png' class='imgBtn' (click)="loadItems()">
+      </th>
+    </tr>
+  </thead>
+  <ng-container *ngFor="let demand of ordersDemands; let i =index">
+    <tr>
+      <td>{{i}}</td>
+      <td><a  (click)="getDetails(demand._id, demand.order)" style='color: blue; cursor: pointer;'>{{demand.order}}</a></td>
+      <td>{{demand.date}}</td>
+      <td>{{demand.whareHouse}}</td>
+    </tr>
+    
+    <tr *ngIf="demand._id== EditRowId2nd && expand==true;">   
+      <th  class="cmptTh"></th><th class="cmptTh">Number</th><th class="cmptTh">Date</th><th class="cmptTh">Amount</th><th class="cmptTh">Allocation</th><th class="cmptTh">Supplied</th>
+    </tr>
+      <ng-container *ngFor="let cmpt of demand.components;" >
+          <tr *ngIf="demand._id== EditRowId2nd && expand==true;">
+            <td> <input type="checkbox" [(ngModel)]="cmpt.isSelected"> </td>
+            <td>{{cmpt.cmptN}}</td>
+            <td>{{cmpt.date}}</td>
+            <td>{{cmpt.quantity}}</td>
+            <td>{{cmpt.allocation}}</td>
+            <td>{{cmpt.suplied}}</td>
+          </tr>
+      </ng-container>
+    
+  </ng-container>
+</table>
+
+<!--
+  <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
+-->
