@@ -1,6 +1,4 @@
-th, td {
-    border-bottom: 1px solid #ddd;
-}
+
 .subHeader{
     background-color: #d6d6d6;
     padding: 3px;
@@ -25,3 +23,14 @@ th, td {
 i{
     font-size: 20px;
 }
+table{
+    color:black;
+    font-size: 16px;
+  }
+  
+td {
+      background-color: white;
+      border-bottom: 1px solid #ddd;
+      font-family: "Berlin Sans FB";
+
+  }

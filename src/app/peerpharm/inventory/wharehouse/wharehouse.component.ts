@@ -313,6 +313,9 @@ export class WharehouseComponent implements OnInit {
   getChildArr(event){
     
     console.log(event)
+    if(event.length>0){
+      this.dir="production";
+    }
     alert(event);
     event.forEach(item => {
         this.appendItems(item.number, item.orderDemandId)

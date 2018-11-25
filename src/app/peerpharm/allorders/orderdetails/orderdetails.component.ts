@@ -134,9 +134,9 @@ export class OrderdetailsComponent implements OnInit {
       orderItems.map(item => {
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
-          if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase() == 'formula porduced') item.color = 'yellow';
-          if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
-          if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+          else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase() == 'formula porduced') item.color = 'yellow';
+          else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+          else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
             if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
               let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
               item.fillingStatus += ", " + lackAmount + " lack";
@@ -144,7 +144,8 @@ export class OrderdetailsComponent implements OnInit {
             }
             else item.color = '#CE90FF';
           }
-          if (item.fillingStatus == 'packed') item.color = '#FFC058';
+          else if (item.fillingStatus == 'packed') item.color = '#FFC058';
+          else item.color = 'white';
         }
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';

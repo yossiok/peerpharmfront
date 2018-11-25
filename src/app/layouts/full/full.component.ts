@@ -36,16 +36,16 @@ export class FullComponent implements OnInit {
   };
 
   Logo() {
-   /* this.expandLogo = !this.expandLogo;
+    this.expandLogo = !this.expandLogo;
     if(this.expandLogo)
     {
-      $(".sidebar-link , .sidebar-item").css("width","250px");
+   //   $(".sidebar-link , .sidebar-item").css("width","250px");
 
     }
     else{
-      $(".sidebar-link , .sidebar-item").css("width","65px");
+      $(".sidebar-link , .sidebar-item").css("width","250px");
     }
-    */
+  
   }
 
   ngOnInit() {
@@ -85,12 +85,18 @@ export class FullComponent implements OnInit {
     }
   }
 
+ 
+
+
+
   toggleSidebarType() {
  
+    debugger;
     switch (this.options.sidebartype) {
       case 'full':
       case 'iconbar':
         this.options.sidebartype = 'mini-sidebar';
+        $(".sidebar-link , .sidebar-item").css("width","65px");
         break;
 
       case 'overlay':
@@ -98,6 +104,8 @@ export class FullComponent implements OnInit {
         break;
 
       case 'mini-sidebar':
+      
+      $(".sidebar-link , .sidebar-item").css("width","250px");
         if (this.defaultSidebar === 'mini-sidebar') {
           this.options.sidebartype = 'full';
         } else {

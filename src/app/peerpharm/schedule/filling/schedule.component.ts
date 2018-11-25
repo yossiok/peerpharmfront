@@ -77,6 +77,7 @@ export class ScheduleComponent implements OnInit {
         if (sced.status == 'beingFilled') sced.color = 'yellow';
         if (sced.status == 'packed') sced.color = 'orange';
         if (sced.status == 'problem') sced.color = 'red';
+        else sced.color = 'white'
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");
 
         //let pipe = new DatePipe('en-US'); // Use your own locale

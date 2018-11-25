@@ -20,8 +20,13 @@ i{
 }
 table{
     color:black;
-}
-
+    font-size: 16px;
+  }
+  
+td {
+      border-bottom: 1px solid #ddd;
+      font-family: "Berlin Sans FB"
+  }
 table tr:hover {
     background-color: lightblue;
 } 
