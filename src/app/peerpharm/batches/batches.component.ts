@@ -22,7 +22,7 @@ export class BatchesComponent implements OnInit {
   }
 
   startInterval() {
-    this.myRefresh = setInterval(()=>{this.getAllBatches();}, 1000*60*3);
+    this.myRefresh = setInterval(() => { this.getAllBatches(); }, 1000 * 60 * 3);
   }
 
 
@@ -41,7 +41,13 @@ export class BatchesComponent implements OnInit {
     });
   }
 
-
+  deleteBatch(batch) {
+    if (confirm("Delete batch?")) {
+      this.batchService.deleteBatch(batch).subscribe(res => {
+        this.batches = this.batches.filter(elem => elem._id != batch._id);
+      });
+    }
+  }
 
 }
 

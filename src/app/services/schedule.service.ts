@@ -50,7 +50,7 @@ export class ScheduleService {
     }
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
-
+  
   updateScheduleLinePosition(scheduleId, newPosition) {
     let url = this.baseUrl + "schedule/update";
     var schedule = {
@@ -60,6 +60,11 @@ export class ScheduleService {
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
 
+  setOpenToToday() {
+    let url = this.baseUrl + "schedule/update";
+    var schedule = {setOpenToToday: true }
+    return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  }
 
   getOpenPrintSchedule() {
     let url = this.baseUrl + "printSchedule";

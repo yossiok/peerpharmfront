@@ -1,5 +1,5 @@
 <!--<table  dir="rtl"   border='0' style='font-size:17px; width:800px;height:620px; font-family:Arial; border-collapse: collapse;' id="table_q"  >-->
-  <table  dir='rtl'>
+  <table  dir='rtl' style='display: inline-table'>
     <thead  >
       <tr>
         <td colspan="4">טופס בקרת איכות</td>
@@ -168,10 +168,10 @@
         שעת בדיקה
       </td>
       <td colspan='3'>
-        <input id='div_checkTime1' class='inputDiv' style='width:100px; margin:10px'>
-        <input id='div_checkTime2' class='inputDiv' style='width:100px; margin:10px'>
-        <input id='div_checkTime3' class='inputDiv' style='width:100px; margin:10px'>
-        <input id='div_checkTime4' class='inputDiv' style='width:100px; margin:10px'>
+        <input id='div_checkTime1' class='inputDiv' style='width:100px; margin:10px'  [(ngModel)]=form.checkTime1>
+        <input id='div_checkTime2' class='inputDiv' style='width:100px; margin:10px'  [(ngModel)]=form.checkTime2>
+        <input id='div_checkTime3' class='inputDiv' style='width:100px; margin:10px'  [(ngModel)]=form.checkTime3>
+        <input id='div_checkTime4' class='inputDiv' style='width:100px; margin:10px'  [(ngModel)]=form.checkTime4>
       </td>
     </tr>
     <tr>
@@ -190,10 +190,10 @@
         משקל נטו
       </td>
       <td colspan='3'>
-        <input id='div_netWeight1' class='inputDiv' style='width:100px; margin:10px'>
-        <input id='div_netWeight2' class='inputDiv' style='width:100px; margin:10px'>
-        <input id='div_netWeight3' class='inputDiv' style='width:100px; margin:10px'>
-        <input id='div_netWeight4' class='inputDiv' style='width:100px; margin:10px'>
+        <input id='div_netWeight1' class='inputDiv' style='width:100px; margin:10px'  [(ngModel)]=form.checkNetoWeight1>
+        <input id='div_netWeight2' class='inputDiv' style='width:100px; margin:10px'  [(ngModel)]=form.checkNetoWeight2>
+        <input id='div_netWeight3' class='inputDiv' style='width:100px; margin:10px'  [(ngModel)]=form.checkNetoWeight3>
+        <input id='div_netWeight4' class='inputDiv' style='width:100px; margin:10px'  [(ngModel)]=form.checkNetoWeight4>
       </td>
     </tr>
     <tr>
@@ -270,8 +270,7 @@
   
   
   
-  <br><br><br>
-  <table border='0' style='font-size:18px; width:800px;height:600px; font-family:Arial; border-collapse: collapse; display:inline;float:right'  id="table_p" class='post' >
+  <table border='0' style='font-size:18px; width:800px;height:600px; font-family:Arial; border-collapse: collapse; display:inline-table;float:right'  id="table_p" class='post' >
     <tr>
       <td>
         שם המוצר

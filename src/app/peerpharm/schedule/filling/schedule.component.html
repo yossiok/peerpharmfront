@@ -22,7 +22,7 @@
       <th><b>Remarks</b></th>
       <th class='printlessTd'><b>shift</b></th>
       <th class='printlessTd'><b>Mkp</b></th>
-<th class='printlessTd'></th>
+<th class='printlessTd'><img src="assets/images/24p.png" style='width:55px; cursor: pointer;' alt="Random second slide" (click)='moveAllOpenScedToToday()'></th>
   </tr> 
 
   </thead>
@@ -66,7 +66,7 @@
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">{{line.packageP | slice:0:20}}</td>
         <!--<td *ngIf="line._id===EditRowId"><input #packageP type='text' [value]="line.packageP"  style='width:150px'></td>-->
         <td *ngIf="line._id===EditRowId"><textarea rows='1' cols='30' id='input_marks' #packageP style='width:160px' [value]="line.packageP" class='form-control'></textarea></td>
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.qty}}</td>
+        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.qtyProduced }} / {{line.qty}}</td>
         <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty"  style='width:60px' class='form-control'></td>
         <td></td>
 

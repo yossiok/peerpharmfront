@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ScheduleService } from "../../../services/schedule.service"
 import { ItemsService } from "../../../services/items.service"
-import { OrdersService } from "../../../services/orders.service" 
+import { OrdersService } from "../../../services/orders.service"
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
 
@@ -17,8 +17,8 @@ export class ScheduleComponent implements OnInit {
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
   today: any;
-  currentType:string="";
-  editRadioBtnType:string="";
+  currentType: string = "";
+  editRadioBtnType: string = "";
   @ViewChild('position') positionN: ElementRef;
   @ViewChild('orderNum') orderN: ElementRef;
   @ViewChild('item') item: ElementRef;
@@ -53,23 +53,50 @@ export class ScheduleComponent implements OnInit {
     pLinePositionN: 999,
   }
   typeShown: String = "basic";
-  constructor(private scheduleService: ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService) { }
+  constructor(private scheduleService: ScheduleService, private itemSer: ItemsService, private orderSer: OrdersService) { }
 
 
   ngOnInit() {
-    
+
     this.today = new Date();
-    this.today= moment( this.today).format("YYYY-MM-DD");
+    this.today = moment(this.today).format("YYYY-MM-DD");
     this.getAllSchedule(this.today);
   }
 
   writeScheduleData() {
     console.log(this.scheduleLine);
-    this.scheduleService.setNewProductionSchedule(this.scheduleLine).subscribe(res => this.scheduleData.push(res));
+    if (this.scheduleLine.mkp == "mkp") {
+      this.scheduleLine.productionLine = '6';
+    } else if (this.scheduleLine.mkp == 'tube') {
+      this.scheduleLine.productionLine = '5';
+    }
+    console.log(this.scheduleLine);
+    this.scheduleService.setNewProductionSchedule(this.scheduleLine).subscribe(res => {
+      this.scheduleData.push(res)
+
+      this.scheduleLine.scheduleId = "";
+      this.scheduleLine.scheduleId = '';
+      this.scheduleLine.positionN = '';
+      this.scheduleLine.orderN = '';
+      this.scheduleLine.item = '';
+      this.scheduleLine.costumer = '';
+      this.scheduleLine.productName = '';
+      this.scheduleLine.batch = '';
+      this.scheduleLine.packageP = '';
+      this.scheduleLine.qty = '';
+      this.scheduleLine.qtyRdy = '';
+      this.scheduleLine.date = '';
+      this.scheduleLine.marks = '';
+      this.scheduleLine.shift = '';
+      this.scheduleLine.mkp = '';
+      this.scheduleLine.status = 'open';
+      this.scheduleLine.productionLine = '';
+      this.scheduleLine.pLinePositionN = 999;
+    });
   }
 
   dateChanged(date) {
-    
+
     console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
@@ -77,7 +104,7 @@ export class ScheduleComponent implements OnInit {
         if (sced.status == 'beingFilled') sced.color = 'yellow';
         if (sced.status == 'packed') sced.color = 'orange';
         if (sced.status == 'problem') sced.color = 'red';
-        else sced.color = 'white'
+        if (sced.status == 'open') sced.color = 'white';
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");
 
         //let pipe = new DatePipe('en-US'); // Use your own locale
@@ -88,16 +115,16 @@ export class ScheduleComponent implements OnInit {
   }
 
   getAllSchedule(today) {
-    this.scheduleService.getScheduleByDate(today).subscribe(res=>{
+    this.scheduleService.getScheduleByDate(today).subscribe(res => {
       res.map(sced => {
-        sced.color='white';
+        sced.color = 'white';
         if (sced.status == 'filled') sced.color = '#CE90FF';
         if (sced.status == 'beingFilled') sced.color = 'yellow';
         if (sced.status == 'packed') sced.color = 'Aquamarine';
         if (sced.status == 'problem') sced.color = 'red';
         sced.date2 = moment(sced.date).format("DD/MM/YY");
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");
-       
+
       });
       res.map(sced => {
         Object.assign({ isSelected: false }, sced);
@@ -151,7 +178,7 @@ export class ScheduleComponent implements OnInit {
     console.log(this.mkp.nativeElement.value);
     console.log(this.qty.nativeElement.value);
 
-    let scheduleToUpdate:any = {
+    let scheduleToUpdate: any = {
       scheduleId: this.id.nativeElement.value,
       positionN: this.positionN.nativeElement.value,
       orderN: this.orderN.nativeElement.value,
@@ -172,7 +199,7 @@ export class ScheduleComponent implements OnInit {
       this.EditRowId = 0;
       scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format("YYYY-MM-DD");
       this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
-      this.editRadioBtnType="";
+      this.editRadioBtnType = "";
     });
 
   }
@@ -180,37 +207,42 @@ export class ScheduleComponent implements OnInit {
   setItemDetails(itemNumber) {
     console.log(itemNumber);
     this.itemSer.getItemData(itemNumber).subscribe(res => {
-       console.log(res[0]);
+      console.log(res[0]);
       let itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-      let packageP = res[0].bottleTube+  " "  +  res[0].capTube + " "  + res[0].pumpTube +  " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
-      this.scheduleLine.productName= itemName;
+      let packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+      this.scheduleLine.productName = itemName;
       this.scheduleLine.packageP = packageP;
     })
   }
 
-  setOrderDetails(orderNumber){
+  setOrderDetails(orderNumber) {
     console.log(orderNumber);
-    this.orderSer.getOrderByNumber(orderNumber).subscribe(res=>{
+    this.orderSer.getOrderByNumber(orderNumber).subscribe(res => {
       let costumer = res[0].costumer;
       this.scheduleLine.costumer = costumer;
     })
   }
 
-  deleteLine(id){
-      this.scheduleService.deleteSchedule(id).subscribe(res=>{
-        this.scheduleData = this.scheduleData.filter(elem=>elem._id!=id);
-      });
+  deleteLine(id) {
+    this.scheduleService.deleteSchedule(id).subscribe(res => {
+      this.scheduleData = this.scheduleData.filter(elem => elem._id != id);
+    });
   }
 
 
-  filterSchedule(){
-    this.scheduleData=this.scheduleData.filter(e => e.isSelected == true);
+  filterSchedule() {
+    this.scheduleData = this.scheduleData.filter(e => e.isSelected == true);
   }
 
-  handleChange(type){
-      this.currentType=type;
+  handleChange(type) {
+    this.currentType = type;
   }
   setDone() {
+  }
+
+  moveAllOpenScedToToday(){
+    this.scheduleService.setOpenToToday().subscribe(res=>{console.log(res)});
+
   }
 }
 

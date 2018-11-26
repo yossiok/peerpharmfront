@@ -15,6 +15,7 @@
       <td>Durms</td>
       <td>Order</td>
       <td>Item</td>
+      <td></td>
     </tr>
   </thead>
   <ng-container *ngFor="let batch of batches; let i = index">
@@ -28,6 +29,7 @@
       <td>{{batch.drumsN}}</td>
       <td>{{batch.order}}</td>
       <td>{{batch.item}}</td>
+      <td><i class="ti-trash text-danger m-r-10"   (click)="deleteBatch(batch)"></i></td>
     </tr>
   </ng-container>
 </table>
