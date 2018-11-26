@@ -42,10 +42,10 @@
       <table border=0>
         <tr>
           <td>
-            Update Date:
+            Last Update:
           </td>
           <td>
-            <input type=date id="id_update" style="width:158px" class="form-control">
+            <input type=date style="width:158px" class="form-control" [(ngModel)]=itemShown.updateDate disabled>
           </td>
         </tr>
         <tr>
@@ -53,7 +53,7 @@
             Name of Updataing:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </td>
           <td>
-            <input type="text" [(ngModel)]=itemShown.nameOfupdating id="id_name_of_updating">
+            <input type="text" [(ngModel)]=itemShown.nameOfupdating  disabled>
           </td>
         </tr>
         <tr>
@@ -61,7 +61,7 @@
             Version Number:
           </td>
           <td>
-            <input type="number " id="id_version" c>
+            <input type="number " id="id_version" [(ngModel)]=itemShown.versionNumber disabled>
           </td>
         </tr>
       </table>

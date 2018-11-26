@@ -11,12 +11,14 @@
       <th style="padding:5px">Name</th>
       <th style="padding:5px">Sticker</th>
       <th style="padding:5px">Barcode</th>
+      <th style="padding:5px">licsens Number</th>
+      <th style="padding:5px">licsens Date</th>
       <th></th>
     </tr>
   </thead>
   <tbody id="table_body">
-    <tr *ngFor="let item of items">
-      <td></td>
+    <tr *ngFor="let item of items; let i=index">
+      <td>{{i}}</td>
       <td>
         <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
           {{item.itemNumber}}
@@ -25,6 +27,8 @@
       <td>{{item.itemFullName}}</td>
       <td>{{item.stickerNumber}}</td>
       <td>{{item.barcodeK}}</td>
+      <td>{{item.licsensNumber}}</td>
+      <td>{{item.licsensDate}}</td>
       <td></td>
     </tr>
   </tbody>

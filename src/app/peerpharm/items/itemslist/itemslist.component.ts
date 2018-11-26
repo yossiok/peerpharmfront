@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ItemsService} from '../../../services/items.service'
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-itemslist',
@@ -24,6 +25,7 @@ export class ItemslistComponent implements OnInit {
       this.itemsCopy=items;
       this.items.map(item=>{
         item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
+        item.licsensDate  = moment(item.licsensDate).format("DD/MM/YYYY");
       })
       
     });

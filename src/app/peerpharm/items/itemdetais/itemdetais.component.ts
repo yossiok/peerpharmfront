@@ -5,6 +5,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserInfo } from '../../taskboard/models/UserInfo';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-itemdetais',
@@ -22,6 +25,9 @@ export class ItemdetaisComponent implements OnInit {
   newItem: FormGroup;
   item: any = {};
   itemCopy:any = {};
+
+  user: UserInfo;
+  userName=""
   itemShown = {
     itemNumber: '',
     name: '',
@@ -30,8 +36,8 @@ export class ItemdetaisComponent implements OnInit {
     proRemarks: '',
     impRemarks: '',
 
-    updateDate: '',
-    nameOfupdating: '31232',
+    updateDate:'',
+    nameOfupdating: '',
     versionNumber: '',
 
     stickerNumber: '',
@@ -126,7 +132,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2,
-    private uploadService: UploadFileService, private toastr: ToastrService) {
+    private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
       itemNumber: [null, Validators.required],
@@ -319,6 +325,7 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
   ngOnInit() {
+    this.getUserInfo();
     this.getItemData();
     //  this.showGoddetData();
   }
@@ -328,8 +335,12 @@ export class ItemdetaisComponent implements OnInit {
     if (number) {
       this.itemsService.getItemData(number).subscribe(res => {
         console.log(res);
+        
         this.item = res[0];
         this.itemShown = res[0];
+        alert(this.itemShown.updateDate);
+        this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
+        this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         this.dataDiv = res[0].goddet;
         this.showGoddetData();
       });
@@ -352,6 +363,8 @@ export class ItemdetaisComponent implements OnInit {
       else{
         this.item = res[0];
         this.itemShown = res[0];
+        this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
+        this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         console.log(res[0]);
         this.dataDiv = res[0].goddet;
         this.showGoddetData();
@@ -361,7 +374,9 @@ export class ItemdetaisComponent implements OnInit {
 
   writeItemData() {
     console.log(this.itemShown)
+    this.itemShown.nameOfupdating = this.user.userName;
     this.getGoddetData();
+    this.itemShown.updateDate
     this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => console.log(res));
   }
 
@@ -521,5 +536,24 @@ export class ItemdetaisComponent implements OnInit {
 
   showSuccess() {
     this.toastr.info('Hello world!', 'Toastr fun!');
+  }
+
+  getUserInfo() {
+    debugger
+      this.authService.userEventEmitter.subscribe(user => {
+      this.user=user.loggedInUser;
+    })
+    debugger
+    if (!this.authService.loggedInUser) {
+      this.authService.userEventEmitter.subscribe(user => {
+        if (user.userName) {
+          this.user = user;
+        }
+      });
+    }
+    else {
+      this.user = this.authService.loggedInUser;
+    }
+
   }
 }
