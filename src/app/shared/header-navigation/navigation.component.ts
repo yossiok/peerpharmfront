@@ -1,5 +1,8 @@
 import { AuthService } from './../../services/auth.service';
 import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { ROUTES } from '../sidebar/menu-items';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UserInfo } from '../../peerpharm/taskboard/models/UserInfo';
 import {
   NgbModal,
   ModalDismissReasons,
@@ -11,7 +14,8 @@ declare var $: any;
 
 @Component({
   selector: 'app-navigation',
-  templateUrl: './navigation.component.html'
+  templateUrl: './navigation.component.html',
+  styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements AfterViewInit {
   @Output() toggleSidebar = new EventEmitter<void>();
@@ -22,9 +26,56 @@ export class NavigationComponent implements AfterViewInit {
   public config: PerfectScrollbarConfigInterface = {};
 
   public showSearch = false;
-
+  showMenu = '';
+  showSubMenu = '';
+  user: UserInfo;
+  public sidebarnavItems: any[];
+ 
   constructor(private modalService: NgbModal, private authService: AuthService) { }
+  ngOnInit() {
+    this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
+    this.authService.userEventEmitter.subscribe(data => {
+      
+      this.user = this.authService.loggedInUser
+    });
 
+ 
+    if (!this.authService.loggedInUser) {
+      this.authService.getLoggedInUser().subscribe(data => {
+        this.user = this.authService.loggedInUser;
+        let newArr = [];
+        this.authService.loggedInUser.modules.forEach(elm => {
+        
+          let tempArr = this.sidebarnavItems.filter(e => e.title == elm);
+          if (tempArr.length > 0)
+            newArr.push(tempArr[0]);
+        });
+        this.sidebarnavItems = newArr;
+        
+
+      });
+    }
+    else {
+      this.sidebarnavItems = [];
+    }
+ 
+  }
+
+   // this is for the open close
+   addExpandClass(element: any) {
+    if (element === this.showMenu) {
+      this.showMenu = '0';
+    } else {
+      this.showMenu = element;
+    }
+  }
+  addActiveClass(element: any) {
+    if (element === this.showSubMenu) {
+      this.showSubMenu = '0';
+    } else {
+      this.showSubMenu = element;
+    }
+  }
   // This is for Notifications
   notifications: Object[] = [
     {
