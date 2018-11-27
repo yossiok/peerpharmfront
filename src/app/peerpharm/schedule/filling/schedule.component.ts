@@ -105,6 +105,7 @@ export class ScheduleComponent implements OnInit {
         if (sced.status == 'packed') sced.color = 'orange';
         if (sced.status == 'problem') sced.color = 'red';
         if (sced.status == 'open') sced.color = 'white';
+        if(sced.cmptsStatus==null) sced.cmptsStatus='true';
         sced.date3 = moment(sced.date).format("YYYY-MM-DD");
 
         //let pipe = new DatePipe('en-US'); // Use your own locale
@@ -243,6 +244,10 @@ export class ScheduleComponent implements OnInit {
   moveAllOpenScedToToday(){
     this.scheduleService.setOpenToToday().subscribe(res=>{console.log(res)});
 
+  }
+
+  dismissInfo(id){
+    this.scheduleData[this.scheduleData.findIndex(sced=>sced._id==id)].cmptsStatus='true';
   }
 }
 
