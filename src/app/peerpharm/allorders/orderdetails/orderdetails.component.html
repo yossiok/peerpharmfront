@@ -85,7 +85,7 @@
               </td>
               <td>{{item.batch}}</td>
               <td><input #inputBatch></td>
-              <td><button class='btn btn-success' *ngIf='item.batch==""' (click)="setBatch(item, inputBatch.value)">set</button></td>
+              <td><button class='btn btn-success'  (click)="setBatch(item, inputBatch.value, item.batch)">set</button></td>
               <td></td>
               <td></td>
             </tr>

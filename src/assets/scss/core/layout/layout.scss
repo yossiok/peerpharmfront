@@ -224,18 +224,6 @@ $left-part-width:260px;
             }
             .left-sidebar {
                 width: $sidebar-width-mini;
-                &:hover {
-                    width: $sidebar-width-full;
-                    .sidebar-nav {
-                        .hide-menu,
-                        .has-arrow:after {
-                            display: block;
-                        }
-                        .nav-small-cap {
-                            justify-content: flex-start;
-                        }
-                    }
-                }
             }
         }
     }

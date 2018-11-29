@@ -10,6 +10,7 @@ import { DEFAULT_VALUE_ACCESSOR } from '@angular/forms/src/directives/default_va
 import { Observable, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
+import * as moment from 'moment';
 
 
 @Component({
@@ -273,16 +274,30 @@ export class OrderdetailsComponent implements OnInit {
       pLinePositionN:999
     }
     debugger
-    this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
+    this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));   
+    let dateSced = this.date.nativeElement.value;
+    dateSced = moment(dateSced).format("DD/MM/YYYY");
+    let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " +  dateSced};
+    this.orderService.editItemOrder(orderObj).subscribe(res=>{
+        console.log(res);
+        this.toastSrv.success(dateSced , "Schedule Saved");
+    })
     console.log(scheduleLine);
   }
 
 
-  setBatch(item, batch) {
-    let batchObj = { orderItemId: item._id, batch: batch };
+  setBatch(item, batch, existBatch) {
+    let updatedBatch;
+    if(existBatch!=null && existBatch!=undefined && existBatch!=""){
+      updatedBatch=batch + "+" + existBatch;
+    }else{
+      updatedBatch=batch;
+    }
+    let batchObj = { orderItemId: item._id, batch: updatedBatch };
     console.log(batchObj);
     this.orderService.editItemOrder(batchObj).subscribe(res => {
       console.log(res);
+      this.toastSrv.success(updatedBatch , "Changes Saved");
     })
   }
 

@@ -142,7 +142,7 @@
      <li class="nav-item dropdown" ngbDropdown *ngFor="let sidebarnavItem of sidebarnavItems" >
           
             <a ngbDropdownToggle class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">  <i [ngClass]="[sidebarnavItem.icon]"></i>&nbsp;{{sidebarnavItem.title}}</a>
+            aria-haspopup="true" aria-expanded="false">  <i [ngClass]="[sidebarnavItem.icon]"></i>&nbsp;<span stlye='color:black; font-weight: bold;font-size: 22px'>{{sidebarnavItem.title}}</span></a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
                 <ng-container *ngFor="let sidebarnavSubItem of sidebarnavItem.submenu">
                     <a class="dropdown-item"  [routerLink]="sidebarnavSubItem.submenu.length > 0 ? null : [sidebarnavSubItem.path]"
