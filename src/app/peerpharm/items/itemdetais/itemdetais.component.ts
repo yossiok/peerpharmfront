@@ -338,7 +338,6 @@ export class ItemdetaisComponent implements OnInit {
         
         this.item = res[0];
         this.itemShown = res[0];
-        alert(this.itemShown.updateDate);
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
         this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         this.dataDiv = res[0].goddet;
