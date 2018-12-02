@@ -53,9 +53,18 @@
       <ng-container  *ngIf='line !== undefined  && line.mkp===typeShown'>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">{{line.positionN}}</td>
         <td *ngIf="line._id===EditRowId"><input #position type='text' [value]="line.positionN"  style='width:40px' class='form-control'><input #id type='hidden' [value]="line._id" ></td>
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.orderN}}</td>
+        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">
+                <a target="_blank"  routerLink='/peerpharm/allorders/orderitems/{{line.orderN}}'>
+            {{line.orderN}}
+                </a>
+        </td>
         <td *ngIf="line._id===EditRowId"><input #orderNum type='text' [value]="line.orderN"  style='width:60px' class='form-control'></td>
-        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">{{line.item}}</td>
+        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">
+
+                <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{line.item}}">
+            {{line.item}}
+                        </a>
+        </td>
         <td *ngIf="line._id===EditRowId"><input #item type='text'   [value]="line.item"    style='width:80px' class='form-control'></td>
         <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.costumer| slice:0:30}}</td>
         <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer"  style='width:99px' class='form-control'></td>

@@ -373,10 +373,18 @@ export class ItemdetaisComponent implements OnInit {
 
   writeItemData() {
     console.log(this.itemShown)
-    this.itemShown.nameOfupdating = this.user.userName;
-    this.getGoddetData();
-    this.itemShown.updateDate
-    this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => console.log(res));
+    if (confirm("Save changes?")){
+      this.itemShown.nameOfupdating = this.user.userName;
+      this.getGoddetData();
+      this.itemShown.updateDate
+      this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
+
+        console.log(res)
+        this.toastr.success("Saved", "Changes Saves");
+        
+      }) ;
+
+    }
   }
 
 
