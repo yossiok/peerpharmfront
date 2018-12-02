@@ -63,7 +63,7 @@
               <th>מספר פריט</th><td><input type='text' [value]="resCmpt.componentN" id="input_componentNumber" ></td><th>מק"ט ספק</th><td align='right'><input [value]="resCmpt.componentNs" type='text'  id="input_idSuplierNumber"></td>	
             </tr>
             <tr>
-              <th>שם פריט</th><td><textarea rows='4' cols='30' [value]="resCmpt.componentName"  style='width:150px'  id='input_componentName'></textarea></td> <th>מלאי מינימום</th><td align='right'><input type='number'  id="input_minimumStock"></td>	
+              <th>שם פריט</th><td><textarea rows='4' cols='30' [value]="resCmpt.componentName"  style='width:150px'  id='input_componentName'></textarea></td> <th>מלאי מינימום</th><td align='right'><input type='number'  id="input_minimumStock"  [value]="resCmpt.minimumStock"></td>	
             </tr>
             
             <tr>
@@ -84,8 +84,8 @@
               </td>
               <th>משקל/סוג</th>
               <td>
-                      <input type="text" id="input_packageWeight" style='width:55px; margin-left:5px' placeholder='גרם'>
-                      <select id='input_packageType'>
+                      <input type="text" id="input_packageWeight" style='width:55px; margin-left:5px' placeholder='גרם'  [value]="resCmpt.packageWeight">
+                      <select id='input_packageType'   [value]="resCmpt.packageType">
 
                         <option value='paperCarton'>נייר/קרטון</option>
                         <option value='drinkCarton'>קרטוניות משקה</option>
@@ -109,22 +109,22 @@
             </tr>
             <tr>
               <th>אספקה</th>
-              <td><input type='text' placeholder="מקומי/חול"  id='input_import'></td>
+              <td><input type='text' placeholder="מקומי/חול"  id='input_import' [value]="resCmpt.importFrom"></td>
               <th>תמונה</th> <td><input type='file' id="input_itemImgID" onchange='uploadImg()' style='display:block'><input type='text' id='tempHiddenImgSrc' style='display:none'></td>
             </tr>
             <tr>
               <th>מספר ספק</th>
-              <td><input type='text'  id='input_suplierN'></td>
+              <td><input type='text'  id='input_suplierN'  [value]="resCmpt.suplierN"></td>
                           <td colspan='2' rowspan='5'><img [src]='resCmpt.img' width="350px" style='margin-top:20px; max-height: 420px;' id='imgID'><br><progress value="0" max="100" id="uploader" style='width:300px' id="uploader">0%</progress></td>
 
             </tr>
             <tr>
               <th>שם ספק</th>
-              <td><input type='text'  id='input_suplierName'></td>
+              <td><input type='text'  id='input_suplierName'  [value]="resCmpt.suplierName"></td>
             </tr>
             <tr>
               <th>הערות</th>
-              <td><textarea rows='4' cols='30'   style='width:150px'  id='input_remarks'></textarea><br>
+              <td><textarea rows='4' cols='30'   style='width:150px'  id='input_remarks'  [value]="resCmpt.remarks"></textarea><br>
               <input type="checkbox" name="printed" value="printed" id='checkBox_need_print'> דרושה הדפסה </td>
             </tr>
             </tbody>
