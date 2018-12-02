@@ -26,11 +26,11 @@ export class FullComponent implements OnInit {
     theme: 'light',
     dir: 'ltr',
     layout: 'vertical',
-    sidebartype: 'full',
+    sidebartype: 'overlay',
     sidebarpos: 'fixed',
     headerpos: 'fixed',
     boxed: 'full',
-    navbarbg: 'skin6',
+    navbarbg: 'skin5',
     sidebarbg: 'skin1',
     logobg: 'skin1'
   };
