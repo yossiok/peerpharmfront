@@ -66,7 +66,7 @@
 
       this.scheduleService.getPrintScheduleByDate(date).subscribe(
         res=>{
-          res.map(elem=>{if(elem.status=="printed") elem.color="Aquamarine"})
+          res.map(elem=>{if(elem.status=="printed") elem.trColor="Aquamarine"})
           this.scheduleData=res;
         }
       )

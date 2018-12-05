@@ -28,9 +28,4 @@ export class FormsService {
     let url = this.baseUrl + "formDetails?idForTitle="+formId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-
-  addorUpdateCostumer(CostumerObj){
-    let url = this.baseUrl + "costumers/add";
-    return this.http.post(url, JSON.stringify(CostumerObj), this.options).pipe(map(res => res.json()))
-  }
 }

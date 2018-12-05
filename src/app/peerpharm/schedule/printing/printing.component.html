@@ -59,7 +59,7 @@
   </tr>
   
   <tbody id="table_body">
-      <tr *ngFor = "let line of scheduleData"  [style.background-color]="line.color">
+      <tr *ngFor = "let line of scheduleData"  [style.background-color]="line.trColor">
       
           <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.positionN}}</td>
           <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:50px'></td>

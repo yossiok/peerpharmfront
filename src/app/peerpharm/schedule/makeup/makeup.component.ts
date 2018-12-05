@@ -52,6 +52,7 @@ export class MakeupComponent implements OnInit {
 
       console.log(res)
       this.scheduleData.push(res);
+      this.toastSrv.success(this.scheduleLine.itemN ," Added");
     })
   }
 

@@ -1,10 +1,11 @@
 
   <div>
-      <div style='background-color: aquamarine;display:inline-table'>נארז</div>&nbsp;
+      <div style='background-color: aquamarine;display:inline-table'>לוקט</div>&nbsp;
       <div style='background-color: #CE90FF; display:inline-table'>מולא</div>&nbsp;
       <div style='background-color: #ffff00; display:inline-table'>בוצע תהליך</div>&nbsp;
       <div style='background-color: #FFC058; display:inline-table'>נארז</div>&nbsp;
       <div style='background-color: red; display:inline-table'>בעיה</div>&nbsp;
+      <div style='background-color: lightblue; display:inline-table'>הודפס</div>&nbsp;
   </div>
 
 <div class='orderHeader' *ngIf="multi==false">
@@ -95,13 +96,13 @@
               <td>{{item.batch}}</td>
               <td><input #inputBatch></td>
               <td><button class='btn btn-success'  (click)="setBatch(item, inputBatch.value, item.batch)">set</button></td>
-              <td></td>
+              <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)" style='cursor: pointer;'></i></td>
               <td></td>
             </tr>
             <tr *ngFor="let det of detailsArr">
               <td></td>
               <td></td>
-              <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button class='btn btn-info'>print</button></td>
+              <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button class='btn btn-info'  (click)="openDetails(content, item, det)">print</button></td>
               <td></td>
               <td></td>
               <td></td>
@@ -142,3 +143,116 @@
     </tr>
   </table>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Print schedule Modal for open order items -->
+
+<ng-template #content let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Print Schedule</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+      <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+        <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="a">Amount</label>
+        <div class="input-group">
+          <input class="form-control mb-4" placeholder="Amount" [(ngModel)]="printSchedule.qty">
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="a">Date</label>
+        <div class="input-group">
+          <input type="date" class="form-control mb-4" placeholder="Date" [(ngModel)]="printSchedule.date">
+        </div>
+      </div>
+  
+  
+  
+  
+      <div class="form-group">
+        <label for="a">Transfer to</label>
+        <div class="input-group">
+          <select name="nextStage" id="nextStage" class="form-control mb-4"  [(ngModel)]="printSchedule.nextStation">
+            <option value="production">Production</option>
+            <option value="filling">Filling</option>
+            <option value="packing">Packing</option>
+          </select><br>
+          <!-- <input class="form-control mb-4" placeholder="Invoice Adress" [(ngModel)]="costumer.invoice"> -->
+        </div>
+      </div>
+  
+  
+      <div class="form-group">
+        <label for="a">Color</label>
+        <div class="input-group">
+          <input class="form-control mb-8" placeholder="color" [(ngModel)]="printSchedule.color">
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="a">Print type</label>
+        <div class="input-group">
+          <select name="printType" id="printType" class="form-control mb-4"  [(ngModel)]="printSchedule.printType">
+              <option value="round">Round</option>
+              <option value="Straight">Straight</option>
+            </select><br>
+        </div>
+      </div>
+
+      <div class="form-group">
+          <label for="a">Remarks </label>
+          <div class="input-group">
+            <textarea [(ngModel)]="printSchedule.marks" class="form-control"></textarea>
+          </div>
+        </div>
+
+      <div class="form-group">
+        <label for="a">Image </label>
+        <div class="input-group" id='img-conatiner'>
+            <img src='null'  style='width:100px; height:100px;'>
+        </div>        
+        <!-- <div #container>
+        </div> -->
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
+    </div>
+  
+  </ng-template>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -128,6 +128,7 @@ selectFile(event, src) {
   let fileName = path.substring(indexFileName, 999);
   this.docPath = fileName;
   console.log(fileName);
+  //get one file of target (input type file) upload event
   this.selectedFiles = event.target.files;
 }
 
@@ -145,6 +146,7 @@ upload(src) {
       console.log('File is completely uploaded!');
       console.log(event.body);
       this.showSuccess();
+      //dismiss 'upload' button
       switch (src) {
         case 'msds':
           this.msdsFile = false;

@@ -11,6 +11,7 @@ import { Observable, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
 import * as moment from 'moment';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -25,6 +26,29 @@ import * as moment from 'moment';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
+  closeResult: string;
+  printSchedule:any ={
+    position:'',
+    orderN:'',
+    itemN:'',
+    itemName:'',
+    costumer:'',
+    cmptName:'',
+    block:'',
+    qty:'',
+    qtyProduced:'',
+    color: '', 
+    printType: '',
+    nextStation: '',
+    marks: '',
+    date: '',
+    dateRdy: '',
+    palletN:'',
+    status:  '',
+  }
+
+
+
   ordersItems;
   ordersItemsCopy;
   item: any;
@@ -64,7 +88,7 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('marks') marks: ElementRef;
   // @ViewChild('type') type:ElementRef; 
 
-  constructor(private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService, private scheduleService: ScheduleService, private location: Location, private toastSrv: ToastrService) { }
+  constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService, private scheduleService: ScheduleService, private location: Location, private toastSrv: ToastrService) { }
 
   ngOnInit() {
     console.log('hi');
@@ -135,7 +159,7 @@ export class OrderdetailsComponent implements OnInit {
       orderItems.map(item => {
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
-          else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase() == 'formula porduced') item.color = 'yellow';
+          else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
           else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
           else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
             if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
@@ -173,8 +197,8 @@ export class OrderdetailsComponent implements OnInit {
         console.log(itemDetais);
         this.detailsArr = [];
         itemDetais.forEach(element => {
-          if (element.bottleNumber != null && element.bottleNumber != "") this.detailsArr.push({ type: "bottle", number: element.bottleNumber });
-          if (element.capNumber != null && element.capNumber != "") this.detailsArr.push({ type: "cap", number: element.capNumber });
+          if (element.bottleNumber != null && element.bottleNumber != "") this.detailsArr.push({ type: "Bottle", number: element.bottleNumber, discription : element.bottleTube });
+          if (element.capNumber != null && element.capNumber != "") this.detailsArr.push({ type: "Cap", number: element.capNumber, discription : element.capTube  });
           console.log(this.detailsArr);
         });
         if (this.expand === true) { this.expand = false; }
@@ -289,16 +313,32 @@ export class OrderdetailsComponent implements OnInit {
   setBatch(item, batch, existBatch) {
     let updatedBatch;
     if(existBatch!=null && existBatch!=undefined && existBatch!=""){
+      //adding to exist batch number to oreder item
       updatedBatch=batch + "+" + existBatch;
     }else{
+      //adding new batch number to oreder item
       updatedBatch=batch;
     }
-    let batchObj = { orderItemId: item._id, batch: updatedBatch };
+    let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
     console.log(batchObj);
     this.orderService.editItemOrder(batchObj).subscribe(res => {
       console.log(res);
       this.toastSrv.success(updatedBatch , "Changes Saved");
-    })
+    });
+
+  }
+
+  updateBatchExist(item , batch){
+    if(!batch){
+      let batchObj = { orderItemId: item._id, fillingStatus: "mkp batch exist"};
+      console.log(batchObj);
+      this.orderService.editItemOrder(batchObj).subscribe(res => {
+        console.log(res);
+        // this.toastSrv.success(updatedBatch , "Changes Saved");
+      });
+
+    }
+
   }
 
 
@@ -321,6 +361,31 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
+  setPrintSced(){
+    console.log(this.printSchedule);
+    this.printSchedule.orderN = this.number;
+    this.printSchedule.costumer = this.costumer;
+    this.scheduleService.setNewPrintSchedule(this.printSchedule).subscribe(res=>{
+      this.toastSrv.success("Saved", this.printSchedule.cmptN);
+    })
+
+  }
+
+  openDetails(content, item, cmpt) {
+
+    console.log(item.itemNumber + " , "  +item.discription + " , "  +  cmpt.number);
+    this.printSchedule.cmptN = cmpt.number;
+    this.printSchedule.itemN = item.itemNumber;
+    this.printSchedule.cmptName = cmpt.discription;
+    this.modalService.open(content).result.then((result) => {
+      console.log(result);
+      if (result == 'Saved') {
+        this.setPrintSced();
+      }
+    })
+  }
+
+
 
   changeText(ev)
   {
@@ -335,4 +400,6 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 }
+
+
 

@@ -28,7 +28,7 @@ export class FullComponent implements OnInit {
     layout: 'vertical',
     sidebartype: 'overlay',
     sidebarpos: 'fixed',
-    headerpos: 'fixed',
+    headerpos: 'fixed', 
     boxed: 'full',
     navbarbg: 'skin5',
     sidebarbg: 'skin1',
