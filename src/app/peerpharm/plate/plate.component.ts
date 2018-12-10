@@ -19,6 +19,7 @@ export class PlateComponent implements OnInit {
     palletItemName: '',
     palletItemBrand: '',
     palletImg: '',
+    tempRemarks:"",
     palletRemarks: '',
     lastUpdate: '',
     lastUpdateUser: '',
@@ -66,6 +67,7 @@ export class PlateComponent implements OnInit {
       palletItemName: '',
       palletItemBrand: '',
       palletImg: '',
+      tempRemarks:"",
       palletRemarks: '',
       lastUpdate: '',
       lastUpdateUser: ''
