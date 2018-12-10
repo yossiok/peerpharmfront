@@ -21,7 +21,8 @@ export class PlateComponent implements OnInit {
     palletImg: '',
     palletRemarks: '',
     lastUpdate: '',
-    lastUpdateUser: ''
+    lastUpdateUser: '',
+    tempRemarks:''
   };
   constructor(private plateService: PlateService, private uploadService: UploadFileService, private toastSrv:ToastrService) { }
 
