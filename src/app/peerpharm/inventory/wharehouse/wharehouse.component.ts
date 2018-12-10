@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Integer } from 'aws-sdk/clients/pi';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-wharehouse',
@@ -22,7 +23,7 @@ export class WharehouseComponent implements OnInit {
   dir: string = "";
   response = { color: '', body: '' }
   i: Integer = 0;
-  constructor(private renderer: Renderer2, private inventoryService: InventoryService) { }
+  constructor(private renderer: Renderer2, private inventoryService: InventoryService, private toasterSer:ToastrService) { }
 
   ngOnInit() {
     this.inventoryService.getWhareHousesList().subscribe(res => {
@@ -219,12 +220,12 @@ export class WharehouseComponent implements OnInit {
       }
     }
     console.log(this.mainDivArr);
-   // this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
-   //   console.log(res)
-    //  if (res != null) {
-
-    //  }
-   // });
+   this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
+     console.log(res)
+     if (res != null) {
+        
+     }
+   });
   }
 
   resetForm() {

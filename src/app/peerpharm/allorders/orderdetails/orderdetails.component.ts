@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
 import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { PlateService } from 'src/app/services/plate.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 })
 export class OrderdetailsComponent implements OnInit {
   closeResult: string;
+  plateImg="";
   printSchedule:any ={
     position:'',
     orderN:'',
@@ -88,7 +90,8 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('marks') marks: ElementRef;
   // @ViewChild('type') type:ElementRef; 
 
-  constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService, private scheduleService: ScheduleService, private location: Location, private toastSrv: ToastrService) { }
+  constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
+     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService) { }
 
   ngOnInit() {
     console.log('hi');
@@ -297,7 +300,9 @@ export class OrderdetailsComponent implements OnInit {
       productionLine:'', 
       pLinePositionN:999
     }
-    debugger
+    if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
+    if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
+
     this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));   
     let dateSced = this.date.nativeElement.value;
     dateSced = moment(dateSced).format("DD/MM/YYYY");
@@ -372,7 +377,11 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   openDetails(content, item, cmpt) {
-
+    this.itemSer.getPlateImg(item.itemNumber).subscribe(data=>{
+       this.plateImg = data.palletImg;
+       this.printSchedule.block = data.palletNumber;
+       this.printSchedule.blockImg = data.palletImg;
+    })
     console.log(item.itemNumber + " , "  +item.discription + " , "  +  cmpt.number);
     this.printSchedule.cmptN = cmpt.number;
     this.printSchedule.itemN = item.itemNumber;

@@ -148,6 +148,18 @@
       this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
     }
   }
-  
+
+
+  deleteLine(id) {
+    this.scheduleService.deletePrintSchedule(id).subscribe(res => {
+      this.scheduleData = this.scheduleData.filter(elem => elem._id != id);
+    });
   }
+  
+
+  showImg(src){
+      window.open(src);
+  }
+  }
+
   

@@ -22,8 +22,23 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getCmptByNumber(cmptNumber):Observable<any>{
+    let url = this.baseUrl + "component?componentN="+cmptNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  addNewCmpt(cmptObj):Observable<any>{ 
+    let url = this.baseUrl + "component/add";
+    return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))
+}
+
   getComponentsAmounts():Observable<any>{
     let url = this.baseUrl + "itemShell?amounts=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAmountOnShelfs(itemNubmer):Observable<any>{  
+    let url = this.baseUrl + "itemShell?shelfsItemsAmounts=yes&itemNumber="+itemNubmer;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

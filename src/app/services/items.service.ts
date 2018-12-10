@@ -34,6 +34,11 @@ export class ItemsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getPlateImg(itemNumber){
+    let url = this.baseUrl + "item?plateImg=yes&itemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   addorUpdateItem(itemObj){
     console.log(itemObj);
     let url = this.baseUrl + "item/add";

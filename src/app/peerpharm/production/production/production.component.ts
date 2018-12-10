@@ -40,7 +40,8 @@ export class ProductionComponent implements OnInit {
         if (sced.status == 'packed') sced.color = 'orange';
         if (sced.status == 'problem') sced.color = 'red';
       });
-    
+      
+      console.log(res);
       this.scheduleData=res;
     
     });

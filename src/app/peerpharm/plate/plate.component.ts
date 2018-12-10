@@ -43,11 +43,35 @@ export class PlateComponent implements OnInit {
     this.plate= this.showPlateData;
   }
 
-  addNewPallet() {
+  updatePallet(src) {
     console.log(this.plate);
-    this.plateService.addNewPlate(this.plate).subscribe(res=>console.log(res));
+    if(src=="new") this.plateService.addNewPlate(this.plate).subscribe(res=>console.log(res));
+    if(src=="update") this.plateService.updatePlate(this.plate).subscribe(res=>console.log(res));
+    if(src=="destroy") {
+      if (confirm("Delete Plate?")) {
+        let plateOjb={
+          _id:this.plate._id,
+          tempRemarks: "delete"
+        }
+        this.plateService.updatePlate(plateOjb).subscribe(res=>console.log(res));
+      }
+    }
+  
   }
 
+  resetForm(){
+    this.plate= {
+      _id:"",
+      palletNumber: '',
+      palletItemName: '',
+      palletItemBrand: '',
+      palletImg: '',
+      palletRemarks: '',
+      lastUpdate: '',
+      lastUpdateUser: ''
+    };
+    this.showPlateData.palletImg='';
+  }
   selectedFiles: FileList;
   currentFileUpload: File;
   progress: { percentage: number } = { percentage: 0 };

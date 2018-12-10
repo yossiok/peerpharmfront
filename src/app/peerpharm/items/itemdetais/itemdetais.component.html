@@ -394,7 +394,7 @@
             <b>Carton no'</b>
           </td>
           <td>
-            <input type=t ext id="id_cartonNo" onfocusout="loadOackagDetails2(this.id, 'id_cartonWeight','id_cartonSelect')"
+            <input type=t ext id="id_cartonNo" (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')"
               [(ngModel)]=itemShown.cartonNumber>
           </td>
         </tr>
@@ -499,7 +499,7 @@
               <tr>
                 <td>
                   <b>Bottle no' </b>
-                  <input type="text" id="id_bottleNo" onfocusout="loadOackagDetails(this.id, 'id_item1weight','id_item1select')"
+                  <input type="text" id="id_bottleNo" (focusout)="loadPackagDetails(itemShown.bottleNumber, 'bottle')"
                     [(ngModel)]=itemShown.bottleNumber>
                 </td>
               </tr>
@@ -553,7 +553,7 @@
                 <td>
 
                   <b>CAP no'</b>
-                  <input type="text" id="id_capNo" [(ngModel)]=itemShown.capNumber onfocusout="loadOackagDetails(this.id, 'id_item2weight','id_item2select')">
+                  <input type="text" id="id_capNo" [(ngModel)]=itemShown.capNumber  (focusout)="loadPackagDetails(itemShown.bottleNumber, 'cap')">
                 </td>
               </tr>
               <tr>
@@ -604,7 +604,7 @@
               <tr>
                 <td>
                   <b>PUMP no'</b>
-                  <input type="text" id="id_pumpNo" [(ngModel)]=itemShown.pumpNumber onfocusout="loadOackagDetails(this.id, 'id_item3weight','id_item3select')">
+                  <input type="text" id="id_pumpNo" [(ngModel)]=itemShown.pumpNumber   (focusout)="loadPackagDetails(itemShown.bottleNumber, 'pump')">
                 </td>
               </tr>
               <tr>
@@ -687,7 +687,7 @@
               <tr>
                 <td>
                   <b>Seal no'</b>
-                  <input type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber onfocusout="loadOackagDetails(this.id, 'id_item4weight','id_item4select')">
+                  <input type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber   (focusout)="loadPackagDetails(itemShown.bottleNumber, 'seal')">
                 </td>
               </tr>
               <tr>

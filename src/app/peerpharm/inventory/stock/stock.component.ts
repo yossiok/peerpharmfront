@@ -8,10 +8,28 @@ import { ActivatedRoute } from '@angular/router'
   styleUrls: ['./stock.component.css']
 })
 export class StockComponent implements OnInit {
-  resCmpt: any;
+ // resCmpt: any;
+  resCmpt:any = {
+    componentN:'',
+    componentName:'',
+    componentNs:'',
+    suplierN: '',
+    suplierName: '',
+    componentType:'',
+    componentCategory:'',
+    img: '',
+    importFrom: '',
+    lastModified:'',
+    minimumStock:'',
+    needPrint:'',
+    packageType: '',
+    packageWeight: '',
+    remarks: '',
+  }
   openModal: boolean = false;
   components: any[];
   componentsAmount: any[];
+
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService) { }
 
   ngOnInit() {
@@ -23,6 +41,7 @@ export class StockComponent implements OnInit {
   getAllComponents() {
     this.inventoryService.getAllComponents().subscribe(components => {
       this.components = components;
+      //why are we using set time out and not async await??
       setTimeout( ()=> {
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
@@ -48,6 +67,23 @@ export class StockComponent implements OnInit {
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber)
   }
 
+  newCmpt(){
+    this.openModal = true;
+  }
+
+  writeNewComponent(){
+    console.log(this.resCmpt);
+     this.inventoryService.addNewCmpt(this.resCmpt).subscribe(res=>{
+       console.log(res)
+   })
+
+  }
+
+  getCmptAmounts(cmpt){
+    this.inventoryService.getAmountOnShelfs(cmpt).subscribe(res=>{
+      console.log(res);
+    });
+  }
   showDialog() {
 
   }

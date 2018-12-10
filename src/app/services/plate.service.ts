@@ -26,4 +26,9 @@ export class PlateService {
     let url = this.baseUrl + 'pallet/add';
     return this.http.post(url, JSON.stringify(plate), this.options).pipe(map(res=>res.json));
   }
+
+  updatePlate(plate):Observable<any>{
+    let url = this.baseUrl + 'pallet/update';
+    return this.http.post(url, JSON.stringify(plate), this.options).pipe(map(res=>res.json));
+  }
 }

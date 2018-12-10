@@ -84,6 +84,12 @@ export class ScheduleService {
     let url = this.baseUrl + "printSchedule/update";
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
+  
+  deletePrintSchedule(id): Observable<any> {
+    let sced={_id:id};
+    let url = this.baseUrl + "printSchedule/delete";
+    return this.http.post(url, JSON.stringify(sced), this.options).pipe(map(res => res.json()));
+  }
 
 
 

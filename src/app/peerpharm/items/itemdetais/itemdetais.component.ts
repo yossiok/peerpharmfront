@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import * as moment from 'moment';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
   selector: 'app-itemdetais',
@@ -131,7 +132,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
 
-  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2,
+  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer:InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
@@ -543,6 +544,33 @@ export class ItemdetaisComponent implements OnInit {
 
   showSuccess() {
     this.toastr.info('Hello world!', 'Toastr fun!');
+  }
+
+
+  loadPackagDetails(number, src){
+    this.invtSer.getCmptByNumber(number).subscribe(res=>{
+      switch (src) {
+        case 'bottle':
+        this.itemShown.item1w=res[0].packageWeight;
+        this.itemShown.item1s=res[0].packageType;  
+        break;
+        case 'cap':
+        this.itemShown.item2w=res[0].packageWeight;
+        this.itemShown.item2s=res[0].packageType;  
+        break;
+        case 'pump':
+        this.itemShown.item3w=res[0].packageWeight;
+        this.itemShown.item3s=res[0].packageType;  
+        break;
+        case 'seal':
+        this.itemShown.item4w=res[0].packageWeight;
+        this.itemShown.item4s=res[0].packageType;  
+        break;
+        case 'carton':
+        this.itemShown.itemCtnW=res[0].packageWeight;
+        break;
+      }
+    })
   }
 
   getUserInfo() {

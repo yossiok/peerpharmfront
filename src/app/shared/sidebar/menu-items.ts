@@ -277,14 +277,22 @@ export const ROUTES: RouteInfo[] = [
           extralink: false,
           submenu: []
         },
-         {
-          path: '/peerpharm/inventory/wharehouse',
-          title: 'Whare House',
-          icon: 'fas fa-tree',
-          class: '',
-          extralink: false,
-          submenu: []
-        }
+        {
+         path: '/peerpharm/inventory/wharehouse',
+         title: 'Whare House',
+         icon: 'fas fa-tree',
+         class: '',
+         extralink: false,
+         submenu: []
+       },
+       {
+        path: '/peerpharm/inventory/inventoryRequest',
+        title: 'Request',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
       
       ]
     },
