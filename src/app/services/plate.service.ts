@@ -21,6 +21,10 @@ export class PlateService {
     let url = this.baseUrl + 'pallet'
     return this.http.get(url).pipe(map(reponse => reponse.json()));  
   }
+  getPlatesByNumber(plateNum):Observable<any>{
+    let url = this.baseUrl + 'pallet?palletNumber=' + plateNum;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));  
+  }
 
   addNewPlate(plate):Observable<any>{
     let url = this.baseUrl + 'pallet/add';

@@ -51,22 +51,28 @@
     </div>
 
     <div style='display: inline-table' *ngIf="dir=='managment'">
+      <h4>הוספת מחסן חדש</h4>
       <input type=text id='wh' #whName placeholder="WhareHouse Name">
       <button id='updateWh' class='btn btn-info' (click)="addNewWhareHouse(whName.value)">Add New WhareHouse</button><br><br>
 
       <div id='resultDiv' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
 
       </div>
-      <u>WhareHouses</u> <br>
 
+      <h4>הוספת מדף חדש</h4>
+      <u>בחר מחסן</u> <br>
       <select #wh class="form-control" (change)="getShelfsList(wh.value)">
         <option></option>
         <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
       </select>
 
+      <h4>הוספת מדף חדש</h4>
       <div id='whareHousesDiv' style='background-color: rgb(223, 255, 194)  ;width:300px; font-weight: bold;'>
-        <input #shelf><button class='btn btn-success' (click)="addNewShelf(shelf.value)">Add Shelf</button><input
-          #searchS (keyup)="searchShelf(searchS.value)" placeholder="חפש מדף">
+        <input #shelf placeholder="הוסף מדף"><button class='btn btn-success' (click)="addNewShelf(shelf.value)">Add Shelf</button>
+
+        <input #searchS placeholder="חפש מדף">
+        <button class='btn btn-info' (click)="searchShelf(searchS.value)">Find Shelf</button>
+
         <div [style.background-color]="response.color">{{response.body}}</div>
         <table>
           <tr *ngFor="let shelf of shelfs;">

@@ -90,8 +90,7 @@ export class BoardComponent implements OnInit {
 
   ) { }
 
-  ngOnInit() {
-   // debugger;
+  ngOnInit() { 
     this.getTasks(this.authService.loggedInUser._id)
 
     this.getDepartments();
@@ -161,7 +160,7 @@ export class BoardComponent implements OnInit {
     this.tasksService.createTask(this.boardTitle, _tiletext, this.data.description,
       new Date(this.data.duedate), this.data.priority)
       .subscribe(newtask => {
-        debugger;
+     
         this.showTaskDetails(newtask,this.content);
         this.newTask = newtask;
         this.getTasks(this.authService.loggedInUser._id);

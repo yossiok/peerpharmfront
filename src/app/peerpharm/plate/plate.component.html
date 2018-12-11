@@ -3,7 +3,11 @@
 	<tr>
 		<td style='width:25%'>
 			<div border=5 style='height:500px; overflow:scroll; overflow:auto; margin-bottom:20px'>
-				<input type='text' placeholder='חפש גלופה' id='searchPallet_input' onkeyup="searchItem2()">
+				<!-- <input type='text' placeholder='חפש גלופה לפי מספר' id='searchPallet_input' onkeyup="searchItem2()"> -->
+				<input type='text' placeholder='חפש גלופה לפי מספר' id='searchPallet_input' [(ngModel)]='filterPlatesNuumber' >&nbsp;&nbsp;
+				<button class="btn btn-info"type="button" (click)="searchItemByNumber(filterPlatesNuumber)">חפש</button>&nbsp;&nbsp;
+				<button class="btn btn-default"type="button" (click)="searchItemByNumber('')">הצג הכל</button>
+
 				<table>
 					<tbody id='palletsTbody'>
 						<tr *ngFor="let plate of plates">
@@ -99,8 +103,8 @@
 				<tr>
 					<td style='padding:10px'>עדכון אחרון</td>
 					<td align='right'>
-						<input type='text' [(ngModel)]='plate.lastUpdate' disabled style='background-color:#DCDCDC; width:90px' class="form-control">&nbsp;&nbsp;&nbsp;
-						<input type='text' [(ngModel)]='plate.lastUpdateUser' disabled style='background-color:#DCDCDC; width:80px' class="form-control">
+						<input type='text' [(ngModel)]='plate.lastUpdate' disabled style='background-color:#DCDCDC; width:115px' class="form-control">&nbsp;&nbsp;&nbsp;
+						<input type='text' [(ngModel)]='plate.lastUpdateUser' disabled style='background-color:#DCDCDC; width:100px' class="form-control">
 					</td>
 				</tr>
 				<tr>

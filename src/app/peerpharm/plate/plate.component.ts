@@ -3,6 +3,7 @@ import { PlateService } from '../../services/plate.service'
 import { HttpResponse, HttpEventType } from '@angular/common/http';
 import { UploadFileService } from '../../services/helpers/upload-file.service';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-plate',
@@ -10,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./plate.component.css']
 })
 export class PlateComponent implements OnInit {
+  filterPlatesNuumber:string='';
   showPlateData;
   imgPath;
   plates: any[];
@@ -19,10 +21,10 @@ export class PlateComponent implements OnInit {
     palletItemName: '',
     palletItemBrand: '',
     palletImg: '',
-    tempRemarks:"",
     palletRemarks: '',
     lastUpdate: '',
     lastUpdateUser: '',
+    tempRemarks:''
   };
   constructor(private plateService: PlateService, private uploadService: UploadFileService, private toastSrv:ToastrService) { }
 
@@ -41,6 +43,9 @@ export class PlateComponent implements OnInit {
   showPlate(plate) {
     console.log(this.plates.find(res => res == plate));
     this.showPlateData = this.plates.find(res => res == plate);
+    //formating the date 
+    this.showPlateData.lastUpdate= moment(this.showPlateData.lastUpdate).format("DD-MM-YYYY");
+    // console.log("this.showPlateData:"+this.showPlateData);
     this.plate= this.showPlateData;
   }
 
@@ -67,10 +72,10 @@ export class PlateComponent implements OnInit {
       palletItemName: '',
       palletItemBrand: '',
       palletImg: '',
-      tempRemarks:"",
       palletRemarks: '',
       lastUpdate: '',
-      lastUpdateUser: ''
+      lastUpdateUser: '',
+      tempRemarks:''
     };
     this.showPlateData.palletImg='';
   }
@@ -110,5 +115,17 @@ export class PlateComponent implements OnInit {
 
   showSuccess(){
     this.toastSrv.success("Plate Added", "Good Luck")
+  }
+
+  searchItemByNumber(filterPlatesNuumber){
+    console.log(filterPlatesNuumber);
+    this.plateService.getPlatesByNumber(filterPlatesNuumber).subscribe(res => {
+      this.plates = res;
+      console.log(res);
+   
+   });
+   if(filterPlatesNuumber==''){
+      this.filterPlatesNuumber='';
+   }
   }
 }

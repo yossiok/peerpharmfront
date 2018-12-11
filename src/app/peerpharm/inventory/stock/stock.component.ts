@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
+import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
+import { HttpRequest } from '@angular/common/http';
 
 @Component({
   selector: 'app-stock',
@@ -27,10 +29,14 @@ export class StockComponent implements OnInit {
     remarks: '',
   }
   openModal: boolean = false;
+  openModalHeader:string;
   components: any[];
   componentsAmount: any[];
+  tempHiddenImgSrc:any;
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService) { }
+  // currentFileUpload: File; //for img upload creating new component
+
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
 
   ngOnInit() {
     this.getAllComponents();
@@ -62,19 +68,43 @@ export class StockComponent implements OnInit {
   }
 
   openData(cmptNumber) {
+    this.openModalHeader="פריט במלאי  "+ cmptNumber;
     this.openModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber)
   }
 
   newCmpt(){
+    this.resCmpt = {
+      componentN:'',
+      componentName:'',
+      componentNs:'',
+      suplierN: '',
+      suplierName: '',
+      componentType:'',
+      componentCategory:'',
+      img: '',
+      importFrom: '',
+      lastModified:'',
+      minimumStock:'',
+      needPrint:'',
+      packageType: '',
+      packageWeight: '',
+      remarks: '',
+    }
+
+
+    this.openModalHeader="יצירת פריט חדש";
     this.openModal = true;
   }
 
   writeNewComponent(){
     console.log(this.resCmpt);
      this.inventoryService.addNewCmpt(this.resCmpt).subscribe(res=>{
-       console.log(res)
+       console.log("res from front: "+res)
+       if(res=="itemExist"){
+        alert("לא ניתן ליצור פריט חדש- מספר "+this.resCmpt.componentN+" פריט כבר קיים במלאי");
+      }
    })
 
   }
@@ -84,7 +114,48 @@ export class StockComponent implements OnInit {
       console.log(res);
     });
   }
-  showDialog() {
 
+
+  uploadImg(fileInputEvent){
+    let file  = fileInputEvent.target.files[0];
+    console.log(file);
+ 
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data=>{
+      if(data.partialText)
+      {
+      // this.tempHiddenImgSrc=data.partialText;
+      this.resCmpt.img = data.partialText;
+      console.log(" this.resCmpt.img "+  this.resCmpt.img);
+      }
+ 
+    })
+}
+
+  
+  upload(src) {
+
+    // const number = this.route.snapshot.paramMap.get('itemNumber');
+    // this.progress.percentage = 0;
+    // this.currentFileUpload = this.selectedFiles.item(0);
+    // this.uploadService.pushFileToStorage(this.currentFileUpload, src, number).subscribe(event => {
+    //   console.log(event);
+
+    //   if (event.type === HttpEventType.UploadProgress) {
+    //     this.progress.percentage = Math.round(100 * event.loaded / event.total);
+    //   } else if (event instanceof HttpResponse) {
+    //     console.log('File is completely uploaded!');
+    //     console.log(event.body);        
+    //   }
+    // });
+
+    // this.selectedFiles = undefined;
   }
+
+
+
+
+
+  showDialog() {
+  }
+  
 }
