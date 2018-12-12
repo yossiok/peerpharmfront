@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-inventory-new-request',
@@ -8,8 +9,11 @@ import { Component, OnInit } from '@angular/core';
 export class InventoryNewRequestComponent implements OnInit {
 
   constructor() { }
+  inventoryReqForm: FormGroup;
+  reqList:Array<any>=[];
 
   ngOnInit() {
   }
 
+  addNewRequest(formValues){}
 }
