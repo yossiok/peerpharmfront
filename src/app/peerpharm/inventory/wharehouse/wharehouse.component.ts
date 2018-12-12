@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/co
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Integer } from 'aws-sdk/clients/pi';
 import { ToastrService } from 'ngx-toastr';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-wharehouse',
@@ -246,7 +247,14 @@ export class WharehouseComponent implements OnInit {
   }
 
   addNewShelf(position) {
-
+    //to upper case and remove spaces
+    position= position.toUpperCase();
+    position= position.replace(/\s/g, '');
+    debugger;
+    if (this.whareHouseId == "") {
+      this.response.body = "Pleae choose wharehose- נא לבחור מחסן"
+      this.response.color = "red"
+    } else
     if (position == "") {
       this.response.body = "Pleae enter shelf - נא להקליד מדף"
       this.response.color = "red"
