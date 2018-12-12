@@ -17,13 +17,15 @@ export class WharehouseComponent implements OnInit {
   whareHouses: any = [];
   whareHouseId: string = ""; //wharehouse id for shelf update
   curentWhareHouseId: string = ""  //wharehouse id for qty update
-  curentWhareHouseName: string = "wh"  //wharehouse id to show
+  
+  curentWhareHouseName: string = "Main"  //wharehouse id to show
   changeWh: boolean = false;
   shelfs: any = [];
   shelfsCopy: any = [];
   dir: string = "";
   response = { color: '', body: '' }
   i: Integer = 0;
+  currTab:string='';
   constructor(private renderer: Renderer2, private inventoryService: InventoryService, private toasterSer:ToastrService) { }
 
   ngOnInit() {
@@ -60,34 +62,40 @@ export class WharehouseComponent implements OnInit {
     }
 
   }*/
-  dirSet(direction) {
-    this.dir = direction;
-    const childElements = this.container.nativeElement.children;
-
-    for (let child of childElements) {
-      const elemnts = child.children;
-      for (let elm of elemnts) {
-        const mnts = elm.children;
-        for (let e of mnts) {
-          console.log(e.getAttribute("name"))
-          if (e.getAttribute("name")) {
-            if (direction == "shellChange" && e.getAttribute("name")=="newShelfName") {
-              e.style.display = 'inline';
-              e.className = "dataInput";
-            } 
-            else if(direction=="production" && e.getAttribute("name")=="newDemandId"){
-              e.style.display = 'inline';
-              e.className = "dataInput";
-            }
-            else {
-              e.style.display = 'none';
-              e.className = "no";
-              e.value = "";
+  dirSet(direction,action) {
+    debugger;
+    if(direction=='whManagment'){
+      this.dir = 'managment';
+      const childElements = this.container.nativeElement.children;
+      debugger;
+      for (let child of childElements) {
+        const elemnts = child.children;
+        for (let elm of elemnts) {
+          const mnts = elm.children;
+          for (let e of mnts) {
+            console.log(e.getAttribute("name"))
+            if (e.getAttribute("name")) {
+              if (direction == "shellChange" && e.getAttribute("name")=="newShelfName") {
+                e.style.display = 'inline';
+                e.className = "dataInput";
+              } 
+              else if(direction=="production" && e.getAttribute("name")=="newDemandId"){
+                e.style.display = 'inline';
+                e.className = "dataInput";
+              }
+              else {
+                e.style.display = 'none';
+                e.className = "no";
+                e.value = "";
+              }
             }
           }
         }
       }
+    } else if(direction=='stkManagment'){
+      this.dir = 'stkManagment';
     }
+
   }
 
 /*
@@ -296,6 +304,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   searchShelf(shelf) {
+    shelf=shelf.toUpperCase();
     console.log(shelf)
     if (shelf == "") {
       this.shelfs = this.shelfsCopy.slice();
@@ -409,10 +418,12 @@ export class WharehouseComponent implements OnInit {
 
 
     createInventoryRow(type, a, demandOrderId) {
+      debugger;
       let shelfsArr;
       if (type == "amount" && this.renderer.parentNode(a).getElementsByTagName("input")[0].value == "") {
         alert("נא להכניס מק``ט")
       } else {
+        debugger;
         const rowDiv = this.renderer.createElement('div');
         const inputItem = this.renderer.createElement('input');
         const inputShelf = this.renderer.createElement('input');

@@ -1,48 +1,65 @@
 <div style='width:100vw'>
-  <div style='display: inline-block; vertical-align: top;' class="col-sm-6">
-    <span (click)="changeCurentWh()">{{curentWhareHouseName}}</span><br>
-    <select #wh *ngIf='changeWh' (change)="setWhareHouse(wh.value)">
-      <option></option>
-      <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
-    </select>
+  <div style='display: inline-block; vertical-align: top;' class="col-sm-6 managingDiv">
+    <!-- <h5>ניהול סחורה - בחר מחסן</h5> -->
+    <!-- <span (click)="changeCurentWh()">{{curentWhareHouseName}}</span><br> -->
+    <!-- <select #wh *ngIf='changeWh' (change)="setWhareHouse(wh.value)"> -->
+    <!-- <select #wh (change)="setWhareHouse(wh.value)"> -->
+      <!-- <option></option> -->
+      <!-- <option *ngFor="let wh of whareHouses;">{{wh.name}}</option> -->
+    <!-- </select>&nbsp;&nbsp;
+    <span (click)="changeCurentWh()">{{curentWhareHouseName}} Wharehouse</span><br> -->
+
+    <br>
     <table>
       <tr>
         <td>
-          <button (click)="dirSet('managment')" class='btn btn-primary'>ניהול מחסן</button>
+          <button (click)="dirSet('whManagment','')" class='btn btn-primary'>ניהול מחסן</button>
+        </td>
+        <td>
+          <button (click)="dirSet('stkManagment','')" class='btn btn-primary'>ניהול סחורה</button>
         </td>
       </tr>
-      <tr *ngIf="curentWhareHouseName!='wh'">
+
+      <tr *ngIf="dir=='stkManagment' ">
+
         <td>
-          <button (click)="dirSet('in')" class='btn btn-info'>קבלת סחורה</button>
+          <button (click)="dirSet('stkManagment','in')" class='btn btn-info'>קבלת סחורה</button>
         </td>
         <td>
-          <button (click)="dirSet('out')" class='btn btn-info'>הוצאת סחורה</button>
+          <button (click)="dirSet('stkManagment','out')" class='btn btn-info'>הוצאת סחורה</button>
         </td>
         <td>
-          <button (click)="dirSet('shellChange')" class='btn btn-info'>שינוי מדף</button>
+          <button (click)="dirSet('stkManagment','shellChange')" class='btn btn-info'>שינוי מדף</button>
         </td>
         <td>
-          <button class='btn btn-info'>הקצאת סחורה</button>
+          <button (click)="dirSet('stkManagment','savedForOrder')" class='btn btn-info'>הקצאת סחורה</button>
         </td>
         <td>
-          <button  (click)="dirSet('production')" class='btn btn-info'>העברה לייצור</button>
+          <button  (click)="dirSet('stkManagment','production')" class='btn btn-info'>העברה לייצור</button>
         </td>
       </tr>
     </table>
 
     <div>
-
       {{dir}}
-
-
     </div>
 
     <br>
 
+    <div *ngIf="dir =='stkManagment'">
+        <h5>ניהול סחורה - בחר מחסן</h5>
+        <select #wh (change)="setWhareHouse(wh.value)">
+          <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
+        </select>&nbsp;&nbsp;
+        <span (click)="changeCurentWh()">{{curentWhareHouseName}} Wharehouse</span><br>
+    </div>
+    <br>
+    
     <div *ngIf="dir!='' && dir!='managment'">
       <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp;
       <button class="btn btn-warning" (click)="resetForm()">Reset / אפס</button>&nbsp;&nbsp;
-      <button class="btn btn-info" (click)="getFormData()">Submit / שלח</button>
+      <button class="btn btn-info" (click)="getFormData()">Submit / שלח שינויים <i class="ti-check m-l-10" ></i>
+      </button>
     </div>
     <br><br>
 
@@ -66,7 +83,7 @@
         <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
       </select>
 
-      <h4>הוספת מדף חדש</h4>
+      <h5>הוספת/חיפוש מדף</h5>
       <div id='whareHousesDiv' style='background-color: rgb(223, 255, 194)  ;width:300px; font-weight: bold;'>
         <input #shelf placeholder="הוסף מדף"><button class='btn btn-success' (click)="addNewShelf(shelf.value)">Add Shelf</button>
 
