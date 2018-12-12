@@ -21,6 +21,7 @@ import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-t
 import { MakeupComponent } from './schedule/makeup/makeup.component';
 import {  WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
+import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -97,7 +98,7 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'inventory/inventory',
     data: {
-      title: 'inventory' 
+      title: 'Inventory' 
     },
     component: StockComponent
   },
@@ -107,6 +108,13 @@ export const PeerPharmRputs: Routes =[
       title: 'WhareHouse' 
     },
     component: WharehouseComponent
+  },
+  {
+    path: 'inventory/inventoryRequest',
+    data: {
+      title: 'Inventory Request' 
+    },
+    component: InventoryNewRequestComponent
   },
   {
     path: 'taskboard/main',

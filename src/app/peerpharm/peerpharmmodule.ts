@@ -61,6 +61,7 @@ import { DndModule } from 'ng2-dnd';
 import { DatepickerModule } from 'angular2-material-datepicker';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { AuthService } from '../services/auth.service';
+import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 @NgModule({
   exports: [
     MatInputModule
@@ -127,6 +128,7 @@ import { AuthService } from '../services/auth.service';
     ItemDocumentsComponent,
     WharehouseComponent,
     InventoryRequestsComponent,
+    InventoryNewRequestComponent,
     ChatComponent
   ],
   providers:[ OrdersService, HttpClientModule]

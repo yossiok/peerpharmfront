@@ -1,0 +1,113 @@
+<p>
+  inventory-new-request works!
+</p>
+
+<div class="row" >
+    <div class="col-12" *ngIf="!submited" >
+        <div class="card" >
+            <div class="card-body">
+                <h3 class="card-title">New Request From Inventory</h3>
+            </div>
+            <hr>
+            <form class="form-horizontal" [formGroup]="inventoryReqForm" (ngSubmit)='addNewRequest(inventoryReqForm.value)'>
+                <div class="card-body">
+                    <h4 class="card-title">Order Info</h4>
+
+                    <div class="form-group row">
+                        <label for="lname" class="col-sm-3 text-right control-label col-form-label">Request number:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" placeholder="request number auto generated" formControlName="reqNum">
+                            <input type='hidden' formControlName="reqInternalId">
+                        </div>
+                        <!-- <button (click)="openSearch(content);  submited=false;" class='btn btn-info'>List</button> -->
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="reqDate" class="col-sm-3 text-right control-label col-form-label">Request date</label>
+                        <div class="col-sm-7">
+                            <input type="date" class="form-control" placeholder="Today" formControlName="currDate" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
+                        <div class="col-sm-7">
+                            <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
+                        </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
+                        </div>
+                    </div> -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 text-right control-label col-form-label">From wharehouse:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" formControlName="fromWh">
+                                <option value="Kasem">Kasem</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 text-right control-label col-form-label">To wharehouse:</label>
+                        <div class="col-sm-7">
+                            <select class="form-control" formControlName="fromWh">
+                                <option value="Rosh ha'ayin">Rosh ha'ayin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 text-right control-label col-form-label">Request list:</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" placeholder="Item number" formControlName="itemInput">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
+                        </div>
+                        <div class="col-sm-1">
+                          <img src="assets/images/add.png" width="30px" style="cursor: pointer;"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-7">
+                            <table class='table'>
+                                <thead class='bg-info text-white'>
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Item number</th>
+                                    <th>Item name</th>
+                                    <th>Amount</th>
+                                    <th>Related Order</th>
+                                    <th></th>
+                                  </tr>
+                                </thead>
+                                <ng-container *ngFor="let reqItem of reqList; let i =index">
+                                  <tr>
+                                    <td>{{i}}</td>
+                                    <td>{{reqItem.itemNumber}}</td>
+                                    <td>{{reqItem.itemName}}</td>
+                                    <td>{{reqItem.amount}}</td>
+                                    <td>{{reqItem.relatedOrder}}</td>
+                                    <td><img src="assets/images/delete.png" width="30px" style="cursor: pointer;"/></td>
+                                  </tr>
+                                </ng-container>
+                              </table>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group m-b-0 text-right">
+                            <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
+                            <button type="submit" class="btn btn-dark waves-effect waves-light">Clear</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </form>
+        </div>
+    </div>
+</div>
