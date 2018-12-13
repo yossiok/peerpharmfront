@@ -23,6 +23,7 @@ export class InventoryRequestsComponent implements OnInit {
   getAllGeneralDemands(){
     this.inventoryService.getInventoryDemandsList().subscribe(res=>{
         console.log(res);
+        debugger;
         res.forEach(element => {
           console.log(element)
           console.log(element.components)

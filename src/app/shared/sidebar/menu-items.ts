@@ -271,7 +271,7 @@ export const ROUTES: RouteInfo[] = [
       submenu: [
         {
           path: '/peerpharm/inventory/inventory',
-          title: 'Item List',
+          title: 'Inventory List',
           icon: 'fas fa-address-book',
           class: '',
           extralink: false,
@@ -287,7 +287,7 @@ export const ROUTES: RouteInfo[] = [
        },
        {
         path: '/peerpharm/inventory/inventoryRequest',
-        title: 'Request',
+        title: 'New Request',
         icon: 'fas fa-tree',
         class: '',
         extralink: false,

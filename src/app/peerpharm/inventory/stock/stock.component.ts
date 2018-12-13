@@ -53,7 +53,7 @@ export class StockComponent implements OnInit {
           this.componentsAmount = res;
           console.log(res);
           this.components.forEach(cmpt => {
-         //   console.log(cmpt);
+         //  adding amounts to all components
             let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
             if(result!=undefined){
               console.log(result._id + " , " + cmpt.componentN);

@@ -179,15 +179,19 @@ export class OrderdetailsComponent implements OnInit {
         item.colorBtn = '#33FFE0';
       });
       this.ordersItems = orderItems;
+      debugger;
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
     });
   }
 
+  //not in useat this moments
   getComponents(orderNumber): void {
+    debugger;
     this.orderService.getComponentsSum(orderNumber).subscribe(components => {
       this.components = components;
       console.log("a" + components);
+      debugger;
     })
   }
 

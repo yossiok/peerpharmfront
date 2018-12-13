@@ -114,7 +114,7 @@ export class OrdersService {
   //get list of sum of all components needed to the order
   getComponentsSum(orderNumber) {
     let url = this.baseUrl + "itemsDemand?orderNumber=" + orderNumber;
-    // debugger
+    debugger
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

@@ -16,21 +16,21 @@
                     <div class="form-group row">
                         <label for="lname" class="col-sm-3 text-right control-label col-form-label">Request number:</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" placeholder="request number auto generated" formControlName="reqNum">
-                            <input type='hidden' formControlName="reqInternalId">
+                            <input type="number" class="form-control" placeholder="request number auto generated" formControlName="reqNum">
+                            <input type='hidden' formControlName="reqNum">
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="reqDate" class="col-sm-3 text-right control-label col-form-label">Request date</label>
                         <div class="col-sm-7">
-                            <input type="date" class="form-control" placeholder="Today" formControlName="currDate" disabled>
+                            <input type="date" class="form-control" placeholder="Today" formControlName="currDate" >
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
                         <div class="col-sm-7">
-                            <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
+                            <input type="date" class="form-control" placeholder="Delivery date" formControlName="deliveryDate">
                         </div>
                     </div>
                     <!-- <div class="form-group row">
@@ -42,7 +42,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 text-right control-label col-form-label">From wharehouse:</label>
                         <div class="col-sm-7">
-                            <select class="form-control" formControlName="fromWh">
+                            <select class="form-control" formControlName="fromWH">
                                 <option value="Kasem">Kasem</option>
                             </select>
                         </div>
@@ -50,7 +50,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 text-right control-label col-form-label">To wharehouse:</label>
                         <div class="col-sm-7">
-                            <select class="form-control" formControlName="fromWh">
+                            <select class="form-control" formControlName="toWH">
                                 <option value="Rosh ha'ayin">Rosh ha'ayin</option>
                             </select>
                         </div>
