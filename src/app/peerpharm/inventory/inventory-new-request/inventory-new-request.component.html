@@ -55,48 +55,8 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 text-right control-label col-form-label">Request list:</label>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" placeholder="Item number" formControlName="itemInput">
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount">
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
-                        </div>
-                        <div class="col-sm-1">
-                          <img src="assets/images/add.png" width="30px" style="cursor: pointer;"/>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-7">
-                            <table class='table'>
-                                <thead class='bg-info text-white'>
-                                  <tr>
-                                    <th>#</th>
-                                    <th>Item number</th>
-                                    <th>Item name</th>
-                                    <th>Amount</th>
-                                    <th>Related Order</th>
-                                    <th></th>
-                                  </tr>
-                                </thead>
-                                <ng-container *ngFor="let reqItem of reqList; let i =index">
-                                  <tr>
-                                    <td>{{i}}</td>
-                                    <td>{{reqItem.itemNumber}}</td>
-                                    <td>{{reqItem.itemName}}</td>
-                                    <td>{{reqItem.amount}}</td>
-                                    <td>{{reqItem.relatedOrder}}</td>
-                                    <td><img src="assets/images/delete.png" width="30px" style="cursor: pointer;"/></td>
-                                  </tr>
-                                </ng-container>
-                              </table>
-                        </div>
-                    </div>
+
+
 
                     <div class="card-body">
                         <div class="form-group m-b-0 text-right">
@@ -107,6 +67,58 @@
                 </div>
                 <hr>
             </form>
+
+            <form class="form-horizontal" [formGroup]="itemLine" (ngSubmit)='addNewRequest(itemLine.value)'>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 text-right control-label col-form-label">Request list:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumInput">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="submit">
+                            <img src="assets/images/add.png" (click)="addToRequsetList(itemLine.value)" width="30px" style="cursor: pointer;"/>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-7">
+                        <table class='table'>
+                            <thead class='bg-info text-white'>
+                              <tr>
+                                <th>#</th>
+                                <th>Item number</th>
+                                <th>Item name</th>
+                                <th>Amount</th>
+                                <th>Related Order</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <ng-container *ngFor="let reqItem of reqList; let i =index">
+                              <tr>
+                                <td>{{i+1}}</td>
+                                <td>{{reqItem.itemNumber}}</td>
+                                <td>{{reqItem.itemName}}</td>
+                                <td>{{reqItem.amount}}</td>
+                                <td>{{reqItem.relatedOrder}}</td>
+                                <td><img src="assets/images/delete.png" (click)="deleteRow(reqItem.itemNumber,reqItem.amount)"width="30px" style="cursor: pointer;"/></td>
+                              </tr>
+                            </ng-container>
+                          </table>
+                    </div>
+                </div>
+            </form>
+
+
+
         </div>
     </div>
 </div>
