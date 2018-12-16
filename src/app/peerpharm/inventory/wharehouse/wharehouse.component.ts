@@ -59,6 +59,7 @@ export class WharehouseComponent implements OnInit {
               else if(direction=="production" && e.getAttribute("name")=="newDemandId"){
                 e.style.display = 'inline';
                 e.className = "dataInput";
+                // e.style.visibility = "hidden";
               }
               else {
                 e.style.display = 'none';
@@ -74,101 +75,6 @@ export class WharehouseComponent implements OnInit {
     }
 
   }
-
-/*
-  createInventoryRow(type, a) {
-    let shelfsArr;
-    if (type == "amount" && this.renderer.parentNode(a).getElementsByTagName("input")[0].value == "") {
-      alert("נא להכניס מק``ט")
-    } else {
-      const rowDiv = this.renderer.createElement('div');
-      const inputItem = this.renderer.createElement('input');
-      const inputShelf = this.renderer.createElement('input');
-      const inputQunatity = this.renderer.createElement('input');
-      const inputNewShelf = this.renderer.createElement('input');
-      const inputEmpty = this.renderer.createElement('input');
-      const btnAdd = this.renderer.createElement('img');
-      const btnShelf = this.renderer.createElement('img');
-      const shelfsDiv = this.renderer.createElement('div');
-
-      this.renderer.setProperty(btnAdd, "src", "assets/images/add.png")
-      this.renderer.setProperty(btnShelf, "src", "assets/images/addShell.png")
-      this.renderer.setProperty(inputShelf, "placeholder", "מדף")
-      this.renderer.setProperty(inputQunatity, "placeholder", "כמות")
-      this.renderer.setProperty(inputNewShelf, "placeholder", "מדף חדש")
-      this.renderer.setProperty(inputNewShelf, "name", "newShelfName")
-
-
-      this.renderer.setStyle(btnAdd, 'width', '30px');
-      this.renderer.setStyle(btnShelf, 'width', '30px');
-      this.renderer.setStyle(shelfsDiv, "display", "inline-table")
-      if (type == "item") {
-        this.i = this.i + 1;
-        this.renderer.setStyle(inputShelf, 'display', 'none');
-        this.renderer.setStyle(inputQunatity, 'display', 'none');
-        this.renderer.setStyle(inputNewShelf, 'display', 'none');
-        this.renderer.setStyle(inputEmpty, 'display', 'none');
-        this.renderer.setProperty(inputItem, "id", "id_" + this.i)
-
-      }
-      else if (type == "amount") {
-        this.renderer.setProperty(btnShelf, "id", this.i)
-        this.renderer.setStyle(btnShelf, 'display', 'none');
-        this.renderer.setStyle(btnAdd, 'display', 'none');
-        this.renderer.setStyle(shelfsDiv, 'display', 'none');
-        this.renderer.setAttribute(inputItem, "class", "dataInput");
-        this.renderer.setAttribute(inputShelf, "class", "dataInput");
-        this.renderer.setAttribute(inputQunatity, "class", "dataInput");
-        this.renderer.setAttribute(inputEmpty, "class", "dataInput");
-        if (this.dir == "shellChange") {
-          this.renderer.setAttribute(inputNewShelf, "class", "dataInput");
-        } else {
-          this.renderer.setAttribute(inputNewShelf, "class", "no");
-          this.renderer.setStyle(inputNewShelf, 'display', 'none');
-        }
-        this.renderer.setStyle(inputItem, 'visibility', 'hidden');
-        this.renderer.setProperty(inputItem, "value", this.renderer.parentNode(a).getElementsByTagName("input")[0].value)
-        console.log(this.renderer.parentNode(a).getElementsByTagName("input")[0].value);
-      }
-      let q = this.renderer;
-      this.renderer.listen(inputItem, 'focusout', () => {
-        this.getItemWhShelfsList(inputItem.value, shelfsDiv).then(result=>{
-          console.log(result)
-          if(result[0]!=""){
-            q.setProperty(shelfsDiv, "innerText", result.toString())
-            q.appendChild(rowDiv, shelfsDiv);
-          }else {
-            q.setProperty(shelfsDiv, "innerText", "לא נמצאו מדפים - N/A")
-            q.appendChild(rowDiv, shelfsDiv);
-          }
-        })
-      });
-
-      this.renderer.listen(btnAdd, 'click', () => {
-        this.createInventoryRow("item", btnAdd);
-      });
-      this.renderer.listen(btnShelf, 'click', () => {
-        this.createInventoryRow("amount", btnShelf)
-
-      });
-
-
-
-      this.renderer.appendChild(rowDiv, btnAdd);
-      this.renderer.appendChild(rowDiv, inputItem);
-      this.renderer.appendChild(rowDiv, inputShelf);
-      this.renderer.appendChild(rowDiv, inputQunatity);
-      this.renderer.appendChild(rowDiv, inputNewShelf);
-      this.renderer.appendChild(rowDiv, inputEmpty); // for the array
-      this.renderer.appendChild(rowDiv, btnShelf);
-      this.renderer.setStyle(inputEmpty, 'display', 'none');
-      if (type == "amount") {
-        this.renderer.appendChild(this.renderer.parentNode(a), rowDiv);
-      } else {
-        this.renderer.appendChild(this.container.nativeElement, rowDiv);
-      }
-    }
-  }*/
 
   getFormData() {
     let div = this.container.nativeElement;
@@ -331,21 +237,24 @@ export class WharehouseComponent implements OnInit {
       const inputEmpty = this.renderer.createElement('input');
       const btnAdd = this.renderer.createElement('img');
       const btnShelf = this.renderer.createElement('img');
+      const btnRemove = this.renderer.createElement('img');
       const shelfsDiv = this.renderer.createElement('div');
 
       this.renderer.setProperty(inputItem, "value", number);
       this.renderer.setProperty(inputDemandId, "value", demandOrderId);
-      this.renderer.setProperty(btnAdd, "src", "assets/images/add.png")
-      this.renderer.setProperty(btnShelf, "src", "assets/images/addShell.png")
-      this.renderer.setProperty(inputShelf, "placeholder", "מדף")
-      this.renderer.setProperty(inputQunatity, "placeholder", "כמות")
-      this.renderer.setProperty(inputNewShelf, "placeholder", "מדף חדש")
-      this.renderer.setProperty(inputNewShelf, "name", "newShelfName")
-      this.renderer.setProperty(inputDemandId, "name", "newDemandId")
+      this.renderer.setProperty(btnAdd, "src", "assets/images/add.png");
+      this.renderer.setProperty(btnShelf, "src", "assets/images/addShell.png");
+      this.renderer.setProperty(btnRemove, "src", "assets/images/delete.png");
+      this.renderer.setProperty(inputShelf, "placeholder", "מדף");
+      this.renderer.setProperty(inputQunatity, "placeholder", "כמות");
+      this.renderer.setProperty(inputNewShelf, "placeholder", "מדף חדש");
+      this.renderer.setProperty(inputNewShelf, "name", "newShelfName");
+      this.renderer.setProperty(inputDemandId, "name", "newDemandId");
 
 
       this.renderer.setStyle(btnAdd, 'width', '30px');
       this.renderer.setStyle(btnShelf, 'width', '30px');
+      this.renderer.setStyle(btnRemove, 'width', '30px');
       this.renderer.setStyle(shelfsDiv, "display", "inline-table")
 
         this.i = this.i + 1;
@@ -372,6 +281,9 @@ export class WharehouseComponent implements OnInit {
       this.renderer.listen(btnAdd, 'click', () => {
         this.createInventoryRow("item", btnAdd, demandOrderId);
       });
+      this.renderer.listen(btnRemove, 'click', () => {
+        this.deleteInventoryRow("item", btnRemove, demandOrderId);
+      });
       this.renderer.listen(btnShelf, 'click', () => {
         this.createInventoryRow("amount", btnShelf, demandOrderId)
 
@@ -388,6 +300,8 @@ export class WharehouseComponent implements OnInit {
       this.renderer.appendChild(rowDiv, btnShelf);
       this.renderer.appendChild(rowDiv, inputDemandId);
       this.renderer.setStyle(inputEmpty, 'display', 'none');
+      this.renderer.appendChild(rowDiv, btnRemove);
+
 
         this.renderer.appendChild(this.container.nativeElement, rowDiv);
       
@@ -413,11 +327,13 @@ export class WharehouseComponent implements OnInit {
           const inputDemandId = this.renderer.createElement('input');
           const btnAdd = this.renderer.createElement('img');
           const btnShelf = this.renderer.createElement('img');
+          const btnRemove = this.renderer.createElement('img');
           const shelfsDiv = this.renderer.createElement('div');
           //stting attributes to rendered elements
           this.renderer.setProperty(inputDemandId, "value", demandOrderId);
           this.renderer.setProperty(btnAdd, "src", "assets/images/add.png");
           this.renderer.setProperty(btnShelf, "src", "assets/images/addShell.png");
+          this.renderer.setProperty(btnRemove, "src", "assets/images/delete.png");
           this.renderer.setProperty(inputItem, "placeholder", 'מק"ט פריט');
           this.renderer.setProperty(inputShelf, "placeholder", "מדף");
           this.renderer.setProperty(inputQunatity, "placeholder", "כמות");
@@ -428,6 +344,7 @@ export class WharehouseComponent implements OnInit {
           //setting style to rendered elements
           this.renderer.setStyle(btnAdd, 'width', '30px');
           this.renderer.setStyle(btnShelf, 'width', '30px');
+          this.renderer.setStyle(btnRemove, 'width', '30px');
           this.renderer.setStyle(shelfsDiv, "display", "inline-table");
 
           if (type == "item") {
@@ -475,6 +392,9 @@ export class WharehouseComponent implements OnInit {
           this.renderer.listen(btnAdd, 'click', () => {
             this.createInventoryRow("item", btnAdd, demandOrderId);
           });
+          this.renderer.listen(btnRemove, 'click', () => {
+            this.deleteInventoryRow("item", btnRemove, demandOrderId);
+          });
           this.renderer.listen(btnShelf, 'click', () => {
             this.createInventoryRow("amount", btnShelf, demandOrderId)
     
@@ -491,12 +411,19 @@ export class WharehouseComponent implements OnInit {
           this.renderer.appendChild(rowDiv, inputEmpty); // for the array
           this.renderer.appendChild(rowDiv, btnShelf);
           this.renderer.setStyle(inputEmpty, 'display', 'none');
+          this.renderer.appendChild(rowDiv, btnRemove);
+
           if (type == "amount") {
             this.renderer.appendChild(this.renderer.parentNode(a), rowDiv);
           } else {
             this.renderer.appendChild(this.container.nativeElement, rowDiv);
           }
       }
+    }
+
+    deleteInventoryRow(type, a, demandOrderId){
+
+      debugger;
     }
 
 

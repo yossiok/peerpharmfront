@@ -82,7 +82,7 @@ export class InventoryRequestsComponent implements OnInit {
     //let tempArr = demandObj[0].components.filter(e => e.isSelected == true).map(e => e = {"item":e.cmptN, "demandId":e._id});
     debugger
     if(tempArr.length>0) {
-      this.outPutItemsArray.emit(tempArr);
+      this.outPutItemsArray.emit(tempArr);  
     }
     console.log(tempArr);
     }
