@@ -34,6 +34,12 @@ export class OrdersService {
     //.map((res: Response) => res.json())
     //.catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
+  getAllOrders(): Observable<any> {
+    let url = this.baseUrl + 'order/allorders'    
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    );
+  }
 
   //edit  order
   editOrder(order): Observable<any> {

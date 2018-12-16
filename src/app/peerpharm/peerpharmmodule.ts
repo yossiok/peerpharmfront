@@ -11,6 +11,8 @@ import { AddFormuleComponent } from './formules/add-formule/add-formule.componen
 import { AddFormuleItemComponent } from './formules/add-formule-item/add-formule-item.component';
 import { PeerPharmRputs } from './peerpharm.routing';
 import { OrdersComponent } from './allorders/orders/orders.component';
+import { AllordersComponent } from './allorders/allorders/allorders.component';
+
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
 import {ScheduleComponent} from './schedule/filling/schedule.component'
 import {ItemslistComponent} from './items/itemslist/itemslist.component'
@@ -97,6 +99,7 @@ import { InventoryNewRequestComponent } from './inventory/inventory-new-request/
   declarations: [
     AddFormuleComponent,
     OrdersComponent,
+    AllordersComponent,
     OrderdetailsComponent,
     NeworderComponent,
     LinesComponent,

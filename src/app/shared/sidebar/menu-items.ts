@@ -58,7 +58,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
-        path: '/component/accordion',
+        path: '/peerpharm/allorders//orders/allorders',
         title: 'All Orders',
         icon: 'mdi mdi-adjust',
         class: '',

@@ -18,6 +18,8 @@ import { Routes, RouterModule } from '@angular/router';
 import {NeworderComponent} from './peerpharm/allorders/neworder/neworder.component'
 import {OrderdetailsComponent} from './peerpharm/allorders/orderdetails/orderdetails.component'
 import {OrdersComponent} from './peerpharm/allorders/orders/orders.component'
+import { AllordersComponent } from './peerpharm/allorders/allorders/allorders.component';
+
 //
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 

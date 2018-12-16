@@ -62,6 +62,7 @@ export class NeworderComponent implements OnInit {
       costumerInternalId:post.costumerInternalId,
       deliveryDate: post.delivery,
       orderRemarks: post.remarks,
+      
       status: 'open',
     }
     this.orderSer.addNewOrder(newOrderObj).subscribe(res => {

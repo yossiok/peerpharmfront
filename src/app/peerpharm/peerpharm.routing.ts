@@ -1,4 +1,5 @@
 import { OrdersComponent } from './allorders/orders/orders.component';
+import { AllordersComponent } from './allorders/allorders/allorders.component';
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
 //import { PeerPharmModule } from './peerpharmmodule';
 import { Routes } from '@angular/router';
@@ -27,21 +28,28 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'allorders/orders',
     data: {
-      title: 'open orders' 
+      title: 'Open Orders' 
     },
     component: OrdersComponent
   },
   {
+    path: 'allorders/orders/allorders',
+    data: {
+      title: 'All Orders' 
+    },
+    component: AllordersComponent
+  },
+  {
     path: 'allorders/orderitems/:id',
     data: {
-      title: 'order' 
+      title: 'Order' 
     },
     component: OrderdetailsComponent
   },
   {
     path: 'allorders/neworder',
     data: {
-      title: 'new order' 
+      title: 'New Order' 
     },
     component: NeworderComponent
   },

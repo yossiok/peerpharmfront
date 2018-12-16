@@ -20,7 +20,13 @@
     </tr>
     
     <tr *ngIf="demand._id== EditRowId2nd && expand==true;">   
-      <th  class="cmptTh"></th><th class="cmptTh">Number</th><th class="cmptTh">Date</th><th class="cmptTh">Amount</th><th class="cmptTh">Allocation</th><th class="cmptTh">Supplied</th>
+      <th  class="cmptTh"></th>
+      <th class="cmptTh">Item Number</th>
+      <th class="cmptTh">Delivery Date</th>
+      <th class="cmptTh">Amount</th>
+      <!-- <th class="cmptTh">Allocation</th> -->
+      <th class="cmptTh">Supplied</th>
+      <th class="cmptTh">Done</th>
     </tr>
       <ng-container *ngFor="let cmpt of demand.components;" >
           <tr *ngIf="demand._id== EditRowId2nd && expand==true;">
@@ -28,8 +34,9 @@
             <td>{{cmpt.cmptN}}</td>
             <td>{{cmpt.date}}</td>
             <td>{{cmpt.quantity}}</td>
-            <td>{{cmpt.allocation}}</td>
+            <!-- <td>{{cmpt.allocation}}</td> -->
             <td>{{cmpt.suplied}}</td>
+            <td>V AutoTBD</td>
           </tr>
       </ng-container>
     
