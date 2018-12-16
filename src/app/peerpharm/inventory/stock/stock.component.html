@@ -1,12 +1,11 @@
-<p>
-  stock works!
-</p>
-
 {{openModal}}<br>
 
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
 <button class='btn' (click)="newCmpt()">מוצר חדש</button>
-
+<br><br>
+    <div (click)='setType("component", this)' [ngStyle]="{'background-color': buttonColor}">Components</div>
+    <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}">Materials</div>
+    <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}">Finished Products</div>
 
 <table class='table'>
   <thead class='bg-info text-white'>

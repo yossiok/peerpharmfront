@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
@@ -28,9 +29,13 @@ export class StockComponent implements OnInit {
     packageWeight: '',
     remarks: '',
   }
+  buttonColor: string = 'white';
+  buttonColor2: string = '#B8ECF1';
+  buttonColor3: string = '#B8ECF1';
   openModal: boolean = false;
   openModalHeader:string;
   components: any[];
+  componentsUnFiltered:any[];
   componentsAmount: any[];
   tempHiddenImgSrc:any;
 
@@ -43,9 +48,37 @@ export class StockComponent implements OnInit {
 
   }
 
+  setType(type, elem) {
+    console.log("hi " + type);
+    console.log("hi " + elem.style);
+    switch (type) {
+      case 'component':
+        this.buttonColor = "white";
+        this.buttonColor2 = "#B8ECF1";
+        this.buttonColor3 = "#B8ECF1";
+        break;
+      case 'material':
+        this.buttonColor = "#B8ECF1";
+        this.buttonColor2 = "white";
+        this.buttonColor3 = "#B8ECF1";
+        break;
+      case 'product':
+        this.buttonColor = "#B8ECF1";
+        this.buttonColor2 = "#B8ECF1";
+        this.buttonColor3 = "white";
+        break;
+    }
+ 
+    this.components=this.componentsUnFiltered.filter(x=> x.itemType==type);
+  }
+
+
+
 
   getAllComponents() {
     this.inventoryService.getAllComponents().subscribe(components => {
+
+      this.componentsUnFiltered=   components.splice(0);
       this.components = components;
       //why are we using set time out and not async await??
       setTimeout( ()=> {
