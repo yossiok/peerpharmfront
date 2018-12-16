@@ -21,45 +21,46 @@ export class InventoryRequestsComponent implements OnInit {
   }
 
 
-  getAllGeneralDemands(){
-    this.inventoryReqService.getInventoryDemandsList().subscribe(res=>{
-        console.log(res);
-        debugger;
-        //res= allorders from itemsDemands table
-        res.forEach(element => {
-         element.components.map(item => {
-       //   item.cmptN="0";
-          item.isSelected=false;
-          //Object.assign({ isSelected: false }, item);
-        })
-          console.log(element.components);
-        });
-        
-        this.ordersDemands=res;
-        console.log( this.ordersDemands)
-    })
-  }
   // getAllGeneralDemands(){
-  //   this.inventoryReqService.getInventoryRequestsList().subscribe(res=>{
+  //   this.inventoryReqService.getInventoryDemandsList().subscribe(res=>{
   //       console.log(res);
   //       debugger;
   //       //res= allorders from itemsDemands table
-  //       res.forEach(InvRequest => {
-  //        InvRequest.reqList.map(item => {
+  //       res.forEach(element => {
+  //        element.components.map(item => {
   //      //   item.cmptN="0";
   //         item.isSelected=false;
   //         //Object.assign({ isSelected: false }, item);
   //       })
-  //         console.log(InvRequest.reqList);
+  //         console.log(element.components);
   //       });
         
   //       this.ordersDemands=res;
-  //       console.log( this.ordersDemands);
+  //       console.log( this.ordersDemands)
   //   })
   // }
+  getAllGeneralDemands(){
+    this.inventoryReqService.getInventoryRequestsList().subscribe(res=>{
+        console.log(res);
+        debugger;
+        //res= allorders from itemsDemands table
+        res.forEach(InvRequest => {
+         InvRequest.reqList.map(item => {
+       //   item.cmptN="0";
+          item.isSelected=false;
+          //Object.assign({ isSelected: false }, item);
+        })
+          console.log(InvRequest.reqList);
+        });
+        
+        this.ordersDemands=res;
+        console.log( this.ordersDemands);
+    })
+  }
 
-  getDetails(itemId, orderNumber): void {
-    this.EditRowId2nd = itemId;
+  getDetails(reqId, orderNumber): void {
+    debugger 
+    this.EditRowId2nd = reqId;
     if (this.expand === true) {
        this.expand = false;
         this.openOrder="";
@@ -71,12 +72,13 @@ export class InventoryRequestsComponent implements OnInit {
 
   
   loadItems() {
+    debugger;
     console.log(this.ordersDemands);
    // let demandObj =this.ordersDemands.filter(orderObj=>orderObj.order==this.openOrder)
-    let demandObj =this.ordersDemands.filter(orderObj=>orderObj.order==this.openOrder)
-    console.log(demandObj);
-    console.log(demandObj[0].components);
-    let tempArr = demandObj[0].components.filter(e => e.isSelected == true).map(elmnt => elmnt = {"number":elmnt.cmptN, "orderDemandId":demandObj[0]._id});
+    let demandObj =this.ordersDemands.filter(orderObj=>orderObj.reqNum==this.openOrder);
+    // console.log(demandObj);
+    // console.log(demandObj[0].components);
+    let tempArr = demandObj[0].reqList.filter(e => e.isSelected == true).map(elmnt => elmnt = {"number":elmnt.itemNumber, "orderDemandId":demandObj[0]._id});
     //let tempArr = demandObj[0].components.filter(e => e.isSelected == true).map(e => e = {"item":e.cmptN, "demandId":e._id});
     debugger
     if(tempArr.length>0) {
