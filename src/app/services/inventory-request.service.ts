@@ -21,7 +21,30 @@ export class InventoryRequestService {
 
   getLastRequsetId():Observable<any>  {
     let url = this.baseUrl + "inventoryRequest?lastReqId=yes" ;
-    debugger;
+    //returns one object not array
+    debugger
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  //************************************************************* */
+  //OR for using inventoryList - Current USE
+  getInventoryDemandsList():Observable<any> {
+    let url = this.baseUrl + "itemsDemand";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  //OR for using inventoryList - TBD
+  getInventoryRequestsList():Observable<any> {
+    let url = this.baseUrl + "inventoryRequest";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+    //************************************************************* */
+
+
+  checkIfComptNumExist(comptNum):Observable<any> {
+    let url = this.baseUrl + "inventoryRequest?componentNum="+comptNum;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  checkIfOrderNumExist(OrderNum):Observable<any> {
+    let url = this.baseUrl + "inventoryRequest?orderNum="+OrderNum;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 }

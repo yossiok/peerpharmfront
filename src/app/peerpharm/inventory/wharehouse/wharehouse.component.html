@@ -20,7 +20,7 @@
         </td>
       </tr>
 
-      <tr *ngIf="dir=='stkManagment' ">
+      <tr *ngIf="screen=='stkManagment' ">
 
         <td>
           <button (click)="dirSet('stkManagment','in')" class='btn btn-info'>קבלת סחורה</button>
@@ -46,7 +46,7 @@
 
     <br>
 
-    <div *ngIf="dir =='stkManagment'">
+    <div *ngIf="screen=='stkManagment'">
         <h5>ניהול סחורה - בחר מחסן</h5>
         <select #wh (change)="setWhareHouse(wh.value)">
           <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>

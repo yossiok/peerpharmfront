@@ -72,9 +72,10 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getInventoryDemandsList(){
-    let url = this.baseUrl + "itemsDemand";
-    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  //MOVED TO: inventory-request.service.ts
+  // getInventoryDemandsList(){
+  //   let url = this.baseUrl + "itemsDemand";
+  //   return this.http.get(url).pipe(map(reponse => reponse.json()));
 
-  }
+  // }
 }

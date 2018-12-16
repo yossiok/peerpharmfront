@@ -16,7 +16,7 @@
                     <div class="form-group row">
                         <label for="lname" class="col-sm-3 text-right control-label col-form-label">Request number:</label>
                         <div class="col-sm-7">
-                            <input type="number" class="form-control" placeholder="request number auto generated" formControlName="reqNum">
+                            <input type="number" class="form-control" placeholder="request number auto generated" formControlName="reqNum" >
                             <input type='hidden' formControlName="reqNum">
                         </div>
                     </div>
@@ -28,10 +28,11 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label" (change)="compareTwoDates()">Delivery date</label>
                         <div class="col-sm-7">
                             <input type="date" class="form-control" placeholder="Delivery date" formControlName="deliveryDate">
                         </div>
+
                     </div>
                     <!-- <div class="form-group row">
                         <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
@@ -43,6 +44,7 @@
                         <label class="col-sm-3 text-right control-label col-form-label">From wharehouse:</label>
                         <div class="col-sm-7">
                             <select class="form-control" formControlName="fromWH">
+                                <option ></option>
                                 <option value="Kasem">Kasem</option>
                             </select>
                         </div>
@@ -51,7 +53,8 @@
                         <label class="col-sm-3 text-right control-label col-form-label">To wharehouse:</label>
                         <div class="col-sm-7">
                             <select class="form-control" formControlName="toWH">
-                                <option value="Rosh ha'ayin">Rosh ha'ayin</option>
+                                <option ></option>
+                                <option value="Rosh haayin">Rosh ha'ayin</option>
                             </select>
                         </div>
                     </div>
@@ -61,14 +64,14 @@
                     <div class="card-body">
                         <div class="form-group m-b-0 text-right">
                             <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
-                            <button type="submit" class="btn btn-dark waves-effect waves-light">Clear</button>
+                            <button type="reset" class="btn btn-dark waves-effect waves-light">Clear</button>
                         </div>
                     </div>
                 </div>
                 <hr>
             </form>
 
-            <form class="form-horizontal" [formGroup]="itemLine" (ngSubmit)='addNewRequest(itemLine.value)'>
+            <form class="form-horizontal" [formGroup]="itemLine" (ngSubmit)='addItemToRequsetList(itemLine.value)'>
 
                 <div class="form-group row">
                     <label class="col-sm-3 text-right control-label col-form-label">Request list:</label>
@@ -76,14 +79,14 @@
                         <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumInput">
                     </div>
                     <div class="col-sm-2">
-                        <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount">
+                        <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount" min="1">
                     </div>
                     <div class="col-sm-2">
                         <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
                     </div>
                     <div class="col-sm-1">
                         <button type="submit">
-                            <img src="assets/images/add.png" (click)="addToRequsetList(itemLine.value)" width="30px" style="cursor: pointer;"/>
+                            <img src="assets/images/add.png" (click)="addItemToRequsetList(itemLine.value)" width="30px" style="cursor: pointer;"/>
                         </button>
                     </div>
                 </div>

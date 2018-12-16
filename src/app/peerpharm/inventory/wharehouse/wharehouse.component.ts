@@ -22,7 +22,8 @@ export class WharehouseComponent implements OnInit {
   changeWh: boolean = false;
   shelfs: any = [];
   shelfsCopy: any = [];
-  dir: string = "";
+  dir: string = "production";
+  screen:String="stkManagment";
   response = { color: '', body: '' }
   i: Integer = 0;
   currTab:string='';
@@ -35,36 +36,12 @@ export class WharehouseComponent implements OnInit {
     })
   }
  
-/*
-  dirSet(direction) {
-    this.dir = direction;
-    const childElements = this.container.nativeElement.children;
 
-    for (let child of childElements) {
-      const elemnts = child.children;
-      for (let elm of elemnts) {
-        const mnts = elm.children;
-        for (let e of mnts) {
-          console.log(e.getAttribute("name"))
-          if (e.getAttribute("name")) {
-            if (direction == "shellChange") {
-              e.style.display = 'inline';
-              e.className = "dataInput";
-            }
-            else {
-              e.style.display = 'none';
-              e.className = "no";
-              e.value = "";
-            }
-          }
-        }
-      }
-    }
-
-  }*/
-  dirSet(direction,action) {
+  dirSet(action,direction) {
+    this.screen=action;
     debugger;
-    if(direction=='whManagment'){
+    if(action=='whManagment'){
+
       this.dir = 'managment';
       const childElements = this.container.nativeElement.children;
       debugger;
@@ -92,8 +69,8 @@ export class WharehouseComponent implements OnInit {
           }
         }
       }
-    } else if(direction=='stkManagment'){
-      this.dir = 'stkManagment';
+    } else if(action=='stkManagment'){ 
+      this.dir = direction;
     }
 
   }
@@ -328,8 +305,9 @@ export class WharehouseComponent implements OnInit {
     });
   }
 
-  getChildArr(event){
-    
+  async getChildArr(event){
+    await this.dirSet('stkManagment','production');
+    debugger
     console.log(event)
     if(event.length>0){
       this.dir="production";
