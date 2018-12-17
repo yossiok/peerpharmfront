@@ -344,8 +344,8 @@ export const ROUTES: RouteInfo[] = [
         }
       
       ]
-    },
-
+    } 
+/*
   {
     path: '',
     title: 'Component',
@@ -458,5 +458,6 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       }
     ]
-  }
+  }*/
+  
 ];

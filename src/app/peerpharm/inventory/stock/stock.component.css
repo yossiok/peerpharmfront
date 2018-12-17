@@ -12,7 +12,7 @@ input[type=checkbox]
 div{
     float:left;
     margin-right: 5px;
-    background-color: white;
+    
     padding: 13px;
     cursor: pointer;
     border:1;
@@ -58,4 +58,28 @@ td {
       size: 25cm 35.7cm;
       margin: 5mm 5mm 5mm 5mm;
     }
+}
+
+.compNum
+{
+    color:blue;
+    text-decoration: underline;
+}
+
+#myModal2,.modal-content
+{
+    padding: 0px;
+    margin: 0px;
+    background-color: #ececec;
+}
+.modal-content table
+{
+    background-color: #ececec;
+    text-align: right;
+    direction: rtl;
+}
+.close
+{
+    font-size: 2.3125rem;
+    margin-left: 0px;
 }

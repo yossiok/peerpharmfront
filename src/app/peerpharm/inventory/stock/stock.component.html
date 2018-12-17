@@ -42,7 +42,7 @@
 <tbody id="table_body">
    <tr *ngFor="let component of components">
      <td></td>
-     <td (click)="openData(component.componentN)"> {{component.componentN}}</td>
+     <td class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
      <td>{{component.componentNS}}</td>
      <td>{{component.componentName}}</td>
      <td>{{component.componentType}}</td>
@@ -57,12 +57,12 @@
 </tbody>
 </table>
 
-<div  *ngIf="openModal==true"  id="myModal2" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; background-color:lightskyblue'>
+<div  *ngIf="openModal==true"  id="myModal2" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
   	<!-- Modal content -->
     <div class="modal-content" style='width:650px' id='modelC'>
         <div class="modal-header">
-          <span class="close" id="closeId2" (click)='openModal=false' align='left'>&times;</span>
+          <span class="close" id="closeId2" (click)='openModal=false'  >&times;</span>
           <!-- <img src="peerpharm.png"  width='140px' align='left'> -->
           <h2 id='div_h3'>{{openModalHeader}}</h2><br>
           <!-- <div class='tabDiv' id='dTag' onclick="changeTag(details)" >פרטים</div><div  class='tabDiv' id='cTag' onclick="changeTag(changes)">רשימת תנועות</div> -->
