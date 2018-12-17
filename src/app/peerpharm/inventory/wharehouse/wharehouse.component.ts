@@ -77,6 +77,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   getFormData() {
+    debugger;
     let div = this.container.nativeElement;
     this.mainDivArr = [];
     let divArr = [];
@@ -393,7 +394,7 @@ export class WharehouseComponent implements OnInit {
             this.createInventoryRow("item", btnAdd, demandOrderId);
           });
           this.renderer.listen(btnRemove, 'click', () => {
-            this.deleteInventoryRow("item", btnRemove, demandOrderId);
+            this.deleteInventoryRow("item", btnRemove, rowDiv);
           });
           this.renderer.listen(btnShelf, 'click', () => {
             this.createInventoryRow("amount", btnShelf, demandOrderId)
@@ -421,7 +422,8 @@ export class WharehouseComponent implements OnInit {
       }
     }
 
-    deleteInventoryRow(type, a, demandOrderId){
+    deleteInventoryRow(type, a, rowDiv){
+      this.renderer.removeChild(this.renderer.parentNode(a), rowDiv);
 
       debugger;
     }
