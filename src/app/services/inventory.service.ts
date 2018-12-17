@@ -42,6 +42,7 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  // updating item shelfs
   updateInventoryChanges(qtyObj){
     var dataTosend={dataArr: qtyObj};
     let url = this.baseUrl + "itemShell/updateMulti";

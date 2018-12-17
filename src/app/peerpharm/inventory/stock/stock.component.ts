@@ -149,7 +149,8 @@ export class StockComponent implements OnInit {
 
   getCmptAmounts(cmpt){
     this.inventoryService.getAmountOnShelfs(cmpt).subscribe(res=>{
-      console.log(res);
+      debugger;
+      console.log("getCmptAmounts"+res);
     });
   }
 

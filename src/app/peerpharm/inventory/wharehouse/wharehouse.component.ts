@@ -20,8 +20,7 @@ export class WharehouseComponent implements OnInit {
   whareHouses: any = [];
   whareHouseId: string = ""; //wharehouse id for shelf update
   curentWhareHouseId: string = ""  //wharehouse id for qty update
-
-  curentWhareHouseName: string = "Main"  //wharehouse id to show
+  curentWhareHouseName: string = ""  //wharehouse id to show
   changeWh: boolean = false;
   shelfs: any = [];
   shelfsCopy: any = [];
@@ -35,16 +34,14 @@ export class WharehouseComponent implements OnInit {
   ngOnInit() {
     this.inventoryService.getWhareHousesList().subscribe(res => {
       let displayAllowedWH = [];
-      debugger;
         for (const wh of res) {
           if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
             displayAllowedWH.push(wh);
           }
         }
         this.whareHouses = displayAllowedWH;
-
-
-
+        this.curentWhareHouseId = displayAllowedWH[0]._id;
+        this.curentWhareHouseName = displayAllowedWH[0].name;
       console.log(res);
     })
   }
@@ -52,13 +49,11 @@ export class WharehouseComponent implements OnInit {
 
   dirSet(action, direction) {
     this.screen = action;
-    debugger;
     if (action == 'whManagment') {
 
       this.dir = 'managment';
       const childElements = this.container.nativeElement.children;
-      debugger;
-      for (let child of childElements) {
+        for (let child of childElements) {
         const elemnts = child.children;
         for (let elm of elemnts) {
           const mnts = elm.children;
@@ -90,7 +85,6 @@ export class WharehouseComponent implements OnInit {
   }
 
   getFormData() {
-    debugger;
     let div = this.container.nativeElement;
     this.mainDivArr = [];
     let divArr = [];
@@ -122,14 +116,16 @@ export class WharehouseComponent implements OnInit {
 
         }
         this.mainDivArr.push(itemData);
-        divArr = [];
+            divArr = [];
       }
     }
     console.log(this.mainDivArr);
     this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
-      console.log(res)
-      if (res != null) {
-
+      console.log("updateInventoryChanges res: "+res);
+        if (res != null) {
+          debugger
+      }else{
+        debugger;
       }
     });
   }
@@ -155,7 +151,6 @@ export class WharehouseComponent implements OnInit {
     //to upper case and remove spaces
     position = position.toUpperCase();
     position = position.replace(/\s/g, '');
-    debugger;
     if (this.whareHouseId == "") {
       this.response.body = "Pleae choose wharehose- נא לבחור מחסן"
       this.response.color = "red"
@@ -190,6 +185,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   setWhareHouse(whname) {
+    debugger
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
     this.curentWhareHouseId = this.whareHouses[i]._id;
     this.curentWhareHouseName = this.whareHouses[i].name;
@@ -238,7 +234,7 @@ export class WharehouseComponent implements OnInit {
     });
   }
 
-
+// ***************************************************************************************
   appendItems(number, demandOrderId) {
     let shelfsArr;
 
@@ -296,11 +292,10 @@ export class WharehouseComponent implements OnInit {
       this.createInventoryRow("item", btnAdd, demandOrderId);
     });
     this.renderer.listen(btnRemove, 'click', () => {
-      this.deleteInventoryRow("item", btnRemove, demandOrderId);
+      this.deleteInventoryRow("item", btnRemove, rowDiv);
     });
     this.renderer.listen(btnShelf, 'click', () => {
       this.createInventoryRow("amount", btnShelf, demandOrderId)
-
     });
 
 
@@ -318,20 +313,19 @@ export class WharehouseComponent implements OnInit {
 
 
     this.renderer.appendChild(this.container.nativeElement, rowDiv);
-
   }
+// ***************************************************************************************
 
 
+// ***************************************************************************************
   //pressing the add item icon
   createInventoryRow(type, a, demandOrderId) {
-    debugger;
     // let shelfsArr;
     //checking if there is an item number
     if (type == "amount" && this.renderer.parentNode(a).getElementsByTagName("input")[0].value == "") {
       alert("נא להכניס מק``ט")
     } else {
-      debugger;
-      //creating elements to variables
+        //creating elements to variables
       const rowDiv = this.renderer.createElement('div');
       const inputItem = this.renderer.createElement('input');
       const inputShelf = this.renderer.createElement('input');
@@ -407,14 +401,12 @@ export class WharehouseComponent implements OnInit {
         this.createInventoryRow("item", btnAdd, demandOrderId);
       });
       this.renderer.listen(btnRemove, 'click', () => {
-        this.deleteInventoryRow("item", btnRemove, demandOrderId);
+        this.deleteInventoryRow("item", btnRemove, rowDiv);
       });
       this.renderer.listen(btnShelf, 'click', () => {
         this.createInventoryRow("amount", btnShelf, demandOrderId)
 
       });
-
-
 
       this.renderer.appendChild(rowDiv, btnAdd);
       this.renderer.appendChild(rowDiv, inputItem);
@@ -430,8 +422,7 @@ export class WharehouseComponent implements OnInit {
       if (type == "amount") {
         this.renderer.appendChild(this.renderer.parentNode(a), rowDiv);
       } else {
-          debugger;
-          //creating elements to variables
+                //creating elements to variables
           const rowDiv = this.renderer.createElement('div');
           const inputItem = this.renderer.createElement('input');
           const inputShelf = this.renderer.createElement('input');
@@ -511,11 +502,8 @@ export class WharehouseComponent implements OnInit {
           });
           this.renderer.listen(btnShelf, 'click', () => {
             this.createInventoryRow("amount", btnShelf, demandOrderId)
-    
           });
-    
-    
-    
+  
           this.renderer.appendChild(rowDiv, btnAdd);
           this.renderer.appendChild(rowDiv, inputItem);
           this.renderer.appendChild(rowDiv, inputShelf);
@@ -535,11 +523,12 @@ export class WharehouseComponent implements OnInit {
       }
     }
   }
+// ***************************************************************************************
+
 
     deleteInventoryRow(type, a, rowDiv){
       this.renderer.removeChild(this.renderer.parentNode(a), rowDiv);
-
-    debugger;
+debugger
   }
 
 
