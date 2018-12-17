@@ -42,8 +42,11 @@ export class NavigationComponent implements AfterViewInit {
  
     if (!this.authService.loggedInUser) {
       this.authService.getLoggedInUser().subscribe(data => {
+        if(data)
+        {
         this.user = this.authService.loggedInUser;
         let newArr = [];
+    
         this.authService.loggedInUser.modules.forEach(elm => {
         
           let tempArr = this.sidebarnavItems.filter(e => e.title == elm);
@@ -51,6 +54,7 @@ export class NavigationComponent implements AfterViewInit {
             newArr.push(tempArr[0]);
         });
         this.sidebarnavItems = newArr;
+      }
         
 
       });

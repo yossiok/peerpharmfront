@@ -10,7 +10,7 @@ import * as moment from 'moment';
 export class ItemslistComponent implements OnInit {
   itemsCopy:any=[];
 
-  items:any[];
+  items:any[]=[];
   constructor(private itemsService:ItemsService) { }
 
   ngOnInit() {

@@ -58,12 +58,14 @@ import { TaskCardComponent } from './taskboard/board/shared/task-card/task-card.
 import { CreateBoardComponent } from './taskboard/board/create-board/create-board.component';
 import { SubtaskComponent } from './taskboard/subtask/subtask.component';
 import { SubTaskCardComponent } from './taskboard/board/shared/sub-task-card/sub-task-card.component';
+ 
 
 import { DndModule } from 'ng2-dnd';
 import { DatepickerModule } from 'angular2-material-datepicker';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { AuthService } from '../services/auth.service';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
+import { SpinnerComponent } from '../shared/spinner.component';
 @NgModule({
   exports: [
     MatInputModule
@@ -132,7 +134,8 @@ import { InventoryNewRequestComponent } from './inventory/inventory-new-request/
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
-    ChatComponent
+    ChatComponent 
+  
   ],
   providers:[ OrdersService, HttpClientModule]
 })

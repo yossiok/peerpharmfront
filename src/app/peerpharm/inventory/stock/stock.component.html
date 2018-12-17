@@ -4,12 +4,18 @@
 <button class='btn' (click)="newCmpt()">מוצר חדש</button>
 <br><br>
 
+<img  *ngIf="components.length==0" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+
+<div  *ngIf="components.length != 0">
+
+
+
   <div (click)='setType("component", this)' [ngStyle]="{'background-color': buttonColor}"  class="navtab">Components</div>
   <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div>
   <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" >Finished Products</div>
 
- 
 
+ 
 <table class='table'>
   <thead class='bg-info text-white'>
 <tr align='center'>
@@ -146,4 +152,6 @@
           <button id="newCbtn" (click)="writeNewComponent()">הקם מוצר</button>
           <button id="updateDataBtn" style='display:none'>עדכן מידע</button>
         </div>
-		  </div>		
+      </div>		
+      
+    </div>

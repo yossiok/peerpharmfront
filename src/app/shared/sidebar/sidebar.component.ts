@@ -50,6 +50,8 @@ export class SidebarComponent implements OnInit {
  
     if (!this.authService.loggedInUser) {
       this.authService.getLoggedInUser().subscribe(data => {
+        if(data)
+        {
         this.user = this.authService.loggedInUser;
         let newArr = [];
         this.authService.loggedInUser.modules.forEach(elm => {
@@ -59,7 +61,7 @@ export class SidebarComponent implements OnInit {
             newArr.push(tempArr[0]);
         });
         this.sidebarnavItems = newArr;
-        
+      }
 
       });
     }
