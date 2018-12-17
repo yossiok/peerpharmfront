@@ -9,6 +9,7 @@ export class UserInfo
     modules:string[];
     role:string;
     appPermissions:string[];
+    allowedWH:string[];
     allowedIPS:string[];
     phone:string;
     twoway:boolean;

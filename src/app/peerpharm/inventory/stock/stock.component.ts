@@ -80,22 +80,27 @@ export class StockComponent implements OnInit {
 
       this.componentsUnFiltered=   components.splice(0);
       this.components = components;
+      debugger;
       //why are we using set time out and not async await??
       setTimeout( ()=> {
+        debugger;
+        
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
           console.log(res);
-          this.components.forEach(cmpt => {
+          this.componentsUnFiltered.forEach(cmpt => {
          //  adding amounts to all components
             let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
             if(result!=undefined){
               console.log(result._id + " , " + cmpt.componentN);
               cmpt.amount = result.total;
             }
-          })
+          });
+          this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
+
         });
 
-      }, 3000);
+      }, 1000);
 
     });
   }
