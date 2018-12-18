@@ -1,4 +1,5 @@
-{{openModal}}<br>
+<!-- {{openModal}} -->
+<br>
 
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
 <button class='btn' (click)="newCmpt()">מוצר חדש</button>
@@ -48,10 +49,10 @@
      <td>{{component.amount}}</td>
      <td></td>
      <td></td>
-     <td><button (click)="getCmptAmounts(component.componentN)">A</button></td>
+     <td><button  (click)="getCmptAmounts(component.componentN)">צפיה בכמויות</button></td>
      <td><img [src]=component.img style='width:50px'></td>
-     <td><button *ngIf="component.procurementSent==true" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
-     <td><input type="number"  (keyup)="inputProcurment($event)"/><button (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></td>
+     <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
+     <td><input type="number"  (keyup)="inputProcurment($event)"/><button class="btn btn-success" (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></td>
      <td></td>
    </tr> 
 </tbody>
@@ -155,3 +156,48 @@
       </div>		
       
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<div  *ngIf="openAmountsModal==true"  id="myModal3" class="modal3" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
+
+  <!-- Modal content -->
+  <div class="modal-content" style='width:650px' id='modelC'>
+      <div class="modal-header">
+        <span class="close" id="closeId2" (click)='openAmountsModal=false'  >&times;</span>
+        <h2 id='div_h3'>{{openModalHeader}} כמויות</h2><br>
+      </div>
+      <div class="modal-body">
+        
+        <table id='detailsTable'>
+
+          <tbody id='changesTbody' dir='rtl'>
+          
+          </tbody>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <!-- <button id="newCbtn" (click)="writeNewComponent()">הקם מוצר</button>
+        <button id="updateDataBtn" style='display:none'>עדכן מידע</button> -->
+      </div>
+    </div>		
+    
+  </div>

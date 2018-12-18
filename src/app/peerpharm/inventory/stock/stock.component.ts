@@ -33,12 +33,14 @@ export class StockComponent implements OnInit {
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
   openModal: boolean = false;
+  openAmountsModal: boolean = false;
   openModalHeader:string;
   components: any[];
   componentsUnFiltered:any[];
   componentsAmount: any[];
   tempHiddenImgSrc:any;
   procurmentQnt:Number;
+  amountsModalData:any;
   // currentFileUpload: File; //for img upload creating new component
 
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
@@ -111,6 +113,12 @@ export class StockComponent implements OnInit {
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber)
   }
+  openAmountsData(cmptNumber) {
+    this.openModalHeader="פריט במלאי  "+ cmptNumber;
+    this.openAmountsModal = true;
+    console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
+    this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+  }
 
   newCmpt(){
     this.resCmpt = {
@@ -147,12 +155,7 @@ export class StockComponent implements OnInit {
 
   }
 
-  getCmptAmounts(cmpt){
-    this.inventoryService.getAmountOnShelfs(cmpt).subscribe(res=>{
-      debugger;
-      console.log("getCmptAmounts"+res);
-    });
-  }
+
 
 
   uploadImg(fileInputEvent){
@@ -169,7 +172,13 @@ export class StockComponent implements OnInit {
  
     })
 }
-
+getCmptAmounts(cmptN){
+  this.openAmountsData(cmptN);
+  this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
+    debugger;
+    console.log("getCmptAmounts"+res);
+  });
+}
 inputProcurment(event: any) { // without type info
   this.procurmentQnt = event.target.value ;
   debugger;

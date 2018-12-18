@@ -36,7 +36,7 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell?amounts=yes";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-
+  //get item amounts in Shelfs 
   getAmountOnShelfs(itemNubmer):Observable<any>{  
     let url = this.baseUrl + "itemShell?shelfsItemsAmounts=yes&itemNumber="+itemNubmer;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
