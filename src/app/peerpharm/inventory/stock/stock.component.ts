@@ -38,7 +38,7 @@ export class StockComponent implements OnInit {
   componentsUnFiltered:any[];
   componentsAmount: any[];
   tempHiddenImgSrc:any;
-
+  procurmentQnt:Number;
   // currentFileUpload: File; //for img upload creating new component
 
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
@@ -80,10 +80,8 @@ export class StockComponent implements OnInit {
 
       this.componentsUnFiltered=   components.splice(0);
       this.components = components;
-      debugger;
       //why are we using set time out and not async await??
       setTimeout( ()=> {
-        debugger;
         
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
@@ -103,6 +101,8 @@ export class StockComponent implements OnInit {
       }, 1000);
 
     });
+    console.log(this.components);
+    debugger;
   }
 
   openData(cmptNumber) {
@@ -168,6 +168,30 @@ export class StockComponent implements OnInit {
       }
  
     })
+}
+
+inputProcurment(event: any) { // without type info
+  this.procurmentQnt = event.target.value ;
+  debugger;
+}
+updateProcurment(componentId,componentNum,status){
+  debugger
+  if(status=="false"){
+    this.procurmentQnt=null;
+  }
+  let objToUpdate={
+    _id:componentId,
+    componentN:componentNum,
+    procurementSent:status,//האם בוצעה הזמנת רכש
+    procurementAmount:this.procurmentQnt,//כמות בהזמנת רכש
+  } 
+  this.inventoryService.updateComptProcurement(objToUpdate).subscribe(res=>{
+    if(res.ok!=0){
+
+    }
+    console.log("res updateComptProcurement: "+res);
+    debugger;
+  });
 }
 
   
