@@ -43,6 +43,9 @@ export class StockComponent implements OnInit {
   amountsModalData:any;
   itemAmountsData:any[];
   itemAmountsWh:any[];
+  newAllocationOrderNum:string;
+  newAllocationAmount:Number;
+  itemIdForAllocation:String;
   // currentFileUpload: File; //for img upload creating new component
 
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
@@ -116,11 +119,12 @@ export class StockComponent implements OnInit {
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     
   }
-  openAmountsData(cmptNumber) {
+  openAmountsData(cmptNumber, cmptId) {
     this.openModalHeader="כמויות פריט במלאי  "+ cmptNumber;
     this.openAmountsModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    this.itemIdForAllocation=cmptId;
   }
 
   newCmpt(){
@@ -175,7 +179,7 @@ export class StockComponent implements OnInit {
  
     })
 }
-getCmptAmounts(cmptN){
+getCmptAmounts(cmptN, cmptId){
 
   this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
     this.itemAmountsData=res.data;
@@ -183,7 +187,7 @@ getCmptAmounts(cmptN){
     debugger;
   });
 
-  this.openAmountsData(cmptN);
+  this.openAmountsData(cmptN, cmptId);
   debugger;
 }
 
@@ -210,6 +214,30 @@ updateProcurment(componentId,componentNum,status){
       console.log("res updateComptProcurement: "+res);
     }
   });
+}
+
+addItemStockAllocation(componentNum){
+  if(this.newAllocationOrderNum!=null && this.newAllocationAmount!=null){
+    let objToUpdate={
+      _id: this.itemIdForAllocation,
+      componentN:componentNum,
+      newAllocations:[{
+        relatedOrderN:this.newAllocationOrderNum,
+        amount:this.newAllocationAmount,
+        supplied:0
+        }
+      ],
+    }
+    this.inventoryService.updateComptAllocations(objToUpdate).subscribe(res=>{
+      if(res.ok!=0){
+        debugger;
+        console.log("res updateComptAllocations: "+res);
+      }
+    });
+  }
+  this.newAllocationOrderNum=null;
+  this.newAllocationAmount=null;
+  debugger;
 }
 
   

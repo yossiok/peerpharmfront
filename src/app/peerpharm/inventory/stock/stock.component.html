@@ -2,7 +2,7 @@
 <br>
 
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
-<button class='btn' (click)="newCmpt()">מוצר חדש</button>
+<button class='btn' (click)="newCmpt()">פריט חדש</button>
 <br><br>
 
 <img  *ngIf="components.length==0" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
@@ -12,8 +12,8 @@
 
 
   <div (click)='setType("component", this)' [ngStyle]="{'background-color': buttonColor}"  class="navtab">Components</div>
-  <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div>
-  <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" >Finished Products</div>
+  <!-- <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div>
+  <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" >Finished Products</div> -->
 
 
  
@@ -49,7 +49,7 @@
      <td>{{component.amount}}</td>
      <td></td>
      <td></td>
-     <td><button  (click)="getCmptAmounts(component.componentN)">צפיה בכמויות</button></td>
+     <td><button  (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
      <td><img [src]=component.img style='width:50px'></td>
      <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
      <td><input type="number"  (keyup)="inputProcurment($event)"/><button class="btn btn-success" (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></td>
@@ -187,34 +187,45 @@
       <div class="modal-body">
         <div *ngFor="let whName of itemAmountsWh">
             <h4><u>{{whName}}</u></h4>
-            <table id='amountsTable' >
-                <tbody id='amountsInWhTbody' align='center'>
-                    <tr >
-                        <th>מדף</th>
-                        <th>כמות</th>
-                        <!-- <th>מחסן</th> -->
-                    </tr>
-        
-                    <tr *ngFor="let shelfAmount of itemAmountsData">
-                      <td>{{shelfAmount.ps}}</td>
-                      <td>{{shelfAmount.sumShelfAmounts}}</td>
-                      <!-- <td>{{shelfAmount.wh}}</td> -->
-                    </tr>
-        
-                </tbody>
-                <!-- <tbody id='changesTbody' dir='rtl'>
-                </tbody> -->
-              </table>
+            <div class="container">
+                <table id='amountsTable' class="table" >
+                    <tbody id='amountsInWhTbody' align='center'>
+                        <tr >
+                            <th><b>מדף</b></th>
+                            <th><b>כמות</b></th>
+                            <!-- <th>מחסן</th> -->
+                        </tr>
+            
+                        <tr *ngFor="let shelfAmount of itemAmountsData">
+                          <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.ps}}</td>
+                          <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.sumShelfAmounts}}</td>
+                          <!-- <td>{{shelfAmount.wh}}</td> -->
+                        </tr>
+            
+                    </tbody>
+                    <!-- <tbody id='changesTbody' dir='rtl'>
+                    </tbody> -->
+                  </table>
+
+            </div>
+
+            
         </div>
       </div>
       <br>
-      <div *ngIf="resCmpt.allocation!=null">
-        <h4><u>הקצאות מלאי</u></h4>
+      <div class="container">
+        <h4>הקצאות מלאי</h4>
+          <label>מספר הזמנה</label>&nbsp;<input [(ngModel)]="newAllocationOrderNum" type="text" placeholder="Order number"/>&nbsp;
+          <label>כמות</label>&nbsp;<input [(ngModel)]="newAllocationAmount" type="number" placeholder="amount"/>&nbsp;<button class="btn-success" (click)="addItemStockAllocation(resCmpt.componentN)">הוסף</button>
+          <div *ngIf="resCmpt.allocation!=null">
+              <h4><u>הקצאות מלאי</u></h4>
+            </div>
+            <div *ngIf="resCmpt.allocation==null">
+                <h4><u>אין הקצאות מלאי</u></h4>
+              </div>
+      </div>
 
-      </div>
-      <div *ngIf="resCmpt.allocation==null">
-        <h4><u>אין הקצאות מלאי</u></h4>
-      </div>
+
       <div class="modal-footer">
         <!-- <button id="newCbtn" (click)="writeNewComponent()">הקם מוצר</button>
         <button id="updateDataBtn" style='display:none'>עדכן מידע</button> -->
