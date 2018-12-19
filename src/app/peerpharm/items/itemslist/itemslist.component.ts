@@ -9,6 +9,8 @@ import * as moment from 'moment';
 })
 export class ItemslistComponent implements OnInit {
   itemsCopy:any=[];
+  hasMoreItemsToload:boolean=true;
+ 
 
   items:any[]=[];
   constructor(private itemsService:ItemsService) { }
@@ -17,18 +19,24 @@ export class ItemslistComponent implements OnInit {
     this.getAllItems();
   }
 
-  getAllItems(){
 
-    this.itemsService.getAllItems().subscribe(items => {
-      
-      this.items=items;
-      this.itemsCopy=items;
-      this.items.map(item=>{
+
+  getAllItems(){
+    
+    
+    this.itemsService.startNewItemObservable().subscribe((items) => {
+      debugger;
+    items.map(item=>{
         item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
         item.licsensDate  = moment(item.licsensDate).format("DD/MM/YYYY");
       })
-      
-    });
+      this.items.push(...items); 
+      if(items.length<1000)
+      {
+        this.hasMoreItemsToload=false;
+      }
+      this.itemsCopy=this.items.slice();
+    } );
   
   }
 

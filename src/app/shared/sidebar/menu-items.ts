@@ -28,7 +28,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: '',
-    title: 'Orders',
+    title: 'menu.Orders',
     icon: 'fas fa-chart-line',
     class: 'has-arrow',
     extralink: false,

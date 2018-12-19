@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { UserInfo } from '../../peerpharm/taskboard/models/UserInfo';
+import { TranslateService } from '@ngx-translate/core';
 declare var $: any;
 
 @Component({
@@ -36,8 +37,13 @@ export class SidebarComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    public translate: TranslateService
+  ) {
+    translate.addLangs(['en', 'he']);
+    translate.setDefaultLang('he'); 
+    translate.use('he');
+   }
 
   // End open close
   ngOnInit() {

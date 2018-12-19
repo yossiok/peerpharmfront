@@ -64,6 +64,7 @@ td {
 {
     color:blue;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 #myModal3,#myModal2,.modal-content

@@ -1,5 +1,5 @@
  import { OrdersService } from '../services/orders.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,9 @@ import { AddFormuleComponent } from './formules/add-formule/add-formule.componen
 import { AddFormuleItemComponent } from './formules/add-formule-item/add-formule-item.component';
 import { PeerPharmRputs } from './peerpharm.routing';
 import { OrdersComponent } from './allorders/orders/orders.component';
-import { AllordersComponent } from './allorders/allorders/allorders.component';
+import { AllordersComponent } from './allorders/allorders/allorders.component'; 
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
 import {ScheduleComponent} from './schedule/filling/schedule.component'
@@ -66,11 +68,14 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { AuthService } from '../services/auth.service';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 import { SpinnerComponent } from '../shared/spinner.component';
+
+
 @NgModule({
   exports: [
     MatInputModule
   ],
   imports: [
+   
     CommonModule,
     RouterModule.forChild(PeerPharmRputs),
     ReactiveFormsModule,
