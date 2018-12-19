@@ -182,17 +182,38 @@
   <div class="modal-content" style='width:650px' id='modelC'>
       <div class="modal-header">
         <span class="close" id="closeId2" (click)='openAmountsModal=false'  >&times;</span>
-        <h2 id='div_h3'>{{openModalHeader}} כמויות</h2><br>
+        <h2 id='div_h3'>{{openModalHeader}}</h2><br>
       </div>
       <div class="modal-body">
+        <div *ngFor="let whName of itemAmountsWh">
+            <h4><u>{{whName}}</u></h4>
+            <table id='amountsTable' >
+                <tbody id='amountsInWhTbody' align='center'>
+                    <tr >
+                        <th>מדף</th>
+                        <th>כמות</th>
+                        <!-- <th>מחסן</th> -->
+                    </tr>
         
-        <table id='detailsTable'>
+                    <tr *ngFor="let shelfAmount of itemAmountsData">
+                      <td>{{shelfAmount.ps}}</td>
+                      <td>{{shelfAmount.sumShelfAmounts}}</td>
+                      <!-- <td>{{shelfAmount.wh}}</td> -->
+                    </tr>
+        
+                </tbody>
+                <!-- <tbody id='changesTbody' dir='rtl'>
+                </tbody> -->
+              </table>
+        </div>
+      </div>
+      <br>
+      <div *ngIf="resCmpt.allocation!=null">
+        <h4><u>הקצאות מלאי</u></h4>
 
-          <tbody id='changesTbody' dir='rtl'>
-          
-          </tbody>
-        </table>
-
+      </div>
+      <div *ngIf="resCmpt.allocation==null">
+        <h4><u>אין הקצאות מלאי</u></h4>
       </div>
       <div class="modal-footer">
         <!-- <button id="newCbtn" (click)="writeNewComponent()">הקם מוצר</button>

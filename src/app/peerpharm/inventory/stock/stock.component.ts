@@ -41,6 +41,8 @@ export class StockComponent implements OnInit {
   tempHiddenImgSrc:any;
   procurmentQnt:Number;
   amountsModalData:any;
+  itemAmountsData:any[];
+  itemAmountsWh:any[];
   // currentFileUpload: File; //for img upload creating new component
 
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
@@ -111,10 +113,11 @@ export class StockComponent implements OnInit {
     this.openModalHeader="פריט במלאי  "+ cmptNumber;
     this.openModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
-    this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber)
+    this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    
   }
   openAmountsData(cmptNumber) {
-    this.openModalHeader="פריט במלאי  "+ cmptNumber;
+    this.openModalHeader="כמויות פריט במלאי  "+ cmptNumber;
     this.openAmountsModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
@@ -173,12 +176,20 @@ export class StockComponent implements OnInit {
     })
 }
 getCmptAmounts(cmptN){
-  this.openAmountsData(cmptN);
+
   this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
+    this.itemAmountsData=res.data;
+    this.itemAmountsWh=res.whList;
     debugger;
-    console.log("getCmptAmounts"+res);
   });
+
+  this.openAmountsData(cmptN);
+  debugger;
 }
+
+
+
+
 inputProcurment(event: any) { // without type info
   this.procurmentQnt = event.target.value ;
   debugger;
@@ -196,10 +207,8 @@ updateProcurment(componentId,componentNum,status){
   } 
   this.inventoryService.updateComptProcurement(objToUpdate).subscribe(res=>{
     if(res.ok!=0){
-
+      console.log("res updateComptProcurement: "+res);
     }
-    console.log("res updateComptProcurement: "+res);
-    debugger;
   });
 }
 
