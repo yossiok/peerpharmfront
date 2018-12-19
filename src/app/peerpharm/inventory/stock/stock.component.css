@@ -14,7 +14,7 @@ div{
     margin-right: 5px;
     
     padding: 13px;
-    cursor: pointer;
+    /* cursor: pointer; */
     border:1;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;

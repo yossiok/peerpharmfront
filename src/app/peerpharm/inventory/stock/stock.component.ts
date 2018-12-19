@@ -221,7 +221,7 @@ addItemStockAllocation(componentNum){
     let objToUpdate={
       _id: this.itemIdForAllocation,
       componentN:componentNum,
-      newAllocations:[{
+      allocations:[{
         relatedOrderN:this.newAllocationOrderNum,
         amount:this.newAllocationAmount,
         supplied:0

@@ -214,13 +214,36 @@
       </div>
       <br>
       <div class="container">
-        <h4>הקצאות מלאי</h4>
+        <h3>הקצאות מלאי</h3>
           <label>מספר הזמנה</label>&nbsp;<input [(ngModel)]="newAllocationOrderNum" type="text" placeholder="Order number"/>&nbsp;
           <label>כמות</label>&nbsp;<input [(ngModel)]="newAllocationAmount" type="number" placeholder="amount"/>&nbsp;<button class="btn-success" (click)="addItemStockAllocation(resCmpt.componentN)">הוסף</button>
-          <div *ngIf="resCmpt.allocation!=null">
-              <h4><u>הקצאות מלאי</u></h4>
+          
+          <div *ngIf="resCmpt.allocations!=null" >
+              <div class="container">
+                  <h4><u>הקצאות קיימות לפריט</u></h4>
+                <table id='allocationsTable' class="table" >
+                    <tbody id='allocationsTBody' align='center'>
+                        <tr >
+                            <th><b>מספר הזמנה</b></th>
+                            <th><b>כמות</b></th>
+                            <th><b>סופק</b></th>
+                        </tr>
+            
+                        <tr *ngFor="let allocation of resCmpt.allocations">
+                          <td >{{allocation.relatedOrderN}}</td>
+                          <td >{{allocation.amount}}</td>
+                          <td >{{allocation.supplied}}</td>
+                        </tr>
+            
+                    </tbody>
+                    <!-- <tbody id='changesTbody' dir='rtl'>
+                    </tbody> -->
+                  </table>
+
             </div>
-            <div *ngIf="resCmpt.allocation==null">
+
+            </div>
+            <div *ngIf="resCmpt.allocations==null">
                 <h4><u>אין הקצאות מלאי</u></h4>
               </div>
       </div>
