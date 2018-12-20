@@ -374,14 +374,16 @@ procurementRecommendations(){
 
   switchModalView()
   {
+    this.inventoryService.getItemMovements(this.resCmpt.componentN).subscribe(data=>
+      {
+        this.itemMovements=data;
+      });
+      
     if(!this.showItemDetails)
     {
       this.showItemDetails=true;
       this.itemmoveBtnTitle="Item movements";
-      this.inventoryService.getItemMovements(this.resCmpt.componentN).subscribe(data=>
-        {
-          this.itemMovements=data;
-        })
+     
     }
     else
     {

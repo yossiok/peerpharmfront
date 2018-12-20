@@ -77,7 +77,7 @@
         <button class="btn btn-primary" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
         <!-- <div class='tabDiv' id='dTag' onclick="changeTag(details)" >פרטים</div><div  class='tabDiv' id='cTag' onclick="changeTag(changes)">רשימת תנועות</div> -->
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
         <div *ngIf="showItemDetails">
           <table id='detailsTable'>
             <tbody id='detailsTbody'>
@@ -173,7 +173,19 @@
         </div>
         <div *ngIf="!showItemDetails">
           <h5>Item Movements</h5>
-          <table class="table table-stipped">
+          <div *ngIf="itemMovements.length==0">
+            <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
+                movements...</b></span>
+            <br />
+          </div>
+          <table class="table table-stipped" style="direction:ltr;text-align:left ">
+
+            <tr>
+              <th>Amount</th>
+              <th>Movement Type</th>
+              <th>Date</th>
+              <th>Shelf In WhareHouse</th>
+            </tr> 
             <tr *ngFor="let itemMovement of itemMovements">
               <td>{{itemMovement.amount}}</td>
               <td>{{itemMovement.movementType}}</td>
