@@ -82,6 +82,10 @@ export class InventoryService {
     let url = this.baseUrl + "component/update?allocation=yes";
     return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
   }
+  sumItemAllocations(){
+    // let url = this.baseUrl + "component/update?allocation=yes";
+    // return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
+  }
   //MOVED TO: inventory-request.service.ts
   // getInventoryDemandsList(){
   //   let url = this.baseUrl + "itemsDemand";

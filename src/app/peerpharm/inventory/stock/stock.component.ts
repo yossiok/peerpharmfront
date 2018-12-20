@@ -100,10 +100,23 @@ export class StockComponent implements OnInit {
               console.log(result._id + " , " + cmpt.componentN);
               cmpt.amount = result.total;
             }
+
+            if(cmpt.allocations.length>0){
+              let itemAllocSum=0;
+              cmpt.allocations.forEach(alloc=>{
+                itemAllocSum= itemAllocSum+alloc.amount;
+              });
+              cmpt.allocAmount=itemAllocSum;
+              debugger
+            }
+
+
           });
           this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
 
         });
+
+
 
       }, 1000);
 

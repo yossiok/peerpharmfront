@@ -47,7 +47,7 @@
      <td>{{component.componentName}}</td>
      <td>{{component.componentType}}</td>
      <td>{{component.amount}}</td>
-     <td></td>
+     <td><div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div></td>
      <td></td>
      <td><button  (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
      <td><img [src]=component.img style='width:50px'></td>
