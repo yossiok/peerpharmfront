@@ -199,3 +199,8 @@ button.toast-close-button {
     width: 25em;
   }
 }
+
+.navbar-collapse
+{
+  margin-left:0px !important;
+}

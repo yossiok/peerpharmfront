@@ -4,9 +4,11 @@
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
 <button class='btn' (click)="newCmpt()">פריט חדש</button>
 <br><br>
-
-<img  *ngIf="components.length==0" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
-
+ 
+<div *ngIf="components.length==0">
+  <img  style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading items...</b></span>
+  <br/> 
+</div>
 <div  *ngIf="components.length != 0">
 
 

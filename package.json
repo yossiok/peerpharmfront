@@ -23,6 +23,8 @@
     "@angular/platform-browser-dynamic": "^6.0.9",
     "@angular/router": "^6.0.9",
     "@ng-bootstrap/ng-bootstrap": "^2.2.0",
+    "@ngx-translate/core": "^11.0.1",
+    "@ngx-translate/http-loader": "^4.0.0",
     "@types/socket.io-client": "^1.4.32",
     "angular-draggable-droppable": "^3.0.1",
     "angular2-material-datepicker": "^0.5.0",

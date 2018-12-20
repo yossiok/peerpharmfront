@@ -1,7 +1,11 @@
 
 
   <input matInput  placeholder="Item name" (keyup)="changeText($event)" />
-  <img  *ngIf="items.length==0" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+  <div  *ngIf="hasMoreItemsToload">
+    <img  style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading more items...</b></span>
+    <br/> 
+  </div>
+  <span><b>showing {{items.length}} items</b></span>
 <table class='table'>
   <thead class='bg-info text-white'>
 

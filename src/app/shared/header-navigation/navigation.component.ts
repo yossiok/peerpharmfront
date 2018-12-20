@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './../../services/auth.service';
 import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { ROUTES } from '../sidebar/menu-items';
@@ -31,7 +32,13 @@ export class NavigationComponent implements AfterViewInit {
   user: UserInfo;
   public sidebarnavItems: any[];
  
-  constructor(private modalService: NgbModal, private authService: AuthService) { }
+  constructor(private modalService: NgbModal, private authService: AuthService ,   public translate: TranslateService
+    ) {
+      translate.addLangs(['en', 'iw']);
+      translate.setDefaultLang('iw');
+      const browserLang = translate.getBrowserLang();
+      translate.use(browserLang.match(/en|he/) ? browserLang : 'iw');
+     }
   ngOnInit() {
     this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
     this.authService.userEventEmitter.subscribe(data => {
