@@ -13,7 +13,7 @@
   </thead>
   <ng-container *ngFor="let demand of ordersDemands; let i =index">
     <tr>
-      <td>{{i}}</td>
+      <td>{{i+1}}</td>
       <td><a  (click)="getDetails(demand._id, demand.reqNum)" style='color: blue; cursor: pointer;'>{{demand.reqNum}}</a></td>
       <td>{{demand.deliveryDate}}</td>
       <td>{{demand.fromWH}}</td>

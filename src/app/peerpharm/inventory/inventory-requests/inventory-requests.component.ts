@@ -20,41 +20,19 @@ export class InventoryRequestsComponent implements OnInit {
     this.getAllGeneralDemands();
   }
 
-
-  // getAllGeneralDemands(){
-  //   this.inventoryReqService.getInventoryDemandsList().subscribe(res=>{
-  //       console.log(res);
-  //       debugger;
-  //       //res= allorders from itemsDemands table
-  //       res.forEach(element => {
-  //        element.components.map(item => {
-  //      //   item.cmptN="0";
-  //         item.isSelected=false;
-  //         //Object.assign({ isSelected: false }, item);
-  //       })
-  //         console.log(element.components);
-  //       });
-        
-  //       this.ordersDemands=res;
-  //       console.log( this.ordersDemands)
-  //   })
-  // }
   getAllGeneralDemands(){
-    this.inventoryReqService.getInventoryRequestsList().subscribe(res=>{
+    this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
         console.log(res);
-        debugger;
         //res= allorders from itemsDemands table
         res.forEach(InvRequest => {
          InvRequest.reqList.map(item => {
        //   item.cmptN="0";
-          item.isSelected=false;
-          //Object.assign({ isSelected: false }, item);
-        })
-          console.log(InvRequest.reqList);
+            item.isSelected=false;
+            //Object.assign({ isSelected: false }, item);
+          })
         });
-        
+        debugger
         this.ordersDemands=res;
-        console.log( this.ordersDemands);
     })
   }
 

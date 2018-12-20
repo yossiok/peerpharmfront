@@ -53,7 +53,7 @@
         </select>&nbsp;&nbsp;
         <span (click)="changeCurentWh()">{{curentWhareHouseName}} Wharehouse</span><br>
     </div>
-    
+    <br>
     <div *ngIf="dir!='' && dir!='managment'">
       <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp;
       <button class="btn btn-warning" (click)="resetForm()">Reset / אפס</button>&nbsp;&nbsp;

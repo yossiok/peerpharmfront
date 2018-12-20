@@ -36,6 +36,10 @@ export class InventoryRequestService {
     let url = this.baseUrl + "inventoryRequest";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getOpenInventoryRequestsList():Observable<any> {
+    let url = this.baseUrl + "inventoryRequest?open=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
     //************************************************************* */
 
 

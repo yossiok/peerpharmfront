@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
 import * as moment from 'moment';
 import { DISABLED } from '@angular/forms/src/model';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-inventory-new-request',
@@ -32,7 +34,7 @@ export class InventoryNewRequestComponent implements OnInit {
     reqStatus:'',
   }
 
-  constructor(private fb: FormBuilder, private inventoryReqService: InventoryRequestService) { 
+  constructor(private fb: FormBuilder, private inventoryReqService: InventoryRequestService, private toastSrv: ToastrService) { 
 
     this.inventoryReqForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -83,46 +85,56 @@ export class InventoryNewRequestComponent implements OnInit {
         debugger;
         console.log(res);
       });
+    }else{
+      this.toastSrv.error("Failed pleae finish filling the form");
     }
 
   }
 
 
   async addItemToRequsetList(reqItemLine){
-
+debugger
     //validating order number
     let validOrderN=false;
     if(reqItemLine.relatedOrder!=""){
-      await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe(res => { 
-        if(res){
+      await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
+        if(res.length>0){
           validOrderN=true;
-        }
-      });
-    }else{
-      validOrderN=true;
-    }
-    //validating item number
-    if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" && validOrderN ){
-       await this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(res => {
-      console.log("checkIfComptNumExist res:"+res);
-      debugger;
-      typeof(res);
-      if(res){
-          let reqListItem={
-            itemNumber:reqItemLine.itemNumInput,
-            itemName:res.componentName,
-            amount:reqItemLine.itemAmount,
-            relatedOrder:reqItemLine.relatedOrder,
+          debugger
+           //validating item number
+          if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" && validOrderN ){
+            debugger
+             this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(res => {
+            console.log("checkIfComptNumExist res:"+res[0]);
+            debugger;
+            if(res.length>0){
+                let reqListItem={
+                  itemNumber:reqItemLine.itemNumInput,
+                  itemName:res[0].componentName,
+                  amount:reqItemLine.itemAmount,
+                  relatedOrder:reqItemLine.relatedOrder,
+                }
+                debugger;
+                this.reqList.push(reqListItem);
+                debugger;
+                this.itemLine.controls.itemNumInput.setValue('');
+                this.itemLine.controls.itemAmount.setValue('');
+                this.itemLine.controls.relatedOrder.setValue('');
+              }else{
+                validOrderN=false;
+                this.toastSrv.error("Failed wrong item number");
+              }
+            });
           }
-          debugger;
-          this.reqList.push(reqListItem);
-          debugger;
-          this.itemLine.controls.itemNumInput.setValue('');
-          this.itemLine.controls.itemAmount.setValue('');
-          this.itemLine.controls.relatedOrder.setValue('');
+
+        }else{
+          validOrderN=false;
+          this.toastSrv.error("Failed wrong order number");
         }
       });
     }
+debugger  
+
   }
 
   deleteRow(itemNum,itemAmout){
@@ -131,11 +143,6 @@ export class InventoryNewRequestComponent implements OnInit {
         object.splice(index, 1)
       }
     });
-
   }
 
 }
-
-
-
-
