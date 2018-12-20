@@ -12,6 +12,9 @@ import { HttpRequest } from '@angular/common/http';
 })
 export class StockComponent implements OnInit {
  // resCmpt: any;
+ itemmoveBtnTitle:string="Item Movements";
+ showItemDetails:boolean=true;
+ itemMovements:any=[];
   resCmpt:any = {
     componentN:'',
     componentName:'',
@@ -367,6 +370,25 @@ procurementRecommendations(){
 
 
   showDialog() {
+  }
+
+  switchModalView()
+  {
+    if(!this.showItemDetails)
+    {
+      this.showItemDetails=true;
+      this.itemmoveBtnTitle="Item movements";
+      this.inventoryService.getItemMovements(this.resCmpt.componentN).subscribe(data=>
+        {
+          this.itemMovements=data;
+        })
+    }
+    else
+    {
+      this.showItemDetails=false;
+      this.itemmoveBtnTitle="Back to item details";
+
+    }
   }
   
 }
