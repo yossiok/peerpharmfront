@@ -57,6 +57,7 @@ export class StockComponent implements OnInit {
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
 
   ngOnInit() {
+    this.components=[]; 
     this.getAllComponents();
 
   }
@@ -217,7 +218,7 @@ getCmptAmounts(cmptN, cmptId){
 
 inputProcurment(event: any) { // without type info
   this.procurementInputEvent=event;
-  this.procurmentQnt = event.target.value ;
+  this.procurmentQnt = event.target.value;
   debugger;
 }
 updateProcurment(componentId,componentNum,status){
@@ -233,7 +234,6 @@ updateProcurment(componentId,componentNum,status){
   } 
   this.inventoryService.updateComptProcurement(objToUpdate).subscribe(res=>{
     if(res.ok!=0 && res.n!=0){
-      this.procurementInputEvent.target.value='';
       console.log("res updateComptProcurement: "+res);
           this.components.map(item=>{
           if(item._id==componentId){
@@ -241,6 +241,7 @@ updateProcurment(componentId,componentNum,status){
             if(this.procurmentQnt==null){
               item.procurementSent=false;
               }else{
+                this.procurementInputEvent.target.value='';
                 item.procurementSent=true;
               }
           }
@@ -323,6 +324,11 @@ deleteItemStockAllocation(cmptId,rowIndex) {
       }
     });
   }
+}
+
+procurementRecommendations(){
+  let recommendList=this.components.filter(cmpt=> cmpt.minimumStock < cmpt.amountKasem+cmpt.amountRH);
+  this.components=recommendList;
   debugger;
 }
 

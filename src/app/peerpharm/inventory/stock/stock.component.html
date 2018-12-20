@@ -2,7 +2,9 @@
 <br>
 
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
-<button class='btn' (click)="newCmpt()">פריט חדש</button>
+<button class='btn btn-primary' (click)="newCmpt()"><b>פריט חדש</b></button> &nbsp;&nbsp; 
+<button class="btn btn-info" (click)="procurementRecommendations()"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp; 
+<button class="btn btn-info" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>
 <br><br>
  
 <div *ngIf="components.length==0">
