@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
@@ -46,6 +46,12 @@ export class StockComponent implements OnInit {
   newAllocationOrderNum:string;
   newAllocationAmount:Number;
   itemIdForAllocation:String;
+  EditRowId: any = "";
+  procurementInputEvent:any;
+
+  @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
+  // @ViewChild('procurmentInput') procurmentInput: ElementRef;
+
   // currentFileUpload: File; //for img upload creating new component
 
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
@@ -124,6 +130,8 @@ export class StockComponent implements OnInit {
     console.log(this.components);
     debugger;
   }
+
+
 
   openData(cmptNumber) {
     this.openModalHeader="פריט במלאי  "+ cmptNumber;
@@ -208,6 +216,7 @@ getCmptAmounts(cmptN, cmptId){
 
 
 inputProcurment(event: any) { // without type info
+  this.procurementInputEvent=event;
   this.procurmentQnt = event.target.value ;
   debugger;
 }
@@ -223,8 +232,19 @@ updateProcurment(componentId,componentNum,status){
     procurementAmount:this.procurmentQnt,//כמות בהזמנת רכש
   } 
   this.inventoryService.updateComptProcurement(objToUpdate).subscribe(res=>{
-    if(res.ok!=0){
+    if(res.ok!=0 && res.n!=0){
+      this.procurementInputEvent.target.value='';
       console.log("res updateComptProcurement: "+res);
+          this.components.map(item=>{
+          if(item._id==componentId){
+            item.procurementAmount=objToUpdate.procurementAmount;
+            if(this.procurmentQnt==null){
+              item.procurementSent=false;
+              }else{
+                item.procurementSent=true;
+              }
+          }
+        });
     }
   });
 }
@@ -242,14 +262,67 @@ addItemStockAllocation(componentNum){
       ],
     }
     this.inventoryService.updateComptAllocations(objToUpdate).subscribe(res=>{
-      if(res.ok!=0){
+      if(res.ok!=0 && res.n!=0){
         debugger;
         console.log("res updateComptAllocations: "+res);
+        this.resCmpt.allocations.push(objToUpdate.allocations[0]);
+        this.resCmpt.allocAmount+=objToUpdate.allocations[0].amount;
       }
     });
   }
   this.newAllocationOrderNum=null;
   this.newAllocationAmount=null;
+  debugger;
+}
+edit(index) {
+  this.EditRowId = index;
+}
+saveAllocEdit(cmptId,rowIndex) {
+  //not in use now
+  debugger;
+  // "suppliedAlloc": this.suppliedAlloc.nativeElement.value,
+
+}
+editItemStockAllocationSupplied(cmptId,rowIndex){
+  debugger;
+  let oldAllocationsArr=this.resCmpt.allocations;
+  let newSupplied=this.suppliedAlloc.nativeElement.value;
+  oldAllocationsArr[this.EditRowId].supplied=newSupplied;
+  let newAllocationsArr=oldAllocationsArr;
+  let objToUpdate={
+    _id: this.itemIdForAllocation,
+    allocations:newAllocationsArr,
+    }
+  debugger;
+  this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
+    if(res.ok!=0 && res.n!=0){
+      debugger;
+      console.log("res updateCompt: "+res);
+      this.EditRowId='';
+      this.resCmpt.allocations=newAllocationsArr;
+    }
+  });
+}
+
+
+
+deleteItemStockAllocation(cmptId,rowIndex) {
+  debugger
+  let amountDeleted=this.resCmpt.allocations[rowIndex].amount;
+  let newAllocationsArr=this.resCmpt.allocations.splice(rowIndex-1, 1);
+  let objToUpdate={
+    _id: this.itemIdForAllocation,
+    allocations:newAllocationsArr,
+    }
+  if (confirm("מחיקת הקצאה")) {
+    this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
+      if(res.ok!=0){
+        debugger;
+        console.log("res updateCompt: "+res);
+        this.resCmpt.allocAmount-=amountDeleted;
+      }
+    });
+  }
   debugger;
 }
 

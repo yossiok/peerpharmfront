@@ -54,7 +54,7 @@
      <td><button  (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
      <td><img [src]=component.img style='width:50px'></td>
      <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
-     <td><input type="number"  (keyup)="inputProcurment($event)"/><button class="btn btn-success" (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></td>
+     <td><input #procurmentInput type="number"  (keyup)="inputProcurment($event)"/><button class="btn btn-success" (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></td>
      <td></td>
    </tr> 
 </tbody>
@@ -225,16 +225,24 @@
                   <h4><u>הקצאות קיימות לפריט</u></h4>
                 <table id='allocationsTable' class="table" >
                     <tbody id='allocationsTBody' align='center'>
-                        <tr >
+                        <tr >                          
+                            <th></th>
+                            <th><b>#</b></th>
                             <th><b>מספר הזמנה</b></th>
                             <th><b>כמות</b></th>
                             <th><b>סופק</b></th>
                         </tr>
             
-                        <tr *ngFor="let allocation of resCmpt.allocations">
+                        <tr *ngFor="let allocation of resCmpt.allocations ; let i = index">                      
+                          <td ><button (click)="deleteItemStockAllocation(resCmpt._id,i)">מחק</button></td>
+                          <td >{{i+1}}</td>
                           <td >{{allocation.relatedOrderN}}</td>
                           <td >{{allocation.amount}}</td>
-                          <td >{{allocation.supplied}}</td>
+                          <td *ngIf="i!==EditRowId" (click)="edit(i)">{{allocation.supplied}}</td>
+                          <td *ngIf="i===EditRowId">
+                            <input #suppliedAlloc type='text' [value]="allocation.supplied" style='width:170px'>
+                            <button (click)="editItemStockAllocationSupplied(resCmpt._id,i)">עדכן</button>
+                          </td>
                         </tr>
             
                     </tbody>

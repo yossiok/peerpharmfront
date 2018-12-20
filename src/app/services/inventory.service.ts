@@ -73,6 +73,10 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  updateCompt(objToUpdate){
+    let url = this.baseUrl + "component/update";
+    return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
+  }
   updateComptProcurement(objToUpdate){
     let url = this.baseUrl + "component/update?procurement=yes";
     return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
