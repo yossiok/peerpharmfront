@@ -68,6 +68,7 @@ import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { AuthService } from '../services/auth.service';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 import { SpinnerComponent } from '../shared/spinner.component';
+import { HeadingsWHPipe } from '../pipes/headings-wh.pipe';
 
 
 @NgModule({
@@ -139,7 +140,8 @@ import { SpinnerComponent } from '../shared/spinner.component';
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
-    ChatComponent 
+    ChatComponent ,
+    HeadingsWHPipe
   
   ],
   providers:[ OrdersService, HttpClientModule]

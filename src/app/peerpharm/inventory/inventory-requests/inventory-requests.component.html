@@ -5,7 +5,7 @@
       <th>Order</th>
       <th>date</th>
       <th>WhareHouse</th>
-      <th></th>
+      <th>Status</th>
       <th>
         <img src='assets/images/move.png' class='imgBtn' (click)="loadItems()">
       </th>
@@ -17,6 +17,7 @@
       <td><a  (click)="getDetails(demand._id, demand.reqNum)" style='color: blue; cursor: pointer;'>{{demand.reqNum}}</a></td>
       <td>{{demand.deliveryDate}}</td>
       <td>{{demand.fromWH}}</td>
+      <td>{{demand.reqStatus}}</td>
     </tr>
     
     <tr *ngIf="demand._id== EditRowId2nd && expand==true;">   
@@ -26,7 +27,7 @@
       <th class="cmptTh">Amount</th>
       <!-- <th class="cmptTh">Allocation</th> -->
       <th class="cmptTh">Supplied</th>
-      <th class="cmptTh">Done</th>
+      <!-- <th class="cmptTh">Done</th> -->
     </tr>
       <ng-container *ngFor="let cmpt of demand.reqList;" >
           <tr *ngIf="demand._id== EditRowId2nd && expand==true;">
@@ -35,8 +36,8 @@
             <td>{{demand.deliveryDate}}</td>
             <td>{{cmpt.amount}}</td>
             <!-- <td>{{cmpt.allocation}}</td> -->
-            <td>{{cmpt.suplied}}</td>
-            <td>V AutoTBD</td>
+            <td>{{cmpt.supplied}}</td>
+            <!-- <td>V AutoTBD</td> -->
           </tr>
       </ng-container>
     

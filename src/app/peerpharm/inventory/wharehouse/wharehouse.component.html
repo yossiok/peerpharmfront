@@ -41,7 +41,7 @@
     </table>
 
     <div>
-      {{dir}}
+      <h2>{{ dir | headingsWH  }}</h2>
     </div>
 
     <br>
@@ -53,7 +53,6 @@
         </select>&nbsp;&nbsp;
         <span (click)="changeCurentWh()">{{curentWhareHouseName}} Wharehouse</span><br>
     </div>
-    <br>
     
     <div *ngIf="dir!='' && dir!='managment'">
       <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp;

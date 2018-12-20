@@ -34,10 +34,11 @@ export class NavigationComponent implements AfterViewInit {
  
   constructor(private modalService: NgbModal, private authService: AuthService ,   public translate: TranslateService
     ) {
-      translate.addLangs(['en', 'iw']);
-      translate.setDefaultLang('iw');
+      translate.addLangs(['en', 'he']);
+      translate.setDefaultLang('he');
       const browserLang = translate.getBrowserLang();
-      translate.use(browserLang.match(/en|he/) ? browserLang : 'iw');
+      translate.use(browserLang.match(/en|he/) ? browserLang : 'he');
+    
      }
   ngOnInit() {
     this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);

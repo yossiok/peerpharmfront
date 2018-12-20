@@ -115,6 +115,7 @@ export class StockComponent implements OnInit {
               let itemAllocSum=0;
               cmpt.allocations.forEach(alloc=>{
                 itemAllocSum= itemAllocSum+alloc.amount;
+                itemAllocSum= itemAllocSum-alloc.supplied;
               });
               cmpt.allocAmount=itemAllocSum;
               debugger
@@ -304,7 +305,15 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
       console.log("res updateCompt: "+res);
       this.EditRowId='';
       this.resCmpt.allocations=newAllocationsArr;
-    }
+        let itemAllocSum=0;
+        this.resCmpt.allocations.forEach(alloc=>{
+          itemAllocSum= itemAllocSum+alloc.amount;
+          itemAllocSum= itemAllocSum-alloc.supplied;
+debugger
+        });
+        this.resCmpt.allocAmount=itemAllocSum;
+        debugger
+      }
   });
 }
 
@@ -312,13 +321,14 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
 
 deleteItemStockAllocation(cmptId,rowIndex) {
   debugger
-  let amountDeleted=this.resCmpt.allocations[rowIndex].amount;
-  let newAllocationsArr=this.resCmpt.allocations.splice(rowIndex-1, 1);
-  let objToUpdate={
-    _id: this.itemIdForAllocation,
-    allocations:newAllocationsArr,
-    }
+
   if (confirm("מחיקת הקצאה")) {
+    let amountDeleted=this.resCmpt.allocations[rowIndex].amount;
+    let newAllocationsArr=this.resCmpt.allocations.splice(rowIndex-1, 1);
+    let objToUpdate={
+      _id: this.itemIdForAllocation,
+      allocations:newAllocationsArr,
+      }
     this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
       if(res.ok!=0){
         debugger;
