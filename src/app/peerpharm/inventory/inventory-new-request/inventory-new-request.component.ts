@@ -41,7 +41,7 @@ export class InventoryNewRequestComponent implements OnInit {
       reqNum: [{value: Number, disabled: true}, Validators.required],
       fromWH: ["", Validators.required],
       toWH: ["", Validators.required],
-      currDate: [Date, Validators.required],
+      currDate: [this.currentDate(), Date, Validators.required],
       deliveryDate: [Date, Validators.required],
       reqList: [Array],
     });
@@ -93,7 +93,7 @@ export class InventoryNewRequestComponent implements OnInit {
 
 
   async addItemToRequsetList(reqItemLine){
-debugger
+
     //validating order number
     let validOrderN=false;
     if(reqItemLine.relatedOrder!=""){
@@ -143,6 +143,11 @@ debugger
         object.splice(index, 1)
       }
     });
+  }
+
+  currentDate() {
+    const currentDate = new Date();
+    return currentDate.toISOString().substring(0,10);
   }
 
 }
