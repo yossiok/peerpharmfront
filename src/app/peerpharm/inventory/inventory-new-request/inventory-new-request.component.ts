@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 
 })
 export class InventoryNewRequestComponent implements OnInit {
-  newReqNumber:Number;
+  newReqNumber:number;
   inventoryReqForm: FormGroup;
   itemLine: FormGroup;
   reqList:Array<any>=[];// to show added items to request
@@ -38,7 +38,7 @@ export class InventoryNewRequestComponent implements OnInit {
 
     this.inventoryReqForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
-      reqNum: [{value: Number, disabled: true}, Validators.required],
+      reqNum: [{value:Number}],
       fromWH: ["", Validators.required],
       toWH: ["", Validators.required],
       currDate: [this.currentDate(), Date, Validators.required],
@@ -69,21 +69,31 @@ export class InventoryNewRequestComponent implements OnInit {
   }
 
   addNewRequest(form){
+    //setValue(this.newReqNumber);
+
+    // this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
+    // form.reqNum.setValue(this.newReqNumber);
+    // form.controls.reqNum.setValue(this.newReqNumber);
     debugger
+    this.inventoryReqForm.value.reqNum;
     if(this.inventoryReqForm.valid){
       this.invReq={
-        reqNum: form.reqNum,
-        fromWH:form.fromWH,
-        toWH: form.toWH,
-        currDate: form.currDate,   
-        deliveryDate: form.deliveryDate,   
-        reqList:this.reqList,
+        reqNum: this.inventoryReqForm.value.reqNum,
+        fromWH:this.inventoryReqForm.value.fromWH,
+        toWH: this.inventoryReqForm.value.toWH,
+        currDate: this.inventoryReqForm.value.currDate,   
+        deliveryDate: this.inventoryReqForm.value.deliveryDate,   
+        reqList:this.inventoryReqForm.value.reqList,
         itemsType: 'components', 
         reqStatus:'open',
       }
       this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
         debugger;
-        console.log(res);
+        if(res){
+          this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" wharehouse.");
+          //error("Failed pleae finish filling the form");
+          console.log(res);
+        }
       });
     }else{
       this.toastSrv.error("Failed pleae finish filling the form");
