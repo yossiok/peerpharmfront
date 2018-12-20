@@ -93,6 +93,7 @@ export class WharehouseComponent implements OnInit {
 
       console.log(innerDiv.value);
       if (innerDiv.value.length > 0) {
+       debugger;
         divArr.push(innerDiv.value);
       }
       else {
@@ -105,7 +106,7 @@ export class WharehouseComponent implements OnInit {
           actionType: this.dir,
           whareHouse: this.curentWhareHouseId,
         }
-        debugger
+        
         if (this.dir == "shellChange") { // if it's for shellChange
           //   Object.assign({newShelf:divArr[3]}, itemData);
           itemData.newShelf = divArr[3];
@@ -123,9 +124,9 @@ export class WharehouseComponent implements OnInit {
     this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
       console.log("updateInventoryChanges res: "+res);
         if (res != null) {
-          debugger
+          
       }else{
-        debugger;
+        ;
       }
     });
   }
@@ -185,7 +186,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   setWhareHouse(whname) {
-    debugger
+    
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
     this.curentWhareHouseId = this.whareHouses[i]._id;
     this.curentWhareHouseName = this.whareHouses[i].name;
@@ -223,7 +224,7 @@ export class WharehouseComponent implements OnInit {
 
   async getChildArr(event) {
     await this.dirSet('stkManagment', 'production');
-    debugger
+    
     console.log(event)
     if (event.length > 0) {
       this.dir = "production";
@@ -260,8 +261,9 @@ export class WharehouseComponent implements OnInit {
     this.renderer.setProperty(inputNewShelf, "placeholder", "מדף חדש");
     this.renderer.setProperty(inputNewShelf, "name", "newShelfName");
     this.renderer.setProperty(inputDemandId, "name", "newDemandId");
+    //this.renderer.setAttribute(inputDemandId, "class", "dataInput");
 
-
+    // this.renderer.setStyle(inputDemandId, 'visibility', 'hidden');
     this.renderer.setStyle(btnAdd, 'width', '30px');
     this.renderer.setStyle(btnShelf, 'width', '30px');
     this.renderer.setStyle(btnRemove, 'width', '30px');
@@ -271,7 +273,7 @@ export class WharehouseComponent implements OnInit {
     this.renderer.setStyle(inputShelf, 'display', 'none');
     this.renderer.setStyle(inputQunatity, 'display', 'none');
     this.renderer.setStyle(inputNewShelf, 'display', 'none');
-    this.renderer.setStyle(inputEmpty, 'display', 'none');
+   // this.renderer.setStyle(inputEmpty, 'display', 'none');
     this.renderer.setProperty(inputItem, "id", "id_" + this.i)
 
     let q = this.renderer;
@@ -347,9 +349,11 @@ export class WharehouseComponent implements OnInit {
       this.renderer.setProperty(inputQunatity, "placeholder", "כמות");
       this.renderer.setProperty(inputNewShelf, "placeholder", "מדף חדש");
       this.renderer.setProperty(inputNewShelf, "name", "newShelfName");
-      this.renderer.setProperty(inputDemandId, "name", "newDemandId");
+      this.renderer.setProperty(inputDemandId,"name", "newDemandId");
+      this.renderer.setAttribute(inputDemandId, "class", "dataInput");
 
       //setting style to rendered elements
+      // this.renderer.setStyle(inputDemandId, 'visibility', 'hidden');
       this.renderer.setStyle(btnAdd, 'width', '30px');
       this.renderer.setStyle(btnShelf, 'width', '30px');
       this.renderer.setStyle(btnRemove, 'width', '30px');
@@ -445,8 +449,10 @@ export class WharehouseComponent implements OnInit {
           this.renderer.setProperty(inputNewShelf, "placeholder", "מדף חדש");
           this.renderer.setProperty(inputNewShelf, "name", "newShelfName");
           this.renderer.setProperty(inputDemandId, "name", "newDemandId");
+          this.renderer.setAttribute(inputDemandId, "class", "dataInput");
     
           //setting style to rendered elements
+          // this.renderer.setStyle(inputDemandId, 'visibility', 'hidden');
           this.renderer.setStyle(btnAdd, 'width', '30px');
           this.renderer.setStyle(btnShelf, 'width', '30px');
           this.renderer.setStyle(btnRemove, 'width', '30px');
@@ -528,7 +534,7 @@ export class WharehouseComponent implements OnInit {
 
     deleteInventoryRow(type, a, rowDiv){
       this.renderer.removeChild(this.renderer.parentNode(a), rowDiv);
-debugger
+
   }
 
 

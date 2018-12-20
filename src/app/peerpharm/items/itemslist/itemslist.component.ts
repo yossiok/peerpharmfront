@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ItemsService} from '../../../services/items.service'
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-itemslist',
@@ -10,6 +11,7 @@ import * as moment from 'moment';
 export class ItemslistComponent implements OnInit {
   itemsCopy:any=[];
   hasMoreItemsToload:boolean=true;
+  subscription: any;
  
 
   items:any[]=[];
@@ -19,19 +21,21 @@ export class ItemslistComponent implements OnInit {
     this.getAllItems();
   }
 
+  onDestroy(){
+    this.subscription.unsubscribe();
+  }
 
 
   getAllItems(){
     
-    
-    this.itemsService.startNewItemObservable().subscribe((items) => {
+    this.subscription = this.itemsService.startNewItemObservable().subscribe((items) => {
       debugger;
     items.map(item=>{
         item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
         item.licsensDate  = moment(item.licsensDate).format("DD/MM/YYYY");
       })
       this.items.push(...items); 
-      if(items.length<1000)
+      if(items.length<500)
       {
         this.hasMoreItemsToload=false;
       }
