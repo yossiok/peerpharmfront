@@ -23,8 +23,10 @@ export class InventoryRequestsComponent implements OnInit {
   getAllGeneralDemands(){
     this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
         console.log(res);
+        debugger
         //res= allorders from itemsDemands table
         res.forEach(InvRequest => {
+          debugger
          InvRequest.reqList.map(item => {
        //   item.cmptN="0";
             item.isSelected=false;
@@ -34,6 +36,7 @@ export class InventoryRequestsComponent implements OnInit {
         debugger
         this.ordersDemands=res;
     })
+  
   }
 
   getDetails(reqId, orderNumber): void {

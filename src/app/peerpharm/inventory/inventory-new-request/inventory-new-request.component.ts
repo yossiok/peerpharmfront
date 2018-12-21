@@ -38,12 +38,12 @@ export class InventoryNewRequestComponent implements OnInit {
 
     this.inventoryReqForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
-      reqNum: [{value:Number}],
+      reqNum: [{value:Number}, Validators.required],
       fromWH: ["", Validators.required],
       toWH: ["", Validators.required],
-      currDate: [this.currentDate(), Date, Validators.required],
-      deliveryDate: [Date, Validators.required],
-      reqList: [Array],
+      currDate: [this.currentDate(), String ],
+      deliveryDate: [String, Validators.required],
+      reqList:  [this.reqList, Validators.required]
     });
     this.itemLine = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -59,22 +59,12 @@ export class InventoryNewRequestComponent implements OnInit {
     this.inventoryReqService.getLastRequsetId().subscribe(res => {
       this.newReqNumber=res.reqNum+1;
       this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
-      debugger;
     });
-
-    // let newDate = new Date().toString();
-    // newDate =moment().format("YYYY/MM/DD");
-    // debugger; 
-    // this.inventoryReqForm.controls.currDate.setValue(newDate);
+    this.inventoryReqForm.controls.currDate.setValidators([]);
+    this.inventoryReqForm.controls.reqList.setValidators([]);
   }
 
   addNewRequest(form){
-    //setValue(this.newReqNumber);
-
-    // this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
-    // form.reqNum.setValue(this.newReqNumber);
-    // form.controls.reqNum.setValue(this.newReqNumber);
-    debugger
     this.inventoryReqForm.value.reqNum;
     if(this.inventoryReqForm.valid){
       this.invReq={
@@ -110,13 +100,11 @@ export class InventoryNewRequestComponent implements OnInit {
       await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
         if(res.length>0){
           validOrderN=true;
-          debugger
            //validating item number
           if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" && validOrderN ){
-            debugger
+            
              this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(res => {
             console.log("checkIfComptNumExist res:"+res[0]);
-            debugger;
             if(res.length>0){
                 let reqListItem={
                   itemNumber:reqItemLine.itemNumInput,
@@ -126,10 +114,11 @@ export class InventoryNewRequestComponent implements OnInit {
                 }
                 debugger;
                 this.reqList.push(reqListItem);
-                debugger;
+                // this.inventoryReqForm.value.reqList.setValue(this.reqList)
                 this.itemLine.controls.itemNumInput.setValue('');
                 this.itemLine.controls.itemAmount.setValue('');
                 this.itemLine.controls.relatedOrder.setValue('');
+                
               }else{
                 validOrderN=false;
                 this.toastSrv.error("Failed wrong item number");

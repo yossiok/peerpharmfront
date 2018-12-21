@@ -15,44 +15,42 @@
 
                     <div class="form-group row">
                         <label for="lname" class="col-sm-3 text-right control-label col-form-label">Request number:</label>
-                        <div class="col-sm-7">
+                        <div class="col-sm-4">
                             <input value="newReqNumber" type="number" class="form-control" placeholder="request number auto generated" formControlName="reqNum" disabled>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="reqDate" class="col-sm-3 text-right control-label col-form-label">Request date</label>
-                        <div class="col-sm-7">
+                        <div class="col-sm-4">
                             <input type="date" class="form-control" placeholder="Today" formControlName="currDate" >
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="cono1" class="col-sm-3 text-right control-label col-form-label" (change)="compareTwoDates()">Delivery date</label>
-                        <div class="col-sm-7">
+                        <div class="col-sm-4">
                             <input type="date" class="form-control" placeholder="Delivery date" formControlName="deliveryDate">
                         </div>
 
                     </div>
                     <!-- <div class="form-group row">
                         <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
-                        <div class="col-sm-7">
+                        <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
                         </div>
                     </div> -->
                     <div class="form-group row">
                         <label class="col-sm-3 text-right control-label col-form-label">From wharehouse:</label>
-                        <div class="col-sm-7">
+                        <div class="col-sm-4">
                             <select class="form-control" formControlName="fromWH">
-                                <option ></option>
                                 <option value="Kasem">Kasem</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 text-right control-label col-form-label">To wharehouse:</label>
-                        <div class="col-sm-7">
+                        <div class="col-sm-4">
                             <select class="form-control" formControlName="toWH">
-                                <option ></option>
                                 <option value="Rosh haayin">Rosh ha'ayin</option>
                             </select>
                         </div>
@@ -84,8 +82,8 @@
                         <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
                     </div>
                     <div class="col-sm-1">
-                        <button type="submit">
-                            <img src="assets/images/add.png" (click)="addItemToRequsetList(itemLine.value)" width="30px" style="cursor: pointer;"/>
+                        <button type="submit" (click)="addItemToRequsetList(itemLine.value)" style="cursor: pointer;">
+                            <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
                         </button>
                     </div>
                 </div>
