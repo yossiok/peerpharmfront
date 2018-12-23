@@ -97,6 +97,8 @@ export class WharehouseComponent implements OnInit {
         divArr.push(innerDiv.value);
       }
       else {
+        //temp fix
+        divArr.splice(0,1);
         let itemData = {
           item: divArr[0],
           shell: divArr[1],
@@ -122,6 +124,7 @@ export class WharehouseComponent implements OnInit {
     }
     console.log(this.mainDivArr);
     this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
+      debugger
       console.log("updateInventoryChanges res: "+res);
         if (res != null) {
           
