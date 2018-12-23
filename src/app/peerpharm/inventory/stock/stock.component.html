@@ -22,7 +22,7 @@
 
 
 
-  <table class='table'>
+  <table class='table stockTable'>
     <thead class='bg-info text-white'>
       <tr align='center'>
 
@@ -285,7 +285,7 @@
                   <td>{{i+1}}</td>
                   <td>{{allocation.relatedOrderN}}</td>
                   <td>{{allocation.amount}}</td>
-                  <td *ngIf="i!==EditRowId" (click)="edit(i)">{{allocation.supplied}}</td>
+                  <td *ngIf="i!==EditRowId" (click)="edit(i)" style="cursor: pointer">{{allocation.supplied}}</td>
                   <td *ngIf="i===EditRowId">
                     <input #suppliedAlloc type='text' [value]="allocation.supplied" style='width:170px'>
                     <button (click)="editItemStockAllocationSupplied(resCmpt._id,i)">עדכן</button>

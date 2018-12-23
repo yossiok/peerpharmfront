@@ -60,6 +60,9 @@ td {
     }
 }
 
+.stockTable> tbody> tr td{
+    font-family: inherit;
+}
 .compNum
 {
     color:blue;
@@ -69,6 +72,7 @@ td {
 
 #myModal3,#myModal2,.modal-content
 {
+    height: 75vh;
     padding: 0px;
     margin: 0px;
     background-color: #ececec;
