@@ -97,6 +97,8 @@ export class WharehouseComponent implements OnInit {
         divArr.push(innerDiv.value);
       }
       else {
+        //temp fix
+        divArr.splice(0,1);
         let itemData = {
           item: divArr[0],
           shell: divArr[1],
@@ -122,6 +124,7 @@ export class WharehouseComponent implements OnInit {
     }
     console.log(this.mainDivArr);
     this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
+      debugger
       console.log("updateInventoryChanges res: "+res);
         if (res != null) {
           
@@ -261,7 +264,7 @@ export class WharehouseComponent implements OnInit {
     this.renderer.setProperty(inputNewShelf, "placeholder", "מדף חדש");
     this.renderer.setProperty(inputNewShelf, "name", "newShelfName");
     this.renderer.setProperty(inputDemandId, "name", "newDemandId");
-    //this.renderer.setAttribute(inputDemandId, "class", "dataInput");
+    this.renderer.setAttribute(inputDemandId, "disabled", "true");
 
     // this.renderer.setStyle(inputDemandId, 'visibility', 'hidden');
     this.renderer.setStyle(btnAdd, 'width', '30px');
@@ -351,6 +354,8 @@ export class WharehouseComponent implements OnInit {
       this.renderer.setProperty(inputNewShelf, "name", "newShelfName");
       this.renderer.setProperty(inputDemandId,"name", "newDemandId");
       this.renderer.setAttribute(inputDemandId, "class", "dataInput");
+      this.renderer.setAttribute(inputDemandId, "disabled", "true");
+
 
       //setting style to rendered elements
       // this.renderer.setStyle(inputDemandId, 'visibility', 'hidden');
@@ -450,7 +455,8 @@ export class WharehouseComponent implements OnInit {
           this.renderer.setProperty(inputNewShelf, "name", "newShelfName");
           this.renderer.setProperty(inputDemandId, "name", "newDemandId");
           this.renderer.setAttribute(inputDemandId, "class", "dataInput");
-    
+          this.renderer.setAttribute(inputDemandId, "disabled", "true");
+
           //setting style to rendered elements
           // this.renderer.setStyle(inputDemandId, 'visibility', 'hidden');
           this.renderer.setStyle(btnAdd, 'width', '30px');
