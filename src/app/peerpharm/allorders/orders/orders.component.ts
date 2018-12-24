@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class OrdersComponent implements OnInit {
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
+  today:any;
 
 
 
@@ -22,7 +24,7 @@ export class OrdersComponent implements OnInit {
   //private orderSrc = new BehaviorSubject<string>("");
 
   @ViewChild('orderRemarks') orderRemarks: ElementRef;
-  //  @ViewChild('type') type:ElementRef; 
+  @ViewChild('orderType') orderType:ElementRef; 
   @ViewChild('deliveryDate') deliveryDate: ElementRef;
   @ViewChild('orderDate') orderDate: ElementRef;
   @ViewChild('costumer') costumer: ElementRef;
@@ -31,6 +33,9 @@ export class OrdersComponent implements OnInit {
 
 
   ngOnInit() {
+    this.today = new Date();
+    this.today = moment(this.today).format("DD/MM/YYYY");
+    // var todayArr = this.today.split('/');
     this.getOrders();
   }
 
@@ -38,9 +43,17 @@ export class OrdersComponent implements OnInit {
   getOrders() {
     this.ordersService.getOrders()
       .subscribe(orders => {
+        debugger
         orders.map(order => {
+          order.color='white'
+          if(this.today>order.deliveryDate){
+            debugger
+            order.color = '#ff3333';
+          }
+
           Object.assign({ isSelected: false }, order);
           order.NumberCostumer = order.orderNumber + " " + order.costumer;
+
         })
         this.orders = orders;
         this.ordersCopy = orders;
@@ -66,6 +79,7 @@ export class OrdersComponent implements OnInit {
         "costumer": this.costumer.nativeElement.value,
         "deliveryDate": this.deliveryDate.nativeElement.value,
         "orderRemarks": this.orderRemarks.nativeElement.value,
+        "orderType": this.orderType.nativeElement.value,
       }
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
         let i = this.orders.findIndex(elemnt => elemnt._id == orderId);

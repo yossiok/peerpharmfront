@@ -27,9 +27,8 @@ export class OrdersService {
     let url = this.baseUrl + 'order'
     //
     // this.http.get(url).subscribe(res=>console.log(res));
-    
-    return this.http.get(url).pipe(
-      map(reponse => reponse.json())
+
+    return this.http.get(url).pipe(map(reponse => reponse.json())
     );
     //.map((res: Response) => res.json())
     //.catch((error: any) => Observable.throw(error.json().error) || 'Server Error');

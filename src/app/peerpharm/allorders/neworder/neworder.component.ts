@@ -55,14 +55,14 @@ export class NeworderComponent implements OnInit {
 
 
   addNewOrder(post) {
-
+debugger
     let newOrderObj = {
       costumer: post.costumer,
       orderDate: post.orderdate,
       costumerInternalId:post.costumerInternalId,
       deliveryDate: post.delivery,
       orderRemarks: post.remarks,
-      
+      type: post.type,
       status: 'open',
     }
     this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
