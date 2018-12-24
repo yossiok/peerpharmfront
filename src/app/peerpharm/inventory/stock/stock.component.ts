@@ -330,7 +330,7 @@ deleteItemStockAllocation(cmptId,rowIndex) {
       allocations:newAllocationsArr,
       }
     this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
-      if(res.ok!=0){
+      if(res.ok!=0 && res.nModified==1 ){
         debugger;
         console.log("res updateCompt: "+res);
         this.resCmpt.allocAmount-=amountDeleted;

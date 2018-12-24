@@ -94,7 +94,11 @@ export class OrdersService {
     return this.http.get(url).pipe(map(reponse => reponse.json())
     )
   }
-
+  getItemById(itemId): Observable<any> {
+    let url = this.baseUrl + "item?id=" + itemId;
+    return this.http.get(url).pipe(map(reponse => reponse.json())
+    )
+  }
 
   //edit item in order
   editItemOrder(orderItem): Observable<any> {
@@ -138,4 +142,5 @@ export class OrdersService {
   getAllOpenOrdersItems(status:boolean){
     this.openOrdersSrc.next(status);
   }
+
 }

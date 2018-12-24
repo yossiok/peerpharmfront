@@ -157,9 +157,24 @@ export class OrderdetailsComponent implements OnInit {
     document.title = "Order " + this.number;
     // const id = this.route.snapshot.paramMap.get('id');
     //this.orderService.getOrderById(id).subscribe(orderItems => {    
-    this.orderService.getOrderItemsByNumber(this.number).subscribe(orderItems => {
-      debugger
+    this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
       orderItems.map(item => {
+            //add license to item
+            debugger
+            // let itemNumStrArr= item.itemNumber.split('-');
+            // if(itemNumStrArr.length>1){
+            //   itemNumStrArr=itemNumStrArr[1];
+            // }
+
+            // this.orderService.getItemByNumber(itemNumStrArr).subscribe(
+            //   itemDetais => { 
+            //     debugger;
+            //       item.licsensNumber=itemDetais.licsensNumber;
+            //       item.licsensExp=itemDetais.licsensDate;
+            //   });
+    
+
+
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
           else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
@@ -201,6 +216,7 @@ export class OrderdetailsComponent implements OnInit {
     console.log(itemNumber + " , " + itemId);
     this.orderService.getItemByNumber(itemNumber).subscribe(
       itemDetais => {
+
         console.log(itemDetais);
         this.detailsArr = [];
         itemDetais.forEach(element => {
@@ -211,7 +227,9 @@ export class OrderdetailsComponent implements OnInit {
         if (this.expand === true) { this.expand = false; }
         else { this.expand = true; }
         
-      })
+      });
+
+
     this.ordersItems.filter(item => item.itemNumber == itemNumber).map(item => {
       if (item.isExpand == "+") {
         item.isExpand = "-";

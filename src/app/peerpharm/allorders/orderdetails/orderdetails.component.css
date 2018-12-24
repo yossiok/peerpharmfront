@@ -63,6 +63,21 @@ i{
   border-radius: 13px 13px 13px 13px;
 }
 
+td> a{
+  font-size: 15px;
+  text-align: center;
+}
+
+.noLicense{
+background: repeating-linear-gradient(
+    45deg,
+    #ff0000,
+    #FEFFEC 4px,
+    #FFFFFF 5px,
+    #FFFFFF 20px
+  );
+}
+
 
   @media print {
     .table{

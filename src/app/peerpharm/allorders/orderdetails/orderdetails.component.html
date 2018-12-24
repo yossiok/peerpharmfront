@@ -66,6 +66,12 @@
             {{item.itemNumber}}
           </a>
         </td>
+        <!-- <td class="noLicense" *ngIf="item.licsensNumber==''">
+          <button class='expendBtn' [style.background-color]="item.colorBtn" (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
+          <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+            {{item.itemNumber}}
+          </a>
+        </td> -->
         <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'></td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
         <td *ngIf="item._id===EditRowId"><input #unitmeasure type='text' [value]="item.unitMeasure" style='width:70px'></td>
