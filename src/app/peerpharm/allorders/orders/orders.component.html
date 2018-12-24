@@ -42,8 +42,7 @@
     </tr>
   </thead>
   <tbody class='table-hover'>
-    <tr *ngFor="let order of orders; let i = index"  >
-      <ng-container [style.background-color]="order.color" >
+    <tr *ngFor="let order of orders; let i = index"  [style.background-color]="order.color"  >
           <td>{{i}}</td>
           <td (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
@@ -91,8 +90,6 @@
           </td>
           <td></td>
           <td></td>
-      </ng-container>
-
     </tr>
   </tbody>
 </table>

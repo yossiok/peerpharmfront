@@ -39,7 +39,7 @@ table{
   }
   
 td {
-      background-color: white;
+      /* background-color: white; */
       border-bottom: 1px solid #ddd;
       font-family: "Berlin Sans FB";
 

@@ -39,10 +39,12 @@
       <th>Reamrks</th>
       <th>Type</th>
       <th></th>
+      <th></th>
+
     </tr>
   </thead>
   <tbody class='table-hover'>
-    <tr *ngFor="let order of orders; let i = index" >
+    <tr *ngFor="let order of orders; let i = index" [style.background-color]="order.color" >
       <td>{{i}}</td>
       <td (click)="edit('')">
         <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
@@ -72,7 +74,7 @@
         <input #orderRemarks type='text' [value]="order.orderRemarks" style='width:170px'>
       </td>
       <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
-      <td></td>
+      <td>{{order.type}}</td>
       <td>
         <!--<img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
         <img *ngIf="order._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, order._id)">
@@ -81,8 +83,9 @@
         <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId"  (click)="saveEdit(true, order._id)"></i>
         <i class="ti-save text-success m-r-10" *ngIf="order._id===EditRowId"  (click)="saveEdit(false, order._id)"></i>
       </td>
+      
       <td></td>
-      <!--<td>{{order.type}}</td>-->
+
     </tr>
   </tbody>
 </table>
