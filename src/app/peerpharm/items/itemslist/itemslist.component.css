@@ -1,0 +1,19 @@
+.table-fixed thead {
+  width: 100%;
+  display: block;
+  }
+  .table-fixed tbody {
+    height: 700px;
+    overflow-y: auto;
+    width: 100%;
+    display: block;
+  }
+  .table-fixed th, td{
+    width:10%;
+    display: inline-block;
+  }
+  .table-fixed tr{
+    width: 100%;
+    display: block;
+  }
+  
