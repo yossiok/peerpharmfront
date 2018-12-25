@@ -77,6 +77,7 @@ export class OrderdetailsComponent implements OnInit {
   expand: boolean = false;
   type = { type: '' };
   ordersToCheck = [];
+  internalNumArr=[];
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
   @ViewChild('quantity') quantity: ElementRef;
@@ -158,23 +159,19 @@ export class OrderdetailsComponent implements OnInit {
     // const id = this.route.snapshot.paramMap.get('id');
     //this.orderService.getOrderById(id).subscribe(orderItems => {    
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
-      orderItems.map(item => {
+      debugger;
+      orderItems.map( item => {
+        debugger;
             //add license to item
-            debugger
-            // let itemNumStrArr= item.itemNumber.split('-');
-            // if(itemNumStrArr.length>1){
-            //   itemNumStrArr=itemNumStrArr[1];
-            // }
-
-            // this.orderService.getItemByNumber(itemNumStrArr).subscribe(
+      //////////////////CHECK IF ITEM HAVE LICENSE////////////////////////////
+           
+            // this.orderService.getItemByNumber(item.itemNumber).subscribe(
             //   itemDetais => { 
             //     debugger;
             //       item.licsensNumber=itemDetais.licsensNumber;
             //       item.licsensExp=itemDetais.licsensDate;
             //   });
-    
-
-
+      //////////////////////////////////////////////
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
           else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
@@ -192,6 +189,14 @@ export class OrderdetailsComponent implements OnInit {
         }
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
+      });
+      orderItems.forEach(item => {
+          this.orderService.getItemByNumber(item.itemNumber).subscribe(
+              itemDetais => { 
+                debugger;
+                  item.licsensNumber=itemDetais.licsensNumber;
+                  item.licsensExp=itemDetais.licsensDate;
+              });
       });
       this.ordersItems = orderItems;
       debugger;

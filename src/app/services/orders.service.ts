@@ -90,15 +90,11 @@ export class OrdersService {
   }
   //get item details (can move it to item service)
   getItemByNumber(itemNumber): Observable<any> {
-    let url = this.baseUrl + "item?itemNumber=" + itemNumber;
+    let url = this.baseUrl + "item?getLicsens=yes&itemNumber=" + itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json())
     )
   }
-  getItemById(itemId): Observable<any> {
-    let url = this.baseUrl + "item?id=" + itemId;
-    return this.http.get(url).pipe(map(reponse => reponse.json())
-    )
-  }
+
 
   //edit item in order
   editItemOrder(orderItem): Observable<any> {
