@@ -51,6 +51,7 @@ export class StockComponent implements OnInit {
   itemIdForAllocation:String;
   EditRowId: any = "";
   procurementInputEvent:any;
+  stockType:String="component"
 
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   // @ViewChild('procurmentInput') procurmentInput: ElementRef;
@@ -94,7 +95,7 @@ export class StockComponent implements OnInit {
 
   getAllComponents() {
     this.inventoryService.getAllComponents().subscribe(components => {
-
+debugger
       this.componentsUnFiltered=   components.splice(0);
       this.components = components;
       //why are we using set time out and not async await??
@@ -170,6 +171,7 @@ export class StockComponent implements OnInit {
       packageType: '',
       packageWeight: '',
       remarks: '',
+      itemType:'',
     }
 
 
@@ -178,6 +180,7 @@ export class StockComponent implements OnInit {
   }
 
   writeNewComponent(){
+    this.resCmpt.itemType=this.stockType;
     console.log(this.resCmpt);
      this.inventoryService.addNewCmpt(this.resCmpt).subscribe(res=>{
        console.log("res from front: "+res)

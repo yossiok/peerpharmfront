@@ -3,6 +3,7 @@ import { OrdersService } from '../../../services/orders.service'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { IfStmt } from '@angular/compiler';
 
 
 @Component({
@@ -48,36 +49,37 @@ export class OrdersComponent implements OnInit {
           let deliveryDateArr;
           if(order.deliveryDate.includes("/")){
             deliveryDateArr=order.deliveryDate.split("/");
+            if(deliveryDateArr[0].split()==1) {
+              deliveryDateArr[0]="0"+deliveryDateArr[0]
+            }
+            if(deliveryDateArr[1].split()==1) {
+              deliveryDateArr[1]="0"+deliveryDateArr[1]
+            }
           }else{
             deliveryDateArr=order.deliveryDate.split("-");
+            let tempV=deliveryDateArr[0];
+            deliveryDateArr[0]=deliveryDateArr[2];
+            deliveryDateArr[2]=tempV;
+
+            order.deliveryDate=deliveryDateArr[0]+"/"+deliveryDateArr[1]+"/"+deliveryDateArr[2];
           }
           let todayDateArr=this.today.split("/");
-          //some date formated as 'YYYY/MM/DD' insted of 'DD/MM/YYYY'
-          if(parseInt(deliveryDateArr[0]) >31){ //=========deliveryDateArr:  YYYY/MM/DD
-          debugger
-            if(parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[2])){
+          debugger  
+          if(parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[2])){
               //RED
               order.color = '#ff9999';
-            }else if(parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1])){
-              //RED
-              order.color = '#ff9999';
-            }else if(parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[0])){
-              //RED
-              order.color = '#ff9999';
-            }
-                       
-          }else{//===============deliveryDateArr:  DD/MM/YYYY 
-            if(parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[2])){
-              //RED
-              order.color = '#ff9999';
-            }else if(parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1])){
-              //RED
-              order.color = '#ff9999';
-            }else if(parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[0])){
-              //RED
-              order.color = '#ff9999';
-            }
-          }
+            }else {
+              if(parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1])
+                && parseInt(deliveryDateArr[2]) == parseInt(todayDateArr[2])){
+                //RED
+                order.color = '#ff9999';
+              }else if(parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[0])
+              && parseInt(deliveryDateArr[1]) == parseInt(todayDateArr[1]) ){
+                  //RED
+                  order.color = '#ff9999';
+                }
+              }
+            
 
           Object.assign({ isSelected: false }, order);
           order.NumberCostumer = order.orderNumber + " " + order.costumer;
