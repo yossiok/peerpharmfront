@@ -44,5 +44,21 @@ File: scss
 @import "icons/crypto-icons/cryptocoins.css";  
 
 
+ /* No greater than 1000px, no less than 1400px */
+ @media (max-width:1400px) and (min-width:1000px) {
+    .topbar .top-navbar .navbar-nav > .nav-item > .nav-link  {
+      padding: 5px 3px !important; 
+    }
+
+    i{
+      display: none !important;
+    }
+    .navbar-collapse
+    {
+        margin-left:5px !important
+    }
+  
+  }
+
 
 
