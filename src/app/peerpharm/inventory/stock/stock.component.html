@@ -2,7 +2,7 @@
 <br>
 
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
-<button class='btn btn-primary' (click)="newCmpt()"><b>פריט חדש</b></button> &nbsp;&nbsp;
+<button class='btn btn-primary' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
 <button class="btn btn-info" (click)="procurementRecommendations()"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp;
 <button class="btn btn-info" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>
 <br><br>
@@ -71,7 +71,7 @@
     <!-- Modal content -->
     <div class="modal-content" style='width:650px' id='modelC'>
       <div class="modal-header">
-        <span class="close" id="closeId2" (click)='openModal=false'>&times;</span>
+        <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
         <!-- <img src="peerpharm.png"  width='140px' align='left'> -->
         <h2 id='div_h3'>{{openModalHeader}}</h2><br>
         <button class="btn btn-primary" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
@@ -198,8 +198,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="newCbtn" (click)="writeNewComponent()">הקם מוצר</button>
-        <button id="updateDataBtn" style='display:none'>עדכן מידע</button>
+        <button id="newCbtn" (click)="writeNewComponent()" *ngIf="newItem=='new'">הקם מוצר</button>
+        <!-- <button id="updateDataBtn" >עדכן מידע</button> -->
       </div>
     </div>
 

@@ -52,6 +52,7 @@ export class StockComponent implements OnInit {
   EditRowId: any = "";
   procurementInputEvent:any;
   stockType:String="component"
+  newItem:String='';
 
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   // @ViewChild('procurmentInput') procurmentInput: ElementRef;
@@ -154,7 +155,8 @@ debugger
     this.itemIdForAllocation=cmptId;
   }
 
-  newCmpt(){
+  newCmpt(newItem){
+    this.newItem=newItem;
     this.resCmpt = {
       componentN:'',
       componentName:'',
@@ -187,6 +189,8 @@ debugger
        if(res=="itemExist"){
         alert("לא ניתן ליצור פריט חדש- מספר "+this.resCmpt.componentN+" פריט כבר קיים במלאי");
       }
+      this.newItem='';
+
    })
 
   }
