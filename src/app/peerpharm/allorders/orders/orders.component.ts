@@ -43,12 +43,40 @@ export class OrdersComponent implements OnInit {
   getOrders() {
     this.ordersService.getOrders()
       .subscribe(orders => {
-        debugger
         orders.map(order => {
           order.color='white'
-          if(this.today>order.deliveryDate){
-            debugger
-            order.color = '#ff9999';
+          let deliveryDateArr;
+          if(order.deliveryDate.includes("/")){
+            deliveryDateArr=order.deliveryDate.split("/");
+          }else{
+            deliveryDateArr=order.deliveryDate.split("-");
+          }
+          let todayDateArr=this.today.split("/");
+          //some date formated as 'YYYY/MM/DD' insted of 'DD/MM/YYYY'
+          if(parseInt(deliveryDateArr[0]) >31){ //=========deliveryDateArr:  YYYY/MM/DD
+          debugger
+            if(parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[2])){
+              //RED
+              order.color = '#ff9999';
+            }else if(parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1])){
+              //RED
+              order.color = '#ff9999';
+            }else if(parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[0])){
+              //RED
+              order.color = '#ff9999';
+            }
+                       
+          }else{//===============deliveryDateArr:  DD/MM/YYYY 
+            if(parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[2])){
+              //RED
+              order.color = '#ff9999';
+            }else if(parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1])){
+              //RED
+              order.color = '#ff9999';
+            }else if(parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[0])){
+              //RED
+              order.color = '#ff9999';
+            }
           }
 
           Object.assign({ isSelected: false }, order);
@@ -68,7 +96,7 @@ export class OrdersComponent implements OnInit {
 
 
   saveEdit(a, orderId) {
-    debugger
+    
     let orderToUpdate = {};
     // a - is if the request is to set order - ready
     if (!a) {
