@@ -341,6 +341,9 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
         this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
+
+        debugger
+        debugger
         this.dataDiv = res[0].goddet;
         this.showGoddetData();
       });
@@ -352,6 +355,7 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
   searchForItem(item) {
+
     this.itemsService.getItemData(item).subscribe(res => {
       console.log(res.length)
       if(res.length==0){
@@ -364,7 +368,8 @@ export class ItemdetaisComponent implements OnInit {
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
-        this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
+        this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD") ;
+        debugger
         console.log(res[0]);
         this.dataDiv = res[0].goddet;
         this.showGoddetData();
@@ -379,7 +384,7 @@ export class ItemdetaisComponent implements OnInit {
       this.getGoddetData();
       this.itemShown.updateDate
       this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
-
+debugger;
         console.log(res)
         this.toastr.success("Saved", "Changes Saves");
         

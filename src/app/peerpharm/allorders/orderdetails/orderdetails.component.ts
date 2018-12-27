@@ -159,9 +159,7 @@ export class OrderdetailsComponent implements OnInit {
     // const id = this.route.snapshot.paramMap.get('id');
     //this.orderService.getOrderById(id).subscribe(orderItems => {    
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
-      debugger;
       orderItems.map( item => {
-        debugger;
             //add license to item
       //////////////////CHECK IF ITEM HAVE LICENSE////////////////////////////
            
@@ -190,16 +188,7 @@ export class OrderdetailsComponent implements OnInit {
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
       });
-      orderItems.forEach(item => {
-          this.orderService.getItemByNumber(item.itemNumber).subscribe(
-              itemDetais => { 
-                debugger;
-                  item.licsensNumber=itemDetais.licsensNumber;
-                  item.licsensExp=itemDetais.licsensDate;
-              });
-      });
       this.ordersItems = orderItems;
-      debugger;
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
     });
@@ -207,11 +196,9 @@ export class OrderdetailsComponent implements OnInit {
 
   //not in useat this moments
   getComponents(orderNumber): void {
-    debugger;
     this.orderService.getComponentsSum(orderNumber).subscribe(components => {
       this.components = components;
       console.log("a" + components);
-      debugger;
     })
   }
 
