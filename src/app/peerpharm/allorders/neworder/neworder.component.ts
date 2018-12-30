@@ -99,7 +99,7 @@ debugger
       orderNumber: this.orderNumber
     }
     console.log(newOrderItemObj);
-    this.orderItemForm.reset(); 1
+    this.orderItemForm.reset(); 
     this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
       this.items.push(res)
       this.itemName = "";
