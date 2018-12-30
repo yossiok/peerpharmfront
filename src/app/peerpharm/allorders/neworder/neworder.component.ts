@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { String } from 'aws-sdk/clients/lexmodelbuildingservice';
 import { map, startWith} from 'rxjs/operators';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-neworder',
@@ -31,7 +32,7 @@ export class NeworderComponent implements OnInit {
   openModal:boolean = false;
   titleAlert: string = 'This field is required';
 
-  constructor(private modalService: NgbModal,private fb: FormBuilder, private orderSer: OrdersService, private costumerService: CostumersService) {
+  constructor(private modalService: NgbModal,private fb: FormBuilder, private orderSer: OrdersService, private costumerService: CostumersService, private toastSrv: ToastrService) {
 
     this.orderForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -39,8 +40,8 @@ export class NeworderComponent implements OnInit {
       costumer: [null, Validators.required],
       costumerInternalId: [null, Validators.required],
       orderdate: [null, Validators.required],
-      remarks: [null, Validators.required],
-      type: [null, Validators.required],
+      remarks: [null],
+      type: [null],
     });
 
     this.orderItemForm = fb.group({
@@ -56,6 +57,7 @@ export class NeworderComponent implements OnInit {
 
   addNewOrder(post) {
 debugger
+  if(this.orderForm.valid){
     let newOrderObj = {
       costumer: post.costumer,
       orderDate: post.orderdate,
@@ -71,8 +73,10 @@ debugger
       this.submited = true;
       console.log(res)
     });
-    console.log(newOrderObj);
+  }else{
+    this.toastSrv.error("Failed pleae finish filling the form");
   }
+}
 
   addNewItemOrder(post) {
     console.log(post);
@@ -108,14 +112,16 @@ debugger
   searchItem(itemNumber) {
     this.itemName = "";
     //console.log(itemNumber);
-    this.orderSer.getItemByNumber(itemNumber).subscribe(res => {
-      // console.log(res[0]);
-      this.orderItemForm.controls.discription.setValue(res[0].name + " " + res[0].subName + " " + res[0].discriptionK);
-      this.orderItemForm.controls.unitmeasure.setValue(res[0].volumeKey);
-      //   this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-      //   this.volume = res[0].volumeKey;
-      console.log(this.itemName + ",  " + this.volume);
-    })
+    if(itemNumber!=''){
+      this.orderSer.getItemByNumber(itemNumber).subscribe(res => {  
+        // console.log(res[0]);
+        this.orderItemForm.controls.discription.setValue(res[0].name + " " + res[0].subName + " " + res[0].discriptionK);
+        this.orderItemForm.controls.unitmeasure.setValue(res[0].volumeKey);
+        //   this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
+        //   this.volume = res[0].volumeKey;
+        console.log(this.itemName + ",  " + this.volume);
+      });
+    }
 
   }
 

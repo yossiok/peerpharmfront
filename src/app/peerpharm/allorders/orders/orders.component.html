@@ -27,23 +27,23 @@
 </div>
 <br><br>
 <input matInput  placeholder="Search order" (keyup)="changeText($event)" />
-<table class='table'>
+<table class='table table-fixed'>
   <thead class='bg-info text-white'  (click)="edit(' ')">
     <tr>
       <th></th>
       <th></th>
-      <th>Order Number</th>
-      <th>Costumer</th>
-      <th>Order date</th>
-      <th>Delivery Date</th>
-      <th>Reamrks</th>
-      <th>Type</th>
+      <th style="padding:5px">Order Number</th>
+      <th style="padding:5px">Costumer</th>
+      <th style="padding:5px">Order date</th>
+      <th style="padding:5px">Delivery Date</th>
+      <th style="padding:5px">Reamrks</th>
+      <th style="padding:5px">Type</th>
       <th></th>
     </tr>
   </thead>
   <tbody class='table-hover'>
     <tr *ngFor="let order of orders; let i = index"  [style.background-color]="order.color"  >
-          <td>{{i}}</td>
+          <td>{{i+1}}</td>
           <td (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
           <td (click)="edit('')" >
@@ -88,7 +88,6 @@
             <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId"  (click)="saveEdit(true, order._id)"></i>
             <i class="ti-save text-success m-r-10" *ngIf="order._id===EditRowId"  (click)="saveEdit(false, order._id)"></i>
           </td>
-          <td></td>
           <td></td>
     </tr>
   </tbody>

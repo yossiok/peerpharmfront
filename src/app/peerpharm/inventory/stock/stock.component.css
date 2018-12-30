@@ -1,3 +1,39 @@
+.table-fixed thead {
+    width: 100%;
+    display: block;
+    }
+.table-fixed tbody {
+    height: 700px;
+    overflow-y: auto;
+    width: 100%;
+    display: block;
+}
+
+.table-fixed th{
+    width:9%;
+    display: inline-block;
+    border: none;
+  }
+  .table-fixed td{
+    width:9%;
+    display: inline-block;
+    border-bottom: none;
+    
+    /* border-left: 1px black solid;     */
+  }
+  .table-fixed tr{
+    width: 100%;
+    display: block;
+  }
+  td>img{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+  }
+
+
+
 input[type=checkbox]
 {
   /* Double-sized Checkboxes */

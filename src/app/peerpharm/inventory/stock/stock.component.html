@@ -22,45 +22,45 @@
 
 
 
-  <table class='table stockTable'>
+  <table class='table stockTable table-fixed'>
     <thead class='bg-info text-white'>
       <tr align='center'>
 
         <th></th>
-        <th><b>מספר פריט</b></th>
-        <th><b>מק"ט פריט/ספק</b></th>
-        <th><b>שם</b></th>
-        <th><b>סוג</b></th>
-        <th><b>כמות</b></th>
-        <th><b>כמות מוקצת</b></th>
-        <th></th>
-        <th></th>
-        <th><b>תמונה</b></th>
-        <th><b>הזמנת רכש</b></th>
-        <th><b>כמות להזמנת רכש</b></th>
-        <th style="width:60px"><img src="excel.png" width="35px" class="exportCsv" id="excelExport" onclick="exportExcel()"></th>
+        <th style="padding:5px"><b>מספר פריט</b></th>
+        <th style="padding:5px"><b>מק"ט פריט/ספק</b></th>
+        <th style="padding:5px"><b>שם</b></th>
+        <th style="padding:5px"><b>סוג</b></th>
+        <th style="padding:5px"><b>כמות</b></th>
+        <th style="padding:5px"></th>
+        <th style="padding:5px"><b>כמות מוקצת</b></th>
+        <th style="padding:5px"><b>תמונה</b></th>
+        <th style="padding:5px"><b>הזמנת רכש</b></th>
+        <th style="padding:5px"><b>כמות להזמנת רכש</b></th>
+        <th ></th>
       </tr>
 
     </thead>
 
 
     <tbody id="table_body">
-      <tr *ngFor="let component of components">
-        <td></td>
+      <tr *ngFor="let component of components; let i = index">
+        <td>{{i+1}}</td>
         <td class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
         <td>{{component.componentNS}}</td>
         <td>{{component.componentName}}</td>
         <td>{{component.componentType}}</td>
         <td>{{component.amount}}</td>
+        <td><button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
         <td>
           <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
         </td>
-        <td></td>
-        <td><button (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
         <td><img [src]=component.img style='width:50px'></td>
         <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
-        <td><input #procurmentInput type="number" (keyup)="inputProcurment($event)" /><button class="btn btn-success"
-            (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></td>
+        <td><div>
+          <input #procurmentInput type="number" (keyup)="inputProcurment($event)" /><button class="btn btn-success"
+          (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button>
+        </div></td>
         <td></td>
       </tr>
     </tbody>

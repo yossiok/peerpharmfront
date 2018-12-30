@@ -28,7 +28,8 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: '',
-    title: 'menu.Orders',
+    // title: 'menu.Orders', // for translation in he.json file 
+    title: 'Orders',
     icon: 'fas fa-chart-line',
     class: 'has-arrow',
     extralink: false,
@@ -49,14 +50,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      {
-        path: '/component/accordion',
-        title: 'Search Order',
-        icon: 'icon-magnifier',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/component/accordion',
+      //   title: 'Search Order',
+      //   icon: 'icon-magnifier',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       {
         path: '/peerpharm/allorders//orders/allorders',
         title: 'All Orders',

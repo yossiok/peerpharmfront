@@ -44,18 +44,18 @@ export const ComponentsRoutes: Routes = [
           ]
         }
       },
-      {
-        path: 'accordion',
-        component: NgbdAccordionBasicComponent,
-        data: {
-          title: 'Accordion',
-          urls: [
-            { title: 'Dashboard', url: '/dashboard' },
-            { title: 'ngComponent' },
-            { title: 'Accordion' }
-          ]
-        }
-      },
+      // {
+      //   path: 'accordion',
+      //   component: NgbdAccordionBasicComponent,
+      //   data: {
+      //     title: 'Accordion',
+      //     urls: [
+      //       { title: 'Dashboard', url: '/dashboard' },
+      //       { title: 'ngComponent' },
+      //       { title: 'Accordion' }
+      //     ]
+      //   }
+      // },
       {
         path: 'alert',
         component: NgbdAlertBasicComponent,
