@@ -47,6 +47,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
+import { PackingComponent } from './peerpharm/schedule/packing/packing.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -71,7 +72,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SidebarComponent , 
     LoginComponent, 
     
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe, 
    
   ],
   imports: [

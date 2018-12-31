@@ -69,6 +69,7 @@ import { AuthService } from '../services/auth.service';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 import { SpinnerComponent } from '../shared/spinner.component';
 import { HeadingsWHPipe } from '../pipes/headings-wh.pipe';
+import { PackingComponent } from './schedule/packing/packing.component';
 
 
 @NgModule({
@@ -141,8 +142,9 @@ import { HeadingsWHPipe } from '../pipes/headings-wh.pipe';
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
     ChatComponent ,
-    HeadingsWHPipe
-  
+    HeadingsWHPipe,
+    PackingComponent
+
   ],
   providers:[ OrdersService, HttpClientModule]
 })

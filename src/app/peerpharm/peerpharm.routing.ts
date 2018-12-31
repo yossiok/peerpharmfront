@@ -23,6 +23,7 @@ import { MakeupComponent } from './schedule/makeup/makeup.component';
 import {  WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
+import { PackingComponent } from './schedule/packing/packing.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -74,6 +75,14 @@ export const PeerPharmRputs: Routes =[
     },
     component: MakeupComponent
   },
+  {
+    path: 'schedule/packingschedule',
+    data: {
+      title: 'Packing Schedule' 
+    },
+    component: PackingComponent
+  },
+  
   {
     path: 'items/itemslist',
     data: {
