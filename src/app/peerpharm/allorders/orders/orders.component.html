@@ -30,21 +30,22 @@
 <table class='table table-fixed'>
   <thead class='bg-info text-white'  (click)="edit(' ')">
     <tr>
-      <th></th>
-      <th></th>
+      <th style="width:5%;"></th>
+      <th style="width:5%;"></th>
       <th style="padding:5px">Order Number</th>
-      <th style="padding:5px">Costumer</th>
+      <th style="width:20%; padding:5px">Costumer</th>
       <th style="padding:5px">Order date</th>
       <th style="padding:5px">Delivery Date</th>
-      <th style="padding:5px">Reamrks</th>
+      <th style="width:15%; padding:5px">Reamrks</th>
       <th style="padding:5px">Type</th>
-      <th></th>
+      <th ></th>
+      <th style="width:5%;"></th>
     </tr>
   </thead>
   <tbody class='table-hover'>
     <tr *ngFor="let order of orders; let i = index"  [style.background-color]="order.color"  >
-          <td>{{i+1}}</td>
-          <td (click)="edit('')">
+          <td style="width:5%;">{{i+1}}</td>
+          <td style="width:5%;" (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected"> </td>
           <td (click)="edit('')" >
             <a target="_blank"  routerLink='/peerpharm/allorders/orderitems/{{order.orderNumber}}' >
@@ -54,12 +55,12 @@
     
             </a>
           </td>
-          <td *ngIf="order._id===EditRowId">
+          <td style="width:20%;" *ngIf="order._id===EditRowId">
             <input #costumer type='text' [value]="order.costumer" style='width:170px'>
             <input [value]='order._id' #id type='hidden'>
             <input [value]='order.orderNumber' #orderNumber type='hidden'>
           </td>
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.costumer}}</td>
+          <td style="width:20%;" *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.costumer}}</td>
     
           <td *ngIf="order._id===EditRowId">
             <input #orderDate type='text' [value]="order.orderDate" style='width:170px'>
@@ -71,16 +72,16 @@
           </td>
           <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.deliveryDate}}</td>
     
-          <td *ngIf="order._id===EditRowId">
+          <td style="width:15%;" *ngIf="order._id===EditRowId">
             <input #orderRemarks type='text' [value]="order.orderRemarks" style='width:170px'>
           </td>
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
+          <td style="width:15%;" *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
     
           <!-- <td *ngIf="order._id===EditRowId">
               <input #orderType type='text' [value]="order.type" style='width:170px'>
             </td> -->
           <td>{{order.type}}</td>
-          <td>
+          <td >
             <!--<img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
             <img *ngIf="order._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, order._id)">
             <img *ngIf="order._id===EditRowId" src='/assets/images/update2.png' style='width:30px; cursor: pointer' (click)="saveEdit()">-->
@@ -88,7 +89,7 @@
             <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId"  (click)="saveEdit(true, order._id)"></i>
             <i class="ti-save text-success m-r-10" *ngIf="order._id===EditRowId"  (click)="saveEdit(false, order._id)"></i>
           </td>
-          <td></td>
+          <td style="width:5%;"></td>
     </tr>
   </tbody>
 </table>

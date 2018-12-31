@@ -17,8 +17,16 @@
     width:10%;
     display: inline-block;
   }
+  .table-fixed td.fullName{
+    width:15%;
+    display: inline-block;
+  }
   .table-fixed tr{
     width: 100%;
     display: block;
+    font-size: 18px;
   }
-  
+  tbody> tr{
+    background-color: white;
+    color: black;
+  }

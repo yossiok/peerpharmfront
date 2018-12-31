@@ -10,21 +10,35 @@
 }
 
 .table-fixed th{
-    width:9%;
+    width:8%;
     display: inline-block;
     border: none;
+    text-align: left;
   }
   .table-fixed td{
-    width:9%;
+    width:8%;
     display: inline-block;
     border-bottom: none;
-    
     /* border-left: 1px black solid;     */
   }
   .table-fixed tr{
     width: 100%;
     display: block;
+    font-size: 18px;
   }
+  
+
+  .table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
+    width: 8%;
+    display: inline-block;
+    border-bottom: none;
+    font-family: "Times New Roman", Times, serif;
+}
+.table-fixed tbody tr{
+    background-color: white;
+    color: black;
+}
+
   td>img{
         display: block;
         margin-left: auto;

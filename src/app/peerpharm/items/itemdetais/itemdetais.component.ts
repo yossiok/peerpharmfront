@@ -269,6 +269,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   getGoddetData() {
+    debugger
     let div = this.container.nativeElement;
     this.mainDivArr = [];
     let divArr = [];
