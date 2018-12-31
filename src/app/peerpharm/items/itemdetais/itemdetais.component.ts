@@ -158,7 +158,7 @@ export class ItemdetaisComponent implements OnInit {
       grossUnitWeightK: [null, Validators.required],
 
       licsensNumber: [null, Validators.required],
-      licsensDate: [null, Validators.required],
+      licsensDate: [Date, Validators.required],
       country: [null, Validators.required],
 
       netCtnWeightK: [null, Validators.required],
@@ -369,8 +369,10 @@ export class ItemdetaisComponent implements OnInit {
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
-        this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD") ;
-        debugger
+        //null as moment format returns="invalid date"
+        if(this.itemShown.licsensDate!=null) {
+          this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD") ;
+        };
         console.log(res[0]);
         this.dataDiv = res[0].goddet;
         this.showGoddetData();
@@ -380,12 +382,13 @@ export class ItemdetaisComponent implements OnInit {
 
   writeItemData() {
     console.log(this.itemShown)
+    debugger;
+
     if (confirm("Save changes?")){
       this.itemShown.nameOfupdating = this.user.userName;
       this.getGoddetData();
-      this.itemShown.updateDate
+      this.itemShown.updateDate;
       this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
-debugger;
         console.log(res)
         this.toastr.success("Saved", "Changes Saves");
         
