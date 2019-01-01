@@ -40,6 +40,11 @@ export class OrdersService {
     );
   }
 
+  // getOrderCompileData(orderNumber): Observable<any> {
+  //   let url = this.baseUrl + 'packingPallltItems?getAmounts=yes&orderNumber=' + orderNumber;
+  //   return this.http.get(url).pipe(map(reponse => reponse.json()));
+  // }
+
   //edit  order
   editOrder(order): Observable<any> {
     let url = this.baseUrl + "order/update";

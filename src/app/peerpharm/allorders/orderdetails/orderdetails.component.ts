@@ -70,6 +70,7 @@ export class OrderdetailsComponent implements OnInit {
     orderNumber: '',
     batch:'',
     itemRemarks:'',
+    compiled: [],
   };
   show: boolean;
   EditRowId: any = "";
@@ -160,6 +161,7 @@ export class OrderdetailsComponent implements OnInit {
     //this.orderService.getOrderById(id).subscribe(orderItems => {    
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
       orderItems.map( item => {
+
             //add license to item
       //////////////////CHECK IF ITEM HAVE LICENSE////////////////////////////
            
@@ -188,13 +190,30 @@ export class OrderdetailsComponent implements OnInit {
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
       });
+
       this.ordersItems = orderItems;
+      // this.OrderCompileData(this.number);
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
     });
   }
 
-  //not in useat this moments
+  // OrderCompileData(orderNumber){
+  //   this.orderService.getOrderCompileData(orderNumber).subscribe(itemPackingList => {
+  //     // this. = components;
+  //     this.ordersItems.map(item=>{
+  //       item.compiled=[] ;
+
+  //       itemPackingList.map(packedItemData=> {
+  //         if(packedItemData._id==item.itemNumber){
+  //           item.compiled.push(packedItemData);
+  //         }
+  //       });
+  //     });
+  //     console.log(this.ordersItems);
+  //   });
+  // }
+  //not in use at this moments
   getComponents(orderNumber): void {
     this.orderService.getComponentsSum(orderNumber).subscribe(components => {
       this.components = components;
