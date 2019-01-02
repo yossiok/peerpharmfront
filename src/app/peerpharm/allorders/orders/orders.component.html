@@ -80,7 +80,7 @@
           <!-- <td *ngIf="order._id===EditRowId">
               <input #orderType type='text' [value]="order.type" style='width:170px'>
             </td> -->
-          <td>{{order.type}}</td>
+          <td #orderType>{{order.type}}</td>
           <td >
             <!--<img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
             <img *ngIf="order._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, order._id)">

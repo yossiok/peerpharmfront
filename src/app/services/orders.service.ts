@@ -144,4 +144,17 @@ export class OrdersService {
     this.openOrdersSrc.next(status);
   }
 
+
+  getItemPackingList(itemNumber): Observable<any> {
+    debugger;
+    let url = this.baseUrl + 'packingPallltItems?itemNPackingList=' + itemNumber;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    );
+  }
+  //not done at server side
+  addItemToPackingList(newObj) {
+    let url = this.baseUrl + 'packingPallltItems/add';
+    return this.http.post(url, JSON.stringify(newObj), this.options).pipe(map(res => res.json()));
+  }
 }

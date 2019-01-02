@@ -97,3 +97,25 @@ background: repeating-linear-gradient(
       display: none;
     }
 }
+
+
+.modal-content, #myModal
+{
+    height: 75vh;
+    padding: 0px;
+    margin: 0px;
+    background-color: #ececec;
+}
+
+
+.modal-content table
+{
+    background-color: #ececec;
+    text-align: right;
+    direction: rtl;
+}
+.close
+{
+    font-size: 2.3125rem;
+    margin-left: 0px;
+}

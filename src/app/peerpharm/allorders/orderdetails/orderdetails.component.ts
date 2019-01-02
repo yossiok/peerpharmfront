@@ -79,6 +79,12 @@ export class OrderdetailsComponent implements OnInit {
   type = { type: '' };
   ordersToCheck = [];
   internalNumArr=[];
+  packingModal=false;
+  packingItemN="";
+  openPackingModalHeader="";
+  itemPackingList:Array<any>;
+  itemPackingPalletsArr:Array<any>
+
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
   @ViewChild('quantity') quantity: ElementRef;
@@ -95,6 +101,49 @@ export class OrderdetailsComponent implements OnInit {
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService) { }
 
+     openPackingModal(itemNumber, index){
+       
+       this.orderService.getItemPackingList(itemNumber).subscribe(itemPackingList=>{
+          this.itemPackingList=itemPackingList;
+          debugger
+       });
+      this.openPackingModalHeader="אריזת פריט מספר  "+ itemNumber;
+      this.packingModal=true;
+      this.packingItemN=itemNumber;
+
+      /*get an array of order pallets */
+      // this.itemPackingPalletsArr=this.itemPackingList.map(x=> {
+      //   if(this.itemPackingPalletsArr.includes({palletId:x.palletId,palletNumber:x.palletNumber})){
+      //     let obj={palletId:x.palletId,palletNumber:x.palletNumber}
+      //     return obj;
+      //   }
+      //   });
+        debugger;
+    }
+    updateItemPacking(itemNumber, palletId){
+
+      let newPackingItemsPalletArr=this.itemPackingList.map(x=>x);
+      let newPackingItemsPallet={
+        orderNumber:this.number,
+        palletId:palletId,
+        itemNumber:this.packingItemN,
+        pcsCtn:Number,
+        ctnPallet:Number,
+        ctnWgt:Number,
+        isExtra:Boolean
+      };
+      if(newPackingItemsPallet.ctnPallet!=null || newPackingItemsPallet.ctnPallet !=undefined || newPackingItemsPallet.ctnPallet!='')
+      /* PackingItemsPallet.update({ palletId: objectToCreate[i].palletId, itemNumber: objectToCreate[i].itemNumber, isExtra: objectToCreate[i].isExtra },
+         { pcsCtn: objectToCreate[i].pcsCtn, ctnPallet: objectToCreate[i].ctnPallet, ctnWgt: objectToCreate[i].ctnWgt, isExtra: objectToCreate[i].isExtra },*/
+      this.orderService.addItemToPackingList(newPackingItemsPalletArr).subscribe(updated=>{
+          if(updated){
+            debugger
+          }
+     });
+
+    }
+
+    
   ngOnInit() {
     console.log('hi');
 
@@ -442,6 +491,5 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 }
-
 
 
