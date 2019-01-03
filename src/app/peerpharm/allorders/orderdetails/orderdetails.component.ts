@@ -82,8 +82,10 @@ export class OrderdetailsComponent implements OnInit {
   packingModal=false;
   packingItemN="";
   openPackingModalHeader="";
-  itemPackingList:any;
+  itemPackingList:Array<any>=[];
   itemPackingPalletsArr:Array<any>=[];
+  // orderPalletsArr:Array<any>=[];
+  orderPackingList:Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -104,19 +106,14 @@ export class OrderdetailsComponent implements OnInit {
      openPackingModal(itemNumber, index){
       this.packingItemN=itemNumber;
        this.orderService.getItemPackingList(itemNumber).subscribe(itemPackingList=>{
+        debugger;
           this.itemPackingList=itemPackingList;
 
-          /*get an array of order pallets */
-          this.itemPackingPalletsArr = this.itemPackingList.map(x=> {
-            let obj={ palletId:x.palletId,  palletNumber:x.palletNumber }
-            debugger
-            if(this.itemPackingPalletsArr.includes({ palletId:x.palletId, palletNumber:x.palletNumber })){
-              return obj;
-            }
-            });
-            console.log(this.itemPackingPalletsArr)
+       });
+       this.orderService.getOrderPackingList(this.number).subscribe(orderPackingList=>{
+        debugger;
+          this.orderPackingList=orderPackingList;
 
-            debugger;
        });
       this.openPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
       this.packingModal=true;

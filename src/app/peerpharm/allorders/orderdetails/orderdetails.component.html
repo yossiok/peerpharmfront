@@ -274,7 +274,46 @@
         </div>
 
         <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
-          <div *ngFor="let itemPackingPallet of itemPackingPalletsArr"></div>
+          <table class="itemPackings">
+            <thead>
+              <tr>
+                <th><b>מספר פריט</b></th>
+                <th><b>יח' בקרטון</b></th>
+                <th><b>קרטונים במשטח</b></th>
+                <th><b>מספר משטח</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let itemPackingPallet of itemPackingList">
+                <td>{{itemPackingPallet.itemNumber}}</td>
+                <td>{{itemPackingPallet.pcsCtn}}</td>
+                <td>{{itemPackingPallet.ctnPallet}}</td>
+                <td>{{itemPackingPallet.palletNumber}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <div class="orerPallets" *ngFor="let itemPacked of orderPackingList">
+            <h4>מספר משטח {{itemPacked.palletNumber}}</h4>
+            <table class="orerPalletsTable">
+              <thead>
+                <tr>
+                  <th><b>מספר פריט</b></th>
+                  <th><b>יח' בקרטון</b></th>
+                  <th><b>קרטונים במשטח</b></th>
+  
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let itemPackingPallet of itemPackingList">
+                  <td>{{itemPacked.itemNumber}}</td>
+                  <td>{{itemPacked.pcsCtn}}</td>
+                  <td>{{itemPacked.ctnPallet}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
         </div>
         <div class="modal-footer">
