@@ -1,6 +1,9 @@
 #myModal{
   float: right;
 }
+#myModal table, #myModal h4{
+  float: right;
+}
 .table{
   color:black;
   font-size: 15px;

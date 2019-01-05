@@ -13,8 +13,6 @@
   <span class='spanTitle'> Order Date:</span><span> {{orderDate}} </span><span class='spanTitle'> Delivery Date: </span><span>{{deliveryDate}}</span>
   <span class='spanTitle'> Costumer :</span><span> {{costumer}} </span><span class='spanTitle'> Remarks:</span><span>
     {{remarks}}</span>
-    <span>
-        <button (click)="OrderCompileData(number)">Order Items Compile</button></span>
 </div>
 <img src="assets/images/load_data2.gif" *ngIf="loadData==true" ><br>
 <input matInput  placeholder="Item Name / Number" (keyup)="changeText($event)" class="form-control  mb-8" />
@@ -274,7 +272,10 @@
         </div>
 
         <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
-          <table class="itemPackings">
+          <div clas="modalFullWidth" width="100%">
+
+          </div>
+          <table class="itemPackings" width="100%">
             <thead>
               <tr>
                 <th><b>מספר פריט</b></th>
@@ -292,11 +293,11 @@
               </tr>
             </tbody>
           </table>
+<br><br>
 
-
-          <div class="orerPallets" *ngFor="let itemPacked of orderPackingList">
-            <h4>מספר משטח {{itemPacked.palletNumber}}</h4>
-            <table class="orerPalletsTable">
+          <div class="orerPallets" *ngFor="let orderPallet of orderPalletsArr" >
+            <h4>משטח מספר {{orderPallet}}</h4>
+            <table class="orerPalletsTable" width="100%">
               <thead>
                 <tr>
                   <th><b>מספר פריט</b></th>
@@ -307,9 +308,12 @@
               </thead>
               <tbody>
                 <tr *ngFor="let itemPackingPallet of itemPackingList">
-                  <td>{{itemPacked.itemNumber}}</td>
-                  <td>{{itemPacked.pcsCtn}}</td>
-                  <td>{{itemPacked.ctnPallet}}</td>
+                  
+                 <ng-container *ngIf="itemPackingPallet.palletNumber==orderPallet">
+                    <td>{{itemPackingPallet.itemNumber}}</td>
+                    <td>{{itemPackingPallet.pcsCtn}}</td>
+                    <td>{{itemPackingPallet.ctnPallet}}</td>
+                  </ng-container>
                 </tr>
               </tbody>
             </table>
@@ -317,7 +321,7 @@
 
         </div>
         <div class="modal-footer">
-          <button  class="btn btn-success" (click)="updateItemPacking(itemNumber)" >עדכן</button>
+          <!-- <button  class="btn btn-success" (click)="updateItemPacking(itemNumber)" >עדכן</button> -->
         </div>
       </div>
 
