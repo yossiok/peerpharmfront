@@ -115,7 +115,7 @@ export const PeerPharmRputs: Routes =[
     component: PlateComponent
   },
   {
-    path: 'inventory/inventory',
+    path: 'inventory/stock',
     data: {
       title: 'Inventory'
     },

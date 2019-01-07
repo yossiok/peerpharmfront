@@ -214,15 +214,6 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-       {
-        path: '/peerpharm/schedule/fillschedule',
-        title: 'Item Tree',
-        icon: 'fas fa-tree',
-        class: '',
-        extralink: false,
-        submenu: []
-      }
-
     ]
   },
 
@@ -279,7 +270,7 @@ export const ROUTES: RouteInfo[] = [
       extralink: false,
       submenu: [
         {
-          path: '/peerpharm/inventory/inventory',
+          path: '/peerpharm/inventory/stock',
           title: 'Inventory List',
           icon: 'fas fa-address-book',
           class: '',
