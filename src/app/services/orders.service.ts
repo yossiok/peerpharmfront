@@ -86,6 +86,12 @@ export class OrdersService {
       map(reponse => reponse.json())
     )
   }
+  getOrdersIdsByNumbers(ordersNumbers): Observable<any> {
+    let url = this.baseUrl + 'order?multyOrdersNumbersIds=' + ordersNumbers;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    )
+  }
 
   getMultiOrdersIds(idsArray): Observable<any> {
     let url = this.baseUrl + 'orderitem?multiOrdersIds=' + idsArray;
@@ -144,4 +150,20 @@ export class OrdersService {
     this.openOrdersSrc.next(status);
   }
 
+
+  getItemPackingList(itemNumber): Observable<any> {
+    let url = this.baseUrl + 'packingPallltItems?itemNPackingList=' + itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json())
+    );
+  }
+  getOrderPackingList(orderNumber): Observable<any> {
+    let url = this.baseUrl + 'packingPallltItems?orderPallets=' + orderNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json())
+    );
+  }
+  //not done at server side
+  addItemToPackingList(newObj) {
+    let url = this.baseUrl + 'packingPallltItems/add';
+    return this.http.post(url, JSON.stringify(newObj), this.options).pipe(map(res => res.json()));
+  }
 }

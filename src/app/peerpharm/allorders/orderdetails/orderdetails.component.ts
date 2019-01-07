@@ -79,6 +79,14 @@ export class OrderdetailsComponent implements OnInit {
   type = { type: '' };
   ordersToCheck = [];
   internalNumArr=[];
+  packingModal=false;
+  packingItemN="";
+  openPackingModalHeader="";
+  itemPackingList:Array<any>=[];
+  itemPackingPalletsArr:Array<any>=[];
+  orderPalletsArr:Array<any>=[];
+  orderPackingList:Array<any>=[];
+
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
   @ViewChild('quantity') quantity: ElementRef;
@@ -95,15 +103,44 @@ export class OrderdetailsComponent implements OnInit {
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService) { }
 
+     openPackingModal(itemNumber, index){
+      this.packingItemN=itemNumber;
+       this.orderService.getItemPackingList(itemNumber).subscribe(itemPackingList=>{
+          this.itemPackingList=itemPackingList;
+
+       });
+       this.orderService.getOrderPackingList(this.number).subscribe(orderPackingList=>{
+          this.orderPackingList=orderPackingList;
+          
+          this.orderPackingList.forEach(element => {
+            if(!this.orderPalletsArr.includes(element.palletNumber)){
+              this.orderPalletsArr.push(element.palletNumber);
+            }            
+          });
+          
+          debugger
+       });
+      this.openPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
+      this.packingModal=true;
+
+
+    }
+
+    
   ngOnInit() {
     console.log('hi');
-
- 
     this.orderService.openOrdersValidate.subscribe(res=>{
-      if(res==true){
+      debugger
+      this.number = this.route.snapshot.paramMap.get('id');
+      if(res==true || this.number=="00"){
+        debugger
         this.loadData=true;
         this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
           this.loadData=false;
+          orderItems.forEach(item => {
+            item.isExpand = '+';
+            item.colorBtn = '#33FFE0';
+          });
           this.ordersItems = orderItems;
           this.ordersItemsCopy = orderItems; 
           this.ordersItems.map(item=>{
@@ -113,29 +150,48 @@ export class OrderdetailsComponent implements OnInit {
           //this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
           console.log(orderItems)
-        })
+        });
           
       }
       else{
-        this.orderService.ordersArr.subscribe(res => {
-          console.log(res)
-          if (res.length > 0) { // if the request is for few orders:
-            this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
-              this.ordersItems = orderItems;
-             // this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
-             // this.getComponents(this.ordersItems[0].orderNumber);
-              this.multi = true;
-              console.log(orderItems)
-            });
-          }
-          else {  //one order:
-            this.getOrderDetails();
-            this.getOrderItems();
-            this.show = true;
-            this.multi = false;
-          }
-        });
+          this.orderService.ordersArr.subscribe(res => {
+            console.log(res)
+            var numArr = this.number.split(",").filter(x=>x!="");
+            if(numArr.length>0){
+              this.orderService.getOrdersIdsByNumbers(numArr).subscribe(ordersIds => {
+                debugger
+                if(ordersIds.length>0){
+                  this.orderService.getMultiOrdersIds(ordersIds).subscribe(orderItems => {
+                    orderItems.forEach(item => {
+                      item.isExpand = '+';
+                      item.colorBtn = '#33FFE0';
+                    });
+                    this.ordersItems = orderItems;
+                    this.multi = true;
+                    console.log(orderItems)
+                  });
+                }
 
+              });
+            } else {  //one order:
+              debugger
+              this.getOrderDetails();
+              this.getOrderItems();
+              this.show = true;
+              this.multi = false;
+            }
+
+            // if (res.length > 0) { // if the request is for few orders:
+            //   this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
+            //     this.ordersItems = orderItems;
+            //    // this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
+            //    // this.getComponents(this.ordersItems[0].orderNumber);
+            //     this.multi = true;
+            //     console.log(orderItems)
+            //   });
+            // } 
+
+          });
       }
     })
 
@@ -283,6 +339,7 @@ export class OrderdetailsComponent implements OnInit {
         let index = this.ordersItems.findIndex(order => order._id == itemToUpdate.orderItemId);
         this.ordersItems[index] = itemToUpdate;
         this.ordersItems[index]._id = itemToUpdate.orderItemId;
+      }else{
       }
 
     });
@@ -442,6 +499,5 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 }
-
 
 

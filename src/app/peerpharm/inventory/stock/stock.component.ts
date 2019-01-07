@@ -87,6 +87,7 @@ export class StockComponent implements OnInit {
         this.buttonColor3 = "white";
         break;
     }
+    this.stockType=type;
  
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==type);
   }

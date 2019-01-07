@@ -15,7 +15,7 @@
   <tbody id="table_body">
     <tr *ngFor="let costumer of costumers; let i=index">
       <td>{{i}}</td>
-      <td (click)='openDetails(content, i)'>{{costumer.costumerId}}</td>
+      <td (click)='openDetails(content, i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
       <td>{{costumer.costumerName}}</td>
       <td>{{costumer.invoice}}</td>
       <td></td>

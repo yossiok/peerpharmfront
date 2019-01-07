@@ -1,3 +1,6 @@
+.fr{
+float: right;
+}
 .table-fixed thead {
     width: 100%;
     display: block;
