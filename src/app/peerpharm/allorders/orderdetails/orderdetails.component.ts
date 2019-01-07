@@ -125,39 +125,22 @@ export class OrderdetailsComponent implements OnInit {
 
 
     }
-    updateItemPacking(itemNumber, palletId){
-
-    //   let newPackingItemsPalletArr=this.itemPackingList.map(x=>x);
-    //   let newPackingItemsPallet={
-    //     orderNumber:this.number,
-    //     palletId:palletId,
-    //     itemNumber:this.packingItemN,
-    //     pcsCtn:Number,
-    //     ctnPallet:Number,
-    //     ctnWgt:Number,
-    //     isExtra:Boolean
-    //   };
-    //   if(newPackingItemsPallet.ctnPallet!=null || newPackingItemsPallet.ctnPallet !=undefined || newPackingItemsPallet.ctnPallet!='')
-    //   /* PackingItemsPallet.update({ palletId: objectToCreate[i].palletId, itemNumber: objectToCreate[i].itemNumber, isExtra: objectToCreate[i].isExtra },
-    //      { pcsCtn: objectToCreate[i].pcsCtn, ctnPallet: objectToCreate[i].ctnPallet, ctnWgt: objectToCreate[i].ctnWgt, isExtra: objectToCreate[i].isExtra },*/
-    //   this.orderService.addItemToPackingList(newPackingItemsPalletArr).subscribe(updated=>{
-    //       if(updated){
-    //         debugger
-    //       }
-    //  });
-
-    }
 
     
   ngOnInit() {
     console.log('hi');
-
- 
     this.orderService.openOrdersValidate.subscribe(res=>{
-      if(res==true){
+      debugger
+      this.number = this.route.snapshot.paramMap.get('id');
+      if(res==true || this.number=="00"){
+        debugger
         this.loadData=true;
         this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
           this.loadData=false;
+          orderItems.forEach(item => {
+            item.isExpand = '+';
+            item.colorBtn = '#33FFE0';
+          });
           this.ordersItems = orderItems;
           this.ordersItemsCopy = orderItems; 
           this.ordersItems.map(item=>{
@@ -167,29 +150,48 @@ export class OrderdetailsComponent implements OnInit {
           //this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
           console.log(orderItems)
-        })
+        });
           
       }
       else{
-        this.orderService.ordersArr.subscribe(res => {
-          console.log(res)
-          if (res.length > 0) { // if the request is for few orders:
-            this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
-              this.ordersItems = orderItems;
-             // this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
-             // this.getComponents(this.ordersItems[0].orderNumber);
-              this.multi = true;
-              console.log(orderItems)
-            });
-          }
-          else {  //one order:
-            this.getOrderDetails();
-            this.getOrderItems();
-            this.show = true;
-            this.multi = false;
-          }
-        });
+          this.orderService.ordersArr.subscribe(res => {
+            console.log(res)
+            var numArr = this.number.split(",").filter(x=>x!="");
+            if(numArr.length>0){
+              this.orderService.getOrdersIdsByNumbers(numArr).subscribe(ordersIds => {
+                debugger
+                if(ordersIds.length>0){
+                  this.orderService.getMultiOrdersIds(ordersIds).subscribe(orderItems => {
+                    orderItems.forEach(item => {
+                      item.isExpand = '+';
+                      item.colorBtn = '#33FFE0';
+                    });
+                    this.ordersItems = orderItems;
+                    this.multi = true;
+                    console.log(orderItems)
+                  });
+                }
 
+              });
+            } else {  //one order:
+              debugger
+              this.getOrderDetails();
+              this.getOrderItems();
+              this.show = true;
+              this.multi = false;
+            }
+
+            // if (res.length > 0) { // if the request is for few orders:
+            //   this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
+            //     this.ordersItems = orderItems;
+            //    // this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
+            //    // this.getComponents(this.ordersItems[0].orderNumber);
+            //     this.multi = true;
+            //     console.log(orderItems)
+            //   });
+            // } 
+
+          });
       }
     })
 
@@ -337,6 +339,7 @@ export class OrderdetailsComponent implements OnInit {
         let index = this.ordersItems.findIndex(order => order._id == itemToUpdate.orderItemId);
         this.ordersItems[index] = itemToUpdate;
         this.ordersItems[index]._id = itemToUpdate.orderItemId;
+      }else{
       }
 
     });

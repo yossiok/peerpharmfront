@@ -86,6 +86,12 @@ export class OrdersService {
       map(reponse => reponse.json())
     )
   }
+  getOrdersIdsByNumbers(ordersNumbers): Observable<any> {
+    let url = this.baseUrl + 'order?multyOrdersNumbersIds=' + ordersNumbers;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    )
+  }
 
   getMultiOrdersIds(idsArray): Observable<any> {
     let url = this.baseUrl + 'orderitem?multiOrdersIds=' + idsArray;

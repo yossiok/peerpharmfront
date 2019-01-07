@@ -148,17 +148,24 @@ export class OrdersComponent implements OnInit {
 
   loadOrders() {
     console.log(this.orders);
-    let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
+    debugger
+    // let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
+    let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e.orderNumber);
     this.ordersService.sendOrderData(tempArr);
     this.ordersService.getAllOpenOrdersItems(false);
-    this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
+    let tempArrStr="";
+    tempArr.forEach(number => {
+      tempArrStr=tempArrStr+","+number;
+    });
+    debugger
+    this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]);
     console.log(tempArr);
     //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
   }
 
   loadOrdersItems() {
     this.ordersService.getAllOpenOrdersItems(true);
-    this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
+    this.router.navigate(["/peerpharm/allorders/orderitems/00"]);
 
   }
 
