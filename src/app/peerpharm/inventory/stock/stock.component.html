@@ -16,13 +16,13 @@
 
 
 
-  <div (click)='setType("component", this)' [ngStyle]="{'background-color': buttonColor}" class="navtab">Components</div>
-  <!-- <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div>
-  <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" >Finished Products</div> -->
+  <div (click)='setType("component", this)' [ngStyle]="{'background-color': buttonColor}" class="navtab" style="cursor:pointer;">Components</div>
+  <!-- <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div>-->
+  <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" style="cursor:pointer;">Products</div> 
 
 
 
-  <table class='table stockTable table-fixed'>
+  <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
     <thead class='bg-info text-white'>
       <tr align='center'>
 
@@ -43,7 +43,7 @@
     </thead>
 
 
-    <tbody id="table_body">
+    <tbody id="table_body" class="componentTable">
       <tr *ngFor="let component of components; let i = index">
         <td style="width:4%">{{i+1}}</td>
         <td class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
@@ -67,7 +67,69 @@
     </tbody>
   </table>
 
-  <div *ngIf="openModal==true" id="myModal2" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
+
+
+
+
+  <table class='table stockTable table-fixed' *ngIf="stockType=='product'">
+      <thead class='bg-info text-white'>
+        <tr align='left'>
+  
+          <th style="width:4%; padding:5px"></th>
+          <th style="width:10%; padding:5px"><b>מספר פריט</b></th>
+          <!-- <th style="padding:5px"><b>מק"ט פריט/ספק</b></th> -->
+          <th style="width:30%; padding:5px"><b>שם</b></th>
+          <!-- <th style="padding:5px"><b>סוג</b></th> -->
+          <th style="width:10%; padding:5px"><b>כמות</b></th>
+          <th style="width:10%; padding:5px"></th>
+          <th style="width:10%; padding:5px"><b>כמות מוקצת</b></th>
+          <th style="width:10%; padding:5px"><b>תמונה</b></th>
+          <!-- <th style="padding:5px"><b>הזמנת רכש</b></th>
+          <th style="padding:5px"><b>כמות להזמנת רכש</b></th> -->
+          <th style="width:5%;" ></th>
+          <th style="width:5%;" ></th>
+        </tr>
+  
+      </thead>
+  
+  
+      <tbody id="table_body" class="productTable">
+        <tr *ngFor="let component of components; let i = index">
+          <td style="width:4%">{{i+1}}</td>
+          <td style="width:10%" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
+          <!-- <td>{{component.componentNS}}</td> -->
+          <td style="width:30%;">{{component.componentName}}</td>
+          <!-- <td>{{component.componentType}}</td> -->
+          <td style="width:10%;">{{component.amount}}</td>
+          <td style="width:10%;"><button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
+          <td style="width:10%;">
+            <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
+          </td>
+          <td style="width:10%;"><img [src]=component.img style='width:50px'></td>
+          <!-- <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
+          <td><div>
+            <input #procurmentInput type="number" (keyup)="inputProcurment($event)" /><span> <button class="btn btn-success"
+              (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span>
+            
+          </div>
+        </td> -->
+          <td style="width:5%;"></td>
+          <td style="width:5%;"></td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+  <div *ngIf="openModal==true && stockType=='component'" id="myModal2" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
     <!-- Modal content -->
     <div class="modal-content" style='width:650px' id='modelC'>
@@ -235,9 +297,9 @@
       </div>
       <div class="modal-body">
         <div *ngFor="let whName of itemAmountsWh">
-          <h4><u>{{whName}}</u></h4>
-          <div class="container">
-            <table id='amountsTable' class="table">
+          <div class="container fr">
+            <h4 class="fr"><u>{{whName}}</u></h4>
+            <table id='amountsTable' class="table fr">
               <tbody id='amountsInWhTbody' align='center'>
                 <tr>
                   <th><b>מדף</b></th>
@@ -262,13 +324,16 @@
         </div>
       </div>
       <br>
-      <div class="container">
-        <h3>הקצאות מלאי</h3>
-        <label>מספר הזמנה</label>&nbsp;<input [(ngModel)]="newAllocationOrderNum" type="text" placeholder="Order number" />&nbsp;
-        <label>כמות</label>&nbsp;<input [(ngModel)]="newAllocationAmount" type="number" placeholder="amount" />&nbsp;<button
-          class="btn-success" (click)="addItemStockAllocation(resCmpt.componentN)">הוסף</button>
+      <div class="container fr">
+        <div class="fr">
+            <h3 class="fr">הקצאות מלאי</h3>
+            <label>מספר הזמנה</label>&nbsp;<input [(ngModel)]="newAllocationOrderNum" type="text" placeholder="Order number" />&nbsp;
+            <label>כמות</label>&nbsp;<input [(ngModel)]="newAllocationAmount" type="number" placeholder="amount" />&nbsp;<button
+              class="btn-success" (click)="addItemStockAllocation(resCmpt.componentN)">הוסף</button>
+    
+        </div>
 
-        <div *ngIf="resCmpt.allocations!=null">
+        <div *ngIf="resCmpt.allocations!=null" class="fr">
           <div class="container">
             <h4><u>הקצאות קיימות לפריט</u></h4>
             <table id='allocationsTable' class="table">
@@ -314,3 +379,6 @@
     </div>
 
   </div>
+
+
+  
