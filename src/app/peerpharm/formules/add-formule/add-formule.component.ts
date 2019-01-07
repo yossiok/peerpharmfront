@@ -1,7 +1,10 @@
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Output, EventEmitter } from '@angular/core';
 import { FormulesService } from '../../../services/formules.service';
 
+export interface FormuleCategory {
+  value: string;
+}
 
 @Component({
   selector: 'app-add-formule',
@@ -10,17 +13,25 @@ import { FormulesService } from '../../../services/formules.service';
 })
 export class AddFormuleComponent implements OnInit {
 
-  formulesForm: FormGroup;
-  phValue:string;
+ public formulesForm: FormGroup;
+  phValue: string;
+  @Output() formuleCreated = new EventEmitter();
 
 
-  constructor(private formuleService:FormulesService) { }
+  constructor(private formuleService: FormulesService) { }
+
+  allFormuleCategory: FormuleCategory[] = [
+    { value: 'Oil Based Lotion'},
+    { value: 'Water Baised Lotion' },
+    { value: 'Hyperallergic'}
+  ];
 
   ngOnInit() {
 
     this.formulesForm = new FormGroup({
       number: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
       lastUpdate: new FormControl('', [Validators.required]),
       ph: new FormControl('', [Validators.required]),
       client: new FormControl('', [Validators.required])
@@ -29,8 +40,8 @@ export class AddFormuleComponent implements OnInit {
 
 
   onSubmit(): void {
-    this.formuleService.addFormule(this.formulesForm.value).subscribe(data=>console.log("added "+data));
-  
+   const newFormuleAdded = this.formulesForm.value;
+   this.formuleCreated.emit(newFormuleAdded);
   }
 
 }

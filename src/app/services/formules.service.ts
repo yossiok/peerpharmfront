@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Formule } from '../peerpharm/formules/models/formule'; 
+import { Formule } from '../peerpharm/formules/models/formule';
+import { FormuleItem } from '../peerpharm/formules/models/formule-item';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -10,17 +11,34 @@ import 'rxjs/add/operator/catch';
   providedIn: 'root'
 })
 export class FormulesService {
+  url: any = '/formules/add';
 
-  url: any = "/formules/add";
+  constructor(private http: Http) {}
 
-  constructor(private http: Http) { }
+  addFormule(
+    number: number,
+    name: string,
+    category: string,
+    lastUpdate: Date,
+    ph: string,
+    client: string,
+    allItems: FormuleItem[]
+  ): Observable<Formule>  {
+    const formule =  new Formule();
+    formule.number = number;
+    formule.name = name;
+    formule.category = category;
+    formule.lastUpdate = lastUpdate;
+    formule.ph = ph;
+    formule.client = client;
+    formule.items = allItems;
 
-  addFormule(formule: Formule): Observable<Formule> {
-    
+    console.log(formule);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.url, formule, options)
-      .map((res) => this.extractData(res))
+    return this.http
+      .post(this.url, formule, options)
+      .map(res => this.extractData(res))
       .catch(this.handleErrorObservable);
   }
   private extractData(res: any) {
@@ -36,6 +54,6 @@ export class FormulesService {
   }
 
   handleErrorObservable(arg0: any): any {
-    throw new Error("Error getting new Formule");
+    throw new Error('Error getting new Formule');
   }
 }

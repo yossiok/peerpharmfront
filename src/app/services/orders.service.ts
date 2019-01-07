@@ -34,7 +34,7 @@ export class OrdersService {
     //.catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
   getAllOrders(): Observable<any> {
-    let url = this.baseUrl + 'order/allorders'    
+    let url = this.baseUrl + 'order/allorders'
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
     );
@@ -64,14 +64,14 @@ export class OrdersService {
     let url = this.baseUrl + 'orderitem?orderId=' + id;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
-    )
+    );
   }
-  
+
   getOrderItemsByNumber(orderNumber): Observable<any> {
     let url = this.baseUrl + 'orderitem?orderNumber=' + orderNumber;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
-    )
+    );
   }
 
   getOpenOrdersItems():Observable<any>{
@@ -104,7 +104,7 @@ export class OrdersService {
   //edit item in order
   editItemOrder(orderItem): Observable<any> {
     let url = this.baseUrl + "orderitem/update";
-    
+
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
 
@@ -131,7 +131,7 @@ export class OrdersService {
   deleteOrderItem(itemId) {
 
     let url = this.baseUrl + "orderitem/remove";
-    
+
     let item = { id: itemId }
     return this.http.post(url, JSON.stringify(item), this.options).pipe(map(res => res.json()))
   }

@@ -4,43 +4,123 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Add Formule Item</h4>
-        <h5 class="card-subtitle"> Enter formule values here </h5>
+        <h5 class="card-subtitle">Enter formule values here</h5>
 
-        <form class="form" [formGroup]="formuleItem" (submit)="onSubmit()" >
+        <form class="form" [formGroup]="itemsForm">
           <div class="form-group m-t-40 row">
-            <label for="example-text-input" class="col-2 col-form-label">Formule stage</label>
+            <label for="example-text-input" class="col-2 col-form-label"
+              >Item Number</label
+            >
             <div class="col-10">
-              <input class="form-control" type="text" formControlName="number">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="number"
+              />
             </div>
           </div>
           <div class="form-group row">
-            <label for="example-search-input" class="col-2 col-form-label">Formule Name</label>
+            <label for="example-number-input" class="col-2 col-form-label"
+              >Item Amount</label
+            >
             <div class="col-10">
-              <input class="form-control" type="search" value="" formControlName="name">
+              <input
+                class="form-control"
+                type="number"
+                value=""
+                formControlName="quantity"
+              />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-date-input" class="col-2 col-form-label">Last updated</label>
+            <label for="example-number-input" class="col-2 col-form-label"
+              >Item Relative Percentage</label
+            >
             <div class="col-10">
-              <input class="form-control" type="date" value="2011-08-19" formControlName="lastUpdate">
+              <input
+                class="form-control"
+                type="number"
+                value=""
+                formControlName="Percentage"
+              />
             </div>
           </div>
-          <div class="form-group row">
-            <label for="example-search-input" class="col-2 col-form-label">Client</label>
-            <div class="col-10">
-              <input class="form-control" type="search" value=""  formControlName="client">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="example-color-input" class="col-2 col-form-label">Ph Range</label>
-            <div class="col-10">
-              <input type="range" class="form-control" formControlName="ph" value="5.5" min="1" max="14"  [(ngModel)]="phValue"  step="0.01" />
-            </div>
-            <label   class="col-2 col-form-label">{{phValue}}</label>
-          </div> 
 
-          <button  class="btn btn-success m-r-10" type="submit">Submit</button>
+          <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label"
+              >Phase Instructions</label
+            >
+            <div class="col-10">
+              <input
+                class="form-control"
+                type="text"
+                value=""
+                formControlName="instractions"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-number-input" class="col-2 col-form-label"
+              >Phase Tempature</label
+            >
+            <div class="col-10">
+              <input
+                class="form-control"
+                type="number"
+                value=""
+                formControlName="temp"
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-color-input" class="col-2 col-form-label"
+              >Ph Range</label
+            >
+            <div class="col-10">
+              <input
+                type="range"
+                class="form-control"
+                formControlName="ph"
+                value="5.5"
+                min="1"
+                max="14"
+                [(ngModel)]="phValue"
+                step="0.01"
+              />
+            </div>
+            <label class="col-2 col-form-label">{{ phValue }}</label>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-date-input" class="col-2 col-form-label"
+              >Last updated</label
+            >
+            <div class="col-10">
+              <input
+                class="form-control"
+                type="date"
+                value="2011-08-19"
+                formControlName="lastUpdate"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="example-search-input" class="col-2 col-form-label"
+              >Client</label
+            >
+            <div class="col-10">
+              <input
+                class="form-control"
+                type="search"
+                value=""
+                formControlName="client"
+              />
+            </div>
+          </div>
+          <button class="btn btn-success m-r-10" type="button" (click)="onSubmit()">Add Another Item</button>
         </form>
       </div>
     </div>

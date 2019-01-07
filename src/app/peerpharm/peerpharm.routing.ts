@@ -10,9 +10,11 @@ import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
 import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
-import {AddFormuleComponent} from './formules/add-formule/add-formule.component'
+import {FormuleComponent} from './formules/formule.component'
 import {LinesComponent} from './production/lines/lines.component'
-import {ProductionComponent} from './production/production/production.component'
+import {ProductionComponent} from './production/production/production.component';
+import {ProductionRequestComponent} from './production/production-request/production-request.component';
+import {ProductionScheduleComponent} from './production/production-schedule/production-schedule.component';
 import {ContentComponent} from './taskboard/core/content/content.component'
 import { BatchesComponent } from './batches/batches.component';
 import {CostumersListComponent} from './costumers/costumers-list/costumers-list.component'
@@ -29,78 +31,78 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'allorders/orders',
     data: {
-      title: 'Open Orders' 
+      title: 'Open Orders'
     },
     component: OrdersComponent
   },
   {
     path: 'allorders/orders/allorders',
     data: {
-      title: 'All Orders' 
+      title: 'All Orders'
     },
     component: AllordersComponent
   },
   {
     path: 'allorders/orderitems/:id',
     data: {
-      title: 'Order' 
+      title: 'Order'
     },
     component: OrderdetailsComponent
   },
   {
     path: 'allorders/neworder',
     data: {
-      title: 'New Order' 
+      title: 'New Order'
     },
     component: NeworderComponent
   },
   {
     path: 'schedule/fillschedule',
     data: {
-      title: 'Fill Schedule' 
+      title: 'Fill Schedule'
     },
     component: ScheduleComponent
   },
   {
     path: 'schedule/printschedule',
     data: {
-      title: 'Print Schedule' 
+      title: 'Print Schedule'
     },
     component: PrintingComponent
   },
   {
     path: 'schedule/makeupschedule',
     data: {
-      title: 'Make Up Schedule' 
+      title: 'Make Up Schedule'
     },
     component: MakeupComponent
   },
   {
     path: 'schedule/packingschedule',
     data: {
-      title: 'Packing Schedule' 
+      title: 'Packing Schedule'
     },
     component: PackingComponent
   },
-  
+
   {
     path: 'items/itemslist',
     data: {
-      title: 'Items List' 
+      title: 'Items List'
     },
     component: ItemslistComponent
   },
   {
     path: 'items/itemDetails',
     data: {
-      title: 'Item Tree' 
+      title: 'Item Tree'
     },
     component: ItemDetailsTabComponent
   },
   {
     path: 'items/itemDetails/:itemNumber',
     data: {
-      title: 'Item Tree' 
+      title: 'Item Tree'
     },
    // component: ItemdetaisComponent
     component: ItemDetailsTabComponent
@@ -108,44 +110,44 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'plates/plates',
     data: {
-      title: 'Plates' 
+      title: 'Plates'
     },
     component: PlateComponent
   },
   {
     path: 'inventory/inventory',
     data: {
-      title: 'Inventory' 
+      title: 'Inventory'
     },
     component: StockComponent
   },
   {
     path: 'inventory/wharehouse',
     data: {
-      title: 'WhareHouse' 
+      title: 'WhareHouse'
     },
     component: WharehouseComponent
   },
   {
     path: 'inventory/inventoryRequest',
     data: {
-      title: 'Inventory Request' 
+      title: 'Inventory Request'
     },
     component: InventoryNewRequestComponent
   },
   {
     path: 'taskboard/main',
     data: {
-      title: 'task-board' 
+      title: 'task-board'
     },
     component: ContentComponent
   },
   {
     path: 'formule/addnewformule',
     data: {
-      title: 'task-board' 
+      title: 'add-formule'
     },
-    component: AddFormuleComponent
+    component: FormuleComponent
   },
   {
     path :'production/lines',
@@ -162,6 +164,20 @@ export const PeerPharmRputs: Routes =[
     component:ProductionComponent
   },
   {
+    path : 'production/productionRequest',
+    data : {
+      title : 'Production Request'
+    },
+    component: ProductionRequestComponent
+  },
+  {
+    path : 'production/productionSchedule',
+    data : {
+      title : 'Production Schedule'
+    },
+    component: ProductionScheduleComponent
+  },
+  {
     path :'batches/batchesList',
     data :{
       title : 'Batches List'
@@ -176,7 +192,7 @@ export const PeerPharmRputs: Routes =[
     },
     component:CostumersListComponent
   }
-  
+
   ,
   {
     path :'forms/forms_list',
@@ -185,7 +201,7 @@ export const PeerPharmRputs: Routes =[
     },
     component:FormslistComponent
   }
-  
+
   ,
   {
     path :'forms/formDetails/:id',
@@ -194,6 +210,6 @@ export const PeerPharmRputs: Routes =[
     },
     component:FormdetailsComponent
   }
-  
+
 ];
 

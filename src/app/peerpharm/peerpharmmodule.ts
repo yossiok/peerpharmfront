@@ -7,11 +7,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { JsonpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormuleComponent } from './formules/formule.component';
 import { AddFormuleComponent } from './formules/add-formule/add-formule.component';
 import { AddFormuleItemComponent } from './formules/add-formule-item/add-formule-item.component';
 import { PeerPharmRputs } from './peerpharm.routing';
 import { OrdersComponent } from './allorders/orders/orders.component';
-import { AllordersComponent } from './allorders/allorders/allorders.component'; 
+import { AllordersComponent } from './allorders/allorders/allorders.component';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
@@ -23,7 +24,9 @@ import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
 import {LinesComponent} from './production/lines/lines.component'
-import {ProductionComponent} from './production/production/production.component'
+import {ProductionComponent} from './production/production/production.component';
+import {ProductionRequestComponent} from './production/production-request/production-request.component';
+import {ProductionScheduleComponent} from './production/production-schedule/production-schedule.component';
 import {ContentComponent} from './taskboard/core/content/content.component'
 import {BatchesComponent} from './batches/batches.component'
 import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component';
@@ -35,6 +38,8 @@ import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-t
 import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
+
+
 import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ChatComponent } from './../shared/chat/chat.component';
@@ -60,7 +65,7 @@ import { TaskCardComponent } from './taskboard/board/shared/task-card/task-card.
 import { CreateBoardComponent } from './taskboard/board/create-board/create-board.component';
 import { SubtaskComponent } from './taskboard/subtask/subtask.component';
 import { SubTaskCardComponent } from './taskboard/board/shared/sub-task-card/sub-task-card.component';
- 
+
 
 import { DndModule } from 'ng2-dnd';
 import { DatepickerModule } from 'angular2-material-datepicker';
@@ -77,17 +82,17 @@ import { PackingComponent } from './schedule/packing/packing.component';
     MatInputModule
   ],
   imports: [
-   
+
     CommonModule,
     RouterModule.forChild(PeerPharmRputs),
     ReactiveFormsModule,
-    JsonpModule, 
-    HttpClientModule, 
+    JsonpModule,
+    HttpClientModule,
     MatCheckboxModule,
     NgbModule,
     FormsModule,
     MatDialogModule,
-    MatGridListModule, 
+    MatGridListModule,
     MatMenuModule,
     MatButtonModule,
     MatTooltipModule,
@@ -99,13 +104,14 @@ import { PackingComponent } from './schedule/packing/packing.component';
     MatTabsModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule, 
+    MatNativeDateModule,
     MatSelectModule,
     DndModule.forRoot(),
     DatepickerModule,
     Ng2FilterPipeModule , HttpClientModule
   ],
   declarations: [
+    FormuleComponent,
     AddFormuleComponent,
     OrdersComponent,
     AllordersComponent,
@@ -113,6 +119,8 @@ import { PackingComponent } from './schedule/packing/packing.component';
     NeworderComponent,
     LinesComponent,
     ProductionComponent,
+    ProductionRequestComponent,
+    ProductionScheduleComponent,
     AddFormuleItemComponent,
     ScheduleComponent,
     ItemslistComponent,
