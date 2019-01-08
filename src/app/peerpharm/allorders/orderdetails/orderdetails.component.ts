@@ -130,13 +130,13 @@ export class OrderdetailsComponent implements OnInit {
   ngOnInit() {
     console.log('hi');
     this.orderService.openOrdersValidate.subscribe(res=>{
-      debugger
       this.number = this.route.snapshot.paramMap.get('id');
+
       if(res==true || this.number=="00"){
-        debugger
         this.loadData=true;
         this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
           this.loadData=false;
+          this.multi = true;
           orderItems.forEach(item => {
             item.isExpand = '+';
             item.colorBtn = '#33FFE0';
@@ -154,13 +154,14 @@ export class OrderdetailsComponent implements OnInit {
           
       }
       else{
+
           this.orderService.ordersArr.subscribe(res => {
             console.log(res)
             var numArr = this.number.split(",").filter(x=>x!="");
             if(numArr.length>0){
               this.orderService.getOrdersIdsByNumbers(numArr).subscribe(ordersIds => {
                 debugger
-                if(ordersIds.length>0){
+                if(ordersIds.length>1){
                   this.orderService.getMultiOrdersIds(ordersIds).subscribe(orderItems => {
                     orderItems.forEach(item => {
                       item.isExpand = '+';
@@ -168,8 +169,14 @@ export class OrderdetailsComponent implements OnInit {
                     });
                     this.ordersItems = orderItems;
                     this.multi = false;
-                    console.log(orderItems)
+                    console.log(orderItems);
                   });
+                }else {  //one order:
+                  debugger
+                  this.getOrderDetails();
+                  this.getOrderItems();
+                  this.show = true;
+                  this.multi = false;
                 }
 
               });
@@ -200,6 +207,7 @@ export class OrderdetailsComponent implements OnInit {
 
   getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
+    debugger
     this.orderService.getOrderByNumber(this.number).subscribe(res => {
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
@@ -207,6 +215,7 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+      debugger
     });
 
   }
