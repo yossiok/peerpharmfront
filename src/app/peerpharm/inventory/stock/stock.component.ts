@@ -4,6 +4,10 @@ import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
 import { HttpRequest } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserInfo } from '../../taskboard/models/UserInfo';
+import { DEC } from '@angular/material';
+
 
 @Component({
   selector: 'app-stock',
@@ -51,20 +55,93 @@ export class StockComponent implements OnInit {
   itemIdForAllocation:String;
   EditRowId: any = "";
   procurementInputEvent:any;
-  stockType:String="component"
+  stockType:String="component";
   newItem:String='';
+  //var's to edit itemshelf in allowed wh for user
+  user: UserInfo;
+  whareHouses:Array<any>;
+  curentWhareHouseId:String;
+  curentWhareHouseName:String;
+  //adding Stock amounts
+  newItemShelfQnt:Number;
+  newItemShelfPosition:String;
+  newItemShelfWH:String;
+
 
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   // @ViewChild('procurmentInput') procurmentInput: ElementRef;
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService) { }
 
   ngOnInit() {
     this.components=[]; 
+    this.getUserAllowedWH();
     this.getAllComponents();
+  }
+getUserAllowedWH(){
+  this.inventoryService.getWhareHousesList().subscribe(res => {
+    
+    let displayAllowedWH = [];
+      for (const wh of res) {
+        if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
+          displayAllowedWH.push(wh);
+        }
+      }
+      this.whareHouses = displayAllowedWH;
+      this.curentWhareHouseId = displayAllowedWH[0]._id;
+      this.curentWhareHouseName = displayAllowedWH[0].name;
+      debugger
+    console.log(res);
+  })
+}
+  
+updateItemStock(direction){
 
+  console.log(this.resCmpt.componentN)
+  debugger
+  let ObjToUpdate=[{
+    actionType: direction,
+    amount: this.newItemShelfQnt,
+    demandOrderId: "",
+    item: this.resCmpt.componentN,
+    newShelf: "",
+    shell: this.newItemShelfPosition,
+    whareHouse: this.newItemShelfWH,
+    }];
+     
+    // NOT READY!!! server side: "ValidationError" line:  item.shell.controller.js:877
+    this.inventoryService.updateInventoryChanges(ObjToUpdate).subscribe(res => {
+      debugger
+      console.log("updateInventoryChanges res: "+res);
+      if (res != null) {
+          debugger
+      }else{
+        debugger
+      }
+    });
+    ////////////////////////////
+
+}
+
+
+  getUserInfo() {
+    debugger
+      this.authService.userEventEmitter.subscribe(user => {
+      this.user=user.loggedInUser;
+    })
+    debugger
+    if (!this.authService.loggedInUser) {
+      this.authService.userEventEmitter.subscribe(user => {
+        if (user.userName) {
+          this.user = user;
+        }
+      });
+    }
+    else {
+      this.user = this.authService.loggedInUser;
+    }
   }
 
   setType(type, elem) {
@@ -400,5 +477,8 @@ procurementRecommendations(){
 
     }
   }
+
+
+
   
-}
+}// END OF CMPT CLASS

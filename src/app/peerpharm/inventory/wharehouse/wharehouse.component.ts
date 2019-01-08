@@ -123,6 +123,7 @@ export class WharehouseComponent implements OnInit {
       }
     }
     console.log(this.mainDivArr);
+    debugger;
     this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
       debugger
       console.log("updateInventoryChanges res: "+res);
@@ -284,6 +285,7 @@ export class WharehouseComponent implements OnInit {
       this.getItemWhShelfsList(inputItem.value, shelfsDiv).then(result => {
         console.log(result)
         if (result[0] != "") {
+          debugger
           q.setProperty(shelfsDiv, "innerText", result.toString())
           q.appendChild(rowDiv, shelfsDiv);
         } else {
@@ -397,6 +399,7 @@ export class WharehouseComponent implements OnInit {
         this.getItemWhShelfsList(inputItem.value, shelfsDiv).then(result => {
           console.log(result)
           if (result[0] != "") {
+            debugger
             q.setProperty(shelfsDiv, "innerText", result.toString())
             q.appendChild(rowDiv, shelfsDiv);
           } else {
@@ -497,6 +500,7 @@ export class WharehouseComponent implements OnInit {
             this.getItemWhShelfsList(inputItem.value, shelfsDiv).then(result=>{
               console.log(result)
               if(result[0]!=""){
+                debugger
                 q.setProperty(shelfsDiv, "innerText", result.toString())
                 q.appendChild(rowDiv, shelfsDiv);
               }else {

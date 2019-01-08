@@ -96,44 +96,63 @@ export class InventoryNewRequestComponent implements OnInit {
 
     //validating order number
     let validOrderN=false;
-    if(reqItemLine.relatedOrder!=""){
-      await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
-        if(res.length>0){
-          validOrderN=true;
-           //validating item number
-          if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" && validOrderN ){
+
+    if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" ){
             
-             this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(res => {
-            console.log("checkIfComptNumExist res:"+res[0]);
-            if(res.length>0){
-                let reqListItem={
-                  itemNumber:reqItemLine.itemNumInput,
-                  itemName:res[0].componentName,
-                  amount:reqItemLine.itemAmount,
-                  relatedOrder:reqItemLine.relatedOrder,
-                }
-                debugger;
-                this.reqList.push(reqListItem);
-                // this.inventoryReqForm.value.reqList.setValue(this.reqList)
-                this.itemLine.controls.itemNumInput.setValue('');
-                this.itemLine.controls.itemAmount.setValue('');
-                this.itemLine.controls.relatedOrder.setValue('');
-                
-              }else{
-                validOrderN=false;
-                this.toastSrv.error("Failed wrong item number");
-              }
-            });
+      await this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(async res => {
+        if(res.length>0){
+          let reqListItem={
+            itemNumber:reqItemLine.itemNumInput,
+            itemName:res[0].componentName,
+            amount:reqItemLine.itemAmount,
+            relatedOrder:reqItemLine.relatedOrder,
           }
 
-        }else{
-          validOrderN=false;
-          this.toastSrv.error("Failed wrong order number");
-        }
-      });
-    }
-debugger  
+          if(reqItemLine.relatedOrder!=""){
+            await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
+              debugger
+              if(res.length>0){
+                validOrderN=true;
+                 //validating item number
+                  //add to req list
+                  this.reqList.push(reqListItem);
+                  this.itemLine.controls.itemNumInput.setValue('');
+                  this.itemLine.controls.itemAmount.setValue('');
+                  this.itemLine.controls.relatedOrder.setValue('');
+      
+              }else{
+                validOrderN=false;
+                this.toastSrv.error("Failed wrong order number");
+              }
+            });
+          }else{
+            //add to req list
+            this.reqList.push(reqListItem);
+            this.itemLine.controls.itemNumInput.setValue('');
+            this.itemLine.controls.itemAmount.setValue('');
+            this.itemLine.controls.relatedOrder.setValue('');
+          }
+       }else{
+         validOrderN=false;
+         this.toastSrv.error("Failed wrong item number");
+       }
+     });
+   }
 
+    // if(reqItemLine.relatedOrder!=""){
+    //   await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
+    //     debugger
+    //     if(res.length>0){
+    //       validOrderN=true;
+    //        //validating item number
+
+
+    //     }else{
+    //       validOrderN=false;
+    //       this.toastSrv.error("Failed wrong order number");
+    //     }
+    //   });
+    // }
   }
 
   deleteRow(itemNum,itemAmout){

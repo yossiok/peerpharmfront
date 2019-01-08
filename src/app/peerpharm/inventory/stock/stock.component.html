@@ -12,7 +12,7 @@
       items...</b></span>
   <br />
 </div>
-<div *ngIf="components.length != 0">
+<div *ngIf="components.length != 0" style="width:100%;">
 
 
 
@@ -71,11 +71,11 @@
 
 
 
-  <table class='table stockTable table-fixed' *ngIf="stockType=='product'">
+  <table class='table productTable Table table-fixed' *ngIf="stockType=='product'">
       <thead class='bg-info text-white'>
         <tr align='left'>
   
-          <th style="width:4%; padding:5px"></th>
+          <th style="width:6%; padding:5px"></th>
           <th style="width:10%; padding:5px"><b>מספר פריט</b></th>
           <!-- <th style="padding:5px"><b>מק"ט פריט/ספק</b></th> -->
           <th style="width:30%; padding:5px"><b>שם</b></th>
@@ -86,8 +86,8 @@
           <th style="width:10%; padding:5px"><b>תמונה</b></th>
           <!-- <th style="padding:5px"><b>הזמנת רכש</b></th>
           <th style="padding:5px"><b>כמות להזמנת רכש</b></th> -->
-          <th style="width:5%;" ></th>
-          <th style="width:5%;" ></th>
+          <th style="width:7%;" ></th>
+          <th style="width:7%;" ></th>
         </tr>
   
       </thead>
@@ -95,7 +95,7 @@
   
       <tbody id="table_body" class="productTable">
         <tr *ngFor="let component of components; let i = index">
-          <td style="width:4%">{{i+1}}</td>
+          <td style="width:6%">{{i+1}}</td>
           <td style="width:10%" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
           <!-- <td>{{component.componentNS}}</td> -->
           <td style="width:30%;">{{component.componentName}}</td>
@@ -113,8 +113,8 @@
             
           </div>
         </td> -->
-          <td style="width:5%;"></td>
-          <td style="width:5%;"></td>
+          <td style="width:7%;"></td>
+          <td style="width:7%;"></td>
         </tr>
       </tbody>
     </table>
@@ -290,7 +290,7 @@
   <div *ngIf="openAmountsModal==true" id="myModal3" class="modal3" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
     <!-- Modal content -->
-    <div class="modal-content" style='width:650px' id='modelC'>
+    <div class="modal-content" style='width:750px' id='modelC'>
       <div class="modal-header">
         <span class="close" id="closeId2" (click)='openAmountsModal=false'>&times;</span>
         <h2 id='div_h3'>{{openModalHeader}}</h2><br>
@@ -311,7 +311,7 @@
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.ps}}</td>
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.sumShelfAmounts}}</td>
                   <!-- <td>{{shelfAmount.wh}}</td> -->
-                </tr>
+                </tr> 
 
               </tbody>
               <!-- <tbody id='changesTbody' dir='rtl'>
@@ -320,8 +320,26 @@
           </div>
         </div>
         
-        <div class="container fr">
-          <label for="">כמות חדשה</label>
+        <div class="container fr addItemshelf">
+          <h5 class="fr row">כמות חדשה</h5>
+          <br>
+          <div class="fr row">
+            <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
+            <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
+            <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
+            <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
+            <select class="col-sm-3 ml-1"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH">
+                <ng-container *ngFor="let wh of whareHouses;" >
+                    <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
+                </ng-container>            
+            </select>
+
+            <select class="col-sm-3 ml-1"  *ngIf="stockType=='component'"  [(ngModel)]="newItemShelfWH">
+                <ng-container *ngFor="let wh of whareHouses;" >
+                    <option *ngIf="wh.name!='Rosh HaAyin products'" [value]="wh._id">{{wh.name}}</option>
+                </ng-container>
+            </select>
+          </div>
         </div>
 
       </div>

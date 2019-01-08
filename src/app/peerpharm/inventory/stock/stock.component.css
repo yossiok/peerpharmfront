@@ -113,7 +113,7 @@ td {
     }
 }
 
-.stockTable> tbody> tr td{
+.stockTable> tbody> tr td, .productTable> tbody> tr td{
     font-family: inherit;
 }
 .compNum

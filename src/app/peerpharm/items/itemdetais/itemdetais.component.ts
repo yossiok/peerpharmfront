@@ -389,6 +389,7 @@ export class ItemdetaisComponent implements OnInit {
       this.getGoddetData();
       this.itemShown.updateDate;
       this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
+        debugger
         console.log(res)
         this.toastr.success("Saved", "Changes Saves");
         
