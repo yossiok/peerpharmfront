@@ -167,7 +167,7 @@ export class OrderdetailsComponent implements OnInit {
                       item.colorBtn = '#33FFE0';
                     });
                     this.ordersItems = orderItems;
-                    this.multi = true;
+                    this.multi = false;
                     console.log(orderItems)
                   });
                 }
