@@ -11,10 +11,11 @@
 
     <tr>
       <th style="width:5%;" ></th>
-      <th style="padding:5px">Item number</th>
+      <th style="width:10%; padding:5px">Item number</th>
       <th style="width:25%; padding:5px">Name</th>
       <th style="padding:5px">Sticker</th>
       <th style="padding:5px">Barcode</th>
+      <th style="padding:5px">Limited License</th>
       <th style="padding:5px">licsens Number</th>
       <th style="padding:5px">licsens Date</th>
       <th style="width:6%; padding:5px">Pallet 1</th>
@@ -28,7 +29,7 @@
   <tbody id="table_body">
     <tr *ngFor="let item of items; let i=index">
       <td style="width:5%;">{{i+1}}</td>
-      <td>
+      <td style="width:10%;">
         <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
           {{item.itemNumber}}
         </a>
@@ -36,6 +37,12 @@
       <td style="width:25%;">{{item.itemFullName}}</td>
       <td>{{item.stickerNumber}}</td>
       <td>{{item.barcodeK}}</td>
+      <td>
+        <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right;">
+        <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right;">
+        <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceItemsQuotaLimit" type="number" [name]="'License'+item.number" style="width: 85px;" (blur)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)">
+        <input *ngIf="!item.licenceItemsQuotaLimit" type="number" [name]="'License'+item.number" style="width: 85px;" (blur)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)">
+      </td>
       <td>{{item.licsensNumber}}</td>
       <td>{{item.licsensDate}}</td>
       <td style="width:6%;">{{item.pallet}}</td>
