@@ -56,6 +56,7 @@ export class InventoryNewRequestComponent implements OnInit {
 
 
   ngOnInit() {
+    // this.getNewReqNumber();
     this.inventoryReqService.getLastRequsetId().subscribe(res => {
       this.newReqNumber=res.reqNum+1;
       this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
@@ -64,31 +65,41 @@ export class InventoryNewRequestComponent implements OnInit {
     this.inventoryReqForm.controls.reqList.setValidators([]);
   }
 
-  addNewRequest(form){
-    this.inventoryReqForm.value.reqNum;
-    if(this.inventoryReqForm.valid){
-      this.invReq={
-        reqNum: this.inventoryReqForm.value.reqNum,
-        fromWH:this.inventoryReqForm.value.fromWH,
-        toWH: this.inventoryReqForm.value.toWH,
-        currDate: this.inventoryReqForm.value.currDate,   
-        deliveryDate: this.inventoryReqForm.value.deliveryDate,   
-        reqList:this.inventoryReqForm.value.reqList,
-        itemsType: 'components', 
-        reqStatus:'open',
-      }
-      this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
-        debugger;
-        if(res){
-          this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" wharehouse.");
-          //error("Failed pleae finish filling the form");
-          console.log(res);
-        }
-      });
-    }else{
-      this.toastSrv.error("Failed pleae finish filling the form");
-    }
+  async addNewRequest(form){
+    // await this.getNewReqNumber();
+    // this.inventoryReqForm.value.reqNum;
+    this.inventoryReqService.getLastRequsetId().subscribe(res => {
 
+      this.newReqNumber=res.reqNum+1;
+      this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
+
+      if(this.inventoryReqForm.valid && this.reqList.length>0){
+        this.invReq={
+          reqNum: this.newReqNumber,
+          fromWH:this.inventoryReqForm.value.fromWH,
+          toWH: this.inventoryReqForm.value.toWH,
+          currDate: this.inventoryReqForm.value.currDate,   
+          deliveryDate: this.inventoryReqForm.value.deliveryDate,   
+          reqList:this.inventoryReqForm.value.reqList,
+          itemsType: 'components', 
+          reqStatus:'open',
+        }
+        this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
+          debugger;
+          if(res){
+            this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" wharehouse.");
+            //error("Failed pleae finish filling the form");
+            console.log(res);
+          }
+        });
+      }else if(this.reqList.length==0){
+        this.toastSrv.error("Failed pleaes items to form");
+      }else {
+        this.toastSrv.error("Failed pleaes finish filling the form");
+      }
+    });
+
+    
   }
 
 
