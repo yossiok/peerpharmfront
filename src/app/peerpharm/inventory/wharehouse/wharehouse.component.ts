@@ -98,7 +98,9 @@ export class WharehouseComponent implements OnInit {
       }
       else {
         //temp fix
-        divArr.splice(0,1);
+        if(this.dir!="production"){
+          divArr.splice(0,1);
+        }
         let itemData = {
           item: divArr[0],
           shell: divArr[1],
@@ -116,7 +118,7 @@ export class WharehouseComponent implements OnInit {
         if (this.dir == "production") { // if it's for production - add demandOrderId for server update
           // Object.assign({demandOrderId:divArr[3]}, itemData);
           itemData.demandOrderId = divArr[3];
-
+          debugger
         }
         this.mainDivArr.push(itemData);
             divArr = [];

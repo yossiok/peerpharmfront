@@ -7,6 +7,7 @@ import { HttpRequest } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { DEC } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class StockComponent implements OnInit {
   openAmountsModal: boolean = false;
   openModalHeader:string;
   components: any[];
+  filteredComponents: any[];
   componentsUnFiltered:any[];
   componentsAmount: any[];
   tempHiddenImgSrc:any;
@@ -67,13 +69,13 @@ export class StockComponent implements OnInit {
   newItemShelfPosition:String;
   newItemShelfWH:String;
 
-
+  @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   // @ViewChild('procurmentInput') procurmentInput: ElementRef;
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService) { }
 
   ngOnInit() {
     this.components=[]; 
@@ -82,8 +84,8 @@ export class StockComponent implements OnInit {
   }
 getUserAllowedWH(){
   this.inventoryService.getWhareHousesList().subscribe(res => {
-    
-    let displayAllowedWH = [];
+    if(res){
+      let displayAllowedWH = [];
       for (const wh of res) {
         if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
           displayAllowedWH.push(wh);
@@ -94,7 +96,8 @@ getUserAllowedWH(){
       this.curentWhareHouseName = displayAllowedWH[0].name;
       debugger
     console.log(res);
-  })
+    }
+  });
 }
   
 updateItemStock(direction){
@@ -109,16 +112,19 @@ updateItemStock(direction){
     newShelf: "",
     shell: this.newItemShelfPosition,
     whareHouse: this.newItemShelfWH,
+    itemType: this.stockType
+
     }];
      
-    // NOT READY!!! server side: "ValidationError" line:  item.shell.controller.js:877
+    //  READY!
     this.inventoryService.updateInventoryChanges(ObjToUpdate).subscribe(res => {
       debugger
+      if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
       console.log("updateInventoryChanges res: "+res);
-      if (res != null) {
-          debugger
-      }else{
-        debugger
+      if (res.nModified != 0) {
+        this.toastSrv.success("Changes Saved");
+      }else if(res.ok==0){
+        this.toastSrv.error("Changes Saved");
       }
     });
     ////////////////////////////
@@ -164,12 +170,19 @@ updateItemStock(direction){
         this.buttonColor3 = "white";
         break;
     }
+    if(this.stockType!=type){
+      this.filterbyNum.nativeElement.value="";
+    }
     this.stockType=type;
  
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==type);
   }
 
-
+  filterRowsByItemNumber(event){
+    let filterVal=event.target.value;
+    this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
+    debugger
+  }
 
 
   getAllComponents() {

@@ -12,13 +12,13 @@
       items...</b></span>
   <br />
 </div>
+
 <div *ngIf="components.length != 0" style="width:100%;">
-
-
-
+    <input #filterbyNum type="text" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)">
+  <br><br>
   <div (click)='setType("component", this)' [ngStyle]="{'background-color': buttonColor}" class="navtab" style="cursor:pointer;">Components</div>
   <!-- <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div>-->
-  <!-- <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" style="cursor:pointer;">Products</div>  -->
+  <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" style="cursor:pointer;">Products</div> 
 
 
 
@@ -96,7 +96,11 @@
       <tbody id="table_body" class="productTable">
         <tr *ngFor="let component of components; let i = index">
           <td style="width:6%">{{i+1}}</td>
-          <td style="width:10%" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
+          <td style="width:10%" class="compNum">            
+            <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{component.componentN}}">
+            {{component.componentN}}
+            </a></td>
+
           <!-- <td>{{component.componentNS}}</td> -->
           <td style="width:30%;">{{component.componentName}}</td>
           <!-- <td>{{component.componentType}}</td> -->
