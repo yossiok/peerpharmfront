@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ItemsService} from '../../../services/items.service'
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-itemslist',
@@ -15,7 +17,7 @@ export class ItemslistComponent implements OnInit {
  
 
   items:any[]=[];
-  constructor(private itemsService:ItemsService) { }
+  constructor(private itemsService:ItemsService, private toastSrv: ToastrService) { }
 
   ngOnInit() {
     this.getAllItems();
@@ -70,34 +72,44 @@ export class ItemslistComponent implements OnInit {
     //   if(QuotaVal==NaN) QuotaVal=null;
     //   hasLimition= myevent.target.checked;
     // } else 
-    if (myevent.target.type=="number" ){  
+    if (licsensNumber!=null && licsensNumber!=undefined && licsensNumber!="" && myevent.target.value>-1){
       QuotaVal= parseInt(myevent.target.value);
-      if(myevent.target.value!=""){
+      if(myevent.target.value!="" ){
         hasLimition= true;
       }else{
         hasLimition= false;
       }
+      let docObj = {
+        licsensNumber:licsensNumber,
+        // itemNumber:itemNumber,
+        licenceItemsQuotaLimit: QuotaVal,
+        licenceHasItemsQuotaLimition: hasLimition,
+        licenceCurrItemsQnt:licenceCurrItemsQnt,
+      }
+    this.itemsService.updateLicenseLimition(docObj).subscribe(res => {
+        if(res.nModified>0){
+          let itemNumArr=[];
+          this.items.filter(item=> {
+            if(item.licsensNumber==licsensNumber){
+              item.licenceItemsQuotaLimit=QuotaVal;
+              item.licenceHasItemsQuotaLimition=hasLimition;
+              item.licenceCurrItemsQnt=res.n;
+              itemNumArr.push(item.itemNumber)
+            }
+           });
+           this.toastSrv.success("License limitation updated in items number: "+ itemNumArr.join());
+
+        } 
+      });
+    } else if(myevent.target.value<0) {
+      this.toastSrv.error("License items limitation must be bigger than 1");
+      myevent.target.value="";
+    }else{
+      this.toastSrv.error("No license number in item number: "+ itemNumber);
+      myevent.target.value="";
     }
 
-    let docObj = {
-      licsensNumber:licsensNumber,
-      // itemNumber:itemNumber,
-      licenceItemsQuotaLimit: QuotaVal,
-      licenceHasItemsQuotaLimition: hasLimition,
-      licenceCurrItemsQnt:licenceCurrItemsQnt,
-    }
-  this.itemsService.updateLicenseLimition(docObj).subscribe(res => {
-      if(res.nModified>0){
-        this.items.filter(item=> {
-          if(item.licsensNumber==licsensNumber){
-            item.licenceItemsQuotaLimit=QuotaVal;
-            item.licenceHasItemsQuotaLimition=hasLimition;
-            item.licenceCurrItemsQnt=res.n;
-          }
-         });
-      } 
 
-    });
 
   }
 
