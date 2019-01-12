@@ -65,15 +65,18 @@ export class ItemslistComponent implements OnInit {
     if(licenceLastUpdateUser==undefined) licenceLastUpdateUser="";
     if(licenceLastUpdateDate==undefined) licenceLastUpdateDate="";
     if(licenceNotifaction==undefined) licenceNotifaction="";
-
-
-    if(myevent.target.type=="checkbox"){
-      QuotaVal= myevent.target.nextSibling.nextElementSibling.valueAsNumber ;
-      if(QuotaVal==NaN) QuotaVal=null;
-      hasLimition= myevent.target.checked;
-    } else if (myevent.target.type=="number"){
-     hasLimition= myevent.target.previousElementSibling.checked;
-     QuotaVal= parseInt(myevent.target.value);
+    // if(myevent.target.type=="checkbox"){
+    //   QuotaVal= myevent.target.nextSibling.nextElementSibling.valueAsNumber ;
+    //   if(QuotaVal==NaN) QuotaVal=null;
+    //   hasLimition= myevent.target.checked;
+    // } else 
+    if (myevent.target.type=="number" ){  
+      QuotaVal= parseInt(myevent.target.value);
+      if(myevent.target.value!=""){
+        hasLimition= true;
+      }else{
+        hasLimition= false;
+      }
     }
 
     let docObj = {

@@ -39,11 +39,9 @@
       <td style="word-wrap: break-word;">{{item.barcodeK}}</td>
       <td>
             <img *ngIf="item.licenceItemsQuotaLimit && (item.licenceItemsQuotaLimit < item.licenceCurrItemsQnt)" style="width: 25px; height: 25px;" src="../../../../assets/images/alert2.png" alt="">
-            
-            <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;">
+            <!-- <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
             <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceItemsQuotaLimit" type="number" style="width: 65px; float: left;" (blur)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber, item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)">
-
-            <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;">
+            <!-- <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
             <input *ngIf="!item.licenceItemsQuotaLimit" type="number" style="width: 65px; float: left;" (blur)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)">    
       </td>
       <td>{{item.licsensNumber}}</td>
