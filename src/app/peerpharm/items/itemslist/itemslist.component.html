@@ -16,8 +16,8 @@
       <th style="padding:5px">Sticker</th>
       <th style="padding:5px">Barcode</th>
       <th style="padding:5px">Limited License</th>
-      <th style="padding:5px">licsens Number</th>
-      <th style="padding:5px">licsens Date</th>
+      <th style="padding:5px">licsense Number</th>
+      <th style="padding:5px">licsense Date</th>
       <th style="width:6%; padding:5px">Pallet 1</th>
       <th style="width:6%; padding:5px">Pallet 2</th>
       <th style="width:6%; padding:5px">Pallet 3</th>
@@ -36,12 +36,15 @@
       </td>
       <td style="width:25%;">{{item.itemFullName}}</td>
       <td>{{item.stickerNumber}}</td>
-      <td>{{item.barcodeK}}</td>
+      <td style="word-wrap: break-word;">{{item.barcodeK}}</td>
       <td>
-        <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right;">
-        <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right;">
-        <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceItemsQuotaLimit" type="number" [name]="'License'+item.number" style="width: 85px;" (blur)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)">
-        <input *ngIf="!item.licenceItemsQuotaLimit" type="number" [name]="'License'+item.number" style="width: 85px;" (blur)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)">
+            <img *ngIf="item.licenceItemsQuotaLimit && (item.licenceItemsQuotaLimit < item.licenceCurrItemsQnt)" style="width: 25px; height: 25px;" src="../../../../assets/images/alert2.png" alt="">
+            
+            <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;">
+            <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceItemsQuotaLimit" type="number" style="width: 65px; float: left;" (blur)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber, item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)">
+
+            <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;">
+            <input *ngIf="!item.licenceItemsQuotaLimit" type="number" style="width: 65px; float: left;" (blur)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)">    
       </td>
       <td>{{item.licsensNumber}}</td>
       <td>{{item.licsensDate}}</td>

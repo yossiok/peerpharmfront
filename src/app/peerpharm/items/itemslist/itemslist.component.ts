@@ -29,7 +29,7 @@ export class ItemslistComponent implements OnInit {
   getAllItems(){
     
     this.subscription = this.itemsService.startNewItemObservable().subscribe((items) => {
-      debugger;
+      // debugger;
     items.map(item=>{
         item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
         item.licsensDate  = moment(item.licsensDate).format("DD/MM/YYYY");
@@ -57,7 +57,7 @@ export class ItemslistComponent implements OnInit {
     }
   }
 
-  updateLicenseQuotaLimitation(myevent, itemNumber, licsensNumber,licenceExprationDate, licenceFileLink,licenceLastUpdateDate, licenceLastUpdateUser, licenceNotifaction){
+  updateLicenseQuotaLimitation(myevent, itemNumber, licsensNumber,licenceCurrItemsQnt,licenceExprationDate, licenceFileLink,licenceLastUpdateDate, licenceLastUpdateUser, licenceNotifaction){
     console.log(myevent);
     let QuotaVal;
     let hasLimition;
@@ -66,33 +66,36 @@ export class ItemslistComponent implements OnInit {
     if(licenceLastUpdateDate==undefined) licenceLastUpdateDate="";
     if(licenceNotifaction==undefined) licenceNotifaction="";
 
+
     if(myevent.target.type=="checkbox"){
-      QuotaVal= myevent.target.nextSibling.value;
+      QuotaVal= myevent.target.nextSibling.nextElementSibling.valueAsNumber ;
+      if(QuotaVal==NaN) QuotaVal=null;
       hasLimition= myevent.target.checked;
-
     } else if (myevent.target.type=="number"){
-     hasLimition= myevent.target.previousElementSibling.checked
-     QuotaVal= myevent.target.value;
-
-debugger
+     hasLimition= myevent.target.previousElementSibling.checked;
+     QuotaVal= parseInt(myevent.target.value);
     }
-    
+
     let docObj = {
-      // licsensNumber: licsensNumber,
-      // licenceExprationDate: licenceExprationDate,
-      // licenceFileLink: licenceFileLink,
-      // licenceLastUpdateDate: licenceLastUpdateDate,
-      // licenceLastUpdateUser: licenceLastUpdateUser,
-      // licenceNotifaction: licenceNotifaction,
-      itemNumber:itemNumber,
+      licsensNumber:licsensNumber,
+      // itemNumber:itemNumber,
       licenceItemsQuotaLimit: QuotaVal,
       licenceHasItemsQuotaLimition: hasLimition,
+      licenceCurrItemsQnt:licenceCurrItemsQnt,
     }
-    
-  this.itemsService.updateLicenseLimition(docObj).subscribe(res => console.log("updateLicenseLimition: "+res));
+  this.itemsService.updateLicenseLimition(docObj).subscribe(res => {
+      if(res.nModified>0){
+        this.items.filter(item=> {
+          if(item.licsensNumber==licsensNumber){
+            item.licenceItemsQuotaLimit=QuotaVal;
+            item.licenceHasItemsQuotaLimition=hasLimition;
+            item.licenceCurrItemsQnt=res.n;
+          }
+         });
+      } 
+
+    });
+
   }
-
-
-
 
 }
