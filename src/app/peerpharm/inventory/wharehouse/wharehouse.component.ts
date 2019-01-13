@@ -97,8 +97,8 @@ export class WharehouseComponent implements OnInit {
         divArr.push(innerDiv.value);
       }
       else {
-        //temp fix
-        if(this.dir!="production"){
+        // temp fix
+        if(this.dir!="production" && this.mainDivArr.length==0){
           divArr.splice(0,1);
         }
         let itemData = {
@@ -126,7 +126,7 @@ export class WharehouseComponent implements OnInit {
     }
     console.log(this.mainDivArr);
     debugger;
-    this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
+    this.inventoryService.updateInventoryChangesTest(this.mainDivArr).subscribe(res => {
       debugger
       console.log("updateInventoryChanges res: "+res);
         if (res != null) {
