@@ -68,6 +68,14 @@ export class StockComponent implements OnInit {
   newItemShelfQnt:Number;
   newItemShelfPosition:String;
   newItemShelfWH:String;
+  cmptTypeList:Array<any>;
+  cmptCategoryList:Array<any>;
+  emptyFilterArr:Boolean=true;
+  // filterbyNumVal:String;
+  // filterByTypeVal:String;
+  // filterByCategoryVal:String;
+  @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
+  @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
 
   @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
@@ -99,6 +107,8 @@ getUserAllowedWH(){
     }
   });
 }
+
+
   
 updateItemStock(direction){
 
@@ -184,6 +194,34 @@ updateItemStock(direction){
     debugger
   }
 
+  filterRowsByCmptTypeanCategory(event){
+    debugger
+    this.emptyFilterArr=true;
+    let type=this.filterByType.nativeElement.value
+    let category= this.filterByCategory.nativeElement.value
+    if(type!="" || category!=""){
+      if(category!=""&&type!="" ){
+        this.components=this.components.filter(x=> x.componentType.includes(type) && x.componentType.includes(category) );
+      }else if(category=="" && type!=""){
+        this.components=this.components.filter(x=> x.componentType.includes(type));
+      }else if(category!="" && type==""){
+        this.components=this.components.filter(x=> x.componentType.includes(category));
+      }
+    }
+    if(this.components.length==0){
+      this.emptyFilterArr=false;
+      this.components=this.componentsUnFiltered;
+    }
+
+    // if(category!=""){
+    //   this.components=this.components.filter(x=> x.componentCategory.includes(category));
+    // }
+    // let filterVal=event.target.value;
+    // this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
+    debugger
+  }
+
+
 
   getAllComponents() {
     this.inventoryService.getAllComponents().subscribe(components => {
@@ -217,6 +255,7 @@ debugger
 
           });
           this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
+          this.getAllCmptTypesAndCategories();
 
         });
 
@@ -226,7 +265,25 @@ debugger
 
     });
     console.log(this.components);
+
     debugger;
+  }
+
+  getAllCmptTypesAndCategories(){
+    this.cmptTypeList=[];
+    this.cmptCategoryList=[];
+    this.components.forEach(cmpt=>{
+      if(cmpt.componentType!=""&&cmpt.componentType!=null&&cmpt.componentType!=undefined){
+        if(!this.cmptTypeList.includes(cmpt.componentType)){
+          return this.cmptTypeList.push(cmpt.componentType);
+        }
+      }
+      if(cmpt.componentCategory!=""&&cmpt.componentCategory!=null&&cmpt.componentCategory!=undefined){
+        if(!this.cmptCategoryList.includes(cmpt.componentCategory)){
+          return this.cmptCategoryList.push(cmpt.componentCategory);
+        }
+      }
+    });    
   }
 
 
