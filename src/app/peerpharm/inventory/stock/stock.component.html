@@ -14,13 +14,13 @@
 </div>
 
 <div *ngIf="components.length != 0" style="width:100%;">
-    <!-- ------------------------------------------------------ -->
+    <!-- -----------------------FILTER COMPONENTS TABLE------------------------------- -->
 
     <div class="container" style="width:100%; padding: 0px" >
         <form style="width:100%;">
           <div class="row" style="width:100%;">
               <div class="col-sm-3">
-                <label >Item Number</label>
+                <label >מספר פריט</label>
                 <input  #filterbyNum type="text" class="form-control" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)">
               </div>
               <div *ngIf="stockType=='component'" class="col-sm-3">

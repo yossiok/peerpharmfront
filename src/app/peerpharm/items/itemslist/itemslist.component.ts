@@ -49,14 +49,30 @@ export class ItemslistComponent implements OnInit {
   changeText(ev)
   {
     let word= ev.target.value;
-    if(word=="")
-    {
+    let wordsArr= word.split(" ");
+    if(wordsArr.length>0){
+      let tempArr=[];
+          wordsArr.forEach(w => {
+            this.itemsCopy.filter(x=>{
+              if (!tempArr.includes(x)){
+                if(x.itemFullName.toLowerCase().includes(w.toLowerCase())) tempArr.push(x);
+              }
+            
+          }); 
+         });
+         this.items= tempArr;
+    }else{
       this.items=this.itemsCopy.slice();
     }
-    else
-    { 
-      this.items= this.items.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
-    }
+
+    // if(word=="")
+    // {
+    //   this.items=this.itemsCopy.slice();
+    // }
+    // else
+    // { 
+    //   this.items= this.items.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
+    // }
   }
 
   updateLicenseQuotaLimitation(myevent, itemNumber, licsensNumber,licenceCurrItemsQnt,licenceExprationDate, licenceFileLink,licenceLastUpdateDate, licenceLastUpdateUser, licenceNotifaction){

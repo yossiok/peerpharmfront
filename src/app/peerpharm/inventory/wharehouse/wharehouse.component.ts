@@ -126,7 +126,7 @@ export class WharehouseComponent implements OnInit {
     }
     console.log(this.mainDivArr);
     debugger;
-    this.inventoryService.updateInventoryChangesTest(this.mainDivArr).subscribe(res => {
+    this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
       debugger
       console.log("updateInventoryChanges res: "+res);
         if (res != null) {

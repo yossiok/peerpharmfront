@@ -127,7 +127,7 @@ updateItemStock(direction){
     }];
      
     //  READY!
-    this.inventoryService.updateInventoryChangesTest(ObjToUpdate).subscribe(res => {
+    this.inventoryService.updateInventoryChanges(ObjToUpdate).subscribe(res => {
       debugger
       if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
       console.log("updateInventoryChanges res: "+res);
