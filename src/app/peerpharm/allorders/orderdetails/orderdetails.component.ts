@@ -171,6 +171,7 @@ export class OrderdetailsComponent implements OnInit {
                       item.colorBtn = '#33FFE0';
                     });
                     this.ordersItems = orderItems;
+                    this.ordersItemsCopy = orderItems; 
                     this.multi = true;
                     console.log(orderItems);
                   });
@@ -262,6 +263,7 @@ export class OrderdetailsComponent implements OnInit {
       });
 
       this.ordersItems = orderItems;
+      this.ordersItemsCopy = orderItems; 
       // this.OrderCompileData(this.number);
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
@@ -500,16 +502,41 @@ export class OrderdetailsComponent implements OnInit {
 
 
 
+  // changeText(ev)
+  // {
+  //   let word= ev.target.value;
+  //   if(word=="")
+  //   {
+  //     this.ordersItems=this.ordersItemsCopy.slice();
+  //   }
+  //   else
+  //   { 
+  //     this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
+  //   }
+  // }
   changeText(ev)
   {
     let word= ev.target.value;
-    if(word=="")
-    {
+    let wordsArr= word.split(" ");
+    wordsArr= wordsArr.filter(x=>x!="");
+    if(wordsArr.length>0){
+      let tempArr=[];
+      this.ordersItemsCopy.filter(x=>{
+        var check=false;
+        var matchAllArr=0;
+        wordsArr.forEach(w => {
+            if(x.discription.toLowerCase().includes(w.toLowerCase()) ){
+              matchAllArr++
+            }
+            (matchAllArr==wordsArr.length)? check=true : check=false ; 
+        }); 
+
+        if(!tempArr.includes(x) && check) tempArr.push(x);
+      });
+         this.ordersItems= tempArr;
+         debugger
+    }else{
       this.ordersItems=this.ordersItemsCopy.slice();
-    }
-    else
-    { 
-      this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
     }
   }
 }

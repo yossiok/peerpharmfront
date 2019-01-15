@@ -18,8 +18,7 @@ export class OrdersComponent implements OnInit {
   ordersCopy: any[];
   EditRowId: any = "";
   today:any;
-
-
+  selectAllOrders:boolean=false;
 
   //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
   //private orderSrc = new BehaviorSubject<string>("");
@@ -169,13 +168,37 @@ export class OrdersComponent implements OnInit {
 
   }
 
-  changeText(ev) {
-    let word = ev.target.value;
-    if (word == "") {
-      this.orders = this.ordersCopy.slice();
-    }
-    else {
-      this.orders = this.orders.filter(x => x.NumberCostumer.toLowerCase().includes(word.toLowerCase()));
+  changeText(ev)
+  {
+    let word= ev.target.value;
+    let wordsArr= word.split(" ");
+    wordsArr= wordsArr.filter(x=>x!="");
+    if(wordsArr.length>0){
+      let tempArr=[];
+      this.ordersCopy.filter(x=>{
+        var check=false;
+        var matchAllArr=0;
+        wordsArr.forEach(w => {
+            if(x.NumberCostumer.toLowerCase().includes(w.toLowerCase()) ){
+              matchAllArr++
+            }
+            (matchAllArr==wordsArr.length)? check=true : check=false ; 
+        }); 
+
+        if(!tempArr.includes(x) && check) tempArr.push(x);
+      });
+         this.orders= tempArr;
+         debugger
+    }else{
+      this.orders=this.ordersCopy.slice();
     }
   }
+
+
+  checkboxAllOrders(ev){
+    this.orders.filter(e => e.isSelected = ev.target.checked)
+  }
+
+
+  
 }

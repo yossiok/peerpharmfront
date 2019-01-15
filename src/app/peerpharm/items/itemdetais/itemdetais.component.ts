@@ -389,7 +389,6 @@ debugger
       this.itemShown.nameOfupdating = this.user.userName;
       this.getGoddetData();
       this.itemShown.updateDate;
-      // this.itemShown.licsensDate  = this.itemShown.licsensDate ;
       debugger
       this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
         console.log(res)

@@ -70,15 +70,6 @@ export class ItemslistComponent implements OnInit {
     }else{
       this.items=this.itemsCopy.slice();
     }
-
-    // if(word=="")
-    // {
-    //   this.items=this.itemsCopy.slice();
-    // }
-    // else
-    // { 
-    //   this.items= this.items.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
-    // }
   }
 
   updateLicenseQuotaLimitation(myevent, itemNumber, licsensNumber,licenceCurrItemsQnt,licenceExprationDate, licenceFileLink,licenceLastUpdateDate, licenceLastUpdateUser, licenceNotifaction){

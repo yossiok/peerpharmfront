@@ -26,7 +26,8 @@
   <br> -->
 
 
-  <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" />
+  <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> 
+  <!-- &nbsp;&nbsp; <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> -->
   <div  *ngIf="hasMoreItemsToload">
     <img  style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading more items...</b></span>
     <br/> 
@@ -61,7 +62,7 @@
         </a>
       </td>
       <td style="width:25%;">{{item.itemFullName}}</td>
-      <td>{{item.stickerNumber}}</td>
+      <td style="word-wrap:normal">{{item.stickerNumber}}<br>Lng: {{item.StickerLanguageK}}</td>
       <td style="word-wrap: break-word;">{{item.barcodeK}}</td>
       <td>
             <img *ngIf="item.licenceItemsQuotaLimit && (item.licenceItemsQuotaLimit < item.licenceCurrItemsQnt)" style="width: 25px; height: 25px;" src="../../../../assets/images/alert2.png" alt="">
