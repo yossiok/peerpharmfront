@@ -26,7 +26,7 @@ export class ItemdetaisComponent implements OnInit {
   newItem: FormGroup;
   item: any = {};
   itemCopy:any = {};
-
+  licsensDateToSend:Date;
   user: UserInfo;
   userName=""
   itemShown = {
@@ -341,8 +341,10 @@ export class ItemdetaisComponent implements OnInit {
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
-        this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
-
+        if(this.itemShown.licsensDate!=null) {
+          this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
+        }
+        
         debugger
         debugger
         this.dataDiv = res[0].goddet;
@@ -381,15 +383,15 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   writeItemData() {
-    console.log(this.itemShown)
-    debugger;
-
+    console.log(this.itemShown);
+debugger
     if (confirm("Save changes?")){
       this.itemShown.nameOfupdating = this.user.userName;
       this.getGoddetData();
       this.itemShown.updateDate;
+      // this.itemShown.licsensDate  = this.itemShown.licsensDate ;
+      debugger
       this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
-        debugger
         console.log(res)
         this.toastr.success("Saved", "Changes Saves");
         
