@@ -50,17 +50,23 @@ export class ItemslistComponent implements OnInit {
   {
     let word= ev.target.value;
     let wordsArr= word.split(" ");
+    wordsArr= wordsArr.filter(x=>x!="");
     if(wordsArr.length>0){
       let tempArr=[];
-          wordsArr.forEach(w => {
-            this.itemsCopy.filter(x=>{
-              if (!tempArr.includes(x)){
-                if(x.itemFullName.toLowerCase().includes(w.toLowerCase())) tempArr.push(x);
-              }
-            
-          }); 
-         });
+      this.itemsCopy.filter(x=>{
+        var check=false;
+        var matchAllArr=0;
+        wordsArr.forEach(w => {
+            if(x.itemFullName.toLowerCase().includes(w.toLowerCase()) ){
+              matchAllArr++
+            }
+            (matchAllArr==wordsArr.length)? check=true : check=false ; 
+        }); 
+
+        if(!tempArr.includes(x) && check) tempArr.push(x);
+      });
          this.items= tempArr;
+         debugger
     }else{
       this.items=this.itemsCopy.slice();
     }
