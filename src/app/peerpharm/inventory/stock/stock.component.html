@@ -2,10 +2,13 @@
 <br>
 
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
-<button class='btn btn-primary' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
-<button class="btn btn-info" (click)="procurementRecommendations()"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp;
-<button class="btn btn-info" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>
-<br><br>
+<div>
+    <button class='btn btn-primary' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
+    <button class="btn btn-info" (click)="procurementRecommendations()"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp;
+    <button class="btn btn-info" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>
+</div>
+
+<br>
 
 <div *ngIf="components.length==0">
   <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
@@ -20,18 +23,18 @@
         <form style="width:100%;">
           <div class="row" style="width:100%;">
               <div class="col-sm-3">
-                <label >מספר פריט</label>
+                <label class="fr">מספר פריט</label>
                 <input  #filterbyNum type="text" class="form-control" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)">
               </div>
               <div *ngIf="stockType=='component'" class="col-sm-3">
-                <label >סוג רכיב</label>
+                <label class="fr">סוג רכיב</label>
                 <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event)">
                   <option selected></option>
                   <option *ngFor="let cmptType of cmptTypeList">{{cmptType}}</option>
                 </select>
               </div>
               <div *ngIf="stockType=='component'" class="col-sm-3">
-                <label >קטגוריה</label>
+                <label class="fr">קטגוריה</label>
                 <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event)">
                   <option selected></option>
                   <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
@@ -41,7 +44,6 @@
         </form>
         <h4 *ngIf="!emptyFilterArr" style="color:red; text-align: center">אין תוצאות לחיפוש שנבחר - הטבלה מציגה את כל הפריטים</h4>
     </div>
-    <br>
 
     <!-- ------------------------------------------------------ -->
 

@@ -85,6 +85,8 @@ export class OrderdetailsComponent implements OnInit {
   itemPackingList:Array<any>=[];
   itemPackingPalletsArr:Array<any>=[];
   orderPalletsArr:Array<any>=[];
+  showingOneOrder:Boolean;
+  showingAllOrders:Boolean;
   orderPackingList:Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
@@ -133,6 +135,7 @@ export class OrderdetailsComponent implements OnInit {
       this.number = this.route.snapshot.paramMap.get('id');
 
       if(res==true || this.number=="00"){
+        this.showingAllOrders=true;
         this.loadData=true;
         this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
           this.loadData=false;
@@ -154,7 +157,7 @@ export class OrderdetailsComponent implements OnInit {
           
       }
       else{
-
+        this.showingAllOrders=false;
           this.orderService.ordersArr.subscribe(res => {
             console.log(res)
             var numArr = this.number.split(",").filter(x=>x!="");
@@ -168,7 +171,7 @@ export class OrderdetailsComponent implements OnInit {
                       item.colorBtn = '#33FFE0';
                     });
                     this.ordersItems = orderItems;
-                    this.multi = false;
+                    this.multi = true;
                     console.log(orderItems);
                   });
                 }else {  //one order:
@@ -177,6 +180,7 @@ export class OrderdetailsComponent implements OnInit {
                   this.getOrderItems();
                   this.show = true;
                   this.multi = false;
+              
                 }
 
               });
@@ -186,6 +190,7 @@ export class OrderdetailsComponent implements OnInit {
               this.getOrderItems();
               this.show = true;
               this.multi = false;
+          
             }
 
             // if (res.length > 0) { // if the request is for few orders:

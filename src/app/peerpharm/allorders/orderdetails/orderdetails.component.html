@@ -8,7 +8,7 @@
       <div style='background-color: lightblue; display:inline-table'>הודפס</div>&nbsp;
   </div>
 
-<div class='orderHeader' *ngIf="multi==false">
+<div class='orderHeader' *ngIf="!showingAllOrders">
   <span class='spanTitle'>Order: </span><span>{{number}} </span><i class="ti-check text-success m-r-10" (click)="closeOrder()"></i>
   <span class='spanTitle'> Order Date:</span><span> {{orderDate}} </span><span class='spanTitle'> Delivery Date: </span><span>{{deliveryDate}}</span>
   <span class='spanTitle'> Costumer :</span><span> {{costumer}} </span><span class='spanTitle'> Remarks:</span><span>
@@ -20,7 +20,7 @@
   <thead class='bg-info text-white'>
     <tr>
       <th> #</th>
-      <th *ngIf="multi==true">Order Number</th>
+      <th *ngIf="!showingAllOrders">Order Number</th>
       <th>Item Number </th>
       <th>Description </th>
       <th>Volume </th>
