@@ -16,7 +16,7 @@
 </div>
 <img src="assets/images/load_data2.gif" *ngIf="loadData==true" ><br>
 <input matInput  placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
-<table class='table' *ngIf="loadData==false">
+<table class='table table-fixed' *ngIf="loadData==false">
   <thead class='bg-info text-white'>
     <tr>
       <th> #</th>
@@ -127,7 +127,7 @@
               </td>
               <td><input #date type='date'></td>
               <td><input #shift type='text' placeholder="Shift"></td>
-              <td><input #marks placeholder="Remarks" type='marks'></td>
+              <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
               <td>
                 <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
                 <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>

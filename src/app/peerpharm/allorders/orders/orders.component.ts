@@ -157,6 +157,7 @@ export class OrdersComponent implements OnInit {
       tempArrStr=tempArrStr+","+number;
     });
     debugger
+    // this.router.navigateByUrl
     this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]);
     console.log(tempArr);
     //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
