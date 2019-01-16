@@ -16,7 +16,7 @@
 </div>
 <img src="assets/images/load_data2.gif" *ngIf="loadData==true" ><br>
 <input matInput  placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
-<table class='table table-fixed' *ngIf="loadData==false">
+<table class='table' *ngIf="loadData==false">
   <thead class='bg-info text-white'>
     <tr>
       <th> #</th>
