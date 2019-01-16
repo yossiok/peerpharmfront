@@ -62,7 +62,7 @@
         </a>
       </td>
       <td style="width:25%;">{{item.itemFullName}}</td>
-      <td style="word-wrap:normal">{{item.stickerNumber}}<br>Lng: {{item.StickerLanguageK}}</td>
+      <td style="word-wrap:normal">{{item.stickerNumber}}<br><span style="word-break: break-word;">{{item.StickerLanguageK}}</span></td>
       <td style="word-wrap: break-word;">{{item.barcodeK}}</td>
       <td>
             <img *ngIf="item.licenceItemsQuotaLimit && (item.licenceItemsQuotaLimit < item.licenceCurrItemsQnt)" style="width: 25px; height: 25px;" src="../../../../assets/images/alert2.png" alt="">

@@ -35,6 +35,7 @@ export class ItemslistComponent implements OnInit {
     items.map(item=>{
         item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
         item.licsensDate  = moment(item.licsensDate).format("DD/MM/YYYY");
+        item.StickerLanguageK=item.StickerLanguageK.split("/").join(" ");
       })
       this.items.push(...items); 
       if(items.length<500)
