@@ -144,9 +144,9 @@
             </div>
           </div>
         </div>
-        <div>
+        <div >
             <ul *ngFor="let costumer of costumers">
-                <li (click)="c('Saved'); choosedCostumer = costumer">{{costumer.costumerName}}</li>
+                <li (click)="c('Saved'); choosedCostumer = costumer">{{costumer.costumerName}} - {{costumer.costumerId}}</li>
             </ul>
         </div>
         <div class="modal-footer">

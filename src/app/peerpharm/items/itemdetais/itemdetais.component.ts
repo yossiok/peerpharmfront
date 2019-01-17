@@ -386,15 +386,20 @@ export class ItemdetaisComponent implements OnInit {
     console.log(this.itemShown);
 debugger
     if (confirm("Save changes?")){
-      this.itemShown.nameOfupdating = this.user.userName;
-      this.getGoddetData();
-      this.itemShown.updateDate;
-      debugger
-      this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
-        console.log(res)
-        this.toastr.success("Saved", "Changes Saves");
-        
-      }) ;
+      if(this.itemShown.itemNumber!=""){
+        this.itemShown.nameOfupdating = this.user.userName;
+        this.getGoddetData();
+        this.itemShown.updateDate;
+        debugger
+        this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
+          console.log(res)
+          this.toastr.success("Saved", "Changes Saved fot item number: "+this.itemShown.itemNumber);
+          
+        }) ;
+      }else{
+        this.toastr.error("No item number!");
+      }
+
 
     }
   }
@@ -554,7 +559,7 @@ debugger
 
 
   showSuccess() {
-    this.toastr.info('Hello world!', 'Toastr fun!');
+    this.toastr.info('Successful upload!');
   }
 
 

@@ -13,6 +13,7 @@ import { ItemsService } from 'src/app/services/items.service';
 import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PlateService } from 'src/app/services/plate.service';
+import { CostumersService } from 'src/app/services/costumers.service';
 
 
 @Component({
@@ -54,7 +55,7 @@ export class OrderdetailsComponent implements OnInit {
   ordersItems;
   ordersItemsCopy;
   item: any;
-  number; orderDate; deliveryDate; costumer; remarks; orderId;
+  number; orderDate; deliveryDate; costumer; costumerInternalId; remarks; orderId;
   chosenType: string;
   detailsArr: any[];
   components: any[];
@@ -103,7 +104,7 @@ export class OrderdetailsComponent implements OnInit {
   // @ViewChild('type') type:ElementRef; 
 
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
-     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService) { }
+     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, private costumerSrevice: CostumersService) { }
 
      openPackingModal(itemNumber, index){
       this.packingItemN=itemNumber;
@@ -217,6 +218,8 @@ export class OrderdetailsComponent implements OnInit {
     this.orderService.getOrderByNumber(this.number).subscribe(res => {
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
+      this.costumerInternalId = res[0].costumerInternalId;
+      // this.costumerSrevice.getCostumerData(CostumerNumber).subscribe(res => {});
       this.orderDate = res[0].orderDate;
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
@@ -232,17 +235,6 @@ export class OrderdetailsComponent implements OnInit {
     //this.orderService.getOrderById(id).subscribe(orderItems => {    
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
       orderItems.map( item => {
-
-            //add license to item
-      //////////////////CHECK IF ITEM HAVE LICENSE////////////////////////////
-           
-            // this.orderService.getItemByNumber(item.itemNumber).subscribe(
-            //   itemDetais => { 
-            //     debugger;
-            //       item.licsensNumber=itemDetais.licsensNumber;
-            //       item.licsensExp=itemDetais.licsensDate;
-            //   });
-      //////////////////////////////////////////////
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
           else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
