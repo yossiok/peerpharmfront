@@ -13,6 +13,7 @@ import { ItemsService } from 'src/app/services/items.service';
 import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PlateService } from 'src/app/services/plate.service';
+import { CostumersService } from 'src/app/services/costumers.service';
 
 
 @Component({
@@ -54,7 +55,7 @@ export class OrderdetailsComponent implements OnInit {
   ordersItems;
   ordersItemsCopy;
   item: any;
-  number; orderDate; deliveryDate; costumer; remarks; orderId;
+  number; orderDate; deliveryDate; costumer; costumerInternalId; remarks; orderId;
   chosenType: string;
   detailsArr: any[];
   components: any[];
@@ -85,6 +86,8 @@ export class OrderdetailsComponent implements OnInit {
   itemPackingList:Array<any>=[];
   itemPackingPalletsArr:Array<any>=[];
   orderPalletsArr:Array<any>=[];
+  showingOneOrder:Boolean;
+  showingAllOrders:Boolean;
   orderPackingList:Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
@@ -101,7 +104,7 @@ export class OrderdetailsComponent implements OnInit {
   // @ViewChild('type') type:ElementRef; 
 
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
-     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService) { }
+     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, private costumerSrevice: CostumersService) { }
 
      openPackingModal(itemNumber, index){
       this.packingItemN=itemNumber;
@@ -133,6 +136,7 @@ export class OrderdetailsComponent implements OnInit {
       this.number = this.route.snapshot.paramMap.get('id');
 
       if(res==true || this.number=="00"){
+        this.showingAllOrders=true;
         this.loadData=true;
         this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
           this.loadData=false;
@@ -154,7 +158,7 @@ export class OrderdetailsComponent implements OnInit {
           
       }
       else{
-
+        this.showingAllOrders=false;
           this.orderService.ordersArr.subscribe(res => {
             console.log(res)
             var numArr = this.number.split(",").filter(x=>x!="");
@@ -168,7 +172,8 @@ export class OrderdetailsComponent implements OnInit {
                       item.colorBtn = '#33FFE0';
                     });
                     this.ordersItems = orderItems;
-                    this.multi = false;
+                    this.ordersItemsCopy = orderItems; 
+                    this.multi = true;
                     console.log(orderItems);
                   });
                 }else {  //one order:
@@ -177,6 +182,7 @@ export class OrderdetailsComponent implements OnInit {
                   this.getOrderItems();
                   this.show = true;
                   this.multi = false;
+              
                 }
 
               });
@@ -186,6 +192,7 @@ export class OrderdetailsComponent implements OnInit {
               this.getOrderItems();
               this.show = true;
               this.multi = false;
+          
             }
 
             // if (res.length > 0) { // if the request is for few orders:
@@ -211,6 +218,8 @@ export class OrderdetailsComponent implements OnInit {
     this.orderService.getOrderByNumber(this.number).subscribe(res => {
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
+      this.costumerInternalId = res[0].costumerInternalId;
+      // this.costumerSrevice.getCostumerData(CostumerNumber).subscribe(res => {});
       this.orderDate = res[0].orderDate;
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
@@ -226,17 +235,6 @@ export class OrderdetailsComponent implements OnInit {
     //this.orderService.getOrderById(id).subscribe(orderItems => {    
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
       orderItems.map( item => {
-
-            //add license to item
-      //////////////////CHECK IF ITEM HAVE LICENSE////////////////////////////
-           
-            // this.orderService.getItemByNumber(item.itemNumber).subscribe(
-            //   itemDetais => { 
-            //     debugger;
-            //       item.licsensNumber=itemDetais.licsensNumber;
-            //       item.licsensExp=itemDetais.licsensDate;
-            //   });
-      //////////////////////////////////////////////
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
           else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
@@ -257,6 +255,7 @@ export class OrderdetailsComponent implements OnInit {
       });
 
       this.ordersItems = orderItems;
+      this.ordersItemsCopy = orderItems; 
       // this.OrderCompileData(this.number);
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
@@ -376,41 +375,48 @@ export class OrderdetailsComponent implements OnInit {
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
-    this.itemSer.getItemData(item.itemNumber).subscribe(res => {
-      let packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
-
-
-    });
-    let scheduleLine = {
-      positionN: '',
-      orderN: item.orderNumber,
-      item: item.itemNumber,
-      costumer: this.costumer,
-      productName: item.discription,
-      batch: item.batch,
-      packageP: '',
-      qty: item.quantity,
-      qtyRdy: '',
-      date: this.date.nativeElement.value,
-      marks: this.marks.nativeElement.value,
-      shift: this.shift.nativeElement.value,
-      mkp: this.chosenType,
-      status: 'open',
-      productionLine:'', 
-      pLinePositionN:999
+    debugger
+    if(this.date.nativeElement.value!=""){
+      this.itemSer.getItemData(item.itemNumber).subscribe(res => { 
+        // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
+        let packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+  
+  
+      });
+      let scheduleLine = {
+        positionN: '',
+        orderN: item.orderNumber,
+        item: item.itemNumber,
+        costumer: this.costumer,
+        productName: item.discription,
+        batch: item.batch,
+        packageP: '',
+        qty: item.quantity,
+        qtyRdy: '',
+        date: this.date.nativeElement.value,
+        marks: this.marks.nativeElement.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks 
+        shift: this.shift.nativeElement.value,
+        mkp: this.chosenType,
+        status: 'open',
+        productionLine:'', 
+        pLinePositionN:999
+      }
+      if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
+      if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
+  
+      this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));   
+      let dateSced = this.date.nativeElement.value;
+      dateSced = moment(dateSced).format("DD/MM/YYYY");
+      let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " +  dateSced};
+      this.orderService.editItemOrder(orderObj).subscribe(res=>{
+          console.log(res);
+          this.toastSrv.success(dateSced , "Schedule Saved");
+      })
+      console.log(scheduleLine);
+  
+    }else{
+      this.toastSrv.error("Invalid Date!");
     }
-    if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
-    if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
-
-    this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));   
-    let dateSced = this.date.nativeElement.value;
-    dateSced = moment(dateSced).format("DD/MM/YYYY");
-    let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " +  dateSced};
-    this.orderService.editItemOrder(orderObj).subscribe(res=>{
-        console.log(res);
-        this.toastSrv.success(dateSced , "Schedule Saved");
-    })
-    console.log(scheduleLine);
   }
 
 
@@ -469,9 +475,11 @@ export class OrderdetailsComponent implements OnInit {
     console.log(this.printSchedule);
     this.printSchedule.orderN = this.number;
     this.printSchedule.costumer = this.costumer;
-    this.scheduleService.setNewPrintSchedule(this.printSchedule).subscribe(res=>{
-      this.toastSrv.success("Saved", this.printSchedule.cmptN);
-    })
+    this.printSchedule.date=moment(this.printSchedule.date).format();
+
+      this.scheduleService.setNewPrintSchedule(this.printSchedule).subscribe(res=>{
+        this.toastSrv.success("Saved", this.printSchedule.cmptN);
+      });
 
   }
 
@@ -480,7 +488,7 @@ export class OrderdetailsComponent implements OnInit {
        this.plateImg = data.palletImg;
        this.printSchedule.block = data.palletNumber;
        this.printSchedule.blockImg = data.palletImg;
-    })
+    });
     console.log(item.itemNumber + " , "  +item.discription + " , "  +  cmpt.number);
     this.printSchedule.cmptN = cmpt.number;
     this.printSchedule.itemN = item.itemNumber;
@@ -495,16 +503,41 @@ export class OrderdetailsComponent implements OnInit {
 
 
 
+  // changeText(ev)
+  // {
+  //   let word= ev.target.value;
+  //   if(word=="")
+  //   {
+  //     this.ordersItems=this.ordersItemsCopy.slice();
+  //   }
+  //   else
+  //   { 
+  //     this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
+  //   }
+  // }
   changeText(ev)
   {
     let word= ev.target.value;
-    if(word=="")
-    {
+    let wordsArr= word.split(" ");
+    wordsArr= wordsArr.filter(x=>x!="");
+    if(wordsArr.length>0){
+      let tempArr=[];
+      this.ordersItemsCopy.filter(x=>{
+        var check=false;
+        var matchAllArr=0;
+        wordsArr.forEach(w => {
+            if(x.discription.toLowerCase().includes(w.toLowerCase()) ){
+              matchAllArr++
+            }
+            (matchAllArr==wordsArr.length)? check=true : check=false ; 
+        }); 
+
+        if(!tempArr.includes(x) && check) tempArr.push(x);
+      });
+         this.ordersItems= tempArr;
+         debugger
+    }else{
       this.ordersItems=this.ordersItemsCopy.slice();
-    }
-    else
-    { 
-      this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
     }
   }
 }
