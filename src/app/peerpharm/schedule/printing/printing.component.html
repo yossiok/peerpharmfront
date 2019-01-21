@@ -1,5 +1,16 @@
 
-<input type='date' [value]="today" (change)="dateChanged($event.target.value)">
+<div class="form-group row" style="width: 50%;">
+  <div class="col-3">
+    <input class="form-control" #date type='date' [value]="today" (change)="dateChanged($event.target.value)">
+  </div>
+  <div class="col-3">
+    <button class="btn btn-info form-control" (click)="getAllSchedule()">All Schedules</button>
+  </div>
+  <div class="col-3">
+      <button class="btn btn-info form-control" (click)="getOpenAllSchedule()">All Open Schedules</button>
+  </div>
+
+</div>
 
 <table class='table'>
   <thead class='bg-info text-white'>

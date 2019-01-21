@@ -28,7 +28,7 @@ import { ToastrService } from 'ngx-toastr';
     @ViewChild('nextStation') nextStation:ElementRef; 
     @ViewChild('qty') qty:ElementRef; 
     @ViewChild('qtyRdy') qtyRdy:ElementRef; 
-    // @ViewChild('date') date:ElementRef; 
+    @ViewChild('date') date:ElementRef; 
     @ViewChild('marks') marks:ElementRef;
     @ViewChild('printType') printType:ElementRef;
     @ViewChild('blockImg') blockImg:ElementRef;
@@ -67,7 +67,8 @@ import { ToastrService } from 'ngx-toastr';
       this.today= new Date();
       this.today = moment(this.today).format("YYYY-MM-DD");
       this.scheduleLine.date=this.today;
-      this.getAllSchedule();
+      this.dateChanged(this.today);
+      // this.getAllSchedule();
     }
   
     writeScheduleData(){
@@ -78,11 +79,11 @@ import { ToastrService } from 'ngx-toastr';
   
     dateChanged(date){
       // date=date.setHours(2,0,0,0);
-      debugger
-      date=moment(date).format();
+      date=moment(date).format("YYYY-MM-DD");
       debugger
       this.scheduleService.getPrintScheduleByDate(date).subscribe(
         res=>{
+          debugger
           // showing only for that date 
           res.map(elem=>{
             let pastDue=(moment(elem.date).format() < moment(this.today).format());
@@ -97,19 +98,26 @@ import { ToastrService } from 'ngx-toastr';
       )
 
     }
-  
-    getAllSchedule(){
+    getAllSchedule(status){
+      this.date.nativeElement.value="";
+
+      this.scheduleService.getAllPrintSchedule().subscribe(res=>{
+        res.map(elem=>{
+          let pastDue=(moment(elem.date).format() < moment(this.today).format());
+          if(elem.status=="printed") elem.trColor="Aquamarine";
+          if(elem.status!="printed" && pastDue) elem.trColor="rgb(250, 148, 148)";            
+        });
+        this.scheduleData=res;
+      });
+    }
+
+    getOpenAllSchedule(status){
+      this.date.nativeElement.value="";
+
       this.scheduleService.getOpenPrintSchedule().subscribe(res=>{
         res.map(elem=>{
           let pastDue=(moment(elem.date).format() < moment(this.today).format());
-
-          if(elem.status=="printed" && !pastDue) elem.trColor="Aquamarine";
-          if(elem.date) {
-            // let d=moment(elem.date).format();
-            // let td=moment(this.today).format();
-            // let pastDue=(moment(elem.date).format() < moment(this.today).format());
-            if(pastDue) elem.trColor="rgb(250, 148, 148)";            
-          }
+          if(pastDue) elem.trColor="rgb(250, 148, 148)";            
         });
         this.scheduleData=res;
       });
