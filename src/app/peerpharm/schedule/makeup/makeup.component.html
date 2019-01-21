@@ -1,4 +1,4 @@
-<input  type ='date' #date (change)="dateChanged(date.value)">
+<input  type ='date' #date [(ngModel)]='today' (change)="dateChanged(date.value)">
   
      
     <table class='table'>

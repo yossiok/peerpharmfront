@@ -3,6 +3,7 @@ import { ScheduleService } from '../../../services/schedule.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-makeup',
@@ -13,6 +14,8 @@ export class MakeupComponent implements OnInit {
   scheduleData:any[];
   EditRowId:any="";
   buttonColor:string='silver';
+  today: any;
+
   @ViewChild('position') positionN:ElementRef; 
   @ViewChild('orderN') orderN:ElementRef; 
   @ViewChild('itemN') item:ElementRef; 
@@ -41,7 +44,9 @@ export class MakeupComponent implements OnInit {
   constructor(private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
-    this.getAllSchedule(); 
+    this.today = new Date();
+    this.today = moment(this.today).format("YYYY-MM-DD");
+    this.getDailySchedule(this.today); 
   }
 
 
@@ -66,19 +71,55 @@ export class MakeupComponent implements OnInit {
         this.scheduleData=res;
       }
     )
-
   }
+  // dateChanged(date) {
+
+  //   console.log(date);
+  //   this.scheduleService.getScheduleByDate(date).subscribe(res => {
+  //     res.map(sced => {
+  //       if (sced.status == 'filled') sced.color = 'Aquamarine';
+  //       if (sced.status == 'beingFilled') sced.color = 'yellow';
+  //       if (sced.status == 'packed') sced.color = 'orange';
+  //       if (sced.status == 'problem') sced.color = 'red';
+  //       if (sced.status == 'open') sced.color = 'white';
+  //       if(sced.cmptsStatus==null) sced.cmptsStatus='true';
+  //       sced.date3 = moment(sced.date).format("YYYY-MM-DD");
+
+  //       //let pipe = new DatePipe('en-US'); // Use your own locale
+  //       //  sced.date3 = pipe.transform(sced.date, 'short');
+  //     });
+  //     this.scheduleData = res;
+  //   });
+  // }
+
 
   edit(id, type) {
     this.EditRowId = id;
   }
-  getAllSchedule(){
+  getDailySchedule(today){
     this.scheduleService.getOpenMkpSchedule().subscribe(res=>{
       console.log(res);     
        
       this.scheduleData=res;
     
     });
+    // this.scheduleService.getScheduleByDate(today).subscribe(res => {
+    //   res.map(sced => {
+    //     sced.color = 'white';
+    //     if (sced.status == 'filled') sced.color = '#CE90FF';
+    //     if (sced.status == 'beingFilled') sced.color = 'yellow';
+    //     if (sced.status == 'packed') sced.color = 'Aquamarine';
+    //     if (sced.status == 'problem') sced.color = 'red';
+    //     sced.date2 = moment(sced.date).format("DD/MM/YY");
+    //     sced.date3 = moment(sced.date).format("YYYY-MM-DD");
+
+    //   });
+    //   res.map(sced => {
+    //     Object.assign({ isSelected: false }, sced);
+    //   });
+    //   this.scheduleData = res;
+
+    // });
   }
 
 

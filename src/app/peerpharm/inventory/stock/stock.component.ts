@@ -7,6 +7,7 @@ import { HttpRequest } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { DEC } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class StockComponent implements OnInit {
   openAmountsModal: boolean = false;
   openModalHeader:string;
   components: any[];
+  filteredComponents: any[];
   componentsUnFiltered:any[];
   componentsAmount: any[];
   tempHiddenImgSrc:any;
@@ -66,14 +68,22 @@ export class StockComponent implements OnInit {
   newItemShelfQnt:Number;
   newItemShelfPosition:String;
   newItemShelfWH:String;
+  cmptTypeList:Array<any>;
+  cmptCategoryList:Array<any>;
+  emptyFilterArr:Boolean=true;
+  // filterbyNumVal:String;
+  // filterByTypeVal:String;
+  // filterByCategoryVal:String;
+  @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
+  @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
 
-
+  @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   // @ViewChild('procurmentInput') procurmentInput: ElementRef;
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService) { }
 
   ngOnInit() {
     this.components=[]; 
@@ -82,8 +92,8 @@ export class StockComponent implements OnInit {
   }
 getUserAllowedWH(){
   this.inventoryService.getWhareHousesList().subscribe(res => {
-    
-    let displayAllowedWH = [];
+    if(res){
+      let displayAllowedWH = [];
       for (const wh of res) {
         if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
           displayAllowedWH.push(wh);
@@ -94,8 +104,11 @@ getUserAllowedWH(){
       this.curentWhareHouseName = displayAllowedWH[0].name;
       debugger
     console.log(res);
-  })
+    }
+  });
 }
+
+
   
 updateItemStock(direction){
 
@@ -109,16 +122,19 @@ updateItemStock(direction){
     newShelf: "",
     shell: this.newItemShelfPosition,
     whareHouse: this.newItemShelfWH,
+    itemType: this.stockType
+
     }];
      
-    // NOT READY!!! server side: "ValidationError" line:  item.shell.controller.js:877
+    //  READY!
     this.inventoryService.updateInventoryChanges(ObjToUpdate).subscribe(res => {
       debugger
+      if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
       console.log("updateInventoryChanges res: "+res);
-      if (res != null) {
-          debugger
-      }else{
-        debugger
+      if (res.nModified != 0) {
+        this.toastSrv.success("Changes Saved");
+      }else if(res.ok==0){
+        this.toastSrv.error("Changes Saved");
       }
     });
     ////////////////////////////
@@ -164,11 +180,46 @@ updateItemStock(direction){
         this.buttonColor3 = "white";
         break;
     }
+    if(this.stockType!=type){
+      this.filterbyNum.nativeElement.value="";
+    }
     this.stockType=type;
  
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==type);
   }
 
+  filterRowsByItemNumber(event){
+    let filterVal=event.target.value;
+    this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
+    debugger
+  }
+
+  filterRowsByCmptTypeanCategory(event){
+    debugger
+    this.emptyFilterArr=true;
+    let type=this.filterByType.nativeElement.value
+    let category= this.filterByCategory.nativeElement.value
+    if(type!="" || category!=""){
+      if(category!=""&&type!="" ){
+        this.components=this.components.filter(x=> x.componentType.includes(type) && x.componentType.includes(category) );
+      }else if(category=="" && type!=""){
+        this.components=this.components.filter(x=> x.componentType.includes(type));
+      }else if(category!="" && type==""){
+        this.components=this.components.filter(x=> x.componentType.includes(category));
+      }
+    }
+    if(this.components.length==0){
+      this.emptyFilterArr=false;
+      this.components=this.componentsUnFiltered;
+    }
+
+    // if(category!=""){
+    //   this.components=this.components.filter(x=> x.componentCategory.includes(category));
+    // }
+    // let filterVal=event.target.value;
+    // this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
+    debugger
+  }
 
 
 
@@ -204,6 +255,7 @@ debugger
 
           });
           this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
+          this.getAllCmptTypesAndCategories();
 
         });
 
@@ -213,7 +265,25 @@ debugger
 
     });
     console.log(this.components);
+
     debugger;
+  }
+
+  getAllCmptTypesAndCategories(){
+    this.cmptTypeList=[];
+    this.cmptCategoryList=[];
+    this.components.forEach(cmpt=>{
+      if(cmpt.componentType!=""&&cmpt.componentType!=null&&cmpt.componentType!=undefined){
+        if(!this.cmptTypeList.includes(cmpt.componentType)){
+          return this.cmptTypeList.push(cmpt.componentType);
+        }
+      }
+      if(cmpt.componentCategory!=""&&cmpt.componentCategory!=null&&cmpt.componentCategory!=undefined){
+        if(!this.cmptCategoryList.includes(cmpt.componentCategory)){
+          return this.cmptCategoryList.push(cmpt.componentCategory);
+        }
+      }
+    });    
   }
 
 

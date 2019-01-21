@@ -77,13 +77,13 @@ export const PeerPharmRputs: Routes =[
     },
     component: MakeupComponent
   },
-  {
-    path: 'schedule/packingschedule',
-    data: {
-      title: 'Packing Schedule'
-    },
-    component: PackingComponent
-  },
+  // {
+  //   path: 'schedule/packingschedule',
+  //   data: {
+  //     title: 'Packing Schedule'
+  //   },
+  //   component: PackingComponent
+  // },
 
   {
     path: 'items/itemslist',

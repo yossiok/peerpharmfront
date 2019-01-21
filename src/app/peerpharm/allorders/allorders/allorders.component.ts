@@ -46,7 +46,6 @@ export class AllordersComponent implements OnInit {
         orders.map(order => {
           order.color='white'
           if(this.today>order.deliveryDate){
-            debugger
             order.color = '#ff9999';
           }
           Object.assign({ isSelected: false }, order);
@@ -62,6 +61,8 @@ export class AllordersComponent implements OnInit {
   edit(id) {
     this.EditRowId = id;
   }
+
+
 
 
   saveEdit(a, orderId) {

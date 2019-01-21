@@ -48,6 +48,11 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell/updateMulti";
     return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
   }
+  updateInventoryChangesTest(qtyObj){
+    var dataTosend={dataArr: qtyObj};
+    let url = this.baseUrl + "itemShell/updateMultiNew";
+    return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
+  }
 
   getWhareHousesList(){
     let url = this.baseUrl + "whareHouse";
