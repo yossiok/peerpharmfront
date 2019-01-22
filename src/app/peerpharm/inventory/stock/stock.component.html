@@ -296,7 +296,7 @@
         <h2 id='div_h3'>{{openModalHeader}}</h2><br>
       </div>
       <div class="modal-body">
-        <div *ngFor="let whName of itemAmountsWh" class="fr">
+        <div *ngFor="let whName of itemAmountsWh">
           <div class="container fr">
             <h4 class="fr"><u>{{whName}}</u></h4>
             <table id='amountsTable' class="table fr">
@@ -317,17 +317,21 @@
               <!-- <tbody id='changesTbody' dir='rtl'>
                     </tbody> -->
             </table>
-          </div>
-        </div>
-        
-        <div class="container fr">
-          <label for="">כמות חדשה</label>
-        </div>
 
+          </div>
+
+
+        </div>
       </div>
       <br>
-      <div class="container fr" style="border-top: solid darkslategrey">
-        <h4 class="fr">הקצאות מלאי</h4>
+      <div class="container fr">
+        <div class="fr">
+            <h3 class="fr">הקצאות מלאי</h3>
+            <label>מספר הזמנה</label>&nbsp;<input [(ngModel)]="newAllocationOrderNum" type="text" placeholder="Order number" />&nbsp;
+            <label>כמות</label>&nbsp;<input [(ngModel)]="newAllocationAmount" type="number" placeholder="amount" />&nbsp;<button
+              class="btn-success" (click)="addItemStockAllocation(resCmpt.componentN)">הוסף</button>
+    
+        </div>
 
         <div *ngIf="resCmpt.allocations!=null" class="fr">
           <div class="container">
@@ -353,14 +357,14 @@
                     <button (click)="editItemStockAllocationSupplied(resCmpt._id,i)">עדכן</button>
                   </td>
                 </tr>
+
               </tbody>
+              <!-- <tbody id='changesTbody' dir='rtl'>
+                    </tbody> -->
             </table>
+
           </div>
-          <div class="fr">
-              <label>מספר הזמנה</label>&nbsp;<input [(ngModel)]="newAllocationOrderNum" type="text" placeholder="Order number" />&nbsp;
-              <label>כמות</label>&nbsp;<input [(ngModel)]="newAllocationAmount" type="number" placeholder="amount" />&nbsp;<button
-                class="btn-success" (click)="addItemStockAllocation(resCmpt.componentN)">הוסף</button>
-          </div>
+
         </div>
         <div *ngIf="resCmpt.allocations==null">
           <h4><u>אין הקצאות מלאי</u></h4>

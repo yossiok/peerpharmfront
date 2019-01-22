@@ -14,5 +14,6 @@ export class UserInfo
     phone:string;
     twoway:boolean;
     picture:string;
+    formsdisable: boolean;
 
 }

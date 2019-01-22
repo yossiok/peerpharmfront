@@ -1,33 +1,109 @@
-<table class='table table-fixed'>
-  <thead class='text-white'>
-
+<table class="table table-fixed">
+  <thead class="text-white">
     <tr>
-      <th style="width:5%;" ></th>
-      <th style="padding:5px">Production Request Number</th>
+      <th style="width:5%;"></th>
+      <th style="width:20%; padding:5px">Production Request Number</th>
       <th style="padding:5px">Item Number</th>
       <th style="padding:5px">Item Total Quantity</th>
-      <th style="padding:5px">Order Number</th>
-      <th style="padding:5px">Order Description</th>
-      <th style="padding:5px">Order Quantity</th>
-      <th style="width:6%; padding:5px">Makat Number</th>
-      <th style="width:6%; padding:5px">Item Barkod</th>
+      <th style="padding:5px">Makat Number</th>
+      <th style="padding:5px">Item Barkod</th>
+      <th style="width:5%;"></th>
     </tr>
   </thead>
   <tbody id="table_body">
-    <tr *ngFor="let request of requests; let i=index">
-      <td style="width:5%;">{{i+1}}</td>
-      <td>{{request.prodRequestNumber}}</td>
+    <tr *ngFor="let request of requests; let i = index">
+      <td style="width:5%;">{{ i + 1 }}</td>
+      <td>{{ request.prodRequestNumber }}</td>
       <td>
-        <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{request.itemNumber}}">
-          {{request.itemNumber}}
+        <a
+          target="_blank"
+          routerLink="/peerpharm/items/itemDetails/{{ request.itemNumber }}"
+        >
+          {{ request.itemNumber }}
         </a>
       </td>
-      <td>{{request.itemTotalQuantity}}</td>
-      <td>{{request.orderNumber}}</td>
-      <td>{{request.orderDes}}</td>
-      <td>{{request.orderQuatity}}</td>
-      <td>{{request.makatNumber}}</td>
-      <td>{{request.itemBarkod}}</td>
+      <td>{{ request.itemTotalQuantity }}</td>
+      <td>{{ request.makatNumber }}</td>
+      <td>{{ request.itemBarkod }}</td>
+      <td>
+        <button
+          class="btn btn-success m-r-10"
+          type="button"
+          (click)="OpenRelatedOrders(request.orders)"
+        >
+          Related Orders
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Related Orders</h4>
+    <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="c('Cross click')"
+    >
+      <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form" [formGroup]="scheduleOrdersForm" (submit)="onSubmit()">
+      <table class="table table-fixed">
+        -->
+        <thead class="text-white">
+          <tr>
+            <th style="width:5%;"></th>
+            <th style="width:10%; padding:5px">Order Number</th>
+            <th style="padding:5px">Delivery Date</th>
+            <th style="padding:5px">Order Quantity</th>
+            <th style="padding:5px">Produce Quantity</th>
+            <th style="padding:5px">Produce status</th>
+            <th style="width:5%;"></th>
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          <tr *ngFor="let order of scheduleOrders; let i = index">
+            <td style="width:5%;">{{ i + 1 }}</td>
+            <td>{{ order.orderNumber }}</td>
+            <td>{{ order.orderDeliveryDate }}</td>
+            <td>{{ order.orderQuantity }}</td>
+            <td>
+              <div class="form-group">
+                <input
+                  class="form-control"
+                  type="number"
+                  value=""
+                  formControlName="producedQuantity"
+                />
+              </div>
+              {{ order.producedQuantity }}
+            </td>
+            <td>
+              <div class="form-group">
+                <input
+                  class="form-control"
+                  type="string"
+                  value=""
+                  formControlName="produceStatus"
+                />
+              </div>
+              {{ order.produceStatus }}
+            </td>
+            <td>
+              <button class="btn btn-success m-r-10" type="submit">Save</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+  <div class="modal-footer">
+  </div>
+</ng-template>

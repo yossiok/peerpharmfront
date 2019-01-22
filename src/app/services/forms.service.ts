@@ -12,15 +12,14 @@ export class FormsService {
 
   constructor(private http:Http) { }
 
-  
+
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = '/';
 
- 
-  getAllForms(){
-    
-    let url = this.baseUrl + "formDetails";
+
+  getAllForms() {
+    let url = this.baseUrl + 'formDetails';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

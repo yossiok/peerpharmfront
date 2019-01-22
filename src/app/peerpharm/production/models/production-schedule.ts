@@ -1,4 +1,4 @@
-export class ProdSchedule {
+export class ProductionSchedule {
   prodRequestNumber: number;
   itemNumber: number;
   itemTotalQuantity: number;

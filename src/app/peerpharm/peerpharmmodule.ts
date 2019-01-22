@@ -26,7 +26,9 @@ import {NeworderComponent} from './allorders/neworder/neworder.component'
 import {LinesComponent} from './production/lines/lines.component'
 import {ProductionComponent} from './production/production/production.component';
 import {ProductionRequestComponent} from './production/production-request/production-request.component';
+import {ProductionOrdersComponent} from './production/production-request/production-orders/production-orders.component';
 import {ProductionScheduleComponent} from './production/production-schedule/production-schedule.component';
+import {ScheduleOrdersComponent} from './production/production-schedule/schedule-orders/schedule-orders.component';
 import {ContentComponent} from './taskboard/core/content/content.component'
 import {BatchesComponent} from './batches/batches.component'
 import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component';
@@ -74,6 +76,7 @@ import { AuthService } from '../services/auth.service';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 import { SpinnerComponent } from '../shared/spinner.component';
 import { HeadingsWHPipe } from '../pipes/headings-wh.pipe';
+import {NgxPrintModule} from 'ngx-print';
 import { PackingComponent } from './schedule/packing/packing.component';
 
 
@@ -108,7 +111,9 @@ import { PackingComponent } from './schedule/packing/packing.component';
     MatSelectModule,
     DndModule.forRoot(),
     DatepickerModule,
-    Ng2FilterPipeModule , HttpClientModule
+    Ng2FilterPipeModule ,
+    NgxPrintModule,
+    HttpClientModule
   ],
   declarations: [
     FormuleComponent,
@@ -121,6 +126,8 @@ import { PackingComponent } from './schedule/packing/packing.component';
     ProductionComponent,
     ProductionRequestComponent,
     ProductionScheduleComponent,
+    ScheduleOrdersComponent,
+    ProductionOrdersComponent,
     AddFormuleItemComponent,
     ScheduleComponent,
     ItemslistComponent,
@@ -154,6 +161,6 @@ import { PackingComponent } from './schedule/packing/packing.component';
     PackingComponent
 
   ],
-  providers:[ OrdersService, HttpClientModule]
+  providers: [ OrdersService, HttpClientModule]
 })
 export class PeerPharmModule {}

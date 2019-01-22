@@ -1,6 +1,18 @@
-{
+[{
   "menu": {
-    "Orders": "הזמנות" 
+    "Orders": "הזמנות"
+  }
+},
+
+{
+  "formDetails": {
+    "Quality Control Form": "טופס בקרת איכות"
+  }
+},
+{
+  "formDetails": {
+    "Product Name": "שם המוצר"
   }
 }
- 
+
+]

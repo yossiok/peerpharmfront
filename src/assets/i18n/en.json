@@ -1,5 +1,17 @@
-{
+[{
   "menu": {
-    "Orders": "Orders" 
+    "Orders": "Orders"
+  }
+},
+{
+  "formDetails": {
+    "Quality Control Form": "Quality Control Form"
+  }
+},
+{
+  "formDetails": {
+    "Product Name": "Product Name"
   }
 }
+
+]
