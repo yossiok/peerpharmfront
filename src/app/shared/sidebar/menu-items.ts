@@ -307,7 +307,7 @@ export const ROUTES: RouteInfo[] = [
       submenu: [
         {
           path: '/peerpharm/forms/forms_list',
-          title: 'Item List',
+          title: 'Forms List',
           icon: 'fas fa-list-ol',
           class: '',
           extralink: false,
