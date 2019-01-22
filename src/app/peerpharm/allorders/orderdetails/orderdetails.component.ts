@@ -162,7 +162,8 @@ export class OrderdetailsComponent implements OnInit {
           this.orderService.ordersArr.subscribe(res => {
             console.log(res)
             var numArr = this.number.split(",").filter(x=>x!="");
-            if(numArr.length>0){
+            debugger
+            if(numArr.length>1){
               this.orderService.getOrdersIdsByNumbers(numArr).subscribe(ordersIds => {
                 debugger
                 if(ordersIds.length>1){
@@ -207,15 +208,17 @@ export class OrderdetailsComponent implements OnInit {
 
           });
       }
-    })
-
+    });
     
   }
 
   getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
-    debugger
+    //if someone loaded just one item in orders screen through "Load" button 
+    if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
+
     this.orderService.getOrderByNumber(this.number).subscribe(res => {
+      debugger
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
       this.costumerInternalId = res[0].costumerInternalId;
@@ -230,6 +233,9 @@ export class OrderdetailsComponent implements OnInit {
   }
   getOrderItems(): void {
     this.number = this.route.snapshot.paramMap.get('id');
+    //if someone loaded just one item in orders screen through "Load" button 
+    if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
+
     document.title = "Order " + this.number;
     // const id = this.route.snapshot.paramMap.get('id');
     //this.orderService.getOrderById(id).subscribe(orderItems => {    

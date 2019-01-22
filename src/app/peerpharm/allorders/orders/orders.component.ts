@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { IfStmt } from '@angular/compiler';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 @Component({
@@ -13,7 +15,7 @@ import { IfStmt } from '@angular/compiler';
 })
 export class OrdersComponent implements OnInit {
 
-  constructor(private ordersService: OrdersService, private router: Router) { }
+  constructor(private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService) { }
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
@@ -147,20 +149,25 @@ export class OrdersComponent implements OnInit {
 
   loadOrders() {
     console.log(this.orders);
-    debugger
     // let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
     let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e.orderNumber);
-    this.ordersService.sendOrderData(tempArr);
-    this.ordersService.getAllOpenOrdersItems(false);
-    let tempArrStr="";
-    tempArr.forEach(number => {
-      tempArrStr=tempArrStr+","+number;
-    });
-    debugger
-    // this.router.navigateByUrl
-    this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]);
-    console.log(tempArr);
-    //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
+    if(tempArr.length>0){
+      this.ordersService.sendOrderData(tempArr);
+      this.ordersService.getAllOpenOrdersItems(false);
+      let tempArrStr="";
+      tempArr.forEach(number => {
+        tempArrStr=tempArrStr+","+number;
+      });
+      
+      let urlPrefixIndex=window.location.href.indexOf("peerpharm");
+      let urlPrefix=window.location.href.substring(0,urlPrefixIndex-1)
+      debugger
+      window.open(urlPrefix+"/peerpharm/allorders/orderitems/"+tempArrStr); 
+      // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
+    } else{
+      this.toastSrv.error("0 Orders selected");
+    }
+
   }
 
   loadOrdersItems() {
