@@ -1,35 +1,50 @@
-<p>
-  batches works!
-</p>
+<div class="form-group row" style=" width: 30%;">
+  <div class="col-5">
+      <input matInput  placeholder="Search batch by name" (change)="changeText($event,'itemName')" class="form-control" />
+  </div>
+  <div class="col-5">
+      <input matInput  placeholder="Search batch by number" (change)="changeText($event,'batchNumber')" class="form-control" >
+  </div>
+</div>
+<br>
+<!-- &nbsp;&nbsp; <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> -->
+<!-- <div *ngIf="batches.length==0">
+  <img  style="width:50px" src="../../../assets/images/motosha-spinner-load.gif" /><span><b>loading more batches...</b></span>
+  <br/> 
+</div> -->
+<span><b>showing {{batches.length}} batches</b></span>
 
+<div>
 
-<table class='table'>
-  <thead class='bg-info text-white'>
-    <tr>
-      <td></td>
-      <td>Batch Number</td>
-      <td>Production Date</td>
-      <td>Item Name</td>
-      <td>P.h</td>
-      <td>Produced/Left</td>
-      <td>Durms</td>
-      <td>Order</td>
-      <td>Item</td>
-      <td></td>
-    </tr>
-  </thead>
-  <ng-container *ngFor="let batch of batches; let i = index">
-    <tr [style.background-color]="batch.color">
-      <td>{{i}}</td>
-      <td>{{batch.batchNumber}}</td>
-      <td>{{batch.produced}}</td>
-      <td>{{batch.itemName}}</td>
-      <td>{{batch.ph}}</td>
-      <td>{{batch.weightKg}} / {{batch.weightQtyLeft}}</td>
-      <td>{{batch.drumsN}}</td>
-      <td>{{batch.order}}</td>
-      <td>{{batch.item}}</td>
-      <td><i class="ti-trash text-danger m-r-10"   (click)="deleteBatch(batch)"></i></td>
-    </tr>
-  </ng-container>
-</table>
+    <table class='table table-fixed'>
+        <thead class='bg-info text-white'>
+          <tr>
+            <td style="width:5%;"></td>
+            <td>Batch Number</td>
+            <td style="width:15%;">Production Date</td>
+            <td>Item Name</td>
+            <td>P.h</td>
+            <td>Produced/Left</td>
+            <td>Durms</td>
+            <td>Order</td>
+            <td>Item</td>
+            <td></td>
+          </tr>
+        </thead>
+        <ng-container *ngFor="let batch of batches; let i = index">
+          <tr [style.background-color]="batch.color">
+            <td style="width:5%;">{{i+1}}</td>
+            <td>{{batch.batchNumber}}</td>
+            <td>{{batch.produced}}</td>
+            <td style="width:15%;">{{batch.itemName}}</td>
+            <td>{{batch.ph}}</td>
+            <td>{{batch.weightKg}} / {{batch.weightQtyLeft}}</td>
+            <td>{{batch.drumsN}}</td>
+            <td style="word-break: break-word;">{{batch.order}}</td>
+            <td style="word-break: break-word;">{{batch.item}}</td>
+            <td><i class="ti-trash text-danger m-r-10"   (click)="deleteBatch(batch)"></i></td>
+          </tr>
+        </ng-container>
+      </table>
+</div>
+

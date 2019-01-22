@@ -79,8 +79,9 @@ import { ToastrService } from 'ngx-toastr';
   
     dateChanged(date){
       // date=date.setHours(2,0,0,0);
+      date=new Date(date)
       date=moment(date).format("YYYY-MM-DD");
-      debugger
+      
       this.scheduleService.getPrintScheduleByDate(date).subscribe(
         res=>{
           debugger

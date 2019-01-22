@@ -472,13 +472,25 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   setPrintSced(){
+    // this.printSchedule.date.setHours(2,0,0,0);
+    let dateToUpdate=new Date(this.printSchedule.date)
+    dateToUpdate.setHours(2,0,0,0)
     console.log(this.printSchedule);
     this.printSchedule.orderN = this.number;
     this.printSchedule.costumer = this.costumer;
-    this.printSchedule.date=moment(this.printSchedule.date).format();
+    debugger
+    this.printSchedule.date=dateToUpdate;
+    // this.printSchedule.date=moment(this.printSchedule.date).format("YYYY-MM-DD");
+    // this.printSchedule.date=moment(this.printSchedule.date.format());
+    debugger
 
       this.scheduleService.setNewPrintSchedule(this.printSchedule).subscribe(res=>{
-        this.toastSrv.success("Saved", this.printSchedule.cmptN);
+        if(res.itemN){
+          this.toastSrv.success("Saved", this.printSchedule.cmptN);
+          debugger
+        }else{
+          this.toastSrv.error("Error - not sent to print schedule");
+        }
       });
 
   }
