@@ -99,7 +99,7 @@ import { ToastrService } from 'ngx-toastr';
       )
 
     }
-    getAllSchedule(status){
+    getAllSchedule(){
       this.date.nativeElement.value="";
 
       this.scheduleService.getAllPrintSchedule().subscribe(res=>{
@@ -112,7 +112,7 @@ import { ToastrService } from 'ngx-toastr';
       });
     }
 
-    getOpenAllSchedule(status){
+    getOpenAllSchedule(){
       this.date.nativeElement.value="";
 
       this.scheduleService.getOpenPrintSchedule().subscribe(res=>{
