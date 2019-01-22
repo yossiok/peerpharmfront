@@ -8,24 +8,25 @@
       <div style='background-color: lightblue; display:inline-table'>הודפס</div>&nbsp;
   </div>
 
-<div class='orderHeader' *ngIf="multi==false">
+<div class='orderHeader' *ngIf="!showingAllOrders">
   <span class='spanTitle'>Order: </span><span>{{number}} </span><i class="ti-check text-success m-r-10" (click)="closeOrder()"></i>
   <span class='spanTitle'> Order Date:</span><span> {{orderDate}} </span><span class='spanTitle'> Delivery Date: </span><span>{{deliveryDate}}</span>
-  <span class='spanTitle'> Costumer :</span><span> {{costumer}} </span><span class='spanTitle'> Remarks:</span><span>
+  <span class='spanTitle'> Costumer :</span><span> {{costumer}} </span><span class='spanTitle'> Costumer Number:</span><span> {{costumerInternalId}} </span>
+  <span class='spanTitle'> Remarks:</span><span>
     {{remarks}}</span>
 </div>
 <img src="assets/images/load_data2.gif" *ngIf="loadData==true" ><br>
-<input matInput  placeholder="Item Name / Number" (keyup)="changeText($event)" class="form-control  mb-8" />
+<input matInput  placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
 <table class='table' *ngIf="loadData==false">
   <thead class='bg-info text-white'>
     <tr>
       <th> #</th>
-      <th *ngIf="multi==true">Order Number</th>
+      <th *ngIf="!showingAllOrders && multi">Order Number</th>
       <th>Item Number </th>
       <th>Description </th>
       <th>Volume </th>
       <th>Quantity </th>
-      <th class='printTd'>Weight </th>
+      <th class='printTd'>Weight</th>
       <th>Remarks </th>
       <th class='printTd'>Status</th>
       <th class='printTd'>Compile</th>
@@ -34,15 +35,15 @@
   </thead>
 
   <tbody>
-    <tr *ngIf="multi==false" class='inputTr'>
-
+    <tr *ngIf="!showingAllOrders" class='inputTr'>
       <td></td>
-      <td><input class="form-control form-control-sm" [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
-      <td><input class="form-control form-control-sm" [(ngModel)]="itemData.discription" style='width:350px' class="form-control form-control-sm"></td>
-      <td><input class="form-control form-control-sm" [(ngModel)]="itemData.unitMeasure"></td>
-      <td><input class="form-control form-control-sm" [(ngModel)]="itemData.quantity"></td>
-      <td><input class="form-control form-control-sm" [(ngModel)]="itemData.qtyKg"></td>
-      <td><input class="form-control form-control-sm" [(ngModel)]="itemData.itemRemarks"></td>
+      <td *ngIf="!showingAllOrders && multi"><input class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum (focusout)="searchItem(orderNumber.value)"></td>
+      <td><input class="form-control form-control-sm" placeholder="Item Number" [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
+      <td><input class="form-control form-control-sm" placeholder="Discription" [(ngModel)]="itemData.discription" style='width:350px' class="form-control form-control-sm"></td>
+      <td><input class="form-control form-control-sm" placeholder="Volume" [(ngModel)]="itemData.unitMeasure"></td>
+      <td><input class="form-control form-control-sm" placeholder="Amount" [(ngModel)]="itemData.quantity"></td>
+      <td><input class="form-control form-control-sm" placeholder="Weight" [(ngModel)]="itemData.qtyKg"></td>
+      <td><input class="form-control form-control-sm" placeholder="Remarks" [(ngModel)]="itemData.itemRemarks"></td>
       <td></td>
       <td></td>
       <td><button (click)="addItemOrder()" class='btn btn-success'>Add</button></td>
@@ -127,7 +128,7 @@
               </td>
               <td><input #date type='date'></td>
               <td><input #shift type='text' placeholder="Shift"></td>
-              <td><input #marks placeholder="Remarks" type='marks'></td>
+              <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
               <td>
                 <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
                 <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>
@@ -245,7 +246,8 @@
       <div class="form-group">
         <label for="a">Image </label>
         <div class="input-group" id='img-conatiner'>
-            <img [src]='plateImg'  style='width:100%;height:100%;'>
+            <img *ngIf="plateImg!=''" [src]='plateImg'  style='width:100%;height:100%;'>
+            <p *ngIf="plateImg==''">Printing Plate Image Missing</p>
         </div>        
         <!-- <div #container>
         </div> -->

@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { IfStmt } from '@angular/compiler';
+import { ToastrService } from 'ngx-toastr';
+
 
 
 @Component({
@@ -13,13 +15,12 @@ import { IfStmt } from '@angular/compiler';
 })
 export class OrdersComponent implements OnInit {
 
-  constructor(private ordersService: OrdersService, private router: Router) { }
+  constructor(private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService) { }
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
   today:any;
-
-
+  selectAllOrders:boolean=false;
 
   //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
   //private orderSrc = new BehaviorSubject<string>("");
@@ -148,19 +149,25 @@ export class OrdersComponent implements OnInit {
 
   loadOrders() {
     console.log(this.orders);
-    debugger
     // let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
     let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e.orderNumber);
-    this.ordersService.sendOrderData(tempArr);
-    this.ordersService.getAllOpenOrdersItems(false);
-    let tempArrStr="";
-    tempArr.forEach(number => {
-      tempArrStr=tempArrStr+","+number;
-    });
-    debugger
-    this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]);
-    console.log(tempArr);
-    //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
+    if(tempArr.length>0){
+      this.ordersService.sendOrderData(tempArr);
+      this.ordersService.getAllOpenOrdersItems(false);
+      let tempArrStr="";
+      tempArr.forEach(number => {
+        tempArrStr=tempArrStr+","+number;
+      });
+      
+      let urlPrefixIndex=window.location.href.indexOf("peerpharm");
+      let urlPrefix=window.location.href.substring(0,urlPrefixIndex-1)
+      debugger
+      window.open(urlPrefix+"/peerpharm/allorders/orderitems/"+tempArrStr); 
+      // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
+    } else{
+      this.toastSrv.error("0 Orders selected");
+    }
+
   }
 
   loadOrdersItems() {
@@ -169,13 +176,37 @@ export class OrdersComponent implements OnInit {
 
   }
 
-  changeText(ev) {
-    let word = ev.target.value;
-    if (word == "") {
-      this.orders = this.ordersCopy.slice();
-    }
-    else {
-      this.orders = this.orders.filter(x => x.NumberCostumer.toLowerCase().includes(word.toLowerCase()));
+  changeText(ev)
+  {
+    let word= ev.target.value;
+    let wordsArr= word.split(" ");
+    wordsArr= wordsArr.filter(x=>x!="");
+    if(wordsArr.length>0){
+      let tempArr=[];
+      this.ordersCopy.filter(x=>{
+        var check=false;
+        var matchAllArr=0;
+        wordsArr.forEach(w => {
+            if(x.NumberCostumer.toLowerCase().includes(w.toLowerCase()) ){
+              matchAllArr++
+            }
+            (matchAllArr==wordsArr.length)? check=true : check=false ; 
+        }); 
+
+        if(!tempArr.includes(x) && check) tempArr.push(x);
+      });
+         this.orders= tempArr;
+         debugger
+    }else{
+      this.orders=this.ordersCopy.slice();
     }
   }
+
+
+  checkboxAllOrders(ev){
+    this.orders.filter(e => e.isSelected = ev.target.checked)
+  }
+
+
+  
 }

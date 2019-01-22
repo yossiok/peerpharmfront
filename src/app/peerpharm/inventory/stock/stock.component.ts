@@ -4,6 +4,11 @@ import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
 import { HttpRequest } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserInfo } from '../../taskboard/models/UserInfo';
+import { DEC } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-stock',
@@ -39,6 +44,7 @@ export class StockComponent implements OnInit {
   openAmountsModal: boolean = false;
   openModalHeader:string;
   components: any[];
+  filteredComponents: any[];
   componentsUnFiltered:any[];
   componentsAmount: any[];
   tempHiddenImgSrc:any;
@@ -51,20 +57,107 @@ export class StockComponent implements OnInit {
   itemIdForAllocation:String;
   EditRowId: any = "";
   procurementInputEvent:any;
-  stockType:String="component"
+  stockType:String="component";
   newItem:String='';
+  //var's to edit itemshelf in allowed wh for user
+  user: UserInfo;
+  whareHouses:Array<any>;
+  curentWhareHouseId:String;
+  curentWhareHouseName:String;
+  //adding Stock amounts
+  newItemShelfQnt:Number;
+  newItemShelfPosition:String;
+  newItemShelfWH:String;
+  cmptTypeList:Array<any>;
+  cmptCategoryList:Array<any>;
+  emptyFilterArr:Boolean=true;
+  // filterbyNumVal:String;
+  // filterByTypeVal:String;
+  // filterByCategoryVal:String;
+  @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
+  @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
 
+  @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   // @ViewChild('procurmentInput') procurmentInput: ElementRef;
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService) { }
 
   ngOnInit() {
     this.components=[]; 
+    this.getUserAllowedWH();
     this.getAllComponents();
+  }
+getUserAllowedWH(){
+  this.inventoryService.getWhareHousesList().subscribe(res => {
+    if(res){
+      let displayAllowedWH = [];
+      for (const wh of res) {
+        if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
+          displayAllowedWH.push(wh);
+        }
+      }
+      this.whareHouses = displayAllowedWH;
+      this.curentWhareHouseId = displayAllowedWH[0]._id;
+      this.curentWhareHouseName = displayAllowedWH[0].name;
+      debugger
+    console.log(res);
+    }
+  });
+}
 
+
+  
+updateItemStock(direction){
+
+  console.log(this.resCmpt.componentN)
+  debugger
+  let ObjToUpdate=[{
+    actionType: direction,
+    amount: this.newItemShelfQnt,
+    demandOrderId: "",
+    item: this.resCmpt.componentN,
+    newShelf: "",
+    shell: this.newItemShelfPosition,
+    whareHouse: this.newItemShelfWH,
+    itemType: this.stockType
+
+    }];
+     
+    //  READY!
+    this.inventoryService.updateInventoryChanges(ObjToUpdate).subscribe(res => {
+      debugger
+      if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
+      console.log("updateInventoryChanges res: "+res);
+      if (res.nModified != 0) {
+        this.toastSrv.success("Changes Saved");
+      }else if(res.ok==0){
+        this.toastSrv.error("Changes Saved");
+      }
+    });
+    ////////////////////////////
+
+}
+
+
+  getUserInfo() {
+    debugger
+      this.authService.userEventEmitter.subscribe(user => {
+      this.user=user.loggedInUser;
+    })
+    debugger
+    if (!this.authService.loggedInUser) {
+      this.authService.userEventEmitter.subscribe(user => {
+        if (user.userName) {
+          this.user = user;
+        }
+      });
+    }
+    else {
+      this.user = this.authService.loggedInUser;
+    }
   }
 
   setType(type, elem) {
@@ -87,11 +180,46 @@ export class StockComponent implements OnInit {
         this.buttonColor3 = "white";
         break;
     }
+    if(this.stockType!=type){
+      this.filterbyNum.nativeElement.value="";
+    }
     this.stockType=type;
  
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==type);
   }
 
+  filterRowsByItemNumber(event){
+    let filterVal=event.target.value;
+    this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
+    debugger
+  }
+
+  filterRowsByCmptTypeanCategory(event){
+    debugger
+    this.emptyFilterArr=true;
+    let type=this.filterByType.nativeElement.value
+    let category= this.filterByCategory.nativeElement.value
+    if(type!="" || category!=""){
+      if(category!=""&&type!="" ){
+        this.components=this.components.filter(x=> x.componentType.includes(type) && x.componentType.includes(category) );
+      }else if(category=="" && type!=""){
+        this.components=this.components.filter(x=> x.componentType.includes(type));
+      }else if(category!="" && type==""){
+        this.components=this.components.filter(x=> x.componentType.includes(category));
+      }
+    }
+    if(this.components.length==0){
+      this.emptyFilterArr=false;
+      this.components=this.componentsUnFiltered;
+    }
+
+    // if(category!=""){
+    //   this.components=this.components.filter(x=> x.componentCategory.includes(category));
+    // }
+    // let filterVal=event.target.value;
+    // this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
+    debugger
+  }
 
 
 
@@ -127,6 +255,7 @@ debugger
 
           });
           this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
+          this.getAllCmptTypesAndCategories();
 
         });
 
@@ -136,7 +265,25 @@ debugger
 
     });
     console.log(this.components);
+
     debugger;
+  }
+
+  getAllCmptTypesAndCategories(){
+    this.cmptTypeList=[];
+    this.cmptCategoryList=[];
+    this.components.forEach(cmpt=>{
+      if(cmpt.componentType!=""&&cmpt.componentType!=null&&cmpt.componentType!=undefined){
+        if(!this.cmptTypeList.includes(cmpt.componentType)){
+          return this.cmptTypeList.push(cmpt.componentType);
+        }
+      }
+      if(cmpt.componentCategory!=""&&cmpt.componentCategory!=null&&cmpt.componentCategory!=undefined){
+        if(!this.cmptCategoryList.includes(cmpt.componentCategory)){
+          return this.cmptCategoryList.push(cmpt.componentCategory);
+        }
+      }
+    });    
   }
 
 
@@ -400,5 +547,8 @@ procurementRecommendations(){
 
     }
   }
+
+
+
   
-}
+}// END OF CMPT CLASS

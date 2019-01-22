@@ -2,6 +2,8 @@
   import {ScheduleService} from "../../../services/schedule.service"
   //import {NgbTabChangeEvent} from '../../../tabset'
   import * as moment from 'moment';
+import { DatepickerComponent } from 'angular2-material-datepicker';
+import { ToastrService } from 'ngx-toastr';
   
   @Component({
     selector: 'app-schedule',
@@ -9,9 +11,13 @@
     styleUrls: ['./printing.component.css']
   })
   export class PrintingComponent implements OnInit {
+    today:any;
     scheduleData:any[];
     EditRowId:any="";
     buttonColor:string='silver';
+    dateToEditStr:any;
+    lineColorDone: string = 'Aquamarine';
+    lineColorPastDue: string = 'rgb(250, 148, 148)';
     @ViewChild('position') positionN:ElementRef; 
     @ViewChild('orderN') orderN:ElementRef; 
     @ViewChild('item') item:ElementRef; 
@@ -19,9 +25,13 @@
     @ViewChild('productName') productName:ElementRef; 
     @ViewChild('batch') batch:ElementRef; 
     @ViewChild('packageP') packageP:ElementRef; 
+    @ViewChild('nextStation') nextStation:ElementRef; 
     @ViewChild('qty') qty:ElementRef; 
-    @ViewChild('aaaa') date:ElementRef; 
+    @ViewChild('qtyRdy') qtyRdy:ElementRef; 
+    @ViewChild('date') date:ElementRef; 
     @ViewChild('marks') marks:ElementRef;
+    @ViewChild('printType') printType:ElementRef;
+    @ViewChild('blockImg') blockImg:ElementRef;
     @ViewChild('shift') shift:ElementRef;
     @ViewChild('mkp') mkp:ElementRef; 
     @ViewChild('id') id:ElementRef; 
@@ -39,7 +49,7 @@
       packageP:'',
       qty:'',
       qtyRdy:'',
-      date:'',
+      date:'' ,
       dateRdy:'',
       marks:'',
       mkp:'',
@@ -50,34 +60,67 @@
     }
     
     typeShown:String="basic";
-    constructor(private scheduleService:ScheduleService ) { }
+    constructor(private scheduleService:ScheduleService , private toastSrv: ToastrService) { }
   
     
     ngOnInit() {
-      this.getAllSchedule();
+      this.today= new Date();
+      this.today = moment(this.today).format("YYYY-MM-DD");
+      this.scheduleLine.date=this.today;
+      this.dateChanged(this.today);
+      // this.getAllSchedule();
     }
   
     writeScheduleData(){
       console.log(this.scheduleLine);
-      this.scheduleService.setNewPrintSchedule(this.scheduleLine).subscribe(res=>console.log(res));
+      this.scheduleService.setNewPrintSchedule(this.scheduleLine).subscribe(res=>{
+      });
     }
   
     dateChanged(date){
-
+      // date=date.setHours(2,0,0,0);
+      date=new Date(date)
+      date=moment(date).format("YYYY-MM-DD");
+      
       this.scheduleService.getPrintScheduleByDate(date).subscribe(
         res=>{
-          res.map(elem=>{if(elem.status=="printed") elem.trColor="Aquamarine"})
+          debugger
+          // showing only for that date 
+          res.map(elem=>{
+            let pastDue=(moment(elem.date).format() < moment(this.today).format());
+            if(elem.status=="printed") {
+              elem.trColor=this.lineColorDone;
+            }else if (pastDue){
+              elem.trColor=this.lineColorPastDue;
+            }
+          });
           this.scheduleData=res;
         }
       )
 
     }
-  
     getAllSchedule(){
-      this.scheduleService.getOpenPrintSchedule().subscribe(res=>{
-        console.log(res);      
+      this.date.nativeElement.value="";
+
+      this.scheduleService.getAllPrintSchedule().subscribe(res=>{
+        res.map(elem=>{
+          let pastDue=(moment(elem.date).format() < moment(this.today).format());
+          if(elem.status=="printed") elem.trColor="Aquamarine";
+          if(elem.status!="printed" && pastDue) elem.trColor="rgb(250, 148, 148)";            
+        });
         this.scheduleData=res;
-      
+      });
+    }
+
+    getOpenAllSchedule(){
+      this.date.nativeElement.value="";
+
+      this.scheduleService.getOpenPrintSchedule().subscribe(res=>{
+        res.map(elem=>{
+          let pastDue=(moment(elem.date).format() < moment(this.today).format());
+          if(pastDue) elem.trColor="rgb(250, 148, 148)";            
+        });
+        this.scheduleData=res;
       });
     }
     
@@ -91,61 +134,104 @@
   
   
     edit(id){
+
+      this.scheduleData.filter(x=> {
+        if(x._id==id){
+          this.dateToEditStr=moment(x.date).format("YYYY-MM-DD");
+        }
+      } ); 
+      debugger
       this.EditRowId=id;
+      debugger
   }
   
   
-  updateSchedule(){
-    console.log(this.date.nativeElement.value);
-    console.log(this.orderN.nativeElement.value);
-    console.log(this.item.nativeElement.value);
-    
-    let scheduleToUpdate={
-      scheduleId:this.id.nativeElement.value,
-      positionN:this.positionN.nativeElement.value,
-      orderN:this.orderN.nativeElement.value,
-      item:this.item.nativeElement.value,
-      costumer:this.costumer.nativeElement.value,
-      productName:this.productName.nativeElement.value,
-      batch:this.batch.nativeElement.value,
-      packageP:this.packageP.nativeElement.value,
-      qty:this.qty.nativeElement.value,
-      qtyRdy:'',
-      date:this.date.nativeElement.value,
-      marks:this.marks.nativeElement.value,
-      shift:this.shift.nativeElement.value,
-      mkp:this.mkp.nativeElement.value
-    }
-    console.log(scheduleToUpdate);
-    this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
-  
-  }
-  
-  setDone(id, orderN, itemN){
-    let today = new Date();
-    today.setHours(2,0,0,0);
-    //var _dt2 = new Date(today);
-    //today = [_dt2.getDate(), _dt2.getMonth() + 1, _dt2.getFullYear()].join('/');
-    var amountPrinted = prompt("Enter Amount Printed", "");
-    var amountPckgs = prompt("Enter Amount pf packages", "");  //for print sticker later
-    if (amountPrinted == null || amountPrinted == "" || amountPckgs == null || amountPckgs == "") {
-    }else {
-      console.log(amountPckgs + " , " + amountPrinted);
-    }
-    var tempItem, tempOrderN, itemRemarks = "";
-    var a = confirm("Print process is done ?");
-    if (a == true) {
+  updateSchedule(line){
+    if (!line.qtyProduced) line.qtyProduced=0; 
+    if (!line.amountPckgs) line.amountPckgs=0; 
+
+    let dateToUpdate= moment(this.dateToEditStr).format();
+    if(this.dateToEditStr!="" && this.item.nativeElement.value!=""){
       let scheduleToUpdate={
+        scheduleId:line._id,
+        // positionN:line.position,
+        orderN:this.orderN.nativeElement.value,
+        item:this.item.nativeElement.value,
+        costumer:this.costumer.nativeElement.value,
+        productName:this.productName.nativeElement.value,
+        batch:this.batch.nativeElement.value,
+        // packageP:line.packageP,
+        qty:this.qty.nativeElement.value,
+        qtyRdy:line.qtyProduced, // in PrintSchedule the field is called "qtyProduced" we change it in server side
+        // date:this.date.nativeElement.value,
+        date: dateToUpdate,
+        marks:this.marks.nativeElement.value,
+        // shift:this.shift.nativeElement.value,
+        // mkp:this.mkp.nativeElement.value
+      }
+      if (confirm("update schedule line?")) {
+        this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>{
+          if(res.nModified==1 && res.n==1){
+            console.log(res);
+            this.toastSrv.success("Changes Saved to item ", line.itemN);
+          } else if(res.nModified==0 && res.n==1){
+            this.toastSrv.info("Item "+ line.itemN+ " is already updated to changes");
+          } else if(res.ok==0){
+            this.toastSrv.error("Failed to update item ", line.itemN);
+          }
+          this.EditRowId="";
+        });  
+      }
+    }
+  
+  }
+  
+  setDone(id, orderN, itemN, line){
+    if (!line.qtyProduced) line.qtyProduced=0; 
+    if (!line.amountPckgs) line.amountPckgs=0; 
+    // let today = new Date();
+    // today.setHours(2,0,0,0);
+
+
+
+    var amountPrinted = prompt("Enter Amount Printed\nCurrent printed amount: "+line.qtyRdy+"\nFrom total Amount :"+line.qty, line.qtyProduced);
+    var amountPckgs = prompt("Enter Amount Printed\nCurrent printed amount: "+line.amountPckgs,line.amountPckgs ); 
+    if(amountPckgs!=null && amountPrinted!=null){
+      var scheduleToUpdate={
         scheduleId:id,
-        qtyProduced:amountPrinted,
+        qtyRdy:amountPrinted,
         amountPckgs:amountPckgs,
-        printDate:today,
+        printDate:this.today,
         orderN:orderN,
         itemN:itemN,
-        status:'printed'
+        status:'partial printing'
       }
-      console.log(scheduleToUpdate);
-      this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>console.log(res));
+      if (amountPrinted >= line.qty ){
+          var a = confirm("Amount printed: "+amountPrinted+"\nRequired Amount: "+line.qty+"\nPrint process is done ?");
+          if (a == true) {
+            scheduleToUpdate.status="printed";
+            line.trColor="Aquamarine";
+            debugger
+          }
+      }
+      this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>{
+        if(res.nModified==1 && res.n==1){
+          if (a == true) {
+            this.scheduleData.map(scd=>{
+              if(scd._id==line._d) scd.trColor=this.lineColorDone;
+            })
+            debugger
+            // line.trColor="Aquamarine";
+          }
+          line.qtyProduced=amountPrinted;
+          line.amountPckgs=amountPckgs;
+          this.toastSrv.success("Changes Saved to item ", line.itemN);
+        } else if(res.nModified==0 && res.n==1){
+          this.toastSrv.info("Item "+ line.itemN+ " is already updated to changes");
+        } else if(res.ok==0){
+          this.toastSrv.error("Failed to update item ", line.itemN);
+        }
+      });
     }
   }
 

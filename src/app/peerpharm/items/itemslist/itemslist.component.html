@@ -1,6 +1,33 @@
+  <!-- <div class="container" style="width:100%; padding: 0px" >
+    <form style="width:100%;">
+      <div class="row" style="width:100%;">
+          <div class="col-sm-3">
+            <label>מספר פריט</label>
+            <input  #filterbyNum type="text" class="form-control" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)">
+          </div>
+          <div *ngIf="stockType=='component'" class="col-sm-3">
+            <label >שם פריט</label>
+            <select #filterByName class="form-control" (change)="filterRowsByItemName($event)">
+              <option selected></option>
+              <option *ngFor="let cmptType of cmptTypeList">{{cmptType}}</option>
+            </select>
+          </div>
+          <div *ngIf="stockType=='component'" class="col-sm-3">
+            <label >קטגוריה</label>
+            <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event)">
+              <option selected></option>
+              <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
+            </select>
+          </div>
+      </div>
+    </form>
+    <h4 *ngIf="!emptyFilterArr" style="color:red; text-align: center">אין תוצאות לחיפוש שנבחר - הטבלה   מציגה את כל הפריטים</h4>
+  </div>
+  <br> -->
 
 
-  <input matInput  placeholder="Item name" (keyup)="changeText($event)" />
+  <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> 
+  <!-- &nbsp;&nbsp; <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> -->
   <div  *ngIf="hasMoreItemsToload">
     <img  style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading more items...</b></span>
     <br/> 
@@ -11,12 +38,13 @@
 
     <tr>
       <th style="width:5%;" ></th>
-      <th style="padding:5px">Item number</th>
+      <th style="width:10%; padding:5px">Item number</th>
       <th style="width:25%; padding:5px">Name</th>
       <th style="padding:5px">Sticker</th>
       <th style="padding:5px">Barcode</th>
-      <th style="padding:5px">licsens Number</th>
-      <th style="padding:5px">licsens Date</th>
+      <th style="padding:5px">Limited License</th>
+      <th style="padding:5px">licsense Number</th>
+      <th style="padding:5px">licsense Date</th>
       <th style="width:6%; padding:5px">Pallet 1</th>
       <th style="width:6%; padding:5px">Pallet 2</th>
       <th style="width:6%; padding:5px">Pallet 3</th>
@@ -28,14 +56,21 @@
   <tbody id="table_body">
     <tr *ngFor="let item of items; let i=index">
       <td style="width:5%;">{{i+1}}</td>
-      <td>
+      <td style="width:10%;">
         <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
           {{item.itemNumber}}
         </a>
       </td>
       <td style="width:25%;">{{item.itemFullName}}</td>
-      <td>{{item.stickerNumber}}</td>
-      <td>{{item.barcodeK}}</td>
+      <td style="word-wrap:normal">{{item.stickerNumber}}<br><span style="word-break: break-word;">{{item.StickerLanguageK}}</span></td>
+      <td style="word-wrap: break-word;">{{item.barcodeK}}</td>
+      <td>
+            <img *ngIf="item.licenceItemsQuotaLimit && (item.licenceItemsQuotaLimit < item.licenceCurrItemsQnt)" style="width: 25px; height: 25px;" src="../../../../assets/images/alert2.png" alt="">
+            <!-- <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
+            <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceItemsQuotaLimit" type="number" style="width: 65px; float: left;" (focusout)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber, item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" min="1">
+            <!-- <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
+            <input *ngIf="!item.licenceItemsQuotaLimit" type="number" style="width: 65px; float: left;" (focusout)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" min="1">    
+      </td>
       <td>{{item.licsensNumber}}</td>
       <td>{{item.licsensDate}}</td>
       <td style="width:6%;">{{item.pallet}}</td>

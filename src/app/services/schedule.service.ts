@@ -67,6 +67,10 @@ export class ScheduleService {
   }
 
   getOpenPrintSchedule() {
+    let url = this.baseUrl + "printSchedule?open=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getAllPrintSchedule() {
     let url = this.baseUrl + "printSchedule";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

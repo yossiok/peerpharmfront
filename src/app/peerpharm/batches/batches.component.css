@@ -8,3 +8,37 @@ th, td {
       border-bottom: 1px solid #ddd;
       font-family: "Berlin Sans FB";
   }
+  .table-fixed thead {
+    width: 100%;
+    display: block;
+    }
+  .table-fixed tbody {
+    height: 700px;
+    overflow-y: auto;
+    width: 100%;
+    display: block;
+  }
+  
+  .table-fixed th{
+    width:10%;
+    display: inline-block;
+    border: none;
+  }
+  .table-fixed td{
+    width:10%;
+    display: inline-block;
+    border-bottom: none;
+  }
+  .table-fixed tr{
+    width: 100%;
+    display: block;
+    font-size: 18px;
+  }
+  
+  
+  .table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
+    width: 10%;
+    display: inline-block;
+    border-bottom: none;
+    font-family: "Times New Roman", Times, serif;
+  }

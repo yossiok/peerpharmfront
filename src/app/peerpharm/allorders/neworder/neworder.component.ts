@@ -38,7 +38,7 @@ export class NeworderComponent implements OnInit {
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
       delivery: [null, Validators.required],
       costumer: [null, Validators.required],
-      costumerInternalId: [null, Validators.required],
+      costumerInternalId: [""],
       orderdate: [null, Validators.required],
       remarks: [null],
       type: [null],
@@ -57,7 +57,12 @@ export class NeworderComponent implements OnInit {
 
   addNewOrder(post) {
 debugger
+if(this.orderForm.controls.costumerInternalId.value==null){
+  this.orderForm.controls.costumerInternalId.setValue(this.choosedCostumer.costumerId);
+};
+
   if(this.orderForm.valid){
+    debugger
     let newOrderObj = {
       costumer: post.costumer,
       orderDate: post.orderdate,
@@ -74,7 +79,7 @@ debugger
       console.log(res)
     });
   }else{
-    this.toastSrv.error("Failed pleae finish filling the form");
+    this.toastSrv.error("Failed please finish filling the form");
   }
 }
 
