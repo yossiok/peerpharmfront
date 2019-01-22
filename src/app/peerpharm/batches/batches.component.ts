@@ -53,7 +53,7 @@ export class BatchesComponent implements OnInit {
       wordsArr= wordsArr.filter(x=>x!="");
       if(wordsArr.length>0){
         let tempArr=[];
-        this.batches.filter(b=>{
+        this.batchesCopy.filter(b=>{
           var check=false;
           var matchAllArr=0;
           wordsArr.forEach(w => {
@@ -74,7 +74,7 @@ export class BatchesComponent implements OnInit {
       let bNum= ev.target.value;
       if(bNum!=''){
         let tempArr=[];
-        this.batches.filter(b=>{
+        this.batchesCopy.filter(b=>{
           var check=false;
           var matchAllArr=0;
           if(b.batchNumber.includes(bNum.toLowerCase()) ){
