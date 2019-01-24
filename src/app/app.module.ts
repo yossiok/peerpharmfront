@@ -1,5 +1,7 @@
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
+import {ExcelService} from './services/excel.service';
+
 import { SignupComponent } from './shared/auth/signup.component';
 import { LoginComponent } from './shared/auth/login.component';
 import * as $ from 'jquery';
@@ -101,7 +103,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
    // AmplifyService,
    OVERLAY_PROVIDERS,
 
-    AuthService,HttpClientModule,
+    AuthService,HttpClientModule,ExcelService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

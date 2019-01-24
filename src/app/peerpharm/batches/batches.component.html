@@ -47,4 +47,30 @@
         </ng-container>
       </table>
 </div>
+<!-- TEST EXPORT TO EXCEL -->
+<button (click)="exportAsXLSX()">exportAsXLSX</button>
 
+<table id ="dataTable" class = "table table-hover">
+  <thead>
+      <tr>
+          <th>Date</th>
+          <th>Address</th>
+          <th>Mode</th>
+          <th>Distance</th>
+          <th>Fare</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let d of dateList;let i = index">
+          <td>{{d.date}}</td> 
+          <td>{{d.address}}</td>
+          <td>{{d.mode}}</td>
+          <td>{{d.distance}}</td>
+          <td>{{d.fare}}</td>
+          <td>
+             <a>Delete</a>
+          </td>   
+      </tr>
+  </tbody>
+</table>

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BatchesService } from '../../services/batches.service'
+// test for excel export
+import {ExcelService} from '../../services/excel.service';
+// private excelService:ExcelService
 
 @Component({
   selector: 'app-batches',
@@ -9,15 +12,36 @@ import { BatchesService } from '../../services/batches.service'
 export class BatchesComponent implements OnInit {
   myRefresh: any = null;
 
-  constructor(private batchService: BatchesService) { }
+  constructor(private batchService: BatchesService, private excelService:ExcelService ) { }
+  dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
   batches: Array<any>;
   batchesCopy: Array<any>;
+
   ngOnInit() {
 
     this.getAllBatches();
     this.startInterval();
   }
 
+  exportAsXLSX() {
+    this.excelService.exportAsExcelFile(this.dateList, 'sample');
+    debugger
+ }
+  exportToExcel(){
+
+
+
+
+    debugger;
+    // test from : https://github.com/SheetJS/js-xlsx/tree/19620da30be2a7d7b9801938a0b9b1fd3c4c4b00/demos/angular2
+    // const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dateList);
+    // /* generate workbook and add the worksheet */
+    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, worksheet, 'Sheet1');
+    // /* save to file */
+    // XLSX.writeFile(wb, "testExport");
+    // // XLSX.writeFile(wb, this.createFileName());
+  }
   stopInterval() {
     clearInterval(this.myRefresh)
   }
