@@ -214,15 +214,6 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-       {
-        path: '/peerpharm/schedule/fillschedule',
-        title: 'Item Tree',
-        icon: 'fas fa-tree',
-        class: '',
-        extralink: false,
-        submenu: []
-      }
-
     ]
   },
 
