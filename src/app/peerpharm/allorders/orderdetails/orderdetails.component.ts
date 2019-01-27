@@ -240,6 +240,7 @@ export class OrderdetailsComponent implements OnInit {
     // const id = this.route.snapshot.paramMap.get('id');
     //this.orderService.getOrderById(id).subscribe(orderItems => {    
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
+      debugger
       orderItems.map( item => {
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
@@ -374,7 +375,9 @@ export class OrderdetailsComponent implements OnInit {
     this.itemData.orderId = this.orderId;
     this.itemData.orderNumber = this.number;
     console.log(this.itemData.orderId);
-    this.orderService.addNewOrderItem(this.itemData).subscribe(item => this.ordersItems.push(item));
+    this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
+      
+      this.ordersItems.push(item)});
   }
 
   setSchedule(item, type) {
@@ -459,10 +462,16 @@ export class OrderdetailsComponent implements OnInit {
 
 
   searchItem(itemNumber) {
-    this.orderService.getItemByNumber(itemNumber).subscribe(res => {
-      this.itemData.discription = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-      this.itemData.unitMeasure = res[0].volumeKey;
-    })
+    debugger
+    if(itemNumber!=""){
+      this.orderService.getItemByNumber(itemNumber).subscribe(res => {
+        if(res.length==1){
+          this.itemData.discription = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
+          this.itemData.unitMeasure = res[0].volumeKey;  
+        }
+      });
+  
+    }
   }
 
   closeOrder() {

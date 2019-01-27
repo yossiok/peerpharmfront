@@ -104,6 +104,6 @@
   </div>
 
   <div style='display: inline-block; vertical-align: top;' class="col-sm-4">
-    <app-inventory-requests (outPutItemsArray)="getChildArr($event)"></app-inventory-requests>
+    <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)"></app-inventory-requests>
   </div>
 </div>
