@@ -20,6 +20,9 @@
         </td>
       </tr>
 
+
+      <!-- STOCK MANGEMENT -->
+
       <tr *ngIf="screen=='stkManagment' ">
 
         <td>
@@ -54,6 +57,12 @@
         <span (click)="changeCurentWh()">{{curentWhareHouseName}} Wharehouse</span><br>
     </div>
     <br>
+
+
+
+
+
+    <!-- WH MANGEMENT -->
     <div *ngIf="dir!='' && dir!='managment'">
       <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp;
       <button class="btn btn-warning" (click)="resetForm()">Reset / אפס</button>&nbsp;&nbsp;
@@ -81,6 +90,7 @@
         <option></option>
         <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
       </select>
+
 
       <h5>הוספת/חיפוש מדף</h5>
       <div id='whareHousesDiv' style='background-color: rgb(223, 255, 194)  ;width:300px; font-weight: bold;'>
