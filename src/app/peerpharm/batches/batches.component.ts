@@ -3,6 +3,11 @@ import { BatchesService } from '../../services/batches.service'
 // test for excel export
 import {ExcelService} from '../../services/excel.service';
 // private excelService:ExcelService
+import * as moment from 'moment';
+import { Toast } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-batches',
@@ -12,10 +17,11 @@ import {ExcelService} from '../../services/excel.service';
 export class BatchesComponent implements OnInit {
   myRefresh: any = null;
 
-  constructor(private batchService: BatchesService, private excelService:ExcelService ) { }
+  constructor(private batchService: BatchesService, private excelService:ExcelService , private toastSrv: ToastrService) { }
   dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
   batches: Array<any>;
   batchesCopy: Array<any>;
+  lastBatchToExport:String;
 
   ngOnInit() {
 
@@ -23,25 +29,6 @@ export class BatchesComponent implements OnInit {
     this.startInterval();
   }
 
-  exportAsXLSX() {
-    this.excelService.exportAsExcelFile(this.dateList, 'sample');
-    debugger
- }
-  exportToExcel(){
-
-
-
-
-    debugger;
-    // test from : https://github.com/SheetJS/js-xlsx/tree/19620da30be2a7d7b9801938a0b9b1fd3c4c4b00/demos/angular2
-    // const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dateList);
-    // /* generate workbook and add the worksheet */
-    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    // XLSX.utils.book_append_sheet(wb, worksheet, 'Sheet1');
-    // /* save to file */
-    // XLSX.writeFile(wb, "testExport");
-    // // XLSX.writeFile(wb, this.createFileName());
-  }
   stopInterval() {
     clearInterval(this.myRefresh)
   }
@@ -64,13 +51,46 @@ export class BatchesComponent implements OnInit {
           else batch.color = "white";
         }
       });
-      
+
     });
   }
 
+  filterBatchesBiggerThenBatchN() {
+    var excelTable=[];
+    if(this.lastBatchToExport!="" && this.lastBatchToExport!=null){
+      this.batchesCopy.map(batch => {
+        let lastBatchYear=this.lastBatchToExport.split("pp")[0];
+        let lastBatchNum=this.lastBatchToExport.split("pp")[1];
+        let year=batch.batchNumber.split("pp")[0] ;
+        let number=batch.batchNumber.split("pp")[1] ;
+        if(year>=lastBatchYear && number>=lastBatchNum && batch.weightKg != null && batch.weightQtyLeft != null){
+          let obj={
+            batchNumber:batch.batchNumber,
+            produced:batch.produced,
+            item:batch.item,
+            itemName:batch.itemName, 
+            expration: batch.expration, 
+            order:batch.order,
+            ph:batch.ph, 
+            weightKg: batch.weightKg,
+          }
+          excelTable.push(obj);
+        }
+      });
+      this.exportAsXLSX(excelTable);
+      this.lastBatchToExport="";
+    }else{
+      this.toastSrv.error("No batch number to follow");
+    }
+  }
+
+
+  exportAsXLSX(data) {
+    this.excelService.exportAsExcelFile(data, 'batches');
+ }
+
   changeText(ev, filterBy)
   {
-    debugger
     if(filterBy=='itemName'){
       let word= ev.target.value;
       let wordsArr= word.split(" ");
