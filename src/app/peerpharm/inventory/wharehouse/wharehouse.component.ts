@@ -317,19 +317,17 @@ WhMngNavBtnColor:String ="";
     if(itemLine.itemNumInput!=""){
       //VALID AMOUT
       if(parseInt(itemLine.itemAmount)!=NaN && itemLine.itemAmount!=0 ){
-        // let validPosition=
-        if(this.currItemShelfs.includes(itemPosition)){
 
-        }else{
-
-        }
         await this.inventoryService.getCmptByNumber(this.itemLine.controls.itemNumInput.value).subscribe(async res => {
           if(res.length>0){
 
-            this.wh.nativeElement.value
-            // await this.inventoryService.getShelfListForItemInWhareHouse(res[0].componentN, this.wh.nativeElement.value).subscribe(async res => {
-            //   this.currItemShelfs=res;
-            // });
+            this.inventoryService.checkIfShelfExist(itemPosition,this.curentWhareHouseId).subscribe(res=>{
+              if(res.length>0){
+               // CREATE AN OBJECT TO FOR ITEMSHELF IN/OUT AND PUSH TO this.inventoryUpdateList.push(obj)
+              }else{
+                this.toastSrv.error("No Such Shelf: "+itemPosition);
+              }  
+            });
           }else{
             this.toastSrv.error("Item Number "+this.itemLine.controls.itemNumInput.value +" Not in Stock");
           }

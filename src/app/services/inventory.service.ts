@@ -27,6 +27,12 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  checkIfShelfExist(shelfPosition,whareHouseId){
+    let url = this.baseUrl + "shell?shelfPosition="+shelfPosition+"&whareHouseId="+whareHouseId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+
+  }
+
   addNewCmpt(cmptObj):Observable<any>{ 
     let url = this.baseUrl + "component/add";
     return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))
