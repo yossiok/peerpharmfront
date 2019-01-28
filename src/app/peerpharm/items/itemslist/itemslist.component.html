@@ -25,8 +25,14 @@
   </div>
   <br> -->
 
-
-  <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> 
+  <div  *ngIf="!hasMoreItemsToload">
+    <input matInput  placeholder="Item name" (change)="changeText($event)" /> 
+    <!-- <button class="btn col-1" (click)="getCurrListToExcel()" class="btn col-3" style="background: none;" data-toggle="tooltip" title="get cuurent item list">
+        <img src="../../../assets/images/excel.png" alt="excel export" style="width: 35px; float: left;" >
+    </button> -->
+  
+  </div>
+  
   <!-- &nbsp;&nbsp; <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> -->
   <div  *ngIf="hasMoreItemsToload">
     <img  style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading more items...</b></span>

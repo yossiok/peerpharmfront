@@ -3,6 +3,8 @@ import {ItemsService} from '../../../services/items.service'
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import {ExcelService} from '../../../services/excel.service';
+
 
 
 @Component({
@@ -17,7 +19,7 @@ export class ItemslistComponent implements OnInit {
  
 
   items:any[]=[];
-  constructor(private itemsService:ItemsService, private toastSrv: ToastrService) { }
+  constructor(private itemsService:ItemsService, private toastSrv: ToastrService,  private excelService:ExcelService) { }
 
   ngOnInit() {
     this.getAllItems();
@@ -127,4 +129,12 @@ export class ItemslistComponent implements OnInit {
 
   }
 
+// EXCEL EXPORT ---------------------------------------------------------------
+  getCurrListToExcel(){
+    this.exportAsXLSX(this.items);
+  }
+  exportAsXLSX(data) {
+    this.excelService.exportAsExcelFile(data, 'items');
+ }
+// ----------------------------------------------------------------------------
 }

@@ -1,11 +1,11 @@
-import { AuthService } from 'src/app/services/auth.service';
-import { UsersService } from './../../../services/users.service';
-import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { InventoryService } from 'src/app/services/inventory.service';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Integer } from 'aws-sdk/clients/pi';
 import { ToastrService } from 'ngx-toastr';
-import { UpperCasePipe } from '@angular/common';
-import { UserInfo } from '../../taskboard/models/UserInfo';
+import { AuthService } from 'src/app/services/auth.service';
+import { InventoryService } from 'src/app/services/inventory.service';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-wharehouse',
@@ -14,7 +14,24 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
 })
 export class WharehouseComponent implements OnInit {
 
+// new ----------------------
+newReqNumber:number;
+inventoryReqForm: FormGroup;
+itemLine: FormGroup;
+inventoryUpdateList:Array<any>=[];// to show added items to request
+itemNumInput:String='';
+itemAmount:Number;
+relatedOrder:String='';
+today:Date=new Date;
+
+currItemShelfs:Array<any>;
+//  -------------------------
+StkMngNavBtnColor:String ="#1affa3";
+WhMngNavBtnColor:String ="";
+
   @ViewChild('container')
+  @ViewChild('wh') wh: ElementRef;
+
   private container: ElementRef;
   mainDivArr: any = [];
   whareHouses: any = [];
@@ -29,9 +46,26 @@ export class WharehouseComponent implements OnInit {
   response = { color: '', body: '' }
   i: Integer = 0;
   currTab: string = '';
-  constructor(private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService, private toasterSer: ToastrService, ) { }
+  constructor(private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService,private toastSrv: ToastrService, ) { 
+
+// new ----------------------
+    this.itemLine = fb.group({
+      //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
+      itemNumInput: ['', Validators.required],
+      itemAmount: [0, Validators.required],
+      itemPosition: ['', Validators.required],
+      relatedOrder: [''],
+      arrivalDate: [Date],
+    });
+//  -------------------------
+
+
+
+  }
 
   ngOnInit() {
+    // let todayStr=moment(this.today).format("YYYY-MM-DD");
+    // this.itemLine.controls.arrivalDate.setValue(todayStr);
     this.inventoryService.getWhareHousesList().subscribe(res => {
       let displayAllowedWH = [];
         for (const wh of res) {
@@ -48,8 +82,11 @@ export class WharehouseComponent implements OnInit {
 
 
   dirSet(action, direction) {
+
     this.screen = action;
     if (action == 'whManagment') {
+      this.WhMngNavBtnColor="#1affa3";
+      this.StkMngNavBtnColor="";
 
       this.dir = 'managment';
       const childElements = this.container.nativeElement.children;
@@ -79,7 +116,13 @@ export class WharehouseComponent implements OnInit {
         }
       }
     } else if (action == 'stkManagment') {
+      //change active navbar colors 
+      this.WhMngNavBtnColor="";
+      this.StkMngNavBtnColor="#1affa3";
       this.dir = direction;
+      // empty unrelevant fields if changing direction
+      if(this.dir!="in")   this.itemLine.controls.arrivalDate.setValue("");
+      if(this.dir=="in")   this.itemLine.controls.relatedOrder.setValue("");
     }
 
   }
@@ -93,7 +136,6 @@ export class WharehouseComponent implements OnInit {
 
       console.log(innerDiv.value);
       if (innerDiv.value.length > 0) {
-       debugger;
         divArr.push(innerDiv.value);
       }
       else {
@@ -118,16 +160,13 @@ export class WharehouseComponent implements OnInit {
         if (this.dir == "production") { // if it's for production - add demandOrderId for server update
           // Object.assign({demandOrderId:divArr[3]}, itemData);
           itemData.demandOrderId = divArr[3];
-          debugger
         }
         this.mainDivArr.push(itemData);
             divArr = [];
       }
     }
     console.log(this.mainDivArr);
-    debugger;
     this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
-      debugger
       console.log("updateInventoryChanges res: "+res);
         if (res != null) {
           
@@ -196,12 +235,12 @@ export class WharehouseComponent implements OnInit {
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
     this.curentWhareHouseId = this.whareHouses[i]._id;
     this.curentWhareHouseName = this.whareHouses[i].name;
-    this.changeWh = false;
+    // this.changeWh = false;
   }
 
-  changeCurentWh() {
-    this.changeWh = true;
-  }
+  // changeCurentWh() {
+  //   this.changeWh = true;
+  // }
 
   searchShelf(shelf) {
     shelf = shelf.toUpperCase();
@@ -240,6 +279,116 @@ export class WharehouseComponent implements OnInit {
       this.appendItems(item.number, item.orderDemandId)
     });
   }
+
+// ********************************************************************************************************************
+// NEW - insted of all the rendering
+// ********************************************************************************************************************
+  async searchItemShelfs(){
+    // this.currItemShelfs=[];
+    // await this.inventoryService.getCmptByNumber(this.itemLine.controls.itemNumInput.value).subscribe(async res => {
+      
+    // });
+    await this.inventoryService.getShelfListForItemInWhareHouse(this.itemLine.controls.itemNumInput.value, this.curentWhareHouseId).subscribe(async res => {
+      if(res.length>0){
+        this.currItemShelfs=res;
+      }else{
+        this.currItemShelfs=[];
+        this.currItemShelfs.push("NO SHELFS WITH ITEM # "+this.itemLine.controls.itemNumInput.value);
+      }
+    });
+ }
+
+
+  deleteRow(itemNum,itemAmout, relatedOrder){
+    this.inventoryUpdateList.forEach(function(item, index, object){
+      if (item.itemNumber==itemNum && item.amount==itemAmout && item.relatedOrder==relatedOrder ) {
+        object.splice(index, 1)
+      }
+    });
+  }
+
+  // currentDate() {
+  //   const currentDate = new Date();
+  //   return currentDate.toISOString().substring(0,10);
+  // }
+
+  async addItemToList(itemLine){
+    let itemPosition=itemLine.itemPosition.toUpperCase();
+    if(itemLine.itemNumInput!=""){
+      //VALID AMOUT
+      if(parseInt(itemLine.itemAmount)!=NaN && itemLine.itemAmount!=0 ){
+        // let validPosition=
+        if(this.currItemShelfs.includes(itemPosition)){
+
+        }else{
+
+        }
+        await this.inventoryService.getCmptByNumber(this.itemLine.controls.itemNumInput.value).subscribe(async res => {
+          if(res.length>0){
+
+            this.wh.nativeElement.value
+            // await this.inventoryService.getShelfListForItemInWhareHouse(res[0].componentN, this.wh.nativeElement.value).subscribe(async res => {
+            //   this.currItemShelfs=res;
+            // });
+          }else{
+            this.toastSrv.error("Item Number "+this.itemLine.controls.itemNumInput.value +" Not in Stock");
+          }
+        });
+      }else{
+        this.toastSrv.error("Item Amount Missing");
+      }
+    }else{
+      this.toastSrv.error("Item Number Missing");
+    }
+  }
+
+
+  loadShelfToInput(position){
+    if(!position.includes("NO SHELFS")){
+      this.itemLine.controls.itemPosition.setValue(position);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ***************************************************************************************
   appendItems(number, demandOrderId) {
@@ -287,7 +436,6 @@ export class WharehouseComponent implements OnInit {
       this.getItemWhShelfsList(inputItem.value, shelfsDiv).then(result => {
         console.log(result)
         if (result[0] != "") {
-          debugger
           q.setProperty(shelfsDiv, "innerText", result.toString())
           q.appendChild(rowDiv, shelfsDiv);
         } else {
@@ -401,7 +549,6 @@ export class WharehouseComponent implements OnInit {
         this.getItemWhShelfsList(inputItem.value, shelfsDiv).then(result => {
           console.log(result)
           if (result[0] != "") {
-            debugger
             q.setProperty(shelfsDiv, "innerText", result.toString())
             q.appendChild(rowDiv, shelfsDiv);
           } else {
@@ -502,7 +649,6 @@ export class WharehouseComponent implements OnInit {
             this.getItemWhShelfsList(inputItem.value, shelfsDiv).then(result=>{
               console.log(result)
               if(result[0]!=""){
-                debugger
                 q.setProperty(shelfsDiv, "innerText", result.toString())
                 q.appendChild(rowDiv, shelfsDiv);
               }else {

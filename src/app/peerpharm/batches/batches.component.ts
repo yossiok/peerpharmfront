@@ -18,7 +18,7 @@ export class BatchesComponent implements OnInit {
   myRefresh: any = null;
 
   constructor(private batchService: BatchesService, private excelService:ExcelService , private toastSrv: ToastrService) { }
-  dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
+  // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
   batches: Array<any>;
   batchesCopy: Array<any>;
   lastBatchToExport:String;

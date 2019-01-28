@@ -20,3 +20,9 @@ td{
 /* input[name="newDemandId"]{
     visibility: hidden;
 } */
+a{
+    text-align: center;
+}
+.itemsList .form-group label{
+    text-align: center;
+}
