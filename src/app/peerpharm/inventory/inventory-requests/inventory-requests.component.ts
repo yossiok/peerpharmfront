@@ -53,15 +53,18 @@ export class InventoryRequestsComponent implements OnInit {
 
   
   loadItems() {
-    debugger;
     console.log(this.ordersDemands);
    // let demandObj =this.ordersDemands.filter(orderObj=>orderObj.order==this.openOrder)
     let demandObj =this.ordersDemands.filter(orderObj=>orderObj.reqNum==this.openOrder);
     // console.log(demandObj);
     // console.log(demandObj[0].components);
-    let tempArr = demandObj[0].reqList.filter(e => e.isSelected == true).map(elmnt => elmnt = {"number":elmnt.itemNumber, "orderDemandId":demandObj[0]._id});
+    debugger;
+
+    let tempArr = demandObj[0].reqList.filter(e => e.isSelected == true).map(elmnt => {
+      elmnt.reqNum=demandObj[0].reqNum;
+      return elmnt
+    } );
     //let tempArr = demandObj[0].components.filter(e => e.isSelected == true).map(e => e = {"item":e.cmptN, "demandId":e._id});
-    debugger
     if(tempArr.length>0) {
       this.outPutItemsArray.emit(tempArr);  
     }

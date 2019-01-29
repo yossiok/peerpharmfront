@@ -51,7 +51,6 @@ export class BatchesComponent implements OnInit {
           else batch.color = "white";
         }
       });
-
     });
   }
 
@@ -83,6 +82,7 @@ export class BatchesComponent implements OnInit {
       this.toastSrv.error("No batch number to follow");
     }
   }
+
 
 
   exportAsXLSX(data) {

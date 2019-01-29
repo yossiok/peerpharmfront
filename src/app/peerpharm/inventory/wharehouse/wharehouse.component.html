@@ -78,46 +78,107 @@
       <br>
 
       <div class="container">
-          <form class="form-horizontal itemsList" [formGroup]="itemLine" >
-              <div class="form-group row">
+        <ng-container *ngIf="!multiInputLines">
+            <form class="form-horizontal itemsList" [formGroup]="itemLine" >
+                <div class="form-group row">
+    
+                    <div class="col-sm-2">
+                      <label>מספר פריט</label>
+                      <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumInput" (blur)="searchItemShelfs($event)">
+                    </div>
+                    <div class="col-sm-2">
+                      <label>מדף</label>
+                      <input type="text" class="form-control" placeholder="Position" formControlName="itemPosition">
+                    </div>
+                    <div class="col-sm-2">
+                      <label>כמות</label>
+                      <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount" min="0">
+                    </div>
+                    <!-- if taking out stock from wh -->
+                    <div class="col-sm-3"  *ngIf="dir!='in'"> 
+                      <label>מספר בקשת מלאי</label>
+                      <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
+                    </div>
+                    <!-- if recieving stock to wh  -->
+                    <div class="col-sm-3" *ngIf="dir=='in'">
+                      <label>הגעת משלוח</label>
+                      <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
+                    </div>
+                    <div class="col-sm-1" style="position: relative;">
+                        <button type="submit" (click)="checkLineValidation(itemLine.value)" style="cursor: pointer; position: absolute; bottom: 0px;">
+                            <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
+                        </button>
+                    </div>
+                </div>
   
-                  <div class="col-sm-2">
-                    <label>מספר פריט</label>
-                    <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumInput" (blur)="searchItemShelfs()">
+                <div>
+                  <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
+                  <ng-container *ngFor="let shelf of currItemShelfs">
+                    <span style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; cursor: pointer;" 
+                    (click)="loadShelfToInput(shelf.position, $event)">{{shelf.position}}: {{shelf.amount}} units</span>&nbsp;&nbsp;
+                  </ng-container>
+                </div>
+            </form>
+  
+        </ng-container>
+  
+        <!-- multiLines for inventory requests load -->
+        <ng-container  *ngIf="multiInputLines">
+          <div *ngFor="let itemFromInvReq of multiLinesArr ; let i = index">
+              <form class="form-horizontal itemsList" >
+                  <div class="form-group row">
+              
+                      <div class="col-sm-2">
+                        <label>מספר פריט</label>
+                        <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Item number" [value]="itemFromInvReq.itemNumber" (blur)="searchItemShelfs()">
+                      </div>
+                      <div class="col-sm-2">
+                        <label>מדף</label>
+                        <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Position" [value]="itemFromInvReq.position" >
+                      </div>
+                      <div class="col-sm-2">
+                        <label>כמות</label>
+                        <input [attr.data-lineid]="i" type="number" class="form-control" placeholder="Amount" min="0" value="0">
+                      </div>
+                      <!-- if taking out stock from wh -->
+                      <div class="col-sm-3 row" >
+                        <div class="col-sm-5">
+                            <label>מס' בקשת מלאי</label>
+                            <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Order Number" [value]="itemFromInvReq.reqNum" disabled>
+                        </div> 
+                        <div class="col-sm-5">
+                            <label>מס' הזמנה</label>
+                            <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Order Number" [value]="itemFromInvReq.relatedOrder" disabled>                              
+                        </div> 
+                      </div>
+                      <div class="col-sm-1" style="position: relative;">
+                          <button [attr.data-lineid]="i" type="submit" (click)="checkLineValidation(itemFromInvReq)" style="cursor: pointer; position: absolute; bottom: 0px;">
+                              <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
+                          </button>
+                      </div>
+                      <div class="col-sm-1" style="position: relative;">
+                          <button [attr.data-lineid]="i" type="button" (click)="deleteRow(itemFromInvReq,$event)" style="cursor: pointer; position: absolute; bottom: 0px;">
+                              <img src="assets/images/deleteBtn.png"  width="30px" style="cursor: pointer;"/>
+                          </button>
+                      </div>
                   </div>
-                  <div class="col-sm-2">
-                    <label>מדף</label>
-                    <input type="text" class="form-control" placeholder="Position" formControlName="itemPosition">
+              
+                  <div>
+                    <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
+                    <ng-container *ngFor="let shelf of itemFromInvReq.currItemShelfs">
+                      <span [attr.data-lineid]="i" style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; cursor: pointer;" 
+                      (click)="loadShelfToInput(shelf.position, $event)">{{shelf.position}}: {{shelf.amount}} units</span>&nbsp;&nbsp;
+                    </ng-container>
                   </div>
-                  <div class="col-sm-2">
-                    <label>כמות</label>
-                    <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount" min="1">
-                  </div>
-                  <!-- if taking out stock from wh -->
-                  <div class="col-sm-3"  *ngIf="dir!='in'"> 
-                    <label>מספר בקשת מלאי</label>
-                    <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
-                  </div>
-                  <!-- if recieving stock to wh  -->
-                  <div class="col-sm-3" *ngIf="dir=='in'">
-                    <label>הגעת משלוח</label>
-                    <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
-                  </div>
-                  <div class="col-sm-1" style="position: relative;">
-                      <button type="submit" (click)="addItemToList(itemLine.value)" style="cursor: pointer; position: absolute; bottom: 0px;">
-                          <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
-                      </button>
-                  </div>
-              </div>
+              </form>  
 
-              <div>
-                <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
-                <ng-container *ngFor="let shelf of currItemShelfs">
-                  <span style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; cursor: pointer;" 
-                  (click)="loadShelfToInput(shelf.position)">{{shelf.position}}: {{shelf.amount}} units</span>&nbsp;&nbsp;
-                </ng-container>
-              </div>
-  
+          </div>
+        </ng-container>
+
+
+<!--  -->
+
+
               <div class="form-group row">
                   <div class="col-sm-8">
                       <table class='table'>
@@ -148,7 +209,7 @@
                         </table>
                   </div>
               </div>
-          </form>
+          <!-- </form> -->
       </div>
       
     </div>
