@@ -98,7 +98,7 @@
                       <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
                     </div>
                     <div class="col-sm-1" style="position: relative;">
-                        <button type="submit" (click)="checkLineValidation(itemLine.value)" style="cursor: pointer; position: absolute; bottom: 0px;">
+                        <button type="submit" (click)="checkLineValidation(itemLine.value, $event.value)" style="cursor: pointer; position: absolute; bottom: 0px;">
                             <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
                         </button>
                     </div>
@@ -107,7 +107,7 @@
                 <div>
                   <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
                   <ng-container *ngFor="let shelf of currItemShelfs">
-                    <span style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; cursor: pointer;" 
+                    <span style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; " 
                     (click)="loadShelfToInput(shelf.position, $event)">{{shelf.position}}: {{shelf.amount}} units</span>&nbsp;&nbsp;
                   </ng-container>
                 </div>
@@ -131,7 +131,7 @@
                       </div>
                       <div class="col-sm-2">
                         <label>כמות</label>
-                        <input [attr.data-lineid]="i" type="number" class="form-control" placeholder="Amount" min="0" value="0">
+                        <input qnt [attr.data-lineid]="i" name="multiLineQntInput" type="number" class="form-control" placeholder="Amount" min="0" [value]="itemFromInvReq.amount">
                       </div>
                       <!-- if taking out stock from wh -->
                       <div class="col-sm-3 row" >
@@ -145,7 +145,7 @@
                         </div> 
                       </div>
                       <div class="col-sm-1" style="position: relative;">
-                          <button [attr.data-lineid]="i" type="submit" (click)="checkLineValidation(itemFromInvReq)" style="cursor: pointer; position: absolute; bottom: 0px;">
+                          <button [attr.data-lineid]="i" type="submit" (click)="checkLineValidation(itemFromInvReq,i, $event , qnt)" style="cursor: pointer; position: absolute; bottom: 0px;">
                               <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
                           </button>
                       </div>

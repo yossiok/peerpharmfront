@@ -72,6 +72,7 @@ export class StockComponent implements OnInit {
   cmptTypeList:Array<any>;
   cmptCategoryList:Array<any>;
   emptyFilterArr:Boolean=true;
+  currItemShelfs:Array<any>;
   // filterbyNumVal:String;
   // filterByTypeVal:String;
   // filterByCategoryVal:String;
@@ -119,34 +120,64 @@ loadComponentItems(){
   });
 }
   
-updateItemStock(direction){
-  if(this.newItemShelfWH!=""){
-    let ObjToUpdate=[{
-      actionType: direction,
-      amount: this.newItemShelfQnt,
-      demandOrderId: "",
-      item: this.resCmpt.componentN,
-      newShelf: "",
-      shell: this.newItemShelfPosition,
-      whareHouse: this.newItemShelfWH,
-      itemType: this.stockType
-  
-      }];
-      if(direction!="in") ObjToUpdate[0].amount*=(-1);
-      //  READY!
-      this.inventoryService.updateInventoryChangesTest(ObjToUpdate).subscribe(res => {
-        debugger
-        if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
-        console.log("updateInventoryChangesTest res: "+res);
-        if (res.nModified != 0) {
-          this.toastSrv.success("Changes Saved");
-        }else if(res.ok==0){
-          this.toastSrv.error("Error- changes not saved");
-        }
-      });
-  }else{
-    this.toastSrv.error("Choose wharehouse")
+async updateItemStock(direction){
+  //check enough amount for "out"
+  this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase();
+  var shelfExsit=false;
+  let itemShelfCurrAmount =[]
+  await this.currItemShelfs.forEach(x=>{
+    if(x.position==this.newItemShelfPosition)  {
+      itemShelfCurrAmount.push(x.amount);
+      shelfExsit=true;
+    };
+  });
+  if(direction=="in"){
+    await this.inventoryService.checkIfShelfExist(this.newItemShelfPosition,this.newItemShelfWH).subscribe(shelfRes=>{
+      if(shelfRes.ShelfId){
+        shelfExsit=true;
+      }
+    });
+      
   }
+
+  if((direction!="in" && itemShelfCurrAmount.length>0) || direction=="in"){
+    let enoughAmount =(itemShelfCurrAmount[0]>=this.newItemShelfQnt);
+    if((direction!="in" && enoughAmount) || direction=="in"){
+  
+      if(direction!="in") this.newItemShelfQnt*=(-1);
+      if(this.newItemShelfWH!=""){
+        let ObjToUpdate=[{
+          actionType: direction,
+          amount: this.newItemShelfQnt,
+          demandOrderId: "",
+          item: this.resCmpt.componentN,
+          newShelf: "",
+          shell: this.newItemShelfPosition,
+          whareHouse: this.newItemShelfWH,
+          itemType: this.stockType
+          }];
+  
+          //  READY!
+          await this.inventoryService.updateInventoryChangesTest(ObjToUpdate).subscribe(res => {
+            debugger
+            if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
+            console.log("updateInventoryChangesTest res: "+res);
+            if (res.nModified != 0) {
+              this.toastSrv.success("Changes Saved");
+            }else if(res.ok==0){
+              this.toastSrv.error("Error- changes not saved");
+            }
+          });
+      }else{
+        this.toastSrv.error("Choose wharehouse");
+      }
+    }else{
+      this.toastSrv.error("Not enough stock on shelf!\n Item Number "+this.resCmpt.componentN+"\n Amount on shelf: "+itemShelfCurrAmount[0]);
+    }
+  } else{
+    this.toastSrv.error("No such shelf: "+this.resCmpt.position);
+  }
+
 }
 
 
@@ -295,6 +326,29 @@ debugger
   }
 
 
+  searchItemShelfs(){
+  if(this.newItemShelfWH!=''){  
+    this.inventoryService.getShelfListForItemInWhareHouse(this.resCmpt.componentN, this.newItemShelfWH).subscribe(async res => {
+      if(res.length>0){
+        this.currItemShelfs=res;
+        debugger
+      }else{
+        this.currItemShelfs=[];
+        this.currItemShelfs.push("NO SHELFS WITH ITEM # "+this.resCmpt.componentN);
+      }
+    });    
+  }else{
+    this.toastSrv.error("Choose Wharhouse");
+  }
+ }
+
+
+ loadShelfToInput(position, ev){
+    if(!position.includes("NO SHELFS")){
+      this.newItemShelfPosition=position;
+    }
+}
+
 
   openData(cmptNumber) {
     this.openModalHeader="פריט במלאי  "+ cmptNumber;
@@ -368,9 +422,8 @@ debugger
  
     })
 }
-getCmptAmounts(cmptN, cmptId){
-
-  this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
+async getCmptAmounts(cmptN, cmptId){
+  await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
     debugger;
