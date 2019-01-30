@@ -17,7 +17,6 @@
 </div>
 
 <div *ngIf="components.length != 0" style="width:100%;">
-    <!-- -----------------------FILTER COMPONENTS TABLE------------------------------- -->
 
     <div class="container" style="width:100%; padding: 0px" >
         <form style="width:100%;">
@@ -172,10 +171,10 @@
 
 
 
-  <div *ngIf="openModal==true && stockType=='component'" id="myModal2" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
+  <div *ngIf="openModal==true && stockType=='component'" id="myModal2" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
     <!-- Modal content -->
-    <div class="modal-content" style='width:650px' id='modelC'>
+    <div class="modal-content" style='width:700px' id='modelC'>
       <div class="modal-header">
         <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
         <!-- <img src="peerpharm.png"  width='140px' align='left'> -->
@@ -184,8 +183,8 @@
         <!-- <div class='tabDiv' id='dTag' onclick="changeTag(details)" >פרטים</div><div  class='tabDiv' id='cTag' onclick="changeTag(changes)">רשימת תנועות</div> -->
       </div>
       <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
-        <div *ngIf="showItemDetails">
-          <table id='detailsTable'>
+        <div *ngIf="itemmoveBtnTitle">
+          <table id='detailsTable'> 
             <tbody id='detailsTbody'>
               <tr>
                 <th >מספר פריט</th>
@@ -272,10 +271,15 @@
                 <td><textarea rows='4' cols='30' style='width:150px' id='input_remarks' [(ngModel)]="resCmpt.remarks"></textarea><br>
                   <input type="checkbox" name="printed" value="printed" id='checkBox_need_print'> דרושה הדפסה </td>
               </tr>
+              <tr>
+                <th><button (click)="loadComponentItems()">צפיה בפריטים מקושרים</button></th>
+                <td><span *ngFor="let item of resCmpt.componentItems">, {{item.itemNumber}}&nbsp;</span></td>
+              </tr>
             </tbody>
             <tbody id='changesTbody' dir='rtl'>
             </tbody>
           </table>
+          
         </div>
         <div *ngIf="!showItemDetails">
           <h5>Item Movements</h5>
@@ -367,14 +371,27 @@
 
         <!-- ADD NEW ITEMSHELF -->
         <div class="container fr addItemshelf">
-            <h5 class="fr row">כמות חדשה</h5>
-            <br>
+            <h4 style="text-align: right; border-bottom: gray solid;">כמות חדשה</h4>
+            <div class="fr row" style="width: 100%">
+              <label class="col-sm-3 ml-1 fr">בחר מחסן</label>
+              <select class="col-sm-3 ml-1"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" >
+                  <ng-container *ngFor="let wh of whareHouses;" >
+                      <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
+                  </ng-container>            
+              </select>
+  
+              <select class="col-sm-3 ml-1 fr"  *ngIf="stockType=='component'"  [(ngModel)]="newItemShelfWH">
+                  <ng-container *ngFor="let wh of whareHouses;" >   
+                      <option *ngIf="wh.name!='Rosh HaAyin products'" [value]="wh._id">{{wh.name}}</option>
+                  </ng-container>
+              </select>
+            </div>
             <div class="fr row">
               <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
               <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
               <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
               <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
-              <select class="col-sm-3 ml-1"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" >
+              <!-- <select class="col-sm-3 ml-1"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" >
                   <ng-container *ngFor="let wh of whareHouses;" >
                       <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
                   </ng-container>            
@@ -384,13 +401,13 @@
                   <ng-container *ngFor="let wh of whareHouses;" >
                       <option *ngIf="wh.name!='Rosh HaAyin products'" [value]="wh._id">{{wh.name}}</option>
                   </ng-container>
-              </select>
+              </select> -->
             </div>
           </div>        
           <!-- END ADD NEW ITEMSHELF -->
           <br>
           <div class="container fr">
-            <h3 class="fr" width="">הקצאות מלאי</h3>
+            <h3 style="text-align: right ; border-bottom: gray solid;">הקצאות מלאי</h3>
             <br>
             <div class="fr">
                 <label>מספר הזמנה</label>&nbsp;<input [(ngModel)]="newAllocationOrderNum" type="text" placeholder="Order number" />&nbsp;

@@ -113,4 +113,10 @@ export class InventoryService {
   //   return this.http.get(url).pipe(map(reponse => reponse.json()));
 
   // }
+
+  getItemsByCmpt(componentN , componentType){
+    let url = this.baseUrl + "component?componentNumber="+componentN +"&componentType="+componentType;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 }

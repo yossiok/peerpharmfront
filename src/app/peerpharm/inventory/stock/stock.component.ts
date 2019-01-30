@@ -36,6 +36,7 @@ export class StockComponent implements OnInit {
     packageType: '',
     packageWeight: '',
     remarks: '',
+    componentItems:[],
   }
   buttonColor: string = 'white';
   buttonColor2: string = '#B8ECF1';
@@ -65,7 +66,7 @@ export class StockComponent implements OnInit {
   curentWhareHouseId:String;
   curentWhareHouseName:String;
   //adding Stock amounts
-  newItemShelfQnt:Number;
+  newItemShelfQnt:number;
   newItemShelfPosition:String;
   newItemShelfWH:String;
   cmptTypeList:Array<any>;
@@ -108,37 +109,44 @@ getUserAllowedWH(){
   });
 }
 
-
+loadComponentItems(){
+  this.inventoryService.getItemsByCmpt(this.resCmpt.componentN , this.resCmpt.componentType).subscribe(res=>{
+    if(res.length>0){
+      this.resCmpt.componentItems=res;
+    }else
+    this.resCmpt.componentItems=[]
+    debugger
+  });
+}
   
 updateItemStock(direction){
-
-  console.log(this.resCmpt.componentN)
-  debugger
-  let ObjToUpdate=[{
-    actionType: direction,
-    amount: this.newItemShelfQnt,
-    demandOrderId: "",
-    item: this.resCmpt.componentN,
-    newShelf: "",
-    shell: this.newItemShelfPosition,
-    whareHouse: this.newItemShelfWH,
-    itemType: this.stockType
-
-    }];
-     
-    //  READY!
-    this.inventoryService.updateInventoryChanges(ObjToUpdate).subscribe(res => {
-      debugger
-      if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
-      console.log("updateInventoryChanges res: "+res);
-      if (res.nModified != 0) {
-        this.toastSrv.success("Changes Saved");
-      }else if(res.ok==0){
-        this.toastSrv.error("Changes Saved");
-      }
-    });
-    ////////////////////////////
-
+  if(this.newItemShelfWH!=""){
+    let ObjToUpdate=[{
+      actionType: direction,
+      amount: this.newItemShelfQnt,
+      demandOrderId: "",
+      item: this.resCmpt.componentN,
+      newShelf: "",
+      shell: this.newItemShelfPosition,
+      whareHouse: this.newItemShelfWH,
+      itemType: this.stockType
+  
+      }];
+      if(direction!="in") ObjToUpdate[0].amount*=(-1);
+      //  READY!
+      this.inventoryService.updateInventoryChangesTest(ObjToUpdate).subscribe(res => {
+        debugger
+        if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
+        console.log("updateInventoryChangesTest res: "+res);
+        if (res.nModified != 0) {
+          this.toastSrv.success("Changes Saved");
+        }else if(res.ok==0){
+          this.toastSrv.error("Error- changes not saved");
+        }
+      });
+  }else{
+    this.toastSrv.error("Choose wharehouse")
+  }
 }
 
 

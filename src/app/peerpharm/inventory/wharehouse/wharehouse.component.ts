@@ -19,8 +19,8 @@ newReqNumber:number;
 inventoryReqForm: FormGroup;
 itemLine: FormGroup;
 inventoryUpdateList:Array<any>=[];// to show added items to request
-itemNumInput:String='';
-itemAmount:Number;
+itemNumber:String='';
+amount:Number;
 relatedOrder:String='';
 today:Date=new Date;
 
@@ -52,9 +52,9 @@ WhMngNavBtnColor:String ="";
 
 // new ----------------------
     this.itemLine = fb.group({
-      itemNumInput: ['', Validators.required],
-      itemAmount: [0, Validators.required],
-      itemPosition: ['', Validators.required],
+      itemNumber: ['', Validators.required],
+      amount: [0, Validators.required],
+      position: ['', Validators.required],
       relatedOrder: [''],
       arrivalDate: [Date],
     });
@@ -122,7 +122,7 @@ WhMngNavBtnColor:String ="";
       this.StkMngNavBtnColor="#1affa3";
       this.dir = direction;
       // empty unrelevant fields if changing direction
-      if(this.dir!="in")   this.itemLine.controls.arrivalDate.setValue("");
+      if(this.dir!="in")   this.itemLine.controls.arrivalDate.setValue(null);
       if(this.dir=="in")   this.itemLine.controls.relatedOrder.setValue("");
     }
 
@@ -288,8 +288,8 @@ WhMngNavBtnColor:String ="";
     if(!this.multiInputLines && ev!=""){
       await this.inventoryService.getShelfListForItemInWhareHouse(ev.target.value, this.curentWhareHouseId).subscribe(async res => {
         if(res.length>0){
-          debugger
           this.currItemShelfs=res;
+          debugger
         }else{
           this.currItemShelfs=[];
           this.currItemShelfs.push("NO SHELFS WITH ITEM # "+ev.target.value);
@@ -308,8 +308,8 @@ WhMngNavBtnColor:String ="";
           }
         });
       });
-      debugger
     }
+    debugger
  }
 
 
@@ -317,11 +317,13 @@ WhMngNavBtnColor:String ="";
  loadShelfToInput(position, ev){
   if(!this.multiInputLines){
     if(!position.includes("NO SHELFS")){
-      this.itemLine.controls.itemPosition.setValue(position);
+      this.itemLine.controls.position.setValue(position);
     }  
   }else if(this.multiInputLines){
     this.multiLinesArr.forEach((x, index)=> {
-      if(index==ev.target.dataset.lineid)  x.position=position;
+      if(!position.includes("NO SHELFS")){
+        if(index==ev.target.dataset.lineid)  x.position=position;
+      }
     });
 
   }  
@@ -354,11 +356,30 @@ WhMngNavBtnColor:String ="";
 
 
 
+deleteLine(itemFromInvReq,index,ev){
+  this.multiLinesArr.splice(index, 1);
+  if(this.multiLinesArr.length==0) this.multiInputLines=false;
 
+}
 
-  deleteRow(itemLine,ev){
-    ev.target;
+  deleteRow(index){
+    this.inventoryUpdateList.splice(index, 1);
   }
+  cleanList(){
+    let cleanConfirm=confirm("מחיקת כל הפריטים מהרשימה");
+    debugger
+    if(cleanConfirm) this.inventoryUpdateList=[];
+  }
+  sendList(){
+    let ObjToUpdate;
+    let sendConfirm=confirm("עדכון שינויים במלאי");
+    if(sendConfirm) {
+      this.inventoryService.updateInventoryChangesTest(ObjToUpdate).subscribe(res => {})
+
+      this.inventoryUpdateList
+    }
+  }
+
 
   // currentDate() {
   //   const currentDate = new Date();
@@ -366,34 +387,40 @@ WhMngNavBtnColor:String ="";
   // }
 
   async checkLineValidation(itemLine){
-    let itemPosition=itemLine.itemPosition.toUpperCase();
-    if(itemLine.itemNumInput!=""){
+    var currItemShelfs=this.currItemShelfs;
+    if(this.multiInputLines){
+          currItemShelfs=itemLine.currItemShelfs;
+    }
+    let position=itemLine.position.toUpperCase();
+    if(itemLine.itemNumber!=""){
       //VALID AMOUT
-      if(parseInt(itemLine.itemAmount)!=NaN && itemLine.itemAmount!=0 ){
-        await this.inventoryService.getCmptByNumber(this.itemLine.controls.itemNumInput.value).subscribe(async itemRes => {
+      if(parseInt(itemLine.amount)!=NaN && itemLine.amount!=0 ){
+        await this.inventoryService.getCmptByNumber(itemLine.itemNumber).subscribe(async itemRes => {
           if(itemRes.length>0){
 
-            this.inventoryService.checkIfShelfExist(itemPosition,this.curentWhareHouseId).subscribe(shelfRes=>{
+            this.inventoryService.checkIfShelfExist(position,this.curentWhareHouseId).subscribe(shelfRes=>{
               if(shelfRes.ShelfId){
                 //next 2 lines for dir!=in
-                let itemShelfCurrAmount =this.currItemShelfs.filter(x=>{
+
+                let itemShelfCurrAmount =[]
+                currItemShelfs.forEach(x=>{
                   if(x.shell_id_in_whareHouse==shelfRes.ShelfId){
-                    return x.amount;
-                  }
+                    itemShelfCurrAmount.push(x.amount);
+                  }   
                 });
-                let enoughAmount =(itemShelfCurrAmount>=itemLine.itemAmount);
-                if((this.dir!=="in" && enoughAmount) || this.dir=="in"){
-                  this.addObjToList(itemLine,itemRes,shelfRes).then(result => {
-                  });
+                let enoughAmount =(itemShelfCurrAmount[0]>=itemLine.amount);
+                if((this.dir!="in" && enoughAmount) || this.dir=="in"){
+                  if(this.dir!="in") itemLine.amount*=(-1);
+                  this.addObjToList(itemLine,itemRes[0],shelfRes);
                 }else{
-                  this.toastSrv.error("Not enough stock on shelf!\n Item Number "+itemLine.itemNumInput+"\n Amount on shelf: "+shelfRes[0].amount);
+                  this.toastSrv.error("Not enough stock on shelf!\n Item Number "+itemLine.itemNumber+"\n Amount on shelf: "+shelfRes[0].amount);
                 }
               }else{
-                this.toastSrv.error("No Such Shelf: "+itemPosition);
+                this.toastSrv.error("No Such Shelf: "+position);
               }  
             });
           }else{
-            this.toastSrv.error("Item Number "+this.itemLine.controls.itemNumInput.value +" Not in Stock");
+            this.toastSrv.error("Item Number "+this.itemLine.controls.itemNumber.value +" Not in Stock");
           }
         });
       }else{
@@ -408,23 +435,26 @@ WhMngNavBtnColor:String ="";
 
 
 addObjToList(itemLine,itemRes,shelfRes){
-  return new Promise(function (resolve, reject) {
-    debugger
-    if(this.itemLine){
-      let obj={
-        amount: Number,
-        item: String,
-        shell_id_in_whareHouse: String,
-        position:String,
-        inventoryReqNum:String,//INVENTORY RERQUEST ID  
-        arrivingDate:Date, // for components stock
-        expirationDate:Date, // for products stock
-        productionDate:Date, // for products stock
-        barcode:String,
-        itemType:String  
-     }
-    }
-  });
+  if(itemLine.reqNum) debugger;
+  let obj={
+    amount: itemLine.amount,
+    item: itemLine.itemNumber,
+    itemName: itemRes.componentName,
+    shell_id_in_whareHouse: shelfRes.ShelfId,
+    position:shelfRes.position,
+    inventoryReqNum:"",//INVENTORY RERQUEST ID  
+    arrivalDate:null, // for components stock
+    expirationDate:null, // for products stock
+    productionDate:null, // for products stock
+    barcode:"",
+    itemType:itemRes.itemType,
+    relatedOrder:itemLine.relatedOrder,  
+ }
+ if(itemLine.reqNum) obj.inventoryReqNum=itemLine.reqNum;
+ if(typeof(itemLine.arrivalDate)=='string') obj.arrivalDate=itemLine.arrivalDate;
+ if(itemRes.itemType=="product") {obj.expirationDate=itemRes.expirationDate ;obj.productionDate=itemRes.productionDate };
+ this.inventoryUpdateList.push(obj);
+
 }
 
 

@@ -68,14 +68,7 @@
 
     <!-- STOCK MANGEMENT -->
     <div *ngIf="dir!='' && dir!='managment'" >
-      <div class="ShouldBeNav">
-          <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp;
-          <button class="btn btn-warning" (click)="resetForm()">Reset / אפס</button>&nbsp;&nbsp;
-          <button class="btn btn-info" (click)="getFormData()">Submit / שלח שינויים <i class="ti-check m-l-10" ></i>
-          </button>    
-      </div>
 
-      <br>
 
       <div class="container">
         <ng-container *ngIf="!multiInputLines">
@@ -84,15 +77,15 @@
     
                     <div class="col-sm-2">
                       <label>מספר פריט</label>
-                      <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumInput" (blur)="searchItemShelfs($event)">
+                      <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumber" (blur)="searchItemShelfs($event)">
                     </div>
                     <div class="col-sm-2">
                       <label>מדף</label>
-                      <input type="text" class="form-control" placeholder="Position" formControlName="itemPosition">
+                      <input type="text" class="form-control" placeholder="Position" formControlName="position">
                     </div>
                     <div class="col-sm-2">
                       <label>כמות</label>
-                      <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount" min="0">
+                      <input type="number" class="form-control" placeholder="Amount" formControlName="amount" min="0">
                     </div>
                     <!-- if taking out stock from wh -->
                     <div class="col-sm-3"  *ngIf="dir!='in'"> 
@@ -144,7 +137,7 @@
                       <div class="col-sm-3 row" >
                         <div class="col-sm-5">
                             <label>מס' בקשת מלאי</label>
-                            <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Order Number" [value]="itemFromInvReq.reqNum" disabled>
+                            <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Request Number" [value]="itemFromInvReq.reqNum" disabled>
                         </div> 
                         <div class="col-sm-5">
                             <label>מס' הזמנה</label>
@@ -157,7 +150,7 @@
                           </button>
                       </div>
                       <div class="col-sm-1" style="position: relative;">
-                          <button [attr.data-lineid]="i" type="button" (click)="deleteRow(itemFromInvReq,$event)" style="cursor: pointer; position: absolute; bottom: 0px;">
+                          <button [attr.data-lineid]="i" type="button" (click)="deleteLine(itemFromInvReq,i,$event)" style="cursor: pointer; position: absolute; bottom: 0px;">
                               <img src="assets/images/deleteBtn.png"  width="30px" style="cursor: pointer;"/>
                           </button>
                       </div>
@@ -177,7 +170,14 @@
 
 
 <!--  -->
+              <div class="ShouldBeNav">
+                <!-- <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp; -->
+                <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
+                <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i class="ti-check m-l-10" ></i>
+                </button>    
+              </div>
 
+              <br>
 
               <div class="form-group row">
                   <div class="col-sm-8">
@@ -194,16 +194,16 @@
                               <th></th>
                             </tr>
                           </thead>
-                          <ng-container *ngFor="let reqItem of reqList; let i =index">
+                          <ng-container *ngFor="let reqItem of inventoryUpdateList; let i =index">
                             <tr>
                               <td>{{i+1}}</td>
-                              <td>{{reqItem.itemNumber}}</td>
+                              <td>{{reqItem.item}}</td>
                               <td>{{reqItem.itemName}}</td>
-                              <td>reqItem.position</td>
+                              <td>{{reqItem.position}}</td>
                               <td>{{reqItem.amount}}</td>
                               <td *ngIf="dir!='in'">{{reqItem.relatedOrder}}</td>
                               <td *ngIf="dir=='in'">{{reqItem.arrivalDate}}</td>
-                              <td><img src="assets/images/delete.png" (click)="deleteRow(reqItem.itemNumber,reqItem.amount,reqItem.relatedOrder)"width="30px" style="cursor: pointer;"/></td>
+                              <td><img src="assets/images/delete.png" (click)="deleteRow(i)"width="30px" style="cursor: pointer;"/></td>
                             </tr>
                           </ng-container>
                         </table>
