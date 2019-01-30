@@ -131,15 +131,15 @@
                       </div>
                       <div class="col-sm-2">
                         <label>כמות</label>
-                        <input qnt [attr.data-lineid]="i" name="multiLineQntInput" type="number" class="form-control" placeholder="Amount" min="0" [value]="itemFromInvReq.amount">
+                        <input #lineqnt{{i}} [attr.data-lineid]="i" name="multiLineQntInput" type="number" class="form-control" placeholder="Amount" min="0" [(ngModel)]="itemFromInvReq.amount">
                       </div>
                       <!-- if taking out stock from wh -->
-                      <div class="col-sm-3 row" >
-                        <div class="col-sm-5">
+                      <div class="col-sm-4 row" >
+                        <div class="col-sm-6">
                             <label>מס' בקשת מלאי</label>
                             <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Request Number" [value]="itemFromInvReq.reqNum" disabled>
                         </div> 
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
                             <label>מס' הזמנה</label>
                             <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Order Number" [value]="itemFromInvReq.relatedOrder" disabled>                              
                         </div> 
@@ -169,7 +169,7 @@
         </ng-container>
 
 
-<!--  -->
+<!--  -->     <br>
               <div class="ShouldBeNav">
                 <!-- <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp; -->
                 <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
@@ -207,6 +207,9 @@
                             </tr>
                           </ng-container>
                         </table>
+                  </div>
+                  <div  *ngIf="loadingToTable" class="col-sm-3">
+                      <img  style="width:60px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
                   </div>
               </div>
           <!-- </form> -->

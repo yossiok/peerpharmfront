@@ -30,7 +30,7 @@ multiLinesArr:Array<any>;
 //  -------------------------
 StkMngNavBtnColor:String ="#1affa3";
 WhMngNavBtnColor:String ="";
-currLineQnt:Number=0;
+
 
   @ViewChild('container')
   @ViewChild('lineqnt')
@@ -50,6 +50,7 @@ currLineQnt:Number=0;
   response = { color: '', body: '' }
   i: Integer = 0;
   currTab: string = '';
+  loadingToTable:boolean=false;
   constructor(private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService,private toastSrv: ToastrService, ) { 
 
 // new ----------------------
@@ -283,6 +284,18 @@ currLineQnt:Number=0;
   //   });
   // }
 
+
+
+
+
+
+
+
+
+
+
+
+
 // ********************************************************************************************************************
 // NEW - insted of all the rendering
 // ********************************************************************************************************************
@@ -346,6 +359,9 @@ currLineQnt:Number=0;
     this.dir = "production";  
     await arrSent.forEach(i=>{
       // i.currInpQnt=0;
+      i.position='';  
+      i.requsetedQnt=i.amount;
+      i.amount=0;
       i.currItemShelfs=[];
       i.currItemShelfs.push({position:""});
     });
@@ -380,43 +396,33 @@ deleteLine(itemFromInvReq,index,ev){
   async sendList(){
     let ObjToUpdate;
     let sendConfirm=confirm("עדכון שינויים במלאי");
-    if(sendConfirm) {
+    if(sendConfirm && this.inventoryUpdateList.length>0) {
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList).subscribe(res => {
+        // res = [itemNumber,itemNumber,itemNumber...]
+        if(res.length>0){ 
+          this.toastSrv.success("שינויים בוצעו בהצלחה");        }
         debugger
       });
     }
   }
 
-
+  getItemLineQnt(i,ev){
+    this.multiLinesArr[i].amount=ev.target.value;
+    debugger
+  }
   // currentDate() {
   //   const currentDate = new Date();
   //   return currentDate.toISOString().substring(0,10);
   // }
 
   async checkLineValidation(itemLine,index,ev:any, lineqnt){
-    this.currLineQnt;
-    var buttonEvent=ev;
-    var buttonEventParent=ev.parentNode;
+    this.loadingToTable=true;
     var position;
     var currItemShelfs;
-
-    
     
     // multiLineQntInput
-// I STOPED HERE
     if(this.multiInputLines){
       currItemShelfs=itemLine.currItemShelfs;
-      // position=itemLine.position.toUpperCase();
-      let test=$( "form input[name='multiLineQntInput']" );
-      var currQnt;
-      test.map((index,x) => {
-        if(index==buttonEvent.currentTarget.dataset.lineid){
-          debugger
-          currItemShelfs
-          itemLine.amount=x.nodeValue;
-          return x
-        }
-      });
     }else{
       currItemShelfs=this.currItemShelfs;
       // position=itemLine.controls.position.value.toUpperCase();
@@ -490,7 +496,7 @@ addObjToList(itemLine,itemRes,shelfRes){
  if(typeof(itemLine.arrivalDate)=='string') obj.arrivalDate=itemLine.arrivalDate;
  if(itemRes.itemType=="product") {obj.expirationDate=itemRes.expirationDate ;obj.productionDate=itemRes.productionDate };
  this.inventoryUpdateList.push(obj);
-
+ this.loadingToTable=false;
 }
 
 
