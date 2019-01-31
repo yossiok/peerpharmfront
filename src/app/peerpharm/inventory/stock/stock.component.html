@@ -1,3 +1,6 @@
+
+
+
 <!-- {{openModal}} -->
 <br>
 
@@ -71,7 +74,7 @@
           <th style="padding:5px"><b>כמות מוקצת</b></th>
           <th style="padding:5px"><b>תמונה</b></th>
           <th style="padding:5px"><b>הזמנת רכש</b></th>
-          <th style="padding:5px"><b>כמות להזמנת רכש</b></th>
+          <th style="padding:5px" *ngIf="stockAdmin"><b>כמות להזמנת רכש</b></th>
           <th ></th>
         </tr>
   
@@ -92,7 +95,7 @@
           </td>
           <td><img [src]=component.img style='width:50px'></td>
           <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
-          <td><div>
+          <td *ngIf="stockAdmin"><div>
             <input #procurmentInput type="number" (keyup)="inputProcurment($event)" /><span> <button class="btn btn-success"
               (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span>
             
@@ -199,6 +202,9 @@
                 <td align='right'><input type='number' id="input_minimumStock" [(ngModel)]="resCmpt.minimumStock"></td>
               </tr>
               <tr>
+                <!-- <th >בפועל ml כמות</th>
+                <td><input type='number' [(ngModel)]="resCmpt.actualMlCapacity" id="input_actualMlCapacity"></td> -->
+
                 <th>סוג</th>
                 <td>
                   <select id='input_componentType'>
@@ -248,6 +254,8 @@
               <tr>
                 <th>קטגוריה</th>
                 <td><input type='text' id="input_componentCategory" [(ngModel)]="resCmpt.componentCategory"></td>
+                <th >בפועל ml כמות</th>
+                <td><input type='number' [(ngModel)]="resCmpt.actualMlCapacity" id="input_actualMlCapacity"></td>
               </tr>
               <tr>
                 <th>אספקה</th>
@@ -272,12 +280,14 @@
                   <input type="checkbox" name="printed" value="printed" id='checkBox_need_print'> דרושה הדפסה </td>
               </tr>
               <tr>
+                <br>
                 <th><button (click)="loadComponentItems()">צפיה בפריטים מקושרים</button></th>
                 <td><span *ngFor="let item of resCmpt.componentItems">, {{item.itemNumber}}&nbsp;</span></td>
+
               </tr>
             </tbody>
-            <tbody id='changesTbody' dir='rtl'>
-            </tbody>
+            <!-- <tbody id='changesTbody' dir='rtl'>
+            </tbody> -->
           </table>
           
         </div>
@@ -331,9 +341,6 @@
 
 
 
-
-
-
   <div *ngIf="openAmountsModal==true" id="myModal3" class="modal3" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
     <!-- Modal content -->
@@ -370,39 +377,40 @@
         </div>
 
         <!-- ADD NEW ITEMSHELF -->
-        <div class="container fr addItemshelf">
-            <h4 style="text-align: right; border-bottom: gray solid;">כמות חדשה</h4>
-            <div class="fr row justify-content-end" style="width: 100%">
-              <label class="col-sm-3 ml-1 fr">בחר מחסן</label>
+        <div class="container fr addItemshelf" >
+            <h4 style="text-align: right; border-bottom: gray solid;">שינוי כמויות</h4>
 
+            <div class="fr row justify-content-end">
+              <label class="col-sm-3 ml-1 fr">בחר מחסן</label>
               <select class="col-sm-3 ml-1"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
                   <ng-container *ngFor="let wh of whareHouses;" >
                       <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
                   </ng-container>            
               </select>
-
               <select class="col-sm-3 ml-1 fr"  *ngIf="stockType=='component'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
                   <ng-container *ngFor="let wh of whareHouses;" >   
                       <option *ngIf="wh.name!='Rosh HaAyin products'" [value]="wh._id">{{wh.name}}</option>
                   </ng-container>
               </select>
             </div>
+
             <div class="fr row justify-content-end">
-              <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
-              <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
-              <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
-              <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
-              <!-- <select class="col-sm-3 ml-1"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" >
-                  <ng-container *ngFor="let wh of whareHouses;" >
-                      <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
-                  </ng-container>            
-              </select>
-  
-              <select class="col-sm-3 ml-1"  *ngIf="stockType=='component'"  [(ngModel)]="newItemShelfWH">
-                  <ng-container *ngFor="let wh of whareHouses;" >
-                      <option *ngIf="wh.name!='Rosh HaAyin products'" [value]="wh._id">{{wh.name}}</option>
-                  </ng-container>
-              </select> -->
+              <h5>העברת סחורה למדף אחר</h5>
+              <div class="fr row justify-content-end">
+                  <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStockShelfChange('shelfChange')">בצע העברה</button>
+                  <!-- <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button> -->
+                  <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
+                  <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
+              </div>
+            </div>
+            <div class="fr row justify-content-end">
+              <h5>הוצאת/קבלת סחורה</h5>
+              <div class="fr row justify-content-end">
+                  <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
+                  <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
+                  <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
+                  <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">    
+              </div>
             </div>
             <div class="fr row justify-content-end">
               <div class="col-sm-12">

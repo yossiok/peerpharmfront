@@ -54,9 +54,9 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell/updateMulti";
     return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
   }
-  updateInventoryChangesTest(qtyObj){
+  updateInventoryChangesTest(qtyObj,stockType){
     var dataTosend={dataArr: qtyObj};
-    let url = this.baseUrl + "itemShell/updateMultiNew";
+    let url = this.baseUrl + "itemShell/updateMultiFinal?stockType="+stockType;
     return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
   }
 

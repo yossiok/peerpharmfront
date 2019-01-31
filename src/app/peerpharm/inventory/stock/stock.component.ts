@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { DEC } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
+import { toDate } from '@angular/common/src/i18n/format_date';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class StockComponent implements OnInit {
     packageWeight: '',
     remarks: '',
     componentItems:[],
+    input_actualMlCapacity:0,
   }
   buttonColor: string = 'white';
   buttonColor2: string = '#B8ECF1';
@@ -73,6 +75,7 @@ export class StockComponent implements OnInit {
   cmptCategoryList:Array<any>;
   emptyFilterArr:Boolean=true;
   currItemShelfs:Array<any>;
+  stockAdmin:Boolean=false;
   // filterbyNumVal:String;
   // filterByTypeVal:String;
   // filterByCategoryVal:String;
@@ -101,10 +104,14 @@ getUserAllowedWH(){
           displayAllowedWH.push(wh);
         }
       }
+      if (this.authService.loggedInUser.authorization.includes("stockAdmin")){
+        this.stockAdmin=true;
+        debugger
+      }
       this.whareHouses = displayAllowedWH;
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
-      debugger
+      
     console.log(res);
     }
   });
@@ -116,77 +123,84 @@ loadComponentItems(){
       this.resCmpt.componentItems=res;
     }else
     this.resCmpt.componentItems=[]
-    debugger
+    
   });
 }
-  
+
+
+async updateItemStockShelfChange(direction){}
+
 async updateItemStock(direction){
   //check enough amount for "out"
   this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase();
   var shelfExsit=false;
-  let itemShelfCurrAmount =[]
+  let itemShelfCurrAmounts =[]
   await this.currItemShelfs.forEach(x=>{
     if(x.position==this.newItemShelfPosition)  {
-      itemShelfCurrAmount.push(x.amount);
+      itemShelfCurrAmounts.push(x.amount);
       shelfExsit=true;
     };
   });
-  if(direction=="in"){
-    await this.inventoryService.checkIfShelfExist(this.newItemShelfPosition,this.newItemShelfWH).subscribe(shelfRes=>{
+    await this.inventoryService.checkIfShelfExist(this.newItemShelfPosition,this.newItemShelfWH).subscribe( async shelfRes=>{
+      
       if(shelfRes.ShelfId){
         shelfExsit=true;
-      }
+        if((direction!="in" && itemShelfCurrAmounts.length>0) || direction=="in"){
+          let enoughAmount =(itemShelfCurrAmounts[0]>=this.newItemShelfQnt);
+          if((direction!="in" && enoughAmount) || direction=="in"){
+        
+            if(direction!="in") this.newItemShelfQnt*=(-1);
+      
+            if(this.newItemShelfWH!=""){
+              let ObjToUpdate=[{
+                amount: this.newItemShelfQnt,
+                item: this.resCmpt.componentN,
+                shell_id_in_whareHouse:shelfRes.ShelfId,
+                position:this.newItemShelfPosition,
+                arrivalDate:null, // only for "in"
+                
+                actionType: direction,
+                demandOrderId: "",
+                newShelf: "",
+                shell: this.newItemShelfPosition,
+                whareHouse: this.newItemShelfWH,
+                itemType: this.stockType
+                }];
+                if(direction="in") ObjToUpdate[0].arrivalDate= new Date();
+        
+                //  READY!
+                await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
+                  
+                  if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
+                  console.log("updateInventoryChangesTest res: "+res);
+                  if (res.nModified != 0) {
+                    this.toastSrv.success("Changes Saved");
+                  }else if(res.ok==0){
+                    this.toastSrv.error("Error- changes not saved");
+                  }
+                });
+            }else{
+              this.toastSrv.error("Choose wharehouse");
+            }
+          }else{
+            this.toastSrv.error("Not enough stock on shelf!\n Item Number "+this.resCmpt.componentN+"\n Amount on shelf: "+itemShelfCurrAmounts[0]);
+          }
+        }
+      }else{
+        this.toastSrv.error("No Such Shelf: "+this.newItemShelfPosition);
+      } 
     });
       
   }
 
-  if((direction!="in" && itemShelfCurrAmount.length>0) || direction=="in"){
-    let enoughAmount =(itemShelfCurrAmount[0]>=this.newItemShelfQnt);
-    if((direction!="in" && enoughAmount) || direction=="in"){
-  
-      if(direction!="in") this.newItemShelfQnt*=(-1);
-      if(this.newItemShelfWH!=""){
-        let ObjToUpdate=[{
-          actionType: direction,
-          amount: this.newItemShelfQnt,
-          demandOrderId: "",
-          item: this.resCmpt.componentN,
-          newShelf: "",
-          shell: this.newItemShelfPosition,
-          whareHouse: this.newItemShelfWH,
-          itemType: this.stockType
-          }];
-  
-          //  READY!
-          await this.inventoryService.updateInventoryChangesTest(ObjToUpdate).subscribe(res => {
-            debugger
-            if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
-            console.log("updateInventoryChangesTest res: "+res);
-            if (res.nModified != 0) {
-              this.toastSrv.success("Changes Saved");
-            }else if(res.ok==0){
-              this.toastSrv.error("Error- changes not saved");
-            }
-          });
-      }else{
-        this.toastSrv.error("Choose wharehouse");
-      }
-    }else{
-      this.toastSrv.error("Not enough stock on shelf!\n Item Number "+this.resCmpt.componentN+"\n Amount on shelf: "+itemShelfCurrAmount[0]);
-    }
-  } else{
-    this.toastSrv.error("No such shelf: "+this.resCmpt.position);
-  }
-
-}
 
 
   getUserInfo() {
-    debugger
+    
       this.authService.userEventEmitter.subscribe(user => {
       this.user=user.loggedInUser;
     })
-    debugger
+    
     if (!this.authService.loggedInUser) {
       this.authService.userEventEmitter.subscribe(user => {
         if (user.userName) {
@@ -230,11 +244,11 @@ async updateItemStock(direction){
   filterRowsByItemNumber(event){
     let filterVal=event.target.value;
     this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
-    debugger
+    
   }
 
   filterRowsByCmptTypeanCategory(event){
-    debugger
+    
     this.emptyFilterArr=true;
     let type=this.filterByType.nativeElement.value
     let category= this.filterByCategory.nativeElement.value
@@ -257,14 +271,14 @@ async updateItemStock(direction){
     // }
     // let filterVal=event.target.value;
     // this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
-    debugger
+    
   }
 
 
 
   getAllComponents() {
     this.inventoryService.getAllComponents().subscribe(components => {
-debugger
+
       this.componentsUnFiltered=   components.splice(0);
       this.components = components;
       //why are we using set time out and not async await??
@@ -288,9 +302,10 @@ debugger
                 itemAllocSum= itemAllocSum-alloc.supplied;
               });
               cmpt.allocAmount=itemAllocSum;
-              debugger
+              
             }
-
+            
+            if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0; 
 
           });
           this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
@@ -305,7 +320,7 @@ debugger
     });
     console.log(this.components);
 
-    debugger;
+    ;
   }
 
   getAllCmptTypesAndCategories(){
@@ -331,7 +346,7 @@ debugger
     this.inventoryService.getShelfListForItemInWhareHouse(this.resCmpt.componentN, this.newItemShelfWH).subscribe(async res => {
       if(res.length>0){
         this.currItemShelfs=res;
-        debugger
+        
       }else{
         this.currItemShelfs=[];
         this.currItemShelfs.push("NO SHELFS WITH ITEM # "+this.resCmpt.componentN);
@@ -362,7 +377,7 @@ debugger
     this.openAmountsModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
-    this.itemIdForAllocation=cmptId;
+    this.itemIdForAllocation=cmptId;  
   }
 
   newCmpt(newItem){
@@ -384,6 +399,7 @@ debugger
       packageWeight: '',
       remarks: '',
       itemType:'',
+      actualMlCapacity:0,
     }
 
 
@@ -426,11 +442,11 @@ async getCmptAmounts(cmptN, cmptId){
   await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
-    debugger;
+    ;
   });
 
   this.openAmountsData(cmptN, cmptId);
-  debugger;
+  ;
 }
 
 
@@ -439,10 +455,10 @@ async getCmptAmounts(cmptN, cmptId){
 inputProcurment(event: any) { // without type info
   this.procurementInputEvent=event;
   this.procurmentQnt = event.target.value;
-  debugger;
+  ;
 }
 updateProcurment(componentId,componentNum,status){
-  debugger
+  
   if(status=="false"){
     this.procurmentQnt=null;
   }
@@ -484,7 +500,7 @@ addItemStockAllocation(componentNum){
     }
     this.inventoryService.updateComptAllocations(objToUpdate).subscribe(res=>{
       if(res.ok!=0 && res.n!=0){
-        debugger;
+        ;
         console.log("res updateComptAllocations: "+res);
         this.resCmpt.allocations.push(objToUpdate.allocations[0]);
         this.resCmpt.allocAmount+=objToUpdate.allocations[0].amount;
@@ -493,19 +509,19 @@ addItemStockAllocation(componentNum){
   }
   this.newAllocationOrderNum=null;
   this.newAllocationAmount=null;
-  debugger;
+  ;
 }
 edit(index) {
   this.EditRowId = index;
 }
 saveAllocEdit(cmptId,rowIndex) {
   //not in use now
-  debugger;
+  ;
   // "suppliedAlloc": this.suppliedAlloc.nativeElement.value,
 
 }
 editItemStockAllocationSupplied(cmptId,rowIndex){
-  debugger;
+  ;
   let oldAllocationsArr=this.resCmpt.allocations;
   let newSupplied=this.suppliedAlloc.nativeElement.value;
   oldAllocationsArr[this.EditRowId].supplied=newSupplied;
@@ -514,10 +530,10 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
     _id: this.itemIdForAllocation,
     allocations:newAllocationsArr,
     }
-  debugger;
+  ;
   this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
     if(res.ok!=0 && res.n!=0){
-      debugger;
+      ;
       console.log("res updateCompt: "+res);
       this.EditRowId='';
       this.resCmpt.allocations=newAllocationsArr;
@@ -525,10 +541,10 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
         this.resCmpt.allocations.forEach(alloc=>{
           itemAllocSum= itemAllocSum+alloc.amount;
           itemAllocSum= itemAllocSum-alloc.supplied;
-debugger
+
         });
         this.resCmpt.allocAmount=itemAllocSum;
-        debugger
+        
       }
   });
 }
@@ -536,7 +552,7 @@ debugger
 
 
 deleteItemStockAllocation(cmptId,rowIndex) {
-  debugger
+  
 
   if (confirm("מחיקת הקצאה")) {
     let amountDeleted=this.resCmpt.allocations[rowIndex].amount;
@@ -547,7 +563,7 @@ deleteItemStockAllocation(cmptId,rowIndex) {
       }
     this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
       if(res.ok!=0 && res.nModified==1 ){
-        debugger;
+        ;
         console.log("res updateCompt: "+res);
         this.resCmpt.allocAmount-=amountDeleted;
       }
@@ -558,7 +574,7 @@ deleteItemStockAllocation(cmptId,rowIndex) {
 procurementRecommendations(){
   let recommendList=this.components.filter(cmpt=> cmpt.minimumStock < cmpt.amountKasem+cmpt.amountRH);
   this.components=recommendList;
-  debugger;
+  ;
 }
 
   

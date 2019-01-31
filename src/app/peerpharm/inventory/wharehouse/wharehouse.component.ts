@@ -397,11 +397,11 @@ deleteLine(itemFromInvReq,index,ev){
     let ObjToUpdate;
     let sendConfirm=confirm("עדכון שינויים במלאי");
     if(sendConfirm && this.inventoryUpdateList.length>0) {
-      await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList).subscribe(res => {
+      debugger
+      await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList,this.inventoryUpdateList[0].itemType).subscribe(res => {
         // res = [itemNumber,itemNumber,itemNumber...]
         if(res.length>0){ 
           this.toastSrv.success("שינויים בוצעו בהצלחה");        }
-        debugger
       });
     }
   }
@@ -438,18 +438,17 @@ deleteLine(itemFromInvReq,index,ev){
             this.inventoryService.checkIfShelfExist(position,this.curentWhareHouseId).subscribe(async shelfRes=>{
               if(shelfRes.ShelfId){
                 //next 2 lines for dir!=in
-                var itemShelfCurrAmount =[]
+                var itemShelfCurrAmounts =[]
 
                 await currItemShelfs.forEach(x=>{
                   if(x.shell_id_in_whareHouse==shelfRes.ShelfId) {
                     // itemLine.amount=x.amount;
-                    itemShelfCurrAmount.push(x.amount);
+                    itemShelfCurrAmounts.push(x.amount);
                   }
                 });
-                if((this.dir!="in" && itemShelfCurrAmount.length>0) || this.dir=="in"){
-                  let enoughAmount =(itemShelfCurrAmount[0]>=itemLine.amount);
+                if((this.dir!="in" && itemShelfCurrAmounts.length>0) || this.dir=="in"){
+                  let enoughAmount =(itemShelfCurrAmounts[0]>=itemLine.amount);
                   if((this.dir!="in" && enoughAmount) || this.dir=="in"){
-                    if(this.dir!="in") itemLine.amount*=(-1);
                     this.addObjToList(itemLine,itemRes[0],shelfRes);
                   }else{
                     this.toastSrv.error("Not enough stock on shelf!\n Item Number "+itemLine.itemNumber+"\n Amount on shelf: "+shelfRes[0].amount);
@@ -478,6 +477,7 @@ deleteLine(itemFromInvReq,index,ev){
 
 addObjToList(itemLine,itemRes,shelfRes){
   if(itemLine.reqNum) debugger;
+
   let obj={
     amount: itemLine.amount,
     item: itemLine.itemNumber,
@@ -492,6 +492,7 @@ addObjToList(itemLine,itemRes,shelfRes){
     itemType:itemRes.itemType,
     relatedOrder:itemLine.relatedOrder,  
  }
+ if(this.dir!="in") itemLine.amount*=(-1);
  if(itemLine.reqNum) obj.inventoryReqNum=itemLine.reqNum;
  if(typeof(itemLine.arrivalDate)=='string') obj.arrivalDate=itemLine.arrivalDate;
  if(itemRes.itemType=="product") {obj.expirationDate=itemRes.expirationDate ;obj.productionDate=itemRes.productionDate };
