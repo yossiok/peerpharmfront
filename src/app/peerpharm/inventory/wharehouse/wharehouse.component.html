@@ -33,7 +33,7 @@
                       <button (click)="dirSet('stkManagment','out')" class='btn btn-info'>הוצאת סחורה</button>
                     </td>
                     <td>
-                      <button (click)="dirSet('stkManagment','shellChange')" class='btn btn-info'>שינוי מדף</button>
+                      <button (click)="dirSet('stkManagment','shelfChange')" class='btn btn-info'>שינוי מדף</button>
                     </td>
                     <!-- <td>
                       <button (click)="dirSet('stkManagment','savedForOrder')" class='btn btn-info'>הקצאת סחורה</button>
@@ -88,14 +88,22 @@
                       <input type="number" class="form-control" placeholder="Amount" formControlName="amount" min="0">
                     </div>
                     <!-- if taking out stock from wh -->
-                    <div class="col-sm-3"  *ngIf="dir!='in'"> 
-                      <label>מספר בקשת מלאי</label>
+                    <div class="col-sm-3"  *ngIf="dir!='in' && dir!='shelfChange'"> 
+                      <label>מס' הזמנה</label>
                       <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
                     </div>
                     <!-- if recieving stock to wh  -->
-                    <div class="col-sm-3" *ngIf="dir=='in'">
+                    <div class="col-sm-2" *ngIf="dir=='in'">
                       <label>הגעת משלוח</label>
                       <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
+                    </div>
+                    <div class="col-sm-2" *ngIf="dir=='in'">
+                      <label>תעודת משלוח</label>
+                      <input type="text" class="form-control" placeholder="Delivery Note" formControlName="deliveryNote">
+                    </div>
+                    <div class="col-sm-3" *ngIf="dir=='shelfChange'">
+                      <label>מדף חדש</label>
+                      <input type="text" class="form-control" placeholder="New Position" formControlName="destShelf">
                     </div>
                     <div class="col-sm-1" style="position: relative;">
                         <button type="submit" (click)="checkLineValidation(itemLine.value, $event.value)" style="cursor: pointer; position: absolute; bottom: 0px;">
@@ -191,6 +199,7 @@
                               <th>Amount</th>
                               <th *ngIf="dir!='in'">Related Order</th>
                               <th *ngIf="dir=='in'">Arrival Date</th>
+                              <th *ngIf="dir=='in'">Delivery Note</th>
                               <th></th>
                             </tr>
                           </thead>
@@ -203,6 +212,7 @@
                               <td>{{reqItem.amount}}</td>
                               <td *ngIf="dir!='in'">{{reqItem.relatedOrder}}</td>
                               <td *ngIf="dir=='in'">{{reqItem.arrivalDate}}</td>
+                              <td *ngIf="dir=='in'">{{reqItem.deliveryNoteNum}}</td>
                               <td><img src="assets/images/delete.png" (click)="deleteRow(i)"width="30px" style="cursor: pointer;"/></td>
                             </tr>
                           </ng-container>

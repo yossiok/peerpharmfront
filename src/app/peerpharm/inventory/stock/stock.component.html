@@ -380,30 +380,43 @@
         <div class="container fr addItemshelf" >
             <h4 style="text-align: right; border-bottom: gray solid;">שינוי כמויות</h4>
 
-            <div class="fr row justify-content-end">
-              <label class="col-sm-3 ml-1 fr">בחר מחסן</label>
-              <select class="col-sm-3 ml-1"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
+            <div class="fr row justify-content-end" style="width: 100%;">
+              <select class="col-sm-3 ml-1 form-control"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
                   <ng-container *ngFor="let wh of whareHouses;" >
                       <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
                   </ng-container>            
               </select>
-              <select class="col-sm-3 ml-1 fr"  *ngIf="stockType=='component'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
+              <select class="col-sm-3 ml-1 fr form-control"  *ngIf="stockType=='component'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
                   <ng-container *ngFor="let wh of whareHouses;" >   
                       <option *ngIf="wh.name!='Rosh HaAyin products'" [value]="wh._id">{{wh.name}}</option>
                   </ng-container>
               </select>
+              <label class="col-sm-3 ml-1">בחר מחסן</label>
             </div>
 
+
             <div class="fr row justify-content-end">
+                <ul class="nav nav-tabs justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link" style="cursor:pointer;" (click)="dirSet('shelfChange')"  [ngStyle]="{'background-color': sehlfChangeNavBtnColor}">העברת סחורה למדף אחר</a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="cursor:pointer;" (click)="dirSet('')" [ngStyle]="{'background-color': amountChangeNavBtnColor}" >הוצאת/קבלת סחורה</a>
+                      </li>
+                </ul>  
+            </div>
+
+            <div class="fr row justify-content-end" *ngIf="amountChangeDir=='shelfChange'">
               <h5>העברת סחורה למדף אחר</h5>
               <div class="fr row justify-content-end">
                   <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStockShelfChange('shelfChange')">בצע העברה</button>
                   <!-- <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button> -->
-                  <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
+                  <input class="col-sm-2 ml-1" type="text" placeholder="מדף חדש"  [(ngModel)]="destShelf"/>
                   <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
+                  <input class="col-sm-2 ml-1" type="text" placeholder="מדף נוכחי"  [(ngModel)]="newItemShelfPosition"/>
               </div>
             </div>
-            <div class="fr row justify-content-end">
+            <div class="fr row justify-content-end" *ngIf="amountChangeDir!='shelfChange'">
               <h5>הוצאת/קבלת סחורה</h5>
               <div class="fr row justify-content-end">
                   <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
@@ -414,7 +427,7 @@
             </div>
             <div class="fr row justify-content-end">
               <div class="col-sm-12">
-                  <label >הפריט נמצא על המדפים</label>&nbsp;<br>
+                  <label class="fr">הפריט נמצא על המדפים</label>&nbsp;<br>
               </div>
                 <ng-container *ngFor="let itemShelf of currItemShelfs">
                   <div class="col-sm-3" (click)="loadShelfToInput(itemShelf.position, $event)" style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; " >

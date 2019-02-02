@@ -9,6 +9,7 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
 import { DEC } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { toDate } from '@angular/common/src/i18n/format_date';
+import { fstat } from 'fs';
 
 
 @Component({
@@ -76,6 +77,11 @@ export class StockComponent implements OnInit {
   emptyFilterArr:Boolean=true;
   currItemShelfs:Array<any>;
   stockAdmin:Boolean=false;
+  destShelfId:String;
+  destShelf:String;
+  amountChangeDir:String;
+  sehlfChangeNavBtnColor:String="";
+  amountChangeNavBtnColor:String="#1affa3";
   // filterbyNumVal:String;
   // filterByTypeVal:String;
   // filterByCategoryVal:String;
@@ -91,6 +97,8 @@ export class StockComponent implements OnInit {
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService) { }
 
   ngOnInit() {
+    let url = this.route.snapshot;
+    debugger      
     this.components=[]; 
     this.getUserAllowedWH();
     this.getAllComponents();
@@ -128,11 +136,43 @@ loadComponentItems(){
 }
 
 
-async updateItemStockShelfChange(direction){}
+async updateItemStockShelfChange(direction){
+  // this.newItemShelfPosition
+  // this.newItemShelfQnt
+  // this.destShelf
+  await this.inventoryService.checkIfShelfExist(this.destShelf,this.newItemShelfWH).subscribe( async shelfRes=>{
+    if(shelfRes.ShelfId){
+      this.destShelfId=shelfRes.ShelfId;
+      this.updateItemStock(direction);
+    }else{
+      this.toastSrv.error("מדף יעד לא קיים")
+    }
+
+  });
+  /* we need to send two objects with negitive and positive amounts 
+  both with dir="shelfchange",
+ and make sure server side will deal with this dir and update movments 
+
+  */
+}
+
+
+dirSet(direction){
+  if(direction=="shelfChange"){
+    this.amountChangeDir= 'shelfChange';
+    this.sehlfChangeNavBtnColor="#1affa3";
+    this.amountChangeNavBtnColor="";
+  }else{
+    this.amountChangeDir= '';
+    this.sehlfChangeNavBtnColor="";
+    this.amountChangeNavBtnColor="#1affa3";
+  }
+}
+
 
 async updateItemStock(direction){
   //check enough amount for "out"
-  this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase();
+  this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase().trim();
   var shelfExsit=false;
   let itemShelfCurrAmounts =[]
   await this.currItemShelfs.forEach(x=>{
@@ -155,29 +195,54 @@ async updateItemStock(direction){
               let ObjToUpdate=[{
                 amount: this.newItemShelfQnt,
                 item: this.resCmpt.componentN,
+                itemName: this.resCmpt.componentName,
                 shell_id_in_whareHouse:shelfRes.ShelfId,
                 position:this.newItemShelfPosition,
                 arrivalDate:null, // only for "in"
-                
+                expirationDate:null, // for products stock
+                productionDate:null, // for products stock
+                barcode:"",
+                itemType: this.stockType,
+                // relatedOrderNum:itemLine.relatedOrder,
+                // deliveryNoteNum:itemLine.deliveryNote,  
                 actionType: direction,
-                demandOrderId: "",
-                newShelf: "",
-                shell: this.newItemShelfPosition,
-                whareHouse: this.newItemShelfWH,
-                itemType: this.stockType
+                WH_originId: this.curentWhareHouseId,
+                WH_originName : this.curentWhareHouseName,
+                shell_id_in_whareHouse_Dest:this.destShelfId,
+                shell_position_in_whareHouse_Dest:this.destShelf,
+                WH_destId:this.curentWhareHouseId,
+                WH_destName:this.curentWhareHouseName,
+
                 }];
+
                 if(direction="in") ObjToUpdate[0].arrivalDate= new Date();
+               if(direction!="in") ObjToUpdate[0].amount*=(-1);
+              //  if(itemLine.reqNum) ObjToUpdate.inventoryReqNum=itemLine.reqNum;
+              //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
+               if(this.stockType=="product") {
+                //  ObjToUpdate.expirationDate=itemRes.expirationDate ;ObjToUpdate.productionDate=itemRes.productionDate 
+                };
+               if(direction=="shelfChange"){
+                ObjToUpdate[0].shell_id_in_whareHouse_Dest= this.destShelfId;
+                ObjToUpdate[0].shell_position_in_whareHouse_Dest= this.destShelf;
+               }
+
         
                 //  READY!
                 await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
-                  
-                  if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
-                  console.log("updateInventoryChangesTest res: "+res);
-                  if (res.nModified != 0) {
+                  if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
-                  }else if(res.ok==0){
-                    this.toastSrv.error("Error- changes not saved");
+                    this.newItemShelfQnt=null
+                    this.destShelf=""
+                    this.destShelfId=""
                   }
+                  // if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
+                  // console.log("updateInventoryChangesTest res: "+res);
+                  // if (res.nModified != 0) {
+                  //   this.toastSrv.success("Changes Saved");
+                  // }else if(res.ok==0){
+                  //   this.toastSrv.error("Error- changes not saved");
+                  // }
                 });
             }else{
               this.toastSrv.error("Choose wharehouse");
@@ -192,6 +257,12 @@ async updateItemStock(direction){
     });
       
   }
+
+
+
+
+
+
 
 
 
@@ -286,12 +357,12 @@ async updateItemStock(direction){
         
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
-          console.log(res);
+          // console.log(res);
           this.componentsUnFiltered.forEach(cmpt => {
          //  adding amounts to all components
             let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
             if(result!=undefined){
-              console.log(result._id + " , " + cmpt.componentN);
+              // console.log(result._id + " , " + cmpt.componentN);
               cmpt.amount = result.total;
             }
 
@@ -313,13 +384,10 @@ async updateItemStock(direction){
 
         });
 
-
-
       }, 1000);
 
     });
-    console.log(this.components);
-
+    // console.log(this.components);
     ;
   }
 
@@ -378,6 +446,13 @@ async updateItemStock(direction){
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.itemIdForAllocation=cmptId;  
+  }
+  closeAmountsData(){
+    this.openAmountsModal = false;
+    this.itemAmountsData=[];
+    this.newItemShelfPosition='';
+    this.newItemShelfQnt=null;
+    this.destShelf='';
   }
 
   newCmpt(newItem){
