@@ -74,7 +74,7 @@
           <th style="padding:5px"><b>כמות מוקצת</b></th>
           <th style="padding:5px"><b>תמונה</b></th>
           <th style="padding:5px"><b>הזמנת רכש</b></th>
-          <th style="padding:5px" *ngIf="stockAdmin"><b>כמות להזמנת רכש</b></th>
+          <th style="padding:5px" ><b *ngIf="stockAdmin">כמות להזמנת רכש</b></th>
           <th ></th>
         </tr>
   
@@ -89,17 +89,20 @@
           <td style="width:15%;">{{component.componentName}}</td>
           <td>{{component.componentType}}</td>
           <td>{{component.amount}}</td>
-          <td><button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
+          <td>
+            <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button>
+          </td>
           <td>
             <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
           </td>
           <td><img [src]=component.img style='width:50px'></td>
           <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
-          <td *ngIf="stockAdmin"><div>
-            <input #procurmentInput type="number" (keyup)="inputProcurment($event)" /><span> <button class="btn btn-success"
-              (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span>
-            
-          </div></td>
+          <td>
+            <div *ngIf="stockAdmin">
+                <input #procurmentInput type="number" (keyup)="inputProcurment($event)" /><span> <button class="btn btn-success"
+                  (click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span>
+            </div>            
+          </td>
           <td></td>
         </tr>
       </tbody>
