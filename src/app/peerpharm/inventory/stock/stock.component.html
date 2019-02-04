@@ -8,7 +8,10 @@
 <div>
     <button class='btn btn-primary' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
     <button class="btn btn-info" (click)="procurementRecommendations()"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp;
-    <button class="btn btn-info" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>
+    <button class="btn btn-info" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>&nbsp;&nbsp;
+    <!-- <button class="btn btn-info" (click)="getDoubleItemShelfs()"><b>getDoubleItemShelfs</b></button>&nbsp;&nbsp;
+    <button class="btn btn-info" (click)="getDoubleStockItems()"><b>getDoubleStockItems</b></button>&nbsp;&nbsp; -->
+
 </div>
 
 <br>
@@ -370,6 +373,7 @@
                 <tr *ngFor="let shelfAmount of itemAmountsData">
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.ps}}</td>
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.sumShelfAmounts}}</td>
+                  <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td>
                   <!-- <td>{{shelfAmount.wh}}</td> -->
                 </tr> 
 
@@ -426,9 +430,9 @@
                   <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
                   <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
                   <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
-                  <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber">
+                  <!-- <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber"> -->
                   <select *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber">
-                    <option *ngFor="let batch of ItemBatchArr"value=""></option>
+                    <option *ngFor="let batch of ItemBatchArr"value="batch.batchNumber">{{batch.batchNumber}}</option>
                   </select>
 
               </div>

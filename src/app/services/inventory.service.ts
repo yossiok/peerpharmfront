@@ -119,4 +119,18 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+
+
+
+// DATA FIXES
+getDoubleItemShelfs(){
+  let url = this.baseUrl + "component/componentFixes?doubleItemShelfs=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+getDoubleStockItems(){
+  let url = this.baseUrl + "component/componentFixes?doubleStockItems=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
+
 }

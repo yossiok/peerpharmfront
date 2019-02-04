@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { toDate } from '@angular/common/src/i18n/format_date';
 import { fstat } from 'fs';
 import { BatchesService } from 'src/app/services/batches.service';
+import { ExcelService } from 'src/app/services/excel.service';
 
 
 @Component({
@@ -98,7 +99,7 @@ export class StockComponent implements OnInit {
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService) { }
+  constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService) { }
 
   ngOnInit() {
     let url = this.route.snapshot;
@@ -107,6 +108,22 @@ export class StockComponent implements OnInit {
     this.getUserAllowedWH();
     this.getAllComponents();
   }
+//************************************************* */
+  exportAsXLSX(data, title) {
+    this.excelService.exportAsExcelFile(data, title);
+ }
+  getDoubleItemShelfs(){
+    this.inventoryService.getDoubleItemShelfs().subscribe(res=>{
+      this.exportAsXLSX(res, "DoubleItemShelfs");
+    })}
+  getDoubleStockItems(){
+    this.inventoryService.getDoubleStockItems().subscribe(res=>{
+      this.exportAsXLSX(res, "DoubleStockItems");
+
+    })}
+
+//************************************************/
+
 getUserAllowedWH(){
   this.inventoryService.getWhareHousesList().subscribe(res => {
     if(res){
@@ -451,9 +468,12 @@ async updateItemStock(direction){
     //get product (and TBD materials) batchs for select
     //??? this.resCmpt has mkp category
     debugger
-    this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
-      this.ItemBatchArr=data;
-    });
+    if(this.stockType!="components"){
+      this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
+        this.ItemBatchArr=data;
+        debugger
+      });  
+    }
   }
   closeAmountsData(){
     this.openAmountsModal = false;
@@ -523,12 +543,15 @@ async updateItemStock(direction){
 }
 async getCmptAmounts(cmptN, cmptId){
   await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
+
+    debugger
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
-    ;
+
+    this.openAmountsData(cmptN, cmptId);
+
   });
 
-  this.openAmountsData(cmptN, cmptId);
   ;
 }
 
