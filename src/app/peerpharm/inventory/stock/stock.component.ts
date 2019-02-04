@@ -10,6 +10,7 @@ import { DEC } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { toDate } from '@angular/common/src/i18n/format_date';
 import { fstat } from 'fs';
+import { BatchesService } from 'src/app/services/batches.service';
 
 
 @Component({
@@ -70,6 +71,8 @@ export class StockComponent implements OnInit {
   curentWhareHouseName:String;
   //adding Stock amounts
   newItemShelfQnt:number;
+  newItemShelfBatchNumber:number;
+  newItemShelfArrivalDate:number;
   newItemShelfPosition:String;
   newItemShelfWH:String;
   cmptTypeList:Array<any>;
@@ -82,6 +85,7 @@ export class StockComponent implements OnInit {
   amountChangeDir:String;
   sehlfChangeNavBtnColor:String="";
   amountChangeNavBtnColor:String="#1affa3";
+  ItemBatchArr:Array<any>;
   // filterbyNumVal:String;
   // filterByTypeVal:String;
   // filterByCategoryVal:String;
@@ -94,7 +98,7 @@ export class StockComponent implements OnInit {
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService) { }
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService) { }
 
   ngOnInit() {
     let url = this.route.snapshot;
@@ -171,6 +175,7 @@ dirSet(direction){
 
 
 async updateItemStock(direction){
+  
   //check enough amount for "out"
   this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase().trim();
   var shelfExsit=false;
@@ -215,7 +220,11 @@ async updateItemStock(direction){
 
                 }];
 
-                if(direction="in") ObjToUpdate[0].arrivalDate= new Date();
+                if(direction="in") {
+                  //   this.batchService.getAllBatchesByNumber(this.newItemShelfBatchNumber).subscribe(batchExist=>{       
+                  //   });
+                  ObjToUpdate[0].arrivalDate= new Date()
+                };
                if(direction!="in") ObjToUpdate[0].amount*=(-1);
               //  if(itemLine.reqNum) ObjToUpdate.inventoryReqNum=itemLine.reqNum;
               //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
@@ -236,13 +245,6 @@ async updateItemStock(direction){
                     this.destShelf=""
                     this.destShelfId=""
                   }
-                  // if(res.missingShelf){ this.toastSrv.error("Missing Shelf In Wharehouse "); };
-                  // console.log("updateInventoryChangesTest res: "+res);
-                  // if (res.nModified != 0) {
-                  //   this.toastSrv.success("Changes Saved");
-                  // }else if(res.ok==0){
-                  //   this.toastSrv.error("Error- changes not saved");
-                  // }
                 });
             }else{
               this.toastSrv.error("Choose wharehouse");
@@ -446,6 +448,12 @@ async updateItemStock(direction){
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.itemIdForAllocation=cmptId;  
+    //get product (and TBD materials) batchs for select
+    //??? this.resCmpt has mkp category
+    debugger
+    this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
+      this.ItemBatchArr=data;
+    });
   }
   closeAmountsData(){
     this.openAmountsModal = false;
@@ -647,9 +655,10 @@ deleteItemStockAllocation(cmptId,rowIndex) {
 }
 
 procurementRecommendations(){
-  let recommendList=this.components.filter(cmpt=> cmpt.minimumStock < cmpt.amountKasem+cmpt.amountRH);
-  this.components=recommendList;
-  ;
+  if(this.stockType!="product"){
+    let recommendList=this.components.filter(cmpt=> cmpt.minimumStock <= cmpt.amountKasem+cmpt.amountRH);
+    this.components=recommendList;  
+  }
 }
 
   

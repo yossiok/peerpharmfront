@@ -20,7 +20,6 @@
 </div>
 
 <div *ngIf="components.length != 0" style="width:100%;">
-
     <div class="container" style="width:100%; padding: 0px" >
         <form style="width:100%;">
           <div class="row" style="width:100%;">
@@ -50,7 +49,7 @@
     <!-- ------------------------------------------------------ -->
 
 
-  <div class="tableContainer" style="width:100%;">
+  <div class="tableContainer" style="width: 100% ;">
 
     <!-- <input #filterbyNum type="text" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)"> -->
   <br>
@@ -58,7 +57,8 @@
     <div (click)='setType("component", this)' [ngStyle]="{'background-color': buttonColor}" class="navtab" style="cursor:pointer;">Components</div>
     <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" style="cursor:pointer;">Products</div> 
     <!-- <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div> -->
-   
+    <div style="padding-left: 10px;"><b> showing {{components.length}} stock items  </b></div>
+
   
     <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
       <thead class='bg-info text-white'>
@@ -87,7 +87,7 @@
           <td class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
           <td>{{component.componentNS}}</td>
           <td style="width:15%;">{{component.componentName}}</td>
-          <td>{{component.componentType}}</td>
+          <td style="word-break: break-all;">{{component.componentType}}</td>
           <td>{{component.amount}}</td>
           <td>
             <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button>
@@ -425,7 +425,12 @@
                   <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
                   <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
                   <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
-                  <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">    
+                  <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
+                  <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber">
+                  <select *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber">
+                    <option *ngFor="let batch of ItemBatchArr"value=""></option>
+                  </select>
+
               </div>
             </div>
             <div class="fr row justify-content-end">

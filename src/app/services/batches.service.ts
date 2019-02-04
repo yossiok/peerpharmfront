@@ -24,6 +24,16 @@ export class BatchesService {
     let url = this.baseUrl + 'batch/excelExportByDate?batchN='+batchN;
     return this.http.get(url).pipe(map(reponse => reponse.json()));  
   }
+  getAllBatchesByNumber(batchN):Observable<any>{
+    let url = this.baseUrl + 'batch?batchNumber='+batchN;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));  
+  }
+
+  getBatchesByItemNumber(itemNumber):Observable<any>{
+    let url = this.baseUrl + 'batch?itemNumber='+itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));  
+  }
+
 
   deleteBatch(batch) {
     let url = this.baseUrl + "batch/remove";
