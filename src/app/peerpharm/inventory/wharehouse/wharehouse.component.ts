@@ -70,10 +70,10 @@ WhMngNavBtnColor:String ="";
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // let todayStr=moment(this.today).format("YYYY-MM-DD");
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
-    this.inventoryService.getWhareHousesList().subscribe(res => {
+    await this.inventoryService.getWhareHousesList().subscribe( res => {
       let displayAllowedWH = [];
         for (const wh of res) {
           if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
@@ -410,8 +410,10 @@ deleteLine(itemFromInvReq,index,ev){
       debugger
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList,this.inventoryUpdateList[0].itemType).subscribe(res => {
         // res = [itemNumber,itemNumber,itemNumber...]
-        if(res.length=="all updated "){ 
-          this.toastSrv.success("שינויים בוצעו בהצלחה");        }
+        if(res.length=="all updated"){ 
+          this.toastSrv.success("שינויים בוצעו בהצלחה");
+
+        }
       });
     }
   }

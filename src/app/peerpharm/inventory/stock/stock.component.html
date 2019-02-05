@@ -327,8 +327,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="newCbtn" (click)="writeNewComponent()" *ngIf="newItem=='new'">הקם מוצר</button>
-        <!-- <button id="updateDataBtn" >עדכן מידע</button> -->
+        <button class="btn btn-success" id="newCbtn" (click)="writeNewComponent()" *ngIf="newItem=='new'">הקם מוצר</button>
+        <button class="btn btn-success"  id="updateDataBtn" (click)="editStockItemDetails()"  *ngIf="newItem!='new'" >עדכן מידע</button>
       </div>
     </div>
 
@@ -447,7 +447,7 @@
                 <ng-container *ngFor="let itemShelf of currItemShelfs">
                   <div class="col-sm-3" (click)="loadShelfToInput(itemShelf.position, $event)" style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; " >
                     <span>{{itemShelf.position}}: {{itemShelf.amount}} units </span>&nbsp;<br>
-                    <span *ngIf="itemShelf.arrivalDate!='undefined'">arrival date: {{itemShelf.arrivalDate}}</span>&nbsp;<br>
+                    <span *ngIf="itemShelf.arrivalDate!='undefined'">arrival date: {{itemShelf.arrivalDate  | date: 'dd/MM/yyyy' }}</span>&nbsp;<br>
                     <span *ngIf="itemShelf.itemType!='component' && itemShelf.expirationDate!='undefined'">expiration date: {{itemShelf.expirationDate}})</span>&nbsp;      
                   </div>
                 </ng-container>

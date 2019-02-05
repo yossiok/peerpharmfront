@@ -102,11 +102,11 @@ export class StockComponent implements OnInit {
 
   constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     let url = this.route.snapshot;
     debugger      
     this.components=[]; 
-    this.getUserAllowedWH();
+    await this.getUserAllowedWH();
     this.getAllComponents();
   }
 //************************************************* */
@@ -530,6 +530,19 @@ async updateItemStock(direction){
 
   }
 
+  editStockItemDetails(){
+    this.resCmpt;
+    if(confirm("לעדכן פריט?")){
+      this.inventoryService.updateCompt(this.resCmpt).subscribe(res=>{
+        if(res.n!=0){
+          this.toastSrv.success("פריט עודכן בהצלחה");
+        } else{
+          this.toastSrv.error("עדכון פריט נכשל");
+        }
+      });
+    }
+
+  }
 
 
 

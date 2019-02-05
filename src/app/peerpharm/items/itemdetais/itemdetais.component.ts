@@ -382,28 +382,40 @@ export class ItemdetaisComponent implements OnInit {
     })
   }
 
-  writeItemData() {
+  async writeItemData() {
     console.log(this.itemShown);
-debugger
-    if (confirm("Save changes?")){
-      if(this.itemShown.itemNumber!=""){
-        this.itemShown.nameOfupdating = this.user.userName;
-        this.getGoddetData();
-        this.itemShown.updateDate;
-        debugger
-        this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
-          console.log(res)
-          this.toastr.success("Saved", "Changes Saved fot item number: "+this.itemShown.itemNumber);
-          
-        }) ;
-      }else{
-        this.toastr.error("No item number!");
+    if(this.itemShown.itemNumber!=""){
+      if (confirm("Save changes?")){
+        await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes=>{
+          if(itemNumRes.length>0){
+            if (confirm("Item alerady exist!\nDo you want to update item number: "+this.itemShown.itemNumber+" ?")){
+              this.updateItemTree();
+            }
+          }else{
+            if (confirm("Create New item number : "+this.itemShown.itemNumber+" ?")){
+              this.updateItemTree();
+            }
+          }
+        });
       }
-
-
     }
+
+
   }
 
+  updateItemTree(){
+    if(this.itemShown.itemNumber!=""){
+      this.itemShown.nameOfupdating = this.user.userName;
+      this.getGoddetData();
+      // this.itemShown.updateDate;
+      this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
+        console.log(res)
+        this.toastr.success("Saved", "Changes Saved fot item number: "+this.itemShown.itemNumber);
+      }) ;
+    }else{
+      this.toastr.error("No item number!");
+    }
+  }
 
   selectedFiles: FileList;
   currentFileUpload: File;

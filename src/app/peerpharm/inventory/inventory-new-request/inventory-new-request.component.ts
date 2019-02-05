@@ -68,6 +68,8 @@ export class InventoryNewRequestComponent implements OnInit {
   async addNewRequest(form){
     // await this.getNewReqNumber();
     // this.inventoryReqForm.value.reqNum;
+
+    //IN CASE OF MORE THAN ONE USER SENDS REQ AT THE SAME TIME
     this.inventoryReqService.getLastRequsetId().subscribe(res => {
 
       this.newReqNumber=res.reqNum+1;
