@@ -103,6 +103,9 @@ export class StockComponent implements OnInit {
   constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService) { }
 
   async ngOnInit() {
+    this.filterbyNum.nativeElement.value='';
+    // this.filterByType.nativeElement='';
+    // this.filterByCategory.nativeElement='';
     let url = this.route.snapshot;
     debugger      
     this.components=[]; 
@@ -343,18 +346,18 @@ async updateItemStock(direction){
     
   }
 
-  filterRowsByCmptTypeanCategory(event){
-    
+  filterRowsByCmptTypeanCategory(event,filter){
+    this.components= this.componentsUnFiltered;
     this.emptyFilterArr=true;
     let type=this.filterByType.nativeElement.value
     let category= this.filterByCategory.nativeElement.value
     if(type!="" || category!=""){
-      if(category!=""&&type!="" ){
-        this.components=this.components.filter(x=> x.componentType.includes(type) && x.componentType.includes(category) );
+      if(category!="" && type!="" ){
+        this.components=this.components.filter(x=> (x.componentType.includes(type) && x.componentCategory.includes(category)) );
       }else if(category=="" && type!=""){
         this.components=this.components.filter(x=> x.componentType.includes(type));
       }else if(category!="" && type==""){
-        this.components=this.components.filter(x=> x.componentType.includes(category));
+        this.components=this.components.filter(x=> x.componentCategory.includes(category));
       }
     }
     if(this.components.length==0){
@@ -458,12 +461,13 @@ async updateItemStock(direction){
 }
 
 
-  openData(cmptNumber) {
+  async openData(cmptNumber) {
+
     this.openModalHeader="פריט במלאי  "+ cmptNumber;
     this.openModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
-    
+    this.loadComponentItems();
   }
   openAmountsData(cmptNumber, cmptId) {
     this.openModalHeader="כמויות פריט במלאי  "+ cmptNumber;

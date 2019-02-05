@@ -35,14 +35,14 @@
               </div>
               <div *ngIf="stockType=='component'" class="col-sm-3">
                 <label class="fr">סוג רכיב</label>
-                <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event)">
+                <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'type')">
                   <option selected></option>
                   <option *ngFor="let cmptType of cmptTypeList">{{cmptType}}</option>
                 </select>
               </div>
               <div *ngIf="stockType=='component'" class="col-sm-3">
                 <label class="fr">קטגוריה</label>
-                <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event)">
+                <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')">
                   <option selected></option>
                   <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
                 </select>
@@ -289,9 +289,11 @@
                   <input type="checkbox" name="printed" value="printed" id='checkBox_need_print'> דרושה הדפסה </td>
               </tr>
               <tr>
-                <br>
-                <th><button (click)="loadComponentItems()">צפיה בפריטים מקושרים</button></th>
-                <td><span *ngFor="let item of resCmpt.componentItems">, {{item.itemNumber}}&nbsp;</span></td>
+                <!-- <th><button (click)="loadComponentItems()">צפיה בפריטים מקושרים</button></th> -->
+                <th>פריטים מקושרים</th>
+                <td><span *ngFor="let item of resCmpt.componentItems" 
+                  style="border: grey solid; border-style: outset; margin:3px; cursor:pointer; padding: 3px; display:inline-block; "> 
+                  {{item.itemNumber}}&nbsp;</span></td>
 
               </tr>
             </tbody>

@@ -53,7 +53,7 @@
 
     <br>
 
-    <div *ngIf="screen=='stkManagment'" >
+    <div *ngIf="screen=='stkManagment' && editWharehouses" >
         <h5>ניהול סחורה - בחר מחסן</h5>
         <select #wh (change)="setWhareHouse(wh.value)">
           <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>

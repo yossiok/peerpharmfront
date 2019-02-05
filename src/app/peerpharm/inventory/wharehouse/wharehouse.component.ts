@@ -51,6 +51,7 @@ WhMngNavBtnColor:String ="";
   i: Integer = 0;
   currTab: string = '';
   loadingToTable:boolean=false;
+  editWharehouses: Boolean=false;
   constructor(private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService,private toastSrv: ToastrService, ) { 
 
 // new ----------------------
@@ -83,8 +84,12 @@ WhMngNavBtnColor:String ="";
         this.whareHouses = displayAllowedWH;
         this.curentWhareHouseId = displayAllowedWH[0]._id;
         this.curentWhareHouseName = displayAllowedWH[0].name;
-      console.log(res);
-    })
+        
+        if (this.authService.loggedInUser.authorization.includes("system")) {
+          this.editWharehouses=true;
+        }
+
+        })
   }
 
 
@@ -410,9 +415,9 @@ deleteLine(itemFromInvReq,index,ev){
       debugger
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList,this.inventoryUpdateList[0].itemType).subscribe(res => {
         // res = [itemNumber,itemNumber,itemNumber...]
-        if(res.length=="all updated"){ 
+        if(res=="all updated"){ 
           this.toastSrv.success("שינויים בוצעו בהצלחה");
-
+          this.itemLine.reset();
         }
       });
     }
@@ -436,10 +441,10 @@ deleteLine(itemFromInvReq,index,ev){
       currItemShelfs=this.currItemShelfs;
       // position=itemLine.controls.position.value.toUpperCase();
     }
-    position=itemLine.position.toUpperCase().trim();
 
     if(itemLine.itemNumber!=""){
       //VALID AMOUT
+      position=itemLine.position.toUpperCase().trim();
 
       if(parseInt(currItemShelfs[0].amount)!=NaN && currItemShelfs[0].amount!=0 && currItemShelfs[0].amount){
         await this.inventoryService.getCmptByNumber(itemLine.itemNumber).subscribe(async itemRes => {
