@@ -131,6 +131,10 @@ getDoubleStockItems(){
   let url = this.baseUrl + "component/componentFixes?doubleStockItems=yes";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+deleteDoubleStockItemsProducts(){
+  let url = this.baseUrl + "component/componentFixes?deleteDoubleStockItemsProducts=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 
 
 }

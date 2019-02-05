@@ -87,6 +87,7 @@ export class StockComponent implements OnInit {
   sehlfChangeNavBtnColor:String="";
   amountChangeNavBtnColor:String="#1affa3";
   ItemBatchArr:Array<any>;
+  filterVal:String='';
   // filterbyNumVal:String;
   // filterByTypeVal:String;
   // filterByCategoryVal:String;
@@ -121,7 +122,11 @@ export class StockComponent implements OnInit {
       this.exportAsXLSX(res, "DoubleStockItems");
 
     })}
-
+    deleteDoubleStockItemsProducts(){
+      this.inventoryService.deleteDoubleStockItemsProducts().subscribe(res=>{
+        console.log(res);
+    })}
+    
 //************************************************/
 
 getUserAllowedWH(){
@@ -332,8 +337,9 @@ async updateItemStock(direction){
   }
 
   filterRowsByItemNumber(event){
-    let filterVal=event.target.value;
-    this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
+    this.filterVal='';
+    this.filterVal=event.target.value;
+    this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(this.filterVal));
     
   }
 
@@ -542,6 +548,7 @@ async updateItemStock(direction){
     })
 }
 async getCmptAmounts(cmptN, cmptId){
+  debugger
   await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
 
     debugger
