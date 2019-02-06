@@ -72,7 +72,7 @@ export class StockComponent implements OnInit {
   curentWhareHouseName:String;
   //adding Stock amounts
   newItemShelfQnt:number;
-  newItemShelfBatchNumber:number;
+  newItemShelfBatchNumber:string;
   newItemShelfArrivalDate:number;
   newItemShelfPosition:String;
   newItemShelfWH:String;
@@ -172,6 +172,7 @@ async updateItemStockShelfChange(direction){
   await this.inventoryService.checkIfShelfExist(this.destShelf,this.newItemShelfWH).subscribe( async shelfRes=>{
     if(shelfRes.ShelfId){
       this.destShelfId=shelfRes.ShelfId;
+      debugger
       this.updateItemStock(direction);
     }else{
       this.toastSrv.error("מדף יעד לא קיים")
@@ -200,8 +201,8 @@ dirSet(direction){
 
 
 async updateItemStock(direction){
-  
   //check enough amount for "out"
+  debugger
   this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase().trim();
   var shelfExsit=false;
   let itemShelfCurrAmounts =[]
@@ -242,18 +243,24 @@ async updateItemStock(direction){
                 shell_position_in_whareHouse_Dest:this.destShelf,
                 WH_destId:this.curentWhareHouseId,
                 WH_destName:this.curentWhareHouseName,
+                batchNumber:'',
 
                 }];
 
                 if(direction="in") {
-                  //   this.batchService.getAllBatchesByNumber(this.newItemShelfBatchNumber).subscribe(batchExist=>{       
-                  //   });
-                  ObjToUpdate[0].arrivalDate= new Date()
+
+                  ObjToUpdate[0].arrivalDate = new Date()
                 };
                if(direction!="in") ObjToUpdate[0].amount*=(-1);
               //  if(itemLine.reqNum) ObjToUpdate.inventoryReqNum=itemLine.reqNum;
               //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
                if(this.stockType=="product") {
+                 debugger
+                 ObjToUpdate[0].batchNumber=this.newItemShelfBatchNumber;
+                let itemBatch = this.ItemBatchArr.filter( b=> b.batchNumber == this.newItemShelfBatchNumber);
+                let expDate=new Date(itemBatch[0].expration);
+                ObjToUpdate[0].expirationDate = expDate;
+                debugger
                 //  ObjToUpdate.expirationDate=itemRes.expirationDate ;ObjToUpdate.productionDate=itemRes.productionDate 
                 };
                if(direction=="shelfChange"){
@@ -266,9 +273,10 @@ async updateItemStock(direction){
                 await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
                   if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
-                    this.newItemShelfQnt=null
-                    this.destShelf=""
-                    this.destShelfId=""
+                    this.components.forEach(stkItem=> { if(stkItem.componentN == ObjToUpdate[0].item) {stkItem.amount = stkItem.amount + ObjToUpdate[0].amount} });
+                    this.newItemShelfQnt=null;
+                    this.destShelf="";
+                    this.destShelfId="";
                   }
                 });
             }else{
