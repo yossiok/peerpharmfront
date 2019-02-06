@@ -140,6 +140,7 @@ WhMngNavBtnColor:String ="";
         // empty unrelevant fields if changing direction
         if(this.dir!="in")   this.itemLine.controls.arrivalDate.setValue(null);
         if(this.dir=="in")   this.itemLine.controls.relatedOrder.setValue("");
+        if(this.dir=="production")   this.multiInputLines=false;
       }
   
     }
