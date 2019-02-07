@@ -370,7 +370,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   addItemOrder() {
-
+debugger
     // console.log(1 + " , " + this.itemData.qtyKg);
     this.itemData.orderId = this.orderId;
     this.itemData.orderNumber = this.number;
@@ -378,6 +378,9 @@ export class OrderdetailsComponent implements OnInit {
     this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
       
       this.ordersItems.push(item)});
+      //reset new item line after "Add"
+      this.itemData = { itemNumber: '', discription: '', unitMeasure: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
+
   }
 
   setSchedule(item, type) {

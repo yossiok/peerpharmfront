@@ -53,7 +53,8 @@
 
     <br>
 
-    <div *ngIf="screen=='stkManagment' && editWharehouses" >
+    <!-- <div *ngIf="screen=='stkManagment' && editWharehouses" > -->
+    <div *ngIf="screen=='stkManagment' " >
         <h5>ניהול סחורה - בחר מחסן</h5>
         <select #wh (change)="setWhareHouse(wh.value)">
           <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
@@ -115,7 +116,7 @@
                 <div>
                   <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
                   <ng-container *ngFor="let shelf of currItemShelfs">
-                    <span style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; " 
+                    <span    
                     (click)="loadShelfToInput(shelf.position, $event)">{{shelf.position}}: {{shelf.amount}} units</span>&nbsp;&nbsp;
                   </ng-container>
                 </div>
@@ -220,6 +221,8 @@
                   </div>
                   <div  *ngIf="loadingToTable" class="col-sm-3">
                       <img  style="width:60px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+                  </div>
+                  <div  *ngIf="!loadingToTable" class="col-sm-3">
                   </div>
               </div>
           <!-- </form> -->

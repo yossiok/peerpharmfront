@@ -85,8 +85,10 @@ WhMngNavBtnColor:String ="";
         this.curentWhareHouseId = displayAllowedWH[0]._id;
         this.curentWhareHouseName = displayAllowedWH[0].name;
         
-        if (this.authService.loggedInUser.authorization.includes("system")) {
-          this.editWharehouses=true;
+        if (this.authService.loggedInUser.authorization) {
+          if (this.authService.loggedInUser.authorization.includes("system")) {
+            this.editWharehouses=true;
+          }
         }
 
         })
@@ -96,6 +98,7 @@ WhMngNavBtnColor:String ="";
   dirSet(action, direction) {
     let dirChange= confirm("מעבר למסך אחר יאפס את הרשימה")
     if(dirChange){
+      if(direction!="production") this.multiInputLines=false;
       this.inventoryUpdateList=[] //reseting list before direction change
       this.multiLinesArr=[]
       this.currItemShelfs=[]
@@ -140,6 +143,7 @@ WhMngNavBtnColor:String ="";
         // empty unrelevant fields if changing direction
         if(this.dir!="in")   this.itemLine.controls.arrivalDate.setValue(null);
         if(this.dir=="in")   this.itemLine.controls.relatedOrder.setValue("");
+        if(this.dir=="production")   this.multiInputLines=false;
       }
   
     }
@@ -374,9 +378,17 @@ WhMngNavBtnColor:String ="";
     this.dir = "production";  
     await arrSent.forEach(i=>{
       // i.currInpQnt=0;
+      // amount: 500
+      // i.amount=i.amount;
+      // i.qntSupplied=i.qntSupplied
+      // isSelected: true
+      // itemName: "Screw bottle NY 150ml transperent 24/415"
+      // itemNumber: "12185"
+      // qntSupplied: 50
+      // relatedOrder: "1938"
+      // reqNum: 1
       i.position='';  
-      i.requsetedQnt=i.amount;
-      i.amount=0;
+      // i.requsetedQnt=i.amount;
       i.currItemShelfs=[];
       i.currItemShelfs.push({position:""});
     });

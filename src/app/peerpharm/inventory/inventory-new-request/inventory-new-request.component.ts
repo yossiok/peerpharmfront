@@ -32,6 +32,7 @@ export class InventoryNewRequestComponent implements OnInit {
     reqList:[],// itemId,requiredAmount ,suppliedAmount, relatedOrderNum, itemStatus, itemType
     itemsType: "", 
     reqStatus:'',
+    // qntSupplied:0,
   }
 
   constructor(private fb: FormBuilder, private inventoryReqService: InventoryRequestService, private toastSrv: ToastrService) { 
@@ -85,6 +86,7 @@ export class InventoryNewRequestComponent implements OnInit {
           reqList:this.inventoryReqForm.value.reqList,
           itemsType: 'components', 
           reqStatus:'open',
+          // qntSupplied: 0,
         }
         this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
           debugger;
@@ -119,6 +121,7 @@ export class InventoryNewRequestComponent implements OnInit {
             itemName:res[0].componentName,
             amount:reqItemLine.itemAmount,
             relatedOrder:reqItemLine.relatedOrder,
+            qntSupplied:0,
           }
 
           if(reqItemLine.relatedOrder!=""){

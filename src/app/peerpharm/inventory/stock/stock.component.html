@@ -292,7 +292,7 @@
                 <!-- <th><button (click)="loadComponentItems()">צפיה בפריטים מקושרים</button></th> -->
                 <th>פריטים מקושרים</th>
                 <td><span *ngFor="let item of resCmpt.componentItems" 
-                  style="border: grey solid; border-style: outset; margin:3px; cursor:pointer; padding: 3px; display:inline-block; "> 
+                  style="border: grey solid; border-style: outset; margin:3px;  padding: 3px; display:inline-block; "> 
                   {{item.itemNumber}}&nbsp;</span></td>
 
               </tr>
@@ -437,6 +437,7 @@
                   <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
                   <!-- <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber"> -->
                   <select *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber">
+                    <option value="" selected >Batch</option>
                     <option *ngFor="let batch of ItemBatchArr" [value]="batch.batchNumber">{{batch.batchNumber}}</option>
                   </select>
 
