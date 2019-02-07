@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import * as moment from 'moment';
+import { InventoryRequestService } from 'src/app/services/inventory-request.service';
+import { map } from 'rxjs-compat/operator/map';
 
 
 @Component({
@@ -52,7 +54,7 @@ WhMngNavBtnColor:String ="";
   currTab: string = '';
   loadingToTable:boolean=false;
   editWharehouses: Boolean=false;
-  constructor(private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService,private toastSrv: ToastrService, ) { 
+  constructor(private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService , private inventoryReqService: InventoryRequestService ,private toastSrv: ToastrService, ) { 
 
 // new ----------------------
     this.itemLine = fb.group({
@@ -143,7 +145,7 @@ WhMngNavBtnColor:String ="";
         // empty unrelevant fields if changing direction
         if(this.dir!="in")   this.itemLine.controls.arrivalDate.setValue(null);
         if(this.dir=="in")   this.itemLine.controls.relatedOrder.setValue("");
-        if(this.dir=="production")   this.multiInputLines=false;
+        if(this.dir=="production")   this.multiInputLines=true;
       }
   
     }
@@ -357,9 +359,10 @@ WhMngNavBtnColor:String ="";
     this.multiLinesArr.forEach((x, index)=> {
       if(!position.includes("NO SHELFS")){
         if(index==ev.target.dataset.lineid)  {
+          debugger
           x.position=position;
           x.requsetedQnt=x.amount;
-          x.amount=0;
+          // x.amount=0;
         };
       }
     });
@@ -377,10 +380,11 @@ WhMngNavBtnColor:String ="";
   if (arrSent.length > 0) {
     this.dir = "production";  
     await arrSent.forEach(i=>{
+      i.qnt=0;
       // i.currInpQnt=0;
       // amount: 500
-      // i.amount=i.amount;
-      // i.qntSupplied=i.qntSupplied
+      i.amount=i.amount;
+      i.qntSupplied=i.qntSupplied
       // isSelected: true
       // itemName: "Screw bottle NY 150ml transperent 24/415"
       // itemNumber: "12185"
@@ -403,7 +407,24 @@ WhMngNavBtnColor:String ="";
   }
 }
 
+async getAllGeneralDemands(){
+  await this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
+      console.log(res);
+      debugger
+      //res= allorders from itemsDemands table
+      res.forEach(invRequest => {
+        debugger
+       invRequest.reqList.map(item => {
+     //   item.cmptN="0";
+          item.isSelected=false;
+          //Object.assign({ isSelected: false }, item);
+        })
+      });
+      debugger
+      this.getChildArr(res);
+  })
 
+}
 
 
 deleteLine(itemFromInvReq,index,ev){
@@ -440,26 +461,30 @@ deleteLine(itemFromInvReq,index,ev){
     debugger
   }
 
-
   async checkLineValidation(itemLine,index,ev:any, lineqnt){  
+    var itemLineToAdd= JSON.parse(JSON.stringify(itemLine)) 
+    if(this.multiInputLines) itemLineToAdd.amount=itemLineToAdd.qnt;
+
     this.loadingToTable=true;
     var position;
     var currItemShelfs;
-    
+
     // multiLineQntInput
     if(this.multiInputLines){
-      currItemShelfs=itemLine.currItemShelfs;
+      itemLineToAdd.amount=itemLineToAdd.qnt;
+      currItemShelfs=itemLineToAdd.currItemShelfs;
+
     }else{
       currItemShelfs=this.currItemShelfs;
-      // position=itemLine.controls.position.value.toUpperCase();
+      // position=itemLineToAdd.controls.position.value.toUpperCase();
     }
 
-    if(itemLine.itemNumber!=""){
+    if(itemLineToAdd.itemNumber!=""){
       //VALID AMOUT
-      position=itemLine.position.toUpperCase().trim();
+      position=itemLineToAdd.position.toUpperCase().trim();
 
       if(parseInt(currItemShelfs[0].amount)!=NaN && currItemShelfs[0].amount!=0 && currItemShelfs[0].amount){
-        await this.inventoryService.getCmptByNumber(itemLine.itemNumber).subscribe(async itemRes => {
+        await this.inventoryService.getCmptByNumber(itemLineToAdd.itemNumber).subscribe(async itemRes => {
           if( itemRes.length>0){
 
             this.inventoryService.checkIfShelfExist(position,this.curentWhareHouseId).subscribe(async shelfRes=>{
@@ -474,27 +499,27 @@ deleteLine(itemFromInvReq,index,ev){
                 });
                 if((this.dir!="in" && itemShelfCurrAmounts.length>0) || this.dir=="in"){
 
-                  let enoughAmount =(itemShelfCurrAmounts[0]>=itemLine.amount);
+                  let enoughAmount =(itemShelfCurrAmounts[0]>=itemLineToAdd.amount);
                   if((this.dir!="in" && enoughAmount) || this.dir=="in"){
                     if(this.dir=='shelfchange'){
-                      this.inventoryService.checkIfShelfExist(itemLine.destShelf,this.curentWhareHouseId).subscribe(async destShelfRes=>{
+                      this.inventoryService.checkIfShelfExist(itemLineToAdd.destShelf,this.curentWhareHouseId).subscribe(async destShelfRes=>{
                         if(destShelfRes.ShelfId){
-                          itemLine.destShelfId=destShelfRes.ShelfId;
-                          this.addObjToList(itemLine,itemRes[0],shelfRes);
+                          itemLineToAdd.destShelfId=destShelfRes.ShelfId;
+                          this.addObjToList(itemLineToAdd,itemRes[0],shelfRes);
                         }else{
-                          this.toastSrv.error("No Such Shelf: "+itemLine.destShelf);
+                          this.toastSrv.error("No Such Shelf: "+itemLineToAdd.destShelf);
                           this.loadingToTable=false;
                         }
                       });
                     } else{
-                      this.addObjToList(itemLine,itemRes[0],shelfRes);
+                      this.addObjToList(itemLineToAdd,itemRes[0],shelfRes);
                     }
                   }else{
-                    this.toastSrv.error("Not enough stock on shelf!\n Item Number "+itemLine.itemNumber+"\n Amount on shelf: "+shelfRes[0].amount);
+                    this.toastSrv.error("Not enough stock on shelf!\n Item Number "+itemLineToAdd.itemNumber+"\n Amount on shelf: "+shelfRes[0].amount);
                     this.loadingToTable=false;
                   }  
                 }else{
-                  this.toastSrv.error("Item: "+itemLine.itemNumber+" dosn't exist on Shelf: "+position);
+                  this.toastSrv.error("Item: "+itemLineToAdd.itemNumber+" dosn't exist on Shelf: "+position);
                   this.loadingToTable=false;
                 }
               }else{
@@ -503,7 +528,7 @@ deleteLine(itemFromInvReq,index,ev){
               }  
             });
           }else{
-            this.toastSrv.error("Item Number "+this.itemLine.controls.itemNumber.value +" Not in Stock");
+            this.toastSrv.error("Item Number "+itemLineToAdd.itemNumber +" Not in Stock");
             this.loadingToTable=false;
           }
         });

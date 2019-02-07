@@ -141,10 +141,12 @@ getUserAllowedWH(){
           displayAllowedWH.push(wh);
         }
       }
-      if (this.authService.loggedInUser.authorization.includes("stockAdmin")){
-        this.stockAdmin=true;
-        debugger
-      }
+      if (this.authService.loggedInUser.authorization){
+        if (this.authService.loggedInUser.authorization.includes("stockAdmin")){
+          this.stockAdmin=true;
+        }
+      }      
+      
       this.whareHouses = displayAllowedWH;
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;

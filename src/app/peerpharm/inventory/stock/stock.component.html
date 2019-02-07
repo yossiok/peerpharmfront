@@ -395,7 +395,7 @@
             <div class="fr row justify-content-end" style="width: 100%;">
               <select class="col-sm-3 ml-1 form-control"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
                   <ng-container *ngFor="let wh of whareHouses;" >
-                      <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
+                      <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id" selected>{{wh.name}}</option>
                   </ng-container>            
               </select>
               <select class="col-sm-3 ml-1 fr form-control"  *ngIf="stockType=='component'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
@@ -451,7 +451,7 @@
                   <div class="col-sm-3" (click)="loadShelfToInput(itemShelf.position, $event)" style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; " >
                     <span>{{itemShelf.position}}: {{itemShelf.amount}} units </span>&nbsp;<br>
                     <span *ngIf="itemShelf.arrivalDate!='undefined'">arrival date: {{itemShelf.arrivalDate  | date: 'dd/MM/yyyy' }}</span>&nbsp;<br>
-                    <span *ngIf="itemShelf.itemType!='component' && itemShelf.expirationDate!='undefined'">expiration date: {{itemShelf.expirationDate}})</span>&nbsp;      
+                    <span *ngIf="itemShelf.itemType!='component' && itemShelf.expirationDate!='undefined'">expiration date: {{itemShelf.expirationDate}}</span>&nbsp;      
                   </div>
                 </ng-container>
 
