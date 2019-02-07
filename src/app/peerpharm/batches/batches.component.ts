@@ -58,10 +58,28 @@ export class BatchesComponent implements OnInit {
     var excelTable=[];
     if(this.lastBatchToExport!="" && this.lastBatchToExport!=null){
       this.batchesCopy.map(batch => {
-        let lastBatchYear=this.lastBatchToExport.split("pp")[0];
-        let lastBatchNum=this.lastBatchToExport.split("pp")[1];
-        let year=batch.batchNumber.split("pp")[0] ;
-        let number=batch.batchNumber.split("pp")[1] ;
+        var lastBatchYear;
+        var lastBatchNum;
+        var year;
+        var number;
+        debugger
+        if(this.lastBatchToExport.includes("pp")) {
+          lastBatchYear=this.lastBatchToExport.split("pp")[0];
+          lastBatchNum=this.lastBatchToExport.split("pp")[1];
+        }else{
+          //some batches dont have "YYpp...""
+          lastBatchYear="1";
+          lastBatchNum=this.lastBatchToExport;
+        }
+        if(batch.batchNumber.includes("pp")) {
+          year=batch.batchNumber.split("pp")[0] ;
+          number=batch.batchNumber.split("pp")[1] ;
+        }else{
+          //some batches dont have "YYpp...""
+          year=1;
+          number=batch.batchNumber;
+        }
+
         if(year>=lastBatchYear && number>=lastBatchNum && batch.weightKg != null && batch.weightQtyLeft != null){
           let obj={
             batchNumber:batch.batchNumber,
