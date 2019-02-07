@@ -82,10 +82,14 @@ export class OrderdetailsComponent implements OnInit {
   internalNumArr=[];
   packingModal=false;
   packingItemN="";
-  openPackingModalHeader="";
+  packingOrderN="";
+  openOrderPackingModalHeader="";
+  openItemPackingModalHeader="";
   itemPackingList:Array<any>=[];
   itemPackingPalletsArr:Array<any>=[];
   orderPalletsArr:Array<any>=[];
+  orderPalletsNumArr:Array<any>=[];
+  palletsData:Array<any>=[];
   showingOneOrder:Boolean;
   showingAllOrders:Boolean;
   orderPackingList:Array<any>=[];
@@ -106,24 +110,34 @@ export class OrderdetailsComponent implements OnInit {
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, private costumerSrevice: CostumersService) { }
 
-     openPackingModal(itemNumber, index){
+     async openPackingModal(itemNumber,orderNumber, index){
       this.packingItemN=itemNumber;
-       this.orderService.getItemPackingList(itemNumber).subscribe(itemPackingList=>{
-          this.itemPackingList=itemPackingList;
+      this.packingOrderN=orderNumber;
+      this.palletsData=[];
 
+      await this.orderService.getItemPackingList(itemNumber).subscribe(itemPackingList=>{
+          this.itemPackingList=itemPackingList;
        });
-       this.orderService.getOrderPackingList(this.number).subscribe(orderPackingList=>{
+
+    //   await this.orderService.getPalletsDataByOrderNumber(orderNumber).subscribe(orderPallets=>{
+    //     this.palletsData = orderPallets
+    //  }); 
+
+     await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList=>{
           this.orderPackingList=orderPackingList;
-          
-          this.orderPackingList.forEach(element => {
-            if(!this.orderPalletsArr.includes(element.palletNumber)){
-              this.orderPalletsArr.push(element.palletNumber);
+          debugger
+          await this.orderPackingList.forEach(item => {
+            let obj = {palletId: item.palletId , palletNumber:item.palletNumber , palletWeight:item.palletWeight , palletMesures:item.palletMesures}
+            let palletId = item.palletId ;
+            if(!this.orderPalletsNumArr.includes(palletId)){
+              this.orderPalletsNumArr.push(palletId);
+              this.orderPalletsArr.push(obj);
             }            
           });
-          
-          debugger
        });
-      this.openPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
+      this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingOrderN;
+      this.openItemPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
+      // this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingItemN;
       this.packingModal=true;
 
 
