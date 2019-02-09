@@ -300,7 +300,6 @@
 
     <div class="container">
       <h4 width="100%" class="text-center">כל הפריטים הארוזים</h4> <br>
-
       <div class="orerPallets row" *ngFor="let orderPallet of orderPalletsArr" class="width: 100%; " >
         <br>
         <div class="row" style="width: 100%; text-align: right">
@@ -320,13 +319,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let itemPackingPallet of itemPackingList">
+                <tr *ngFor="let orderitemPackingPallet of orderPackingList">
                   
-                  <!-- <ng-container *ngIf="itemPackingPallet.palletNumber==orderPallet">
-                    <td>{{itemPackingPallet.itemNumber}}</td>
-                    <td>{{itemPackingPallet.pcsCtn}}</td>
-                    <td>{{itemPackingPallet.ctnPallet}}</td>
-                  </ng-container> -->
+                  <ng-container *ngIf="orderitemPackingPallet.palletId == orderPallet.palletId ">
+                    <td>{{orderitemPackingPallet.itemNumber}}</td>
+                    <td>{{orderitemPackingPallet.pcsCtn}}</td>
+                    <td>{{orderitemPackingPallet.ctnPallet}}</td>
+                  </ng-container>
                 </tr>
               </tbody>
             </table>

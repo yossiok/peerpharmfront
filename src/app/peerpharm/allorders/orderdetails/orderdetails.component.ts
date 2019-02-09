@@ -132,6 +132,7 @@ export class OrderdetailsComponent implements OnInit {
             if(!this.orderPalletsNumArr.includes(palletId)){
               this.orderPalletsNumArr.push(palletId);
               this.orderPalletsArr.push(obj);
+              debugger
             }            
           });
        });
