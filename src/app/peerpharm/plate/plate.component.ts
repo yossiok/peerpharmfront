@@ -13,9 +13,12 @@ import * as moment from 'moment';
 export class PlateComponent implements OnInit {
   today:Date=new Date();
   filterPlatesNuumber:string='';
+  filterPlatesName:string='';
+  filterPlatesNameWordArr:Array<any>;
   showPlateData;
   imgPath;
   plates: any[];
+  platesUfiltered: any[];
   plate= {
     _id:"",
     palletNumber: '',
@@ -39,7 +42,9 @@ export class PlateComponent implements OnInit {
   getAllPlates() {
     this.plateService.getPlates().subscribe(res => {
       this.plates = res;
+      this.platesUfiltered = res;
       this.filterPlatesNuumber='';
+      this.filterPlatesName='';
       console.log(res);
     });
   }
@@ -160,4 +165,31 @@ export class PlateComponent implements OnInit {
       this.filterPlatesNuumber='';
    }
   }
+
+  searchPlateByName(filterPlatesName){
+    this.filterPlatesNameWordArr = this.filterPlatesName.split(" ");
+    this.filterPlatesNameWordArr= this.filterPlatesNameWordArr.filter(x=>x!="");
+    if(this.filterPlatesNameWordArr.length>0){
+      let tempArr=[];
+
+      this.platesUfiltered.filter(plt=>{
+        var check=false;
+        var matchAllArr=0;
+        this.filterPlatesNameWordArr.forEach(w => {
+            if(plt.palletItemName.toLowerCase().includes(w.toLowerCase()) 
+                ||  plt.palletItemBrand.toLowerCase().includes(w.toLowerCase())){
+              matchAllArr++
+            }
+            (matchAllArr==this.filterPlatesNameWordArr.length)? check=true : check=false ; 
+        }); 
+
+        if(!tempArr.includes(plt) && check) tempArr.push(plt);
+      });
+        //  this.components= tempArr;
+         this.plates = tempArr;
+    }
+
+  }
+
+
 }

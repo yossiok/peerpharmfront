@@ -101,7 +101,7 @@
   
           <th style="width:4%; padding:5px"></th>
           <th style="padding:5px"><b>מספר פריט</b></th>
-          <th style="padding:5px"><b>מק"ט פריט/ספק</b></th>
+          <th style="padding:5px"><b>מק"ט פריט-ספק</b></th>
           <th style="width:15%; padding:5px"><b>שם</b></th>
           <th style="padding:5px"><b>סוג</b></th>
           <th style="padding:5px"><b>כמות</b></th>
@@ -130,7 +130,7 @@
           <td>
             <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
           </td>
-          <td><img [src]=component.img style='width:50px'></td>
+          <td><img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)" ></td>
           <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
           <td>
             <div *ngIf="stockAdmin">
@@ -185,7 +185,7 @@
             <td style="width:10%;">
               <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
             </td>
-            <td style="width:10%;"><img [src]=component.img style='width:50px'></td>
+            <td style="width:10%;"><img [src]=component.img style='width:50px ; cursor: pointer;' (click)="openImg(component.img)"></td>
             <!-- <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
             <td><div>
               <input #procurmentInput type="number" (keyup)="inputProcurment($event)" /><span> <button class="btn btn-success"
@@ -369,7 +369,21 @@
   </div>
 
 
+  <div *ngIf="openImgModal==true && currModalImgSrc!=''" id="myImgModal" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
+      <!-- Modal content -->
+      <div class="modal-content" style='width:700px' id='modelD'>
+        <div class="modal-header">
+          <span class="close" id="closeId2" (click)="ImgModal=false ; currModalImgSrc='' ">&times;</span>
+        </div>
+        <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
+          <img [src]="currModalImgSrc" width="100%">
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+  
+    </div>
 
 
 
@@ -465,6 +479,7 @@
               <div class="fr row justify-content-end">
                   <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
                   <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
+                  <input *ngIf="stockType=='component'" class="col-sm-2 ml-1" type="text" placeholder="תעודת משלוח"  [(ngModel)]="relatedOrderNum"/>
                   <input class="col-sm-2 ml-1" type="text" placeholder="מדף"  [(ngModel)]="newItemShelfPosition"/>
                   <input class="col-sm-2 ml-1" type="number" placeholder="כמות"  [(ngModel)]="newItemShelfQnt">
                   <!-- <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber"> -->

@@ -47,6 +47,7 @@ export class StockComponent implements OnInit {
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
   openModal: boolean = false;
+  openImgModal: boolean = false;
   openAmountsModal: boolean = false;
   openModalHeader:string;
   components: any[];
@@ -70,6 +71,7 @@ export class StockComponent implements OnInit {
   whareHouses:Array<any>;
   curentWhareHouseId:String;
   curentWhareHouseName:String;
+  relatedOrderNum:String='';
   //adding Stock amounts
   newItemShelfQnt:number;
   newItemShelfBatchNumber:string;
@@ -88,6 +90,7 @@ export class StockComponent implements OnInit {
   amountChangeNavBtnColor:String="#1affa3";
   ItemBatchArr:Array<any>;
   filterVal:String='';
+  currModalImgSrc:String='';
   // filterbyNumVal:String;
   // filterByTypeVal:String;
   // filterByCategoryVal:String;
@@ -107,7 +110,6 @@ export class StockComponent implements OnInit {
     // this.filterByType.nativeElement='';
     // this.filterByCategory.nativeElement='';
     let url = this.route.snapshot;
-    debugger      
     this.components=[]; 
     await this.getUserAllowedWH();
     this.getAllComponents();
@@ -175,7 +177,6 @@ async updateItemStockShelfChange(direction){
   await this.inventoryService.checkIfShelfExist(this.destShelf,this.newItemShelfWH).subscribe( async shelfRes=>{
     if(shelfRes.ShelfId){
       this.destShelfId=shelfRes.ShelfId;
-      debugger
       this.updateItemStock(direction);
     }else{
       this.toastSrv.error("מדף יעד לא קיים")
@@ -205,7 +206,6 @@ dirSet(direction){
 
 async updateItemStock(direction){
   //check enough amount for "out"
-  debugger
   this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase().trim();
   var shelfExsit=false;
   let itemShelfCurrAmounts =[]
@@ -223,9 +223,10 @@ async updateItemStock(direction){
           let enoughAmount =(itemShelfCurrAmounts[0]>=this.newItemShelfQnt);
           if((direction!="in" && enoughAmount) || direction=="in"){
         
-            if(direction!="in") this.newItemShelfQnt*=(-1);
+            // if(direction!="in") this.newItemShelfQnt*=(-1);
       
             if(this.newItemShelfWH!=""){
+              let relatedOrderNum= this.relatedOrderNum.toUpperCase();
               let ObjToUpdate=[{
                 amount: this.newItemShelfQnt,
                 item: this.resCmpt.componentN,
@@ -247,22 +248,25 @@ async updateItemStock(direction){
                 WH_destId:this.curentWhareHouseId,
                 WH_destName:this.curentWhareHouseName,
                 batchNumber:'',
+                relatedOrderNum: relatedOrderNum,
+
 
                 }];
 
-                if(direction="in") {
+                if(direction=="in") { 
                   ObjToUpdate[0].arrivalDate = new Date()
                 };
-               if(direction!="in") ObjToUpdate[0].amount*=(-1);
+               if(direction!="in") {
+                 debugger 
+                ObjToUpdate[0].amount=ObjToUpdate[0].amount*(-1);
+              };
               //  if(itemLine.reqNum) ObjToUpdate.inventoryReqNum=itemLine.reqNum;
               //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
                if(this.stockType=="product") {
-                 debugger
                  ObjToUpdate[0].batchNumber=this.newItemShelfBatchNumber;
                 let itemBatch = this.ItemBatchArr.filter( b=> b.batchNumber == this.newItemShelfBatchNumber);
                 let expDate=new Date(itemBatch[0].expration);
                 ObjToUpdate[0].expirationDate = expDate;
-                debugger
                 //  ObjToUpdate.expirationDate=itemRes.expirationDate ;ObjToUpdate.productionDate=itemRes.productionDate 
                 };
                if(direction=="shelfChange"){
@@ -518,6 +522,10 @@ async updateItemStock(direction){
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
+  }
+  openImg(componentImg) {
+    this.openImgModal = true;
+    this.currModalImgSrc=componentImg;
   }
   openAmountsData(cmptNumber, cmptId) {
     this.openModalHeader="כמויות פריט במלאי  "+ cmptNumber;
@@ -812,7 +820,10 @@ procurementRecommendations(){
     }
   }
 
+// ********************ENLARGE TABLE IMAGE BY CLICK************
 
+
+// ************************************************************
 
   
 }// END OF CMPT CLASS
