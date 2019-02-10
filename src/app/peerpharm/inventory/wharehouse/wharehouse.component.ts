@@ -577,7 +577,7 @@ addObjToList(itemLine,itemRes,shelfRes){
   };
  if(this.dir=="shelfChange"){
   obj.shell_id_in_whareHouse_Dest= itemLine.destShelfId;
-  obj.shell_position_in_whareHouse_Dest= itemLine.destShelf;
+  obj.shell_position_in_whareHouse_Dest= itemLine.destShelf.toUpperCase();
  }
 
  this.inventoryUpdateList.push(obj);

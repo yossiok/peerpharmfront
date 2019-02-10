@@ -171,6 +171,7 @@ async updateItemStockShelfChange(direction){
   // this.newItemShelfPosition
   // this.newItemShelfQnt
   // this.destShelf
+  this.destShelf=this.destShelf.toLocaleUpperCase();
   await this.inventoryService.checkIfShelfExist(this.destShelf,this.newItemShelfWH).subscribe( async shelfRes=>{
     if(shelfRes.ShelfId){
       this.destShelfId=shelfRes.ShelfId;
@@ -272,6 +273,7 @@ async updateItemStock(direction){
 
         
                 //  READY!
+                debugger
                 await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
                   if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
@@ -352,9 +354,47 @@ async updateItemStock(direction){
   filterRowsByItemNumber(event){
     this.filterVal='';
     this.filterVal=event.target.value;
-    this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(this.filterVal));
+    this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(this.filterVal) && x.itemType==this.stockType );
     
   }
+  filterRowsByItemSupplierNumber(event){
+    this.filterVal='';
+    this.filterVal=event.target.value;
+    this.components=this.componentsUnFiltered.filter(x=> x.componentNs.includes(this.filterVal)  && x.itemType==this.stockType );
+  }
+  filterRowsByItemName(event){
+    this.filterVal='';
+    this.filterVal=event.target.value;
+    this.components=this.componentsUnFiltered.filter(x=> x.componentName.toLowerCase().includes(this.filterVal.toLowerCase()) && x.itemType==this.stockType );
+    
+  }
+
+  changeText(ev, filterBy)
+  {
+    if(filterBy=='itemName'){
+      let word= ev.target.value;
+      let wordsArr= word.split(" ");
+      wordsArr= wordsArr.filter(x=>x!="");
+      if(wordsArr.length>0){
+        let tempArr=[];
+        this.componentsUnFiltered.filter(stk=>{
+          var check=false;
+          var matchAllArr=0;
+          wordsArr.forEach(w => {
+              if(stk.componentName.toLowerCase().includes(w.toLowerCase()) &&  stk.itemType==this.stockType){
+                matchAllArr++
+              }
+              (matchAllArr==wordsArr.length)? check=true : check=false ; 
+          }); 
+  
+          if(!tempArr.includes(stk) && check) tempArr.push(stk);
+        });
+           this.components= tempArr;
+           debugger
+      }
+    }
+  }
+
 
   filterRowsByCmptTypeanCategory(event,filter){
     this.components= this.componentsUnFiltered;
@@ -547,8 +587,10 @@ async updateItemStock(direction){
   editStockItemDetails(){
     this.resCmpt;
     if(confirm("לעדכן פריט?")){
+      debugger
       this.inventoryService.updateCompt(this.resCmpt).subscribe(res=>{
-        if(res.n!=0){
+        debugger
+        if(res.nModified!=0){
           this.toastSrv.success("פריט עודכן בהצלחה");
         } else{
           this.toastSrv.error("עדכון פריט נכשל");

@@ -26,21 +26,50 @@
 
 <div style="width:100%;">
   
-    <div class="container" style="width:100%; padding: 0px" >
+    <div style="width:100%; padding: 0px" >
         <form style="width:100%;">
           <div class="row" style="width:100%;">
-              <div class="col-sm-3">
+              <div class="col-sm-2">
                 <label class="fr">מספר פריט</label>
-                <input  #filterbyNum type="text" class="form-control" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)">
+                <input  #filterbyNum type="text" class="form-control" placeholder="Item Number" (change)="filterRowsByItemNumber($event)">
               </div>
-              <div *ngIf="stockType=='component'" class="col-sm-3">
+              <div class="col-sm-2">
+                  <label class="fr">שם פריט</label>
+                  <input  #filterByCmptName type="text" class="form-control" placeholder="Item Name" (change)="changeText($event, 'itemName')">
+                </div>
+              <div *ngIf="stockType=='component'" class="col-sm-2">
+                <label class="fr">מק"ט ספק</label>
+                <input  #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number..." (change)="filterRowsByItemSupplierNumber($event)">
+              </div>
+
+              <div *ngIf="stockType=='component'" class="col-sm-2">
                 <label class="fr">סוג רכיב</label>
                 <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'type')">
                   <option selected></option>
-                  <option *ngFor="let cmptType of cmptTypeList">{{cmptType}}</option>
+                  <option value='bottle_Glass'>בקבוק זכוכית</option>
+                  <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+                  <option value='jar_Glass'>צנצנת זכוכית</option>
+                  <option value='jar_Plastic'>צנצנת פלסטיק</option>
+                  <option value='cap'>פקק</option>
+                  <option value='cover'>מכסה</option>
+                  <option value='pump'>משאבה</option>
+                  <option value='cosmetic_pump'>משאבה קוסמטית</option>
+                  <option value='over_cap'>מכסה עילי</option>
+                  <option value='tube'>שפורפרת</option>
+                  <option value='colons'>קולונים</option>
+                  <option value='hair_life'>היירלייפ</option>
+                  <option value='compacts'>קומפקטים</option>
+                  <option value='personal_package'>אריזות אישיות</option>
+                  <option value='master_carton'>קרטוני מאסטר</option>
+                  <option value='newsletter'>עלון לצרכן</option>
+                  <option value='irosol_valve'>אירוסול- שסתום</option>
+                  <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                  <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+                  <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                  <!-- <option *ngFor="let cmptType of cmptTypeList">{{cmptType}}</option> -->
                 </select>
               </div>
-              <div *ngIf="stockType=='component'" class="col-sm-3">
+              <div *ngIf="stockType=='component'" class="col-sm-2">
                 <label class="fr">קטגוריה</label>
                 <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')">
                   <option selected></option>
@@ -91,7 +120,7 @@
         <tr *ngFor="let component of components; let i = index">
           <td style="width:4%">{{i+1}}</td>
           <td class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
-          <td>{{component.componentNS}}</td>
+          <td>{{component.componentNs}}</td>
           <td style="width:15%;">{{component.componentName}}</td>
           <td style="word-break: break-all;">{{component.componentType}}</td>
           <td>{{component.amount}}</td>
@@ -216,7 +245,10 @@
 
                 <th>סוג</th>
                 <td>
-                  <select id='input_componentType'>
+
+                  <input type="text" *ngIf="newItem!='new'" [(ngModel)]="resCmpt.componentType" disabled/>
+
+                  <select id='input_componentType' [(ngModel)]="resCmpt.componentType" >
                     <option value='bottle_Glass'>בקבוק זכוכית</option>
                     <option value='bottle_Plastic'>בקבוק פלסטיק</option>
                     <option value='jar_Glass'>צנצנת זכוכית</option>
