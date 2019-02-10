@@ -89,10 +89,10 @@
                       <input type="number" class="form-control" placeholder="Amount" formControlName="amount" min="0">
                     </div>
                     <!-- if taking out stock from wh -->
-                    <div class="col-sm-3"  *ngIf="dir!='in' && dir!='shelfChange'"> 
+                    <!-- <div class="col-sm-3"  *ngIf="dir!='in' && dir!='shelfChange'"> 
                       <label>מס' הזמנה</label>
                       <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
-                    </div>
+                    </div> -->
                     <!-- if recieving stock to wh  -->
                     <div class="col-sm-2" *ngIf="dir=='in'">
                       <label>הגעת משלוח</label>
@@ -117,7 +117,7 @@
                   <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
                   <ng-container *ngFor="let shelf of currItemShelfs">
                     <span    
-                    (click)="loadShelfToInput(shelf.position, $event)">{{shelf.position}}: {{shelf.amount}} units</span>&nbsp;&nbsp;
+                    (click)="loadShelfToInput(shelf.position, $event)" style="cursor: pointer;"><b>{{shelf.position}}</b>: {{shelf.amount}} units</span>&nbsp;&nbsp;
                   </ng-container>
                 </div>
             </form>

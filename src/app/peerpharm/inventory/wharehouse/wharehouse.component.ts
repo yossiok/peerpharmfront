@@ -218,33 +218,33 @@ WhMngNavBtnColor:String ="";
     })
   }
 
-  addNewShelf(position) {
-    //to upper case and remove spaces
-    position = position.toUpperCase();
-    position = position.replace(/\s/g, '');
-    if (this.whareHouseId == "") {
-      this.response.body = "Pleae choose wharehose- נא לבחור מחסן"
-      this.response.color = "red"
-    } else
-      if (position == "") {
-        this.response.body = "Pleae enter shelf - נא להקליד מדף"
-        this.response.color = "red"
-      }
-      else {
-        let shellObj = { whareHouseId: this.whareHouseId, position: position }
-        this.inventoryService.addNewShelf(shellObj).subscribe(res => {
-          console.log(res)
-          if (res._id.length > 0) {
-            this.shelfs.push(res)
-            this.response.body = "Shelf Added- מדף התווסף"
-            this.response.color = 'Aquamarine'
-          } else {
-            this.response.body = "Shelf is already exist - מדף קיים כבר"
-            this.response.color = 'red'
-          }
-        })
-      }
-  }
+  // addNewShelf(position) {
+  //   //to upper case and remove spaces
+  //   position = position.toUpperCase();
+  //   position = position.replace(/\s/g, '');
+  //   if (this.whareHouseId == "") {
+  //     this.response.body = "Pleae choose wharehose- נא לבחור מחסן"
+  //     this.response.color = "red"
+  //   } else
+  //     if (position == "") {
+  //       this.response.body = "Pleae enter shelf - נא להקליד מדף"
+  //       this.response.color = "red"
+  //     }
+  //     else {
+  //       let shellObj = { whareHouseId: this.whareHouseId, position: position }
+  //       this.inventoryService.addNewShelf(shellObj).subscribe(res => {
+  //         console.log(res)
+  //         if (res._id.length > 0) {
+  //           this.shelfs.push(res)
+  //           this.response.body = "Shelf Added- מדף התווסף"
+  //           this.response.color = 'Aquamarine'
+  //         } else {
+  //           this.response.body = "Shelf is already exist - מדף קיים כבר"
+  //           this.response.color = 'red'
+  //         }
+  //       })
+  //     }
+  // }
 
   addNewWhareHouse(whareHouseName) {
     this.inventoryService.addNewWhareHouse(whareHouseName).subscribe(res => {
@@ -450,7 +450,8 @@ deleteLine(itemFromInvReq,index,ev){
         // res = [itemNumber,itemNumber,itemNumber...]
         if(res=="all updated"){ 
           this.toastSrv.success("שינויים בוצעו בהצלחה");
-          this.itemLine.reset();
+          if(this.dir!='shelfChange') this.itemLine.reset();
+          this.inventoryUpdateList=[];
         }
       });
     }
@@ -501,7 +502,9 @@ deleteLine(itemFromInvReq,index,ev){
 
                   let enoughAmount =(itemShelfCurrAmounts[0]>=itemLineToAdd.amount);
                   if((this.dir!="in" && enoughAmount) || this.dir=="in"){
-                    if(this.dir=='shelfchange'){
+                    debugger
+                    if(this.dir=='shelfChange'){
+                      itemLineToAdd.destShelf= itemLineToAdd.destShelf.toUpperCase();
                       this.inventoryService.checkIfShelfExist(itemLineToAdd.destShelf,this.curentWhareHouseId).subscribe(async destShelfRes=>{
                         if(destShelfRes.ShelfId){
                           itemLineToAdd.destShelfId=destShelfRes.ShelfId;
@@ -546,7 +549,7 @@ deleteLine(itemFromInvReq,index,ev){
 
 
 addObjToList(itemLine,itemRes,shelfRes){
-
+if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
   let obj={
     amount: itemLine.amount,
     item: itemLine.itemNumber,
@@ -582,9 +585,48 @@ addObjToList(itemLine,itemRes,shelfRes){
 
  this.inventoryUpdateList.push(obj);
  this.loadingToTable=false;
+ this.itemLine.reset();
+}else{
+  alert("יש לשלוח קודם את שינוי המדף ברשימה");
+  this.loadingToTable=false;
+}
+
 }
 
 
+
+
+
+
+
+addNewShelf(position) {
+  //to upper case and remove spaces
+  position = position.toUpperCase();
+  position = position.replace(/\s/g, '');
+  debugger
+  if (this.whareHouseId == "") {
+    this.response.body = "Pleae choose wharehose- נא לבחור מחסן"
+    this.response.color = "red"
+  } else
+    if (position == "") {
+      this.response.body = "Pleae enter shelf - נא להקליד מדף"
+      this.response.color = "red"
+    }
+    else {
+      let shellObj = { whareHouseId: this.whareHouseId, position: position }
+      this.inventoryService.addNewShelf(shellObj).subscribe(res => {
+        console.log(res)
+        if (res._id.length > 0) {
+          this.shelfs.push(res)
+          this.response.body = "Shelf Added- מדף התווסף"
+          this.response.color = 'Aquamarine'
+        } else {
+          this.response.body = "Shelf is already exist - מדף קיים כבר"
+          this.response.color = 'red'
+        }
+      })
+    }
+}
 
 
 

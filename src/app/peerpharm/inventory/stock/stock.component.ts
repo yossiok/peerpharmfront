@@ -251,7 +251,6 @@ async updateItemStock(direction){
                 }];
 
                 if(direction="in") {
-
                   ObjToUpdate[0].arrivalDate = new Date()
                 };
                if(direction!="in") ObjToUpdate[0].amount*=(-1);
@@ -281,6 +280,7 @@ async updateItemStock(direction){
                     this.newItemShelfQnt=null;
                     this.destShelf="";
                     this.destShelfId="";
+                    this.newItemShelfPosition='';
                   }
                 });
             }else{
@@ -618,6 +618,10 @@ async updateItemStock(direction){
 }
 async getCmptAmounts(cmptN, cmptId){
   debugger
+  // this.currItemShelfs=[];
+  this.newItemShelfPosition='';
+  this.newItemShelfQnt=0;
+  this.destShelf='';
   await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
 
     debugger
