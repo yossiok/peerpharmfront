@@ -74,6 +74,10 @@ export class InventoryService {
     let url = this.baseUrl + "shell/add";
     return this.http.post(url, JSON.stringify(shellObj), this.options).pipe(map(res => res.json()))
   }
+  // addNewWhareHouse(whareHouseName){ //OLD !!!
+  //   let url = this.baseUrl + "whareHouse/add";
+  //   return this.http.post(url, JSON.stringify({name:whareHouseName}), this.options).pipe(map(res => res.json()))
+  // }
   addNewWhareHouse(whareHouseName){
     let url = this.baseUrl + "whareHouse/add";
     return this.http.post(url, JSON.stringify({name:whareHouseName}), this.options).pipe(map(res => res.json()))

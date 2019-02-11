@@ -47,7 +47,7 @@ WhMngNavBtnColor:String ="";
   changeWh: boolean = false;
   shelfs: any = [];
   shelfsCopy: any = [];
-  dir: string = "production";
+  dir: string = "in";
   screen: String = "stkManagment";
   response = { color: '', body: '' }
   i: Integer = 0;
@@ -218,7 +218,7 @@ WhMngNavBtnColor:String ="";
     })
   }
 
-  // addNewShelf(position) {
+  // addNewShelf(position) { //OLD!!!
   //   //to upper case and remove spaces
   //   position = position.toUpperCase();
   //   position = position.replace(/\s/g, '');
@@ -246,17 +246,24 @@ WhMngNavBtnColor:String ="";
   //     }
   // }
 
+  // addNewWhareHouse(whareHouseName) { //OLD!!!
+  //   this.inventoryService.addNewWhareHouse(whareHouseName).subscribe(res => {
+  //     console.log(res)
+  //     if (res != "faild") {
+  //       this.whareHouses.push(res)
+  //     }
+  //   })
+  // }
   addNewWhareHouse(whareHouseName) {
     this.inventoryService.addNewWhareHouse(whareHouseName).subscribe(res => {
       console.log(res)
-      if (res != "faild") {
+      if (res.name) {
         this.whareHouses.push(res)
       }
     })
   }
 
   setWhareHouse(whname) {
-    
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
     this.curentWhareHouseId = this.whareHouses[i]._id;
     this.curentWhareHouseName = this.whareHouses[i].name;
@@ -452,6 +459,8 @@ deleteLine(itemFromInvReq,index,ev){
           this.toastSrv.success("שינויים בוצעו בהצלחה");
           if(this.dir!='shelfChange') this.itemLine.reset();
           this.inventoryUpdateList=[];
+        }else{
+          this.toastSrv.error("שגיאה- לא התבצע עדכון");
         }
       });
     }
@@ -480,19 +489,19 @@ deleteLine(itemFromInvReq,index,ev){
       // position=itemLineToAdd.controls.position.value.toUpperCase();
     }
 
-    if(itemLineToAdd.itemNumber!=""){
+    if(itemLineToAdd.itemNumber!="" && !currItemShelfs[0].includes("NO SHELFS WITH ITEM #")){
       //VALID AMOUT
       position=itemLineToAdd.position.toUpperCase().trim();
-
+      debugger
       if(parseInt(currItemShelfs[0].amount)!=NaN && currItemShelfs[0].amount!=0 && currItemShelfs[0].amount){
         await this.inventoryService.getCmptByNumber(itemLineToAdd.itemNumber).subscribe(async itemRes => {
           if( itemRes.length>0){
 
             this.inventoryService.checkIfShelfExist(position,this.curentWhareHouseId).subscribe(async shelfRes=>{
-              if(shelfRes.ShelfId){
-                //next 2 lines for dir!=in
-                var itemShelfCurrAmounts =[]
 
+              if(shelfRes.ShelfId){
+                
+                var itemShelfCurrAmounts =[]
                 await currItemShelfs.forEach(x=>{
                   if(x.shell_id_in_whareHouse==shelfRes.ShelfId) {
                     itemShelfCurrAmounts.push(x.amount);
@@ -500,9 +509,8 @@ deleteLine(itemFromInvReq,index,ev){
                 });
                 if((this.dir!="in" && itemShelfCurrAmounts.length>0) || this.dir=="in"){
 
-                  let enoughAmount =(itemShelfCurrAmounts[0]>=itemLineToAdd.amount);
+                  let enoughAmount =(itemShelfCurrAmounts[0] >= itemLineToAdd.amount);
                   if((this.dir!="in" && enoughAmount) || this.dir=="in"){
-                    debugger
                     if(this.dir=='shelfChange'){
                       itemLineToAdd.destShelf= itemLineToAdd.destShelf.toUpperCase();
                       this.inventoryService.checkIfShelfExist(itemLineToAdd.destShelf,this.curentWhareHouseId).subscribe(async destShelfRes=>{
@@ -510,7 +518,7 @@ deleteLine(itemFromInvReq,index,ev){
                           itemLineToAdd.destShelfId=destShelfRes.ShelfId;
                           this.addObjToList(itemLineToAdd,itemRes[0],shelfRes);
                         }else{
-                          this.toastSrv.error("No Such Shelf: "+itemLineToAdd.destShelf);
+                          this.toastSrv.error("אין מדף כזה במחסן: "+this.curentWhareHouseName);
                           this.loadingToTable=false;
                         }
                       });
@@ -518,29 +526,30 @@ deleteLine(itemFromInvReq,index,ev){
                       this.addObjToList(itemLineToAdd,itemRes[0],shelfRes);
                     }
                   }else{
-                    this.toastSrv.error("Not enough stock on shelf!\n Item Number "+itemLineToAdd.itemNumber+"\n Amount on shelf: "+shelfRes[0].amount);
+                    this.toastSrv.error("אין מספיק כמות על המדף!\n  כמות נוכחית על המדף: "+shelfRes.stock[0].amount );
                     this.loadingToTable=false;
                   }  
                 }else{
-                  this.toastSrv.error("Item: "+itemLineToAdd.itemNumber+" dosn't exist on Shelf: "+position);
+                  this.toastSrv.error("פריט: "+itemLineToAdd.itemNumber+"\n לא נמצא על מדף: "+position);
                   this.loadingToTable=false;
                 }
               }else{
-                this.toastSrv.error("No Such Shelf: "+position);
+                debugger
+                this.toastSrv.error("אין מדף כזה במחסן: "+position);
                 this.loadingToTable=false;
               }  
             });
           }else{
-            this.toastSrv.error("Item Number "+itemLineToAdd.itemNumber +" Not in Stock");
+            this.toastSrv.error("אין פריט כזה במלאי "+itemLineToAdd.itemNumber +" ");
             this.loadingToTable=false;
           }
         });
       }else{
-        this.toastSrv.error("Item Amount Missing");
+        this.toastSrv.error("חסרה כמות");
         this.loadingToTable=false;
       }
     }else{
-      this.toastSrv.error("Item Number Missing");
+      this.toastSrv.error("מספר פריט לא קיים");
       this.loadingToTable=false;
     }
   }
@@ -602,30 +611,29 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
 addNewShelf(position) {
   //to upper case and remove spaces
   position = position.toUpperCase();
-  position = position.replace(/\s/g, '');
+  position = position.trim();
   debugger
+
   if (this.whareHouseId == "") {
-    this.response.body = "Pleae choose wharehose- נא לבחור מחסן"
-    this.response.color = "red"
-  } else
-    if (position == "") {
-      this.response.body = "Pleae enter shelf - נא להקליד מדף"
-      this.response.color = "red"
-    }
-    else {
+    this.toastSrv.error("לא נבחר מחסן")
+  } else if (position == "") {
+      this.toastSrv.error("לא הוכנס מיקום מדף חדש")
+  }
+  else {
+    if(confirm(" הקמת מדף חדש " + position)){
       let shellObj = { whareHouseId: this.whareHouseId, position: position }
       this.inventoryService.addNewShelf(shellObj).subscribe(res => {
         console.log(res)
-        if (res._id.length > 0) {
-          this.shelfs.push(res)
-          this.response.body = "Shelf Added- מדף התווסף"
-          this.response.color = 'Aquamarine'
+        if (res.position) {
+          this.shelfs.push(res);
+          this.toastSrv.success("הוקם מדף חדש בהצלחה!");
         } else {
-          this.response.body = "Shelf is already exist - מדף קיים כבר"
-          this.response.color = 'red'
+          this.toastSrv.error("לא הוכנס מיקום מדף חדש");
+
         }
-      })
+      });
     }
+  }
 }
 
 

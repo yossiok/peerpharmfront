@@ -216,14 +216,15 @@ async updateItemStock(direction){
     };
   });
     await this.inventoryService.checkIfShelfExist(this.newItemShelfPosition,this.newItemShelfWH).subscribe( async shelfRes=>{
-      
+      debugger
       if(shelfRes.ShelfId){
         shelfExsit=true;
+        debugger
         if((direction!="in" && itemShelfCurrAmounts.length>0) || direction=="in"){
           let enoughAmount =(itemShelfCurrAmounts[0]>=this.newItemShelfQnt);
           if((direction!="in" && enoughAmount) || direction=="in"){
         
-            // if(direction!="in") this.newItemShelfQnt*=(-1);
+            if(direction!="in") this.newItemShelfQnt*=(-1);
       
             if(this.newItemShelfWH!=""){
               let relatedOrderNum= this.relatedOrderNum.toUpperCase();
@@ -258,7 +259,7 @@ async updateItemStock(direction){
                 };
                if(direction!="in") {
                  debugger 
-                ObjToUpdate[0].amount=ObjToUpdate[0].amount*(-1);
+                // ObjToUpdate[0].amount=ObjToUpdate[0].amount*(-1);
               };
               //  if(itemLine.reqNum) ObjToUpdate.inventoryReqNum=itemLine.reqNum;
               //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
@@ -285,6 +286,8 @@ async updateItemStock(direction){
                     this.destShelf="";
                     this.destShelfId="";
                     this.newItemShelfPosition='';
+                  }else{
+                    this.toastSrv.error("Error - Changes not saved");
                   }
                 });
             }else{
@@ -293,6 +296,8 @@ async updateItemStock(direction){
           }else{
             this.toastSrv.error("Not enough stock on shelf!\n Item Number "+this.resCmpt.componentN+"\n Amount on shelf: "+itemShelfCurrAmounts[0]);
           }
+        }else{
+          this.toastSrv.error("No Item Amounts On Shelf: "+this.newItemShelfPosition);  
         }
       }else{
         this.toastSrv.error("No Such Shelf: "+this.newItemShelfPosition);
@@ -516,6 +521,7 @@ async updateItemStock(direction){
 
 
   async openData(cmptNumber) {
+    this.itemMovements=[];
 
     this.openModalHeader="פריט במלאי  "+ cmptNumber;
     this.openModal = true;
