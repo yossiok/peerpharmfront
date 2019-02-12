@@ -151,8 +151,8 @@ export class OrdersService {
   }
 
 
-  getItemPackingList(itemNumber): Observable<any> {
-    let url = this.baseUrl + 'packingPallltItems?itemNPackingList=' + itemNumber;
+  getItemPackingList(itemNumber,orderNumber): Observable<any> {
+    let url = this.baseUrl + 'packingPallltItems?itemNPackingList=' + itemNumber+"&orderNumber="+orderNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json())
     );
   }

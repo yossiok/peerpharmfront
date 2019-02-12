@@ -115,8 +115,9 @@ export class OrderdetailsComponent implements OnInit {
       this.packingOrderN=orderNumber;
       this.palletsData=[];
 
-      await this.orderService.getItemPackingList(itemNumber).subscribe(itemPackingList=>{
+      await this.orderService.getItemPackingList(itemNumber,this.packingOrderN).subscribe(async itemPackingList=>{
           this.itemPackingList=itemPackingList;
+
        });
 
     //   await this.orderService.getPalletsDataByOrderNumber(orderNumber).subscribe(orderPallets=>{
@@ -125,16 +126,34 @@ export class OrderdetailsComponent implements OnInit {
 
      await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList=>{
           this.orderPackingList=orderPackingList;
-          debugger
           await this.orderPackingList.forEach(item => {
             let obj = {palletId: item.palletId , palletNumber:item.palletNumber , palletWeight:item.palletWeight , palletMesures:item.palletMesures}
             let palletId = item.palletId ;
             if(!this.orderPalletsNumArr.includes(palletId)){
               this.orderPalletsNumArr.push(palletId);
               this.orderPalletsArr.push(obj);
-              debugger
             }            
           });
+
+          await this.ordersItems.forEach(async (orderItem, key) => {
+            let packedQnt=0;
+            let packedItemsOnPallet=0;
+            await this.orderPackingList.filter(packedItem=>{
+              if(orderItem.itemNumber == packedItem.itemNumber ){
+                packedItemsOnPallet = packedItem.pcsCtn*packedItem.ctnPallet;
+                packedQnt = packedQnt+packedItemsOnPallet
+                packedItem.totalPackedQnt = packedQnt;
+
+                if(orderItem.quantity == packedItem.totalPackedQnt ){
+                  packedItem.lineColor="rgb(204, 255, 204)";
+                } else{
+                  packedItem.lineColor="rgb(255, 255, 204)";
+                }
+              }
+            });
+          });
+
+
        });
       this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingOrderN;
       this.openItemPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
@@ -177,10 +196,8 @@ export class OrderdetailsComponent implements OnInit {
           this.orderService.ordersArr.subscribe(res => {
             console.log(res)
             var numArr = this.number.split(",").filter(x=>x!="");
-            debugger
             if(numArr.length>1){
               this.orderService.getOrdersIdsByNumbers(numArr).subscribe(ordersIds => {
-                debugger
                 if(ordersIds.length>1){
                   this.orderService.getMultiOrdersIds(ordersIds).subscribe(orderItems => {
                     orderItems.forEach(item => {
@@ -193,7 +210,6 @@ export class OrderdetailsComponent implements OnInit {
                     console.log(orderItems);
                   });
                 }else {  //one order:
-                  debugger
                   this.getOrderDetails();
                   this.getOrderItems();
                   this.show = true;
@@ -203,7 +219,6 @@ export class OrderdetailsComponent implements OnInit {
 
               });
             } else {  //one order:
-              debugger
               this.getOrderDetails();
               this.getOrderItems();
               this.show = true;
@@ -233,7 +248,6 @@ export class OrderdetailsComponent implements OnInit {
     if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
 
     this.orderService.getOrderByNumber(this.number).subscribe(res => {
-      debugger
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
       this.costumerInternalId = res[0].costumerInternalId;
@@ -242,7 +256,6 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
-      debugger
     });
 
   }
@@ -255,7 +268,6 @@ export class OrderdetailsComponent implements OnInit {
     // const id = this.route.snapshot.paramMap.get('id');
     //this.orderService.getOrderById(id).subscribe(orderItems => {    
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
-      debugger
       orderItems.map( item => {
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
@@ -363,7 +375,6 @@ export class OrderdetailsComponent implements OnInit {
 
       console.log(res)
       if (res != "error") {
-        debugger
         this.toastSrv.success(itemToUpdate.itemNumber, "Changes Saved");
         this.EditRowId = "";
         let index = this.ordersItems.findIndex(order => order._id == itemToUpdate.orderItemId);
@@ -385,7 +396,6 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   addItemOrder() {
-debugger
     // console.log(1 + " , " + this.itemData.qtyKg);
     this.itemData.orderId = this.orderId;
     this.itemData.orderNumber = this.number;
@@ -402,7 +412,6 @@ debugger
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
-    debugger
     if(this.date.nativeElement.value!=""){
       this.itemSer.getItemData(item.itemNumber).subscribe(res => { 
         // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
@@ -480,7 +489,6 @@ debugger
 
 
   searchItem(itemNumber) {
-    debugger
     if(itemNumber!=""){
       this.orderService.getItemByNumber(itemNumber).subscribe(res => {
         if(res.length==1){
@@ -511,16 +519,13 @@ debugger
     console.log(this.printSchedule);
     this.printSchedule.orderN = this.number;
     this.printSchedule.costumer = this.costumer;
-    debugger
     this.printSchedule.date=dateToUpdate;
     // this.printSchedule.date=moment(this.printSchedule.date).format("YYYY-MM-DD");
     // this.printSchedule.date=moment(this.printSchedule.date.format());
-    debugger
 
       this.scheduleService.setNewPrintSchedule(this.printSchedule).subscribe(res=>{
         if(res.itemN){
           this.toastSrv.success("Saved", this.printSchedule.cmptN);
-          debugger
         }else{
           this.toastSrv.error("Error - not sent to print schedule");
         }
@@ -580,7 +585,6 @@ debugger
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.ordersItems= tempArr;
-         debugger
     }else{
       this.ordersItems=this.ordersItemsCopy.slice();
     }

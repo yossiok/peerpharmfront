@@ -319,14 +319,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let orderitemPackingPallet of orderPackingList">
+                <ng-container *ngFor="let orderitemPackingPallet of orderPackingList">
+                  <tr *ngIf="orderitemPackingPallet.palletId == orderPallet.palletId " [style.background-color]="orderitemPackingPallet.lineColor">
+                      <td>{{orderitemPackingPallet.itemNumber}}</td>
+                      <td>{{orderitemPackingPallet.pcsCtn}}</td>
+                      <td>{{orderitemPackingPallet.ctnPallet}}</td>
+                  </tr>
+                </ng-container>
+                <!-- <tr *ngFor="let orderitemPackingPallet of orderPackingList" [style.background-color]="orderitemPackingPallet.lineColor">
                   
-                  <ng-container *ngIf="orderitemPackingPallet.palletId == orderPallet.palletId ">
+                  <ng-container *ngIf="orderitemPackingPallet.palletId == orderPallet.palletId "  >
                     <td>{{orderitemPackingPallet.itemNumber}}</td>
                     <td>{{orderitemPackingPallet.pcsCtn}}</td>
                     <td>{{orderitemPackingPallet.ctnPallet}}</td>
                   </ng-container>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
         </div>
