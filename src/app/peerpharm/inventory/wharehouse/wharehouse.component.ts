@@ -489,7 +489,7 @@ deleteLine(itemFromInvReq,index,ev){
       // position=itemLineToAdd.controls.position.value.toUpperCase();
     }
 
-    if(itemLineToAdd.itemNumber!="" && !currItemShelfs[0].includes("NO SHELFS WITH ITEM #")){
+    if(itemLineToAdd.itemNumber!="" && currItemShelfs[0]._id){
       //VALID AMOUT
       position=itemLineToAdd.position.toUpperCase().trim();
       debugger
