@@ -489,11 +489,11 @@ deleteLine(itemFromInvReq,index,ev){
       // position=itemLineToAdd.controls.position.value.toUpperCase();
     }
 
-    if(itemLineToAdd.itemNumber!="" && currItemShelfs[0]._id){
+    if( (itemLineToAdd.itemNumber!=""  && this.dir=='in') || (itemLineToAdd.itemNumber!=""  && currItemShelfs[0]._id && this.dir!='in')){
       //VALID AMOUT
       position=itemLineToAdd.position.toUpperCase().trim();
       debugger
-      if(parseInt(currItemShelfs[0].amount)!=NaN && currItemShelfs[0].amount!=0 && currItemShelfs[0].amount){
+      if(((this.dir!='in'  && parseInt(currItemShelfs[0].amount)!=NaN  && currItemShelfs[0].amount!= undefined ) || (this.dir=='in' && itemLine.amount!="")) ){
         await this.inventoryService.getCmptByNumber(itemLineToAdd.itemNumber).subscribe(async itemRes => {
           if( itemRes.length>0){
 
