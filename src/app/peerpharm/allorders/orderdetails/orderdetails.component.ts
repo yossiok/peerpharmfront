@@ -242,12 +242,12 @@ export class OrderdetailsComponent implements OnInit {
     
   }
 
-  getOrderDetails() {
+  async getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
     //if someone loaded just one item in orders screen through "Load" button 
     if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
 
-    this.orderService.getOrderByNumber(this.number).subscribe(res => {
+    await this.orderService.getOrderByNumber(this.number).subscribe(res => {
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
       this.costumerInternalId = res[0].costumerInternalId;
@@ -257,7 +257,6 @@ export class OrderdetailsComponent implements OnInit {
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
     });
-
   }
   getOrderItems(): void {
     this.number = this.route.snapshot.paramMap.get('id');

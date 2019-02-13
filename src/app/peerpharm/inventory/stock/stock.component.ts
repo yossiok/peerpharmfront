@@ -22,6 +22,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 export class StockComponent implements OnInit {
  // resCmpt: any;
  itemmoveBtnTitle:string="Item Movements";
+ loadingMovements:boolean=false;
  showItemDetails:boolean=true;
  itemMovements:any=[];
   resCmpt:any = {
@@ -521,8 +522,9 @@ async updateItemStock(direction){
 
 
   async openData(cmptNumber) {
+    this.showItemDetails=true;
+    this.itemmoveBtnTitle="Item movements";
     this.itemMovements=[];
-
     this.openModalHeader="פריט במלאי  "+ cmptNumber;
     this.openModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
@@ -773,7 +775,7 @@ deleteItemStockAllocation(cmptId,rowIndex) {
 
 procurementRecommendations(){
   if(this.stockType!="product"){
-    let recommendList=this.components.filter(cmpt=> cmpt.minimumStock <= cmpt.amountKasem+cmpt.amountRH);
+    let recommendList=this.components.filter(cmpt=> cmpt.minimumStock >= cmpt.amount);
     this.components=recommendList;  
   }
 }
@@ -807,9 +809,11 @@ procurementRecommendations(){
 
   switchModalView()
   {
+    this.loadingMovements=true;
     this.inventoryService.getItemMovements(this.resCmpt.componentN).subscribe(data=>
       {
         this.itemMovements=data;
+        this.loadingMovements=false;
       });
       
     if(!this.showItemDetails)
@@ -822,7 +826,7 @@ procurementRecommendations(){
     {
       this.showItemDetails=false;
       this.itemmoveBtnTitle="Back to item details";
-
+      this.loadingMovements=false;
     }
   }
 
