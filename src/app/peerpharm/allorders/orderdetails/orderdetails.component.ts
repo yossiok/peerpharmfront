@@ -458,6 +458,7 @@ export class OrderdetailsComponent implements OnInit {
 
   setBatch(item, batch, existBatch) {
     let updatedBatch;
+    batch=batch.toLowerCase();
     if(existBatch!=null && existBatch!=undefined && existBatch!=""){
       //adding to exist batch number to oreder item
       updatedBatch=batch + "+" + existBatch;
@@ -475,6 +476,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   updateBatchExist(item , batch){
+    batch=batch.toLowerCase();
     if(!batch){
       let batchObj = { orderItemId: item._id, fillingStatus: "mkp batch exist"};
       console.log(batchObj);
@@ -576,7 +578,7 @@ export class OrderdetailsComponent implements OnInit {
         var check=false;
         var matchAllArr=0;
         wordsArr.forEach(w => {
-            if(x.discription.toLowerCase().includes(w.toLowerCase()) ){
+            if( (x.itemFullName&&x.itemFullName.toLowerCase().includes(w.toLowerCase())) || (x.discription&&x.discription.toLowerCase().includes(w.toLowerCase())) ){
               matchAllArr++
             }
             (matchAllArr==wordsArr.length)? check=true : check=false ; 
