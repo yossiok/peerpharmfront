@@ -6,9 +6,10 @@
 
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
 <div>
-    <button class='btn btn-primary' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
-    <button class="btn btn-info" (click)="procurementRecommendations()"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp;
-    <button class="btn btn-info" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>&nbsp;&nbsp;
+    <button class='btn btn-success' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
+    <button class="btn btn-info" (click)="procurementRecommendations('minimumStock')"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp;
+    <button class="btn btn-info" (click)="procurementRecommendations('haveRecommendation')"><b>המלצות רכש קיימות</b></button> &nbsp;&nbsp;
+    <button class="btn btn-primary" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>&nbsp;&nbsp;
     <!-- <button class="btn btn-info" (click)="getDoubleItemShelfs()"><b>getDoubleItemShelfs</b></button>&nbsp;&nbsp;  -->
     <!-- <button class="btn btn-info" (click)="getDoubleStockItems()"><b>getDoubleStockItems</b></button>&nbsp;&nbsp; -->
     <!-- <button class="btn btn-info" (click)="deleteDoubleStockItemsProducts()"><b>deleteDoubleStockItemsProducts</b></button>&nbsp;&nbsp; -->
@@ -131,7 +132,7 @@
             <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
           </td>
           <td><img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)" ></td>
-          <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
+          <td><button *ngIf="component.procurementSent==true && stockAdmin" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
           <td>
             <div *ngIf="stockAdmin" style="width: 100%; padding: 0px 0px">
                 <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 100%; padding: 0px" />

@@ -773,10 +773,18 @@ deleteItemStockAllocation(cmptId,rowIndex) {
   }
 }
 
-procurementRecommendations(){
-  if(this.stockType!="product"){
-    let recommendList=this.components.filter(cmpt=> cmpt.minimumStock >= cmpt.amount);
-    this.components=recommendList;  
+procurementRecommendations(filterType){
+  this.components=this.componentsUnFiltered;
+  if(filterType=="minimumStock"){
+    if(this.stockType!="product"){
+      let recommendList=this.components.filter(cmpt=> cmpt.minimumStock >= cmpt.amount);
+      this.components=recommendList;  
+    }  
+  }else if(filterType=="haveRecommendation"){
+    if(this.stockType!="product"){
+      let recommendList=this.components.filter(cmpt=> cmpt.procurementSent == true);
+      this.components=recommendList;  
+    }  
   }
 }
 
