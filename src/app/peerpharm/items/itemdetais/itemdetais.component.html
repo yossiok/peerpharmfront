@@ -646,7 +646,63 @@
               </tr>
             </table>
           </td>
-          <td class='extraTd' id="extraTdId" *ngIf="(item.extraImage1!='' && item.extraImage1!='undefined') || itemShown.extraText1!='' || (item.extraImage2!='' && item.extraImage2!='undefined') || itemShown.extraText2!=''">
+
+      <!-- <td class='sealTd' id="sealTdId" *ngIf="(item.sealImage!='' && item.sealImage!='undefined') || itemShown.sealTube!='' || itemShown.sealNumber!=''"> -->
+          <td class='sealTd' id="sealTdId" >
+              <table border="0" width="200px">
+                <tr>
+                  <td align='center'>
+                    <input type="file" id="id_itemImg1" (change)="selectFile($event, 'seal')"><br>
+                    <button class="btn" [disabled]="!selectedFiles" (click)="upload('seal')" *ngIf='sealFile'>>></button>
+                    <br>
+                    <img id="id_img8" [src]=item.sealImage>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Seal no'</b>
+                    <input type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber   (focusout)="loadPackagDetails(itemShown.bottleNumber, 'seal')">
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>_ Details : </b>
+                    <input type="text" id="id_sealText" [(ngModel)]=itemShown.sealTube>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Weight (gr)</b>
+                    <input type="text" id="id_item4weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item4w>
+                    <select id='id_item4select' [(ngModel)]=itemShown.item4s>
+                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+  
+                      <option value='paperCarton'>נייר/קרטון</option>
+                      <option value='drinkCarton'>קרטוניות משקה</option>
+                      <option value='totalCarton'>סה"כ קרטון</option>
+                      <option value='transperentGlass'>זכוכית שקופה</option>
+                      <option value='colorGlass'>זכוכית צבעונית</option>
+                      <option value='totalGlass'>סה"כ זכוכית</option>
+  
+                      <option value='pet'>PET</option>
+                      <option value='hdpe'>HDPE</option>
+                      <option value='ldpe'>LDPE</option>
+                      <option value='pp'>PP</option>
+                      <option value='ps'>PS</option>
+                      <option value='otherPlastic'>פלסטיק אחר</option>
+                      <option value='totalPlastic'>סה"כ פלסטיק</option>
+                      <option value='metal'>מתכת</option>
+                      <option value='wood'>עץ</option>
+                      <option value='otherMaterial'>חומר אחר</option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+            </td>                
+
+          <!-- <td class='extraTd' id="extraTdId" *ngIf="(item.extraImage1!='' && item.extraImage1!='undefined') || itemShown.extraText1!='' || (item.extraImage2!='' && item.extraImage2!='undefined') || itemShown.extraText2!=''"> -->
+          <td class='extraTd' id="extraTdId" >
+            <h5>Extra Images</h5>
             <table border="0" width="200px">
               <tr>
                 <td align='center'>
@@ -678,57 +734,9 @@
 
             </table>
           </td>
-          <td class='sealTd' id="sealTdId" *ngIf="(item.sealImage!='' && item.sealImage!='undefined') || itemShown.sealTube!='' || itemShown.sealNumber!=''">
-            <table border="0" width="200px">
-              <tr>
-                <td align='center'>
-                  <input type="file" id="id_itemImg1" (change)="selectFile($event, 'seal')"><br>
-                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('seal')" *ngIf='sealFile'>>></button>
-                  <br>
-                  <img id="id_img8" [src]=item.sealImage>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Seal no'</b>
-                  <input type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber   (focusout)="loadPackagDetails(itemShown.bottleNumber, 'seal')">
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>_ Details : </b>
-                  <input type="text" id="id_sealText" [(ngModel)]=itemShown.sealTube>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Weight (gr)</b>
-                  <input type="text" id="id_item4weight" style='width:40px; margin-left:8px' [(ngModel)]=itemShown.item4w>
-                  <select id='id_item4select' [(ngModel)]=itemShown.item4s>
-                    PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
 
-                    <option value='paperCarton'>נייר/קרטון</option>
-                    <option value='drinkCarton'>קרטוניות משקה</option>
-                    <option value='totalCarton'>סה"כ קרטון</option>
-                    <option value='transperentGlass'>זכוכית שקופה</option>
-                    <option value='colorGlass'>זכוכית צבעונית</option>
-                    <option value='totalGlass'>סה"כ זכוכית</option>
 
-                    <option value='pet'>PET</option>
-                    <option value='hdpe'>HDPE</option>
-                    <option value='ldpe'>LDPE</option>
-                    <option value='pp'>PP</option>
-                    <option value='ps'>PS</option>
-                    <option value='otherPlastic'>פלסטיק אחר</option>
-                    <option value='totalPlastic'>סה"כ פלסטיק</option>
-                    <option value='metal'>מתכת</option>
-                    <option value='wood'>עץ</option>
-                    <option value='otherMaterial'>חומר אחר</option>
-                  </select>
-                </td>
-              </tr>
-            </table>
-          </td>
+
           <td>
             <table border="0" width="300px">
               <tr>

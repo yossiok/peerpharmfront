@@ -413,11 +413,11 @@ async updateItemStock(direction){
     let category= this.filterByCategory.nativeElement.value
     if(type!="" || category!=""){
       if(category!="" && type!="" ){
-        this.components=this.components.filter(x=> (x.componentType.includes(type) && x.componentCategory.includes(category)) );
+        this.components=this.components.filter(x=> (x.componentType.includes(type) && x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
       }else if(category=="" && type!=""){
-        this.components=this.components.filter(x=> x.componentType.includes(type));
+        this.components=this.components.filter(x=> (x.componentType.includes(type) && x.itemType.includes(this.stockType) ) );
       }else if(category!="" && type==""){
-        this.components=this.components.filter(x=> x.componentCategory.includes(category));
+        this.components=this.components.filter(x=> (x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
       }
     }
     if(this.components.length==0){

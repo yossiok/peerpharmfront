@@ -19,12 +19,16 @@
 <div *ngIf="loadData==false">
   <p>Showing {{ordersItems.length}} items</p>
 </div>
+<!-- <div>
+  <button *ngIf="!multi && ordersItems.length!=0" (click)="openCmptDemandsModal()">Order Components Demand</button>
+</div> -->
 <input matInput  placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
 
 <table class='table' *ngIf="loadData==false">
   <thead class='bg-info text-white'>
     <tr>
       <th> #</th>
+
       <th *ngIf="!showingAllOrders && multi">Order Number</th>
       <th>Item Number </th>
       <th>Description </th>
@@ -341,14 +345,8 @@
               </tbody>
             </table>
         </div>
-
-
-
-</div>
-
-
-</div>
-
+      </div>
+   </div>
 
     </div>
     <div class="modal-footer">
@@ -356,6 +354,70 @@
     </div>
   </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <div *ngIf="cmptModal==true" id="cmptModal" class="modal3" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
+
+      <!-- Modal content -->
+      <div class="modal-content" style='width:650px' id='modelC'>
+        <div class="modal-header">
+          <span class="close" id="closeId3" (click)="cmptModal=false ; newItem='';">&times;</span>
+          <h2 id='div_h3'>{{openOrderPackingModalHeader}}</h2><br>
+        </div>
+
+        <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
+          <!-- <div clas="modalFullWidth" width="100%">
+
+          </div> -->
+          <h4>auto components Header TBD</h4> 
+          <table class="itemPackings" width="100%">
+            <thead>
+              <tr>
+                <th><b>מספר פריט</b></th>
+                <th><b>יח' בקרטון</b></th>
+                <th><b>קרטונים במשטח</b></th>
+                <th><b>מספר משטח</b></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let itemPackingPallet of itemPackingList">
+                <td>{{itemPackingPallet.itemNumber}}</td>
+                <td>{{itemPackingPallet.pcsCtn}}</td>
+                <td>{{itemPackingPallet.ctnPallet}}</td>
+                <td>{{itemPackingPallet.palletNumber}}</td>
+              </tr>
+            </tbody>
+          </table>
+<br><br>
+
+    <div class="container">
+    </div>
+
+    </div>
+    <div class="modal-footer">
+      <!-- <button  class="btn btn-success" (click)="updateItemPacking(itemNumber)" >עדכן</button> -->
+    </div>
+  </div>
 
 
 

@@ -172,4 +172,7 @@ export class OrdersService {
     let url = this.baseUrl + 'packingPallltItems/add';
     return this.http.post(url, JSON.stringify(newObj), this.options).pipe(map(res => res.json()));
   }
+
+  //get items required elements for item: components/stickers/boxes/cartons
+
 }

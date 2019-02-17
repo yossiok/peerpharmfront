@@ -256,6 +256,7 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+
     });
   }
   getOrderItems(): void {
@@ -590,6 +591,49 @@ export class OrderdetailsComponent implements OnInit {
       this.ordersItems=this.ordersItemsCopy.slice();
     }
   }
+
+
+  // checkboxAllOrders(ev){
+  //   this.ordersItems.filter(e => e.isSelected = ev.target.checked)
+  // }
+
+  openCmptDemandsModal(){
+    this.number
+    this.ordersItems
+    this.multi
+    this.showingAllOrders
+    this.showingOneOrder
+    this.internalNumArr
+
+    debugger
+
+    /*
+    FIELDS WE WANT TO GET FOR EACH ORDER_ITEM FROM ITEMS COLLECTION
+    
+    itemNumber
+
+    stickerNumber: String,
+    stickerTypeK: String,
+    StickerLanguageK: String,
+
+    boxNumber: String,
+    boxTypeK: String,
+
+    cartonNumber: String,
+    PcsCarton: String,
+    *** cartonNumberQnt:  =Qnt/PcsCarton: ***
+
+    bottleNumber: String,
+    capNumber: String,
+    pumpNumber: String,
+    sealNumber: String,
+    goddet: ???
+
+    
+    */
+  }
+
+ 
 }
 
 

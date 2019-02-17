@@ -48,7 +48,8 @@
     <tr *ngFor="let order of orders; let i = index"  [style.background-color]="order.color"  >
           <td style="width:5%;">{{i+1}}</td>
           <td style="width:5%;" (click)="edit('')">
-            <input type="checkbox" [(ngModel)]="order.isSelected"  name="orderSelect"> </td>
+            <input type="checkbox" [(ngModel)]="order.isSelected"  name="orderSelect"> 
+          </td>
           <td (click)="edit('')" >
             <a target="_blank"  routerLink='/peerpharm/allorders/orderitems/{{order.orderNumber}}' >
               <!-- <a routerLink="/orderitems/{{order._id}}">-->

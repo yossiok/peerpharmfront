@@ -85,7 +85,7 @@ export class OrdersComponent implements OnInit {
           Object.assign({ isSelected: false }, order);
           order.NumberCostumer = order.orderNumber + " " + order.costumer;
 
-        })
+        });
         this.orders = orders;
         this.ordersCopy = orders;
       })
