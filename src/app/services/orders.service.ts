@@ -62,9 +62,7 @@ export class OrdersService {
   }
   getOrderById(id): Observable<any> {
     let url = this.baseUrl + 'orderitem?orderId=' + id;
-    return this.http.get(url).pipe(
-      map(reponse => reponse.json())
-    );
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   getOrderItemsByNumber(orderNumber): Observable<any> {
@@ -174,5 +172,9 @@ export class OrdersService {
   }
 
   //get items required elements for item: components/stickers/boxes/cartons
-
+  
+  getOrderComponents(orderItemsNumArr): Observable<any> {
+    let url = this.baseUrl + 'orderitem/getComponents?orderItemsNumArr=' + orderItemsNumArr;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 }

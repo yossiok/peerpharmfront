@@ -53,6 +53,15 @@ input[type=checkbox]
 #myModal table, #myModal h4{
   float: right;
 }
+
+#cmptModal{
+  float: right;
+}
+#cmptModal table, #cmptModal h4{
+  float: right;
+}
+
+
 .table{
   color:black;
   font-size: 15px;
@@ -159,7 +168,7 @@ background: repeating-linear-gradient(
 }
 
 
-.modal-content, #myModal
+.modal-content, #myModal , #cmptModal
 {
     height: 75vh;
     padding: 0px;

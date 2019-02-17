@@ -81,6 +81,7 @@ export class OrderdetailsComponent implements OnInit {
   ordersToCheck = [];
   internalNumArr=[];
   packingModal=false;
+  cmptModal=false;
   packingItemN="";
   packingOrderN="";
   openOrderPackingModalHeader="";
@@ -93,6 +94,15 @@ export class OrderdetailsComponent implements OnInit {
   showingOneOrder:Boolean;
   showingAllOrders:Boolean;
   orderPackingList:Array<any>=[];
+  orderItemsComponents:Array<any>=[];
+
+  bottleList: Array<any>=[];
+  capList: Array<any>=[];
+  pumpList: Array<any>=[];
+  sealList: Array<any>=[];
+  stickerList: Array<any>=[];
+  boxList: Array<any>=[];
+  cartonList: Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -470,6 +480,12 @@ export class OrderdetailsComponent implements OnInit {
     console.log(batchObj);
     this.orderService.editItemOrder(batchObj).subscribe(res => {
       console.log(res);
+      this.ordersItems.map(orderItem=>{
+        if(orderItem._id == item._id){
+          orderItem.batch= updatedBatch;
+          orderItem.fillingStatus= "formula porduced " + updatedBatch;
+        }
+      });
       this.toastSrv.success(updatedBatch , "Changes Saved");
     });
 
@@ -482,6 +498,7 @@ export class OrderdetailsComponent implements OnInit {
       console.log(batchObj);
       this.orderService.editItemOrder(batchObj).subscribe(res => {
         console.log(res);
+        
         // this.toastSrv.success(updatedBatch , "Changes Saved");
       });
 
@@ -597,15 +614,129 @@ export class OrderdetailsComponent implements OnInit {
   //   this.ordersItems.filter(e => e.isSelected = ev.target.checked)
   // }
 
-  openCmptDemandsModal(){
-    this.number
-    this.ordersItems
-    this.multi
-    this.showingAllOrders
-    this.showingOneOrder
-    this.internalNumArr
+  async openCmptDemandsModal(){
 
-    debugger
+    this.bottleList= [];
+    this.capList= [];
+    this.pumpList= [];
+    this.sealList= [];
+    this.stickerList= [];
+    this.boxList= [];
+    this.cartonList= [];
+    if(this.ordersItems.length>0){
+      this.internalNumArr=[];
+      this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber) );
+      await this.orderService.getOrderComponents(this.internalNumArr).subscribe( async res=>{      
+        await res.map(async item=> {
+          let i=this.ordersItems.filter(x=> x.itemNumber==item.itemNumber)[0];
+          item.quantity = parseInt(i.quantity);
+          item.itemName = i.discription;
+
+          if (item.bottleNumber!='' && item.bottleNumber!='---' ) {
+            let newCmpt= true;
+            await this.bottleList.forEach(b=>{
+              if(b.bottleNumber==item.bottleNumber) {
+                newCmpt=false;
+                b.qnt+=parseInt(item.quantity);
+              }
+            });
+            if(newCmpt){
+              this.bottleList.push({bottleNumber:item.bottleNumber , qnt:item.quantity});
+              newCmpt=false;
+            }
+          }
+
+          if (item.capNumber!='' && item.capNumber!='---' ) {
+            let newCmpt= true;
+            await this.capList.forEach(b=>{
+              if(b.capNumber==item.capNumber) {
+                newCmpt=false;
+                b.qnt+=parseInt(item.quantity);
+              }
+            });
+            if(newCmpt){
+              this.capList.push({capNumber:item.capNumber , qnt:item.quantity});
+              newCmpt=false;
+            }
+          }
+
+          if (item.pumpNumber!='' && item.pumpNumber!='---' ) {
+            let newCmpt= true;
+            await this.pumpList.forEach(b=>{
+              if(b.pumpNumber==item.pumpNumber) {
+                newCmpt=false;
+                b.qnt+=parseInt(item.quantity);
+              }
+            });
+            if(newCmpt){
+              this.pumpList.push({pumpNumber:item.pumpNumber , qnt:item.quantity});
+              newCmpt=false;
+            }
+          }
+          if (item.sealNumber!='' && item.sealNumber!='---' ) {
+            let newCmpt= true;
+            await this.sealList.forEach(b=>{
+              if(b.sealNumber==item.sealNumber) {
+                newCmpt=false;
+                b.qnt+=parseInt(item.quantity);
+              }
+            });
+            if(newCmpt){
+              this.sealList.push({sealNumber:item.sealNumber , qnt:item.quantity});
+              newCmpt=false;
+            }
+          }
+          if (item.stickerNumber!='' && item.stickerNumber!='---' ) {
+            let newCmpt= true;
+            await this.stickerList.forEach(b=>{
+              if(b.stickerNumber==item.stickerNumber) {
+                newCmpt=false;
+                b.qnt+=parseInt(item.quantity);
+              }
+            });
+            if(newCmpt){
+              this.stickerList.push({stickerNumber:item.stickerNumber , qnt:item.quantity});
+              newCmpt=false;
+            }
+          }
+          if (item.boxNumber!='' && item.boxNumber!='---' ) {
+            let newCmpt= true;
+            await this.boxList.forEach(b=>{
+              if(b.boxNumber==item.boxNumber) {
+                newCmpt=false;
+                b.qnt+=parseInt(item.quantity);
+              }
+            });
+            if(newCmpt){
+              this.boxList.push({boxNumber:item.boxNumber , qnt:item.quantity});
+              newCmpt=false;
+            }
+          }
+          if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
+            let newCmpt= true;
+            await this.cartonList.forEach(b=>{
+              if(b.cartonNumber==item.cartonNumber) {
+                newCmpt=false;
+                b.qnt+=parseInt(item.quantity);
+              }
+            });
+            if(newCmpt){
+              this.cartonList.push({cartonNumber:item.cartonNumber , qnt:(item.quantity/parseInt(item.PcsCarton))});
+              newCmpt=false;
+            }
+          }
+          console.log(this.bottleList);
+        });
+        this.orderItemsComponents= res;
+        debugger
+        this.cmptModal=true;
+        console.log(res);
+        debugger
+      })  
+    }
+    
+
+    
 
     /*
     FIELDS WE WANT TO GET FOR EACH ORDER_ITEM FROM ITEMS COLLECTION
