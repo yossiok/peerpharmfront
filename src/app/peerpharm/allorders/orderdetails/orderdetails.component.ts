@@ -164,7 +164,7 @@ export class OrderdetailsComponent implements OnInit {
           });
 
 
-       });
+       });      
       this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingOrderN;
       this.openItemPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
       // this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingItemN;
@@ -614,6 +614,27 @@ export class OrderdetailsComponent implements OnInit {
   //   this.ordersItems.filter(e => e.isSelected = ev.target.checked)
   // }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   async openCmptDemandsModal(){
 
     this.bottleList= [];
@@ -627,104 +648,145 @@ export class OrderdetailsComponent implements OnInit {
       this.internalNumArr=[];
       this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber) );
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe( async res=>{      
-        await res.map(async item=> {
+        await res.forEach(async item=> {
+
           let i=this.ordersItems.filter(x=> x.itemNumber==item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
           item.itemName = i.discription;
 
           if (item.bottleNumber!='' && item.bottleNumber!='---' ) {
             let newCmpt= true;
-            await this.bottleList.forEach(b=>{
-              if(b.bottleNumber==item.bottleNumber) {
+            if( this.bottleList.map(function (el) { return el.bottleNumber; }).includes(item.bottleNumber) ){
+              this.bottleList.map(i=>{
+                if(i.bottleNumber==item.bottleNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.bottleList.push({bottleNumber:item.bottleNumber , qnt:item.quantity});
                 newCmpt=false;
-                b.qnt+=parseInt(item.quantity);
               }
-            });
-            if(newCmpt){
-              this.bottleList.push({bottleNumber:item.bottleNumber , qnt:item.quantity});
-              newCmpt=false;
             }
           }
 
           if (item.capNumber!='' && item.capNumber!='---' ) {
             let newCmpt= true;
-            await this.capList.forEach(b=>{
-              if(b.capNumber==item.capNumber) {
+            if( this.capList.map(function (el) { return el.capNumber; }).includes(item.capNumber) ){
+              this.capList.map(i=>{
+                if(i.capNumber==item.capNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.capList.push({capNumber:item.capNumber , qnt:item.quantity});
                 newCmpt=false;
-                b.qnt+=parseInt(item.quantity);
               }
-            });
-            if(newCmpt){
-              this.capList.push({capNumber:item.capNumber , qnt:item.quantity});
-              newCmpt=false;
+            }
+          }
+          
+          if (item.pumpNumber!='' && item.pumpNumber!='---' ) {
+            let newCmpt= true;
+            if( this.pumpList.map(function (el) { return el.pumpNumber; }).includes(item.pumpNumber) ){
+              this.pumpList.map(i=>{
+                if(i.pumpNumber==item.pumpNumber){
+                  newCmpt=false;
+                  // i= Object.assign(i, {qnt: i.qnt+parseInt(item.quantity) });
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.pumpList.push({pumpNumber:item.pumpNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
             }
           }
 
-          if (item.pumpNumber!='' && item.pumpNumber!='---' ) {
-            let newCmpt= true;
-            await this.pumpList.forEach(b=>{
-              if(b.pumpNumber==item.pumpNumber) {
-                newCmpt=false;
-                b.qnt+=parseInt(item.quantity);
-              }
-            });
-            if(newCmpt){
-              this.pumpList.push({pumpNumber:item.pumpNumber , qnt:item.quantity});
-              newCmpt=false;
-            }
-          }
           if (item.sealNumber!='' && item.sealNumber!='---' ) {
             let newCmpt= true;
-            await this.sealList.forEach(b=>{
-              if(b.sealNumber==item.sealNumber) {
+            if( this.sealList.map(function (el) { return el.sealNumber; }).includes(item.sealNumber) ){
+              this.sealList.map(i=>{
+                if(i.sealNumber==item.sealNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.sealList.push({sealNumber:item.sealNumber , qnt:item.quantity});
                 newCmpt=false;
-                b.qnt+=parseInt(item.quantity);
               }
-            });
-            if(newCmpt){
-              this.sealList.push({sealNumber:item.sealNumber , qnt:item.quantity});
-              newCmpt=false;
             }
           }
+
           if (item.stickerNumber!='' && item.stickerNumber!='---' ) {
             let newCmpt= true;
-            await this.stickerList.forEach(b=>{
-              if(b.stickerNumber==item.stickerNumber) {
+            if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerNumber) ){
+              this.stickerList.map(i=>{
+                if(i.stickerNumber==item.stickerNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.stickerList.push({stickerNumber:item.stickerNumber , qnt:item.quantity});
                 newCmpt=false;
-                b.qnt+=parseInt(item.quantity);
               }
-            });
-            if(newCmpt){
-              this.stickerList.push({stickerNumber:item.stickerNumber , qnt:item.quantity});
-              newCmpt=false;
             }
           }
+
           if (item.boxNumber!='' && item.boxNumber!='---' ) {
             let newCmpt= true;
-            await this.boxList.forEach(b=>{
-              if(b.boxNumber==item.boxNumber) {
+            if( this.boxList.map(function (el) { return el.boxNumber; }).includes(item.boxNumber) ){
+              this.boxList.map(i=>{
+                if(i.boxNumber==item.boxNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.boxList.push({boxNumber:item.boxNumber , qnt:item.quantity});
                 newCmpt=false;
-                b.qnt+=parseInt(item.quantity);
               }
-            });
-            if(newCmpt){
-              this.boxList.push({boxNumber:item.boxNumber , qnt:item.quantity});
-              newCmpt=false;
             }
           }
+
           if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
             let newCmpt= true;
-            await this.cartonList.forEach(b=>{
-              if(b.cartonNumber==item.cartonNumber) {
+            if( this.cartonList.map(function (el) { return el.cartonNumber; }).includes(item.cartonNumber) ){
+              this.cartonList.map(i=>{
+                if(i.cartonNumber==item.cartonNumber){
+                  newCmpt=false;
+                  i.qnt= i.qnt+(item.quantity/parseInt(item.PcsCarton));
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.cartonList.push({cartonNumber:item.cartonNumber , qnt: (item.quantity/parseInt(item.PcsCarton)) });
                 newCmpt=false;
-                b.qnt+=parseInt(item.quantity);
               }
-            });
-            if(newCmpt){
-              this.cartonList.push({cartonNumber:item.cartonNumber , qnt:(item.quantity/parseInt(item.PcsCarton))});
-              newCmpt=false;
             }
           }
+
+          // if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
+          //   let newCmpt= true;
+          //   await this.cartonList.forEach(b=>{
+          //     if(b.cartonNumber==item.cartonNumber) {
+          //       newCmpt=false;
+          //       b.qnt+=item.quantity/parseInt(item.PcsCarton);
+          //     }
+          //   });
+          //   if(newCmpt){
+          //     this.cartonList.push({cartonNumber:item.cartonNumber , qnt:(item.quantity/parseInt(item.PcsCarton))});
+          //     newCmpt=false;
+          //   }
+          // }
           console.log(this.bottleList);
         });
         this.orderItemsComponents= res;
@@ -736,11 +798,11 @@ export class OrderdetailsComponent implements OnInit {
     }
     
 
-    
+
 
     /*
     FIELDS WE WANT TO GET FOR EACH ORDER_ITEM FROM ITEMS COLLECTION
-    
+
     itemNumber
 
     stickerNumber: String,
@@ -765,6 +827,17 @@ export class OrderdetailsComponent implements OnInit {
   }
 
  
+  // getItemWhShelfsList(orderItemsCmptArr) {
+
+  //   return new Promise(function (resolve, reject) {
+  //       if () {
+  //         resolve(res);
+  //       } else resolve([])
+  //   });
+  // }
+
+
+
 }
 
 

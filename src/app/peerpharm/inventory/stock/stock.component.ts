@@ -413,26 +413,24 @@ async updateItemStock(direction){
     let category= this.filterByCategory.nativeElement.value
     if(type!="" || category!=""){
       if(category!="" && type!="" ){
-        this.components=this.components.filter(x=> (x.componentType.includes(type) && x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+        this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
       }else if(category=="" && type!=""){
-        this.components=this.components.filter(x=> (x.componentType.includes(type) && x.itemType.includes(this.stockType) ) );
+        this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.itemType.includes(this.stockType) ) );
       }else if(category!="" && type==""){
-        this.components=this.components.filter(x=> (x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+        this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
       }
-    }
-    if(this.components.length==0){
-      this.emptyFilterArr=false;
-      this.components=this.componentsUnFiltered;
+      if(this.components.length==0){
+        this.emptyFilterArr=false;
+        this.components=this.componentsUnFiltered;
+      }  
+    }else if(type=="" && category==""){
+      this.components=this.components.filter(x=> ( x.itemType.includes(this.stockType) ) );
     }
 
-    // if(category!=""){
-    //   this.components=this.components.filter(x=> x.componentCategory.includes(category));
-    // }
-    // let filterVal=event.target.value;
-    // this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(filterVal));
-    
   }
+  clearAllFiltersInputs(){
 
+  }
 
 
   getAllComponents() {

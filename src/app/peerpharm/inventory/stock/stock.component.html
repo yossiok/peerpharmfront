@@ -28,7 +28,7 @@
 <div style="width:100%;">
   
     <div style="width:100%; padding: 0px" >
-        <form style="width:100%;">
+        <form style="width:100%;" name="filterListFrom">
           <div class="row" style="width:100%;">
               <div class="col-sm-2">
                 <label class="fr">מספר פריט</label>
@@ -76,6 +76,10 @@
                   <option selected></option>
                   <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
                 </select>
+              </div>
+              <div *ngIf="stockType=='component'" class="col-sm-1">
+                <br>
+                <button class="btn btn-warning" type="reset"><b>נקה שדות חיפוש</b></button>
               </div>
           </div>
         </form>
