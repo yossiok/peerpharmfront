@@ -65,7 +65,6 @@ export class OrdersComponent implements OnInit {
             order.deliveryDate=deliveryDateArr[0]+"/"+deliveryDateArr[1]+"/"+deliveryDateArr[2];
           }
           let todayDateArr=this.today.split("/");
-          debugger  
           if(parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[2])){
               //RED
               order.color = '#ff9999';
@@ -159,9 +158,8 @@ export class OrdersComponent implements OnInit {
         tempArrStr=tempArrStr+","+number;
       });
       
-      let urlPrefixIndex=window.location.href.indexOf("peerpharm");
-      let urlPrefix=window.location.href.substring(0,urlPrefixIndex-1)
-      debugger
+      let urlPrefixIndex=window.location.href.indexOf("/peerpharm");
+      let urlPrefix=window.location.href.substring(0,urlPrefixIndex)
       window.open(urlPrefix+"/peerpharm/allorders/orderitems/"+tempArrStr); 
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
     } else{
@@ -196,7 +194,6 @@ export class OrdersComponent implements OnInit {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.orders= tempArr;
-         debugger
     }else{
       this.orders=this.ordersCopy.slice();
     }
