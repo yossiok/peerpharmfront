@@ -203,11 +203,11 @@ export class OrderdetailsComponent implements OnInit {
       }
       else{
         this.showingAllOrders=false;
-          this.orderService.ordersArr.subscribe(res => {
+          this.orderService.ordersArr.subscribe(async res => {
             console.log(res)
             var numArr = this.number.split(",").filter(x=>x!="");
-            if(numArr.length>1){
-              this.orderService.getOrdersIdsByNumbers(numArr).subscribe(ordersIds => {
+            if(numArr.length>1){ //multi orders:  came through load button
+              this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async ordersIds => {
                 if(ordersIds.length>1){
                   this.orderService.getMultiOrdersIds(ordersIds).subscribe(orderItems => {
                     orderItems.forEach(item => {
@@ -219,9 +219,9 @@ export class OrderdetailsComponent implements OnInit {
                     this.multi = true;
                     console.log(orderItems);
                   });
-                }else {  //one order:
-                  this.getOrderDetails();
-                  this.getOrderItems();
+                }else {  //one order: but came through load button
+                  await this.getOrderDetails();
+                  await this.getOrderItems();
                   this.show = true;
                   this.multi = false;
               
@@ -229,23 +229,11 @@ export class OrderdetailsComponent implements OnInit {
 
               });
             } else {  //one order:
-              this.getOrderDetails();
-              this.getOrderItems();
+              await this.getOrderDetails();
+              await this.getOrderItems();
               this.show = true;
               this.multi = false;
-          
             }
-
-            // if (res.length > 0) { // if the request is for few orders:
-            //   this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
-            //     this.ordersItems = orderItems;
-            //    // this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
-            //    // this.getComponents(this.ordersItems[0].orderNumber);
-            //     this.multi = true;
-            //     console.log(orderItems)
-            //   });
-            // } 
-
           });
       }
     });
@@ -256,7 +244,7 @@ export class OrderdetailsComponent implements OnInit {
     this.number = this.route.snapshot.paramMap.get('id');
     //if someone loaded just one item in orders screen through "Load" button 
     if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
-
+    
     await this.orderService.getOrderByNumber(this.number).subscribe(res => {
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
@@ -266,7 +254,7 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
-
+      debugger
     });
   }
   getOrderItems(): void {
@@ -790,10 +778,8 @@ export class OrderdetailsComponent implements OnInit {
           console.log(this.bottleList);
         });
         this.orderItemsComponents= res;
-        debugger
         this.cmptModal=true;
         console.log(res);
-        debugger
       })  
     }
     
