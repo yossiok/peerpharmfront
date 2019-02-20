@@ -32,20 +32,24 @@
           <div class="row" style="width:100%;">
               <div class="col-sm-2">
                 <label class="fr">מספר פריט</label>
-                <input  #filterbyNum type="text" class="form-control" placeholder="Item Number" (change)="filterRowsByItemNumber($event)">
+                <input  #filterbyNum type="text" class="form-control" placeholder="Item Number" (change)="filterRows($event, 'itemNum' )">
+                <!-- <input  #filterbyNum type="text" class="form-control" placeholder="Item Number" (change)="filterRowsByItemNumber($event)"> -->
               </div>
               <div class="col-sm-2">
                   <label class="fr">שם פריט</label>
-                  <input  #filterByCmptName type="text" class="form-control" placeholder="Item Name" (change)="changeText($event, 'itemName')">
+                  <input  #filterByCmptName type="text" class="form-control" placeholder="Item Name" (change)="filterRows($event, 'itemName')">
+                  <!-- <input  #filterByCmptName type="text" class="form-control" placeholder="Item Name" (change)="changeText($event, 'itemName')"> -->
                 </div>
               <div *ngIf="stockType=='component'" class="col-sm-2">
                 <label class="fr">מק"ט ספק</label>
-                <input  #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number..." (change)="filterRowsByItemSupplierNumber($event)">
+                <input  #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number..." (change)="filterRows($event , 'supplierN')">
+                <!-- <input  #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number..." (change)="filterRowsByItemSupplierNumber($event)"> -->
               </div>
 
               <div *ngIf="stockType=='component'" class="col-sm-2">
                 <label class="fr">סוג רכיב</label>
-                <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'type')">
+                <select #filterByType class="form-control" (change)="filterRows($event , 'type')">
+                <!-- <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'type')"> -->
                   <option selected></option>
                   <option value='bottle_Glass'>בקבוק זכוכית</option>
                   <option value='bottle_Plastic'>בקבוק פלסטיק</option>
@@ -72,7 +76,8 @@
               </div>
               <div *ngIf="stockType=='component'" class="col-sm-2">
                 <label class="fr">קטגוריה</label>
-                <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')">
+                <select #filterByCategory class="form-control" (change)="filterRows($event , 'category')">
+                <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
                   <option selected></option>
                   <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
                 </select>

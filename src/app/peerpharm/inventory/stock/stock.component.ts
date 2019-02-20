@@ -92,13 +92,13 @@ export class StockComponent implements OnInit {
   ItemBatchArr:Array<any>;
   filterVal:String='';
   currModalImgSrc:String='';
-  // filterbyNumVal:String;
-  // filterByTypeVal:String;
-  // filterByCategoryVal:String;
+ 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
-
+  @ViewChild('filterBySupplierN') filterBySupplierN: ElementRef; //this.filterBySupplierN.nativeElement.value
+  @ViewChild('filterByCmptName') filterByCmptName: ElementRef; //this.filterByCmptName.nativeElement.value
   @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
+
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   // @ViewChild('procurmentInput') procurmentInput: ElementRef;
 
@@ -361,33 +361,36 @@ async updateItemStock(direction){
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==type);
   }
 
-  filterRowsByItemNumber(event){
-    this.filterVal='';
-    this.filterVal=event.target.value;
-    this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(this.filterVal) && x.itemType==this.stockType );
-    
-  }
-  filterRowsByItemSupplierNumber(event){
-    this.filterVal='';
-    this.filterVal=event.target.value;
-    this.components=this.componentsUnFiltered.filter(x=> x.componentNs.includes(this.filterVal)  && x.itemType==this.stockType );
-  }
-  filterRowsByItemName(event){
-    this.filterVal='';
-    this.filterVal=event.target.value;
-    this.components=this.componentsUnFiltered.filter(x=> x.componentName.toLowerCase().includes(this.filterVal.toLowerCase()) && x.itemType==this.stockType );
-    
-  }
 
-  changeText(ev, filterBy)
-  {
-    if(filterBy=='itemName'){
-      let word= ev.target.value;
+  filterRows(event,filterType){
+    this.emptyFilterArr=true;
+    this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType );
+    this.filterVal='';
+    this.filterVal=event.target.value;
+    if(this.filterByType.nativeElement.value!=""){
+      let CmptType=this.filterByType.nativeElement.value;
+      this.components=this.components.filter(x=> ( x.componentType.includes(CmptType) &&  x.itemType.includes(this.stockType) ) );
+    }
+    if(this.filterByCategory.nativeElement.value!=""){
+      let category=this.filterByCategory.nativeElement.value;
+      this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+    }
+    if(this.filterBySupplierN.nativeElement.value!=""){
+      let supplierN=this.filterBySupplierN.nativeElement.value;
+      this.components=this.components.filter(x=> ( x.suplierN.includes(supplierN) && x.itemType.includes(this.stockType) ) );
+    }
+    if(this.filterbyNum.nativeElement.value!=""){
+      let itemNum=this.filterbyNum.nativeElement.value;
+      this.components=this.components.filter(x=> ( x.componentN.includes(itemNum) && x.itemType.includes(this.stockType) ) );
+    }
+    
+    if(this.filterByCmptName.nativeElement.value!=""){
+      let word= event.target.value;
       let wordsArr= word.split(" ");
       wordsArr= wordsArr.filter(x=>x!="");
       if(wordsArr.length>0){
         let tempArr=[];
-        this.componentsUnFiltered.filter(stk=>{
+        this.components.filter(stk=>{
           var check=false;
           var matchAllArr=0;
           wordsArr.forEach(w => {
@@ -403,34 +406,77 @@ async updateItemStock(direction){
            debugger
       }
     }
-  }
-
-
-  filterRowsByCmptTypeanCategory(event,filter){
-    this.components= this.componentsUnFiltered;
-    this.emptyFilterArr=true;
-    let type=this.filterByType.nativeElement.value
-    let category= this.filterByCategory.nativeElement.value
-    if(type!="" || category!=""){
-      if(category!="" && type!="" ){
-        this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
-      }else if(category=="" && type!=""){
-        this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.itemType.includes(this.stockType) ) );
-      }else if(category!="" && type==""){
-        this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
-      }
-      if(this.components.length==0){
-        this.emptyFilterArr=false;
-        this.components=this.componentsUnFiltered;
-      }  
-    }else if(type=="" && category==""){
-      this.components=this.components.filter(x=> ( x.itemType.includes(this.stockType) ) );
+    
+    if(this.components.length==0){
+      this.emptyFilterArr=false;
+      this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType );
     }
-
+    debugger
   }
-  clearAllFiltersInputs(){
 
-  }
+
+  // filterRowsByItemNumber(event){
+  //   this.filterVal='';
+  //   this.filterVal=event.target.value;
+  //   this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(this.filterVal) && x.itemType==this.stockType );
+  // }
+  // filterRowsByItemSupplierNumber(event){
+  //   this.filterVal='';
+  //   this.filterVal=event.target.value;
+  //   this.components=this.componentsUnFiltered.filter(x=> x.componentNs.includes(this.filterVal)  && x.itemType==this.stockType );
+  // }
+  // filterRowsByItemName(event){
+  //   this.filterVal='';
+  //   this.filterVal=event.target.value;
+  //   this.components=this.componentsUnFiltered.filter(x=> x.componentName.toLowerCase().includes(this.filterVal.toLowerCase()) && x.itemType==this.stockType );
+  // }
+  // changeText(ev, filterBy)
+  // {
+  //   if(filterBy=='itemName'){
+  //     let word= ev.target.value;
+  //     let wordsArr= word.split(" ");
+  //     wordsArr= wordsArr.filter(x=>x!="");
+  //     if(wordsArr.length>0){
+  //       let tempArr=[];
+  //       this.componentsUnFiltered.filter(stk=>{
+  //         var check=false;
+  //         var matchAllArr=0;
+  //         wordsArr.forEach(w => {
+  //             if(stk.componentName.toLowerCase().includes(w.toLowerCase()) &&  stk.itemType==this.stockType){
+  //               matchAllArr++
+  //             }
+  //             (matchAllArr==wordsArr.length)? check=true : check=false ; 
+  //         }); 
+  
+  //         if(!tempArr.includes(stk) && check) tempArr.push(stk);
+  //       });
+  //          this.components= tempArr;
+  //          debugger
+  //     }
+  //   }
+  // }
+  // filterRowsByCmptTypeanCategory(event,filter){
+  //   this.components= this.componentsUnFiltered;
+  //   this.emptyFilterArr=true;
+  //   let type=this.filterByType.nativeElement.value
+  //   let category= this.filterByCategory.nativeElement.value
+  //   if(type!="" || category!=""){
+  //     if(category!="" && type!="" ){
+  //       this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+  //     }else if(category=="" && type!=""){
+  //       this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.itemType.includes(this.stockType) ) );
+  //     }else if(category!="" && type==""){
+  //       this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+  //     }
+  //     if(this.components.length==0){
+  //       this.emptyFilterArr=false;
+  //       this.components=this.componentsUnFiltered;
+  //     }  
+  //   }else if(type=="" && category==""){
+  //     this.components=this.components.filter(x=> ( x.itemType.includes(this.stockType) ) );
+  //   }
+  // }
+
 
 
   getAllComponents() {
