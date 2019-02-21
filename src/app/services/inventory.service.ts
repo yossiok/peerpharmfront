@@ -140,5 +140,8 @@ deleteDoubleStockItemsProducts(){
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 
-
+getItemsOnShelf(shelfPosition,wh , stockType){
+  let url = this.baseUrl + "itemShell?getItemsOnShelf=yes&shelfPosition="+shelfPosition +"&whareHouseId="+wh+"&stockType="+stockType;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 }

@@ -32,11 +32,13 @@ multiLinesArr:Array<any>;
 //  -------------------------
 StkMngNavBtnColor:String ="#1affa3";
 WhMngNavBtnColor:String ="";
+ItemsOnShelf:Array<any>;
 
 
   @ViewChild('container')
   @ViewChild('lineqnt')
   @ViewChild('wh') wh: ElementRef;
+  @ViewChild('shelfSearch') shelfSearch: ElementRef;
 
   private container: ElementRef;
   mainDivArr: any = [];
@@ -603,6 +605,34 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
 }
 
 
+
+
+
+searchItemsOnShelf(event){
+  this.ItemsOnShelf=[];
+  let shelf = event.target.value;
+  
+  let whId= this.curentWhareHouseId;
+  let stockType;
+  if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem")  stockType="component";
+  if(this.curentWhareHouseName == "Rosh HaAyin products")  stockType="product";
+  if(shelf!=''){
+    this.inventoryService.getItemsOnShelf(shelf, whId, stockType).subscribe(res => {
+      if(res=="shelfMissing"){
+        this.toastSrv.error("מדף לא קיים במחסן");
+      }
+      else if(res=="noItemsOnShelf"){
+        this.toastSrv.error("אין פריטים על המדף");
+      }else{
+        debugger
+        this.ItemsOnShelf=res;
+        console.log(this.ItemsOnShelf)
+      }
+    });
+  }else{
+    this.toastSrv.error('נא להכניס מדף');
+  }
+}
 
 
 

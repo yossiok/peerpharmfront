@@ -377,7 +377,8 @@ async updateItemStock(direction){
     }
     if(this.filterBySupplierN.nativeElement.value!=""){
       let supplierN=this.filterBySupplierN.nativeElement.value;
-      this.components=this.components.filter(x=> ( x.suplierN.includes(supplierN) && x.itemType.includes(this.stockType) ) );
+      debugger
+      this.components=this.components.filter(x=> ( x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType) ) );
     }
     if(this.filterbyNum.nativeElement.value!=""){
       let itemNum=this.filterbyNum.nativeElement.value;

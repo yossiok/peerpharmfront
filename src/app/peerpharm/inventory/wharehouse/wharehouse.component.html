@@ -26,21 +26,24 @@
       
             <tr *ngIf="screen=='stkManagment' " >
       
-                  <td>
-                      <button (click)="dirSet('stkManagment','in')" class='btn btn-info'>קבלת סחורה</button>
-                    </td>
-                    <td>
-                      <button (click)="dirSet('stkManagment','out')" class='btn btn-info'>הוצאת סחורה</button>
-                    </td>
-                    <td>
-                      <button (click)="dirSet('stkManagment','shelfChange')" class='btn btn-info'>שינוי מדף</button>
-                    </td>
-                    <!-- <td>
-                      <button (click)="dirSet('stkManagment','savedForOrder')" class='btn btn-info'>הקצאת סחורה</button>
-                    </td> -->
-                    <td>
-                      <button  (click)="dirSet('stkManagment','production')" class='btn btn-info'>העברה לייצור</button>
-                    </td>
+              <td>
+                <button (click)="dirSet('stkManagment','')" class='btn btn-info'>צפיה במדף</button>
+              </td>
+              <td>
+                <button (click)="dirSet('stkManagment','in')" class='btn btn-info'>קבלת סחורה</button>
+              </td>
+              <td>
+                <button (click)="dirSet('stkManagment','out')" class='btn btn-info'>הוצאת סחורה</button>
+              </td>
+              <td>
+                <button (click)="dirSet('stkManagment','shelfChange')" class='btn btn-info'>שינוי מדף</button>
+              </td>
+              <!-- <td>
+                <button (click)="dirSet('stkManagment','savedForOrder')" class='btn btn-info'>הקצאת סחורה</button>
+              </td> -->
+              <td>
+                <button  (click)="dirSet('stkManagment','production')" class='btn btn-info'>העברה לייצור</button>
+              </td>
       
             </tr>
           </table>
@@ -234,8 +237,37 @@
 
 
 
+<!-- <div *ngIf="dir=='' &&  dir!='whManagment'" style="text-align: right; " class="container">
+  <h3 > צפיה בפריטים על מדף</h3>
+  <form class="form-horizontal itemsList" [formGroup]="itemLine" >
+    <div class="form-group row">
+        <div class="col-sm-2">
+          <label>חפש מדף</label>
+          <input #shelfSearch type="text" class="form-control" placeholder="Item number" (blur)="searchItemsOnShelf($event)">
+        </div>
+      </div>
+    </form>
+    <div>
 
-
+      <table>
+        <thead>
+          <th>Item Number</th>
+          <th>Item Name</th>
+          <th>Quantity on Shelf</th>
+          <th>Item Image</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ItemsOnShelf">
+            <td>{{item.item}}</td>
+            <td>{{item.componentName}}</td>
+            <td>{{item.amount}}</td>
+            <td> <img [src]="item.img" alt="תמונת פריט"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+        
+</div> -->
 
 
 
