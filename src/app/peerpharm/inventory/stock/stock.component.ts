@@ -62,7 +62,7 @@ export class StockComponent implements OnInit {
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
 
   ngOnInit() {
-    this.components=[]; 
+    this.components=[];
     this.getAllComponents();
 
   }
@@ -88,7 +88,7 @@ export class StockComponent implements OnInit {
         break;
     }
     this.stockType=type;
- 
+
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==type);
   }
 
@@ -97,12 +97,12 @@ export class StockComponent implements OnInit {
 
   getAllComponents() {
     this.inventoryService.getAllComponents().subscribe(components => {
-debugger
+// debugger
       this.componentsUnFiltered=   components.splice(0);
       this.components = components;
       //why are we using set time out and not async await??
       setTimeout( ()=> {
-        
+
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
           console.log(res);
@@ -121,7 +121,7 @@ debugger
                 itemAllocSum= itemAllocSum-alloc.supplied;
               });
               cmpt.allocAmount=itemAllocSum;
-              debugger
+              // debugger
             }
 
 
@@ -136,7 +136,7 @@ debugger
 
     });
     console.log(this.components);
-    debugger;
+    // debugger;
   }
 
 
@@ -146,7 +146,7 @@ debugger
     this.openModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
-    
+
   }
   openAmountsData(cmptNumber, cmptId) {
     this.openModalHeader="כמויות פריט במלאי  "+ cmptNumber;
@@ -202,7 +202,7 @@ debugger
   uploadImg(fileInputEvent){
     let file  = fileInputEvent.target.files[0];
     console.log(file);
- 
+
     this.uploadService.uploadFileToS3Storage(file).subscribe(data=>{
       if(data.partialText)
       {
@@ -210,7 +210,7 @@ debugger
       this.resCmpt.img = data.partialText;
       console.log(" this.resCmpt.img "+  this.resCmpt.img);
       }
- 
+
     })
 }
 getCmptAmounts(cmptN, cmptId){
@@ -218,11 +218,11 @@ getCmptAmounts(cmptN, cmptId){
   this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
-    debugger;
+   // debugger;
   });
 
   this.openAmountsData(cmptN, cmptId);
-  debugger;
+  // debugger;
 }
 
 
@@ -231,10 +231,10 @@ getCmptAmounts(cmptN, cmptId){
 inputProcurment(event: any) { // without type info
   this.procurementInputEvent=event;
   this.procurmentQnt = event.target.value;
-  debugger;
+ // debugger;
 }
 updateProcurment(componentId,componentNum,status){
-  debugger
+ // debugger
   if(status=="false"){
     this.procurmentQnt=null;
   }
@@ -243,7 +243,7 @@ updateProcurment(componentId,componentNum,status){
     componentN:componentNum,
     procurementSent:status,//האם בוצעה הזמנת רכש
     procurementAmount:this.procurmentQnt,//כמות בהזמנת רכש
-  } 
+  }
   this.inventoryService.updateComptProcurement(objToUpdate).subscribe(res=>{
     if(res.ok!=0 && res.n!=0){
       console.log("res updateComptProcurement: "+res);
@@ -276,7 +276,7 @@ addItemStockAllocation(componentNum){
     }
     this.inventoryService.updateComptAllocations(objToUpdate).subscribe(res=>{
       if(res.ok!=0 && res.n!=0){
-        debugger;
+       // debugger;
         console.log("res updateComptAllocations: "+res);
         this.resCmpt.allocations.push(objToUpdate.allocations[0]);
         this.resCmpt.allocAmount+=objToUpdate.allocations[0].amount;
@@ -285,19 +285,19 @@ addItemStockAllocation(componentNum){
   }
   this.newAllocationOrderNum=null;
   this.newAllocationAmount=null;
-  debugger;
+ // debugger;
 }
 edit(index) {
   this.EditRowId = index;
 }
 saveAllocEdit(cmptId,rowIndex) {
   //not in use now
-  debugger;
+  // debugger;
   // "suppliedAlloc": this.suppliedAlloc.nativeElement.value,
 
 }
 editItemStockAllocationSupplied(cmptId,rowIndex){
-  debugger;
+ // debugger;
   let oldAllocationsArr=this.resCmpt.allocations;
   let newSupplied=this.suppliedAlloc.nativeElement.value;
   oldAllocationsArr[this.EditRowId].supplied=newSupplied;
@@ -306,10 +306,10 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
     _id: this.itemIdForAllocation,
     allocations:newAllocationsArr,
     }
-  debugger;
+ // debugger;
   this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
     if(res.ok!=0 && res.n!=0){
-      debugger;
+     // debugger;
       console.log("res updateCompt: "+res);
       this.EditRowId='';
       this.resCmpt.allocations=newAllocationsArr;
@@ -317,10 +317,10 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
         this.resCmpt.allocations.forEach(alloc=>{
           itemAllocSum= itemAllocSum+alloc.amount;
           itemAllocSum= itemAllocSum-alloc.supplied;
-debugger
+// debugger
         });
         this.resCmpt.allocAmount=itemAllocSum;
-        debugger
+        // debugger
       }
   });
 }
@@ -328,7 +328,7 @@ debugger
 
 
 deleteItemStockAllocation(cmptId,rowIndex) {
-  debugger
+ // debugger
 
   if (confirm("מחיקת הקצאה")) {
     let amountDeleted=this.resCmpt.allocations[rowIndex].amount;
@@ -339,7 +339,7 @@ deleteItemStockAllocation(cmptId,rowIndex) {
       }
     this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
       if(res.ok!=0 && res.nModified==1 ){
-        debugger;
+       // debugger;
         console.log("res updateCompt: "+res);
         this.resCmpt.allocAmount-=amountDeleted;
       }
@@ -350,10 +350,10 @@ deleteItemStockAllocation(cmptId,rowIndex) {
 procurementRecommendations(){
   let recommendList=this.components.filter(cmpt=> cmpt.minimumStock < cmpt.amountKasem+cmpt.amountRH);
   this.components=recommendList;
-  debugger;
+ // debugger;
 }
 
-  
+
   upload(src) {
 
     // const number = this.route.snapshot.paramMap.get('itemNumber');
@@ -366,7 +366,7 @@ procurementRecommendations(){
     //     this.progress.percentage = Math.round(100 * event.loaded / event.total);
     //   } else if (event instanceof HttpResponse) {
     //     console.log('File is completely uploaded!');
-    //     console.log(event.body);        
+    //     console.log(event.body);
     //   }
     // });
 
@@ -386,12 +386,12 @@ procurementRecommendations(){
       {
         this.itemMovements=data;
       });
-      
+
     if(!this.showItemDetails)
     {
       this.showItemDetails=true;
       this.itemmoveBtnTitle="Item movements";
-     
+
     }
     else
     {
@@ -400,5 +400,5 @@ procurementRecommendations(){
 
     }
   }
-  
+
 }

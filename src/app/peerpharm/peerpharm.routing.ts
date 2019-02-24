@@ -26,6 +26,8 @@ import {  WharehouseComponent } from './inventory/wharehouse/wharehouse.componen
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 import { PackingComponent } from './schedule/packing/packing.component';
+import { BarcodePrintComponent } from './schedule/barcode-print/barcode-print.component';
+import { NotificationComponent } from './notification/notification.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -83,6 +85,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Packing Schedule'
     },
     component: PackingComponent
+  },
+  {
+    path: 'schedule/barcode-print',
+    data: {
+      title: 'Print Barcode'
+    },
+    component: BarcodePrintComponent
   },
 
   {
@@ -209,6 +218,14 @@ export const PeerPharmRputs: Routes =[
       title : 'Forms'
     },
     component:FormdetailsComponent
+  }
+  ,
+  {
+    path :'notification',
+    data :{
+      title : 'Notification'
+    },
+    component: NotificationComponent
   }
 
 ];

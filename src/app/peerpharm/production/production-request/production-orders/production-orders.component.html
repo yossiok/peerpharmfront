@@ -1,0 +1,52 @@
+<form
+  class="form"
+  [formGroup]="prodOrdersForm"
+  style="margin-top:30px; border-top: 0.5px solid #00b090; padding-top:30px;"
+>
+  <div class="form-group row">
+    <label for="example-search-input" class="col-2 col-form-label"
+      >Related order number</label
+    >
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="number"
+        value=""
+        formControlName="orderNumber"
+      />
+    </div>
+    <div class="col-2">
+      <button
+        class="btn btn-success m-r-10"
+        type="button"
+        (click)="findOrderBynumber()"
+      >
+        Find Order
+      </button>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="example-search-output" class="col-2 col-form-label"
+      >Order Customer</label
+    >
+    <div class="col-2">
+      <input
+        class="form-control"
+        type="text"
+        value=""
+        formControlName="orderCustomer"
+      />
+    </div>
+    <label for="example-search-output" class="col-2 col-form-label"
+      >Order Delivery Date</label
+    >
+    <div class="col-2">
+      <input
+        class="form-control"
+        type="text"
+        value=""
+        formControlName="orderDeliveryDate"
+      />
+    </div>
+  </div>
+</form>

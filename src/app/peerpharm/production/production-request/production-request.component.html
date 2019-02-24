@@ -28,10 +28,55 @@
                 class="form-control"
                 type="search"
                 formControlName="itemNumber"
+                (focusout)="ValidateItemNumber()"
+                value=""
               />
+              <div *ngIf="errorItemNumber" style="font-size: 10pt; color: red;">
+                Not valid Item number
+              </div>
             </div>
           </div>
           <div class="form-group row">
+            <label for="example-makat-input" class="col-2 col-form-label"
+              >Makat Number</label
+            >
+            <div class="col-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="makatNumber"
+                value=""
+              />
+            </div>
+            <label for="example-makat-input" class="col-2 col-form-label"
+              >Item's Barkod</label
+            >
+            <div class="col-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="itemBarkod"
+                value=""
+              />
+            </div>
+          </div>
+          <div *ngFor="let order of this.productionScheduleObject.orders">
+            <app-production-orders
+              #childOrders
+              (sumQuantityChild)="UpdateTotalQuantity($event)"
+            ></app-production-orders>
+          </div>
+          <div class="m-t-40 row">
+            <button
+              class="btn btn-success m-r-10 col-2"
+              type="button"
+              (click)="RealtedOrders()"
+            >
+              Add Related Orders
+            </button>
+          </div>
+
+          <div class="form-group row" style="margin-top:30px">
             <label for="example-number-input" class="col-2 col-form-label"
               >Item production total quantity</label
             >
@@ -41,84 +86,6 @@
                 type="number"
                 value=""
                 formControlName="itemTotalQuantity"
-              />
-            </div>
-          </div>
-          <div class="m-t-40 row">
-            <input class="col-2 checkBox" type="checkbox" [checked]="orderchecked" (change)="orderchecked=!orderchecked" />
-            <label for="example-check-input" class="col-10 col-form-label"
-              >This request related to prior order</label
-            >
-          </div>
-            <div *ngIf="orderchecked">
-              <div class="form-group row">
-                <label for="example-search-input" class="col-2 col-form-label"
-                  >Related order number</label
-                >
-                <div class="col-8">
-                  <input
-                    class="form-control"
-                    type="number"
-                    value=""
-                    formControlName="orderNumber"
-                  />
-                </div>
-                <button
-                  class="btn btn-success m-r-10 col-2"
-                  type="button"
-                  (click)="findOrderBynumber()"
-                >
-                  Find Order
-                </button>
-              </div>
-              <div class="form-group row">
-                <label for="example-search-output" class="col-2 col-form-label"
-                  >Order Description</label
-                >
-                <div class="col-4">
-                  <input
-                    class="form-control"
-                    type="text"
-                    [value]="orderItemDes"
-                    formControlName="orderDes"
-                  />
-                </div>
-                <label for="example-search-output" class="col-2 col-form-label"
-                  >Order Quantity</label
-                >
-                <div class="col-4">
-                  <input
-                    class="form-control"
-                    type="text"
-                    [value]="orderItemQuantity"
-                    formControlName="orderQuantity"
-                  />
-                </div>
-              </div>
-            </div>
-          <div class="form-group row">
-            <label for="example-makat-input" class="col-2 col-form-label"
-              >Makat Number</label
-            >
-            <div class="col-10">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="makatNumber"
-                value=""
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="example-makat-input" class="col-2 col-form-label"
-              >Item's Barkod</label
-            >
-            <div class="col-10">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="itemBarkod"
-                value=""
               />
             </div>
           </div>

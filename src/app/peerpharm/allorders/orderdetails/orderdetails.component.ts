@@ -39,7 +39,7 @@ export class OrderdetailsComponent implements OnInit {
     block:'',
     qty:'',
     qtyProduced:'',
-    color: '', 
+    color: '',
     printType: '',
     nextStation: '',
     marks: '',
@@ -98,7 +98,7 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('date') date: ElementRef;
   @ViewChild('shift') shift: ElementRef;
   @ViewChild('marks') marks: ElementRef;
-  // @ViewChild('type') type:ElementRef; 
+  // @ViewChild('type') type:ElementRef;
 
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService) { }
@@ -111,13 +111,13 @@ export class OrderdetailsComponent implements OnInit {
        });
        this.orderService.getOrderPackingList(this.number).subscribe(orderPackingList=>{
           this.orderPackingList=orderPackingList;
-          
+
           this.orderPackingList.forEach(element => {
             if(!this.orderPalletsArr.includes(element.palletNumber)){
               this.orderPalletsArr.push(element.palletNumber);
-            }            
+            }
           });
-          
+
           debugger
        });
       this.openPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
@@ -126,7 +126,7 @@ export class OrderdetailsComponent implements OnInit {
 
     }
 
-    
+
   ngOnInit() {
     console.log('hi');
     this.orderService.openOrdersValidate.subscribe(res=>{
@@ -142,7 +142,7 @@ export class OrderdetailsComponent implements OnInit {
             item.colorBtn = '#33FFE0';
           });
           this.ordersItems = orderItems;
-          this.ordersItemsCopy = orderItems; 
+          this.ordersItemsCopy = orderItems;
           this.ordersItems.map(item=>{
             item.itemFullName = item.itemNumber + " "  +item.discription;
           })
@@ -151,7 +151,7 @@ export class OrderdetailsComponent implements OnInit {
           this.multi = true;
           console.log(orderItems)
         });
-          
+
       }
       else{
           this.orderService.ordersArr.subscribe(res => {
@@ -189,13 +189,13 @@ export class OrderdetailsComponent implements OnInit {
             //     this.multi = true;
             //     console.log(orderItems)
             //   });
-            // } 
+            // }
 
           });
       }
     })
 
-    
+
   }
 
   getOrderDetails() {
@@ -214,15 +214,15 @@ export class OrderdetailsComponent implements OnInit {
     this.number = this.route.snapshot.paramMap.get('id');
     document.title = "Order " + this.number;
     // const id = this.route.snapshot.paramMap.get('id');
-    //this.orderService.getOrderById(id).subscribe(orderItems => {    
+    //this.orderService.getOrderById(id).subscribe(orderItems => {
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
       orderItems.map( item => {
 
             //add license to item
       //////////////////CHECK IF ITEM HAVE LICENSE////////////////////////////
-           
+
             // this.orderService.getItemByNumber(item.itemNumber).subscribe(
-            //   itemDetais => { 
+            //   itemDetais => {
             //     debugger;
             //       item.licsensNumber=itemDetais.licsensNumber;
             //       item.licsensExp=itemDetais.licsensDate;
@@ -293,7 +293,7 @@ export class OrderdetailsComponent implements OnInit {
         });
         if (this.expand === true) { this.expand = false; }
         else { this.expand = true; }
-        
+
       });
 
 
@@ -387,13 +387,13 @@ export class OrderdetailsComponent implements OnInit {
       shift: this.shift.nativeElement.value,
       mkp: this.chosenType,
       status: 'open',
-      productionLine:'', 
+      productionLine:'',
       pLinePositionN:999
     }
     if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
     if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
 
-    this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));   
+    this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
     let dateSced = this.date.nativeElement.value;
     dateSced = moment(dateSced).format("DD/MM/YYYY");
     let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " +  dateSced};
@@ -494,8 +494,8 @@ export class OrderdetailsComponent implements OnInit {
       this.ordersItems=this.ordersItemsCopy.slice();
     }
     else
-    { 
-      this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase())); 
+    {
+      this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase()));
     }
   }
 }

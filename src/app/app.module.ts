@@ -37,7 +37,7 @@ import { SpinnerComponent } from './shared/spinner.component';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar'; 
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { ContentComponent } from './peerpharm/taskboard/core/content/content.component';
 import { MatSnackBar } from '@angular/material';
 import { OVERLAY_PROVIDERS } from '../../node_modules/@angular/cdk/overlay';
@@ -46,6 +46,7 @@ import { MyiframeComponent } from './myiframe/myiframe.component';
 import { ToastrModule } from 'ngx-toastr';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { NgxBarcodeModule } from 'ngx-barcode';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
 import { PackingComponent } from './peerpharm/schedule/packing/packing.component';
 
@@ -66,14 +67,14 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AppComponent,
     SpinnerComponent,
     FullComponent,
-    BlankComponent, 
+    BlankComponent,
     NavigationComponent,
-    BreadcrumbComponent,  
-    SidebarComponent , 
-    LoginComponent, 
-    
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe, 
-   
+    BreadcrumbComponent,
+    SidebarComponent ,
+    LoginComponent,
+
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,
+
   ],
   imports: [
     TranslateModule.forRoot({
@@ -85,15 +86,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     }),
     CommonModule,
     BrowserModule,
-    BrowserAnimationsModule, 
-    ToastrModule.forRoot(), 
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     HttpClientModule,
-    FormsModule,    
+    FormsModule,
    // AmplifyAngularModule   ,
     HttpModule,
     NgbModule.forRoot(),
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule,
+    NgxBarcodeModule.forRoot()
   ],
   providers: [
     MatSnackBar,

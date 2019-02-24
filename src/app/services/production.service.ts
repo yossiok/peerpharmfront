@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions, Jsonp } from "@angular/http";
 import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { map } from "rxjs/operators";
-import { ProdSchedule } from "../peerpharm/production/models/production-schedule";
+import { ProductionSchedule } from "../peerpharm/production/models/production-schedule";
 
 @Injectable({
   providedIn: "root"
@@ -37,12 +37,12 @@ export class ProductionService {
   // return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()));
   // }
 
-  addProductionSchedule(prodSchedule): Observable<ProdSchedule> {
+  addProductionSchedule(productionSchedule): Observable<ProductionSchedule> {
     const url = this.baseUrl + 'productionSchedule/add';
-    console.log(prodSchedule);
+    console.log(productionSchedule);
     console.log(url);
     return this.http
-      .post(url, prodSchedule, this.options)
+      .post(url, productionSchedule, this.options)
       .pipe(map(res => res.json()));
   }
 

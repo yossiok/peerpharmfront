@@ -36,10 +36,14 @@ table {
 thead {
   text-align: center;
 }
+th {
+  max-width: 120px;
+}
 td {
   border-bottom: 1px solid #ddd;
   font-family: "Berlin Sans FB";
   padding:5px;
+  max-width: 120px;
 }
 table tr:hover {
   background-color: lightblue;
@@ -57,7 +61,23 @@ table tr:hover {
   height:34px;
 }
 
+#table_body{
+  background-color: white;
+  width:100%;
+}
+
 @media only screen and (max-width: 1024px) {
+  th {
+    max-width: 80px;
+  }
+  td {
+    max-width: 80px;
+  }
+  .btn{
+    max-width: 75px;
+    padding:1px;
+    font-size: 9pt;
+  }
 
 }
 
@@ -78,3 +98,47 @@ table tr:hover {
     margin: 5mm 5mm 5mm 5mm;
   }
 }
+
+.barcodeForm label {
+  width: 150px;
+}
+
+input[type="radio"]  {
+  width:18px;
+  margin-left:20px;
+}
+
+.barcodeForm input[type="text"]{
+  width: 200px;
+}
+
+.barcodeForm input[type="number"]{
+  width: 200px;
+}
+
+
+.barcodeForm button {
+  margin-left: 8px;
+}
+
+.modal-footer {
+  display:flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.modal-footer .row {
+  width:100%;
+  text-align:center;
+}
+
+.sticker {
+  font-size: 12pt;
+  border:0.5px solid black;
+  text-align: center;
+}
+
+.right {
+  float:right;
+}
+

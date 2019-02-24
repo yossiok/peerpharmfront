@@ -1,0 +1,362 @@
+Filter By Date: <input type="date" #date [(ngModel)]="today" />
+<button class="btn btn-info">Filter</button>
+
+<form class="form" [formGroup]="addScheduleForm" (submit)="onSubmit()">
+  <table>
+    <thead class="bg-success text-white">
+      <tr>
+        <th class="positionClass"><b>P</b></th>
+        <th><b>Order</b></th>
+        <th><b>Item</b></th>
+        <th><b>Costumer</b></th>
+        <th><b>Name of product</b></th>
+        <th><b>Batch number</b></th>
+        <th><b>Package</b></th>
+        <th><b>Qty</b></th>
+        <th><b>Date</b></th>
+        <th><b>Remarks</b></th>
+        <th class="mkpClass printlessTd"><b>shift</b></th>
+        <th><input class="mkpClassInput" value="MKP" /></th>
+        <th>
+          <img
+            src="assets/images/24p.png"
+            style="width:55px; cursor: pointer;"
+            alt="Random second slide"
+          />
+        </th>
+      </tr>
+    </thead>
+    <tr>
+      <td class="positionClass">
+        <input
+          type="text"
+          id="input_position"
+          formControlName="positionN"
+          class="form-control"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          id="input_order"
+          formControlName="orderN"
+          class="form-control"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          id="input_item"
+          formControlName="item"
+          class="form-control"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          id="input_costumer"
+          formControlName="costumer"
+          class="form-control"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          id="input_productName"
+          class="form-control"
+          formControlName="productName"
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          id="input_batchN"
+          formControlName="batch"
+          class="form-control"
+        />
+      </td>
+      <td>
+        <textarea
+          rows="1"
+          cols="20"
+          id="input_package"
+          formControlName="packageP"
+          class="form-control"
+        ></textarea>
+      </td>
+      <td>
+        <input
+          type="text"
+          id="input_Qty"
+          formControlName="qty"
+          class="form-control"
+        />
+      </td>
+      <td>
+        <input
+          type="date"
+          id="input_Date"
+          formControlName="date"
+          class="form-control"
+        />
+      </td>
+      <td>
+        <textarea
+          rows="1"
+          cols="30"
+          id="input_marks"
+          formControlName="marks"
+          class="form-control"
+        ></textarea>
+      </td>
+      <td class="printlessTd">
+        <select
+          class="selectShiftClass"
+          id="select_shift"
+          formControlName="shift"
+          ><option value="Day">Day</option
+          ><option value="Night">Night</option></select
+        >
+      </td>
+      <td class="printlessTd mkpClass">
+        <input
+          type="radio"
+          name="mkp"
+          value="basic"
+          checked="checked"
+          formControlName="mkp"
+        />Basic<br />
+        <input
+          type="radio"
+          name="mkp"
+          value="tube"
+          formControlName="mkp"
+        />Tube<br />
+        <input
+          type="radio"
+          name="mkp"
+          value="mkp"
+          formControlName="mkp"
+        />Mkp<br />
+      </td>
+      <td class="printlessTd">
+        <button class="btn btn-info " type="submit">Add</button><br />
+      </td>
+    </tr>
+    <tbody id="table_body">
+      <tr *ngFor="let line of scheduleData">
+        <td class="positionClass">{{ line.positionN }}</td>
+        <td>
+          <a
+            target="_blank"
+            routerLink="/peerpharm/allorders/orderitems/{{ line.orderN }}"
+          >
+            {{ line.orderN }}
+          </a>
+        </td>
+        <td>
+          <a
+            target="_blank"
+            routerLink="/peerpharm/items/itemDetails/{{ line.item }}"
+          >
+            {{ line.item }}
+          </a>
+        </td>
+        <td>{{ line.costumer | slice: 0:30 }}</td>
+        <td>{{ line.productName }}</td>
+        <td>{{ line.batch }}</td>
+        <td>{{ line.packageP | slice: 0:20 }}</td>
+        <td>{{ line.qtyProduced }} / {{ line.qty }}</td>
+        <td>{{ line.date | date: "dd/MM/yyyy" }}</td>
+        <td>{{ line.marks }}</td>
+        <td class="mkpClass printlessTd">{{ line.shift }}</td>
+        <td class="printlessTd mkpClass">{{ line.mkp }}</td>
+        <td>
+          <button
+            class="btn btn-success m-r-10"
+            type="button"
+            (click)="openPrintBarkod(content, line)"
+          >
+            Print Barkod
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+
+<!--First Modal-->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Print Barkod Details</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="c('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form
+      class="form barcodeForm"
+      [formGroup]="printBarcodeForm"
+      (submit)="printSubmit()"
+    >
+      <div *ngIf="showCustomerFlag" class="form-group row">
+        <label for="customerName">Customer Name:</label>
+        <input class="form-control" type="text" formControlName="costumer" />
+        <button
+          type="button"
+          class="btn btn-success m-r-10"
+          (click)="RemoveFields('customer')"
+        >
+          Remove
+        </button>
+      </div>
+
+      <div *ngIf="showItemFlag" class="form-group row">
+        <label for="itemNumber">Item Number:</label>
+        <input class="form-control" type="text" formControlName="item" />
+        <button
+          type="button"
+          class="btn btn-success m-r-10"
+          (click)="RemoveFields('item')"
+        >
+          Remove
+        </button>
+      </div>
+
+      <div class="form-group row">
+        <label for="productName">Product Name:</label>
+        <input class="form-control" type="text" formControlName="productName" />
+      </div>
+
+      <div class="form-group row">
+        <label for="unitMsr">Volume Key:</label>
+        <input class="form-control" type="text" formControlName="unitMsr" />
+      </div>
+
+      <div class="form-group row">
+        <label for="pcsCarton">Pcs/Ctn:</label>
+        <input class="form-control" type="text" formControlName="pcsCtn" />
+      </div>
+
+      <div *ngIf="showBarcodeFlag" class="form-group row">
+        <label for="barcode">Barcode Number:</label>
+        <input class="form-control" type="text" formControlName="barcode" />
+        <button
+          type="button"
+          class="btn btn-success m-r-10"
+          (click)="RemoveFields('barcode')"
+        >
+          Remove
+        </button>
+      </div>
+
+      <div *ngIf="showBatchFlag" class="form-group row">
+        <label for="printBatch">Batch To Print:</label>
+        <input class="form-control" type="text" formControlName="batch" />
+        <button
+          type="button"
+          class="btn btn-success m-r-10"
+          (click)="RemoveFields('batch')"
+        >
+          Remove
+        </button>
+      </div>
+
+      <div *ngIf="showExpFlag" class="form-group row">
+        <label for="exp">Expiration:</label>
+        <input class="form-control" type="text" formControlName="exp" />
+        <button
+          type="button"
+          class="btn btn-success m-r-10"
+          (click)="RemoveFields('exp')"
+        >
+          Remove
+        </button>
+      </div>
+      <div class="form-group row">
+        <label for="local">Ship Within Israel?</label>
+        <input
+          class="radio"
+          type="radio"
+          name="local"
+          value="Yes"
+          checked="checked"
+          formControlName="local"
+        />Yes
+        <input
+          class="radio"
+          type="radio"
+          name="local"
+          value="No"
+          checked="checked"
+          formControlName="local"
+        />No
+      </div>
+      <div class="form-group row">
+        <label for="printQty">Amount Of Stickers To Print:</label>
+        <input class="form-control" type="number" formControlName="printQty" />
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="row">
+      <button
+        type="submit"
+        class="btn btn-outline-dark"
+        (click)="printSubmit()"
+      >
+        Next
+      </button>
+    </div>
+    <div id="print-section">
+      <div
+        class="row"
+        *ngFor="let sticker of amountOfStickersArr; let i = index"
+        [attr.data-index]="i"
+      >
+        <div class="col-sm-12 sticker">
+          <div class="row">
+            <b>{{ schedLine.productName }}</b>
+          </div>
+          <div class="row" *ngIf="showItemFlag">
+            <b>Item Number: {{ schedLine.item }}</b>
+          </div>
+          <div class="row">
+            <b class="col-sm-6"> {{ volumeK }} </b>
+            <b class="col-sm-6 right">{{ pcsCarton }}</b>
+          </div>
+          <div class="row">
+            <b class="col-sm-6" *ngIf="showBatchFlag"
+              >{{ printBarkod.batch }}
+            </b>
+            <div *ngIf="showExpFlag">
+              <b class="col-sm-3 right">Exp:</b>
+              <b class="col-sm-3 right">{{ printBarkod.exp }}</b>
+            </div>
+          </div>
+          <div class="row" *ngIf="showBarcodeFlag">
+            <ngx-barcode
+              *ngFor="let bcValue of printBarcodeValues"
+              [bc-element-type]="barcodeElementType"
+              [bc-value]="bcValue"
+              [bc-format]="barcodeFormat"
+              [bc-width]="barcodeWidth"
+              [bc-height]="barcodeHeight"
+              [bc-font-size]="barcodeFontSize"
+            ></ngx-barcode>
+            <b>{{ printBarkod.barcode }}</b>
+          </div>
+          <div class="row" *ngIf="showCustomerFlag">
+            <b>{{ schedLine.costumer }}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button  printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button">Print</button>
+  </div>
+</ng-template>

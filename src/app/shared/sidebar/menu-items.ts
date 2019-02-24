@@ -110,6 +110,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
+      {
+        path: '/peerpharm/schedule/barcode-print',
+        title: 'Barcode Print',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
     ]
   },
   {
@@ -130,6 +138,14 @@ export const ROUTES: RouteInfo[] = [
       {
         path: '/peerpharm/schedule/fillschedule',
         title: 'Department',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '/peerpharm/notification',
+        title: 'Notification',
         icon: ' fab fa-page4',
         class: '',
         extralink: false,

@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Add a new Notification</h4>
+
+        <form class="form" [formGroup]="noteForm" (submit)="onSubmit()">
+          <div class="form-group m-t-40 row">
+            <label for="example-text-input" class="col-2 col-form-label"
+              >Notification Content</label
+            >
+            <div class="col-10">
+              <textarea
+                class="form-control"
+                type="text"
+                formControlName="noteContent"
+              >
+              </textarea>
+            </div>
+          </div>
+          <div class="form-group m-t-40 row">
+            <label for="example-text-input" class="col-2 col-form-label"
+              >Notified Users</label
+            >
+            <div class="col-10">
+              <input type="checkbox" [checked]="allCheck" (change)="allUserSelect()" />
+              All Users
+              <div
+                formArrayName="sendUsers"
+                *ngFor="
+                  let user of noteForm.controls.sendUsers.controls;
+                  let i = index
+                "
+              >
+                  <input type="checkbox" [formControlName]="i" />
+                  <span class="userName">{{ allUsers[i].firstName }}</span>
+                  <span class="userName">{{ allUsers[i].lastName }}</span>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-info waves-effect waves-light">
+            Send Notification
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

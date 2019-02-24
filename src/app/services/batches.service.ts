@@ -18,11 +18,18 @@ export class BatchesService {
 
   getAllBatches():Observable<any>{
     let url = this.baseUrl + 'batch'
-    return this.http.get(url).pipe(map(reponse => reponse.json()));  
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   deleteBatch(batch) {
     let url = this.baseUrl + "batch/remove";
     return this.http.post(url, JSON.stringify(batch), this.options).pipe(map(res => res.json()))
+  }
+
+  getBatchData(batchNumber) {
+    let url = this.baseUrl + "batch?batchNumber=" + batchNumber;
+    return this.http.get(url).pipe(map(reponse =>
+      reponse.json()
+    ));
   }
 }

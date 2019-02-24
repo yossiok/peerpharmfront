@@ -1,10 +1,14 @@
-export class ProdSchedule {
+import { ProductionOrders } from './production-orders';
+
+export class ProductionSchedule {
   prodRequestNumber: number;
-  itemNumber: number;
-  itemTotalQuantity: number;
-  orderNumber: number;
-  orderDes: string;
-  orderQuantity: string;
-  makatNumber: string ;
+  itemNumber: string;
+  makatNumber: string;
   itemBarkod: string;
+  itemTotalQuantity: number;
+  orders: ProductionOrders[];
+
+  constructor() {
+    this.orders = [];
+  }
 }
