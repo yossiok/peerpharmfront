@@ -29,10 +29,10 @@ export class NotificationService {
     this.messages.next(msg);
   }
 
-  joinNotes(sendUsers: any[]): any {
- //  debugger;
-    this.wsService.joinNotes(sendUsers);
-  }
+//   joinNotes(sendUsers: any[]): any {
+//  //  debugger;
+//     this.wsService.joinNotes(sendUsers);
+//   }
 
   addNotification(
     noteCreated: Date,

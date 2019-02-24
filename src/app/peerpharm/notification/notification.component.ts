@@ -101,49 +101,49 @@ export class NotificationComponent implements OnInit {
     console.log(this.allCheck);
   }
 
-  onSubmit(): void {
-    event.preventDefault();
-    if (!this.allCheck) {
-       this.selectedUserIds = this.noteForm.value.sendUsers
-        .map((v, i) => (v ? this.allUsers[i]._id : null))
-        .filter(v => v !== null);
+  // onSubmit(): void {
+  //   event.preventDefault();
+  //   if (!this.allCheck) {
+  //      this.selectedUserIds = this.noteForm.value.sendUsers
+  //       .map((v, i) => (v ? this.allUsers[i]._id : null))
+  //       .filter(v => v !== null);
 
-      for (
-        let index = 0;
-        index < this.noteForm.controls.sendUsers.controls.length;
-        index++
-      ) {
-        if (!this.noteForm.controls.sendUsers.controls[index].value) {
-          this.noteForm.controls.sendUsers.removeAt(index);
-          index--;
-        }
-      }
-    }
-    else {
-      this.selectedUserIds = this.noteForm.value.sendUsers
-      .map((v, i) => (v ? null : this.allUsers[i]._id))
-      .filter(v => v !== null);
-    }
+  //     for (
+  //       let index = 0;
+  //       index < this.noteForm.controls.sendUsers.controls.length;
+  //       index++
+  //     ) {
+  //       if (!this.noteForm.controls.sendUsers.controls[index].value) {
+  //         this.noteForm.controls.sendUsers.removeAt(index);
+  //         index--;
+  //       }
+  //     }
+  //   }
+  //   else {
+  //     this.selectedUserIds = this.noteForm.value.sendUsers
+  //     .map((v, i) => (v ? null : this.allUsers[i]._id))
+  //     .filter(v => v !== null);
+  //   }
 
-    this.noteForm.controls["sendUsers"].setValue(this.selectedUserIds);
-    this.noteForm.controls["userId"].setValue(this.loggedInUser._id);
+  //   this.noteForm.controls["sendUsers"].setValue(this.selectedUserIds);
+  //   this.noteForm.controls["userId"].setValue(this.loggedInUser._id);
 
-    const newNotification = this.noteForm.value;
-    // console.log(newNotification);
+  //   const newNotification = this.noteForm.value;
+  //   // console.log(newNotification);
 
-  //  debugger;
-    this.notificationService.joinNotes(newNotification.sendUsers);
-    this.notificationService.sendMsg(newNotification);
+  // //  debugger;
+  //   this.notificationService.joinNotes(newNotification.sendUsers);
+  //   this.notificationService.sendMsg(newNotification);
 
-    this.notificationService
-      .addNotification(
-        newNotification.noteCreated,
-        newNotification.userId,
-        newNotification.noteContent,
-        newNotification.sendUsers,
-        newNotification.recievedUsers
-      )
-      .subscribe(data => console.log("added " + data));
+  //   this.notificationService
+  //     .addNotification(
+  //       newNotification.noteCreated,
+  //       newNotification.userId,
+  //       newNotification.noteContent,
+  //       newNotification.sendUsers,
+  //       newNotification.recievedUsers
+  //     )
+  //     .subscribe(data => console.log("added " + data));
 
-  }
+  // }
 }

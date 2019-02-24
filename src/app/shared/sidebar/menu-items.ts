@@ -102,14 +102,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      {
-        path: '/peerpharm/schedule/packingschedule',
-        title: 'Packing',
-        icon: ' fab fa-page4',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/schedule/packingschedule',
+      //   title: 'Packing',
+      //   icon: ' fab fa-page4',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       {
         path: '/peerpharm/schedule/barcode-print',
         title: 'Barcode Print',
@@ -143,14 +143,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      {
-        path: '/peerpharm/schedule/fillschedule',
-        title: 'Department',
-        icon: ' fab fa-page4',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/schedule/fillschedule',
+      //   title: 'Department',
+      //   icon: ' fab fa-page4',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       {
         path: '/peerpharm/notification',
         title: 'Notification',
@@ -248,22 +248,22 @@ export const ROUTES: RouteInfo[] = [
     class: 'has-arrow',
     extralink: false,
     submenu: [
-      {
-        path: '/peerpharm/schedule/fillschedule',
-        title: 'Item List',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-       {
-        path: '/peerpharm/schedule/fillschedule',
-        title: 'Item Tree',
-        icon: 'fas fa-tree',
-        class: '',
-        extralink: false,
-        submenu: []
-      }
+      // {
+      //   path: '/peerpharm/schedule/fillschedule',
+      //   title: 'Item List',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      //  {
+      //   path: '/peerpharm/schedule/fillschedule',
+      //   title: 'Item Tree',
+      //   icon: 'fas fa-tree',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // }
 
     ]
   },

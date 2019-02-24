@@ -454,6 +454,7 @@
               line.cmptsStatus != null && line.cmptsStatus.includes('false')
             "
             (click)="dismissInfo(line._id)"
+            style="width: 20px;"
           />
           <i
             class="ti-trash text-danger m-r-10"
@@ -466,13 +467,13 @@
             [(ngModel)]="line.isSelected"
             *ngIf="line._id !== EditRowId"
           />
-          <button
+          <!-- <button
             class="btn btn-success m-r-10"
             type="button"
             (click)="openPrintBarkod(content, line)"
           >
             Print Barkod
-          </button>
+          </button> -->
         </td>
         <td *ngIf="line._id === EditRowId">
           <i class="ti-save text-success m-r-10" (click)="updateSchedule()"></i>

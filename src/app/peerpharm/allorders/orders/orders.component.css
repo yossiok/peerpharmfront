@@ -10,12 +10,14 @@
 }
 
 .table-fixed th{
-    width:10%;
+    width:12%;
+    /* width:8%; */
     display: inline-block;
     border: none;
   }
   .table-fixed td{
-    width:10%;
+    width:12%;
+    /* width:8%; */
     display: inline-block;
     border-bottom: none;
     /* border-left: 1px black solid;     */
@@ -28,7 +30,8 @@
   
 
   .table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
-    width: 10%;
+    width:12%;
+    /* width:8%; */
     display: inline-block;
     border-bottom: none;
     font-family: "Times New Roman", Times, serif;
