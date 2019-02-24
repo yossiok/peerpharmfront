@@ -21,25 +21,24 @@ export class ProductionOrdersComponent implements OnInit {
     this.prodOrdersForm = new FormGroup({
       orderNumber: new FormControl('', [Validators.required]),
       orderDeliveryDate: new FormControl('', [Validators.required]),
-      orderCustomer: new FormControl('', [Validators.required])
+      orderQuantity: new FormControl('', [Validators.required])
     });
   }
 
   findOrderBynumber() {
     const orderNumber = this.prodOrdersForm.value.orderNumber;
 
-    // this.ordersService.getOrderByNumber(orderNumber).subscribe(data => {
-    //   data.map(orderItem => {
-    //      console.log(orderItem);
-        // const quantityItemNumber: Number = new Number(orderItem.quantity);
-        //  this.prodOrdersForm.controls['orderQuantity'].setValue(quantityItemNumber);
-        //  this.sumQuantityChild.emit(quantityItemNumber);
-      // });
-    // });
+    this.ordersService.getOrderItemsByNumber(orderNumber).subscribe(data => {
+      data.map(orderItem => {
+         console.log(orderItem);
+        const quantityItemNumber: Number = new Number(orderItem.quantity);
+         this.prodOrdersForm.controls['orderQuantity'].setValue(quantityItemNumber);
+         this.sumQuantityChild.emit(quantityItemNumber);
+      });
+    });
 
     this.ordersService.getOrderByNumber(orderNumber).subscribe(data => {
       data.map(orderItem => {
-        this.prodOrdersForm.controls['orderCustomer'].setValue(orderItem.costumer);
         this.prodOrdersForm.controls['orderDeliveryDate'].setValue(orderItem.deliveryDate);
       });
     });

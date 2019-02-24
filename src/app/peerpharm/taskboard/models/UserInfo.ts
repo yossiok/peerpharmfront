@@ -5,6 +5,8 @@ export class UserInfo
     firstName:string;
     lastName:string;
     userDepartments:string[];
+    userDepartment:string;
+    userPosition:string[];
     userEmail:string;
     modules:string[];
     role:string;
@@ -15,5 +17,6 @@ export class UserInfo
     twoway:boolean;
     picture:string;
     formsdisable: boolean;
+    authorization:string[];
 
 }

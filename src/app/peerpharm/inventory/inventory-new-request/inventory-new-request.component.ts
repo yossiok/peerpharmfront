@@ -32,6 +32,7 @@ export class InventoryNewRequestComponent implements OnInit {
     reqList:[],// itemId,requiredAmount ,suppliedAmount, relatedOrderNum, itemStatus, itemType
     itemsType: "", 
     reqStatus:'',
+    // qntSupplied:0,
   }
 
   constructor(private fb: FormBuilder, private inventoryReqService: InventoryRequestService, private toastSrv: ToastrService) { 
@@ -56,6 +57,7 @@ export class InventoryNewRequestComponent implements OnInit {
 
 
   ngOnInit() {
+    // this.getNewReqNumber();
     this.inventoryReqService.getLastRequsetId().subscribe(res => {
       this.newReqNumber=res.reqNum+1;
       this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
@@ -64,31 +66,44 @@ export class InventoryNewRequestComponent implements OnInit {
     this.inventoryReqForm.controls.reqList.setValidators([]);
   }
 
-  addNewRequest(form){
-    this.inventoryReqForm.value.reqNum;
-    if(this.inventoryReqForm.valid){
-      this.invReq={
-        reqNum: this.inventoryReqForm.value.reqNum,
-        fromWH:this.inventoryReqForm.value.fromWH,
-        toWH: this.inventoryReqForm.value.toWH,
-        currDate: this.inventoryReqForm.value.currDate,   
-        deliveryDate: this.inventoryReqForm.value.deliveryDate,   
-        reqList:this.inventoryReqForm.value.reqList,
-        itemsType: 'components', 
-        reqStatus:'open',
-      }
-      this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
-        debugger;
-        if(res){
-          this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" wharehouse.");
-          //error("Failed pleae finish filling the form");
-          console.log(res);
-        }
-      });
-    }else{
-      this.toastSrv.error("Failed pleae finish filling the form");
-    }
+  async addNewRequest(form){
+    // await this.getNewReqNumber();
+    // this.inventoryReqForm.value.reqNum;
 
+    //IN CASE OF MORE THAN ONE USER SENDS REQ AT THE SAME TIME
+    this.inventoryReqService.getLastRequsetId().subscribe(res => {
+
+      this.newReqNumber=res.reqNum+1;
+      this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
+
+      if(this.inventoryReqForm.valid && this.reqList.length>0){
+        this.invReq={
+          reqNum: this.newReqNumber,
+          fromWH:this.inventoryReqForm.value.fromWH,
+          toWH: this.inventoryReqForm.value.toWH,
+          currDate: this.inventoryReqForm.value.currDate,   
+          deliveryDate: this.inventoryReqForm.value.deliveryDate,   
+          reqList:this.inventoryReqForm.value.reqList,
+          itemsType: 'components', 
+          reqStatus:'open',
+          // qntSupplied: 0,
+        }
+        this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
+          debugger;
+          if(res){
+            this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" wharehouse.");
+            //error("Failed pleae finish filling the form");
+            console.log(res);
+          }
+        });
+      }else if(this.reqList.length==0){
+        this.toastSrv.error("Failed pleaes items to form");
+      }else {
+        this.toastSrv.error("Failed pleaes finish filling the form");
+      }
+    });
+
+    
   }
 
 
@@ -96,44 +111,64 @@ export class InventoryNewRequestComponent implements OnInit {
 
     //validating order number
     let validOrderN=false;
-    if(reqItemLine.relatedOrder!=""){
-      await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
-        if(res.length>0){
-          validOrderN=true;
-           //validating item number
-          if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" && validOrderN ){
+
+    if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" ){
             
-             this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(res => {
-            console.log("checkIfComptNumExist res:"+res[0]);
-            if(res.length>0){
-                let reqListItem={
-                  itemNumber:reqItemLine.itemNumInput,
-                  itemName:res[0].componentName,
-                  amount:reqItemLine.itemAmount,
-                  relatedOrder:reqItemLine.relatedOrder,
-                }
-                debugger;
-                this.reqList.push(reqListItem);
-                // this.inventoryReqForm.value.reqList.setValue(this.reqList)
-                this.itemLine.controls.itemNumInput.setValue('');
-                this.itemLine.controls.itemAmount.setValue('');
-                this.itemLine.controls.relatedOrder.setValue('');
-                
-              }else{
-                validOrderN=false;
-                this.toastSrv.error("Failed wrong item number");
-              }
-            });
+      await this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(async res => {
+        if(res.length>0){
+          let reqListItem={
+            itemNumber:reqItemLine.itemNumInput,
+            itemName:res[0].componentName,
+            amount:reqItemLine.itemAmount,
+            relatedOrder:reqItemLine.relatedOrder,
+            qntSupplied:0,
           }
 
-        }else{
-          validOrderN=false;
-          this.toastSrv.error("Failed wrong order number");
-        }
-      });
-    }
-debugger  
+          if(reqItemLine.relatedOrder!=""){
+            await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
+              debugger
+              if(res.length>0){
+                validOrderN=true;
+                 //validating item number
+                  //add to req list
+                  this.reqList.push(reqListItem);
+                  this.itemLine.controls.itemNumInput.setValue('');
+                  this.itemLine.controls.itemAmount.setValue('');
+                  this.itemLine.controls.relatedOrder.setValue('');
+      
+              }else{
+                validOrderN=false;
+                this.toastSrv.error("Failed wrong order number");
+              }
+            });
+          }else{
+            //add to req list
+            this.reqList.push(reqListItem);
+            this.itemLine.controls.itemNumInput.setValue('');
+            this.itemLine.controls.itemAmount.setValue('');
+            this.itemLine.controls.relatedOrder.setValue('');
+          }
+       }else{
+         validOrderN=false;
+         this.toastSrv.error("Failed wrong item number");
+       }
+     });
+   }
 
+    // if(reqItemLine.relatedOrder!=""){
+    //   await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
+    //     debugger
+    //     if(res.length>0){
+    //       validOrderN=true;
+    //        //validating item number
+
+
+    //     }else{
+    //       validOrderN=false;
+    //       this.toastSrv.error("Failed wrong order number");
+    //     }
+    //   });
+    // }
   }
 
   deleteRow(itemNum,itemAmout){

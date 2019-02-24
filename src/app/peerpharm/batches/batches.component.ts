@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { BatchesService } from '../../services/batches.service'
+// test for excel export
+import {ExcelService} from '../../services/excel.service';
+// private excelService:ExcelService
+import * as moment from 'moment';
+import { Toast } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-batches',
@@ -9,8 +17,12 @@ import { BatchesService } from '../../services/batches.service'
 export class BatchesComponent implements OnInit {
   myRefresh: any = null;
 
-  constructor(private batchService: BatchesService) { }
-  batches: any[];
+  constructor(private batchService: BatchesService, private excelService:ExcelService , private toastSrv: ToastrService) { }
+  // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
+  batches: Array<any>;
+  batchesCopy: Array<any>;
+  lastBatchToExport:String;
+
   ngOnInit() {
 
     this.getAllBatches();
@@ -31,14 +43,113 @@ export class BatchesComponent implements OnInit {
     this.batchService.getAllBatches().subscribe((res) => {
       console.log(res);
       this.batches = res;
+      this.batchesCopy = res;
       this.batches.map(batch => {
         if (batch.weightKg != null && batch.weightQtyLeft != null) {
           if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
           else if (batch.weightQtyLeft < batch.weightKg) batch.color = "yellow";
           else batch.color = "white";
         }
-      })
+      });
     });
+  }
+
+  filterBatchesBiggerThenBatchN() {
+    var excelTable=[];
+    if(this.lastBatchToExport!="" && this.lastBatchToExport!=null){
+      this.batchesCopy.map(batch => {
+        var lastBatchYear;
+        var lastBatchNum;
+        var year;
+        var number;
+        debugger
+        if(this.lastBatchToExport.includes("pp")) {
+          lastBatchYear=this.lastBatchToExport.split("pp")[0];
+          lastBatchNum=this.lastBatchToExport.split("pp")[1];
+        }else{
+          //some batches dont have "YYpp...""
+          lastBatchYear="1";
+          lastBatchNum=this.lastBatchToExport;
+        }
+        if(batch.batchNumber.includes("pp")) {
+          year=batch.batchNumber.split("pp")[0] ;
+          number=batch.batchNumber.split("pp")[1] ;
+        }else{
+          //some batches dont have "YYpp...""
+          year=1;
+          number=batch.batchNumber;
+        }
+
+        if(year>=lastBatchYear && number>=lastBatchNum && batch.weightKg != null && batch.weightQtyLeft != null){
+          let obj={
+            batchNumber:batch.batchNumber,
+            produced:batch.produced,
+            item:batch.item,
+            itemName:batch.itemName, 
+            expration: batch.expration, 
+            order:batch.order,
+            ph:batch.ph, 
+            weightKg: batch.weightKg,
+          }
+          excelTable.push(obj);
+        }
+      });
+      this.exportAsXLSX(excelTable);
+      this.lastBatchToExport="";
+    }else{
+      this.toastSrv.error("No batch number to follow");
+    }
+  }
+
+
+
+  exportAsXLSX(data) {
+    this.excelService.exportAsExcelFile(data, 'batches');
+ }
+
+  changeText(ev, filterBy)
+  {
+    if(filterBy=='itemName'){
+      let word= ev.target.value;
+      let wordsArr= word.split(" ");
+      wordsArr= wordsArr.filter(x=>x!="");
+      if(wordsArr.length>0){
+        let tempArr=[];
+        this.batchesCopy.filter(b=>{
+          var check=false;
+          var matchAllArr=0;
+          wordsArr.forEach(w => {
+              if(b.itemName.toLowerCase().includes(w.toLowerCase()) ){
+                matchAllArr++
+              }
+              (matchAllArr==wordsArr.length)? check=true : check=false ; 
+          }); 
+  
+          if(!tempArr.includes(b) && check) tempArr.push(b);
+        });
+           this.batches= tempArr;
+           debugger
+      }else{
+        this.batches=this.batchesCopy.slice();
+      }
+    }else if(filterBy=='batchNumber'){
+      let bNum= ev.target.value;
+      if(bNum!=''){
+        let tempArr=[];
+        this.batchesCopy.filter(b=>{
+          var check=false;
+          var matchAllArr=0;
+          if(b.batchNumber.includes(bNum.toLowerCase()) ){
+            tempArr.push(b);
+          }
+        });
+           this.batches= tempArr;
+           debugger
+      }else{
+        this.batches=this.batchesCopy.slice();
+      }
+    }
+
   }
 
   deleteBatch(batch) {

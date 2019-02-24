@@ -11,10 +11,14 @@ import * as moment from 'moment';
   styleUrls: ['./plate.component.css']
 })
 export class PlateComponent implements OnInit {
+  today:Date=new Date();
   filterPlatesNuumber:string='';
+  filterPlatesName:string='';
+  filterPlatesNameWordArr:Array<any>;
   showPlateData;
   imgPath;
   plates: any[];
+  platesUfiltered: any[];
   plate= {
     _id:"",
     palletNumber: '',
@@ -22,19 +26,25 @@ export class PlateComponent implements OnInit {
     palletItemBrand: '',
     palletImg: '',
     palletRemarks: '',
-    lastUpdate: '',
+    lastUpdate: this.today,
     lastUpdateUser: '',
     tempRemarks:''
   };
+
   constructor(private plateService: PlateService, private uploadService: UploadFileService, private toastSrv:ToastrService) { }
 
   ngOnInit() {
     this.getAllPlates();
+    this.showPlateData.lastUpdate= moment(this.plate.lastUpdate).format("DD-MM-YYYY");
+
   }
 
   getAllPlates() {
     this.plateService.getPlates().subscribe(res => {
       this.plates = res;
+      this.platesUfiltered = res;
+      this.filterPlatesNuumber='';
+      this.filterPlatesName='';
       console.log(res);
     });
   }
@@ -44,25 +54,53 @@ export class PlateComponent implements OnInit {
     console.log(this.plates.find(res => res == plate));
     this.showPlateData = this.plates.find(res => res == plate);
     //formating the date 
+    debugger
     this.showPlateData.lastUpdate= moment(this.showPlateData.lastUpdate).format("DD-MM-YYYY");
     // console.log("this.showPlateData:"+this.showPlateData);
     this.plate= this.showPlateData;
   }
 
-  updatePallet(src) {
+  async updatePallet(src) {
+    this.plate.lastUpdate=this.today;
+    debugger
     console.log(this.plate);
-    if(src=="new") this.plateService.addNewPlate(this.plate).subscribe(res=>console.log(res));
-    if(src=="update") this.plateService.updatePlate(this.plate).subscribe(res=>console.log(res));
+    if(src=="new") {
+      this.plateService.addNewPlate(this.plate).subscribe(res=>{
+      debugger
+      if(res.existPlate){
+        this.toastSrv.error("Plate Numer: "+this.plate.palletNumber+" already exsit in system!");
+      }else{
+        this.toastSrv.success("Plate Numer: "+this.plate.palletNumber+" Created!");
+        console.log(res);
+      }
+      this.showPlate(this.plate);
+    });}
+    if(src=="update"){
+      this.plateService.updatePlate(this.plate).subscribe(res=>{
+        if(res.n!=0){
+          this.toastSrv.success("Plate Numer: "+this.plate.palletNumber+" updated!");
+        } else{
+          this.toastSrv.error("Plate Numer: "+this.plate.palletNumber+" update faild");
+        }
+        this.showPlate(this.plate);
+      });
+    } 
     if(src=="destroy") {
       if (confirm("Delete Plate?")) {
         let plateOjb={
           _id:this.plate._id,
           tempRemarks: "delete"
         }
-        this.plateService.updatePlate(plateOjb).subscribe(res=>console.log(res));
+        this.plateService.updatePlate(plateOjb).subscribe(res=>{
+          if(res.n!=0){
+            this.toastSrv.success("Plate Numer: "+this.plate.palletNumber+" updated!");
+          } else{
+            this.toastSrv.error("Plate Numer: "+this.plate.palletNumber+" update faild");
+          }
+          this.showPlate(this.plate);
+        });
       }
     }
-  
   }
 
   resetForm(){
@@ -73,7 +111,7 @@ export class PlateComponent implements OnInit {
       palletItemBrand: '',
       palletImg: '',
       palletRemarks: '',
-      lastUpdate: '',
+      lastUpdate: this.today,
       lastUpdateUser: '',
       tempRemarks:''
     };
@@ -117,15 +155,41 @@ export class PlateComponent implements OnInit {
     this.toastSrv.success("Plate Added", "Good Luck")
   }
 
-  searchItemByNumber(filterPlatesNuumber){
+  searchPlateByNumber(filterPlatesNuumber){
     console.log(filterPlatesNuumber);
     this.plateService.getPlatesByNumber(filterPlatesNuumber).subscribe(res => {
       this.plates = res;
       console.log(res);
-   
    });
    if(filterPlatesNuumber==''){
       this.filterPlatesNuumber='';
    }
   }
+
+  searchPlateByName(filterPlatesName){
+    this.filterPlatesNameWordArr = this.filterPlatesName.split(" ");
+    this.filterPlatesNameWordArr= this.filterPlatesNameWordArr.filter(x=>x!="");
+    if(this.filterPlatesNameWordArr.length>0){
+      let tempArr=[];
+
+      this.platesUfiltered.filter(plt=>{
+        var check=false;
+        var matchAllArr=0;
+        this.filterPlatesNameWordArr.forEach(w => {
+            if(plt.palletItemName.toLowerCase().includes(w.toLowerCase()) 
+                ||  plt.palletItemBrand.toLowerCase().includes(w.toLowerCase())){
+              matchAllArr++
+            }
+            (matchAllArr==this.filterPlatesNameWordArr.length)? check=true : check=false ; 
+        }); 
+
+        if(!tempArr.includes(plt) && check) tempArr.push(plt);
+      });
+        //  this.components= tempArr;
+         this.plates = tempArr;
+    }
+
+  }
+
+
 }

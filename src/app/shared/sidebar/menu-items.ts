@@ -118,6 +118,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
+      // {
+      //   path: '/peerpharm/schedule/packingschedule',
+      //   title: 'Packing',
+      //   icon: ' fab fa-page4',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
     ]
   },
   {
@@ -230,15 +238,6 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-       {
-        path: '/peerpharm/schedule/fillschedule',
-        title: 'Item Tree',
-        icon: 'fas fa-tree',
-        class: '',
-        extralink: false,
-        submenu: []
-      }
-
     ]
   },
 
@@ -295,7 +294,7 @@ export const ROUTES: RouteInfo[] = [
       extralink: false,
       submenu: [
         {
-          path: '/peerpharm/inventory/inventory',
+          path: '/peerpharm/inventory/stock',
           title: 'Inventory List',
           icon: 'fas fa-address-book',
           class: '',
@@ -332,7 +331,7 @@ export const ROUTES: RouteInfo[] = [
       submenu: [
         {
           path: '/peerpharm/forms/forms_list',
-          title: 'Item List',
+          title: 'Forms List',
           icon: 'fas fa-list-ol',
           class: '',
           extralink: false,

@@ -21,7 +21,7 @@
       <th><b>Date</b></th>
       <th><b>Remarks</b></th>
       <th class='printlessTd'><b>shift</b></th>
-      <th class='printlessTd'><input  style='width:107px' value="MKP"></th>
+      <th class='printlessTd'><input  style='width:107px' value=""></th>
 <th class='printlessTd'><img src="assets/images/24p.png" style='width:55px; cursor: pointer;' alt="Random second slide" (click)='moveAllOpenScedToToday()'></th>
   </tr>
 
@@ -60,7 +60,6 @@
         </td>
         <td *ngIf="line._id===EditRowId"><input #orderNum type='text' [value]="line.orderN"  style='width:60px' class='form-control'></td>
         <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">
-
                 <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{line.item}}">
             {{line.item}}
                         </a>

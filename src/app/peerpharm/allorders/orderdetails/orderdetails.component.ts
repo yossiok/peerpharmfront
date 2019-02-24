@@ -13,6 +13,7 @@ import { ItemsService } from 'src/app/services/items.service';
 import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PlateService } from 'src/app/services/plate.service';
+import { CostumersService } from 'src/app/services/costumers.service';
 
 
 @Component({
@@ -54,7 +55,7 @@ export class OrderdetailsComponent implements OnInit {
   ordersItems;
   ordersItemsCopy;
   item: any;
-  number; orderDate; deliveryDate; costumer; remarks; orderId;
+  number; orderDate; deliveryDate; costumer; costumerInternalId; remarks; orderId;
   chosenType: string;
   detailsArr: any[];
   components: any[];
@@ -80,12 +81,28 @@ export class OrderdetailsComponent implements OnInit {
   ordersToCheck = [];
   internalNumArr=[];
   packingModal=false;
+  cmptModal=false;
   packingItemN="";
-  openPackingModalHeader="";
+  packingOrderN="";
+  openOrderPackingModalHeader="";
+  openItemPackingModalHeader="";
   itemPackingList:Array<any>=[];
   itemPackingPalletsArr:Array<any>=[];
   orderPalletsArr:Array<any>=[];
+  orderPalletsNumArr:Array<any>=[];
+  palletsData:Array<any>=[];
+  showingOneOrder:Boolean;
+  showingAllOrders:Boolean;
   orderPackingList:Array<any>=[];
+  orderItemsComponents:Array<any>=[];
+
+  bottleList: Array<any>=[];
+  capList: Array<any>=[];
+  pumpList: Array<any>=[];
+  sealList: Array<any>=[];
+  stickerList: Array<any>=[];
+  boxList: Array<any>=[];
+  cartonList: Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -101,26 +118,56 @@ export class OrderdetailsComponent implements OnInit {
   // @ViewChild('type') type:ElementRef;
 
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
-     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService) { }
+     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, private costumerSrevice: CostumersService) { }
 
-     openPackingModal(itemNumber, index){
+     async openPackingModal(itemNumber,orderNumber, index){
       this.packingItemN=itemNumber;
-       this.orderService.getItemPackingList(itemNumber).subscribe(itemPackingList=>{
+      this.packingOrderN=orderNumber;
+      this.palletsData=[];
+
+      await this.orderService.getItemPackingList(itemNumber,this.packingOrderN).subscribe(async itemPackingList=>{
           this.itemPackingList=itemPackingList;
 
        });
-       this.orderService.getOrderPackingList(this.number).subscribe(orderPackingList=>{
-          this.orderPackingList=orderPackingList;
 
-          this.orderPackingList.forEach(element => {
-            if(!this.orderPalletsArr.includes(element.palletNumber)){
-              this.orderPalletsArr.push(element.palletNumber);
+    //   await this.orderService.getPalletsDataByOrderNumber(orderNumber).subscribe(orderPallets=>{
+    //     this.palletsData = orderPallets
+    //  });
+
+     await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList=>{
+          this.orderPackingList=orderPackingList;
+          await this.orderPackingList.forEach(item => {
+            let obj = {palletId: item.palletId , palletNumber:item.palletNumber , palletWeight:item.palletWeight , palletMesures:item.palletMesures}
+            let palletId = item.palletId ;
+            if(!this.orderPalletsNumArr.includes(palletId)){
+              this.orderPalletsNumArr.push(palletId);
+              this.orderPalletsArr.push(obj);
             }
           });
 
-          debugger
+          await this.ordersItems.forEach(async (orderItem, key) => {
+            let packedQnt=0;
+            let packedItemsOnPallet=0;
+            await this.orderPackingList.filter(packedItem=>{
+              if(orderItem.itemNumber == packedItem.itemNumber ){
+                packedItemsOnPallet = packedItem.pcsCtn*packedItem.ctnPallet;
+                packedQnt = packedQnt+packedItemsOnPallet
+                packedItem.totalPackedQnt = packedQnt;
+
+                if(orderItem.quantity == packedItem.totalPackedQnt ){
+                  packedItem.lineColor="rgb(204, 255, 204)";
+                } else{
+                  packedItem.lineColor="rgb(255, 255, 204)";
+                }
+              }
+            });
+          });
+
+
        });
-      this.openPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
+      this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingOrderN;
+      this.openItemPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
+      // this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingItemN;
       this.packingModal=true;
 
 
@@ -130,13 +177,14 @@ export class OrderdetailsComponent implements OnInit {
   ngOnInit() {
     console.log('hi');
     this.orderService.openOrdersValidate.subscribe(res=>{
-      debugger
       this.number = this.route.snapshot.paramMap.get('id');
+
       if(res==true || this.number=="00"){
-        debugger
+        this.showingAllOrders=true;
         this.loadData=true;
         this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
           this.loadData=false;
+          this.multi = true;
           orderItems.forEach(item => {
             item.isExpand = '+';
             item.colorBtn = '#33FFE0';
@@ -154,80 +202,71 @@ export class OrderdetailsComponent implements OnInit {
 
       }
       else{
-          this.orderService.ordersArr.subscribe(res => {
+        this.showingAllOrders=false;
+          this.orderService.ordersArr.subscribe(async res => {
             console.log(res)
             var numArr = this.number.split(",").filter(x=>x!="");
-            if(numArr.length>0){
-              this.orderService.getOrdersIdsByNumbers(numArr).subscribe(ordersIds => {
-                debugger
-                if(ordersIds.length>0){
+            if(numArr.length>1){ //multi orders:  came through load button
+              this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async ordersIds => {
+                if(ordersIds.length>1){
                   this.orderService.getMultiOrdersIds(ordersIds).subscribe(orderItems => {
                     orderItems.forEach(item => {
                       item.isExpand = '+';
                       item.colorBtn = '#33FFE0';
                     });
                     this.ordersItems = orderItems;
+                    this.ordersItemsCopy = orderItems;
                     this.multi = true;
-                    console.log(orderItems)
+                    console.log(orderItems);
                   });
+                }else {  //one order: but came through load button
+                  await this.getOrderDetails();
+                  await this.getOrderItems();
+                  this.show = true;
+                  this.multi = false;
+
                 }
 
               });
             } else {  //one order:
-              debugger
-              this.getOrderDetails();
-              this.getOrderItems();
+              await this.getOrderDetails();
+              await this.getOrderItems();
               this.show = true;
               this.multi = false;
             }
-
-            // if (res.length > 0) { // if the request is for few orders:
-            //   this.orderService.getMultiOrdersIds(res).subscribe(orderItems => {
-            //     this.ordersItems = orderItems;
-            //    // this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
-            //    // this.getComponents(this.ordersItems[0].orderNumber);
-            //     this.multi = true;
-            //     console.log(orderItems)
-            //   });
-            // }
-
           });
       }
-    })
-
+    });
 
   }
 
-  getOrderDetails() {
+  async getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
-    this.orderService.getOrderByNumber(this.number).subscribe(res => {
+    //if someone loaded just one item in orders screen through "Load" button
+    if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
+
+    await this.orderService.getOrderByNumber(this.number).subscribe(res => {
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
+      this.costumerInternalId = res[0].costumerInternalId;
+      // this.costumerSrevice.getCostumerData(CostumerNumber).subscribe(res => {});
       this.orderDate = res[0].orderDate;
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+      debugger
     });
-
   }
   getOrderItems(): void {
     this.number = this.route.snapshot.paramMap.get('id');
+    //if someone loaded just one item in orders screen through "Load" button
+    if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
+
     document.title = "Order " + this.number;
     // const id = this.route.snapshot.paramMap.get('id');
     //this.orderService.getOrderById(id).subscribe(orderItems => {
     this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
       orderItems.map( item => {
-
-            //add license to item
-      //////////////////CHECK IF ITEM HAVE LICENSE////////////////////////////
-
-            // this.orderService.getItemByNumber(item.itemNumber).subscribe(
-            //   itemDetais => {
-            //     debugger;
-            //       item.licsensNumber=itemDetais.licsensNumber;
-            //       item.licsensExp=itemDetais.licsensDate;
-            //   });
-      //////////////////////////////////////////////
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
           else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
@@ -248,6 +287,7 @@ export class OrderdetailsComponent implements OnInit {
       });
 
       this.ordersItems = orderItems;
+      this.ordersItemsCopy = orderItems;
       // this.OrderCompileData(this.number);
       this.getComponents(this.ordersItems[0].orderNumber);
       console.log(orderItems)
@@ -333,7 +373,6 @@ export class OrderdetailsComponent implements OnInit {
 
       console.log(res)
       if (res != "error") {
-        debugger
         this.toastSrv.success(itemToUpdate.itemNumber, "Changes Saved");
         this.EditRowId = "";
         let index = this.ordersItems.findIndex(order => order._id == itemToUpdate.orderItemId);
@@ -355,58 +394,69 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   addItemOrder() {
-
     // console.log(1 + " , " + this.itemData.qtyKg);
     this.itemData.orderId = this.orderId;
     this.itemData.orderNumber = this.number;
     console.log(this.itemData.orderId);
-    this.orderService.addNewOrderItem(this.itemData).subscribe(item => this.ordersItems.push(item));
+    this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
+
+      this.ordersItems.push(item)});
+      //reset new item line after "Add"
+      this.itemData = { itemNumber: '', discription: '', unitMeasure: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
+
   }
 
   setSchedule(item, type) {
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
-    this.itemSer.getItemData(item.itemNumber).subscribe(res => {
-      let packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+    if(this.date.nativeElement.value!=""){
+      this.itemSer.getItemData(item.itemNumber).subscribe(res => {
+        // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
+        let packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
 
 
-    });
-    let scheduleLine = {
-      positionN: '',
-      orderN: item.orderNumber,
-      item: item.itemNumber,
-      costumer: this.costumer,
-      productName: item.discription,
-      batch: item.batch,
-      packageP: '',
-      qty: item.quantity,
-      qtyRdy: '',
-      date: this.date.nativeElement.value,
-      marks: this.marks.nativeElement.value,
-      shift: this.shift.nativeElement.value,
-      mkp: this.chosenType,
-      status: 'open',
-      productionLine:'',
-      pLinePositionN:999
+      });
+      let scheduleLine = {
+        positionN: '',
+        orderN: item.orderNumber,
+        item: item.itemNumber,
+        costumer: this.costumer,
+        productName: item.discription,
+        batch: item.batch,
+        packageP: '',
+        qty: item.quantity,
+        qtyRdy: '',
+        date: this.date.nativeElement.value,
+        marks: this.marks.nativeElement.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
+        shift: this.shift.nativeElement.value,
+        mkp: this.chosenType,
+        status: 'open',
+        productionLine:'',
+        pLinePositionN:999
+      }
+      if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
+      if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
+
+      this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
+      let dateSced = this.date.nativeElement.value;
+      dateSced = moment(dateSced).format("DD/MM/YYYY");
+      let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " +  dateSced};
+      this.orderService.editItemOrder(orderObj).subscribe(res=>{
+          console.log(res);
+          this.toastSrv.success(dateSced , "Schedule Saved");
+      })
+      console.log(scheduleLine);
+
+    }else{
+      this.toastSrv.error("Invalid Date!");
     }
-    if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
-    if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
-
-    this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
-    let dateSced = this.date.nativeElement.value;
-    dateSced = moment(dateSced).format("DD/MM/YYYY");
-    let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " +  dateSced};
-    this.orderService.editItemOrder(orderObj).subscribe(res=>{
-        console.log(res);
-        this.toastSrv.success(dateSced , "Schedule Saved");
-    })
-    console.log(scheduleLine);
   }
 
 
   setBatch(item, batch, existBatch) {
     let updatedBatch;
+    batch=batch.toLowerCase();
     if(existBatch!=null && existBatch!=undefined && existBatch!=""){
       //adding to exist batch number to oreder item
       updatedBatch=batch + "+" + existBatch;
@@ -418,17 +468,25 @@ export class OrderdetailsComponent implements OnInit {
     console.log(batchObj);
     this.orderService.editItemOrder(batchObj).subscribe(res => {
       console.log(res);
+      this.ordersItems.map(orderItem=>{
+        if(orderItem._id == item._id){
+          orderItem.batch= updatedBatch;
+          orderItem.fillingStatus= "formula porduced " + updatedBatch;
+        }
+      });
       this.toastSrv.success(updatedBatch , "Changes Saved");
     });
 
   }
 
   updateBatchExist(item , batch){
+    batch=batch.toLowerCase();
     if(!batch){
       let batchObj = { orderItemId: item._id, fillingStatus: "mkp batch exist"};
       console.log(batchObj);
       this.orderService.editItemOrder(batchObj).subscribe(res => {
         console.log(res);
+
         // this.toastSrv.success(updatedBatch , "Changes Saved");
       });
 
@@ -438,10 +496,15 @@ export class OrderdetailsComponent implements OnInit {
 
 
   searchItem(itemNumber) {
-    this.orderService.getItemByNumber(itemNumber).subscribe(res => {
-      this.itemData.discription = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-      this.itemData.unitMeasure = res[0].volumeKey;
-    })
+    if(itemNumber!=""){
+      this.orderService.getItemByNumber(itemNumber).subscribe(res => {
+        if(res.length==1){
+          this.itemData.discription = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
+          this.itemData.unitMeasure = res[0].volumeKey;
+        }
+      });
+
+    }
   }
 
   closeOrder() {
@@ -457,12 +520,23 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   setPrintSced(){
+    // this.printSchedule.date.setHours(2,0,0,0);
+    let dateToUpdate=new Date(this.printSchedule.date)
+    dateToUpdate.setHours(2,0,0,0)
     console.log(this.printSchedule);
     this.printSchedule.orderN = this.number;
     this.printSchedule.costumer = this.costumer;
-    this.scheduleService.setNewPrintSchedule(this.printSchedule).subscribe(res=>{
-      this.toastSrv.success("Saved", this.printSchedule.cmptN);
-    })
+    this.printSchedule.date=dateToUpdate;
+    // this.printSchedule.date=moment(this.printSchedule.date).format("YYYY-MM-DD");
+    // this.printSchedule.date=moment(this.printSchedule.date.format());
+
+      this.scheduleService.setNewPrintSchedule(this.printSchedule).subscribe(res=>{
+        if(res.itemN){
+          this.toastSrv.success("Saved", this.printSchedule.cmptN);
+        }else{
+          this.toastSrv.error("Error - not sent to print schedule");
+        }
+      });
 
   }
 
@@ -471,7 +545,7 @@ export class OrderdetailsComponent implements OnInit {
        this.plateImg = data.palletImg;
        this.printSchedule.block = data.palletNumber;
        this.printSchedule.blockImg = data.palletImg;
-    })
+    });
     console.log(item.itemNumber + " , "  +item.discription + " , "  +  cmpt.number);
     this.printSchedule.cmptN = cmpt.number;
     this.printSchedule.itemN = item.itemNumber;
@@ -486,18 +560,273 @@ export class OrderdetailsComponent implements OnInit {
 
 
 
+  // changeText(ev)
+  // {
+  //   let word= ev.target.value;
+  //   if(word=="")
+  //   {
+  //     this.ordersItems=this.ordersItemsCopy.slice();
+  //   }
+  //   else
+  //   {
+  //     this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase()));
+  //   }
+  // }
   changeText(ev)
   {
     let word= ev.target.value;
-    if(word=="")
-    {
+    let wordsArr= word.split(" ");
+    wordsArr= wordsArr.filter(x=>x!="");
+    if(wordsArr.length>0){
+      let tempArr=[];
+      this.ordersItemsCopy.filter(x=>{
+        var check=false;
+        var matchAllArr=0;
+        wordsArr.forEach(w => {
+            if( (x.itemFullName&&x.itemFullName.toLowerCase().includes(w.toLowerCase())) || (x.discription&&x.discription.toLowerCase().includes(w.toLowerCase())) ){
+              matchAllArr++
+            }
+            (matchAllArr==wordsArr.length)? check=true : check=false ;
+        });
+
+        if(!tempArr.includes(x) && check) tempArr.push(x);
+      });
+         this.ordersItems= tempArr;
+    }else{
       this.ordersItems=this.ordersItemsCopy.slice();
     }
     else
     {
       this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase()));
-    }
   }
+
+
+  // checkboxAllOrders(ev){
+  //   this.ordersItems.filter(e => e.isSelected = ev.target.checked)
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  async openCmptDemandsModal(){
+
+    this.bottleList= [];
+    this.capList= [];
+    this.pumpList= [];
+    this.sealList= [];
+    this.stickerList= [];
+    this.boxList= [];
+    this.cartonList= [];
+    if(this.ordersItems.length>0){
+      this.internalNumArr=[];
+      this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber) );
+      await this.orderService.getOrderComponents(this.internalNumArr).subscribe( async res=>{
+        await res.forEach(async item=> {
+
+          let i=this.ordersItems.filter(x=> x.itemNumber==item.itemNumber)[0];
+          item.quantity = parseInt(i.quantity);
+          item.itemName = i.discription;
+
+          if (item.bottleNumber!='' && item.bottleNumber!='---' ) {
+            let newCmpt= true;
+            if( this.bottleList.map(function (el) { return el.bottleNumber; }).includes(item.bottleNumber) ){
+              this.bottleList.map(i=>{
+                if(i.bottleNumber==item.bottleNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.bottleList.push({bottleNumber:item.bottleNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
+
+          if (item.capNumber!='' && item.capNumber!='---' ) {
+            let newCmpt= true;
+            if( this.capList.map(function (el) { return el.capNumber; }).includes(item.capNumber) ){
+              this.capList.map(i=>{
+                if(i.capNumber==item.capNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.capList.push({capNumber:item.capNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
+
+          if (item.pumpNumber!='' && item.pumpNumber!='---' ) {
+            let newCmpt= true;
+            if( this.pumpList.map(function (el) { return el.pumpNumber; }).includes(item.pumpNumber) ){
+              this.pumpList.map(i=>{
+                if(i.pumpNumber==item.pumpNumber){
+                  newCmpt=false;
+                  // i= Object.assign(i, {qnt: i.qnt+parseInt(item.quantity) });
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.pumpList.push({pumpNumber:item.pumpNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
+
+          if (item.sealNumber!='' && item.sealNumber!='---' ) {
+            let newCmpt= true;
+            if( this.sealList.map(function (el) { return el.sealNumber; }).includes(item.sealNumber) ){
+              this.sealList.map(i=>{
+                if(i.sealNumber==item.sealNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.sealList.push({sealNumber:item.sealNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
+
+          if (item.stickerNumber!='' && item.stickerNumber!='---' ) {
+            let newCmpt= true;
+            if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerNumber) ){
+              this.stickerList.map(i=>{
+                if(i.stickerNumber==item.stickerNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.stickerList.push({stickerNumber:item.stickerNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
+
+          if (item.boxNumber!='' && item.boxNumber!='---' ) {
+            let newCmpt= true;
+            if( this.boxList.map(function (el) { return el.boxNumber; }).includes(item.boxNumber) ){
+              this.boxList.map(i=>{
+                if(i.boxNumber==item.boxNumber){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.boxList.push({boxNumber:item.boxNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
+
+          if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
+            let newCmpt= true;
+            if( this.cartonList.map(function (el) { return el.cartonNumber; }).includes(item.cartonNumber) ){
+              this.cartonList.map(i=>{
+                if(i.cartonNumber==item.cartonNumber){
+                  newCmpt=false;
+                  i.qnt= i.qnt+(item.quantity/parseInt(item.PcsCarton));
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.cartonList.push({cartonNumber:item.cartonNumber , qnt: (item.quantity/parseInt(item.PcsCarton)) });
+                newCmpt=false;
+              }
+            }
+          }
+
+          // if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
+          //   let newCmpt= true;
+          //   await this.cartonList.forEach(b=>{
+          //     if(b.cartonNumber==item.cartonNumber) {
+          //       newCmpt=false;
+          //       b.qnt+=item.quantity/parseInt(item.PcsCarton);
+          //     }
+          //   });
+          //   if(newCmpt){
+          //     this.cartonList.push({cartonNumber:item.cartonNumber , qnt:(item.quantity/parseInt(item.PcsCarton))});
+          //     newCmpt=false;
+          //   }
+          // }
+          console.log(this.bottleList);
+        });
+        this.orderItemsComponents= res;
+        this.cmptModal=true;
+        console.log(res);
+      })
+    }
+
+
+
+
+    /*
+    FIELDS WE WANT TO GET FOR EACH ORDER_ITEM FROM ITEMS COLLECTION
+
+    itemNumber
+
+    stickerNumber: String,
+    stickerTypeK: String,
+    StickerLanguageK: String,
+
+    boxNumber: String,
+    boxTypeK: String,
+
+    cartonNumber: String,
+    PcsCarton: String,
+    *** cartonNumberQnt:  =Qnt/PcsCarton: ***
+
+    bottleNumber: String,
+    capNumber: String,
+    pumpNumber: String,
+    sealNumber: String,
+    goddet: ???
+
+
+    */
+  }
+
+
+  // getItemWhShelfsList(orderItemsCmptArr) {
+
+  //   return new Promise(function (resolve, reject) {
+  //       if () {
+  //         resolve(res);
+  //       } else resolve([])
+  //   });
+  // }
+
+
+
 }
 
 

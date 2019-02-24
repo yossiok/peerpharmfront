@@ -3,10 +3,17 @@
 	<tr>
 		<td style='width:25%'>
 			<div border=5 style='height:500px; overflow:scroll; overflow:auto; margin-bottom:20px'>
+				<div style="margin-bottom: 5px; ">
+					<input type='text' placeholder='חפש גלופה לפי מספר' id='searchPallet_input' [(ngModel)]='filterPlatesNuumber' >&nbsp;&nbsp;
+					<button class="btn btn-info"type="button" (click)="searchPlateByNumber(filterPlatesNuumber)">חפש</button>&nbsp;&nbsp;
+					<button class="btn btn-default"type="button" (click)="getAllPlates()">הצג הכל</button>		
+				</div>
+				<div style="margin-bottom: 5px; ">
+					<input type='text' placeholder='חפש גלופה לפי שם' id='searchPallet_input' [(ngModel)]='filterPlatesName' >&nbsp;&nbsp;
+					<button class="btn btn-info"type="button" (click)="searchPlateByName(filterPlatesName)">חפש</button>&nbsp;&nbsp;
+					<button class="btn btn-default"type="button" (click)="getAllPlates()">הצג הכל</button>		
+				</div>
 				<!-- <input type='text' placeholder='חפש גלופה לפי מספר' id='searchPallet_input' onkeyup="searchItem2()"> -->
-				<input type='text' placeholder='חפש גלופה לפי מספר' id='searchPallet_input' [(ngModel)]='filterPlatesNuumber' >&nbsp;&nbsp;
-				<button class="btn btn-info"type="button" (click)="searchItemByNumber(filterPlatesNuumber)">חפש</button>&nbsp;&nbsp;
-				<button class="btn btn-default"type="button" (click)="searchItemByNumber('')">הצג הכל</button>
 
 				<table>
 					<tbody id='palletsTbody'>

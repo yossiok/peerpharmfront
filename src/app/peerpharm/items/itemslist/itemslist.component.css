@@ -9,12 +9,12 @@
     display: block;
   }
   .table-fixed th{
-    width:10%;
+    width:8%;
     display: inline-block;
     border: none;
   }
   .table-fixed td{
-    width:10%;
+    width:8%;
     display: inline-block;
   }
   .table-fixed td.fullName{
@@ -29,4 +29,14 @@
   tbody> tr{
     background-color: white;
     color: black;
+  }
+  
+  input[type=checkbox]
+  {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(2); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    padding: 10px;
   }

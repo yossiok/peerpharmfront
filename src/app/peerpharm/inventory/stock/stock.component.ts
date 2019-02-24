@@ -4,6 +4,15 @@ import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
 import { HttpRequest } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserInfo } from '../../taskboard/models/UserInfo';
+import { DEC } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
+import { toDate } from '@angular/common/src/i18n/format_date';
+import { fstat } from 'fs';
+import { BatchesService } from 'src/app/services/batches.service';
+import { ExcelService } from 'src/app/services/excel.service';
+
 
 @Component({
   selector: 'app-stock',
@@ -13,6 +22,7 @@ import { HttpRequest } from '@angular/common/http';
 export class StockComponent implements OnInit {
  // resCmpt: any;
  itemmoveBtnTitle:string="Item Movements";
+ loadingMovements:boolean=false;
  showItemDetails:boolean=true;
  itemMovements:any=[];
   resCmpt:any = {
@@ -31,14 +41,18 @@ export class StockComponent implements OnInit {
     packageType: '',
     packageWeight: '',
     remarks: '',
+    componentItems:[],
+    input_actualMlCapacity:0,
   }
   buttonColor: string = 'white';
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
   openModal: boolean = false;
+  openImgModal: boolean = false;
   openAmountsModal: boolean = false;
   openModalHeader:string;
   components: any[];
+  filteredComponents: any[];
   componentsUnFiltered:any[];
   componentsAmount: any[];
   tempHiddenImgSrc:any;
@@ -51,20 +65,272 @@ export class StockComponent implements OnInit {
   itemIdForAllocation:String;
   EditRowId: any = "";
   procurementInputEvent:any;
-  stockType:String="component"
+  stockType:String="component";
   newItem:String='';
+  //var's to edit itemshelf in allowed wh for user
+  user: UserInfo;
+  whareHouses:Array<any>;
+  curentWhareHouseId:String;
+  curentWhareHouseName:String;
+  relatedOrderNum:String='';
+  //adding Stock amounts
+  newItemShelfQnt:number;
+  newItemShelfBatchNumber:string;
+  newItemShelfArrivalDate:number;
+  newItemShelfPosition:String;
+  newItemShelfWH:String;
+  cmptTypeList:Array<any>;
+  cmptCategoryList:Array<any>;
+  emptyFilterArr:Boolean=true;
+  currItemShelfs:Array<any>;
+  stockAdmin:Boolean=false;
+  destShelfId:String;
+  destShelf:String;
+  amountChangeDir:String;
+  sehlfChangeNavBtnColor:String="";
+  amountChangeNavBtnColor:String="#1affa3";
+  ItemBatchArr:Array<any>;
+  filterVal:String='';
+  currModalImgSrc:String='';
+
+  @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
+  @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
+  @ViewChild('filterBySupplierN') filterBySupplierN: ElementRef; //this.filterBySupplierN.nativeElement.value
+  @ViewChild('filterByCmptName') filterByCmptName: ElementRef; //this.filterByCmptName.nativeElement.value
+  @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
 
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   // @ViewChild('procurmentInput') procurmentInput: ElementRef;
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService) { }
+  constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.filterbyNum.nativeElement.value='';
+    // this.filterByType.nativeElement='';
+    // this.filterByCategory.nativeElement='';
+    let url = this.route.snapshot;
     this.components=[];
+    await this.getUserAllowedWH();
     this.getAllComponents();
+  }
+//************************************************* */
+  exportAsXLSX(data, title) {
+    this.excelService.exportAsExcelFile(data, title);
+ }
+  getDoubleItemShelfs(){
+    this.inventoryService.getDoubleItemShelfs().subscribe(res=>{
+      this.exportAsXLSX(res, "DoubleItemShelfs");
+    })}
+  getDoubleStockItems(){
+    this.inventoryService.getDoubleStockItems().subscribe(res=>{
+      this.exportAsXLSX(res, "DoubleStockItems");
 
+    })}
+    deleteDoubleStockItemsProducts(){
+      this.inventoryService.deleteDoubleStockItemsProducts().subscribe(res=>{
+        console.log(res);
+    })}
+
+//************************************************/
+
+getUserAllowedWH(){
+  this.inventoryService.getWhareHousesList().subscribe(res => {
+    if(res){
+      let displayAllowedWH = [];
+      for (const wh of res) {
+        if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
+          displayAllowedWH.push(wh);
+        }
+      }
+      if (this.authService.loggedInUser.authorization){
+        if (this.authService.loggedInUser.authorization.includes("stockAdmin")){
+          this.stockAdmin=true;
+        }
+      }
+
+      this.whareHouses = displayAllowedWH;
+      this.curentWhareHouseId = displayAllowedWH[0]._id;
+      this.curentWhareHouseName = displayAllowedWH[0].name;
+
+    console.log(res);
+    }
+  });
+}
+
+loadComponentItems(){
+  this.inventoryService.getItemsByCmpt(this.resCmpt.componentN , this.resCmpt.componentType).subscribe(res=>{
+    if(res.length>0){
+      this.resCmpt.componentItems=res;
+    }else
+    this.resCmpt.componentItems=[]
+
+  });
+}
+
+
+async updateItemStockShelfChange(direction){
+  // this.newItemShelfPosition
+  // this.newItemShelfQnt
+  // this.destShelf
+  this.destShelf=this.destShelf.toLocaleUpperCase();
+  await this.inventoryService.checkIfShelfExist(this.destShelf,this.newItemShelfWH).subscribe( async shelfRes=>{
+    if(shelfRes.ShelfId){
+      this.destShelfId=shelfRes.ShelfId;
+      this.updateItemStock(direction);
+    }else{
+      this.toastSrv.error("מדף יעד לא קיים")
+    }
+
+  });
+  /* we need to send two objects with negitive and positive amounts
+  both with dir="shelfchange",
+ and make sure server side will deal with this dir and update movments
+
+  */
+}
+
+
+dirSet(direction){
+  if(direction=="shelfChange"){
+    this.amountChangeDir= 'shelfChange';
+    this.sehlfChangeNavBtnColor="#1affa3";
+    this.amountChangeNavBtnColor="";
+  }else{
+    this.amountChangeDir= '';
+    this.sehlfChangeNavBtnColor="";
+    this.amountChangeNavBtnColor="#1affa3";
+  }
+}
+
+
+async updateItemStock(direction){
+  //check enough amount for "out"
+  this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase().trim();
+  var shelfExsit=false;
+  let itemShelfCurrAmounts =[]
+  await this.currItemShelfs.forEach(x=>{
+    if(x.position==this.newItemShelfPosition)  {
+      itemShelfCurrAmounts.push(x.amount);
+      shelfExsit=true;
+    };
+  });
+    await this.inventoryService.checkIfShelfExist(this.newItemShelfPosition,this.newItemShelfWH).subscribe( async shelfRes=>{
+      debugger
+      if(shelfRes.ShelfId){
+        shelfExsit=true;
+        debugger
+        if((direction!="in" && itemShelfCurrAmounts.length>0) || direction=="in"){
+          let enoughAmount =(itemShelfCurrAmounts[0]>=this.newItemShelfQnt);
+          if((direction!="in" && enoughAmount) || direction=="in"){
+
+            if(direction!="in") this.newItemShelfQnt*=(-1);
+
+            if(this.newItemShelfWH!=""){
+              let relatedOrderNum= this.relatedOrderNum.toUpperCase();
+              let ObjToUpdate=[{
+                amount: this.newItemShelfQnt,
+                item: this.resCmpt.componentN,
+                itemName: this.resCmpt.componentName,
+                shell_id_in_whareHouse:shelfRes.ShelfId,
+                position:this.newItemShelfPosition,
+                arrivalDate:null, // only for "in"
+                expirationDate:null, // for products stock
+                productionDate:null, // for products stock
+                barcode:"",
+                itemType: this.stockType,
+                // relatedOrderNum:itemLine.relatedOrder,
+                // deliveryNoteNum:itemLine.deliveryNote,
+                actionType: direction,
+                WH_originId: this.curentWhareHouseId,
+                WH_originName : this.curentWhareHouseName,
+                shell_id_in_whareHouse_Dest:this.destShelfId,
+                shell_position_in_whareHouse_Dest:this.destShelf,
+                WH_destId:this.curentWhareHouseId,
+                WH_destName:this.curentWhareHouseName,
+                batchNumber:'',
+                relatedOrderNum: relatedOrderNum,
+
+
+                }];
+
+                if(direction=="in") {
+                  ObjToUpdate[0].arrivalDate = new Date()
+                };
+               if(direction!="in") {
+                 debugger
+                // ObjToUpdate[0].amount=ObjToUpdate[0].amount*(-1);
+              };
+              //  if(itemLine.reqNum) ObjToUpdate.inventoryReqNum=itemLine.reqNum;
+              //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
+               if(this.stockType=="product") {
+                 ObjToUpdate[0].batchNumber=this.newItemShelfBatchNumber;
+                let itemBatch = this.ItemBatchArr.filter( b=> b.batchNumber == this.newItemShelfBatchNumber);
+                let expDate=new Date(itemBatch[0].expration);
+                ObjToUpdate[0].expirationDate = expDate;
+                //  ObjToUpdate.expirationDate=itemRes.expirationDate ;ObjToUpdate.productionDate=itemRes.productionDate
+                };
+               if(direction=="shelfChange"){
+                ObjToUpdate[0].shell_id_in_whareHouse_Dest= this.destShelfId;
+                ObjToUpdate[0].shell_position_in_whareHouse_Dest= this.destShelf;
+               }
+
+
+                //  READY!
+                debugger
+                await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
+                  if(res=="all updated"){
+                    this.toastSrv.success("Changes Saved");
+                    this.components.forEach(stkItem=> { if(stkItem.componentN == ObjToUpdate[0].item) {stkItem.amount = stkItem.amount + ObjToUpdate[0].amount} });
+                    this.newItemShelfQnt=null;
+                    this.destShelf="";
+                    this.destShelfId="";
+                    this.newItemShelfPosition='';
+                  }else{
+                    this.toastSrv.error("Error - Changes not saved");
+                  }
+                });
+            }else{
+              this.toastSrv.error("Choose wharehouse");
+            }
+          }else{
+            this.toastSrv.error("Not enough stock on shelf!\n Item Number "+this.resCmpt.componentN+"\n Amount on shelf: "+itemShelfCurrAmounts[0]);
+          }
+        }else{
+          this.toastSrv.error("No Item Amounts On Shelf: "+this.newItemShelfPosition);
+        }
+      }else{
+        this.toastSrv.error("No Such Shelf: "+this.newItemShelfPosition);
+      }
+    });
+
+  }
+
+
+
+
+
+
+
+
+
+  getUserInfo() {
+
+      this.authService.userEventEmitter.subscribe(user => {
+      this.user=user.loggedInUser;
+    })
+
+    if (!this.authService.loggedInUser) {
+      this.authService.userEventEmitter.subscribe(user => {
+        if (user.userName) {
+          this.user = user;
+        }
+      });
+    }
+    else {
+      this.user = this.authService.loggedInUser;
+    }
   }
 
   setType(type, elem) {
@@ -87,17 +353,135 @@ export class StockComponent implements OnInit {
         this.buttonColor3 = "white";
         break;
     }
+    if(this.stockType!=type){
+      this.filterbyNum.nativeElement.value="";
+    }
     this.stockType=type;
 
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==type);
   }
 
 
+  filterRows(event,filterType){
+    this.emptyFilterArr=true;
+    this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType );
+    this.filterVal='';
+    this.filterVal=event.target.value;
+    if(this.filterByType.nativeElement.value!=""){
+      let CmptType=this.filterByType.nativeElement.value;
+      this.components=this.components.filter(x=> ( x.componentType.includes(CmptType) &&  x.itemType.includes(this.stockType) ) );
+    }
+    if(this.filterByCategory.nativeElement.value!=""){
+      let category=this.filterByCategory.nativeElement.value;
+      this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+    }
+    if(this.filterBySupplierN.nativeElement.value!=""){
+      let supplierN=this.filterBySupplierN.nativeElement.value;
+      debugger
+      this.components=this.components.filter(x=> ( x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType) ) );
+    }
+    if(this.filterbyNum.nativeElement.value!=""){
+      let itemNum=this.filterbyNum.nativeElement.value;
+      this.components=this.components.filter(x=> ( x.componentN.includes(itemNum) && x.itemType.includes(this.stockType) ) );
+    }
+
+    if(this.filterByCmptName.nativeElement.value!=""){
+      let word= event.target.value;
+      let wordsArr= word.split(" ");
+      wordsArr= wordsArr.filter(x=>x!="");
+      if(wordsArr.length>0){
+        let tempArr=[];
+        this.components.filter(stk=>{
+          var check=false;
+          var matchAllArr=0;
+          wordsArr.forEach(w => {
+              if(stk.componentName.toLowerCase().includes(w.toLowerCase()) &&  stk.itemType==this.stockType){
+                matchAllArr++
+              }
+              (matchAllArr==wordsArr.length)? check=true : check=false ;
+          });
+
+          if(!tempArr.includes(stk) && check) tempArr.push(stk);
+        });
+           this.components= tempArr;
+           debugger
+      }
+    }
+
+    if(this.components.length==0){
+      this.emptyFilterArr=false;
+      this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType );
+    }
+    debugger
+  }
+
+
+  // filterRowsByItemNumber(event){
+  //   this.filterVal='';
+  //   this.filterVal=event.target.value;
+  //   this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(this.filterVal) && x.itemType==this.stockType );
+  // }
+  // filterRowsByItemSupplierNumber(event){
+  //   this.filterVal='';
+  //   this.filterVal=event.target.value;
+  //   this.components=this.componentsUnFiltered.filter(x=> x.componentNs.includes(this.filterVal)  && x.itemType==this.stockType );
+  // }
+  // filterRowsByItemName(event){
+  //   this.filterVal='';
+  //   this.filterVal=event.target.value;
+  //   this.components=this.componentsUnFiltered.filter(x=> x.componentName.toLowerCase().includes(this.filterVal.toLowerCase()) && x.itemType==this.stockType );
+  // }
+  // changeText(ev, filterBy)
+  // {
+  //   if(filterBy=='itemName'){
+  //     let word= ev.target.value;
+  //     let wordsArr= word.split(" ");
+  //     wordsArr= wordsArr.filter(x=>x!="");
+  //     if(wordsArr.length>0){
+  //       let tempArr=[];
+  //       this.componentsUnFiltered.filter(stk=>{
+  //         var check=false;
+  //         var matchAllArr=0;
+  //         wordsArr.forEach(w => {
+  //             if(stk.componentName.toLowerCase().includes(w.toLowerCase()) &&  stk.itemType==this.stockType){
+  //               matchAllArr++
+  //             }
+  //             (matchAllArr==wordsArr.length)? check=true : check=false ;
+  //         });
+
+  //         if(!tempArr.includes(stk) && check) tempArr.push(stk);
+  //       });
+  //          this.components= tempArr;
+  //          debugger
+  //     }
+  //   }
+  // }
+  // filterRowsByCmptTypeanCategory(event,filter){
+  //   this.components= this.componentsUnFiltered;
+  //   this.emptyFilterArr=true;
+  //   let type=this.filterByType.nativeElement.value
+  //   let category= this.filterByCategory.nativeElement.value
+  //   if(type!="" || category!=""){
+  //     if(category!="" && type!="" ){
+  //       this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+  //     }else if(category=="" && type!=""){
+  //       this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.itemType.includes(this.stockType) ) );
+  //     }else if(category!="" && type==""){
+  //       this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+  //     }
+  //     if(this.components.length==0){
+  //       this.emptyFilterArr=false;
+  //       this.components=this.componentsUnFiltered;
+  //     }
+  //   }else if(type=="" && category==""){
+  //     this.components=this.components.filter(x=> ( x.itemType.includes(this.stockType) ) );
+  //   }
+  // }
+
 
 
   getAllComponents() {
     this.inventoryService.getAllComponents().subscribe(components => {
-// debugger
       this.componentsUnFiltered=   components.splice(0);
       this.components = components;
       //why are we using set time out and not async await??
@@ -105,12 +489,12 @@ export class StockComponent implements OnInit {
 
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
-          console.log(res);
+          // console.log(res);
           this.componentsUnFiltered.forEach(cmpt => {
          //  adding amounts to all components
             let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
             if(result!=undefined){
-              console.log(result._id + " , " + cmpt.componentN);
+              // console.log(result._id + " , " + cmpt.componentN);
               cmpt.amount = result.total;
             }
 
@@ -121,32 +505,78 @@ export class StockComponent implements OnInit {
                 itemAllocSum= itemAllocSum-alloc.supplied;
               });
               cmpt.allocAmount=itemAllocSum;
-              // debugger
             }
 
+            if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0;
 
           });
           this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
+          this.getAllCmptTypesAndCategories();
 
         });
-
-
 
       }, 1000);
 
     });
-    console.log(this.components);
-    // debugger;
+    // console.log(this.components);
+    ;
+  }
+
+  getAllCmptTypesAndCategories(){
+    this.cmptTypeList=[];
+    this.cmptCategoryList=[];
+    this.components.forEach(cmpt=>{
+      if(cmpt.componentType!=""&&cmpt.componentType!=null&&cmpt.componentType!=undefined){
+        if(!this.cmptTypeList.includes(cmpt.componentType)){
+          return this.cmptTypeList.push(cmpt.componentType);
+        }
+      }
+      if(cmpt.componentCategory!=""&&cmpt.componentCategory!=null&&cmpt.componentCategory!=undefined){
+        if(!this.cmptCategoryList.includes(cmpt.componentCategory)){
+          return this.cmptCategoryList.push(cmpt.componentCategory);
+        }
+      }
+    });
   }
 
 
+  searchItemShelfs(){
+  if(this.newItemShelfWH!=''){
+    this.inventoryService.getShelfListForItemInWhareHouse(this.resCmpt.componentN, this.newItemShelfWH).subscribe(async res => {
+      if(res.length>0){
+        this.currItemShelfs=res;
 
-  openData(cmptNumber) {
+      }else{
+        this.currItemShelfs=[];
+        this.currItemShelfs.push("NO SHELFS WITH ITEM # "+this.resCmpt.componentN);
+      }
+    });
+  }else{
+    this.toastSrv.error("Choose Wharhouse");
+  }
+ }
+
+
+ loadShelfToInput(position, ev){
+    if(!position.includes("NO SHELFS")){
+      this.newItemShelfPosition=position;
+    }
+}
+
+
+  async openData(cmptNumber) {
+    this.showItemDetails=true;
+    this.itemmoveBtnTitle="Item movements";
+    this.itemMovements=[];
     this.openModalHeader="פריט במלאי  "+ cmptNumber;
     this.openModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
-
+    this.loadComponentItems();
+  }
+  openImg(componentImg) {
+    this.openImgModal = true;
+    this.currModalImgSrc=componentImg;
   }
   openAmountsData(cmptNumber, cmptId) {
     this.openModalHeader="כמויות פריט במלאי  "+ cmptNumber;
@@ -154,6 +584,22 @@ export class StockComponent implements OnInit {
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.itemIdForAllocation=cmptId;
+    //get product (and TBD materials) batchs for select
+    //??? this.resCmpt has mkp category
+    debugger
+    if(this.stockType!="components"){
+      this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
+        this.ItemBatchArr=data;
+        debugger
+      });
+    }
+  }
+  closeAmountsData(){
+    this.openAmountsModal = false;
+    this.itemAmountsData=[];
+    this.newItemShelfPosition='';
+    this.newItemShelfQnt=null;
+    this.destShelf='';
   }
 
   newCmpt(newItem){
@@ -175,6 +621,7 @@ export class StockComponent implements OnInit {
       packageWeight: '',
       remarks: '',
       itemType:'',
+      actualMlCapacity:0,
     }
 
 
@@ -196,6 +643,21 @@ export class StockComponent implements OnInit {
 
   }
 
+  editStockItemDetails(){
+    this.resCmpt;
+    if(confirm("לעדכן פריט?")){
+      debugger
+      this.inventoryService.updateCompt(this.resCmpt).subscribe(res=>{
+        debugger
+        if(res.nModified!=0){
+          this.toastSrv.success("פריט עודכן בהצלחה");
+        } else{
+          this.toastSrv.error("עדכון פריט נכשל");
+        }
+      });
+    }
+
+  }
 
 
 
@@ -213,16 +675,23 @@ export class StockComponent implements OnInit {
 
     })
 }
-getCmptAmounts(cmptN, cmptId){
+async getCmptAmounts(cmptN, cmptId){
+  debugger
+  // this.currItemShelfs=[];
+  this.newItemShelfPosition='';
+  this.newItemShelfQnt=0;
+  this.destShelf='';
+  await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
 
-  this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
+    debugger
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
-   // debugger;
+
+    this.openAmountsData(cmptN, cmptId);
+
   });
 
-  this.openAmountsData(cmptN, cmptId);
-  // debugger;
+  ;
 }
 
 
@@ -231,10 +700,10 @@ getCmptAmounts(cmptN, cmptId){
 inputProcurment(event: any) { // without type info
   this.procurementInputEvent=event;
   this.procurmentQnt = event.target.value;
- // debugger;
+  ;
 }
 updateProcurment(componentId,componentNum,status){
- // debugger
+
   if(status=="false"){
     this.procurmentQnt=null;
   }
@@ -276,7 +745,7 @@ addItemStockAllocation(componentNum){
     }
     this.inventoryService.updateComptAllocations(objToUpdate).subscribe(res=>{
       if(res.ok!=0 && res.n!=0){
-       // debugger;
+        ;
         console.log("res updateComptAllocations: "+res);
         this.resCmpt.allocations.push(objToUpdate.allocations[0]);
         this.resCmpt.allocAmount+=objToUpdate.allocations[0].amount;
@@ -285,19 +754,19 @@ addItemStockAllocation(componentNum){
   }
   this.newAllocationOrderNum=null;
   this.newAllocationAmount=null;
- // debugger;
+  ;
 }
 edit(index) {
   this.EditRowId = index;
 }
 saveAllocEdit(cmptId,rowIndex) {
   //not in use now
-  // debugger;
+  ;
   // "suppliedAlloc": this.suppliedAlloc.nativeElement.value,
 
 }
 editItemStockAllocationSupplied(cmptId,rowIndex){
- // debugger;
+  ;
   let oldAllocationsArr=this.resCmpt.allocations;
   let newSupplied=this.suppliedAlloc.nativeElement.value;
   oldAllocationsArr[this.EditRowId].supplied=newSupplied;
@@ -306,10 +775,10 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
     _id: this.itemIdForAllocation,
     allocations:newAllocationsArr,
     }
- // debugger;
+  ;
   this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
     if(res.ok!=0 && res.n!=0){
-     // debugger;
+      ;
       console.log("res updateCompt: "+res);
       this.EditRowId='';
       this.resCmpt.allocations=newAllocationsArr;
@@ -317,10 +786,10 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
         this.resCmpt.allocations.forEach(alloc=>{
           itemAllocSum= itemAllocSum+alloc.amount;
           itemAllocSum= itemAllocSum-alloc.supplied;
-// debugger
+
         });
         this.resCmpt.allocAmount=itemAllocSum;
-        // debugger
+
       }
   });
 }
@@ -328,7 +797,6 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
 
 
 deleteItemStockAllocation(cmptId,rowIndex) {
- // debugger
 
   if (confirm("מחיקת הקצאה")) {
     let amountDeleted=this.resCmpt.allocations[rowIndex].amount;
@@ -339,7 +807,7 @@ deleteItemStockAllocation(cmptId,rowIndex) {
       }
     this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
       if(res.ok!=0 && res.nModified==1 ){
-       // debugger;
+        ;
         console.log("res updateCompt: "+res);
         this.resCmpt.allocAmount-=amountDeleted;
       }
@@ -347,10 +815,19 @@ deleteItemStockAllocation(cmptId,rowIndex) {
   }
 }
 
-procurementRecommendations(){
-  let recommendList=this.components.filter(cmpt=> cmpt.minimumStock < cmpt.amountKasem+cmpt.amountRH);
-  this.components=recommendList;
- // debugger;
+procurementRecommendations(filterType){
+  this.components=this.componentsUnFiltered;
+  if(filterType=="minimumStock"){
+    if(this.stockType!="product"){
+      let recommendList=this.components.filter(cmpt=> cmpt.minimumStock >= cmpt.amount);
+      this.components=recommendList;
+    }
+  }else if(filterType=="haveRecommendation"){
+    if(this.stockType!="product"){
+      let recommendList=this.components.filter(cmpt=> cmpt.procurementSent == true);
+      this.components=recommendList;
+    }
+  }
 }
 
 
@@ -382,9 +859,11 @@ procurementRecommendations(){
 
   switchModalView()
   {
+    this.loadingMovements=true;
     this.inventoryService.getItemMovements(this.resCmpt.componentN).subscribe(data=>
       {
         this.itemMovements=data;
+        this.loadingMovements=false;
       });
 
     if(!this.showItemDetails)
@@ -397,8 +876,14 @@ procurementRecommendations(){
     {
       this.showItemDetails=false;
       this.itemmoveBtnTitle="Back to item details";
-
+      this.loadingMovements=false;
     }
   }
 
-}
+// ********************ENLARGE TABLE IMAGE BY CLICK************
+
+
+// ************************************************************
+
+
+}// END OF CMPT CLASS

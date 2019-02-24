@@ -14,7 +14,13 @@ export class ProductionScheduleComponent implements OnInit {
   requests: ProductionSchedule[];
   orders: ProductionOrders[];
   public scheduleOrdersForm: FormGroup;
-  scheduleOrders: ProductionOrders[] = [];
+  scheduleOrders: ProductionOrders[] = [{
+    orderNumber : 2,
+    orderDeliveryDate: '01-01-19',
+    orderQuantity: 3,
+    producedQuantity: 2,
+    produceStatus: 'finish'
+  }];
   closeResult: string;
   openModal = false;
   constructor(private productionService: ProductionService, private modalService: NgbModal) {}
@@ -40,7 +46,7 @@ export class ProductionScheduleComponent implements OnInit {
   }
 
 
-  OpenRelatedOrders(content) {
+  OpenRelatedOrders(content){
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       console.log(result);
 

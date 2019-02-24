@@ -37,12 +37,12 @@ export class ProductionService {
   // return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()));
   // }
 
-  addProductionSchedule(productionSchedule): Observable<ProductionSchedule> {
+  addProductionSchedule(ProductionSchedule): Observable<ProductionSchedule> {
     const url = this.baseUrl + 'productionSchedule/add';
-    console.log(productionSchedule);
+    console.log(ProductionSchedule);
     console.log(url);
     return this.http
-      .post(url, productionSchedule, this.options)
+      .post(url, ProductionSchedule, this.options)
       .pipe(map(res => res.json()));
   }
 

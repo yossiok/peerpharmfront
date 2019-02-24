@@ -22,7 +22,7 @@
           {{ request.itemNumber }}
         </a>
       </td>
-      <td></td>
+      <td>{{ request.itemTotalQuantity }}</td>
       <td>{{ request.makatNumber }}</td>
       <td>{{ request.itemBarkod }}</td>
       <td>
@@ -73,7 +73,7 @@
             <td style="width:5%;">{{ i + 1 }}</td>
             <td>{{ order.orderNumber }}</td>
             <td>{{ order.orderDeliveryDate }}</td>
-            <td></td>
+            <td>{{ order.orderQuantity }}</td>
             <td>
               <div class="form-group">
                 <input

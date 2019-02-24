@@ -50,6 +50,10 @@ export class ItemsService {
     let url = this.baseUrl + "item/updateDocs";
     return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json))
   }
+  updateLicenseLimition(itemDocObj) {
+    let url = this.baseUrl + "item/updateDocs?updateLicenseLimition=yes";
+    return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json()))
+  }
 
 
 

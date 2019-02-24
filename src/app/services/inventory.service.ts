@@ -27,6 +27,12 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  checkIfShelfExist(shelfPosition,whareHouseId){
+    let url = this.baseUrl + "shell?shelfPosition="+shelfPosition+"&whareHouseId="+whareHouseId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+
+  }
+
   addNewCmpt(cmptObj):Observable<any>{ 
     let url = this.baseUrl + "component/add";
     return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))
@@ -48,6 +54,11 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell/updateMulti";
     return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
   }
+  updateInventoryChangesTest(qtyObj,stockType){
+    var dataTosend={dataArr: qtyObj};
+    let url = this.baseUrl + "itemShell/updateMultiFinal?stockType="+stockType;
+    return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
+  }
 
   getWhareHousesList(){
     let url = this.baseUrl + "whareHouse";
@@ -63,6 +74,10 @@ export class InventoryService {
     let url = this.baseUrl + "shell/add";
     return this.http.post(url, JSON.stringify(shellObj), this.options).pipe(map(res => res.json()))
   }
+  // addNewWhareHouse(whareHouseName){ //OLD !!!
+  //   let url = this.baseUrl + "whareHouse/add";
+  //   return this.http.post(url, JSON.stringify({name:whareHouseName}), this.options).pipe(map(res => res.json()))
+  // }
   addNewWhareHouse(whareHouseName){
     let url = this.baseUrl + "whareHouse/add";
     return this.http.post(url, JSON.stringify({name:whareHouseName}), this.options).pipe(map(res => res.json()))
@@ -102,4 +117,31 @@ export class InventoryService {
   //   return this.http.get(url).pipe(map(reponse => reponse.json()));
 
   // }
+
+  getItemsByCmpt(componentN , componentType){
+    let url = this.baseUrl + "component?componentNumber="+componentN +"&componentType="+componentType;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+
+
+
+// DATA FIXES
+getDoubleItemShelfs(){
+  let url = this.baseUrl + "component/componentFixes?doubleItemShelfs=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+getDoubleStockItems(){
+  let url = this.baseUrl + "component/componentFixes?doubleStockItems=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+deleteDoubleStockItemsProducts(){
+  let url = this.baseUrl + "component/componentFixes?deleteDoubleStockItemsProducts=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
+getItemsOnShelf(shelfPosition,wh , stockType){
+  let url = this.baseUrl + "itemShell?getItemsOnShelf=yes&shelfPosition="+shelfPosition +"&whareHouseId="+wh+"&stockType="+stockType;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 }

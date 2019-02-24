@@ -26,7 +26,7 @@ export class ItemdetaisComponent implements OnInit {
   newItem: FormGroup;
   item: any = {};
   itemCopy:any = {};
-
+  licsensDateToSend:Date;
   user: UserInfo;
   userName=""
   itemShown = {
@@ -337,13 +337,14 @@ export class ItemdetaisComponent implements OnInit {
     if (number) {
       this.itemsService.getItemData(number).subscribe(res => {
         console.log(res);
-        
+        debugger
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
-        this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
-
-        debugger
+        if(this.itemShown.licsensDate!=null) {
+          this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
+        }
+        
         debugger
         this.dataDiv = res[0].goddet;
         this.showGoddetData();
@@ -366,6 +367,7 @@ export class ItemdetaisComponent implements OnInit {
         this.showGoddet();
       }
       else{
+        debugger
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
@@ -380,23 +382,40 @@ export class ItemdetaisComponent implements OnInit {
     })
   }
 
-  writeItemData() {
-    console.log(this.itemShown)
-    debugger;
-
-    if (confirm("Save changes?")){
-      this.itemShown.nameOfupdating = this.user.userName;
-      this.getGoddetData();
-      this.itemShown.updateDate;
-      this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
-        console.log(res)
-        this.toastr.success("Saved", "Changes Saves");
-        
-      }) ;
-
+  async writeItemData() {
+    console.log(this.itemShown);
+    if(this.itemShown.itemNumber!=""){
+      if (confirm("Save changes?")){
+        await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes=>{
+          if(itemNumRes.length>0){
+            if (confirm("Item alerady exist!\nDo you want to update item number: "+this.itemShown.itemNumber+" ?")){
+              this.updateItemTree();
+            }
+          }else{
+            if (confirm("Create New item number : "+this.itemShown.itemNumber+" ?")){
+              this.updateItemTree();
+            }
+          }
+        });
+      }
     }
+
+
   }
 
+  updateItemTree(){
+    if(this.itemShown.itemNumber!=""){
+      this.itemShown.nameOfupdating = this.user.userName;
+      this.getGoddetData();
+      // this.itemShown.updateDate;
+      this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
+        console.log(res)
+        this.toastr.success("Saved", "Changes Saved fot item number: "+this.itemShown.itemNumber);
+      }) ;
+    }else{
+      this.toastr.error("No item number!");
+    }
+  }
 
   selectedFiles: FileList;
   currentFileUpload: File;
@@ -552,7 +571,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   showSuccess() {
-    this.toastr.info('Hello world!', 'Toastr fun!');
+    this.toastr.info('Successful upload!');
   }
 
 

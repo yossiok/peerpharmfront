@@ -1,9 +1,67 @@
+/****************************************************/
+.table-fixed thead {
+  width: 100%;
+  display: block;
+  }
+.table-fixed tbody {
+  height: 700px;
+  overflow-y: auto;
+  width: 100%;
+  display: block;
+}
+
+/* .table-fixed th{
+  width:10%;
+  display: inline-block;
+  border: none;
+}
+.table-fixed td{
+  width:10%;
+  display: inline-block;
+  border-bottom: none;
+} */
+.table-fixed tr{
+  width: 100%;
+  display: block;
+  font-size: 18px;
+}
+
+
+.table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
+  width: 10%;
+  display: inline-block;
+  border-bottom: none;
+  font-family: "Times New Roman", Times, serif;
+}
+
+
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  padding: 10px;
+}
+/****************************************************/
+
 #myModal{
   float: right;
 }
 #myModal table, #myModal h4{
   float: right;
 }
+
+#cmptModal{
+  float: right;
+}
+#cmptModal table, #cmptModal h4{
+  float: right;
+}
+
+
 .table{
   color:black;
   font-size: 15px;
@@ -110,7 +168,7 @@ background: repeating-linear-gradient(
 }
 
 
-.modal-content, #myModal
+.modal-content, #myModal , #cmptModal
 {
     height: 75vh;
     padding: 0px;
