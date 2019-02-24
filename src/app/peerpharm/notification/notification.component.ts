@@ -101,7 +101,7 @@ export class NotificationComponent implements OnInit {
     console.log(this.allCheck);
   }
 
-  // onSubmit(): void {
+  onSubmit(): void {
   //   event.preventDefault();
   //   if (!this.allCheck) {
   //      this.selectedUserIds = this.noteForm.value.sendUsers
@@ -145,5 +145,5 @@ export class NotificationComponent implements OnInit {
   //     )
   //     .subscribe(data => console.log("added " + data));
 
-  // }
+  }
 }
