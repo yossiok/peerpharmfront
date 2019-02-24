@@ -85,6 +85,7 @@ if(this.orderForm.controls.costumerInternalId.value==null){
   }else{
     this.toastSrv.error("Failed please finish filling the form");
   }
+}
 
   addNewItemOrder(post) {
     console.log(post);
@@ -115,6 +116,7 @@ if(this.orderForm.controls.costumerInternalId.value==null){
     });
     //  orderId:this.orderId
   }
+
 
   searchItem(itemNumber) {
     this.itemName = "";

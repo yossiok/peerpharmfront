@@ -1,3 +1,5 @@
+//
+
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
@@ -14,14 +16,12 @@ export class WebsocketService {
   connect(): Rx.Subject<MessageEvent> {
     // If you aren't familiar with environment variables then
     // you can hard code `environment.ws_url` as `http://localhost:5000`
-    this.socket = io(`http://127.0.0.1:8200`);
-    //debugger;
+    this.socket = io(`http://18.221.58.99:8200`);
+
     // We define our observable which will observe any incoming messages
     // from our socket.io server.
     let observable = new Observable(observer => {
-    //  debugger;
         this.socket.on('message', (data) => {
-          debugger;
           console.log("Received message from Websocket Server")
           observer.next(data);
         })
@@ -50,10 +50,5 @@ export class WebsocketService {
   joinroom(taskid: string): any {
    this.socket.emit('room', taskid)
   }
-
-  joinNotes(sendUsers: any[]): any {
-  // debugger;
-    this.socket.emit('notes', sendUsers)
-   }
 
 }

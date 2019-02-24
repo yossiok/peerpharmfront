@@ -14,13 +14,13 @@ export class ProductionScheduleComponent implements OnInit {
   requests: ProductionSchedule[];
   orders: ProductionOrders[];
   public scheduleOrdersForm: FormGroup;
-  scheduleOrders: ProductionOrders[] = [{
-    orderNumber : 2,
-    orderDeliveryDate: '01-01-19',
-    orderQuantity: 3,
-    producedQuantity: 2,
-    produceStatus: 'finish'
-  }];
+  // scheduleOrders: ProductionOrders[] = [{
+  //   orderNumber : 2,
+  //   orderDeliveryDate: '01-01-19',
+  //   orderQuantity: 3,
+  //   producedQuantity: 2,
+  //   produceStatus: 'finish'
+  // }]; // No Use
   closeResult: string;
   openModal = false;
   constructor(private productionService: ProductionService, private modalService: NgbModal) {}

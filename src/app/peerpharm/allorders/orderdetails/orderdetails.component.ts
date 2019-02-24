@@ -594,10 +594,8 @@ export class OrderdetailsComponent implements OnInit {
          this.ordersItems= tempArr;
     }else{
       this.ordersItems=this.ordersItemsCopy.slice();
+      // this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase()));
     }
-    else
-    {
-      this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase()));
   }
 
 

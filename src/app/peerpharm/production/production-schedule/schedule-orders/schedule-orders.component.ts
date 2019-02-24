@@ -9,13 +9,13 @@ import { ProductionOrders } from './../../models/production-orders';
 })
 export class ScheduleOrdersComponent implements OnInit {
   public scheduleOrdersForm: FormGroup;
-  scheduleOrders: ProductionOrders[] = [{
-    orderNumber : 2,
-    orderDeliveryDate: '01-01-19',
-    orderQuantity: 3,
-    producedQuantity: 2,
-    produceStatus: 'finish'
-  }];
+  // scheduleOrders: ProductionOrders[] = [{
+  //   orderNumber : 2,
+  //   orderDeliveryDate: '01-01-19',
+  //   orderQuantity: 3,
+  //   producedQuantity: 2,
+  //   produceStatus: 'finish'
+  // }]; // No use
 
 
   // @Input() scheduleOrders: ProductionOrders[];
