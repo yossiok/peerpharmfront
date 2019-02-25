@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,18 +6,18 @@ import {
   FormGroup,
   FormArray,
   ValidatorFn
-} from "@angular/forms";
-import * as moment from "moment";
-import { UserInfo } from "./../taskboard/models/UserInfo";
-import { UsersService } from "./../../services/users.service";
-import { AuthService } from "./../../services/auth.service";
-import { NotificationService } from "./../../services/notification.service";
+} from '@angular/forms';
+import * as moment from 'moment';
+import { UserInfo } from './../taskboard/models/UserInfo';
+import { UsersService } from './../../services/users.service';
+import { AuthService } from './../../services/auth.service';
+import { NotificationService } from './../../services/notification.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: "app-notification",
-  templateUrl: "./notification.component.html",
-  styleUrls: ["./notification.component.css"]
+  selector: 'app-notification',
+  templateUrl: './notification.component.html',
+  styleUrls: ['./notification.component.css']
 })
 export class NotificationComponent implements OnInit {
   allUsers: UserInfo[];
@@ -25,8 +25,9 @@ export class NotificationComponent implements OnInit {
   noteForm: FormGroup;
   noteCreated: any;
   allCheck = false;
-  selectedUserIds: any[];
-  MOCK_selectedUserIds: string[];
+  // selectedUserIds: any[];
+  selectedUserIds: string[] = null;
+  recievedNote: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,23 +38,34 @@ export class NotificationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.MOCK_selectedUserIds = ['5b48b2c9abc088119cd73605',
-    '5b48b2c9abc088119cd73604', '5b48b2c9abc088119cd73607'];
+    this.notificationService.newMessageRecivedEventEmitter.subscribe(data => {
+      this.recievedNote = data;
+      console.log(this.recievedNote, 'Notifications');
+
+      // 5b48b2c9abc088119cd73604
+      if (this.recievedNote) {
+        this.selectedUserIds = this.recievedNote.sendUsers;
+        console.log(this.selectedUserIds, 'sendUsers');
+        this.SendNotesById();
+      }
+    });
+
     this.noteCreated = new Date();
-    this.noteCreated = moment(this.noteCreated).format("YYYY-MM-DD");
+    this.noteCreated = moment(this.noteCreated).format('YYYY-MM-DD');
 
     this.initNoteForm();
     this.GetUserAllData();
-    this.GetLoggedInUser();
+    this.GetUserInfo();
+    console.log(this.loggedInUser._id + 'Logged in user');
   }
 
   initNoteForm() {
     this.noteForm = this.formBuilder.group({
       noteCreated: new FormControl(this.noteCreated, [Validators.required]),
-      userId: new FormControl("", [Validators.required]),
-      noteContent: new FormControl("", [Validators.required]),
+      userId: new FormControl('', [Validators.required]),
+      noteContent: new FormControl('', [Validators.required]),
       sendUsers: new FormArray([], this.MinSelectedCheckboxes(1)),
-      recievedUsers: new FormControl("", [Validators.required])
+      recievedUsers: new FormControl('', [Validators.required])
     });
   }
 
@@ -78,18 +90,35 @@ export class NotificationComponent implements OnInit {
     });
   }
 
-  GetLoggedInUser() {
-    this.authService.userEventEmitter.subscribe(user => {
-      this.loggedInUser = user;
-      if(this.MOCK_selectedUserIds.includes(this.loggedInUser._id)) {
-        this.toastrService.success("Guten Morgen",
-        "You have recieved new notification from: ", {
+  SendNotesById() {
+
+    // debugger;
+    if (this.selectedUserIds.includes(this.loggedInUser._id)) {
+     // debugger;
+      this.toastrService.success(
+        this.recievedNote.noteContent,
+        'Message From: ' + this.loggedInUser.firstName + ' ' + this.loggedInUser.lastName,
+        {
           timeOut: 0,
           extendedTimeOut: 0
         }
-        );
-      }
+      );
+    }
+  }
+
+  GetUserInfo() {
+    this.authService.userEventEmitter.subscribe(user => {
+      this.loggedInUser = user.loggedInUser;
     });
+    if (!this.authService.loggedInUser) {
+      this.authService.userEventEmitter.subscribe(user => {
+        if (user.userName) {
+          this.loggedInUser = user;
+        }
+      });
+    } else {
+      this.loggedInUser = this.authService.loggedInUser;
+    }
   }
 
   allUserSelect() {
@@ -104,7 +133,7 @@ export class NotificationComponent implements OnInit {
   onSubmit(): void {
     event.preventDefault();
     if (!this.allCheck) {
-       this.selectedUserIds = this.noteForm.value.sendUsers
+      this.selectedUserIds = this.noteForm.value.sendUsers
         .map((v, i) => (v ? this.allUsers[i]._id : null))
         .filter(v => v !== null);
 
@@ -118,22 +147,20 @@ export class NotificationComponent implements OnInit {
           index--;
         }
       }
-    }
-    else {
+    } else {
       this.selectedUserIds = this.noteForm.value.sendUsers
-      .map((v, i) => (v ? null : this.allUsers[i]._id))
-      .filter(v => v !== null);
+        .map((v, i) => (v ? null : this.allUsers[i]._id))
+        .filter(v => v !== null);
     }
 
-    this.noteForm.controls["sendUsers"].setValue(this.selectedUserIds);
-    this.noteForm.controls["userId"].setValue(this.loggedInUser._id);
-
+    this.noteForm.controls['sendUsers'].setValue(this.selectedUserIds);
+    this.noteForm.controls['userId'].setValue(this.loggedInUser._id);
     const newNotification = this.noteForm.value;
-    // console.log(newNotification);
 
-  //  debugger;
     this.notificationService.joinNotes(newNotification.sendUsers);
     this.notificationService.sendMsg(newNotification);
+
+    console.log(this.recievedNote + ' recievedNote');
 
     this.notificationService
       .addNotification(
@@ -143,7 +170,6 @@ export class NotificationComponent implements OnInit {
         newNotification.sendUsers,
         newNotification.recievedUsers
       )
-      .subscribe(data => console.log("added " + data));
-
+      .subscribe(data => console.log('added ' + data));
   }
 }
