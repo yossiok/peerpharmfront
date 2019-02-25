@@ -21,6 +21,7 @@ export class OrdersComponent implements OnInit {
   EditRowId: any = "";
   today:any;
   selectAllOrders:boolean=false;
+  // onHoldDate:string;
 
   //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
   //private orderSrc = new BehaviorSubject<string>("");
@@ -32,11 +33,14 @@ export class OrdersComponent implements OnInit {
   @ViewChild('costumer') costumer: ElementRef;
   @ViewChild('orderNumber') orderNumber: ElementRef;
   @ViewChild('id') id: ElementRef;
+  @ViewChild('stage') stage: ElementRef;
+  @ViewChild('onHoldDate') onHoldDate: ElementRef;
 
 
   ngOnInit() {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
+    // this.onHoldDate=moment(new Date()).format("YYYY-MM-DD");
     // var todayArr = this.today.split('/');
     this.getOrders();
   }
@@ -64,7 +68,7 @@ export class OrdersComponent implements OnInit {
 
             order.deliveryDate=deliveryDateArr[0]+"/"+deliveryDateArr[1]+"/"+deliveryDateArr[2];
           }
-          let todayDateArr=this.today.split("/");
+          let todayDateArr=this.today.split("/"); 
           if(parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[2])){
               //RED
               order.color = '#ff9999';
@@ -97,11 +101,11 @@ export class OrdersComponent implements OnInit {
   }
 
 
-  saveEdit(a, orderId) {
+  saveEdit(closedOrder, orderId) {
     
     let orderToUpdate = {};
     // a - is if the request is to set order - ready
-    if (!a) {
+    if (!closedOrder) {
       orderToUpdate = {
         'orderId': this.id.nativeElement.value,
         'orderNumber': this.orderNumber.nativeElement.value,
@@ -110,10 +114,17 @@ export class OrdersComponent implements OnInit {
         "deliveryDate": this.deliveryDate.nativeElement.value,
         "orderRemarks": this.orderRemarks.nativeElement.value,
         "orderType": this.orderType.nativeElement.value,
+        "stage": this.stage.nativeElement.value,
+        "onHoldDate": this.onHoldDate.nativeElement.value,
       }
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
         let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
-        orderToUpdate['status'] = "";
+        orderToUpdate['status'] = this.orders[i].status;
+        orderToUpdate['color'] = this.orders[i].color;
+        orderToUpdate['stage'] = this.orders[i].stage;
+
+        debugger
+        // color, status= open
         this.orders[i] = orderToUpdate;
         this.EditRowId = '';
         console.log(res)
@@ -121,17 +132,24 @@ export class OrdersComponent implements OnInit {
 
     }
     else {
-      orderToUpdate = { status: 'close', orderId: orderId }
-      if (confirm("Close Order?")) {
-        console.log(orderToUpdate);
-        this.ordersService.editOrder(orderToUpdate).subscribe(res => {
-          let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
-          orderToUpdate['status'] = "";
-          this.orders[i] = orderToUpdate;
-          this.EditRowId = '';
-          console.log(res)
-        });
+      if(orderId.id!=''){
+        orderToUpdate = { status: 'close', orderId: orderId }
+        if (confirm("Close Order?")) {
+          console.log(orderToUpdate);
+          this.ordersService.editOrder(orderToUpdate).subscribe(res => {
+            let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
+            orderToUpdate['status'] = "";
+            this.orders[i] = orderToUpdate;
+            this.EditRowId = '';
+            console.log(res)
+          });
+        }
+      }else{
+        if(confirm('לא נשמרו שינויים להזמנה')){
+          this.EditRowId='';
+        }
       }
+
     }
   }
 

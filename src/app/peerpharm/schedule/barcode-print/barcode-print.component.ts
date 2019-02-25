@@ -71,7 +71,7 @@ export class BarcodePrintComponent implements OnInit {
     });
   }
 
-  getAllSchedule() {
+     getAllSchedule() {
     this.scheduleService.getSchedule().subscribe(res => {
       this.scheduleData = res;
     });

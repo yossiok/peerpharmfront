@@ -30,8 +30,8 @@
 <table class='table table-fixed'>
   <thead class='bg-info text-white'  (click)="edit(' ')">
     <tr>
-      <th style="width:5%;"></th>
-      <th style="width:5%;">
+      <th style="width:3%;"></th>
+      <th style="width:3%;">
           <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">
       </th>
       <th style="padding:5px">Order Number</th>
@@ -39,15 +39,16 @@
       <th style="padding:5px">Order date</th>
       <th style="padding:5px">Delivery Date</th>
       <th style="width:15%; padding:5px">Reamrks</th>
-      <th style="padding:5px">Type</th>
-      <th ></th>
+      <th style="padding:5px ; width: 8%">Type</th>
+      <!-- <th style="padding:5px">Stage</th>
+      <th style="padding:5px ; width:10%">On Hold</th> -->
       <th style="width:5%;"></th>
     </tr>
   </thead>
   <tbody class='table-hover'>
-    <tr *ngFor="let order of orders; let i = index"  [style.background-color]="order.color"  >
-          <td style="width:5%;">{{i+1}}</td>
-          <td style="width:5%;" (click)="edit('')">
+    <tr *ngFor="let order of orders; let i = index"  [style.background-color]="order.color" (blur)="saveEdit(false, '')" >
+          <td style="width:3%;">{{i+1}}</td>
+          <td style="width:3%;" (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected"  name="orderSelect"> 
           </td>
           <td (click)="edit('')" >
@@ -83,7 +84,25 @@
           <!-- <td *ngIf="order._id===EditRowId">
               <input #orderType type='text' [value]="order.type" style='width:170px'>
             </td> -->
-          <td #orderType>{{order.type}}</td>
+          <td #orderType style="width: 8%;">{{order.type}}</td>
+
+          <!-- <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.stage}}</td>
+          <td *ngIf="order._id===EditRowId">
+            <select #stage style="width: 80%" >
+              <option value="new">חדש</option>
+              <option value="partialCmpt">רכיבים קיימים- חלקית</option>
+              <option value="allCmpt">רכיבים קיימים</option>
+              <option value="production">נשלח לייצור</option>
+              <option value="prodFinish">הכל עבר ייצור</option>
+              <option value="done">הזמנה סגורה</option>
+            </select>
+          </td>
+
+          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.onHoldDate}}</td>
+          <td *ngIf="order._id===EditRowId" style="width:10%">
+            <input #onHoldDate type="date"  >
+          </td>   -->
+
           <td >
             <!--<img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
             <img *ngIf="order._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, order._id)">
@@ -92,7 +111,6 @@
             <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId"  (click)="saveEdit(true, order._id)"></i>
             <i class="ti-save text-success m-r-10" *ngIf="order._id===EditRowId"  (click)="saveEdit(false, order._id)"></i>
           </td>
-          <td style="width:5%;"></td>
     </tr>
   </tbody>
 </table>

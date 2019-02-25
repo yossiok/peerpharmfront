@@ -28,7 +28,7 @@
               <div
                 formArrayName="sendUsers"
                 *ngFor="
-                  let user of noteForm.controls.sendUsers.controls;
+                  let user of noteForm.controls.sendUsers.value;
                   let i = index
                 "
               >
