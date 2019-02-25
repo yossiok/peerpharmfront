@@ -127,7 +127,7 @@ export class OrdersComponent implements OnInit {
         // color, status= open
         this.orders[i] = orderToUpdate;
         this.EditRowId = '';
-        console.log(res)
+        console.log(res);
       });
 
     }

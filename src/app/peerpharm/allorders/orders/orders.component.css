@@ -10,13 +10,13 @@
 }
 
 .table-fixed th{
-    width:12%;
+    width:8%;
     /* width:8%; */
     display: inline-block;
     border: none;
   }
   .table-fixed td{
-    width:12%;
+    width:8%;
     /* width:8%; */
     display: inline-block;
     border-bottom: none;
@@ -30,7 +30,7 @@
   
 
   .table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
-    width:12%;
+    width:8%;
     /* width:8%; */
     display: inline-block;
     border-bottom: none;
