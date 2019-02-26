@@ -516,6 +516,7 @@ deleteLine(itemFromInvReq,index,ev){
                     if(this.dir=='shelfChange'){
                       itemLineToAdd.destShelf= itemLineToAdd.destShelf.toUpperCase();
                       this.inventoryService.checkIfShelfExist(itemLineToAdd.destShelf,this.curentWhareHouseId).subscribe(async destShelfRes=>{
+                        debugger
                         if(destShelfRes.ShelfId){
                           itemLineToAdd.destShelfId=destShelfRes.ShelfId;
                           this.addObjToList(itemLineToAdd,itemRes[0],shelfRes);

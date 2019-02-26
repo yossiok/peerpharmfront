@@ -60,13 +60,11 @@ export class NeworderComponent implements OnInit {
   }
 
   addNewOrder(post) {
-debugger
-if(this.orderForm.controls.costumerInternalId.value==null){
-  this.orderForm.controls.costumerInternalId.setValue(this.choosedCostumer.costumerId);
-};
+  if(this.orderForm.controls.costumerInternalId.value==null){
+    this.orderForm.controls.costumerInternalId.setValue(this.choosedCostumer.costumerId);
+  };
 
   if(this.orderForm.valid){
-    debugger
     let newOrderObj = {
       costumer: post.costumer,
       orderDate: post.orderdate,
@@ -75,6 +73,8 @@ if(this.orderForm.controls.costumerInternalId.value==null){
       orderRemarks: post.remarks,
       type: post.type,
       status: 'open',
+      stage: 'new',
+      onHoldDate: null,
     }
     this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
       this.orderId = res._id;

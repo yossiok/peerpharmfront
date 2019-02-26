@@ -51,7 +51,7 @@
     </tr>
   </thead>
   <tbody class='table-hover'>
-    <tr *ngFor="let order of orders; let i = index"  [style.background-color]="order.color" (blur)="saveEdit(false, '')" >
+    <tr *ngFor="let order of orders; let i = index" style="height: 10%;" [style.background-color]="order.color" (blur)="saveEdit(false, '')" >
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:3%;" (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected"  name="orderSelect"> 
@@ -91,14 +91,14 @@
             </td> -->
           <td #orderType style="width: 7%;">{{order.type}}</td>
 
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.stage | orderStage}}</td>
+          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)" style="text-align: center;  height: 100%;" [style.background-color]="order.stageColor">{{order.stage | orderStage}}</td>
           <td *ngIf="order._id===EditRowId">
             <select #stage style="width: 80%" [value]='order.stage' >
               <option value="new">חדש</option>
               <option value="partialCmpt">רכיבים קיימים- חלקית</option>
               <option value="allCmpt">כל הרכיבים קיימים</option>
               <option value="production">נשלח לייצור</option>
-              <option value="prodFinish">הכל עבר ייצור</option>
+              <option value="prodFinish">עבר ייצור</option>
               <option value="done">הזמנה סגורה</option>
             </select>
           </td>

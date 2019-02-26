@@ -22,7 +22,8 @@ export class OrderStagePipe implements PipeTransform {
         currStage = "נשלח לייצור";
         break;
       case "prodFinish":
-        currStage = "הכל עבר ייצור";
+        currStage = "עבר ייצור";
+        break;
       case "done":
         currStage = "הזמנה סגורה";
         break;

@@ -73,19 +73,19 @@ export class OrdersComponent implements OnInit {
           if(parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[2])){
               //RED
               order.color = '#ff9999';
-            }else {
-              if(parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1])
-                && parseInt(deliveryDateArr[2]) == parseInt(todayDateArr[2])){
+          }else {
+            if(parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1])
+              && parseInt(deliveryDateArr[2]) == parseInt(todayDateArr[2])){
+              //RED
+              order.color = '#ff9999';
+            }else if(parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[0])
+            && parseInt(deliveryDateArr[1]) == parseInt(todayDateArr[1]) ){
                 //RED
                 order.color = '#ff9999';
-              }else if(parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[0])
-              && parseInt(deliveryDateArr[1]) == parseInt(todayDateArr[1]) ){
-                  //RED
-                  order.color = '#ff9999';
-                }
               }
-            
+            }
 
+          this.returnStageColor(order);  
           Object.assign({ isSelected: false }, order);
           order.NumberCostumer = order.orderNumber + " " + order.costumer;
 
@@ -96,14 +96,29 @@ export class OrdersComponent implements OnInit {
   }
 
 
+  returnStageColor(order){
+    if(order.stage=="new"){
+      order.stageColor="white";
+    }else if(order.stage=="partialCmpt"){
+      order.stageColor="#ffa64d";
+    }else if(order.stage=="allCmpt"){
+      order.stageColor="#ffff80";              
+    }else if(order.stage=="production"){
+      order.stageColor="#b3ecff";                            
+    }else if(order.stage=="prodFinish"){
+      order.stageColor="#d9b3ff";                                          
+    }else if(order.stage=="done"){
+      order.stageColor="#9ae59a";                                                        
+    }
+  }
 
   edit(id) {
     this.EditRowId = id;
     if(id!='') {
       let i = this.orders.findIndex(elemnt => elemnt._id == id);
-      this.onHoldStrDate=moment(this.orders[i]).format('YYYY-MM-DD');
-      console.log(this.onHoldStrDate);
-      // this.onHoldDate.nativeElement.value= this.orders[i] ;
+      if(this.orders[i].onHoldDate!=null && this.orders[i].onHoldDate!="" && this.orders[i].onHoldDate!=undefined ){
+        this.onHoldStrDate=moment(this.orders[i]).format('YYYY-MM-DD');
+      }
     }
   }
 
@@ -122,16 +137,19 @@ export class OrdersComponent implements OnInit {
         stage: this.stage.nativeElement.value,
         onHoldDate: this.onHoldDate.nativeElement.value,
       }
+      debugger
       if(orderToUpdate.onHoldDate == "") {orderToUpdate.onHoldDate=null;} else{ orderToUpdate.onHoldDate= new Date(orderToUpdate.onHoldDate)      }
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
         if(res!="order missing"){
           let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
           // orderToUpdate['status'] = this.orders[i].status;
           orderToUpdate['color'] = this.orders[i].color;
+          orderToUpdate['stageColor'] = this.orders[i].stageColor;
           orderToUpdate['NumberCostumer'] = this.orders[i].NumberCostumer;
           orderToUpdate['isSelected'] = this.orders[i].isSelected;
           this.orders[i] = res[0]; 
           this.orders[i].color = orderToUpdate['color'];
+          this.returnStageColor(this.orders[i]);
           this.orders[i].NumberCostumer = orderToUpdate['NumberCostumer'];
           this.orders[i].isSelected = orderToUpdate['isSelected'];
           this.EditRowId = '';
@@ -145,13 +163,14 @@ export class OrdersComponent implements OnInit {
     }
     else {
       if(orderId.id!=''){
-        let orderToUpdate = { status: 'close', orderId: orderId }
+        let orderToUpdate = { status: 'close', orderId: orderId , stage:'done'}
         if (confirm("Close Order?")) {
           console.log(orderToUpdate);
           this.ordersService.editOrder(orderToUpdate).subscribe(res => {
             if(res!="order missing"){
               let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
               orderToUpdate['status'] = "";
+              orderToUpdate['stage'] = "done";
               // this.orders[i] = orderToUpdate;
               this.orders.splice(i,i+1);
               // this.orders[i] = res;
