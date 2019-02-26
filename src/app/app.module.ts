@@ -51,6 +51,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
 import { PackingComponent } from './peerpharm/schedule/packing/packing.component';
+// import { OrderStagePipe } from './pipes/order-stage.pipe';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -75,7 +76,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SidebarComponent ,
     LoginComponent,
 
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe, 
 
   ],
   imports: [

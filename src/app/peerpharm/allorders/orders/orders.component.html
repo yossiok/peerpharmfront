@@ -34,13 +34,17 @@
       <th style="width:3%;">
           <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">
       </th>
-      <th style="padding:5px">Order Number</th>
+      <th style="padding:5px">Order Number
+        <i class="ti-exchange-vertical" (click)="sortOrdersByOrderNumber()" style="cursor:pointer" ></i>
+      </th>
       <th style="width:20%; padding:5px">Costumer</th>
       <th style="padding:5px">Order date</th>
       <th style="padding:5px">Delivery Date</th>
       <th style="width:15%; padding:5px">Reamrks</th>
       <th style="padding:5px ; width: 7%">Type</th>
-      <th style="padding:5px">Stage</th>
+      <th style="padding:5px">Stage
+        <i class="ti-exchange-vertical" (click)="sortOrdersByStage()" style="cursor:pointer" ></i>
+      </th>
       <th style="padding:5px ; width:11%">On Hold</th>
       <th style="width:4%;"></th>
       <th style="width:5%;"></th>
@@ -87,30 +91,30 @@
             </td> -->
           <td #orderType style="width: 7%;">{{order.type}}</td>
 
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.stage}}</td>
+          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.stage | orderStage}}</td>
           <td *ngIf="order._id===EditRowId">
-            <select #stage style="width: 80%" >
+            <select #stage style="width: 80%" [value]='order.stage' >
               <option value="new">חדש</option>
               <option value="partialCmpt">רכיבים קיימים- חלקית</option>
-              <option value="allCmpt">רכיבים קיימים</option>
+              <option value="allCmpt">כל הרכיבים קיימים</option>
               <option value="production">נשלח לייצור</option>
               <option value="prodFinish">הכל עבר ייצור</option>
               <option value="done">הזמנה סגורה</option>
             </select>
           </td>
 
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.onHoldDate}}</td>
+          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.onHoldDate | date: 'dd/MM/yyyy'}}</td>
           <td *ngIf="order._id===EditRowId" style="width:11%">
-            <input #onHoldDate type="date"  >
+            <input #onHoldDate type="date" [value]="onHoldStrDate" >
           </td>  
           <td style="width: 4%"></td>
-          <td style="width: 5%" >
+          <td style="width: 5%" > 
             <!--<img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
             <img *ngIf="order._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, order._id)">
             <img *ngIf="order._id===EditRowId" src='/assets/images/update2.png' style='width:30px; cursor: pointer' (click)="saveEdit()">-->
-            <i class="ti-trash text-danger m-r-10" *ngIf="order._id!==EditRowId"  (click)="deleteOrder(order)"></i>&nbsp;
-            <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId"  (click)="saveEdit(true, order._id)"></i>
-            <i class="ti-save text-success m-r-10" *ngIf="order._id===EditRowId"  (click)="saveEdit(false, order._id)"></i>
+            <i class="ti-trash text-danger m-r-10" *ngIf="order._id!==EditRowId"  (click)="deleteOrder(order)" style="cursor:pointer" ></i>&nbsp;
+            <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId"  (click)="saveEdit(true, order._id)" style="cursor:pointer" ></i>
+            <i class="ti-save text-success m-r-10" *ngIf="order._id===EditRowId"  (click)="saveEdit(false, order._id)" style="cursor:pointer" ></i>
          </td>
     </tr>
   </tbody>

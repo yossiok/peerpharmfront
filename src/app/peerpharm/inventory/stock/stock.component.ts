@@ -292,7 +292,7 @@ async updateItemStock(direction){
                   }
                 });
             }else{
-              this.toastSrv.error("Choose wharehouse");
+              this.toastSrv.error("Choose warehouse");
             }
           }else{
             this.toastSrv.error("Not enough stock on shelf!\n Item Number "+this.resCmpt.componentN+"\n Amount on shelf: "+itemShelfCurrAmounts[0]);

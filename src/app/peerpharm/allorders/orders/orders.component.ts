@@ -21,7 +21,10 @@ export class OrdersComponent implements OnInit {
   EditRowId: any = "";
   today:any;
   selectAllOrders:boolean=false;
-  // onHoldDate:string;
+  onHoldStrDate:String;
+  stageSortDir:string="done";
+  numberSortDir:string="oldFirst";
+  sortCurrType:String="OrderNumber";
 
   //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
   //private orderSrc = new BehaviorSubject<string>("");
@@ -40,8 +43,6 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
-    // this.onHoldDate=moment(new Date()).format("YYYY-MM-DD");
-    // var todayArr = this.today.split('/');
     this.getOrders();
   }
 
@@ -98,50 +99,67 @@ export class OrdersComponent implements OnInit {
 
   edit(id) {
     this.EditRowId = id;
+    if(id!='') {
+      let i = this.orders.findIndex(elemnt => elemnt._id == id);
+      this.onHoldStrDate=moment(this.orders[i]).format('YYYY-MM-DD');
+      console.log(this.onHoldStrDate);
+      // this.onHoldDate.nativeElement.value= this.orders[i] ;
+    }
   }
 
 
   saveEdit(closedOrder, orderId) {
-    
-    let orderToUpdate = {};
     // a - is if the request is to set order - ready
     if (!closedOrder) {
-      orderToUpdate = {
-        'orderId': this.id.nativeElement.value,
-        'orderNumber': this.orderNumber.nativeElement.value,
-        "orderDate": this.orderDate.nativeElement.value,
-        "costumer": this.costumer.nativeElement.value,
-        "deliveryDate": this.deliveryDate.nativeElement.value,
-        "orderRemarks": this.orderRemarks.nativeElement.value,
-        "orderType": this.orderType.nativeElement.value,
-        "stage": this.stage.nativeElement.value,
-        "onHoldDate": this.onHoldDate.nativeElement.value,
+      let orderToUpdate = {
+        orderId: this.id.nativeElement.value,
+        orderNumber: this.orderNumber.nativeElement.value,
+        orderDate: this.orderDate.nativeElement.value,
+        costumer: this.costumer.nativeElement.value,
+        deliveryDate: this.deliveryDate.nativeElement.value,
+        orderRemarks: this.orderRemarks.nativeElement.value,
+        orderType: this.orderType.nativeElement.value,
+        stage: this.stage.nativeElement.value,
+        onHoldDate: this.onHoldDate.nativeElement.value,
       }
+      if(orderToUpdate.onHoldDate == "") {orderToUpdate.onHoldDate=null;} else{ orderToUpdate.onHoldDate= new Date(orderToUpdate.onHoldDate)      }
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
-        let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
-        orderToUpdate['status'] = this.orders[i].status;
-        orderToUpdate['color'] = this.orders[i].color;
-        orderToUpdate['stage'] = this.orders[i].stage;
+        if(res!="order missing"){
+          let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
+          // orderToUpdate['status'] = this.orders[i].status;
+          orderToUpdate['color'] = this.orders[i].color;
+          orderToUpdate['NumberCostumer'] = this.orders[i].NumberCostumer;
+          orderToUpdate['isSelected'] = this.orders[i].isSelected;
+          this.orders[i] = res[0]; 
+          this.orders[i].color = orderToUpdate['color'];
+          this.orders[i].NumberCostumer = orderToUpdate['NumberCostumer'];
+          this.orders[i].isSelected = orderToUpdate['isSelected'];
+          this.EditRowId = '';
+          this.toastSrv.success("Changes Saved!")
 
-        debugger
-        // color, status= open
-        this.orders[i] = orderToUpdate;
-        this.EditRowId = '';
-        console.log(res);
+          console.log(res);
+        }else{
+          this.toastSrv.error("Changes Not Saved")
+        }
       });
-
     }
     else {
       if(orderId.id!=''){
-        orderToUpdate = { status: 'close', orderId: orderId }
+        let orderToUpdate = { status: 'close', orderId: orderId }
         if (confirm("Close Order?")) {
           console.log(orderToUpdate);
           this.ordersService.editOrder(orderToUpdate).subscribe(res => {
-            let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
-            orderToUpdate['status'] = "";
-            this.orders[i] = orderToUpdate;
-            this.EditRowId = '';
-            console.log(res)
+            if(res!="order missing"){
+              let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
+              orderToUpdate['status'] = "";
+              // this.orders[i] = orderToUpdate;
+              this.orders.splice(i,i+1);
+              // this.orders[i] = res;
+              this.EditRowId = '';
+              this.toastSrv.success("Order Closed!");
+              console.log(res)
+            }
+
           });
         }
       }else{
@@ -222,6 +240,62 @@ export class OrdersComponent implements OnInit {
     this.orders.filter(e => e.isSelected = ev.target.checked)
   }
 
+  sortOrdersByStage(){
+    
+    var tempArr =[] ,stageNewArr =[], stagePartialCmptArr =[], stageAllCmptArr =[], stageProductionArr =[] , stageProdFinishArr =[], stageDoneArr =[];
+
+      this.orders.forEach(order => {
+        if(order.stage == "new"){
+          stageNewArr.push(order);
+        }else if(order.stage == "partialCmpt"){
+          stagePartialCmptArr.push(order);
+        }else if(order.stage == "allCmpt"){
+          stageAllCmptArr.push(order);
+        }else if(order.stage == "production"){
+          stageProductionArr.push(order);
+        }else if(order.stage == "prodFinish"){
+          stageProdFinishArr.push(order);
+        }else if(order.stage == "done"){
+          stageDoneArr.push(order);
+        }
+        
+        if((stageNewArr.length + stagePartialCmptArr.length + stageAllCmptArr.length + stageProductionArr.length + stageProdFinishArr.length + stageDoneArr.length) == this.orders.length){
+          if(this.stageSortDir=="new"){
+            stagePartialCmptArr.map(order=>tempArr.push(order))
+            stageAllCmptArr.map(order=>tempArr.push(order))
+            stageProductionArr.map(order=>tempArr.push(order))
+            stageProdFinishArr.map(order=>tempArr.push(order))
+            stageDoneArr.map(order=>tempArr.push(order))
+            stageNewArr.map(order=>tempArr.push(order))
+            this.stageSortDir="done";
+          }
+          else if(this.stageSortDir=="done"){
+            stageNewArr.map(order=>tempArr.push(order))
+            stagePartialCmptArr.map(order=>tempArr.push(order))
+            stageAllCmptArr.map(order=>tempArr.push(order))
+            stageProductionArr.map(order=>tempArr.push(order))
+            stageProdFinishArr.map(order=>tempArr.push(order))
+            stageDoneArr.map(order=>tempArr.push(order))
+            this.stageSortDir="new";
+          }
+          this.orders= tempArr;
+          this.sortCurrType="stage"
+        }
+      });
+  }
+
+  sortOrdersByOrderNumber(){
+    if(this.sortCurrType!="orderNumber")  this.orders= this.ordersCopy;
+    if(this.numberSortDir=="oldFirst"){
+      this.orders= this.orders.reverse();
+      this.numberSortDir="newFirst";
+    }else if(this.numberSortDir=="newFirst"){
+      this.orders= this.orders.reverse();
+      this.numberSortDir="oldFirst";
+    }
+    this.sortCurrType="orderNumber"
+
+  }
 
   
 }

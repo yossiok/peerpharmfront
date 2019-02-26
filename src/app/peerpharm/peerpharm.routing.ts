@@ -133,7 +133,7 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'inventory/wharehouse',
     data: {
-      title: 'WhareHouse'
+      title: 'Warehouse'
     },
     component: WharehouseComponent
   },
