@@ -79,6 +79,7 @@ import { AuthService } from '../services/auth.service';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 import { SpinnerComponent } from '../shared/spinner.component';
 import { HeadingsWHPipe } from '../pipes/headings-wh.pipe';
+import { OrderStagePipe } from '../pipes/order-stage.pipe';
 import {NgxPrintModule} from 'ngx-print';
 import { PackingComponent } from './schedule/packing/packing.component';
 
@@ -164,7 +165,8 @@ import { PackingComponent } from './schedule/packing/packing.component';
     InventoryNewRequestComponent,
     ChatComponent ,
     HeadingsWHPipe,
-    PackingComponent
+    PackingComponent,
+    OrderStagePipe,
 
   ],
   providers: [ OrdersService, HttpClientModule]

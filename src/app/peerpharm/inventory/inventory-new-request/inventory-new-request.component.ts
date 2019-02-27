@@ -91,7 +91,7 @@ export class InventoryNewRequestComponent implements OnInit {
         this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
           debugger;
           if(res){
-            this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" wharehouse.");
+            this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" warehouse.");
             //error("Failed pleae finish filling the form");
             console.log(res);
           }

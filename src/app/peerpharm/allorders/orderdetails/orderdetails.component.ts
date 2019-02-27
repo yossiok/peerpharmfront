@@ -338,6 +338,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
     this.ordersItems.filter(item => item.itemNumber == itemNumber).map(item => {
+      this.EditRowId='';
       if (item.isExpand == "+") {
         item.isExpand = "-";
         item.colorBtn = '#F7866A';
@@ -350,38 +351,55 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   edit(id) {
-    if (this.EditRowId == id) this.EditRowId = '';
-    else this.EditRowId = id;
-
+    debugger
+    if (this.EditRowId == id) {
+      debugger
+      this.EditRowId = '';
+    } else 
+    if(id!=''){
+      this.EditRowId = id;
+    } else{
+      this.EditRowId = '';
+    }
   }
 
-  saveEdit(a) {
-    let itemToUpdate = {
+  saveEdit() {
+      let itemToUpdate = {
 
-      'orderItemId': this.id.nativeElement.value,
-      'itemNumber': this.itemN.nativeElement.value,
-      "unitMeasure": this.unitMeasure.nativeElement.value,
-      "discription": this.itemName.nativeElement.value,
-      "quantity": this.quantity.nativeElement.value,
-      "qtyKg": this.weight.nativeElement.value,
-      "itemRemarks": this.itemRemarks.nativeElement.value,
-    }
-    console.log(itemToUpdate);
-    // console.log("edit " + itemToUpdate.orderItemId );
-
-    this.orderService.editItemOrder(itemToUpdate).subscribe(res => {
-
-      console.log(res)
-      if (res != "error") {
-        this.toastSrv.success(itemToUpdate.itemNumber, "Changes Saved");
-        this.EditRowId = "";
-        let index = this.ordersItems.findIndex(order => order._id == itemToUpdate.orderItemId);
-        this.ordersItems[index] = itemToUpdate;
-        this.ordersItems[index]._id = itemToUpdate.orderItemId;
-      }else{
+        'orderItemId': this.id.nativeElement.value,
+        'itemNumber': this.itemN.nativeElement.value,
+        "unitMeasure": this.unitMeasure.nativeElement.value,
+        "discription": this.itemName.nativeElement.value,
+        "quantity": this.quantity.nativeElement.value,
+        "qtyKg": this.weight.nativeElement.value,
+        "itemRemarks": this.itemRemarks.nativeElement.value,
       }
+      console.log(itemToUpdate);
+      // console.log("edit " + itemToUpdate.orderItemId );
+  
+      this.orderService.editItemOrder(itemToUpdate).subscribe(res => {
+  
+        console.log(res)
+        if (res != "error") {
+          this.toastSrv.success(itemToUpdate.itemNumber, "Changes Saved");
+          this.EditRowId = "";
+          let index = this.ordersItems.findIndex(order => order._id == itemToUpdate.orderItemId);
+          // this.ordersItems[index] = itemToUpdate;
+          this.ordersItems[index]._id = itemToUpdate.orderItemId;
+          this.ordersItems[index].itemRemarks = itemToUpdate.itemRemarks;
+          this.ordersItems[index].discription = itemToUpdate.discription;
+          this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
+          this.ordersItems[index].quantity = itemToUpdate.quantity;
+          this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
+          this.ordersItems[index].unitMeasure = itemToUpdate.unitMeasure;
 
-    });
+          debugger
+        }else{
+        }
+  
+      });
+
+
   }
 
   deleteItem(item) {

@@ -303,7 +303,7 @@ export const ROUTES: RouteInfo[] = [
         },
         {
          path: '/peerpharm/inventory/wharehouse',
-         title: 'Whare House',
+         title: 'Warehouse',
          icon: 'fas fa-tree',
          class: '',
          extralink: false,

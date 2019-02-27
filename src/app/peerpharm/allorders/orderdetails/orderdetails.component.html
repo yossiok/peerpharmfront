@@ -25,7 +25,7 @@
 <input matInput  placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
 
 <table class='table' *ngIf="loadData==false">
-  <thead class='bg-info text-white'>
+  <thead class='bg-info text-white' (click)="edit('')">
     <tr>
       <th> #</th>
 
@@ -43,7 +43,7 @@
   </thead>
 
   <tbody>
-    <tr *ngIf="!showingAllOrders" class='inputTr'>
+    <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
       <td></td>
       <td *ngIf="!showingAllOrders && multi"><input class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum (focusout)="searchItem(orderNumber.value)"></td>
       <td><input class="form-control form-control-sm" placeholder="Item Number" [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
@@ -60,13 +60,14 @@
     <tr>
 
     </tr>
-    <ng-container *ngFor="let item of ordersItems; let i = index">
-      <tr [style.background-color]="item.color">
+    <ng-container *ngFor="let item of ordersItems; let i = index" >
+      <tr [style.background-color]="item.color"  (click)="edit(item._id)" (blur)="edit('')">
 
 
         <td *ngIf="item._id===EditRowId"><input #id type='hidden' [value]="item._id" style='width:370px'>
           <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}</td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td>
+        <td *ngIf="item._id!==EditRowId" ><b>{{i+1}}</b></td>
+        <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
 
         <td *ngIf="multi==true">{{item.orderNumber}}</td>
         <td *ngIf="item.licsensNumber!=''">
@@ -82,15 +83,15 @@
           </a>
         </td>
         <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'></td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
+        <td *ngIf="item._id!==EditRowId" >{{item.discription}}</td>
         <td *ngIf="item._id===EditRowId"><input #unitmeasure type='text' [value]="item.unitMeasure" style='width:70px'></td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.unitMeasure}}</td>
+        <td *ngIf="item._id!==EditRowId" >{{item.unitMeasure}}</td>
         <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
+        <td *ngIf="item._id!==EditRowId" >{{item.quantity}}</td>
         <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px' class='printTd'></td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td>
+        <td *ngIf="item._id!==EditRowId" >{{item.qtyKg}}</td>
         <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' /></td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
+        <td *ngIf="item._id!==EditRowId" >{{item.itemRemarks}}</td>
         <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
 
         <td *ngIf="item.compiled&&item.compiled.length==0" class='printTd' > </td>
@@ -154,7 +155,7 @@
 
 </table>
 <br>
-<div class='printTd'>components:
+<!-- <div class='printTd'>components:
   <table>
     <tr *ngFor="let cmpt of components">
       <td>{{cmpt.componentN}}</td>
@@ -164,7 +165,7 @@
       <td>{{cmpt.lack}}</td>
     </tr>
   </table>
-</div>
+</div> -->
 
 
 
