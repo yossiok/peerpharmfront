@@ -5,6 +5,7 @@ import { Headers, RequestOptions } from "@angular/http";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import * as io from "socket.io-client";
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: "root"
@@ -14,9 +15,13 @@ export class NotificationService {
   private socket: any;
   messages: Subject<any>;
   newMessageRecivedEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+  private baseUrl = '/';
+  private headers = new Headers({ "Content-Type": "application/json" });
+  private options = new RequestOptions({ headers: this.headers });
 
   constructor(private http: Http) {
-    this.socket = io(`http://127.0.0.1:8200`);
+  //  this.socket = io(`http://127.0.0.1:8200`); Localhost
+    this.socket = io(`http://18.221.58.99:8200`);
     this.socket.on("connect", () => {
       this.socket.on("message", data => {
         this.newMessageRecivedEventEmitter.emit(data);
@@ -48,10 +53,9 @@ export class NotificationService {
       sendUsers: sendUsers,
       recievedUsers: recievedUsers
     };
-    let headers = new Headers({ "Content-Type": "application/json" });
-    let options = new RequestOptions({ headers: headers });
+
     return this.http
-      .post(this.url, notification, options)
+      .post(this.url, notification, this.options)
       .map(res => this.extractData(res))
       .catch(this.handleErrorObservable);
   }
@@ -69,5 +73,11 @@ export class NotificationService {
 
   handleErrorObservable(arg0: any): any {
     throw new Error("Error getting new Notification");
+  }
+
+
+  editNotification(note): Observable<any> {
+    let url = this.baseUrl + "notification/update";
+    return this.http.post(url, JSON.stringify(note), this.options).pipe(map(res => res.json()));
   }
 }

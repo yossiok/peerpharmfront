@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -6,28 +6,33 @@ import {
   FormGroup,
   FormArray,
   ValidatorFn
-} from '@angular/forms';
-import * as moment from 'moment';
-import { UserInfo } from './../taskboard/models/UserInfo';
-import { UsersService } from './../../services/users.service';
-import { AuthService } from './../../services/auth.service';
-import { NotificationService } from './../../services/notification.service';
-import { ToastrService } from 'ngx-toastr';
+} from "@angular/forms";
+import { take } from "rxjs/operators";
+import * as moment from "moment";
+import { UserInfo } from "./../taskboard/models/UserInfo";
+import { UsersService } from "./../../services/users.service";
+import { AuthService } from "./../../services/auth.service";
+import { NotificationService } from "./../../services/notification.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-notification',
-  templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.css']
+  selector: "app-notification",
+  templateUrl: "./notification.component.html",
+  styleUrls: ["./notification.component.css"]
 })
 export class NotificationComponent implements OnInit {
   allUsers: UserInfo[];
   loggedInUser: UserInfo;
   noteForm: FormGroup;
+  sendControl: any;
+  receiveUserArr: any[] = new Array();
   noteCreated: any;
   allCheck = false;
-  // selectedUserIds: any[];
   selectedUserIds: string[] = null;
+  newNotification: any;
   recievedNote: any = null;
+  newNoteId: string;
+  editNote: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,35 +43,37 @@ export class NotificationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.GetUserInfo();
+
     this.notificationService.newMessageRecivedEventEmitter.subscribe(data => {
       this.recievedNote = data;
-      console.log(this.recievedNote, 'Notifications');
+      //   console.log(this.recievedNote, "Notifications");
 
-      // 5b48b2c9abc088119cd73604
+      // 5b48b2c9abc088119cd73604 sima Id
       if (this.recievedNote) {
         this.selectedUserIds = this.recievedNote.sendUsers;
-        console.log(this.selectedUserIds, 'sendUsers');
         this.SendNotesById();
       }
     });
 
     this.noteCreated = new Date();
-    this.noteCreated = moment(this.noteCreated).format('YYYY-MM-DD');
+    this.noteCreated = moment(this.noteCreated).format("YYYY-MM-DD");
 
     this.initNoteForm();
     this.GetUserAllData();
-    this.GetUserInfo();
-    console.log(this.loggedInUser._id + 'Logged in user');
   }
 
   initNoteForm() {
     this.noteForm = this.formBuilder.group({
       noteCreated: new FormControl(this.noteCreated, [Validators.required]),
-      userId: new FormControl('', [Validators.required]),
-      noteContent: new FormControl('', [Validators.required]),
+      userId: new FormControl("", [Validators.required]),
+      noteContent: new FormControl("", [Validators.required]),
       sendUsers: new FormArray([], this.MinSelectedCheckboxes(1)),
-      recievedUsers: new FormControl('', [Validators.required])
+      recievedUsers: new FormControl("", [Validators.required])
     });
+
+    this.sendControl = <FormArray>this.noteForm.get("sendUsers");
+   // this.receiveControl = <FormArray>this.noteForm.get("recievedUsers");
   }
 
   MinSelectedCheckboxes(min = 1) {
@@ -83,41 +90,53 @@ export class NotificationComponent implements OnInit {
     this.usersService.getAllUsers().subscribe(users => {
       this.allUsers = users;
       const initArr = this.allUsers.map(c => new FormControl(false));
-      const control = <FormArray>this.noteForm.controls.sendUsers;
       initArr.forEach((element, index) => {
-        control.push(initArr[index]);
+        this.sendControl.push(initArr[index]);
       });
     });
   }
 
   SendNotesById() {
-
-    // debugger;
     if (this.selectedUserIds.includes(this.loggedInUser._id)) {
-     // debugger;
-      this.toastrService.success(
-        this.recievedNote.noteContent,
-        'Message From: ' + this.loggedInUser.firstName + ' ' + this.loggedInUser.lastName,
-        {
-          timeOut: 0,
-          extendedTimeOut: 0
-        }
-      );
+      this.toastrService
+        .success(
+          this.recievedNote.noteContent,
+          "Message From: " +
+            this.loggedInUser.firstName +
+            " " +
+            this.loggedInUser.lastName,
+          {
+            closeButton: true,
+            timeOut: 0,
+            extendedTimeOut: 0
+          }
+        )
+        .onHidden.pipe(take(1))
+        .subscribe(() => this.toasterClickedHandler());
     }
+  }
+
+  toasterClickedHandler() {
+    this.receiveUserArr.push(this.loggedInUser._id);
+    this.editNote = {
+      noteId: this.newNoteId,
+      noteCreated: this.newNotification.noteCreated,
+      userId: this.newNotification.userId,
+      noteContent: this.newNotification.noteContent,
+      sendUsers: this.newNotification.sendUsers,
+      recievedUsers: this.receiveUserArr
+    };
+    this.notificationService.editNotification(this.editNote).subscribe(res => {
+      console.log(res);
+    });
   }
 
   GetUserInfo() {
     this.authService.userEventEmitter.subscribe(user => {
-      this.loggedInUser = user.loggedInUser;
+      this.loggedInUser = user;
     });
-    if (!this.authService.loggedInUser) {
-      this.authService.userEventEmitter.subscribe(user => {
-        if (user.userName) {
-          this.loggedInUser = user;
-        }
-      });
-    } else {
-      this.loggedInUser = this.authService.loggedInUser;
+    if (this.loggedInUser == null) {
+      this.authService.getLoggedInUser().subscribe();
     }
   }
 
@@ -127,23 +146,19 @@ export class NotificationComponent implements OnInit {
     } else {
       this.allCheck = true;
     }
-    console.log(this.allCheck);
   }
 
   onSubmit(): void {
     event.preventDefault();
+
     if (!this.allCheck) {
       this.selectedUserIds = this.noteForm.value.sendUsers
         .map((v, i) => (v ? this.allUsers[i]._id : null))
         .filter(v => v !== null);
 
-      for (
-        let index = 0;
-        index < this.noteForm.controls.sendUsers.controls.length;
-        index++
-      ) {
-        if (!this.noteForm.controls.sendUsers.controls[index].value) {
-          this.noteForm.controls.sendUsers.removeAt(index);
+      for (let index = 0; index < this.sendControl.controls.length; index++) {
+        if (!this.sendControl.controls[index].value) {
+          this.sendControl.removeAt(index);
           index--;
         }
       }
@@ -153,23 +168,24 @@ export class NotificationComponent implements OnInit {
         .filter(v => v !== null);
     }
 
-    this.noteForm.controls['sendUsers'].setValue(this.selectedUserIds);
-    this.noteForm.controls['userId'].setValue(this.loggedInUser._id);
-    const newNotification = this.noteForm.value;
+    this.noteForm.controls["sendUsers"].setValue(this.selectedUserIds);
+    this.noteForm.controls["userId"].setValue(this.loggedInUser._id);
+    this.newNotification = this.noteForm.value;
 
-    this.notificationService.joinNotes(newNotification.sendUsers);
-    this.notificationService.sendMsg(newNotification);
-
-    console.log(this.recievedNote + ' recievedNote');
+    this.notificationService.joinNotes(this.newNotification.sendUsers);
+    this.notificationService.sendMsg(this.newNotification);
 
     this.notificationService
       .addNotification(
-        newNotification.noteCreated,
-        newNotification.userId,
-        newNotification.noteContent,
-        newNotification.sendUsers,
-        newNotification.recievedUsers
+        this.newNotification.noteCreated,
+        this.newNotification.userId,
+        this.newNotification.noteContent,
+        this.newNotification.sendUsers,
+        this.newNotification.recievedUsers
       )
-      .subscribe(data => console.log('added ' + data));
+      .subscribe(data => {
+        this.newNoteId = data._id;
+        console.log("added " + data);
+      });
   }
 }
