@@ -351,11 +351,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   edit(id) {
-    debugger
-    if (this.EditRowId == id) {
-      debugger
-      this.EditRowId = '';
-    } else 
+
     if(id!=''){
       this.EditRowId = id;
     } else{

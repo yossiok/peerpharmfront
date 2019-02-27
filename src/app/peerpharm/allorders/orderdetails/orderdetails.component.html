@@ -61,10 +61,12 @@
 
     </tr>
     <ng-container *ngFor="let item of ordersItems; let i = index" >
-      <tr [style.background-color]="item.color"  (click)="edit(item._id)" (blur)="edit('')">
+      <!-- <tr [style.background-color]="item.color"  (click)="edit(item._id)" (blur)="edit('')"> -->
+      <tr [style.background-color]="item.color"  (click)="edit(item._id)" >
 
 
-        <td *ngIf="item._id===EditRowId"><input #id type='hidden' [value]="item._id" style='width:370px'>
+        <td *ngIf="item._id===EditRowId">
+          <input #id type='hidden' [value]="item._id" style='width:370px'>
           <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}</td>
         <td *ngIf="item._id!==EditRowId" ><b>{{i+1}}</b></td>
         <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->

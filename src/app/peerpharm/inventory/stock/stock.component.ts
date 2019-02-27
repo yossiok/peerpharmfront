@@ -114,24 +114,34 @@ export class StockComponent implements OnInit {
     this.components=[];
     await this.getUserAllowedWH();
     this.getAllComponents();
+    // this.exportMovementsAsXLSX();
+
+
   }
 //************************************************* */
+//   exportMovementsAsXLSX() {
+//     this.inventoryService.getAllMovements().subscribe(data=>{
+//       debugger
+//       this.excelService.exportAsExcelFile(data, "movements");
+//         });
+    
+//  }
   exportAsXLSX(data, title) {
     this.excelService.exportAsExcelFile(data, title);
  }
-  getDoubleItemShelfs(){
-    this.inventoryService.getDoubleItemShelfs().subscribe(res=>{
-      this.exportAsXLSX(res, "DoubleItemShelfs");
-    })}
-  getDoubleStockItems(){
-    this.inventoryService.getDoubleStockItems().subscribe(res=>{
-      this.exportAsXLSX(res, "DoubleStockItems");
+  // getDoubleItemShelfs(){
+  //   this.inventoryService.getDoubleItemShelfs().subscribe(res=>{
+  //     this.exportAsXLSX(res, "DoubleItemShelfs");
+  //   })}
+  // getDoubleStockItems(){
+  //   this.inventoryService.getDoubleStockItems().subscribe(res=>{
+  //     this.exportAsXLSX(res, "DoubleStockItems");
 
-    })}
-    deleteDoubleStockItemsProducts(){
-      this.inventoryService.deleteDoubleStockItemsProducts().subscribe(res=>{
-        console.log(res);
-    })}
+  //   })}
+  //   deleteDoubleStockItemsProducts(){
+  //     this.inventoryService.deleteDoubleStockItemsProducts().subscribe(res=>{
+  //       console.log(res);
+  //   })}
 
 //************************************************/
 
@@ -574,11 +584,11 @@ async updateItemStock(direction){
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
   }
-  openImg(componentImg) {
+  async openImg(componentImg) {
     this.openImgModal = true;
     this.currModalImgSrc=componentImg;
   }
-  openAmountsData(cmptNumber, cmptId) {
+  async openAmountsData(cmptNumber, cmptId) {
     this.openModalHeader="כמויות פריט במלאי  "+ cmptNumber;
     this.openAmountsModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
@@ -586,14 +596,14 @@ async updateItemStock(direction){
     this.itemIdForAllocation=cmptId;
     //get product (and TBD materials) batchs for select
     //??? this.resCmpt has mkp category
-    debugger
     if(this.stockType!="components"){
-      this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
+      await this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
         this.ItemBatchArr=data;
         debugger
       });
     }
   }
+
   closeAmountsData(){
     this.openAmountsModal = false;
     this.itemAmountsData=[];
@@ -681,13 +691,13 @@ async getCmptAmounts(cmptN, cmptId){
   this.newItemShelfPosition='';
   this.newItemShelfQnt=0;
   this.destShelf='';
-  await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
+  await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(async res=>{
 
     debugger
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
 
-    this.openAmountsData(cmptN, cmptId);
+    await this.openAmountsData(cmptN, cmptId);
 
   });
 

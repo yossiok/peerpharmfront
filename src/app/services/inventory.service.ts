@@ -144,4 +144,13 @@ getItemsOnShelf(shelfPosition,wh , stockType){
   let url = this.baseUrl + "itemShell?getItemsOnShelf=yes&shelfPosition="+shelfPosition +"&whareHouseId="+wh+"&stockType="+stockType;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+
+getAllMovements():Observable<any>{
+  let url = this.baseUrl + "itemmovement?all=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
+
+
+
 }
