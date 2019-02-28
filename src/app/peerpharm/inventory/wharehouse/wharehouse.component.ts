@@ -611,14 +611,15 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
 
 searchItemsOnShelf(event){
   this.ItemsOnShelf=[];
-  let shelf = event.target.value;
+  // let shelf = event.target.value;
+  let shelfPosiotion = this.shelfSearch.nativeElement.value.toUpperCase().trim();
   
   let whId= this.curentWhareHouseId;
   let stockType;
   if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem")  stockType="component";
   if(this.curentWhareHouseName == "Rosh HaAyin products")  stockType="product";
-  if(shelf!=''){
-    this.inventoryService.getItemsOnShelf(shelf, whId, stockType).subscribe(res => {
+  if(shelfPosiotion!=''){
+    this.inventoryService.getItemsOnShelf(shelfPosiotion, whId, stockType).subscribe(res => {
       if(res=="shelfMissing"){
         this.toastSrv.error("מדף לא קיים במחסן");
       }

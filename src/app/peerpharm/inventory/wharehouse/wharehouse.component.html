@@ -26,9 +26,9 @@
       
             <tr *ngIf="screen=='stkManagment' " >
       
-              <!-- <td>
-                <button (click)="dirSet('stkManagment','')" class='btn btn-info'>צפיה במדף</button>
-              </td> -->
+              <td>
+                <button (click)="dirSet('stkManagment','watchShelfs')" class='btn btn-info'>צפיה במדף</button>
+              </td>
               <td>
                 <button (click)="dirSet('stkManagment','in')" class='btn btn-info'>קבלת סחורה</button>
               </td>
@@ -71,7 +71,7 @@
 
 
     <!-- STOCK MANGEMENT -->
-    <div *ngIf="dir!='' && dir!='managment'" >
+    <div *ngIf="dir!='' && dir!='managment'  && dir!='watchShelfs'"  >
 
 
       <div class="container">
@@ -268,7 +268,37 @@
     </div>
         
 </div> -->
-
+<div *ngIf="dir=='watchShelfs'">
+    <form >
+      <h4>צפיה בפריטים על מדף</h4>
+      <input #shelfSearch type="text" placeholder="מדף">
+      <button (click)="searchItemsOnShelf()">חפש</button>
+  
+      <table class='table'>
+          <thead class='bg-info text-white'>
+            <tr>
+              <th>#</th>
+              <th>Item number</th>
+              <th>Item name</th>
+              <th>Position</th>
+              <th>Amount on Shelf</th>
+              <th>Image</th>
+            </tr>
+          </thead>
+          <ng-container *ngFor="let item of ItemsOnShelf; let i =index">
+            <tr>
+              <td>{{i+1}}</td>
+              <td>{{item.item}}</td>
+              <td>{{item.componentName}}</td>
+              <td>{{item.position}}</td>
+              <td>{{item.amount}}</td>
+              <td><img [src]="item.img" alt="item image" width="70px"></td>
+            </tr>
+          </ng-container>
+        </table>
+  
+    </form>
+  </div>
 
 
 
