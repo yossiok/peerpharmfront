@@ -121,7 +121,7 @@ export class StockComponent implements OnInit {
 //************************************************* */
 //   exportMovementsAsXLSX() {
 //     this.inventoryService.getAllMovements().subscribe(data=>{
-//       debugger
+//          
 //       this.excelService.exportAsExcelFile(data, "movements");
 //         });
     
@@ -227,10 +227,10 @@ async updateItemStock(direction){
     };
   });
     await this.inventoryService.checkIfShelfExist(this.newItemShelfPosition,this.newItemShelfWH).subscribe( async shelfRes=>{
-      debugger
+         
       if(shelfRes.ShelfId){
         shelfExsit=true;
-        debugger
+           
         if((direction!="in" && itemShelfCurrAmounts.length>0) || direction=="in"){
           let enoughAmount =(itemShelfCurrAmounts[0]>=this.newItemShelfQnt);
           if((direction!="in" && enoughAmount) || direction=="in"){
@@ -269,16 +269,21 @@ async updateItemStock(direction){
                   ObjToUpdate[0].arrivalDate = new Date()
                 };
                if(direction!="in") {
-                 debugger
+                    
                 // ObjToUpdate[0].amount=ObjToUpdate[0].amount*(-1);
               };
               //  if(itemLine.reqNum) ObjToUpdate.inventoryReqNum=itemLine.reqNum;
               //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
                if(this.stockType=="product") {
                  ObjToUpdate[0].batchNumber=this.newItemShelfBatchNumber;
-                let itemBatch = this.ItemBatchArr.filter( b=> b.batchNumber == this.newItemShelfBatchNumber);
-                let expDate=new Date(itemBatch[0].expration);
-                ObjToUpdate[0].expirationDate = expDate;
+                 if(this.newItemShelfBatchNumber!=""){
+                  let itemBatch = this.ItemBatchArr.filter( b=> b.batchNumber == this.newItemShelfBatchNumber);
+                  let expDate=new Date(itemBatch[0].expration);
+                  ObjToUpdate[0].expirationDate = expDate;
+                 }else{
+                  ObjToUpdate[0].expirationDate=null;
+                 }
+
                 //  ObjToUpdate.expirationDate=itemRes.expirationDate ;ObjToUpdate.productionDate=itemRes.productionDate
                 };
                if(direction=="shelfChange"){
@@ -288,7 +293,7 @@ async updateItemStock(direction){
 
 
                 //  READY!
-                debugger
+                   
                 await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
                   if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
@@ -377,18 +382,21 @@ async updateItemStock(direction){
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType );
     this.filterVal='';
     this.filterVal=event.target.value;
-    if(this.filterByType.nativeElement.value!=""){
-      let CmptType=this.filterByType.nativeElement.value;
-      this.components=this.components.filter(x=> ( x.componentType.includes(CmptType) &&  x.itemType.includes(this.stockType) ) );
-    }
-    if(this.filterByCategory.nativeElement.value!=""){
-      let category=this.filterByCategory.nativeElement.value;
-      this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
-    }
-    if(this.filterBySupplierN.nativeElement.value!=""){
-      let supplierN=this.filterBySupplierN.nativeElement.value;
-      debugger
-      this.components=this.components.filter(x=> ( x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType) ) );
+    if(this.stockType!='product'){
+      if(this.filterByType.nativeElement.value!=""){
+        let CmptType=this.filterByType.nativeElement.value;
+        this.components=this.components.filter(x=> ( x.componentType.includes(CmptType) &&  x.itemType.includes(this.stockType) ) );
+      }
+      if(this.filterByCategory.nativeElement.value!=""){
+        let category=this.filterByCategory.nativeElement.value;
+        this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+      }
+      if(this.filterBySupplierN.nativeElement.value!=""){
+        let supplierN=this.filterBySupplierN.nativeElement.value;
+           
+        this.components=this.components.filter(x=> ( x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType) ) );
+      }
+
     }
     if(this.filterbyNum.nativeElement.value!=""){
       let itemNum=this.filterbyNum.nativeElement.value;
@@ -414,7 +422,7 @@ async updateItemStock(direction){
           if(!tempArr.includes(stk) && check) tempArr.push(stk);
         });
            this.components= tempArr;
-           debugger
+              
       }
     }
 
@@ -422,7 +430,7 @@ async updateItemStock(direction){
       this.emptyFilterArr=false;
       this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType );
     }
-    debugger
+       
   }
 
 
@@ -462,7 +470,7 @@ async updateItemStock(direction){
   //         if(!tempArr.includes(stk) && check) tempArr.push(stk);
   //       });
   //          this.components= tempArr;
-  //          debugger
+  //             
   //     }
   //   }
   // }
@@ -599,7 +607,7 @@ async updateItemStock(direction){
     if(this.stockType!="components"){
       await this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
         this.ItemBatchArr=data;
-        debugger
+           
       });
     }
   }
@@ -656,9 +664,9 @@ async updateItemStock(direction){
   editStockItemDetails(){
     this.resCmpt;
     if(confirm("לעדכן פריט?")){
-      debugger
+         
       this.inventoryService.updateCompt(this.resCmpt).subscribe(res=>{
-        debugger
+           
         if(res.nModified!=0){
           this.toastSrv.success("פריט עודכן בהצלחה");
         } else{
@@ -686,14 +694,14 @@ async updateItemStock(direction){
     })
 }
 async getCmptAmounts(cmptN, cmptId){
-  debugger
+     
   // this.currItemShelfs=[];
   this.newItemShelfPosition='';
   this.newItemShelfQnt=0;
   this.destShelf='';
   await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(async res=>{
 
-    debugger
+       
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
 
