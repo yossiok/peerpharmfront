@@ -99,9 +99,9 @@
     <!-- <input #filterbyNum type="text" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)"> -->
   <br>
 
-    <div (click)='setType("component", this)' [ngStyle]="{'background-color': buttonColor}" class="navtab" style="cursor:pointer;">Components</div>
-    <div (click)='setType("product", this)' [ngStyle]="{'background-color': buttonColor3}" class="navtab" style="cursor:pointer;">Products</div> 
-    <!-- <div (click)='setType("material", this)' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div> -->
+    <div (click)='setType("component")' [ngStyle]="{'background-color': buttonColor}" class="navtab" style="cursor:pointer;">Components</div>
+    <div (click)='setType("product")' [ngStyle]="{'background-color': buttonColor3}" class="navtab" style="cursor:pointer;">Products</div> 
+    <!-- <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div> -->
     <div style="padding-left: 10px;"><b> showing {{components.length}} stock items  </b></div>
 
   
@@ -457,7 +457,7 @@
               <select class="col-sm-3 ml-1 form-control"  *ngIf="stockType=='product'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
                   <option value="" selected>בחר מחסן</option>
                   <ng-container *ngFor="let wh of whareHouses;" >
-                      <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id" selected>{{wh.name}}</option>
+                      <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
                   </ng-container>            
               </select>
               <select class="col-sm-3 ml-1 fr form-control"  *ngIf="stockType=='component'"  [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
@@ -512,9 +512,10 @@
               </div>
                 <ng-container *ngFor="let itemShelf of currItemShelfs">
                   <div class="col-sm-3" (click)="loadShelfToInput(itemShelf.position, $event)" style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; " >
-                    <span>{{itemShelf.position}}: {{itemShelf.amount}} units </span>&nbsp;<br>
-                    <span *ngIf="itemShelf.arrivalDate!='undefined'">arrival date: {{itemShelf.arrivalDate  | date: 'dd/MM/yyyy' }}</span>&nbsp;<br>
-                    <span *ngIf="itemShelf.itemType!='component' && itemShelf.expirationDate!='undefined'">expiration date: {{itemShelf.expirationDate}}</span>&nbsp;      
+                    <span><u>{{itemShelf.position}}</u>: <b>{{itemShelf.amount}}</b>  units </span>&nbsp;<br>
+                    <span *ngIf="itemShelf.arrivalDate!='undefined' && itemShelf.itemType=='product' ">Batch: {{itemShelf.batchNumber }}</span>&nbsp;<br>
+                    <!-- <span *ngIf="itemShelf.arrivalDate!='undefined'">arrival date: {{itemShelf.arrivalDate  | date: 'dd/MM/yyyy' }}</span>&nbsp;<br>
+                    <span *ngIf="itemShelf.itemType!='component' && itemShelf.expirationDate!='undefined'">expiration date: {{itemShelf.expirationDate}}</span>&nbsp;       -->
                   </div>
                 </ng-container>
 

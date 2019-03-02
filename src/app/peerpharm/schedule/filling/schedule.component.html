@@ -363,7 +363,7 @@
         <td *ngIf="line._id === EditRowId">
           <input #packageP type="text" [value]="line.packageP" />
         </td>
-        <td *ngIf="line._id === EditRowId">
+        <!-- <td *ngIf="line._id === EditRowId">
           <textarea
             rows="1"
             cols="30"
@@ -372,7 +372,7 @@
             [value]="line.packageP"
             class="form-control"
           ></textarea>
-        </td>
+        </td> -->
         <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
           {{ line.qtyProduced }} / {{ line.qty }}
         </td>

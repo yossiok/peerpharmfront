@@ -163,7 +163,10 @@ getUserAllowedWH(){
       this.whareHouses = displayAllowedWH;
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
-
+      if(this.curentWhareHouseName.includes('product')) {
+        // this.setType("product");
+        this.stockType="product";
+      }
     console.log(res);
     }
   });
@@ -348,9 +351,8 @@ async updateItemStock(direction){
     }
   }
 
-  setType(type, elem) {
-    console.log("hi " + type);
-    console.log("hi " + elem.style);
+  setType(type) {
+
     switch (type) {
       case 'component':
         this.buttonColor = "white";
@@ -528,12 +530,13 @@ async updateItemStock(direction){
             if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0;
 
           });
-          this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
+          this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType);
+          this.setType(this.stockType);
           this.getAllCmptTypesAndCategories();
 
         });
 
-      }, 1000);
+      }, 100);
 
     });
     // console.log(this.components);
@@ -704,6 +707,8 @@ async getCmptAmounts(cmptN, cmptId){
        
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
+    this.currItemShelfs=[];
+    this.newItemShelfWH="";
 
     await this.openAmountsData(cmptN, cmptId);
 
