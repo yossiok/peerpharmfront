@@ -170,7 +170,7 @@ export class OrderdetailsComponent implements OnInit {
                   });
                 }else {  //one order: but came through load button
                   await this.getOrderDetails();
-                  await this.getOrderItems();
+                  await this.getOrderItems(false);
                   this.show = true;
                   this.multi = false;
 
@@ -179,7 +179,7 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {  //one order:
               await this.getOrderDetails();
-              await this.getOrderItems();
+              await this.getOrderItems(false);
               this.show = true;
               this.multi = false;
             }
@@ -188,6 +188,31 @@ export class OrderdetailsComponent implements OnInit {
     });
 
   }
+
+  addItemOrder() {
+    debugger
+    this.itemData.orderId = this.orderId;
+    if(!this.multi) this.itemData.orderNumber = this.number;
+    let newItemImpRemark= this.itemData.itemImpRemark;
+    debugger
+    this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
+      if(item.itemNumber==this.itemData.itemNumber ){
+        debugger
+        item.itemImpRemark= newItemImpRemark;
+        item.isExpand = '+';
+        item.colorBtn = '#33FFE0';
+        this.ordersItems.push(item);
+        this.itemData = { itemNumber: '', discription: '', unitMeasure: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
+        this.getOrderItems(true);
+
+        this.toastSrv.success('item '+item.itemNumber+' added');
+      }else if (item=='error'){
+          this.toastSrv.error('Adding item faild');        
+      }
+    });
+  }
+
+
 
   async getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
@@ -205,15 +230,20 @@ export class OrderdetailsComponent implements OnInit {
       this.orderId = res[0]._id;
     });
   }
-  getOrderItems(): void {
+  getOrderItems(singleLine): void {
+    var orderNum;
+     
     this.number = this.route.snapshot.paramMap.get('id');
-    //if someone loaded just one item in orders screen through "Load" button
     if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
+    if(singleLine){
+      orderNum = this.itemData.orderNumber.trim(); 
+    }else{
+      orderNum = this.number; 
+    }
+    //if someone loaded just one item in orders screen through "Load" button
 
     document.title = "Order " + this.number;
-    // const id = this.route.snapshot.paramMap.get('id');
-    //this.orderService.getOrderById(id).subscribe(orderItems => {
-    this.orderService.getOrderItemsByNumber(this.number).subscribe( orderItems => {
+    this.orderService.getOrderItemsByNumber(orderNum).subscribe( orderItems => {
       orderItems.map( item => {
         if (item.fillingStatus != null) {
           if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
@@ -234,11 +264,20 @@ export class OrderdetailsComponent implements OnInit {
         item.colorBtn = '#33FFE0';
       });
 
-      this.ordersItems = orderItems;
-      this.ordersItemsCopy = orderItems;
-      // this.OrderCompileData(this.number);
+      if(singleLine){
+        this.ordersItems.filter(item=> {
+          if(item.itemNumber == orderItems[0].itemNumber){
+            debugger
+            item =orderItems[0];
+          }
+        });
+      }else{
+        this.ordersItems = orderItems;
+        this.ordersItemsCopy = orderItems;
+      }
+      debugger
       this.getComponents(this.ordersItems[0].orderNumber);
-      console.log(orderItems)
+
     });
   }
 
@@ -355,27 +394,7 @@ export class OrderdetailsComponent implements OnInit {
     });
   }
 
-  addItemOrder() {
-    // console.log(1 + " , " + this.itemData.qtyKg);
-    this.itemData.orderId = this.orderId;
-    if(!this.multi) this.itemData.orderNumber = this.number;
-    let newItemImpRemark= this.itemData.itemImpRemark;
-    debugger
-    this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
-      if(item.itemNumber==this.itemData.itemNumber ){
-        debugger
-        item.itemImpRemark= newItemImpRemark;
-        item.isExpand = '+';
-        item.colorBtn = '#33FFE0';
-        // item.compiled = [];
-        this.ordersItems.push(item);
-        this.itemData = { itemNumber: '', discription: '', unitMeasure: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
-        // this.getOrderItems();
-      }
-    });
-      //reset new item line after "Add"
 
-  }
 
   setSchedule(item, type) {
     console.log(item);

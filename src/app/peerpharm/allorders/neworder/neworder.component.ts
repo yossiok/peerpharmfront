@@ -110,9 +110,15 @@ export class NeworderComponent implements OnInit {
     console.log(newOrderItemObj);
     this.orderItemForm.reset();
     this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
-      this.items.push(res);
-      this.itemName = "";
-      this.volume = 0;
+      if(res!='error'){
+        this.items.push(res);
+        this.itemName = "";
+        this.volume = 0;
+        this.toastSrv.success('item '+res.itemNumber+' added');
+      } else{
+        this.toastSrv.error('Adding item faild');
+      }
+
     });
     //  orderId:this.orderId
   }
