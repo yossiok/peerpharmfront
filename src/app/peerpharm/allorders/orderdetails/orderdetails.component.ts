@@ -120,58 +120,7 @@ export class OrderdetailsComponent implements OnInit {
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, private costumerSrevice: CostumersService) { }
 
-     async openPackingModal(itemNumber,orderNumber, index){
-      this.packingItemN=itemNumber;
-      this.packingOrderN=orderNumber;
-      this.palletsData=[];
 
-      await this.orderService.getItemPackingList(itemNumber,this.packingOrderN).subscribe(async itemPackingList=>{
-          this.itemPackingList=itemPackingList;
-
-       });
-
-    //   await this.orderService.getPalletsDataByOrderNumber(orderNumber).subscribe(orderPallets=>{
-    //     this.palletsData = orderPallets
-    //  });
-
-     await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList=>{
-          this.orderPackingList=orderPackingList;
-          await this.orderPackingList.forEach(item => {
-            let obj = {palletId: item.palletId , palletNumber:item.palletNumber , palletWeight:item.palletWeight , palletMesures:item.palletMesures}
-            let palletId = item.palletId ;
-            if(!this.orderPalletsNumArr.includes(palletId)){
-              this.orderPalletsNumArr.push(palletId);
-              this.orderPalletsArr.push(obj);
-            }
-          });
-
-          await this.ordersItems.forEach(async (orderItem, key) => {
-            let packedQnt=0;
-            let packedItemsOnPallet=0;
-            await this.orderPackingList.filter(packedItem=>{
-              if(orderItem.itemNumber == packedItem.itemNumber ){
-                packedItemsOnPallet = packedItem.pcsCtn*packedItem.ctnPallet;
-                packedQnt = packedQnt+packedItemsOnPallet
-                packedItem.totalPackedQnt = packedQnt;
-
-                if(orderItem.quantity == packedItem.totalPackedQnt ){
-                  packedItem.lineColor="rgb(204, 255, 204)";
-                } else{
-                  packedItem.lineColor="rgb(255, 255, 204)";
-                }
-              }
-            });
-          });
-
-
-       });
-      this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingOrderN;
-      this.openItemPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
-      // this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingItemN;
-      this.packingModal=true;
-
-
-    }
 
 
   ngOnInit() {
@@ -254,7 +203,6 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
-      debugger
     });
   }
   getOrderItems(): void {
@@ -410,13 +358,22 @@ export class OrderdetailsComponent implements OnInit {
   addItemOrder() {
     // console.log(1 + " , " + this.itemData.qtyKg);
     this.itemData.orderId = this.orderId;
-    this.itemData.orderNumber = this.number;
-    console.log(this.itemData.orderId);
+    if(!this.multi) this.itemData.orderNumber = this.number;
+    let newItemImpRemark= this.itemData.itemImpRemark;
+    debugger
     this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
-
-      this.ordersItems.push(item)});
+      if(item.itemNumber==this.itemData.itemNumber ){
+        debugger
+        item.itemImpRemark= newItemImpRemark;
+        item.isExpand = '+';
+        item.colorBtn = '#33FFE0';
+        // item.compiled = [];
+        this.ordersItems.push(item);
+        this.itemData = { itemNumber: '', discription: '', unitMeasure: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
+        // this.getOrderItems();
+      }
+    });
       //reset new item line after "Add"
-      this.itemData = { itemNumber: '', discription: '', unitMeasure: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
 
   }
 
@@ -515,6 +472,7 @@ export class OrderdetailsComponent implements OnInit {
         if(res.length==1){
           this.itemData.discription = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
           this.itemData.unitMeasure = res[0].volumeKey;
+          this.itemData.itemImpRemark = res[0].impRemarks;
         }
       });
 
@@ -610,6 +568,60 @@ export class OrderdetailsComponent implements OnInit {
       this.ordersItems=this.ordersItemsCopy.slice();
       // this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase()));
     }
+  }
+
+
+  async openPackingModal(itemNumber,orderNumber, index){
+    this.packingItemN=itemNumber;
+    this.packingOrderN=orderNumber;
+    this.palletsData=[];
+
+    await this.orderService.getItemPackingList(itemNumber,this.packingOrderN).subscribe(async itemPackingList=>{
+        this.itemPackingList=itemPackingList;
+
+     });
+
+  //   await this.orderService.getPalletsDataByOrderNumber(orderNumber).subscribe(orderPallets=>{
+  //     this.palletsData = orderPallets
+  //  });
+
+   await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList=>{
+        this.orderPackingList=orderPackingList;
+        await this.orderPackingList.forEach(item => {
+          let obj = {palletId: item.palletId , palletNumber:item.palletNumber , palletWeight:item.palletWeight , palletMesures:item.palletMesures}
+          let palletId = item.palletId ;
+          if(!this.orderPalletsNumArr.includes(palletId)){
+            this.orderPalletsNumArr.push(palletId);
+            this.orderPalletsArr.push(obj);
+          }
+        });
+
+        await this.ordersItems.forEach(async (orderItem, key) => {
+          let packedQnt=0;
+          let packedItemsOnPallet=0;
+          await this.orderPackingList.filter(packedItem=>{
+            if(orderItem.itemNumber == packedItem.itemNumber ){
+              packedItemsOnPallet = packedItem.pcsCtn*packedItem.ctnPallet;
+              packedQnt = packedQnt+packedItemsOnPallet
+              packedItem.totalPackedQnt = packedQnt;
+
+              if(orderItem.quantity == packedItem.totalPackedQnt ){
+                packedItem.lineColor="rgb(204, 255, 204)";
+              } else{
+                packedItem.lineColor="rgb(255, 255, 204)";
+              }
+            }
+          });
+        });
+
+
+     });
+    this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingOrderN;
+    this.openItemPackingModalHeader="אריזת פריט מספר  "+ this.packingItemN;
+    // this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingItemN;
+    this.packingModal=true;
+
+
   }
 
 
