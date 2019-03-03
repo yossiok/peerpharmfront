@@ -177,7 +177,7 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
             type="button"
             (click)="openPrintBarkod(content, line)"
           >
-            Print Barkod
+            Print Barcod
           </button>
         </td>
       </tr>
@@ -313,6 +313,7 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
         Next
       </button>
     </div>
+    <button *ngIf="amountOfStickersArr.length>0" printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button">Print</button>
     <div id="print-section">
       <div
         class="row"
@@ -335,7 +336,7 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
               >{{ printBarkod.batch }}
             </b>
             <div *ngIf="showExpFlag">
-              <b class="col-sm-3 right">Exp:</b>
+              <b class="col-sm-3">Exp:</b>
               <b class="col-sm-3 right">{{ printBarkod.exp }}</b>
             </div>
           </div>
@@ -357,6 +358,6 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
         </div>
       </div>
     </div>
-    <button  printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button">Print</button>
+    <button *ngIf="amountOfStickersArr.length>0" printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button">Print</button>
   </div>
 </ng-template>

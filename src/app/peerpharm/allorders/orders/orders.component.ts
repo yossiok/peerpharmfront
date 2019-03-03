@@ -213,9 +213,10 @@ export class OrdersComponent implements OnInit {
         tempArrStr=tempArrStr+","+number;
       });
       
-      let urlPrefixIndex=window.location.href.indexOf("/peerpharm");
+      let urlPrefixIndex=window.location.href.indexOf("peerpharm/");
       let urlPrefix=window.location.href.substring(0,urlPrefixIndex)
-      window.open(urlPrefix+"/peerpharm/allorders/orderitems/"+tempArrStr); 
+      debugger
+      window.open(urlPrefix+"peerpharm/allorders/orderitems/"+tempArrStr); 
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
     } else{
       this.toastSrv.error("0 Orders selected");

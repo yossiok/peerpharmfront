@@ -6,6 +6,7 @@ import { Schedule } from './../models/schedule';
 import { ScheduleService } from './../../../services/schedule.service';
 import { ItemsService } from './../../../services/items.service';
 import { BatchesService } from './../../../services/batches.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-barcode-print',
@@ -43,7 +44,8 @@ export class BarcodePrintComponent implements OnInit {
     private scheduleService: ScheduleService,
     private itemsService: ItemsService,
     private batchesService: BatchesService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastSrv: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -84,7 +86,7 @@ export class BarcodePrintComponent implements OnInit {
   // Modal Functions
   openPrintBarkod(content, line) {
     this.schedLine = line;
-
+    this.amountOfStickersArr=[];
     this.GetItemAllData()
       .then(() => {
         if (this.schedLine.batch) {
@@ -116,7 +118,7 @@ export class BarcodePrintComponent implements OnInit {
           console.log(data);
           resolve(data);
         });
-      }, 1000);
+      }, 500);
     });
   }
 
@@ -197,10 +199,14 @@ export class BarcodePrintComponent implements OnInit {
 
   printSubmit() {
     this.printBarkod = this.printBarcodeForm.value;
-    for (let i = 0; i < this.printBarkod.printQty; i++) {
-      this.amountOfStickersArr.push(this.printBarkod);
+    if(this.printBarkod.printQty>0 && this.printBarkod.printQty!=""){
+      for (let i = 0; i < this.printBarkod.printQty; i++) {
+        this.amountOfStickersArr.push(this.printBarkod);
+      }
+      console.log(this.amountOfStickersArr);  
+    } else{
+      this.toastSrv.error('Please enter amount of stickers');
     }
-    console.log(this.amountOfStickersArr);
   }
 
   get printBarcodeValues(): string[] {
