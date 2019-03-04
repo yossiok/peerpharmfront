@@ -28,6 +28,7 @@ export class BarcodePrintComponent implements OnInit {
   grossW: number;
   exp: string;
   showCustomerFlag = true;
+  showOrderNumFlag = true;
   showItemFlag = true;
   showBarcodeFlag = true;
   showBatchFlag = true;
@@ -39,6 +40,7 @@ export class BarcodePrintComponent implements OnInit {
   barcodeWidth = 2.3;
   barcodeHeight = 150;
   barcodeFontSize = 28;
+  barcodeFlat = true;
 
   constructor(
     private scheduleService: ScheduleService,
@@ -88,9 +90,10 @@ export class BarcodePrintComponent implements OnInit {
     this.schedLine = line;
     this.amountOfStickersArr=[];
     this.GetItemAllData()
-      .then(() => {
+      .then(async () => {
         if (this.schedLine.batch) {
-          this.GetBatchAllData();
+          //waiting foe batch data =batchNumber+Exp Date
+          await this.GetBatchAllData();
         }
       })
       .then(() => this.initPrintScheduleForm())
@@ -137,6 +140,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   initPrintScheduleForm() {
+    debugger
     this.pcsCarton =  this.itemData[0].PcsCarton.replace(/\D/g, '') + ' Pcs';
     this.barcodeK = this.itemData[0].barcodeK;
     this.volumeK = this.itemData[0].volumeKey;
@@ -146,6 +150,10 @@ export class BarcodePrintComponent implements OnInit {
     this.printBarcodeForm = new FormGroup({
       costumer: new FormControl(
         { value: this.schedLine.costumer, disabled: true },
+        [Validators.required]
+      ),
+      orderN: new FormControl(
+        { value: this.schedLine.orderN, disabled: true },
         [Validators.required]
       ),
       item: new FormControl({ value: this.schedLine.item, disabled: true }, [
@@ -171,6 +179,9 @@ export class BarcodePrintComponent implements OnInit {
     switch (field) {
       case 'customer':
         this.showCustomerFlag = false;
+        break;
+      case 'orderN':
+        this.showOrderNumFlag = false;
         break;
       case 'item':
         this.showItemFlag = false;
@@ -198,6 +209,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printSubmit() {
+    this.amountOfStickersArr=[];
     this.printBarkod = this.printBarcodeForm.value;
     if(this.printBarkod.printQty>0 && this.printBarkod.printQty!=""){
       for (let i = 0; i < this.printBarkod.printQty; i++) {

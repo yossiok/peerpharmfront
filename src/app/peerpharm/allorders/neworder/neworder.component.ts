@@ -204,10 +204,9 @@ export class NeworderComponent implements OnInit {
     };
     console.log(newOrderItemObj);
     this.orderItemForm.reset();
-    1;
-    this.orderSer
-      .addNewOrderItem(newOrderItemObj)
-      .subscribe(res => this.items.push(res));
+    this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => 
+      this.items.push(res)
+      );
   }
 
   getCostumers() {

@@ -215,6 +215,17 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
           Remove
         </button>
       </div>
+      <div *ngIf="showOrderNumFlag" class="form-group row">
+        <label for="orderN">Order Number:</label>
+        <input class="form-control" type="text" formControlName="orderN" />
+        <button
+          type="button"
+          class="btn btn-success m-r-10"
+          (click)="RemoveFields('orderN')"
+        >
+          Remove
+        </button>
+      </div>
 
       <div *ngIf="showItemFlag" class="form-group row">
         <label for="itemNumber">Item Number:</label>
@@ -313,14 +324,18 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
         Next
       </button>
     </div>
-    <button *ngIf="amountOfStickersArr.length>0" printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button">Print</button>
-    <div id="print-section">
+    <button *ngIf="amountOfStickersArr.length>0" printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button"
+      >
+      Print
+    </button>
+
+    <div id="print-section" style="flex-wrap: wrap;">
       <div
         class="row"
         *ngFor="let sticker of amountOfStickersArr; let i = index"
         [attr.data-index]="i"
       >
-        <div class="col-sm-12 sticker">
+        <div class="col-sm-12 sticker " >
           <div class="row">
             <b>{{ schedLine.productName }}</b>
           </div>
@@ -328,19 +343,17 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
             <b>Item Number: {{ schedLine.item }}</b>
           </div>
           <div class="row">
-            <b class="col-sm-6"> {{ volumeK }} </b>
+            <b class="col-sm-6"> {{ volumeK }} ml</b>
             <b class="col-sm-6 right">{{ pcsCarton }}</b>
           </div>
           <div class="row">
-            <b class="col-sm-6" *ngIf="showBatchFlag"
-              >{{ printBarkod.batch }}
-            </b>
-            <div *ngIf="showExpFlag">
+            <b class="col-sm-6" *ngIf="showBatchFlag"> {{ printBarkod.batch }}  </b>
+            <div class="col-sm-6 row" *ngIf="showExpFlag">
               <b class="col-sm-3">Exp:</b>
               <b class="col-sm-3 right">{{ printBarkod.exp }}</b>
             </div>
           </div>
-          <div class="row" *ngIf="showBarcodeFlag">
+          <div class="row" *ngIf="showBarcodeFlag" >
             <ngx-barcode
               *ngFor="let bcValue of printBarcodeValues"
               [bc-element-type]="barcodeElementType"
@@ -354,6 +367,9 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
           </div>
           <div class="row" *ngIf="showCustomerFlag">
             <b>{{ schedLine.costumer }}</b>
+          </div>
+          <div class="row" *ngIf="showOrderNumFlag">
+            <b>Order Number: {{ schedLine.orderN }}</b>
           </div>
         </div>
       </div>

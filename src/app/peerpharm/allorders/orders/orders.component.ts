@@ -213,10 +213,10 @@ export class OrdersComponent implements OnInit {
         tempArrStr=tempArrStr+","+number;
       });
       
-      let urlPrefixIndex=window.location.href.indexOf("peerpharm/");
+      let urlPrefixIndex=window.location.href.indexOf("#");
       let urlPrefix=window.location.href.substring(0,urlPrefixIndex)
       debugger
-      window.open(urlPrefix+"peerpharm/allorders/orderitems/"+tempArrStr); 
+      window.open(urlPrefix+"#/peerpharm/allorders/orderitems/"+tempArrStr); 
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
     } else{
       this.toastSrv.error("0 Orders selected");
@@ -226,7 +226,10 @@ export class OrdersComponent implements OnInit {
 
   loadOrdersItems() {
     this.ordersService.getAllOpenOrdersItems(true);
-    this.router.navigate(["/peerpharm/allorders/orderitems/00"]);
+    let urlPrefixIndex=window.location.href.indexOf("#");
+    let urlPrefix=window.location.href.substring(0,urlPrefixIndex);
+    window.open(urlPrefix+"#/peerpharm/allorders/orderitems/00"); 
+    // this.router.navigate(["/peerpharm/allorders/orderitems/00"]);
 
   }
 
