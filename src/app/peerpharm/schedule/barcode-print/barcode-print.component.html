@@ -331,7 +331,7 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
 
     <div id="print-section" style="flex-wrap: wrap;">
       <div
-        class="row"
+        class="row printSticker"
         *ngFor="let sticker of amountOfStickersArr; let i = index"
         [attr.data-index]="i"
       >
@@ -374,6 +374,10 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
         </div>
       </div>
     </div>
-    <button *ngIf="amountOfStickersArr.length>0" printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button">Print</button>
+    <button *ngIf="amountOfStickersArr.length>0" printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button"
+       [printStyle]="{
+        '.printSticker': { 'width': '100%', 'height': '100mm', 'margin-left': '10.8mm', 'text-align': 'center', 'font-size' : '16pt'  }
+      }"
+      >Print</button>
   </div>
 </ng-template>
