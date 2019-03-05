@@ -304,7 +304,17 @@
               </tr>
               <tr>
                 <th>קטגוריה</th>
-                <td><input type='text' id="input_componentCategory" [(ngModel)]="resCmpt.componentCategory"></td>
+                <td>
+                  <!-- <input type='text' id="input_componentCategory" [(ngModel)]="resCmpt.componentCategory"> -->
+                  <select [(ngModel)]="resCmpt.componentCategory" >
+                  <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
+                    <option value=""></option>
+                    <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
+                  </select>
+                
+                
+                
+                </td>
                 <th >בפועל ml כמות</th>
                 <td><input type='number' [(ngModel)]="resCmpt.actualMlCapacity" id="input_actualMlCapacity"></td>
               </tr>
