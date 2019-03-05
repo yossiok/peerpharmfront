@@ -21,6 +21,7 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('colums') colums: ElementRef;
   @ViewChild('container')
   private container: ElementRef;
+  alowUserEditItemTree:Boolean=false;
   mainDivArr: any = [];
   dataDiv: any = [];
   newItem: FormGroup;
@@ -327,6 +328,7 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
   ngOnInit() {
+
     this.getUserInfo();
     this.getItemData();
     //  this.showGoddetData();
@@ -601,22 +603,32 @@ export class ItemdetaisComponent implements OnInit {
     })
   }
 
-  getUserInfo() {
-    debugger
-      this.authService.userEventEmitter.subscribe(user => {
-      this.user=user.loggedInUser;
-    })
-    debugger
-    if (!this.authService.loggedInUser) {
-      this.authService.userEventEmitter.subscribe(user => {
-        if (user.userName) {
-          this.user = user;
+  async getUserInfo() {
+    await this.authService.userEventEmitter.subscribe(user => {
+      this.user=user;
+      // this.user=user.loggedInUser;
+      // if (!this.authService.loggedInUser) {
+      //   this.authService.userEventEmitter.subscribe(user => {
+      //     if (user.userName) {
+      //       this.user = user;
+            
+      //     }
+      //   });
+      // }
+      // else {
+      //   this.user = this.authService.loggedInUser;
+      // }
+      if (this.user.authorization){
+        if (this.authService.loggedInUser.authorization.includes("updateItemTree")){
+          this.alowUserEditItemTree=true;
         }
-      });
-    }
-    else {
-      this.user = this.authService.loggedInUser;
-    }
+      }
+
+    });
+
+
+
+
 
   }
 }
