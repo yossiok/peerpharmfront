@@ -21,8 +21,8 @@ export class AddFormuleItemComponent implements OnInit {
       instractions: new FormControl('', [Validators.required]),
       temp: new FormControl('', [Validators.required]),
       ph: new FormControl('', [Validators.required]),
-      lastUpdate: new FormControl('', [Validators.required]),
-      client: new FormControl('', [Validators.required])
+      // lastUpdate: new FormControl('', [Validators.required]),
+      client: new FormControl('', [Validators.required]) 
     });
   }
 

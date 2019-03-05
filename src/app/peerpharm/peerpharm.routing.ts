@@ -29,6 +29,7 @@ import { PackingComponent } from './schedule/packing/packing.component';
 import { BarcodePrintComponent } from './schedule/barcode-print/barcode-print.component';
 import { NotificationComponent } from './notification/notification.component';
 
+
 export const PeerPharmRputs: Routes =[
   {
     path: 'allorders/orders',

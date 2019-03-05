@@ -1,4 +1,5 @@
 import { FormuleItem } from './formule-item';
+import { FormulePhase } from './formule-phase';
 
 export class Formule {
     number: number;
@@ -8,4 +9,5 @@ export class Formule {
     ph: string;
     client: string ;
     items: FormuleItem[];
+    phases: FormulePhase[];
 }

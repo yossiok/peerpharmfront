@@ -5,6 +5,7 @@ import {
   QueryList
 } from '@angular/core';
 import { FormuleItem } from './models/formule-item';
+import { FormulePhase } from './models/formule-phase';
 import { FormulesService } from '../../services/formules.service';
 
 @Component({
@@ -17,14 +18,29 @@ export class FormuleComponent implements AfterViewInit {
   constructor(private formuleService: FormulesService) {}
   newFormuleBasic = null;
   allItemsForm: FormuleItem[] = [];
+  allPhasesForm: FormulePhase[] = [];
 
   @ViewChildren('childItem')
   childItems: QueryList<any>;
+  childPhases: QueryList<any>;
+
 
   onFormuleAdded(newFormuleCreated) {
     this.newFormuleBasic = newFormuleCreated;
+    const newPhase = new FormulePhase();
+    // const newItem = new FormuleItem();
+    this.allPhasesForm.push(newPhase);
+    // this.allItemsForm.push(newItem);
+  }
+
+  onPhaseAdded(newFormuleCreated) {
+    debugger
+    // const newPhase = new FormulePhase();
+    // this.allPhasesForm.push(newPhase);
     const newItem = new FormuleItem();
     this.allItemsForm.push(newItem);
+
+
   }
 
   onItemAdded(lastItemAdded) {
@@ -52,7 +68,8 @@ export class FormuleComponent implements AfterViewInit {
      .subscribe(data => console.log('added ' + data));
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit() { 
+    debugger 
     this.childItems.forEach(childItem => console.log(childItem));
   }
 }
