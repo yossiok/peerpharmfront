@@ -16,17 +16,21 @@ export class AddFormuleItemComponent implements OnInit {
   ngOnInit() {
     this.itemsForm = new FormGroup({
       number: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      supplierNumber: new FormControl('', [Validators.required]),
+      supplierName: new FormControl('', [Validators.required]),
+      supplierItemNumber: new FormControl('', [Validators.required]),
+      procurementItemNumber: new FormControl('', [Validators.required]),
       quantity: new FormControl('', [Validators.required]),
       Percentage: new FormControl('', [Validators.required]),
-      instractions: new FormControl('', [Validators.required]),
+      instructions: new FormControl('', [Validators.required]),
       temp: new FormControl('', [Validators.required]),
-      ph: new FormControl('', [Validators.required]),
-      // lastUpdate: new FormControl('', [Validators.required]),
-      client: new FormControl('', [Validators.required]) 
+      itemPH: new FormControl('', [Validators.required]),
     });
   }
 
   onSubmit() {
+    debugger
     const newItemAdded = this.itemsForm.value;
     this.formuleItem.emit(newItemAdded);
   }

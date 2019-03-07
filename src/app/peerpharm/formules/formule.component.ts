@@ -53,8 +53,9 @@ export class FormuleComponent implements AfterViewInit {
       this.allItemsForm[index].number = childItem.itemsForm.value.number;
       this.allItemsForm[index].quantity = childItem.itemsForm.value.quantity;
       this.allItemsForm[index].percentage = childItem.itemsForm.value.Percentage;
-      this.allItemsForm[index].phaseInstructions = childItem.itemsForm.value.instractions;
+      this.allItemsForm[index].instructions = childItem.itemsForm.value.instractions;
     });
+    
     this.formuleService
       .addFormule(
         this.newFormuleBasic.number,

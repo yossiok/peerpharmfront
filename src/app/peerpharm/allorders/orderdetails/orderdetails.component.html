@@ -88,7 +88,10 @@
             {{item.itemNumber}}
           </a>
         </td>
-        <td *ngIf="item._id===EditRowId"><input #itemImpRemark type='text' [value]="item.itemImpRemark" style='width:150px ; color:red;' disabled></td>
+        <td *ngIf="item._id===EditRowId">
+          <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark" style='width:150px ; color:red;' disabled>
+          <input #itemImpRemark type='text' *ngIf="item.itemImpRemark==undefined" [value]="" style='width:150px ; color:red;' disabled>
+        </td>
         <td *ngIf="item._id!==EditRowId" style='width:150px ; color:red;' >{{item.itemImpRemark}}</td>
 
         <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'></td>

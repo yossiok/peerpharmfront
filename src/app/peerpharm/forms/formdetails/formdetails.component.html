@@ -1,20 +1,56 @@
 <!--<table  dir="rtl"   border='0' style='font-size:17px; width:800px;height:620px; font-family:Arial; border-collapse: collapse;' id="table_q"  >-->
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Filling</a>
+          <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Personal Packing</a>
+          <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Packing</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+    </div>
+
+
 <div id="print-section">
     <h4 class="card-title">Quality Control</h4>
   <table dir="rtl" style="display: inline-table">
     <thead>
       <tr>
-        <td colspan="4"  [translate]="'Quality Control Form'"></td>
+        <td colspan="4"  [translate]="'Quality Control Form'" style="text-align: center ; padding: 10px ;"><b>Filling Form</b></td>
       </tr>
     </thead>
+
     <tr>
-      <td  [translate]="'Product Name'"></td>
+        <td>מספר הזמנה</td>
+        <td>
+          <input
+            id="div_orderNumber"
+            [(ngModel)]="form.orderNumber"
+            style="width:100px"
+            [disabled]="disabledValue"
+          />
+        </td>
+        <td>כמות מוזמנת</td>
+        <td>
+          <input
+            id="div_orderQuantity"
+            [(ngModel)]="form.orderQuantity"
+            class="inputDiv"
+            style="width:100px"
+            [disabled]="disabledValue"
+          />
+        </td>
+      </tr>
+    <tr>
+      <td  [translate]="'Product Name'">שם המוצר</td>
       <td colspan="3">
         <input
           type="text"
           [(ngModel)]="form.productName"
           id="div_productName"
-          style="width:550px"
+          style="width:506px"
           [disabled]="disabledValue"
         />
       </td>
@@ -54,7 +90,7 @@
       <td>כמות חביות</td>
       <td>
         <input
-          id="div_durms"
+          id="div_drumsAmount"
           [(ngModel)]="form.drumsAmount"
           class="inputDiv"
           style="width:100px"
@@ -67,7 +103,7 @@
       <td>
         <input
           id="div_productionDate"
-          [(ngModel)]="form.dateN"
+          [(ngModel)]="form.productaionDate"
           class="inputDiv"
           style="width:100px"
           [disabled]="disabledValue"
@@ -120,7 +156,7 @@
       <td>שעת סיום מילוי</td>
       <td>
         <input
-          id="div_fillingEnd"
+          id="div_endTimeWork"
           [(ngModel)]="form.endTimeWork"
           class="inputDiv"
           style="width:100px"
@@ -143,7 +179,7 @@
       <td>
         <input
           id="div_netoWeight"
-          [(ngModel)]="form.dateN"
+          [(ngModel)]="form.netWeight"
           class="inputDiv"
           style="width:100px"
           [disabled]="disabledValue"
@@ -155,7 +191,7 @@
       <td>
         <input
           id="div_lableldBy"
-          [(ngModel)]="form.dateN"
+          [(ngModel)]="form.labeledBy"
           class="inputDiv"
           style="width:100px"
           [disabled]="disabledValue"
@@ -165,7 +201,7 @@
       <td>
         <input
           id="div_packegeBy"
-          [(ngModel)]="form.dateN"
+          [(ngModel)]="form.packegeBy"
           class="inputDiv"
           style="width:100px"
           [disabled]="disabledValue"
@@ -173,12 +209,12 @@
       </td>
     </tr>
     <tr style="background-color:50D7FF">
-      <td colspan="4">בדיקות לפני מילוי</td>
+      <td colspan="4" style="text-align: center;"><b>בדיקות לפני מילוי</b></td>
     </tr>
     <tr>
         <td>רשיון לפריט</td>
         <td>
-          <input type="checkbox" id="itemLicence" [disabled]="disabledValue" />
+          <input type="checkbox" id="itemLicence" [disabled]="disabledValue" [value]="form.packegeBy"/>
         </td>
     </tr>
     <tr style="background-color:50D7FF">

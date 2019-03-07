@@ -558,6 +558,7 @@ async updateItemStock(direction){
         }
       }
     });
+    console.log(this.cmptCategoryList)
   }
 
 

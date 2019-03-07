@@ -38,7 +38,7 @@ export class FormdetailsComponent implements OnInit {
     if (id) {
       this.formsService.getFormData(id).subscribe(res => {
         this.form = res[0];
-
+        debugger
         this.form.checkNetoWeight.forEach(element => {
           if (element) {
             const netNumber = parseInt(element, 10);
@@ -63,4 +63,7 @@ export class FormdetailsComponent implements OnInit {
     this.disabledValue = this.authService.loggedInUser.formsdisable;
     console.log(this.authService.loggedInUser.formsdisable);
   }
+
+
+
 }

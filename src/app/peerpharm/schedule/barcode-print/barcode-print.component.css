@@ -83,7 +83,7 @@ table tr:hover {
 
 @media print {
   table {
-    color: black;
+    color: blue;
     font-size: 15px;
   }
   -ms-transform: rotate(270deg);
@@ -97,6 +97,27 @@ table tr:hover {
     size: 25cm 35.7cm;
     margin: 5mm 5mm 5mm 5mm;
   }
+  /* .sticker {
+    font-size: 12pt;
+    border:0.5px solid black;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    align-items: center;
+    justify-content: center;
+  }
+  .sticker > .row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .printSticker { 
+    width: 100% ;
+    color: blue;
+    height: 100mm ;
+    margin-left : 10.8mm ; 
+    text-align: center ; 
+    font-size : 20pt  ;
+  } */
 }
 
 .barcodeForm label {
@@ -137,6 +158,9 @@ input[type="radio"]  {
   border:0.5px solid black;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
 }
 .sticker > .row{
   display: flex;
@@ -147,4 +171,5 @@ input[type="radio"]  {
 .right {
   float:right;
 }
+
 

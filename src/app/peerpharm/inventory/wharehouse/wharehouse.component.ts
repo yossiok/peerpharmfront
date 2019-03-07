@@ -561,43 +561,56 @@ deleteLine(itemFromInvReq,index,ev){
 
 
 addObjToList(itemLine,itemRes,shelfRes){
-if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
-  let obj={
-    amount: itemLine.amount,
-    item: itemLine.itemNumber,
-    itemName: itemRes.componentName,
-    shell_id_in_whareHouse: shelfRes.ShelfId,
-    position:shelfRes.position,
-    inventoryReqNum:"",//INVENTORY RERQUEST ID  
-    arrivalDate:null, // for components stock
-    expirationDate:null, // for products stock
-    productionDate:null, // for products stock
-    barcode:"",
-    itemType:itemRes.itemType,
-    relatedOrderNum:itemLine.relatedOrder,
-    deliveryNoteNum:itemLine.deliveryNote,  
-    actionType:this.dir,
-    WH_originId:this.curentWhareHouseId,
-    WH_originName:this.curentWhareHouseName,
-    shell_id_in_whareHouse_Dest:'',
-    shell_position_in_whareHouse_Dest:'',
-    WH_destId:this.curentWhareHouseId,
-    WH_destName:this.curentWhareHouseName,
- }
- if(this.dir!="in") obj.amount*=(-1);
- if(itemLine.reqNum) obj.inventoryReqNum=itemLine.reqNum;
- if(typeof(itemLine.arrivalDate)=='string') obj.arrivalDate=itemLine.arrivalDate;
- if(itemRes.itemType=="product") {
-   obj.expirationDate=itemRes.expirationDate ;obj.productionDate=itemRes.productionDate 
-  };
- if(this.dir=="shelfChange"){
-  obj.shell_id_in_whareHouse_Dest= itemLine.destShelfId;
-  obj.shell_position_in_whareHouse_Dest= itemLine.destShelf.toUpperCase();
- }
 
- this.inventoryUpdateList.push(obj);
- this.loadingToTable=false;
- this.itemLine.reset();
+if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
+
+  let itemNumExistInList=false;
+  this.inventoryUpdateList.map(i=> {if(i.item == itemLine.itemNumber && i.position == itemLine.position )  itemNumExistInList=true });
+
+  //we have an issue processing stock change with same itemShelfs in the same sended list
+  if(!itemNumExistInList){
+    let obj={
+      amount: itemLine.amount,
+      item: itemLine.itemNumber,
+      itemName: itemRes.componentName,
+      shell_id_in_whareHouse: shelfRes.ShelfId,
+      position:shelfRes.position,
+      inventoryReqNum:"",//INVENTORY RERQUEST ID  
+      arrivalDate:null, // for components stock
+      expirationDate:null, // for products stock
+      productionDate:null, // for products stock
+      barcode:"",
+      itemType:itemRes.itemType,
+      relatedOrderNum:itemLine.relatedOrder,
+      deliveryNoteNum:itemLine.deliveryNote,  
+      actionType:this.dir,
+      WH_originId:this.curentWhareHouseId,
+      WH_originName:this.curentWhareHouseName,
+      shell_id_in_whareHouse_Dest:'',
+      shell_position_in_whareHouse_Dest:'',
+      WH_destId:this.curentWhareHouseId,
+      WH_destName:this.curentWhareHouseName,
+   }
+   if(this.dir!="in") obj.amount*=(-1);
+   if(itemLine.reqNum) obj.inventoryReqNum=itemLine.reqNum;
+   if(typeof(itemLine.arrivalDate)=='string') obj.arrivalDate=itemLine.arrivalDate;
+   if(itemRes.itemType=="product") {
+     obj.expirationDate=itemRes.expirationDate ;obj.productionDate=itemRes.productionDate 
+    };
+   if(this.dir=="shelfChange"){
+    obj.shell_id_in_whareHouse_Dest= itemLine.destShelfId;
+    obj.shell_position_in_whareHouse_Dest= itemLine.destShelf.toUpperCase();
+   }
+  
+   this.inventoryUpdateList.push(obj);
+   this.loadingToTable=false;
+   this.itemLine.reset();
+
+  }else{
+    alert(" מספר פריט "+itemLine.itemNumber+" במדף "+itemLine.position+"\nכבר קיים ברשימה");
+  }
+
+
 }else{
   alert("יש לשלוח קודם את שינוי המדף ברשימה");
   this.loadingToTable=false;
