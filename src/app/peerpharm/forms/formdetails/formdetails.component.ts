@@ -16,6 +16,10 @@ export class FormdetailsComponent implements OnInit {
   averageNetoWeight = 0;
   loggedInUser: UserInfo;
   netoWeightArr: number[] = new Array();
+  tabView: String= "fillingForm";
+  fillingTabBtn:String ="#fff";
+  pPackingTabBtn:String ="transperent";
+  compileTabBtn:String ="transperent";
 
   constructor(
     private formsService: FormsService,
@@ -64,6 +68,38 @@ export class FormdetailsComponent implements OnInit {
     console.log(this.authService.loggedInUser.formsdisable);
   }
 
+  tabChange(view){
+
+    switch (view) {
+      case 'fillingForm': {
+        this.tabView = 'fillingForm';
+        this.fillingTabBtn="#fff"
+        this.pPackingTabBtn="#eef5f9";
+        this.compileTabBtn="#eef5f9";
+        break;
+      }
+      case 'personalPackingForm': {
+        this.tabView = 'packingForm';
+        this.fillingTabBtn="#eef5f9"
+        this.pPackingTabBtn="#fff";
+        this.compileTabBtn="#eef5f9";
+
+        break;
+      }
+      case 'compileForm': {
+        this.tabView = 'compileForm';
+        this.fillingTabBtn="#eef5f9"
+        this.pPackingTabBtn="#eef5f9";
+        this.compileTabBtn="#fff";
+
+        break;
+      }
+    }
+  }
+
+
+
+  
 
 
 }
