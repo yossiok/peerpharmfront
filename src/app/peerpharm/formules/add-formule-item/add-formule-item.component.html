@@ -33,7 +33,7 @@
               />
             </div>
           </div>
-          <div class="form-group m-t-40 row">
+          <!-- <div class="form-group m-t-40 row">
             <label for="example-text-input" class="col-2 col-form-label"
               >Supplier Number</label
             >
@@ -64,11 +64,11 @@
                 formControlName="suplierItemNumber"
               />
             </div>
-          </div>
+          </div> -->
 
           <div class="form-group row">
             <label for="example-number-input" class="col-2 col-form-label"
-              >Item Amount</label
+              >Item Quantity</label
             >
             <div class="col-10">
               <input
@@ -77,6 +77,13 @@
                 value=""
                 formControlName="quantity"
               />
+              <select 
+              class="form-control"
+              type="text"
+              formControlName="quantityUnits">
+                <option value="ml">ml</option>
+                <option value="gr">gr</option>
+              </select>
             </div>
           </div>
 
@@ -89,7 +96,7 @@
                 class="form-control"
                 type="number"
                 value=""
-                formControlName="Percentage"
+                formControlName="percentage"
               />
             </div>
           </div>
