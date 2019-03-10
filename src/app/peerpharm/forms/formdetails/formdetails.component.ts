@@ -20,6 +20,7 @@ export class FormdetailsComponent implements OnInit {
   fillingTabBtn:String ="#fff";
   pPackingTabBtn:String ="transperent";
   compileTabBtn:String ="transperent";
+  allChecks: Array<any>=[];
 
   constructor(
     private formsService: FormsService,
@@ -34,7 +35,8 @@ export class FormdetailsComponent implements OnInit {
 
   ngOnInit() {
     this.getFormData();
-    this.UserDisableAuth();
+    // this.UserDisableAuth();
+    // this.wrapAllChecks();
   }
 
   getFormData() {
@@ -50,6 +52,7 @@ export class FormdetailsComponent implements OnInit {
           }
         });
         this.CalcAvgWeight();
+        this.wrapAllChecks();
       });
     }
   }
@@ -63,9 +66,25 @@ export class FormdetailsComponent implements OnInit {
     this.averageNetoWeight = sum / arrlength;
   }
 
-  UserDisableAuth() {
-    this.disabledValue = this.authService.loggedInUser.formsdisable;
-    console.log(this.authService.loggedInUser.formsdisable);
+  // UserDisableAuth() {
+  //   this.disabledcheckNetoWeightValue = this.authService.loggedInUser.formsdisable;
+  //   console.log(this.authService.loggedInUser.formsdisable);
+  // }
+
+  wrapAllChecks(){
+    for (let index = 0; index < this.form.checkTime.length; index++) {
+      debugger
+      this.allChecks.push({
+        checkTime: this.form.checkTime[index],
+        checkBox_clean: this.form.checkBox_clean[index],
+        checkNetoWeight: this.form.checkNetoWeight[index],
+        checkBox_closedWaterProof: this.form.checkBox_closedWaterProof[index],
+        checkBox_stickerPrinting: this.form.checkBox_stickerPrinting[index],
+        checkBox_lotNumberPrinting: this.form.checkBox_lotNumberPrinting[index],
+        checkBox_correctFinalPacking: this.form.checkBox_correctFinalPacking[index],
+      });
+    }
+    
   }
 
   tabChange(view){

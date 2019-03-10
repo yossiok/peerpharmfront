@@ -256,8 +256,40 @@
             <tr style="background-color:50D7FF">
               <td colspan="4" class="subHeader">בקרה במהלך מילוי</td>
             </tr>
-        
-            <tr style=" overflow-x: scroll;">
+            
+            <tr>
+              <table>
+                <thead>
+                    <tr>
+                        <th>שעת בדיקה</th>
+                        <th>נקיון מכלים</th>
+                        <th>משקל נטו</th>
+                        <th>משקל ממוצע</th>
+                        <th>סגירה ואיטום</th>
+                        <th>תקינות הדבקת התוויות</th>
+                        <th>בדיקת מס' אצוות</th>
+                        <th>תקינות אריזה סופית</th>
+                        <th>כמות שיוצרה</th>
+                        <th>אישור נקיון מכונה לאחר מילוי</th>
+                      </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let check of form.allChecks">
+                    <td>{{check.checkTime}}</td>
+                    <td>{{check.checkBox_clean}}</td>
+                    <td>{{check.checkNetoWeight}}</td>
+                    <td>{{check.checkBox_closedWaterProof}}</td>
+                    <td>{{check.checkBox_stickerPrinting}}</td>
+                    <td>{{check.checkBox_lotNumberPrinting}}</td>
+                    <td>{{check.checkBox_correctFinalPacking}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </tr>
+
+
+
+            <!-- <tr>
               <td>שעת בדיקה</td>
               <td colspan="3">
                 <input
@@ -425,7 +457,7 @@
                   [disabled]="disabledValue"
                 />
               </td>
-            </tr>
+            </tr> -->
             
             <tr>
               <td>כמות שיוצרה</td>
