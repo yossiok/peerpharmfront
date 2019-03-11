@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { toDate } from '@angular/common/src/i18n/format_date';
 import { fstat } from 'fs';
 import { BatchesService } from 'src/app/services/batches.service';
+import { ItemsService } from 'src/app/services/items.service';
 import { ExcelService } from 'src/app/services/excel.service';
 
 
@@ -92,6 +93,8 @@ export class StockComponent implements OnInit {
   ItemBatchArr:Array<any>;
   filterVal:String='';
   currModalImgSrc:String='';
+  productToFind: String='';
+  productResponse: any={};
 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
@@ -104,7 +107,8 @@ export class StockComponent implements OnInit {
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService) { }
+  constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, 
+    private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService , private itemService: ItemsService) { }
 
   async ngOnInit() {
     this.filterbyNum.nativeElement.value='';
@@ -616,6 +620,50 @@ async updateItemStock(direction){
     }
   }
 
+  searchProduct(){
+    if(this.productToFind!=""){
+      // check the stock item is really new
+      this.inventoryService.getCmptByNumber(this.productToFind , 'product').subscribe(res=>{
+        if(res.length==0){
+          // get item data from item tree
+          this.itemService.getItemData(this.productToFind).subscribe(data=>{
+            debugger
+            
+              this.resCmpt={
+                actualMlCapacity:0,
+                componentCategory:"",
+                componentN:data[0].itemNumber,
+                componentName:data[0].name+" "+data[0].subName+" "+data[0].discriptionK,
+                componentNs:"",
+                componentType:data[0].itemType,
+                img:data[0].imgMain1,
+                importFrom:"",
+                itemType:"product",
+                lastModified:"",
+                minimumStock:"",
+                needPrint:"",
+                packageType:"",
+                packageWeight:"",
+                remarks:"",
+                suplierN:"",
+                suplierName:"",
+              };
+              
+
+          });
+        } else{
+          this.toastSrv.error("Stock Item alredy exist");
+        }
+      });
+
+    } else{
+      this.toastSrv.error("Please enter product number");
+      this.resetResCmptData();
+    }
+
+
+  }
+
   closeAmountsData(){
     this.openAmountsModal = false;
     this.itemAmountsData=[];
@@ -625,6 +673,7 @@ async updateItemStock(direction){
   }
 
   newCmpt(newItem){
+    debugger
     this.newItem=newItem;
     this.resCmpt = {
       componentN:'',
@@ -646,24 +695,33 @@ async updateItemStock(direction){
       actualMlCapacity:0,
     }
 
-
     this.openModalHeader="יצירת פריט חדש";
     this.openModal = true;
   }
 
   writeNewComponent(){
-    this.resCmpt.itemType=this.stockType;
-    console.log(this.resCmpt);
-     this.inventoryService.addNewCmpt(this.resCmpt).subscribe(res=>{
-       console.log("res from front: "+res)
-       if(res=="itemExist"){
-        alert("לא ניתן ליצור פריט חדש- מספר "+this.resCmpt.componentN+" פריט כבר קיים במלאי");
-      }
-      this.newItem='';
-
-   })
-
+    if(this.resCmpt.componentN!=""){
+      this.resCmpt.itemType=this.stockType;
+      console.log(this.resCmpt);
+       this.inventoryService.addNewCmpt(this.resCmpt).subscribe(res=>{
+         console.log("res from front: "+res)
+         if(res=="itemExist"){
+          alert("לא ניתן ליצור פריט חדש- מספר "+this.resCmpt.componentN+" פריט כבר קיים במלאי");
+        } else if(res.componentN){ 
+          this.toastSrv.success("New stock item created");
+          this.components.push(res);
+          debugger
+        } 
+        this.newItem='';
+  
+     });
+  
+    } else{
+      this.toastSrv.error("Can't create new stock item without number")
+    }
   }
+
+
 
   editStockItemDetails(){
     this.resCmpt;
@@ -681,6 +739,28 @@ async updateItemStock(direction){
 
   }
 
+  resetResCmptData(){
+    this.resCmpt = {
+      componentN:'',
+      componentName:'',
+      componentNs:'',
+      suplierN: '',
+      suplierName: '',
+      componentType:'',
+      componentCategory:'',
+      img: '',
+      importFrom: '',
+      lastModified:'',
+      minimumStock:'',
+      needPrint:'',
+      packageType: '',
+      packageWeight: '',
+      remarks: '',
+      componentItems:[],
+      input_actualMlCapacity:0,
+    }
+  
+  }
 
 
   uploadImg(fileInputEvent){
@@ -818,7 +898,26 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
   });
 }
 
-
+deleteStockItem(stockItemNumber){
+  let ItemToDelete=this.components.filter(i=> i.componentN == stockItemNumber && i.itemType == this.stockType).slice()[0];
+  if(confirm("האם אתה רוצה למחוק את פריט "+ItemToDelete+" ?")){
+    if(this.stockType== 'component'){
+      this.inventoryService.getItemsByCmpt(ItemToDelete.componentN , ItemToDelete.componentType).subscribe(res=>{
+        if(res.length>0){
+          alert("יש מוצרים מקושרים לפריט - לא ניתן למחוק");
+        }else{
+          // this.inventoryService.deleteStockItemAndItemShelfs(ItemToDelete.componentN, ItemToDelete.itemType ).subscribe(res=>{
+          // 
+          // });
+        }    
+      });
+    }else if(this.stockType== 'product'){
+  
+    }else if(this.stockType== 'material'){
+  
+    }
+  }
+}
 
 deleteItemStockAllocation(cmptId,rowIndex) {
 

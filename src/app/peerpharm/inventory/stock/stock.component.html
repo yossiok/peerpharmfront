@@ -105,6 +105,8 @@
     <div style="padding-left: 10px;"><b> showing {{components.length}} stock items  </b></div>
 
   
+
+    <!-- TABLE START -->
     <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
       <thead class='bg-info text-white'>
         <tr align='center'>
@@ -141,14 +143,16 @@
             <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
           </td>
           <td><img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)" ></td>
-          <td><button *ngIf="component.procurementSent==true && stockAdmin" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
+          <td><button *ngIf="component.procurementSent==true && stockAdmin" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
+            מחק</button>{{component.procurementAmount}}</td>
           <td>
             <div *ngIf="stockAdmin" style="width: 100%; padding: 0px 0px">
                 <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 100%; padding: 0px" />
                 <span> <button class="btn btn-success"(click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span>
             </div>            
           </td>
-          <td></td>
+          <td><img (click)="deleteStockItem(component.componentN)" 
+            src="../../../../assets/images/deleteBtn.png" alt="delete stock item" style="width: 60px ; cursor: pointer; "></td>
         </tr>
       </tbody>
     </table>
@@ -212,6 +216,7 @@
   </div>
 
 
+    <!-- TABLE END -->
 
 
 
@@ -392,6 +397,119 @@
     </div>
 
   </div>
+
+
+
+
+
+  <div *ngIf="openModal==true && stockType=='product'" id="myModal2" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:185px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3); 
+  height: 50vh;'>
+
+      <!-- Modal content -->
+      <div class="modal-content" style='width:700px; height: 50vh;' id='modelC'>
+        <div class="modal-header">
+          <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+          <!-- <img src="peerpharm.png"  width='140px' align='left'> -->
+          <h2 id='div_h3'>{{openModalHeader}}</h2><br>
+        </div>
+        <div class="modal-body flex-container" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
+          <div *ngIf="showItemDetails">
+            <table id='detailsTable'> 
+              <tbody id='detailsTbody'>
+                <tr>
+                  <th >מספר פריט</th>
+                  <td><input type='text' [(ngModel)]="productToFind" >
+                      <img (click)="searchProduct()" src="../../../../assets/images/search.png" alt="" style="padding-right: 10px; width: 50px; cursor: pointer;">
+                  </td>
+                </tr>
+                <tr>
+                  <th>שם פריט</th>
+                  <td>
+                    <textarea rows='4' cols='30' [(ngModel)]="resCmpt.componentName" style='width:80%' id='input_componentName'></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <th>סוג פריט</th>
+                  <td>
+                    <input type="text" [(ngModel)]="resCmpt.componentType">
+                  </td>  
+                </tr>
+                <tr>
+                  <th>תמונה</th>
+                  <td>
+                    <img *ngIf="resCmpt.img!=''" [src]="resCmpt.img" style="min-width: 200px;" alt="Item main image please wait ...">
+                    <p *ngIf="resCmpt.img==''" ><b> -No Image- </b></p>
+                  </td>  
+                </tr>
+
+              </tbody>
+            </table>
+            
+          </div>
+          <div *ngIf="!showItemDetails">
+            <h5>Item Movements</h5>
+            <div *ngIf="itemMovements.length==0">
+              <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
+                  movements...</b></span>
+              <br />
+              <p *ngIf="!loadingMovements  && itemMovements.length==0 " style="font-weight: bold; color: red;">No Item Movements !</p>
+            </div>
+            <table class="table table-stipped" style="direction:ltr;text-align:left ">
+  
+              <tr>
+                <th>Amount</th>
+                <th>Movement Type</th>
+                <th>Date</th>
+                <th>Shelf</th>
+                <th>New Shelf</th>
+                <th>WhareHouse</th>
+              </tr> 
+              <tr *ngFor="let itemMovement of itemMovements">
+                <td>{{itemMovement.amount}}</td>
+                <td>{{itemMovement.movementType}}</td>
+                <td>{{itemMovement.movementDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{itemMovement.shell_position_in_whareHouse_Origin}}</td>
+                <td>{{itemMovement.shell_position_in_whareHouse_Dest}}</td>
+                <td>{{itemMovement.WH_originName}}</td>
+  
+              </tr>
+  
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" id="newCbtn" (click)="writeNewComponent()" *ngIf="newItem=='new'">הקם מוצר</button>
+        </div>
+      </div>
+  
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   <div *ngIf="openImgModal==true && currModalImgSrc!=''" id="myImgModal" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>

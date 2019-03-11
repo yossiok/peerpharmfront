@@ -22,8 +22,8 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getCmptByNumber(cmptNumber):Observable<any>{
-    let url = this.baseUrl + "component?componentN="+cmptNumber;
+  getCmptByNumber(cmptNumber, stockType):Observable<any>{
+    let url = this.baseUrl + "component?componentN="+cmptNumber+"&stockType="+stockType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -150,7 +150,10 @@ getAllMovements():Observable<any>{
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 
-
+deleteStockItemAndItemShelfs(itemNumber, itemType ):Observable<any>{
+  let url = this.baseUrl + "component/?itemNumber="+itemNumber+"&stockType="+itemType;
+  return this.http.delete(url).pipe(map(reponse => reponse.json()));
+}
 
 
 }

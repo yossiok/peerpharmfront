@@ -35,6 +35,7 @@ WhMngNavBtnColor:String ="";
 ItemsOnShelf:Array<any>;
 
 
+
   @ViewChild('container')
   @ViewChild('lineqnt')
   @ViewChild('wh') wh: ElementRef;
@@ -473,7 +474,11 @@ deleteLine(itemFromInvReq,index,ev){
     debugger
   }
 
-  async checkLineValidation(itemLine,index,ev:any, lineqnt){  
+  async checkLineValidation(itemLine,index,ev:any, lineqnt){
+    let stockType;
+    if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem")  stockType="component";
+    if(this.curentWhareHouseName == "Rosh HaAyin products")  stockType="product";
+    
     var itemLineToAdd= JSON.parse(JSON.stringify(itemLine)) 
     if(this.multiInputLines) itemLineToAdd.amount=itemLineToAdd.qnt;
 
@@ -496,7 +501,7 @@ deleteLine(itemFromInvReq,index,ev){
       position=itemLineToAdd.position.toUpperCase().trim();
       debugger
       if(((this.dir!='in'  && parseInt(currItemShelfs[0].amount)!=NaN  && currItemShelfs[0].amount!= undefined ) || (this.dir=='in' && itemLine.amount!="")) ){
-        await this.inventoryService.getCmptByNumber(itemLineToAdd.itemNumber).subscribe(async itemRes => {
+        await this.inventoryService.getCmptByNumber(itemLineToAdd.itemNumber , stockType).subscribe(async itemRes => {
           if( itemRes.length>0){
 
             this.inventoryService.checkIfShelfExist(position,this.curentWhareHouseId).subscribe(async shelfRes=>{

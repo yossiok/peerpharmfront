@@ -578,7 +578,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   loadPackagDetails(number, src){
-    this.invtSer.getCmptByNumber(number).subscribe(res=>{
+    this.invtSer.getCmptByNumber(number , 'product').subscribe(res=>{
       switch (src) {
         case 'bottle':
         this.itemShown.item1w=res[0].packageWeight;
