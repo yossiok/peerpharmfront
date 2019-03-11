@@ -39,12 +39,11 @@ export class FormdetailsComponent implements OnInit {
     // this.wrapAllChecks();
   }
 
-  getFormData() {
+  async getFormData() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.formsService.getFormData(id).subscribe(res => {
+      await this.formsService.getFormData(id).subscribe(res => {
         this.form = res[0];
-        debugger
         this.form.checkNetoWeight.forEach(element => {
           if (element) {
             const netNumber = parseInt(element, 10);
@@ -83,8 +82,7 @@ export class FormdetailsComponent implements OnInit {
         checkBox_lotNumberPrinting: this.form.checkBox_lotNumberPrinting[index],
         checkBox_correctFinalPacking: this.form.checkBox_correctFinalPacking[index],
       });
-    }
-    
+    }    
   }
 
   tabChange(view){

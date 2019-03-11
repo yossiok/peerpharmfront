@@ -46,7 +46,7 @@
                     [disabled]="disabledValue"
                   />
                 </td>
-              </tr>
+            </tr>
             <tr>
               <td  [translate]="'Product Name'">שם המוצר</td>
               <td colspan="3">
@@ -54,7 +54,7 @@
                   type="text"
                   [(ngModel)]="form.productName"
                   id="div_productName"
-                  style="width:500px"
+                  style="width:571px"
                   [disabled]="disabledValue"
                 />
               </td>
@@ -258,33 +258,32 @@
             </tr>
             
             <tr>
-              <table>
-                <thead>
-                    <tr>
-                        <th>שעת בדיקה</th>
-                        <th>נקיון מכלים</th>
-                        <th>משקל נטו</th>
-                        <th>משקל ממוצע</th>
-                        <th>סגירה ואיטום</th>
-                        <th>תקינות הדבקת התוויות</th>
-                        <th>בדיקת מס' אצוות</th>
-                        <th>תקינות אריזה סופית</th>
-                        <th>כמות שיוצרה</th>
-                        <th>אישור נקיון מכונה לאחר מילוי</th>
-                      </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let check of form.allChecks">
-                    <td>{{check.checkTime}}</td>
-                    <td>{{check.checkBox_clean}}</td>
-                    <td>{{check.checkNetoWeight}}</td>
-                    <td>{{check.checkBox_closedWaterProof}}</td>
-                    <td>{{check.checkBox_stickerPrinting}}</td>
-                    <td>{{check.checkBox_lotNumberPrinting}}</td>
-                    <td>{{check.checkBox_correctFinalPacking}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <td colspan="12">
+                  <table class="checks table table-bordered">
+                      <thead>
+                          <tr>
+                            <th scope="col">שעת בדיקה</th>
+                            <th scope="col">נקיון המיכלים</th>
+                            <th scope="col">משקל נטו</th>
+                            <th scope="col">סגירה ואיטום</th>
+                            <th scope="col">תקינות הדבקת התוויות</th>
+                            <th scope="col">בדיקת מס' אצוות</th>
+                            <th scope="col">תקינות אריזה סופית</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let check of allChecks">
+                          <td>{{check.checkTime}}</td>
+                          <td>{{check.checkBox_clean}}</td>
+                          <td>{{check.checkNetoWeight}}</td>
+                          <td>{{check.checkBox_closedWaterProof}}</td>
+                          <td>{{check.checkBox_stickerPrinting}}</td>
+                          <td>{{check.checkBox_lotNumberPrinting}}</td>
+                          <td>{{check.checkBox_correctFinalPacking}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+              </td>
             </tr>
 
 
@@ -458,7 +457,9 @@
                 />
               </td>
             </tr> -->
-            
+            <tr style="background-color:50D7FF">
+                <td colspan="4" class="subHeader"></td>
+              </tr>
             <tr>
               <td>כמות שיוצרה</td>
               <td>
@@ -485,17 +486,28 @@
             <tr>
                 <td>ייצור מלא</td>
                 <td>
-                  <input *ngIf="form.leftBatchNumber ==''" type="checkbox"  [disabled]="disabledValue" [checked]='true'/>
-                  <input *ngIf="form.leftBatchNumber !=''" type="checkbox"  [disabled]="disabledValue" [checked]='false'/>
+                  <input *ngIf="form.leftBatchWeight ==''" style="width:100px" type="checkbox"  [disabled]="disabledValue" [checked]='true'/>
+                  <input *ngIf="form.leftBatchWeight !=''" style="width:100px" type="checkbox"  [disabled]="disabledValue" [checked]='false'/>
                 </td>
                 <td>ייצור חלקי</td>
                 <td>
-                  <input *ngIf="form.leftBatchNumber !=''"  type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='true'/>
-                  <input *ngIf="form.leftBatchNumber ==''"  type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='false'/>
-                  <input *ngIf="form.leftBatchNumber !=''" type="text"  [disabled]="disabledValue" [(ngModel)]="form.leftBatchNumber"/>
-                  <input *ngIf="form.leftBatchNumber !=''" type="text"  [disabled]="disabledValue" [(ngModel)]="form.leftBatchWeight"/>
+                    <input *ngIf="form.leftBatchWeight !=''"  style="width:100px" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='true'/>
+                    <input *ngIf="form.leftBatchWeight ==''"  style="width:100px" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='false'/>
                 </td>
-              </tr>
+            </tr>
+            <tr *ngIf="form.leftBatchWeight !=''">
+              <td><b>ייצור חלקי</b></td>
+            </tr>
+            <tr *ngIf="form.leftBatchWeight !=''">
+                <td>אצווה</td>
+                <td>
+                  <input type="text"  [disabled]="disabledValue" [(ngModel)]="form.leftBatchNumber" style="width:100px" />
+                </td>
+                <td>כמות שנשארה</td>
+                <td>
+                  <input type="text"  [disabled]="disabledValue" [(ngModel)]="form.leftBatchWeight" style="width:100px" />
+                </td>
+            </tr>
         
               <tr>
                   <td>רשיון לפריט</td>
@@ -520,11 +532,12 @@
                 </tr>
         
             <tr>
-              <td colspan="4" style="border-bottom:0px solid;">
+              <td>הערות</td>
+              <td colspan="3" style="border-bottom:0px solid;">
                 <input
                   id="div_qualityRemarks"
                   class="inputDiv"
-                  style="width:500px"
+                  style="width:571px"
                   [disabled]="disabledValue"
                   [(ngModel)]="form.frontRemarks"
                 />
@@ -559,12 +572,12 @@
           </thead>
           <tr>
             <td>שם המוצר</td>
-            <td colspan="6">
+            <td colspan="3">
               <input
                 id="div_productName2"
                 class="inputDiv"
                 [disabled]="disabledValue"
-                style="width:500px"
+                style="width:446px"
                 [(ngModel)]="form.productName"
               />
             </td>
@@ -674,8 +687,10 @@
             </td>
           </tr>
           <tr>
-            <td style="border-bottom:0px solid;">הערות:</td>
-            <input type="text" id="div_totalItemsN" style="width:100px" [disabled]="disabledValue"  [(ngModel)]="form.backRemarks"/>
+            <td style="border-bottom:0px solid;">הערות</td>
+            <td colspan="3">
+                <input type="text" id="div_totalItemsN" style="width:446px" [disabled]="disabledValue"  [(ngModel)]="form.backRemarks"/>
+            </td>
           </tr>
           <!-- <tr>
             <td colspan="4">
