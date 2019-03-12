@@ -19,6 +19,10 @@
   style="margin-right: 20px;"
 />
 
+
+
+
+
 <table class="table">
   <thead>
     <tr style="background-color:white; ">
@@ -40,6 +44,13 @@
     </tr>
   </thead>
   <tbody>
+
+    <div *ngIf="forms.length==0">
+      <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
+          items...</b></span>
+      <br />
+    </div>
+
     <tr *ngFor="let form of forms; let i = index">
       <td>
         <a routerLink="/peerpharm/forms/formDetails/{{ form._id }}">

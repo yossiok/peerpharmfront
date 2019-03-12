@@ -8,7 +8,7 @@ import { ExcelService } from 'src/app/services/excel.service';
   styleUrls: ['./formslist.component.css']
 })
 export class FormslistComponent implements OnInit {
-  forms: any[];
+  forms: any[]=[];
   formsCopy: any[];
   sortByFillingDate: Boolean = false;
   constructor(private formsService: FormsService,  private excelService:ExcelService) {}
