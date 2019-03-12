@@ -315,16 +315,16 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
     </div>
     <div id="print-section">
       <div
-        class="row"
+        class="row printSticker"
         *ngFor="let sticker of amountOfStickersArr; let i = index"
         [attr.data-index]="i"
       >
         <div class="col-sm-12 sticker">
           <div class="row">
-            <b>{{ schedLine.productName }}</b>
+              <b>{{ schedLine.productName }}</b>
           </div>
           <div class="row" *ngIf="showItemFlag">
-            <b>Item Number: {{ schedLine.item }}</b>
+              <b>Item Number: {{ schedLine.item }}</b>
           </div>
           <div class="row">
             <b class="col-sm-6"> {{ volumeK }} </b>
@@ -339,17 +339,27 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
               <b class="col-sm-3 right">{{ printBarkod.exp }}</b>
             </div>
           </div>
-          <div class="row" *ngIf="showBarcodeFlag">
-            <ngx-barcode
-              *ngFor="let bcValue of printBarcodeValues"
-              [bc-element-type]="barcodeElementType"
-              [bc-value]="bcValue"
-              [bc-format]="barcodeFormat"
-              [bc-width]="barcodeWidth"
-              [bc-height]="barcodeHeight"
-              [bc-font-size]="barcodeFontSize"
-            ></ngx-barcode>
-            <b>{{ printBarkod.barcode }}</b>
+          <div class="row barcodeImg" *ngIf="showBarcodeFlag">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <ngx-barcode
+                *ngFor="let bcValue of printBarcodeValues"
+                [bc-element-type]="barcodeElementType"
+                [bc-value]="bcValue"
+                [bc-format]="barcodeFormat"
+                [bc-width]="barcodeWidth"
+                [bc-height]="barcodeHeight"
+                [bc-font-size]="barcodeFontSize"
+              ></ngx-barcode>
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="row" >
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <b>{{ printBarkod.barcode }}</b>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
           </div>
           <div class="row" *ngIf="showCustomerFlag">
             <b>{{ schedLine.costumer }}</b>
@@ -357,6 +367,22 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
         </div>
       </div>
     </div>
-    <button  printSectionId="print-section" ngxPrint class="btn btn-success m-r-10" type="button">Print</button>
+    <button
+      printSectionId="print-section"
+      ngxPrint
+      [printStyle]="{
+        '.printSticker': {
+          'height': '100mm',
+          'text-align' : 'center'
+        } ,
+        '.sticker': {
+          'padding-top' : '10mm'
+        }
+      }"
+      class="btn btn-success m-r-10"
+      type="button"
+    >
+      Print
+    </button>
   </div>
 </ng-template>
