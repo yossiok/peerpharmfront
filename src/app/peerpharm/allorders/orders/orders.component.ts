@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
@@ -25,7 +25,14 @@ export class OrdersComponent implements OnInit {
   stageSortDir:string="done";
   numberSortDir:string="oldFirst";
   sortCurrType:String="OrderNumber";
-
+  stagesCount={
+    new: 0,
+    partialCmpt: 0,
+    allCmpt: 0,
+    production: 0,
+    prodFinish: 0,
+    done: 0,
+  }
   //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
   //private orderSrc = new BehaviorSubject<string>("");
 
@@ -38,6 +45,10 @@ export class OrdersComponent implements OnInit {
   @ViewChild('id') id: ElementRef;
   @ViewChild('stage') stage: ElementRef;
   @ViewChild('onHoldDate') onHoldDate: ElementRef;
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+}
 
 
   ngOnInit() {
@@ -99,21 +110,28 @@ export class OrdersComponent implements OnInit {
   returnStageColor(order){
     if(order.stage=="new"){
       order.stageColor="white";
+      this.stagesCount.new++;
     }else if(order.stage=="partialCmpt"){
       order.stageColor="#ffa64d";
+      this.stagesCount.partialCmpt++;
     }else if(order.stage=="allCmpt"){
-      order.stageColor="#ffff80";              
+      order.stageColor="#ffff80";
+      this.stagesCount.allCmpt++;              
     }else if(order.stage=="production"){
-      order.stageColor="#b3ecff";                            
+      order.stageColor="#b3ecff";
+      this.stagesCount.production++;                            
     }else if(order.stage=="prodFinish"){
-      order.stageColor="#d9b3ff";                                          
+      order.stageColor="#d9b3ff";
+      this.stagesCount.prodFinish++;                                          
     }else if(order.stage=="done"){
-      order.stageColor="#9ae59a";                                                        
+      order.stageColor="#9ae59a";
+      this.stagesCount.done++;                                                        
     }
   }
 
   edit(id) {
     this.EditRowId = id;
+    debugger
     if(id!='') {
       let i = this.orders.findIndex(elemnt => elemnt._id == id);
       if(this.orders[i].onHoldDate!=null && this.orders[i].onHoldDate!="" && this.orders[i].onHoldDate!=undefined ){
@@ -267,7 +285,7 @@ export class OrdersComponent implements OnInit {
     
     var tempArr =[] ,stageNewArr =[], stagePartialCmptArr =[], stageAllCmptArr =[], stageProductionArr =[] , stageProdFinishArr =[], stageDoneArr =[];
 
-      this.orders.forEach(order => {
+      this.orders.forEach((order, key) => {
         if(order.stage == "new"){
           stageNewArr.push(order);
         }else if(order.stage == "partialCmpt"){
@@ -280,9 +298,15 @@ export class OrdersComponent implements OnInit {
           stageProdFinishArr.push(order);
         }else if(order.stage == "done"){
           stageDoneArr.push(order);
+        } else{
+          debugger
         }
         
+        if(key+1 == this.orders.length){
+          debugger
+        }
         if((stageNewArr.length + stagePartialCmptArr.length + stageAllCmptArr.length + stageProductionArr.length + stageProdFinishArr.length + stageDoneArr.length) == this.orders.length){
+          debugger
           if(this.stageSortDir=="new"){
             stagePartialCmptArr.map(order=>tempArr.push(order))
             stageAllCmptArr.map(order=>tempArr.push(order))

@@ -164,22 +164,24 @@ export class NeworderComponent implements OnInit {
     this.getCostumers();
   }
 
-  addNewSavedOrder(post) {
-    let newOrderObj = {
-      costumer: post.costumer,
-      orderDate: post.orderdate,
-      deliveryDate: post.delivery,
-      orderRemarks: post.remarks,
-      status: "open"
-    };
-    this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
-      this.orderId = res._id;
-      this.orderNumber = res.orderNumber;
-      this.submited = true;
-      console.log(res);
-    });
-    console.log(newOrderObj);
-  }
+  // addNewSavedOrder(post) {
+  //   let newOrderObj = {
+  //     costumer: post.costumer,
+  //     orderDate: post.orderdate,
+  //     deliveryDate: post.delivery,
+  //     orderRemarks: post.remarks,
+  //     status: "open",
+  //     stage: 'new',
+  //     onHoldDate: null,
+  //   };
+  //   this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
+  //     this.orderId = res._id;
+  //     this.orderNumber = res.orderNumber;
+  //     this.submited = true;
+  //     console.log(res);
+  //   });
+  //   console.log(newOrderObj);
+  // }
 
   addNewSavedOrderItem(post) {
     console.log(post);

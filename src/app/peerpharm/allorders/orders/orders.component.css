@@ -83,3 +83,14 @@ td {
       font-family: "Berlin Sans FB";
 
   }
+
+.stageTags{
+    display:inline-block;  
+    float: right; 
+}
+.stageTags > div{
+    display:inline-block; 
+    padding: 10px; 
+    margin: 5px ; 
+    border: darkgray solid;
+}
