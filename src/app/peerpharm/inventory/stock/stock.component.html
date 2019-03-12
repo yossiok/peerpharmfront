@@ -41,7 +41,7 @@
                   <!-- <input  #filterByCmptName type="text" class="form-control" placeholder="Item Name" (change)="changeText($event, 'itemName')"> -->
                 </div>
               <div *ngIf="stockType=='component'" class="col-sm-2">
-                <label class="fr">מק"ט ספק</label>
+                <label class="fr">מק"ט פריט-ספק</label>
                 <input  #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number..." (change)="filterRows($event , 'supplierN')">
                 <!-- <input  #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number..." (change)="filterRowsByItemSupplierNumber($event)"> -->
               </div>
@@ -113,7 +113,7 @@
   
           <th style="width:4%; padding:5px"></th>
           <th style="padding:5px"><b>מספר פריט</b></th>
-          <th style="padding:5px"><b>מק"ט פריט-ספק</b></th>
+          <th style="padding:5px;"><b>מק"ט פריט-ספק</b></th>
           <th style="width:15%; padding:5px"><b>שם</b></th>
           <th style="padding:5px"><b>סוג</b></th>
           <th style="padding:5px"><b>כמות</b></th>
@@ -132,9 +132,9 @@
         <tr *ngFor="let component of components; let i = index">
           <td style="width:4%">{{i+1}}</td>
           <td class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
-          <td>{{component.componentNs}}</td>
+          <td style="word-break: normal;">{{component.componentNs}}</td>
           <td style="width:15%;">{{component.componentName}}</td>
-          <td style="word-break: break-all;">{{component.componentType}}</td>
+          <td style="word-break: normal;">{{component.componentType}}</td>
           <td>{{component.amount}}</td>
           <td>
             <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button>
@@ -143,16 +143,36 @@
             <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
           </td>
           <td><img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)" ></td>
-          <td><button *ngIf="component.procurementSent==true && stockAdmin" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
+          <td>
+            <button *ngIf="component.procurementSent==true && stockAdmin" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
             מחק</button>{{component.procurementAmount}}</td>
+          <!-- <td style="width: 15%;">
+              <form *ngIf="stockAdmin">
+                <div class="row" style="padding : 0px; display: flex; justify-content: flex-end; ">
+                  <div class="col" style="padding : 0px ;">
+                    <input #newProcurmentQnt class="form-control" type="number" (keyup)="inputProcurment($event)" placeholder="Quantity">
+                  </div>
+                  <div class="col" style="padding : 0px ;">
+                      <input #newProcurmentOrderNum class="form-control" type="text" placeholder="Order Number">
+                  </div>
+                  <div class="col" style="padding : 0px ;">
+                    <input #newProcurmentExceptedDate class="form-control" type="date" >
+                  </div>
+
+                  <div class="col" style="padding : 0px ;">
+                    <button class="btn btn-success form-control"(click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button>
+                  </div>
+                </div>
+            </form>
+          </td> -->
           <td>
             <div *ngIf="stockAdmin" style="width: 100%; padding: 0px 0px">
                 <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 100%; padding: 0px" />
                 <span> <button class="btn btn-success"(click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span>
-            </div>            
+            </div>       
+          <td><img (click)="deleteStockItemValidation(component.componentN)" 
+            src="../../../../assets/images/deleteBtn.png" alt="delete stock item" style="width: 60px ; cursor: pointer; ">
           </td>
-          <td><img (click)="deleteStockItem(component.componentN)" 
-            src="../../../../assets/images/deleteBtn.png" alt="delete stock item" style="width: 60px ; cursor: pointer; "></td>
         </tr>
       </tbody>
     </table>
@@ -208,7 +228,10 @@
             </div>
           </td> -->
             <td style="width:7%;"></td>
-            <td style="width:7%;"></td>
+            <td style="width:7%;">
+              <img (click)="deleteStockItemValidation(component.componentN)" 
+              src="../../../../assets/images/deleteBtn.png" alt="delete stock item" style="width: 60px ; cursor: pointer; ">
+            </td>
           </tr>
         </tbody>
       </table>
@@ -444,41 +467,11 @@
 
               </tbody>
             </table>
-            
           </div>
-          <div *ngIf="!showItemDetails">
-            <h5>Item Movements</h5>
-            <div *ngIf="itemMovements.length==0">
-              <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
-                  movements...</b></span>
-              <br />
-              <p *ngIf="!loadingMovements  && itemMovements.length==0 " style="font-weight: bold; color: red;">No Item Movements !</p>
-            </div>
-            <table class="table table-stipped" style="direction:ltr;text-align:left ">
-  
-              <tr>
-                <th>Amount</th>
-                <th>Movement Type</th>
-                <th>Date</th>
-                <th>Shelf</th>
-                <th>New Shelf</th>
-                <th>WhareHouse</th>
-              </tr> 
-              <tr *ngFor="let itemMovement of itemMovements">
-                <td>{{itemMovement.amount}}</td>
-                <td>{{itemMovement.movementType}}</td>
-                <td>{{itemMovement.movementDate | date: 'dd/MM/yyyy'}}</td>
-                <td>{{itemMovement.shell_position_in_whareHouse_Origin}}</td>
-                <td>{{itemMovement.shell_position_in_whareHouse_Dest}}</td>
-                <td>{{itemMovement.WH_originName}}</td>
-  
-              </tr>
-  
-            </table>
-          </div>
+
         </div>
         <div class="modal-footer">
-          <button class="btn btn-success" id="newCbtn" (click)="writeNewComponent()" *ngIf="newItem=='new'">הקם מוצר</button>
+          <button class="btn btn-success" id="newCbtn" (click)="writeNewComponent()" *ngIf="newItemBtn=='new'">הקם מוצר</button>
         </div>
       </div>
   

@@ -68,6 +68,7 @@ export class StockComponent implements OnInit {
   procurementInputEvent:any;
   stockType:String="component";
   newItem:String='';
+  newItemBtn:String='new';
   //var's to edit itemshelf in allowed wh for user
   user: UserInfo;
   whareHouses:Array<any>;
@@ -103,7 +104,9 @@ export class StockComponent implements OnInit {
   @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
 
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
-  // @ViewChild('procurmentInput') procurmentInput: ElementRef;
+  @ViewChild('newProcurmentQnt') newProcurmentQnt: ElementRef;
+  @ViewChild('newProcurmentOrderNum') newProcurmentOrderNum: ElementRef;
+  @ViewChild('newProcurmentExceptedDate') newProcurmentExceptedDate: ElementRef;
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -707,11 +710,17 @@ async updateItemStock(direction){
          console.log("res from front: "+res)
          if(res=="itemExist"){
           alert("לא ניתן ליצור פריט חדש- מספר "+this.resCmpt.componentN+" פריט כבר קיים במלאי");
-        } else if(res.componentN){ 
+        } else if(res.componentN){
           this.toastSrv.success("New stock item created");
+          this.componentsUnFiltered.push(res);
           this.components.push(res);
+
+          // this.getAllComponents();
+          this.resetResCmptData();
+          this.filterbyNum.nativeElement.value='';
+
           debugger
-        } 
+        }
         this.newItem='';
   
      });
@@ -806,6 +815,8 @@ inputProcurment(event: any) { // without type info
   this.procurmentQnt = event.target.value;
   ;
 }
+
+
 updateProcurment(componentId,componentNum,status){
 
   if(status=="false"){
@@ -898,25 +909,47 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
   });
 }
 
-deleteStockItem(stockItemNumber){
+deleteStockItemValidation(stockItemNumber){
   let ItemToDelete=this.components.filter(i=> i.componentN == stockItemNumber && i.itemType == this.stockType).slice()[0];
-  if(confirm("האם אתה רוצה למחוק את פריט "+ItemToDelete+" ?")){
+  if(confirm("האם אתה רוצה למחוק את פריט ?\n מספר פריט: "+ItemToDelete.componentN+"\n שם פריט: "+ItemToDelete.componentName)){
     if(this.stockType== 'component'){
-      this.inventoryService.getItemsByCmpt(ItemToDelete.componentN , ItemToDelete.componentType).subscribe(res=>{
-        if(res.length>0){
+      this.inventoryService.getItemsByCmpt(ItemToDelete.componentN , ItemToDelete.componentType).subscribe(resp=>{
+        if(resp.length>0){
           alert("יש מוצרים מקושרים לפריט - לא ניתן למחוק");
         }else{
-          // this.inventoryService.deleteStockItemAndItemShelfs(ItemToDelete.componentN, ItemToDelete.itemType ).subscribe(res=>{
-          // 
-          // });
-        }    
+          this.deleteStockItem(ItemToDelete);
+        }  
       });
     }else if(this.stockType== 'product'){
-  
+      this.deleteStockItem(ItemToDelete);
+
     }else if(this.stockType== 'material'){
   
     }
   }
+}
+deleteStockItem(ItemToDelete){
+  this.inventoryService.deleteStockItemAndItemShelfs(ItemToDelete.componentN, ItemToDelete.itemType ).subscribe(res=>{
+    if(res.componentN){
+      this.toastSrv.success("item deleted!\n"+res.componentN);
+      this.componentsUnFiltered.filter((c, key)=> {
+        if(c.componentN==res.componentN && c.itemType==res.itemType ){
+          this.componentsUnFiltered.splice(key, 1);//remove from array
+
+          if(this.components.length>1){
+
+            this.components.filter((c, key)=> {
+              if(c.componentN==res.componentN && c.itemType==res.itemType ){
+                this.components.splice(key, 1);//remove from array
+              }
+            });
+          }else{
+            this.setType(this.stockType);
+          }
+          }
+       });
+    }
+  });
 }
 
 deleteItemStockAllocation(cmptId,rowIndex) {

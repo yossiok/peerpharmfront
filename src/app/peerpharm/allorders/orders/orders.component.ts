@@ -308,11 +308,11 @@ export class OrdersComponent implements OnInit {
         if((stageNewArr.length + stagePartialCmptArr.length + stageAllCmptArr.length + stageProductionArr.length + stageProdFinishArr.length + stageDoneArr.length) == this.orders.length){
           debugger
           if(this.stageSortDir=="new"){
-            stagePartialCmptArr.map(order=>tempArr.push(order))
-            stageAllCmptArr.map(order=>tempArr.push(order))
-            stageProductionArr.map(order=>tempArr.push(order))
-            stageProdFinishArr.map(order=>tempArr.push(order))
             stageDoneArr.map(order=>tempArr.push(order))
+            stageProdFinishArr.map(order=>tempArr.push(order))
+            stageProductionArr.map(order=>tempArr.push(order))
+            stageAllCmptArr.map(order=>tempArr.push(order))
+            stagePartialCmptArr.map(order=>tempArr.push(order))
             stageNewArr.map(order=>tempArr.push(order))
             this.stageSortDir="done";
           }
