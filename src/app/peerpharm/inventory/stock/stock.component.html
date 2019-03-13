@@ -121,7 +121,7 @@
           <th style="padding:5px"><b>כמות מוקצת</b></th>
           <th style="padding:5px"><b>תמונה</b></th>
           <th style="padding:5px"><b>הזמנת רכש</b></th>
-          <th style="padding:5px" ><b *ngIf="stockAdmin">כמות להזמנת רכש</b></th>
+          <th style="padding:5px" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th>
           <th ></th>
         </tr>
   
@@ -144,10 +144,10 @@
           </td>
           <td><img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)" ></td>
           <td>
-            <button *ngIf="component.procurementSent==true && stockAdmin" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
+            <button *ngIf="component.procurementSent==true && updateStockItem" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
             מחק</button>{{component.procurementAmount}}</td>
           <!-- <td style="width: 15%;">
-              <form *ngIf="stockAdmin">
+              <form *ngIf="updateStockItem">
                 <div class="row" style="padding : 0px; display: flex; justify-content: flex-end; ">
                   <div class="col" style="padding : 0px ;">
                     <input #newProcurmentQnt class="form-control" type="number" (keyup)="inputProcurment($event)" placeholder="Quantity">
@@ -166,11 +166,11 @@
             </form>
           </td> -->
           <td>
-            <div *ngIf="stockAdmin" style="width: 100%; padding: 0px 0px">
+            <div *ngIf="updateStockItem" style="width: 100%; padding: 0px 0px">
                 <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 100%; padding: 0px" />
                 <span> <button class="btn btn-success"(click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span>
             </div>       
-          <td><img (click)="deleteStockItemValidation(component.componentN)" 
+          <td><img *ngIf="stockAdmin" (click)="deleteStockItemValidation(component.componentN)" 
             src="../../../../assets/images/deleteBtn.png" alt="delete stock item" style="width: 60px ; cursor: pointer; ">
           </td>
         </tr>

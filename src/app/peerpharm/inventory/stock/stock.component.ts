@@ -85,6 +85,7 @@ export class StockComponent implements OnInit {
   cmptCategoryList:Array<any>;
   emptyFilterArr:Boolean=true;
   currItemShelfs:Array<any>;
+  updateStockItem:Boolean=false;
   stockAdmin:Boolean=false;
   destShelfId:String;
   destShelf:String;
@@ -162,6 +163,9 @@ getUserAllowedWH(){
         }
       }
       if (this.authService.loggedInUser.authorization){
+        if (this.authService.loggedInUser.authorization.includes("updateStockItem")){
+          this.updateStockItem=true;
+        }
         if (this.authService.loggedInUser.authorization.includes("stockAdmin")){
           this.stockAdmin=true;
         }
