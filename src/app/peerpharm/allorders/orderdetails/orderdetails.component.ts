@@ -103,6 +103,7 @@ export class OrderdetailsComponent implements OnInit {
   stickerList: Array<any>=[];
   boxList: Array<any>=[];
   cartonList: Array<any>=[];
+  platesList: Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -756,10 +757,10 @@ export class OrderdetailsComponent implements OnInit {
               }
             }
           }
-
+          debugger
           if (item.stickerNumber!='' && item.stickerNumber!='---' ) {
             let newCmpt= true;
-            if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerNumber) ){
+            if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerNumber)  ){
               this.stickerList.map(i=>{
                 if(i.stickerNumber==item.stickerNumber){
                   newCmpt=false;
@@ -769,6 +770,22 @@ export class OrderdetailsComponent implements OnInit {
             }else{
               if(newCmpt){
                 this.stickerList.push({stickerNumber:item.stickerNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
+          if (item.stickerTypeK!='' && item.stickerTypeK!='---' ) {
+            let newCmpt= true;
+            if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerTypeK)  ){
+              this.stickerList.map(i=>{
+                if(i.stickerNumber==item.stickerTypeK){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.stickerList.push({stickerNumber:item.stickerTypeK , qnt:item.quantity});
                 newCmpt=false;
               }
             }
@@ -790,6 +807,22 @@ export class OrderdetailsComponent implements OnInit {
               }
             }
           }
+          if (item.boxTypeK!='' && item.boxTypeK!='---' ) {
+            let newCmpt= true;
+            if( this.boxList.map(function (el) { return el.boxNumber; }).includes(item.boxTypeK) ){
+              this.boxList.map(i=>{
+                if(i.boxNumber==item.boxTypeK){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.boxList.push({boxNumber:item.boxTypeK , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
 
           if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
             let newCmpt= true;
@@ -803,6 +836,22 @@ export class OrderdetailsComponent implements OnInit {
             }else{
               if(newCmpt){
                 this.cartonList.push({cartonNumber:item.cartonNumber , qnt: (item.quantity/parseInt(item.PcsCarton)) });
+                newCmpt=false;
+              }
+            }
+          }
+          
+          if (item.pallet!='' && item.pallet!='---' ) {
+            let newCmpt= true;
+            if( this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet) ){
+              this.cartonList.map(i=>{
+                if(i.palletNumber==item.pallet){
+                  newCmpt=false;
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.cartonList.push({palletNumber:item.cartonNumber });
                 newCmpt=false;
               }
             }

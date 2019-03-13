@@ -19,9 +19,12 @@
 <div *ngIf="loadData==false">
   <p>Showing {{ordersItems.length}} items</p>
 </div>
+
 <!-- <div>
   <button *ngIf="!multi && ordersItems.length!=0" (click)="openCmptDemandsModal()">Order Components Demand</button>
 </div> -->
+
+
 <input matInput  placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
 
 <table class='table' *ngIf="loadData==false">
@@ -377,7 +380,7 @@
 
 
   
-  <div *ngIf="cmptModal==true" id="cmptModal" class="modal3" style='width: 70%;border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
+  <div *ngIf="cmptModal==true" id="cmptModal" class="modal3" style='width: 85%;border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
     <!-- Modal content -->
     <div class="modal-content"  id='modelC'>
@@ -387,12 +390,130 @@
       </div>
 
       <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
+
+          <div class="container" style="width: 100%; float: right ;">
+
+            <div *ngIf="bottleList.length>0">
+                <h5>Bottles</h5>
+                <div *ngFor="let bottle of bottleList">
+                  <label>bottle Number: {{bottle.bottleNumber}}</label> &nbsp;&nbsp;
+                  <label>Quantity: {{bottle.qnt}}</label>
+                </div>    
+            </div>
+            <div *ngIf="capList.length>0">
+                <h5>Caps</h5>
+                <div *ngFor="let cap of capList">
+                    <label>cap Number: {{cap.capNumber}}</label> &nbsp;&nbsp;
+                    <label>Quantity: {{cap.qnt}}</label>
+                </div>    
+            </div>
+            <div *ngIf="pumpList.length>0">
+                <h5>Pumps</h5>
+                <div *ngFor="let pump of pumpList">
+                  <label>pump Number: {{pump.pumpNumber}}</label> &nbsp;&nbsp;
+                  <label>Quantity: {{pump.qnt}}</label>
+                </div>    
+            </div>
+            <div *ngIf="sealList.length>0">
+                <h5>Seals</h5>
+                <div *ngFor="let seal of sealList">
+                    <label>seal Number: {{seal.sealNumber}}</label> &nbsp;&nbsp;
+                    <label>Quantity: {{seal.qnt}}</label>
+                </div>    
+            </div>
+            <div *ngIf="stickerList.length>0">
+                <h5>Stickers</h5>
+                <div *ngFor="let sticker of stickerList">
+                    <label>sticker Number: {{sticker.stickerNumber}}</label> &nbsp;&nbsp;
+                    <label>Quantity: {{sticker.qnt}}</label>
+                </div>    
+            </div>
+            <div *ngIf="boxList.length>0">
+                <h5>Boxes</h5>
+                <div *ngFor="let box of boxList">
+                    <label>box Number: {{box.boxNumber}}</label> &nbsp;&nbsp;
+                    <label>Quantity: {{box.qnt}}</label>
+                </div>    
+            </div>
+            <div *ngIf="cartonList.length>0">
+                <h5>Master Catons</h5>
+                <div *ngFor="let carton of cartonList">
+                    <label>carton Number: {{carton.cartonNumber}}</label> &nbsp;&nbsp;
+                    <label>Quantity: {{carton.qnt}}</label>
+                </div>    
+            </div>
+            <div *ngIf="platesList.length>0">
+                <h5>Plates</h5>
+                <div *ngFor="let plate of platesList">
+                    <label>plate Number: {{plate.palletNumber}}</label> &nbsp;&nbsp;
+                </div>    
+            </div>
+          </div>
+
+          <br><br>
         <!-- <div clas="modalFullWidth" width="100%">
 
         </div> -->
+
         <div  style="width: 100%; float: right ;" class="container">
             <div *ngFor="let itemCmpts of orderItemsComponents" style="margin-top:1em;">
-                <h4>פריט {{itemCmpts.itemNumber}} &nbsp;&nbsp; {{itemCmpts.itemName}}</h4>
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Item Number</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Bottle</th>
+                        <th scope="col">Cap</th>
+                        <th scope="col">Pump</th>
+                        <th scope="col">Seal</th>
+                        <th scope="col">Sticker1</th>
+                        <th scope="col">Sticker2</th>
+                        <th scope="col">Box1</th>
+                        <th scope="col">Box2</th>
+                        <th scope="col">Master Caton</th>
+                        <th scope="col">PcsCarton</th>
+                        <th scope="col">Mid Caton</th>
+                        <th scope="col">Plate1</th>
+                        <th scope="col">Plate2</th>
+                        <th scope="col">Plate3</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr scope="row">
+                          <td>{{itemCmpts.itemNumber}}</td>
+                          <td>{{itemCmpts.itemName}}</td>
+                          <td>{{itemCmpts.quantity}}</td>
+                          <td>{{itemCmpts.bottleNumber}}</td>
+                          <td>{{itemCmpts.capNumber}}</td>
+                          <td>{{itemCmpts.pumpNumber}}</td>
+                          <td>{{itemCmpts.sealNumber}}</td>
+                          <td>{{itemCmpts.sticker1Number}}</td>
+                          <td>{{itemCmpts.sticker2Number}}</td>
+                          <td>{{itemCmpts.box1Number}}</td>
+                          <td>{{itemCmpts.box2Number}}</td>
+                          <td>{{itemCmpts.cartonNumber}}</td>
+                          <td>{{itemCmpts.PcsCarton}}</td>
+                          <td>{{itemCmpts.midCartonNumner}}</td>
+                          <td>{{itemCmpts.pallet}}</td>
+                          <td>{{itemCmpts.pallet2}}</td>
+                          <td>{{itemCmpts.pallet3}}</td>
+                        </tr>
+
+                    </tbody>
+                  </table>      
+
+            </div>
+        </div>
+        <br>
+
+        <!-- <div  style="width: 100%; float: right ;" class="container">
+            <div *ngFor="let itemCmpts of orderItemsComponents" style="margin-top:1em;">
+                <h4>פריט {{itemCmpts.itemNumber}} &nbsp;&nbsp; {{itemCmpts.itemName}} </h4>
+                <br>
+
+
+
                 <table class="itemPackings"  style="width: 100% ; margin: 1em 2em;">
                   <thead>
                     <tr>
@@ -418,62 +539,10 @@
                   </tbody>
                 </table>
               </div>
-        </div>
+        </div> -->
 
 
-<br><br>
 
-  <div class="container" style="width: 100%; float: right ;">
-    <div *ngIf="bottleList.length>0">
-        <h5>Bottles</h5>
-        <div *ngFor="let bottle of bottleList">
-          <label>bottle Number: {{bottle.bottleNumber}}</label> &nbsp;&nbsp;
-          <label>Quantity: {{bottle.qnt}}</label>
-        </div>    
-    </div>
-    <div *ngIf="capList.length>0">
-        <h5>Caps</h5>
-        <div *ngFor="let cap of capList">
-            <label>cap Number: {{cap.capNumber}}</label> &nbsp;&nbsp;
-            <label>Quantity: {{cap.qnt}}</label>
-        </div>    
-    </div>
-    <div *ngIf="pumpList.length>0">
-        <h5>Pumps</h5>
-        <div *ngFor="let pump of pumpList">
-          <label>pump Number: {{pump.pumpNumber}}</label> &nbsp;&nbsp;
-          <label>Quantity: {{pump.qnt}}</label>
-        </div>    
-    </div>
-    <div *ngIf="sealList.length>0">
-        <h5>Seals</h5>
-        <div *ngFor="let seal of sealList">
-            <label>seal Number: {{seal.sealNumber}}</label> &nbsp;&nbsp;
-            <label>Quantity: {{seal.qnt}}</label>
-        </div>    
-    </div>
-    <div *ngIf="stickerList.length>0">
-        <h5>Stickers</h5>
-        <div *ngFor="let sticker of stickerList">
-            <label>sticker Number: {{sticker.stickerNumber}}</label> &nbsp;&nbsp;
-            <label>Quantity: {{sticker.qnt}}</label>
-        </div>    
-    </div>
-    <div *ngIf="boxList.length>0">
-        <h5>Boxes</h5>
-        <div *ngFor="let box of boxList">
-            <label>box Number: {{box.boxNumber}}</label> &nbsp;&nbsp;
-            <label>Quantity: {{box.qnt}}</label>
-        </div>    
-    </div>
-    <div *ngIf="cartonList.length>0">
-        <h5>Master Catons</h5>
-        <div *ngFor="let carton of cartonList">
-            <label>carton Number: {{carton.cartonNumber}}</label> &nbsp;&nbsp;
-            <label>Quantity: {{carton.qnt}}</label>
-        </div>    
-    </div>
-  </div>
 
   </div>
   <div class="modal-footer">
