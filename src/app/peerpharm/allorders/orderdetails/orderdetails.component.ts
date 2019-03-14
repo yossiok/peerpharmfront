@@ -14,6 +14,8 @@ import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PlateService } from 'src/app/services/plate.service';
 import { CostumersService } from 'src/app/services/costumers.service';
+import {ExcelService} from '../../../services/excel.service';
+
 
 
 @Component({
@@ -104,6 +106,7 @@ export class OrderdetailsComponent implements OnInit {
   boxList: Array<any>=[];
   cartonList: Array<any>=[];
   platesList: Array<any>=[];
+  itemTreeRemarks: Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -119,10 +122,14 @@ export class OrderdetailsComponent implements OnInit {
   // @ViewChild('type') type:ElementRef;
 
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
-     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, private costumerSrevice: CostumersService) { }
+     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, 
+     private costumerSrevice: CostumersService, private excelService:ExcelService ) { }
 
 
-
+    exportAsXLSX(data) {
+      debugger
+      this.excelService.exportAsExcelFile(data, 'Order '+this.ordersItems[0].orderNumber+' Explode');
+   }
 
   ngOnInit() {
     console.log('hi');
@@ -191,14 +198,14 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   addItemOrder() {
-    debugger
+     
     this.itemData.orderId = this.orderId;
     if(!this.multi) this.itemData.orderNumber = this.number;
     let newItemImpRemark= this.itemData.itemImpRemark;
-    debugger
+     
     this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
       if(item.itemNumber==this.itemData.itemNumber ){
-        debugger
+         
         item.itemImpRemark= newItemImpRemark;
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
@@ -268,7 +275,7 @@ export class OrderdetailsComponent implements OnInit {
       if(singleLine){
         this.ordersItems.filter(item=> {
           if(item.itemNumber == orderItems[0].itemNumber){
-            debugger
+             
             item =orderItems[0];
           }
         });
@@ -276,7 +283,7 @@ export class OrderdetailsComponent implements OnInit {
         this.ordersItems = orderItems;
         this.ordersItemsCopy = orderItems;
       }
-      debugger
+       
       this.getComponents(this.ordersItems[0].orderNumber);
 
     });
@@ -377,7 +384,7 @@ export class OrderdetailsComponent implements OnInit {
           this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].unitMeasure = itemToUpdate.unitMeasure;
 
-          debugger
+           
         }else{
         }
   
@@ -679,15 +686,20 @@ export class OrderdetailsComponent implements OnInit {
     this.stickerList= [];
     this.boxList= [];
     this.cartonList= [];
+    this.itemTreeRemarks= [];
     if(this.ordersItems.length>0){
       this.internalNumArr=[];
-      this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber) );
+      this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber.trim()) );
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe( async res=>{
         await res.forEach(async item=> {
-
           let i=this.ordersItems.filter(x=> x.itemNumber==item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
           item.itemName = i.discription;
+
+          console.log("i from orderItems ", i)
+          console.log("i.quantity",i.quantity);
+          console.log("item.quantity",item.quantity);
+
 
           if (item.bottleNumber!='' && item.bottleNumber!='---' ) {
             let newCmpt= true;
@@ -757,7 +769,7 @@ export class OrderdetailsComponent implements OnInit {
               }
             }
           }
-          debugger
+           
           if (item.stickerNumber!='' && item.stickerNumber!='---' ) {
             let newCmpt= true;
             if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerNumber)  ){
@@ -844,17 +856,51 @@ export class OrderdetailsComponent implements OnInit {
           if (item.pallet!='' && item.pallet!='---' ) {
             let newCmpt= true;
             if( this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet) ){
-              this.cartonList.map(i=>{
+              this.platesList.map(i=>{
                 if(i.palletNumber==item.pallet){
                   newCmpt=false;
                 }
               });
             }else{
               if(newCmpt){
-                this.cartonList.push({palletNumber:item.cartonNumber });
+                this.platesList.push({palletNumber:item.pallet });
                 newCmpt=false;
               }
             }
+          }
+          if (item.pallet2!='' && item.pallet2!='---' ) {
+            let newCmpt= true;
+            if( this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet2) ){
+              this.platesList.map(i=>{
+                if(i.palletNumber==item.pallet2){
+                  newCmpt=false;
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.platesList.push({palletNumber:item.pallet2 });
+                newCmpt=false;
+              }
+            }
+          }
+          if (item.pallet3!='' && item.pallet3!='---' ) {
+            let newCmpt= true;
+            if( this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet3) ){
+              this.platesList.map(i=>{
+                if(i.palletNumber==item.pallet3){
+                  newCmpt=false;
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.platesList.push({palletNumber:item.pallet3 });
+                newCmpt=false;
+              }
+            }
+          }
+
+          if (item.impRemarks!='' || item.proRemarks!='' ) {
+            this.itemTreeRemarks.push(item);
           }
 
           // if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
@@ -872,6 +918,7 @@ export class OrderdetailsComponent implements OnInit {
           // }
           console.log(this.bottleList);
         });
+         debugger
         this.orderItemsComponents= res;
         this.cmptModal=true;
         console.log(res);
