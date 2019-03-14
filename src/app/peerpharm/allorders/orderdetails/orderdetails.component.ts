@@ -57,7 +57,7 @@ export class OrderdetailsComponent implements OnInit {
   ordersItems;
   ordersItemsCopy;
   item: any;
-  number; orderDate; deliveryDate; costumer; costumerInternalId; remarks; orderId;
+  number; orderDate; deliveryDate; costumer; costumerInternalId; remarks; orderId; orderStage; stageColor;
   chosenType: string;
   detailsArr: any[];
   components: any[];
@@ -220,7 +220,22 @@ export class OrderdetailsComponent implements OnInit {
     });
   }
 
+updateSingleOrderStage(ev){
+  if(confirm("שינוי שלב של הזמנה")){
+    let newStageValue=ev.target.value;
+    this.orderStage;
+    this.stageColor;
+    debugger
+    this.orderService.editOrderStage(this.ordersItems[0]._id , newStageValue).subscribe(order => {
+      debugger
+    this.returnStageColor(this.orderStage);
+  
+    });
+  } else{
+    ev.target.value = this.orderStage;
+  }
 
+}
 
   async getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
@@ -236,6 +251,10 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+      if(!this.multi) {
+        this.orderStage=res[0].stage;
+        this.returnStageColor(this.orderStage);
+      }
     });
   }
   getOrderItems(singleLine): void {
@@ -657,7 +676,21 @@ export class OrderdetailsComponent implements OnInit {
   // }
 
 
-
+  returnStageColor(stage){
+    if(stage=="new"){
+      this.stageColor="white";
+    }else if(stage=="partialCmpt"){
+      this.stageColor="#ffa64d";
+    }else if(stage=="allCmpt"){
+      this.stageColor="#ffff80";              
+    }else if(stage=="production"){
+      this.stageColor="#b3ecff";                            
+    }else if(stage=="prodFinish"){
+      this.stageColor="#d9b3ff";                                          
+    }else if(stage=="done"){
+      this.stageColor="#9ae59a";                                                        
+    }
+  }
 
 
 

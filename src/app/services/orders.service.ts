@@ -50,6 +50,10 @@ export class OrdersService {
     let url = this.baseUrl + "order/update";
     return this.http.post(url, JSON.stringify(order), this.options).pipe(map(res => res.json()))
   }
+  editOrderStage(orderId,stage): Observable<any> {
+    let url = this.baseUrl + "order/update?updateStage="+stage;
+    return this.http.post(url, JSON.stringify({orderId}), this.options).pipe(map(res => res.json()))
+  }
 
   deleteOrder(order) {
     let url = this.baseUrl + "order/remove";

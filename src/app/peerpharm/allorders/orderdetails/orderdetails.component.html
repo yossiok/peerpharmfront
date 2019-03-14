@@ -12,9 +12,20 @@
   <span class='spanTitle'>Order: </span><span>{{number}} </span><i class="ti-check text-success m-r-10" (click)="closeOrder()"></i>
   <span class='spanTitle'> Order Date:</span><span> {{orderDate}} </span><span class='spanTitle'> Delivery Date: </span><span>{{deliveryDate}}</span>
   <span class='spanTitle'> Costumer :</span><span> {{costumer}} </span><span class='spanTitle'> Costumer Number:</span><span> {{costumerInternalId}} </span>
-  <span class='spanTitle'> Remarks:</span><span>
-    {{remarks}}</span>
+  <span class='spanTitle'> Remarks:</span>
+  <span >{{remarks}}</span>
 </div>
+<!-- <div *ngIf="!multi" style="width:98% ; display: flex; justify-content: center;" [style.background-color]="stageColor">
+    <label style=" padding: 15px 40px 0px 0px; " >Stage:</label>
+    <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" >
+        <option value="new">חדש</option>
+        <option value="partialCmpt">רכיבים קיימים- חלקית</option>
+        <option value="allCmpt">כל הרכיבים קיימים</option>
+        <option value="production">נשלח לייצור</option>
+        <option value="prodFinish">עבר ייצור</option>
+        <option value="done">הזמנה סגורה</option>
+      </select>
+</div> -->
 <img src="assets/images/load_data2.gif" *ngIf="loadData==true" ><br>
 <div *ngIf="loadData==false">
   <p>Showing {{ordersItems.length}} items</p>
