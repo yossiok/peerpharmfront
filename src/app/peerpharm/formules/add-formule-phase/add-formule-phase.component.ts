@@ -30,4 +30,7 @@ export class AddFormulePhaseComponent implements OnInit {
     this.formulePhase.emit(newPhaseAdded);
   }
 
+  deletePhase(){
+    
+  }
 }
