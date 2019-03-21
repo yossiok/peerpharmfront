@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service';
 import { ScheduleService } from '../../../services/schedule.service'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -120,7 +120,10 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('shift') shift: ElementRef;
   @ViewChild('marks') marks: ElementRef;
   // @ViewChild('type') type:ElementRef;
-
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+}
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, 
      private costumerSrevice: CostumersService, private excelService:ExcelService ) { }

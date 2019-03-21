@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
@@ -31,6 +31,10 @@ export class AllordersComponent implements OnInit {
   @ViewChild('costumer') costumer: ElementRef;
   @ViewChild('orderNumber') orderNumber: ElementRef;
   @ViewChild('id') id: ElementRef;
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+  }
 
 
   ngOnInit() {

@@ -177,6 +177,7 @@ background: repeating-linear-gradient(
   justify-content: start;
   flex-wrap: wrap;
   flex-direction: row;
+  padding-left: 40px;
 }
 .cmptListData{
   background-color: aliceblue;
