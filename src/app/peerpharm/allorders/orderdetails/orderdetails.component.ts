@@ -97,6 +97,7 @@ export class OrderdetailsComponent implements OnInit {
   showingAllOrders:Boolean;
   orderPackingList:Array<any>=[];
   orderItemsComponents:Array<any>=[];
+  orderItemsStock:Array<any>=[];
 
   bottleList: Array<any>=[];
   capList: Array<any>=[];
@@ -130,7 +131,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
     exportAsXLSX(data) {
-      debugger
+       
       this.excelService.exportAsExcelFile(data, 'Order '+this.ordersItems[0].orderNumber+' Explode');
    }
 
@@ -142,13 +143,14 @@ export class OrderdetailsComponent implements OnInit {
       if(res==true || this.number=="00"){
         this.showingAllOrders=true;
         this.loadData=true;
-        this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
+        this.orderService.getOpenOrdersItems().subscribe(async orderItems=>{
           this.loadData=false;
           this.multi = true;
           orderItems.forEach(item => {
             item.isExpand = '+';
             item.colorBtn = '#33FFE0';
           });
+          await this.colorOrderItemsLines(orderItems).then(data=>{   });
           this.ordersItems = orderItems;
           this.ordersItemsCopy = orderItems;
           this.ordersItems.map(item=>{
@@ -169,11 +171,13 @@ export class OrderdetailsComponent implements OnInit {
             if(numArr.length>1){ //multi orders:  came through load button
               this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async ordersIds => {
                 if(ordersIds.length>1){
-                  this.orderService.getMultiOrdersIds(ordersIds).subscribe(orderItems => {
+                  this.orderService.getMultiOrdersIds(ordersIds).subscribe(async orderItems => {
                     orderItems.forEach(item => {
                       item.isExpand = '+';
                       item.colorBtn = '#33FFE0';
                     });
+
+                    await this.colorOrderItemsLines(orderItems).then(data=>{   });
                     this.ordersItems = orderItems;
                     this.ordersItemsCopy = orderItems;
                     this.multi = true;
@@ -228,9 +232,9 @@ updateSingleOrderStage(ev){
     let newStageValue=ev.target.value;
     this.orderStage;
     this.stageColor;
-    debugger
+     
     this.orderService.editOrderStage(this.ordersItems[0]._id , newStageValue).subscribe(order => {
-      debugger
+       
     this.returnStageColor(this.orderStage);
   
     });
@@ -260,7 +264,8 @@ updateSingleOrderStage(ev){
       }
     });
   }
-  getOrderItems(singleLine): void {
+
+getOrderItems(singleLine): void {
     var orderNum;
      
     this.number = this.route.snapshot.paramMap.get('id');
@@ -276,19 +281,24 @@ updateSingleOrderStage(ev){
     this.orderService.getOrderItemsByNumber(orderNum).subscribe( orderItems => {
       orderItems.map( item => {
         if (item.fillingStatus != null) {
-          if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
-          else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
-          else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
-          else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
-            if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
-              let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
-              item.fillingStatus += ", " + lackAmount + " lack";
-              item.infoColor = 'red';
+          if(item.status!='done'){
+            if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
+            else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
+            else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+            else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+              if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
+                let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
+                item.fillingStatus += ", " + lackAmount + " lack";
+                item.infoColor = 'red';
+              }
+              else item.color = '#CE90FF';
             }
-            else item.color = '#CE90FF';
+            else if (item.fillingStatus == 'packed') item.color = '#FFC058';
+            else item.color = 'none';
+  
+          }else{
+            item.color = 'aquamarine';
           }
-          else if (item.fillingStatus == 'packed') item.color = '#FFC058';
-          else item.color = 'white';
         }
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
@@ -309,6 +319,39 @@ updateSingleOrderStage(ev){
       this.getComponents(this.ordersItems[0].orderNumber);
 
     });
+  }
+
+  colorOrderItemsLines(orderItems){
+
+    return new Promise(async function (resolve, reject) {
+      await orderItems.map( item => {
+        if (item.fillingStatus != null) {
+          if(item.status!='done'){
+            if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
+            else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
+            else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+            else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+              if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
+                let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
+                item.fillingStatus += ", " + lackAmount + " lack";
+                item.infoColor = 'red';
+              }
+              else item.color = '#CE90FF';
+            }
+            else if (item.fillingStatus == 'packed') item.color = '#FFC058';
+            else item.color = 'none';
+  
+          }else{
+            item.color = 'aquamarine';
+          }
+        }
+        item.isExpand = '+';
+        item.colorBtn = '#33FFE0';
+      });
+  
+      resolve(orderItems);
+    });
+    
   }
 
   // OrderCompileData(orderNumber){
@@ -539,7 +582,23 @@ updateSingleOrderStage(ev){
       });
     }
   }
+  setOrderItemDone(item){
+    if (confirm("Item "+item.itemNumber+"\n From order "+item.orderNumber+"\n Is ready?")) {
+      this.orderService.editItemOrderStatus(item).subscribe(res => {
+        if(res._id){
+          this.ordersItems.filter(i=>{
+            if(i._id == res._id){
+               
+              i.status="done";
+              i.color = "aquamarine";
+            }
+          });
+        }
+        console.log(res);
+      });
+    }
 
+  }
   setPrintSced(){
     // this.printSchedule.date.setHours(2,0,0,0);
     let dateToUpdate=new Date(this.printSchedule.date)
@@ -939,26 +998,11 @@ updateSingleOrderStage(ev){
             this.itemTreeRemarks.push(item);
           }
 
-          // if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
-          //   let newCmpt= true;
-          //   await this.cartonList.forEach(b=>{
-          //     if(b.cartonNumber==item.cartonNumber) {
-          //       newCmpt=false;
-          //       b.qnt+=item.quantity/parseInt(item.PcsCarton);
-          //     }
-          //   });
-          //   if(newCmpt){
-          //     this.cartonList.push({cartonNumber:item.cartonNumber , qnt:(item.quantity/parseInt(item.PcsCarton))});
-          //     newCmpt=false;
-          //   }
-          // }
-          console.log(this.bottleList);
         });
-         debugger
+          
         this.orderItemsComponents= res;
         this.cmptModal=true;
-        console.log(res);
-      })
+      });
     }
 
 
