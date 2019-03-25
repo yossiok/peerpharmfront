@@ -110,9 +110,15 @@ export class NeworderComponent implements OnInit {
     console.log(newOrderItemObj);
     this.orderItemForm.reset();
     this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
-      this.items.push(res);
-      this.itemName = "";
-      this.volume = 0;
+      if(res!='error'){
+        this.items.push(res);
+        this.itemName = "";
+        this.volume = 0;
+        this.toastSrv.success('item '+res.itemNumber+' added');
+      } else{
+        this.toastSrv.error('Adding item faild');
+      }
+
     });
     //  orderId:this.orderId
   }
@@ -158,22 +164,24 @@ export class NeworderComponent implements OnInit {
     this.getCostumers();
   }
 
-  addNewSavedOrder(post) {
-    let newOrderObj = {
-      costumer: post.costumer,
-      orderDate: post.orderdate,
-      deliveryDate: post.delivery,
-      orderRemarks: post.remarks,
-      status: "open"
-    };
-    this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
-      this.orderId = res._id;
-      this.orderNumber = res.orderNumber;
-      this.submited = true;
-      console.log(res);
-    });
-    console.log(newOrderObj);
-  }
+  // addNewSavedOrder(post) {
+  //   let newOrderObj = {
+  //     costumer: post.costumer,
+  //     orderDate: post.orderdate,
+  //     deliveryDate: post.delivery,
+  //     orderRemarks: post.remarks,
+  //     status: "open",
+  //     stage: 'new',
+  //     onHoldDate: null,
+  //   };
+  //   this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
+  //     this.orderId = res._id;
+  //     this.orderNumber = res.orderNumber;
+  //     this.submited = true;
+  //     console.log(res);
+  //   });
+  //   console.log(newOrderObj);
+  // }
 
   addNewSavedOrderItem(post) {
     console.log(post);
@@ -198,10 +206,9 @@ export class NeworderComponent implements OnInit {
     };
     console.log(newOrderItemObj);
     this.orderItemForm.reset();
-    1;
-    this.orderSer
-      .addNewOrderItem(newOrderItemObj)
-      .subscribe(res => this.items.push(res));
+    this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => 
+      this.items.push(res)
+      );
   }
 
   getCostumers() {

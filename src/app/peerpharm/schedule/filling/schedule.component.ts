@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { ScheduleService } from "../../../services/schedule.service";
 import { ItemsService } from "../../../services/items.service";
 import { OrdersService } from "../../../services/orders.service";
@@ -40,6 +40,10 @@ export class ScheduleComponent implements OnInit {
   @ViewChild('shiftA') shift: ElementRef;
   @ViewChild('mkpA') mkp: ElementRef;
   @ViewChild('id') id: ElementRef;
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('', this.currentType);
+  }
 
   scheduleLine = {
     scheduleId: '',

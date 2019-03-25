@@ -16,6 +16,11 @@ export class FormdetailsComponent implements OnInit {
   averageNetoWeight = 0;
   loggedInUser: UserInfo;
   netoWeightArr: number[] = new Array();
+  tabView: String= "fillingForm";
+  fillingTabBtn:String ="#fff";
+  pPackingTabBtn:String ="transperent";
+  compileTabBtn:String ="transperent";
+  allChecks: Array<any>=[];
 
   constructor(
     private formsService: FormsService,
@@ -30,15 +35,15 @@ export class FormdetailsComponent implements OnInit {
 
   ngOnInit() {
     this.getFormData();
-    this.UserDisableAuth();
+    // this.UserDisableAuth();
+    // this.wrapAllChecks();
   }
 
-  getFormData() {
+  async getFormData() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.formsService.getFormData(id).subscribe(res => {
+      await this.formsService.getFormData(id).subscribe(res => {
         this.form = res[0];
-
         this.form.checkNetoWeight.forEach(element => {
           if (element) {
             const netNumber = parseInt(element, 10);
@@ -46,6 +51,7 @@ export class FormdetailsComponent implements OnInit {
           }
         });
         this.CalcAvgWeight();
+        this.wrapAllChecks();
       });
     }
   }
@@ -59,8 +65,58 @@ export class FormdetailsComponent implements OnInit {
     this.averageNetoWeight = sum / arrlength;
   }
 
-  UserDisableAuth() {
-    this.disabledValue = this.authService.loggedInUser.formsdisable;
-    console.log(this.authService.loggedInUser.formsdisable);
+  // UserDisableAuth() {
+  //   this.disabledcheckNetoWeightValue = this.authService.loggedInUser.formsdisable;
+  //   console.log(this.authService.loggedInUser.formsdisable);
+  // }
+
+  wrapAllChecks(){
+    for (let index = 0; index < this.form.checkTime.length; index++) {
+      debugger
+      this.allChecks.push({
+        checkTime: this.form.checkTime[index],
+        checkBox_clean: this.form.checkBox_clean[index],
+        checkNetoWeight: this.form.checkNetoWeight[index],
+        checkBox_closedWaterProof: this.form.checkBox_closedWaterProof[index],
+        checkBox_stickerPrinting: this.form.checkBox_stickerPrinting[index],
+        checkBox_lotNumberPrinting: this.form.checkBox_lotNumberPrinting[index],
+        checkBox_correctFinalPacking: this.form.checkBox_correctFinalPacking[index],
+      });
+    }    
   }
+
+  tabChange(view){
+
+    switch (view) {
+      case 'fillingForm': {
+        this.tabView = 'fillingForm';
+        this.fillingTabBtn="#fff"
+        this.pPackingTabBtn="#eef5f9";
+        this.compileTabBtn="#eef5f9";
+        break;
+      }
+      case 'personalPackingForm': {
+        this.tabView = 'packingForm';
+        this.fillingTabBtn="#eef5f9"
+        this.pPackingTabBtn="#fff";
+        this.compileTabBtn="#eef5f9";
+
+        break;
+      }
+      case 'compileForm': {
+        this.tabView = 'compileForm';
+        this.fillingTabBtn="#eef5f9"
+        this.pPackingTabBtn="#eef5f9";
+        this.compileTabBtn="#fff";
+
+        break;
+      }
+    }
+  }
+
+
+
+  
+
+
 }

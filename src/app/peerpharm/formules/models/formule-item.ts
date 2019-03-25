@@ -1,7 +1,10 @@
 
 export class FormuleItem {
-  number: number;
+  number: number;//מספר פריט חו"ג במלאי -פנימי שלנו 
+  name: string;
   quantity: number;
+  quantityUnits:String;
   percentage: number;
-  phaseInstructions: string;
+  itemPH: number;
+  instructions: string;
 }

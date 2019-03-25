@@ -3,7 +3,9 @@
   <div class="col-sm-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Add Formule Item</h4>
+        <h4 class="card-title">Add Phase Item
+            <span class="close" id="deleteItem" (click)="deletePhaseItem()">&times;</span>
+        </h4>
         <h5 class="card-subtitle">Enter formule values here</h5>
 
         <form class="form" [formGroup]="itemsForm">
@@ -19,9 +21,54 @@
               />
             </div>
           </div>
+          <div class="form-group m-t-40 row">
+            <label for="example-text-input" class="col-2 col-form-label"
+              >Item Name</label
+            >
+            <div class="col-10">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="name"
+              />
+            </div>
+          </div>
+          <!-- <div class="form-group m-t-40 row">
+            <label for="example-text-input" class="col-2 col-form-label"
+              >Supplier Number</label
+            >
+            <div class="col-2">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="suplierNumber"
+              />
+            </div>
+            <label for="example-text-input" class="col-2 col-form-label"
+              >Supplier Name</label
+            >
+            <div class="col-2">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="suplierName"
+              />
+            </div>
+            <label for="example-text-input" class="col-2 col-form-label"
+              >Supplier Item Number</label
+            >
+            <div class="col-2">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="suplierItemNumber"
+              />
+            </div>
+          </div> -->
+
           <div class="form-group row">
             <label for="example-number-input" class="col-2 col-form-label"
-              >Item Amount</label
+              >Item Quantity</label
             >
             <div class="col-10">
               <input
@@ -30,6 +77,13 @@
                 value=""
                 formControlName="quantity"
               />
+              <select 
+              class="form-control"
+              type="text"
+              formControlName="quantityUnits">
+                <option value="ml">ml</option>
+                <option value="gr">gr</option>
+              </select>
             </div>
           </div>
 
@@ -42,28 +96,28 @@
                 class="form-control"
                 type="number"
                 value=""
-                formControlName="Percentage"
+                formControlName="percentage"
               />
             </div>
           </div>
 
           <div class="form-group row">
             <label for="example-text-input" class="col-2 col-form-label"
-              >Phase Instructions</label
+              >Instructions</label
             >
             <div class="col-10">
               <input
                 class="form-control"
                 type="text"
                 value=""
-                formControlName="instractions"
+                formControlName="instructions"
               />
             </div>
           </div>
 
           <div class="form-group row">
             <label for="example-number-input" class="col-2 col-form-label"
-              >Phase Tempature</label
+              >Tempature</label
             >
             <div class="col-10">
               <input
@@ -83,7 +137,7 @@
               <input
                 type="range"
                 class="form-control"
-                formControlName="ph"
+                formControlName="itemPH"
                 value="5.5"
                 min="1"
                 max="14"
@@ -94,32 +148,7 @@
             <label class="col-2 col-form-label">{{ phValue }}</label>
           </div>
 
-          <div class="form-group row">
-            <label for="example-date-input" class="col-2 col-form-label"
-              >Last updated</label
-            >
-            <div class="col-10">
-              <input
-                class="form-control"
-                type="date"
-                value="2011-08-19"
-                formControlName="lastUpdate"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="example-search-input" class="col-2 col-form-label"
-              >Client</label
-            >
-            <div class="col-10">
-              <input
-                class="form-control"
-                type="search"
-                value=""
-                formControlName="client"
-              />
-            </div>
-          </div>
+
           <button class="btn btn-success m-r-10" type="button" (click)="onSubmit()">Add Another Item</button>
         </form>
       </div>

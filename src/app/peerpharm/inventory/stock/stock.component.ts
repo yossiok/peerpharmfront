@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { toDate } from '@angular/common/src/i18n/format_date';
 import { fstat } from 'fs';
 import { BatchesService } from 'src/app/services/batches.service';
+import { ItemsService } from 'src/app/services/items.service';
 import { ExcelService } from 'src/app/services/excel.service';
 
 
@@ -67,6 +68,7 @@ export class StockComponent implements OnInit {
   procurementInputEvent:any;
   stockType:String="component";
   newItem:String='';
+  newItemBtn:String='new';
   //var's to edit itemshelf in allowed wh for user
   user: UserInfo;
   whareHouses:Array<any>;
@@ -83,6 +85,7 @@ export class StockComponent implements OnInit {
   cmptCategoryList:Array<any>;
   emptyFilterArr:Boolean=true;
   currItemShelfs:Array<any>;
+  updateStockItem:Boolean=false;
   stockAdmin:Boolean=false;
   destShelfId:String;
   destShelf:String;
@@ -92,6 +95,8 @@ export class StockComponent implements OnInit {
   ItemBatchArr:Array<any>;
   filterVal:String='';
   currModalImgSrc:String='';
+  productToFind: String='';
+  productResponse: any={};
 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
@@ -100,11 +105,14 @@ export class StockComponent implements OnInit {
   @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
 
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
-  // @ViewChild('procurmentInput') procurmentInput: ElementRef;
+  @ViewChild('newProcurmentQnt') newProcurmentQnt: ElementRef;
+  @ViewChild('newProcurmentOrderNum') newProcurmentOrderNum: ElementRef;
+  @ViewChild('newProcurmentExceptedDate') newProcurmentExceptedDate: ElementRef;
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService) { }
+  constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, 
+    private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService , private itemService: ItemsService) { }
 
   async ngOnInit() {
     this.filterbyNum.nativeElement.value='';
@@ -114,24 +122,34 @@ export class StockComponent implements OnInit {
     this.components=[];
     await this.getUserAllowedWH();
     this.getAllComponents();
+    // this.exportMovementsAsXLSX();
+
+
   }
 //************************************************* */
+//   exportMovementsAsXLSX() {
+//     this.inventoryService.getAllMovements().subscribe(data=>{
+//          
+//       this.excelService.exportAsExcelFile(data, "movements");
+//         });
+    
+//  }
   exportAsXLSX(data, title) {
     this.excelService.exportAsExcelFile(data, title);
  }
-  getDoubleItemShelfs(){
-    this.inventoryService.getDoubleItemShelfs().subscribe(res=>{
-      this.exportAsXLSX(res, "DoubleItemShelfs");
-    })}
-  getDoubleStockItems(){
-    this.inventoryService.getDoubleStockItems().subscribe(res=>{
-      this.exportAsXLSX(res, "DoubleStockItems");
+  // getDoubleItemShelfs(){
+  //   this.inventoryService.getDoubleItemShelfs().subscribe(res=>{
+  //     this.exportAsXLSX(res, "DoubleItemShelfs");
+  //   })}
+  // getDoubleStockItems(){
+  //   this.inventoryService.getDoubleStockItems().subscribe(res=>{
+  //     this.exportAsXLSX(res, "DoubleStockItems");
 
-    })}
-    deleteDoubleStockItemsProducts(){
-      this.inventoryService.deleteDoubleStockItemsProducts().subscribe(res=>{
-        console.log(res);
-    })}
+  //   })}
+  //   deleteDoubleStockItemsProducts(){
+  //     this.inventoryService.deleteDoubleStockItemsProducts().subscribe(res=>{
+  //       console.log(res);
+  //   })}
 
 //************************************************/
 
@@ -145,6 +163,9 @@ getUserAllowedWH(){
         }
       }
       if (this.authService.loggedInUser.authorization){
+        if (this.authService.loggedInUser.authorization.includes("updateStockItem")){
+          this.updateStockItem=true;
+        }
         if (this.authService.loggedInUser.authorization.includes("stockAdmin")){
           this.stockAdmin=true;
         }
@@ -153,7 +174,10 @@ getUserAllowedWH(){
       this.whareHouses = displayAllowedWH;
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
-
+      if(this.curentWhareHouseName.includes('product')) {
+        // this.setType("product");
+        this.stockType="product";
+      }
     console.log(res);
     }
   });
@@ -217,10 +241,10 @@ async updateItemStock(direction){
     };
   });
     await this.inventoryService.checkIfShelfExist(this.newItemShelfPosition,this.newItemShelfWH).subscribe( async shelfRes=>{
-      debugger
+         
       if(shelfRes.ShelfId){
         shelfExsit=true;
-        debugger
+           
         if((direction!="in" && itemShelfCurrAmounts.length>0) || direction=="in"){
           let enoughAmount =(itemShelfCurrAmounts[0]>=this.newItemShelfQnt);
           if((direction!="in" && enoughAmount) || direction=="in"){
@@ -259,16 +283,21 @@ async updateItemStock(direction){
                   ObjToUpdate[0].arrivalDate = new Date()
                 };
                if(direction!="in") {
-                 debugger
+                    
                 // ObjToUpdate[0].amount=ObjToUpdate[0].amount*(-1);
               };
               //  if(itemLine.reqNum) ObjToUpdate.inventoryReqNum=itemLine.reqNum;
               //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
                if(this.stockType=="product") {
                  ObjToUpdate[0].batchNumber=this.newItemShelfBatchNumber;
-                let itemBatch = this.ItemBatchArr.filter( b=> b.batchNumber == this.newItemShelfBatchNumber);
-                let expDate=new Date(itemBatch[0].expration);
-                ObjToUpdate[0].expirationDate = expDate;
+                 if(this.newItemShelfBatchNumber!=""){
+                  let itemBatch = this.ItemBatchArr.filter( b=> b.batchNumber == this.newItemShelfBatchNumber);
+                  let expDate=new Date(itemBatch[0].expration);
+                  ObjToUpdate[0].expirationDate = expDate;
+                 }else{
+                  ObjToUpdate[0].expirationDate=null;
+                 }
+
                 //  ObjToUpdate.expirationDate=itemRes.expirationDate ;ObjToUpdate.productionDate=itemRes.productionDate
                 };
                if(direction=="shelfChange"){
@@ -278,7 +307,7 @@ async updateItemStock(direction){
 
 
                 //  READY!
-                debugger
+                   
                 await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
                   if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
@@ -333,9 +362,8 @@ async updateItemStock(direction){
     }
   }
 
-  setType(type, elem) {
-    console.log("hi " + type);
-    console.log("hi " + elem.style);
+  setType(type) {
+
     switch (type) {
       case 'component':
         this.buttonColor = "white";
@@ -367,18 +395,21 @@ async updateItemStock(direction){
     this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType );
     this.filterVal='';
     this.filterVal=event.target.value;
-    if(this.filterByType.nativeElement.value!=""){
-      let CmptType=this.filterByType.nativeElement.value;
-      this.components=this.components.filter(x=> ( x.componentType.includes(CmptType) &&  x.itemType.includes(this.stockType) ) );
-    }
-    if(this.filterByCategory.nativeElement.value!=""){
-      let category=this.filterByCategory.nativeElement.value;
-      this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
-    }
-    if(this.filterBySupplierN.nativeElement.value!=""){
-      let supplierN=this.filterBySupplierN.nativeElement.value;
-      debugger
-      this.components=this.components.filter(x=> ( x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType) ) );
+    if(this.stockType!='product'){
+      if(this.filterByType.nativeElement.value!=""){
+        let CmptType=this.filterByType.nativeElement.value;
+        this.components=this.components.filter(x=> ( x.componentType.includes(CmptType) &&  x.itemType.includes(this.stockType) ) );
+      }
+      if(this.filterByCategory.nativeElement.value!=""){
+        let category=this.filterByCategory.nativeElement.value;
+        this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
+      }
+      if(this.filterBySupplierN.nativeElement.value!=""){
+        let supplierN=this.filterBySupplierN.nativeElement.value;
+           
+        this.components=this.components.filter(x=> ( x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType) ) );
+      }
+
     }
     if(this.filterbyNum.nativeElement.value!=""){
       let itemNum=this.filterbyNum.nativeElement.value;
@@ -404,7 +435,7 @@ async updateItemStock(direction){
           if(!tempArr.includes(stk) && check) tempArr.push(stk);
         });
            this.components= tempArr;
-           debugger
+              
       }
     }
 
@@ -412,7 +443,7 @@ async updateItemStock(direction){
       this.emptyFilterArr=false;
       this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType );
     }
-    debugger
+       
   }
 
 
@@ -452,7 +483,7 @@ async updateItemStock(direction){
   //         if(!tempArr.includes(stk) && check) tempArr.push(stk);
   //       });
   //          this.components= tempArr;
-  //          debugger
+  //             
   //     }
   //   }
   // }
@@ -510,12 +541,13 @@ async updateItemStock(direction){
             if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0;
 
           });
-          this.components=this.componentsUnFiltered.filter(x=> x.itemType=="component");
+          this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType);
+          this.setType(this.stockType);
           this.getAllCmptTypesAndCategories();
 
         });
 
-      }, 1000);
+      }, 100);
 
     });
     // console.log(this.components);
@@ -537,6 +569,7 @@ async updateItemStock(direction){
         }
       }
     });
+    console.log(this.cmptCategoryList)
   }
 
 
@@ -574,11 +607,11 @@ async updateItemStock(direction){
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
   }
-  openImg(componentImg) {
+  async openImg(componentImg) {
     this.openImgModal = true;
     this.currModalImgSrc=componentImg;
   }
-  openAmountsData(cmptNumber, cmptId) {
+  async openAmountsData(cmptNumber, cmptId) {
     this.openModalHeader="כמויות פריט במלאי  "+ cmptNumber;
     this.openAmountsModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
@@ -586,14 +619,58 @@ async updateItemStock(direction){
     this.itemIdForAllocation=cmptId;
     //get product (and TBD materials) batchs for select
     //??? this.resCmpt has mkp category
-    debugger
     if(this.stockType!="components"){
-      this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
+      await this.batchService.getBatchesByItemNumber(cmptNumber+"").subscribe(data=>{
         this.ItemBatchArr=data;
-        debugger
+           
       });
     }
   }
+
+  searchProduct(){
+    if(this.productToFind!=""){
+      // check the stock item is really new
+      this.inventoryService.getCmptByNumber(this.productToFind , 'product').subscribe(res=>{
+        if(res.length==0){
+          // get item data from item tree
+          this.itemService.getItemData(this.productToFind).subscribe(data=>{
+            debugger
+            
+              this.resCmpt={
+                actualMlCapacity:0,
+                componentCategory:"",
+                componentN:data[0].itemNumber,
+                componentName:data[0].name+" "+data[0].subName+" "+data[0].discriptionK,
+                componentNs:"",
+                componentType:data[0].itemType,
+                img:data[0].imgMain1,
+                importFrom:"",
+                itemType:"product",
+                lastModified:"",
+                minimumStock:"",
+                needPrint:"",
+                packageType:"",
+                packageWeight:"",
+                remarks:"",
+                suplierN:"",
+                suplierName:"",
+              };
+              
+
+          });
+        } else{
+          this.toastSrv.error("Stock Item alredy exist");
+        }
+      });
+
+    } else{
+      this.toastSrv.error("Please enter product number");
+      this.resetResCmptData();
+    }
+
+
+  }
+
   closeAmountsData(){
     this.openAmountsModal = false;
     this.itemAmountsData=[];
@@ -603,6 +680,7 @@ async updateItemStock(direction){
   }
 
   newCmpt(newItem){
+    debugger
     this.newItem=newItem;
     this.resCmpt = {
       componentN:'',
@@ -624,31 +702,46 @@ async updateItemStock(direction){
       actualMlCapacity:0,
     }
 
-
     this.openModalHeader="יצירת פריט חדש";
     this.openModal = true;
   }
 
   writeNewComponent(){
-    this.resCmpt.itemType=this.stockType;
-    console.log(this.resCmpt);
-     this.inventoryService.addNewCmpt(this.resCmpt).subscribe(res=>{
-       console.log("res from front: "+res)
-       if(res=="itemExist"){
-        alert("לא ניתן ליצור פריט חדש- מספר "+this.resCmpt.componentN+" פריט כבר קיים במלאי");
-      }
-      this.newItem='';
+    if(this.resCmpt.componentN!=""){
+      this.resCmpt.itemType=this.stockType;
+      console.log(this.resCmpt);
+       this.inventoryService.addNewCmpt(this.resCmpt).subscribe(res=>{
+         console.log("res from front: "+res)
+         if(res=="itemExist"){
+          alert("לא ניתן ליצור פריט חדש- מספר "+this.resCmpt.componentN+" פריט כבר קיים במלאי");
+        } else if(res.componentN){
+          this.toastSrv.success("New stock item created");
+          this.componentsUnFiltered.push(res);
+          this.components.push(res);
 
-   })
+          // this.getAllComponents();
+          this.resetResCmptData();
+          this.filterbyNum.nativeElement.value='';
 
+          debugger
+        }
+        this.newItem='';
+  
+     });
+  
+    } else{
+      this.toastSrv.error("Can't create new stock item without number")
+    }
   }
+
+
 
   editStockItemDetails(){
     this.resCmpt;
     if(confirm("לעדכן פריט?")){
-      debugger
+         
       this.inventoryService.updateCompt(this.resCmpt).subscribe(res=>{
-        debugger
+           
         if(res.nModified!=0){
           this.toastSrv.success("פריט עודכן בהצלחה");
         } else{
@@ -659,6 +752,28 @@ async updateItemStock(direction){
 
   }
 
+  resetResCmptData(){
+    this.resCmpt = {
+      componentN:'',
+      componentName:'',
+      componentNs:'',
+      suplierN: '',
+      suplierName: '',
+      componentType:'',
+      componentCategory:'',
+      img: '',
+      importFrom: '',
+      lastModified:'',
+      minimumStock:'',
+      needPrint:'',
+      packageType: '',
+      packageWeight: '',
+      remarks: '',
+      componentItems:[],
+      input_actualMlCapacity:0,
+    }
+  
+  }
 
 
   uploadImg(fileInputEvent){
@@ -676,18 +791,20 @@ async updateItemStock(direction){
     })
 }
 async getCmptAmounts(cmptN, cmptId){
-  debugger
+     
   // this.currItemShelfs=[];
   this.newItemShelfPosition='';
   this.newItemShelfQnt=0;
   this.destShelf='';
-  await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(res=>{
+  await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(async res=>{
 
-    debugger
+       
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
+    this.currItemShelfs=[];
+    this.newItemShelfWH="";
 
-    this.openAmountsData(cmptN, cmptId);
+    await this.openAmountsData(cmptN, cmptId);
 
   });
 
@@ -702,6 +819,8 @@ inputProcurment(event: any) { // without type info
   this.procurmentQnt = event.target.value;
   ;
 }
+
+
 updateProcurment(componentId,componentNum,status){
 
   if(status=="false"){
@@ -794,7 +913,48 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
   });
 }
 
+deleteStockItemValidation(stockItemNumber){
+  let ItemToDelete=this.components.filter(i=> i.componentN == stockItemNumber && i.itemType == this.stockType).slice()[0];
+  if(confirm("האם אתה רוצה למחוק את פריט ?\n מספר פריט: "+ItemToDelete.componentN+"\n שם פריט: "+ItemToDelete.componentName)){
+    if(this.stockType== 'component'){
+      this.inventoryService.getItemsByCmpt(ItemToDelete.componentN , ItemToDelete.componentType).subscribe(resp=>{
+        if(resp.length>0){
+          alert("יש מוצרים מקושרים לפריט - לא ניתן למחוק");
+        }else{
+          this.deleteStockItem(ItemToDelete);
+        }  
+      });
+    }else if(this.stockType== 'product'){
+      this.deleteStockItem(ItemToDelete);
 
+    }else if(this.stockType== 'material'){
+  
+    }
+  }
+}
+deleteStockItem(ItemToDelete){
+  this.inventoryService.deleteStockItemAndItemShelfs(ItemToDelete.componentN, ItemToDelete.itemType ).subscribe(res=>{
+    if(res.componentN){
+      this.toastSrv.success("item deleted!\n"+res.componentN);
+      this.componentsUnFiltered.filter((c, key)=> {
+        if(c.componentN==res.componentN && c.itemType==res.itemType ){
+          this.componentsUnFiltered.splice(key, 1);//remove from array
+
+          if(this.components.length>1){
+
+            this.components.filter((c, key)=> {
+              if(c.componentN==res.componentN && c.itemType==res.itemType ){
+                this.components.splice(key, 1);//remove from array
+              }
+            });
+          }else{
+            this.setType(this.stockType);
+          }
+          }
+       });
+    }
+  });
+}
 
 deleteItemStockAllocation(cmptId,rowIndex) {
 

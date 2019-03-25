@@ -779,5 +779,7 @@
 
 </table>
   <br>
-  <button class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
-  <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>
+  
+      <button *ngIf="alowUserEditItemTree" class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
+      <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>    
+  

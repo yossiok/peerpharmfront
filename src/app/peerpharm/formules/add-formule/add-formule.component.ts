@@ -1,6 +1,7 @@
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Component, OnInit , Output, EventEmitter } from '@angular/core';
 import { FormulesService } from '../../../services/formules.service';
+import { ToastrService } from "ngx-toastr";
 
 export interface FormuleCategory {
   value: string;
@@ -14,11 +15,11 @@ export interface FormuleCategory {
 export class AddFormuleComponent implements OnInit {
 
  public formulesForm: FormGroup;
-  phValue: string;
+  phValue: string="7";
   @Output() formuleCreated = new EventEmitter();
 
 
-  constructor(private formuleService: FormulesService) { }
+  constructor(private formuleService: FormulesService , private toastSrv: ToastrService) { }
 
   allFormuleCategory: FormuleCategory[] = [
     { value: 'Oil Based Lotion'},
@@ -40,8 +41,19 @@ export class AddFormuleComponent implements OnInit {
 
 
   onSubmit(): void {
-   const newFormuleAdded = this.formulesForm.value;
-   this.formuleCreated.emit(newFormuleAdded);
+    if(this.formulesForm){
+      const newFormuleAdded = this.formulesForm.value;
+      this.formuleCreated.emit(newFormuleAdded);
+    }else{
+      this.toastSrv.error("Please complete Formule fields");
+    }
   }
 
+  changePH(ev){
+    if(ev.target.value>=0){
+      this.phValue=ev.target.value;
+    }else{
+      this.toastSrv.error("Please enter valid PH number");
+    }
+  }
 }

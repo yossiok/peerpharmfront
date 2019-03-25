@@ -1,0 +1,27 @@
+.subHeader{
+    margin: 20px auto 20px auto;
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+}
+.nav-item{
+    cursor: pointer;
+    width: 150px;
+}
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  padding: 10px;
+}
+
+tr{
+    height: 45px;
+}
+table.checks{
+
+}

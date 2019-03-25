@@ -19,16 +19,24 @@
   style="margin-right: 20px;"
 />
 
+
+
+
+
 <table class="table">
   <thead>
     <tr style="background-color:white; ">
-      <th></th>
-      <th>ItemN</th>
+      <th>Form Number
+          <i class="ti-exchange-vertical" (click)="sortFormsByFormNumber()" style="cursor:pointer" ></i>
+      </th>
+      <th>Item Number</th>
       <th>Item Name</th>
       <th>
-        <button style="background-color: transparent;" (click)="SortBy()">
           Filling Date
-        </button>
+          <!-- <i class="ti-exchange-vertical" (click)="sortFormsByFillingDate()" style="cursor:pointer" ></i> -->
+        <!-- <button style="background-color: transparent;" (click)="SortBy()">
+          Filling Date
+        </button> -->
       </th>
       <th>Batch</th>
       <th>Costumer</th>
@@ -36,6 +44,13 @@
     </tr>
   </thead>
   <tbody>
+
+    <div *ngIf="forms.length==0">
+      <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
+          items...</b></span>
+      <br />
+    </div>
+
     <tr *ngFor="let form of forms; let i = index">
       <td>
         <a routerLink="/peerpharm/forms/formDetails/{{ form._id }}">
@@ -43,7 +58,7 @@
         </a>
       </td>
       <td>{{ form.itemN }}</td>
-      <td>{{ form.itemName }}</td>
+      <td>{{ form.productName }}</td>
       <td>{{ form.fillingDate }}</td>
       <td>{{ form.batchN }}</td>
       <td>{{ form.costumerName }}</td>

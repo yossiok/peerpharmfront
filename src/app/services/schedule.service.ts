@@ -28,7 +28,6 @@ export class ScheduleService {
   }
   getSchedule() {
     let url = this.baseUrl + "schedule";
-    debugger
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

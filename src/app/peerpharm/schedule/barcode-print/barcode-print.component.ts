@@ -6,6 +6,7 @@ import { Schedule } from './../models/schedule';
 import { ScheduleService } from './../../../services/schedule.service';
 import { ItemsService } from './../../../services/items.service';
 import { BatchesService } from './../../../services/batches.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-barcode-print',
@@ -27,6 +28,7 @@ export class BarcodePrintComponent implements OnInit {
   grossW: number;
   exp: string;
   showCustomerFlag = true;
+  showOrderNumFlag = true;
   showItemFlag = true;
   showBarcodeFlag = true;
   showBatchFlag = true;
@@ -38,12 +40,14 @@ export class BarcodePrintComponent implements OnInit {
   barcodeWidth = 2.3;
   barcodeHeight = 150;
   barcodeFontSize = 28;
+  barcodeFlat = true;
 
   constructor(
     private scheduleService: ScheduleService,
     private itemsService: ItemsService,
     private batchesService: BatchesService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastSrv: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -84,11 +88,12 @@ export class BarcodePrintComponent implements OnInit {
   // Modal Functions
   openPrintBarkod(content, line) {
     this.schedLine = line;
-
+    this.amountOfStickersArr=[];
     this.GetItemAllData()
-      .then(() => {
+      .then(async () => {
         if (this.schedLine.batch) {
-          this.GetBatchAllData();
+          //waiting foe batch data =batchNumber+Exp Date
+          await this.GetBatchAllData();
         }
       })
       .then(() => this.initPrintScheduleForm())
@@ -116,7 +121,7 @@ export class BarcodePrintComponent implements OnInit {
           console.log(data);
           resolve(data);
         });
-      }, 1000);
+      }, 500);
     });
   }
 
@@ -135,6 +140,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   initPrintScheduleForm() {
+    debugger
     this.pcsCarton =  this.itemData[0].PcsCarton.replace(/\D/g, '') + ' Pcs';
     this.barcodeK = this.itemData[0].barcodeK;
     this.volumeK = this.itemData[0].volumeKey;
@@ -144,6 +150,10 @@ export class BarcodePrintComponent implements OnInit {
     this.printBarcodeForm = new FormGroup({
       costumer: new FormControl(
         { value: this.schedLine.costumer, disabled: true },
+        [Validators.required]
+      ),
+      orderN: new FormControl(
+        { value: this.schedLine.orderN, disabled: true },
         [Validators.required]
       ),
       item: new FormControl({ value: this.schedLine.item, disabled: true }, [
@@ -169,6 +179,9 @@ export class BarcodePrintComponent implements OnInit {
     switch (field) {
       case 'customer':
         this.showCustomerFlag = false;
+        break;
+      case 'orderN':
+        this.showOrderNumFlag = false;
         break;
       case 'item':
         this.showItemFlag = false;
@@ -196,11 +209,16 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printSubmit() {
+    this.amountOfStickersArr=[];
     this.printBarkod = this.printBarcodeForm.value;
-    for (let i = 0; i < this.printBarkod.printQty; i++) {
-      this.amountOfStickersArr.push(this.printBarkod);
+    if(this.printBarkod.printQty>0 && this.printBarkod.printQty!=""){
+      for (let i = 0; i < this.printBarkod.printQty; i++) {
+        this.amountOfStickersArr.push(this.printBarkod);
+      }
+      console.log(this.amountOfStickersArr);  
+    } else{
+      this.toastSrv.error('Please enter amount of stickers');
     }
-    console.log(this.amountOfStickersArr);
   }
 
   get printBarcodeValues(): string[] {

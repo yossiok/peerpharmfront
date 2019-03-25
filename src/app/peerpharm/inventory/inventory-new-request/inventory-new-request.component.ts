@@ -5,6 +5,8 @@ import { InventoryRequestService } from 'src/app/services/inventory-request.serv
 import * as moment from 'moment';
 import { DISABLED } from '@angular/forms/src/model';
 import { ToastrService } from 'ngx-toastr';
+import {inventoryReqItem} from "../models/inventoryReqItem"
+
 
 
 @Component({
@@ -14,6 +16,9 @@ import { ToastrService } from 'ngx-toastr';
 
 })
 export class InventoryNewRequestComponent implements OnInit {
+
+  reqItemToAdd= new inventoryReqItem;
+
   newReqNumber:number;
   inventoryReqForm: FormGroup;
   itemLine: FormGroup;
@@ -32,7 +37,7 @@ export class InventoryNewRequestComponent implements OnInit {
     reqList:[],// itemId,requiredAmount ,suppliedAmount, relatedOrderNum, itemStatus, itemType
     itemsType: "", 
     reqStatus:'',
-    // qntSupplied:0,
+    qntSupplied:0,
   }
 
   constructor(private fb: FormBuilder, private inventoryReqService: InventoryRequestService, private toastSrv: ToastrService) { 
@@ -73,7 +78,7 @@ export class InventoryNewRequestComponent implements OnInit {
     //IN CASE OF MORE THAN ONE USER SENDS REQ AT THE SAME TIME
     this.inventoryReqService.getLastRequsetId().subscribe(res => {
 
-      this.newReqNumber=res.reqNum+1;
+      this.newReqNumber=res.reqNum+1; // for cases more than one user create invReq at the same time - we need an updated reqNum
       this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
 
       if(this.inventoryReqForm.valid && this.reqList.length>0){
@@ -86,7 +91,7 @@ export class InventoryNewRequestComponent implements OnInit {
           reqList:this.inventoryReqForm.value.reqList,
           itemsType: 'components', 
           reqStatus:'open',
-          // qntSupplied: 0,
+          qntSupplied: 0,
         }
         this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
           debugger;
@@ -123,7 +128,7 @@ export class InventoryNewRequestComponent implements OnInit {
             relatedOrder:reqItemLine.relatedOrder,
             qntSupplied:0,
           }
-
+          this.reqItemToAdd= reqListItem; // class inventoryReqItem
           if(reqItemLine.relatedOrder!=""){
             await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
               debugger
@@ -131,7 +136,7 @@ export class InventoryNewRequestComponent implements OnInit {
                 validOrderN=true;
                  //validating item number
                   //add to req list
-                  this.reqList.push(reqListItem);
+                  this.reqList.push( this.reqItemToAdd);
                   this.itemLine.controls.itemNumInput.setValue('');
                   this.itemLine.controls.itemAmount.setValue('');
                   this.itemLine.controls.relatedOrder.setValue('');
@@ -143,7 +148,7 @@ export class InventoryNewRequestComponent implements OnInit {
             });
           }else{
             //add to req list
-            this.reqList.push(reqListItem);
+            this.reqList.push( this.reqItemToAdd);
             this.itemLine.controls.itemNumInput.setValue('');
             this.itemLine.controls.itemAmount.setValue('');
             this.itemLine.controls.relatedOrder.setValue('');

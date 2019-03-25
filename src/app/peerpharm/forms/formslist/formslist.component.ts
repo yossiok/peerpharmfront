@@ -8,8 +8,9 @@ import { ExcelService } from 'src/app/services/excel.service';
   styleUrls: ['./formslist.component.css']
 })
 export class FormslistComponent implements OnInit {
-  forms: any[];
+  forms: any[]=[];
   formsCopy: any[];
+  sortByFillingDate: Boolean = false;
   constructor(private formsService: FormsService,  private excelService:ExcelService) {}
 
   ngOnInit() {
@@ -22,17 +23,23 @@ export class FormslistComponent implements OnInit {
       this.formsCopy = res;
     });
   }
-
-  SortBy() {
+  sortFormsByFormNumber(){
+    this.forms.reverse()
+  }
+  sortFormsByFillingDate() {
+    // NOT WOTKING WELL !! NEED TO DIVIDE YEAR/MONTH/DAY
+    this.sortByFillingDate=(this.sortByFillingDate) ? false:true;
+    let sortDir=this.sortByFillingDate;
     this.forms.sort(function(a, b) {
-      if (Date.parse(b.fillingDate) - Date.parse(a.fillingDate)) {
-        return -1;
-      } else if (Date.parse(a.fillingDate) - Date.parse(b.fillingDate)) {
-        return 1;
-      } else {
-        return 0;
+      let aFillingDate= new Date(a.fillingDate);
+      let bFillingDate= new Date(b.fillingDate);
+      if(sortDir){
+        return aFillingDate.getTime() - bFillingDate.getTime();
+      } else{
+        return bFillingDate.getTime() - aFillingDate.getTime();
       }
     });
+
   }
 
 
