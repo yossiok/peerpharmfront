@@ -234,7 +234,7 @@ updateSingleOrderStage(ev){
     this.stageColor;
      
     this.orderService.editOrderStage(this.ordersItems[0]._id , newStageValue).subscribe(order => {
-       
+       debugger
     this.returnStageColor(this.orderStage);
   
     });
@@ -739,6 +739,7 @@ getOrderItems(singleLine): void {
 
 
   returnStageColor(stage){
+    debugger
     if(stage=="new"){
       this.stageColor="white";
     }else if(stage=="partialCmpt"){

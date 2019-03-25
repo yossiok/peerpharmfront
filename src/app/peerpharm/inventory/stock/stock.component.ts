@@ -311,6 +311,10 @@ async updateItemStock(direction){
                 await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
                   if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
+                     
+                    this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
+                      console.log(x.n+" items with amount=0 deleted");
+                    });
                     this.components.forEach(stkItem=> { if(stkItem.componentN == ObjToUpdate[0].item) {stkItem.amount = stkItem.amount + ObjToUpdate[0].amount} });
                     this.newItemShelfQnt=null;
                     this.destShelf="";
