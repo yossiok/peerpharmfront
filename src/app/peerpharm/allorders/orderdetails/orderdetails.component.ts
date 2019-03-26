@@ -232,10 +232,11 @@ updateSingleOrderStage(ev){
     let newStageValue=ev.target.value;
     this.orderStage;
     this.stageColor;
-     
-    this.orderService.editOrderStage(this.ordersItems[0]._id , newStageValue).subscribe(order => {
+     debugger
+    this.orderService.editOrderStage(this.ordersItems[0] , newStageValue).subscribe(order => {
        debugger
-    this.returnStageColor(this.orderStage);
+       this.orderStage= newStageValue;
+      this.returnStageColor(this.orderStage);
   
     });
   } else{
@@ -289,7 +290,7 @@ getOrderItems(singleLine): void {
               if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
                 let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
                 item.fillingStatus += ", " + lackAmount + " lack";
-                item.infoColor = 'red';
+                item.infoColor = '#ff7272';
               }
               else item.color = '#CE90FF';
             }
@@ -334,7 +335,7 @@ getOrderItems(singleLine): void {
               if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
                 let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
                 item.fillingStatus += ", " + lackAmount + " lack";
-                item.infoColor = 'red';
+                item.infoColor = '#ff7272';
               }
               else item.color = '#CE90FF';
             }
@@ -549,7 +550,6 @@ getOrderItems(singleLine): void {
       console.log(batchObj);
       this.orderService.editItemOrder(batchObj).subscribe(res => {
         console.log(res);
-
         // this.toastSrv.success(updatedBatch , "Changes Saved");
       });
 
@@ -588,9 +588,10 @@ getOrderItems(singleLine): void {
         if(res._id){
           this.ordersItems.filter(i=>{
             if(i._id == res._id){
-               
+               debugger
               i.status="done";
               i.color = "aquamarine";
+              this.toastSrv.success('Item '+i.itemNumber+' set to Done');
             }
           });
         }

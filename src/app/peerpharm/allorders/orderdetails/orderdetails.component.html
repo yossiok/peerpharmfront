@@ -15,17 +15,18 @@
   <span class='spanTitle'> Remarks:</span>
   <span >{{remarks}}</span>
 </div>
-<!-- <div *ngIf="!multi" style="width:98% ; display: flex; justify-content: center;" [style.background-color]="stageColor">
-    <label style=" padding: 15px 40px 0px 0px; " >Stage:</label>
-    <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" >
-        <option value="new">חדש</option>
-        <option value="partialCmpt">רכיבים קיימים- חלקית</option>
-        <option value="allCmpt">כל הרכיבים קיימים</option>
-        <option value="production">נשלח לייצור</option>
-        <option value="prodFinish">עבר ייצור</option>
-        <option value="done">הזמנה סגורה</option>
+<div *ngIf="!multi" style="width:98% ; display: flex; justify-content: center;" [style.background-color]="stageColor">
+    <label style=" padding: 15px 40px 0px 0px; font-size: 22px; " >Stage:</label>
+    <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" 
+    style="font-size: 22px; " [style.background-color]="stageColor" >
+        <option value="new" style="background-color: white ;">חדש</option>
+        <option value="partialCmpt" style="background-color: #ffa64d ;">רכיבים קיימים- חלקית</option>
+        <option value="allCmpt" style="background-color: #ffff80 ;">כל הרכיבים קיימים</option>
+        <option value="production" style="background-color: #b3ecff ;">נשלח לייצור</option>
+        <option value="prodFinish" style="background-color: #d9b3ff ;">עבר ייצור</option>
+        <option value="done" style="background-color: #9ae59a;">הזמנה סגורה</option>
       </select>
-</div> -->
+</div>
 <img src="assets/images/load_data2.gif" *ngIf="loadData==true" ><br>
 <div *ngIf="loadData==false">
   <p>Showing {{ordersItems.length}} items</p>
