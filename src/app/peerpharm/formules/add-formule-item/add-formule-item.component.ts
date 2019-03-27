@@ -31,4 +31,7 @@ export class AddFormuleItemComponent implements OnInit {
     const newItemAdded = this.itemsForm.value;
     this.formuleItem.emit(newItemAdded);
   }
+  deletePhaseItem(){
+    
+  }
 }

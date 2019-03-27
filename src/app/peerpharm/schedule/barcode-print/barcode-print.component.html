@@ -372,11 +372,13 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
       ngxPrint
       [printStyle]="{
         '.printSticker': {
-          'height': '100mm',
-          'text-align' : 'center'
+          'text-align' : 'center',
+          'font-size': '30px' 
         } ,
         '.sticker': {
-          'padding-top' : '10mm'
+          'padding-top' : '10mm',
+          'page-break-inside': 'avoid',
+          'page-break-after': 'always'
         }
       }"
       class="btn btn-success m-r-10"

@@ -111,7 +111,7 @@ i{
   .spanTitle{
       font-size: 18px;
       color: black;
-      margin-left: 30px
+      margin-left: 30px;
   }
 
   .orderHeader{
@@ -145,6 +145,53 @@ background: repeating-linear-gradient(
     #FFFFFF 5px,
     #FFFFFF 20px
   );
+}
+
+.showCmptBtn{
+  width: 70px;
+  border: 4px outset darkseagreen;
+  border-radius: 50px;
+  padding: 5px;
+  background: #fff;
+  cursor: pointer;
+}
+.cmptListDiv{
+  border: black solid 1px;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  background-color: white;
+  font-size: 16px;
+}
+.cmptT tr{
+  font-size: 18px;
+  border-bottom: 1px grey black;
+}
+.cmptT th{
+  background-color: whitesmoke ;
+}
+.cmptListContainer{
+  width: 100%;
+  float: right;
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding-left: 40px;
+}
+.cmptListData{
+  background-color: aliceblue;
+  padding: 0px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.itemTreesTb thead{
+background-color: aliceblue;
+
+}
+.itemTreesTb tbody{
+background-color: white;
+
 }
 
 

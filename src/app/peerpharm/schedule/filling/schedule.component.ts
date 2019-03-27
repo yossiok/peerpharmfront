@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { ScheduleService } from "../../../services/schedule.service";
 import { ItemsService } from "../../../services/items.service";
 import { OrdersService } from "../../../services/orders.service";
@@ -40,6 +40,10 @@ export class ScheduleComponent implements OnInit {
   @ViewChild('shiftA') shift: ElementRef;
   @ViewChild('mkpA') mkp: ElementRef;
   @ViewChild('id') id: ElementRef;
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('', this.currentType);
+  }
 
   scheduleLine = {
     scheduleId: '',
@@ -130,6 +134,7 @@ export class ScheduleComponent implements OnInit {
         if (sced.status == 'filled') sced.color = 'Aquamarine';
         if (sced.status == 'beingFilled') sced.color = 'yellow';
         if (sced.status == 'packed') sced.color = 'orange';
+        if (sced.status == 'partialDone') sced.color = '#ff7272';
         if (sced.status == 'problem') sced.color = 'red';
         if (sced.status == 'open') sced.color = 'white';
         if (sced.cmptsStatus == null) sced.cmptsStatus = 'true';
@@ -155,6 +160,9 @@ export class ScheduleComponent implements OnInit {
         }
         if (sced.status === 'packed') {
           sced.color = 'Aquamarine';
+        }
+        if (sced.status === 'partialDone') {
+          sced.color = '#ff7272';
         }
         if (sced.status === 'problem') {
           sced.color = 'red';

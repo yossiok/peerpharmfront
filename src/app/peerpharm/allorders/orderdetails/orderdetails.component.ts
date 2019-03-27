@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service';
 import { ScheduleService } from '../../../services/schedule.service'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -14,6 +14,8 @@ import * as moment from 'moment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PlateService } from 'src/app/services/plate.service';
 import { CostumersService } from 'src/app/services/costumers.service';
+import {ExcelService} from '../../../services/excel.service';
+
 
 
 @Component({
@@ -55,7 +57,7 @@ export class OrderdetailsComponent implements OnInit {
   ordersItems;
   ordersItemsCopy;
   item: any;
-  number; orderDate; deliveryDate; costumer; costumerInternalId; remarks; orderId;
+  number; orderDate; deliveryDate; costumer; costumerInternalId; remarks; orderId; orderStage; stageColor;
   chosenType: string;
   detailsArr: any[];
   components: any[];
@@ -95,6 +97,7 @@ export class OrderdetailsComponent implements OnInit {
   showingAllOrders:Boolean;
   orderPackingList:Array<any>=[];
   orderItemsComponents:Array<any>=[];
+  orderItemsStock:Array<any>=[];
 
   bottleList: Array<any>=[];
   capList: Array<any>=[];
@@ -103,6 +106,8 @@ export class OrderdetailsComponent implements OnInit {
   stickerList: Array<any>=[];
   boxList: Array<any>=[];
   cartonList: Array<any>=[];
+  platesList: Array<any>=[];
+  itemTreeRemarks: Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -116,12 +121,19 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('shift') shift: ElementRef;
   @ViewChild('marks') marks: ElementRef;
   // @ViewChild('type') type:ElementRef;
-
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+}
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
-     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, private costumerSrevice: CostumersService) { }
+     private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, 
+     private costumerSrevice: CostumersService, private excelService:ExcelService ) { }
 
 
-
+    exportAsXLSX(data) {
+       
+      this.excelService.exportAsExcelFile(data, 'Order '+this.ordersItems[0].orderNumber+' Explode');
+   }
 
   ngOnInit() {
     console.log('hi');
@@ -131,13 +143,14 @@ export class OrderdetailsComponent implements OnInit {
       if(res==true || this.number=="00"){
         this.showingAllOrders=true;
         this.loadData=true;
-        this.orderService.getOpenOrdersItems().subscribe(orderItems=>{
+        this.orderService.getOpenOrdersItems().subscribe(async orderItems=>{
           this.loadData=false;
           this.multi = true;
           orderItems.forEach(item => {
             item.isExpand = '+';
             item.colorBtn = '#33FFE0';
           });
+          await this.colorOrderItemsLines(orderItems).then(data=>{   });
           this.ordersItems = orderItems;
           this.ordersItemsCopy = orderItems;
           this.ordersItems.map(item=>{
@@ -158,11 +171,13 @@ export class OrderdetailsComponent implements OnInit {
             if(numArr.length>1){ //multi orders:  came through load button
               this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async ordersIds => {
                 if(ordersIds.length>1){
-                  this.orderService.getMultiOrdersIds(ordersIds).subscribe(orderItems => {
+                  this.orderService.getMultiOrdersIds(ordersIds).subscribe(async orderItems => {
                     orderItems.forEach(item => {
                       item.isExpand = '+';
                       item.colorBtn = '#33FFE0';
                     });
+
+                    await this.colorOrderItemsLines(orderItems).then(data=>{   });
                     this.ordersItems = orderItems;
                     this.ordersItemsCopy = orderItems;
                     this.multi = true;
@@ -190,14 +205,14 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   addItemOrder() {
-    debugger
+     
     this.itemData.orderId = this.orderId;
     if(!this.multi) this.itemData.orderNumber = this.number;
     let newItemImpRemark= this.itemData.itemImpRemark;
-    debugger
+     
     this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
       if(item.itemNumber==this.itemData.itemNumber ){
-        debugger
+         
         item.itemImpRemark= newItemImpRemark;
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
@@ -212,7 +227,23 @@ export class OrderdetailsComponent implements OnInit {
     });
   }
 
+updateSingleOrderStage(ev){
+  if(confirm("שינוי שלב של הזמנה")){
+    let newStageValue=ev.target.value;
+    this.orderStage;
+    this.stageColor;
+     debugger
+    this.orderService.editOrderStage(this.ordersItems[0] , newStageValue).subscribe(order => {
+       debugger
+       this.orderStage= newStageValue;
+      this.returnStageColor(this.orderStage);
+  
+    });
+  } else{
+    ev.target.value = this.orderStage;
+  }
 
+}
 
   async getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
@@ -228,9 +259,14 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+      if(!this.multi) {
+        this.orderStage=res[0].stage;
+        this.returnStageColor(this.orderStage);
+      }
     });
   }
-  getOrderItems(singleLine): void {
+
+getOrderItems(singleLine): void {
     var orderNum;
      
     this.number = this.route.snapshot.paramMap.get('id');
@@ -246,19 +282,24 @@ export class OrderdetailsComponent implements OnInit {
     this.orderService.getOrderItemsByNumber(orderNum).subscribe( orderItems => {
       orderItems.map( item => {
         if (item.fillingStatus != null) {
-          if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
-          else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
-          else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
-          else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
-            if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
-              let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
-              item.fillingStatus += ", " + lackAmount + " lack";
-              item.infoColor = 'red';
+          if(item.status!='done'){
+            if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
+            else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
+            else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+            else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+              if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
+                let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
+                item.fillingStatus += ", " + lackAmount + " lack";
+                item.infoColor = '#ff7272';
+              }
+              else item.color = '#CE90FF';
             }
-            else item.color = '#CE90FF';
+            else if (item.fillingStatus == 'packed') item.color = '#FFC058';
+            else item.color = 'none';
+  
+          }else{
+            item.color = 'aquamarine';
           }
-          else if (item.fillingStatus == 'packed') item.color = '#FFC058';
-          else item.color = 'white';
         }
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
@@ -267,7 +308,7 @@ export class OrderdetailsComponent implements OnInit {
       if(singleLine){
         this.ordersItems.filter(item=> {
           if(item.itemNumber == orderItems[0].itemNumber){
-            debugger
+             
             item =orderItems[0];
           }
         });
@@ -275,10 +316,43 @@ export class OrderdetailsComponent implements OnInit {
         this.ordersItems = orderItems;
         this.ordersItemsCopy = orderItems;
       }
-      debugger
+       
       this.getComponents(this.ordersItems[0].orderNumber);
 
     });
+  }
+
+  colorOrderItemsLines(orderItems){
+
+    return new Promise(async function (resolve, reject) {
+      await orderItems.map( item => {
+        if (item.fillingStatus != null) {
+          if(item.status!='done'){
+            if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
+            else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
+            else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+            else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+              if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
+                let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
+                item.fillingStatus += ", " + lackAmount + " lack";
+                item.infoColor = '#ff7272';
+              }
+              else item.color = '#CE90FF';
+            }
+            else if (item.fillingStatus == 'packed') item.color = '#FFC058';
+            else item.color = 'none';
+  
+          }else{
+            item.color = 'aquamarine';
+          }
+        }
+        item.isExpand = '+';
+        item.colorBtn = '#33FFE0';
+      });
+  
+      resolve(orderItems);
+    });
+    
   }
 
   // OrderCompileData(orderNumber){
@@ -376,7 +450,7 @@ export class OrderdetailsComponent implements OnInit {
           this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].unitMeasure = itemToUpdate.unitMeasure;
 
-          debugger
+           
         }else{
         }
   
@@ -476,7 +550,6 @@ export class OrderdetailsComponent implements OnInit {
       console.log(batchObj);
       this.orderService.editItemOrder(batchObj).subscribe(res => {
         console.log(res);
-
         // this.toastSrv.success(updatedBatch , "Changes Saved");
       });
 
@@ -509,7 +582,24 @@ export class OrderdetailsComponent implements OnInit {
       });
     }
   }
+  setOrderItemDone(item){
+    if (confirm("Item "+item.itemNumber+"\n From order "+item.orderNumber+"\n Is ready?")) {
+      this.orderService.editItemOrderStatus(item).subscribe(res => {
+        if(res._id){
+          this.ordersItems.filter(i=>{
+            if(i._id == res._id){
+               debugger
+              i.status="done";
+              i.color = "aquamarine";
+              this.toastSrv.success('Item '+i.itemNumber+' set to Done');
+            }
+          });
+        }
+        console.log(res);
+      });
+    }
 
+  }
   setPrintSced(){
     // this.printSchedule.date.setHours(2,0,0,0);
     let dateToUpdate=new Date(this.printSchedule.date)
@@ -649,7 +739,22 @@ export class OrderdetailsComponent implements OnInit {
   // }
 
 
-
+  returnStageColor(stage){
+    debugger
+    if(stage=="new"){
+      this.stageColor="white";
+    }else if(stage=="partialCmpt"){
+      this.stageColor="#ffa64d";
+    }else if(stage=="allCmpt"){
+      this.stageColor="#ffff80";              
+    }else if(stage=="production"){
+      this.stageColor="#b3ecff";                            
+    }else if(stage=="prodFinish"){
+      this.stageColor="#d9b3ff";                                          
+    }else if(stage=="done"){
+      this.stageColor="#9ae59a";                                                        
+    }
+  }
 
 
 
@@ -678,15 +783,20 @@ export class OrderdetailsComponent implements OnInit {
     this.stickerList= [];
     this.boxList= [];
     this.cartonList= [];
+    this.itemTreeRemarks= [];
     if(this.ordersItems.length>0){
       this.internalNumArr=[];
-      this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber) );
+      this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber.trim()) );
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe( async res=>{
         await res.forEach(async item=> {
-
           let i=this.ordersItems.filter(x=> x.itemNumber==item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
           item.itemName = i.discription;
+
+          console.log("i from orderItems ", i)
+          console.log("i.quantity",i.quantity);
+          console.log("item.quantity",item.quantity);
+
 
           if (item.bottleNumber!='' && item.bottleNumber!='---' ) {
             let newCmpt= true;
@@ -756,10 +866,10 @@ export class OrderdetailsComponent implements OnInit {
               }
             }
           }
-
+           
           if (item.stickerNumber!='' && item.stickerNumber!='---' ) {
             let newCmpt= true;
-            if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerNumber) ){
+            if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerNumber)  ){
               this.stickerList.map(i=>{
                 if(i.stickerNumber==item.stickerNumber){
                   newCmpt=false;
@@ -769,6 +879,22 @@ export class OrderdetailsComponent implements OnInit {
             }else{
               if(newCmpt){
                 this.stickerList.push({stickerNumber:item.stickerNumber , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
+          if (item.stickerTypeK!='' && item.stickerTypeK!='---' ) {
+            let newCmpt= true;
+            if( this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerTypeK)  ){
+              this.stickerList.map(i=>{
+                if(i.stickerNumber==item.stickerTypeK){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.stickerList.push({stickerNumber:item.stickerTypeK , qnt:item.quantity});
                 newCmpt=false;
               }
             }
@@ -790,6 +916,22 @@ export class OrderdetailsComponent implements OnInit {
               }
             }
           }
+          if (item.boxTypeK!='' && item.boxTypeK!='---' ) {
+            let newCmpt= true;
+            if( this.boxList.map(function (el) { return el.boxNumber; }).includes(item.boxTypeK) ){
+              this.boxList.map(i=>{
+                if(i.boxNumber==item.boxTypeK){
+                  newCmpt=false;
+                  i.qnt+=parseInt(item.quantity);
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.boxList.push({boxNumber:item.boxTypeK , qnt:item.quantity});
+                newCmpt=false;
+              }
+            }
+          }
 
           if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
             let newCmpt= true;
@@ -807,26 +949,62 @@ export class OrderdetailsComponent implements OnInit {
               }
             }
           }
+          
+          if (item.pallet!='' && item.pallet!='---' ) {
+            let newCmpt= true;
+            if( this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet) ){
+              this.platesList.map(i=>{
+                if(i.palletNumber==item.pallet){
+                  newCmpt=false;
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.platesList.push({palletNumber:item.pallet });
+                newCmpt=false;
+              }
+            }
+          }
+          if (item.pallet2!='' && item.pallet2!='---' ) {
+            let newCmpt= true;
+            if( this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet2) ){
+              this.platesList.map(i=>{
+                if(i.palletNumber==item.pallet2){
+                  newCmpt=false;
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.platesList.push({palletNumber:item.pallet2 });
+                newCmpt=false;
+              }
+            }
+          }
+          if (item.pallet3!='' && item.pallet3!='---' ) {
+            let newCmpt= true;
+            if( this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet3) ){
+              this.platesList.map(i=>{
+                if(i.palletNumber==item.pallet3){
+                  newCmpt=false;
+                }
+              });
+            }else{
+              if(newCmpt){
+                this.platesList.push({palletNumber:item.pallet3 });
+                newCmpt=false;
+              }
+            }
+          }
 
-          // if (item.cartonNumber!='' && item.cartonNumber!='---' ) {
-          //   let newCmpt= true;
-          //   await this.cartonList.forEach(b=>{
-          //     if(b.cartonNumber==item.cartonNumber) {
-          //       newCmpt=false;
-          //       b.qnt+=item.quantity/parseInt(item.PcsCarton);
-          //     }
-          //   });
-          //   if(newCmpt){
-          //     this.cartonList.push({cartonNumber:item.cartonNumber , qnt:(item.quantity/parseInt(item.PcsCarton))});
-          //     newCmpt=false;
-          //   }
-          // }
-          console.log(this.bottleList);
+          if (item.impRemarks!='' || item.proRemarks!='' ) {
+            this.itemTreeRemarks.push(item);
+          }
+
         });
+          
         this.orderItemsComponents= res;
         this.cmptModal=true;
-        console.log(res);
-      })
+      });
     }
 
 

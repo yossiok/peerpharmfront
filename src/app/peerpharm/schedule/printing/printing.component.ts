@@ -1,4 +1,4 @@
-  import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+  import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
   import {ScheduleService} from "../../../services/schedule.service"
   //import {NgbTabChangeEvent} from '../../../tabset'
   import * as moment from 'moment';
@@ -35,6 +35,10 @@ import { ToastrService } from 'ngx-toastr';
     @ViewChild('shift') shift:ElementRef;
     @ViewChild('mkp') mkp:ElementRef; 
     @ViewChild('id') id:ElementRef; 
+    @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+      console.log(event);
+      this.edit('');
+    }
   
     scheduleLine = {
       itemN:'',

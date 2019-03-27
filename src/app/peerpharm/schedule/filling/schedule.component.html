@@ -150,6 +150,7 @@
       <th><b>Remarks</b></th>
       <th class="mkpClass printlessTd"><b>shift</b></th>
       <th><input class="mkpClassInput" value="MKP" /></th>
+      <th></th>
       <th>
         <img
           src="assets/images/24p.png"
@@ -278,6 +279,7 @@
         [(ngModel)]="scheduleLine.mkp"
       />Mkp<br />
     </td>
+    <td class="printlessTd"></td>
     <td class="printlessTd">
       <button class="btn btn-info " (click)="writeScheduleData()">Add</button
       ><br />
@@ -418,9 +420,9 @@
         >
           {{ line.mkp }}
         </td>
-        <td *ngIf="line._id === EditRowId">
+        <!-- <td *ngIf="line._id === EditRowId">
           <input #mkp type="text" [value]="line.mkp" class="form-control" />
-        </td>
+        </td> -->
         <td *ngIf="line._id === EditRowId">
           <input
             type="radio"
@@ -461,7 +463,10 @@
             (click)="deleteLine(line._id)"
           ></i
           >&nbsp;
-          <i class="ti-check text-success m-r-10" (click)="setDone()"></i>
+          <!-- <i class="ti-check text-success m-r-10" (click)="setDone()"></i> -->
+        </td>
+        
+        <td>
           <input
             type="checkbox"
             [(ngModel)]="line.isSelected"
