@@ -158,7 +158,7 @@ export class BoardComponent implements OnInit {
   addNewTask(_tiletext) {
     // Moment(this.data.duedate).format('DD/MM/YYYY')
     this.tasksService.createTask(this.boardTitle, _tiletext, this.data.description,
-      new Date(this.data.duedate), this.data.priority)
+      new Date(this.data.duedate), this.data.priority , this.authService.loggedInUser._id)
       .subscribe(newtask => {
      
         this.showTaskDetails(newtask,this.content);

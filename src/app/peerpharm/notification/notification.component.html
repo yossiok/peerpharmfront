@@ -18,24 +18,25 @@
               </textarea>
             </div>
           </div>
+          
           <div class="form-group m-t-40 row">
             <label for="example-text-input" class="col-2 col-form-label"
-              >Notified Users</label
-            >
+              >Notified Users</label>
+
             <div class="col-10">
-              <input type="checkbox" [checked]="allCheck" (change)="allUserSelect()" />
-              All Users
-              <div
-                formArrayName="sendUsers"
-                *ngFor="
-                  let user of sendControl.value;
-                  let i = index
-                "
-              >
-                  <input type="checkbox" [formControlName]="i" />
-                  <span class="userName">{{ allUsers[i].firstName }}</span>
-                  <span class="userName">{{ allUsers[i].lastName }}</span>
+              <div>
+                  <input type="checkbox" [checked]="allCheck" (change)="allUserSelect()" />
+                  <span>All Users</span>    
               </div>
+              <form  [formArrayName]="sendUsers" >
+                  <div    *ngFor="let user of sendControl.value;  let i = index " >
+                      <input type="checkbox" [formControlName]="i" />
+                      <span class="userName">{{ allUsers[i].firstName }}</span>
+                      <span class="userName">{{ allUsers[i].lastName }}</span>
+                  </div>
+              </form>
+
+
             </div>
           </div>
           <button type="submit" class="btn btn-info waves-effect waves-light">
