@@ -28,6 +28,7 @@ import { InventoryNewRequestComponent } from './inventory/inventory-new-request/
 import { PackingComponent } from './schedule/packing/packing.component';
 import { BarcodePrintComponent } from './schedule/barcode-print/barcode-print.component';
 import { NotificationComponent } from './notification/notification.component';
+import { ProcurementOrderItemBalanceComponent} from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -227,6 +228,14 @@ export const PeerPharmRputs: Routes =[
       title : 'Notification'
     },
     component: NotificationComponent
+  }
+  ,
+  {
+    path :'procurement/procurementOrderItemBalance',
+    data :{
+      title : 'Procurement Order Item Balance'
+    },
+    component: ProcurementOrderItemBalanceComponent
   }
 
 ];

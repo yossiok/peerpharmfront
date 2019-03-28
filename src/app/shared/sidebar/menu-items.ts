@@ -248,14 +248,14 @@ export const ROUTES: RouteInfo[] = [
     class: 'has-arrow',
     extralink: false,
     submenu: [
-      // {
-      //   path: '/peerpharm/schedule/fillschedule',
-      //   title: 'Item List',
-      //   icon: 'fas fa-list-ol',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
+      {
+        path: '/peerpharm/procurement/procurementOrderItemBalance',
+        title: 'Procurement Order Item Balance',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
       //  {
       //   path: '/peerpharm/schedule/fillschedule',
       //   title: 'Item Tree',

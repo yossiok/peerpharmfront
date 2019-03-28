@@ -42,28 +42,28 @@ th {
 td {
   border-bottom: 1px solid #ddd;
   font-family: "Berlin Sans FB";
-  padding:5px;
+  padding: 5px;
   max-width: 120px;
 }
 table tr:hover {
   background-color: lightblue;
 }
 .positionClass {
-  width:3%;
+  width: 3%;
 }
-.mkpClass{
-  width:7%;
+.mkpClass {
+  width: 7%;
 }
-.mkpClassInput{
-  width:100px;
+.mkpClassInput {
+  width: 100px;
 }
-.selectShiftClass{
-  height:34px;
+.selectShiftClass {
+  height: 34px;
 }
 
-#table_body{
+#table_body {
   background-color: white;
-  width:100%;
+  width: 100%;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -73,71 +73,89 @@ table tr:hover {
   td {
     max-width: 80px;
   }
-  .btn{
+  .btn {
     max-width: 75px;
-    padding:1px;
+    padding: 1px;
     font-size: 9pt;
   }
-
 }
 
 @media print {
+  .page {
+    display: none;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    text-align: center;
+  }
+  @page {
+    size: auto;
+    margin: 0mm auto;
+  }
+
   table {
+    text-align: center;
+    page-break-after: always;
+  }
+
+  /* table {
     color: black;
     font-size: 15px;
   }
   -ms-transform: rotate(270deg);
   /* IE 9 */
-  -webkit-transform: rotate(270deg);
+  /* -webkit-transform: rotate(270deg); */
   /* Chrome, Safari, Opera */
-  transform: rotate(270deg);
+  /* transform: rotate(270deg);
   top: 1.5in;
   left: -1in;
   @page {
     size: 25cm 35.7cm;
     margin: 5mm 5mm 5mm 5mm;
-  }
+  }*/
 }
 
 .barcodeForm label {
   width: 150px;
 }
 
-input[type="radio"]  {
-  width:18px;
-  margin-left:20px;
+input[type="radio"] {
+  width: 18px;
+  margin-left: 20px;
 }
 
-.barcodeForm input[type="text"]{
+.barcodeForm input[type="text"] {
   width: 200px;
 }
 
-.barcodeForm input[type="number"]{
+.barcodeForm input[type="number"] {
   width: 200px;
 }
-
 
 .barcodeForm button {
   margin-left: 8px;
 }
 
 .modal-footer {
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-content: center;
 }
 
 .modal-footer .row {
-  width:100%;
-  text-align:center;
-}
-
-.sticker {
-  font-size: 12pt;
-  border:0.5px solid black;
+  width: 100%;
   text-align: center;
 }
 
-.right {
-  float:right;
+.barcodeTbl {
+  font-size: 12pt;
+  border: 0.5px solid black;
+  text-align: center;
+  height: 100mm;
+  padding-top : '10mm'
 }
+
+
+
+

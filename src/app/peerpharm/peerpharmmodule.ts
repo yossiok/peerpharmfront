@@ -43,6 +43,7 @@ import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import { NotificationComponent } from './notification/notification.component';
+import { ProcurementOrderItemBalanceComponent } from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
 
 
 import {MatSelectModule} from '@angular/material/select';
@@ -161,6 +162,7 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
     ItemDetailsTabComponent,
     ItemDocumentsComponent,
     NotificationComponent,
+    ProcurementOrderItemBalanceComponent,
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,

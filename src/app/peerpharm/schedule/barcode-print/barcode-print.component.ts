@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
-import * as moment from 'moment';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Schedule } from './../models/schedule';
-import { ScheduleService } from './../../../services/schedule.service';
-import { ItemsService } from './../../../services/items.service';
-import { BatchesService } from './../../../services/batches.service';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
+import { FormControl, Validators, FormGroup } from "@angular/forms";
+import * as moment from "moment";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Schedule } from "./../models/schedule";
+import { ScheduleService } from "./../../../services/schedule.service";
+import { ItemsService } from "./../../../services/items.service";
+import { BatchesService } from "./../../../services/batches.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-barcode-print',
-  templateUrl: './barcode-print.component.html',
-  styleUrls: ['./barcode-print.component.css']
+  selector: "app-barcode-print",
+  templateUrl: "./barcode-print.component.html",
+  styleUrls: ["./barcode-print.component.css"]
 })
 export class BarcodePrintComponent implements OnInit {
+  @ViewChild("print-section") printSection: ElementRef;
   today: any;
   scheduleData: any;
   public addScheduleForm: FormGroup;
@@ -35,8 +36,8 @@ export class BarcodePrintComponent implements OnInit {
   showExpFlag = true;
   amountOfStickersArr: any[] = [];
   printBarkod: any;
-  barcodeElementType = 'svg';
-  barcodeFormat = 'CODE128';
+  barcodeElementType = "svg";
+  barcodeFormat = "CODE128";
   barcodeWidth = 2.3;
   barcodeHeight = 150;
   barcodeFontSize = 28;
@@ -47,12 +48,12 @@ export class BarcodePrintComponent implements OnInit {
     private itemsService: ItemsService,
     private batchesService: BatchesService,
     private modalService: NgbModal,
-    private toastSrv: ToastrService,
+    private toastSrv: ToastrService
   ) {}
 
   ngOnInit() {
     this.today = new Date();
-    this.today = moment(this.today).format('YYYY-MM-DD');
+    this.today = moment(this.today).format("YYYY-MM-DD");
 
     this.initAddScheduleForm();
     this.getAllSchedule();
@@ -60,22 +61,22 @@ export class BarcodePrintComponent implements OnInit {
 
   initAddScheduleForm() {
     this.addScheduleForm = new FormGroup({
-      positionN: new FormControl('', [Validators.required]),
-      orderN: new FormControl('', [Validators.required]),
-      item: new FormControl('', [Validators.required]),
-      costumer: new FormControl('', [Validators.required]),
-      productName: new FormControl('', [Validators.required]),
-      batch: new FormControl('', [Validators.required]),
-      packageP: new FormControl('', [Validators.required]),
-      qty: new FormControl('', [Validators.required]),
-      date: new FormControl('', [Validators.required]),
-      marks: new FormControl('', [Validators.required]),
-      shift: new FormControl('', [Validators.required]),
-      mkp: new FormControl('', [Validators.required])
+      positionN: new FormControl("", [Validators.required]),
+      orderN: new FormControl("", [Validators.required]),
+      item: new FormControl("", [Validators.required]),
+      costumer: new FormControl("", [Validators.required]),
+      productName: new FormControl("", [Validators.required]),
+      batch: new FormControl("", [Validators.required]),
+      packageP: new FormControl("", [Validators.required]),
+      qty: new FormControl("", [Validators.required]),
+      date: new FormControl("", [Validators.required]),
+      marks: new FormControl("", [Validators.required]),
+      shift: new FormControl("", [Validators.required]),
+      mkp: new FormControl("", [Validators.required])
     });
   }
 
-     getAllSchedule() {
+  getAllSchedule() {
     this.scheduleService.getSchedule().subscribe(res => {
       this.scheduleData = res;
     });
@@ -88,7 +89,7 @@ export class BarcodePrintComponent implements OnInit {
   // Modal Functions
   openPrintBarkod(content, line) {
     this.schedLine = line;
-    this.amountOfStickersArr=[];
+    this.amountOfStickersArr = [];
     this.GetItemAllData()
       .then(async () => {
         if (this.schedLine.batch) {
@@ -99,12 +100,11 @@ export class BarcodePrintComponent implements OnInit {
       .then(() => this.initPrintScheduleForm())
       .then(() => {
         this.modalService
-          .open(content, { ariaLabelledBy: 'modal-basic-title' })
+          .open(content, { ariaLabelledBy: "modal-basic-title" })
           .result.then(
             result => {
               this.closeResult = `Closed with: ${result}`;
               console.log(this.closeResult);
-
             },
             reason => {
               this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -140,8 +140,8 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   initPrintScheduleForm() {
-    debugger
-    this.pcsCarton =  this.itemData[0].PcsCarton.replace(/\D/g, '') + ' Pcs';
+    //  debugger;
+    this.pcsCarton = this.itemData[0].PcsCarton.replace(/\D/g, "") + " Pcs";
     this.barcodeK = this.itemData[0].barcodeK;
     this.volumeK = this.itemData[0].volumeKey;
     this.netoW = this.itemData[0].netWeightK;
@@ -170,29 +170,29 @@ export class BarcodePrintComponent implements OnInit {
       barcode: new FormControl(this.barcodeK, [Validators.required]),
       batch: new FormControl(this.schedLine.batch, [Validators.required]),
       exp: new FormControl(this.exp, [Validators.required]),
-      local: new FormControl('', [Validators.required]),
-      printQty: new FormControl('', [Validators.required])
+      local: new FormControl("", [Validators.required]),
+      printQty: new FormControl("", [Validators.required])
     });
   }
 
   RemoveFields(field) {
     switch (field) {
-      case 'customer':
+      case "customer":
         this.showCustomerFlag = false;
         break;
-      case 'orderN':
+      case "orderN":
         this.showOrderNumFlag = false;
         break;
-      case 'item':
+      case "item":
         this.showItemFlag = false;
         break;
-      case 'barcode':
+      case "barcode":
         this.showBarcodeFlag = false;
         break;
-      case 'batch':
+      case "batch":
         this.showBatchFlag = false;
         break;
-      case 'exp':
+      case "exp":
         this.showExpFlag = false;
         break;
     }
@@ -200,50 +200,78 @@ export class BarcodePrintComponent implements OnInit {
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
+      return "by pressing ESC";
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
+      return "by clicking on a backdrop";
     } else {
       return `with: ${reason}`;
     }
   }
 
   printSubmit() {
-    this.amountOfStickersArr=[];
+    this.amountOfStickersArr = [];
     this.printBarkod = this.printBarcodeForm.value;
-    if(this.printBarkod.printQty>0 && this.printBarkod.printQty!=""){
+    if (this.printBarkod.printQty > 0 && this.printBarkod.printQty != "") {
       for (let i = 0; i < this.printBarkod.printQty; i++) {
         this.amountOfStickersArr.push(this.printBarkod);
       }
-      console.log(this.amountOfStickersArr);  
-    } else{
-      this.toastSrv.error('Please enter amount of stickers');
+      console.log(this.amountOfStickersArr);
+    } else {
+      this.toastSrv.error("Please enter amount of stickers");
     }
   }
 
   get printBarcodeValues(): string[] {
-    return this.printBarkod.barcode.split('\n');
+    return this.printBarkod.barcode.split("\n");
+  }
+
+  printBarcode() {
+    const prtContent = document.getElementById("print-section");
+    const WinPrint = window.open(
+      "",
+      "",
+      "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0"
+    );
+    WinPrint.document.write(
+      // tslint:disable-next-line:max-line-length
+      //    <link rel="stylesheet" type="text/css" href="/assets/barcode.css">
+      `<html><head><title>Print it!</title>
+      <style>
+      .barcodeTbl {
+        font-size: 12pt;
+        text-align: center;
+        height: 100mm;
+        padding-top:10px;
+      }
+      </style>
+      </head><body>`
+    );
+    WinPrint.document.write(prtContent.innerHTML);
+    WinPrint.document.close();
+    WinPrint.focus();
+    WinPrint.print();
+    WinPrint.close();
   }
 
   // barcodeDisplay(index) {
   //   if (this.printBarkod.barcode.length === 13) {
-	// 		JsBarcode('#barcodeView' + index , this.printBarkod.barcode, {
-	// 		  format: 'ean13',
-	// 		  flat: true,
-	// 		  width: 2.3,
-	// 		  height: 150,
-	// 		  fontSize: 28
-	// 		});
-	// 		}
-	// 		else {
-	// 			JsBarcode('#barcodeView' + index , this.printBarkod.barcode, {
-	// 			  format: 'CODE128',
-	// 			  flat: true,
-	// 			  width: 2.3,
-	// 			  height: 150,
-	// 			  fontSize: 28
-	// 			});
-	// 		}
+  // 		JsBarcode('#barcodeView' + index , this.printBarkod.barcode, {
+  // 		  format: 'ean13',
+  // 		  flat: true,
+  // 		  width: 2.3,
+  // 		  height: 150,
+  // 		  fontSize: 28
+  // 		});
+  // 		}
+  // 		else {
+  // 			JsBarcode('#barcodeView' + index , this.printBarkod.barcode, {
+  // 			  format: 'CODE128',
+  // 			  flat: true,
+  // 			  width: 2.3,
+  // 			  height: 150,
+  // 			  fontSize: 28
+  // 			});
+  // 		}
   // }
 
   /////////////
