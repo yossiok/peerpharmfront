@@ -458,8 +458,11 @@ deleteLine(itemFromInvReq,index,ev){
       debugger
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList,this.inventoryUpdateList[0].itemType).subscribe(res => {
         // res = [itemNumber,itemNumber,itemNumber...]
-        if(res=="all updated"){ 
+        if(res=="all updated"){
           this.toastSrv.success("שינויים בוצעו בהצלחה");
+          this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
+            console.log(x.n+" items with amount=0 deleted");
+          });
           if(this.dir!='shelfChange') this.itemLine.reset();
           this.inventoryUpdateList=[];
         }else{

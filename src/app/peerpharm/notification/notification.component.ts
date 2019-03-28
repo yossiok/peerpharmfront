@@ -68,7 +68,7 @@ export class NotificationComponent implements OnInit {
       noteCreated: new FormControl(this.noteCreated, [Validators.required]),
       userId: new FormControl("", [Validators.required]),
       noteContent: new FormControl("", [Validators.required]),
-      sendUsers: new FormArray([], this.MinSelectedCheckboxes(1)),
+      sendUsers: new FormArray([], this.MinSelectedCheckboxes(1)), // checks double checkbox - WHY???
       recievedUsers: new FormControl("", [Validators.required])
     });
 
@@ -149,6 +149,7 @@ export class NotificationComponent implements OnInit {
   }
 
   onSubmit(): void {
+    debugger
     event.preventDefault();
 
     if (!this.allCheck) {

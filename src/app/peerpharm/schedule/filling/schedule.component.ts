@@ -134,6 +134,7 @@ export class ScheduleComponent implements OnInit {
         if (sced.status == 'filled') sced.color = 'Aquamarine';
         if (sced.status == 'beingFilled') sced.color = 'yellow';
         if (sced.status == 'packed') sced.color = 'orange';
+        if (sced.status == 'partialDone') sced.color = '#ff7272';
         if (sced.status == 'problem') sced.color = 'red';
         if (sced.status == 'open') sced.color = 'white';
         if (sced.cmptsStatus == null) sced.cmptsStatus = 'true';
@@ -159,6 +160,9 @@ export class ScheduleComponent implements OnInit {
         }
         if (sced.status === 'packed') {
           sced.color = 'Aquamarine';
+        }
+        if (sced.status === 'partialDone') {
+          sced.color = '#ff7272';
         }
         if (sced.status === 'problem') {
           sced.color = 'red';
