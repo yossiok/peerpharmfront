@@ -230,18 +230,41 @@ export class BarcodePrintComponent implements OnInit {
     const WinPrint = window.open(
       "",
       "",
-      "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0"
+      "left=0,top=0,width=800,height=900,toolbar=0,scrollbars='yes',status=0"
     );
     WinPrint.document.write(
       // tslint:disable-next-line:max-line-length
       //    <link rel="stylesheet" type="text/css" href="/assets/barcode.css">
-      `<html><head><title>Print it!</title>
+      `<html>
+      <head>
+      <title>Print it!</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
+      body {
+        display:flex;
+	      align-items:center;
+	      justify-content:center;
+	      flex-direction:column;
+      }
       .barcodeTbl {
         font-size: 12pt;
         text-align: center;
         height: 100mm;
         padding-top:10px;
+      }
+      @media print {
+        .page{
+          display:none;
+        }
+        body {
+          -webkit-print-color-adjust: exact;
+        }
+        @page {
+        size: auto;  margin: 0mm;
+        }
+        table {
+        page-break-after : always;
+        }
       }
       </style>
       </head><body>`
