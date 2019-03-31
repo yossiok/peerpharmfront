@@ -257,13 +257,18 @@ export class BarcodePrintComponent implements OnInit {
           display:none;
         }
         body {
-          -webkit-print-color-adjust: exact;
+          width: 100% !important;
+          display:flex !important;
+          align-items:center !important;
+          justify-content:center !important;
+          flex-direction:column !important;
+          -webkit-print-color-adjust: exact !important;
         }
         @page {
-        size: auto;  margin: 0mm;
+        size: auto;  margin: 0mm  !important;
         }
         table {
-        page-break-after : always;
+        page-break-after : always  !important;
         }
       }
       </style>
