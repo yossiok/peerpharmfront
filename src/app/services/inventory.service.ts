@@ -159,5 +159,10 @@ deleteStockItemAndItemShelfs(itemNumber, itemType ):Observable<any>{
   return this.http.delete(url).pipe(map(reponse => reponse.json()));
 }
 
+addToWHActionLogs(objToUpdate){
+  let url = this.baseUrl + "itemmovement/whActionLogs";
+  return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
+}
+
 
 }

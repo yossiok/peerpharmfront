@@ -37,7 +37,7 @@
       <!-- <th class="cmptTh">Done</th> -->
     </tr>
       <ng-container *ngFor="let cmpt of demand.reqList;" >
-          <tr *ngIf="demand._id== EditRowId2nd && expand==true;">
+          <tr *ngIf="demand._id== EditRowId2nd && expand==true;" [style.background-color]='cmpt.cmptLineColor'>
             <td> <input type="checkbox" [(ngModel)]="cmpt.isSelected"> </td>
             <td>{{cmpt.itemNumber}}</td>
             <td>{{demand.deliveryDate}}</td>
