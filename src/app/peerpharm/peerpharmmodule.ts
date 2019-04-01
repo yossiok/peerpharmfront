@@ -1,6 +1,6 @@
  import { OrdersService } from '../services/orders.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -173,6 +173,10 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
     AddFormulePhaseComponent,
 
   ],
-  providers: [ OrdersService, HttpClientModule]
+  providers: [ OrdersService, HttpClientModule],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class PeerPharmModule {}
