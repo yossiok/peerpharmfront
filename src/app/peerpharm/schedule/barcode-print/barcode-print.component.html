@@ -313,12 +313,14 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
         Next
       </button>
     </div>
+
     <div class="row" id="print-section">
       <div
         class="row printSticker"
         *ngFor="let sticker of amountOfStickersArr; let i = index"
         [attr.data-index]="i"
       >
+      <center>
           <table class="barcodeTbl" style="width:100%">
             <tr>
               <td>{{ schedLine.productName }}</td>
@@ -352,6 +354,7 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
               <td>{{ schedLine.costumer }}</td>
             </tr>
           </table>
+        </center>
 
           <!-- <div class="row">
             <b>{{ schedLine.productName }}</b>
@@ -399,6 +402,7 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
           </div> -->
       </div>
     </div>
+
     <button
       (click)="printBarcode()"
       class="btn btn-success m-r-10"
