@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-inventory-requests',
@@ -9,17 +10,25 @@ import { InventoryRequestService } from 'src/app/services/inventory-request.serv
 })
 export class InventoryRequestsComponent implements OnInit {
 
-  constructor(private inventoryService:InventoryService, private inventoryReqService: InventoryRequestService) { }
+  constructor(private inventoryService:InventoryService, private inventoryReqService: InventoryRequestService, 
+    private notificationService: NotificationService) { }
   ordersDemands:any=[];
   EditRowId2nd: any = "";
   expand: boolean = false;
   openOrder:string="";
+  newReqIncoming:boolean=false;
   @Output() outPutItemsArray = new EventEmitter();
 
   ngOnInit() {
+    this.notificationService.newInventoryReqEventEmitter.subscribe(data=>{
+      this.newReqIncoming=true;
+    });
     this.getAllGeneralDemands();
   }
 
+  getNewIncomingInventoryReq(){
+    this.getAllGeneralDemands();        
+  }
   getAllGeneralDemands(){
     this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
         console.log(res);
@@ -31,10 +40,11 @@ export class InventoryRequestsComponent implements OnInit {
        //   item.cmptN="0";
             item.isSelected=false;
             //Object.assign({ isSelected: false }, item);
-          })
+          });
         });
         debugger
         this.ordersDemands=res;
+        this.newReqIncoming=false;
     })
   
   }

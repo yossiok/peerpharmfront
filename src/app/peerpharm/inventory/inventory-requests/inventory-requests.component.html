@@ -1,5 +1,11 @@
 <table class='table'>
   <thead class='bg-info text-white'>
+    <tr *ngIf="newReqIncoming"  style="background-color: tomato;">
+      <th colspan="5" style="font-size: 18px; text-align: right;"><b>נשלחו בקשות חדשות למחסן</b></th>
+      <th colspan="1"><img src="../../../../assets/images/expand.png" alt="download new requests" 
+        style="width: 35px; cursor:pointer; "
+        (click)="getNewIncomingInventoryReq()"></th>
+    </tr>
     <tr>
       <th>#</th>
       <th>Requet Number</th>
@@ -18,6 +24,7 @@
       <td>{{demand.deliveryDate}}</td>
       <td>{{demand.fromWH}}</td>
       <td>{{demand.reqStatus}}</td>
+      <td>{{demand.userName}}</td>
     </tr>
     
     <tr *ngIf="demand._id== EditRowId2nd && expand==true;">   
