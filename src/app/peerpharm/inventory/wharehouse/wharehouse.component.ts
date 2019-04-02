@@ -532,20 +532,24 @@ deleteLine(itemFromInvReq,index,ev){
 
                   let enoughAmount =(itemShelfCurrAmounts[0] >= itemLineToAdd.amount);
                   if((this.dir!="in" && enoughAmount) || this.dir=="in"){
+                    let destQntBefore=0;
                     if(this.dir=='shelfChange'){
                       itemLineToAdd.destShelf= itemLineToAdd.destShelf.toUpperCase();
                       this.inventoryService.checkIfShelfExist(itemLineToAdd.destShelf,this.curentWhareHouseId).subscribe(async destShelfRes=>{
                         debugger
                         if(destShelfRes.ShelfId){
                           itemLineToAdd.destShelfId=destShelfRes.ShelfId;
-                          this.addObjToList(itemLineToAdd,itemRes[0],shelfRes , itemShelfCurrAmounts[0]);
+                          if(destShelfRes.stock.length>0){
+                            destQntBefore=destShelfRes.stock.filter(shl=>shl.item==itemLineToAdd.itemNumber)[0].amount;
+                          }
+                          this.addObjToList(itemLineToAdd,itemRes[0],shelfRes , itemShelfCurrAmounts[0], destQntBefore);
                         }else{
                           this.toastSrv.error("אין מדף כזה במחסן: "+this.curentWhareHouseName);
                           this.loadingToTable=false;
                         }
                       });
                     } else{
-                      this.addObjToList(itemLineToAdd,itemRes[0],shelfRes , itemShelfCurrAmounts[0]);
+                      this.addObjToList(itemLineToAdd,itemRes[0],shelfRes , itemShelfCurrAmounts[0], null);
                     }
                   }else{
                     this.toastSrv.error("אין מספיק כמות על המדף!\n  כמות נוכחית על המדף: "+shelfRes.stock[0].amount );
@@ -579,7 +583,7 @@ deleteLine(itemFromInvReq,index,ev){
 
 
 
-addObjToList(itemLine,itemRes,shelfRes , itemShelfCurrAmount){
+addObjToList(itemLine,itemRes,shelfRes , originShelfQntBefore, destShelfQntBefore){
 
 if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
 
@@ -609,7 +613,9 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
       shell_position_in_whareHouse_Dest:'',
       WH_destId:this.curentWhareHouseId,
       WH_destName:this.curentWhareHouseName,
-      originShelfQntBefore: itemShelfCurrAmount,
+      originShelfQntBefore: originShelfQntBefore,
+      destShelfQntBefore: originShelfQntBefore,
+      userName: this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName,
    }
    if(this.dir!="in") obj.amount*=(-1);
    if(itemLine.reqNum) obj.inventoryReqNum=itemLine.reqNum;
