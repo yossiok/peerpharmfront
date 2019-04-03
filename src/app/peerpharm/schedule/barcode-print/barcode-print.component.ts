@@ -7,6 +7,7 @@ import { ScheduleService } from "./../../../services/schedule.service";
 import { ItemsService } from "./../../../services/items.service";
 import { BatchesService } from "./../../../services/batches.service";
 import { ToastrService } from "ngx-toastr";
+import { BarcodePrintService } from "./../../../services/barcodePrint.service";
 
 @Component({
   selector: "app-barcode-print",
@@ -42,13 +43,17 @@ export class BarcodePrintComponent implements OnInit {
   barcodeHeight = 150;
   barcodeFontSize = 28;
   barcodeFlat = true;
+  printBarcodeId: string;
+  barcodeUrl: string;
+
 
   constructor(
     private scheduleService: ScheduleService,
     private itemsService: ItemsService,
     private batchesService: BatchesService,
     private modalService: NgbModal,
-    private toastSrv: ToastrService
+    private toastSrv: ToastrService,
+    private barcodePrintService: BarcodePrintService
   ) {}
 
   ngOnInit() {
@@ -226,81 +231,14 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printBarcode() {
-    const prtContent = document.getElementById("print-section");
-    const WinPrint = window.open(
-      "",
-      "",
-      "left=0,top=0,width=800,height=900,toolbar=0,scrollbars='yes',status=0"
-    );
-    WinPrint.document.write(
-      // tslint:disable-next-line:max-line-length
-      //    <link rel="stylesheet" type="text/css" href="/assets/barcode.css">
-      `<html>
-      <head>
-      <title>Print it!</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <style>
-      body {
-        display:flex;
-	      align-items:center;
-	      justify-content:center;
-	      flex-direction:column;
-      }
-      .barcodeTbl {
-        font-size: 12pt;
-        text-align: center;
-        height: 100mm;
-        padding-top:10px;
-      }
-      @media print {
-        .page{
-          display:none;
-        }
-        body {
-          width: 100% !important;
-          display:flex !important;
-          align-items:center !important;
-          justify-content:center !important;
-          flex-direction:column !important;
-          -webkit-print-color-adjust: exact !important;
-        }
-        @page {
-        size: auto;  margin: 0mm  !important;
-        }
-        table {
-        page-break-after : always  !important;
-        }
-      }
-      </style>
-      </head><body>`
-    );
-    WinPrint.document.write(prtContent.innerHTML);
-    WinPrint.document.close();
-    WinPrint.focus();
-    WinPrint.print();
-    WinPrint.close();
+    const prtContent = document.getElementById("print-section").innerHTML;
+    const barcodeObj = { allBarcode: prtContent };
+    this.barcodePrintService.addBarcodePrint(barcodeObj).subscribe(data => {
+      console.log(data);
+      this.printBarcodeId = data.id;
+      console.log(this.printBarcodeId);
+      this.barcodeUrl = 'http://localhost/old/newBarcode.html?_id=' + this.printBarcodeId;
+    });
+
   }
-
-  // barcodeDisplay(index) {
-  //   if (this.printBarkod.barcode.length === 13) {
-  // 		JsBarcode('#barcodeView' + index , this.printBarkod.barcode, {
-  // 		  format: 'ean13',
-  // 		  flat: true,
-  // 		  width: 2.3,
-  // 		  height: 150,
-  // 		  fontSize: 28
-  // 		});
-  // 		}
-  // 		else {
-  // 			JsBarcode('#barcodeView' + index , this.printBarkod.barcode, {
-  // 			  format: 'CODE128',
-  // 			  flat: true,
-  // 			  width: 2.3,
-  // 			  height: 150,
-  // 			  fontSize: 28
-  // 			});
-  // 		}
-  // }
-
-  /////////////
 }

@@ -149,11 +149,13 @@ input[type="radio"] {
 }
 
 .barcodeTbl {
-  font-size: 12pt;
-  border: 0.5px solid black;
+  margin: 0px auto;
+  width: 360px;
+  min-height: 360px;
+  font-size: 24px;
+  border: 0px;
   text-align: center;
-  height: 100mm;
-  padding-top : '10mm'
+  margin-top:20px;
 }
 
 
