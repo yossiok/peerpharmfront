@@ -89,6 +89,8 @@ export class StockComponent implements OnInit {
   stockAdmin:Boolean=false;
   destShelfId:String;
   destShelf:String;
+  destShelfQntBefore:Number=0;
+  originShelfQntBefore:Number=0;
   amountChangeDir:String;
   sehlfChangeNavBtnColor:String="";
   amountChangeNavBtnColor:String="#1affa3";
@@ -134,9 +136,15 @@ export class StockComponent implements OnInit {
 //         });
     
 //  }
-  exportAsXLSX(data, title) {
-    this.excelService.exportAsExcelFile(data, title);
- }
+  ExportKasemAllCmptsOnShelfs() {
+    this.inventoryService.getKasemAllCmptsOnShelfs().subscribe(data=>{
+      debugger
+      this.excelService.exportAsExcelFile(data, "kasemItemsOnShelfs");
+        });
+   }
+//   exportAsXLSX(data, title) {
+//     this.excelService.exportAsExcelFile(data, title);
+//  }
   // getDoubleItemShelfs(){
   //   this.inventoryService.getDoubleItemShelfs().subscribe(res=>{
   //     this.exportAsXLSX(res, "DoubleItemShelfs");
@@ -199,9 +207,14 @@ async updateItemStockShelfChange(direction){
   // this.newItemShelfQnt
   // this.destShelf
   this.destShelf=this.destShelf.toLocaleUpperCase();
+  //destination shelf
   await this.inventoryService.checkIfShelfExist(this.destShelf,this.newItemShelfWH).subscribe( async shelfRes=>{
     if(shelfRes.ShelfId){
-      this.destShelfId=shelfRes.ShelfId;
+      this.destShelfId = shelfRes.ShelfId;
+      this.destShelfQntBefore = 0;
+      if(shelfRes.stock.length > 0) {
+        this.destShelfQntBefore = shelfRes.stock.filter(shl=>shl.item==this.resCmpt.componentN)[0].amount;
+      }
       this.updateItemStock(direction);
     }else{
       this.toastSrv.error("מדף יעד לא קיים")
@@ -230,6 +243,7 @@ dirSet(direction){
 
 
 async updateItemStock(direction){
+
   //check enough amount for "out"
   this.newItemShelfPosition=this.newItemShelfPosition.toUpperCase().trim();
   var shelfExsit=false;
@@ -243,6 +257,9 @@ async updateItemStock(direction){
     await this.inventoryService.checkIfShelfExist(this.newItemShelfPosition,this.newItemShelfWH).subscribe( async shelfRes=>{
          
       if(shelfRes.ShelfId){
+        if(shelfRes.stock.length>0){
+          this.originShelfQntBefore= shelfRes.stock.filter(shl=>shl.item==this.resCmpt.componentN)[0].amount;
+        }
         shelfExsit=true;
            
         if((direction!="in" && itemShelfCurrAmounts.length>0) || direction=="in"){
@@ -275,8 +292,9 @@ async updateItemStock(direction){
                 WH_destName:this.curentWhareHouseName,
                 batchNumber:'',
                 relatedOrderNum: relatedOrderNum,
-
-
+                originShelfQntBefore: this.originShelfQntBefore,
+                destShelfQntBefore: this.destShelfQntBefore,
+                userName: this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName,
                 }];
 
                 if(direction=="in") {
@@ -309,17 +327,30 @@ async updateItemStock(direction){
                 //  READY!
                    
                 await this.inventoryService.updateInventoryChangesTest(ObjToUpdate,this.stockType).subscribe(res => {
+                  console.log('ObjToUpdate',ObjToUpdate);
                   if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
                      
                     this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
                       console.log(x.n+" items with amount=0 deleted");
+                    }); 
+                    let actionLogObj={
+                      dateAndTime: new Date(),
+                      logs: ObjToUpdate,
+                      userName: this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName,
+                      movementType: ObjToUpdate[0].actionType,
+                    }
+                    debugger
+                    this.inventoryService.addToWHActionLogs(actionLogObj).subscribe(res => {
+                      this.toastSrv.success("פעולות מחסנאי נשמרו");
                     });
                     this.components.forEach(stkItem=> { if(stkItem.componentN == ObjToUpdate[0].item) {stkItem.amount = stkItem.amount + ObjToUpdate[0].amount} });
                     this.newItemShelfQnt=null;
                     this.destShelf="";
                     this.destShelfId="";
                     this.newItemShelfPosition='';
+                    this.originShelfQntBefore=0;
+                    this.destShelfQntBefore=0;
                   }else{
                     this.toastSrv.error("Error - Changes not saved");
                   }

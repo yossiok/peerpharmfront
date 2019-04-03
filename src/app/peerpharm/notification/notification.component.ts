@@ -164,6 +164,12 @@ export class NotificationComponent implements OnInit {
         }
       }
     } else {
+      // this.noteForm.value.sendUsers= this.allUsers.map(user=> user._id);
+      // console.log('this.noteForm.value.sendUsers',this.noteForm.value.sendUsers);
+      // this.selectedUserIds = this.noteForm.value.sendUsers.filter(usr=> usr!=null);
+      // this.selectedUserIds.push(this.loggedInUser._id)
+      // console.log('this.selectedUserIds',this.selectedUserIds);
+
       this.selectedUserIds = this.noteForm.value.sendUsers
         .map((v, i) => (v ? null : this.allUsers[i]._id))
         .filter(v => v !== null);

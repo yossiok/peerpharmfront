@@ -165,4 +165,10 @@ addToWHActionLogs(objToUpdate){
 }
 
 
+getKasemAllCmptsOnShelfs():Observable<any>{
+  let url = this.baseUrl + "itemShell?getAllItemShelfsCmpt=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
+
 }
