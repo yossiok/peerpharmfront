@@ -77,7 +77,7 @@ export class StockComponent implements OnInit {
   relatedOrderNum:String='';
   //adding Stock amounts
   newItemShelfQnt:number;
-  newItemShelfBatchNumber:string;
+  newItemShelfBatchNumber:string='';
   newItemShelfArrivalDate:number;
   newItemShelfPosition:String;
   newItemShelfWH:String;
@@ -308,8 +308,16 @@ async updateItemStock(direction){
               //  if(typeof(itemLine.arrivalDate)=='string') ObjToUpdate.arrivalDate=itemLine.arrivalDate;
                if(this.stockType=="product") {
                  ObjToUpdate[0].batchNumber=this.newItemShelfBatchNumber;
-                 if(this.newItemShelfBatchNumber!=""){
+                 if(this.newItemShelfBatchNumber!=""){ 
                   let itemBatch = this.ItemBatchArr.filter( b=> b.batchNumber == this.newItemShelfBatchNumber);
+                  //fix date format 
+                  let dateArr=itemBatch[0].expration.split('/');
+                  let dateArrToJoin=[];
+                  dateArrToJoin[0]=dateArr[2];
+                  dateArrToJoin[1]=dateArr[1];
+                  dateArrToJoin[2]=dateArr[0];
+                  let dateToUpdate=dateArrToJoin.join('-');
+                  
                   let expDate=new Date(itemBatch[0].expration);
                   ObjToUpdate[0].expirationDate = expDate;
                  }else{
