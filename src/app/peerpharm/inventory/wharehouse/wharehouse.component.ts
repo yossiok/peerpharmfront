@@ -33,6 +33,7 @@ multiLinesArr:Array<any>;
 StkMngNavBtnColor:String ="#1affa3";
 WhMngNavBtnColor:String ="";
 ItemsOnShelf:Array<any>;
+listToPrint:Array<any>=[];
 
 
 
@@ -57,6 +58,7 @@ ItemsOnShelf:Array<any>;
   currTab: string = '';
   loadingToTable:boolean=false;
   editWharehouses: Boolean=false;
+  
   constructor(private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService , private inventoryReqService: InventoryRequestService ,private toastSrv: ToastrService, ) { 
 
 // new ----------------------
@@ -155,54 +157,54 @@ ItemsOnShelf:Array<any>;
 
   }
 
-  getFormData() {
-    let div = this.container.nativeElement;
-    this.mainDivArr = [];
-    let divArr = [];
-    //  for (let innerDiv of div.getElementsByTagName('input')) {
-    for (let innerDiv of div.getElementsByClassName('dataInput')) {
+  // getFormData() {
+  //   let div = this.container.nativeElement;
+  //   this.mainDivArr = [];
+  //   let divArr = [];
+  //   //  for (let innerDiv of div.getElementsByTagName('input')) {
+  //   for (let innerDiv of div.getElementsByClassName('dataInput')) {
 
-      console.log(innerDiv.value);
-      if (innerDiv.value.length > 0) {
-        divArr.push(innerDiv.value);
-      }
-      else {
-        // temp fix
-        if(this.dir!="production" && this.mainDivArr.length==0){
-          divArr.splice(0,1);
-        }
-        let itemData = {
-          item: divArr[0],
-          shell: divArr[1],
-          amount: divArr[2],
-          newShelf: "",
-          demandOrderId: "",
-          actionType: this.dir,
-          whareHouse: this.curentWhareHouseId,
-        }
+  //     console.log(innerDiv.value);
+  //     if (innerDiv.value.length > 0) {
+  //       divArr.push(innerDiv.value);
+  //     }
+  //     else {
+  //       // temp fix
+  //       if(this.dir!="production" && this.mainDivArr.length==0){
+  //         divArr.splice(0,1);
+  //       }
+  //       let itemData = {
+  //         item: divArr[0],
+  //         shell: divArr[1],
+  //         amount: divArr[2],
+  //         newShelf: "",
+  //         demandOrderId: "",
+  //         actionType: this.dir,
+  //         whareHouse: this.curentWhareHouseId,
+  //       }
         
-        if (this.dir == "shellChange") { // if it's for shellChange
-          //   Object.assign({newShelf:divArr[3]}, itemData);
-          itemData.newShelf = divArr[3];
-        }
-        if (this.dir == "production") { // if it's for production - add demandOrderId for server update
-          // Object.assign({demandOrderId:divArr[3]}, itemData);
-          itemData.demandOrderId = divArr[3];
-        }
-        this.mainDivArr.push(itemData);
-            divArr = [];
-      }
-    }
-    console.log(this.mainDivArr);
-    this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
-      console.log("updateInventoryChanges res: "+res);
-        if (res != null) {
+  //       if (this.dir == "shellChange") { // if it's for shellChange
+  //         //   Object.assign({newShelf:divArr[3]}, itemData);
+  //         itemData.newShelf = divArr[3];
+  //       }
+  //       if (this.dir == "production") { // if it's for production - add demandOrderId for server update
+  //         // Object.assign({demandOrderId:divArr[3]}, itemData);
+  //         itemData.demandOrderId = divArr[3];
+  //       }
+  //       this.mainDivArr.push(itemData);
+  //           divArr = [];
+  //     }
+  //   }
+  //   console.log(this.mainDivArr);
+  //   this.inventoryService.updateInventoryChanges(this.mainDivArr).subscribe(res => {
+  //     console.log("updateInventoryChanges res: "+res);
+  //       if (res != null) {
           
-      }else{
-        ;
-      }
-    });
-  }
+  //     }else{
+  //       ;
+  //     }
+  //   });
+  // }
 
   resetForm() {
     const childElements = this.container.nativeElement.children;
@@ -302,18 +304,6 @@ ItemsOnShelf:Array<any>;
     });
   }
 
-  // async getChildArr(event) {
-  //   await this.dirSet('stkManagment', 'production');
-    
-  //   console.log(event)
-  //   if (event.length > 0) {
-  //     this.dir = "production";
-  //   }
-  //   alert(event);
-  //   event.forEach(item => {
-  //     this.appendItems(item.number, item.orderDemandId)
-  //   });
-  // }
 
 
 
@@ -391,30 +381,21 @@ ItemsOnShelf:Array<any>;
     this.dir = "production";  
     await arrSent.forEach(i=>{
       i.qnt=0;
-      // i.currInpQnt=0;
-      // amount: 500
       i.amount=i.amount;
       i.qntSupplied=i.qntSupplied
-      // isSelected: true
-      // itemName: "Screw bottle NY 150ml transperent 24/415"
-      // itemNumber: "12185"
-      // qntSupplied: 50
-      // relatedOrder: "1938"
-      // reqNum: 1
       i.position='';  
-      // i.requsetedQnt=i.amount;
       i.currItemShelfs=[];
       i.currItemShelfs.push({position:""});
     });
 
   }
-  let loadItems=confirm("טעינת פריטים מבקשת מלאי");
-  if(loadItems){
+  // let loadItems=confirm("טעינת פריטים מבקשת מלאי");
+  // if(loadItems){
     this.multiLinesArr=arrSent;
     arrSent.forEach(itemFromInvReq => {
       this.searchItemShelfs("");
     });  
-  }
+  // }
 }
 
 async getAllGeneralDemands(){
@@ -474,6 +455,17 @@ deleteLine(itemFromInvReq,index,ev){
           this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
             console.log(x.n+" items with amount=0 deleted");
           });
+          this.listToPrint= this.inventoryUpdateList.map(i=>{
+            if(i.amount<0){
+              i.amount=Math.abs(i.amount);
+            }
+            return i;
+          });
+          //PRINT !!!
+          if(this.dir == 'production' || this.dir == 'out' ){
+            this.printStockTransferCertificate();
+          }
+
           if(this.dir!='shelfChange') this.itemLine.reset();
           this.inventoryUpdateList=[];
         }else{
@@ -481,6 +473,11 @@ deleteLine(itemFromInvReq,index,ev){
         }
       });
     }
+  }
+  
+  printStockTransferCertificate(){
+    //print
+    
   }
 
   getItemLineQnt(i,ev){
@@ -540,7 +537,13 @@ deleteLine(itemFromInvReq,index,ev){
                         if(destShelfRes.ShelfId){
                           itemLineToAdd.destShelfId=destShelfRes.ShelfId;
                           if(destShelfRes.stock.length>0){
-                            destQntBefore=destShelfRes.stock.filter(shl=>shl.item==itemLineToAdd.itemNumber)[0].amount;
+                            destShelfRes.stock.map(shl=> 
+                              {
+                                if(shl.item==itemLineToAdd.itemNumber){
+                                  debugger
+                                  destQntBefore= shl.amount;
+                                }
+                              });
                           }
                           this.addObjToList(itemLineToAdd,itemRes[0],shelfRes , itemShelfCurrAmounts[0], destQntBefore);
                         }else{
@@ -595,6 +598,8 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
     let obj={ 
       amount: itemLine.amount,
       item: itemLine.itemNumber,
+      supplierItemNumber: '',
+      supplierName: '',
       itemName: itemRes.componentName,
       shell_id_in_whareHouse: shelfRes.ShelfId,
       position:shelfRes.position,
@@ -622,7 +627,11 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
    if(typeof(itemLine.arrivalDate)=='string') obj.arrivalDate=itemLine.arrivalDate;
    if(itemRes.itemType=="product") {
      obj.expirationDate=itemRes.expirationDate ;obj.productionDate=itemRes.productionDate 
-    };
+    }
+   if(itemRes.itemType=="component") {
+     obj.supplierItemNumber= itemRes.suplierN;
+     obj.supplierName= itemRes.suplierName;
+    }
    if(this.dir=="shelfChange"){
     obj.shell_id_in_whareHouse_Dest= itemLine.destShelfId;
     obj.shell_position_in_whareHouse_Dest= itemLine.destShelf.toUpperCase();
@@ -631,7 +640,17 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
    this.inventoryUpdateList.push(obj);
    this.loadingToTable=false;
    this.itemLine.reset();
+   this.multiLinesArr;
+   this.multiLinesArr.map((line,key)=>{
+     if(line.itemNumber == obj.item && line.position ==obj.position && line.qnt == Math.abs(obj.amount)  ) {
+       debugger
+      this.multiLinesArr.splice(key,1);
+     }
+   });
+   
+   
 
+debugger
   }else{
     alert(" מספר פריט "+itemLine.itemNumber+" במדף "+itemLine.position+"\nכבר קיים ברשימה");
   }

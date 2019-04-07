@@ -213,8 +213,15 @@ async updateItemStockShelfChange(direction){
       this.destShelfId = shelfRes.ShelfId;
       this.destShelfQntBefore = 0;
       if(shelfRes.stock.length > 0) {
-        this.destShelfQntBefore = shelfRes.stock.filter(shl=>shl.item==this.resCmpt.componentN)[0].amount;
+      shelfRes.stock.map(shl=> 
+          {
+            if(shl.item==this.resCmpt.componentN){
+              debugger
+              this.destShelfQntBefore= shl.amount;
+            }
+          });
       }
+      debugger
       this.updateItemStock(direction);
     }else{
       this.toastSrv.error("מדף יעד לא קיים")

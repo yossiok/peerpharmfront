@@ -32,18 +32,13 @@ export class InventoryRequestsComponent implements OnInit {
   getAllGeneralDemands(){
     this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
         console.log(res);
-        debugger
         res.forEach(InvRequest => {
-          debugger
-          if(InvRequest.status=='closed'){
-            
-          }
+
          InvRequest.reqList.map(item => {
             item.isSelected=false;
             if(item.amount <= item.qntSupplied) item.cmptLineColor= 'lightgreen';
           });
         });
-        debugger
         this.ordersDemands=res;
         this.newReqIncoming=false;
     })
@@ -51,7 +46,6 @@ export class InventoryRequestsComponent implements OnInit {
   }
 
   getDetails(reqId, orderNumber): void {
-    debugger 
     this.EditRowId2nd = reqId;
     if (this.expand === true) {
        this.expand = false;
@@ -69,15 +63,12 @@ export class InventoryRequestsComponent implements OnInit {
     let demandObj =this.ordersDemands.filter(orderObj=>orderObj.reqNum==this.openOrder);
     // console.log(demandObj);
     // console.log(demandObj[0].components);
-    debugger;
-
     let tempArr = demandObj[0].reqList.filter(e => e.isSelected == true).map(elmnt => {
       elmnt.reqNum=demandObj[0].reqNum;
       return elmnt
     } );
     //let tempArr = demandObj[0].components.filter(e => e.isSelected == true).map(e => e = {"item":e.cmptN, "demandId":e._id});
     if(tempArr.length>0) {
-      debugger
       this.outPutItemsArray.emit(tempArr);  
     }
     console.log(tempArr);

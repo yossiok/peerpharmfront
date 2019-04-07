@@ -125,7 +125,9 @@ export class InventoryNewRequestComponent implements OnInit {
             this.inventoryReqForm.controls['deliveryDate'].reset();
             this.inventoryReqForm.controls['fromWH'].reset();
             this.inventoryReqForm.controls['toWH'].reset();
-            console.log(res);
+            this.inventoryReqForm.controls['reqList'].reset();
+            console.log('this.inventoryReqForm.value.reqList\n',this.inventoryReqForm.value.reqList);
+
           }
         });
       }else if(this.reqList.length==0){
