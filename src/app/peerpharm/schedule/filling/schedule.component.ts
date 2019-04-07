@@ -207,6 +207,19 @@ export class ScheduleComponent implements OnInit {
   }
 
   updateSchedule() {
+    debugger
+    this.EditRowId;
+    this.scheduleData;
+    let scdLneInfo=
+      this.scheduleData.filter(
+        sced => {
+          sced._id == this.EditRowId
+        } );
+    let updateOrderItemDate= (scdLneInfo[0].date == this.date.nativeElement.value );
+
+    debugger
+    this.date.nativeElement.value
+
     console.log(this.date.nativeElement.value);
     console.log(this.orderN.nativeElement.value);
     console.log(this.item.nativeElement.value);
@@ -247,6 +260,9 @@ export class ScheduleComponent implements OnInit {
         )
       ] = scheduleToUpdate;
       this.editRadioBtnType = '';
+      if(updateOrderItemDate) {
+        //update orderItemSchedule
+      }
     });
   }
 

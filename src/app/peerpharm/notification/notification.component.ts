@@ -68,7 +68,7 @@ export class NotificationComponent implements OnInit {
       noteCreated: new FormControl(this.noteCreated, [Validators.required]),
       userId: new FormControl("", [Validators.required]),
       noteContent: new FormControl("", [Validators.required]),
-      sendUsers: new FormArray([], this.MinSelectedCheckboxes(1)),
+      sendUsers: new FormArray([], this.MinSelectedCheckboxes(1)), // checks double checkbox - WHY???
       recievedUsers: new FormControl("", [Validators.required])
     });
 
@@ -149,6 +149,7 @@ export class NotificationComponent implements OnInit {
   }
 
   onSubmit(): void {
+    debugger
     event.preventDefault();
 
     if (!this.allCheck) {
@@ -163,6 +164,12 @@ export class NotificationComponent implements OnInit {
         }
       }
     } else {
+      // this.noteForm.value.sendUsers= this.allUsers.map(user=> user._id);
+      // console.log('this.noteForm.value.sendUsers',this.noteForm.value.sendUsers);
+      // this.selectedUserIds = this.noteForm.value.sendUsers.filter(usr=> usr!=null);
+      // this.selectedUserIds.push(this.loggedInUser._id)
+      // console.log('this.selectedUserIds',this.selectedUserIds);
+
       this.selectedUserIds = this.noteForm.value.sendUsers
         .map((v, i) => (v ? null : this.allUsers[i]._id))
         .filter(v => v !== null);

@@ -77,7 +77,7 @@ export class TasksService {
 
 
 
-  createTask(boardid: string, list: string, name: string, dueDate: Date, priority: string): Observable<any> {
+  createTask(boardid: string, list: string, name: string, dueDate: Date, priority: string, userId: string): Observable<any> {
     console.log('post');
     
     const url = this.boardUrl + boardid + '/tasks';
@@ -99,7 +99,8 @@ export class TasksService {
       'name': name,
       'dueDate': d,
       'priority': priority, 
-      'participants':[]
+      'participants':[],
+      'userId':userId,
     }
     console.log(taskobj);
 

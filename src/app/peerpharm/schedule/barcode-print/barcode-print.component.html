@@ -313,78 +313,77 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
         Next
       </button>
     </div>
-    <div id="print-section">
-      <div
-        class="row printSticker"
+
+    <div class="row" id="print-section">
+      <table
         *ngFor="let sticker of amountOfStickersArr; let i = index"
         [attr.data-index]="i"
+        class="barcodeTbl"
+        dir="ltr"
       >
-        <div class="col-sm-12 sticker">
-          <div class="row">
-              <b>{{ schedLine.productName }}</b>
-          </div>
-          <div class="row" *ngIf="showItemFlag">
-              <b>Item Number: {{ schedLine.item }}</b>
-          </div>
-          <div class="row">
-            <b class="col-sm-6"> {{ volumeK }} </b>
-            <b class="col-sm-6 right">{{ pcsCarton }}</b>
-          </div>
-          <div class="row">
-            <b class="col-sm-6" *ngIf="showBatchFlag"
-              >{{ printBarkod.batch }}
-            </b>
-            <div *ngIf="showExpFlag">
-              <b class="col-sm-3 right">Exp:</b>
-              <b class="col-sm-3 right">{{ printBarkod.exp }}</b>
-            </div>
-          </div>
-          <div class="row barcodeImg" *ngIf="showBarcodeFlag">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-10">
-                <ngx-barcode
-                *ngFor="let bcValue of printBarcodeValues"
-                [bc-element-type]="barcodeElementType"
-                [bc-value]="bcValue"
-                [bc-format]="barcodeFormat"
-                [bc-width]="barcodeWidth"
-                [bc-height]="barcodeHeight"
-                [bc-font-size]="barcodeFontSize"
-              ></ngx-barcode>
-            </div>
-            <div class="col-sm-1"></div>
-            <div class="row" >
-                <div class="col-sm-3"></div>
-                <div class="col-sm-6">
-                    <b>{{ printBarkod.barcode }}</b>
-                </div>
-                <div class="col-sm-3"></div>
-            </div>
-          </div>
-          <div class="row" *ngIf="showCustomerFlag">
-            <b>{{ schedLine.costumer }}</b>
-          </div>
-        </div>
-      </div>
+        <tr>
+          <td>{{ schedLine.productName }}</td>
+        </tr>
+        <tr>
+          <td>Item Number: {{ schedLine.item }}</td>
+        </tr>
+        <tr>
+          <td>{{ volumeK }} {{ pcsCarton }}</td>
+        </tr>
+        <tr>
+          <td>{{ printBarkod.batch }} Exp: {{ printBarkod.exp }}</td>
+        </tr>
+        <tr>
+          <td>
+            <ngx-barcode
+              *ngFor="let bcValue of printBarcodeValues"
+              [bc-element-type]="barcodeElementType"
+              [bc-value]="bcValue"
+              [bc-format]="barcodeFormat"
+              [bc-width]="barcodeWidth"
+              [bc-height]="barcodeHeight"
+              [bc-font-size]="barcodeFontSize"
+            ></ngx-barcode>
+          </td>
+        </tr>
+        <tr>
+          <td>{{ printBarkod.barcode }}</td>
+        </tr>
+        <tr *ngIf="showCustomerFlag">
+          <td>{{ schedLine.costumer }}</td>
+        </tr>
+      </table>
     </div>
+
     <button
-      printSectionId="print-section"
-      ngxPrint
-      [printStyle]="{
-        '.printSticker': {
-          'text-align' : 'center',
-          'font-size': '30px' 
-        } ,
-        '.sticker': {
-          'padding-top' : '10mm',
-          'page-break-inside': 'avoid',
-          'page-break-after': 'always'
-        }
-      }"
+      *ngIf="!printBarcodeId"
+      (click)="printBarcode()"
       class="btn btn-success m-r-10"
       type="button"
+
     >
-      Print
+      Save
     </button>
+    <a
+      *ngIf="printBarcodeId"
+      class="btn btn-success m-r-10"
+      type="button"
+      [attr.href]=barcodeUrl
+
+    >
+      You Barcode Is Ready Press Here To Continue
+  </a>
   </div>
 </ng-template>
+
+<!-- printSectionId="print-section"
+ngxPrint
+[printStyle]="{
+  '.printSticker': {
+    'height': '100mm',
+    'text-align' : 'center'
+  } ,
+  '.sticker': {
+    'padding-top' : '10mm'
+  }
+}" -->

@@ -1,6 +1,6 @@
  import { OrdersService } from '../services/orders.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,6 +43,7 @@ import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import { NotificationComponent } from './notification/notification.component';
+import { ProcurementOrderItemBalanceComponent } from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
 
 
 import {MatSelectModule} from '@angular/material/select';
@@ -161,6 +162,7 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
     ItemDetailsTabComponent,
     ItemDocumentsComponent,
     NotificationComponent,
+    ProcurementOrderItemBalanceComponent,
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
@@ -171,6 +173,10 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
     AddFormulePhaseComponent,
 
   ],
-  providers: [ OrdersService, HttpClientModule]
+  providers: [ OrdersService, HttpClientModule],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class PeerPharmModule {}

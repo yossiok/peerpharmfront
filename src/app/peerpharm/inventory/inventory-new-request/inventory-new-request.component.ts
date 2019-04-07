@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,Injectable, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
@@ -6,8 +6,13 @@ import * as moment from 'moment';
 import { DISABLED } from '@angular/forms/src/model';
 import { ToastrService } from 'ngx-toastr';
 import {inventoryReqItem} from "../models/inventoryReqItem"
+import { Http, Response } from "@angular/http";
+import { AuthService } from 'src/app/services/auth.service';
 
 
+// @Injectable({
+//   providedIn: "root"
+// })
 
 @Component({
   selector: 'app-inventory-new-request',
@@ -16,9 +21,11 @@ import {inventoryReqItem} from "../models/inventoryReqItem"
 
 })
 export class InventoryNewRequestComponent implements OnInit {
+  // private socket: any;
+  // newInventoryReqEventEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   reqItemToAdd= new inventoryReqItem;
-
+  userName: any;
   newReqNumber:number;
   inventoryReqForm: FormGroup;
   itemLine: FormGroup;
@@ -38,10 +45,17 @@ export class InventoryNewRequestComponent implements OnInit {
     itemsType: "", 
     reqStatus:'',
     qntSupplied:0,
+    userName:'',
   }
 
-  constructor(private fb: FormBuilder, private inventoryReqService: InventoryRequestService, private toastSrv: ToastrService) { 
-
+  constructor(private authService: AuthService, private http: Http, private fb: FormBuilder, private inventoryReqService: InventoryRequestService, private toastSrv: ToastrService) { 
+  //  this.socket = io(`http://127.0.0.1:8200`); Localhost
+  // this.socket = io(`http://18.221.58.99:8200`);
+  // this.socket.on("connect", () => {
+  //   this.socket.on("newInventoryReq", data => {
+  //     this.newInventoryReqEventEmitter.emit(data);
+  //   });
+  // });
     this.inventoryReqForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
       reqNum: [{value:Number}, Validators.required],
@@ -63,6 +77,7 @@ export class InventoryNewRequestComponent implements OnInit {
 
   ngOnInit() {
     // this.getNewReqNumber();
+    this.getUserInfo();
     this.inventoryReqService.getLastRequsetId().subscribe(res => {
       this.newReqNumber=res.reqNum+1;
       this.inventoryReqForm.controls.reqNum.setValue(this.newReqNumber);
@@ -70,6 +85,14 @@ export class InventoryNewRequestComponent implements OnInit {
     this.inventoryReqForm.controls.currDate.setValidators([]);
     this.inventoryReqForm.controls.reqList.setValidators([]);
   }
+
+  getUserInfo() {
+        this.authService.userEventEmitter.subscribe(user => {
+        this.userName=user.firstName+" "+user.lastName;
+      });
+
+
+}
 
   async addNewRequest(form){
     // await this.getNewReqNumber();
@@ -92,13 +115,19 @@ export class InventoryNewRequestComponent implements OnInit {
           itemsType: 'components', 
           reqStatus:'open',
           qntSupplied: 0,
+          userName: this.userName,
         }
         this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
-          debugger;
           if(res){
             this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" warehouse.");
             //error("Failed pleae finish filling the form");
-            console.log(res);
+            this.reqList=[];
+            this.inventoryReqForm.controls['deliveryDate'].reset();
+            this.inventoryReqForm.controls['fromWH'].reset();
+            this.inventoryReqForm.controls['toWH'].reset();
+            this.inventoryReqForm.controls['reqList'].reset();
+            console.log('this.inventoryReqForm.value.reqList\n',this.inventoryReqForm.value.reqList);
+
           }
         });
       }else if(this.reqList.length==0){

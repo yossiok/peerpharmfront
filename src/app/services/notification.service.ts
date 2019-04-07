@@ -15,16 +15,21 @@ export class NotificationService {
   private socket: any;
   messages: Subject<any>;
   newMessageRecivedEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+  newInventoryReqEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+
   private baseUrl = '/';
   private headers = new Headers({ "Content-Type": "application/json" });
   private options = new RequestOptions({ headers: this.headers });
 
   constructor(private http: Http) {
-  //  this.socket = io(`http://127.0.0.1:8200`); Localhost
+  //  this.socket = io(`http://127.0.0.1:8200`);// Localhost
     this.socket = io(`http://18.221.58.99:8200`);
     this.socket.on("connect", () => {
       this.socket.on("message", data => {
         this.newMessageRecivedEventEmitter.emit(data);
+      });
+      this.socket.on("newInventoryReq", data => {
+        this.newInventoryReqEventEmitter.emit(data);
       });
     });
   }

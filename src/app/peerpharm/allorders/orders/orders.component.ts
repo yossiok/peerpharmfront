@@ -181,6 +181,7 @@ export class OrdersComponent implements OnInit {
     }
     else {
       if(orderId.id!=''){
+        console.log('this.orders before', this.orders)
         let orderToUpdate = { status: 'close', orderId: orderId , stage:'done'}
         if (confirm("Close Order?")) {
           console.log(orderToUpdate);
@@ -190,7 +191,10 @@ export class OrdersComponent implements OnInit {
               orderToUpdate['status'] = "";
               orderToUpdate['stage'] = "done";
               // this.orders[i] = orderToUpdate;
-              this.orders.splice(i,i+1);
+              debugger
+              this.orders.splice(i,1);
+              console.log('this.orders after', this.orders)
+
               // this.orders[i] = res;
               this.EditRowId = '';
               this.toastSrv.success("Order Closed!");

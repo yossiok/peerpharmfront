@@ -1,0 +1,7 @@
+.barcodeTbl {
+  font-size: 12pt;
+  border: 0.5px solid black;
+  text-align: center;
+  height: 100mm;
+  padding-top : '10mm'
+}

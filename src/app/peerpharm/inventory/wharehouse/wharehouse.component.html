@@ -356,9 +356,78 @@
 
   <div style='display: inline-block; vertical-align: top; ' class="col-sm-4">
       <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)"></app-inventory-requests>
-    </div>
+  </div>
+
 </div>
-<!-- <div style='width:45vw'>
 
-</div> -->
 
+<div>
+  <div id="print-section" style="direction: rtl; text-align: right; display: none">
+    <header>
+      <h1 >פאר פארם בע"מ</h1>
+      <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
+      <p>
+        <span>טלפון 03-9024055</span>&nbsp;&nbsp;
+        <span>פקס 03-9024015</span>&nbsp;&nbsp;
+        <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
+        <span>ח.פ: 511899023</span>
+      </p>
+    </header>
+    <main>
+      <h2>תעודת העברה</h2>
+      <p class='originDestWh'>
+        <span><u>ממחסן:</u></span>&nbsp;&nbsp;
+        <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-קאסם</span>&nbsp;&nbsp;
+        <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-ראש העין</span>&nbsp;&nbsp;
+        <span><u>למחסן:</u></span>&nbsp;&nbsp;
+        <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-קאסם</span>&nbsp;&nbsp;&nbsp;
+        <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-ראש העין</span>&nbsp;&nbsp;&nbsp;
+        <span><u>תאריך:</u></span>&nbsp;&nbsp;
+        <span>{{today  | date :'dd-MM-yyyy'  }}</span>&nbsp;&nbsp;
+
+      </p>
+      <br>
+      <table>
+        <header>
+          <tr>
+            <th>#</th>
+            <th>מספר פריט</th>
+            <th>שם פריט</th>
+            <th>פריט מק"ט ספק</th>
+            <th>כמות</th>
+          </tr>
+        </header>
+        <tbody>
+          <ng-container *ngFor="let reqItem of inventoryUpdateList; let i =index">
+            <tr>
+              <td>{{i+1}}</td>
+              <td>{{reqItem.item}}</td>
+              <td>{{reqItem.itemName}}</td>
+              <td>{{reqItem.supplierItemNumber}}</td>
+              <td>{{reqItem.amount}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </main>
+    <div class="signatures">
+      
+    </div>
+    <footer>
+      
+    </footer>
+  </div>
+  <button  
+      [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
+      header : {'border-bottom': 'solid 1px'},
+      footer : {'border-top': 'solid 1px'},
+      main : {'text-align': 'center'},
+      '.originDestWh':{'text-align':'right'},
+      th : {'width': '20%'},
+      td : {'width': '20%'}
+      }"  
+      printTitle="תעודת העברה"  
+      printSectionId="print-section"  
+      ngxPrint>print</button>
+  
+</div>
