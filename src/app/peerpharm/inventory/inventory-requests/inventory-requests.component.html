@@ -18,7 +18,7 @@
     </tr>
   </thead>
   <ng-container *ngFor="let demand of ordersDemands; let i =index">
-    <tr>
+    <tr >
       <td>{{i+1}}</td>
       <td><a  (click)="getDetails(demand._id, demand.reqNum)" style='color: blue; cursor: pointer;'>{{demand.reqNum}}</a></td>
       <td>{{demand.deliveryDate}}</td>
@@ -34,6 +34,7 @@
       <th class="cmptTh">Amount</th>
       <!-- <th class="cmptTh">Allocation</th> -->
       <th class="cmptTh">Supplied</th>
+      <th class="cmptTh">remark</th>
       <!-- <th class="cmptTh">Done</th> -->
     </tr>
       <ng-container *ngFor="let cmpt of demand.reqList;" >
@@ -44,6 +45,7 @@
             <td>{{cmpt.amount}}</td>
             <!-- <td>{{cmpt.allocation}}</td> -->
             <td>{{cmpt.qntSupplied}}</td>
+            <td>{{cmpt.remarks}}</td>
             <!-- <td>V AutoTBD</td> -->
           </tr>
       </ng-container>

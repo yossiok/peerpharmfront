@@ -62,7 +62,10 @@
         <select #wh (change)="setWhareHouse(wh.value)">
           <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
         </select>&nbsp;&nbsp;
-        <span>{{curentWhareHouseName}} Wharehouse</span><br>
+        <span>{{curentWhareHouseName}} Wharehouse</span>
+        <span *ngIf='whareHouses.length == 0'><img src="../../../../assets/images/refreshData.png" style="cursor: pointer; width: 40px; " (click)="getUserWhs()"> </span>
+        
+        <br>
     </div>
     <br>
 
@@ -362,7 +365,7 @@
 
 
 <div>
-  <div id="print-section" style="direction: rtl; text-align: right; display: none">
+  <div id="print-section" style="direction: rtl; text-align: right; display: none; ">
     <header>
       <h1 >פאר פארם בע"מ</h1>
       <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
@@ -397,8 +400,8 @@
               <th>כמות</th>
             </tr>
           <ng-container *ngFor="let reqItem of listToPrint; let i =index">
-            <tr>
-              <td>{{i+1}}</td>
+            <tr >
+              <td class="cellPadding">{{i+1}}</td>
               <td>{{reqItem.item}}</td>
               <td class='itemNamePrint'>{{reqItem.itemName}}</td>
               <td>{{reqItem.supplierItemNumber}}</td>
@@ -409,26 +412,56 @@
       </table>
     </main>
     <div class="signatures">
-      
+      <p>
+        <span>שם המקבל:</span>&nbsp;&nbsp;
+        <span>
+          <u>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </u>
+        </span>&nbsp;&nbsp;
+        <span>חתימה:</span>&nbsp;&nbsp;
+        <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </span>&nbsp;&nbsp;
+        <span>תאריך:</span>&nbsp;&nbsp;
+        <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </span>&nbsp;&nbsp;
+      </p>
     </div>
     <footer>
-      
     </footer>
   </div>
   <button  
-      style='display:none;'
+      style='display: none;'
       #printBtn
       [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
       header : {'border-bottom': 'solid 1px'},
-      footer : {'border-top': 'solid 1px'},
+      main : {'border-bottom': 'solid 1px' },
+      table :{ 'text-align': 'right' },
+      footer : { 'position': 'absolute' , 'width': '100%' },
       h2 : {'text-align': 'center'},
       '.originDestWh':{'text-align':'right'},
-      th : {'width': '16%' ,'text-align':'right' , 'padding': '10px'},
-      td : {'width': '16%' , 'border-bottom' : 'solid 0.5px'},
-      '.itemNamePrint' : {'width': '35%'}
+      th : {'width': '16%' },
+      td : {'width': '16%' },
+      '.itemNamePrint' : {'width': '35%'},
+      '.signatures' : { 'margin' : '50px'},
+      '.cellPadding' : { 'padding' : '15px 0px'}
       }"  
       printTitle="תעודת העברה"  
       printSectionId="print-section"  
       ngxPrint>print</button>
   <!-- <button (click)="printStockTransferCertificate()">click</button> -->
 </div>
+<!-- '.reciverNameLine' : {'width': '100px'},
+'.reciverSignatureLine' : {'width': '100px'},
+'.reciverDateLine' : {'width': '100px'}, -->
+
+<!-- '.signatures > p > span'  : {'width': '70px', 'display': 'inline-block' , 'border-bottom' : 'solid 1px'} -->

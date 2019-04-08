@@ -70,6 +70,7 @@ export class InventoryNewRequestComponent implements OnInit {
       itemNumInput: ['', Validators.required],
       itemAmount: [Number, Validators.required],
       relatedOrder: [''],
+      remarks: [''],
     });
 
   }
@@ -156,6 +157,7 @@ export class InventoryNewRequestComponent implements OnInit {
             amount:reqItemLine.itemAmount,
             relatedOrder:reqItemLine.relatedOrder,
             qntSupplied:0,
+            remarks: reqItemLine.remarks,
           }
           this.reqItemToAdd= reqListItem; // class inventoryReqItem
           if(reqItemLine.relatedOrder!=""){
@@ -169,6 +171,7 @@ export class InventoryNewRequestComponent implements OnInit {
                   this.itemLine.controls.itemNumInput.setValue('');
                   this.itemLine.controls.itemAmount.setValue('');
                   this.itemLine.controls.relatedOrder.setValue('');
+                  this.itemLine.controls.remarks.setValue('');
       
               }else{
                 validOrderN=false;
@@ -181,6 +184,7 @@ export class InventoryNewRequestComponent implements OnInit {
             this.itemLine.controls.itemNumInput.setValue('');
             this.itemLine.controls.itemAmount.setValue('');
             this.itemLine.controls.relatedOrder.setValue('');
+            this.itemLine.controls.remarks.setValue('');
           }
        }else{
          validOrderN=false;

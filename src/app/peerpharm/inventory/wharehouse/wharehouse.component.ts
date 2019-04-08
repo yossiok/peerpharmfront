@@ -80,16 +80,21 @@ listToPrint:Array<any>=[];
 
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     // let todayStr=moment(this.today).format("YYYY-MM-DD");
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
-    await this.inventoryService.getWhareHousesList().subscribe( res => {
+    this.getUserWhs()
+  }
+
+  getUserWhs(){
+    this.inventoryService.getWhareHousesList().subscribe(async res => {
       let displayAllowedWH = [];
-        for (const wh of res) {
+        // for (const wh of res) {
+        await res.forEach((wh)=> {
           if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
             displayAllowedWH.push(wh);
           }
-        }
+        });
         this.whareHouses = displayAllowedWH;
         this.curentWhareHouseId = displayAllowedWH[0]._id;
         this.curentWhareHouseName = displayAllowedWH[0].name;
@@ -100,9 +105,8 @@ listToPrint:Array<any>=[];
           }
         }
 
-        })
+        });
   }
-
 
   dirSet(action, direction) {
     let dirChange= confirm("מעבר למסך אחר יאפס את הרשימה")

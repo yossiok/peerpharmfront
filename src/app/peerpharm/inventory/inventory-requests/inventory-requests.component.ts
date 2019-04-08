@@ -40,8 +40,9 @@ export class InventoryRequestsComponent implements OnInit {
           });
         });
         this.ordersDemands=res;
+        debugger
         this.newReqIncoming=false;
-    })
+    });
   
   }
 
