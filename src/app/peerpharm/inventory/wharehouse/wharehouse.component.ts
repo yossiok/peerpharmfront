@@ -7,6 +7,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import * as moment from 'moment';
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
 import { map } from 'rxjs-compat/operator/map';
+import { last } from '../../../../../node_modules/@angular/router/src/utils/collection';
 
 
 @Component({
@@ -41,6 +42,7 @@ listToPrint:Array<any>=[];
   @ViewChild('lineqnt')
   @ViewChild('wh') wh: ElementRef;
   @ViewChild('shelfSearch') shelfSearch: ElementRef;
+  @ViewChild('printBtn') printBtn: ElementRef;
 
   private container: ElementRef;
   mainDivArr: any = [];
@@ -437,7 +439,7 @@ deleteLine(itemFromInvReq,index,ev){
     let sendConfirm=confirm("עדכון שינויים במלאי");
     if(sendConfirm && this.inventoryUpdateList.length>0) {
       debugger
-      await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList,this.inventoryUpdateList[0].itemType).subscribe(res => {
+      await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList,this.inventoryUpdateList[0].itemType).subscribe(async res => {
         // res = [itemNumber,itemNumber,itemNumber...]
         if(res=="all updated"){
           this.toastSrv.success("שינויים בוצעו בהצלחה");
@@ -455,14 +457,13 @@ deleteLine(itemFromInvReq,index,ev){
           this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
             console.log(x.n+" items with amount=0 deleted");
           });
-          this.listToPrint= this.inventoryUpdateList.map(i=>{
-            if(i.amount<0){
-              i.amount=Math.abs(i.amount);
-            }
-            return i;
-          });
+
           //PRINT !!!
           if(this.dir == 'production' || this.dir == 'out' ){
+            // this.listToPrint = await this.inventoryUpdateList.filter(i=>{
+            //   if(i.amount<0)  i.amount=Math.abs(i.amount);
+            //   return i;
+            // });
             this.printStockTransferCertificate();
           }
 
@@ -475,9 +476,26 @@ deleteLine(itemFromInvReq,index,ev){
     }
   }
   
-  printStockTransferCertificate(){
+  async printStockTransferCertificate(){
     //print
-    
+    // setTimeout( ()=> {
+        this.printBtn.nativeElement.click();
+        this.listToPrint=[];
+    // },200);
+    // await this.inventoryUpdateList.filter((i,key)=>{
+    //   let tempObj= Object.assign({},i);
+    //   this.listToPrint.push(tempObj);
+    //   if( key+1 == this.inventoryUpdateList.length){
+    //     this.listToPrint.forEach(j=>{
+    //       if(j.amount<0){
+    //         j.amount=Math.abs(j.amount);
+    //       }
+    //     });
+    //     // setTimeout( ()=> {},100);
+    //     this.printBtn.nativeElement.click();
+    //     this.listToPrint=[];
+    //   }
+    // });
   }
 
   getItemLineQnt(i,ev){
@@ -638,6 +656,13 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
    }
   
    this.inventoryUpdateList.push(obj);
+
+   if(this.dir == 'production' || this.dir == 'out'){
+      let tempObj= Object.assign({},obj);
+      tempObj.amount= Math.abs(tempObj.amount);
+      this.listToPrint.push(obj);
+    // this.listToPrint[this.listToPrint.length-1].qnt=  Math.abs(this.listToPrint[this.listToPrint.length-1].amount);     
+   }
    this.loadingToTable=false;
    this.itemLine.reset();
    this.multiLinesArr;
