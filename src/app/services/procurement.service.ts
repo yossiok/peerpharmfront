@@ -19,4 +19,24 @@ export class Procurementservice {
     console.log(url);
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getProcurementOrder() {
+    const url = this.baseUrl + 'procurementOrderController';
+    console.log(url);
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getProcurementOrderItem() {
+    const url = this.baseUrl + 'procurementOrderItemController';
+    console.log(url);
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getProcurementOrderItemByOrderNumber(orderNumber, OrderDate) {
+    console.log(orderNumber);
+    console.log(OrderDate);
+    const url = this.baseUrl + 'procurementOrderItemController?orderNumber=' + orderNumber + '&orderDate=' + OrderDate;
+    console.log(url);
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 }

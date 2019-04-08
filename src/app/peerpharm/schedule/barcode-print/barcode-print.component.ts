@@ -45,6 +45,7 @@ export class BarcodePrintComponent implements OnInit {
   barcodeFlat = true;
   printBarcodeId: string;
   barcodeUrl: string;
+  create_table: string;
 
 
   constructor(
@@ -219,6 +220,7 @@ export class BarcodePrintComponent implements OnInit {
     if (this.printBarkod.printQty > 0 && this.printBarkod.printQty != "") {
       for (let i = 0; i < this.printBarkod.printQty; i++) {
         this.amountOfStickersArr.push(this.printBarkod);
+        this.create_table = "create_table"+i;
       }
       console.log(this.amountOfStickersArr);
     } else {

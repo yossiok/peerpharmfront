@@ -255,15 +255,23 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
+      },
+       {
+        path: '/peerpharm/procurement/procurementOrders',
+        title: 'Procurement Orders',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '/peerpharm/procurement/procurementOrderItems',
+        title: 'Procurement Order Items',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
       }
-      //  {
-      //   path: '/peerpharm/schedule/fillschedule',
-      //   title: 'Item Tree',
-      //   icon: 'fas fa-tree',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // }
 
     ]
   },

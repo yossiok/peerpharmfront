@@ -1,0 +1,37 @@
+<table>
+  <thead class="bg-success text-white">
+    <tr>
+      <th><b>Supplier Number</b></th>
+      <th><b>Supplier Name</b></th>
+      <th><b>Item Number</b></th>
+      <th><b>Item Name</b></th>
+      <th><b>Order Number</b></th>
+      <th><b>Order Date</b></th>
+      <th><b>Measure</b></th>
+      <th><b>Order Quantity</b></th>
+      <th><b>Price</b></th>
+      <th><b>Discount Precentage</b></th>
+      <th><b>total Payment</b></th>
+    </tr>
+  </thead>
+  <tbody id="table_body">
+    <tr *ngFor="let line of procurementData">
+      <td>
+        {{ line.supplierNumber }}
+      </td>
+      <td>
+        {{ line.supplierName }}
+      </td>
+      <td>{{ line.itemNumber }}</td>
+      <td>{{ line.itemName }}</td>
+      <td>{{ line.orderNumber }}</td>
+      <td>{{ line.orderDate }}</td>
+      <td>{{ line.measure }}</td>
+      <td>{{ line.orderQnt }}</td>
+      <td>{{ line.price }}</td>
+      <td>{{ line.discountPercentage }}</td>
+      <td>{{ line.orderQnt }}</td>
+      <td>{{ line.totalPayment }}</td>
+    </tr>
+  </tbody>
+</table>

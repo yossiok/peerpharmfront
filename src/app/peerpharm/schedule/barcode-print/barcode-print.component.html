@@ -320,6 +320,11 @@ Filter By Date: <input type="date" #date [(ngModel)]="today" />
         [attr.data-index]="i"
         class="barcodeTbl"
         dir="ltr"
+        [style.margin.px]="0"
+        [style.width.px]="360"
+        [style.max-height.px]="360"
+        [style.font-size.px]="24"
+        [attr.id]="create_table"
       >
         <tr>
           <td>{{ schedLine.productName }}</td>
