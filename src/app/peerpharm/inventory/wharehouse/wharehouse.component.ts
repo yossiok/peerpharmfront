@@ -479,10 +479,11 @@ deleteLine(itemFromInvReq,index,ev){
   async printStockTransferCertificate(){
     //print
     // setTimeout( ()=> {
+
         this.printBtn.nativeElement.click();
         this.listToPrint=[];
     // },200);
-    // await this.inventoryUpdateList.filter((i,key)=>{
+    // await this.list.filter((i,key)=>{
     //   let tempObj= Object.assign({},i);
     //   this.listToPrint.push(tempObj);
     //   if( key+1 == this.inventoryUpdateList.length){
@@ -660,7 +661,7 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
    if(this.dir == 'production' || this.dir == 'out'){
       let tempObj= Object.assign({},obj);
       tempObj.amount= Math.abs(tempObj.amount);
-      this.listToPrint.push(obj);
+      this.listToPrint.push(tempObj);
     // this.listToPrint[this.listToPrint.length-1].qnt=  Math.abs(this.listToPrint[this.listToPrint.length-1].amount);     
    }
    this.loadingToTable=false;
