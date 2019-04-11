@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { BatchesService } from '../../services/batches.service'
 // test for excel export
 import {ExcelService} from '../../services/excel.service';
@@ -22,13 +22,28 @@ export class BatchesComponent implements OnInit {
   batches: Array<any>;
   batchesCopy: Array<any>;
   lastBatchToExport:String;
+  EditRowId: any = "";
 
+  @ViewChild('batchNumber') batchNumber: ElementRef;
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+}
   ngOnInit() {
 
     this.getAllBatches();
     this.startInterval();
   }
-
+  edit(id) {
+    this.EditRowId = id;
+    debugger
+    if(id!='') {
+      let i = this.batches.findIndex(elemnt => elemnt._id == id);
+      // if(this.batches[i].onHoldDate!=null && this.orders[i].onHoldDate!="" && this.orders[i].onHoldDate!=undefined ){
+      //   this.onHoldStrDate=moment(this.orders[i]).format('YYYY-MM-DD');
+      // }
+    }
+  }
   stopInterval() {
     clearInterval(this.myRefresh)
   }
