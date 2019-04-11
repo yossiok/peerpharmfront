@@ -17,20 +17,17 @@ export class ProcurementOrderItemComponent implements OnInit {
     private procurementservice: Procurementservice,
     private route: ActivatedRoute
   ) {
-    debugger;
   }
 
   ngOnInit() {
     console.log('Enter');
     this.orderNumber = this.route.snapshot.paramMap.get('orderNumber');
-    this.orderDate =  this.route.snapshot.paramMap.get('orderDate');
+   // this.orderDate =  this.route.snapshot.paramMap.get('orderDate');
 
     if (this.orderNumber){
-      debugger;
       this.getAllProcurementOrderItemByOrderId();
     }
     else {
-      debugger;
       this.getAllProcurementOrderItem();
     }
 
@@ -44,8 +41,7 @@ export class ProcurementOrderItemComponent implements OnInit {
   }
 
   getAllProcurementOrderItemByOrderId() {
-    debugger;
-    this.procurementservice.getProcurementOrderItemByOrderNumber(this.orderNumber, this.orderDate).subscribe(res => {
+    this.procurementservice.getProcurementOrderItemByOrderNumber(this.orderNumber).subscribe(res => {
       this.procurementData = res;
       console.log(this.procurementData);
     });

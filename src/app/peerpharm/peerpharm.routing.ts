@@ -251,6 +251,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Procurement Order Items'
     },
     component: ProcurementOrderItemComponent
+  },
+  {
+    path : 'procurement/procurementOrderItems',
+    data : {
+      title : 'Procurement Order Items'
+    },
+    component: ProcurementOrderItemComponent
   }
 
 ];
