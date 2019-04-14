@@ -1,3 +1,13 @@
+.deleteBtn{
+  background-color: transparent;
+}
+
+.deleteBtn img{
+  width: 15%;
+  height: 70px;
+}
+
+
 .machineBoard{
     background: rgb(250, 255, 238);
     display: inline-table;

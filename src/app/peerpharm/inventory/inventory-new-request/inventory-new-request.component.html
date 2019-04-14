@@ -69,9 +69,10 @@
             </form>
 
             <form class="form-horizontal" [formGroup]="itemLine" >
+                <div class="col-sm-1"></div>
 
-                <div class="form-group row">
-                    <label class="col-sm-3 text-right control-label col-form-label">Request list:</label>
+                <div class="form-group row col-sm-9">
+                    <label class="col-sm-2 text-right control-label col-form-label">Request list:</label>
                     <div class="col-sm-2">
                         <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumInput">
                     </div>
@@ -81,6 +82,9 @@
                     <div class="col-sm-2">
                         <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
                     </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
+                    </div>
                     <div class="col-sm-1">
                         <button type="submit" (click)="addItemToRequsetList(itemLine.value)" style="cursor: pointer;">
                             <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
@@ -89,8 +93,8 @@
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-7">
+                <div class="col-sm-1"></div>
+                    <div class="col-sm-9">
                         <table class='table'>
                             <thead class='bg-info text-white'>
                               <tr>
@@ -99,6 +103,7 @@
                                 <th>Item name</th>
                                 <th>Amount</th>
                                 <th>Related Order</th>
+                                <th>Remarks</th>
                                 <th></th>
                               </tr>
                             </thead>
@@ -109,6 +114,7 @@
                                 <td>{{reqItem.itemName}}</td>
                                 <td>{{reqItem.amount}}</td>
                                 <td>{{reqItem.relatedOrder}}</td>
+                                <td>{{reqItem.remarks}}</td>
                                 <td><img src="assets/images/delete.png" (click)="deleteRow(reqItem.itemNumber,reqItem.amount)"width="30px" style="cursor: pointer;"/></td>
                               </tr>
                             </ng-container>

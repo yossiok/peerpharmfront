@@ -43,8 +43,17 @@
         <ng-container *ngFor="let batch of batches; let i = index">
           <tr [style.background-color]="batch.color">
             <td style="width:5%;">{{i+1}}</td>
-            <td>{{batch.batchNumber}}</td>
-            <td>{{batch.produced}}</td>
+            
+            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.batchNumber}}</td>
+            <td *ngIf="batch._id===EditRowId">
+                <input #batchNumber type='text' [value]="batch.batchNumber" style='width:170px'>
+            </td>
+
+            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.produced}}</td>
+            <td *ngIf="batch._id===EditRowId">
+                <input #batchNumber type='text' [value]="batch.produced" style='width:170px'>
+            </td>
+
             <td style="width:15%;">{{batch.itemName}}</td>
             <td>{{batch.ph}}</td>
             <td>{{batch.weightKg}} / {{batch.weightQtyLeft}}</td>

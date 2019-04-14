@@ -31,6 +31,8 @@ import { NotificationComponent } from './notification/notification.component';
 import { ProcurementOrderItemBalanceComponent} from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
 import { TwoFactor } from '../guards/twofactor.guard';
 
+import { ProcurementOrdersComponent} from './procurement/procumentOrders/procurementOrders.component';
+import { ProcurementOrderItemComponent} from './procurement/procumentOrderItem/procurementOrderItem.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -238,6 +240,27 @@ export const PeerPharmRputs: Routes =[
       title : 'Procurement Order Item Balance'
     },
     component: ProcurementOrderItemBalanceComponent
+  },
+  {
+    path :'procurement/procurementOrders',
+    data :{
+      title : 'Procurement Orders'
+    },
+    component: ProcurementOrdersComponent
+  },
+  {
+    path : 'procurement/procurementOrderItems/:orderNumber',
+    data : {
+      title : 'Procurement Order Items'
+    },
+    component: ProcurementOrderItemComponent
+  },
+  {
+    path : 'procurement/procurementOrderItems',
+    data : {
+      title : 'Procurement Order Items'
+    },
+    component: ProcurementOrderItemComponent
   }
 
 ];

@@ -44,7 +44,8 @@ import { InventoryRequestsComponent } from './inventory/inventory-requests/inven
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import { NotificationComponent } from './notification/notification.component';
 import { ProcurementOrderItemBalanceComponent } from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
-
+import { ProcurementOrdersComponent } from './procurement/procumentOrders/procurementOrders.component';
+import { ProcurementOrderItemComponent } from './procurement/procumentOrderItem/procurementOrderItem.component';
 
 import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -163,6 +164,8 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
     ItemDocumentsComponent,
     NotificationComponent,
     ProcurementOrderItemBalanceComponent,
+    ProcurementOrdersComponent,
+    ProcurementOrderItemComponent,
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
