@@ -55,6 +55,13 @@ export class AuthService {
     return   <Observable<boolean>> this.httpClient.post((this.baseUrl+"login"), userObj,this.httpOptions);
   }
 
+  
+  loginWith2WayKey(onetime:string):Observable<any>
+  {
+
+    return     this.httpClient.get(this.baseUrl+"auth/2way/"+onetime);
+  }
+
 
 
 

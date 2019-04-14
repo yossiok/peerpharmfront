@@ -1,5 +1,6 @@
 import { Component, Injectable, Directive, TemplateRef, EventEmitter } from '@angular/core';
 import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from './auth.service';
 
 /**
  * Options passed when opening a confirmation modal
@@ -72,14 +73,14 @@ export class ConfirmService {
 @Component({
   selector: 'confirm-modal-component',
   template: `<div class="modal-header">
-  <h1>modall</h1>
+  <h1>Enter your secret one time key</h1>
     <button type="button" class="close" aria-label="Close" (click)="no()">
       <span aria-hidden="true">&times;</span>
     </button>
-    <h4  class="modal-title">{{ options.title}}</h4>
+    <h4  class="modal-title"></h4>
   </div>
   <div class="modal-body">
-    <p>{{ options.message }}</p>
+   <input [(ngModel)]="onetime" />
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-danger" (click)="yes()">Yes</button>
@@ -89,15 +90,28 @@ export class ConfirmService {
 export class ConfirmModalComponent {
 
   options: ConfirmOptions;
+  onetime:string="";
 
-  constructor(private state: ConfirmState, private confService:ConfirmService) {
+  constructor(private state: ConfirmState, private confService:ConfirmService, private authService:AuthService) {
     this.options = state.options;
 
   }
 
   yes() {
-  this.confService.userAnserEventEmitter.emit(true);
-  this.state.modal.dismiss();
+this.authService.loginWith2WayKey(this.onetime).subscribe(data=>
+  {
+    if(data.msg==true)
+    {
+      this.confService.userAnserEventEmitter.emit(true);
+      this.state.modal.dismiss();
+    }
+    else
+    {
+      this.confService.userAnserEventEmitter.emit(false);
+      this.state.modal.dismiss();
+    }
+  })
+
   }
 
   no() {
