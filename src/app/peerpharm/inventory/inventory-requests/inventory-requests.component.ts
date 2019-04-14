@@ -33,14 +33,14 @@ export class InventoryRequestsComponent implements OnInit {
     this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
         console.log(res);
         res.forEach(InvRequest => {
-
-         InvRequest.reqList.map(item => {
-            item.isSelected=false;
-            if(item.amount <= item.qntSupplied) item.cmptLineColor= 'lightgreen';
-          });
+          if(InvRequest.reqList!=null && InvRequest.reqList!=undefined){
+            InvRequest.reqList.map(item => {
+              item.isSelected=false;
+              if(item.amount <= item.qntSupplied) item.cmptLineColor= 'lightgreen';
+            });
+          }
         });
         this.ordersDemands=res;
-        debugger
         this.newReqIncoming=false;
     });
   
