@@ -59,6 +59,7 @@ export class OrderdetailsComponent implements OnInit {
   item: any;
   number; orderDate; deliveryDate; costumer; costumerInternalId; remarks; orderId; orderStage; stageColor;
   chosenType: string;
+  chosenMkpType: string;
   detailsArr: any[];
   components: any[];
   multi: boolean = false;
@@ -468,7 +469,24 @@ getOrderItems(singleLine): void {
     });
   }
 
-
+  setMkpSchedule(item, type , date, remarks){
+    // we should check what about type = '' 
+    if(item.type=='mkp'){
+      if(date!=''){
+        if(type!=''){
+          // set obj to send
+          //send to mkp.schedule.controller.js 
+        }else{
+        this.toastSrv.error('Please choose makeup type');
+        }
+      }else{
+        this.toastSrv.error('Invalid Date');
+       }
+    }else{
+     this.toastSrv.error('Product is not Make-Up type');
+    }
+    debugger
+  }
 
   setSchedule(item, type) {
     console.log(item);

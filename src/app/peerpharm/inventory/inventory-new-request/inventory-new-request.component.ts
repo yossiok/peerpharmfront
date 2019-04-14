@@ -116,10 +116,10 @@ export class InventoryNewRequestComponent implements OnInit {
           itemsType: 'components', 
           reqStatus:'open',
           qntSupplied: 0,
-          userName: this.userName,
+          userName: this.authService.loggedInUser.firstName +" "+this.authService.loggedInUser.lastName,
         }
         this.inventoryReqService.addNewRequest(this.invReq).subscribe(res => {
-          if(res){
+          if(res!='reqListNull'){
             this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" warehouse.");
             //error("Failed pleae finish filling the form");
             this.reqList=[];
@@ -129,6 +129,8 @@ export class InventoryNewRequestComponent implements OnInit {
             this.inventoryReqForm.controls['reqList'].reset();
             console.log('this.inventoryReqForm.value.reqList\n',this.inventoryReqForm.value.reqList);
 
+          }else{
+            this.toastSrv.error("Something went wrong! \nPlease send request again.");
           }
         });
       }else if(this.reqList.length==0){
@@ -162,7 +164,6 @@ export class InventoryNewRequestComponent implements OnInit {
           this.reqItemToAdd= reqListItem; // class inventoryReqItem
           if(reqItemLine.relatedOrder!=""){
             await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
-              debugger
               if(res.length>0){
                 validOrderN=true;
                  //validating item number

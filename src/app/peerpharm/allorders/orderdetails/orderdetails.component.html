@@ -164,7 +164,9 @@
             </tr>
             <tr *ngFor="let det of detailsArr">
               <td></td>
-              <td></td>
+              <td>
+                <h5>Set Printing Schedule: </h5>
+              </td>
               <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button class='btn btn-info'  (click)="openDetails(content, item, det)">print</button></td>
               <td></td>
               <td></td>
@@ -174,7 +176,7 @@
             <tr>
               <td></td>
               <td>
-                <h5>Set Schedule: </h5>
+                <h5>Set Filling Schedule: </h5>
               </td>
               <td><input #date type='date'></td>
               <td><input #shift type='text' placeholder="Shift"></td>
@@ -185,6 +187,20 @@
                 <input type="radio" name="type" #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
               </td>
               <td><button (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <h5>Set MKP Production Schedule: </h5>
+              </td>
+              <td><input #mkpProdDate type='date'></td>
+              <td><input #mkpProdRemarks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
+              <td></td>
+              <td>
+                <input type="radio" name="mkpType" #mkpType value='liquid' [(ngModel)]="chosenMkpType" checked>Liquid<br>
+                <input type="radio" name="mkpType" #mkpType value='powder' [(ngModel)]="chosenMkpType">Powder<br>
+              </td>
+              <td><button (click)='setMkpSchedule(item ,mkpType.value, mkpProdDate.value, mkpProdRemarks.value)' class='btn btn-success'>Set</button></td>
             </tr>
           </table>
 
