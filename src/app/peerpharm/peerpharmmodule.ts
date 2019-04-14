@@ -173,7 +173,7 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
     HeadingsWHPipe,
     PackingComponent,
     OrderStagePipe,
-    AddFormulePhaseComponent,
+    AddFormulePhaseComponent
 
   ],
   providers: [ OrdersService, HttpClientModule],

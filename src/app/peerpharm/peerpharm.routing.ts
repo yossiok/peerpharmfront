@@ -29,6 +29,8 @@ import { PackingComponent } from './schedule/packing/packing.component';
 import { BarcodePrintComponent } from './schedule/barcode-print/barcode-print.component';
 import { NotificationComponent } from './notification/notification.component';
 import { ProcurementOrderItemBalanceComponent} from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
+import { TwoFactor } from '../guards/twofactor.guard';
+
 import { ProcurementOrdersComponent} from './procurement/procumentOrders/procurementOrders.component';
 import { ProcurementOrderItemComponent} from './procurement/procumentOrderItem/procurementOrderItem.component';
 
@@ -159,7 +161,8 @@ export const PeerPharmRputs: Routes =[
     data: {
       title: 'add-formule'
     },
-    component: FormuleComponent
+    component: FormuleComponent,
+    canActivate:[TwoFactor]
   },
   {
     path :'production/lines',
