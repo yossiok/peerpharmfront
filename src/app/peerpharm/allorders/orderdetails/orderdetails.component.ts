@@ -469,11 +469,30 @@ getOrderItems(singleLine): void {
     });
   }
 
-  setMkpSchedule(item, type , date, remarks){
+  setMkpSchedule(item, mkpType , date, remarks){
     // we should check what about type = '' 
-    if(item.type=='mkp'){
       if(date!=''){
-        if(type!=''){
+        let schedDate=  moment(date).format();
+        if(mkpType!=''){
+          let obj={
+            itemFullName: item.discription,
+            itemNumber: item.itemNumber,
+            orderItemId:item._id,
+            orderId: item.orderId,
+            orderNumber: item.orderNumber,
+            quantity: item.quantity,
+            quantityProduced: item.quantityProduced,
+            mkpType:mkpType,
+            date:date,
+            orderItemRemarks:remarks,
+          }
+          this.scheduleService.setNewMkpProductionSchedule(obj).subscribe(res => {
+            if(res!='error'){
+
+            }else{
+              this.toastSrv.error("Something went wrong!\nCan't set item to makeup production schedule.");
+            }
+          });
           // set obj to send
           //send to mkp.schedule.controller.js 
         }else{
@@ -482,11 +501,8 @@ getOrderItems(singleLine): void {
       }else{
         this.toastSrv.error('Invalid Date');
        }
-    }else{
-     this.toastSrv.error('Product is not Make-Up type');
     }
-    debugger
-  }
+  
 
   setSchedule(item, type) {
     console.log(item);

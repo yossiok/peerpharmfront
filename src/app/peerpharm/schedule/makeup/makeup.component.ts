@@ -46,10 +46,13 @@ export class MakeupComponent implements OnInit {
   ngOnInit() {
     this.today = new Date();
     this.today = moment(this.today).format("YYYY-MM-DD");
+    this.getAllOpenMkpSchedule();
     this.getDailySchedule(this.today); 
   }
 
-
+  getAllOpenMkpSchedule(){
+    
+  }
   
   writeScheduleData(){
     console.log(this.scheduleLine);
