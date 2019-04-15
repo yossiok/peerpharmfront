@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ScheduleService } from '../../../services/schedule.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { OrdersService } from 'src/app/services/orders.service';
@@ -13,6 +13,7 @@ import * as moment from 'moment';
 export class MakeupComponent implements OnInit {
   scheduleData:any[];
   EditRowId:any="";
+  currentType: string = "";
   buttonColor:string='silver';
   today: any;
 
@@ -26,6 +27,10 @@ export class MakeupComponent implements OnInit {
   @ViewChild('aaaa') date:ElementRef; 
   @ViewChild('marks') marks:ElementRef;
   @ViewChild('id') id:ElementRef; 
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+}
 
   scheduleLine = {
     positionN: '',
@@ -46,12 +51,17 @@ export class MakeupComponent implements OnInit {
   ngOnInit() {
     this.today = new Date();
     this.today = moment(this.today).format("YYYY-MM-DD");
-    this.getAllOpenMkpSchedule();
+    // this.getAllOpenMkpSchedule();
     this.getDailySchedule(this.today); 
   }
 
   getAllOpenMkpSchedule(){
     
+    this.scheduleService.getOpenMkpSchedule().subscribe(res=>{
+      console.log(res);     
+      this.scheduleData=res;
+    
+    });
   }
   
   writeScheduleData(){
@@ -96,16 +106,18 @@ export class MakeupComponent implements OnInit {
   // }
 
 
-  edit(id, type) {
-    this.EditRowId = id;
-  }
-  getDailySchedule(today){
-    this.scheduleService.getOpenMkpSchedule().subscribe(res=>{
+
+  getDailySchedule(dateStr){
+    console.log(dateStr); 
+    let date= new Date(dateStr);    
+    console.log(date); 
+    this.scheduleService.getMkpScheduleByDate(date).subscribe(res=>{
       console.log(res);     
        
       this.scheduleData=res;
     
     });
+    
     // this.scheduleService.getScheduleByDate(today).subscribe(res => {
     //   res.map(sced => {
     //     sced.color = 'white';
@@ -125,7 +137,22 @@ export class MakeupComponent implements OnInit {
     // });
   }
 
-
+  schedDateChanged(date) {
+    console.log(date);
+    this.scheduleService.getMkpScheduleByDate(date).subscribe(res => {
+      res.map(sced => {
+        if (sced.status == 'done') sced.color = 'Aquamarine';
+        if (sced.status == 'beingProduced') sced.color = 'yellow';
+        if (sced.status == 'partialDone') sced.color = '#ff7272';
+        if (sced.status == 'new') sced.color = 'white';
+        sced.date = moment(sced.date).format('YYYY-MM-DD');
+      });
+      this.scheduleData = res;
+    });
+  }
+    edit(id) {
+    this.EditRowId = id;
+  }
   
   updateSchedule(){
     console.log(this.date.nativeElement.value);

@@ -1,7 +1,101 @@
-<input  type ='date' #date [(ngModel)]='today' (change)="dateChanged(date.value)">
+
+<input  type ='date' #date [(ngModel)]='today' (change)="schedDateChanged(date.value)">
 
 
-    <table>
+<table class='table table-fixed'>
+    <thead class='bg-info text-white'  >
+      <tr>
+        <th style="width:3%;"></th>
+        <!-- <th style="width:3%;">
+            <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">
+        </th> -->
+        <th style="padding:5px">Order Number</th>
+        <th style="width:6%; padding:5px">Item Number</th>
+        <th style="width:15%; padding:5px">Item Name</th>
+        <th style="width:15%; padding:5px">Item Important Remarks</th>
+        <th style="padding:5px">Units</th>
+        <th style="padding:5px">Date</th>
+        <th style="padding:5px">Quantity (Kg)</th>
+        <th style="padding:5px">Quantity Produced (Kg)</th>
+        <th style="padding:5px">Batch</th>
+        <th style="width:10%; padding:5px">Reamrks</th>
+        <th style="width:5%;"></th>
+        <th style="width:5%;"></th>
+      </tr>
+    </thead>
+    <tbody class='table-hover'>
+        <!-- 
+    orderN: String,
+    itemN: String,
+    mkpType: String,
+    productName: String,
+    material: String,
+    materialNumber: String,
+    baseSubstance: String,
+    //itemDetails
+    name: String,
+    subName: String,
+    discriptionK: String,
+    proRemarks: String,
+    impRemarks: String,
+    netWeightK: Number,
+    costumer: String,
+    costumerId: String,
+    qty: Number,
+    qtyWeightKg: Number,
+    qtyProduced: Number,
+    qtyProducedWeightKg: Number,
+    batch: String,    
+    date: Date,
+    dateRdy: Date,
+    marks: String,
+    status: String,
+    setBy: String,
+         -->
+      <tr *ngFor="let sched of scheduleData; let i = index" style="height: 10%;" [style.background-color]="sched.color" (blur)="saveEdit(false, '')" >
+            <td style="width:3%;">{{i+1}}</td>
+            <td (click)="edit('')" >
+                {{order.orderNumber}}
+            </td>
+            <td style="width:6%;" (click)="edit(sched._id)">{{sched.itemN}}</td>      
+            <td style="width:15%;" (click)="edit(sched._id)">{{sched.productName}}</td>    
+            <td style="width:10%; color: red;" (click)="edit(sched._id)">{{sched.impRemarks}}</td>    
+            <td  (click)="edit(sched._id)">{{sched.qty}}</td>    
+            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.date}}</td>
+            <td (click)="edit(sched._id)">{{sched.qtyWeightKg}}</td>
+            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.qtyProducedWeightKg}}</td>
+            <td *ngIf="sched._id===EditRowId">
+                <input #schedLineKgProduced type='number' [value]="sched.qtyProducedWeightKg" >
+            </td>
+      
+            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.batch}}</td>
+            <td style="width:15%;" *ngIf="sched._id===EditRowId">
+              <input #schedLineBatch type='text' [value]="sched.batch" style='width:170px'>
+            </td>
+
+            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.marks}}</td>
+            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.status}}</td>
+  
+            <td style="width:15%;" *ngIf="sched._id===EditRowId">
+              <input #orderRemarks type='text' [value]="sched.orderRemarks" style='width:170px'>
+            </td>
+            <td style="width:15%;" *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.schedRemarks}}</td>
+      
+            <td style="width: 5%"></td>
+            <td style="width: 5%" > 
+              <!--<img *ngIf="sched._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(sched)">
+              <img *ngIf="sched._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, sched._id)">
+              <img *ngIf="sched._id===EditRowId" src='/assets/images/update2.png' style='width:30px; cursor: pointer' (click)="saveEdit()">-->
+              <i class="ti-trash text-danger  m-r-10" *ngIf="sched._id!==EditRowId"  (click)="deleteOrder(sched)" style="cursor:pointer" ></i>&nbsp;
+              <i class="ti-check text-success m-r-10" *ngIf="sched._id!==EditRowId"  (click)="saveEdit(true, sched._id)" style="cursor:pointer" ></i>
+              <i class="ti-save text-success m-r-10" *ngIf="sched._id===EditRowId"  (click)="saveEdit(false, sched._id)" style="cursor:pointer" ></i>
+           </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+    <!-- <table>
         <thead class='bg-info text-white'>
       <tr align='center'>
           <th><b>P</b></th>
@@ -22,7 +116,7 @@
 
       <tr id='inputTr'>
          <td></td>
-         <td><input   [(ngModel)]="scheduleLine.orderN" #ord  onfocusout="setCostumer()" (focusout)="setOrderDetails(ord.value)" ></td>
+         <td><input   [(ngModel)]="scheduleLine.schedN" #ord  onfocusout="setCostumer()" (focusout)="setOrderDetails(ord.value)" ></td>
          <td><input   [(ngModel)]="scheduleLine.itemN"  #itm  onfocusout="setItemDetails()"   (focusout)="setItemDetails(itm.value)"></td>
          <td><input   [(ngModel)]="scheduleLine.productName"   ></td>
          <td><input   [(ngModel)]="scheduleLine.volume"></td>
@@ -72,4 +166,4 @@
             </td>
         </tr>
     </tbody>
-    </table>
+    </table> -->

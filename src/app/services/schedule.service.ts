@@ -110,6 +110,7 @@ export class ScheduleService {
     let url = this.baseUrl + "mkpSchedule?date=" + date;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  
 
   setNewMkpSchedule(schedule): Observable<any> {
     let url = this.baseUrl + "mkpSchedule/add";

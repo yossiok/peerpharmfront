@@ -15,6 +15,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { PlateService } from 'src/app/services/plate.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import {ExcelService} from '../../../services/excel.service';
+import { AuthService } from '../../../services/auth.service';
 
 
 
@@ -109,6 +110,7 @@ export class OrderdetailsComponent implements OnInit {
   cartonList: Array<any>=[];
   platesList: Array<any>=[];
   itemTreeRemarks: Array<any>=[];
+  ordersData: Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -128,7 +130,7 @@ export class OrderdetailsComponent implements OnInit {
 }
   constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, 
-     private costumerSrevice: CostumersService, private excelService:ExcelService ) { }
+     private costumerSrevice: CostumersService, private excelService:ExcelService, private authService: AuthService ) { }
 
 
     exportAsXLSX(data) {
@@ -170,9 +172,10 @@ export class OrderdetailsComponent implements OnInit {
             console.log(res)
             var numArr = this.number.split(",").filter(x=>x!="");
             if(numArr.length>1){ //multi orders:  came through load button
-              this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async ordersIds => {
-                if(ordersIds.length>1){
-                  this.orderService.getMultiOrdersIds(ordersIds).subscribe(async orderItems => {
+              this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async orders => {
+                if(orders.ordersIds.length>1){
+                  this.ordersData = orders.ordersData;
+                  this.orderService.getMultiOrdersIds(orders.ordersIds).subscribe(async orderItems => {
                     orderItems.forEach(item => {
                       item.isExpand = '+';
                       item.colorBtn = '#33FFE0';
@@ -472,8 +475,15 @@ getOrderItems(singleLine): void {
   setMkpSchedule(item, mkpType , date, remarks){
     // we should check what about type = '' 
       if(date!=''){
-        let schedDate=  moment(date).format();
+        
         if(mkpType!=''){
+          let costumer= this.ordersData.map(order=> {
+            if(order.orderNumber==item.orderNumber) {
+              return {costumerName: order.costumer,costumerId:order.costumerInternalId }
+            }
+           })[0];
+           if(costumer.costumerId == undefined) costumer.costumerId= ''; 
+           if(costumer.costumerId == undefined) costumer.costumerId= ''; 
           let obj={
             itemFullName: item.discription,
             itemNumber: item.itemNumber,
@@ -483,12 +493,16 @@ getOrderItems(singleLine): void {
             quantity: item.quantity,
             quantityProduced: item.quantityProduced,
             mkpType:mkpType,
-            date:date,
+            date:new Date(date),
             orderItemRemarks:remarks,
+            userName: this.authService.loggedInUser.firstName+' '+this.authService.loggedInUser.lastName,
+            costumerName:costumer.costumerName,
+            costumerId:costumer.costumerId,
           }
+          if (obj.quantityProduced == '') obj.quantityProduced = 0 ;
           this.scheduleService.setNewMkpProductionSchedule(obj).subscribe(res => {
-            if(res!='error'){
-
+            if(res.itemN){
+              this.toastSrv.success('Item sent to Mkp production schedule.');
             }else{
               this.toastSrv.error("Something went wrong!\nCan't set item to makeup production schedule.");
             }

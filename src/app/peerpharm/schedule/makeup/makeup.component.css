@@ -1,6 +1,6 @@
 
 
-div {
+/* div {
   float: left;
   margin-right: 5px;
   background-color: white;
@@ -9,8 +9,8 @@ div {
   border: 1;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-}
-div::selection {
+} */
+/* div::selection {
   background-color: blue;
 }
 .btnImg {
@@ -50,4 +50,56 @@ td input{
 
 tbody{
   text-align: center;
+} */
+
+
+/* FIXED TABLE */
+.table-fixed thead {
+  width: 100%;
+  display: block;
+  }
+.table-fixed tbody {
+  height: 700px;
+  overflow-y: auto;
+  width: 100%;
+  display: block;
+}
+
+.table-fixed th{
+  width:8%;
+  /* width:8%; */
+  display: inline-block;
+  border: none;
+}
+.table-fixed td{
+  width:8%;
+  /* width:8%; */
+  display: inline-block;
+  border-bottom: none;
+  /* border-left: 1px black solid;     */
+}
+.table-fixed tr{
+  width: 100%;
+  display: block;
+  font-size: 18px;
+}
+
+
+.table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
+  width:8%;
+  /* width:8%; */
+  display: inline-block;
+  border-bottom: none;
+  font-family: "Times New Roman", Times, serif;
+}
+
+
+input[type=checkbox]
+{
+/* Double-sized Checkboxes */
+-ms-transform: scale(2); /* IE */
+-moz-transform: scale(2); /* FF */
+-webkit-transform: scale(2); /* Safari and Chrome */
+-o-transform: scale(2); /* Opera */
+padding: 10px;
 }
