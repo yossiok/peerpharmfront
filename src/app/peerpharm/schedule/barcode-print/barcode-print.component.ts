@@ -233,8 +233,11 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printBarcode() {
+    document.getElementById("print-section").setAttribute('style' , 'margin: 0px ; padding: 0px');
+
     const prtContent = document.getElementById("print-section").innerHTML;
     const barcodeObj = { allBarcode: prtContent };
+    debugger
     this.barcodePrintService.addBarcodePrint(barcodeObj).subscribe(data => {
       console.log(data);
       this.printBarcodeId = data.id;

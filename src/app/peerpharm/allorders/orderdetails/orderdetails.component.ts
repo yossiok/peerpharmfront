@@ -146,23 +146,24 @@ export class OrderdetailsComponent implements OnInit {
       if(res==true || this.number=="00"){
         this.showingAllOrders=true;
         this.loadData=true;
-        this.orderService.getOpenOrdersItems().subscribe(async orderItems=>{
+        this.orderService.getOpenOrdersItems().subscribe(async orders=>{
           this.loadData=false;
           this.multi = true;
-          orderItems.forEach(item => {
+          orders.orderItems.forEach(item => {
             item.isExpand = '+';
             item.colorBtn = '#33FFE0';
           });
-          await this.colorOrderItemsLines(orderItems).then(data=>{   });
-          this.ordersItems = orderItems;
-          this.ordersItemsCopy = orderItems;
+          this.ordersData= orders.ordersData;
+          await this.colorOrderItemsLines(orders.orderItems).then(data=>{   });
+          this.ordersItems = orders.orderItems;
+          this.ordersItemsCopy = orders.orderItems;
           this.ordersItems.map(item=>{
             item.itemFullName = item.itemNumber + " "  +item.discription;
           })
           //this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
           //this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
-          console.log(orderItems)
+          console.log(orders.orderItems)
         });
 
       }
@@ -263,6 +264,7 @@ updateSingleOrderStage(ev){
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+      this.ordersData=res;
       if(!this.multi) {
         this.orderStage=res[0].stage;
         this.returnStageColor(this.orderStage);
@@ -477,12 +479,12 @@ getOrderItems(singleLine): void {
       if(date!=''){
         
         if(mkpType!=''){
+          debugger
           let costumer= this.ordersData.map(order=> {
             if(order.orderNumber==item.orderNumber) {
               return {costumerName: order.costumer,costumerId:order.costumerInternalId }
             }
            })[0];
-           if(costumer.costumerId == undefined) costumer.costumerId= ''; 
            if(costumer.costumerId == undefined) costumer.costumerId= ''; 
           let obj={
             itemFullName: item.discription,
@@ -503,7 +505,10 @@ getOrderItems(singleLine): void {
           this.scheduleService.setNewMkpProductionSchedule(obj).subscribe(res => {
             if(res.itemN){
               this.toastSrv.success('Item sent to Mkp production schedule.');
-            }else{
+            }else if(res=='No netWeightK'){
+              alert('לפריט מספר '+obj.itemNumber+'\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט');
+            }
+            else{
               this.toastSrv.error("Something went wrong!\nCan't set item to makeup production schedule.");
             }
           });
@@ -788,7 +793,6 @@ getOrderItems(singleLine): void {
 
 
   returnStageColor(stage){
-    debugger
     if(stage=="new"){
       this.stageColor="white";
     }else if(stage=="partialCmpt"){
