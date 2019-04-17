@@ -33,6 +33,7 @@ import {ProductionScheduleComponent} from './production/production-schedule/prod
 import {ScheduleOrdersComponent} from './production/production-schedule/schedule-orders/schedule-orders.component';
 import {ContentComponent} from './taskboard/core/content/content.component'
 import {BatchesComponent} from './batches/batches.component'
+import {BatchesMkpComponent} from './batches/batches-mkp/batches-mkp.component'
 import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component';
 import {PrintingComponent} from './schedule/printing/printing.component';
 import { MakeupComponent } from './schedule/makeup/makeup.component';
@@ -155,6 +156,7 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
     SubTaskCardComponent,
     CreateBoardComponent,
     BatchesComponent,
+    BatchesMkpComponent,
     CostumersListComponent,
     PrintingComponent,
     MakeupComponent,

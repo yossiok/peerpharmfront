@@ -116,6 +116,9 @@ export class BatchesComponent implements OnInit {
     }
   }
 
+  addNewBatch(){
+    
+  }
 
 
   exportAsXLSX(data) {

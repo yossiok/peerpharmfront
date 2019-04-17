@@ -7,6 +7,7 @@ import { DatePipe } from "@angular/common";
 import { Schedule } from './../models/schedule';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-schedule",
@@ -69,7 +70,7 @@ export class ScheduleComponent implements OnInit {
     private scheduleService: ScheduleService,
     private itemSer: ItemsService,
     private orderSer: OrdersService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit() {
@@ -94,6 +95,8 @@ export class ScheduleComponent implements OnInit {
   }
 
   writeScheduleData() {
+    if(this.orderN.nativeElement.value!=''){
+
     console.log(this.scheduleLine);
     if (this.scheduleLine.mkp == 'mkp') {
       this.scheduleLine.productionLine = '6';
@@ -125,6 +128,9 @@ export class ScheduleComponent implements OnInit {
         this.scheduleLine.productionLine = '';
         this.scheduleLine.pLinePositionN = 999;
       });
+    }else{
+      alert('מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.');
+    }
   }
 
   dateChanged(date) {
@@ -208,62 +214,67 @@ export class ScheduleComponent implements OnInit {
 
   updateSchedule() {
     debugger
-    this.EditRowId;
-    this.scheduleData;
-    let scdLneInfo=
-      this.scheduleData.filter(
-        sced => {
-          sced._id == this.EditRowId
-        } );
-    let updateOrderItemDate= (scdLneInfo[0].date == this.date.nativeElement.value );
+    if(this.orderN.nativeElement.value!=''){
+      this.EditRowId;
+      this.scheduleData;
+      let scdLneInfo=
+        this.scheduleData.filter(
+          sced => {
+            sced._id == this.EditRowId
+          } );
+      let updateOrderItemDate= (scdLneInfo[0].date == this.date.nativeElement.value );
+  
+      debugger
+      this.date.nativeElement.value
+  
+      console.log(this.date.nativeElement.value);
+      console.log(this.orderN.nativeElement.value);
+      console.log(this.item.nativeElement.value);
+      console.log(this.positionN.nativeElement.value);
+      console.log(this.costumer.nativeElement.value);
+      console.log(this.batch.nativeElement.value);
+      console.log(this.packageP.nativeElement.value);
+      console.log(this.marks.nativeElement.value);
+      console.log(this.shift.nativeElement.value);
+      console.log(this.mkp.nativeElement.value);
+      console.log(this.qty.nativeElement.value);
+  
+      let scheduleToUpdate: any = {
+        scheduleId: this.id.nativeElement.value,
+        positionN: this.positionN.nativeElement.value,
+        orderN: this.orderN.nativeElement.value,
+        item: this.item.nativeElement.value,
+        costumer: this.costumer.nativeElement.value,
+        productName: this.productName.nativeElement.value,
+        batch: this.batch.nativeElement.value,
+        packageP: this.packageP.nativeElement.value,
+        qty: this.qty.nativeElement.value,
+        qtyRdy: '',
+        date: this.date.nativeElement.value,
+        marks: this.marks.nativeElement.value,
+        shift: this.shift.nativeElement.value,
+        mkp: this.currentType
+      };
+      console.log(scheduleToUpdate);
+      this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
+        this.EditRowId = 0;
+        scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
+          'YYYY-MM-DD'
+        );
+        this.scheduleData[
+          this.scheduleData.findIndex(
+            sced => sced._id == scheduleToUpdate.scheduleId
+          )
+        ] = scheduleToUpdate;
+        this.editRadioBtnType = '';
+        if(updateOrderItemDate) {
+          //update orderItemSchedule
+        }
+      });
+    }else{
+      alert('מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.');
+    }
 
-    debugger
-    this.date.nativeElement.value
-
-    console.log(this.date.nativeElement.value);
-    console.log(this.orderN.nativeElement.value);
-    console.log(this.item.nativeElement.value);
-    console.log(this.positionN.nativeElement.value);
-    console.log(this.costumer.nativeElement.value);
-    console.log(this.batch.nativeElement.value);
-    console.log(this.packageP.nativeElement.value);
-    console.log(this.marks.nativeElement.value);
-    console.log(this.shift.nativeElement.value);
-    console.log(this.mkp.nativeElement.value);
-    console.log(this.qty.nativeElement.value);
-
-    let scheduleToUpdate: any = {
-      scheduleId: this.id.nativeElement.value,
-      positionN: this.positionN.nativeElement.value,
-      orderN: this.orderN.nativeElement.value,
-      item: this.item.nativeElement.value,
-      costumer: this.costumer.nativeElement.value,
-      productName: this.productName.nativeElement.value,
-      batch: this.batch.nativeElement.value,
-      packageP: this.packageP.nativeElement.value,
-      qty: this.qty.nativeElement.value,
-      qtyRdy: '',
-      date: this.date.nativeElement.value,
-      marks: this.marks.nativeElement.value,
-      shift: this.shift.nativeElement.value,
-      mkp: this.currentType
-    };
-    console.log(scheduleToUpdate);
-    this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
-      this.EditRowId = 0;
-      scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
-        'YYYY-MM-DD'
-      );
-      this.scheduleData[
-        this.scheduleData.findIndex(
-          sced => sced._id == scheduleToUpdate.scheduleId
-        )
-      ] = scheduleToUpdate;
-      this.editRadioBtnType = '';
-      if(updateOrderItemDate) {
-        //update orderItemSchedule
-      }
-    });
   }
 
   setItemDetails(itemNumber) {

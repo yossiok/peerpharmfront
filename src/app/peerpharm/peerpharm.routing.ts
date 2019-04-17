@@ -33,6 +33,7 @@ import { TwoFactor } from '../guards/twofactor.guard';
 
 import { ProcurementOrdersComponent} from './procurement/procumentOrders/procurementOrders.component';
 import { ProcurementOrderItemComponent} from './procurement/procumentOrderItem/procurementOrderItem.component';
+import { BatchesMkpComponent } from './batches/batches-mkp/batches-mkp.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -162,7 +163,7 @@ export const PeerPharmRputs: Routes =[
       title: 'add-formule'
     },
     component: FormuleComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',
@@ -198,8 +199,14 @@ export const PeerPharmRputs: Routes =[
       title : 'Batches List'
     },
     component:BatchesComponent
-  }
-  ,
+  },
+  {
+    path :'batches/mkpBatchesList',
+    data :{
+      title : 'Make-Up Batches List'
+    },
+    component:BatchesMkpComponent
+  },
   {
     path :'costumers/costumers_list',
     data :{
