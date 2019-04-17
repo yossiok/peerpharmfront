@@ -243,7 +243,7 @@ export class BarcodePrintComponent implements OnInit {
       this.printBarcodeId = data.id;
       console.log(this.printBarcodeId);
       // this.barcodeUrl = 'http://localhost/old/newBarcode.html?_id=' + this.printBarcodeId; //localhost
-      this.barcodeUrl = 'http://http://peerpharmsystem.com/old/newBarcode.html?_id=' + this.printBarcodeId; // production 18.221.58.99
+      this.barcodeUrl = 'http://peerpharmsystem.com/old/newBarcode.html?_id=' + this.printBarcodeId; // production 18.221.58.99
     });
 
   }
