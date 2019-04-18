@@ -24,7 +24,7 @@ export class BarcodePrintComponent implements OnInit {
   closeResult: string;
   itemData: any;
   pcsCarton: string;
-  volumeK: number;
+  volumeK: string;
   barcodeK: string;
   netoW: number;
   grossW: number;
@@ -36,11 +36,12 @@ export class BarcodePrintComponent implements OnInit {
   showBatchFlag = true;
   showExpFlag = true;
   amountOfStickersArr: any[] = [];
+  stickerPrintView: any[] = [];
   printBarkod: any;
   barcodeElementType = "svg";
   barcodeFormat = "CODE128";
   barcodeWidth = 2.3;
-  barcodeHeight = 150;
+  barcodeHeight = 75;
   barcodeFontSize = 28;
   barcodeFlat = true;
   printBarcodeId: string;
@@ -90,6 +91,12 @@ export class BarcodePrintComponent implements OnInit {
 
   onSubmit(): void {
     const newSchedule = this.printBarcodeForm.value;
+  }
+
+  clearPrintView(){
+    debugger
+    this.stickerPrintView=[];
+    this.amountOfStickersArr=[];
   }
 
   // Modal Functions
@@ -146,10 +153,9 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   initPrintScheduleForm() {
-    //  debugger;
     this.pcsCarton = this.itemData[0].PcsCarton.replace(/\D/g, "") + " Pcs";
     this.barcodeK = this.itemData[0].barcodeK;
-    this.volumeK = this.itemData[0].volumeKey;
+    this.volumeK = this.itemData[0].volumeKey+' ml';
     this.netoW = this.itemData[0].netWeightK;
     this.grossW = this.itemData[0].grossUnitWeightK;
 
@@ -204,6 +210,7 @@ export class BarcodePrintComponent implements OnInit {
     }
   }
 
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return "by pressing ESC";
@@ -216,13 +223,24 @@ export class BarcodePrintComponent implements OnInit {
 
   printSubmit() {
     this.amountOfStickersArr = [];
+    this.printBarcodeId=null;
+    this.showCustomerFlag = true;
+    this.showOrderNumFlag = true;
+    this.showItemFlag = true;
+    this.showBarcodeFlag = true;
+    this.showBatchFlag = true;
+    this.showExpFlag = true;
+
     this.printBarkod = this.printBarcodeForm.value;
     if (this.printBarkod.printQty > 0 && this.printBarkod.printQty != "") {
       for (let i = 0; i < this.printBarkod.printQty; i++) {
         this.amountOfStickersArr.push(this.printBarkod);
         this.create_table = "create_table"+i;
       }
+      this.stickerPrintView[0]=this.amountOfStickersArr[0];
+
       console.log(this.amountOfStickersArr);
+
     } else {
       this.toastSrv.error("Please enter amount of stickers");
     }
