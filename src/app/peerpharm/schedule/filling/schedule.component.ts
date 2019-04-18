@@ -95,7 +95,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   writeScheduleData() {
-    if(this.orderN.nativeElement.value!=''){
+    if(this.scheduleLine.orderN!=''){
 
     console.log(this.scheduleLine);
     if (this.scheduleLine.mkp == 'mkp') {
