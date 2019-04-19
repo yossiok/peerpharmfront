@@ -1,7 +1,7 @@
 import { AuthService } from './../../services/auth.service';
 import { debounceTime } from 'rxjs/operators';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router ,ActivatedRoute} from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { OverlayModule } from '@angular/cdk/overlay';
 
@@ -10,10 +10,11 @@ import { OverlayModule } from '@angular/cdk/overlay';
   templateUrl: './login.component.html',
   providers:[MatSnackBar, OverlayModule]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   username: string;
   password: string;
-  constructor(private auth: AuthService,   private router: Router, public snackBar: MatSnackBar) { }
+  redirectUrl:string="";
+  constructor(private auth: AuthService,   private router: Router, public snackBar: MatSnackBar, private activatedRoute:ActivatedRoute) { }
 
   loginform = true;
   recoverform = false;
@@ -27,12 +28,28 @@ export class LoginComponent {
     this.auth.login(loginfrm).subscribe((resp) => {
       if(resp)
       {
+        debugger;
+        if(this.redirectUrl&&this.redirectUrl!="")
+        {
+          debugger
+          this.router.navigate([this.redirectUrl]);
+        }
+        else
+        {
         this.router.navigate(['/#/peerpharm/allorders/orders']);
+        }
       }
       else{
         let snackBarRef = this.snackBar.open('Login failed please try again');
       }
     });
 
+  }
+  
+  ngOnInit()
+  {
+    this.activatedRoute.queryParams.subscribe(params => {
+     this.redirectUrl = params['redirectUrl']; 
+    });
   }
 }
