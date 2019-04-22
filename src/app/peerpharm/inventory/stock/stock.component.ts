@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
@@ -13,6 +13,7 @@ import { fstat } from 'fs';
 import { BatchesService } from 'src/app/services/batches.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 
 @Component({
@@ -51,6 +52,8 @@ export class StockComponent implements OnInit {
   openModal: boolean = false;
   openImgModal: boolean = false;
   openAmountsModal: boolean = false;
+  openProcurementModal: boolean = false;
+  procurementModalHeader:string;
   openModalHeader:string;
   components: any[];
   filteredComponents: any[];
@@ -100,6 +103,11 @@ export class StockComponent implements OnInit {
   productToFind: String='';
   productResponse: any={};
 
+  newItemProcurmentDetails: FormGroup;
+  newOrderProcurmentDetails: FormGroup;
+  newTransportDetails: FormGroup;
+  transportationItem: FormGroup;
+
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
   @ViewChild('filterBySupplierN') filterBySupplierN: ElementRef; //this.filterBySupplierN.nativeElement.value
@@ -114,7 +122,76 @@ export class StockComponent implements OnInit {
   // currentFileUpload: File; //for img upload creating new component
 
   constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, 
-    private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService , private itemService: ItemsService) { }
+    private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService , private itemService: ItemsService, 
+    private fb: FormBuilder, ) {
+
+    //   this.newItemProcurmentDetails = fb.group({
+    //     componentN: [String, Validators.required],// מספר פריט 
+    //     componentNs: [String, ],// מספר מק"ט אצל הספק
+    //     suplierN: [String, Validators.required],// מספר הזמנת רכש
+    //     suplierName: [String, Validators.required],// מספר הזמנת רכש
+    //     procurmentOrderNumber: [Number, Validators.required],// מספר הזמנת רכש
+    //     jobNumber: [String, Validators.required],// מספר הזמנת רכש
+    //     expectedDate: [Date, Validators.required],// מספר הזמנת רכש
+    //     suppliedDate: [Date, Validators.required],// מספר הזמנת רכש
+    //     quantity: [Number, Validators.required],// מספר הזמנת רכש
+    //     quantityRecived: [Number, Validators.required],
+    //     remarks: [String, ],
+    //     lastUpdateDate: [Date, Validators.nullValidator],
+    //     lastUpdateUser: [String, Validators.nullValidator],
+    //     status: [String, Validators.nullValidator],
+    //   });
+    //   // this.newOrderProcurmentDetails = fb.group({
+    //   //   componentN: [String, Validators.required],// מספר פריט 
+    //   //   componentNs: [String, ],// מספר מק"ט אצל הספק
+    //   //   suplierN: [String, Validators.required],// מספר הזמנת רכש
+    //   //   suplierName: [String, Validators.required],// מספר הזמנת רכש
+    //   //   procurmentOrderNumber: [Number, Validators.required],// מספר הזמנת רכש
+    //   //   transportationJobNumber: [String,],// מספר הזמנת רכש
+    //   //   expectedDate: [Date, Validators.required],// מספר הזמנת רכש
+    //   //   suppliedDate: [Date, Validators.required],// מספר הזמנת רכש
+    //   //   quantity: [Number, Validators.required],// מספר הזמנת רכש
+    //   //   quantityRecived: [Number, Validators.required],
+    //   //   remarks: [String, ],
+    //   //   lastUpdateDate: [Date, Validators.nullValidator],
+    //   //   lastUpdateUser: [String, Validators.nullValidator],
+    //   //   status: [String, Validators.nullValidator],
+    //   // });
+    //   this.newTransportDetails = fb.group({
+    //     jobNumber: [String, Validators.required],// מספר הזמנת רכש
+    //     transporterName: [String, Validators.required],// מספר הזמנת רכש
+    //     expectedDate: [Date, Validators.required],// מספר הזמנת רכש
+    //     suppliedDate: [Date, Validators.required],// מספר הזמנת רכש
+    //     transportationItems: [Array, Validators.required],// מספר הזמנות רכש
+    //     airOrSeaOrLand: [String, Validators.required],
+    //     remarks: [String, ],
+    //     lastUpdateDate: [Date, Validators.nullValidator],
+    //     lastUpdateUser: [String, Validators.nullValidator],
+    //     status: [String, Validators.nullValidator],
+    //   });
+    //   this.transportationItem = fb.group({
+    //     componentN: [String, Validators.required],// מספר הזמנת רכש
+    //     componentNs: [String, Validators.required],// מספר הזמנת רכש
+    //     procurmentOrderNumber: [String, Validators.required],// מספר הזמנת רכש
+    //     quantity: [Number, Validators.required],// מספר הזמנת רכש
+    //     quantityRecived: [Number, Validators.required],
+    //   });
+     }
+     @Output() sendDataToExpectedArrivalsModal = new EventEmitter();
+     
+     getNewExpectedArrivalsData(outputeEvent){
+        console.log('getting new updated expected arrivals data')
+        console.log(outputeEvent)
+        if(outputeEvent=='closeModal'){
+          this.openProcurementModal=false;
+        }
+        debugger
+     }
+     updateExpectedProcurment(stockItem){
+      this.resCmpt=stockItem;
+      // this.sendDataToExpectedArrivalsModal.emit(stockItem);  
+      this.openProcurementModal=true;
+      }
 
   async ngOnInit() {
     this.filterbyNum.nativeElement.value='';
@@ -136,6 +213,11 @@ export class StockComponent implements OnInit {
 //         });
     
 //  }
+
+
+
+
+
   ExportKasemAllCmptsOnShelfs() {
     this.inventoryService.getKasemAllCmptsOnShelfs().subscribe(data=>{
       debugger
@@ -1097,3 +1179,6 @@ procurementRecommendations(filterType){
 
 
 }// END OF CMPT CLASS
+
+
+

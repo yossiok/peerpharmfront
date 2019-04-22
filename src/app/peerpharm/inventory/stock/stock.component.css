@@ -157,6 +157,12 @@ td {
   /* margin: 0 !important; */
 }
 
+.alignRightInModal{
+  width:100%;
+  justify-content: flex-end;
+  /* display: flex; */
+  float: right;
+}
 @media screen and (max-width: 1024px) {
 
 

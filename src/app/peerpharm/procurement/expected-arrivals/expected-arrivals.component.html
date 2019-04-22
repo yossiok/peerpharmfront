@@ -1,0 +1,167 @@
+<div id="myProcurementModal" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
+
+  <!-- Modal content -->
+  <div class="modal-content" style='width:1000px' id='modelD'>
+    <div class="modal-header" style="text-align: right;">
+      <span style="float:right;" class="close" id="closeId2" (click)="closeMadal()">&times;</span>
+      <h2>{{procurementModalHeader}}</h2>
+    </div>
+    <div class="modal-body" style="text-align: right; overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
+      <div class="addNewExpectedArrival">
+
+        <div class="row" style="width:100%; float: right; ">
+            <div class="list-group col-sm-12">
+                <button #singleBtn type="button" class="list-group-item"
+                (click)='chooseExpectedDateUpdateType("singleItem", $event)'>
+                 עדכן צפי הגעה לפריט זה בלבד
+                </button>
+                <button #multiBtn type="button" class="list-group-item"
+                (click)='chooseExpectedDateUpdateType("multiItems", $event)'>
+                עדכן צפי הגעה למספר פריטים 
+                </button>
+                <!-- <button #orderBtn type="button" class="list-group-item"
+                (click)='chooseExpectedDateUpdateType("order", $event)'>
+                עדכן צפי הגעה להזמנת רכש שלמה
+              </button> -->
+              </div>
+          </div>
+
+          <div *ngIf="updateTypeView!=null" >
+            <form [formGroup]="newItemProcurmentDetails">
+              <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right;">
+                <!-- <div class="form-group col-md-3 alignRightInModal">
+                  <label >מק"ט-פריט ספק</label>
+                  <input 
+                  type="text" formControlName="componentNs" class="form-control"  >
+                </div> -->
+                <div class="form-group col-md-3">
+                  <label >מספר ספק</label>
+                  <input type="text" formControlName="suplierN" class="form-control">
+                </div>
+                <div class="form-group col-md-3">
+                  <label >שם ספק</label>
+                  <input type="text" formControlName="suplierName" class="form-control">
+                </div>
+                <div class="form-group col-md-3">
+                  <label >הזמנת רכש</label>
+                  <input type="text" formControlName="procurmentOrderNumber" class="form-control">
+                </div>
+                <div class="form-group col-md-3 alignRightInModal">
+                  <label >צפי הגעה</label>
+                  <input 
+                  type="date" formControlName="expectedDate" class="form-control"  >
+                </div>
+              </div>
+              <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right; position:relative;">
+                <div *ngIf="updateTypeView=='multiItems'" class="form-group col-md-1 alignRightInModal">
+                  <button name="addingItems" style="cursor:pointer;"
+                  (click)="addItem()">
+                    <img src="../../../../assets/images/add.png" width="30px">
+                  </button>
+                </div>
+                <div class="form-group col-md-3 alignRightInModal">
+                  <label >מק"ט-פריט ספק</label>
+                  <input 
+                  type="text" formControlName="componentNs" class="form-control"  >
+                </div>
+                <div class="form-group col-md-3">
+                  <label >כמות</label>
+                  <input type="number" formControlName="quantity" class="form-control">
+                </div>
+
+              </div>
+            </form>
+            <div>
+              <label style=" margin-right: 20px; font-size: 20px;" >שינוע</label>
+              <input [(ngModel)]="updateTransportaion" type="checkbox">
+            </div>
+
+            <div *ngIf="updateTransportaion">
+              <form [formGroup]="newTransportDetails">
+                <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right;">
+                  <div class="form-group col-md-3">
+                    <label >שם המשנע</label>
+                    <input type="text" formControlName="transporterName" class="form-control">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label >JobNumber</label>
+                    <input type="text" formControlName="jobNumber" class="form-control">
+                  </div>
+                  <div class="form-group col-md-3 alignRightInModal">
+                    <label >צפי הגעה</label>
+                    <input type="date" formControlName="expectedDate" class="form-control"  >
+                  </div>
+                </div>
+                <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right;">
+                  <div class="form-group col-md-3" style="direction: rtl;">
+                    <label class="row col-md-12">סוג המשלוח</label>
+                    <div class="row">
+                        <input type="radio" value="land" formControlName="shippingMethod" class="form-control">
+                        <label>יבשה</label>    
+                    </div>
+                    <div class="row">
+                        <input type="radio" value="air" formControlName="shippingMethod" class="form-control">
+                        <label>אוויר</label>    
+                    </div>
+                    <div class="row">
+                        <input type="radio" value="sea" formControlName="shippingMethod" class="form-control">
+                        <label>ים</label>    
+                    </div>
+                    <!-- <input type="radio" value="air" formControlName="shippingMethod" class="form-control">אוויר
+                    <input type="radio" value="sea" formControlName="shippingMethod" class="form-control">ים -->
+                  </div>
+                  <div class="form-group col-md-8">
+                    <label >הערות</label>
+                    <input type="text" formControlName="remarks" class="form-control">
+                  </div>
+
+                </div>
+              </form>
+            </div>
+
+          </div>
+          <!-- <div *ngIf="updateTypeView=='multiItems'" ></div>
+          <div *ngIf="updateTypeView=='order'" ></div> -->
+
+      <div class="viewExpectedArrivals">
+        <h5>הזמנות רכש קיימות לפריט</h5>
+        <table class="table table-hover" style="float:right; direction: rtl;">
+          <thead>
+            <tr>
+              <th class="col">#</th>
+              <th class="col">מספר הזמנת רכש</th>
+              <th class="col">מק"ט-פריט ספק</th>
+              <th class="col">שם ספק</th>
+              <th class="col">מספר ספק</th>
+              <th class="col">כמות</th>
+              <th class="col">הערות</th>
+              <th class="col">שינוע</th>
+              <th class="col">JobNumber</th>
+              <th class="col">צפי הגעה</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let expectedArrival of itemExpectedArrivals; let i=index; '>
+              <td scope="row">{{i+1}}</td>
+              <td>{{expectedArrival.procurmentOrderNumber}}</td>
+              <td>{{expectedArrival.componentNs}}</td>
+              <td>{{expectedArrival.suplierName}}</td>
+              <td>{{expectedArrival.suplierN}}</td>
+              <td>{{expectedArrival.quantity}}</td>
+              <td>{{expectedArrival.remarks}}</td>
+              <td *ngIf="expectedArrival.transporterName!='' && expectedArrival.transporterName!=null">{{expectedArrival.transporterName}}</td>
+              <td *ngIf="expectedArrival.transporterName=='' || expectedArrival.transporterName==null"> </td>
+              <td *ngIf="expectedArrival.jobNumber!='' && expectedArrival.jobNumber!=null">{{expectedArrival.jobNumber}}</td>
+              <td *ngIf="expectedArrival.jobNumber=='' || expectedArrival.jobNumber==null"> </td>
+              <td>{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+    </div>
+  </div>
+
+</div>

@@ -50,7 +50,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
-import { PackingComponent } from './peerpharm/schedule/packing/packing.component';
 import { ConfirmModalComponent } from './services/confirm.modal.service';
 
 // import { OrderStagePipe } from './pipes/order-stage.pipe';
@@ -78,7 +77,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SidebarComponent ,
     LoginComponent, 
 
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent,
 
   ],
   entryComponents:[ConfirmModalComponent],

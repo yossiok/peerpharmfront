@@ -86,6 +86,7 @@ import { OrderStagePipe } from '../pipes/order-stage.pipe';
 import {NgxPrintModule} from 'ngx-print';
 import { PackingComponent } from './schedule/packing/packing.component';
 import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formule-phase.component';
+import { ExpectedArrivalsComponent } from './procurement/expected-arrivals/expected-arrivals.component';
 
 
 @NgModule({
@@ -175,7 +176,8 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
     HeadingsWHPipe,
     PackingComponent,
     OrderStagePipe,
-    AddFormulePhaseComponent
+    AddFormulePhaseComponent,
+    ExpectedArrivalsComponent,
 
   ],
   providers: [ OrdersService, HttpClientModule],
