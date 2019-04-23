@@ -53,12 +53,7 @@
                 </div>
               </div>
               <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right; position:relative;">
-                <div *ngIf="updateTypeView=='multiItems'" class="form-group col-md-1 alignRightInModal">
-                  <button name="addingItems" style="cursor:pointer;"
-                  (click)="addItem()">
-                    <img src="../../../../assets/images/add.png" width="30px">
-                  </button>
-                </div>
+
                 <div class="form-group col-md-3 alignRightInModal">
                   <label >מק"ט-פריט ספק</label>
                   <input 
@@ -68,7 +63,16 @@
                   <label >כמות</label>
                   <input type="number" formControlName="quantity" class="form-control">
                 </div>
-
+                <div *ngIf="updateTypeView=='multiItems'" class="form-group col-md-1 alignRightInModal">
+                  <button name="addingItems" style="cursor:pointer;"
+                  (click)="addItem()">
+                    <img src="../../../../assets/images/aproved.png" width="30px">
+                  </button>
+                </div>
+                <div *ngIf="updateTransportaion==false" class="form-group col-md-3 alignRightInModal">
+                  <img src="../../../../assets/images/shipped.png"  alt="save"
+                  (click)="saveUpdates()">
+                </div>
               </div>
             </form>
             <div>
@@ -110,11 +114,14 @@
                     <!-- <input type="radio" value="air" formControlName="shippingMethod" class="form-control">אוויר
                     <input type="radio" value="sea" formControlName="shippingMethod" class="form-control">ים -->
                   </div>
-                  <div class="form-group col-md-8">
+                  <div class="form-group col-md-6">
                     <label >הערות</label>
                     <input type="text" formControlName="remarks" class="form-control">
                   </div>
-
+                  <div *ngIf="updateTransportaion==false" class="form-group col-md-3 alignRightInModal">
+                    <img src="../../../../assets/images/shipped.png"  alt="save"
+                    (click)="saveUpdates()">
+                  </div>
                 </div>
               </form>
             </div>

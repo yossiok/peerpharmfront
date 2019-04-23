@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { map } from 'rxjs/operators';
+import { Observable } from '../../../node_modules/rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -39,4 +40,15 @@ export class Procurementservice {
     console.log(url);
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  
+  addExpectedArrivals(arrivalsArr):Observable<any>{
+    let url = this.baseUrl + 'expectedArrivalController/add';
+    return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
+  }
+  updateExpectedArrival(arrivalsArr):Observable<any>{
+    let url = this.baseUrl + 'expectedArrivalController/upadate';
+    return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
+  }
+
 }

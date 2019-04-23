@@ -129,9 +129,14 @@ export class ExpectedArrivalsComponent implements OnInit {
   }
 
   addItem(){
+    this.newItemProcurmentDetails;
+    this.newTransportDetails;
+  
     this.arrToUpdate;
   }
+  saveUpdates(){
 
+  }
   setBtnColor(updateType, ev){
   switch (updateType) {
 
