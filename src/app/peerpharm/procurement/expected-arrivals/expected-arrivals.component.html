@@ -29,55 +29,95 @@
           <div *ngIf="updateTypeView!=null" >
             <form [formGroup]="newItemProcurmentDetails">
               <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right;">
-                <!-- <div class="form-group col-md-3 alignRightInModal">
-                  <label >מק"ט-פריט ספק</label>
-                  <input 
-                  type="text" formControlName="componentNs" class="form-control"  >
-                </div> -->
-                <div class="form-group col-md-3">
-                  <label >מספר ספק</label>
-                  <input type="text" formControlName="suplierN" class="form-control">
-                </div>
-                <div class="form-group col-md-3">
-                  <label >שם ספק</label>
-                  <input type="text" formControlName="suplierName" class="form-control">
-                </div>
-                <div class="form-group col-md-3">
-                  <label >הזמנת רכש</label>
-                  <input type="text" formControlName="procurmentOrderNumber" class="form-control">
-                </div>
-                <div class="form-group col-md-3 alignRightInModal">
-                  <label >צפי הגעה</label>
-                  <input 
-                  type="date" formControlName="expectedDate" class="form-control"  >
-                </div>
+                  <!-- <div class="form-group col-md-3 alignRightInModal">
+                    <label >מק"ט-פריט ספק</label>
+                    <input 
+                    type="text" formControlName="componentNs" class="form-control"  >
+                  </div> -->
+                  <div class="form-group col-md-3">
+                    <label >מספר ספק</label>
+                    <input type="text" formControlName="suplierN" class="form-control">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label >שם ספק</label>
+                    <input type="text" formControlName="suplierName" class="form-control">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label >הזמנת רכש</label>
+                    <input type="text" formControlName="procurmentOrderNumber" class="form-control">
+                  </div>
+                  <div class="form-group col-md-3 alignRightInModal">
+                    <label >צפי הגעה</label>&nbsp;<span *ngIf="updateTransportaion" style="color: red; font-weight: bold;">צפי הגעה נקבע ע"י שינוע</span>
+                    <input 
+                    type="date" formControlName="expectedDate" class="form-control" [disabled]="updateTransportaion"  >
+                  </div>
               </div>
-              <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right; position:relative;">
 
-                <div class="form-group col-md-3 alignRightInModal">
-                  <label >מק"ט-פריט ספק</label>
+              <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right; position:relative;">
+                <div class="form-group col-md-2 alignRightInModal">
+                  <label >מק"ט-פריט קומקס</label>
                   <input 
-                  type="text" formControlName="componentNs" class="form-control"  >
+                  type="text" formControlName="cmxComponentN" class="form-control"  >
                 </div>
-                <div class="form-group col-md-3">
+                <div *ngIf="updateTypeView=='multiItems' " class="form-group col-md-2 alignRightInModal">
+                  <label >מק"ט-פנימי פארפארם</label>
+                  <input  
+                  type="text" formControlName="componentN" class="form-control"  >
+                </div>
+                <div *ngIf="updateTypeView=='singleItem'" class="form-group col-md-2 alignRightInModal">
+                  <label >מק"ט-פנימי פארפארם</label>
+                  <input disabled
+                  type="text" formControlName="componentN" class="form-control"  >
+                </div>
+                <div class="form-group col-md-2">
                   <label >כמות</label>
                   <input type="number" formControlName="quantity" class="form-control">
+                </div>
+                <div class="form-group col-md-2">
+                  <label >הערות לפריט</label>
+                  <input type="text" formControlName="remarks" class="form-control">
                 </div>
                 <div *ngIf="updateTypeView=='multiItems'" class="form-group col-md-1 alignRightInModal">
                   <button name="addingItems" style="cursor:pointer;"
                   (click)="addItem()">
-                    <img src="../../../../assets/images/aproved.png" width="30px">
+                    <img src="../../../../assets/images/add.png" width="30px">
                   </button>
                 </div>
-                <div *ngIf="updateTransportaion==false" class="form-group col-md-3 alignRightInModal">
-                  <img src="../../../../assets/images/shipped.png"  alt="save"
-                  (click)="saveUpdates()">
+                <div *ngIf="updateTransportaion==false" class="form-group col-md-2 alignRightInModal">
+                  <img class="sendUpdates" src="../../../../assets/images/shipped.png"  alt="save"
+                  (click)="saveMultiUpdates()">
                 </div>
-              </div>
+
+                </div>
+                <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right;">
+                  <!-- <label >פריטים לעדכון:</label> -->
+                  <table>
+                    <tr>
+                      <th>
+                        מספר פריט פנימי
+                      </th>
+                      <th>
+                        מספר פריט קומקס
+                      </th>
+                      <th>
+                        כמות
+                      </th>
+                    </tr>
+                    <tr *ngFor="let item of arrToUpdate">
+                      <td>{{item.componentN}}</td>
+                      <td>{{item.cmxComponentN}}</td>
+                      <td>{{item.quantity}}</td>
+                      <td><img src="../../../../assets/images/delete.png" width="35px"
+                              (click)="searchTransportaionJobNumber()">
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
             </form>
             <div>
-              <label style=" margin-right: 20px; font-size: 20px;" >שינוע</label>
-              <input [(ngModel)]="updateTransportaion" type="checkbox">
+              <label  style=" margin-right: 20px; font-size: 20px;" >שינוע</label>
+              <input [(ngModel)]="updateTransportaion" type="checkbox" (change)="transporterChecked($event)">
             </div>
 
             <div *ngIf="updateTransportaion">
@@ -88,7 +128,7 @@
                     <input type="text" formControlName="transporterName" class="form-control">
                   </div>
                   <div class="form-group col-md-3">
-                    <label >JobNumber</label>
+                    <label >JobNumber</label><img src="../../../../assets/images/search.png" width="35px;">
                     <input type="text" formControlName="jobNumber" class="form-control">
                   </div>
                   <div class="form-group col-md-3 alignRightInModal">
@@ -100,7 +140,7 @@
                   <div class="form-group col-md-3" style="direction: rtl;">
                     <label class="row col-md-12">סוג המשלוח</label>
                     <div class="row">
-                        <input type="radio" value="land" formControlName="shippingMethod" class="form-control">
+                        <input type="radio" value="land" formControlName="shippingMethod" class="form-control" value="true">
                         <label>יבשה</label>    
                     </div>
                     <div class="row">
@@ -118,9 +158,9 @@
                     <label >הערות</label>
                     <input type="text" formControlName="remarks" class="form-control">
                   </div>
-                  <div *ngIf="updateTransportaion==false" class="form-group col-md-3 alignRightInModal">
-                    <img src="../../../../assets/images/shipped.png"  alt="save"
-                    (click)="saveUpdates()">
+                  <div *ngIf="updateTransportaion==true" class="form-group col-md-3 alignRightInModal">
+                      <img class="sendUpdates" src="../../../../assets/images/shipped.png"  alt="save"
+                      (click)="saveMultiUpdates()">
                   </div>
                 </div>
               </form>
@@ -132,35 +172,49 @@
 
       <div class="viewExpectedArrivals">
         <h5>הזמנות רכש קיימות לפריט</h5>
-        <table class="table table-hover" style="float:right; direction: rtl;">
+        <table class="table table-hover" style="float:right; direction: rtl; ">
           <thead>
             <tr>
               <th class="col">#</th>
               <th class="col">מספר הזמנת רכש</th>
-              <th class="col">מק"ט-פריט ספק</th>
+              <th class="col">מק"ט-קומקס</th>
+              <th class="col">מק"ט-פנימי</th>
               <th class="col">שם ספק</th>
               <th class="col">מספר ספק</th>
               <th class="col">כמות</th>
               <th class="col">הערות</th>
-              <th class="col">שינוע</th>
+              <th class="col">שם המשנע</th>
               <th class="col">JobNumber</th>
               <th class="col">צפי הגעה</th>
+              <th class="col"></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor='let expectedArrival of itemExpectedArrivals; let i=index; '>
-              <td scope="row">{{i+1}}</td>
-              <td>{{expectedArrival.procurmentOrderNumber}}</td>
-              <td>{{expectedArrival.componentNs}}</td>
+              <td >{{i+1}}</td>
+              <td (click)="edit(i)">{{expectedArrival.procurmentOrderNumber}}</td>
+              <td>{{expectedArrival.cmxComponentN}}</td>
+              <td>{{expectedArrival.componentN}}</td>
               <td>{{expectedArrival.suplierName}}</td>
               <td>{{expectedArrival.suplierN}}</td>
               <td>{{expectedArrival.quantity}}</td>
               <td>{{expectedArrival.remarks}}</td>
-              <td *ngIf="expectedArrival.transporterName!='' && expectedArrival.transporterName!=null">{{expectedArrival.transporterName}}</td>
+              <td *ngIf="expectedArrival.transporterName!='' && expectedArrival.transporterName!=null">{{expectedArrival.transporterName}} </td>
               <td *ngIf="expectedArrival.transporterName=='' || expectedArrival.transporterName==null"> </td>
-              <td *ngIf="expectedArrival.jobNumber!='' && expectedArrival.jobNumber!=null">{{expectedArrival.jobNumber}}</td>
+              <td *ngIf="expectedArrival.jobNumber!='' && expectedArrival.jobNumber!=null">{{expectedArrival.jobNumber}} 
+                &nbsp; <img src="../../../../assets/images/editPencil.png" alt="editTransport" 
+                            style="width:35px; cursor: pointer; "
+                            (click)="editExistingTransportationData(expectedArrival, i)">
+              </td>
               <td *ngIf="expectedArrival.jobNumber=='' || expectedArrival.jobNumber==null"> </td>
               <td>{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
+              <td>
+                <div *>
+                    <i *ngIf="EditRowId!=''" class="ti-save text-success m-r-10"  (click)="saveSingleLineUpdate(expectedArrival, i)"></i>
+
+                  <img src="../../../../assets/images/save.png" alt="">
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>

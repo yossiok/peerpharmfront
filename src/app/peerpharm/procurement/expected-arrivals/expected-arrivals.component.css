@@ -5,7 +5,7 @@
 button[name="addingItems"]{
     background: transparent;
     position: absolute;
-    bottom: 0px;
+    top: 28px;
     left: 10px;
 }
 input[type=checkbox]
@@ -26,4 +26,10 @@ input[type=radio]
     margin-left: 10px;
     top: -7px;
     position: relative;
+}
+.sendUpdates{
+    width: 85px;
+    float: left;
+    cursor: pointer;
+    margin-left: 20px;
 }

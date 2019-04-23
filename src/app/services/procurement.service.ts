@@ -41,7 +41,15 @@ export class Procurementservice {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  /*EXPECTED ARRIVALS OF PROCURMENT ITEMS*/
   
+  getItemExpectedArrivals(componentN): Observable<any> {
+    let url = this.baseUrl + 'expectedArrivalController?componentN=' +componentN;
+    return this.http.get(url).pipe( map(reponse => reponse.json())
+    )
+  }
+
+
   addExpectedArrivals(arrivalsArr):Observable<any>{
     let url = this.baseUrl + 'expectedArrivalController/add';
     return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
@@ -50,5 +58,11 @@ export class Procurementservice {
     let url = this.baseUrl + 'expectedArrivalController/upadate';
     return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
   }
+  findOpenJobNumbers(): Observable<any> {
+    let url = this.baseUrl + 'expectedArrivalController?openJobNumbers';
+    return this.http.get(url).pipe( map(reponse => reponse.json())
+    )
+  }
+
 
 }

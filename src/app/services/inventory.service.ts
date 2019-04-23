@@ -26,6 +26,10 @@ export class InventoryService {
     let url = this.baseUrl + "component?componentN="+cmptNumber+"&stockType="+stockType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getCmptBySupplierItemNumber(cmptNumber, stockType):Observable<any>{
+    let url = this.baseUrl + "component?componentNs="+cmptNumber+"&stockType="+stockType;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   checkIfShelfExist(shelfPosition,whareHouseId){
     let url = this.baseUrl + "shell?shelfPosition="+shelfPosition+"&whareHouseId="+whareHouseId;
