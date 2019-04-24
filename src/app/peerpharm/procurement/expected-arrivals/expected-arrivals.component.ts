@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { ToastrService } from 'ngx-toastr';
@@ -27,7 +27,8 @@ export class ExpectedArrivalsComponent implements OnInit {
   multiItemsToUpdateView: Array<any>;
   userName:String;
   jobNumberList:Array<any>;
-
+  items:FormArray; 
+  objToUpdate:any;
 
   @Input() componentData: any;
   @Output() outPutItemsExpectedData = new EventEmitter();
@@ -68,7 +69,7 @@ export class ExpectedArrivalsComponent implements OnInit {
       transporterName: ["", Validators.required],// מספר הזמנת רכש
       expectedDate: [Date, Validators.required],// מספר הזמנת רכש
       suppliedDate: [Date, ],// מספר הזמנת רכש
-      transportationItems: [[], Validators.required],// מספר הזמנות רכש
+      transportationItems: this.fb.array([ ]),// מספר הזמנות רכש
       shippingMethod: ["", Validators.required],
       remarks: ["", ],
       lastUpdateDate: [Date, Validators.nullValidator],
@@ -98,7 +99,11 @@ export class ExpectedArrivalsComponent implements OnInit {
     this.userName= this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName
     this.procurementModalHeader= "צפי הגעה של הזמנות רכש - פריט "+this.componentData.componentN;      
     this.arrToUpdate=[];  
+
     this.getItemExpectedArrivalsData();
+    // document.getElementsByTagName('input:"type=radio');
+    // document.querySelectorAll("input[type=radio]")
+    // debugger
     console.log('this is the  data recived in @Input  ')
     console.log(this.componentData)
   }
@@ -152,16 +157,34 @@ export class ExpectedArrivalsComponent implements OnInit {
         })
       }else{
         this.arrToUpdate.push(objToAdd);
+        
         this.resetUpdateLine();
       }
 
     }else{
       this.toastSrv.error("חסר מידע - לא ניתן לשמור");
     }
-  
   }
 
-resetUpdateLine(){
+  updateNewTransportItems(obj){
+    this.items = this.newTransportDetails.get('transportationItems') as FormArray;
+    debugger
+    this.items.push(this.createItem(obj));
+  }
+    createItem(obj): FormGroup {
+      if(obj.componentN){
+        return this.fb.group({
+          componentN:obj.componentN,// מספר הזמנת רכש
+          componentNs:obj.componentNs,// מספר הזמנת רכש
+          cmxComponentN: obj.cmxComponentN,// מספר הזמנת רכש
+          procurmentOrderNumber: obj.procurmentOrderNumber,// מספר הזמנת רכש
+          quantity: obj.quantity,// מספר הזמנת רכש
+          quantityRecived: obj.quantityRecived,
+          });  
+      }
+    }
+
+    resetUpdateLine(){
       //reset after push to arr
       this.newItemProcurmentDetails.controls.componentNs.setValue('');
       this.newItemProcurmentDetails.controls.remarks.setValue('');
@@ -171,18 +194,17 @@ resetUpdateLine(){
 
 
   adjustObj(){
-    //default of new data
+    //default of new data   
     this.newItemProcurmentDetails.controls.lastUpdateDate.setValue(new Date());
     this.newItemProcurmentDetails.controls.lastUpdateUser.setValue(this.userName);
     this.newItemProcurmentDetails.controls.status.setValue('open');
-    
+
     if(this.updateTransportaion){
-      debugger
-      
-      this.addTransportationItem();
+
       this.newTransportDetails.controls.lastUpdateDate.setValue(new Date());
       this.newTransportDetails.controls.lastUpdateUser.setValue(this.userName);
-      this.newItemProcurmentDetails.controls.status.setValue('open');
+      this.newTransportDetails.controls.status.setValue('open');
+
       if(this.newTransportDetails.valid){
         this.newItemProcurmentDetails.controls.jobNumber.setValue(this.newTransportDetails.value.jobNumber);
         this.newItemProcurmentDetails.controls.expectedDate.setValue(this.newTransportDetails.value.expectedDate);
@@ -192,12 +214,13 @@ resetUpdateLine(){
     }else{
       this.newItemProcurmentDetails.controls.jobNumber.setValue('');
     }
+    
     let obj=
       {
         componentN: this.newItemProcurmentDetails.value.componentN.trim(),
         componentName: this.newItemProcurmentDetails.value.componentName.trim(),
         componentNs: this.newItemProcurmentDetails.value.componentNs.trim(),
-        cmxComponentNs: this.newItemProcurmentDetails.value.cmxComponentN.trim(),
+        cmxComponentN: this.newItemProcurmentDetails.value.cmxComponentN.trim(),
         suplierN: this.newItemProcurmentDetails.value.suplierN.trim(),
         suplierName: this.newItemProcurmentDetails.value.suplierName.trim(),
         procurmentOrderNumber: this.newItemProcurmentDetails.value.procurmentOrderNumber.trim(),
@@ -211,10 +234,26 @@ resetUpdateLine(){
         lastUpdateUser: this.userName,
         status: 'open',
       }
+      this.objToUpdate = obj;
+      if(this.updateNewTransportItems && this.newTransportDetails.valid){
+        this.addTransportationItem();
+      }
       return obj;
     
   }
+adjustTransportObj(){
+  this.newTransportDetails.controls.lastUpdateDate.setValue(new Date());
+  this.newTransportDetails.controls.lastUpdateUser.setValue(this.userName);
+  this.newTransportDetails.controls.status.setValue('open');
 
+  if(this.newTransportDetails.valid){
+    this.newItemProcurmentDetails.controls.jobNumber.setValue(this.newTransportDetails.value.jobNumber);
+    this.newItemProcurmentDetails.controls.expectedDate.setValue(this.newTransportDetails.value.expectedDate);
+  }else{
+    this.toastSrv.error("חסרים נתוני שינוע");
+  }
+
+}
   addTransportationItem(){
     this.transportationItem.reset();
     this.transportationItem.controls.componentN.setValue(this.newItemProcurmentDetails.value.componentN); 
@@ -223,8 +262,9 @@ resetUpdateLine(){
     this.transportationItem.controls.procurmentOrderNumber.setValue(this.newItemProcurmentDetails.value.procurmentOrderNumber); 
     this.transportationItem.controls.quantity.setValue(this.newItemProcurmentDetails.value.quantity); 
     this.transportationItem.controls.quantityRecived.setValue(this.newItemProcurmentDetails.value.quantityRecived); 
-
-    this.newTransportDetails.value.transportationItems.push(this.transportationItem.value);
+    this.updateNewTransportItems(this.objToUpdate);
+    debugger
+    this.newTransportDetails.value.transportationItems;
     console.log(this.newTransportDetails.value);
     debugger
   }
@@ -267,7 +307,12 @@ sendUpdates(){
     });  
   }
 }
-
+deleteItem(item, i){
+  this.arrToUpdate.splice(i,1);
+  if(this.updateNewTransportItems){
+    this.newTransportDetails.value.transportationItems.splice(i,1)
+  }
+}
 transporterChecked(ev){
   if(ev.target.checked){
     this.newTransportDetails.reset();
@@ -275,10 +320,10 @@ transporterChecked(ev){
 
   }
 }
-  edit(index) {
-    this.EditRowId = index;
-    if(index!='') {
-      this.lineToUpdate=  this.itemExpectedArrivals[index];
+  edit(id) {
+    this.EditRowId = id;
+    if(id!='') {
+      this.lineToUpdate=  this.itemExpectedArrivals.map(i=>i._id==id)[0];
       //get the line data
     }
   }

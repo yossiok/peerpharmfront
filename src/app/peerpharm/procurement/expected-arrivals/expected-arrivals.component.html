@@ -5,6 +5,7 @@
     <div class="modal-header" style="text-align: right;">
       <span style="float:right;" class="close" id="closeId2" (click)="closeMadal()">&times;</span>
       <h2>{{procurementModalHeader}}</h2>
+      <h3 style="color: red; margin:0 10px; ">מסך לא בשימוש עד הודעה רשמית</h3>
     </div>
     <div class="modal-body" style="text-align: right; overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
       <div class="addNewExpectedArrival">
@@ -93,22 +94,24 @@
                   <!-- <label >פריטים לעדכון:</label> -->
                   <table>
                     <tr>
-                      <th>
+                      
+                      <th style="padding: 0 12px;">
                         מספר פריט פנימי
                       </th>
-                      <th>
+                      <th style="padding: 0 12px;">
                         מספר פריט קומקס
                       </th>
-                      <th>
+                      <th style="padding: 0 12px;">
                         כמות
                       </th>
+                      <th style="padding: 0 12px;"></th>
                     </tr>
-                    <tr *ngFor="let item of arrToUpdate">
-                      <td>{{item.componentN}}</td>
-                      <td>{{item.cmxComponentN}}</td>
-                      <td>{{item.quantity}}</td>
-                      <td><img src="../../../../assets/images/delete.png" width="35px"
-                              (click)="searchTransportaionJobNumber()">
+                    <tr *ngFor="let item of arrToUpdate; let i =index;">
+                      <td  style="padding: 0 12px;" >{{item.componentN}}</td>
+                      <td  style="padding: 0 12px;" >{{item.cmxComponentN}}</td>
+                      <td  style="padding: 0 12px;" >{{item.quantity}}</td>
+                      <td  style="padding: 0 12px;" ><img src="../../../../assets/images/delete.png" width="35px"
+                              (click)="deleteItem(item, i)">
                       </td>
                     </tr>
                   </table>
@@ -116,6 +119,7 @@
 
             </form>
             <div>
+              <label  style=" margin-right: 20px; font-size: 15px; color: darkred" >הוסף נתוני שינוע לפני הוספת פריטים</label>
               <label  style=" margin-right: 20px; font-size: 20px;" >שינוע</label>
               <input [(ngModel)]="updateTransportaion" type="checkbox" (change)="transporterChecked($event)">
             </div>
@@ -140,7 +144,7 @@
                   <div class="form-group col-md-3" style="direction: rtl;">
                     <label class="row col-md-12">סוג המשלוח</label>
                     <div class="row">
-                        <input type="radio" value="land" formControlName="shippingMethod" class="form-control" value="true">
+                        <input type="radio" value="land" formControlName="shippingMethod" class="form-control" checked="true">
                         <label>יבשה</label>    
                     </div>
                     <div class="row">
@@ -207,15 +211,16 @@
                             (click)="editExistingTransportationData(expectedArrival, i)">
               </td>
               <td *ngIf="expectedArrival.jobNumber=='' || expectedArrival.jobNumber==null"> </td>
-              <td>{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
+              <td >{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
+              <!-- <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
+              <td *ngIf="expectedArrival._id===EditRowId" style="width:11%">
+                <input #onHoldDate type="date" [value]="onHoldStrDate" >
+              </td>  
               <td>
-                <div *>
-                    <i *ngIf="EditRowId!=''" class="ti-save text-success m-r-10"  (click)="saveSingleLineUpdate(expectedArrival, i)"></i>
-
+                  <i *ngIf="EditRowId!=''" class="ti-save text-success m-r-10"  (click)="saveSingleLineUpdate(expectedArrival, i)"></i>
                   <img src="../../../../assets/images/save.png" alt="">
-                </div>
               </td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
       </div>
