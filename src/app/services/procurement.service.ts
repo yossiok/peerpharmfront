@@ -63,6 +63,12 @@ export class Procurementservice {
     return this.http.get(url).pipe( map(reponse => reponse.json())
     )
   }
+  findOneJobNumber(jobNumber): Observable<any> {
+    debugger
+    let url = this.baseUrl + 'expectedArrivalController?oneJobNumber='+jobNumber;
+    return this.http.get(url).pipe( map(reponse => reponse.json())
+    )
+  }
 
 
 }

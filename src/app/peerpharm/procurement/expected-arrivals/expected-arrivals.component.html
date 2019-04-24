@@ -1,7 +1,7 @@
 <div id="myProcurementModal" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
   <!-- Modal content -->
-  <div class="modal-content" style='width:1000px' id='modelD'>
+  <div class="modal-content" style='width:1200px' id='modelD'>
     <div class="modal-header" style="text-align: right;">
       <span style="float:right;" class="close" id="closeId2" (click)="closeMadal()">&times;</span>
       <h2>{{procurementModalHeader}}</h2>
@@ -179,48 +179,149 @@
         <table class="table table-hover" style="float:right; direction: rtl; ">
           <thead>
             <tr>
-              <th class="col">#</th>
-              <th class="col">מספר הזמנת רכש</th>
-              <th class="col">מק"ט-קומקס</th>
-              <th class="col">מק"ט-פנימי</th>
-              <th class="col">שם ספק</th>
-              <th class="col">מספר ספק</th>
-              <th class="col">כמות</th>
-              <th class="col">הערות</th>
-              <th class="col">שם המשנע</th>
-              <th class="col">JobNumber</th>
-              <th class="col">צפי הגעה</th>
-              <th class="col"></th>
+              <th class="col tableTailsCols">#</th>
+              <th class="col tableCenterCols">מספר הזמנת רכש</th>
+              <th class="col tableCenterCols">מק"ט-קומקס</th>
+              <th class="col tableCenterCols">מק"ט-פנימי</th>
+              <th class="col tableCenterCols">שם ספק</th>
+              <th class="col tableCenterCols">מספר ספק</th>
+              <th class="col tableCenterCols">כמות</th>
+              <th class="col tableCenterCols">הערות</th>
+              <th class="col tableCenterCols">שם המשנע</th>
+              <th class="col tableCenterCols">JobNumber</th>
+              <th class="col tableCenterCols">צפי הגעה</th>
+              <th class="col tableTailsCols"></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor='let expectedArrival of itemExpectedArrivals; let i=index; '>
-              <td >{{i+1}}</td>
-              <td (click)="edit(i)">{{expectedArrival.procurmentOrderNumber}}</td>
-              <td>{{expectedArrival.cmxComponentN}}</td>
-              <td>{{expectedArrival.componentN}}</td>
-              <td>{{expectedArrival.suplierName}}</td>
-              <td>{{expectedArrival.suplierN}}</td>
-              <td>{{expectedArrival.quantity}}</td>
-              <td>{{expectedArrival.remarks}}</td>
-              <td *ngIf="expectedArrival.transporterName!='' && expectedArrival.transporterName!=null">{{expectedArrival.transporterName}} </td>
-              <td *ngIf="expectedArrival.transporterName=='' || expectedArrival.transporterName==null"> </td>
-              <td *ngIf="expectedArrival.jobNumber!='' && expectedArrival.jobNumber!=null">{{expectedArrival.jobNumber}} 
-                &nbsp; <img src="../../../../assets/images/editPencil.png" alt="editTransport" 
-                            style="width:35px; cursor: pointer; "
-                            (click)="editExistingTransportationData(expectedArrival, i)">
-              </td>
-              <td *ngIf="expectedArrival.jobNumber=='' || expectedArrival.jobNumber==null"> </td>
-              <td >{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
-              <!-- <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
-              <td *ngIf="expectedArrival._id===EditRowId" style="width:11%">
-                <input #onHoldDate type="date" [value]="onHoldStrDate" >
-              </td>  
-              <td>
-                  <i *ngIf="EditRowId!=''" class="ti-save text-success m-r-10"  (click)="saveSingleLineUpdate(expectedArrival, i)"></i>
-                  <img src="../../../../assets/images/save.png" alt="">
-              </td>
-            </tr> -->
+            <ng-container *ngFor='let expectedArrival of itemExpectedArrivals; let i=index; '>
+                <tr >
+                    <td class="tableTailsCols">{{i+1}}</td>
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.procurmentOrderNumber}}</td>
+                    <td *ngIf="expectedArrival._id===EditRowId" >
+                        <input type="text" [value]="changedLine.procurmentOrderNumber" >
+                    </td>  
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.cmxComponentN}}</td>
+                    <td *ngIf="expectedArrival._id===EditRowId" >
+                        <input type="text" [value]="changedLine.cmxComponentN" >
+                    </td>  
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.componentN}}</td>
+                    <td *ngIf="expectedArrival._id===EditRowId" >
+                        <input type="text" [value]="changedLine.componentN" >
+                    </td>  
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.suplierName}}</td>
+                    <td *ngIf="expectedArrival._id===EditRowId" >
+                        <input type="text" [value]="changedLine.suplierName" >
+                    </td>  
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.suplierN}}</td>
+                    <td *ngIf="expectedArrival._id===EditRowId" >
+                        <input type="text" [value]="changedLine.suplierN" >
+                    </td>  
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.quantity}}</td>
+                    <td *ngIf="expectedArrival._id===EditRowId" >
+                        <input type="number" [value]="changedLine.quantity" >
+                    </td>  
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.remarks}}</td>
+                    <td *ngIf="expectedArrival._id===EditRowId" >
+                        <input type="text" [value]="changedLine.remarks" >
+                    </td>  
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.transporterName}} 
+                    </td>
+                    <td *ngIf="expectedArrival._id===EditRowId">
+                        <div >
+                            {{expectedArrival.transporterName}}
+                        </div>
+                        <!-- <div *ngIf="expectedArrival._id===EditRowId && expectedArrival.jobNumber===EditJobN">
+                            <input *ngIf="expectedArrival.jobNumber===EditJobN" type="text" [value]="changedLine.transporterName" >
+                        </div> -->
+                    </td>
+                    <!-- <td *ngIf="expectedArrival._id===EditRowId"  >
+                        <input type="text" [value]="changedLine.transporterName" >
+                    </td>   -->
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">
+                        {{expectedArrival.jobNumber}}               
+                    </td> 
+                    <td *ngIf="expectedArrival._id===EditRowId">
+                      <div  >
+                          {{expectedArrival.jobNumber}} 
+                          <img *ngIf="expectedArrival._id===EditRowId && expectedArrival.jobNumber!==EditJobN"
+                          src="../../../../assets/images/editPencil.png" alt="editTransport" 
+                          style="width:35px; cursor: pointer; "
+                          (click)="editJN(expectedArrival)">
+                      </div>
+      
+                      <!-- <div *ngIf="expectedArrival._id===EditRowId && expectedArrival.jobNumber===EditJobN">
+                          <input *ngIf="expectedArrival.jobNumber===EditJobN" type="text" [value]="changedLine.jobNumber" >
+                          <i *ngIf="expectedArrival.jobNumber===EditJobN" class="ti-save text-success m-r-10"  (click)="editExistingTransportationData(expectedArrival, i)"></i>
+                      </div> -->
+                    </td>
+                    <!-- <td >{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td> -->
+                    <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
+                    <td *ngIf="expectedArrival._id===EditRowId" style="width:11%">
+                      <input type="date" [value]="dateStr" >
+                    </td>  
+                    <td class="tableTailsCols">
+                        <i *ngIf="expectedArrival._id===EditRowId" class="ti-save text-success m-r-10"  (click)="saveSingleLineUpdate(expectedArrival, i)"></i>
+                        <!-- <img src="../../../../assets/images/save.png" alt=""> -->
+                    </td>
+                  </tr>
+
+
+                  <tr *ngIf="expectedArrival._id===EditRowId && EditJobN===expectedArrival.jobNumber"
+                  class="editExistingJobNum">
+
+                    <td colspan=1>
+                      <label >
+                      עדכון נתוני שינוע:
+                    </label>
+                    </td>
+                    <td colspan=2>
+                      <label >
+                          #Job Number:
+                      </label>
+                      <input type="text" [value]="changedJobNumber.jobNumber" (blur)="JNumChange($event)">
+                    </td>
+                    <td colspan=2>
+                        <label >
+                            שם המשנע:
+                        </label>
+                      <input type="text" [value]="changedJobNumber.transporterName" >
+                    </td>
+                    <td colspan=2>
+                      <label >
+                          שיטת שינוע:
+                      </label>
+                      <div style="position: relative">
+                        <input type="radio" style="width: 15%; position:absolute; top: 4px; margin-left: 20px" value="land" [(ngModel)]="changedJobNumber.shippingMethod" >
+                        <label style=" margin-right: 25px;">יבשה</label>    
+                      </div>
+                      <div style="position: relative">
+                        <input type="radio" style="width: 15%; position:absolute; top: 4px; margin-left: 20px" value="air" [(ngModel)]="changedJobNumber.shippingMethod">
+                        <label style=" margin-right: 25px;">אוויר</label>    
+                      </div>
+                      <div style="position: relative">
+                          <input type="radio" style="width: 15%; position:absolute; top: 4px; margin-left: 20px" value="sea" [(ngModel)]="changedJobNumber.shippingMethod">
+                          <label style=" margin-right: 25px;">ים</label>     
+                      </div>
+                    </td>
+                    <td colspan=2>
+                      <label >
+                          הערות:
+                      </label>
+                        <input type="text" [value]="changedJobNumber.remarks" >
+                      </td>  
+                    <td colspan=1>
+                      <label >
+                          צפי הגעה:
+                      </label>
+                      <input type="date" [value]="changedJobNumber.expectedArrival" >
+                    </td>
+                    <td colspan=1>
+                        <i class="ti-save text-success m-r-10"  (click)="saveLineJobNChanges()"></i>
+                    </td>
+                  </tr>
+      
+            </ng-container>
           </tbody>
         </table>
       </div>

@@ -20,6 +20,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor: string = "white";
   buttonColor2: string = "#B8ECF1";
   buttonColor3: string = "#B8ECF1";
+  buttonColor4: string = "#B8ECF1";
   today: any;
   currentType: string = "";
   editRadioBtnType: string = "";
@@ -98,7 +99,9 @@ export class ScheduleComponent implements OnInit {
     if(this.scheduleLine.orderN!=''){
 
     console.log(this.scheduleLine);
-    if (this.scheduleLine.mkp == 'mkp') {
+    if(this.scheduleLine.mkp == 'sachet'){
+      this.scheduleLine.productionLine = '7';
+    }else if (this.scheduleLine.mkp == 'mkp') {
       this.scheduleLine.productionLine = '6';
     } else if (this.scheduleLine.mkp == 'tube') {
       this.scheduleLine.productionLine = '5';
@@ -192,16 +195,25 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor = 'white';
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
         break;
       case 'tube':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = 'white';
         this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
         break;
       case 'mkp':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = 'white';
+        this.buttonColor4 = 'white';
+        break;
+      case 'sachet':
+        this.buttonColor = '#B8ECF1';
+        this.buttonColor2 = '#B8ECF1';
+        this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = 'white';
         break;
     }
     this.typeShown = type;

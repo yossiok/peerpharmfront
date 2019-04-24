@@ -33,3 +33,25 @@ input[type=radio]
     cursor: pointer;
     margin-left: 20px;
 }
+
+.viewExpectedArrivals input{
+    width: 120%;
+}
+.tableTailsCols{
+    width:5%;
+}
+.viewExpectedArrivals tbody td {
+    width:8%;
+}
+.tableCenterCols{
+    width:8%;
+}
+.editExistingJobNum{
+    background-color: #e0eaf9;
+}
+tr.editExistingJobNum >td{
+    width: 12%;
+}
+.ti-save{
+    cursor: pointer;
+}

@@ -134,6 +134,12 @@
 >
   Make Up
 </div>
+<div
+  (click)="setType(&quot;sachet&quot;, this)"
+  [ngStyle]="{ 'background-color': buttonColor4 }"
+>
+  Sachet
+</div>
 
 <table>
   <thead class="bg-success text-white">
@@ -278,6 +284,12 @@
         value="mkp"
         [(ngModel)]="scheduleLine.mkp"
       />Mkp<br />
+      <input
+        type="radio"
+        name="type"
+        value="sachet"
+        [(ngModel)]="scheduleLine.mkp"
+      />Sachet<br />
     </td>
     <td class="printlessTd"></td>
     <td class="printlessTd">

@@ -552,6 +552,7 @@ getOrderItems(singleLine): void {
         productionLine:'',
         pLinePositionN:999
       }
+      if(scheduleLine.mkp=="sachet") scheduleLine.productionLine="7";
       if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
       if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
 
