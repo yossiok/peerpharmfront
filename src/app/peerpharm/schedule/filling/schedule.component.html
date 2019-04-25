@@ -460,6 +460,14 @@
             [checked]="line.mkp === 'mkp'"
             (change)="handleChange('mkp')"
           />Mkp<br />
+          <input
+            type="radio"
+            name="typeEdit"
+            #mkpA
+            value="sachet"
+            [checked]="line.mkp === 'sachet'"
+            (change)="handleChange('sachet')"
+          />Sachet<br />
         </td>
         <td *ngIf="line._id !== EditRowId">
           <img

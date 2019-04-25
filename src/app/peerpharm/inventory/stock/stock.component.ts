@@ -268,10 +268,100 @@ getUserAllowedWH(){
         // this.setType("product");
         this.stockType="product";
       }
+      debugger
+      // this.getAllComponentsByType();
+
+      }
     console.log(res);
-    }
+
   });
 }
+
+
+// getAllComponentsByType(){
+//   this.stockType;
+//   this.inventoryService.getAllComponentsByType(this.stockType).subscribe(components => {
+//     this.componentsUnFiltered=   components.items.splice(0);
+//     this.components = components.items.splice(0);
+
+//     this.componentsAmount = components.componentsAmount.splice(0);;
+//     // console.log(res);
+//     this.componentsUnFiltered.forEach(cmpt => {
+//    //  adding amounts to all components
+//       let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
+//       if(result!=undefined){
+//         cmpt.amount = result.total;
+//       }
+//       if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0;
+
+//     });
+//     this.setType(this.stockType);
+//     this.getAllCmptTypesAndCategories();
+//     debugger
+//   });
+// }
+ 
+getAllComponents() {
+  this.inventoryService.getAllComponents().subscribe(components => {
+    this.componentsUnFiltered=   components.splice(0);
+    this.components = components;
+    //why are we using set time out and not async await??
+    setTimeout( ()=> {
+
+      this.inventoryService.getComponentsAmounts().subscribe(res => {
+        this.componentsAmount = res;
+        // console.log(res);
+        this.componentsUnFiltered.forEach(cmpt => {
+       //  adding amounts to all components
+          let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
+          if(result!=undefined){
+            // console.log(result._id + " , " + cmpt.componentN);
+            cmpt.amount = result.total;
+          }
+
+          // if(cmpt.allocations.length>0){
+          //   let itemAllocSum=0;
+          //   cmpt.allocations.forEach(alloc=>{
+          //     itemAllocSum= itemAllocSum+alloc.amount;
+          //     itemAllocSum= itemAllocSum-alloc.supplied;
+          //   });
+          //   cmpt.allocAmount=itemAllocSum;
+          // }
+
+          if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0;
+
+        });
+        this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType);
+        this.setType(this.stockType);
+        this.getAllCmptTypesAndCategories();
+
+      });
+
+    }, 100);
+
+  });
+  // console.log(this.components);
+  ;
+}
+
+getAllCmptTypesAndCategories(){
+  this.cmptTypeList=[];
+  this.cmptCategoryList=[];
+  this.components.forEach(cmpt=>{
+    if(cmpt.componentType!=""&&cmpt.componentType!=null&&cmpt.componentType!=undefined){
+      if(!this.cmptTypeList.includes(cmpt.componentType)){
+        return this.cmptTypeList.push(cmpt.componentType);
+      }
+    }
+    if(cmpt.componentCategory!=""&&cmpt.componentCategory!=null&&cmpt.componentCategory!=undefined){
+      if(!this.cmptCategoryList.includes(cmpt.componentCategory)){
+        return this.cmptCategoryList.push(cmpt.componentCategory);
+      }
+    }
+  });
+  console.log(this.cmptCategoryList)
+}
+
 
 loadComponentItems(){
   this.inventoryService.getItemsByCmpt(this.resCmpt.componentN , this.resCmpt.componentType).subscribe(res=>{
@@ -579,130 +669,9 @@ async updateItemStock(direction){
   }
 
 
-  // filterRowsByItemNumber(event){
-  //   this.filterVal='';
-  //   this.filterVal=event.target.value;
-  //   this.components=this.componentsUnFiltered.filter(x=> x.componentN.includes(this.filterVal) && x.itemType==this.stockType );
-  // }
-  // filterRowsByItemSupplierNumber(event){
-  //   this.filterVal='';
-  //   this.filterVal=event.target.value;
-  //   this.components=this.componentsUnFiltered.filter(x=> x.componentNs.includes(this.filterVal)  && x.itemType==this.stockType );
-  // }
-  // filterRowsByItemName(event){
-  //   this.filterVal='';
-  //   this.filterVal=event.target.value;
-  //   this.components=this.componentsUnFiltered.filter(x=> x.componentName.toLowerCase().includes(this.filterVal.toLowerCase()) && x.itemType==this.stockType );
-  // }
-  // changeText(ev, filterBy)
-  // {
-  //   if(filterBy=='itemName'){
-  //     let word= ev.target.value;
-  //     let wordsArr= word.split(" ");
-  //     wordsArr= wordsArr.filter(x=>x!="");
-  //     if(wordsArr.length>0){
-  //       let tempArr=[];
-  //       this.componentsUnFiltered.filter(stk=>{
-  //         var check=false;
-  //         var matchAllArr=0;
-  //         wordsArr.forEach(w => {
-  //             if(stk.componentName.toLowerCase().includes(w.toLowerCase()) &&  stk.itemType==this.stockType){
-  //               matchAllArr++
-  //             }
-  //             (matchAllArr==wordsArr.length)? check=true : check=false ;
-  //         });
-
-  //         if(!tempArr.includes(stk) && check) tempArr.push(stk);
-  //       });
-  //          this.components= tempArr;
-  //             
-  //     }
-  //   }
-  // }
-  // filterRowsByCmptTypeanCategory(event,filter){
-  //   this.components= this.componentsUnFiltered;
-  //   this.emptyFilterArr=true;
-  //   let type=this.filterByType.nativeElement.value
-  //   let category= this.filterByCategory.nativeElement.value
-  //   if(type!="" || category!=""){
-  //     if(category!="" && type!="" ){
-  //       this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
-  //     }else if(category=="" && type!=""){
-  //       this.components=this.components.filter(x=> ( x.componentType.includes(type) && x.itemType.includes(this.stockType) ) );
-  //     }else if(category!="" && type==""){
-  //       this.components=this.components.filter(x=> ( x.componentCategory.includes(category) && x.itemType.includes(this.stockType) ) );
-  //     }
-  //     if(this.components.length==0){
-  //       this.emptyFilterArr=false;
-  //       this.components=this.componentsUnFiltered;
-  //     }
-  //   }else if(type=="" && category==""){
-  //     this.components=this.components.filter(x=> ( x.itemType.includes(this.stockType) ) );
-  //   }
-  // }
 
 
 
-  getAllComponents() {
-    this.inventoryService.getAllComponents().subscribe(components => {
-      this.componentsUnFiltered=   components.splice(0);
-      this.components = components;
-      //why are we using set time out and not async await??
-      setTimeout( ()=> {
-
-        this.inventoryService.getComponentsAmounts().subscribe(res => {
-          this.componentsAmount = res;
-          // console.log(res);
-          this.componentsUnFiltered.forEach(cmpt => {
-         //  adding amounts to all components
-            let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
-            if(result!=undefined){
-              // console.log(result._id + " , " + cmpt.componentN);
-              cmpt.amount = result.total;
-            }
-
-            if(cmpt.allocations.length>0){
-              let itemAllocSum=0;
-              cmpt.allocations.forEach(alloc=>{
-                itemAllocSum= itemAllocSum+alloc.amount;
-                itemAllocSum= itemAllocSum-alloc.supplied;
-              });
-              cmpt.allocAmount=itemAllocSum;
-            }
-
-            if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0;
-
-          });
-          this.components=this.componentsUnFiltered.filter(x=> x.itemType==this.stockType);
-          this.setType(this.stockType);
-          this.getAllCmptTypesAndCategories();
-
-        });
-
-      }, 100);
-
-    });
-    // console.log(this.components);
-    ;
-  }
-
-  getAllCmptTypesAndCategories(){
-    this.cmptTypeList=[];
-    this.cmptCategoryList=[];
-    this.components.forEach(cmpt=>{
-      if(cmpt.componentType!=""&&cmpt.componentType!=null&&cmpt.componentType!=undefined){
-        if(!this.cmptTypeList.includes(cmpt.componentType)){
-          return this.cmptTypeList.push(cmpt.componentType);
-        }
-      }
-      if(cmpt.componentCategory!=""&&cmpt.componentCategory!=null&&cmpt.componentCategory!=undefined){
-        if(!this.cmptCategoryList.includes(cmpt.componentCategory)){
-          return this.cmptCategoryList.push(cmpt.componentCategory);
-        }
-      }
-    });
-    console.log(this.cmptCategoryList)
-  }
 
 
   searchItemShelfs(){
