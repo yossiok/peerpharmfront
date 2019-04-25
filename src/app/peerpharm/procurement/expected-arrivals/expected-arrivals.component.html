@@ -5,7 +5,7 @@
     <div class="modal-header" style="text-align: right;">
       <span style="float:right;" class="close" id="closeId2" (click)="closeMadal()">&times;</span>
       <h2>{{procurementModalHeader}}</h2>
-      <h3 style="color: red; margin:0 10px; ">מסך לא בשימוש עד הודעה רשמית</h3>
+      <!-- <h3 style="color: red; margin:0 10px; ">מסך לא בשימוש עד הודעה רשמית</h3> -->
     </div>
     <div class="modal-body" style="text-align: right; overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
       <div class="addNewExpectedArrival">
@@ -199,31 +199,31 @@
                     <td class="tableTailsCols">{{i+1}}</td>
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.procurmentOrderNumber}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" >
-                        <input type="text" [value]="changedLine.procurmentOrderNumber" >
+                        <input type="text" [(ngModel)]="changedLine.procurmentOrderNumber" >
                     </td>  
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.cmxComponentN}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" >
-                        <input type="text" [value]="changedLine.cmxComponentN" >
+                        <input type="text" [(ngModel)]="changedLine.cmxComponentN" >
                     </td>  
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.componentN}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" >
-                        <input type="text" [value]="changedLine.componentN" >
+                        <input type="text" [(ngModel)]="changedLine.componentN" >
                     </td>  
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.suplierName}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" >
-                        <input type="text" [value]="changedLine.suplierName" >
+                        <input type="text" [(ngModel)]="changedLine.suplierName" >
                     </td>  
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.suplierN}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" >
-                        <input type="text" [value]="changedLine.suplierN" >
+                        <input type="text" [(ngModel)]="changedLine.suplierN" >
                     </td>  
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.quantity}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" >
-                        <input type="number" [value]="changedLine.quantity" >
+                        <input type="number" [(ngModel)]="changedLine.quantity" >
                     </td>  
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.remarks}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" >
-                        <input type="text" [value]="changedLine.remarks" >
+                        <input type="text" [(ngModel)]="changedLine.remarks" >
                     </td>  
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.transporterName}} 
                     </td>
@@ -258,10 +258,11 @@
                     <!-- <td >{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td> -->
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" style="width:11%">
-                      <input type="date" [value]="dateStr" >
+                      <input type="date" [(ngModel)]="dateStr" >
                     </td>  
                     <td class="tableTailsCols">
-                        <i *ngIf="expectedArrival._id===EditRowId" class="ti-save text-success m-r-10"  (click)="saveSingleLineUpdate(expectedArrival, i)"></i>
+                        <i *ngIf="expectedArrival._id===EditRowId" class="ti-save text-success m-r-10" style="font-size:35px;"  
+                        (click)="saveSingleLineUpdate(expectedArrival, i)"></i>
                         <!-- <img src="../../../../assets/images/save.png" alt=""> -->
                     </td>
                   </tr>
@@ -279,13 +280,13 @@
                       <label >
                           #Job Number:
                       </label>
-                      <input type="text" [value]="changedJobNumber.jobNumber" (blur)="JNumChange($event)">
+                      <input type="text" [(ngModel)]="changedJobNumber.jobNumber" (blur)="JNumChange($event)">
                     </td>
                     <td colspan=2>
                         <label >
                             שם המשנע:
                         </label>
-                      <input type="text" [value]="changedJobNumber.transporterName" >
+                      <input type="text" [(ngModel)]="changedJobNumber.transporterName" >
                     </td>
                     <td colspan=2>
                       <label >
@@ -308,16 +309,16 @@
                       <label >
                           הערות:
                       </label>
-                        <input type="text" [value]="changedJobNumber.remarks" >
+                        <input type="text" [(ngModel)]="changedJobNumber.remarks" >
                       </td>  
                     <td colspan=1>
                       <label >
                           צפי הגעה:
                       </label>
-                      <input type="date" [value]="changedJobNumber.expectedArrival" >
+                      <input type="date" [(ngModel)]="this.dateJNStr" >
                     </td>
                     <td colspan=1>
-                        <i class="ti-save text-success m-r-10"  (click)="saveLineJobNChanges()"></i>
+                        <i class="ti-save text-success m-r-10" style="font-size:35px;"  (click)="saveLineJobNChanges(expectedArrival)"></i>
                     </td>
                   </tr>
       

@@ -55,8 +55,16 @@ export class Procurementservice {
     return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
   }
   updateExpectedArrival(arrivalsArr):Observable<any>{
-    let url = this.baseUrl + 'expectedArrivalController/upadate';
+    let url = this.baseUrl + 'expectedArrivalController/updateExpected';
     return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
+  }
+  addNewJobNumber(obj):Observable<any>{
+    let url = this.baseUrl + 'expectedArrivalController/addJobNumber';
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
+  }
+  updateTransformationArrival(obj):Observable<any>{
+    let url = this.baseUrl + 'expectedArrivalController/updateTransport';
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
   findOpenJobNumbers(): Observable<any> {
     let url = this.baseUrl + 'expectedArrivalController?openJobNumbers';
@@ -69,6 +77,7 @@ export class Procurementservice {
     return this.http.get(url).pipe( map(reponse => reponse.json())
     )
   }
+  
 
 
 }
