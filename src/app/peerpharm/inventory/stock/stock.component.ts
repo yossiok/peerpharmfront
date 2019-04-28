@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
@@ -124,72 +124,22 @@ export class StockComponent implements OnInit {
   constructor(private excelService:ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService, 
     private authService: AuthService,private toastSrv: ToastrService , private batchService: BatchesService , private itemService: ItemsService, 
     private fb: FormBuilder, ) {
-
-    //   this.newItemProcurmentDetails = fb.group({
-    //     componentN: [String, Validators.required],// מספר פריט 
-    //     componentNs: [String, ],// מספר מק"ט אצל הספק
-    //     suplierN: [String, Validators.required],// מספר הזמנת רכש
-    //     suplierName: [String, Validators.required],// מספר הזמנת רכש
-    //     procurmentOrderNumber: [Number, Validators.required],// מספר הזמנת רכש
-    //     jobNumber: [String, Validators.required],// מספר הזמנת רכש
-    //     expectedDate: [Date, Validators.required],// מספר הזמנת רכש
-    //     suppliedDate: [Date, Validators.required],// מספר הזמנת רכש
-    //     quantity: [Number, Validators.required],// מספר הזמנת רכש
-    //     quantityRecived: [Number, Validators.required],
-    //     remarks: [String, ],
-    //     lastUpdateDate: [Date, Validators.nullValidator],
-    //     lastUpdateUser: [String, Validators.nullValidator],
-    //     status: [String, Validators.nullValidator],
-    //   });
-    //   // this.newOrderProcurmentDetails = fb.group({
-    //   //   componentN: [String, Validators.required],// מספר פריט 
-    //   //   componentNs: [String, ],// מספר מק"ט אצל הספק
-    //   //   suplierN: [String, Validators.required],// מספר הזמנת רכש
-    //   //   suplierName: [String, Validators.required],// מספר הזמנת רכש
-    //   //   procurmentOrderNumber: [Number, Validators.required],// מספר הזמנת רכש
-    //   //   transportationJobNumber: [String,],// מספר הזמנת רכש
-    //   //   expectedDate: [Date, Validators.required],// מספר הזמנת רכש
-    //   //   suppliedDate: [Date, Validators.required],// מספר הזמנת רכש
-    //   //   quantity: [Number, Validators.required],// מספר הזמנת רכש
-    //   //   quantityRecived: [Number, Validators.required],
-    //   //   remarks: [String, ],
-    //   //   lastUpdateDate: [Date, Validators.nullValidator],
-    //   //   lastUpdateUser: [String, Validators.nullValidator],
-    //   //   status: [String, Validators.nullValidator],
-    //   // });
-    //   this.newTransportDetails = fb.group({
-    //     jobNumber: [String, Validators.required],// מספר הזמנת רכש
-    //     transporterName: [String, Validators.required],// מספר הזמנת רכש
-    //     expectedDate: [Date, Validators.required],// מספר הזמנת רכש
-    //     suppliedDate: [Date, Validators.required],// מספר הזמנת רכש
-    //     transportationItems: [Array, Validators.required],// מספר הזמנות רכש
-    //     airOrSeaOrLand: [String, Validators.required],
-    //     remarks: [String, ],
-    //     lastUpdateDate: [Date, Validators.nullValidator],
-    //     lastUpdateUser: [String, Validators.nullValidator],
-    //     status: [String, Validators.nullValidator],
-    //   });
-    //   this.transportationItem = fb.group({
-    //     componentN: [String, Validators.required],// מספר הזמנת רכש
-    //     componentNs: [String, Validators.required],// מספר הזמנת רכש
-    //     procurmentOrderNumber: [String, Validators.required],// מספר הזמנת רכש
-    //     quantity: [Number, Validators.required],// מספר הזמנת רכש
-    //     quantityRecived: [Number, Validators.required],
-    //   });
      }
      @Output() sendDataToExpectedArrivalsModal = new EventEmitter();
-     
+     @Input() expectedArrivalItemData: any;
+
+     //expected Arrivals modal
      getNewExpectedArrivalsData(outputeEvent){
         console.log('getting new updated expected arrivals data')
         console.log(outputeEvent)
         if(outputeEvent=='closeModal'){
           this.openProcurementModal=false;
+          //update expected arrivals info for item 
         }
-        debugger
      }
+
      updateExpectedProcurment(stockItem){
       this.resCmpt=stockItem;
-      // this.sendDataToExpectedArrivalsModal.emit(stockItem);  
       this.openProcurementModal=true;
       }
 
@@ -267,6 +217,8 @@ getUserAllowedWH(){
       if(this.curentWhareHouseName.includes('product')) {
         // this.setType("product");
         this.stockType="product";
+      }else{
+        this.stockType="component";
       }
       debugger
       // this.getAllComponentsByType();
@@ -303,6 +255,7 @@ getUserAllowedWH(){
  
 getAllComponents() {
   this.inventoryService.getAllComponents().subscribe(components => {
+    console.log(components[0]);
     this.componentsUnFiltered=   components.splice(0);
     this.components = components;
     //why are we using set time out and not async await??
@@ -318,16 +271,6 @@ getAllComponents() {
             // console.log(result._id + " , " + cmpt.componentN);
             cmpt.amount = result.total;
           }
-
-          // if(cmpt.allocations.length>0){
-          //   let itemAllocSum=0;
-          //   cmpt.allocations.forEach(alloc=>{
-          //     itemAllocSum= itemAllocSum+alloc.amount;
-          //     itemAllocSum= itemAllocSum-alloc.supplied;
-          //   });
-          //   cmpt.allocAmount=itemAllocSum;
-          // }
-
           if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0;
 
         });

@@ -41,15 +41,24 @@ export class Procurementservice {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+
+
+
   /*EXPECTED ARRIVALS OF PROCURMENT ITEMS*/
   
   getItemExpectedArrivals(componentN): Observable<any> {
     let url = this.baseUrl + 'expectedArrivalController?componentN=' +componentN;
-    return this.http.get(url).pipe( map(reponse => reponse.json())
-    )
+    return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
-
-
+  findOpenJobNumbers(): Observable<any> {
+    let url = this.baseUrl + 'expectedArrivalController?openJobNumbers';
+    return this.http.get(url).pipe( map(reponse => reponse.json()))
+  }
+  findOneJobNumber(jobNumber): Observable<any> {
+    debugger
+    let url = this.baseUrl + 'expectedArrivalController?oneJobNumber='+jobNumber;
+    return this.http.get(url).pipe( map(reponse => reponse.json()))
+  }
   addExpectedArrivals(arrivalsArr):Observable<any>{
     let url = this.baseUrl + 'expectedArrivalController/add';
     return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
@@ -66,16 +75,10 @@ export class Procurementservice {
     let url = this.baseUrl + 'expectedArrivalController/updateTransport';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
-  findOpenJobNumbers(): Observable<any> {
-    let url = this.baseUrl + 'expectedArrivalController?openJobNumbers';
-    return this.http.get(url).pipe( map(reponse => reponse.json())
-    )
-  }
-  findOneJobNumber(jobNumber): Observable<any> {
+  suppliedExpectedArrival(arrivalsArr):Observable<any>{
     debugger
-    let url = this.baseUrl + 'expectedArrivalController?oneJobNumber='+jobNumber;
-    return this.http.get(url).pipe( map(reponse => reponse.json())
-    )
+    let url = this.baseUrl + 'expectedArrivalController/expectedSupplied';
+    return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
   }
   
 

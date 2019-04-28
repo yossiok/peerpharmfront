@@ -145,27 +145,18 @@
           </td>
           <td><img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)" ></td>
           <td>
-            <button *ngIf="component.procurementSent==true && updateStockItem" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
-            מחק</button>{{component.procurementAmount}}</td>
-          <!-- <td style="width: 15%;">
-              <form *ngIf="updateStockItem">
-                <div class="row" style="padding : 0px; display: flex; justify-content: flex-end; ">
-                  <div class="col" style="padding : 0px ;">
-                    <input #newProcurmentQnt class="form-control" type="number" (keyup)="inputProcurment($event)" placeholder="Quantity">
-                  </div>
-                  <div class="col" style="padding : 0px ;">
-                      <input #newProcurmentOrderNum class="form-control" type="text" placeholder="Order Number">
-                  </div>
-                  <div class="col" style="padding : 0px ;">
-                    <input #newProcurmentExceptedDate class="form-control" type="date" >
-                  </div>
-
-                  <div class="col" style="padding : 0px ;">
-                    <button class="btn btn-success form-control"(click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button>
-                  </div>
-                </div>
-            </form>
-          </td> -->
+            <!-- <button *ngIf="component.procurementSent==true && updateStockItem" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
+            מחק</button>{{component.procurementAmount}} -->
+              <table>
+                <tr *ngFor="let expt of component.procurementArr "
+                style="font-size:18px">
+                  <td>כמות</td>
+                  <td>{{expt.quantity}}</td>
+                  <td>תאריך</td>
+                  <td>{{expt.expectedDate | date :'dd/MM/yyyy'}}</td>
+                </tr>
+              </table>
+          </td>
           <td>
             <div *ngIf="updateStockItem" style="width: 100%; padding: 0px 0px">
                 <!-- <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 50%; padding: 0px"/>

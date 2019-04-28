@@ -3,7 +3,7 @@
   <!-- Modal content -->
   <div class="modal-content" style='width:1200px' id='modelD'>
     <div class="modal-header" style="text-align: right;">
-      <span style="float:right;" class="close" id="closeId2" (click)="closeMadal()">&times;</span>
+      <span style="float:left; margin-left:0px; font-size: 40px; " class="close" id="closeId2" (click)="closeMadal()">&times;</span>
       <h2>{{procurementModalHeader}}</h2>
       <!-- <h3 style="color: red; margin:0 10px; ">מסך לא בשימוש עד הודעה רשמית</h3> -->
     </div>
@@ -250,20 +250,16 @@
                           (click)="editJN(expectedArrival)">
                       </div>
       
-                      <!-- <div *ngIf="expectedArrival._id===EditRowId && expectedArrival.jobNumber===EditJobN">
-                          <input *ngIf="expectedArrival.jobNumber===EditJobN" type="text" [value]="changedLine.jobNumber" >
-                          <i *ngIf="expectedArrival.jobNumber===EditJobN" class="ti-save text-success m-r-10"  (click)="editExistingTransportationData(expectedArrival, i)"></i>
-                      </div> -->
                     </td>
-                    <!-- <td >{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td> -->
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">{{expectedArrival.expectedDate |  date: 'dd/MM/yyyy'}}</td>
                     <td *ngIf="expectedArrival._id===EditRowId" style="width:11%">
                       <input type="date" [(ngModel)]="dateStr" >
                     </td>  
                     <td class="tableTailsCols">
-                        <i *ngIf="expectedArrival._id===EditRowId" class="ti-save text-success m-r-10" style="font-size:35px;"  
+                        <i *ngIf="expectedArrival._id===EditRowId" class="ti-save text-success m-r-10" style="font-size:35px; cursor: pointer;"  
                         (click)="saveSingleLineUpdate(expectedArrival, i)"></i>
-                        <!-- <img src="../../../../assets/images/save.png" alt=""> -->
+                        <i *ngIf="expectedArrival._id!==EditRowId" class="ti-check text-success m-r-10" style="font-size:35px; cursor: pointer;"  
+                        (click)="suppliedSingleLineUpdate(expectedArrival)"></i>
                     </td>
                   </tr>
 

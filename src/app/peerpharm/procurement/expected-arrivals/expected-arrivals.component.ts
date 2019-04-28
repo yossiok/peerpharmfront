@@ -59,9 +59,16 @@ export class ExpectedArrivalsComponent implements OnInit {
   @ViewChild('singleBtn') singleBtn: ElementRef;
   @ViewChild('multiBtn') multiBtn: ElementRef;
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    console.log(event);
+    debugger
+    if(this.EditJobN!=null){
+    this.editJN(null);
+    }else{
+    // this.editJN(null);
     this.edit('');
-    this.editJN('');
+    }
+    // console.log(event);
+    // this.edit('');
+    // this.editJN(null);
 }
   // @ViewChild('orderBtn') orderBtn: ElementRef;
   singleBtnStyle:String;
@@ -372,30 +379,42 @@ transporterChecked(ev){
     }
   }
   editJN(exptArrvl) {
-    if(this.EditRowId == exptArrvl._id){
-      this.EditJobN = exptArrvl.jobNumber;
-       debugger
-      this.dateJNStr=this.changedLine.expectedDate.slice(0,10);
-      this.changedJobNumber={};
-      if(exptArrvl.jobNumber!='') {
+    if(exptArrvl!=null){
+      if(this.EditRowId == exptArrvl._id ){
+        this.EditJobN = exptArrvl.jobNumber;
          debugger
-        this.procuretServ.findOneJobNumber(exptArrvl.jobNumber).subscribe(res=>{
-          if(res.length>0){
-            this.newJN=false;
-            debugger
-            this.dateJNStr=res[0].expectedDate.slice(0,10);
-            this.changedJobNumber=  {
-              jobNumber:res[0].jobNumber,
-              transporterName:res[0].transporterName,
-              expectedDate:this.dateJNStr,
-              shippingMethod:res[0].shippingMethod,
-              remarks:res[0].remarks,
-              transportationItems:res[0].transportationItems,
+        this.dateJNStr=this.changedLine.expectedDate.slice(0,10);
+        this.changedJobNumber={};
+        if(exptArrvl.jobNumber!='') {
+           debugger
+          this.procuretServ.findOneJobNumber(exptArrvl.jobNumber).subscribe(res=>{
+            if(res.length>0){
+              this.newJN=false;
+              debugger
+              this.dateJNStr=res[0].expectedDate.slice(0,10);
+              this.changedJobNumber=  {
+                jobNumber:res[0].jobNumber,
+                transporterName:res[0].transporterName,
+                expectedDate:this.dateJNStr,
+                shippingMethod:res[0].shippingMethod,
+                remarks:res[0].remarks,
+                transportationItems:res[0].transportationItems,
+              }
+              this.changedJobNumber = res[0];
+            }else{
+              debugger
+              this.newJN=true;
+              this.changedJobNumber=  {
+                jobNumber:this.changedLine.jobNumber,
+                transporterName:this.changedLine.transporterName,
+                expectedDate:this.dateJNStr,
+                shippingMethod:'land',
+                remarks:this.changedLine.remarks,
+                transportationItems:[],
+              }
             }
-            this.changedJobNumber = res[0];
-          }else{
-            debugger
-            this.newJN=true;
+            });
+          }else if(exptArrvl.jobNumber==''){
             this.changedJobNumber=  {
               jobNumber:this.changedLine.jobNumber,
               transporterName:this.changedLine.transporterName,
@@ -404,20 +423,12 @@ transporterChecked(ev){
               remarks:this.changedLine.remarks,
               transportationItems:[],
             }
+            this.newJN=true;
           }
-          });
-        }else if(exptArrvl.jobNumber==''){
-          this.changedJobNumber=  {
-            jobNumber:this.changedLine.jobNumber,
-            transporterName:this.changedLine.transporterName,
-            expectedDate:this.dateJNStr,
-            shippingMethod:'land',
-            remarks:this.changedLine.remarks,
-            transportationItems:[],
-          }
-          this.newJN=true;
-        }
-      }     
+        }  
+    }else {
+      this.EditJobN=null;
+    }
   }
 
 JNumChange(ev){
@@ -521,19 +532,35 @@ saveLineJobNChanges(expectedArrival){
       this.changedLine;
         let conf=confirm("לשמור שינויים בצפי הגעה של פריט "+ expectedArrival.componentN+" ?");
       if(conf){
-
-        // let objToUpdate=this.itemExpectedArrivals.filter(expt=> {
-        //   if(expt.componentN==expectedArrival.componentN && expt.componentNs==expectedArrival.componentN ){
-        //   }
-        // });
-      this.procuretServ.updateExpectedArrival(this.changedLine).subscribe(res=>{
-        if(res.componentN){
-          this.toastSrv.success('שינויים בוצעו בהצלחה');
-          this.edit('');
-          this.changedLine={};
-        }
-      });
-
+        this.procuretServ.updateExpectedArrival(this.changedLine).subscribe(res=>{
+          if(res.componentN){
+            this.toastSrv.success('שינויים בוצעו בהצלחה');
+            this.edit('');
+            this.changedLine={};
+          }
+        });
+      }
+    }
+    suppliedSingleLineUpdate(expectedArrival, ev){
+      let objToSend={
+        _id: expectedArrival._id,
+        suppliedDate: new Date(),
+        quantityRecived: expectedArrival.quantity,
+        lastUpdateDate: new Date(),
+        lastUpdateUser: this.userName,
+        status: "close",
+      }
+      let conf=confirm("עדכון הגעת פריט "+ expectedArrival.componentN+"\nכמות: "+expectedArrival.quantity+"\nהזמנת רכש: "+expectedArrival.procurmentOrderNumber );
+      if(conf){
+        debugger
+        this.procuretServ.suppliedExpectedArrival(objToSend).subscribe(res=>{
+          if(res._id){
+            this.toastSrv.success('שינויים בוצעו בהצלחה');
+            this.edit('');
+            ev.target;
+            debugger
+          }
+        });
       }
     }
     
@@ -542,7 +569,9 @@ saveLineJobNChanges(expectedArrival){
 
 
 
+emitTpParentComponent(){
 
+}
 
 
 
