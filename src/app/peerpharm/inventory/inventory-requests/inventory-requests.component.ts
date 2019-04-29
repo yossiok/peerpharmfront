@@ -79,4 +79,17 @@ export class InventoryRequestsComponent implements OnInit {
     }
     console.log(tempArr);
     }
+
+  closeInventoryReqManually(invReqId){
+      if(confirm('לא כל הכמויות סופקו לבקשת מלאי\nהאם לסגור בקשת מלאי?')){
+        this.inventoryReqService.closeRequest({id:invReqId}).subscribe(res=>{
+          debugger
+          if(res._id){  
+              this.getAllGeneralDemands();
+            }
+        });
+      }  
+    }
+
+
 }

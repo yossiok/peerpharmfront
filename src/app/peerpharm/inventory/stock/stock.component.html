@@ -13,7 +13,6 @@
     <!-- <button class="btn btn-info" (click)="getDoubleItemShelfs()"><b>getDoubleItemShelfs</b></button>&nbsp;&nbsp;  -->
     <!-- <button class="btn btn-info" (click)="getDoubleStockItems()"><b>getDoubleStockItems</b></button>&nbsp;&nbsp; -->
     <!-- <button class="btn btn-info" (click)="deleteDoubleStockItemsProducts()"><b>deleteDoubleStockItemsProducts</b></button>&nbsp;&nbsp; -->
-    <!-- <button (click)="ExportKasemAllCmptsOnShelfs()">ExportKasemAllCmptsOnShelfs</button> -->
 
 </div>
 
@@ -112,58 +111,70 @@
       <thead class='bg-info text-white'>
         <tr align='center'>
   
-          <th style="width:4%; padding:5px"></th>
-          <th style="padding:5px"><b>מספר פריט</b></th>
-          <th style="padding:5px;"><b>מק"ט פריט-ספק</b></th>
+          <th style="width:3%; padding:5px"></th>
+          <th style="width:6%; padding:5px"><b>מספר פריט</b></th>
+          <th style="width:5%; padding:5px;"><b>מק"ט פריט-ספק</b></th>
           <th style="width:15%; padding:5px"><b>שם</b></th>
-          <th style="padding:5px"><b>סוג</b></th>
-          <th style="padding:5px"><b>כמות</b></th>
-          <th style="padding:5px"></th>
-          <th style="padding:5px"><b>כמות מוקצת</b></th>
-          <th style="padding:5px"><b>תמונה</b></th>
-          <th style="padding:5px"><b>הזמנת רכש</b></th>
-          <th style="padding:5px" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th>
-          <th ></th>
+          <th style="width:5%; padding:5px"><b>סוג</b></th> 
+          <th style="width:7%; padding:5px"><b>כמות</b></th>
+          <!-- <th style="padding:5px"><b>כמות מוקצת</b></th> -->
+          <th style="width:7%; padding:5px"><b>תמונה</b></th>
+          <th style="width:12%; padding:5px"><b>הזמנת רכש</b></th>
+          <!-- <th style="padding:5px" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th> -->
+          <th style="width:3%; padding:5px"></th>
         </tr>
   
       </thead>
   
   
       <tbody id="table_body" class="componentTable">
-        <tr *ngFor="let component of components; let i = index">
-          <td style="width:4%">{{i+1}}</td>
-          <td class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
-          <td style="word-break: normal;">{{component.componentNs}}</td>
+        <tr *ngFor="let component of components; let i = index" >
+          <td style="width:3%;">{{i+1}}</td>
+          <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
+          <td style="width:5%; word-break: normal;">{{component.componentNs}}</td>
           <td style="width:15%;">{{component.componentName}}</td>
-          <td style="word-break: normal;">{{component.componentType}}</td>
-          <td>{{component.amount}}</td>
-          <td>
-            <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button>
+          <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
+          <td style="width:7%;"
+          (click)="getCmptAmounts(component.componentN, component._id)"
+          style="cursor: pointer;">{{component.amount}}
+            <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
+           
+              style="width: 40px; margin-left: 15px; cursor: pointer; float: right;">
+              <!-- <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)"
+              style="float:right;">צפיה בכמויות</button> -->
           </td>
-          <td>
+
+          <!-- <td>
             <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
+          </td> -->
+          <td style="width:7%; text-align: center;">
+            <img [src]="component.img" style='width:50px ; cursor: pointer;'  (click)="openImg(component.img)" >
           </td>
-          <td><img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)" ></td>
-          <td>
+          <td style="width:12%;">
+              <img src="../../../../assets/images/delivery-clock.png" alt="expectedDelivery"
+              style="cursor: pointer; width: 35px; float: right;"
+              (click)="updateExpectedProcurment(component)">
             <!-- <button *ngIf="component.procurementSent==true && updateStockItem" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
             מחק</button>{{component.procurementAmount}} -->
-              <table>
-                <tr *ngFor="let expt of component.procurementArr "
-                style="font-size:18px">
-                  <td>כמות</td>
-                  <td>{{expt.quantity}}</td>
-                  <td>תאריך</td>
-                  <td>{{expt.expectedDate | date :'dd/MM/yyyy'}}</td>
-                </tr>
+              <table >
+                <tbody>
+                    <tr *ngFor="let expt of component.procurementArr "
+                    class="d-flex flex-row-reverse"
+                    style="font-size:16px;">
+                      <td class="p-2">כמות</td>
+                      <td class="p-2">{{expt.quantity}}</td>
+                      <td class="p-2">תאריך</td>
+                      <td class="p-2">{{expt.expectedDate | date :'dd/MM/yyyy'}}</td>
+                    </tr>    
+                </tbody>
               </table>
           </td>
-          <td>
-            <div *ngIf="updateStockItem" style="width: 100%; padding: 0px 0px">
+            <!-- <div *ngIf="updateStockItem" style="width: 100%; padding: 0px 0px"> -->
                 <!-- <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 50%; padding: 0px"/>
                 <span> <button class="btn btn-success"(click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span> -->
-            </div>
-            <button class="btn btn-success" (click)="updateExpectedProcurment(component)">עדכן צפי הגעה</button>       
-          <td>
+            <!-- </div> -->
+            <!-- <button class="btn btn-success" (click)="updateExpectedProcurment(component)">עדכן צפי הגעה</button>        -->
+          <td style="width:3%;">
             <img *ngIf="stockAdmin" (click)="deleteStockItemValidation(component.componentN)" 
             src="../../../../assets/images/deleteBtn.png" alt="delete stock item" style="width: 60px ; cursor: pointer; ">
           </td>

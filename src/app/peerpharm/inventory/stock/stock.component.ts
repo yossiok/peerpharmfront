@@ -134,7 +134,14 @@ export class StockComponent implements OnInit {
         console.log(outputeEvent)
         if(outputeEvent=='closeModal'){
           this.openProcurementModal=false;
+          this.resCmpt={}
           //update expected arrivals info for item 
+        } else if(outputeEvent=='stockLineChanged'){
+          this.inventoryService.getSingleStockItemData(this.resCmpt._id).subscribe(res=>{
+            console.log(res[0]);
+            this.components
+            this.componentsUnFiltered
+          });
         }
      }
 
@@ -161,19 +168,22 @@ export class StockComponent implements OnInit {
 //          
 //       this.excelService.exportAsExcelFile(data, "movements");
 //         });
-    
 //  }
 
 
 
 
-
-  ExportKasemAllCmptsOnShelfs() {
-    this.inventoryService.getKasemAllCmptsOnShelfs().subscribe(data=>{
-      debugger
-      this.excelService.exportAsExcelFile(data, "kasemItemsOnShelfs");
-        });
-   }
+devExcelExport(){
+  
+  this.inventoryService.getOldProcurementAmount().subscribe(data=>{
+    this.excelService.exportAsExcelFile(data, "oldProcurementAmounts");
+      });
+}
+  // ExportKasemAllCmptsOnShelfs() {
+  //   this.inventoryService.getKasemAllCmptsOnShelfs().subscribe(data=>{
+  //     this.excelService.exportAsExcelFile(data, "kasemItemsOnShelfs");
+  //       });
+  //  }
 //   exportAsXLSX(data, title) {
 //     this.excelService.exportAsExcelFile(data, title);
 //  }
@@ -220,12 +230,12 @@ getUserAllowedWH(){
       }else{
         this.stockType="component";
       }
-      debugger
+      
       // this.getAllComponentsByType();
 
       }
     console.log(res);
-
+      debugger
   });
 }
 
@@ -249,7 +259,7 @@ getUserAllowedWH(){
 //     });
 //     this.setType(this.stockType);
 //     this.getAllCmptTypesAndCategories();
-//     debugger
+//     
 //   });
 // }
  
@@ -331,12 +341,12 @@ async updateItemStockShelfChange(direction){
       shelfRes.stock.map(shl=> 
           {
             if(shl.item==this.resCmpt.componentN){
-              debugger
+              
               this.destShelfQntBefore= shl.amount;
             }
           });
       }
-      debugger
+      
       this.updateItemStock(direction);
     }else{
       this.toastSrv.error("מדף יעד לא קיים")
@@ -380,7 +390,9 @@ async updateItemStock(direction){
          
       if(shelfRes.ShelfId){
         if(shelfRes.stock.length>0){
-          this.originShelfQntBefore= shelfRes.stock.filter(shl=>shl.item==this.resCmpt.componentN)[0].amount;
+          let temp=shelfRes.stock.map(shl=>shl.item==this.resCmpt.componentN);
+          this.originShelfQntBefore= temp[0].amount;
+          debugger
         }
         shelfExsit=true;
            
@@ -460,6 +472,12 @@ async updateItemStock(direction){
                   console.log('ObjToUpdate',ObjToUpdate);
                   if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
+                    debugger
+                    this.inventoryService.getAmountOnShelfs(this.resCmpt.componentN).subscribe(async res=>{
+                      this.itemAmountsData=res.data;
+                      this.itemAmountsWh=res.whList;
+                      debugger
+                    });
                      
                     this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
                       console.log(x.n+" items with amount=0 deleted");
@@ -470,7 +488,7 @@ async updateItemStock(direction){
                       userName: this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName,
                       movementType: ObjToUpdate[0].actionType,
                     }
-                    debugger
+                    
                     this.inventoryService.addToWHActionLogs(actionLogObj).subscribe(res => {
                       this.toastSrv.success("פעולות מחסנאי נשמרו");
                     });
@@ -678,7 +696,7 @@ async updateItemStock(direction){
         if(res.length==0){
           // get item data from item tree
           this.itemService.getItemData(this.productToFind).subscribe(data=>{
-            debugger
+            
             
               this.resCmpt={
                 actualMlCapacity:0,
@@ -724,7 +742,7 @@ async updateItemStock(direction){
   }
 
   newCmpt(newItem){
-    debugger
+    
     this.newItem=newItem;
     this.resCmpt = {
       componentN:'',
@@ -767,7 +785,7 @@ async updateItemStock(direction){
           this.resetResCmptData();
           this.filterbyNum.nativeElement.value='';
 
-          debugger
+          
         }
         this.newItem='';
   
@@ -842,7 +860,7 @@ async getCmptAmounts(cmptN, cmptId){
   this.destShelf='';
   await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(async res=>{
 
-       
+       debugger
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
     this.currItemShelfs=[];

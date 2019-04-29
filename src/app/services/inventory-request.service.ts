@@ -15,7 +15,11 @@ export class InventoryRequestService {
   constructor(private http: Http) { }
 
   addNewRequest(reqObj){
-    let url = this.baseUrl + "inventoryRequest";
+    let url = this.baseUrl + "inventoryRequest/add";
+    return this.http.post(url, JSON.stringify(reqObj), this.options).pipe(map(res => res.json()));
+  }
+  closeRequest(reqObj){
+    let url = this.baseUrl + "inventoryRequest/close";
     return this.http.post(url, JSON.stringify(reqObj), this.options).pipe(map(res => res.json()));
   }
 

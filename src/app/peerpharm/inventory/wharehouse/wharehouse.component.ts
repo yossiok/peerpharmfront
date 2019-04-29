@@ -331,7 +331,7 @@ listToPrint:Array<any>=[];
       await this.inventoryService.getShelfListForItemInWhareHouse(ev.target.value, this.curentWhareHouseId).subscribe(async res => {
         if(res.length>0){
           this.currItemShelfs=res;
-          debugger
+          
         }else{
           this.currItemShelfs=[];
           this.currItemShelfs.push("NO SHELFS WITH ITEM # "+ev.target.value);
@@ -351,7 +351,7 @@ listToPrint:Array<any>=[];
         });
       });
     }
-    debugger
+    
  }
 
 
@@ -365,7 +365,7 @@ listToPrint:Array<any>=[];
     this.multiLinesArr.forEach((x, index)=> {
       if(!position.includes("NO SHELFS")){
         if(index==ev.target.dataset.lineid)  {
-          debugger
+          
           x.position=position;
           x.requsetedQnt=x.amount;
           // x.amount=0;
@@ -407,17 +407,17 @@ listToPrint:Array<any>=[];
 async getAllGeneralDemands(){
   await this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
       console.log(res);
-      debugger
+      
       //res= allorders from itemsDemands table
       res.forEach(invRequest => {
-        debugger
+        
        invRequest.reqList.map(item => {
      //   item.cmptN="0";
           item.isSelected=false;
           //Object.assign({ isSelected: false }, item);
         })
       });
-      debugger
+      
       this.getChildArr(res);
   })
 
@@ -442,7 +442,7 @@ deleteLine(itemFromInvReq,index,ev){
     let ObjToUpdate;
     let sendConfirm=confirm("עדכון שינויים במלאי");
     if(sendConfirm && this.inventoryUpdateList.length>0) {
-      debugger
+      
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList,this.inventoryUpdateList[0].itemType).subscribe(async res => {
         // res = [itemNumber,itemNumber,itemNumber...]
         if(res=="all updated"){
@@ -454,7 +454,7 @@ deleteLine(itemFromInvReq,index,ev){
             movementType: this.dir,
           }
 
-          debugger
+          
           this.inventoryService.addToWHActionLogs(actionLogObj).subscribe(res => {
             this.toastSrv.success("פעולות מחסנאי נשמרו");
           });
@@ -505,7 +505,7 @@ deleteLine(itemFromInvReq,index,ev){
 
   getItemLineQnt(i,ev){
     this.multiLinesArr[i].amount=ev.target.value;
-    debugger
+    
   }
 
   async checkLineValidation(itemLine,index,ev:any, lineqnt){
@@ -533,7 +533,7 @@ deleteLine(itemFromInvReq,index,ev){
     if( (itemLineToAdd.itemNumber!=""  && this.dir=='in') || (itemLineToAdd.itemNumber!=""  && currItemShelfs[0]._id && this.dir!='in')){
       //VALID AMOUT
       position=itemLineToAdd.position.toUpperCase().trim();
-      debugger
+      
       if(((this.dir!='in'  && parseInt(currItemShelfs[0].amount)!=NaN  && currItemShelfs[0].amount!= undefined ) || (this.dir=='in' && itemLine.amount!="")) ){
         await this.inventoryService.getCmptByNumber(itemLineToAdd.itemNumber , stockType).subscribe(async itemRes => {
           if( itemRes.length>0){
@@ -556,14 +556,14 @@ deleteLine(itemFromInvReq,index,ev){
                     if(this.dir=='shelfChange'){
                       itemLineToAdd.destShelf= itemLineToAdd.destShelf.toUpperCase();
                       this.inventoryService.checkIfShelfExist(itemLineToAdd.destShelf,this.curentWhareHouseId).subscribe(async destShelfRes=>{
-                        debugger
+                        
                         if(destShelfRes.ShelfId){
                           itemLineToAdd.destShelfId=destShelfRes.ShelfId;
                           if(destShelfRes.stock.length>0){
                             destShelfRes.stock.map(shl=> 
                               {
                                 if(shl.item==itemLineToAdd.itemNumber){
-                                  debugger
+                                  
                                   destQntBefore= shl.amount;
                                 }
                               });
@@ -586,7 +586,7 @@ deleteLine(itemFromInvReq,index,ev){
                   this.loadingToTable=false;
                 }
               }else{
-                debugger
+                
                 this.toastSrv.error("אין מדף כזה במחסן: "+position);
                 this.loadingToTable=false;
               }  
@@ -615,7 +615,7 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
 
   let itemNumExistInList=false;
   this.inventoryUpdateList.map(i=> {if(i.item == itemLine.itemNumber && i.position == itemLine.position )  itemNumExistInList=true });
-
+  
   //we have an issue processing stock change with same itemShelfs in the same sended list
   if(!itemNumExistInList){
     let obj={ 
@@ -673,14 +673,17 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
    this.multiLinesArr;
    this.multiLinesArr.map((line,key)=>{
      if(line.itemNumber == obj.item && line.position ==obj.position && line.qnt == Math.abs(obj.amount)  ) {
-       debugger
+       
       this.multiLinesArr.splice(key,1);
+      if(this.multiLinesArr.length == 0) {
+        this.multiLinesArr
+      }
      }
    });
    
    
 
-debugger
+
   }else{
     alert(" מספר פריט "+itemLine.itemNumber+" במדף "+itemLine.position+"\nכבר קיים ברשימה");
   }
@@ -714,7 +717,7 @@ searchItemsOnShelf(event){
       else if(res=="noItemsOnShelf"){
         this.toastSrv.error("אין פריטים על המדף");
       }else{
-        debugger
+        
         this.ItemsOnShelf=res;
         console.log(this.ItemsOnShelf)
       }
@@ -732,7 +735,7 @@ addNewShelf(position) {
   //to upper case and remove spaces
   position = position.toUpperCase();
   position = position.trim();
-  debugger
+  
 
   if (this.whareHouseId == "") {
     this.toastSrv.error("לא נבחר מחסן")

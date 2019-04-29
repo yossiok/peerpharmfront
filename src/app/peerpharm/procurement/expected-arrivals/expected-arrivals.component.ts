@@ -340,6 +340,7 @@ sendUpdates(){
         this.toastSrv.success("שינויים נשמרו בהצלחה");
         this.toastSrv.success("נתוני שינוע עודכנו");
         this.arrToUpdate=[];
+        this.outPutItemsExpectedData.emit('stockLineChanged');
       }else if(res.newtransDoc){
         this.toastSrv.success("שינויים נשמרו בהצלחה");
         this.toastSrv.success("נתוני שינוע חדשים עודכנו");
@@ -351,7 +352,7 @@ sendUpdates(){
         this.toastSrv.error("שינויים לא נשמרו");      
       }  
       this.getItemExpectedArrivalsData();
-
+      this.outPutItemsExpectedData.emit('stockLineChanged');
     });  
   }
 }
@@ -537,6 +538,7 @@ saveLineJobNChanges(expectedArrival){
             this.toastSrv.success('שינויים בוצעו בהצלחה');
             this.edit('');
             this.changedLine={};
+            this.outPutItemsExpectedData.emit('stockLineChanged');
           }
         });
       }
@@ -557,6 +559,7 @@ saveLineJobNChanges(expectedArrival){
           if(res._id){
             this.toastSrv.success('שינויים בוצעו בהצלחה');
             this.edit('');
+            this.outPutItemsExpectedData.emit('stockLineChanged');
             ev.target;
             debugger
           }

@@ -12,7 +12,8 @@
       <th>Requet Number</th>
       <th>date</th>
       <th>Warehouse</th>
-      <th>Status</th>
+      <th></th>
+      <!-- <th>Status</th> -->
       <th>
         <img src='assets/images/move.png' class='imgBtn' (click)="loadItems()">
       </th>
@@ -24,8 +25,12 @@
       <td><a  (click)="getDetails(demand._id, demand.reqNum)" style='color: blue; cursor: pointer;'>{{demand.reqNum}}</a></td>
       <td>{{demand.deliveryDate}}</td>
       <td>{{demand.fromWH}}</td>
-      <td>{{demand.reqStatus}}</td>
+      <!-- <td>{{demand.reqStatus}}</td> -->
       <td>{{demand.userName}}</td>
+      <td>
+          <i class="ti-check text-success m-r-10" style="font-size:35px; cursor: pointer;"  
+          (click)="closeInventoryReqManually(demand._id)"></i>
+      </td>
     </tr>
     
     <tr *ngIf="demand._id== EditRowId2nd && expand==true;">   

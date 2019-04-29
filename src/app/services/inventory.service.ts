@@ -21,6 +21,11 @@ export class InventoryService {
     let url = this.baseUrl + "component";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getSingleStockItemData(id) {
+    const url = this.baseUrl + 'component/byId/?stockItemId='+id;
+    console.log(url);
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllComponentsByType(itemType):Observable<any>{
     let url = this.baseUrl + "component?itemType="+itemType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -175,6 +180,10 @@ addToWHActionLogs(objToUpdate){
 
 getKasemAllCmptsOnShelfs():Observable<any>{
   let url = this.baseUrl + "itemShell?getAllItemShelfsCmpt=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+getOldProcurementAmount():Observable<any>{
+  let url = this.baseUrl + "component?oldProcurementAmount";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 

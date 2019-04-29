@@ -134,9 +134,9 @@ export class InventoryNewRequestComponent implements OnInit {
           }
         });
       }else if(this.reqList.length==0){
-        this.toastSrv.error("Failed pleaes items to form");
+        this.toastSrv.error("Failed please add items");
       }else {
-        this.toastSrv.error("Failed pleaes finish filling the form");
+        this.toastSrv.error("Failed please finish filling the form");
       }
     });
 

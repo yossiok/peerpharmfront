@@ -15,6 +15,8 @@ export class Procurementservice {
 
   constructor(private http: Http) { }
 
+
+
   getProcurementOrderItemBalance() {
     const url = this.baseUrl + 'procurementOrderItemBalance';
     console.log(url);
