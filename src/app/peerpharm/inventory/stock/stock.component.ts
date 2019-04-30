@@ -130,6 +130,8 @@ export class StockComponent implements OnInit {
 
      //expected Arrivals modal
      getNewExpectedArrivalsData(outputeEvent){
+      debugger
+
         console.log('getting new updated expected arrivals data')
         console.log(outputeEvent)
         if(outputeEvent=='closeModal'){
@@ -137,9 +139,11 @@ export class StockComponent implements OnInit {
           this.resCmpt={}
           //update expected arrivals info for item 
         } else if(outputeEvent=='stockLineChanged'){
+          debugger
           this.inventoryService.getSingleStockItemData(this.resCmpt._id).subscribe(res=>{
             console.log(res[0]);
-            this.components
+            debugger
+            this.components 
             this.componentsUnFiltered
           });
         }

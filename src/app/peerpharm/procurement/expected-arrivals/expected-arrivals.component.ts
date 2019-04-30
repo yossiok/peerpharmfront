@@ -59,7 +59,7 @@ export class ExpectedArrivalsComponent implements OnInit {
   @ViewChild('singleBtn') singleBtn: ElementRef;
   @ViewChild('multiBtn') multiBtn: ElementRef;
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    debugger
+    
     if(this.EditJobN!=null){
     this.editJN(null);
     }else{
@@ -87,7 +87,7 @@ export class ExpectedArrivalsComponent implements OnInit {
       procurmentOrderNumber: ["", Validators.required],// מספר הזמנת רכש
       jobNumber: ["", ],// מספר הזמנת רכש
       transporterName: ["", ],// מספר הזמנת רכש
-      expectedDate: [Date, Validators.required],// מספר הזמנת רכש
+      expectedDate: [Date, null ],// מספר הזמנת רכש
       suppliedDate: [Date, Validators.required],// מספר הזמנת רכש
       quantity: [Number, Validators.required,],// מספר הזמנת רכש
       quantityRecived: [0, Validators.required],
@@ -100,7 +100,7 @@ export class ExpectedArrivalsComponent implements OnInit {
     this.newTransportDetails = fb.group({
       jobNumber: ["", Validators.required],// מספר הזמנת רכש
       transporterName: ["", Validators.required],// מספר הזמנת רכש
-      expectedDate: [Date, Validators.required],// מספר הזמנת רכש
+      expectedDate: [Date, ],// מספר הזמנת רכש
       suppliedDate: [Date, ],// מספר הזמנת רכש
       transportationItems: this.fb.array([ ]),// מספר הזמנות רכש
       shippingMethod: ["", Validators.required],
@@ -340,7 +340,6 @@ sendUpdates(){
         this.toastSrv.success("שינויים נשמרו בהצלחה");
         this.toastSrv.success("נתוני שינוע עודכנו");
         this.arrToUpdate=[];
-        this.outPutItemsExpectedData.emit('stockLineChanged');
       }else if(res.newtransDoc){
         this.toastSrv.success("שינויים נשמרו בהצלחה");
         this.toastSrv.success("נתוני שינוע חדשים עודכנו");
@@ -351,8 +350,9 @@ sendUpdates(){
       }else{
         this.toastSrv.error("שינויים לא נשמרו");      
       }  
+      this.outPutItemsExpectedData.emit('stockLineChanged');    
       this.getItemExpectedArrivalsData();
-      this.outPutItemsExpectedData.emit('stockLineChanged');
+      console.log('objToSend',objToSend);
     });  
   }
 }
@@ -374,24 +374,22 @@ transporterChecked(ev){
     if(id!='') {
       this.changedLine=  this.itemExpectedArrivals.filter(i=>i._id==id)[0];
       this.lineToUpdate=  this.itemExpectedArrivals.filter(i=>i._id==id);
-      debugger
       this.dateStr=this.changedLine.expectedDate.slice(0,10);
-       
     }
   }
   editJN(exptArrvl) {
     if(exptArrvl!=null){
       if(this.EditRowId == exptArrvl._id ){
         this.EditJobN = exptArrvl.jobNumber;
-         debugger
+         
         this.dateJNStr=this.changedLine.expectedDate.slice(0,10);
         this.changedJobNumber={};
         if(exptArrvl.jobNumber!='') {
-           debugger
+           
           this.procuretServ.findOneJobNumber(exptArrvl.jobNumber).subscribe(res=>{
             if(res.length>0){
               this.newJN=false;
-              debugger
+              
               this.dateJNStr=res[0].expectedDate.slice(0,10);
               this.changedJobNumber=  {
                 jobNumber:res[0].jobNumber,
@@ -403,7 +401,7 @@ transporterChecked(ev){
               }
               this.changedJobNumber = res[0];
             }else{
-              debugger
+              
               this.newJN=true;
               this.changedJobNumber=  {
                 jobNumber:this.changedLine.jobNumber,
@@ -438,7 +436,7 @@ JNumChange(ev){
       this.newJN=false;
       this.changedJobNumber=res[0];
       this.changedJobNumber.expectedDate=res[0]
-      debugger
+      
       this.dateJNStr=res[0].expectedDate.slice(0,10);;
 
       this.toastSrv.warning("#JobNumber זה כבר מקושר לפריטי רכש\n שינוי נתונים ישפיע על כל הפריטים המקושרים.");
@@ -463,11 +461,11 @@ saveLineJobNChanges(expectedArrival){
     this.changedJobNumber.lastUpdateUser=this.userName;  
     this.changedJobNumber.status='open';      
     this.changedJobNumber.expectedDate=new Date(Date.parse(this.dateJNStr)).toISOString();  
-    debugger
+    
   
     if(this.newJN){
       this.changedJobNumber.transportationItems.push(item);
-      debugger
+      
       this.procuretServ.addNewJobNumber(this.changedJobNumber).subscribe(res=>{
         if(res.id){
           this.toastSrv.success('נתוני שינוע עודכנו בהצלחה')
@@ -488,7 +486,7 @@ saveLineJobNChanges(expectedArrival){
     if(!inTransportationItems){
       this.changedJobNumber.transportationItems.push(item)
     };
-    debugger
+    
     this.procuretServ.updateTransformationArrival(this.changedJobNumber).subscribe(res=>{
       if(res.trans.jobNumber){
         this.toastSrv.success('נתוני שינוע עודכנו בהצלחה')
@@ -554,14 +552,14 @@ saveLineJobNChanges(expectedArrival){
       }
       let conf=confirm("עדכון הגעת פריט "+ expectedArrival.componentN+"\nכמות: "+expectedArrival.quantity+"\nהזמנת רכש: "+expectedArrival.procurmentOrderNumber );
       if(conf){
-        debugger
+        
         this.procuretServ.suppliedExpectedArrival(objToSend).subscribe(res=>{
           if(res._id){
             this.toastSrv.success('שינויים בוצעו בהצלחה');
             this.edit('');
             this.outPutItemsExpectedData.emit('stockLineChanged');
             ev.target;
-            debugger
+            
           }
         });
       }
@@ -622,37 +620,3 @@ emitTpParentComponent(){
 
 
 
-// this.itemExpectedArrivals=[
-//   {
-//     componentN: "12185",  
-//     componentNs: "16411000", 
-//     suplierN: "34301", 
-//     suplierName: "Sanwa",
-//     procurmentOrderNumber: "121212",
-//     jobNumber: "111111",
-//     transporterName: "someTramsporter",
-//     expectedDate: new Date(),
-//     suppliedDate: null,
-//     quantity: 10000,
-//     quantityRecived: 0, 
-//     remarks: "some text", 
-//     lastUpdateDate: new Date(), 
-//     lastUpdateUser: "noa seri", 
-//     status: "open", 
-//   }
-// ]
-
-
-    // if(this.updateTransportaion){
-    //   if(this.newTransportDetails.valid){
-    //     this.arrToUpdate.forEach(p=>{
-    //       p.jobNumber = this.newTransportDetails.value.jobNumber;
-    //       p.expectedDate = this.newTransportDetails.value.expectedDate;
-    //     });
-    //     this.sendUpdates();        
-    //   }else{
-    //     this.toastSrv.error("נתוני שינוע חסרים");
-    //   }      
-    // }else{
-    //   this.sendUpdates();        
-    // }
