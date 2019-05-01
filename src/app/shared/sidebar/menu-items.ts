@@ -1,6 +1,7 @@
 import { RouteInfo } from './sidebar.metadata';
 
 export const ROUTES: RouteInfo[] = [
+
  /* {
     path: '',
     title: 'Personal',
@@ -324,7 +325,15 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
-      }
+      },
+      //  {
+      //   path: '/peerpharm/inventory/materialArrival',
+      //   title: 'Material Arrival',
+      //   icon: 'fas fa-tree',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
 
       ]
     },

@@ -87,6 +87,7 @@ import {NgxPrintModule} from 'ngx-print';
 import { PackingComponent } from './schedule/packing/packing.component';
 import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formule-phase.component';
 import { ExpectedArrivalsComponent } from './procurement/expected-arrivals/expected-arrivals.component';
+import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
 
 
 @NgModule({
@@ -172,6 +173,7 @@ import { ExpectedArrivalsComponent } from './procurement/expected-arrivals/expec
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
+    MaterialArrivalComponent,
     ChatComponent ,
     HeadingsWHPipe,
     PackingComponent,

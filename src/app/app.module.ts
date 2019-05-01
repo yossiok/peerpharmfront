@@ -77,7 +77,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SidebarComponent ,
     LoginComponent, 
 
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent,
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent, 
 
   ],
   entryComponents:[ConfirmModalComponent],

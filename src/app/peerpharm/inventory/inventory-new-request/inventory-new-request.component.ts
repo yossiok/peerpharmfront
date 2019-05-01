@@ -59,10 +59,10 @@ export class InventoryNewRequestComponent implements OnInit {
     this.inventoryReqForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
       reqNum: [{value:Number}, Validators.required],
-      fromWH: ["", Validators.required],
-      toWH: ["", Validators.required],
+      fromWH: ["Kasem", Validators.required],
+      toWH: ["Rosh haayin", Validators.required],
       currDate: [this.currentDate(), String ],
-      deliveryDate: [String, Validators.required],
+      deliveryDate: [this.currentDate(), Validators.required],
       reqList:  [this.reqList, Validators.required]
     });
     this.itemLine = fb.group({
@@ -123,10 +123,11 @@ export class InventoryNewRequestComponent implements OnInit {
             this.toastSrv.success("Request sent to "+ this.inventoryReqForm.value.fromWH +" warehouse.");
             //error("Failed pleae finish filling the form");
             this.reqList=[];
-            this.inventoryReqForm.controls['deliveryDate'].reset();
-            this.inventoryReqForm.controls['fromWH'].reset();
-            this.inventoryReqForm.controls['toWH'].reset();
-            this.inventoryReqForm.controls['reqList'].reset();
+            this.inventoryReqForm.controls['deliveryDate'].reset(this.currentDate());
+            this.inventoryReqForm.controls['currDate'].reset(this.currentDate());
+            this.inventoryReqForm.controls['fromWH'].setValue('Kasem');
+            this.inventoryReqForm.controls['toWH'].setValue('Rosh haayin');
+            this.inventoryReqForm.controls['reqList'].setValue(this.reqList);
             console.log('this.inventoryReqForm.value.reqList\n',this.inventoryReqForm.value.reqList);
 
           }else{
@@ -145,7 +146,11 @@ export class InventoryNewRequestComponent implements OnInit {
 
 
   async addItemToRequsetList(reqItemLine){
-
+    reqItemLine.itemNumInput= reqItemLine.itemNumInput.trim();
+    console.log('reqItemLine.itemNumInput: '+reqItemLine.itemNumInput);
+    reqItemLine.relatedOrder= reqItemLine.relatedOrder.trim();
+    console.log('reqItemLine.relatedOrder: '+reqItemLine.relatedOrder);
+debugger
     //validating order number
     let validOrderN=false;
 
@@ -194,20 +199,6 @@ export class InventoryNewRequestComponent implements OnInit {
      });
    }
 
-    // if(reqItemLine.relatedOrder!=""){
-    //   await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
-    //     debugger
-    //     if(res.length>0){
-    //       validOrderN=true;
-    //        //validating item number
-
-
-    //     }else{
-    //       validOrderN=false;
-    //       this.toastSrv.error("Failed wrong order number");
-    //     }
-    //   });
-    // }
   }
 
   deleteRow(itemNum,itemAmout){

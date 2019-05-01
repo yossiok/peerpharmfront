@@ -39,10 +39,10 @@
         <!-- ============================================================== -->
         <!-- Toggle which is visible on mobile only -->
         <!-- ============================================================== -->
-        <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" (click)="isCollapsed = !isCollapsed"
+        <!-- <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" (click)="isCollapsed = !isCollapsed"
           [attr.aria-expanded]="!isCollapsed" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent">
           <i class="ti-more"></i>
-        </a>
+        </a> -->
       </div>
       <!-- ============================================================== -->
       <!-- End Logo -->
@@ -55,13 +55,13 @@
   <!-- ============================================================== -->
   <!-- Left Sidebar - style you can find in sidebar.scss  -->
   <!-- ============================================================== -->
-  <!-- <aside class="left-sidebar" [attr.data-sidebarbg]="options.sidebarbg" (mouseover)="Logo()" (mouseout)="Logo()"> -->
+  <aside class="left-sidebar" [attr.data-sidebarbg]="options.sidebarbg" (mouseover)="Logo()" (mouseout)="Logo()">
     <!-- Sidebar scroll-->
-    <!-- <div class="scroll-sidebar" [perfectScrollbar]="config"> -->
-      <!-- <app-sidebar></app-sidebar> -->
-    <!-- </div> -->
+    <div class="scroll-sidebar" [perfectScrollbar]="config">
+      <app-sidebar></app-sidebar>
+    </div>
     <!-- End Sidebar scroll-->
-  <!-- </aside> -->
+  </aside>
   <!-- ============================================================== -->
   <!-- End Left Sidebar - style you can find in sidebar.scss  -->
   <!-- ============================================================== -->

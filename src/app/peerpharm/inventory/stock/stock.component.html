@@ -119,7 +119,7 @@
           <th style="width:7%; padding:5px"><b>כמות</b></th>
           <!-- <th style="padding:5px"><b>כמות מוקצת</b></th> -->
           <th style="width:7%; padding:5px"><b>תמונה</b></th>
-          <th style="width:12%; padding:5px"><b>הזמנת רכש</b></th>
+          <th style="width:12%; padding:5px"><b>צפי הגעה הזמנת רכש</b></th>
           <!-- <th style="padding:5px" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th> -->
           <th style="width:3%; padding:5px"></th>
         </tr>
@@ -163,7 +163,7 @@
                     style="font-size:16px;">
                       <td class="p-2">כמות</td>
                       <td class="p-2">{{expt.quantity}}</td>
-                      <td class="p-2" >תאריך</td>
+                      <td class="p-2" *ngIf="expt.expectedDate!=null" >תאריך</td>
                       <td class="p-2">{{expt.expectedDate | date :'dd/MM/yyyy'}}</td>
                     </tr>    
                 </tbody>

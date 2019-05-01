@@ -52,6 +52,10 @@ export class Procurementservice {
     let url = this.baseUrl + 'expectedArrivalController?componentN=' +componentN;
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
+  // copyOldData(): Observable<any> {
+  //   let url = this.baseUrl + 'expectedArrivalController/copyOldData';
+  //   return this.http.get(url).pipe( map(reponse => reponse.json()));
+  // }
   findOpenJobNumbers(): Observable<any> {
     let url = this.baseUrl + 'expectedArrivalController?openJobNumbers';
     return this.http.get(url).pipe( map(reponse => reponse.json()))

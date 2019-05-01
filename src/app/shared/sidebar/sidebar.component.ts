@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../services/auth.service';
 import { UserInfo } from '../../peerpharm/taskboard/models/UserInfo';
 import { TranslateService } from '@ngx-translate/core';
+import { NotificationService } from 'src/app/services/notification.service';
 declare var $: any;
 
 @Component({
@@ -40,7 +41,8 @@ export class SidebarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private notificationService: NotificationService,
   ) {
     translate.addLangs(['en', 'he']);
     translate.setDefaultLang('he'); 
@@ -49,6 +51,9 @@ export class SidebarComponent implements OnInit {
 
   // End open close
   ngOnInit() {
+    this.notificationService.newMessageRecivedEventEmitter.subscribe(data => {
+      console.log("socket connection : "+data);
+    });
     this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
     this.authService.userEventEmitter.subscribe(data => {
       

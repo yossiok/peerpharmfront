@@ -369,6 +369,18 @@ transporterChecked(ev){
 
   }
 }
+resetDate(form){
+  form.controls.expectedDate.setValue(null);
+}
+
+// copyOldData(){
+//   debugger
+//   this.procuretServ.copyOldData().subscribe(res=>{
+//     debugger
+//     console.log(res);
+//   });
+// }
+
   edit(id) {
     this.EditRowId = id;
     if(id!='') {

@@ -34,6 +34,7 @@ import { TwoFactor } from '../guards/twofactor.guard';
 import { ProcurementOrdersComponent} from './procurement/procumentOrders/procurementOrders.component';
 import { ProcurementOrderItemComponent} from './procurement/procumentOrderItem/procurementOrderItem.component';
 import { BatchesMkpComponent } from './batches/batches-mkp/batches-mkp.component';
+import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -149,6 +150,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Inventory Request'
     },
     component: InventoryNewRequestComponent
+  },
+  {
+    path: 'inventory/materialArrival',
+    data: {
+      title: 'Material Arrival'
+    },
+    component: MaterialArrivalComponent
   },
   {
     path: 'taskboard/main',
