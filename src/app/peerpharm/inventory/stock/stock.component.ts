@@ -129,8 +129,8 @@ export class StockComponent implements OnInit {
      @Input() expectedArrivalItemData: any;
 
      //expected Arrivals modal
-     getNewExpectedArrivalsData(outputeEvent){
-      debugger
+     async getNewExpectedArrivalsData(outputeEvent){
+      
 
         console.log('getting new updated expected arrivals data')
         console.log(outputeEvent)
@@ -139,12 +139,25 @@ export class StockComponent implements OnInit {
           this.resCmpt={}
           //update expected arrivals info for item 
         } else if(outputeEvent=='stockLineChanged'){
-          debugger
-          this.inventoryService.getSingleStockItemData(this.resCmpt._id).subscribe(res=>{
-            console.log(res[0]);
-            debugger
-            this.components 
-            this.componentsUnFiltered
+          console.log('this.resCmpt',this.resCmpt)
+          await this.inventoryService.getSingleComponentData(this.resCmpt._id).subscribe( res=>{         
+          console.log('res[0]',res[0])            
+            // this.componentsUnFiltered.filter(c=>{
+            //   if(c._id==res[0]._id){
+            //     debugger
+            //     c.procurementArr= res[0].procurementArr;
+            //   }  
+            //  });
+            this.components.forEach(c=>{
+              if(c._id==res[0]._id){
+                c.procurementArr= res[0].procurementArr;
+              }
+            });
+            this.componentsUnFiltered.forEach(c=>{
+              if(c._id==res[0]._id){
+                c.procurementArr= res[0].procurementArr;
+              }
+            });
           });
         }
      }
@@ -239,7 +252,7 @@ getUserAllowedWH(){
 
       }
     console.log(res);
-      debugger
+      
   });
 }
 
@@ -271,7 +284,7 @@ getAllComponents() {
   this.inventoryService.getAllComponents().subscribe(components => {
     console.log(components[0]);
     this.componentsUnFiltered=   components.splice(0);
-    this.components = components;
+    this.components = components.splice(0);
     //why are we using set time out and not async await??
     setTimeout( ()=> {
 
@@ -396,7 +409,7 @@ async updateItemStock(direction){
         if(shelfRes.stock.length>0){
           let temp=shelfRes.stock.map(shl=>shl.item==this.resCmpt.componentN);
           this.originShelfQntBefore= temp[0].amount;
-          debugger
+          
         }
         shelfExsit=true;
            
@@ -476,11 +489,11 @@ async updateItemStock(direction){
                   console.log('ObjToUpdate',ObjToUpdate);
                   if(res=="all updated"){
                     this.toastSrv.success("Changes Saved");
-                    debugger
+                    
                     this.inventoryService.getAmountOnShelfs(this.resCmpt.componentN).subscribe(async res=>{
                       this.itemAmountsData=res.data;
                       this.itemAmountsWh=res.whList;
-                      debugger
+                      
                     });
                      
                     this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
@@ -864,7 +877,7 @@ async getCmptAmounts(cmptN, cmptId){
   this.destShelf='';
   await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(async res=>{
 
-       debugger
+       
     this.itemAmountsData=res.data;
     this.itemAmountsWh=res.whList;
     this.currItemShelfs=[];
@@ -1050,7 +1063,7 @@ procurementRecommendations(filterType){
     }
   }else if(filterType=="haveRecommendation"){
     if(this.stockType!="product"){
-      let recommendList=this.components.filter(cmpt=> cmpt.procurementSent == true);
+      let recommendList=this.components.filter(cmpt=> cmpt.procurementArr.length > 0);
       this.components=recommendList;
     }
   }

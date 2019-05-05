@@ -374,9 +374,9 @@ resetDate(form){
 }
 
 // copyOldData(){
-//   debugger
+//   
 //   this.procuretServ.copyOldData().subscribe(res=>{
-//     debugger
+//     
 //     console.log(res);
 //   });
 // }
@@ -570,7 +570,9 @@ saveLineJobNChanges(expectedArrival){
             this.toastSrv.success('שינויים בוצעו בהצלחה');
             this.edit('');
             this.outPutItemsExpectedData.emit('stockLineChanged');
+            this.itemExpectedArrivals
             ev.target;
+            
             
           }
         });

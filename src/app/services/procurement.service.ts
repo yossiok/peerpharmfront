@@ -61,7 +61,7 @@ export class Procurementservice {
     return this.http.get(url).pipe( map(reponse => reponse.json()))
   }
   findOneJobNumber(jobNumber): Observable<any> {
-    debugger
+    
     let url = this.baseUrl + 'expectedArrivalController?oneJobNumber='+jobNumber;
     return this.http.get(url).pipe( map(reponse => reponse.json()))
   }
@@ -82,7 +82,7 @@ export class Procurementservice {
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
   suppliedExpectedArrival(arrivalsArr):Observable<any>{
-    debugger
+    
     let url = this.baseUrl + 'expectedArrivalController/expectedSupplied';
     return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
   }

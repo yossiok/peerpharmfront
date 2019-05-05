@@ -112,7 +112,6 @@ export class OrdersService {
   //edit item in order
   editItemOrder(orderItem): Observable<any> {
     let url = this.baseUrl + "orderitem/update";
-
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
   editItemOrderStatus(orderItem): Observable<any> {

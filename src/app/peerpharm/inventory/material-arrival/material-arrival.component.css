@@ -1,0 +1,7 @@
+.container-fluid{
+    background-color: pink;
+}
+
+form.flex-row-reverse *{
+float: right;
+}

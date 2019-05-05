@@ -1,6 +1,28 @@
 <p>
   material-arrival works!
 </p>
-<div class="container-fluid" >
-  
+<div class="container" [style.height]="screenHeight+'px'">
+  <form  class="mh-85 d-flex flex-row-reverse">
+
+      <div class="form-row w-100 d-flex flex-row-reverse">
+          <div class="col-md-4 mb-3">
+              <label for="validationServer01">First name</label>
+              <input type="text" class="form-control is-valid" id="validationServer01" placeholder="First name" value="Mark" required>
+              <!-- <div class="valid-feedback">
+                Looks good!
+              </div> -->
+            </div>  
+      </div>
+    
+    <!-- <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="validationServer01">First name</label>
+        <input type="text" class="form-control is-valid" id="validationServer01" placeholder="First name" value="Mark" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+      </div>
+    </div> -->
+    
+  </form>
 </div>

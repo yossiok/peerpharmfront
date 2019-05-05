@@ -22,7 +22,7 @@ export class InventoryRequestsComponent implements OnInit {
   ngOnInit() {
     this.notificationService.newInventoryReqEventEmitter.subscribe(data=>{
       debugger
-      if(data=='new'){
+      if(data=='newInventoryReq'){
         this.newReqIncoming=true;
       }else{
         this.getAllGeneralDemands();

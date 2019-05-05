@@ -563,9 +563,8 @@ getOrderItems(singleLine): void {
       this.orderService.editItemOrder(orderObj).subscribe(res=>{
           console.log(res);
           this.toastSrv.success(dateSced , "Schedule Saved");
-      })
+      });
       console.log(scheduleLine);
-
     }else{
       this.toastSrv.error("Invalid Date!");
     }
@@ -654,20 +653,34 @@ getOrderItems(singleLine): void {
     }
 
   }
-  setPrintSced(){
+  setPrintSced(orderItemId){
     // this.printSchedule.date.setHours(2,0,0,0);
-    let dateToUpdate=new Date(this.printSchedule.date)
-    dateToUpdate.setHours(2,0,0,0)
+    let dateToUpdate=new Date(this.printSchedule.date);
+    dateToUpdate.setHours(2,0,0,0);
     console.log(this.printSchedule);
     this.printSchedule.orderN = this.number;
     this.printSchedule.costumer = this.costumer;
-    this.printSchedule.date=dateToUpdate;
+    this.printSchedule.date = dateToUpdate;
     // this.printSchedule.date=moment(this.printSchedule.date).format("YYYY-MM-DD");
     // this.printSchedule.date=moment(this.printSchedule.date.format());
 
       this.scheduleService.setNewPrintSchedule(this.printSchedule).subscribe(res=>{
         if(res.itemN){
           this.toastSrv.success("Saved", this.printSchedule.cmptN);
+          console.log(res)
+          // let dateSced= res.date.slice(0,10); // could also used for date string
+          let dateSced= res.date.split('T')[0];
+          let orderObj = { orderItemId: orderItemId, fillingStatus: "Sent to print " + dateSced };
+          debugger
+          this.orderService.editItemOrder(orderObj).subscribe(res=>{
+            console.log(res);
+            if(res.n>0){
+              this.ordersItems.map(i=>{
+                if(i._id == orderItemId)  i.fillingStatus =orderObj.fillingStatus ;
+              })
+            }
+            // this.toastSrv.success(dateSced , "Schedule Saved");
+        });
         }else{
           this.toastSrv.error("Error - not sent to print schedule");
         }
@@ -675,8 +688,9 @@ getOrderItems(singleLine): void {
 
   }
 
-  openDetails(content, item, cmpt) {
+  setToPrintDetails(content, item, cmpt) {
     this.itemSer.getPlateImg(item.itemNumber).subscribe(data=>{
+      debugger
        this.plateImg = data.palletImg;
        this.printSchedule.block = data.palletNumber;
        this.printSchedule.blockImg = data.palletImg;
@@ -688,7 +702,9 @@ getOrderItems(singleLine): void {
     this.modalService.open(content).result.then((result) => {
       console.log(result);
       if (result == 'Saved') {
-        this.setPrintSced();
+        if(confirm('שליחת פק"ע ללו"ז הדפסה תשנה את סטטוס הפריט בהזמנה.')){
+          this.setPrintSced(item._id);
+        }
       }
     })
   }

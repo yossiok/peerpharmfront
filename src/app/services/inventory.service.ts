@@ -21,9 +21,8 @@ export class InventoryService {
     let url = this.baseUrl + "component";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  getSingleStockItemData(id) {
-    debugger
-    const url = this.baseUrl + 'component/byId/?stockItemId='+id;
+  getSingleComponentData(cmptId) {
+    const url = this.baseUrl + 'component/?cmptId='+cmptId;
     console.log(url);
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

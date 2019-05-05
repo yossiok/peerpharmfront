@@ -22,8 +22,9 @@ import { ToastrService } from 'ngx-toastr';
     @ViewChild('orderN') orderN:ElementRef; 
     @ViewChild('item') item:ElementRef; 
     @ViewChild('costumer') costumer:ElementRef; 
-    @ViewChild('productName') productName:ElementRef; 
-    @ViewChild('batch') batch:ElementRef; 
+    @ViewChild('cmptN') cmptN:ElementRef; 
+    @ViewChild('cmptName') cmptName:ElementRef; 
+    @ViewChild('color') color:ElementRef; 
     @ViewChild('packageP') packageP:ElementRef; 
     @ViewChild('nextStation') nextStation:ElementRef; 
     @ViewChild('qty') qty:ElementRef; 
@@ -158,13 +159,12 @@ import { ToastrService } from 'ngx-toastr';
     if(this.dateToEditStr!="" && this.item.nativeElement.value!=""){
       let scheduleToUpdate={
         scheduleId:line._id,
-        // positionN:line.position,
         orderN:this.orderN.nativeElement.value,
-        item:this.item.nativeElement.value,
+        itemN:this.item.nativeElement.value,
         costumer:this.costumer.nativeElement.value,
-        productName:this.productName.nativeElement.value,
-        batch:this.batch.nativeElement.value,
-        // packageP:line.packageP,
+        cmptName:this.cmptName.nativeElement.value,
+        cmptN:this.cmptN.nativeElement.value,
+        color:this.color.nativeElement.value,
         qty:this.qty.nativeElement.value,
         qtyRdy:line.qtyProduced, // in PrintSchedule the field is called "qtyProduced" we change it in server side
         // date:this.date.nativeElement.value,
@@ -175,14 +175,36 @@ import { ToastrService } from 'ngx-toastr';
       }
       if (confirm("update schedule line?")) {
         this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>{
-          if(res.nModified==1 && res.n==1){
+          if(res._id){
             console.log(res);
-            this.toastSrv.success("Changes Saved to item ", line.itemN);
-          } else if(res.nModified==0 && res.n==1){
-            this.toastSrv.info("Item "+ line.itemN+ " is already updated to changes");
-          } else if(res.ok==0){
+            this.toastSrv.success("Changes Saved to item ", res.itemN);
+            this.scheduleData.map(sch=>{
+              if(sch._id == res._id){
+                sch=res;
+                this.EditRowId='';
+              }
+            });
+
+          }else{
             this.toastSrv.error("Failed to update item ", line.itemN);
           }
+
+
+          // if(res.nModified==1 && res.n==1){
+          //   console.log(res);
+          //   this.toastSrv.success("Changes Saved to item ", line.itemN);
+          //   this.scheduleData.map(sch=>{
+          //     if(sch._id == line._id){
+          //       debugger
+          //       sch.marks=scheduleToUpdate.marks;
+          //       this.EditRowId='';
+          //     }
+          //   })
+          // } else if(res.nModified==0 && res.n==1){
+          //   this.toastSrv.info("Item "+ line.itemN+ " is already updated to changes");
+          // } else if(res.ok==0){
+          //   this.toastSrv.error("Failed to update item ", line.itemN);
+          // }
           this.EditRowId="";
         });  
       }
@@ -219,22 +241,35 @@ import { ToastrService } from 'ngx-toastr';
           }
       }
       this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>{
-        if(res.nModified==1 && res.n==1){
-          if (a == true) {
-            this.scheduleData.map(scd=>{
-              if(scd._id==line._d) scd.trColor=this.lineColorDone;
-            })
-            debugger
-            // line.trColor="Aquamarine";
-          }
-          line.qtyProduced=amountPrinted;
-          line.amountPckgs=amountPckgs;
-          this.toastSrv.success("Changes Saved to item ", line.itemN);
-        } else if(res.nModified==0 && res.n==1){
-          this.toastSrv.info("Item "+ line.itemN+ " is already updated to changes");
-        } else if(res.ok==0){
+        if(res._id){
+          console.log(res);
+          this.toastSrv.success("Changes Saved to item ", res.itemN);
+          this.scheduleData.map(sch=>{
+            if(sch._id == res._id){
+              sch=res;
+              this.EditRowId='';
+            }
+          });
+
+        }else{
           this.toastSrv.error("Failed to update item ", line.itemN);
         }
+        // if(res.nModified==1 && res.n==1){
+        //   if (a == true) {
+        //     this.scheduleData.map(scd=>{
+        //       if(scd._id==line._d) scd.trColor=this.lineColorDone;
+        //     })
+        //     debugger
+        //     // line.trColor="Aquamarine";
+        //   }
+        //   line.qtyProduced=amountPrinted;
+        //   line.amountPckgs=amountPckgs;
+        //   this.toastSrv.success("Changes Saved to item ", line.itemN);
+        // } else if(res.nModified==0 && res.n==1){
+        //   this.toastSrv.info("Item "+ line.itemN+ " is already updated to changes");
+        // } else if(res.ok==0){
+        //   this.toastSrv.error("Failed to update item ", line.itemN);
+        // }
       });
     }
   }

@@ -80,14 +80,17 @@
         </a>
       </td>
       <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.itemN" style='width:50px' disabled></td>
+
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
       <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer" style='width:50px' disabled></td>
+      
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.cmptN}}</td>
-      <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.cmptN" style='width:110px'></td>
+      <td *ngIf="line._id===EditRowId"><input #cmptN type='text' [value]="line.cmptN" style='width:110px'></td>
+      
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.cmptName}}</td>
-      <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.cmptName" style='width:110px'></td>
+      <td *ngIf="line._id===EditRowId"><input #cmptName type='text' [value]="line.cmptName" style='width:110px'></td>
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.color}}</td>
-      <td *ngIf="line._id===EditRowId"><input #batch type='text' [value]="line.color" style='width:110px'></td>
+      <td *ngIf="line._id===EditRowId"><input #color type='text' [value]="line.color" style='width:110px'></td>
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.qty}}&nbsp;/{{line.qtyProduced}}</td>
       <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty" style='width:50px'>&nbsp;/ {{line.qtyProduced}}</td>
@@ -102,7 +105,7 @@
 
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.marks}}</td>
-      <td *ngIf="line._id===EditRowId"><input #marks type='text' [value]="line.marks" style='width:50px'></td>
+      <td *ngIf="line._id===EditRowId"><input #marks type='text' [value]="line.marks" style='width:150px'></td>
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.printType}}</td>
       <td *ngIf="line._id===EditRowId"><input #printType type='text' [value]="line.printType" style='width:50px'></td>
       <td *ngIf="line._id!==EditRowId" (click) = "showImg(line.blockImg)" style='cursor: pointer; color: blue'>{{line.block}}</td>

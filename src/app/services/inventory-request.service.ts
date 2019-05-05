@@ -26,7 +26,6 @@ export class InventoryRequestService {
   getLastRequsetId():Observable<any>  {
     let url = this.baseUrl + "inventoryRequest?lastReqId=yes" ;
     //returns one object not array
-    debugger
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   //************************************************************* */
