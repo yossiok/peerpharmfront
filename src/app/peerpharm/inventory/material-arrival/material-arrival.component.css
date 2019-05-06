@@ -5,3 +5,11 @@
 form.flex-row-reverse *{
 float: right;
 }
+form label{
+    float: right;
+}
+
+.form-row{
+    padding-bottom: 15px;
+}
+

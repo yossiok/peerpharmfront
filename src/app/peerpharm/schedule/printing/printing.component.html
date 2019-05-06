@@ -18,7 +18,7 @@
     <tr align='center'>
       <th><b>P</b></th>
       <th><b>Order</b></th>
-      <th><b>Item N</b></th>
+      <th><b>Item Number</b></th>
       <th><b>Costumer</b></th>
       <th>Cmpt N</th>
       <th>Cmpt Name</th>
@@ -118,7 +118,7 @@
       </td>
       <td *ngIf="line._id===EditRowId">
         <!-- <img src='assets/images/update2.png' (click)="updateSchedule(line)" class='btnImg' style='width:30px;height: 30px' *ngIf="line.status!='printed'"> -->
-        <i class="ti-save text-success m-r-10" (click)="updateSchedule(line)" style='width:30px !important ; height: 30px !important;'></i>
+        <i class="ti-save text-success m-r-10" (click)="updateSchedule(line)" style='cursor:pointer; width:30px !important ; height: 30px !important;'></i>
 
       </td>
 

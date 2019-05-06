@@ -156,8 +156,8 @@
               <td>
                 <h5>Batch</h5>
               </td>
-              <td>{{item.batch}}</td>
-              <td><input #inputBatch></td>
+              <!-- <td>{{item.batch}}</td> -->
+              <td colspan="2"><input  type='text' #inputBatch></td>
               <td><button class='btn btn-success'  (click)="setBatch(item, inputBatch.value, item.batch)">set</button></td>
               <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)" style='cursor: pointer;'></i></td>
               <td></td>

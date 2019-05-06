@@ -698,6 +698,7 @@ getOrderItems(singleLine): void {
     console.log(item.itemNumber + " , "  +item.discription + " , "  +  cmpt.number);
     this.printSchedule.cmptN = cmpt.number;
     this.printSchedule.itemN = item.itemNumber;
+    this.printSchedule.itemName = item.name+" "+item.subName+" "+item.discriptionK;
     this.printSchedule.cmptName = cmpt.discription;
     this.modalService.open(content).result.then((result) => {
       console.log(result);

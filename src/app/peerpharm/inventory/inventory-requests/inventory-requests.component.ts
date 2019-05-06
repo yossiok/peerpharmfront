@@ -42,6 +42,7 @@ export class InventoryRequestsComponent implements OnInit {
             InvRequest.reqList.map(item => {
               item.isSelected=false;
               if(item.amount <= item.qntSupplied) item.cmptLineColor= 'lightgreen';
+              if(item.amount > item.qntSupplied && item.qntSupplied>0) item.cmptLineColor= 'LemonChiffon';
             });
           }
         });

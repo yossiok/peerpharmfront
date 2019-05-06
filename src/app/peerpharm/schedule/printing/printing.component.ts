@@ -89,7 +89,7 @@ import { ToastrService } from 'ngx-toastr';
       
       this.scheduleService.getPrintScheduleByDate(date).subscribe(
         res=>{
-          debugger
+          
           // showing only for that date 
           res.map(elem=>{
             let pastDue=(moment(elem.date).format() < moment(this.today).format());
@@ -145,9 +145,9 @@ import { ToastrService } from 'ngx-toastr';
           this.dateToEditStr=moment(x.date).format("YYYY-MM-DD");
         }
       } ); 
-      debugger
+      
       this.EditRowId=id;
-      debugger
+      
   }
   
   
@@ -157,55 +157,55 @@ import { ToastrService } from 'ngx-toastr';
 
     let dateToUpdate= moment(this.dateToEditStr).format();
     if(this.dateToEditStr!="" && this.item.nativeElement.value!=""){
+      
       let scheduleToUpdate={
         scheduleId:line._id,
         orderN:this.orderN.nativeElement.value,
         itemN:this.item.nativeElement.value,
+        itemName:line.value,
         costumer:this.costumer.nativeElement.value,
         cmptName:this.cmptName.nativeElement.value,
         cmptN:this.cmptN.nativeElement.value,
         color:this.color.nativeElement.value,
         qty:this.qty.nativeElement.value,
         qtyRdy:line.qtyProduced, // in PrintSchedule the field is called "qtyProduced" we change it in server side
-        // date:this.date.nativeElement.value,
         date: dateToUpdate,
         marks:this.marks.nativeElement.value,
-        // shift:this.shift.nativeElement.value,
-        // mkp:this.mkp.nativeElement.value
+        nextStation:this.nextStation.nativeElement.value,
+        printType:this.printType.nativeElement.value,
       }
       if (confirm("update schedule line?")) {
+        console.log('scheduleToUpdate ',scheduleToUpdate);
         this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>{
           if(res._id){
-            console.log(res);
             this.toastSrv.success("Changes Saved to item ", res.itemN);
-            this.scheduleData.map(sch=>{
+            this.scheduleData.filter((sch,key)=>{
               if(sch._id == res._id){
-                sch=res;
-                this.EditRowId='';
+                debugger
+                // sch=res; //NOT WORKING WELL - we turned to quick fix
+                  sch.cmptN= scheduleToUpdate.cmptN;
+                  sch.cmptName= scheduleToUpdate.cmptName;
+                  sch.color= scheduleToUpdate.color;
+                  sch.costumer= scheduleToUpdate.costumer;
+                  sch.date= scheduleToUpdate.date;
+                  sch.itemN= scheduleToUpdate.itemN;
+                  sch.itemName= scheduleToUpdate.itemName;
+                  sch.marks= scheduleToUpdate.marks;
+                  sch.nextStation= scheduleToUpdate.nextStation;
+                  sch.orderN= scheduleToUpdate.orderN;
+                  sch.printType= scheduleToUpdate.printType;
+                  sch.qty= scheduleToUpdate.qty;
+                  sch.qtyProduced= scheduleToUpdate.qtyRdy;
               }
+              if(key+1 == this.scheduleData.length){
+                this.EditRowId='';
+              } 
             });
-
+            
           }else{
             this.toastSrv.error("Failed to update item ", line.itemN);
           }
-
-
-          // if(res.nModified==1 && res.n==1){
-          //   console.log(res);
-          //   this.toastSrv.success("Changes Saved to item ", line.itemN);
-          //   this.scheduleData.map(sch=>{
-          //     if(sch._id == line._id){
-          //       debugger
-          //       sch.marks=scheduleToUpdate.marks;
-          //       this.EditRowId='';
-          //     }
-          //   })
-          // } else if(res.nModified==0 && res.n==1){
-          //   this.toastSrv.info("Item "+ line.itemN+ " is already updated to changes");
-          // } else if(res.ok==0){
-          //   this.toastSrv.error("Failed to update item ", line.itemN);
-          // }
-          this.EditRowId="";
+          // this.EditRowId="";
         });  
       }
     }
@@ -215,12 +215,8 @@ import { ToastrService } from 'ngx-toastr';
   setDone(id, orderN, itemN, line){
     if (!line.qtyProduced) line.qtyProduced=0; 
     if (!line.amountPckgs) line.amountPckgs=0; 
-    // let today = new Date();
-    // today.setHours(2,0,0,0);
 
-
-
-    var amountPrinted = prompt("Enter Amount Printed\nCurrent printed amount: "+line.qtyRdy+"\nFrom total Amount :"+line.qty, line.qtyProduced);
+    var amountPrinted = prompt("Enter Amount Printed\nCurrent printed amount: "+ line.qtyProduced +"\nFrom total Amount of:"+line.qty, line.qtyProduced);
     var amountPckgs = prompt("Enter Amount Printed\nCurrent printed amount: "+line.amountPckgs,line.amountPckgs ); 
     if(amountPckgs!=null && amountPrinted!=null){
       var scheduleToUpdate={
@@ -237,7 +233,7 @@ import { ToastrService } from 'ngx-toastr';
           if (a == true) {
             scheduleToUpdate.status="printed";
             line.trColor="Aquamarine";
-            debugger
+            
           }
       }
       this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>{
@@ -246,7 +242,10 @@ import { ToastrService } from 'ngx-toastr';
           this.toastSrv.success("Changes Saved to item ", res.itemN);
           this.scheduleData.map(sch=>{
             if(sch._id == res._id){
-              sch=res;
+              sch.qtyProduced = scheduleToUpdate.qtyRdy ;
+              sch.status = scheduleToUpdate.status ;
+              sch.printDate = scheduleToUpdate.printDate ;
+              sch.amountPckgs = scheduleToUpdate.amountPckgs ;
               this.EditRowId='';
             }
           });
@@ -254,22 +253,6 @@ import { ToastrService } from 'ngx-toastr';
         }else{
           this.toastSrv.error("Failed to update item ", line.itemN);
         }
-        // if(res.nModified==1 && res.n==1){
-        //   if (a == true) {
-        //     this.scheduleData.map(scd=>{
-        //       if(scd._id==line._d) scd.trColor=this.lineColorDone;
-        //     })
-        //     debugger
-        //     // line.trColor="Aquamarine";
-        //   }
-        //   line.qtyProduced=amountPrinted;
-        //   line.amountPckgs=amountPckgs;
-        //   this.toastSrv.success("Changes Saved to item ", line.itemN);
-        // } else if(res.nModified==0 && res.n==1){
-        //   this.toastSrv.info("Item "+ line.itemN+ " is already updated to changes");
-        // } else if(res.ok==0){
-        //   this.toastSrv.error("Failed to update item ", line.itemN);
-        // }
       });
     }
   }
