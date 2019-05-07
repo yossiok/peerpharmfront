@@ -188,4 +188,11 @@ getOldProcurementAmount():Observable<any>{
 }
 
 
+
+/* Matreials Stock */
+newMatrialArrival(objToUpdate){
+  let url = this.baseUrl + "material";
+  return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
+}
+
 }

@@ -4,6 +4,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserInfo } from '../../taskboard/models/UserInfo';
 
 @Component({
   selector: 'app-material-arrival',
@@ -12,9 +13,10 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class MaterialArrivalComponent implements OnInit {
   screenHeight: number;
-  todayStr: String = '';
-  user: String = '';
+  dateStr: String ;
+  user: UserInfo ;
   analysisFlag: Boolean = false;
+  borderColor: String = '#36bea6';
   newMaterialArrival: FormGroup;
   constructor(private fb: FormBuilder, private invtSer:InventoryService, private procuretServ: Procurementservice, private toastSrv: ToastrService, 
     private authService: AuthService,) {
@@ -26,12 +28,9 @@ export class MaterialArrivalComponent implements OnInit {
       materialName: ["", Validators.required], 
 
       lotNumber: ["", Validators.required], 
-      // deliveryDate: [Date, new Date(), Validators.required], 
-      // expiryDate: [String, "", Validators.required], 
       expiryDate: [Date, Validators.nullValidator],
       productionDate: [Date, ],
 
-      // productionDate: [String, ""], 
       supplierName: ["", Validators.required], 
       supplierNumber: ["", Validators.required],
       analysisApproval: [Boolean, ], 
@@ -54,15 +53,32 @@ export class MaterialArrivalComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.user=this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+    this.user =   this.authService.loggedInUser;
     debugger
-    this.todayStr= (new Date().toISOString() ).slice(0,10);
-    console.log(this.todayStr);
+    this.authService.getLoggedInUser().subscribe(data => {
+      if (data.msg == null) {
+        console.log(data.msg);
+        this.user=data;
+        debugger
+      }
+    });
+
+    this.newMaterialArrival.controls.user.setValue( this.user.firstName+" "+this.user.lastName);
+    let tmpD=new Date();
+    this.dateStr= tmpD.toISOString().slice(0,10);
+    console.log(this.dateStr);
     //setting form to screen height
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
   }
 
+  addMaterialToStock(){
+    let formToSend;
+    this.dateStr
+debugger
+    // this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{});         
+
+  }
   searchInternalNumber(){
     console.log(this.newMaterialArrival.value.internalNumber);
     
@@ -75,6 +91,11 @@ export class MaterialArrivalComponent implements OnInit {
 
   }
 
+  fieldsColor(){
+    if(this.newMaterialArrival.valid){
+      this.borderColor; 
+    }
+  }
   resetForm(){
     this.newMaterialArrival.reset();
   }
