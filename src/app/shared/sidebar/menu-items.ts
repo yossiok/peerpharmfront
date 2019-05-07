@@ -326,14 +326,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      //  {
-      //   path: '/peerpharm/inventory/materialArrival',
-      //   title: 'Material Arrival',
-      //   icon: 'fas fa-tree',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
+       {
+        path: '/peerpharm/inventory/materialArrival',
+        title: 'Material Arrival',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
 
       ]
     },

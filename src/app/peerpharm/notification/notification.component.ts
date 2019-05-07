@@ -149,7 +149,7 @@ export class NotificationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    debugger
+    
     event.preventDefault();
 
     if (!this.allCheck) {

@@ -63,6 +63,7 @@ export class SidebarComponent implements OnInit {
  
     if (!this.authService.loggedInUser) {
       this.authService.getLoggedInUser().subscribe(data => {
+        
         if(data)
         {
         this.user = this.authService.loggedInUser;

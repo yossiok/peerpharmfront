@@ -1,140 +1,150 @@
 
-<div class="container" [style.height]="screenHeight+'px'">
-  <h2 style='text-align: center;'>Material Arrival</h2>
-  <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2>
-  <form  class="mh-85" [formGroup]="newMaterialArrival"  >
+<!-- <div class="container" [style.height]="screenHeight+'px'"> -->
+  <div>
+      <h2 style='text-align: center;'>Material Arrival</h2>
+      <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2>
+      <form  class="mh-85" [formGroup]="newMaterialArrival"  >
+    
+          <div class="form-row w-100 flex-row-reverse" style="padding-bottom: 15px;">
+              <div class="col-ms-4">
+                <label for="date">תאריך הגעה<b style="color:red">*</b></label>
+                <input type="date"  class="form-control is-valid" placeholder="First name" 
+                [(ngModel)]="dateStr" [ngModelOptions]="{standalone: true}"
+                required disabled>
+                <!-- <div class="valid-feedback">
+                  Looks good!
+                </div> -->
+              </div>  
+              <div class="col-ms-4">
+                <label for="user">שם משתמש</label>
+                <input type="text"  class="form-control is-valid" placeholder="user name" 
+                [(ngModel)]="user" [ngModelOptions]="{standalone: true}"            
+                required disabled>
+              </div>  
+          </div>
+          <div class="form-row w-100 flex-row-reverse">
+              <div class="col-ms-4">
+                <img src="../../../../assets/images/search.png" alt="search internal number" 
+                style="width:28px; cursor: pointer;"
+                (click)="searchInternalNumber()">
+                <label >מק"ט פנימי</label>
+                <input type="text"  class="form-control is-valid" placeholder="Internal number" 
+                formControlName="internalNumber" name='internalNumber'  >
+              </div>  
+              <div class="col-ms-4">
+                <label >שם הפריט</label>
+                <input type="text"  class="form-control is-valid" placeholder="item name" formControlName="materialName" name='materialName' required disabled>
+              </div>  
+              <div class="col-ms-4">
+                <label >אנליזה תקינה</label>
+                <input type="checkbox"  class="form-control is-valid" 
+                [(ngModel)]="analysisFlag"  [ngModelOptions]="{standalone: true}" required >
+              </div>  
+          </div>
+          <div class="form-row w-100 flex-row-reverse">
+              <div class="col-ms-4">
+                <label >אצוות יצרן - lot number</label>
+                <input type="text"  class="form-control is-valid" placeholder="Lot number" formControlName="lotNumber" name='lotNumber'  >
+              </div>  
+              <div class="col-ms-4">
+                <label >תאריך ייצור</label>
+                <input type="date"  class="form-control is-valid"  formControlName="productionDate" name='productionDate'  >
+              </div>  
+              <div class="col-ms-4">
+                  <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -33px;"
+                  (click)="resetDate(newItemProcurmentDetails)"></i>  
+                <label >תאריך תפוגה</label>
+                <!-- <div class="form-group col-md-1 alignRightInModal" style="position: relative;">
+                                     
+                </div> -->
+                <input type="date"  class="form-control is-valid" formControlName="expiryDate" name='expiryDate' >
+              </div>  
+          </div>
+          <div class="form-row w-100 flex-row-reverse">
+              <div class="col-ms-4">
+                  <img src="../../../../assets/images/search.png" alt="search internal number" 
+                  style="width:28px; cursor: pointer;"
+                  (click)="searchSupplierNumber()">
+                <label >מספר ספק</label>
+                <input type="text"  class="form-control is-valid" placeholder="supplier number" formControlName="supplierNumber" name='supplierNumber'  >
+              </div>  
+              <div class="col-ms-4">
+                <label >שם ספק</label>
+                <input type="text"  class="form-control is-valid" placeholder="supplier name" formControlName="supplierName" name='supplierName'  >
+              </div>  
+              <div class="col-ms-4">
+                <label >מספר הזמנת רכש</label>
+                <input type="text"  class="form-control is-valid" placeholder="comax order number" formControlName="cmxOrderN" name='cmxOrderN' >
+              </div>  
+          </div>
+          <div class="form-row w-100 flex-row-reverse">
+              <div class="col-ms-4">
+                <label >כמות כוללת</label>
+                <input type="number"  class="form-control is-valid" formControlName="totalQnt" name='totalQnt'  >
+              </div>  
+              <div class="col-ms-4">
+                <label >יח' מדידה</label>
+                <select class="form-control is-valid" formControlName="mesureType" name='mesureType'>
+                  <option value="kg">קילוגרם</option>  
+                  <option value="liter">ליטר</option>  
+                </select>
+              </div>  
+          </div>
+          <div class="form-row w-100 flex-row-reverse">
+    
+              <div class="col-ms-4">
+                <label >סוג אריזה</label>
+                <select class="form-control is-valid" formControlName="packageType" name='packageType'>
+                  <option value="">בחר אריזה</option> 
+                  <option value="plasticBarrel">חבית פלסטיק</option>
+                  <option value="metalBarrel">חבית מתכת</option>
+                  <option value="jerrycan‏‏‏‏">ג'ריקן</option>
+                  <option value="bag">שק</option>
+                  <option value="cube">קוביה</option>
+                  <option value="bucket">דלי</option>
+                  <option value="carton">קרטון</option>
+                  <option value="bottel">בקבוק</option>
+                </select>
+              </div>  
+              <div class="col-ms-4">
+                <label >כמות אריזות</label>
+                <input type="number"  class="form-control is-valid"  formControlName="packageQnt" name='packageQnt' >
+              </div>  
+              <div class="col-ms-4" *ngIf="newMaterialArrival.value.packageType == 'carton'">
+                  <label >יח' בקרטון</label>
+                  <input type="number"  class="form-control is-valid" formControlName="unitsInPack" name='unitsInPack'  >
+              </div>  
+          </div>
+    
+          <div class="form-row w-100 flex-row-reverse"> 
+            <div class="col-ms-4">
+                <label >מיקום הסחורה</label>
+                <select class="form-control is-valid" formControlName="warehouse" name='warehouse'>
+                  <option value="">בחר מיקום</option> 
+                  <option value="production floor">ייצור</option>
+                  <option value="zero Warehouse">מחסן אפס</option>
+                  <option value="gaya Warehouse">מחסן גאיה</option>
+                  <option value="floor2">רחבה</option>
+                  <option value="lab">מעבדה</option>
+                  <option value="makeup">איפור</option>
+                  <option value="kasem">קאסם</option>
+                </select>
+              </div>     
+              <div class="col-ms-4">
+                  <label >הערות</label>
+                  <input type="text" class="form-control is-valid" placeholder="remarks..."
+                  formControlName="remarks" name='remarks'>
+            </div>
+          </div>
+    
+          <div class="form-row w-100 d-flex justify-content-around"> 
+            <div class="col-ms-4">
+              <button (click)="submitForm()" class="btn btn-success">אישור</button>
+              <button (click)="resetForm()" class="btn btn-danger">איפוס</button>
+            </div>
+          </div>
+    
+      </form>
+  </div>
 
-      <div class="form-row w-100 flex-row-reverse" style="padding-bottom: 15px;">
-          <div class="col-ms-4">
-            <label for="date">תאריך הגעה</label>
-            <input type="date" class="form-control is-valid" placeholder="First name" 
-            [(ngModel)]="dateStr" [ngModelOptions]="{standalone: true}"
-            required disabled>
-            <!-- <div class="valid-feedback">
-              Looks good!
-            </div> -->
-          </div>  
-          <div class="col-ms-4">
-            <label for="user">שם משתמש</label>
-            <input type="text" class="form-control is-valid" placeholder="user name" 
-            [(ngModel)]="user" [ngModelOptions]="{standalone: true}"            
-            required disabled>
-          </div>  
-      </div>
-      <div class="form-row w-100 flex-row-reverse">
-          <div class="col-ms-4">
-            <img src="../../../../assets/images/search.png" alt="search internal number" 
-            style="width:28px; cursor: pointer;"
-            (click)="searchInternalNumber()">
-            <label >מק"ט פנימי</label>
-            <input type="text" class="form-control is-valid" placeholder="Internal number" formControlName="internalNumber"  >
-          </div>  
-          <div class="col-ms-4">
-            <label >שם הפריט</label>
-            <input type="text" class="form-control is-valid" placeholder="item name" formControlName="materialName" required disabled>
-          </div>  
-          <div class="col-ms-4">
-            <label >אנליזה תקינה</label>
-            <input type="checkbox" class="form-control is-valid" 
-            [(ngModel)]="analysisFlag"  [ngModelOptions]="{standalone: true}" required >
-          </div>  
-      </div>
-      <div class="form-row w-100 flex-row-reverse">
-          <div class="col-ms-4">
-            <label >אצוות יצרן - lot number</label>
-            <input type="text" class="form-control is-valid" placeholder="Lot number" formControlName="lotNumber"  >
-          </div>  
-          <div class="col-ms-4">
-            <label >תאריך ייצור</label>
-            <input type="date" class="form-control is-valid"  formControlName="productionDate"  >
-          </div>  
-          <div class="col-ms-4">
-            <label >תאריך תפוגה</label>
-            <input type="date" class="form-control is-valid" formControlName="expiryDate" >
-          </div>  
-      </div>
-      <div class="form-row w-100 flex-row-reverse">
-          <div class="col-ms-4">
-              <img src="../../../../assets/images/search.png" alt="search internal number" 
-              style="width:28px; cursor: pointer;"
-              (click)="searchSupplierNumber()">
-            <label >מספר ספק</label>
-            <input type="text" class="form-control is-valid" placeholder="supplier number" formControlName="supplierNumber"  >
-          </div>  
-          <div class="col-ms-4">
-            <label >שם ספק</label>
-            <input type="text" class="form-control is-valid" placeholder="supplier name" formControlName="supplierName"  >
-          </div>  
-          <div class="col-ms-4">
-            <label >מספר הזמנת רכש</label>
-            <input type="text" class="form-control is-valid" placeholder="comax order number" formControlName="cmxOrderN" >
-          </div>  
-      </div>
-      <div class="form-row w-100 flex-row-reverse">
-          <div class="col-ms-4">
-            <label >כמות כוללת</label>
-            <input type="number" class="form-control is-valid" formControlName="totalQnt"  >
-          </div>  
-          <div class="col-ms-4">
-            <label >יח' מדידה</label>
-            <select name="" class="form-control is-valid" formControlName="mesureType">
-              <option value="kg">קילוגרם</option>  
-              <option value="liter">ליטר</option>  
-              <option value="gr">גרם</option>  
-              <option value="ml">מיליליטר</option>  
-            </select>
-          </div>  
-      </div>
-      <div class="form-row w-100 flex-row-reverse">
-
-          <div class="col-ms-4">
-            <label >סוג אריזה</label>
-            <select name="" class="form-control is-valid" formControlName="packageType">
-              <option value="">בחר אריזה</option> 
-              <option value="plasticBarrel">חבית פלסטיק</option>
-              <option value="metalBarrel">חבית מתכת</option>
-              <option value="jerrycan‏‏‏‏">ג'ריקן</option>
-              <option value="bag">שק</option>
-              <option value="cube">קוביה</option>
-              <option value="bucket">דלי</option>
-              <option value="carton">קרטון</option>
-              <option value="bottel">בקבוק</option>
-            </select>
-          </div>  
-          <div class="col-ms-4">
-            <label >כמות אריזות</label>
-            <input type="number" class="form-control is-valid"  formControlName="packageQnt" >
-          </div>  
-          <div class="col-ms-4" *ngIf="newMaterialArrival.value.packageType == 'carton'">
-              <label >יח' בקרטון</label>
-              <input type="number" class="form-control is-valid" formControlName="unitsInPack"  >
-          </div>  
-      </div>
-      <div class="form-row w-100 flex-row-reverse">
-
-
-      </div>
-      <div class="form-row w-100 flex-row-reverse"> 
-        <div class="col-ms-4">
-            <label >מיקום הסחורה</label>
-            <select name="" class="form-control is-valid" formControlName="warehouse">
-              <option value="">בחר מיקום</option> 
-              <option value="production floor">ייצור</option>
-              <option value="zero Warehouse">מחסן אפס</option>
-              <option value="gaya Warehouse">מחסן גאיה</option>
-              <option value="floor2">רחבה</option>
-              <option value="lab">מעבדה</option>
-              <option value="makeup">איפור</option>
-              <option value="kasem">קאסם</option>
-            </select>
-          </div>     
-      </div>
-      <div class="form-row w-100 d-flex justify-content-around"> 
-        <div class="col-ms-4">
-          <button (click)="submitForm()" class="btn btn-success">אישור</button>
-          <button (click)="resetForm()" class="btn btn-danger">איפוס</button>
-        </div>
-      </div>
-
-  </form>
-</div>
+<!-- </div> -->

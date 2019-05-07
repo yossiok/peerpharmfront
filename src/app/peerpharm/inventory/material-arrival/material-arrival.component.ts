@@ -14,7 +14,8 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
 export class MaterialArrivalComponent implements OnInit {
   screenHeight: number;
   dateStr: String ;
-  user: UserInfo ;
+  user: String ;
+  userObj: String ;
   analysisFlag: Boolean = false;
   borderColor: String = '#36bea6';
   newMaterialArrival: FormGroup;
@@ -36,9 +37,8 @@ export class MaterialArrivalComponent implements OnInit {
       analysisApproval: [Boolean, ], 
       
       totalQnt: [0, Validators.required], 
-      mesureType: [ 'kg', Validators.required], 
-          
-      // remarks: ["", ],
+      mesureType: [ 'kg', Validators.required],           
+      remarks: ["", ],
       cmxOrderN: ["", ],
       packageType: ["", Validators.required], //select 
       packageQnt: [0, ],    
@@ -53,17 +53,13 @@ export class MaterialArrivalComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.user =   this.authService.loggedInUser;
-    debugger
-    this.authService.getLoggedInUser().subscribe(data => {
-      if (data.msg == null) {
-        console.log(data.msg);
-        this.user=data;
-        debugger
-      }
+    // this.user =   this.authService.loggedInUser;
+    this.authService.userEventEmitter.subscribe(data => {
+      
+      this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
     });
 
-    this.newMaterialArrival.controls.user.setValue( this.user.firstName+" "+this.user.lastName);
+    // this.newMaterialArrival.controls.user.setValue( this.user.firstName+" "+this.user.lastName);
     let tmpD=new Date();
     this.dateStr= tmpD.toISOString().slice(0,10);
     console.log(this.dateStr);
@@ -71,13 +67,16 @@ export class MaterialArrivalComponent implements OnInit {
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
   }
-
+  
   addMaterialToStock(){
+
     let formToSend;
     this.dateStr
-debugger
     // this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{});         
 
+  }
+  createBarcode(){
+    // waiting for yossi
   }
   searchInternalNumber(){
     console.log(this.newMaterialArrival.value.internalNumber);
@@ -88,15 +87,40 @@ debugger
   }
 
   submitForm(){
-
+      this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
+        debugger
+    if(this.newMaterialArrival.valid){
+      
+    }else{
+      this.fieldsColor()
+    }
   }
 
   fieldsColor(){
-    if(this.newMaterialArrival.valid){
-      this.borderColor; 
+    // var inputArr = document.getElementsByTagName('input');
+    var inputArr = $('.form-row input, .form-row select');
+    for (const [key, value] of Object.entries(this.newMaterialArrival.controls)) { 
+      var tag =document.getElementsByName(key)[0];  
+      if(tag!= undefined){
+        if(value.status=='INVALID'){
+          tag.style.borderColor= 'red';
+          debugger
+        }else{
+          tag.style.borderColor= '#36bea6';
+        }  
+      }    
+
+      // for (let index = 0; index < inputArr.length; index++) {
+      //   var element = inputArr[index];
+      //   debugger
+      //   if(element.name != '' && value.status == 'INVALID'  ){}
+      //   element.style.borderColor = (value.status == 'VALID') ? 'red' : '#36bea6';
+      // }  
+
     }
   }
   resetForm(){
     this.newMaterialArrival.reset();
   }
+  
 }
