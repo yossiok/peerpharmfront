@@ -195,4 +195,11 @@ newMatrialArrival(objToUpdate){
   return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
 }
 
+findByItemNumber(itemNumber):Observable<any>{
+  let url = this.baseUrl + "material?purchaseItemNumber="+itemNumber;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
+
+itemNumber
 }

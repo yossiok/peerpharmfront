@@ -287,26 +287,30 @@ getOrderItems(singleLine): void {
     document.title = "Order " + this.number;
     this.orderService.getOrderItemsByNumber(orderNum).subscribe( orderItems => {
       orderItems.map( item => {
-        if (item.fillingStatus != null) {
-          if(item.status!='done'){
-            if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
-            else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
-            else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
-            else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
-              if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
-                let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
-                item.fillingStatus += ", " + lackAmount + " lack";
-                item.infoColor = '#ff7272';
+          if (item.fillingStatus != null) {
+            if(item.status!='done'){
+              if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
+              else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
+              else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+              else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+                if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
+                  let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
+                  item.fillingStatus += ", " + lackAmount + " lack";
+                  item.infoColor = '#ff7272';
+                }
+                else item.color = '#CE90FF';
               }
-              else item.color = '#CE90FF';
+              else if (item.fillingStatus == 'packed') item.color = '#FFC058';
+              else item.color = 'none';
+    
+            }else{
+              item.color = 'aquamarine';
             }
-            else if (item.fillingStatus == 'packed') item.color = '#FFC058';
-            else item.color = 'none';
-  
-          }else{
+          } else if(item.fillingStatus == undefined && item.status=='done'){
             item.color = 'aquamarine';
           }
-        }
+
+
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
       });
@@ -322,7 +326,7 @@ getOrderItems(singleLine): void {
         this.ordersItems = orderItems;
         this.ordersItemsCopy = orderItems;
       }
-       
+       debugger
       this.getComponents(this.ordersItems[0].orderNumber);
 
     });
@@ -351,11 +355,13 @@ getOrderItems(singleLine): void {
           }else{
             item.color = 'aquamarine';
           }
+        }else if(item.fillingStatus == undefined && item.status=='done'){
+          item.color = 'aquamarine';
         }
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
       });
-  
+      debugger
       resolve(orderItems);
     });
     

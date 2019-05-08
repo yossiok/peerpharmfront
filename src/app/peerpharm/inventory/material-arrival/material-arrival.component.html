@@ -1,6 +1,7 @@
 
 <!-- <div class="container" [style.height]="screenHeight+'px'"> -->
   <div>
+    <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a>
       <h2 style='text-align: center;'>Material Arrival</h2>
       <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2>
       <form  class="mh-85" [formGroup]="newMaterialArrival"  >
@@ -47,12 +48,14 @@
                 <input type="text"  class="form-control is-valid" placeholder="Lot number" formControlName="lotNumber" name='lotNumber'  >
               </div>  
               <div class="col-ms-4">
+                  <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
+                  (click)="resetDate('productionDate')"></i>  
                 <label >תאריך ייצור</label>
                 <input type="date"  class="form-control is-valid"  formControlName="productionDate" name='productionDate'  >
               </div>  
               <div class="col-ms-4">
-                  <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -33px;"
-                  (click)="resetDate(newItemProcurmentDetails)"></i>  
+                  <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
+                  (click)="resetDate('expiryDate')"></i>  
                 <label >תאריך תפוגה</label>
                 <!-- <div class="form-group col-md-1 alignRightInModal" style="position: relative;">
                                      
