@@ -19,3 +19,10 @@ form label{
 .col-ms-4{
     margin-bottom: 10px;
 }
+
+.orderLine{
+    border-bottom: grey solid 2px;
+    width: 100%;
+    cursor: pointer;
+     
+}

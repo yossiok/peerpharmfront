@@ -1,7 +1,7 @@
 
 <!-- <div class="container" [style.height]="screenHeight+'px'"> -->
   <div>
-    <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a>
+    <!-- <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a> -->
       <h2 style='text-align: center;'>Material Arrival</h2>
       <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2>
       <form  class="mh-85" [formGroup]="newMaterialArrival"  >
@@ -150,4 +150,52 @@
       </form>
   </div>
 
-<!-- </div> -->
+  
+  <!-- Supplier Modal -->
+  <!-- <button (click)="openSearch(modal1);  submited=false;" class='btn btn-info'>List</button> -->
+
+  <!-- <div *ngFor="let orderItem of openOrders">
+      <div class="orderLine" >
+        <span>הזמנה: {{orderItem.orderNumber}}</span>
+        <span>כמות: {{orderItem.orderQnt}}</span>
+      </div>
+    </div> -->
+    <ng-template #modal1 let-c="close" let-d="dismiss">
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Add Costumer</h4>
+          <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+          <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+            <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div >
+                <ul *ngFor="let orderItem of openOrders">
+                    <li (click)="c('Saved'); choosenOrderItem = orderItem">{{orderItem.orderNumber}} מספר הזמנה</li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
+        </div>
+      
+</ng-template>      
+
+
+
+
+<!-- PRINT BARCODE SECTION -->
+<div>
+    <div id="print-section" style="visibility: hidden"> 
+        <h1>item number</h1>
+        
+        <h2>barcode</h2>
+        <!--Your html stuff that you want to print-->
+      </div>
+      <button
+      [printStyle]="{body: {'text-align' : 'center'} , h1 : {'color': 'red'}, h2 : {'border': 'solid 1px'}}"
+      printSectionId="print-section"
+      ngxPrint>print</button>
+</div>

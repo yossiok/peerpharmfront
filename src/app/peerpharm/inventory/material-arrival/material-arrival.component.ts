@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-material-arrival',
@@ -12,6 +13,8 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
   styleUrls: ['./material-arrival.component.css']
 })
 export class MaterialArrivalComponent implements OnInit {
+  
+  @ViewChild('modal1') modal1: ElementRef;
   screenHeight: number;
   dateStr: String ;
   user: String ;
@@ -20,11 +23,16 @@ export class MaterialArrivalComponent implements OnInit {
   borderColor: String = '#36bea6';
   newMaterialArrival: FormGroup;
   barcodeData: any;
-
+  choosenOrderItem: any;
   openOrders: Array<any>;
   supplierModal:Boolean= false;
-  constructor(private fb: FormBuilder, private invtSer:InventoryService, private procuretServ: Procurementservice, private toastSrv: ToastrService, 
-    private authService: AuthService, ) {
+
+  constructor(private fb: FormBuilder, 
+    private invtSer:InventoryService, 
+    private procuretServ: Procurementservice, 
+    private toastSrv: ToastrService, 
+    private authService: AuthService,
+    private modalService: NgbModal,    ) {
       
     this.newMaterialArrival = fb.group({
       arrivalDate: [Date, Validators.nullValidator],
@@ -85,44 +93,71 @@ export class MaterialArrivalComponent implements OnInit {
   }
   searchInternalNumber(){
     if(this.newMaterialArrival.value.internalNumber !=""){
-      debugger
       this.invtSer.findByItemNumber(this.newMaterialArrival.value.internalNumber).subscribe(item => {
-        debugger
         console.log(item);
         if(item == "noItemInCmx"){
-          this.toastSrv.error("Can't find item number")
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+          this.toastSrv.error("Can't find item number")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         }else if(item.length ==1){
           this.newMaterialArrival.controls.materialName.setValue(item[0].itemName)
           this.newMaterialArrival.controls.supplierNumber.setValue(item[0].supplierNumber)
           this.newMaterialArrival.controls.supplierName.setValue(item[0].supplierName)
-        }else if(item.openBAlance){
-          debugger
-          if(item.openBAlance.length == 1){
-            this.newMaterialArrival.controls.materialName.setValue(item.openBAlance[0].itemName)
-            this.newMaterialArrival.controls.supplierNumber.setValue(item.openBAlance[0].supplierNumber)
-            this.newMaterialArrival.controls.supplierName.setValue(item.openBAlance[0].supplierName)
-            this.newMaterialArrival.controls.cmxOrderN.setValue(item.openBAlance[0].orderNumber)
+        }else if(item.openbalance){
+          if(item.openbalance.length == 1){
+            this.newMaterialArrival.controls.materialName.setValue(item.openbalance[0].itemName)
+            this.newMaterialArrival.controls.supplierNumber.setValue(item.openbalance[0].supplierNumber)
+            this.newMaterialArrival.controls.supplierName.setValue(item.openbalance[0].supplierName)
+            this.newMaterialArrival.controls.cmxOrderN.setValue(item.openbalance[0].orderNumber)
           }else{
-            this.openOrders= item.openBAlance.map(i=>i) // show modal to user - make him choose  
+            
+            this.openOrders= item.openbalance.map(i=>i) // show modal to user - make him choose  
+            debugger
+            this.openSearch(this.modal1);
+
           }
         }
       });
   
     }
   }
+
+  openSearch(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: "modal-basic-title" })
+      .result.then(
+        result => {
+          console.log(result);
+
+          if (result == "Saved") {
+            console.log(this.choosenOrderItem)
+            this.newMaterialArrival.controls.materialName.setValue(this.choosenOrderItem.itemName)
+            this.newMaterialArrival.controls.supplierNumber.setValue(this.choosenOrderItem.supplierNumber)
+            this.newMaterialArrival.controls.supplierName.setValue(this.choosenOrderItem.supplierName)
+            this.newMaterialArrival.controls.cmxOrderN.setValue(this.choosenOrderItem.orderNumber)
+            debugger
+            // this.chooseCostumer();
+          }
+          // this.closeResult = `Closed with: ${result}`;
+          // console.log(this.closeResult);
+        },
+        reason => {
+          // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
+
+
   searchSupplierNumber(){
     console.log(this.newMaterialArrival.value.supplierNumber);
   }
 
   submitForm(){
-
-      this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
+    this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
     debugger
     if(this.newMaterialArrival.valid){
 
+      debugger
       //CREATE BARCODE
-      this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING");
       //CREATE BARCODE
       // we can also save all the form value obj = this.newMaterialArrival.value
       this.barcodeData={
@@ -132,6 +167,8 @@ export class MaterialArrivalComponent implements OnInit {
         expiryDate: this.newMaterialArrival.value.expiryDate,
         lotNumber: this.newMaterialArrival.value.lotNumber,
       }
+    this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
+      
     }else{
       this.fieldsColor();
     }
@@ -177,5 +214,8 @@ export class MaterialArrivalComponent implements OnInit {
       }
     }
   }
+
+
+
 
 }
