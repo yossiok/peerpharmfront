@@ -18,6 +18,7 @@ export class MaterialArrivalComponent implements OnInit {
   screenHeight: number;
   dateStr: String ;
   user: String ;
+  suppliers: Array<any> ;
   userObj: String ;
   analysisFlag: Boolean = false;
   borderColor: String = '#36bea6';
@@ -67,6 +68,10 @@ export class MaterialArrivalComponent implements OnInit {
 
   ngOnInit() {
     // this.user =   this.authService.loggedInUser;
+    this.invtSer.getAllSuppliers().subscribe(data => {
+      this.suppliers=data;   
+      debugger   
+    });
     this.authService.userEventEmitter.subscribe(data => {
       
       this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
@@ -147,8 +152,12 @@ export class MaterialArrivalComponent implements OnInit {
 
 
 
-  searchSupplierNumber(){
-    console.log(this.newMaterialArrival.value.supplierNumber);
+  searchSupplierName(){
+    // take name from input 
+    let name= this.newMaterialArrival.value.supplierName;
+    if(name!=""){
+
+    }
   }
 
   submitForm(){

@@ -190,12 +190,18 @@ export class StockComponent implements OnInit {
 
 
 
-devExcelExport(){
+// devExcelExport(){
   
-  this.inventoryService.getOldProcurementAmount().subscribe(data=>{
-    this.excelService.exportAsExcelFile(data, "oldProcurementAmounts");
-      });
-}
+//   this.inventoryService.getOldProcurementAmount().subscribe(data=>{
+//     this.excelService.exportAsExcelFile(data, "oldProcurementAmounts");
+//       });
+// }
+  // ExportAllCmpts() {
+  //   this.inventoryService.getAllComponentsByType('component').subscribe(data=>{
+  //     debugger
+  //     this.excelService.exportAsExcelFile(data.items, "stock components");
+  //       });
+  //  }
   // ExportKasemAllCmptsOnShelfs() {
   //   this.inventoryService.getKasemAllCmptsOnShelfs().subscribe(data=>{
   //     this.excelService.exportAsExcelFile(data, "kasemItemsOnShelfs");

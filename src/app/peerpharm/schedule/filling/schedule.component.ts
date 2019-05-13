@@ -140,7 +140,8 @@ export class ScheduleComponent implements OnInit {
     console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
-        if (sced.status == 'filled') sced.color = 'Aquamarine';
+        if (sced.status == 'filled') sced.color = '#CE90FF';
+        if (sced.status == 'done') sced.color = 'Aquamarine';
         if (sced.status == 'beingFilled') sced.color = 'yellow';
         if (sced.status == 'packed') sced.color = 'orange';
         if (sced.status == 'partialDone') sced.color = '#ff7272';
@@ -168,6 +169,9 @@ export class ScheduleComponent implements OnInit {
           sced.color = 'yellow';
         }
         if (sced.status === 'packed') {
+          sced.color = 'Aquamarine';
+        }
+        if (sced.status === 'done') {
           sced.color = 'Aquamarine';
         }
         if (sced.status === 'partialDone') {

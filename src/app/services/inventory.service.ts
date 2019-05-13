@@ -62,11 +62,11 @@ export class InventoryService {
   }
 
   // updating item shelfs
-  updateInventoryChanges(qtyObj){
-    var dataTosend={dataArr: qtyObj};
-    let url = this.baseUrl + "itemShell/updateMulti";
-    return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
-  }
+  // updateInventoryChanges(qtyObj){
+  //   var dataTosend={dataArr: qtyObj};
+  //   let url = this.baseUrl + "itemShell/updateMulti";
+  //   return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
+  // }
   updateInventoryChangesTest(qtyObj,stockType){
     var dataTosend={dataArr: qtyObj};
     let url = this.baseUrl + "itemShell/updateMultiFinal?stockType="+stockType;
@@ -188,6 +188,12 @@ getOldProcurementAmount():Observable<any>{
 }
 
 
+/* SUPPLIERS */
+
+getAllSuppliers():Observable<any>{
+  let url = this.baseUrl + "/supplier"
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 
 /* Matreials Stock */
 newMatrialArrival(objToUpdate){
@@ -201,5 +207,4 @@ findByItemNumber(itemNumber):Observable<any>{
 }
 
 
-itemNumber
 }
