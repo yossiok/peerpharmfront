@@ -191,7 +191,7 @@ getOldProcurementAmount():Observable<any>{
 /* SUPPLIERS */
 
 getAllSuppliers():Observable<any>{
-  let url = this.baseUrl + "/supplier"
+  let url = this.baseUrl + "supplier"
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 
@@ -201,8 +201,18 @@ newMatrialArrival(objToUpdate){
   return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
 }
 
+getMaterialStockItemByNum(internalNumber):Observable<any>{
+  let url = this.baseUrl + "material?materialNumber="+internalNumber ;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 findByItemNumber(itemNumber):Observable<any>{
   let url = this.baseUrl + "material?purchaseItemNumber="+itemNumber;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
+getItemsBySupplierNum(number):Observable<any>{
+  debugger
+  let url = this.baseUrl + "material?supplierNumber="+number;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 

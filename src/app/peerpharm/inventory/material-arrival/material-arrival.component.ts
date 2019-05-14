@@ -15,16 +15,20 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class MaterialArrivalComponent implements OnInit {
   
   @ViewChild('modal1') modal1: ElementRef;
+  @ViewChild('supplierNameInput') supplierNameInput: ElementRef;
   screenHeight: number;
   dateStr: String ;
   user: String ;
   suppliers: Array<any> ;
+  suppliersList: Array<any> ;
+  supplierItemsList: Array<any> ;
   userObj: String ;
   analysisFlag: Boolean = false;
   borderColor: String = '#36bea6';
   newMaterialArrival: FormGroup;
   barcodeData: any;
   choosenOrderItem: any;
+  chosenItem: any;
   openOrders: Array<any>;
   supplierModal:Boolean= false;
 
@@ -70,20 +74,38 @@ export class MaterialArrivalComponent implements OnInit {
     // this.user =   this.authService.loggedInUser;
     this.invtSer.getAllSuppliers().subscribe(data => {
       this.suppliers=data;   
-      debugger   
+      this.suppliersList=data;   
     });
+
     this.authService.userEventEmitter.subscribe(data => {
-      
       this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
     });
 
-    // this.newMaterialArrival.controls.user.setValue( this.user.firstName+" "+this.user.lastName);
     let tmpD=new Date();
     this.dateStr= tmpD.toISOString().slice(0,10);
-    console.log(this.dateStr);
     //setting form to screen height
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
+  }
+
+  filterSuppliers(input){
+    if(input !=""){
+      let inputVal= input.toLowerCase();
+      this.suppliersList= this.suppliers.filter(sup=> 
+        { if(sup.suplierName.toLowerCase().includes(inputVal)) return sup;  });
+    }    
+  }
+
+  chooseSupplierFromList(sup){
+    this.invtSer.getItemsBySupplierNum(sup.supplierNumber).subscribe(stockItems=>{
+      if(stockItems.length>0){  
+        this.supplierItemsList= stockItems;
+        //open modal to choose item
+        this.openSearch(this.modal1);
+      } else{
+          this.toastSrv.error("supplier don't have items")
+      }
+    });
   }
   
   addMaterialToStock(){
@@ -98,67 +120,35 @@ export class MaterialArrivalComponent implements OnInit {
   }
   searchInternalNumber(){
     if(this.newMaterialArrival.value.internalNumber !=""){
-      this.invtSer.findByItemNumber(this.newMaterialArrival.value.internalNumber).subscribe(item => {
+      this.invtSer.getMaterialStockItemByNum(this.newMaterialArrival.value.internalNumber).subscribe(item => {
         console.log(item);
-        if(item == "noItemInCmx"){
+        debugger
+        if(item.length==0){
           this.toastSrv.error("Can't find item number")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         }else if(item.length ==1){
-          this.newMaterialArrival.controls.materialName.setValue(item[0].itemName)
-          this.newMaterialArrival.controls.supplierNumber.setValue(item[0].supplierNumber)
-          this.newMaterialArrival.controls.supplierName.setValue(item[0].supplierName)
-        }else if(item.openbalance){
-          if(item.openbalance.length == 1){
-            this.newMaterialArrival.controls.materialName.setValue(item.openbalance[0].itemName)
-            this.newMaterialArrival.controls.supplierNumber.setValue(item.openbalance[0].supplierNumber)
-            this.newMaterialArrival.controls.supplierName.setValue(item.openbalance[0].supplierName)
-            this.newMaterialArrival.controls.cmxOrderN.setValue(item.openbalance[0].orderNumber)
-          }else{
-            
-            this.openOrders= item.openbalance.map(i=>i) // show modal to user - make him choose  
-            debugger
-            this.openSearch(this.modal1);
-
+          this.newMaterialArrival.controls.materialName.setValue(item[0].componentName);
+          this.newMaterialArrival.controls.supplierNumber.setValue(item[0].suplierN);
+          this.newMaterialArrival.controls.supplierName.setValue(item[0].p);
+          debugger
+        }else if(item.length>1){
+          this.toastSrv.error("umlti items with the same number")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
           }
-        }
+        
       });
   
     }
   }
 
-  openSearch(content) {
-    this.modalService
-      .open(content, { ariaLabelledBy: "modal-basic-title" })
-      .result.then(
-        result => {
-          console.log(result);
-
-          if (result == "Saved") {
-            console.log(this.choosenOrderItem)
-            this.newMaterialArrival.controls.materialName.setValue(this.choosenOrderItem.itemName)
-            this.newMaterialArrival.controls.supplierNumber.setValue(this.choosenOrderItem.supplierNumber)
-            this.newMaterialArrival.controls.supplierName.setValue(this.choosenOrderItem.supplierName)
-            this.newMaterialArrival.controls.cmxOrderN.setValue(this.choosenOrderItem.orderNumber)
-            debugger
-            // this.chooseCostumer();
-          }
-          // this.closeResult = `Closed with: ${result}`;
-          // console.log(this.closeResult);
-        },
-        reason => {
-          // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
 
 
 
-  searchSupplierName(){
-    // take name from input 
-    let name= this.newMaterialArrival.value.supplierName;
-    if(name!=""){
+  // searchSupplierName(){
+  //   // take name from input 
+  //   let name= this.newMaterialArrival.value.supplierName;
+  //   if(name!=""){
 
-    }
-  }
+  //   }
+  // }
 
   submitForm(){
     this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
@@ -225,6 +215,94 @@ export class MaterialArrivalComponent implements OnInit {
   }
 
 
+  openSearch(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: "modal-basic-title" })
+      .result.then(
+        result => {
+          console.log(result);
+
+          if (result == "chosen") {
+            this.newMaterialArrival.controls.internalNumber.setValue(this.chosenItem.componentN);
+            this.searchInternalNumber();
+            // this.newMaterialArrival.controls.supplierNumber.setValue(this.choosenOrderItem.supplierNumber)
+            // this.newMaterialArrival.controls.supplierName.setValue(this.choosenOrderItem.supplierName)
+            // this.newMaterialArrival.controls.cmxOrderN.setValue(this.choosenOrderItem.orderNumber)
+            debugger
+            // this.chooseCostumer();
+          }
+          // this.closeResult = `Closed with: ${result}`;
+          // console.log(this.closeResult);
+        },
+        reason => {
+          // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// GET ALL PURCHASE OPEN BALANCE FOR ITEM
+      // this.invtSer.findByItemNumber(this.newMaterialArrival.value.internalNumber).subscribe(item => {
+      //   console.log(item);
+      //   if(item == "noItemInCmx"){
+      //     this.toastSrv.error("Can't find item number")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+      //   }else if(item.length ==1){
+      //     this.newMaterialArrival.controls.materialName.setValue(item[0].itemName)
+      //     this.newMaterialArrival.controls.supplierNumber.setValue(item[0].supplierNumber)
+      //     this.newMaterialArrival.controls.supplierName.setValue(item[0].supplierName)
+      //   }else if(item.openbalance){
+      //     if(item.openbalance.length == 1){
+      //       this.newMaterialArrival.controls.materialName.setValue(item.openbalance[0].itemName)
+      //       this.newMaterialArrival.controls.supplierNumber.setValue(item.openbalance[0].supplierNumber)
+      //       this.newMaterialArrival.controls.supplierName.setValue(item.openbalance[0].supplierName)
+      //       this.newMaterialArrival.controls.cmxOrderN.setValue(item.openbalance[0].orderNumber)
+      //     }else{
+            
+      //       this.openOrders= item.openbalance.map(i=>i) // show modal to user - make him choose  
+      //       debugger
+      //       this.openSearch(this.modal1);
+
+      //     }
+      //   }
+      // });
+
+

@@ -169,7 +169,7 @@ export class ScheduleComponent implements OnInit {
           sced.color = 'yellow';
         }
         if (sced.status === 'packed') {
-          sced.color = 'Aquamarine';
+          sced.color = 'orange';
         }
         if (sced.status === 'done') {
           sced.color = 'Aquamarine';
