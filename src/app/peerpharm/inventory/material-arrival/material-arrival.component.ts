@@ -16,12 +16,14 @@ export class MaterialArrivalComponent implements OnInit {
   
   @ViewChild('modal1') modal1: ElementRef;
   @ViewChild('supplierNameInput') supplierNameInput: ElementRef;
+  @ViewChild('supplierItemNameInput') supplierItemNameInput: ElementRef;
   screenHeight: number;
   dateStr: String ;
   user: String ;
   suppliers: Array<any> ;
   suppliersList: Array<any> ;
   supplierItemsList: Array<any> ;
+  supplierItemsListCopy: Array<any> ;
   userObj: String ;
   analysisFlag: Boolean = false;
   borderColor: String = '#36bea6';
@@ -64,7 +66,7 @@ export class MaterialArrivalComponent implements OnInit {
       // unitMesureType: [0, ],    
       
       warehouse: [""], //select 
-      position: [""], //select 
+      position: ["GENERAL"], //select 
       barcode:[""]
     });
 
@@ -91,15 +93,30 @@ export class MaterialArrivalComponent implements OnInit {
   filterSuppliers(input){
     if(input !=""){
       let inputVal= input.toLowerCase();
-      this.suppliersList= this.suppliers.filter(sup=> 
-        { if(sup.suplierName.toLowerCase().includes(inputVal)) return sup;  });
-    }    
+      this.suppliersList= this.suppliers.filter(sup=> { 
+          if(sup.suplierName.toLowerCase().includes(inputVal)) {
+            return sup;
+          } 
+        });
+      }    
+  }
+
+  filterSupplierItems(input){
+    if(input !=""){
+      let inputVal= input.toLowerCase();
+      this.supplierItemsList= this.supplierItemsListCopy.filter(item=> { 
+          if(item.componentName.toLowerCase().includes(inputVal)) {
+            return item;
+          } 
+        });
+      }    
   }
 
   chooseSupplierFromList(sup){
-    this.invtSer.getItemsBySupplierNum(sup.supplierNumber).subscribe(stockItems=>{
+    this.invtSer.getItemsBySupplierNum(sup.suplierNumber).subscribe(stockItems=>{
       if(stockItems.length>0){  
         this.supplierItemsList= stockItems;
+        this.supplierItemsListCopy= stockItems;
         //open modal to choose item
         this.openSearch(this.modal1);
       } else{
@@ -108,13 +125,7 @@ export class MaterialArrivalComponent implements OnInit {
     });
   }
   
-  addMaterialToStock(){
-    
-    let formToSend;
-    this.dateStr
-    // this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{});         
 
-  }
   createBarcode(){
     // waiting for yossi
   }
@@ -122,14 +133,21 @@ export class MaterialArrivalComponent implements OnInit {
     if(this.newMaterialArrival.value.internalNumber !=""){
       this.invtSer.getMaterialStockItemByNum(this.newMaterialArrival.value.internalNumber).subscribe(item => {
         console.log(item);
-        debugger
         if(item.length==0){
           this.toastSrv.error("Can't find item number")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         }else if(item.length ==1){
           this.newMaterialArrival.controls.materialName.setValue(item[0].componentName);
           this.newMaterialArrival.controls.supplierNumber.setValue(item[0].suplierN);
-          this.newMaterialArrival.controls.supplierName.setValue(item[0].p);
-          debugger
+          this.newMaterialArrival.controls.supplierName.setValue(item[0].suplierName);
+          if(item[0].unit!="" && item[0].unit!=undefined && item[0].unit!=null ){
+            // console.log(this.newMaterialArrival.value.mesureType)
+            this.newMaterialArrival.controls.mesureType.setValue(item[0].unit);
+            // console.log(this.newMaterialArrival.value.mesureType)
+            // this.newMaterialArrival.value.mesureType= item[0].unit;
+            // console.log(this.newMaterialArrival.value.mesureType)
+
+          } 
+          this.suppliersList=[];
         }else if(item.length>1){
           this.toastSrv.error("umlti items with the same number")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
           }
@@ -152,10 +170,7 @@ export class MaterialArrivalComponent implements OnInit {
 
   submitForm(){
     this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
-    debugger
     if(this.newMaterialArrival.valid){
-
-      debugger
       //CREATE BARCODE
       //CREATE BARCODE
       // we can also save all the form value obj = this.newMaterialArrival.value
@@ -167,10 +182,48 @@ export class MaterialArrivalComponent implements OnInit {
         lotNumber: this.newMaterialArrival.value.lotNumber,
       }
     this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
-      
+    this.checkLotNumber().then(ok=> {
+      this.addMaterialToStock();    
+      });
     }else{
+      this.toastSrv.error("Fill all required fields")
       this.fieldsColor();
     }
+  }
+
+
+  checkLotNumber(){
+    var form= this.newMaterialArrival;
+    var inventoryService = this.invtSer; 
+    return new Promise(function (resolve, reject) {
+      let itemN= form.value.internalNumber;
+      let lotN= form.value.lotNumber;
+
+      inventoryService.getLotNumber(itemN, lotN).subscribe(itemShelfs=>{
+        if (itemShelfs.length>0){
+          itemShelfs.forEach((itemShl, key) => {
+            if(form.value.expiryDate != itemShl.expirationDate ){
+              if(confirm("מספר לוט כבר קיים במערכת עם תאריך תפוגה \n"+itemShl.expirationDate)){
+                form.controls.expiryDate.setValue(itemShl.expirationDate);
+              } 
+            }
+            if(key+1 == itemShelfs.length)  resolve('lot number checked');
+          });
+        }else{
+          resolve('lot number new')
+        }
+      })  
+    });
+
+  }
+
+  addMaterialToStock(){
+    let formToSend= this.newMaterialArrival.value;
+    this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{
+      console.log(res);
+      debugger
+    });         
+
   }
 
   fieldsColor(){

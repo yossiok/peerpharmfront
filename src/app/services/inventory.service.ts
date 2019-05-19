@@ -211,8 +211,13 @@ findByItemNumber(itemNumber):Observable<any>{
 }
 
 getItemsBySupplierNum(number):Observable<any>{
-  debugger
   let url = this.baseUrl + "material?supplierNumber="+number;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
+getLotNumber(itemN, lotN):Observable<any>{
+  debugger
+  let url = this.baseUrl + "material?itemN="+itemN+"&lotN="+lotN;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 

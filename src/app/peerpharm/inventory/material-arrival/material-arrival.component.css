@@ -26,3 +26,17 @@ form label{
     cursor: pointer;
      
 }
+.supplierItemsList ul{
+    list-style: none;
+    text-align: right;
+}
+.supplierItemsList ul li{
+    direction: rtl;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: lightgrey solid 1px;
+}
+.supplierItemsList input{
+    margin-bottom: 15px;
+    border-bottom: lightgrey solid 1px;
+}
