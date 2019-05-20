@@ -71,6 +71,8 @@ export class FormslistComponent implements OnInit {
       arrToExcel.push(newObj);
     });
     this.excelService.exportAsExcelFile(arrToExcel, 'forms');
+    // var data=[];
+    // this.excelService.exportAsExcelFile(data, 'fault_forms');
  }
 
 

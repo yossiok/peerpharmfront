@@ -18,8 +18,7 @@
               </div>  
               <div class="col-ms-4">
                 <label for="user">שם משתמש</label>
-                <input type="text"  class="form-control is-valid" placeholder="user name" 
-                [(ngModel)]="user" [ngModelOptions]="{standalone: true}"            
+                <input type="text"  class="form-control is-valid" placeholder="user name" formControlName="user"
                 required disabled>
               </div>  
           </div>
@@ -55,7 +54,7 @@
               </div>  
               <div class="col-ms-4">
                   <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
-                  (click)="resetDate('expiryDate')"></i>  
+                  (click)="resetDate('expiryDate')" ></i>  
                 <label >תאריך תפוגה</label>
                 <!-- <div class="form-group col-md-1 alignRightInModal" style="position: relative;">
                                      

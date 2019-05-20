@@ -42,8 +42,8 @@ export class MaterialArrivalComponent implements OnInit {
     private modalService: NgbModal,    ) {
       
     this.newMaterialArrival = fb.group({
-      arrivalDate: [Date, Validators.nullValidator],
-      user: ["", Validators.nullValidator],
+      arrivalDate: [Date, Validators.required],
+      user: ["", Validators.required],
       internalNumber: ["", Validators.required],
       materialName: ["", Validators.required], 
 
@@ -53,7 +53,7 @@ export class MaterialArrivalComponent implements OnInit {
 
       supplierName: ["", Validators.required], 
       supplierNumber: ["", Validators.required],
-      analysisApproval: [Boolean, ], 
+      analysisApproval: [false, ], 
       
       totalQnt: [0, Validators.required], 
       mesureType: [ 'kg', Validators.required],           
@@ -74,21 +74,22 @@ export class MaterialArrivalComponent implements OnInit {
 
   ngOnInit() {
     // this.user =   this.authService.loggedInUser;
+    this.authService.userEventEmitter.subscribe(data => {
+      this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+      this.newMaterialArrival.controls.user.setValue(this.user)
+    });
     this.invtSer.getAllSuppliers().subscribe(data => {
       this.suppliers=data;   
       this.suppliersList=data;   
     });
-
-    this.authService.userEventEmitter.subscribe(data => {
-      this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
-    });
-
     let tmpD=new Date();
     this.dateStr= tmpD.toISOString().slice(0,10);
+    this.newMaterialArrival.controls.arrivalDate.setValue(tmpD);
     //setting form to screen height
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
   }
+
 
   filterSuppliers(input){
     if(input !=""){
@@ -169,23 +170,54 @@ export class MaterialArrivalComponent implements OnInit {
   // }
 
   submitForm(){
-    this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
-    if(this.newMaterialArrival.valid){
-      //CREATE BARCODE
-      //CREATE BARCODE
-      // we can also save all the form value obj = this.newMaterialArrival.value
-      this.barcodeData={
-        internalNumber: this.newMaterialArrival.value.internalNumber,
-        materialName: this.newMaterialArrival.value.materialName,
-        barcode: this.newMaterialArrival.value.barcode,
-        expiryDate: this.newMaterialArrival.value.expiryDate,
-        lotNumber: this.newMaterialArrival.value.lotNumber,
-      }
-    this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
-    this.checkLotNumber().then(ok=> {
-      this.addMaterialToStock();    
+    if(this.newMaterialArrival.value.user == ""){
+      this.authService.userEventEmitter.subscribe(data => {
+        this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+        this.newMaterialArrival.controls.user.setValue(this.user);
       });
-    }else{
+    }
+    let continueSend= false;
+    this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
+    debugger
+    if(this.newMaterialArrival.value.productionDate!=""){ this.adjustDate(this.newMaterialArrival.controls.productionDate)  }
+    if(this.newMaterialArrival.value.expiryDate!=""){ this.adjustDate(this.newMaterialArrival.controls.expiryDate) }
+    if(this.newMaterialArrival.valid){
+      if( !this.analysisFlag ){
+        if(confirm('אנליזה לא תקינה , האם להמשיך?')){
+          continueSend= true;
+        }else{
+          continueSend= false;          
+        }
+      }
+
+      if(this.newMaterialArrival.value.expiryDate=""){
+        if(confirm('תאריך תפוגה חסר , האם להמשיך?')){
+          continueSend= true;  
+        }else{
+          continueSend= false;
+        }
+      }
+
+      if(continueSend){
+        this.newMaterialArrival.value.productionDate = new Date(this.newMaterialArrival.value.productionDate)
+        this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
+        this.checkLotNumber().then(ok=> {
+          //CREATE BARCODE
+          // we can also save all the form value obj = this.newMaterialArrival.value
+          // this.barcodeData={
+          //   internalNumber: this.newMaterialArrival.value.internalNumber,
+          //   materialName: this.newMaterialArrival.value.materialName,
+          //   barcode: this.newMaterialArrival.value.barcode,
+          //   expiryDate: this.newMaterialArrival.value.expiryDate,
+          //   lotNumber: this.newMaterialArrival.value.lotNumber,
+          // }
+          this.addMaterialToStock();    
+          });
+
+      }
+    }
+
+    if (!continueSend || !this.newMaterialArrival.valid){
       this.toastSrv.error("Fill all required fields")
       this.fieldsColor();
     }
@@ -201,10 +233,12 @@ export class MaterialArrivalComponent implements OnInit {
 
       inventoryService.getLotNumber(itemN, lotN).subscribe(itemShelfs=>{
         if (itemShelfs.length>0){
+          // wont save same lot numbers with different expiry date
           itemShelfs.forEach((itemShl, key) => {
             if(form.value.expiryDate != itemShl.expirationDate ){
-              if(confirm("מספר לוט כבר קיים במערכת עם תאריך תפוגה \n"+itemShl.expirationDate)){
-                form.controls.expiryDate.setValue(itemShl.expirationDate);
+              let date= itemShl.expirationDate.slice(0,10)
+              if(confirm("מספר לוט כבר קיים במערכת עם תאריך תפוגה \n"+date)){
+                form.controls.expiryDate.setValue(date);
               } 
             }
             if(key+1 == itemShelfs.length)  resolve('lot number checked');
@@ -217,11 +251,19 @@ export class MaterialArrivalComponent implements OnInit {
 
   }
 
+
   addMaterialToStock(){
     let formToSend= this.newMaterialArrival.value;
     this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{
-      console.log(res);
-      debugger
+      if(res == "saved"){
+        this.toastSrv.success("New material arrival saved!");
+          this.resetForm();
+          //print barcode;
+      }else if(res == 'no material with number'){
+        this.toastSrv.error("Item number wrong")
+      }else{
+        this.toastSrv.error("Something went wrong, saving faild")
+      }
     });         
 
   }
@@ -251,8 +293,12 @@ export class MaterialArrivalComponent implements OnInit {
   }
   resetForm(){
     this.newMaterialArrival.reset();
+    this.newMaterialArrival.controls.arrivalDate.setValue(new Date());
+    this.newMaterialArrival.controls.user.setValue(this.user);
   }
-  
+  adjustDate(formField){
+    formField.setValue(new Date(formField.value));
+  }
   resetDate(date){
     switch (date) {
       case 'expiryDate': {
