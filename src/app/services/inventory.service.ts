@@ -220,5 +220,10 @@ getLotNumber(itemN, lotN):Observable<any>{
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 
+getAllMaterialsArrivals():Observable<any>{
+  let url = this.baseUrl + "material?allLogs=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
 
 }

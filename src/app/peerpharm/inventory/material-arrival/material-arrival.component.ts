@@ -5,7 +5,7 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-material-arrival',
@@ -13,11 +13,20 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./material-arrival.component.css']
 })
 export class MaterialArrivalComponent implements OnInit {
-  
+  public beforeChange($event: NgbTabChangeEvent) {
+    debugger
+    this.activeTabId = $event.activeId;
+    // if ($event.activeId === 'tab-preventchange2') {
+    //   $event.preventDefault();
+    // }
+  }
   @ViewChild('modal1') modal1: ElementRef;
   @ViewChild('supplierNameInput') supplierNameInput: ElementRef;
   @ViewChild('supplierItemNameInput') supplierItemNameInput: ElementRef;
+  @ViewChild('printBtn') printBtn: ElementRef;
+  @ViewChild('tabset') tabset: NgbTabset ;
   screenHeight: number;
+  activeTabId: String ;
   dateStr: String ;
   user: String ;
   suppliers: Array<any> ;
@@ -32,7 +41,21 @@ export class MaterialArrivalComponent implements OnInit {
   choosenOrderItem: any;
   chosenItem: any;
   openOrders: Array<any>;
+
   supplierModal:Boolean= false;
+
+// barcode vars //
+
+bcValue: String="";
+materialNum: String ;
+
+barcodeElementType = "svg";
+barcodeFormat = "CODE128";
+barcodeWidth = 2.3;
+barcodeHeight = 75;
+barcodeFontSize = 28;
+barcodeFlat = true;
+
 
   constructor(private fb: FormBuilder, 
     private invtSer:InventoryService, 
@@ -88,8 +111,9 @@ export class MaterialArrivalComponent implements OnInit {
     //setting form to screen height
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
+    // two displays "tab-selectbyid1" OR "tab-selectbyid2"
+    this.activeTabId="tab-selectbyid2"
   }
-
 
   filterSuppliers(input){
     if(input !=""){
@@ -143,9 +167,7 @@ export class MaterialArrivalComponent implements OnInit {
           if(item[0].unit!="" && item[0].unit!=undefined && item[0].unit!=null ){
             // console.log(this.newMaterialArrival.value.mesureType)
             this.newMaterialArrival.controls.mesureType.setValue(item[0].unit);
-            // console.log(this.newMaterialArrival.value.mesureType)
-            // this.newMaterialArrival.value.mesureType= item[0].unit;
-            // console.log(this.newMaterialArrival.value.mesureType)
+
 
           } 
           this.suppliersList=[];
@@ -170,6 +192,9 @@ export class MaterialArrivalComponent implements OnInit {
   // }
 
   submitForm(){
+    // shelf general position
+    this.newMaterialArrival.controls.position.setValue('GENERAL');
+    this.materialNum= this.newMaterialArrival.value.internalNumber;
     if(this.newMaterialArrival.value.user == ""){
       this.authService.userEventEmitter.subscribe(data => {
         this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
@@ -230,15 +255,16 @@ export class MaterialArrivalComponent implements OnInit {
     return new Promise(function (resolve, reject) {
       let itemN= form.value.internalNumber;
       let lotN= form.value.lotNumber;
-
+      let breakeLoop=false;
       inventoryService.getLotNumber(itemN, lotN).subscribe(itemShelfs=>{
         if (itemShelfs.length>0){
           // wont save same lot numbers with different expiry date
           itemShelfs.forEach((itemShl, key) => {
-            if(form.value.expiryDate != itemShl.expirationDate ){
+            if(form.value.expiryDate != itemShl.expirationDate && !breakeLoop ){
               let date= itemShl.expirationDate.slice(0,10)
               if(confirm("מספר לוט כבר קיים במערכת עם תאריך תפוגה \n"+date)){
                 form.controls.expiryDate.setValue(date);
+                breakeLoop=true;
               } 
             }
             if(key+1 == itemShelfs.length)  resolve('lot number checked');
@@ -255,7 +281,10 @@ export class MaterialArrivalComponent implements OnInit {
   addMaterialToStock(){
     let formToSend= this.newMaterialArrival.value;
     this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{
-      if(res == "saved"){
+      if(res.savedDoc ){
+        this.bcValue= res.savedDoc._id ;// we can also keep only the doc-Id
+        this.materialNum= res.savedDoc.internalNumber;
+        this.printBtn.nativeElement.click();
         this.toastSrv.success("New material arrival saved!");
           this.resetForm();
           //print barcode;

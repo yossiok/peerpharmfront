@@ -1,223 +1,248 @@
+<ngb-tabset #tabset="ngbTabset" justify="end"  (tabChange)="beforeChange($event)" [activeId]="activeTabId" >
+
+  <ngb-tab id="tab-selectbyid2" style="flex-direction:row-reverse; " >
+    <ng-template ngbTabTitle ><b>כניסות חו"ג</b></ng-template>
+    <ng-template ngbTabContent>
+      <app-material-arrival-table></app-material-arrival-table>
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab id="tab-selectbyid1" style="flex-direction:row-reverse; "  >  
+    <ng-template ngbTabTitle ><b>חו"ג חדש</b></ng-template>
+    <ng-template ngbTabContent>
+
+        <div #arrivalForm>
+            <!-- <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a> -->
+              <h2 style='text-align: center;'>Material Arrival</h2>
+              <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2>
+              <form  class="mh-85" [formGroup]="newMaterialArrival"  >
+            
+                  <div class="form-row w-100 flex-row-reverse" style="padding-bottom: 15px;">
+                      <div class="col-ms-4">
+                        <label for="date">תאריך הגעה<b style="color:red">*</b></label>
+                        <input type="date"  class="form-control is-valid" placeholder="First name" 
+                        [(ngModel)]="dateStr" [ngModelOptions]="{standalone: true}"
+                        required disabled>
+                        <!-- <div class="valid-feedback">
+                          Looks good!
+                        </div> -->
+                      </div>  
+                      <div class="col-ms-4">
+                        <label for="user">שם משתמש</label>
+                        <input type="text"  class="form-control is-valid" placeholder="user name" formControlName="user"
+                        required disabled>
+                      </div>  
+                  </div>
+                  <div class="form-row w-100 flex-row-reverse">
+                      <div class="col-ms-4">
+                        <img src="../../../../assets/images/search.png" alt="search internal number" 
+                        style="width:28px; cursor: pointer;"
+                        (click)="searchInternalNumber()">
+                        <label >מק"ט פנימי</label>
+                        <input type="text"  class="form-control is-valid" placeholder="Internal number" 
+                        formControlName="internalNumber" name='internalNumber'  >
+                      </div>  
+                      <div class="col-ms-4">
+                        <label >שם הפריט</label>
+                        <input type="text"  class="form-control is-valid" placeholder="item name" formControlName="materialName" name='materialName' required disabled>
+                      </div>  
+                      <div class="col-ms-4">
+                        <label >אנליזה תקינה</label>
+                        <input type="checkbox"  class="form-control is-valid" 
+                        [(ngModel)]="analysisFlag"  [ngModelOptions]="{standalone: true}" required >
+                      </div>  
+                  </div>
+                  <div class="form-row w-100 flex-row-reverse">
+                      <div class="col-ms-4">
+                        <label >אצוות יצרן - lot number</label>
+                        <input type="text"  class="form-control is-valid" placeholder="Lot number" formControlName="lotNumber" name='lotNumber'  >
+                      </div>  
+                      <div class="col-ms-4">
+                          <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
+                          (click)="resetDate('productionDate')"></i>  
+                        <label >תאריך ייצור</label>
+                        <input type="date"  class="form-control is-valid"  formControlName="productionDate" name='productionDate'  >
+                      </div>  
+                      <div class="col-ms-4">
+                          <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
+                          (click)="resetDate('expiryDate')" ></i>  
+                        <label >תאריך תפוגה</label>
+                        <!-- <div class="form-group col-md-1 alignRightInModal" style="position: relative;">
+                                             
+                        </div> -->
+                        <input type="date"  class="form-control is-valid" formControlName="expiryDate" name='expiryDate' >
+                      </div>  
+                  </div>
+                  <div class="form-row w-100 flex-row-reverse">
+                      <div class="col-ms-4">
+        
+                        <label >מספר ספק</label>
+                        <input type="text"  class="form-control is-valid" placeholder="supplier number" formControlName="supplierNumber" name='supplierNumber'  >
+                      </div>  
+                      <div class="col-ms-4">
+                          <!-- <img src="../../../../assets/images/search.png" alt="search internal number" 
+                          style="width:28px; cursor: pointer;"
+                          (click)="filterSuppliers(supplierNameInput.value)"> -->
+                        <label >שם ספק</label>
+                        <!-- <input type="text"  class="form-control is-valid" placeholder="supplier name" formControlName="supplierName" name='supplierName'  > -->
+        
+                        <input class="form-control is-valid" #supplierNameInput type="text" placeholder="Search.." formControlName="supplierName" name='supplierName' (keyup)="filterSuppliers(supplierNameInput.value)">
+                        <ul *ngIf="supplierNameInput.value !=''" class="list-group" id="myList" style="overflow-y: scroll; max-height: 200px;">
+                          <li *ngFor="let sup of suppliersList; "
+                          class="list-group-item" (click)="chooseSupplierFromList(sup)" style="cursor:pointer;">{{sup.suplierName}}</li>
+                        </ul>  
+        
+                      </div>  
+                      <div class="col-ms-4">
+                        <label >מספר הזמנת רכש</label>
+                        <input type="text"  class="form-control is-valid" placeholder="comax order number" formControlName="cmxOrderN" name='cmxOrderN' >
+                      </div>  
+                  </div>
+                  <div class="form-row w-100 flex-row-reverse">
+                      <div class="col-ms-4">
+                        <label >כמות כוללת</label>
+                        <input type="number"  class="form-control is-valid" formControlName="totalQnt" name='totalQnt'  >
+                      </div>  
+                      <div class="col-ms-4">
+                        <label >יח' מדידה</label>
+                        <select class="form-control is-valid" formControlName="mesureType" name='mesureType'>
+                          <option value="kg">קילוגרם</option>  
+                          <option value="liter">ליטר</option>  
+                        </select>
+                      </div>  
+                  </div>
+                  <div class="form-row w-100 flex-row-reverse">
+            
+                      <div class="col-ms-4">
+                        <label >סוג אריזה</label>
+                        <select class="form-control is-valid" formControlName="packageType" name='packageType'>
+                          <option value="">בחר אריזה</option> 
+                          <option value="plasticBarrel">חבית פלסטיק</option>
+                          <option value="metalBarrel">חבית מתכת</option>
+                          <option value="jerrycan‏‏‏‏">ג'ריקן</option>
+                          <option value="bag">שק</option>
+                          <option value="cube">קוביה</option>
+                          <option value="bucket">דלי</option>
+                          <option value="carton">קרטון</option>
+                          <option value="bottel">בקבוק</option>
+                        </select>
+                      </div>  
+                      <div class="col-ms-4">
+                        <label >כמות אריזות</label>
+                        <input type="number"  class="form-control is-valid"  formControlName="packageQnt" name='packageQnt' >
+                      </div>  
+                      <div class="col-ms-4" *ngIf="newMaterialArrival.value.packageType == 'carton'">
+                          <label >יח' בקרטון</label>
+                          <input type="number"  class="form-control is-valid" formControlName="unitsInPack" name='unitsInPack'  >
+                      </div>  
+                  </div>
+            
+                  <div class="form-row w-100 flex-row-reverse"> 
+                    <div class="col-ms-4">
+                        <label >מיקום הסחורה</label>
+                        <select class="form-control is-valid" formControlName="warehouse" name='warehouse'>
+                          <option value="">בחר מיקום</option> 
+                          <option value="production floor">ייצור</option>
+                          <option value="zero">מחסן אפס</option>
+                          <option value="gaya">מחסן גאיה</option>
+                          <option value="outside">רחבה</option>
+                          <option value="lab">מעבדה</option>
+                          <option value="makeup">איפור</option>
+                          <option value="Kasem materials">קאסם</option>
+                        </select>
+                      </div>     
+                      <div class="col-ms-4">
+                          <label >הערות</label>
+                          <input type="text" class="form-control is-valid" placeholder="remarks..."
+                          formControlName="remarks" name='remarks'>
+                    </div>
+                  </div>
+            
+                  <div class="form-row w-100 d-flex justify-content-around"> 
+                    <div class="col-ms-4">
+                      <button (click)="submitForm()" class="btn btn-success">אישור</button>
+                      <button (click)="resetForm()" class="btn btn-danger">איפוס</button>
+                    </div>
+                  </div>
+            
+              </form>
+          </div>
+        
+        <!-- Supplier Items Modal -->
+        <ng-template #modal1 let-c="close" let-d="dismiss"> 
+                <div class="modal-header" style="direcrion: rtl;">
+                  <h4 class="modal-title" id="modal-basic-title">פריטים של ספק</h4>
+                  <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+                  <button type="button" class="close" aria-label="Close" (click)="c('Cross click')" style="margin-left: 0">
+                    <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+        
+                    <div class="supplierItemsList" >
+                        <input class="form-control is-valid" #supplierItemNameInput type="text" placeholder="Search.." 
+                        (keyup)="filterSupplierItems(supplierItemNameInput.value)">
+                        <ul >
+                            <li *ngFor="let item of supplierItemsList" (click)="c('chosen');  chosenItem = item"
+                            style="direction:rtl; ">{{item.componentN}}  &nbsp;&nbsp; {{item.componentName}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+        </ng-template>      
+        <!-- Supplier Items Modal -->
+
+
+
+
+    </ng-template>
+  </ngb-tab>
+
+</ngb-tabset>
 
 <!-- <div class="container" [style.height]="screenHeight+'px'"> -->
-  <div>
-    <!-- <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a> -->
-      <h2 style='text-align: center;'>Material Arrival</h2>
-      <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2>
-      <form  class="mh-85" [formGroup]="newMaterialArrival"  >
-    
-          <div class="form-row w-100 flex-row-reverse" style="padding-bottom: 15px;">
-              <div class="col-ms-4">
-                <label for="date">תאריך הגעה<b style="color:red">*</b></label>
-                <input type="date"  class="form-control is-valid" placeholder="First name" 
-                [(ngModel)]="dateStr" [ngModelOptions]="{standalone: true}"
-                required disabled>
-                <!-- <div class="valid-feedback">
-                  Looks good!
-                </div> -->
-              </div>  
-              <div class="col-ms-4">
-                <label for="user">שם משתמש</label>
-                <input type="text"  class="form-control is-valid" placeholder="user name" formControlName="user"
-                required disabled>
-              </div>  
+ 
+
+          <!-- PRINT BARCODE SECTION -->
+          <div style="visibility: hidden">
+              <!-- <button #printBtn style="visibility: hidden" -->
+            <button #printBtn 
+            [printStyle]="{ '#itemNum': {'text-align': 'center'}, table : {'width': '100%'} }"
+            printSectionId="print-section"
+            ngxPrint>print
+            </button>
+
+            <!-- <div class="row clearfix" id="print-section" style="visibility: hidden"> -->
+            <div class="row clearfix" id="print-section" style="visibility: hidden">
+                <table
+                  [attr.data-index]="i"
+                  class="barcodeTbl"
+                  dir="ltr"
+                  [style.margin.px]="0"
+                  [style.width.px]="360"
+                  [style.max-height.px]="360"
+                  [style.font-size.px]="24"
+                  [style.font-family]="Arial"
+                  [style.border.px]="0"
+                  [attr.id]="create_table"
+                >
+                <tr>
+                  <td id='itemNum' >{{ materialNumber }}</td>
+                </tr>
+                <tr>
+                  <td id='barcode'>
+                    <ngx-barcode
+                      [bc-element-type]="barcodeElementType"
+                      [bc-value]="bcValue"
+                      [bc-format]="barcodeFormat"
+                      [bc-width]="barcodeWidth"
+                      [bc-height]="barcodeHeight"
+                      [bc-font-size]="barcodeFontSize"
+                    ></ngx-barcode>
+                  </td>
+              </tr>
+            </table>
           </div>
-          <div class="form-row w-100 flex-row-reverse">
-              <div class="col-ms-4">
-                <img src="../../../../assets/images/search.png" alt="search internal number" 
-                style="width:28px; cursor: pointer;"
-                (click)="searchInternalNumber()">
-                <label >מק"ט פנימי</label>
-                <input type="text"  class="form-control is-valid" placeholder="Internal number" 
-                formControlName="internalNumber" name='internalNumber'  >
-              </div>  
-              <div class="col-ms-4">
-                <label >שם הפריט</label>
-                <input type="text"  class="form-control is-valid" placeholder="item name" formControlName="materialName" name='materialName' required disabled>
-              </div>  
-              <div class="col-ms-4">
-                <label >אנליזה תקינה</label>
-                <input type="checkbox"  class="form-control is-valid" 
-                [(ngModel)]="analysisFlag"  [ngModelOptions]="{standalone: true}" required >
-              </div>  
-          </div>
-          <div class="form-row w-100 flex-row-reverse">
-              <div class="col-ms-4">
-                <label >אצוות יצרן - lot number</label>
-                <input type="text"  class="form-control is-valid" placeholder="Lot number" formControlName="lotNumber" name='lotNumber'  >
-              </div>  
-              <div class="col-ms-4">
-                  <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
-                  (click)="resetDate('productionDate')"></i>  
-                <label >תאריך ייצור</label>
-                <input type="date"  class="form-control is-valid"  formControlName="productionDate" name='productionDate'  >
-              </div>  
-              <div class="col-ms-4">
-                  <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
-                  (click)="resetDate('expiryDate')" ></i>  
-                <label >תאריך תפוגה</label>
-                <!-- <div class="form-group col-md-1 alignRightInModal" style="position: relative;">
-                                     
-                </div> -->
-                <input type="date"  class="form-control is-valid" formControlName="expiryDate" name='expiryDate' >
-              </div>  
-          </div>
-          <div class="form-row w-100 flex-row-reverse">
-              <div class="col-ms-4">
-
-                <label >מספר ספק</label>
-                <input type="text"  class="form-control is-valid" placeholder="supplier number" formControlName="supplierNumber" name='supplierNumber'  >
-              </div>  
-              <div class="col-ms-4">
-                  <!-- <img src="../../../../assets/images/search.png" alt="search internal number" 
-                  style="width:28px; cursor: pointer;"
-                  (click)="filterSuppliers(supplierNameInput.value)"> -->
-                <label >שם ספק</label>
-                <!-- <input type="text"  class="form-control is-valid" placeholder="supplier name" formControlName="supplierName" name='supplierName'  > -->
-
-                <input class="form-control is-valid" #supplierNameInput type="text" placeholder="Search.." formControlName="supplierName" name='supplierName' (keyup)="filterSuppliers(supplierNameInput.value)">
-                <ul *ngIf="supplierNameInput.value !=''" class="list-group" id="myList" style="overflow-y: scroll; max-height: 200px;">
-                  <li *ngFor="let sup of suppliersList; "
-                  class="list-group-item" (click)="chooseSupplierFromList(sup)" style="cursor:pointer;">{{sup.suplierName}}</li>
-                </ul>  
-
-              </div>  
-              <!-- <div class="col-ms-4">
-                  <img src="../../../../assets/images/search.png" alt="search internal number" 
-                  style="width:28px; cursor: pointer;"
-                  (click)="searchSupplierName()">
-                <label >שם ספק</label>
-                <input type="text"  class="form-control is-valid" placeholder="supplier name" formControlName="supplierName" name='supplierName'  >
-              </div>   -->
-              <div class="col-ms-4">
-                <label >מספר הזמנת רכש</label>
-                <input type="text"  class="form-control is-valid" placeholder="comax order number" formControlName="cmxOrderN" name='cmxOrderN' >
-              </div>  
-          </div>
-          <div class="form-row w-100 flex-row-reverse">
-              <div class="col-ms-4">
-                <label >כמות כוללת</label>
-                <input type="number"  class="form-control is-valid" formControlName="totalQnt" name='totalQnt'  >
-              </div>  
-              <div class="col-ms-4">
-                <label >יח' מדידה</label>
-                <select class="form-control is-valid" formControlName="mesureType" name='mesureType'>
-                  <option value="kg">קילוגרם</option>  
-                  <option value="liter">ליטר</option>  
-                </select>
-              </div>  
-          </div>
-          <div class="form-row w-100 flex-row-reverse">
-    
-              <div class="col-ms-4">
-                <label >סוג אריזה</label>
-                <select class="form-control is-valid" formControlName="packageType" name='packageType'>
-                  <option value="">בחר אריזה</option> 
-                  <option value="plasticBarrel">חבית פלסטיק</option>
-                  <option value="metalBarrel">חבית מתכת</option>
-                  <option value="jerrycan‏‏‏‏">ג'ריקן</option>
-                  <option value="bag">שק</option>
-                  <option value="cube">קוביה</option>
-                  <option value="bucket">דלי</option>
-                  <option value="carton">קרטון</option>
-                  <option value="bottel">בקבוק</option>
-                </select>
-              </div>  
-              <div class="col-ms-4">
-                <label >כמות אריזות</label>
-                <input type="number"  class="form-control is-valid"  formControlName="packageQnt" name='packageQnt' >
-              </div>  
-              <div class="col-ms-4" *ngIf="newMaterialArrival.value.packageType == 'carton'">
-                  <label >יח' בקרטון</label>
-                  <input type="number"  class="form-control is-valid" formControlName="unitsInPack" name='unitsInPack'  >
-              </div>  
-          </div>
-    
-          <div class="form-row w-100 flex-row-reverse"> 
-            <div class="col-ms-4">
-                <label >מיקום הסחורה</label>
-                <select class="form-control is-valid" formControlName="warehouse" name='warehouse'>
-                  <option value="">בחר מיקום</option> 
-                  <option value="production floor">ייצור</option>
-                  <option value="zero">מחסן אפס</option>
-                  <option value="gaya">מחסן גאיה</option>
-                  <option value="outside">רחבה</option>
-                  <option value="lab">מעבדה</option>
-                  <option value="makeup">איפור</option>
-                  <option value="Kasem materials">קאסם</option>
-                </select>
-              </div>     
-              <div class="col-ms-4">
-                  <label >הערות</label>
-                  <input type="text" class="form-control is-valid" placeholder="remarks..."
-                  formControlName="remarks" name='remarks'>
-            </div>
-          </div>
-    
-          <div class="form-row w-100 d-flex justify-content-around"> 
-            <div class="col-ms-4">
-              <button (click)="submitForm()" class="btn btn-success">אישור</button>
-              <button (click)="resetForm()" class="btn btn-danger">איפוס</button>
-            </div>
-          </div>
-    
-      </form>
-  </div>
-
-  
-  <!-- Supplier Modal -->
-  <!-- <button (click)="openSearch(modal1);  submited=false;" class='btn btn-info'>List</button> -->
-
-  <!-- <div *ngFor="let orderItem of openOrders">
-      <div class="orderLine" >
-        <span>הזמנה: {{orderItem.orderNumber}}</span>
-        <span>כמות: {{orderItem.orderQnt}}</span>
-      </div>
-    </div> -->
-
-
-
-
-
-    <ng-template #modal1 let-c="close" let-d="dismiss">
-
-        <div class="modal-header" style="direcrion: rtl;">
-          <h4 class="modal-title" id="modal-basic-title">פריטים של ספק</h4>
-          <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
-          <button type="button" class="close" aria-label="Close" (click)="c('Cross click')" style="margin-left: 0">
-            <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
-            <span aria-hidden="true">&times;</span>
-          </button>
         </div>
-        <div class="modal-body">
-
-            <div class="supplierItemsList" >
-                <input class="form-control is-valid" #supplierItemNameInput type="text" placeholder="Search.." 
-                (keyup)="filterSupplierItems(supplierItemNameInput.value)">
-                <ul >
-                    <li *ngFor="let item of supplierItemsList" (click)="c('chosen');  chosenItem = item"
-                    style="direction:rtl; ">{{item.componentN}}  &nbsp;&nbsp; {{item.componentName}}</li>
-                </ul>
-            </div>
-        </div>
-        <div class="modal-footer">
-        </div>
-      
-</ng-template>      
-
-
-
-
-<!-- PRINT BARCODE SECTION -->
-<div>
-    <div id="print-section" style="visibility: hidden"> 
-        <h1>item number</h1>
-        
-        <h2>barcode</h2>
-        <!--Your html stuff that you want to print-->
-      </div>
-      <button
-      [printStyle]="{body: {'text-align' : 'center'} , h1 : {'color': 'red'}, h2 : {'border': 'solid 1px'}}"
-      printSectionId="print-section"
-      ngxPrint>print</button>
-</div>

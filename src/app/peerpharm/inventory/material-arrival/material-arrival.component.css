@@ -40,3 +40,10 @@ form label{
     margin-bottom: 15px;
     border-bottom: lightgrey solid 1px;
 }
+
+.flexDirRtl {
+    flex-direction: row-reverse !important;
+}
+.nav-link{
+    font-size: 20px;
+}

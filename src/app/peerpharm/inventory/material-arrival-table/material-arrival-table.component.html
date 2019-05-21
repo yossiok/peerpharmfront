@@ -1,0 +1,79 @@
+<br>
+<table class='table table-fixed'>
+    <thead class='bg-info text-white'  >
+      <tr>
+        <th style="width:5%;">#</th>
+        <th style="width:10%;">מספר פריט</th>
+        <th style="width:20%; padding:5px">שם חו"ג</th>
+        <th style="width:10%; padding:5px">מספר ספק</th>
+        <th style="width:10%; padding:5px">שם ספק</th>
+        <th style="width:10%; padding:5px">אצוות יצרן</th>
+        <th style="width:10%; padding:5px">תאריך תפוגה</th>
+        <th style="width:5%; padding:5px">אנליזה</th>
+        <th style="width:10%; padding:5px">תאריך הגעה</th>
+        <th style="width:5%; padding:5px">הדפסה</th>
+        <th style="width:5%;"></th>
+      </tr>
+    </thead>
+    <tbody class='table-hover'>
+        <tr *ngFor="let arrival of materialsArrivals; let i = index" >
+            <td style="width:5%;">{{i+1}}</td>
+            <td style="width:10%;">{{arrival.internalNumber}}</td>
+            <td style="width:20%; padding:5px">{{arrival.materialName}}</td>
+            <td style="width:10%; padding:5px">{{arrival.supplierNumber}}</td>
+            <td style="width:10%; padding:5px">{{arrival.supplierName}}</td>
+            <td style="width:10%; padding:5px">{{arrival.lotNumber}}</td>
+            <td style="width:10%; padding:5px">{{arrival.expiryDate | date: "dd/MM/yyyy" }}</td>
+            <td style="width:5%; padding:5px">{{arrival.analysisApproval}}</td>
+            <td style="width:10%; padding:5px">{{arrival.arrivalDate | date: "dd/MM/yyyy" }}</td>
+            <td style="width:5%; padding:5px">
+              <img src="../../../../assets/images/printer.jpg" style="width: 40px; cursor: pointer;" (click)="printBarcode(arrival._id)">
+            </td>
+            <td style="width:5%;"></td>
+          </tr>
+    </tbody>
+    </table>
+
+
+              <!-- PRINT BARCODE SECTION -->
+            <div style="visibility: hidden;">
+                <!-- <button #printBtn style="visibility: hidden" -->
+              <button #printBtn 
+              [printStyle]="{ '#itemNum': {'text-align': 'center'}, table : {'width': '100%'} }"
+              printSectionId="print-section"
+              ngxPrint>print
+              </button>
+    
+                <!-- <div class="row clearfix" id="print-section" style="visibility: hidden"> -->
+              <div class="row clearfix" id="print-section" style="visibility: hidden">
+                  <table
+                    [attr.data-index]="i"
+                    class="barcodeTbl"
+                    dir="ltr"
+                    [style.margin.px]="0"
+                    [style.width.px]="360"
+                    [style.max-height.px]="360"
+                    [style.font-size.px]="24"
+                    [style.font-family]="Arial"
+                    [style.border.px]="0"
+                    [attr.id]="create_table"
+                  >
+                  <tr>
+                    <td id='itemNum' >{{ materialNum }}</td>
+                  </tr>
+                  <tr>
+                    <td id='barcode'>
+                      <ngx-barcode
+                        [bc-element-type]="barcodeElementType"
+                        [bc-value]="bcValue"
+                        [bc-format]="barcodeFormat"
+                        [bc-width]="barcodeWidth"
+                        [bc-height]="barcodeHeight"
+                        [bc-font-size]="barcodeFontSize"
+                      >
+                    </ngx-barcode>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>

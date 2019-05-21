@@ -1,0 +1,32 @@
+.table-fixed thead {
+    width: 100%;
+    display: block;
+    }
+.table-fixed tbody {
+    height: 700px;
+    overflow-y: auto;
+    width: 100%;
+    display: block;
+}
+
+.table-fixed th{
+    display: inline-block;
+    border: none;
+  }
+  .table-fixed td{
+    display: inline-block;
+    border-bottom: none;
+    /* border-left: 1px black solid;     */
+  }
+  .table-fixed tr{
+    width: 100%;
+    display: block;
+    font-size: 18px;
+  }
+  
+
+  .table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
+    display: inline-block;
+    border-bottom: none;
+    font-family: "Times New Roman", Times, serif;
+}

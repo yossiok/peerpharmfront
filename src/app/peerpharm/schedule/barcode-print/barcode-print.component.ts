@@ -94,7 +94,6 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   clearPrintView(){
-    debugger
     this.stickerPrintView=[];
     this.amountOfStickersArr=[];
   }
