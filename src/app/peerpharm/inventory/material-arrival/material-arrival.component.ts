@@ -115,6 +115,7 @@ barcodeFlat = true;
     this.activeTabId="tab-selectbyid2"
   }
 
+
   filterSuppliers(input){
     if(input !=""){
       let inputVal= input.toLowerCase();
