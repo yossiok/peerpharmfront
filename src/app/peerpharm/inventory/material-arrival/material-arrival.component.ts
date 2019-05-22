@@ -111,7 +111,7 @@ barcodeFlat = true;
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
     // two displays "tab-selectbyid1" OR "tab-selectbyid2"
-    this.activeTabId="tab-selectbyid2"
+    this.activeTabId="tab-selectbyid1"
   }
 
 
