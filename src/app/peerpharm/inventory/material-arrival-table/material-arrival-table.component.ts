@@ -14,8 +14,8 @@ export class MaterialArrivalTableComponent implements OnInit {
   currentDoc: any;
   // barcode vars //
   
-  bcValue: Array<any>=['test1', 'test2' ];
-  materialNumber: String ;
+  bcValue: Array<any>=[ ];
+  materialNum: String ;
   barcodeElementType = "svg";
   barcodeFormat = "CODE128";
   barcodeWidth = 2.3;
@@ -35,19 +35,19 @@ export class MaterialArrivalTableComponent implements OnInit {
 
   printBarcode(id){
     this.bcValue=[];
-    this.materialNumber="";
+    this.materialNum="";
     this.materialsArrivals.filter((m,key)=> {
       if(m._id == id){
-        this.currentDoc=m;
-        this.bcValue =  [this.currentDoc._id];
-        this.materialNumber= this.currentDoc.internalNumber;    
-        debugger
-        console.log("materialNumber", this.materialNumber)
-        console.log("bcValue", this.bcValue)    
+        this.bcValue =  [m._id];
+        this.materialNum= m.internalNumber;    
       }
       if( key+1 == this.materialsArrivals.length){
+        this.bcValue
+        this.materialNum
         debugger
-        this.printBtn.nativeElement.click();
+        setTimeout(() => {
+          this.printBtn.nativeElement.click();          
+        }, 500);
       }
     });
   }

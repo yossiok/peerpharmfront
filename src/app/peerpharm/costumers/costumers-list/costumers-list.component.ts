@@ -26,6 +26,7 @@ export class CostumersListComponent implements OnInit {
     delivery: '',
     country: '',
     marks: '',
+    impRemark: '',
     contact: []
   }
 
@@ -47,6 +48,7 @@ export class CostumersListComponent implements OnInit {
       delivery: '',
       country: '',
       marks: '',
+      impRemark: '',
       contact: []
     }
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {

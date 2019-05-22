@@ -14,18 +14,49 @@
   <span class='spanTitle'> Costumer :</span><span> {{costumer}} </span><span class='spanTitle'> Costumer Number:</span><span> {{costumerInternalId}} </span>
   <span class='spanTitle'> Remarks:</span>
   <span >{{remarks}}</span>
+  <ng-container *ngIf="(multi && !showingAllOrders) ||(!multi && !showingAllOrders)">
+      <span class='spanTitle' >Costumer Important Remark:</span>
+      <span *ngIf="costumersNumbers.length <= 1 && multiCostumerImpRemark.length > 0"> <b style="color: red ; font-size: 18px; ">  {{costumerImpRemark}} </b>  </span>
+      <!-- <span *ngIf="costumersNumbers.length == 1 && multiCostumerImpRemark.length > 1"> <b style="color: red ; font-size: 18px; ">  {{costumerImpRemark}} </b>  </span> -->
+
+      <span *ngIf="costumersNumbers.length > 1 && multiCostumerImpRemark.length  > 0"> <b style="color: red"> ריבוי לקוחות- לא ניתן לצפות בהערות חשובות</b> </span>
+
+
+  </ng-container>
+<!-- <ng-container *ngIf="(multi && !showingAllOrders) ||(!multi && !showingAllOrders)">
+    <span class='spanTitle' >Costumer Important Remark:</span>
+    <span *ngIf="costumersNumbers.length < 2"> {{costumerImpRemark}} </span>
+    <span *ngIf="costumersNumbers.length > 1"> <b style="color: red"> ריבוי לקוחות- לא ניתן לצפות בהערות חשובות</b> </span>
+</ng-container > -->
+
 </div>
-<div *ngIf="!multi" style="width:98% ; display: flex; justify-content: center;" [style.background-color]="stageColor">
-    <label style=" padding: 15px 40px 0px 0px; font-size: 22px; " >Stage:</label>
-    <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" 
-    style="font-size: 22px; " [style.background-color]="stageColor" >
-        <option value="new" style="background-color: white ;">חדש</option>
-        <option value="partialCmpt" style="background-color: #ffa64d ;">רכיבים קיימים- חלקית</option>
-        <option value="allCmpt" style="background-color: #ffff80 ;">כל הרכיבים קיימים</option>
-        <option value="production" style="background-color: #b3ecff ;">נשלח לייצור</option>
-        <option value="prodFinish" style="background-color: #d9b3ff ;">עבר ייצור</option>
-        <option value="done" style="background-color: #9ae59a;">הזמנה סגורה</option>
-      </select>
+
+
+<div *ngIf="!multi" style="width:98% ; display: flex; justify-content: space-between;" [style.background-color]="stageColor">
+  <div class="fl">
+      <label style=" padding: 15px 40px 0px 0px; font-size: 22px; " >Stage:</label>
+      <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" 
+      style="font-size: 22px; " [style.background-color]="stageColor" >
+          <option value="new" style="background-color: white ;">חדש</option>
+          <option value="partialCmpt" style="background-color: #ffa64d ;">רכיבים קיימים- חלקית</option>
+          <option value="allCmpt" style="background-color: #ffff80 ;">כל הרכיבים קיימים</option>
+          <option value="production" style="background-color: #b3ecff ;">נשלח לייצור</option>
+          <option value="prodFinish" style="background-color: #d9b3ff ;">עבר ייצור</option>
+          <option value="done" style="background-color: #9ae59a;">הזמנה סגורה</option>
+        </select>  
+  </div>
+  <div class="fr" >
+      <label style=" padding: 15px 40px 0px 0px; font-size: 22px; " >Stage:</label>
+      <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" 
+      style="font-size: 22px; " [style.background-color]="stageColor" >
+          <option value="new" style="background-color: white ;">חדש</option>
+          <option value="partialCmpt" style="background-color: #ffa64d ;">רכיבים קיימים- חלקית</option>
+          <option value="allCmpt" style="background-color: #ffff80 ;">כל הרכיבים קיימים</option>
+          <option value="production" style="background-color: #b3ecff ;">נשלח לייצור</option>
+          <option value="prodFinish" style="background-color: #d9b3ff ;">עבר ייצור</option>
+          <option value="done" style="background-color: #9ae59a;">הזמנה סגורה</option>
+        </select>  
+  </div>
 </div>
 <img src="assets/images/load_data2.gif" *ngIf="loadData==true" ><br>
 <div *ngIf="loadData==false">
@@ -49,7 +80,7 @@
       <th>Item Number </th>
       <th>Item Important Remark</th>
       <th>Description </th>
-      <th>Volume </th>
+      <th>neto Weight(Gr) </th>
       <th>Quantity </th>
       <th class='printTd'>Weight</th>
       <th>Remarks </th>
@@ -72,7 +103,7 @@
         <!-- <img src="../../../../assets/images/alert3.gif" width="30px" alt="see important remarks from item tree"> -->
       </td>
       <td><input class="form-control form-control-sm" placeholder="Discription" [(ngModel)]="itemData.discription" style='width:350px' class="form-control form-control-sm"></td>
-      <td><input class="form-control form-control-sm" placeholder="Volume" [(ngModel)]="itemData.unitMeasure"></td>
+      <td><input class="form-control form-control-sm" placeholder="neto Weight(Gr)" [(ngModel)]="itemData.netWeightGr"></td>
       <td><input class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="itemData.quantity"></td>
       <td><input class="form-control form-control-sm" placeholder="Weight" [(ngModel)]="itemData.qtyKg"></td>
       <td><input class="form-control form-control-sm" placeholder="Remarks" [(ngModel)]="itemData.itemRemarks"></td>
@@ -120,9 +151,9 @@
         <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'></td>
         <td *ngIf="item._id!==EditRowId" 
         (click)="edit(item._id)">{{item.discription}}</td>
-        <td *ngIf="item._id===EditRowId"><input #unitmeasure type='text' [value]="item.unitMeasure" style='width:70px'></td>
+        <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:70px'></td>
         <td *ngIf="item._id!==EditRowId" 
-        (click)="edit(item._id)">{{item.unitMeasure}}</td>
+        (click)="edit(item._id)">{{item.netWeightGr}}</td>
         <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
         <td *ngIf="item._id!==EditRowId" 
         (click)="edit(item._id)">{{item.quantity}}</td>

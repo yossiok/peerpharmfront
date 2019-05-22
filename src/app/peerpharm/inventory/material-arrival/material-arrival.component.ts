@@ -46,9 +46,8 @@ export class MaterialArrivalComponent implements OnInit {
 
 // barcode vars //
 
-bcValue: String="";
+bcValue: Array<any>=[ ];
 materialNum: String ;
-
 barcodeElementType = "svg";
 barcodeFormat = "CODE128";
 barcodeWidth = 2.3;
@@ -214,6 +213,8 @@ barcodeFlat = true;
         }else{
           continueSend= false;          
         }
+      }else{
+        continueSend= true;
       }
 
       if(this.newMaterialArrival.value.expiryDate=""){
@@ -222,9 +223,12 @@ barcodeFlat = true;
         }else{
           continueSend= false;
         }
+      }else if(continueSend){
+        continueSend= true;
       }
 
       if(continueSend){
+        debugger
         this.newMaterialArrival.value.productionDate = new Date(this.newMaterialArrival.value.productionDate)
         this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
         this.checkLotNumber().then(ok=> {
@@ -283,9 +287,11 @@ barcodeFlat = true;
     let formToSend= this.newMaterialArrival.value;
     this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{
       if(res.savedDoc ){
-        this.bcValue= res.savedDoc._id ;// we can also keep only the doc-Id
+        this.bcValue= [ res.savedDoc._id ] ;
         this.materialNum= res.savedDoc.internalNumber;
-        this.printBtn.nativeElement.click();
+        // this.printBtn.nativeElement.click();
+
+        this.printBarcode(res.savedDoc._id , res.savedDoc.internalNumber);// we might need to change the value to numbers
         this.toastSrv.success("New material arrival saved!");
           this.resetForm();
           //print barcode;
@@ -296,6 +302,14 @@ barcodeFlat = true;
       }
     });         
 
+  }
+
+  printBarcode(id , number){
+    this.bcValue=[id];
+    this.materialNum=number;
+        setTimeout(() => {
+          this.printBtn.nativeElement.click();          
+        }, 500);
   }
 
   fieldsColor(){

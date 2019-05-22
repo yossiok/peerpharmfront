@@ -39,7 +39,7 @@
             <div style="visibility: hidden;">
                 <!-- <button #printBtn style="visibility: hidden" -->
               <button #printBtn 
-              [printStyle]="{ '#itemNum': {'text-align': 'center'}, table : {'width': '100%'} }"
+              [printStyle]="{ '#itemNumber': {'text-align': 'center'}, table : {'width': '100%'} }"
               printSectionId="print-section"
               ngxPrint>print
               </button>
@@ -59,7 +59,7 @@
                     [attr.id]="create_table"
                   >
                   <tr>
-                    <td id='itemNum' >{{ materialNum }}</td>
+                    <td id='itemNumber' >{{ materialNum }}</td>
                   </tr>
                   <tr>
                     <td id='barcode'>

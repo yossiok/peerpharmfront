@@ -68,7 +68,7 @@ export class OrderdetailsComponent implements OnInit {
   itemData: any = {
     itemNumber: '',
     discription: '',
-    unitMeasure: '',
+    netWeightGr: '',
     quantity: '',
     qtyKg: '',
     orderId: '',
@@ -111,11 +111,14 @@ export class OrderdetailsComponent implements OnInit {
   platesList: Array<any>=[];
   itemTreeRemarks: Array<any>=[];
   ordersData: Array<any>=[];
+  costumersNumbers: Array<any>=[];
+  costumerImpRemark: String;
+  multiCostumerImpRemark: Array<any>=[];
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
   @ViewChild('quantity') quantity: ElementRef;
-  @ViewChild('unitmeasure') unitMeasure: ElementRef;
+  @ViewChild('netWeightGr') netWeightGr: ElementRef;
   @ViewChild('itemname') itemName: ElementRef;
   @ViewChild('itemNumber') itemN: ElementRef;
   @ViewChild('id') id: ElementRef;
@@ -144,6 +147,7 @@ export class OrderdetailsComponent implements OnInit {
       this.number = this.route.snapshot.paramMap.get('id');
 
       if(res==true || this.number=="00"){
+        // Getting All OrderItems!
         this.showingAllOrders=true;
         this.loadData=true;
         this.orderService.getOpenOrdersItems().subscribe(async orders=>{
@@ -176,6 +180,12 @@ export class OrderdetailsComponent implements OnInit {
               this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async orders => {
                 if(orders.ordersIds.length>1){
                   this.ordersData = orders.ordersData;
+                  this.ordersData.map(order =>{
+                    if(order.costumerImpRemark != undefined && order.costumerImpRemark!="" ){
+                      this.multiCostumerImpRemark.push(order.costumerImpRemark)
+                    }
+                  })
+                  this.checkCostumersImportantRemarks(this.ordersData);
                   this.orderService.getMultiOrdersIds(orders.ordersIds).subscribe(async orderItems => {
                     orderItems.forEach(item => {
                       item.isExpand = '+';
@@ -222,7 +232,7 @@ export class OrderdetailsComponent implements OnInit {
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
         this.ordersItems.push(item);
-        this.itemData = { itemNumber: '', discription: '', unitMeasure: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
+        this.itemData = { itemNumber: '', discription: '', netWeightGr: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
         this.getOrderItems(true);
 
         this.toastSrv.success('item '+item.itemNumber+' added');
@@ -237,9 +247,9 @@ updateSingleOrderStage(ev){
     let newStageValue=ev.target.value;
     this.orderStage;
     this.stageColor;
-     debugger
+     
     this.orderService.editOrderStage(this.ordersItems[0] , newStageValue).subscribe(order => {
-       debugger
+       
        this.orderStage= newStageValue;
       this.returnStageColor(this.orderStage);
   
@@ -249,6 +259,33 @@ updateSingleOrderStage(ev){
   }
 
 }
+  async checkCostumersImportantRemarks(orders){
+    debugger
+    this.costumersNumbers=[]
+    await orders.forEach((o,key)=>{
+      if(o.costumerImpRemark!=undefined && o.costumerImpRemark!=""){
+        if( !this.multiCostumerImpRemark.includes( o.costumerImpRemark )){
+          this.multiCostumerImpRemark.push(o.costumerImpRemark)          
+        }
+
+      }
+      if(o.costumerInternalId!=undefined && o.costumerInternalId!="" && o.costumerInternalId!=null){
+        if (!this.costumersNumbers.includes(o.costumerInternalId) ){
+          this.costumersNumbers.push(o.costumerInternalId);
+        } 
+      }else{
+        this.costumersNumbers.push(o.costumerName);
+      }
+
+      if(key+1 == orders.length){
+        if(this.costumersNumbers.length == 1 && this.multiCostumerImpRemark.length > 1) this.costumerImpRemark= this.multiCostumerImpRemark[0]
+        console.log("this.costumersNumbers",this.costumersNumbers)
+        console.log("this.multiCostumerImpRemark",this.multiCostumerImpRemark)
+        console.log("this.costumerImpRemark",this.costumerImpRemark)
+      }
+    });
+
+  }
 
   async getOrderDetails() {
     this.number = this.route.snapshot.paramMap.get('id');
@@ -264,7 +301,10 @@ updateSingleOrderStage(ev){
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+      
+      this.costumerImpRemark = res[0].costumerImpRemark;
       this.ordersData=res;
+      this.checkCostumersImportantRemarks(res);
       if(!this.multi) {
         this.orderStage=res[0].stage;
         this.returnStageColor(this.orderStage);
@@ -326,7 +366,7 @@ getOrderItems(singleLine): void {
         this.ordersItems = orderItems;
         this.ordersItemsCopy = orderItems;
       }
-       debugger
+       
       this.getComponents(this.ordersItems[0].orderNumber);
 
     });
@@ -361,7 +401,7 @@ getOrderItems(singleLine): void {
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
       });
-      debugger
+      
       resolve(orderItems);
     });
     
@@ -437,7 +477,7 @@ getOrderItems(singleLine): void {
 
         'orderItemId': this.id.nativeElement.value,
         'itemNumber': this.itemN.nativeElement.value,
-        "unitMeasure": this.unitMeasure.nativeElement.value,
+        "netWeightGr": this.netWeightGr.nativeElement.value,
         "discription": this.itemName.nativeElement.value,
         "quantity": this.quantity.nativeElement.value,
         "qtyKg": this.weight.nativeElement.value,
@@ -460,7 +500,7 @@ getOrderItems(singleLine): void {
           this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].quantity = itemToUpdate.quantity;
           this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
-          this.ordersItems[index].unitMeasure = itemToUpdate.unitMeasure;
+          this.ordersItems[index].netWeightGr = itemToUpdate.netWeightGr;
 
            
         }else{
@@ -485,7 +525,7 @@ getOrderItems(singleLine): void {
       if(date!=''){
         
         if(mkpType!=''){
-          debugger
+          
           let costumer= this.ordersData.map(order=> {
             if(order.orderNumber==item.orderNumber) {
               return {costumerName: order.costumer,costumerId:order.costumerInternalId }
@@ -622,7 +662,7 @@ getOrderItems(singleLine): void {
       this.orderService.getItemByNumber(itemNumber).subscribe(res => {
         if(res.length==1){
           this.itemData.discription = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-          this.itemData.unitMeasure = res[0].volumeKey;
+          this.itemData.netWeightGr = res[0].netWeightK;
           this.itemData.itemImpRemark = res[0].impRemarks;
         }
       });
@@ -647,7 +687,7 @@ getOrderItems(singleLine): void {
         if(res._id){
           this.ordersItems.filter(i=>{
             if(i._id == res._id){
-               debugger
+               
               i.status="done";
               i.color = "aquamarine";
               this.toastSrv.success('Item '+i.itemNumber+' set to Done');
@@ -677,7 +717,7 @@ getOrderItems(singleLine): void {
           // let dateSced= res.date.slice(0,10); // could also used for date string
           let dateSced= res.date.split('T')[0];
           let orderObj = { orderItemId: orderItemId, fillingStatus: "Sent to print " + dateSced };
-          debugger
+          
           this.orderService.editItemOrder(orderObj).subscribe(res=>{
             console.log(res);
             if(res.n>0){
@@ -696,7 +736,7 @@ getOrderItems(singleLine): void {
 
   setToPrintDetails(content, item, cmpt) {
     this.itemSer.getPlateImg(item.itemNumber).subscribe(data=>{
-      debugger
+      
        this.plateImg = data.palletImg;
        this.printSchedule.block = data.palletNumber;
        this.printSchedule.blockImg = data.palletImg;

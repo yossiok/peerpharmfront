@@ -276,6 +276,9 @@ export class NeworderComponent implements OnInit {
   }
 
   chooseCostumer() {
+    if(this.choosedCostumer.impRemark != null && this.choosedCostumer.impRemark!= undefined && this.choosedCostumer.impRemark!="" ){
+      alert("ללקוח יש הערה חשובה:\n"+this.choosedCostumer.impRemark);
+    }
     this.orderForm.controls.costumer.setValue(
       this.choosedCostumer.costumerName
     );
