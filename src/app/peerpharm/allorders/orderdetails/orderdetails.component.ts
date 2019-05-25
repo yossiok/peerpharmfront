@@ -114,6 +114,7 @@ export class OrderdetailsComponent implements OnInit {
   costumersNumbers: Array<any>=[];
   costumerImpRemark: String;
   multiCostumerImpRemark: Array<any>=[];
+  editBatchN: Boolean=false;
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -122,6 +123,7 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('itemname') itemName: ElementRef;
   @ViewChild('itemNumber') itemN: ElementRef;
   @ViewChild('id') id: ElementRef;
+  @ViewChild('inputBatch') inputBatch: ElementRef;
 
   @ViewChild('date') date: ElementRef;
   @ViewChild('shift') shift: ElementRef;
@@ -430,8 +432,18 @@ getOrderItems(singleLine): void {
     })
   }
 
+editBatch(batch){
+  this.editBatchN=true;
+  setTimeout(() => {
+    this.inputBatch.nativeElement.value= batch;    
+  }, 100);
+}
 
   getDetails(itemNumber, itemId): void {
+    // if(this.inputBatch.nativeElement.value !=undefined){
+    //   this.inputBatch.nativeElement.value='';
+    // }
+    this.editBatchN=false;
     this.EditRowId2nd = itemId;
     console.log(itemNumber + " , " + itemId);
     this.orderService.getItemByNumber(itemNumber).subscribe(
@@ -461,6 +473,10 @@ getOrderItems(singleLine): void {
         item.colorBtn = '#33FFE0';
       }
     });
+    setTimeout(() => {
+      this.inputBatch.nativeElement.value= '';
+      this.editBatchN=false;    
+    }, 100);  
   }
 
   edit(id) {
@@ -618,27 +634,43 @@ getOrderItems(singleLine): void {
 
 
   setBatch(item, batch, existBatch) {
-    let updatedBatch;
-    batch=batch.toLowerCase();
-    if(existBatch!=null && existBatch!=undefined && existBatch!=""){
-      //adding to exist batch number to oreder item
-      updatedBatch=batch + "+" + existBatch;
-    }else{
-      //adding new batch number to oreder item
-      updatedBatch=batch;
+    if(this.inputBatch.nativeElement.value != undefined){}
+    this.inputBatch.nativeElement.value;
+    let updatedBatch = this.inputBatch.nativeElement.value.toLowerCase();
+    updatedBatch = updatedBatch.trim();
+    // batch=batch.toLowerCase();
+    // batch=batch.trim();
+    let cont=true;
+    if(item.batch!="" && updatedBatch=='' ){
+      cont=confirm('למחוק אצווה?')
     }
-    let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
-    console.log(batchObj);
-    this.orderService.editItemOrder(batchObj).subscribe(res => {
-      console.log(res);
-      this.ordersItems.map(orderItem=>{
-        if(orderItem._id == item._id){
-          orderItem.batch= updatedBatch;
-          orderItem.fillingStatus= "formula porduced " + updatedBatch;
-        }
+
+
+    // if(existBatch!=null && existBatch!=undefined && existBatch!=""){
+    //   //adding to exist batch number to oreder item
+    //   updatedBatch=batch + "+" + existBatch;
+    // }else{
+    //   //adding new batch number to oreder item
+    //   updatedBatch=batch;
+    // }
+    // let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
+    if(cont){
+      let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
+      console.log(batchObj);
+      this.orderService.editItemOrder(batchObj).subscribe(res => {
+        console.log(res);
+        this.ordersItems.map(orderItem=>{
+          if(orderItem._id == item._id){
+            orderItem.batch= updatedBatch;
+            orderItem.fillingStatus= "formula porduced " + updatedBatch;
+          }
+        });
+        this.toastSrv.success(updatedBatch , "Changes Saved");
+        this.inputBatch.nativeElement.value="";
+        this.editBatchN=false;
       });
-      this.toastSrv.success(updatedBatch , "Changes Saved");
-    });
+  
+    }
 
   }
 

@@ -32,20 +32,8 @@
 </div>
 
 
-<div *ngIf="!multi" style="width:98% ; display: flex; justify-content: space-between;" [style.background-color]="stageColor">
-  <div class="fl">
-      <label style=" padding: 15px 40px 0px 0px; font-size: 22px; " >Stage:</label>
-      <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" 
-      style="font-size: 22px; " [style.background-color]="stageColor" >
-          <option value="new" style="background-color: white ;">חדש</option>
-          <option value="partialCmpt" style="background-color: #ffa64d ;">רכיבים קיימים- חלקית</option>
-          <option value="allCmpt" style="background-color: #ffff80 ;">כל הרכיבים קיימים</option>
-          <option value="production" style="background-color: #b3ecff ;">נשלח לייצור</option>
-          <option value="prodFinish" style="background-color: #d9b3ff ;">עבר ייצור</option>
-          <option value="done" style="background-color: #9ae59a;">הזמנה סגורה</option>
-        </select>  
-  </div>
-  <div class="fr" >
+<div *ngIf="!multi" style="width:98% ; display: flex; justify-content: center;" [style.background-color]="stageColor">
+  <div >
       <label style=" padding: 15px 40px 0px 0px; font-size: 22px; " >Stage:</label>
       <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" 
       style="font-size: 22px; " [style.background-color]="stageColor" >
@@ -188,7 +176,8 @@
                 <h5>Batch</h5>
               </td>
               <!-- <td>{{item.batch}}</td> -->
-              <td colspan="2"><input  type='text' #inputBatch></td>
+              <td colspan="2"><label *ngIf="!editBatchN" (click)="editBatch(item.batch)" style="cursor: pointer; margin-right: 10px;">{{item.batch}}</label>
+                <input  *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined" type='text' style="width:50%" #inputBatch></td>
               <td><button class='btn btn-success'  (click)="setBatch(item, inputBatch.value, item.batch)">set</button></td>
               <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)" style='cursor: pointer;'></i></td>
               <td></td>

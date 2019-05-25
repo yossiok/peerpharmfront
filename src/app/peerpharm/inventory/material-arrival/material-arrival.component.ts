@@ -203,7 +203,6 @@ barcodeFlat = true;
     }
     let continueSend= false;
     this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
-    debugger
     if(this.newMaterialArrival.value.productionDate!=""){ this.adjustDate(this.newMaterialArrival.controls.productionDate)  }
     if(this.newMaterialArrival.value.expiryDate!=""){ this.adjustDate(this.newMaterialArrival.controls.expiryDate) }
     if(this.newMaterialArrival.valid){
@@ -228,6 +227,7 @@ barcodeFlat = true;
       }
 
       if(continueSend){
+        
         debugger
         this.newMaterialArrival.value.productionDate = new Date(this.newMaterialArrival.value.productionDate)
         this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
@@ -294,6 +294,7 @@ barcodeFlat = true;
         this.printBarcode(res.savedDoc._id , res.savedDoc.internalNumber);// we might need to change the value to numbers
         this.toastSrv.success("New material arrival saved!");
           this.resetForm();
+          this.analysisFlag = false;
           //print barcode;
       }else if(res == 'no material with number'){
         this.toastSrv.error("Item number wrong")
