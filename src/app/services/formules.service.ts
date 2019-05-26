@@ -4,6 +4,7 @@ import { Formule } from '../peerpharm/formules/models/formule';
 import { FormuleItem } from '../peerpharm/formules/models/formule-item';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -12,9 +13,13 @@ import 'rxjs/add/operator/catch';
 })
 export class FormulesService {
   url: any = '/formules/add';
+  private headers = new Headers({ 'Content-Type': 'application/json' });
+  private options = new RequestOptions({ headers: this.headers });
+  private baseUrl = '/';
 
   constructor(private http: Http) {}
 
+  // for formule.component.ts
   addFormule(
     number: number,
     name: string,
@@ -24,6 +29,7 @@ export class FormulesService {
     client: string,
     allItems: FormuleItem[]
   ): Observable<Formule>  {
+    let url= this.baseUrl+ "formules/add";
     const formule =  new Formule();
     formule.number = number;
     formule.name = name;
@@ -37,7 +43,7 @@ export class FormulesService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http
-      .post(this.url, formule, options)
+      .post(url, formule, options)
       .map(res => this.extractData(res))
       .catch(this.handleErrorObservable);
   }
@@ -56,4 +62,23 @@ export class FormulesService {
   handleErrorObservable(arg0: any): any {
     throw new Error('Error getting new Formule');
   }
+
+
+
+
+
+
+
+  // NOA Fomule Service
+  getFormuleByNumber(number){
+    debugger
+    let url = this.baseUrl + "formules?byNumber="+number;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  
+  newFormule(newFormuleDetails){
+    let url = this.baseUrl + "formules/add";
+    return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
+  }
+
 }

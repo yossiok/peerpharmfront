@@ -61,7 +61,7 @@
                   </tr>
                   <tr>
                     <td id='barcode'>
-                      <ngx-barcode
+                      <!-- <ngx-barcode
                         [bc-element-type]="barcodeElementType"
                         [bc-value]="bcValue"
                         [bc-format]="barcodeFormat"
@@ -69,9 +69,33 @@
                         [bc-height]="barcodeHeight"
                         [bc-font-size]="barcodeFontSize"
                       >
-                    </ngx-barcode>
+                    </ngx-barcode> -->
+                    <ngx-barcode 
+                    [bc-element-type]="elementType" 
+                    [bc-value]="bcValue" 
+                    [bc-format]="format" 
+                    [bc-line-color]="lineColor"
+                    [bc-width]="width"
+                    [bc-height]="height" 
+                    [bc-display-value]="displayValue" 
+                    [bc-font-options]="fontOptions" 
+                    [bc-font]="font"
+                    [bc-text-align]="textAlign" 
+                    [bc-text-position]="textPosition" 
+                    [bc-text-margin]="textMargin" 
+                    [bc-font-size]="fontSize" 
+                    [bc-background]="background"
+                    [bc-margin]="margin"  
+                    [bc-margin-top]="marginTop" 
+                    [bc-margin-bottom]="marginBottom" 
+                    [bc-margin-left]="marginLeft" 
+                    [bc-margin-right]="marginRight">
+                  </ngx-barcode>
                     </td>
                   </tr>
+                  <!-- <tr>
+                    <td  >{{ bcValue }}</td>
+                  </tr> -->
                 </table>
               </div>
             </div>

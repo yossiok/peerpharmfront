@@ -89,6 +89,7 @@ import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formu
 import { ExpectedArrivalsComponent } from './procurement/expected-arrivals/expected-arrivals.component';
 import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
 import { MaterialArrivalTableComponent } from './inventory/material-arrival-table/material-arrival-table.component';
+import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
 
 
 @NgModule({
@@ -176,6 +177,7 @@ import { MaterialArrivalTableComponent } from './inventory/material-arrival-tabl
     InventoryNewRequestComponent,
     MaterialArrivalComponent,
     MaterialArrivalTableComponent,
+    MaterialScanViewComponent,
     ChatComponent ,
     HeadingsWHPipe,
     PackingComponent,

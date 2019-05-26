@@ -77,6 +77,7 @@
   </thead>
   <tbody class='table-hover'>
     <tr *ngFor="let order of orders; let i = index" style="height: 10%;" [style.background-color]="order.color" (blur)="saveEdit(false, '')" >
+    <!-- <tr *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')" > -->
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:3%;" (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected"  name="orderSelect"> 
@@ -109,7 +110,8 @@
           <td style="width:15%;" *ngIf="order._id===EditRowId">
             <input #orderRemarks type='text' [value]="order.orderRemarks" style='width:170px'>
           </td>
-          <td style="width:15%;" *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
+          <td style="width: 15%; height: 100%; overflow-wrap: normal; overflow-y: auto;" 
+          *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
     
           <!-- <td *ngIf="order._id===EditRowId">
               <input #orderType type='text' [value]="order.type" style='width:170px'>

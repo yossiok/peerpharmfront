@@ -74,7 +74,8 @@
       <td style="width:15%;" *ngIf="order._id===EditRowId">
         <input #orderRemarks type='text' [value]="order.orderRemarks" style='width:170px'>
       </td>
-      <td style="width:15%;" *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
+      <td style="width: 15%; height: 100%; overflow-wrap: normal; overflow-y: auto;"  
+      *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderRemarks}}</td>
       <td>{{order.type}}</td>
       <td >
         <!--<img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">

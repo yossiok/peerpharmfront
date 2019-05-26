@@ -96,7 +96,7 @@ barcodeFlat = true;
 
   ngOnInit() {
     // this.user =   this.authService.loggedInUser;
-    this.authService.userEventEmitter.subscribe(data => {
+    this.authService.userEventEmitter.subscribe(data => { 
       this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
       this.newMaterialArrival.controls.user.setValue(this.user)
     });
@@ -285,6 +285,8 @@ barcodeFlat = true;
 
   addMaterialToStock(){
     let formToSend= this.newMaterialArrival.value;
+    formToSend.lastUpdate= new Date();
+    formToSend.lastUpdateUser= this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{
       if(res.savedDoc ){
         this.bcValue= [ res.savedDoc._id ] ;

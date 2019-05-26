@@ -35,6 +35,7 @@ import { ProcurementOrdersComponent} from './procurement/procumentOrders/procure
 import { ProcurementOrderItemComponent} from './procurement/procumentOrderItem/procurementOrderItem.component';
 import { BatchesMkpComponent } from './batches/batches-mkp/batches-mkp.component';
 import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
+import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -157,6 +158,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Material Arrival'
     },
     component: MaterialArrivalComponent
+  },
+  {
+    path: 'inventory/scanMaterialView',
+    data: {
+      title: 'Material Scan'
+    },
+    component: MaterialScanViewComponent,
   },
   {
     path: 'taskboard/main',

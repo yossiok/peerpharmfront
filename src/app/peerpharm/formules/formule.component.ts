@@ -31,6 +31,7 @@ export class FormuleComponent implements AfterViewInit {
     // const newItem = new FormuleItem();
     this.allPhasesForm.push(newPhase);
     // this.allItemsForm.push(newItem);
+    debugger
   }
 
   onPhaseAdded(newFormuleCreated) {

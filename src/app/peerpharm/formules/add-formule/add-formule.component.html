@@ -5,7 +5,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Add a new Formule</h4>
-        <h5 class="card-subtitle">Enter formule values here</h5>
+        <h5 class="card-subtitle">Enter general formule details here</h5>
 
         <form class="form" [formGroup]="formulesForm" (submit)="onSubmit()">
           <div class="form-group m-t-40 row">
@@ -44,7 +44,7 @@
                   *ngFor="let category of allFormuleCategory"
                   [ngValue]="category"
                 >
-                  {{ category.value }}
+                  {{ category }}
                 </option>
               </select>
             </div>
@@ -65,13 +65,11 @@
           </div>
           <div class="form-group row">
             <label for="example-search-input" class="col-2 col-form-label"
-              >Client</label
-            >
+              >Client</label>
             <div class="col-10">
               <input
                 class="form-control"
                 type="search"
-                value=""
                 formControlName="client"
               />
             </div>
@@ -95,8 +93,8 @@
             <!-- <label class="col-2 col-form-label">{{ phValue }}</label> -->
             
           </div>
-
-          <button class="btn btn-success m-r-10" type="submit">Add Formule's  Phases</button>
+          <button *ngIf="!formuleSaved" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
+          <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's  Phases</button>
         </form>
       </div>
     </div>

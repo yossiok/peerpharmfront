@@ -16,12 +16,31 @@ export class MaterialArrivalTableComponent implements OnInit {
   
   bcValue: Array<any>=[ ];
   materialNum: String ;
-  barcodeElementType = "svg";
-  barcodeFormat = "CODE128";
-  barcodeWidth = 2.3;
-  barcodeHeight = 75;
-  barcodeFontSize = 28;
-  barcodeFlat = true;
+  // barcodeElementType = "svg";
+  // barcodeFormat = "CODE128";
+  // barcodeWidth = 2.3;
+  // barcodeHeight = 75;
+  // barcodeFontSize = 28;
+  // barcodeFlat = true;
+  elementType = 'svg';
+  // value = 'someValue12340987';
+  format = 'CODE128';
+  lineColor = '#000000';
+  width = 2;
+  height = 100;
+  displayValue = false; // true=display bcValue under barcode
+  fontOptions = '';
+  font = 'monospace';
+  textAlign = 'center';
+  textPosition = 'bottom';
+  textMargin = 2;
+  fontSize = 20;
+  background = '#ffffff';
+  margin = 10;
+  marginTop = 10;
+  marginBottom = 10;
+  marginLeft = 10;
+  marginRight = 10;
   constructor(
     private invtSer:InventoryService,
   ) { }

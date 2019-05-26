@@ -224,6 +224,10 @@ getAllMaterialsArrivals():Observable<any>{
   let url = this.baseUrl + "material?allLogs=yes";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+getMaterialArrivalFormById(id):Observable<any>{
+  let url = this.baseUrl + "material/scanBarcodeId?viewOnly=yes&id="+id;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 
 
 }

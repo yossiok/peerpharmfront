@@ -1,0 +1,34 @@
+<p>
+  material-scan-view works!
+</p>
+
+<div class="d-flex flex-column tbView">
+
+  <div class="p-2 analysis" *ngIf="currMaterial.analysisApproval" style="color: green; " >Good Analysis</div>
+  <div class="p-2 analysis" *ngIf="!currMaterial.analysisApproval" style="color: red; " >Bad Analysis!</div>
+  <div class="p-2">
+    <label>מק"ט פנימי: </label>
+    <p>{{currMaterial.internalNumber}}</p>
+  </div>
+  <div class="p-2">
+    <label>שם חו"ג: </label>
+    <p>{{currMaterial.materialName}}</p>
+  </div>
+  <div class="p-2">
+    <label>אצוות יצרן: </label>
+    <p>{{currMaterial.lotNumber}}</p>
+  </div>
+  <div class="p-2">
+    <label>תאריך תפוגה: </label>
+    <p>{{currMaterial.expiryDate | date: 'dd/MM/yyyy'}}</p>
+  </div>
+  <div class="p-2">
+    <label>מספר ספק: </label>
+    <p>{{currMaterial.supplierNumber}}</p>
+  </div>
+  <div class="p-2">
+    <label>שם ספק: </label>
+    <p>{{currMaterial.supplierName}}</p>
+  </div>
+
+</div>
