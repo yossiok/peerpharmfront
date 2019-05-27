@@ -209,7 +209,7 @@
           <div style="visibility: hidden">
               <!-- <button #printBtn style="visibility: hidden" -->
             <button #printBtn 
-            [printStyle]="{ '#itemNum': {'text-align': 'center'}, table : {'width': '100%'} }"
+            [printStyle]="{ 'body' : {'margin-top': '20px'}, '#itemNumber': {'text-align': 'center' ,'margin-top': '20px'  }, 'table' : {'width': '80%'} }"
             printSectionId="print-section"
             ngxPrint>print
             </button>
@@ -219,10 +219,10 @@
                 <table
                   class="barcodeTbl"
                   dir="ltr"
-                  [style.margin.px]="0"
+                  [style.margin.px]="15"
                   [style.width.px]="360"
                   [style.max-height.px]="360"
-                  [style.font-size.px]="24"
+                  [style.font-size.px]="30"
                   style.font-family="Arial"
                   [style.border.px]="0"
                 >

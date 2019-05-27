@@ -11,6 +11,7 @@ import { NgxBarcodeModule } from 'ngx-barcode';
 import { FormuleComponent } from './formules/formule.component';
 import { AddFormuleComponent } from './formules/add-formule/add-formule.component';
 import { AddFormuleItemComponent } from './formules/add-formule-item/add-formule-item.component';
+import { FormuleFormTableComponent } from './formules/formule-form-table/formule-form-table.component';
 import { PeerPharmRputs } from './peerpharm.routing';
 import { OrdersComponent } from './allorders/orders/orders.component';
 import { AllordersComponent } from './allorders/allorders/allorders.component';
@@ -184,6 +185,7 @@ import { MaterialScanViewComponent } from './inventory/material-scan-view/materi
     OrderStagePipe,
     AddFormulePhaseComponent,
     ExpectedArrivalsComponent,
+    FormuleFormTableComponent,
 
   ],
   providers: [ OrdersService, HttpClientModule],

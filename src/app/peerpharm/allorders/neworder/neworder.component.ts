@@ -22,7 +22,7 @@ export class NeworderComponent implements OnInit {
   closeResult: string;
   choosedCostumer: any;
   itemName: String;
-  volume: Number = 0;
+  netWeightK: Number = 0;
   lastOrderNumber: Number;
   items: any[] = [];
   costumers: any[] = [];
@@ -52,7 +52,7 @@ export class NeworderComponent implements OnInit {
     this.orderItemForm = fb.group({
       itemN: [null, Validators.required],
       discription: [null, Validators.required],
-      unitmeasure: [null, Validators.required],
+      netWeightK: [null, Validators.required],
       quantity: [null, Validators.required],
       qtyKg: [null, Validators.nullValidator],
       remarks: [null, Validators.nullValidator]
@@ -92,11 +92,11 @@ export class NeworderComponent implements OnInit {
     debugger;
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
     //if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
-    // if(this.volume!=0 && this.volume!=null) post.unitmeasure = this.volume;
+    // if(this.netWeightK!=0 && this.netWeightK!=null) post.netWeightK = this.netWeightK;
     let newOrderItemObj = {
       itemNumber: post.itemN,
       discription: post.discription,
-      unitMeasure: post.unitmeasure,
+      netWeightGr: post.netWeightK,
       quantity: post.quantity,
       qtyKg: post.qtyKg,
       batch: "",
@@ -113,7 +113,7 @@ export class NeworderComponent implements OnInit {
       if(res!='error'){
         this.items.push(res);
         this.itemName = "";
-        this.volume = 0;
+        this.netWeightK = 0;
         this.toastSrv.success('item '+res.itemNumber+' added');
       } else{
         this.toastSrv.error('Adding item faild');
@@ -133,10 +133,10 @@ export class NeworderComponent implements OnInit {
         this.orderItemForm.controls.discription.setValue(
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK
         );
-        this.orderItemForm.controls.unitmeasure.setValue(res[0].volumeKey);
+        this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
         //   this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-        //   this.volume = res[0].volumeKey;
-        console.log(this.itemName + ",  " + this.volume);
+        //   this.netWeightK = res[0].netWeightK;
+        console.log(this.itemName + ",  " + this.netWeightK);
       });
     }
   }
@@ -188,12 +188,12 @@ export class NeworderComponent implements OnInit {
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
     if (post.discription == null || post.discription != this.itemName)
       post.discription = this.itemName;
-    if (post.unitmeasure == null || post.unitmeasure != this.volume)
-      post.unitmeasure = this.volume;
+    if (post.netWeightK == null || post.netWeightK != this.netWeightK)
+      post.netWeightK = this.netWeightK;
     let newOrderItemObj = {
       itemNumber: post.itemN,
       discription: post.discription,
-      unitMeasure: post.unitmeasure,
+      netWeightGr: post.netWeightK,
       quantity: post.quantity,
       qtyKg: post.qtyKg,
       batch: "",
