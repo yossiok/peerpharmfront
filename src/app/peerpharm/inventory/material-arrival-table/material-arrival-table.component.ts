@@ -12,15 +12,23 @@ export class MaterialArrivalTableComponent implements OnInit {
   materialsArrivals: Array<any>;
   materialsArrivalsCopy: Array<any>;
   currentDoc: any;
-  // barcode vars //
-  
-  bcValue: Array<any>=[ ];
+
   materialNum: String ;
+  materialName: String ;
+  lotNumber: String ;
+  productionDate: String ;
+  arrivalDate: String ;
+  expiryDate: String ;
+
+  smallText: Boolean=false;
+  
+  // barcode values
+  bcValue: Array<any>=[ ];
   elementType = 'svg';
   format = 'CODE128';
   lineColor = '#000000';
   width = 1;
-  height = 200;
+  height = 150;
   displayValue = false; // true=display bcValue under barcode
   fontOptions = '';
   font = 'monospace';
@@ -48,16 +56,34 @@ export class MaterialArrivalTableComponent implements OnInit {
   printBarcode(id){
     this.bcValue=[];
     this.materialNum="";
+    this.materialName="";
+    this.lotNumber="";
+    this.productionDate="";
+    this.arrivalDate="";
+    this.expiryDate="";
+
+    
     this.materialsArrivals.filter((m,key)=> {
+
       if(m._id == id){
         this.bcValue =  [m._id];
         this.materialNum= m.internalNumber;    
+        this.materialName= m.materialName;    
+        this.lotNumber= m.lotNumber;    
+        this.productionDate= m.productionDate;
+        this.arrivalDate= m.arrivalDate;
+        this.expiryDate= m.expiryDate; 
+        
+        // if(this.materialName.length> 80) this.smallText= true;
+        this.smallText = (this.materialName.length> 80) ? true : false;
+
       }
       if( key+1 == this.materialsArrivals.length){
-        this.bcValue
-        this.materialNum
-        debugger
+
         setTimeout(() => {
+          console.log(this.materialNum)
+          console.log(this.materialName)
+          console.log(this.lotNumber)
           this.printBtn.nativeElement.click();          
         }, 500);
       }

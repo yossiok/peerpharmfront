@@ -144,7 +144,7 @@ export class StockComponent implements OnInit {
           console.log('res[0]',res[0])            
             // this.componentsUnFiltered.filter(c=>{
             //   if(c._id==res[0]._id){
-            //     debugger
+            //     
             //     c.procurementArr= res[0].procurementArr;
             //   }  
             //  });
@@ -198,7 +198,7 @@ export class StockComponent implements OnInit {
 // }
   // ExportAllCmpts() {
   //   this.inventoryService.getAllComponentsByType('component').subscribe(data=>{
-  //     debugger
+  //     
   //     this.excelService.exportAsExcelFile(data.items, "stock components");
   //       });
   //  }
@@ -340,13 +340,18 @@ getAllCmptTypesAndCategories(){
 
 
 loadComponentItems(){
-  this.inventoryService.getItemsByCmpt(this.resCmpt.componentN , this.resCmpt.componentType).subscribe(res=>{
-    if(res.length>0){
-      this.resCmpt.componentItems=res;
-    }else
-    this.resCmpt.componentItems=[]
-
-  });
+  this.resCmpt.componentType=  this.stockType;
+  if(this.resCmpt.componentType != ''){
+    this.inventoryService.getItemsByCmpt(this.resCmpt.componentN , this.resCmpt.componentType).subscribe(res=>{
+      if(res.length>0){
+        this.resCmpt.componentItems=res;
+      }else
+      this.resCmpt.componentItems=[]
+  
+    });
+  }else{
+    this.toastSrv.error('Item type error \nPlease refresh screen.');
+  }
 }
 
 

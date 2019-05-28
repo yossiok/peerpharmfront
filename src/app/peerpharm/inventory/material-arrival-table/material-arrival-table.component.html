@@ -39,7 +39,7 @@
             <div style="visibility: hidden;">
                 <!-- <button #printBtn style="visibility: hidden" -->
               <button #printBtn 
-              [printStyle]="{ 'body' : {'margin-top': '20px'}, '#itemNumber': {'text-align': 'center' ,'margin-top': '20px'  }, 'table' : {'width': '80%'} }"
+              [printStyle]="{ 'body' : {'margin-top': '5px' }, '#itemNumber': {'margin-top': '10px'  }, 'table' : {'text-align': 'right','width': '80%'} }"
               printSectionId="print-section"
               ngxPrint>print
               </button>
@@ -48,28 +48,38 @@
               <div class="row clearfix" id="print-section" style="visibility: hidden">
                   <table
                     class="barcodeTbl"
-                    dir="ltr"
+                    dir="rtl"
                     [style.margin.px]="15"
                     [style.width.px]="360"
-                    [style.max-height.px]="360"
-                    [style.font-size.px]="30"
-                    style.font-family="Arial"
+                    [style.max-height.px]="600"
+                    [style.font-size.px]="40"
+                    [style.font-weight]="bold"
+                    [style.font-family]="Arial"
                     [style.border.px]="0"
                   >
                   <tr>
-                    <td id='itemNumber' >{{ materialNum }}</td>
+                    <td id='itemNumber'>מק"ט: <u >{{ materialNum }}</u></td>
                   </tr>
                   <tr>
+                    <td *ngIf="!smallText" [style.font-size.px]="40">שם: <u dir="ltr">{{ materialName }}</u></td>
+                    <td *ngIf="smallText" [style.font-size.px]="25">שם: <u dir="ltr">{{ materialName }}</u></td>
+                  </tr>
+                  <tr>
+                    <td>אצווה: <u dir="ltr">{{ lotNumber }}</u></td>
+                  </tr>
+                  <tr>
+                    <td>ת.יצור: <u dir="ltr">{{ productionDate | date: 'dd/MM/yyyy' }}</u></td>
+                  </tr>
+                  <tr>
+                    <td>ת.קבלה: <u dir="ltr">{{ arrivalDate | date: 'dd/MM/yyyy' }}</u></td>
+                  </tr>
+                  <tr>
+                    <td>ת.תפוגה: <u dir="ltr">{{ expiryDate | date: 'dd/MM/yyyy' }}</u></td>
+                  </tr>
+
+                  <tr>
                     <td id='barcode'>
-                      <!-- <ngx-barcode
-                        [bc-element-type]="barcodeElementType"
-                        [bc-value]="bcValue"
-                        [bc-format]="barcodeFormat"
-                        [bc-width]="barcodeWidth"
-                        [bc-height]="barcodeHeight"
-                        [bc-font-size]="barcodeFontSize"
-                      >
-                    </ngx-barcode> -->
+                      
                     <ngx-barcode 
                     [bc-element-type]="elementType" 
                     [bc-value]="bcValue" 

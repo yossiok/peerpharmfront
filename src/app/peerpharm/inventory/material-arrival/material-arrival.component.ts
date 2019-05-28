@@ -14,7 +14,7 @@ import { NgbModal, NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstr
 })
 export class MaterialArrivalComponent implements OnInit {
   public beforeChange($event: NgbTabChangeEvent) {
-    debugger
+    
     this.activeTabId = $event.activeId;
     // if ($event.activeId === 'tab-preventchange2') {
     //   $event.preventDefault();
@@ -45,15 +45,21 @@ export class MaterialArrivalComponent implements OnInit {
   supplierModal:Boolean= false;
 
 // barcode vars //
+materialNum: String ;
+materialName: String ;
+lotNumber: String ;
+productionDate: String ;
+arrivalDate: String ;
+expiryDate: String ;
+
+smallText: Boolean=false;
 
 bcValue: Array<any>=[ ];
-materialNum: String ;
-
 elementType = 'svg';
 format = 'CODE128';
 lineColor = '#000000';
 width = 1;
-height = 200;
+height = 150;
 displayValue = false; // true=display bcValue under barcode
 fontOptions = '';
 font = 'monospace';
@@ -67,8 +73,6 @@ marginTop = 20;
 marginBottom = 10;
 marginLeft = 10;
 marginRight = 10;
-
-
 
   constructor(private fb: FormBuilder, 
     private invtSer:InventoryService, 
@@ -209,6 +213,12 @@ marginRight = 10;
     // shelf general position
     this.newMaterialArrival.controls.position.setValue('GENERAL');
     this.materialNum= this.newMaterialArrival.value.internalNumber;
+    this.materialName= this.newMaterialArrival.value.materialName;
+    this.lotNumber= this.newMaterialArrival.value.lotNumber;
+    this.productionDate= this.newMaterialArrival.value.productionDate;
+    this.arrivalDate= this.newMaterialArrival.value.arrivalDate;
+    this.expiryDate= this.newMaterialArrival.value.expiryDate;
+
     if(this.newMaterialArrival.value.user == ""){
       this.authService.userEventEmitter.subscribe(data => {
         this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
@@ -242,7 +252,7 @@ marginRight = 10;
 
       if(continueSend){
         
-        debugger
+        
         this.newMaterialArrival.value.productionDate = new Date(this.newMaterialArrival.value.productionDate)
         this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
         this.checkLotNumber().then(ok=> {
@@ -305,7 +315,13 @@ marginRight = 10;
       if(res.savedDoc ){
         this.bcValue= [ res.savedDoc._id ] ;
         this.materialNum= res.savedDoc.internalNumber;
-        // this.printBtn.nativeElement.click();
+        this.materialName= res.savedDoc.materialName;
+        this.lotNumber= res.savedDoc.lotNumber;
+        this.productionDate= res.savedDoc.productionDate;
+        this.arrivalDate= res.savedDoc.arrivalDate;
+        this.expiryDate= res.savedDoc.expiryDate;
+
+        this.smallText = (this.materialName.length> 80) ? true : false;
 
         this.printBarcode(res.savedDoc._id , res.savedDoc.internalNumber);// we might need to change the value to numbers
         this.toastSrv.success("New material arrival saved!");
@@ -322,11 +338,14 @@ marginRight = 10;
   }
 
   printBarcode(id , number){
-    this.bcValue=[id];
-    this.materialNum=number;
-        setTimeout(() => {
-          this.printBtn.nativeElement.click();          
-        }, 500);
+    if(id!=""){
+      setTimeout(() => {
+        this.printBtn.nativeElement.click();          
+      }, 500);
+    }else{
+      this.toastSrv.error("Can't print sticker");
+    }
+
   }
 
   fieldsColor(){
@@ -337,7 +356,7 @@ marginRight = 10;
       if(tag!= undefined){
         if(value.status=='INVALID'){
           tag.style.borderColor= 'red';
-          debugger
+          
         }else{
           tag.style.borderColor= '#36bea6';
         }  
@@ -345,7 +364,7 @@ marginRight = 10;
 
       // for (let index = 0; index < inputArr.length; index++) {
       //   var element = inputArr[index];
-      //   debugger
+      //   
       //   if(element.name != '' && value.status == 'INVALID'  ){}
       //   element.style.borderColor = (value.status == 'VALID') ? 'red' : '#36bea6';
       // }  
@@ -388,7 +407,7 @@ marginRight = 10;
             // this.newMaterialArrival.controls.supplierNumber.setValue(this.choosenOrderItem.supplierNumber)
             // this.newMaterialArrival.controls.supplierName.setValue(this.choosenOrderItem.supplierName)
             // this.newMaterialArrival.controls.cmxOrderN.setValue(this.choosenOrderItem.orderNumber)
-            debugger
+            
             // this.chooseCostumer();
           }
           // this.closeResult = `Closed with: ${result}`;
@@ -458,7 +477,7 @@ marginRight = 10;
       //     }else{
             
       //       this.openOrders= item.openbalance.map(i=>i) // show modal to user - make him choose  
-      //       debugger
+      //       
       //       this.openSearch(this.modal1);
 
       //     }

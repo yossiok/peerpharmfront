@@ -14,9 +14,9 @@
         <div #arrivalForm>
             <!-- <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a> -->
               <h2 style='text-align: center;'>Material Arrival</h2>
-              <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2>
+              <!-- <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2> -->
               <form  class="mh-85" [formGroup]="newMaterialArrival"  >
-            
+                
                   <div class="form-row w-100 flex-row-reverse" style="padding-bottom: 15px;">
                       <div class="col-ms-4">
                         <label for="date">תאריך הגעה<b style="color:red">*</b></label>
@@ -209,7 +209,7 @@
           <div style="visibility: hidden">
               <!-- <button #printBtn style="visibility: hidden" -->
             <button #printBtn 
-            [printStyle]="{ 'body' : {'margin-top': '20px'}, '#itemNumber': {'text-align': 'center' ,'margin-top': '20px'  }, 'table' : {'width': '80%'} }"
+            [printStyle]="{ 'body' : {'margin-top': '5px' }, '#itemNumber': {'margin-top': '10px'  }, 'table' : {'text-align': 'right','width': '80%'} }"
             printSectionId="print-section"
             ngxPrint>print
             </button>
@@ -218,28 +218,58 @@
             <div class="row clearfix" id="print-section" style="visibility: hidden">
                 <table
                   class="barcodeTbl"
-                  dir="ltr"
+                  dir="rtl"
                   [style.margin.px]="15"
                   [style.width.px]="360"
-                  [style.max-height.px]="360"
-                  [style.font-size.px]="30"
+                  [style.max-height.px]="600"
+                  [style.font-size.px]="40"
+                  [style.font-weight]="bold"
                   style.font-family="Arial"
                   [style.border.px]="0"
                 >
                 <tr>
-                  <td id='itemNum' >{{ materialNum }}</td>
-                </tr>
+                    <td id='itemNumber'>מק"ט: <u >{{ materialNum }}</u></td>
+                  </tr>
+                  <tr>
+                    <td *ngIf="!smallText" [style.font-size.px]="40">שם: <u dir="ltr">{{ materialName }}</u></td>
+                    <td *ngIf="smallText" [style.font-size.px]="25">שם: <u dir="ltr">{{ materialName }}</u></td>
+                  </tr>
+                  <tr>
+                    <td>אצווה: <u dir="ltr">{{ lotNumber }}</u></td>
+                  </tr>
+                  <tr>
+                    <td>ת.יצור: <u dir="ltr">{{ productionDate | date: 'dd/MM/yyyy' }}</u></td>
+                  </tr>
+                  <tr>
+                    <td>ת.קבלה: <u dir="ltr">{{ arrivalDate | date: 'dd/MM/yyyy' }}</u></td>
+                  </tr>
+                  <tr>
+                    <td>ת.תפוגה: <u dir="ltr">{{ expiryDate | date: 'dd/MM/yyyy' }}</u></td>
+                  </tr>
                 <tr>
                   <td id='barcode'>
                     <ngx-barcode
-                      [bc-element-type]="barcodeElementType"
-                      [bc-value]="bcValue"
-                      [bc-format]="barcodeFormat"
-                      [bc-width]="barcodeWidth"
-                      [bc-height]="barcodeHeight"
-                      [bc-font-size]="barcodeFontSize"
-                    ></ngx-barcode>
-                  </td>
+                    [bc-element-type]="elementType" 
+                    [bc-value]="bcValue" 
+                    [bc-format]="format" 
+                    [bc-line-color]="lineColor"
+                    [bc-width]="width"
+                    [bc-height]="height" 
+                    [bc-display-value]="displayValue" 
+                    [bc-font-options]="fontOptions" 
+                    [bc-font]="font"
+                    [bc-text-align]="textAlign" 
+                    [bc-text-position]="textPosition" 
+                    [bc-text-margin]="textMargin" 
+                    [bc-font-size]="fontSize" 
+                    [bc-background]="background"
+                    [bc-margin]="margin"  
+                    [bc-margin-top]="marginTop" 
+                    [bc-margin-bottom]="marginBottom" 
+                    [bc-margin-left]="marginLeft" 
+                    [bc-margin-right]="marginRight">
+                  </ngx-barcode>
+                </td>
               </tr>
             </table>
           </div>
