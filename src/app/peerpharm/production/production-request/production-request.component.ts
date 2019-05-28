@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ProductionOrders } from './../models/production-orders';
 import { ProductionSchedule } from './../models/production-schedule';
 import { ItemsService } from './../../../services/items.service';
 import { ProductionService } from './../../../services/production.service';
+import { OrdersService } from '../../../services/orders.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-production-request',
@@ -11,9 +13,19 @@ import { ProductionService } from './../../../services/production.service';
   styleUrls: ['./production-request.component.css']
 })
 export class ProductionRequestComponent implements OnInit {
+  userName: String;
+  departments: Array<any>;
+  formules: Array<any>;
+  categories: Array<any>;
+  orders: Array<any>;
+  items: Array<any>;
+  
   constructor(
+    private fb: FormBuilder,
     private productionService: ProductionService,
-    private itemsService: ItemsService
+    private itemsService: ItemsService,
+    private ordersService: OrdersService,
+    private authService: AuthService,
   ) {}
 
   public requestForm: FormGroup;
@@ -23,7 +35,22 @@ export class ProductionRequestComponent implements OnInit {
   @ViewChildren('childOrders')
   childOrders: QueryList<any>;
 
-  ngOnInit() {
+    async ngOnInit() {
+    await this.authorizedUser().then(user=>{ 
+      this.userName=user+"";
+    });
+
+    console.log(this.userName)
+    // this.requestForm= this.fb.group({
+    //   date: [new Date(), Validators.required],
+    //   user: ["", Validators.required],
+    //   reqNumber: [Number, Validators.required],
+    //   formuleNumber: ["", Validators.required],
+    //   formuleName: ["", Validators.required],
+    //   relatedItems: [Array, Validators.required],
+    //   relatedOrders: [Array, Validators.required],
+    //   quantity: [Number, Validators.required],
+    // });
     this.requestForm = new FormGroup({
       prodRequestNumber: new FormControl('', [Validators.required]),
       itemNumber: new FormControl('', [Validators.required]),
@@ -32,6 +59,17 @@ export class ProductionRequestComponent implements OnInit {
       itemTotalQuantity: new FormControl(null, [Validators.required])
     });
   }
+
+  async authorizedUser(){ 
+  var authService=this.authService;
+  return new Promise(async function (resolve, reject) {
+    authService.userEventEmitter.subscribe(user => {
+      user.firstName+" "+user.lastName;
+      resolve (user.firstName+" "+user.lastName);
+    });
+  });
+  
+}
 
   ValidateItemNumber() {
     //debugger;
