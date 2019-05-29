@@ -25,6 +25,9 @@ export class FormuleComponent implements AfterViewInit {
   childPhases: QueryList<any>;
 
 
+  ngOnInit(){
+
+  }
   onFormuleAdded(newFormuleCreated) {
     this.newFormuleBasic = newFormuleCreated;
     const newPhase = new FormulePhase();

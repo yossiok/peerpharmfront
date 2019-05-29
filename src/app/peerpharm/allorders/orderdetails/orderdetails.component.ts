@@ -68,7 +68,7 @@ export class OrderdetailsComponent implements OnInit {
   itemData: any = {
     itemNumber: '',
     discription: '',
-    netWeightGr: '',
+    netWeightGr: null,
     quantity: '',
     qtyKg: '',
     orderId: '',
@@ -233,6 +233,7 @@ export class OrderdetailsComponent implements OnInit {
         item.itemImpRemark= newItemImpRemark;
         item.isExpand = '+';
         item.colorBtn = '#33FFE0';
+        item.compiled = [];
         this.ordersItems.push(item);
         this.itemData = { itemNumber: '', discription: '', netWeightGr: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
         this.getOrderItems(true);
@@ -695,6 +696,9 @@ editBatch(batch){
         if(res.length==1){
           this.itemData.discription = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
           this.itemData.netWeightGr = res[0].netWeightK;
+          if(res[0].netWeightK !=null && res[0].netWeightK !=undefined && res[0].netWeightK !=''){
+            this.itemData.netWeightGr = res[0].netWeightK;
+          }
           this.itemData.itemImpRemark = res[0].impRemarks;
         }
       });

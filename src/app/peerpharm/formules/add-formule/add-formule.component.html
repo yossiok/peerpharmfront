@@ -3,7 +3,8 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="card">
-      <div class="card-body">
+      <!-- add new  -->
+      <div class="card-body" *ngIf="!formuleSaved">
         <h4 class="card-title">Add a new Formule</h4>
         <h5 class="card-subtitle">Enter general formule details here</h5>
 
@@ -96,6 +97,15 @@
           <button *ngIf="!formuleSaved" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
           <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's  Phases</button>
         </form>
+      </div>
+
+      <div>
+          <div class="card-body" *ngIf="!formuleSaved" style="color: blue;">
+              <h4 class="card-title">{{currentFormule.number}}</h4>
+              <h4 class="card-title">{{currentFormule.name}}</h4>
+
+          </div>
+      
       </div>
     </div>
   </div>

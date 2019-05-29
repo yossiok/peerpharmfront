@@ -132,7 +132,6 @@ marginRight = 10;
     this.activeTabId="tab-selectbyid1"
   }
 
-
   filterSuppliers(input){
     if(input !=""){
       let inputVal= input.toLowerCase();
