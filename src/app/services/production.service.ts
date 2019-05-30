@@ -50,4 +50,10 @@ export class ProductionService {
     const url = this.baseUrl + 'productionSchedule';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+
+  addProdRequest(reqForm): Observable<any> {
+    let url = this.baseUrl + "productionSchedule/add"; 
+    return this.http.post(url, JSON.stringify(reqForm), this.options).pipe(map(res => res.json()))
+  }
 }

@@ -1,99 +1,199 @@
 <!-- .row -->
 <div class="row">
-  <div class="col-sm-12">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Production Request Form</h4>
-        <h5 class="card-subtitle">Enter production request values here</h5>
-
-        <form class="form" [formGroup]="requestForm" (submit)="onSubmit()">
-          <div class="form-group m-t-40 row">
-            <label for="example-number-input" class="col-2 col-form-label"
-              >Production Request Number</label
-            >
-            <div class="col-10">
-              <input
-                class="form-control"
-                type="number"
-                formControlName="reqNumber"
-              />
-            </div>
-          </div>
-          <div class="form-group m-t-40 row">
-            <label for="example-search-input" class="col-2 col-form-label"
-              >Item Number</label
-            >
-            <div class="col-10">
-              <input
-                class="form-control"
-                type="search"
-                formControlName="itemNumber"
-                (focusout)="ValidateItemNumber()"
-                value=""
-              />
-              <div *ngIf="errorItemNumber" style="font-size: 10pt; color: red;">
-                Not valid Item number
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Production Request Form</h4>
+          <h5 class="card-subtitle">Enter production request values here</h5>
+  
+          <form class="form" [formGroup]="requestForm" (submit)="onSubmit()">
+  
+              <div class="form-group m-t-40 row">
+                  <label for="example-number-input" class="col-2 col-form-label">Request Date</label>
+                  <div class="col-10">
+                    <input
+                      disabled
+                      class="form-control"
+                      type="date"
+                      #todayD
+                    />
+                  </div>
+                </div>
+  
+                <div class="form-group m-t-40 row">
+                  <label for="example-number-input" class="col-2 col-form-label">Due Date</label>
+                  <div class="col-10">
+                    <input
+                      class="form-control"
+                      type="date"
+                      #dueDate
+                    />
+                  </div>
+                </div>
+  
+            <div class="form-group m-t-40 row">
+              <label for="example-number-input" class="col-2 col-form-label">Production Request Number</label>
+              <div class="col-10">
+                <input
+                  class="form-control"
+                  type="number"
+                  formControlName="reqNumber"
+                />
               </div>
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="example-makat-input" class="col-2 col-form-label"
-              >Makat Number</label
-            >
-            <div class="col-4">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="makatNumber"
-                value=""
-              />
+  
+            <div class="form-group m-t-40 row">
+              <label for="example-search-input" class="col-2 col-form-label">
+                Formule Number:</label>
+                <div class="col-10">
+                  <input
+                  class="form-control"
+                  type="text"
+                  formControlName="formuleNumber"
+                  />
+                <!-- <div *ngIf="errorItemNumber" style="font-size: 10pt; color: red;">
+                  Not valid Item number
+                </div> -->
+              </div>
             </div>
-            <label for="example-makat-input" class="col-2 col-form-label"
-              >Item's Barkod</label
-            >
-            <div class="col-4">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="itemBarkod"
-                value=""
-              />
+  
+  
+            <div class="form-group row">
+              <label for="example-makat-input" class="col-2 col-form-label">Formule Name</label>
+              <div class="col-4">
+                <input
+                  type="text"
+                  class="form-control"
+                  #nameL
+                  (keyup)="filterNameList(nameL.value)"
+                />
+                
+                <ul *ngIf="nameL.value!=''"
+                class="list-group" id="myList" style="overflow-y: scroll; max-height: 200px;">
+                    <li *ngFor="let n of nameList"
+                    class="list-group-item" (click)="nameL.value=n.name;" style="cursor:pointer;">{{n.name}}</li>
+                  </ul>  
+              </div>
+           
             </div>
-          </div>
-          <div *ngFor="let order of this.productionScheduleObject.orders">
-            <app-production-orders
-              #childOrders
-              (sumQuantityChild)="UpdateTotalQuantity($event)"
-            ></app-production-orders>
-          </div>
-          <div class="m-t-40 row">
-            <button
-              class="btn btn-success m-r-10 col-2"
-              type="button"
-              (click)="RealtedOrders()"
-            >
-              Add Related Orders
-            </button>
-          </div>
-
-          <div class="form-group row" style="margin-top:30px">
-            <label for="example-number-input" class="col-2 col-form-label"
-              >Item production total quantity</label
-            >
-            <div class="col-10">
-              <input
-                class="form-control"
-                type="number"
-                value=""
-                formControlName="itemTotalQuantity"
-              />
+  
+            <div class="form-group row">
+                <label for="example-makat-input" class="col-2 col-form-label"> Related Items:</label>
+                <div class="col-4">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="item number"
+                    #itemNum
+                  />
+                </div>
+                <div class="col-4">
+                    <input
+                    type="text"
+                    class="form-control"
+                    placeholder="order number"
+                    #orderNum
+                  />
+                </div>
+  
+                <div class="col-1">
+                  <button class="btn btn-success" type="button" (click)="addRelatedItem(itemNum.value, orderNum.value )">+</button>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <ul>
+                    <li *ngFor="let item of relatedItems; let i =index;">item :{{item.itemNumber}} , order :{{item.orderNumber}}  &nbsp;&nbsp; 
+                      <img src="../../../../assets/images/delete.png" style="width: 20px; cursor: pointer;"
+                      (click)="removeItem(item, i)"> </li> 
+                    </ul>
+                  </div>
+                </div>
+             
+              </div>
+  
+            <!-- <div *ngFor="let order of this.productionScheduleObject.orders">
+              <app-production-orders
+                #childOrders
+                (sumQuantityChild)="UpdateTotalQuantity($event)"
+              ></app-production-orders>
             </div>
-          </div>
-
-          <button class="btn btn-success m-r-10" type="submit">Finish</button>
-        </form>
+            <div class="m-t-40 row">
+              <button
+                class="btn btn-success m-r-10 col-2"
+                type="button"
+                (click)="RealtedOrders()"
+              >
+                Add Related Orders
+              </button>
+            </div> -->
+  
+            <div class="form-group row" style="margin-top:30px">
+              <label for="example-number-input" class="col-2 col-form-label"
+                >Quantity:</label
+              >
+              <div class="col-10">
+                <input
+                  class="form-control"
+                  type="number"
+                  formControlName="itemTotalQuantity"
+                />
+              </div>
+            </div>
+  
+            <div class="form-group row" style="margin-top:30px">
+              <label for="example-number-input" class="col-2 col-form-label"
+                >User:</label
+              >
+              <div class="col-10">
+                <input
+                  class="form-control"
+                  type="text"
+                  value=""
+                  formControlName="user"
+                  disabled
+                />
+              </div>
+            </div>
+  <!-- 
+            <div class="form-group row" style="margin-top:30px">
+              <label for="example-number-input" class="col-2 col-form-label"
+                >Last Updated:</label
+              >
+              <div class="col-10">
+                <input
+                  class="form-control"
+                  type="date"
+                  value=""
+                  formControlName="lastUpdated"
+                />
+              </div>
+            </div> -->
+  
+            <!-- <div class="form-group row" style="margin-top:30px">
+              <label for="example-number-input" class="col-2 col-form-label"
+                >Last Updated User:</label
+              >
+              <div class="col-10">
+                <input
+                  class="form-control"
+                  type="text"
+                  value=""
+                  formControlName="lastUpdatedUser"
+                />
+              </div>
+            </div> -->
+  
+  
+  
+  
+            
+  
+            <button class="btn btn-success m-r-10" type="submit">Save</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- /.row -->
+  <!-- /.row -->
+  
+  

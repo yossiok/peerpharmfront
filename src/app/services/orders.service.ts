@@ -140,12 +140,16 @@ export class OrdersService {
   }
 
   deleteOrderItem(itemId) {
-
     let url = this.baseUrl + "orderitem/remove";
-
     let item = { id: itemId }
     return this.http.post(url, JSON.stringify(item), this.options).pipe(map(res => res.json()))
   }
+  getOrderItemByNumberAndOrder(item, order) {
+    let url = this.baseUrl + "orderitem?item=" + item+"&order="+ order;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+
 
   sendOrderData(tempArr: Array<string>) {
     this.orderSrc.next(tempArr);

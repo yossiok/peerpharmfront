@@ -35,11 +35,15 @@
     </table>
 
 
+    <!-- 
+    [printStyle]="{ 'body' : {'margin-top': '5px' }, '#itemNumber': {'margin-top': '10px'  }, 'table' : {'text-align': 'right','width': '80%'} }"
+     -->
+
               <!-- PRINT BARCODE SECTION -->
             <div style="visibility: hidden;">
                 <!-- <button #printBtn style="visibility: hidden" -->
               <button #printBtn 
-              [printStyle]="{ 'body' : {'margin-top': '5px' }, '#itemNumber': {'margin-top': '10px'  }, 'table' : {'text-align': 'right','width': '80%'} }"
+              [printStyle]="{ 'body' : {'margin-top': '20px' }, 'table' : {'text-align': 'center','width': '100%'} , 'td': {'border-top': 'solid black 1px'} }"
               printSectionId="print-section"
               ngxPrint>print
               </button>
@@ -49,36 +53,37 @@
                   <table
                     class="barcodeTbl"
                     dir="rtl"
-                    [style.margin.px]="15"
-                    [style.width.px]="360"
-                    [style.max-height.px]="600"
+                    [style.margin.px]="1"
+                    [style.width.px]="600"
+                    [style.max-height.px]="300"
                     [style.font-size.px]="40"
                     style.font-weight="bold"
                     style.font-family="Arial"
-                    [style.border.px]="0"
+                    style.float="right"
+                    
                   >
+                  <tr dir="ltr">
+                    <td colspan="2" *ngIf="!smallText" [style.font-size.px]="40">{{ materialName }}</td>
+                    <td colspan="2" *ngIf="smallText" [style.font-size.px]="25">{{ materialName }}</td>
+                  </tr>  
                   <tr>
-                    <td id='itemNumber'>מק"ט: <u >{{ materialNum }}</u></td>
+                    <td colspan="2" id='itemNumber'>מק"ט: {{ materialNum }}</td>
                   </tr>
                   <tr>
-                    <td *ngIf="!smallText" [style.font-size.px]="40">שם: <u dir="ltr">{{ materialName }}</u></td>
-                    <td *ngIf="smallText" [style.font-size.px]="25">שם: <u dir="ltr">{{ materialName }}</u></td>
+                      <td>אצווה: {{ lotNumber }}</td>
+                      <td>ת.תפוגה: {{ expiryDate | date: 'dd/MM/yyyy' }}</td>
                   </tr>
                   <tr>
-                    <td>אצווה: <u dir="ltr">{{ lotNumber }}</u></td>
+                    <td colspan="2">ת.יצור: {{ productionDate | date: 'dd/MM/yyyy' }}</td>
                   </tr>
                   <tr>
-                    <td>ת.יצור: <u dir="ltr">{{ productionDate | date: 'dd/MM/yyyy' }}</u></td>
+                    <td colspan="2">ת.קבלה: {{ arrivalDate | date: 'dd/MM/yyyy' }}</td>
                   </tr>
                   <tr>
-                    <td>ת.קבלה: <u dir="ltr">{{ arrivalDate | date: 'dd/MM/yyyy' }}</u></td>
-                  </tr>
-                  <tr>
-                    <td>ת.תפוגה: <u dir="ltr">{{ expiryDate | date: 'dd/MM/yyyy' }}</u></td>
                   </tr>
 
                   <tr>
-                    <td id='barcode'>
+                    <td colspan="2" id='barcode'>
                       
                     <ngx-barcode 
                     [bc-element-type]="elementType" 
