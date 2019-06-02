@@ -26,7 +26,7 @@ export class ProductionRequestComponent implements OnInit {
   orders: Array<any>;
   items: Array<any>;
   nameList: Array<any>;
-  names: Array<any>=[];
+  allFormules: Array<any>=[];
   nameInput:String;
   relatedItems:Array<any>=[];
 
@@ -88,7 +88,7 @@ export class ProductionRequestComponent implements OnInit {
     console.log(this.userName)
 
 
-    this.getAllFormules()
+    this.getAllFormules();
 
   
   }
@@ -139,7 +139,7 @@ export class ProductionRequestComponent implements OnInit {
 
     if(input !=""){
       let inputVal= input.toLowerCase();
-      this.nameList= this.names.filter(n => {
+      this.nameList= this.allFormules.filter(n => {
           if(n.name.toLowerCase().includes(inputVal)) {
             
             return n;
@@ -151,7 +151,7 @@ export class ProductionRequestComponent implements OnInit {
   getAllFormules() { 
 
     this.formuleService.getAllFormules().subscribe( data => {
-    this.names = data; 
+    this.allFormules = data; 
     })
 
   }

@@ -75,6 +75,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules?byNumber="+number;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllFormules(){
+    let url = this.baseUrl + "formules?all=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   
   newFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/add";
