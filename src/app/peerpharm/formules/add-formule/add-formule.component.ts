@@ -3,6 +3,7 @@ import { Component, OnInit , Output, EventEmitter } from '@angular/core';
 import { FormulesService } from '../../../services/formules.service';
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from 'src/app/services/auth.service';
+import { UserInfo } from '../../taskboard/models/UserInfo';
 
 // export interface FormuleCategory {
 //   value: string;
@@ -17,9 +18,11 @@ export class AddFormuleComponent implements OnInit {
 
  public formulesForm: FormGroup;
   user: string="";
+  userInfo: UserInfo;
   phValue: string="7";
   formuleDetailsOk: Boolean= false;
   formuleSaved: Boolean= false;
+  editFormule: Boolean= false;
   currentFormule:any={
     number: null,
     name:"",
@@ -55,29 +58,27 @@ export class AddFormuleComponent implements OnInit {
   //   { value: 'Hyperallergic'}
   // ];
 
-  async ngOnInit() {
-    this.authService.userEventEmitter.subscribe(data => { 
-      debugger
+  ngOnInit() {
+    
+    this.authService.userEventEmitter.subscribe(data => {
       this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
       this.formulesForm.controls.lastUpdateUser.setValue(this.user);
     });
-    // this.formulesForm = new FormGroup({});
+    
     this.formulesForm.controls.client.setValue('Peerpharm Ltd');
   }
-// getUserIngo()  {
-//   debugger
-//   return new Promise(async function (resolve, reject) {
-//     debugger
-//     await 
-//       resolve(this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName)
-//     });
-//   });
-// }
 
-  onSubmit(): void {
-    //check if formule form alredy exist
-    debugger
-    this.formuleService.getFormuleByNumber(this.formulesForm.value.number).subscribe(data=>{
+
+
+  async onSubmit() {
+    if(this.formulesForm.value.lastUpdateUser ==""){
+      this.authService.userEventEmitter.subscribe(data => {
+        this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+        this.formulesForm.controls.lastUpdateUser.setValue(this.user);
+      });  
+    }
+    
+    await this.formuleService.getFormuleByNumber(this.formulesForm.value.number).subscribe(data=>{
       debugger
       if(data.length!=0){
         this.toastSrv.error("Formule number already exist");
@@ -109,6 +110,7 @@ export class AddFormuleComponent implements OnInit {
 
   }
 
+
   changePH(ev){
     if(ev.target.value>=0){
       this.phValue=ev.target.value;
@@ -122,6 +124,12 @@ export class AddFormuleComponent implements OnInit {
     this.formuleCreated.emit(this.currentFormule);
   }
 
-
+editFormuleDetails(action){
+  if(action=="save"){
+  this.formuleSaved= true;
+  } else if(action == "edit"){
+    this.formuleSaved= false;
+  }
+}
 
 }

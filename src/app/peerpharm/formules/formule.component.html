@@ -4,7 +4,7 @@
 <app-add-formule-phase #childPhases (formulePhase)='onPhaseAdded($event)' *ngFor = 'let phase of allPhasesForm'>
 </app-add-formule-phase>
 <app-add-formule-item #childItem (formuleItem)='onItemAdded($event)' *ngFor = 'let item of allItemsForm'></app-add-formule-item>
-v
+
 <app-formule-form-table></app-formule-form-table>
 
 <button class="btn btn-success m-r-10" type="button" (click)="onFinish()">Finish</button>

@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
-
+import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-material-arrival-table',
   templateUrl: './material-arrival-table.component.html',
@@ -8,19 +10,38 @@ import { InventoryService } from 'src/app/services/inventory.service';
 })
 export class MaterialArrivalTableComponent implements OnInit {
   @ViewChild('printBtn') printBtn: ElementRef;
+  @ViewChild('internalNumber') internalNumber: ElementRef;
+  @ViewChild('materName') materName: ElementRef;
+  @ViewChild('supplierNumber') supplierNumber: ElementRef;
+  @ViewChild('supplierName') supplierName: ElementRef;
+  @ViewChild('lotNum') lotNum: ElementRef;
+  @ViewChild('expireDate') expireDate: ElementRef;
+  @ViewChild('analysisApproval') analysisApproval: ElementRef;
+  @ViewChild('arriveDate') arriveDate: ElementRef;
+  @ViewChild('modal1') modal1: ElementRef;
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+}
 
   materialsArrivals: Array<any>;
   materialsArrivalsCopy: Array<any>;
   currentDoc: any;
-
+  EditRowId: any = "";
   materialNum: String ;
   materialName: String ;
   lotNumber: String ;
   productionDate: String ;
   arrivalDate: String ;
   expiryDate: String ;
-
+  onHoldStrDate:String;
   smallText: Boolean=false;
+  dateString: any = "";
+  dateString2: any = "";
+  suppliers: Array<any> ;
+  suppliersList: Array<any> ;
+  supplierItemsList: Array<any> ;
+  supplierItemsListCopy: Array<any> ;
   
   // barcode values
   bcValue: Array<any>=[ ];
@@ -44,6 +65,8 @@ export class MaterialArrivalTableComponent implements OnInit {
   marginRight = 10;
   constructor(
     private invtSer:InventoryService,
+    private toastSrv: ToastrService, 
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -51,6 +74,11 @@ export class MaterialArrivalTableComponent implements OnInit {
       this.materialsArrivals= data;
       this.materialsArrivalsCopy= data;
     })
+
+    this.invtSer.getAllSuppliers().subscribe(data => {
+      this.suppliers=data;   
+      this.suppliersList=data;   
+    });
   }
 
   printBarcode(id){
@@ -89,4 +117,43 @@ export class MaterialArrivalTableComponent implements OnInit {
       }
     });
   }
+
+  edit(id) {
+    // if(id!='') {
+    //   this.EditRowId = id;
+    //   this.currentDoc=  this.materialsArrivals.filter(i=> {
+    //     if(i._id == id){
+    //         return i;
+    //       }
+    //     })[0]; 
+        
+    //     this.dateString =  this.currentDoc.expiryDate.slice(0,10);
+    //     this.dateString2 =  this.currentDoc.arrivalDate.slice(0,10);
+    // }else{
+    //   this.EditRowId = '';
+    // }
+  }
+
+  filterSuppliers(input){
+    if(input !=""){
+      let inputVal= input.toLowerCase();
+      this.suppliersList= this.suppliers.filter(sup=> {
+          if(sup.suplierName.toLowerCase().includes(inputVal)) {
+            return sup;
+          } 
+        });
+      }    
+
+  }
+
+  chooseSupplierFromList(sup,eve){
+this.supplierName.nativeElement.value=sup.suplierName;
+this.supplierNumber.nativeElement.value=sup.suplierNumber;
+this.suppliersList=[];
+  // updateMaterialForm() { 
+
+  }  
+
+  // }
+
 }

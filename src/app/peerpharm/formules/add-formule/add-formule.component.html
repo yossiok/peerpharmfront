@@ -99,20 +99,32 @@
         </form>
       </div>
 
-      <div>
-          <div class="card-body" *ngIf="!formuleSaved" style="color: blue;">
-              <h4 class="card-title">{{currentFormule.number}}</h4>
-              <h4 class="card-title">{{currentFormule.name}}</h4>
-
-          </div>
       
-      </div>
-    </div>
+          <!-- <div class="d-flex justify-content-start">...</div> -->
+      <div class="card-body" *ngIf="formuleSaved" style="color: blue; font-size: 35px;">
+        <div class="d-flex flex-row justify-content-end">
+          <i *ngIf="formuleSaved && currentFormule._id" class="ti-pencil" style="width: 40px; font-weight: bold; cursor: pointer;"
+            (click)="editFormuleDetails('edit')">
+          </i>
+          <i  *ngIf="formuleSaved && currentFormule._id" class="ti-check" style="width: 40px; font-weight: bold; cursor: pointer;"
+            (click)="editFormuleDetails('save')">
+          </i>
+        </div>
+        <div class="d-flex flex-row justify-content-start">
+          <div class="p-2">Number: {{currentFormule.number}}</div>
+          <div class="p-2">Name: {{currentFormule.name}}</div>
+        </div>  
+        <div class="d-flex flex-row justify-content-start">
+          <div class="p-2">Ph: {{currentFormule.ph}}</div>
+          <div class="p-2">Category: {{currentFormule.category }}</div>
+          <div class="p-2">Client: {{currentFormule.client}}</div>
+        </div>
+      </div>      
+    <!--close div class='card' -->
+    </div> 
+    <!--close div class='col-sm-12' -->
   </div>
-
-
-
-
-  
+  <!--close div class='row' -->                                                                                                                                                                                                                                                                                                                                     
 </div>
+
 <!-- /.row -->
