@@ -45,6 +45,8 @@ export class MaterialArrivalComponent implements OnInit {
   openOrders: Array<any>;
 
   supplierModal:Boolean= false;
+  supplierModalHeader:String= "";
+  supplierModalInfo:any;
 
 // barcode vars //
 materialNum: String ;
@@ -164,7 +166,16 @@ marginRight = 10;
       }    
   }
 
+  chooseOnlySupplier(){
+    this.newMaterialArrival.controls.supplierNumber.setValue(this.supplierModalInfo.suplierNumber);
+    this.newMaterialArrival.controls.supplierName.setValue(this.supplierModalInfo.suplierName);
+    this.suppliersList=[];
+  }
+
   chooseSupplierFromList(sup){
+    this.supplierModalHeader= "פריטים של ספק "+sup.suplierNumber+"\n";
+    this.supplierModalInfo=sup;
+    this.chooseOnlySupplier();
     this.invtSer.getItemsBySupplierNum(sup.suplierNumber).subscribe(stockItems=>{
       if(stockItems.length>0){  
         this.supplierItemsList= stockItems;
@@ -406,6 +417,7 @@ marginRight = 10;
 
 
   openSearch(content) {
+    debugger
     this.modalService
       .open(content, { ariaLabelledBy: "modal-basic-title" })
       .result.then(

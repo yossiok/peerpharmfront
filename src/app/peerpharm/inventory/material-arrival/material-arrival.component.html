@@ -172,7 +172,9 @@
         <!-- Supplier Items Modal -->
         <ng-template #modal1 let-c="close" let-d="dismiss"> 
                 <div class="modal-header" style="direction: rtl;">
-                  <h4 class="modal-title" id="modal-basic-title">פריטים של ספק</h4>
+                  <h4 class="modal-title" id="modal-basic-title" style="cursor : pointer;"
+                  (click)="chooseOnlySupplier()">פריטים של ספר מספר: {{ supplierModalInfo.suplierNumber }} <br>שם ספק: {{ supplierModalInfo.suplierName }}  </h4>
+                  <!-- <h4 class="modal-title" id="modal-basic-title">פריטים של ספק </h4> -->
                   <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
                   <button type="button" class="close" aria-label="Close" (click)="c('Cross click')" style="margin-left: 0">
                     <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
