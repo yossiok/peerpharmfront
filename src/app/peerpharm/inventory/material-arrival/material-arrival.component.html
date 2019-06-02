@@ -11,14 +11,14 @@
     <ng-template ngbTabTitle ><b>חו"ג חדש</b></ng-template>
     <ng-template ngbTabContent>
 
-        <div #arrivalForm>
+        <div #arrivalForm id="arrivalForm">
             <!-- <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a> -->
               <h2 style='text-align: center;'>Material Arrival</h2>
               <!-- <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2> -->
-              <form  class="mh-85" [formGroup]="newMaterialArrival"  >
+              <form  class="mh-85 container-fluid" [formGroup]="newMaterialArrival"  >
                 
                   <div class="form-row w-100 flex-row-reverse" style="padding-bottom: 15px;">
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                         <label for="date">תאריך הגעה<b style="color:red">*</b></label>
                         <input type="date"  class="form-control is-valid" placeholder="First name" 
                         [(ngModel)]="dateStr" [ngModelOptions]="{standalone: true}"
@@ -27,43 +27,44 @@
                           Looks good!
                         </div> -->
                       </div>  
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                         <label for="user">שם משתמש</label>
                         <input type="text"  class="form-control is-valid" placeholder="user name" formControlName="user"
                         required disabled>
                       </div>  
                   </div>
                   <div class="form-row w-100 flex-row-reverse">
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                         <img src="../../../../assets/images/search.png" alt="search internal number" 
                         style="width:28px; cursor: pointer;"
                         (click)="searchInternalNumber()">
-                        <label >מק"ט פנימי</label>
+                        <label for="internalNumber" >מק"ט פנימי</label>
                         <input type="text"  class="form-control is-valid" placeholder="Internal number" 
                         formControlName="internalNumber" name='internalNumber'  >
                       </div>  
-                      <div class="col-ms-4">
-                        <label >שם הפריט</label>
+                      <div class="col-sm-6">
+                        <label for="materialName">שם הפריט</label>
                         <input type="text"  class="form-control is-valid" placeholder="item name" formControlName="materialName" name='materialName' required disabled>
                       </div>  
-                      <div class="col-ms-4">
-                        <label >אנליזה תקינה</label>
-                        <input type="checkbox"  class="form-control is-valid" 
-                        [(ngModel)]="analysisFlag"  [ngModelOptions]="{standalone: true}" required >
-                      </div>  
+
                   </div>
                   <div class="form-row w-100 flex-row-reverse">
-                      <div class="col-ms-4">
+                      <div class="col-sm-1">
+                        <label >אנליזה תקינה</label>
+                        <input type="checkbox"  class="form-control is-valid" 
+                        #analysisFlag  [ngModelOptions]="{standalone: true}" required  >
+                      </div>  
+                      <div class="col-sm-3">
                         <label >אצוות יצרן - lot number</label>
                         <input type="text"  class="form-control is-valid" placeholder="Lot number" formControlName="lotNumber" name='lotNumber'  >
                       </div>  
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                           <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
                           (click)="resetDate('productionDate')"></i>  
                         <label >תאריך ייצור</label>
                         <input type="date"  class="form-control is-valid"  formControlName="productionDate" name='productionDate'  >
                       </div>  
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                           <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
                           (click)="resetDate('expiryDate')" ></i>  
                         <label >תאריך תפוגה</label>
@@ -74,12 +75,12 @@
                       </div>  
                   </div>
                   <div class="form-row w-100 flex-row-reverse">
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
         
                         <label >מספר ספק</label>
                         <input type="text"  class="form-control is-valid" placeholder="supplier number" formControlName="supplierNumber" name='supplierNumber'  >
                       </div>  
-                      <div class="col-ms-4">
+                      <div class="col-sm-4">
                           <!-- <img src="../../../../assets/images/search.png" alt="search internal number" 
                           style="width:28px; cursor: pointer;"
                           (click)="filterSuppliers(supplierNameInput.value)"> -->
@@ -93,17 +94,17 @@
                         </ul>  
                         
                       </div>  
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                         <label >מספר הזמנת רכש</label>
                         <input type="text"  class="form-control is-valid" placeholder="comax order number" formControlName="cmxOrderN" name='cmxOrderN' >
                       </div>  
                   </div>
                   <div class="form-row w-100 flex-row-reverse">
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                         <label >כמות כוללת</label>
                         <input type="number"  class="form-control is-valid" formControlName="totalQnt" name='totalQnt'  >
                       </div>  
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                         <label >יח' מדידה</label>
                         <select class="form-control is-valid" formControlName="mesureType" name='mesureType'>
                           <option value="kg">קילוגרם</option>  
@@ -113,7 +114,7 @@
                   </div>
                   <div class="form-row w-100 flex-row-reverse">
             
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                         <label >סוג אריזה</label>
                         <select class="form-control is-valid" formControlName="packageType" name='packageType'>
                           <option value="">בחר אריזה</option> 
@@ -127,18 +128,18 @@
                           <option value="bottel">בקבוק</option>
                         </select>
                       </div>  
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                         <label >כמות אריזות</label>
                         <input type="number"  class="form-control is-valid"  formControlName="packageQnt" name='packageQnt' >
                       </div>  
-                      <div class="col-ms-4" *ngIf="newMaterialArrival.value.packageType == 'carton'">
+                      <div class="col-sm-2" *ngIf="newMaterialArrival.value.packageType == 'carton'">
                           <label >יח' בקרטון</label>
                           <input type="number"  class="form-control is-valid" formControlName="unitsInPack" name='unitsInPack'  >
                       </div>  
                   </div>
             
                   <div class="form-row w-100 flex-row-reverse"> 
-                    <div class="col-ms-4">
+                    <div class="col-sm-2">
                         <label >מיקום הסחורה</label>
                         <select class="form-control is-valid" formControlName="warehouse" name='warehouse'>
                           <option value="">בחר מיקום</option> 
@@ -151,7 +152,7 @@
                           <option value="Kasem materials">קאסם</option>
                         </select>
                       </div>     
-                      <div class="col-ms-4">
+                      <div class="col-sm-2">
                           <label >הערות</label>
                           <input type="text" class="form-control is-valid" placeholder="remarks..."
                           formControlName="remarks" name='remarks'>
@@ -159,7 +160,7 @@
                   </div>
             
                   <div class="form-row w-100 d-flex justify-content-around"> 
-                    <div class="col-ms-4">
+                    <div class="col-sm-4">
                       <button (click)="submitForm()" class="btn btn-success">אישור</button>
                       <button (click)="resetForm()" class="btn btn-danger">איפוס</button>
                     </div>

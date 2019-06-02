@@ -1,6 +1,18 @@
-.container-fluid{
-    background-color: pink;
-}
+
+@media screen and (min-width: 1000px) {
+    #arrivalForm{
+      width: 60%;
+    }
+  }
+@media screen and (min-width: 750px) {
+    #arrivalForm{
+      width: 75%;
+    }
+  }
+
+  #arrivalForm{
+    float: right;
+  }
 
 form.flex-row-reverse *{
 float: right;

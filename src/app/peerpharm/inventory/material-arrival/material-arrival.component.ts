@@ -25,6 +25,8 @@ export class MaterialArrivalComponent implements OnInit {
   @ViewChild('supplierItemNameInput') supplierItemNameInput: ElementRef;
   @ViewChild('printBtn') printBtn: ElementRef;
   @ViewChild('tabset') tabset: NgbTabset ;
+  @ViewChild('analysisFlag') analysisFlag: ElementRef ;
+ 
   screenHeight: number;
   activeTabId: String ;
   dateStr: String ;
@@ -34,7 +36,7 @@ export class MaterialArrivalComponent implements OnInit {
   supplierItemsList: Array<any> ;
   supplierItemsListCopy: Array<any> ;
   userObj: String ;
-  analysisFlag: Boolean = false;
+  // analysisFlag: Boolean = false;
   borderColor: String = '#36bea6';
   newMaterialArrival: FormGroup;
   barcodeData: any;
@@ -93,15 +95,15 @@ marginRight = 10;
 
       supplierName: ["", Validators.required], 
       supplierNumber: ["", Validators.required],
-      analysisApproval: [false, ], 
+      analysisApproval: [Boolean, false, ], 
       
-      totalQnt: [0, Validators.required], 
+      totalQnt: [null, Validators.required], 
       mesureType: [ 'kg', Validators.required],           
       remarks: ["", ],
       cmxOrderN: ["", ],
       packageType: ["", Validators.required], //select 
-      packageQnt: [0, ],    
-      unitsInPack: [0, ],    
+      packageQnt: [1, Validators.min(1)],    
+      unitsInPack: [null, Validators.min(1)],    
       // unitVolume: [0, ],    
       // unitMesureType: [0, ],    
       
@@ -129,8 +131,16 @@ marginRight = 10;
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
     // two displays "tab-selectbyid1" OR "tab-selectbyid2"
-    this.activeTabId="tab-selectbyid2"
+    this.activeTabId="tab-selectbyid1"
   }
+  // analysisFlagChange(ev){
+  //   if(ev.target.checked){
+  //     this.newMaterialArrival.value.analysisApproval= true;
+  //   }else{
+  //     this.newMaterialArrival.value.analysisApproval= false;
+  //   }
+  //   debugger
+  // }
 
   filterSuppliers(input){
     if(input !=""){
@@ -225,11 +235,12 @@ marginRight = 10;
       });
     }
     let continueSend= false;
-    this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
+    this.newMaterialArrival.controls.analysisApproval.setValue(this.analysisFlag.nativeElement.checked);
+    // this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
     if(this.newMaterialArrival.value.productionDate!=""){ this.adjustDate(this.newMaterialArrival.controls.productionDate)  }
     if(this.newMaterialArrival.value.expiryDate!=""){ this.adjustDate(this.newMaterialArrival.controls.expiryDate) }
     if(this.newMaterialArrival.valid){
-      if( !this.analysisFlag ){
+      if( !this.analysisFlag.nativeElement.checked ){
         if(confirm('אנליזה לא תקינה , האם להמשיך?')){
           continueSend= true;
         }else{
@@ -264,6 +275,7 @@ marginRight = 10;
           //   expiryDate: this.newMaterialArrival.value.expiryDate,
           //   lotNumber: this.newMaterialArrival.value.lotNumber,
           // }
+          debugger;          
           this.addMaterialToStock();    
           });
 
@@ -325,7 +337,7 @@ marginRight = 10;
         this.printBarcode(res.savedDoc._id , res.savedDoc.internalNumber);// we might need to change the value to numbers
         this.toastSrv.success("New material arrival saved!");
           this.resetForm();
-          this.analysisFlag = false;
+          this.analysisFlag.nativeElement.checked = false;
           //print barcode;
       }else if(res == 'no material with number'){
         this.toastSrv.error("Item number wrong")
