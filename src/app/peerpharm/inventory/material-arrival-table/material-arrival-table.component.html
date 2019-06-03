@@ -1,77 +1,85 @@
 <br>
+
 <table class='table table-fixed'>
-    <thead class='bg-info text-white'  >
+    <thead class='tableheader bg-info text-white'  >
       <tr>
         <th style="width:5%;">#</th>
         <th style="width:10%;">מספר פריט</th>
-        <th style="width:20%; padding:5px">שם חו"ג</th>
-        <th style="width:10%; padding:5px">מספר ספק</th>
-        <th style="width:10%; padding:5px">שם ספק</th>
-        <th style="width:10%; padding:5px">אצוות יצרן</th>
-        <th style="width:10%; padding:5px">תאריך תפוגה</th>
-        <th style="width:5%; padding:5px">אנליזה</th>
-        <th style="width:10%; padding:5px">תאריך הגעה</th>
-        <th style="width:5%; padding:5px">הדפסה</th>
-        <th style="width:5%;"></th>
+        <th style="width:15%;">שם חו"ג</th>
+        <th style="width:8%;">מספר ספק</th>
+        <th style="width:5%;">כמות</th>
+        <th style="width:8%;">שם ספק</th>
+        <th style="width:8%;">אצוות יצרן</th>
+        <th style="width:8%;">תאריך תפוגה</th>
+        <th style="width:5%;">אנליזה</th>
+        <th style="width:10%;">תאריך הגעה</th>
+        <th style="width:5%;">הדפסה</th>
+
       </tr>
     </thead>
-    <tbody class='table-hover'>
+    <tbody class='text-center table-hover'>
         <tr *ngFor="let arrival of materialsArrivals; let i = index" >
             <td style="width:5%;">{{i+1}}</td>
 
             <td *ngIf="arrival._id != EditRowId"  (click)="edit(arrival._id)" style="width:10%;">{{arrival.internalNumber}}</td>
 
             <td *ngIf="arrival._id==EditRowId"  (click)="edit(arrival._id)" style="width:10%;">
-              <input  #internalNumber type='text' disabled [value]="arrival.internalNumber" style='width:170px'>
+              <input  #internalNumber type='text' disabled [value]="arrival.internalNumber" style='width: 60px'>
             </td>
 
-            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:20%; padding:5px">{{arrival.materialName}}</td>
-            <td *ngIf="arrival._id==EditRowId"  style="width:20%; padding:5px">
-              <input #materName type='text' disabled [value]="arrival.materialName" style='width:170px'>
+            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:15%; padding:5px">{{arrival.materialName}}</td>
+            <td *ngIf="arrival._id==EditRowId"  style="width:15%; padding:5px">
+              <input #materName type='text' disabled [value]="arrival.materialName" style='width: auto'>
             </td>
 
-            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:10%; padding:5px">{{arrival.supplierNumber}}</td>
-            <td *ngIf="arrival._id==EditRowId"  style="width:10%; padding:5px">
-              <input disabed #supplierNumber  type='text'  [value]="arrival.supplierNumber" style='width:170px'>
+            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:8%; padding:5px">{{arrival.supplierNumber}}</td>
+            <td *ngIf="arrival._id==EditRowId"  style="width:8%; padding:5px">
+              <input disabled #supplierNumber  type='text'  [value]="arrival.supplierNumber" style='width: auto'>
             </td>
 
-            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:10%; padding:5px">{{arrival.supplierName}}</td>
-            <td  *ngIf="arrival._id==EditRowId"  style="width:10%; padding:5px">
+            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:5%; padding:5px">{{arrival.totalQnt}}</td>
+            <td *ngIf="arrival._id==EditRowId"  style="width:5%; padding:5px">
+              <input  #quantity  type='number'  [value]="arrival.totalQnt" style='width: auto'>
+            </td>
+
+            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:8%; padding:5px">{{arrival.supplierName}}</td>
+            <td  *ngIf="arrival._id==EditRowId"  style="width:8%; padding:5px">
               <!-- <input #supplierName type='text' [value]="arrival.supplierName" style='width:170px'> -->
               
               <input class="form-control is-valid"  #supplierName type="text" [value]="arrival.supplierName" name='supplierName' (keyup)="filterSuppliers(supplierName.value)">
               <ul *ngIf="supplierName.value !=''" class="list-group" id="myList" style="overflow-y: scroll; max-height: 200px;">
-                <li *ngFor="let sup of suppliersList" class="list-group-item" (click)="chooseSupplierFromList(sup,$event)" style="cursor:pointer;">{{sup.suplierName}}</li>
+                <li *ngFor="let sup of suppliersList" class="list-group-item" (click)="chooseSupplierFromList(sup,$event)" style="width: auto; cursor:pointer;">{{sup.suplierName}}</li>
               </ul>  
             </td>
 
-            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:10%; padding:5px">{{arrival.lotNumber}}</td>
-            <td *ngIf="arrival._id==EditRowId"  style="width:10%; padding:5px">
-              <input #lotNum  type='text' [value]="arrival.lotNumber" style='width:170px'>
+            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:8%; padding:5px">{{arrival.lotNumber}}</td>
+            <td *ngIf="arrival._id==EditRowId"  style="width:8%; padding:5px">
+              <input class="text-center" #lotNum  type='text' [value]="arrival.lotNumber" style='width: 75px'>
             </td>
 
-            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:10%; padding:5px">{{arrival.expiryDate | date: "dd/MM/yyyy" }}</td>
-            <td *ngIf="arrival._id==EditRowId"  style="width:10%; padding:5px">
-              <input #expireDate type='date' [value]="dateString" style='width:170px'>
+            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:8%; padding:5px">{{arrival.expiryDate | date: "dd/MM/yyyy" }}</td>
+            <td *ngIf="arrival._id==EditRowId"  style="width:8%; padding:5px">
+              <input class="text-center" #expireDate type='date' [value]="dateString" style='width: auto'>
             </td>
 
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:5%; padding:5px">{{arrival.analysisApproval}}</td>
             <td  *ngIf="arrival._id==EditRowId"  style="width:5%; padding:5px">
-              <input #analysisApproval type='text' [value]="arrival.analysisApproval" style='width:170px'>
+              <input class="text-center" #analysisApproval type='text' [value]="arrival.analysisApproval" style='width: 60px'>
             </td>
 
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:10%; padding:5px">{{arrival.arrivalDate | date: "dd/MM/yyyy" }}</td>
             <td *ngIf="arrival._id==EditRowId"  style="width:10%; padding:5px">
-              <input #arriveDate type='date' disabled [value]="dateString2" style='width:170px'>
+              <input #arriveDate type='date' disabled [value]="dateString2" style='width: auto'>
             </td>
 
-            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:5%; padding:5px">
+            <td *ngIf="arrival._id!=EditRowId" style="width:5%; padding:5px">
               <img src="../../../../assets/images/printer.jpg" style="width: 40px; cursor: pointer;" (click)="printBarcode(arrival._id)">
             </td>
             <td *ngIf="arrival._id==EditRowId"  style="width:5%; padding:5px">
-              <i class="ti-save text-success m-r-10" style="cursor: pointer"  (click)="saveLineChanges(arrival)"></i>
+              <i class="ti-save text-success m-r-10" style="font-size: 30px; cursor: pointer"  (click)="saveEdit(currDoc)"></i>
             </td>
-            <td style="width:5%;"></td>
+
+
           </tr>
     </tbody>
     </table>
@@ -99,14 +107,14 @@
                     [style.width.px]="600"
                     [style.max-height.px]="300"
                     [style.font-size.px]="40"
-                    style.font-weight="bold"
+                    style.font-weight="900"
                     style.font-family="Arial"
                     style.float="right"
                     
                   >
                   <tr dir="ltr">
-                    <td colspan="2" *ngIf="!smallText" [style.font-size.px]="40">{{ materialName }}</td>
-                    <td colspan="2" *ngIf="smallText" [style.font-size.px]="25">{{ materialName }}</td>
+                    <td colspan="2" *ngIf="!smallText" [style.font-size.px]="40" [style.font-weight]="900">{{ materialName }}</td>
+                    <td colspan="2" *ngIf="smallText" [style.font-size.px]="25" [style.font-weight]="900">{{ materialName }}</td>
                   </tr>  
                   <tr>
                     <td colspan="2" id='itemNumber'>מק"ט: {{ materialNum }}</td>

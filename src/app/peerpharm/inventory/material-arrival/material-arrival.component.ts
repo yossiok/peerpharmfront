@@ -141,7 +141,7 @@ marginRight = 10;
   //   }else{
   //     this.newMaterialArrival.value.analysisApproval= false;
   //   }
-  //   debugger
+  //   
   // }
 
   filterSuppliers(input){
@@ -286,7 +286,7 @@ marginRight = 10;
           //   expiryDate: this.newMaterialArrival.value.expiryDate,
           //   lotNumber: this.newMaterialArrival.value.lotNumber,
           // }
-          debugger;          
+          ;          
           this.addMaterialToStock();    
           });
 
@@ -304,21 +304,22 @@ marginRight = 10;
     var form= this.newMaterialArrival;
     var inventoryService = this.invtSer; 
     return new Promise(function (resolve, reject) {
-      let itemN= form.value.internalNumber;
+      // let itemN= form.value.internalNumber;
+      let suppNumber= form.value.supplierNumber;
       let lotN= form.value.lotNumber;
       let breakeLoop=false;
-      inventoryService.getLotNumber(itemN, lotN).subscribe(itemShelfs=>{
-        if (itemShelfs.length>0){
+      inventoryService.getLotNumber(suppNumber, lotN).subscribe(arrivalForms=>{
+        if (arrivalForms.length>0){
           // wont save same lot numbers with different expiry date
-          itemShelfs.forEach((itemShl, key) => {
-            if(form.value.expiryDate != itemShl.expirationDate && !breakeLoop ){
-              let date= itemShl.expirationDate.slice(0,10)
+          arrivalForms.forEach((form, key) => {
+            if(form.value.expiryDate != form.expirationDate && !breakeLoop ){
+              let date= form.expirationDate.slice(0,10)
               if(confirm("מספר לוט כבר קיים במערכת עם תאריך תפוגה \n"+date)){
                 form.controls.expiryDate.setValue(date);
                 breakeLoop=true;
               } 
             }
-            if(key+1 == itemShelfs.length)  resolve('lot number checked');
+            if(key+1 == arrivalForms.length)  resolve('lot number checked');
           });
         }else{
           resolve('lot number new')
@@ -417,7 +418,7 @@ marginRight = 10;
 
 
   openSearch(content) {
-    debugger
+    
     this.modalService
       .open(content, { ariaLabelledBy: "modal-basic-title" })
       .result.then(

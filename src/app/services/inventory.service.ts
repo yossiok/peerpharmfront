@@ -215,8 +215,8 @@ getItemsBySupplierNum(number):Observable<any>{
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 
-getLotNumber(itemN, lotN):Observable<any>{
-  let url = this.baseUrl + "material?itemN="+itemN+"&lotN="+lotN;
+getLotNumber(supplierNumber, lotN):Observable<any>{
+  let url = this.baseUrl + "material?suppNumber="+supplierNumber+"&lotN="+lotN;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 
@@ -229,5 +229,10 @@ getMaterialArrivalFormById(id):Observable<any>{
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 
+//returns doc with _id or "doc not found"
+updateMaterialArrivalForm(objToUpdate){
+  let url = this.baseUrl + "material/updateForm";
+  return this.http.put(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
+}
 
 }

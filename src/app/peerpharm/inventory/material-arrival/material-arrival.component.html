@@ -226,7 +226,7 @@
                   [style.width.px]="360"
                   [style.max-height.px]="600"
                   [style.font-size.px]="40"
-                  style.font-weight="bold"
+                  style.font-weight="900"
                   style.font-family="Arial"
                   [style.border.px]="0"
                 >
@@ -234,8 +234,8 @@
                     <td id='itemNumber'>מק"ט: <u >{{ materialNum }}</u></td>
                   </tr>
                   <tr>
-                    <td *ngIf="!smallText" [style.font-size.px]="40">שם: <u dir="ltr">{{ materialName }}</u></td>
-                    <td *ngIf="smallText" [style.font-size.px]="25">שם: <u dir="ltr">{{ materialName }}</u></td>
+                    <td *ngIf="!smallText" [style.font-size.px]="40" [style.font-weight]="900" >שם: <u dir="ltr">{{ materialName }}</u></td>
+                    <td *ngIf="smallText" [style.font-size.px]="25" [style.font-weight]="900" >שם: <u dir="ltr">{{ materialName }}</u></td>
                   </tr>
                   <tr>
                     <td>אצווה: <u dir="ltr">{{ lotNumber }}</u></td>
