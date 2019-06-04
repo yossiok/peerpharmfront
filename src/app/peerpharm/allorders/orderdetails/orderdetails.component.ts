@@ -332,8 +332,16 @@ getOrderItems(singleLine): void {
       orderItems.map( item => {
           if (item.fillingStatus != null) {
             if(item.status!='done'){
-              if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
-              else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
+              if (item.fillingStatus.toLowerCase() == 'filled' 
+                  || item.fillingStatus.toLowerCase() == 'partfilled'){
+                    item.color = '#CE90FF';
+                  }
+              else if ( item.fillingStatus.toLowerCase() == 'beingfilled' 
+                      || item.fillingStatus.toLowerCase().includes("scheduled") 
+                      || item.fillingStatus.toLowerCase().includes('formula porduced') 
+                      || item.fillingStatus.toLowerCase().includes('batch exist')){
+                        item.color = 'yellow';
+                      } 
               else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
               else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
                 if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {

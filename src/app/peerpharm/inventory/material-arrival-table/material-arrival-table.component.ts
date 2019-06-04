@@ -45,6 +45,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   supplierItemsList: Array<any>;
   supplierItemsListCopy: Array<any>;
 
+
   // barcode values
   bcValue: Array<any> = [];
   elementType = 'svg';
@@ -75,7 +76,7 @@ export class MaterialArrivalTableComponent implements OnInit {
     this.invtSer.getAllMaterialsArrivals().subscribe(data => {
       this.materialsArrivals = data;
       this.materialsArrivalsCopy = data;
-      console.log("this.materialsArrivals[0]: ",this.materialsArrivals[0])
+      console.log("this.materialsArrivals[0]: ", this.materialsArrivals[0])
 
     })
 
@@ -160,10 +161,10 @@ export class MaterialArrivalTableComponent implements OnInit {
   }
 
   saveEdit(currDoc) {
-
-    if(this.supplierNumber.nativeElement.value != "") { 
+    this.currentDoc.analysisApproval = this.analysisApproval.nativeElement.checked
+    if (this.supplierNumber.nativeElement.value != "") {
       this.currentDoc.supplierNumber = this.supplierNumber.nativeElement.value.trim()
-    } else { 
+    } else {
       this.toastSrv.error("Can't save changes with missing fields.")
     }
 
@@ -173,18 +174,13 @@ export class MaterialArrivalTableComponent implements OnInit {
       this.toastSrv.error("Can't save changes with missing fields.")
     }
 
-    if (this.analysisApproval.nativeElement.value != "") {
-      this.currentDoc.analysisApproval = this.analysisApproval.nativeElement.value.trim()
-    } else {
-      this.toastSrv.error("Can't save changes with missing fields.")
-    }
 
     if (this.arriveDate.nativeElement.value != "") {
 
       let currentDate = this.arriveDate.nativeElement.value
       let newDate = new Date(currentDate)
       this.currentDoc.arrivalDate = newDate;
-    
+
     }
 
 
@@ -197,36 +193,36 @@ export class MaterialArrivalTableComponent implements OnInit {
     }
 
     if (this.lotNum.nativeElement.value != "") {
-     
-      if(this.currentDoc.lotNumber != this.lotNum.nativeElement.value.trim()){
-        if(confirm("האם אתה בטוח שאתה רוצה לשנות מספר אצווה ?")) {
-        this.checkLotNumber().then(
-          data=>{
-            console.log("data from checkLotNumber():" , data)
-            if(data == "lot number new"){
-              this.currentDoc.lotNumber= this.lotNum.nativeElement.value.trim();
-              this.currentDoc.expiryDate= this.expireDate.nativeElement.value.trim();
-              console.log("this.currentDoc.lotNumber:" ,this.currentDoc.lotNumber)
-              console.log("this.currentDoc.expiryDate:" ,this.currentDoc.expiryDate)
-              console.log(this.currentDoc)
 
-            } else { }
-  
-          }
-        );  
-      } else  {
-        this.lotNum.nativeElement.value = this.currentDoc.lotNumber;
+      if (this.currentDoc.lotNumber != this.lotNum.nativeElement.value.trim()) {
+        if (confirm("האם אתה בטוח שאתה רוצה לשנות מספר אצווה ?")) {
+          this.checkLotNumber().then(
+            data => {
+              console.log("data from checkLotNumber():", data)
+              if (data == "lot number new") {
+                this.currentDoc.lotNumber = this.lotNum.nativeElement.value.trim();
+                this.currentDoc.expiryDate = this.expireDate.nativeElement.value.trim();
+                console.log("this.currentDoc.lotNumber:", this.currentDoc.lotNumber)
+                console.log("this.currentDoc.expiryDate:", this.currentDoc.expiryDate)
+                console.log(this.currentDoc)
+
+              } else { }
+
+            }
+          );
+        } else {
+          this.lotNum.nativeElement.value = this.currentDoc.lotNumber;
+        }
+        let newLotNum = Object.assign({}, this.materialsArrivals);
       }
-      let newLotNum = Object.assign({}, this.materialsArrivals);
-    }
-     
-    
+
+
       this.currentDoc.lotNumber = this.lotNum.nativeElement.value.trim()
     } else {
       this.toastSrv.error("Can't save changes with missing fields.")
     }
 
-    if (this.quantity.nativeElement.value != "" && this.quantity.nativeElement.value > 0 ) {
+    if (this.quantity.nativeElement.value != "" && this.quantity.nativeElement.value > 0) {
       this.currentDoc.totalQnt = parseInt(this.quantity.nativeElement.value.trim())
     } else {
       this.toastSrv.error("Can't save changes with missing fields.")
@@ -236,40 +232,54 @@ export class MaterialArrivalTableComponent implements OnInit {
   }
 
 
-  checkLotNumber(){
+  checkLotNumber() {
 
-    var newForm= this.currentDoc;
-    var inventoryService = this.invtSer; 
-    let lotN= this.lotNum.nativeElement.value.trim();
+    var newForm = this.currentDoc;
+    var inventoryService = this.invtSer;
+    let lotN = this.lotNum.nativeElement.value.trim();
     return new Promise(function (resolve, reject) {
       // let itemN= newForm.internalNumber;
-      let suppNum= newForm.supplierNumber;
-      let breakeLoop=false;
+      let suppNum = newForm.supplierNumber;
+      let breakeLoop = false;
       debugger
-      inventoryService.getLotNumber(suppNum, lotN).subscribe(arrivalForms=>{
+      inventoryService.getLotNumber(suppNum, lotN).subscribe(arrivalForms => {
         debugger
-        if (arrivalForms.length>0){
+        if (arrivalForms.length > 0) {
           // wont save same lot numbers with different expiry date
           arrivalForms.forEach((form, key) => {
-            if(newForm.expiryDate != form.expiryDate && !breakeLoop ){
-              let date= form.expiryDate.slice(0,10);
-              if(confirm("מספר לוט כבר קיים במערכת עם תאריך תפוגה \n"+date)){
+            if (newForm.expiryDate != form.expiryDate && !breakeLoop) {
+              let date = form.expiryDate.slice(0, 10);
+              debugger
+              if (confirm("מספר לוט כבר קיים במערכת עם תאריך תפוגה \n" + date)) {
                 newForm.expiryDate = date; // date type
-                this.expireDate.nativeElement.value = date.slice(0,10); //  input type date gets "yyyy-MM-dd"
-                breakeLoop=true;
+                this.expireDate.nativeElement.value = date.slice(0, 10); //  input type date gets "yyyy-MM-dd"
+                breakeLoop = true;
                 debugger
               }
             }
-            if(key+1 == arrivalForms.length)  resolve('lot number checked');
+            if (key + 1 == arrivalForms.length) resolve('lot number checked');
           });
-        }else{
+        } else {
           resolve('lot number new')
         }
-      })  
+      })
     });
 
   }
 
-  // }
+  isChecked(ev) {
+    debugger;
+    if (ev.target.checked == true) {
+
+      this.analysisApproval.nativeElement.checked = ev.target.checked;
+      debugger;
+    }
+
+    if (ev.target.checked == false) {
+      debugger;
+      this.analysisApproval.nativeElement.checked = ev.target.checked;
+    }
+
+  }
 
 }
