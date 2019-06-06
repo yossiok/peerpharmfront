@@ -195,6 +195,14 @@ getAllSuppliers():Observable<any>{
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 
+
+
+
+
+
+
+
+
 /* Matreials Stock */
 newMatrialArrival(objToUpdate){
   let url = this.baseUrl + "material";
@@ -230,9 +238,9 @@ getMaterialArrivalFormById(id):Observable<any>{
 }
 
 //returns doc with _id or "doc not found"
-updateMaterialArrivalForm(objToUpdate){
+updateMaterialArrivalForm(formToUpdate){
   let url = this.baseUrl + "material/updateForm";
-  return this.http.put(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
+  return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
 }
 
 }

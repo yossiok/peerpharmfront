@@ -125,19 +125,19 @@ export class MaterialArrivalTableComponent implements OnInit {
   }
 
   edit(id) {
-    // if (id != '') {
-    //   this.EditRowId = id;
-    //   this.currentDoc = this.materialsArrivals.filter(i => {
-    //     if (i._id == id) {
-    //       return i;
-    //     }
-    //   })[0];
+    if (id != '') {
+      this.EditRowId = id;
+      this.currentDoc = this.materialsArrivals.filter(i => {
+        if (i._id == id) {
+          return i;
+        }
+      })[0];
 
-    //   this.dateString = this.currentDoc.expiryDate.slice(0, 10);
-    //   this.dateString2 = this.currentDoc.arrivalDate.slice(0, 10);
-    // } else {
-    //   this.EditRowId = '';
-    // }
+      this.dateString = this.currentDoc.expiryDate.slice(0, 10);
+      this.dateString2 = this.currentDoc.arrivalDate.slice(0, 10);
+    } else {
+      this.EditRowId = '';
+    }
   }
 
   filterSuppliers(input) {
@@ -197,27 +197,22 @@ export class MaterialArrivalTableComponent implements OnInit {
       if (this.currentDoc.lotNumber != this.lotNum.nativeElement.value.trim()) {
         if (confirm("האם אתה בטוח שאתה רוצה לשנות מספר אצווה ?")) {
           this.checkLotNumber().then(
-            data => {
-              console.log("data from checkLotNumber():", data)
-              if (data == "lot number new") {
-                this.currentDoc.lotNumber = this.lotNum.nativeElement.value.trim();
-                this.currentDoc.expiryDate = this.expireDate.nativeElement.value.trim();
-                console.log("this.currentDoc.lotNumber:", this.currentDoc.lotNumber)
-                console.log("this.currentDoc.expiryDate:", this.currentDoc.expiryDate)
-                console.log(this.currentDoc)
-
-              } else { }
-
+            msg => {
+              console.log("data from checkLotNumber():", msg)
+              // if (msg == "new" || msg == "existing") { }
+              // update-  updateMaterialArrivalForm(formToUpdate){
             }
-          );
+          ).catch(msg=>{
+            //dont want to continue after lotNumber confirm 
+            console.log(msg);
+          });
+
+
         } else {
-          this.lotNum.nativeElement.value = this.currentDoc.lotNumber;
+          this.lotNum.nativeElement.value = this.currentDoc.lotNumber; 
         }
-        let newLotNum = Object.assign({}, this.materialsArrivals);
       }
 
-
-      this.currentDoc.lotNumber = this.lotNum.nativeElement.value.trim()
     } else {
       this.toastSrv.error("Can't save changes with missing fields.")
     }
@@ -254,13 +249,23 @@ export class MaterialArrivalTableComponent implements OnInit {
                 newForm.expiryDate = date; // date type
                 this.expireDate.nativeElement.value = date.slice(0, 10); //  input type date gets "yyyy-MM-dd"
                 breakeLoop = true;
-                debugger
+                this.currentDoc.lotNumber= this.lotNum.nativeElement.value.trim();
+                this.currentDoc.expiryDate= this.expireDate.nativeElement.value.trim();
+                resolve('existing');
+                // resolve('date change to existing lotNumber date');
+              }else{
+                // set the native value to the original value before changes
+                this.lotNum.nativeElement.value =this.currentDoc.lotNumber; 
+                reject('no changes made');
               }
             }
             if (key + 1 == arrivalForms.length) resolve('lot number checked');
           });
         } else {
-          resolve('lot number new')
+          //get values from edit row inputs 
+          this.currentDoc.lotNumber = this.lotNum.nativeElement.value.trim();
+          this.currentDoc.expiryDate = this.expireDate.nativeElement.value.trim();
+          resolve('new')
         }
       })
     });
