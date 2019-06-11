@@ -7,8 +7,12 @@
       <div class="card-body" *ngIf="!formuleSaved">
         <h4 class="card-title">Add a new Formule</h4>
         <h5 class="card-subtitle">Enter general formule details here</h5>
-
-        <form class="form" [formGroup]="formulesForm" (submit)="onSubmit()">
+        <div class="clearfix" style="float:right;">
+          <i  *ngIf="!formuleSaved && currentFormule._id" class="ti-check" style="color: blue; width: 40px; font-size: 35px;font-weight: bold; cursor: pointer;"
+            (click)="editFormuleDetails('save')">
+          </i>
+        </div>
+        <form class="form" [formGroup]="formulesForm" (submit)="onSubmit('new')">
           <div class="form-group m-t-40 row">
             <label for="example-text-input" class="col-2 col-form-label"
               >Formule Number</label
@@ -94,8 +98,8 @@
             <!-- <label class="col-2 col-form-label">{{ phValue }}</label> -->
             
           </div>
-          <button *ngIf="!formuleSaved" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
-          <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's  Phases</button>
+          <button *ngIf="!formuleSaved && editSavedFormule!=true" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
+          <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
         </form>
       </div>
 
@@ -106,9 +110,8 @@
           <i *ngIf="formuleSaved && currentFormule._id" class="ti-pencil" style="width: 40px; font-weight: bold; cursor: pointer;"
             (click)="editFormuleDetails('edit')">
           </i>
-          <i  *ngIf="formuleSaved && currentFormule._id" class="ti-check" style="width: 40px; font-weight: bold; cursor: pointer;"
-            (click)="editFormuleDetails('save')">
-          </i>
+
+
         </div>
         <div class="d-flex flex-row justify-content-start">
           <div class="p-2">Number: {{currentFormule.number}}</div>

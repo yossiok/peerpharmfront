@@ -7,6 +7,7 @@ import {
 import { FormuleItem } from './models/formule-item';
 import { FormulePhase } from './models/formule-phase';
 import { FormulesService } from '../../services/formules.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-formule',
@@ -15,18 +16,20 @@ import { FormulesService } from '../../services/formules.service';
 })
 export class FormuleComponent implements AfterViewInit {
 
-  constructor(private formuleService: FormulesService) {}
+  constructor(private formuleService: FormulesService , private authService: AuthService) {}
   newFormuleBasic = null;
   allItemsForm: FormuleItem[] = [];
   allPhasesForm: FormulePhase[] = [];
-
+  userInfo:any;
   @ViewChildren('childItem')
   childItems: QueryList<any>;
   childPhases: QueryList<any>;
 
 
   ngOnInit(){
-
+    // debugger
+    // this.userInfo= this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+    // console.log("this.userInfo: "+this.userInfo)
   }
   onFormuleAdded(newFormuleCreated) {
     this.newFormuleBasic = newFormuleCreated;

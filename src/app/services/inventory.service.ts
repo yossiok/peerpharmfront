@@ -239,7 +239,7 @@ getMaterialArrivalFormById(id):Observable<any>{
 
 //returns doc with _id or "doc not found"
 updateMaterialArrivalForm(formToUpdate){
-  let url = this.baseUrl + "material/updateForm";
+  let url = this.baseUrl + "material/";
   return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
 }
 

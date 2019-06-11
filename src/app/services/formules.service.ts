@@ -71,7 +71,6 @@ export class FormulesService {
 
   // NOA Fomule Service
   getFormuleByNumber(number){
-    debugger
     let url = this.baseUrl + "formules?byNumber="+number;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -83,6 +82,10 @@ export class FormulesService {
   newFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/add";
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
+  }
+  updateFormule(newFormuleDetails){
+    let url = this.baseUrl + "formules/update";
+    return this.http.put(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
   }
 
 }

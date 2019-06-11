@@ -22,13 +22,13 @@ export class AddFormuleComponent implements OnInit {
   phValue: string="7";
   formuleDetailsOk: Boolean= false;
   formuleSaved: Boolean= false;
-  editFormule: Boolean= false;
+  editSavedFormule: Boolean= false;
   currentFormule:any={
     number: null,
     name:"",
     category: "",
     lastUpdate: new Date(),
-    lastUpdateUSer: "",
+    lastUpdateUser: "",
     ph: null,
     client: "",
   };
@@ -58,19 +58,37 @@ export class AddFormuleComponent implements OnInit {
   //   { value: 'Hyperallergic'}
   // ];
 
-  ngOnInit() {
-    
-    this.authService.userEventEmitter.subscribe(data => {
-      this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+  async ngOnInit() {
+    await this.authService.userEventEmitter.subscribe(user => {
+      this.user=user.firstName+" "+user.lastName;
       this.formulesForm.controls.lastUpdateUser.setValue(this.user);
     });
-    
+
+    // await this.authService.getLoggedInUser().subscribe(data=>{
+    //   data;
+    //   debugger
+    // })
+    // this.authService.userEventEmitter.subscribe(data => {
+    //   this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+    //   this.formulesForm.controls.lastUpdateUser.setValue(this.user);
+    // });
+    // await this.getUserInfo().then(msg=>{
+    //   console.log('got user info')
+    // }).catch(errMsg=>{
+    //   console.log("user info errMsg: "+errMsg)
+    // });
+    console.log('welcome '+this.user);
     this.formulesForm.controls.client.setValue('Peerpharm Ltd');
   }
 
 
+  async updateCurrFormule(){
+    
+    // this.currentFormule=
+  }
 
-  async onSubmit() {
+  async onSubmit(actionType) {
+    //get user info
     if(this.formulesForm.value.lastUpdateUser ==""){
       this.authService.userEventEmitter.subscribe(data => {
         this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
@@ -78,24 +96,27 @@ export class AddFormuleComponent implements OnInit {
       });  
     }
     
+    // check if formule number free to use
     await this.formuleService.getFormuleByNumber(this.formulesForm.value.number).subscribe(data=>{
-      debugger
       if(data.length!=0){
         this.toastSrv.error("Formule number already exist");
       }else{
-        // trim unwanted edges
+        // trim unwanted tails
         this.formulesForm.value.number.trim();
         this.formulesForm.value.name.trim();
         this.formulesForm.value.client.trim();
         this.formulesForm.controls.ph.setValue(this.phValue);
 
+        //check that all fields filled
         if(this.formulesForm.valid){
           var newFormuleDetails = this.formulesForm.value;
+          //save new formule
           this.formuleService.newFormule(newFormuleDetails).subscribe(formule=>{
-            debugger
             if(formule._id){
               this.currentFormule=formule;
               this.formuleSaved=true;
+              this.editSavedFormule=false;
+
 
               // this.formuleCreated.emit(newFormuleDetails);
             } else if(formule == 'formule number exist'){
@@ -126,10 +147,64 @@ export class AddFormuleComponent implements OnInit {
 
 editFormuleDetails(action){
   if(action=="save"){
-  this.formuleSaved= true;
-  } else if(action == "edit"){
+    this.formuleSaved= true;
+    this.editSavedFormule=false;
+    this.saveFormuleDetails();
+  } 
+  else if(action == "edit"){
     this.formuleSaved= false;
+    this.editSavedFormule= true;
+    
   }
+}
+
+saveFormuleDetails(){
+  //
+  this.formulesForm.value.number.trim();
+  this.formulesForm.value.name.trim();
+  this.formulesForm.value.client.trim();
+  this.formulesForm.controls.ph.setValue(this.phValue);
+
+  //check that all fields filled
+  if(this.formulesForm.valid){
+    var udateFormuleDetails = this.formulesForm.value;
+    // 
+    udateFormuleDetails._id=this.currentFormule._id
+    // udateFormuleDetails.phases=this.currentFormule.phases;
+    //save updated formule
+    this.formuleService.updateFormule(udateFormuleDetails).subscribe(formule=>{
+      if(formule._id){
+        this.currentFormule=formule;
+        this.formuleSaved=true;
+        this.editSavedFormule=false;
+        this.toastSrv.success("Details Saved");
+
+        // this.formuleCreated.emit(newFormuleDetails);
+      } else if(formule == 'formule number exist'){
+          this.toastSrv.error("Formule Number already exist");
+      }else if(formule == "cant find formule id"){
+        this.toastSrv.error("Can't update Formule by id");
+      }
+    });
+  }else{
+    this.toastSrv.error("Please complete Formule fields");
+  }
+}
+
+getUserInfo(){
+  var that=this;
+  return new Promise(function (resolve, reject) {
+    that.authService.userEventEmitter.subscribe(data => {
+      that.user = that.authService.loggedInUser.firstName+" "+that.authService.loggedInUser.lastName;
+      that.formulesForm.controls.lastUpdateUser.setValue(that.user);
+      if(that.user!="" && that.formulesForm.value.lastUpdateUser){
+        resolve("continue");
+      }else{
+        reject("No user name");
+      }
+    });  
+  
+  });
 }
 
 }
