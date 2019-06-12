@@ -107,6 +107,7 @@
 </table>
 -->
 
+<!-- <button (click)="addImpRemarkFromItemTree()">addImpRemarkFromItemTree</button> -->
 {{ today | date: "dd/MM/yyyy" }}<br />
 <input
   type="date"
@@ -141,12 +142,13 @@
   Sachet
 </div>
 
-<table>
+<table class="scheduleTB">
   <thead class="bg-success text-white">
     <tr>
       <th class="positionClass"><b>P</b></th>
       <th><b>Order</b></th>
       <th><b>Item</b></th>
+      <th><b>Item Important Remark</b></th>
       <th><b>Costumer</b></th>
       <th><b>Name of product</b></th>
       <th><b>Batch number</b></th>
@@ -195,6 +197,15 @@
         #itemN
         (focusout)="setItemDetails(itemN.value)"
         class="form-control"
+      />
+    </td>
+    <td>
+      <input
+        type="text"
+        id="input_itemImpRemark"
+        class="form-control"
+        [(ngModel)]="scheduleLine.itemImpRemark"
+        disabled
       />
     </td>
     <td>
@@ -343,6 +354,14 @@
         <td *ngIf="line._id === EditRowId">
           <input #item type="text" [value]="line.item" class="form-control" />
         </td>
+
+        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)" style="color:red ;  max-width: 12%; overflow-wrap: break-word;">
+            {{ line.itemImpRemark }}
+        </td>
+        <td *ngIf="line._id === EditRowId">
+          <input #item type="text" [value]="line.itemImpRemark" class="form-control" style="color:red ; "  disabled/>
+        </td>
+
         <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
           {{ line.costumer | slice: 0:30 }}
         </td>

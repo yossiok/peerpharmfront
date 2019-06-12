@@ -3,7 +3,7 @@
 
 <br>
 <div class='mainDiv'>
-    <div class='subContainer'>
+    <!-- <div class='subContainer'>
       <div class='subHeader'>Ordered Last 7-Days</div>
       <div class='subMain'> 17 </div>
       <div class='subHeader'><br></div>
@@ -21,9 +21,9 @@
           <div class='subHeader'>Panding Orders</div>
           <div class='subMain'> 5  </div>
           <div class='subHeader'><br></div>
-    </div>
-    <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Load </button> &nbsp;&nbsp;&nbsp;
-    <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Show Items </button>
+    </div> -->
+    <!-- <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Load </button> &nbsp;&nbsp;&nbsp;
+    <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Show Items </button> -->
 </div>
 <br><br>
 <input matInput placeholder="Search costumer by name" (change)="changeText($event)" 
@@ -31,6 +31,9 @@
   margin-bottom: 5px;
   width: 300px;
   font-size: 18px"/>
+    <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px'> Load </button> 
+    <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px'> Show Items </button>
+  
 <div class="stageTags" >
   <div style="background-color: white; " >
      חדש:  <span><b>{{stagesCount.new}}</b></span>

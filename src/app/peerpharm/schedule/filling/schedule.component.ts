@@ -64,7 +64,8 @@ export class ScheduleComponent implements OnInit {
     mkp: '',
     status: 'open',
     productionLine: '',
-    pLinePositionN: 999
+    pLinePositionN: 999,
+    itemImpRemark:'',
   };
   typeShown: String = 'basic';
   constructor(
@@ -107,6 +108,7 @@ export class ScheduleComponent implements OnInit {
       this.scheduleLine.productionLine = '5';
     }
     console.log(this.scheduleLine);
+    debugger
     this.scheduleService
       .setNewProductionSchedule(this.scheduleLine)
       .subscribe(res => {
@@ -130,6 +132,7 @@ export class ScheduleComponent implements OnInit {
         this.scheduleLine.status = 'open';
         this.scheduleLine.productionLine = '';
         this.scheduleLine.pLinePositionN = 999;
+        this.scheduleLine.itemImpRemark = '';
       });
     }else{
       alert('מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.');
@@ -228,18 +231,20 @@ export class ScheduleComponent implements OnInit {
     this.currentType = type;
   }
 
-  updateSchedule() {
-    debugger
+  async updateSchedule() {
     if(this.orderN.nativeElement.value!=''){
       this.EditRowId;
       this.scheduleData;
       let scdLneInfo=
-        this.scheduleData.filter(
+        await this.scheduleData.filter(
           sced => {
-            sced._id == this.EditRowId
-          } );
+            if(sced._id == this.EditRowId) {
+              debugger
+              return sced;
+            } 
+          });
       let updateOrderItemDate= (scdLneInfo[0].date == this.date.nativeElement.value );
-  
+      scdLneInfo[0].itemImpRemark
       debugger
       this.date.nativeElement.value
   
@@ -269,7 +274,8 @@ export class ScheduleComponent implements OnInit {
         date: this.date.nativeElement.value,
         marks: this.marks.nativeElement.value,
         shift: this.shift.nativeElement.value,
-        mkp: this.currentType
+        mkp: this.currentType,
+        itemImpRemark: scdLneInfo[0].itemImpRemark,
       };
       console.log(scheduleToUpdate);
       this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
@@ -296,7 +302,9 @@ export class ScheduleComponent implements OnInit {
   setItemDetails(itemNumber) {
     console.log(itemNumber);
     this.itemSer.getItemData(itemNumber).subscribe(res => {
+      console.log("getItemData: "+res[0]);
       console.log(res[0]);
+      let impremark= res[0].impRemarks;
       let itemName =
         res[0].name + ' ' + res[0].subName + ' ' + res[0].discriptionK;
       let packageP =
@@ -313,6 +321,7 @@ export class ScheduleComponent implements OnInit {
         res[0].extraText2;
       this.scheduleLine.productName = itemName;
       this.scheduleLine.packageP = packageP;
+      this.scheduleLine.itemImpRemark = impremark;
     });
   }
 
@@ -401,4 +410,22 @@ export class ScheduleComponent implements OnInit {
     const newPrintBarkod = this.printScheduleFillingForm.value;
     console.log(newPrintBarkod);
    }
+
+
+
+
+
+   addImpRemarkFromItemTree(){
+     this.scheduleService.addImpRemarkFromItemTree().subscribe(data=>{
+      console.log(data);
+      debugger
+     });
+   }
+
+
+
+
+
+
+
 }

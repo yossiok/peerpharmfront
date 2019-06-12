@@ -594,48 +594,60 @@ editBatch(batch){
     }
   
 
-  setSchedule(item, type) {
+  async setSchedule(item, type) {
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
     if(this.date.nativeElement.value!=""){
-      this.itemSer.getItemData(item.itemNumber).subscribe(res => {
-        // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
-        let packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+      var packageP="";
+      var impremark="";
+      if(item.itemNumber !=""){
+        await this.itemSer.getItemData(item.itemNumber).subscribe(res => {
 
+          // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
+          if(res[0]._id){
+            packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+            impremark= res[0].impRemarks;  
+          }
+          let scheduleLine = {
+            positionN: '',
+            orderN: item.orderNumber,
+            item: item.itemNumber,
+            costumer: this.costumer,
+            productName: item.discription,
+            batch: item.batch,
+            packageP: packageP ,
+            qty: item.quantity,
+            qtyRdy: '',
+            date: this.date.nativeElement.value,
+            marks: this.marks.nativeElement.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
+            shift: this.shift.nativeElement.value,
+            mkp: this.chosenType,
+            status: 'open',
+            productionLine:'',
+            pLinePositionN:999,
+            itemImpRemark: impremark,
+          }
+          if(scheduleLine.mkp=="sachet") scheduleLine.productionLine="7";
+          if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
+          if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
+    
+          this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
+          let dateSced = this.date.nativeElement.value;
+          dateSced = moment(dateSced).format("DD/MM/YYYY");
+          let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " +  dateSced};
+          this.orderService.editItemOrder(orderObj).subscribe(res=>{
+              console.log(res);
+              this.toastSrv.success(dateSced , "Schedule Saved");
+              debugger
+          });
+          console.log(scheduleLine);
+        });
 
-      });
-      let scheduleLine = {
-        positionN: '',
-        orderN: item.orderNumber,
-        item: item.itemNumber,
-        costumer: this.costumer,
-        productName: item.discription,
-        batch: item.batch,
-        packageP: '',
-        qty: item.quantity,
-        qtyRdy: '',
-        date: this.date.nativeElement.value,
-        marks: this.marks.nativeElement.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
-        shift: this.shift.nativeElement.value,
-        mkp: this.chosenType,
-        status: 'open',
-        productionLine:'',
-        pLinePositionN:999
+      }else{
+        this.toastSrv.error("Item number missing");
       }
-      if(scheduleLine.mkp=="sachet") scheduleLine.productionLine="7";
-      if(scheduleLine.mkp=="mkp") scheduleLine.productionLine="6";
-      if(scheduleLine.mkp=="tube") scheduleLine.productionLine="5";
 
-      this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
-      let dateSced = this.date.nativeElement.value;
-      dateSced = moment(dateSced).format("DD/MM/YYYY");
-      let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " +  dateSced};
-      this.orderService.editItemOrder(orderObj).subscribe(res=>{
-          console.log(res);
-          this.toastSrv.success(dateSced , "Schedule Saved");
-      });
-      console.log(scheduleLine);
     }else{
       this.toastSrv.error("Invalid Date!");
     }

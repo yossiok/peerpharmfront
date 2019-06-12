@@ -252,7 +252,6 @@ export class OrdersComponent implements OnInit {
     let urlPrefix=window.location.href.substring(0,urlPrefixIndex);
     window.open(urlPrefix+"#/peerpharm/allorders/orderitems/00"); 
     // this.router.navigate(["/peerpharm/allorders/orderitems/00"]);
-
   }
 
   changeText(ev)

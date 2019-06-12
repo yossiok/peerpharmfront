@@ -26,14 +26,24 @@
     <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Show Items </button>
 </div> -->
 <br><br>
-<input matInput  placeholder="Search order by number" (keyup)="changeText($event)" />
+<div>
+  <input matInput  placeholder="Search order by number" (keyup)="changeText($event)"
+    style=" line-height: 45px; margin-bottom: 5px; width: 300px; font-size: 18px;" />
+  <button (click)="loadCheckedOrders()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px'> Load </button>   
+    <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px'> Show Items </button>
+
+</div>
+
 <table class='table table-fixed'>
   <thead class='bg-info text-white'  (click)="edit(' ')">
     <tr>
       <th style="width:5%;"></th>
       <th style="width:5%;">
+        <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">
       </th>
-      <th style="padding:5px">Order Number</th>
+      <th style="padding:5px">Order Number
+        <i class="ti-exchange-vertical" (click)="sortOrdersByOrderNumber()" style="cursor:pointer" ></i>
+      </th>
       <th style="width:20%; padding:5px">Costumer</th>
       <th style="padding:5px">Order date</th>
       <th style="padding:5px">Delivery Date</th>

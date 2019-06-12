@@ -130,4 +130,22 @@ export class ScheduleService {
     let url = this.baseUrl + "mkpSchedule/delete";
     return this.http.post(url, JSON.stringify(sced), this.options).pipe(map(res => res.json()));
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  addImpRemarkFromItemTree(){
+    let url = this.baseUrl + "schedule/addItemImportantRemarkToSchedule";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 }

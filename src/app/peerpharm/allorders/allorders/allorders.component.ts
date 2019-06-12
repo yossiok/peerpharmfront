@@ -3,6 +3,7 @@ import { OrdersService } from '../../../services/orders.service'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -13,11 +14,20 @@ import * as moment from 'moment';
 })
 export class AllordersComponent implements OnInit {
 
-  constructor(private ordersService: OrdersService, private router: Router) { }
+  constructor(private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService) { }
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
   today:any;
+  sortCurrType:String="OrderNumber";
+  numberSortDir:string="oldFirst";
+  // stageSortDir:string="done";
+  selectAllOrders:boolean=false;
+
+
+
+
+
 
 
 
@@ -118,21 +128,15 @@ export class AllordersComponent implements OnInit {
     }
   }
 
-  loadOrders() {
-    console.log(this.orders);
-    let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
-    this.ordersService.sendOrderData(tempArr);
-    this.ordersService.getAllOpenOrdersItems(false);
-    this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
-    console.log(tempArr);
-    //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
-  }
-
-  loadOrdersItems() {
-    this.ordersService.getAllOpenOrdersItems(true);
-    this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
-
-  }
+  // loadOrders() {
+  //   console.log(this.orders);
+  //   let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
+  //   this.ordersService.sendOrderData(tempArr);
+  //   this.ordersService.getAllOpenOrdersItems(false);
+  //   this.router.navigate(["/peerpharm/allorders/orderitems/43"]);
+  //   console.log(tempArr);
+  //   //this.ordersService.getMultiOrdersIds(tempArr).subscribe(res=>console.log(res));
+  // }
 
   changeText(ev) {
     let word = ev.target.value;
@@ -143,4 +147,55 @@ export class AllordersComponent implements OnInit {
       this.orders = this.orders.filter(x => x.NumberCostumer.toLowerCase().includes(word.toLowerCase()));
     }
   }
+
+  checkboxAllOrders(ev){
+    this.orders.filter(e => e.isSelected = ev.target.checked);
+  }
+
+  sortOrdersByOrderNumber(){
+    if(this.sortCurrType!="orderNumber")  this.orders= this.ordersCopy;
+    if(this.numberSortDir=="oldFirst"){
+      this.orders= this.orders.reverse();
+      this.numberSortDir="newFirst";
+    }else if(this.numberSortDir=="newFirst"){
+      this.orders= this.orders.reverse();
+      this.numberSortDir="oldFirst";
+    }
+    this.sortCurrType="orderNumber"
+  }
+
+  
+
+  loadCheckedOrders() {
+    console.log(this.orders);
+    // let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
+    let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e.orderNumber);
+    if(tempArr.length>0){
+      this.ordersService.sendOrderData(tempArr);
+      this.ordersService.getAllOpenOrdersItems(false);
+      let tempArrStr="";
+      tempArr.forEach(number => {
+        tempArrStr=tempArrStr+","+number;
+      });
+      
+      let urlPrefixIndex=window.location.href.indexOf("#");
+      let urlPrefix=window.location.href.substring(0,urlPrefixIndex)
+      debugger
+      window.open(urlPrefix+"#/peerpharm/allorders/orderitems/"+tempArrStr); 
+      // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
+    } else{
+      this.toastSrv.error("0 Orders selected");
+    }
+  }
+
+  loadOrdersItems() {
+    this.ordersService.getAllOpenOrdersItems(true);
+    let urlPrefixIndex=window.location.href.indexOf("#");
+    let urlPrefix=window.location.href.substring(0,urlPrefixIndex);
+    window.open(urlPrefix+"#/peerpharm/allorders/orderitems/00"); 
+    // this.router.navigate(["/peerpharm/allorders/orderitems/00"]);
+  }
+
+
+
 }
