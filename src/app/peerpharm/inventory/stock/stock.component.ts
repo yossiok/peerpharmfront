@@ -107,6 +107,7 @@ export class StockComponent implements OnInit {
   newOrderProcurmentDetails: FormGroup;
   newTransportDetails: FormGroup;
   transportationItem: FormGroup;
+  loadingExcel:Boolean=false;
 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
@@ -186,7 +187,75 @@ export class StockComponent implements OnInit {
 //       this.excelService.exportAsExcelFile(data, "movements");
 //         });
 //  }
+  exportCurrTable() {
+    this.loadingExcel= true;
+    
+    this.makeFileForExcelDownload().then( (data:any[])=>{
+      console.log(data)
+      debugger
+      
+      // var anyArr: any[]=data;
+      switch (this.stockType) {
+        case 'component':
+          this.excelService.exportAsExcelFile(data , "component stock table");
+          break;
+        case 'product':
+          this.excelService.exportAsExcelFile(data , "product stock table");
+          break;
+        case 'material':
+          this.excelService.exportAsExcelFile(data , "material stock table");
+          break;
+        case 'sticker':
+          this.excelService.exportAsExcelFile(data , "sticker stock table");
+          break;
+      }
+      this.loadingExcel= false;
+// switch case;
+    }).catch(errMsg=>{
+      this.toastSrv.error(errMsg);
+    });
 
+ }
+ makeFileForExcelDownload() {
+  var that=this;
+  var arr:any[]=[]
+  return new Promise(function (resolve, reject) {
+    var line={}
+    if(that.stockType== 'component'){
+      for (let i = 0; i < that.components.length; i++) {
+        line = {
+          'מספר פריט': that.components[i].componentN,
+          'מק"ט פריט אצל הספק': that.components[i].componentNs,
+          'שם הפריט': that.components[i].componentName,
+          'סוג פריט': that.components[i].componentType,
+          'כמות במלאי': that.components[i].amount,
+        }
+        arr.push(line)
+      }
+      resolve(arr);
+    }else if(that.stockType== 'product'){
+      for (let i = 0; i < that.components.length; i++) {
+        line = {
+          'מספר פריט': that.components[i].componentN,
+          'שם המוצר': that.components[i].componentName,
+          'כמות במלאי': that.components[i].amount,
+        }
+        arr.push(line)
+      }
+      resolve(arr);
+    } else if(that.stockType== 'material'){
+      for (let i = 0; i < that.components.length; i++) {
+        line = {
+          'מספר פריט': that.components[i].componentN,
+          'שם החו"ג': that.components[i].componentName,
+          'כמות במלאי': that.components[i].amount,
+        }
+        arr.push(line)
+      }
+      resolve(arr);
+    }  
+  });
+}
 
 
 

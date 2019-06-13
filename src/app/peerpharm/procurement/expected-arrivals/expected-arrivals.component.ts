@@ -386,7 +386,14 @@ resetDate(form){
     if(id!='') {
       this.changedLine=  this.itemExpectedArrivals.filter(i=>i._id==id)[0];
       this.lineToUpdate=  this.itemExpectedArrivals.filter(i=>i._id==id);
-      this.dateStr=this.changedLine.expectedDate.slice(0,10);
+      debugger
+
+      this.dateStr;
+      if(this.changedLine.expectedDate != null && this.changedLine.expectedDate != undefined ){
+        this.dateStr=this.changedLine.expectedDate.slice(0,10);
+      }else{
+        this.dateStr="";
+      }
     }
   }
   editJN(exptArrvl) {
@@ -541,9 +548,16 @@ saveLineJobNChanges(expectedArrival){
 
       this.lineToUpdate;
       this.changedLine;
+      this.dateStr;
+      debugger
+      if(this.dateStr!=null && this.dateStr!=undefined && this.dateStr!=""){
+        this.changedLine.expectedArrival =  new Date(this.dateStr+"").toISOString();
+      }
         let conf=confirm("לשמור שינויים בצפי הגעה של פריט "+ expectedArrival.componentN+" ?");
       if(conf){
+        debugger
         this.procuretServ.updateExpectedArrival(this.changedLine).subscribe(res=>{
+          debugger
           if(res.componentN){
             this.toastSrv.success('שינויים בוצעו בהצלחה');
             this.edit('');
