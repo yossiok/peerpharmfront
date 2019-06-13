@@ -19,6 +19,7 @@
       <th><b>P</b></th>
       <th><b>Order</b></th>
       <th><b>Item Number</b></th>
+      <th><b>Item Image</b></th>
       <th><b>Costumer</b></th>
       <th>Cmpt N</th>
       <th>Cmpt Name</th>
@@ -39,6 +40,7 @@
     <td></td>
     <td><input [(ngModel)]="scheduleLine.orderN" style='width:60px' onfocusout="setCostumer()"></td>
     <td><input [(ngModel)]="scheduleLine.itemN" style='width:90px' onfocusout="setItemDetails()"></td>
+    <td><input [(ngModel)]="scheduleLine.itemImg" style='width:90px' disabled></td>
     <td><input [(ngModel)]="scheduleLine.costumer" style='width:80px'></td>
     <td><input [(ngModel)]="scheduleLine.cmptN" style='width:80px'></td>
     <td><input [(ngModel)]="scheduleLine.cmptName" style='width:110px'></td>
@@ -80,6 +82,15 @@
         </a>
       </td>
       <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.itemN" style='width:50px' disabled></td>
+
+      <td *ngIf="line._id!==EditRowId"  style='cursor: pointer; color: blue'>
+        <!-- {{line.itemImg}} -->
+        <!-- <img src="../../../../assets/images/imageIcon.png" alt="imageIcon" style="width: 30px" (click) = "showItemImg(line.itemN)"> -->
+        <img src="../../../../assets/images/imageIcon.png" alt="imageIcon" style="width: 30px" (click)="openItemImg(line.itemN)">
+      </td>
+      <td *ngIf="line._id===EditRowId">
+        <input #itemImg type='text' value="" style='width:50px' disabled>
+      </td>
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
       <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer" style='width:50px' disabled></td>
@@ -125,3 +136,22 @@
     </tr>
   </tbody>
 </table>
+
+
+
+
+<div *ngIf="openImgModal==true " id="myImgModal" class="modal2" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
+
+  <!-- Modal content -->
+  <div class="modal-content" style='width:1000px' id='modelD'>
+    <div class="modal-header">
+      <span class="close" id="closeId2" (click)="openImgModal=false ; currModalImgArr=[] ;" style="font-size:40px;">&times;</span>
+    </div>
+    <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
+      <img *ngFor="let imgSrc of currModalImgArr"[src]="imgSrc" width="100%" style="margin-bottom: 10px; margin-left: 10px;">
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+
+</div>

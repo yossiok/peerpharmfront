@@ -4,6 +4,7 @@
   import * as moment from 'moment';
 import { DatepickerComponent } from 'angular2-material-datepicker';
 import { ToastrService } from 'ngx-toastr';
+import { ItemsService } from 'src/app/services/items.service';
   
   @Component({
     selector: 'app-schedule',
@@ -36,6 +37,7 @@ import { ToastrService } from 'ngx-toastr';
     @ViewChild('shift') shift:ElementRef;
     @ViewChild('mkp') mkp:ElementRef; 
     @ViewChild('id') id:ElementRef; 
+    @ViewChild('itemImg') itemImg:ElementRef; 
     @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
       console.log(event);
       this.edit('');
@@ -65,7 +67,9 @@ import { ToastrService } from 'ngx-toastr';
     }
     
     typeShown:String="basic";
-    constructor(private scheduleService:ScheduleService , private toastSrv: ToastrService) { }
+    currModalImgArr:Array<any>;
+    openImgModal:Boolean= false;
+    constructor(private scheduleService:ScheduleService , private toastSrv: ToastrService , private itemsService: ItemsService) { }
   
     
     ngOnInit() {
@@ -109,6 +113,7 @@ import { ToastrService } from 'ngx-toastr';
 
       this.scheduleService.getAllPrintSchedule().subscribe(res=>{
         res.map(elem=>{
+          console.log(elem);
           let pastDue=(moment(elem.date).format() < moment(this.today).format());
           if(elem.status=="printed") elem.trColor="Aquamarine";
           if(elem.status!="printed" && pastDue) elem.trColor="rgb(250, 148, 148)";            
@@ -173,6 +178,7 @@ import { ToastrService } from 'ngx-toastr';
         marks:this.marks.nativeElement.value,
         nextStation:this.nextStation.nativeElement.value,
         printType:this.printType.nativeElement.value,
+        itemImg:this.itemImg.nativeElement.value,
       }
       if (confirm("update schedule line?")) {
         console.log('scheduleToUpdate ',scheduleToUpdate);
@@ -196,6 +202,7 @@ import { ToastrService } from 'ngx-toastr';
                   sch.printType= scheduleToUpdate.printType;
                   sch.qty= scheduleToUpdate.qty;
                   sch.qtyProduced= scheduleToUpdate.qtyRdy;
+                  sch.itemImg= scheduleToUpdate.itemImg;
               }
               if(key+1 == this.scheduleData.length){
                 this.EditRowId='';
@@ -264,10 +271,52 @@ import { ToastrService } from 'ngx-toastr';
     });
   }
   
+  showItemImg(itemNumber){
+    this.itemsService.getItemData(itemNumber).subscribe(doc=>{
+      if(doc[0].imgMain1!="" && doc[0].imgMain1!=undefined && doc[0].imgMain1!=null && doc[0].imgMain1!="null"){
+        window.open(doc[0].imgMain1); 
+      }else if(doc[0].imgMain2!="" && doc[0].imgMain2!=undefined && doc[0].imgMain2!=null && doc[0].imgMain2!="null"){
+        window.open(doc[0].imgMain2);
+      }else if(doc[0].imgMain3!="" && doc[0].imgMain3!=undefined && doc[0].imgMain3!=null && doc[0].imgMain3!="null"){
+        window.open(doc[0].imgMain3);
+      }else{
+        this.toastSrv.error("No main image for this item")        
+      }
+    });
+  }
+
+  async openItemImg(itemNumber) {
+
+    // this.openImgModal = true;
+    this.currModalImgArr=[];
+    this.openImgModal = false;
+    await this.itemsService.getItemData(itemNumber).subscribe(doc=>{
+      this.currModalImgArr=[];
+        
+      if(doc[0].imgMain1!="" && doc[0].imgMain1!=undefined && doc[0].imgMain1!=null && doc[0].imgMain1!="null"){
+        this.currModalImgArr.push(doc[0].imgMain1); 
+      }
+      if(doc[0].imgMain2!="" && doc[0].imgMain2!=undefined && doc[0].imgMain2!=null && doc[0].imgMain2!="null"){
+        this.currModalImgArr.push(doc[0].imgMain2); 
+      }
+      if(doc[0].imgMain3!="" && doc[0].imgMain3!=undefined && doc[0].imgMain3!=null && doc[0].imgMain3!="null"){
+        this.currModalImgArr.push(doc[0].imgMain3); 
+      }
+      debugger
+      if(this.currModalImgArr.length>0){
+        this.openImgModal = true;
+      }else{
+        this.toastSrv.error("No item images");
+      }
+
+    });
+
+  }
 
   showImg(src){
       window.open(src);
   }
+  
   }
 
   
