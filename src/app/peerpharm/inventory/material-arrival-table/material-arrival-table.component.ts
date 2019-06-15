@@ -349,7 +349,7 @@ export class MaterialArrivalTableComponent implements OnInit {
     }
   }
 
-  testFunction(action){
+  testFunction(){
     debugger;
     if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
 debugger
