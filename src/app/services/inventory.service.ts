@@ -232,6 +232,18 @@ getAllMaterialsArrivals():Observable<any>{
   let url = this.baseUrl + "material?allLogs=yes";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+
+getAllMaterialsByDate(fromDate, toDate):Observable<any>{
+  debugger
+  let url = this.baseUrl + "material/byDate?fromDate="+fromDate+"&toDate="+toDate;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
+getAllMaterialsArrivalsWeek():Observable<any>{
+  let url = this.baseUrl + "material?week=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
 getMaterialArrivalFormById(id):Observable<any>{
   let url = this.baseUrl + "material/scanBarcodeId?viewOnly=yes&id="+id;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
