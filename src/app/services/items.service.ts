@@ -88,4 +88,10 @@ export class ItemsService {
     return itemResultObservable;
   }
 
+  
+  getItemsWithoutBoxOrStickerFields() {
+    let url = this.baseUrl + "item/reports?noBox=yes&noSticker=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 }

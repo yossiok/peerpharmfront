@@ -24,6 +24,12 @@ export class ItemslistComponent implements OnInit {
   ngOnInit() {
     this.getAllItems();
   }
+  exportToExcel(){
+    this.itemsService.getItemsWithoutBoxOrStickerFields().subscribe(data=>{
+      this.excelService.exportAsExcelFile(data , "items without boxNumber or StickerNumber");
+
+    });
+  }
 
   onDestroy(){
     this.subscription.unsubscribe();

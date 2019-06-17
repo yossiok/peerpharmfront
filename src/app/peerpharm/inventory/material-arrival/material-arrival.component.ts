@@ -111,7 +111,8 @@ marginRight = 10;
       
       warehouse: [""], //select 
       position: ["GENERAL"], //select 
-      barcode:[""]
+      barcode:[""],
+      deliveryNoteNumber:["", Validators.required],
     });
 
    }
@@ -238,6 +239,8 @@ marginRight = 10;
     this.productionDate= this.newMaterialArrival.value.productionDate;
     this.arrivalDate= this.newMaterialArrival.value.arrivalDate;
     this.expiryDate= this.newMaterialArrival.value.expiryDate;
+    this.newMaterialArrival.value.deliveryNoteNumber.trim();
+    
 
     if(this.newMaterialArrival.value.user == ""){
       this.authService.userEventEmitter.subscribe(data => {
@@ -311,9 +314,9 @@ marginRight = 10;
       inventoryService.getLotNumber(suppNumber, lotN).subscribe(arrivalForms=>{
         if (arrivalForms.length>0){
           // wont save same lot numbers with different expiry date
-          arrivalForms.forEach((form, key) => {
-            if(form.value.expiryDate != form.expirationDate && !breakeLoop ){
-              let date= form.expirationDate.slice(0,10)
+          arrivalForms.forEach((f, key) => {
+            if(form.value.expiryDate != f.expiryDate && !breakeLoop ){
+              let date= f.expiryDate.slice(0,10)
               if(confirm("מספר לוט כבר קיים במערכת עם תאריך תפוגה \n"+date)){
                 form.controls.expiryDate.setValue(date);
                 breakeLoop=true;

@@ -16,6 +16,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   @ViewChild('supplierNumber') supplierNumber: ElementRef;
   @ViewChild('supplierName') supplierName: ElementRef;
   @ViewChild('lotNum') lotNum: ElementRef;
+  @ViewChild('remarks') remarks: ElementRef;
   @ViewChild('expireDate') expireDate: ElementRef;
   @ViewChild('analysisApproval') analysisApproval: ElementRef;
   @ViewChild('arriveDate') arriveDate: ElementRef;
@@ -181,7 +182,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   saveEdit(currDoc) {
     this.currentDoc.analysisApproval = this.analysisApproval.nativeElement.checked
     if (this.supplierNumber.nativeElement.value != "") {
-      debugger
+       
       this.currentDoc.supplierNumber = this.supplierNumber.nativeElement.value.trim()
     } else {
       this.toastSrv.error("Can't save changes with missing fields.")
@@ -189,49 +190,58 @@ export class MaterialArrivalTableComponent implements OnInit {
 
     if (this.supplierName.nativeElement.value != "") {
       this.currentDoc.supplierName = this.supplierName.nativeElement.value.trim()
-      debugger
+       
     } else {
       this.toastSrv.error("Can't save changes with missing fields.")
     }
 
 
     if (this.arriveDate.nativeElement.value != "") {
-      debugger
-      let currentDate = this.arriveDate.nativeElement.value
-      let newDate = new Date(currentDate)
-      this.currentDoc.arrivalDate = newDate;
-
+       this.adjustDate('arrivalDate', this.arriveDate.nativeElement.value);
+      // let currentDate = this.arriveDate.nativeElement.value
+      // let newDate = new Date(currentDate)
+      // this.currentDoc.arrivalDate = newDate;
+      console.log("this.currentDoc.arrivalDate= new Date(this.arriveDate.nativeElement.value) \n",
+                  this.currentDoc.arrivalDate)
     }
 
 
     if (this.expireDate.nativeElement.value != "") {
-      let currentDate = this.expireDate.nativeElement.value;
-      let newDate = new Date(currentDate)
-      this.currentDoc.expiryDate = newDate;
-      debugger
+      // let currentDate = this.expireDate.nativeElement.value;
+      // let newDate = new Date(currentDate)
+      // this.currentDoc.expiryDate = newDate
+      this.adjustDate('expiryDate', this.expireDate.nativeElement.value);
+      
+      console.log(this.currentDoc.expiryDate)
+      ;
+       
     } else {
       this.toastSrv.error("Can't save changes with missing fields.")
     }
 
+
+
+
     if (this.lotNum.nativeElement.value != "") {
-      debugger
+        
       if (this.currentDoc.lotNumber != this.lotNum.nativeElement.value.trim()) {
         if (confirm("האם אתה בטוח שאתה רוצה לשנות מספר אצווה ?")) {
           this.checkLotNumber().then(
             
             msg => {
 
-              debugger;
+               
               console.log("data from checkLotNumber():", msg)
               // if (msg == "new" || msg == "existing") { }
-              this.invtSer.updateMaterialArrivalForm(this.currentDoc).subscribe(data =>{
-                this.toastSrv.success("Details were successfully saved")
-              })
-
+                    // this.invtSer.updateMaterialArrivalForm(this.currentDoc).subscribe(data =>{
+              //    
+              //   this.toastSrv.success("Details were successfully saved")
+              // })
+              this.updateDocument();
              
             }
           ).catch(msg=>{
-           debugger;
+            
             console.log(msg);
           });
 
@@ -239,6 +249,12 @@ export class MaterialArrivalTableComponent implements OnInit {
         } else {
           this.lotNum.nativeElement.value = this.currentDoc.lotNumber; 
         }
+      }else {
+        this.updateDocument();
+        // this.invtSer.updateMaterialArrivalForm(this.currentDoc).subscribe(data =>{
+        //    
+        //   this.toastSrv.success("Details were successfully saved")
+        // });
       }
 
     } else {
@@ -253,6 +269,30 @@ export class MaterialArrivalTableComponent implements OnInit {
 
 
   }
+  adjustDate(dateField, value){
+    // this[dateField].nativeElement.value
+    
+    this.currentDoc[dateField]=new Date(value)
+    
+  }
+
+updateDocument(){
+   
+  this.invtSer.updateMaterialArrivalForm(this.currentDoc).subscribe(data =>{
+    this.materialsArrivals.map(doc=>{
+      if(doc.id == this.currentDoc._id){
+        doc=data;
+      }
+    });
+    this.materialsArrivalsCopy.map(doc=>{
+      if(doc.id == this.currentDoc._id){
+        doc=data;
+      }
+    });
+    this.EditRowId=""
+    this.toastSrv.success("Details were successfully saved");
+  });
+}
 
 
 
@@ -303,15 +343,15 @@ export class MaterialArrivalTableComponent implements OnInit {
   }
 
   isChecked(ev) {
-    debugger;
+    ;
     if (ev.target.checked == true) {
 
       this.analysisApproval.nativeElement.checked = ev.target.checked;
-      debugger;
+      ;
     }
 
     if (ev.target.checked == false) {
-      debugger;
+      ;
       this.analysisApproval.nativeElement.checked = ev.target.checked;
     }
 
@@ -320,12 +360,12 @@ export class MaterialArrivalTableComponent implements OnInit {
 
   changeText(ev)
   {
-    debugger
+    
     let word= ev.target.value;
     let wordsArr= word.split(" ");
     wordsArr= wordsArr.filter(x=>x!="");
     if(wordsArr.length>0){
-      debugger
+      
       let tempArr=[];
       this.materialsArrivalsCopy.filter(x=>{
         
@@ -342,17 +382,17 @@ export class MaterialArrivalTableComponent implements OnInit {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.materialsArrivals= tempArr;
-         debugger
+         
     }else{
-      debugger
+      
       this.materialsArrivals=this.materialsArrivalsCopy.slice();
     }
   }
 
-  testFunction(){
-    debugger;
+  dateChange(){
+    ;
     if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
-debugger
+
       this.invtSer.getAllMaterialsByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
         this.materialsArrivals = data;
         this.materialsArrivalsCopy = data;

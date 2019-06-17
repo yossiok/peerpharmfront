@@ -549,15 +549,12 @@ saveLineJobNChanges(expectedArrival){
       this.lineToUpdate;
       this.changedLine;
       this.dateStr;
-      debugger
       if(this.dateStr!=null && this.dateStr!=undefined && this.dateStr!=""){
-        this.changedLine.expectedArrival =  new Date(this.dateStr+"").toISOString();
+        this.changedLine.expectedDate =  new Date(this.dateStr+"");
       }
         let conf=confirm("לשמור שינויים בצפי הגעה של פריט "+ expectedArrival.componentN+" ?");
       if(conf){
-        debugger
         this.procuretServ.updateExpectedArrival(this.changedLine).subscribe(res=>{
-          debugger
           if(res.componentN){
             this.toastSrv.success('שינויים בוצעו בהצלחה');
             this.edit('');

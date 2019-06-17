@@ -21,6 +21,10 @@ export class InventoryService {
     let url = this.baseUrl + "component";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  // getAllComponentsByStockType(itemType):Observable<any>{
+  //   let url = this.baseUrl + "component/stockType?itemType="+itemType;
+  //   return this.http.get(url).pipe(map(reponse => reponse.json()));
+  // }
   getSingleComponentData(cmptId) {
     const url = this.baseUrl + 'component/?cmptId='+cmptId;
     console.log(url);
