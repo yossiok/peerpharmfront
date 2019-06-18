@@ -409,9 +409,9 @@ getAllCmptTypesAndCategories(){
 
 
 loadComponentItems(){
-  this.resCmpt.componentType=  this.stockType;
-  if(this.resCmpt.componentType != ''){
-    this.inventoryService.getItemsByCmpt(this.resCmpt.componentN , this.resCmpt.componentType).subscribe(res=>{
+  // this.resCmpt.componentType=  this.stockType;
+  if(this.resCmpt.itemType != ''){
+    this.inventoryService.getItemsByCmpt(this.resCmpt.componentN , this.resCmpt.itemType).subscribe(res=>{
       if(res.length>0){
         this.resCmpt.componentItems=res;
       }else
@@ -899,9 +899,8 @@ async updateItemStock(direction){
     this.resCmpt;
     if(confirm("לעדכן פריט?")){
          
-      this.inventoryService.updateCompt(this.resCmpt).subscribe(res=>{
-           
-        if(res.nModified!=0){
+      this.inventoryService.updateCompt(this.resCmpt).subscribe(res=>{           
+        if(res._id){
           this.toastSrv.success("פריט עודכן בהצלחה");
         } else{
           this.toastSrv.error("עדכון פריט נכשל");
@@ -1055,8 +1054,7 @@ editItemStockAllocationSupplied(cmptId,rowIndex){
     }
   ;
   this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
-    if(res.ok!=0 && res.n!=0){
-      ;
+    if(res._id){
       console.log("res updateCompt: "+res);
       this.EditRowId='';
       this.resCmpt.allocations=newAllocationsArr;
@@ -1125,9 +1123,8 @@ deleteItemStockAllocation(cmptId,rowIndex) {
       allocations:newAllocationsArr,
       }
     this.inventoryService.updateCompt(objToUpdate).subscribe(res=>{
-      if(res.ok!=0 && res.nModified==1 ){
-        ;
-        console.log("res updateCompt: "+res);
+      console.log("res updateCompt: "+res);
+      if(res._id ){
         this.resCmpt.allocAmount-=amountDeleted;
       }
     });
