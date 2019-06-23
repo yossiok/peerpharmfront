@@ -1,9 +1,11 @@
-<app-add-formule (formuleCreated)='onFormuleAdded($event)'>
+<app-add-formule 
+(formuleCreated)='onFormuleAdded($event)'
+(firstPhaseCreated)='onFirstPhaseCreated($event)'>
 
 </app-add-formule>
-<app-add-formule-phase #childPhases (formulePhase)='onPhaseAdded($event)' *ngFor = 'let phase of allPhasesForm'>
+<app-add-formule-phase #childPhases (phaseCreated)='onPhaseAdded($event)' *ngFor = 'let phase of allPhasesForm'>
 </app-add-formule-phase>
-<app-add-formule-item #childItem (formuleItem)='onItemAdded($event)' *ngFor = 'let item of allItemsForm'></app-add-formule-item>
+<app-add-formule-item #childItem (itemAdded)='onItemAdded($event)' *ngFor = 'let item of allItemsForm'></app-add-formule-item>
 
 <app-formule-form-table></app-formule-form-table>
 

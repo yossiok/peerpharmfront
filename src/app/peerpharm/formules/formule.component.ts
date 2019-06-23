@@ -39,6 +39,10 @@ export class FormuleComponent implements AfterViewInit {
     // this.allItemsForm.push(newItem);
     debugger
   }
+  onFirstPhaseCreated(firstPhase){
+    //save phase info
+    //add empty first item to phase
+  }
 
   onPhaseAdded(newFormuleCreated) {
     debugger
@@ -46,8 +50,6 @@ export class FormuleComponent implements AfterViewInit {
     // this.allPhasesForm.push(newPhase);
     const newItem = new FormuleItem();
     this.allItemsForm.push(newItem);
-
-
   }
 
   onItemAdded(lastItemAdded) {

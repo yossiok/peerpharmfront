@@ -6,8 +6,8 @@
           <h4 class="card-title">Add Formule Phase
               <span class="close" id="deletePhase" >&times;</span>
           </h4>
-          <h5 class="card-subtitle">Formula Number:</h5>
-          <h5 class="card-subtitle">Formula Name:</h5>
+          <!-- <h5 class="card-subtitle">Formula Number:</h5>
+          <h5 class="card-subtitle">Formula Name:</h5> -->
   
           <form class="form" [formGroup]="phaseForm">
             <div class="form-group m-t-40 row">
@@ -17,7 +17,7 @@
               <div class="col-10">
                 <input
                   class="form-control"
-                  type="text"
+                  type="number"
                   formControlName="phaseNumber"
                 />
               </div>
@@ -29,8 +29,7 @@
               <div class="col-10">
                 <input
                   class="form-control"
-                  type="number"
-                  value=""
+                  type="text"
                   formControlName="phaseName"
                 />
               </div>
@@ -43,7 +42,6 @@
                   <input
                     class="form-control"
                     type="text"
-                    value=""
                     formControlName="instractions"
                   />
                 </div>

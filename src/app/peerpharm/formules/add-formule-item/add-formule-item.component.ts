@@ -9,7 +9,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 export class AddFormuleItemComponent implements OnInit {
   itemsForm: FormGroup;
   phValue: any;
-  @Output() formuleItem = new EventEmitter();
+  @Output() itemAdded = new EventEmitter();
 
   constructor() {}
 
@@ -28,8 +28,12 @@ export class AddFormuleItemComponent implements OnInit {
 
   onSubmit() {
     debugger
-    const newItemAdded = this.itemsForm.value;
-    this.formuleItem.emit(newItemAdded);
+    if(this.itemsForm.valid){
+      const newItemAdded = this.itemsForm.value;
+      this.itemAdded.emit(newItemAdded);  
+    }else{
+      // toaster
+    }
   }
   deletePhaseItem(){
     

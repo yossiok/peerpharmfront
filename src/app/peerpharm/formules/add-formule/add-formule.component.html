@@ -12,17 +12,21 @@
             (click)="editFormuleDetails('save')">
           </i>
         </div>
-        <form class="form" [formGroup]="formulesForm" (submit)="onSubmit('new')">
+        <form class="form" [formGroup]="formulesForm" (submit)="onSubmit('new')" style="width: 50%;">
           <div class="form-group m-t-40 row">
             <label for="example-text-input" class="col-2 col-form-label"
               >Formule Number</label
             >
-            <div class="col-10">
+            <div class="col-9">
               <input
                 class="form-control"
                 type="text"
                 formControlName="number"
               />
+            </div>
+            <div class="col-1">
+              <img src="../../../../assets/images/search.png" alt="search formule number"
+                style="cursor: pointer; width: 40px;" (click)="findFormuleByNumber()">
             </div>
           </div>
           <div class="form-group row">
@@ -59,12 +63,19 @@
             <label for="example-date-input" class="col-2 col-form-label"
               >Last updated</label
             >
-            <div class="col-10">
+            <div class="col-4">
               <input
                 class="form-control"
                 type="date"
-                value="2011-08-19"
                 formControlName="lastUpdate"
+              />
+            </div>
+            <div class="col-4">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="lastUpdateUser"
+                disabled
               />
             </div>
           </div>
@@ -98,7 +109,8 @@
             <!-- <label class="col-2 col-form-label">{{ phValue }}</label> -->
             
           </div>
-          <button *ngIf="!formuleSaved && editSavedFormule!=true" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
+          <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id==null" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
+          <!-- <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id!=null" class="btn btn-info m-r-10" type="submit">Edit</button> -->
           <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
         </form>
       </div>
@@ -122,6 +134,8 @@
           <div class="p-2">Category: {{currentFormule.category }}</div>
           <div class="p-2">Client: {{currentFormule.client}}</div>
         </div>
+        <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
+
       </div>      
     <!--close div class='card' -->
     </div> 

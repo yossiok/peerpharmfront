@@ -31,8 +31,11 @@ export class AddFormuleComponent implements OnInit {
     lastUpdateUser: "",
     ph: null,
     client: "",
+    id:null,
   };
+  
   @Output() formuleCreated = new EventEmitter();
+  @Output() firstPhaseCreated = new EventEmitter();
 
 
 
@@ -47,6 +50,7 @@ export class AddFormuleComponent implements OnInit {
       lastUpdateUser: ['', Validators.required],
       ph: [null, ],
       client: ['', Validators.required],
+      id: [null, ],
     });
   }
 
@@ -98,7 +102,7 @@ export class AddFormuleComponent implements OnInit {
     
     // check if formule number free to use
     await this.formuleService.getFormuleByNumber(this.formulesForm.value.number).subscribe(data=>{
-      if(data.length!=0){
+      if(data!=null){
         this.toastSrv.error("Formule number already exist");
       }else{
         // trim unwanted tails
@@ -114,11 +118,12 @@ export class AddFormuleComponent implements OnInit {
           this.formuleService.newFormule(newFormuleDetails).subscribe(formule=>{
             if(formule._id){
               this.currentFormule=formule;
+              this.formulesForm.controls.id.setValue(formule._id);
               this.formuleSaved=true;
               this.editSavedFormule=false;
 
 
-              // this.formuleCreated.emit(newFormuleDetails);
+              this.formuleCreated.emit(newFormuleDetails);
             } else if(formule == 'formule number exist'){
                 this.toastSrv.error("Formule Number already exist");
             }
@@ -142,7 +147,36 @@ export class AddFormuleComponent implements OnInit {
   }
 
   addFirstPhase(){
-    this.formuleCreated.emit(this.currentFormule);
+    this.firstPhaseCreated.emit(this.currentFormule);
+  }
+
+  findFormuleByNumber(){
+    if(this.formulesForm.value.number!=""){
+      this.formuleService.getFormuleByNumber(this.formulesForm.value.number).subscribe(formule=>{
+        if(formule._id){
+          this.currentFormule= formule
+          // this.currentFormule.name= formule.name
+          // this.currentFormule.category= formule.category
+          // this.currentFormule.lastUpdate= formule.lastUpdate
+          // this.currentFormule.lastUpdateUser= formule.lastUpdateUser
+          // this.currentFormule.ph= formule.ph
+          // this.currentFormule.client= formule.client
+          // this.currentFormule.id= formule.id
+          this.formuleSaved=true;
+
+          // this.formulesForm.controls.name.setValue(formule.name);
+          // this.formulesForm.controls.category.setValue(formule.category);
+          // this.formulesForm.controls.lastUpdate.setValue(formule.lastUpdate);
+          // this.formulesForm.controls.lastUpdateUser.setValue(formule.lastUpdateUser);
+          // this.formulesForm.controls.ph.setValue(formule.ph);
+          // this.formulesForm.controls.client.setValue(formule.client)  
+          // this.formulesForm.controls.id.setValue(formule._id)  
+        }else{
+          this.toastSrv.error("Can't find formule number")
+        }
+
+      });
+    }
   }
 
 editFormuleDetails(action){
