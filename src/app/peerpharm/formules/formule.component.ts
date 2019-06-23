@@ -24,7 +24,7 @@ export class FormuleComponent implements AfterViewInit {
   @ViewChildren('childItem')
   childItems: QueryList<any>;
   childPhases: QueryList<any>;
-
+  disableAddPhase: Boolean= false;
 
   ngOnInit(){
     // debugger
@@ -37,17 +37,35 @@ export class FormuleComponent implements AfterViewInit {
     // const newItem = new FormuleItem();
     this.allPhasesForm.push(newPhase);
     // this.allItemsForm.push(newItem);
-    debugger
   }
-  onFirstPhaseCreated(firstPhase){
-    //save phase info
-    //add empty first item to phase
+  LoadingFormule(newFormule){
+    this.newFormuleBasic = newFormule;
+    this.formuleService.getPhasesByFormuleId(this.newFormuleBasic._id).subscribe(phases=>{
+      if(phases.length> 0){
+        this.allPhasesForm=[]; 
+        phases.forEach(phs => {
+          this.allPhasesForm.push(phs);
+        });
+      }else{
+        this.onFirstPhaseCreated(this.newFormuleBasic)
+      }
+      debugger
+    });
+
   }
 
-  onPhaseAdded(newFormuleCreated) {
+  onFirstPhaseCreated(newFormuleCreated){
+    this.newFormuleBasic = newFormuleCreated;
+    this.newFormuleBasic;
+    var newPhase = new FormulePhase();
+    newPhase.phaseNumber= this.allPhasesForm.length+1
+    this.allPhasesForm.push(newPhase);
+    this.disableAddPhase=false;
+  }
+
+  onPhaseAdded(phaseToSave) {
+    this.allPhasesForm.push(phaseToSave);
     debugger
-    // const newPhase = new FormulePhase();
-    // this.allPhasesForm.push(newPhase);
     const newItem = new FormuleItem();
     this.allItemsForm.push(newItem);
   }
@@ -79,7 +97,6 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() { 
-    debugger 
     this.childItems.forEach(childItem => console.log(childItem));
   }
 }

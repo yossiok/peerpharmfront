@@ -1,12 +1,27 @@
-<app-add-formule 
-(formuleCreated)='onFormuleAdded($event)'
-(firstPhaseCreated)='onFirstPhaseCreated($event)'>
+<div class="row">
+    <div class="col-6">
+        <app-add-formule 
+        (formuleCreated)='onFormuleAdded($event)'
+        (formuleLoaded)='LoadingFormule($event)'
+        (firstPhaseCreated)='onFirstPhaseCreated($event)'
+        [disableAdding]="disableAddPhase"
+        >
+        
+        </app-add-formule>
+        <app-add-formule-phase #childPhases  
+        [formuleBase]="newFormuleBasic"
+        (phaseCreated)='onPhaseAdded($event)' 
+        *ngFor = 'let phase of allPhasesForm'>
+        </app-add-formule-phase>
+        <app-add-formule-item #childItem (itemAdded)='onItemAdded($event)' 
+        *ngFor = 'let item of allItemsForm'>
+        </app-add-formule-item>
+    </div>    
+    <div class="col-6">
+        <app-formule-form-table [formulePhases]="allPhasesForm"></app-formule-form-table>
+    </div>
+</div>
 
-</app-add-formule>
-<app-add-formule-phase #childPhases (phaseCreated)='onPhaseAdded($event)' *ngFor = 'let phase of allPhasesForm'>
-</app-add-formule-phase>
-<app-add-formule-item #childItem (itemAdded)='onItemAdded($event)' *ngFor = 'let item of allItemsForm'></app-add-formule-item>
 
-<app-formule-form-table></app-formule-form-table>
 
 <button class="btn btn-success m-r-10" type="button" (click)="onFinish()">Finish</button>

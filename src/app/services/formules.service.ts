@@ -79,13 +79,23 @@ export class FormulesService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   
+  getPhasesByFormuleId(formuleId){
+    let url = this.baseUrl + "formules/phases/?byFormuleId="+formuleId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  
   newFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/add";
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
+  }
+
+  addNewPhaseToFormule(newFormulePhase){
+    let url = this.baseUrl + "formules/addPhase";
+    return this.http.post(url, JSON.stringify(newFormulePhase), this.options).pipe(map(res => res.json()));
   }
   updateFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/update";
     return this.http.put(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
   }
-
+  
 }

@@ -1,5 +1,5 @@
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { Component, OnInit , Output, EventEmitter } from '@angular/core';
+import { Component, OnInit , Output, EventEmitter, Input } from '@angular/core';
 import { FormulesService } from '../../../services/formules.service';
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from 'src/app/services/auth.service';
@@ -35,8 +35,9 @@ export class AddFormuleComponent implements OnInit {
   };
   
   @Output() formuleCreated = new EventEmitter();
+  @Output() formuleLoaded = new EventEmitter();
   @Output() firstPhaseCreated = new EventEmitter();
-
+  @Input() disableAdding :Boolean;
 
 
   constructor(private fb: FormBuilder, private authService: AuthService ,
@@ -122,7 +123,7 @@ export class AddFormuleComponent implements OnInit {
               this.formuleSaved=true;
               this.editSavedFormule=false;
 
-
+debugger
               this.formuleCreated.emit(newFormuleDetails);
             } else if(formule == 'formule number exist'){
                 this.toastSrv.error("Formule Number already exist");
@@ -155,22 +156,9 @@ export class AddFormuleComponent implements OnInit {
       this.formuleService.getFormuleByNumber(this.formulesForm.value.number).subscribe(formule=>{
         if(formule._id){
           this.currentFormule= formule
-          // this.currentFormule.name= formule.name
-          // this.currentFormule.category= formule.category
-          // this.currentFormule.lastUpdate= formule.lastUpdate
-          // this.currentFormule.lastUpdateUser= formule.lastUpdateUser
-          // this.currentFormule.ph= formule.ph
-          // this.currentFormule.client= formule.client
-          // this.currentFormule.id= formule.id
           this.formuleSaved=true;
-
-          // this.formulesForm.controls.name.setValue(formule.name);
-          // this.formulesForm.controls.category.setValue(formule.category);
-          // this.formulesForm.controls.lastUpdate.setValue(formule.lastUpdate);
-          // this.formulesForm.controls.lastUpdateUser.setValue(formule.lastUpdateUser);
-          // this.formulesForm.controls.ph.setValue(formule.ph);
-          // this.formulesForm.controls.client.setValue(formule.client)  
-          // this.formulesForm.controls.id.setValue(formule._id)  
+          // this.addFirstPhase();
+          this.formuleLoaded.emit(this.currentFormule);
         }else{
           this.toastSrv.error("Can't find formule number")
         }

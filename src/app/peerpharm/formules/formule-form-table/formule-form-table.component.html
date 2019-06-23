@@ -6,7 +6,9 @@
   <table class="table table-bordered">
       <thead>
           <tr>
-            <th scope="col">Phase</th>
+            <th scope="col">Phase Number</th>
+            <th scope="col">Phase Name</th>
+            <th scope="col">Phase Instructions</th>
             <th scope="col">No.</th>
             <th scope="col">Raw Material Name</th>
             <th scope="col">Execute</th>
@@ -21,11 +23,13 @@
         <tbody>
             <ng-container *ngFor="  let phase of formulePhases;" style="border: solid black 2px;">
                 <tr *ngFor="let step of phase.stepsArr ; let i = index; ">
-                  <td *ngIf="i==0" [attr.rowspan]="phase.stepsArr.length" >{{phase.phase}}</td>
-                  <td>{{i+1}}</td>
-                  <td>{{step.itemIndex}}</td>
-                  <td>{{step.materialName}}</td>
-                  <td>{{step.materialName}}</td>
+                  <td *ngIf="i==0" [attr.rowspan]="phase.stepsArr.length" >{{phase.phaseNumber}}</td>
+                  <td *ngIf="i==0" [attr.rowspan]="phase.stepsArr.length" >{{phase.phaseName}}</td>
+                  <td *ngIf="i==0" [attr.rowspan]="phase.stepsArr.length" >{{phase.phaseInstructions}}</td>
+                  <td>{{i+1}}1</td>
+                  <td>{{step.itemIndex}}2</td>
+                  <td>{{step.materialName}}3</td>
+                  <td>{{step.materialName}}4</td>
                   <td>{{step.materialName}}</td>
                   <td>{{step.materialName}}</td>
                   <td>{{step.materialName}}</td>

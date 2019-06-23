@@ -111,7 +111,7 @@
           </div>
           <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id==null" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
           <!-- <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id!=null" class="btn btn-info m-r-10" type="submit">Edit</button> -->
-          <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
+          <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()" [disabled]="disableAdding">Add Formule's Phases</button>
         </form>
       </div>
 
@@ -134,7 +134,7 @@
           <div class="p-2">Category: {{currentFormule.category }}</div>
           <div class="p-2">Client: {{currentFormule.client}}</div>
         </div>
-        <button *ngIf="formuleSaved" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
+        <button *ngIf="formuleSaved  && disableAdding" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
 
       </div>      
     <!--close div class='card' -->

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-formule-form-table',
@@ -6,14 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./formule-form-table.component.css']
 })
 export class FormuleFormTableComponent implements OnInit {
-  formulePhases:Array<any>;
+  phases:Array<any>;
   constructor() { }
+  @Input() formulePhases: Array<any>;
 
   ngOnInit() {
-    //get formule derails for doc title
-    //with formule Id get formule phases -> sort by phase phaseIndex --> sort 
-    //
-    this.formulePhases=[
+    this.phases= this.formulePhases;
+    // getPhaseItems
+    debugger
+    this.phases=[
       {
       phase:"A",
       phaseIndex:"1",
