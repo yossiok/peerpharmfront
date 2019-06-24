@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-6">
         <app-add-formule 
-        (formuleCreated)='onFormuleAdded($event)'
+        (formuleCreated)='onNewFormuleAdded($event)'
         (formuleLoaded)='LoadingFormule($event)'
         (firstPhaseCreated)='onFirstPhaseCreated($event)'
         [disableAdding]="disableAddPhase"
@@ -11,10 +11,16 @@
         <app-add-formule-phase #childPhases  
         [formuleBase]="newFormuleBasic"
         (phaseCreated)='onPhaseAdded($event)' 
-        *ngFor = 'let phase of allPhasesForm'>
+        [phaseInfo]="phase"
+        *ngIf="newPhase">
+
         </app-add-formule-phase>
-        <app-add-formule-item #childItem (itemAdded)='onItemAdded($event)' 
-        *ngFor = 'let item of allItemsForm'>
+        <app-add-formule-item #childItem 
+        [itemInfo]="item"
+        [phaseInfo]="phase"
+        (itemAdded)='onItemAdded($event)' 
+        *ngIf="newItem"
+        >
         </app-add-formule-item>
     </div>    
     <div class="col-6">

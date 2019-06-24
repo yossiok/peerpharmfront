@@ -71,7 +71,7 @@ export class AddFormuleComponent implements OnInit {
 
     // await this.authService.getLoggedInUser().subscribe(data=>{
     //   data;
-    //   debugger
+    //    
     // })
     // this.authService.userEventEmitter.subscribe(data => {
     //   this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
@@ -117,14 +117,12 @@ export class AddFormuleComponent implements OnInit {
           var newFormuleDetails = this.formulesForm.value;
           //save new formule
           this.formuleService.newFormule(newFormuleDetails).subscribe(formule=>{
-            if(formule._id){
+            if(formule){
               this.currentFormule=formule;
               this.formulesForm.controls.id.setValue(formule._id);
               this.formuleSaved=true;
               this.editSavedFormule=false;
-
-debugger
-              this.formuleCreated.emit(newFormuleDetails);
+              this.formuleCreated.emit(this.formulesForm.value);
             } else if(formule == 'formule number exist'){
                 this.toastSrv.error("Formule Number already exist");
             }
@@ -154,13 +152,15 @@ debugger
   findFormuleByNumber(){
     if(this.formulesForm.value.number!=""){
       this.formuleService.getFormuleByNumber(this.formulesForm.value.number).subscribe(formule=>{
-        if(formule._id){
+        if(formule){
           this.currentFormule= formule
           this.formuleSaved=true;
+          this.disableAdding=true;
           // this.addFirstPhase();
           this.formuleLoaded.emit(this.currentFormule);
         }else{
           this.toastSrv.error("Can't find formule number")
+          // this.formuleLoaded.emit(null);
         }
 
       });

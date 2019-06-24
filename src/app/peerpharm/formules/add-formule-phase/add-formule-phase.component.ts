@@ -16,11 +16,14 @@ export class AddFormulePhaseComponent implements OnInit {
   // @Output() formulePhase = new EventEmitter();
   @Output() phaseCreated = new EventEmitter();
   @Input() formuleBase :any;
+  @Input() phaseInfo :any;
+  
 
   constructor(private toastSrv: ToastrService, private formuleService: FormulesService, private fb: FormBuilder, ) { 
 
     this.phaseForm = this.fb.group({
       //set by the user
+      _id: [null, Validators.required],
       phaseNumber: [null, Validators.required],
       phaseName: ['', Validators.required],
       phaseInstructions: ['', Validators.required],
@@ -32,30 +35,60 @@ export class AddFormulePhaseComponent implements OnInit {
     });
   }
 
+  ngOnChanges() {
+    this.adjustFormData();
+  }
+
   ngOnInit() {
+    this.adjustFormData();
+  }
+
+  adjustFormData(){
     this.phaseForm.controls.formuleId.setValue(this.formuleBase._id);
     this.phaseForm.controls.formuleNumber.setValue(this.formuleBase.number);
     this.phaseForm.controls.formuleName.setValue(this.formuleBase.name);
-    debugger
-    // this.phaseForm = new FormGroup({
-    //   phaseNumber: new FormControl('', [Validators.required]),
-    //   phaseName: new FormControl('', [Validators.required]),
-    //   instractions: new FormControl('', [Validators.required]),
-    //   formuleNumber: new FormControl('', [Validators.required]),
-    //   formuleName: new FormControl('', [Validators.required]),
-    // });
+    this.phaseForm.controls.phaseNumber.setValue(this.phaseInfo.phaseNumber);
+    this.phaseForm.controls.phaseName.setValue(this.phaseInfo.phaseName);
+    this.phaseForm.controls.phaseInstructions.setValue(this.phaseInfo.phaseInstructions);
+  }
+  onSubmit() {
+    if(this.phaseForm.value._id){
+
+      // when loding phase from table we get id 
+      this.phaseValidation();
+
+    }else if(this.phaseForm.value._id == null || this.phaseForm.value._id == undefined ){
+      // add new Phase 
+      this.formuleService.getPhaseByNumberAndFormuleId(this.phaseForm.value.formuleId, this.phaseForm.value.phaseNumber)
+      .subscribe(existingPhase=>{
+        
+        console.log('before')
+        debugger
+        if(existingPhase){
+          this.phaseForm.controls._id.setValue(existingPhase._id);
+          this.phaseValidation();
+
+        }
+      });
+
+    }
+    console.log('after')
+
+
+
+
   }
 
-  onSubmit() {
-    debugger
-    // if form valid
+  phaseValidation(){
+    // return new Promise=
     if(this.phaseForm.valid){
-      if(this.phaseForm.value.items.length>0){
-        //adjust items arr
-      }
-      this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(phase=>{
-        this.phaseCreated.emit(phase);
-      })
+      // if(this.phaseForm.value.items.length>0){
+      //   //adjust items arr
+      // }
+      //moved the post call to formule.component
+      // this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(phase=>{
+        this.phaseCreated.emit(this.phaseForm.value);
+      // })
     }else{
       this.toastSrv.error("Please fill all fields");
     }

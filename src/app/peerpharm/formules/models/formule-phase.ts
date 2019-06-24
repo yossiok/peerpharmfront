@@ -1,11 +1,13 @@
 import { FormuleItem } from './formule-item';
 
 export class FormulePhase {
-    phaseNumber: Number;
-    phaseName: String;
-    phaseInstructions: String;
-    items: [FormuleItem];
-    formuleId: String;
-    formuleNumber: Number;
-    formuleName: String;
+    _id: string;
+    phaseNumber: number;
+    phaseName: string;
+    phaseInstructions: string;
+    // items: [FormuleItem];
+    items: FormuleItem[];
+    formuleId: string;
+    formuleNumber: number;
+    formuleName: string;
 }

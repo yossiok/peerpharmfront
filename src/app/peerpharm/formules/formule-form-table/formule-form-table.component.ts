@@ -10,50 +10,60 @@ export class FormuleFormTableComponent implements OnInit {
   constructor() { }
   @Input() formulePhases: Array<any>;
 
+
+  ngOnChanges() {
+    this.phases= this.formulePhases;
+     
+    // this.doSomething(changes.categoryId.currentValue);
+    // You can also use categoryId.previousValue and 
+    // categoryId.firstChange for comparing old and new values
+
+}
+
   ngOnInit() {
     this.phases= this.formulePhases;
     // getPhaseItems
-    debugger
-    this.phases=[
-      {
-      phase:"A",
-      phaseIndex:"1",
-      stepsArr: [
-          {
-            itemIndex: 1,
-            materialName: "water",
-          },
-          {
-            itemIndex: 2,
-            materialName: "oil",
-          },
-          {
-            itemIndex: 3,
-            materialName: "silicon",
-          },
-       ],
-       stepsAmount:3,
-       },
-      {
-      phase:"B",
-      phaseIndex:"2",
-      stepsArr: [
-          {
-            itemIndex: 1,
-            materialName: "water",
-          },
-          {
-            itemIndex: 2,
-            materialName: "oil",
-          },
-          {
-            itemIndex: 3,
-            materialName: "silicon",
-          },
-        ],
-        stepsAmount: 3,
-       },
-    ]
+     
+    // this.phases=[
+    //   {
+    //   phase:"A",
+    //   phaseIndex:"1",
+    //   stepsArr: [
+    //       {
+    //         itemIndex: 1,
+    //         materialName: "water",
+    //       },
+    //       {
+    //         itemIndex: 2,
+    //         materialName: "oil",
+    //       },
+    //       {
+    //         itemIndex: 3,
+    //         materialName: "silicon",
+    //       },
+    //    ],
+    //    stepsAmount:3,
+    //    },
+    //   {
+    //   phase:"B",
+    //   phaseIndex:"2",
+    //   stepsArr: [
+    //       {
+    //         itemIndex: 1,
+    //         materialName: "water",
+    //       },
+    //       {
+    //         itemIndex: 2,
+    //         materialName: "oil",
+    //       },
+    //       {
+    //         itemIndex: 3,
+    //         materialName: "silicon",
+    //       },
+    //     ],
+    //     stepsAmount: 3,
+    //    },
+    // ]
   }
 
 }

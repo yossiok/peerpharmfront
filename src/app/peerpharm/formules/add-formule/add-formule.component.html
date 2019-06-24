@@ -134,7 +134,7 @@
           <div class="p-2">Category: {{currentFormule.category }}</div>
           <div class="p-2">Client: {{currentFormule.client}}</div>
         </div>
-        <button *ngIf="formuleSaved  && disableAdding" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
+        <button *ngIf="disableAdding" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
 
       </div>      
     <!--close div class='card' -->

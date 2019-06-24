@@ -6,8 +6,9 @@ export class Formule {
     name: string;
     category: string;
     lastUpdate: Date;
-    ph: string;
+    lastUpdateUser:string;
+    ph: number;
     client: string ;
-    items: FormuleItem[];
+    // items: FormuleItem[];
     phases: FormulePhase[];
 }

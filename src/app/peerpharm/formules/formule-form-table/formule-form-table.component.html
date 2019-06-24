@@ -12,30 +12,37 @@
             <th scope="col">No.</th>
             <th scope="col">Raw Material Name</th>
             <th scope="col">Execute</th>
-            <th scope="col">item Number</th>
+            <th scope="col">Weight</th>
             <th scope="col">Weight%</th>
-            <th scope="col">Weight(Kg)</th>
-            <th scope="col">Temp.</th>
-            <th scope="col">Process</th>
+            <th scope="col">Temp</th>
+            <th scope="col">PH</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-            <ng-container *ngFor="  let phase of formulePhases;" style="border: solid black 2px;">
-                <tr *ngFor="let step of phase.stepsArr ; let i = index; ">
-                  <td *ngIf="i==0" [attr.rowspan]="phase.stepsArr.length" >{{phase.phaseNumber}}</td>
-                  <td *ngIf="i==0" [attr.rowspan]="phase.stepsArr.length" >{{phase.phaseName}}</td>
-                  <td *ngIf="i==0" [attr.rowspan]="phase.stepsArr.length" >{{phase.phaseInstructions}}</td>
-                  <td>{{i+1}}1</td>
-                  <td>{{step.itemIndex}}2</td>
-                  <td>{{step.materialName}}3</td>
-                  <td>{{step.materialName}}4</td>
-                  <td>{{step.materialName}}</td>
-                  <td>{{step.materialName}}</td>
-                  <td>{{step.materialName}}</td>
-                  <td>{{step.materialName}}</td>
-                  <td></td>
-                </tr>      
+            <ng-container *ngFor="  let phase of formulePhases; let indx=index;" style="border: solid black 2px;">
+                <ng-container *ngIf="phase.items.length > 0">
+                  <tr *ngFor="let item of phase.items ; let i = index; ">
+                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" >{{phase.phaseNumber}}</td>
+                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" >{{phase.phaseName}}</td>
+                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" >{{phase.phaseInstructions}}</td>
+                    <td>{{item.itemNumber}}</td>
+                    <td>{{item.itemName}}</td>
+                    <td>{{item.itemInstructions}}</td>
+                    <td>{{item.quantity}}&nbsp; {{item.quantityUnits}}</td>
+                    <td>{{item.percentage}}</td>
+                    <td>{{item.materialName}}</td>
+                    <td>{{item.itemPH}}</td>
+                    <td></td>
+                  </tr>        
+                </ng-container>
+                <ng-container *ngIf="phase.items.length == 0">
+                  <tr>
+                    <td>{{phase.phaseNumber}}</td>
+                    <td>{{phase.phaseName}}</td>
+                    <td>{{phase.phaseInstructions}}</td>
+                  </tr>
+                </ng-container>
             </ng-container>
           
           </tbody>

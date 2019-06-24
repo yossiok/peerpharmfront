@@ -1,10 +1,12 @@
 
 export class FormuleItem {
-  number: number;//מספר פריט חו"ג במלאי -פנימי שלנו 
-  name: string;
-  quantity: number;
-  quantityUnits:String;
-  percentage: number;
-  itemPH: number;
-  instructions: string;
+  itemNumber:string;//מספר פריט חו"ג במלאי -פנימי שלנו 
+  itemName:string;
+  itemInstructions:string;
+  quantity:number;
+  quantityUnits:string;
+  percentage:number;
+  itemPH:number;
+  formuleId:string;
+  phaseId:string;
 }

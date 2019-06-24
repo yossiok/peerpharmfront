@@ -1,5 +1,7 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormulesService } from 'src/app/services/formules.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-formule-item',
@@ -10,29 +12,45 @@ export class AddFormuleItemComponent implements OnInit {
   itemsForm: FormGroup;
   phValue: any;
   @Output() itemAdded = new EventEmitter();
+  @Input() itemInfo :any;
+  @Input() phaseInfo :any;
 
-  constructor() {}
-
-  ngOnInit() {
-    this.itemsForm = new FormGroup({
-      number: new FormControl('', [Validators.required]),
-      name: new FormControl('', [Validators.required]),
-      quantity: new FormControl('', [Validators.required]),
-      quantityUnits: new FormControl('', [Validators.required]),
-      percentage: new FormControl('', [Validators.required]),
-      instructions: new FormControl('', [Validators.required]),
-      temp: new FormControl('', [Validators.required]),
-      itemPH: new FormControl('', [Validators.required]),
+  constructor(private toastSrv: ToastrService, private formuleService: FormulesService, private fb: FormBuilder) {
+    this.itemsForm = this.fb.group({
+      //set by the user
+      itemNumber: [null, Validators.required],
+      itemName: ['', Validators.required],
+      itemInstructions: ['', ],
+      quantity: [null, Validators.required],
+      quantityUnits: ['gr', Validators.required],
+      percentage: [null, Validators.required],
+      itemPH: [7, Validators.required],
+      formuleId: ['', Validators.required],
+      phaseId: ['', Validators.required],
     });
   }
 
+  ngOnChange(){
+    this.adjustFormData();
+    }
+  ngOnInit() {
+    this.adjustFormData();
+  }
+  adjustFormData(){
+    this.itemsForm.controls.formuleId.setValue(this.phaseInfo.formuleId);
+    this.itemsForm.controls.phaseId.setValue(this.phaseInfo._id);
+    this.itemsForm.controls.itemNumber.setValue(this.itemInfo.itemNumber);
+    this.itemsForm.controls.itemName.setValue(this.itemInfo.itemName);
+    this.itemsForm.controls.itemInstructions.setValue(this.itemInfo.itemInstructions);
+  }
+
   onSubmit() {
-    debugger
     if(this.itemsForm.valid){
       const newItemAdded = this.itemsForm.value;
       this.itemAdded.emit(newItemAdded);  
     }else{
       // toaster
+      this.toastSrv.error('Fill required item fields')
     }
   }
   deletePhaseItem(){
