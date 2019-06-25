@@ -26,37 +26,34 @@
     <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light' style='height:45px'> Show Items </button> -->
 </div>
 <br><br>
-<input matInput placeholder="Search costumer by name" (change)="changeText($event)" 
-  style=" line-height: 45px;
-  margin-bottom: 5px;
-  width: 300px;
-  font-size: 18px"/>
-    <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px'> Load </button> 
-    <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px'> Show Items </button>
+<input matInput class="searchInput" placeholder="Search Costumer By Name" (change)="changeText($event)"/>
+ 
+    <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px; box-shadow: 2px 2px 2px black'> Load </button> 
+    <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px; box-shadow: 2px 2px 2px black'> Show Items </button>
   
 <div class="stageTags" >
-  <div style="background-color: white; " >
+  <div class="stageStyle" style="background-color: white; " >
      חדש:  <span><b>{{stagesCount.new}}</b></span>
   </div>
-  <div style="background-color: #ffa64d; " >
+  <div class="stageStyle" style="background-color: #ffa64d; " >
       רכיבים קיימים- חלקית:  <span><b>{{stagesCount.partialCmpt}}</b></span>
   </div>
-  <div style="background-color: #ffff80; " >
+  <div class="stageStyle" style="background-color: #ffff80; " >
       כל הרכיבים קיימים:  <span><b>{{stagesCount.allCmpt}}</b></span>
   </div>
-  <div style="background-color: #b3ecff; " >
+  <div class="stageStyle" style="background-color: #b3ecff; " >
       נשלח לייצור:  <span><b>{{stagesCount.production}}</b></span>
   </div>
-  <div style="background-color: #d9b3ff; " >
+  <div class="stageStyle" style="background-color: #d9b3ff; " >
       עבר ייצור:  <span><b>{{stagesCount.prodFinish}}</b></span>
   </div>
-  <div style="background-color: #9ae59a; " >
+  <div class="stageStyle" style="background-color: #9ae59a; " >
       הזמנה סגורה:  <span><b>{{stagesCount.done}}</b></span>
   </div>
 </div>
   
 <table class='table table-fixed'>
-  <thead class='bg-info text-white'  >
+  <thead class='tableHeader text-white'  >
     <tr>
       <th style="width:3%;"></th>
       <th style="width:3%;">
@@ -78,8 +75,8 @@
       <th style="width:5%;"></th>
     </tr>
   </thead>
-  <tbody class='table-hover'>
-    <tr *ngFor="let order of orders; let i = index" style="height: 10%;" [style.background-color]="order.color" (blur)="saveEdit(false, '')" >
+  <tbody class='table-hover'>  
+    <tr  *ngFor="let order of orders; let i = index" style="height:10%;box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" [style.background-color]="order.color" (blur)="saveEdit(false, '')" >
     <!-- <tr *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')" > -->
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:3%;" (click)="edit('')">
@@ -121,7 +118,7 @@
             </td> -->
           <td #orderType style="width: 7%;">{{order.type}}</td>
 
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)" style="text-align: center;  height: 100%;" [style.background-color]="order.stageColor">{{order.stage | orderStage}}</td>
+          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)" class="newUniqueFont" style="box-shadow: inset 0px 0px 2px 1px black; text-align: center;  height: 100%;" [style.background-color]="order.stageColor">{{order.stage | orderStage}}</td>
           <td *ngIf="order._id===EditRowId">
             <select #stage style="width: 80%" [value]='order.stage' >
               <option value="new">חדש</option>

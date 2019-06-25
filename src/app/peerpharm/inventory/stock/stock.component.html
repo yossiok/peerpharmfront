@@ -6,10 +6,10 @@
 
 <!-- <button (click)="showDialog =!showDialog" class="btn">Open</button>  -->
 <div>
-    <button class='btn btn-success' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
-    <button class="btn btn-info" (click)="procurementRecommendations('minimumStock')"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp;
-    <button class="btn btn-info" (click)="procurementRecommendations('haveRecommendation')"><b>המלצות רכש קיימות</b></button> &nbsp;&nbsp;
-    <button class="btn btn-primary" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>&nbsp;&nbsp;
+    <button class='btn topBtn btn-success' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
+    <button class="btn topBtn btn-info" (click)="procurementRecommendations('minimumStock')"><b>בדוק המלצה לרכש</b></button> &nbsp;&nbsp;
+    <button class="btn topBtn btn-info" (click)="procurementRecommendations('haveRecommendation')"><b>המלצות רכש קיימות</b></button> &nbsp;&nbsp;
+    <button class="btn topBtn btn-primary" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>&nbsp;&nbsp;
     <!-- <button class="btn btn-info" (click)="ExportAllCmpts()"><b>export to excel</b></button>&nbsp;&nbsp;  -->
     <!-- <button class="btn btn-info" (click)="getDoubleStockItems()"><b>getDoubleStockItems</b></button>&nbsp;&nbsp; -->
     <!-- <button class="btn btn-info" (click)="deleteDoubleStockItemsProducts()"><b>deleteDoubleStockItemsProducts</b></button>&nbsp;&nbsp; -->
@@ -87,7 +87,7 @@
               </div>
               <div *ngIf="stockType=='component'" class="col-sm-1">
                 <br>
-                <button class="btn btn-warning" type="reset"><b>נקה שדות חיפוש</b></button>
+                <button style="margin-top:7px;" class="btn topBtn btn-warning" type="reset"><b>נקה שדות חיפוש</b></button>
               </div>
           </div>
         </form>
@@ -104,7 +104,7 @@
 
     <div (click)='setType("component")' [ngStyle]="{'background-color': buttonColor}" class="navtab" style="cursor:pointer;">Components</div>
     <div (click)='setType("product")' [ngStyle]="{'background-color': buttonColor3}" class="navtab" style="cursor:pointer;">Products</div> 
-    <!-- <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2}" class="navtab">Materials</div> -->
+    <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2}" class="navtab" style="cursor:pointer;">Materials</div>
     <div style="padding-left: 10px;"><b> showing {{components.length}} stock items  </b></div>
     <div  class="export" style="cursor:pointer;">
       <img *ngIf="loadingExcel" style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
@@ -116,8 +116,8 @@
 
     <!-- TABLE START -->
     <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
-      <thead class='bg-info text-white'>
-        <tr align='center'>
+      <thead class='tableHeader text-white'>
+        <tr style="text-align: center">
   
           <th style="width:3%; padding:5px"></th>
           <th style="width:6%; padding:5px"><b>מספר פריט</b></th>
@@ -136,7 +136,7 @@
   
   
       <tbody id="table_body" class="componentTable">
-        <tr *ngFor="let component of components; let i = index" >
+        <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let component of components; let i = index" >
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
           <td style="width:5%; word-break: normal;">{{component.componentNs}}</td>
@@ -145,7 +145,7 @@
           <td style="width:7%;"
           (click)="getCmptAmounts(component.componentN, component._id)"
           style="cursor: pointer;">{{component.amount}}
-            <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
+            <img  src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
            
               style="width: 40px; margin-left: 15px; cursor: pointer; float: right;">
               <!-- <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)"
@@ -198,7 +198,7 @@
   
   
     <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
-        <thead class='bg-info text-white'>
+        <thead class='tableHeader text-white'>
           <tr align='center'>
     
             <th style="width:6%; padding:5px"></th>
@@ -220,7 +220,7 @@
     
     
         <tbody id="table_body" class="productTable">
-          <tr *ngFor="let component of components; let i = index">
+          <tr style="box-shadow: inset 1px -2px 4px 0px black; margin-top: 10px;" *ngFor="let component of components; let i = index">
             <td style="width:6%">{{i+1}}</td>
             <td style="width:10%" class="compNum">            
               <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{component.componentN}}">
@@ -254,10 +254,36 @@
 
   </div>
 
-
     <!-- TABLE END -->
 
 
+    <table  class='table stockTable table-fixed' *ngIf="stockType=='material'">
+        <thead class='bg-info text-white'>
+            <tr style="text-align: center">
+      
+              <th style="width:3%; padding:5px"></th>
+              <th style="width:6%; padding:5px"><b>מספר פריט</b></th>
+              <th style="width:5%; padding:5px;"><b>מק"ט פריט-ספק</b></th>
+              <th style="width:15%; padding:5px"><b>שם</b></th>
+              <th style="width:5%; padding:5px"><b>סוג</b></th> 
+              <th style="width:7%; padding:5px"><b>כמות</b></th>
+              <!-- <th style="padding:5px"><b>כמות מוקצת</b></th> -->
+              <th style="width:7%; padding:5px"><b>תמונה</b></th>
+              <th style="width:12%; padding:5px"><b>צפי הגעה הזמנת רכש</b></th>
+              <!-- <th style="padding:5px" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th> -->
+              <th style="width:3%; padding:5px"></th>
+            </tr>
+      
+          </thead>
+        <tbody  id="table_body" class="materialsTable">
+            <tr *ngFor="let material of materials; let i = index">
+
+
+
+
+          </tr>
+        </tbody>
+      </table>
 
 
 
@@ -726,6 +752,83 @@
       <!-- END OF MODAL CONTENT -->
     </div>
   </div>
+
+  <div *ngIf="openModal==true && stockType=='material'" id="myModal3" class="modal3" style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:185px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
+
+      <!-- Modal content -->
+      <div class="modal-content" style='width:700px' id='modelC'>
+        <div id="material-header" class="modal-header">
+          <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+      
+          <h2 id='div_h3'>{{openModalHeader}}</h2><br>
+          <button class="btn btn-primary" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
+          
+        </div>
+        <div id="material-body" class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 900px; padding-left: 0px">
+          <div *ngIf="showItemDetails">
+            <table id='detailsTable'> 
+              <tbody id='detailsTbody'>
+                  <tr style="background: rgb(165, 185, 250);">
+                      <th>מספר פריט</th>
+                      <td><input style="width: 150px;" class="itemInput" type='text' [(ngModel)]="productToFind" >
+                          <img (click)="searchProduct()" src="../../../../assets/images/search.png" alt="" style="padding-right: 10px; width: 30px; cursor: pointer;">
+                      </td>
+                    </tr>
+                    <tr style="background: rgb(165, 185, 250);">
+                        <th>שם פריט</th>
+                        <td><input class="itemInput" type='text'>
+                        </td>
+                      </tr>
+                      <tr style="background: rgb(165, 185, 250);">
+                          <th>הערות</th>
+                          <td><textarea rows="5" cols="20" ></textarea>
+                          </td>
+                        </tr>
+                    
+            
+              </tbody>
+            </table>
+            
+          </div>
+          <div *ngIf="!showItemDetails">
+            <h5>Item Movements</h5>
+            <div *ngIf="itemMovements.length==0">
+              <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
+                  movements...</b></span>
+              <br />
+              <p *ngIf="!loadingMovements  && itemMovements.length==0 " style="font-weight: bold; color: red;">No Item Movements !</p>
+            </div>
+            <table class="table table-stipped" style="direction:ltr;text-align:left ">
+  
+              <tr>
+                <th>Amount</th>
+                <th>Movement Type</th>
+                <th>Date</th>
+                <th>Shelf</th>
+                <th>New Shelf</th>
+                <th>WhareHouse</th>
+              </tr> 
+              <tr *ngFor="let itemMovement of itemMovements">
+                <td>{{itemMovement.amount}}</td>
+                <td>{{itemMovement.movementType}}</td>
+                <td>{{itemMovement.movementDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{itemMovement.shell_position_in_whareHouse_Origin}}</td>
+                <td>{{itemMovement.shell_position_in_whareHouse_Dest}}</td>
+                <td>{{itemMovement.WH_originName}}</td>
+  
+              </tr>
+  
+            </table>
+          </div>
+        </div>
+        <div id="material-footer" class="modal-footer">
+          <button class="btn btn-success" id="newCbtn" (click)="writeNewComponent()" *ngIf="newItem=='new'">הקם מוצר</button>
+          <button class="btn btn-success"  id="updateDataBtn" (click)="editStockItemDetails()"  *ngIf="newItem!='new'" >עדכן מידע</button>
+        </div>
+      </div>
+  
+    </div>
+  
 
 
   

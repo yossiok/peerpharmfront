@@ -43,7 +43,7 @@ td {
   padding:5px;
 }
 table tr:hover {
-  background-color: lightblue;
+  background-color: rgb(223, 223, 238);
 }
 .positionClass {
   width:3%;
@@ -79,3 +79,29 @@ table tr:hover {
     margin: 5mm 5mm 5mm 5mm;
   }
 }
+
+.tableHeader {
+  box-shadow: 2px 2px 12px 2px black !important;
+  background: rgb(69, 69, 202);
+  padding:0px !important;
+}
+.tableHeader:hover { 
+  background: rgb(69, 69, 202) !important;
+}
+tr { 
+  margin-top: 10px !important;
+}
+
+ textarea , select { 
+  box-shadow: 1px 1px 2px black;
+}
+input[type=text] { 
+ box-shadow: 1px 1px 2px black;
+} 
+input[type=date] { 
+  box-shadow: 1px 1px 2px black;
+ } 
+
+ td { 
+   text-align: center;
+ }

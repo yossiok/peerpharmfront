@@ -1,3 +1,10 @@
 table tr td{
     font-size: 18px;
 }
+.tableHeader {
+    box-shadow: 2px 2px 12px 2px black !important;
+    background: rgb(69, 69, 202) !important;
+  }
+  input , select , textarea { 
+      box-shadow: 2px 2px 2px black;
+  }

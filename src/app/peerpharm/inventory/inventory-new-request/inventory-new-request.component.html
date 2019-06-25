@@ -1,130 +1,126 @@
-<p>
-  inventory-new-request works!
-</p>
-
-<div class="row" >
-    <div class="col-12"  >
-        <div class="card" >
-            <div class="card-body">
-                <h3 class="card-title">New Request From Inventory</h3>
-            </div>
-            <hr>
-            <form class="form-horizontal" [formGroup]="inventoryReqForm" (ngSubmit)='addNewRequest(inventoryReqForm.value)'>
-                <div class="card-body">
-                    <h4 class="card-title">Order Info</h4>
-
-                    <div class="form-group row">
-                        <label for="lname" class="col-sm-3 text-right control-label col-form-label">Request number:</label>
-                        <div class="col-sm-4">
-                            <input value="newReqNumber" type="number" class="form-control" placeholder="request number auto generated" formControlName="reqNum" disabled>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="reqDate" class="col-sm-3 text-right control-label col-form-label">Request date</label>
-                        <div class="col-sm-4">
-                            <input type="date" class="form-control" formControlName="currDate" >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
-                        <div class="col-sm-4">
-                            <input type="date" class="form-control" formControlName="deliveryDate">
-                        </div>
-
-                    </div>
-                    <!-- <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
-                        </div>
-                    </div> -->
-                    <div class="form-group row">
-                        <label class="col-sm-3 text-right control-label col-form-label">From warehouse:</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" formControlName="fromWH">
-                                <option value="Kasem">Kasem</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 text-right control-label col-form-label">To warehouse:</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" formControlName="toWH">
-                                <option value="Rosh haayin">Rosh ha'ayin</option>
-                            </select>
-                        </div>
-                    </div>
-
-
-
-                    <div class="card-body">
-                        <div class="form-group m-b-0 text-right">
-                            <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
-                            <button type="reset" class="btn btn-dark waves-effect waves-light">Clear</button>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-            </form>
-
-            <form class="form-horizontal" [formGroup]="itemLine" >
-                <div class="col-sm-1"></div>
-
-                <div class="form-group row col-sm-9">
-                    <label class="col-sm-2 text-right control-label col-form-label">Request list:</label>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumInput">
-                    </div>
-                    <div class="col-sm-2">
-                        <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount" min="1">
-                    </div>
-                    <div class="col-sm-2">
-                        <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
-                    </div>
-                    <div class="col-sm-1">
-                        <button type="submit" (click)="addItemToRequsetList(itemLine.value)" style="cursor: pointer;">
-                            <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                <div class="col-sm-1"></div>
-                    <div class="col-sm-9">
-                        <table class='table'>
-                            <thead class='bg-info text-white'>
-                              <tr>
-                                <th>#</th>
-                                <th>Item number</th>
-                                <th>Item name</th>
-                                <th>Amount</th>
-                                <th>Related Order</th>
-                                <th>Remarks</th>
-                                <th></th>
-                              </tr>
-                            </thead>
-                            <ng-container *ngFor="let reqItem of reqList; let i =index">
-                              <tr>
-                                <td>{{i+1}}</td>
-                                <td>{{reqItem.itemNumber}}</td>
-                                <td>{{reqItem.itemName}}</td>
-                                <td>{{reqItem.amount}}</td>
-                                <td>{{reqItem.relatedOrder}}</td>
-                                <td>{{reqItem.remarks}}</td>
-                                <td><img src="assets/images/delete.png" (click)="deleteRow(reqItem.itemNumber,reqItem.amount)"width="30px" style="cursor: pointer;"/></td>
-                              </tr>
-                            </ng-container>
-                          </table>
-                    </div>
-                </div>
-            </form>
-
-
-
-        </div>
-    </div>
-</div>
+  <div class="row" >
+      <div class="col-12"  >
+          <div class="card" >
+              <div class="card-body">
+                  <h3 class="card-title">New Request From Inventory</h3>
+              </div>
+              <hr>
+              <form class="form-horizontal" [formGroup]="inventoryReqForm" (ngSubmit)='addNewRequest(inventoryReqForm.value)'>
+                  <div class="card-body">
+                      <h4 class="card-title">Order Info</h4>
+  
+                      <div class="form-group row">
+                          <label for="lname" class="col-sm-3 text-right control-label col-form-label"><strong>Request Number:</strong></label>
+                          <div class="col-sm-4">
+                              <input value="newReqNumber" type="number" class="form-control" placeholder="request number auto generated" formControlName="reqNum" disabled>
+                          </div>
+                      </div>
+  
+                      <div class="form-group row">
+                          <label for="reqDate" class="col-sm-3 text-right control-label col-form-label"><strong>Request Date:</strong></label>
+                          <div class="col-sm-4">
+                              <input type="date" class="form-control" formControlName="currDate" >
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="cono1" class="col-sm-3 text-right control-label col-form-label"><strong>Delivery Date:</strong></label>
+                          <div class="col-sm-4">
+                              <input type="date" class="form-control" formControlName="deliveryDate">
+                          </div>
+  
+                      </div>
+                      <!-- <div class="form-group row">
+                          <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
+                          <div class="col-sm-4">
+                              <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
+                          </div>
+                      </div> -->
+                      <div class="form-group row">
+                          <label class="col-sm-3 text-right control-label col-form-label"><strong>From Warehouse:</strong></label>
+                          <div class="col-sm-4">
+                              <select class="form-control" formControlName="fromWH">
+                                  <option value="Kasem">Kasem</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label class="col-sm-3 text-right control-label col-form-label"><strong>To Warehouse:</strong></label>
+                          <div class="col-sm-4">
+                              <select class="form-control" formControlName="toWH">
+                                  <option value="Rosh haayin">Rosh Ha'ayin</option>
+                              </select>
+                          </div>
+                      </div>
+  
+  
+  
+                      <div class="card-body">
+                          <div class="form-group m-b-0 text-right">
+                              <button style="box-shadow:1px 1px 2px;" type="submit" class="btn btn-info waves-effect waves-light">Save</button>
+                              <button style="box-shadow:1px 1px 2px;" type="reset" class="btn btn-dark waves-effect waves-light">Clear</button>
+                          </div>
+                      </div>
+                  </div>
+                  <hr>
+              </form>
+  
+              <form class="form-horizontal" [formGroup]="itemLine" >
+                  <div class="col-sm-1"></div>
+  
+                  <div class="form-group row col-sm-9">
+                      <label class="col-sm-2 text-right control-label col-form-label"><strong>Request List:</strong></label>
+                      <div class="col-sm-2">
+                          <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumInput">
+                      </div>
+                      <div class="col-sm-2">
+                          <input type="number" class="form-control" placeholder="Amount" formControlName="itemAmount" min="1">
+                      </div>
+                      <div class="col-sm-2">
+                          <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
+                      </div>
+                      <div class="col-sm-3">
+                          <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
+                      </div>
+                      <div class="col-sm-1">
+                          <button type="submit" (click)="addItemToRequsetList(itemLine.value)" style="cursor: pointer;">
+                              <img src="assets/images/add.png"  width="30px" style="cursor: pointer;"/>
+                          </button>
+                      </div>
+                  </div>
+  
+                  <div class="form-group row">
+                  <div class="col-sm-1"></div>
+                      <div class="col-sm-9">
+                          <table class='table'>
+                              <thead style="box-shadow: 1px 1px 2px 1px black;" class='bg-info text-white'>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Item number</th>
+                                  <th>Item name</th>
+                                  <th>Amount</th>
+                                  <th>Related Order</th>
+                                  <th>Remarks</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <ng-container *ngFor="let reqItem of reqList; let i =index">
+                                <tr>
+                                  <td>{{i+1}}</td>
+                                  <td>{{reqItem.itemNumber}}</td>
+                                  <td>{{reqItem.itemName}}</td>
+                                  <td>{{reqItem.amount}}</td>
+                                  <td>{{reqItem.relatedOrder}}</td>
+                                  <td>{{reqItem.remarks}}</td>
+                                  <td><img src="assets/images/delete.png" (click)="deleteRow(reqItem.itemNumber,reqItem.amount)"width="30px" style="cursor: pointer;"/></td>
+                                </tr>
+                              </ng-container>
+                            </table>
+                      </div>
+                  </div>
+              </form>
+  
+  
+  
+          </div>
+      </div>
+  </div>

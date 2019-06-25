@@ -190,3 +190,49 @@ td {
 
 
 }
+
+#material-header { 
+  background: rgb(165, 185, 250);
+  box-shadow: 3px 0px 3px black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 1200px;
+}
+
+#material-body { 
+  background: rgb(165, 185, 250);
+  box-shadow: 3px 0px 3px black;
+  width: 1200px;
+  height: 900px;
+  
+}
+
+#material-footer { 
+  background: rgb(165, 185, 250);
+  box-shadow: 3px 3px 3px black;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  width: 1200px;
+}
+.itemInput { 
+  width: 150px;
+}
+
+.tableHeader {
+  box-shadow: 2px 2px 12px 2px black !important;
+  background: rgb(69, 69, 202);
+}
+.topBtn { 
+  box-shadow: 2px 2px 2px black;
+}
+tr { 
+  text-align: center;
+}
+
+input[type=text] { 
+  box-shadow: 2px 2px 12px 2px black !important;
+}
+
+select { 
+  box-shadow: 2px 2px 12px 2px black !important;
+}

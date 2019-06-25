@@ -21,7 +21,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       </tr>
     </thead>
     <tbody class='text-center table-hover'>
-        <tr  *ngFor="let arrival of materialsArrivals; let i = index" >
+        <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"  *ngFor="let arrival of materialsArrivals; let i = index" >
             <td style="width:5%;"><strong>{{i+1}}</strong></td>
 
             <td *ngIf="arrival._id != EditRowId"  (click)="edit(arrival._id)" style="width:10%;">{{arrival.remarks}}</td>
@@ -133,7 +133,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
                   <tr>
                     
                     
-                      <td ><span [style.font-size.px]="25" >אצווה: </span> <span dir="ltr">{{ lotNumber }}</span></td>
+                      <td dir="ltr"><span [style.font-size.px]="25" >אצווה: </span> {{ lotNumber }}</td>
                       <td><span [style.font-size.px]="25" >ת.תפוגה: </span> {{ expiryDate | date: 'dd/MM/yyyy' }}</td>
                   </tr>
                   <tr>

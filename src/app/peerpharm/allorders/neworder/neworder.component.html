@@ -11,7 +11,7 @@
                     <h4 class="card-title">Order Info</h4>
 
                     <div class="form-group row">
-                        <label for="lname" class="col-sm-3 text-right control-label col-form-label">Costumer</label>
+                        <label for="lname" class="col-sm-3 text-right control-label col-form-label"><strong>Costumer</strong></label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
                             <input type='hidden' formControlName="costumerInternalId">
@@ -25,30 +25,30 @@
                               </mat-form-field>-->
                             <!---->
                         </div>
-                        <button (click)="openSearch(content);  submited=false;" class='btn btn-info'>List</button>
+                        <button style="box-shadow: 2px 2px 2px black;" (click)="openSearch(content);  submited=false;" class='btn btn-info'><strong>List</strong></button>
                     </div>
                     <div class="form-group row">
-                        <label for="email1" class="col-sm-3 text-right control-label col-form-label">Date of order</label>
+                        <label for="email1" class="col-sm-3 text-right control-label col-form-label"><strong>Date Of Order</strong></label>
                         <div class="col-sm-9">
                             <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Delivery date</label>
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label"><strong>Delivery Date</strong></label>
                         <div class="col-sm-9">
                             <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Remarks</label>
+                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label"><strong>Remarks</strong></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 text-right control-label col-form-label">Type</label>
+                        <label class="col-sm-3 text-right control-label col-form-label"><strong>Type</strong></label>
                         <div class="col-sm-9">
-                            <select class="form-control" formControlName="type">
+                            <select style="box-shadow: 1px 1px 1px black;" class="form-control" formControlName="type">
                                 <option>Cosmetic</option>
                                 <option>Make Up</option>
                                 <option>Cosmetic & MakeUp</option>
@@ -57,8 +57,8 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group m-b-0 text-right">
-                            <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
-                            <button type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
+                            <button style="box-shadow: 2px 2px 2px black;" type="submit" class="btn btn-info waves-effect waves-light">Save</button>
+                            <button style="box-shadow: 2px 2px 2px black;" type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
                         </div>
                     </div>
                 </div>

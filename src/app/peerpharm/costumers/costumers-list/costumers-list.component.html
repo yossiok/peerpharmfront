@@ -2,7 +2,7 @@
 
 
 <table class='table'>
-  <thead class='bg-info text-white'>
+  <thead class='tableHeader'>
 
     <tr>
       <th></th>
@@ -13,7 +13,7 @@
     </tr>
   </thead>
   <tbody id="table_body">
-    <tr *ngFor="let costumer of costumers; let i=index">
+    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let costumer of costumers; let i=index">
       <td>{{i}}</td>
       <td (click)='openDetails(content, i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
       <td>{{costumer.costumerName}}</td>

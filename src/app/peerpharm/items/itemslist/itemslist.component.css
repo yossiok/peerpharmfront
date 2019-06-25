@@ -40,3 +40,14 @@
     -o-transform: scale(2); /* Opera */
     padding: 10px;
   }
+
+  .tableHeader {
+    box-shadow: 2px 2px 12px 2px black !important;
+    background: rgb(69, 69, 202);
+    height: 50px;
+    text-align: center;
+  }
+
+  td { 
+    text-align: center;
+  }

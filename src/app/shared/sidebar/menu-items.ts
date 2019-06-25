@@ -297,7 +297,7 @@ export const ROUTES: RouteInfo[] = [
   },
     {
       path: '',
-      title: ' Inevntory',
+      title: ' Inventory',
       icon: ' fas fa-dolly',
       class: 'has-arrow',
       extralink: false,

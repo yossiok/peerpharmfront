@@ -109,13 +109,13 @@
 
 <!-- <button (click)="addImpRemarkFromItemTree()">addImpRemarkFromItemTree</button> -->
 {{ today | date: "dd/MM/yyyy" }}<br />
-<input
+<input style="box-shadow: 2px 2px 2px black; height: 30px;"
   type="date"
   #date
   [(ngModel)]="today"
   (change)="dateChanged(date.value)"
 />
-<button class="btn btn-info" (click)="filterSchedule()">Filter</button>
+<button class="btn btn-info" style="box-shadow: 2px 2px 2px black; margin-left: 5px; height: 30px;" (click)="filterSchedule()">Filter</button>
 <br /><br />
 <div
   (click)="setType(&quot;basic&quot;, this)"
@@ -143,7 +143,7 @@
 </div>
 
 <table class="scheduleTB">
-  <thead class="bg-success text-white">
+  <thead class="tableHeader text-white">
     <tr>
       <th class="positionClass"><b>P</b></th>
       <th><b>Order</b></th>
@@ -304,15 +304,15 @@
     </td>
     <td class="printlessTd"></td>
     <td class="printlessTd">
-      <button class="btn btn-info " (click)="writeScheduleData()">Add</button
+      <button style="box-shadow: 2px 2px 2px black;" class="btn btn-info " (click)="writeScheduleData()">Add</button
       ><br />
     </td>
   </tr>
 
   <tbody id="table_body">
-    <tr *ngFor="let line of scheduleData" [style.background-color]="line.color">
+    <tr  style="box-shadow: inset 1px -2px 4px 0px black; margin-top: 1px;" *ngFor="let line of scheduleData" [style.background-color]="line.color">
       <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
-        <td
+        <td 
           class="positionClass"
           *ngIf="line._id !== EditRowId"
           (click)="edit(line._id, line.mkp)"

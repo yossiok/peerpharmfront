@@ -1,20 +1,20 @@
 
 <div class="form-group row" style="width: 50%;">
   <div class="col-3">
-    <input class="form-control" #date type='date' [value]="today" (change)="dateChanged($event.target.value)">
+    <input style="box-shadow: 2px 2px 2px black;" class="form-control" #date type='date' [value]="today" (change)="dateChanged($event.target.value)">
   </div>
   <div class="col-3">
-    <button class="btn btn-info form-control" (click)="getAllSchedule()">All Schedules</button>
+    <button style="box-shadow: 2px 2px 2px black;" class="btn btn-info form-control" (click)="getAllSchedule()">All Schedules</button>
   </div>
   <div class="col-3">
-      <button class="btn btn-info form-control" (click)="getOpenAllSchedule()">All Open Schedules</button>
+      <button style="box-shadow: 2px 2px 2px black;" class="btn btn-info form-control" (click)="getOpenAllSchedule()">All Open Schedules</button>
   </div>
 
 </div>
 
 
 <table class='table'>
-  <thead class='bg-info text-white'>
+  <thead class='tableHeader text-white'>
     <tr align='center'>
       <th><b>P</b></th>
       <th><b>Order</b></th>
@@ -62,8 +62,8 @@
         <option value="flat">Flat</option>
       </select>
     </td>
-    <td class='printlessTd'><button class="button" (click)="writeScheduleData()" style='width:110px' id='addBtn'>Add</button><br>
-      <button onclick='clearRow()' style='width:110px; background-color:red'>Clear</button>
+    <td class='printlessTd'><button class="button" (click)="writeScheduleData()" style='margin: 5px;border: 1px solid black;box-shadow:2px 2px 2px black;width:70px; background-color:rgb(19, 165, 19)' id='addBtn'>Add</button>
+      <button onclick='clearRow()' style='border: 1px solid black;box-shadow:2px 2px 2px black; width:70px; background-color:rgb(214, 29, 29)'>Clear</button>
     </td>
   </tr>
 

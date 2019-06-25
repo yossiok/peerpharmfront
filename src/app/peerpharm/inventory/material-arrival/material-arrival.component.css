@@ -59,3 +59,24 @@ form label{
 .nav-link{
     font-size: 20px;
 }
+
+input[type=text] { 
+    box-shadow: 1px 1px 1px black;
+}
+
+input[type=number] { 
+    box-shadow: 1px 1px 1px black;
+}
+
+input[type=date] { 
+    box-shadow: 1px 1px 1px black;
+}
+
+
+select { 
+    box-shadow: 1px 1px 1px black;
+}
+
+.btn-success , .btn-danger { 
+    box-shadow: 2px 2px 4px black;
+}

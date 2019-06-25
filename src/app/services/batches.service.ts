@@ -52,4 +52,10 @@ export class BatchesService {
   }
 
 
+  updateBatchesForm(formToUpdate){
+    debugger;
+    let url = this.baseUrl + "batch/";
+    return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
+  }
+
 }

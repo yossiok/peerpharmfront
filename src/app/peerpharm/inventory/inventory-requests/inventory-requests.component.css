@@ -20,3 +20,7 @@ input[type=checkbox]
 .imgBtn:hover{
     width:45px;
 }
+.mat-ripple-element { 
+    left:0;
+    animation: none;
+}
