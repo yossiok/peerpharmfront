@@ -932,7 +932,12 @@ editBatch(batch){
 
 
 
-
+  // getOrderItemsFromArray(){
+  //   this.orderService.getOrderItemsFromArray().subscribe(data=>{
+  //       this.excelService.exportAsExcelFile(data.docs, 'OrderItems');
+  //       this.excelService.exportAsExcelFile(data.noResult, 'NoOrderItems');
+  //   });
+  // }
 
 
 

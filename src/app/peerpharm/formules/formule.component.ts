@@ -9,6 +9,7 @@ import { FormulePhase } from './models/formule-phase';
 import { FormulesService } from '../../services/formules.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { Formule } from './models/formule';
 
 @Component({
   selector: 'app-formule',
@@ -91,6 +92,7 @@ export class FormuleComponent implements AfterViewInit {
 
   }
 
+  
   onPhaseAdded(phaseToSave) {
     // check if exist in formule
     let exist=false;
@@ -98,7 +100,7 @@ export class FormuleComponent implements AfterViewInit {
       if(p.phaseNumber == phaseToSave.phaseNumber) {
         exist= true;
       }
-    })
+    });
     if(!exist){
       // ADD PHASE !
       // this.formuleService.addNewPhaseToFormule(phaseToSave).subscribe(phase=>{
@@ -106,24 +108,43 @@ export class FormuleComponent implements AfterViewInit {
       if(phaseToSave._id){
         this.phase= new FormulePhase();
         this.phase= phaseToSave;
-        debugger
         this.allPhasesForm.push(this.phase);
-        this.newItem=true;
-        this.item = new FormuleItem();
-        this.item.formuleId= this.phase.formuleId ;
-        this.item.phaseId= this.phase._id ;
+        this.addItemToScreen();
+
       } else{
       this.toastSrv.error('phase without id')
       }
       // });
 
     }else{
-      this.toastSrv.error('phase exist in formule')
+      if(confirm('לשמור שינויים בפאזה?')){
+
+        let index;
+        this.allPhasesForm.forEach((p,key)=>{
+          if(p.phaseNumber == phaseToSave.phaseNumber) {
+            index= key;
+          }
+        });
+        this.allPhasesForm[index]=phaseToSave;
+        debugger
+
+        this.phase=phaseToSave;
+        this.addItemToScreen()
+      }else{
+        this.toastSrv.error('phase exist in formule\nChanges not saved')
+      }
     }
     // this.allPhasesForm.push(phaseToSave);
      
     // const newItem = new FormuleItem();
     // this.allItemsForm.push(newItem);
+  }
+  addItemToScreen(){
+
+    this.newItem=true;
+    this.item = new FormuleItem();
+    this.item.formuleId= this.phase.formuleId ;
+    this.item.phaseId= this.phase._id ;
   }
 
   onItemAdded(item) {
@@ -141,34 +162,48 @@ export class FormuleComponent implements AfterViewInit {
             p = updatedPhase;
           } 
         });
+        this.toastSrv.success("Item added to phase");
         console.log("this.allPhasesForm",this.allPhasesForm);
       });
     }else{
+      
       this.toastSrv.error("Can't find phase to update")
     }
     const newItem = new FormuleItem();
     this.allItemsForm.push(newItem);
   }
 
+  onPhaseLoad(phaseToLoad){
+    if(phaseToLoad._id){
+      this.phase= new FormulePhase();
+      this.phase= phaseToLoad;
+    }else{
+      this.toastSrv.error("no phase id")
+    }
+  }
+
+
   onFinish() {
-    // this.childItems.forEach((childItem, index) => {
-    //   this.allItemsForm[index].number = childItem.itemsForm.value.number;
-    //   this.allItemsForm[index].quantity = childItem.itemsForm.value.quantity;
-    //   this.allItemsForm[index].percentage = childItem.itemsForm.value.Percentage;
-    //   this.allItemsForm[index].instructions = childItem.itemsForm.value.instractions;
-    // });
-    
-    this.formuleService
-      .addFormule(
-        this.newFormuleBasic.number,
-        this.newFormuleBasic.name,
-        this.newFormuleBasic.category.value,
-        this.newFormuleBasic.lastUpdate,
-        this.newFormuleBasic.ph,
-        this.newFormuleBasic.client,
-        this.allItemsForm
-      )
-     .subscribe(data => console.log('added ' + data));
+
+    var formuleToSave= new Formule(); 
+    formuleToSave= {
+      number: this.newFormuleBasic.number,
+      name: this.newFormuleBasic.name,
+      category: this.newFormuleBasic.category,
+      lastUpdate: this.newFormuleBasic.lastUpdate,
+      lastUpdateUser: this.newFormuleBasic.lastUpdateUser,
+      ph: this.newFormuleBasic.ph,
+      client: this.newFormuleBasic.client,
+      phases: this.allPhasesForm,
+      }
+      this.formuleService.updateFormule(formuleToSave).subscribe(data=>{
+        if(data._id){
+          this.toastSrv.success("Formule Saved")
+        }else{
+          this.toastSrv.error("Formule NOT Saved!")
+          this.toastSrv.error("error: "+data)
+        }
+      })
   }
 
   ngAfterViewInit() { 

@@ -23,9 +23,9 @@
             <ng-container *ngFor="  let phase of formulePhases; let indx=index;" style="border: solid black 2px;">
                 <ng-container *ngIf="phase.items.length > 0">
                   <tr *ngFor="let item of phase.items ; let i = index; ">
-                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" >{{phase.phaseNumber}}</td>
-                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" >{{phase.phaseName}}</td>
-                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" >{{phase.phaseInstructions}}</td>
+                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase" (click)="loadPhaseToForm(phase)">{{phase.phaseNumber}}</td>
+                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td>
+                    <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseInstructions}}</td>
                     <td>{{item.itemNumber}}</td>
                     <td>{{item.itemName}}</td>
                     <td>{{item.itemInstructions}}</td>
@@ -38,9 +38,9 @@
                 </ng-container>
                 <ng-container *ngIf="phase.items.length == 0">
                   <tr>
-                    <td>{{phase.phaseNumber}}</td>
-                    <td>{{phase.phaseName}}</td>
-                    <td>{{phase.phaseInstructions}}</td>
+                    <td class="phase" (click)="loadPhaseToForm(phase)">{{phase.phaseNumber}}</td>
+                    <td class="phase">{{phase.phaseName}}</td>
+                    <td class="phase">{{phase.phaseInstructions}}</td>
                   </tr>
                 </ng-container>
             </ng-container>

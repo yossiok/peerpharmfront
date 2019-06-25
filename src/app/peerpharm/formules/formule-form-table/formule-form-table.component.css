@@ -1,0 +1,7 @@
+table{
+    background-color: white;
+}
+td.phase{
+    background-color: antiquewhite; 
+    cursor: pointer;
+}

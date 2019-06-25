@@ -25,6 +25,7 @@ export class AddFormuleItemComponent implements OnInit {
       quantityUnits: ['gr', Validators.required],
       percentage: [null, Validators.required],
       itemPH: [7, Validators.required],
+      temp: [null, ],
       formuleId: ['', Validators.required],
       phaseId: ['', Validators.required],
     });
@@ -53,6 +54,17 @@ export class AddFormuleItemComponent implements OnInit {
       this.toastSrv.error('Fill required item fields')
     }
   }
+
+  resetItemFormButNotPhase(){
+    this.itemsForm.controls.itemNumber.reset();
+    this.itemsForm.controls.itemName.reset();
+    this.itemsForm.controls.itemInstructions.reset();
+    this.itemsForm.controls.quantity.reset();
+    this.itemsForm.controls.quantityUnits.reset();
+    this.itemsForm.controls.percentage.reset();
+    this.itemsForm.controls.itemPH.reset();
+  }
+
   deletePhaseItem(){
     
   }

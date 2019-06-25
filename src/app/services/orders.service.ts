@@ -188,4 +188,10 @@ export class OrdersService {
     let url = this.baseUrl + 'orderitem/getComponents?orderItemsNumArr=' + orderItemsNumArr;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+
+  getOrderItemsFromArray(): Observable<any> {
+    let url = this.baseUrl + 'orderitem/getOrderItemsFromArray';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 }

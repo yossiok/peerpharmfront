@@ -24,7 +24,11 @@
         </app-add-formule-item>
     </div>    
     <div class="col-6">
-        <app-formule-form-table [formulePhases]="allPhasesForm"></app-formule-form-table>
+        <app-formule-form-table 
+        [formulePhases]="allPhasesForm"
+        (loadPhase)="onPhaseLoad($event)">
+
+        </app-formule-form-table>
     </div>
 </div>
 

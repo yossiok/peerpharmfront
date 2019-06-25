@@ -50,6 +50,9 @@ export class AddFormulePhaseComponent implements OnInit {
     this.phaseForm.controls.phaseNumber.setValue(this.phaseInfo.phaseNumber);
     this.phaseForm.controls.phaseName.setValue(this.phaseInfo.phaseName);
     this.phaseForm.controls.phaseInstructions.setValue(this.phaseInfo.phaseInstructions);
+    if(this.phaseInfo._id!= undefined && this.phaseInfo._id!= null ){
+    this.phaseForm.controls._id.setValue(this.phaseInfo._id);
+    }
   }
   onSubmit() {
     if(this.phaseForm.value._id){

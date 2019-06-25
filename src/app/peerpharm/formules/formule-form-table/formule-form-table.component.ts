@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-formule-form-table',
@@ -9,9 +9,12 @@ export class FormuleFormTableComponent implements OnInit {
   phases:Array<any>;
   constructor() { }
   @Input() formulePhases: Array<any>;
+  @Output() loadPhase = new EventEmitter();
 
+  
 
   ngOnChanges() {
+    debugger
     this.phases= this.formulePhases;
      
     // this.doSomething(changes.categoryId.currentValue);
@@ -23,47 +26,9 @@ export class FormuleFormTableComponent implements OnInit {
   ngOnInit() {
     this.phases= this.formulePhases;
     // getPhaseItems
-     
-    // this.phases=[
-    //   {
-    //   phase:"A",
-    //   phaseIndex:"1",
-    //   stepsArr: [
-    //       {
-    //         itemIndex: 1,
-    //         materialName: "water",
-    //       },
-    //       {
-    //         itemIndex: 2,
-    //         materialName: "oil",
-    //       },
-    //       {
-    //         itemIndex: 3,
-    //         materialName: "silicon",
-    //       },
-    //    ],
-    //    stepsAmount:3,
-    //    },
-    //   {
-    //   phase:"B",
-    //   phaseIndex:"2",
-    //   stepsArr: [
-    //       {
-    //         itemIndex: 1,
-    //         materialName: "water",
-    //       },
-    //       {
-    //         itemIndex: 2,
-    //         materialName: "oil",
-    //       },
-    //       {
-    //         itemIndex: 3,
-    //         materialName: "silicon",
-    //       },
-    //     ],
-    //     stepsAmount: 3,
-    //    },
-    // ]
+  }
+  loadPhaseToForm(phase){
+    this.loadPhase.emit(phase);
   }
 
 }
