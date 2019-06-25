@@ -46,6 +46,8 @@ export class AddFormuleItemComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger
+
     if(this.itemsForm.valid){
       const newItemAdded = this.itemsForm.value;
       this.itemAdded.emit(newItemAdded);  
@@ -63,6 +65,7 @@ export class AddFormuleItemComponent implements OnInit {
     this.itemsForm.controls.quantityUnits.reset();
     this.itemsForm.controls.percentage.reset();
     this.itemsForm.controls.itemPH.reset();
+    this.itemsForm.controls.temp.reset();
   }
 
   deletePhaseItem(){

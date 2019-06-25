@@ -47,12 +47,14 @@ export class ProductionRequestComponent implements OnInit {
       dueDate: [new Date(), Validators.required],
       user: ["", Validators.required],
       reqNumber: [Number, Validators.required],
+      formuleId: ["", Validators.required],
       formuleNumber: ["", Validators.required],
-      formuleName: [String, Validators.required],
+      formuleName: ["", Validators.required],
       relatedItems: [Array],
       quantity: [Number, Validators.required],
       lastUpdated: [Date, Validators.required],
-      lastUpdatedUser: ["", Validators.required]
+      lastUpdatedUser: ["", Validators.required],
+      status: ["new", Validators.required]
 
     });
     
@@ -75,13 +77,12 @@ export class ProductionRequestComponent implements OnInit {
     this.todayD.nativeElement.value = this.today;
     this.dueDate.nativeElement.value = this.today;
 
-    await this.authorizedUser().then(user=>{
-      debugger
-      this.userName=user+"";
-      this.requestForm.controls.user.setValue(user+"")
-      this.requestForm.controls.lastUpdatedUser.setValue(user+"")
-
+    await this.authService.userEventEmitter.subscribe(user => {
+      this.userName=user.firstName+" "+user.lastName;
+      this.requestForm.controls.user.setValue(this.userName)
+      this.requestForm.controls.lastUpdatedUser.setValue(this.userName)
     });
+
 
 
 
@@ -226,5 +227,17 @@ export class ProductionRequestComponent implements OnInit {
     })
   }
 
+  findFormule(ev){
+    let num= ev.target.value;
+    debugger
+    this.formuleService.getFormuleByNumber(num).subscribe(formule=>{
+      if(formule._id){
+        this.requestForm.controls.formuleName.setValue(formule.name) ;
+        this.requestForm.controls.formuleId.setValue(formule._id) ;
+      } else{
+        this.toastSrv.error("Can't find formule number")
+      }
+    })
+  }
 
 }

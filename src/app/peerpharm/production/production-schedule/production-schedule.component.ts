@@ -4,6 +4,8 @@ import { ProductionOrders } from './../models/production-orders';
 import { ProductionSchedule } from './../models/production-schedule';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from '../../../../../node_modules/ngx-toastr';
+import { FormulesService } from '../../../services/formules.service';
 
 @Component({
   selector: 'app-production-schedule',
@@ -13,6 +15,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 export class ProductionScheduleComponent implements OnInit {
   requests: ProductionSchedule[];
   orders: ProductionOrders[];
+  scheduleItems:Array<any>;
   public scheduleOrdersForm: FormGroup;
   // scheduleOrders: ProductionOrders[] = [{
   //   orderNumber : 2,
@@ -23,7 +26,9 @@ export class ProductionScheduleComponent implements OnInit {
   // }]; // No Use
   closeResult: string;
   openModal = false;
-  constructor(private productionService: ProductionService, private modalService: NgbModal) {}
+  constructor(private productionService: ProductionService, private modalService: NgbModal,
+    private toastSrv: ToastrService,
+    private formuleService: FormulesService,) {}
 
   ngOnInit() {
     this.productionService.getAllProductionSchedule().subscribe(res => {
@@ -48,13 +53,21 @@ export class ProductionScheduleComponent implements OnInit {
 
   OpenRelatedOrders(content){
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      debugger
+      this.scheduleItems= content;
       console.log(result);
 
       this.closeResult = `Closed with: ${result}`;
       console.log(this.closeResult);
     }, (reason) => {
-
+      this.scheduleItems= [];
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  startFormuleForm(request){
+    this.formuleService.startFormuleForm(request).subscribe(data=>{
+
     });
   }
 

@@ -44,7 +44,8 @@ export class AddFormulePhaseComponent implements OnInit {
   }
 
   adjustFormData(){
-    this.phaseForm.controls.formuleId.setValue(this.formuleBase._id);
+    if(this.formuleBase.id) this.phaseForm.controls.formuleId.setValue(this.formuleBase.id);
+    if(this.formuleBase._id) this.phaseForm.controls.formuleId.setValue(this.formuleBase._id)
     this.phaseForm.controls.formuleNumber.setValue(this.formuleBase.number);
     this.phaseForm.controls.formuleName.setValue(this.formuleBase.name);
     this.phaseForm.controls.phaseNumber.setValue(this.phaseInfo.phaseNumber);
@@ -56,15 +57,12 @@ export class AddFormulePhaseComponent implements OnInit {
   }
   onSubmit() {
     if(this.phaseForm.value._id){
-
       // when loding phase from table we get id 
       this.phaseValidation();
-
     }else if(this.phaseForm.value._id == null || this.phaseForm.value._id == undefined ){
       // add new Phase 
       this.formuleService.getPhaseByNumberAndFormuleId(this.phaseForm.value.formuleId, this.phaseForm.value.phaseNumber)
       .subscribe(existingPhase=>{
-        
         console.log('before')
         debugger
         if(existingPhase){
@@ -83,15 +81,9 @@ export class AddFormulePhaseComponent implements OnInit {
   }
 
   phaseValidation(){
-    // return new Promise=
+    debugger
     if(this.phaseForm.valid){
-      // if(this.phaseForm.value.items.length>0){
-      //   //adjust items arr
-      // }
-      //moved the post call to formule.component
-      // this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(phase=>{
         this.phaseCreated.emit(this.phaseForm.value);
-      // })
     }else{
       this.toastSrv.error("Please fill all fields");
     }

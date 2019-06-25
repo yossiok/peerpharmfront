@@ -2,6 +2,7 @@ import { FormuleItem } from './formule-item';
 import { FormulePhase } from './formule-phase';
 
 export class Formule {
+    _id:string; 
     number: number;
     name: string;
     category: string;

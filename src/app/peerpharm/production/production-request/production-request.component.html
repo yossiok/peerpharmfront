@@ -1,6 +1,6 @@
 <!-- .row -->
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-6">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Production Request Form</h4>
@@ -50,6 +50,7 @@
                   class="form-control"
                   type="text"
                   formControlName="formuleNumber"
+                  (focusout)="findFormule($event)"
                   />
                 <!-- <div *ngIf="errorItemNumber" style="font-size: 10pt; color: red;">
                   Not valid Item number
@@ -65,7 +66,8 @@
                   type="text"
                   class="form-control"
                   #nameL
-                  (keyup)="filterNameList(nameL.value)"
+                  formControlName="formuleName"
+                  
                 />
                 
                 <ul *ngIf="nameL.value!=''"
@@ -135,7 +137,7 @@
                 <input
                   class="form-control"
                   type="number"
-                  formControlName="itemTotalQuantity"
+                  formControlName="quantity"
                 />
               </div>
             </div>

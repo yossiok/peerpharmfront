@@ -42,14 +42,10 @@ export class FormuleComponent implements AfterViewInit {
 
   }
   onNewFormuleAdded(newFormuleCreated) {
+    debugger
     this.onFirstPhaseCreated(newFormuleCreated);
   }
   
-  updatingFormuleBaseInfo(){}
-  updatingPhaseInfo(){}
-  updatingItemInfo(){}
-
-
   LoadingFormule(newFormule){
     if(newFormule!=null){
       this.newFormuleBasic = newFormule;
@@ -79,16 +75,21 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   onFirstPhaseCreated(newFormuleCreated){
+
     this.newFormuleBasic = newFormuleCreated;
     const newPhase = new FormulePhase();
     newPhase.phaseNumber= this.allPhasesForm.length+1;
-    newPhase.formuleId= this.newFormuleBasic._id;
+    newPhase.formuleId= this.newFormuleBasic.id;
     newPhase.formuleNumber= this.newFormuleBasic.number;
     newPhase.formuleName= this.newFormuleBasic.name;
-    this.disableAddPhase=false;
-
-    this.phase=newPhase;
-    this.newPhase=true;
+    debugger
+    this.formuleService.addNewPhaseToFormule(newPhase).subscribe(phase=>{
+      debugger
+      this.disableAddPhase=false;
+      this.phase=newPhase;
+      this.newPhase=true;
+  
+    })
 
   }
 
@@ -123,10 +124,13 @@ export class FormuleComponent implements AfterViewInit {
         this.allPhasesForm.forEach((p,key)=>{
           if(p.phaseNumber == phaseToSave.phaseNumber) {
             index= key;
+            if(p.items.length>0){
+              phaseToSave.items=p.items;
+            }
           }
         });
         this.allPhasesForm[index]=phaseToSave;
-        debugger
+        
 
         this.phase=phaseToSave;
         this.addItemToScreen()
@@ -148,6 +152,7 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   onItemAdded(item) {
+    debugger
     let existinfPhase= this.allPhasesForm.filter(p=> {
       if(p._id == item.phaseId){
         return p;
@@ -187,6 +192,7 @@ export class FormuleComponent implements AfterViewInit {
 
     var formuleToSave= new Formule(); 
     formuleToSave= {
+      _id: this.newFormuleBasic._id,
       number: this.newFormuleBasic.number,
       name: this.newFormuleBasic.name,
       category: this.newFormuleBasic.category,

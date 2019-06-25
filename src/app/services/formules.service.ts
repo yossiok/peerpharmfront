@@ -115,5 +115,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules/updatePhase";
     return this.http.put(url, JSON.stringify(phase), this.options).pipe(map(res => res.json()));
   }
+
+  startFormuleForm(request){
+    let url = this.baseUrl + "formules/forms";
+    return this.http.post(url, JSON.stringify(request), this.options).pipe(map(res => res.json()));
+  }
   
 }

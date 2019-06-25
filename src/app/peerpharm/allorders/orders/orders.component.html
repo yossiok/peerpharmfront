@@ -118,7 +118,7 @@
             </td> -->
           <td #orderType style="width: 7%;">{{order.type}}</td>
 
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)" class="newUniqueFont" style="box-shadow: inset 0px 0px 2px 1px black; text-align: center;  height: 100%;" [style.background-color]="order.stageColor">{{order.stage | orderStage}}</td>
+          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)"  style="box-shadow: inset 0px 0px 2px 1px black; text-align: center;  height: 100%;" [style.background-color]="order.stageColor">{{order.stage | orderStage}}</td>
           <td *ngIf="order._id===EditRowId">
             <select #stage style="width: 80%" [value]='order.stage' >
               <option value="new">חדש</option>
