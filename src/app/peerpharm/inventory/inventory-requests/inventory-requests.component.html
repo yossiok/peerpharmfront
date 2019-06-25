@@ -1,4 +1,4 @@
-From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
+<!-- From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date"> -->
 <mat-tab-group>
   <mat-tab>
     <ng-template  mat-tab-label>
@@ -84,20 +84,20 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
         </th>
       </tr>
       </thead>
-      <ng-container *ngFor="let request of allRequests; let i =index">
+      <!-- <ng-container *ngFor="let request of allRequests; let i =index">
           <tr >
             <td>{{i+1}}</td>
             <td><a  (click)="getDetails(request._id, request.reqNum)" style='color: blue; cursor: pointer;'>{{request.reqNum}}</a></td>
             <td>{{request.deliveryDate}}</td>
             <td>{{request.fromWH}}</td>
-            <!-- <td>{{request.reqStatus}}</td> -->
+            <td>{{request.reqStatus}}</td>
             <td>{{request.userName}}</td>
             <td>
                 <i class="ti-check text-success m-r-10" style="font-size:35px; cursor: pointer;"  
                 (click)="closeInventoryReqManually(request._id)"></i>
             </td>
           </tr>
-      </ng-container>
+      </ng-container> -->
     </table>
  
   </mat-tab>
