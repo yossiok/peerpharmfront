@@ -1,0 +1,13 @@
+<p>
+  wizard works!
+</p>
+<div *ngIf="formuleFrom" class="container">
+
+  <div *ngIf="step ==1">
+    <h2>Step1 - Scan Barcode</h2>
+    <input type="text" class='inputStyle' (change)="searchMaterial($event)">
+    <h3 *ngIf="wrongItem">Wrong Item</h3>
+    <h3 *ngIf="sugestedItem">{{sugestedItem}}</h3>
+
+  </div>
+</div>

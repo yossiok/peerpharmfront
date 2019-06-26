@@ -36,6 +36,7 @@ import { ProcurementOrderItemComponent} from './procurement/procumentOrderItem/p
 import { BatchesMkpComponent } from './batches/batches-mkp/batches-mkp.component';
 import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
 import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
+import { WizardComponent } from './production/wizard/wizard.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -208,6 +209,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Production Schedule'
     },
     component: ProductionScheduleComponent
+  },
+  {
+    path : 'production/wizard',
+    data : {
+      title : 'Wizard'
+    },
+    component: WizardComponent
   },
   {
     path :'batches/batchesList',

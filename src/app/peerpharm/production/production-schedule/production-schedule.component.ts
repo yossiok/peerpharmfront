@@ -65,12 +65,18 @@ export class ProductionScheduleComponent implements OnInit {
   }
 
   startFormuleForm(request){
-
-    this.formuleService.startFormuleForm(request).subscribe(formuleAssemblyForm=>{
-      if(formuleAssemblyForm != null){
-        // send to wizard with formuleAssemblyForm
-      }
-    });
+    if(request.status == 'new'){
+      this.formuleService.startFormuleForm(request).subscribe(formuleAssemblyForm=>{
+        if(formuleAssemblyForm != null ){
+          let urlPrefixIndex=window.location.href.indexOf("#");
+          let urlPrefix=window.location.href.substring(0,urlPrefixIndex)
+          debugger
+          window.open(urlPrefix+"#/peerpharm/production/wizard?schedule="+formuleAssemblyForm.productionScheduleId);
+          // send to wizard with formuleAssemblyForm
+        }
+      });
+  
+    }
   }
   continueFormuleForm(request){
     this.formuleService.findFormuleForm(request).subscribe(formuleAssemblyForm=>{

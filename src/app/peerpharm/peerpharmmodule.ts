@@ -91,6 +91,7 @@ import { ExpectedArrivalsComponent } from './procurement/expected-arrivals/expec
 import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
 import { MaterialArrivalTableComponent } from './inventory/material-arrival-table/material-arrival-table.component';
 import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
+import { WizardComponent } from './production/wizard/wizard.component';
 
 
 @NgModule({
@@ -186,6 +187,7 @@ import { MaterialScanViewComponent } from './inventory/material-scan-view/materi
     AddFormulePhaseComponent,
     ExpectedArrivalsComponent,
     FormuleFormTableComponent,
+    WizardComponent,
 
   ],
   providers: [ OrdersService, HttpClientModule],
