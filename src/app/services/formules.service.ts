@@ -116,9 +116,15 @@ export class FormulesService {
     return this.http.put(url, JSON.stringify(phase), this.options).pipe(map(res => res.json()));
   }
 
+  // FORMULE PRODUCTION FORMS
   startFormuleForm(request){
     let url = this.baseUrl + "formules/forms";
     return this.http.post(url, JSON.stringify(request), this.options).pipe(map(res => res.json()));
+  }
+
+  findFormuleForm(formuleId){
+    let url = this.baseUrl + "formules/forms?formuleId="+formuleId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   
 }

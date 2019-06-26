@@ -13,7 +13,7 @@ import { FormulesService } from '../../../services/formules.service';
   styleUrls: ['./production-schedule.component.css']
 })
 export class ProductionScheduleComponent implements OnInit {
-  requests: ProductionSchedule[];
+  requests: Array<any>;
   orders: ProductionOrders[];
   scheduleItems:Array<any>;
   public scheduleOrdersForm: FormGroup;
@@ -53,7 +53,6 @@ export class ProductionScheduleComponent implements OnInit {
 
   OpenRelatedOrders(content){
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      debugger
       this.scheduleItems= content;
       console.log(result);
 
@@ -66,8 +65,18 @@ export class ProductionScheduleComponent implements OnInit {
   }
 
   startFormuleForm(request){
-    this.formuleService.startFormuleForm(request).subscribe(data=>{
 
+    this.formuleService.startFormuleForm(request).subscribe(formuleAssemblyForm=>{
+      if(formuleAssemblyForm != null){
+        // send to wizard with formuleAssemblyForm
+      }
+    });
+  }
+  continueFormuleForm(request){
+    this.formuleService.findFormuleForm(request).subscribe(formuleAssemblyForm=>{
+      if(formuleAssemblyForm != null){
+        // send to wizard with formuleAssemblyForm
+      }
     });
   }
 

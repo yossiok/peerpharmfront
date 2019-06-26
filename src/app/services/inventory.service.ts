@@ -217,6 +217,10 @@ getMaterialStockItemByNum(internalNumber):Observable<any>{
   let url = this.baseUrl + "material?materialNumber="+internalNumber ;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+getMaterialStockItemById(id):Observable<any>{
+  let url = this.baseUrl + "material?materialId="+id ;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 findByItemNumber(itemNumber):Observable<any>{
   let url = this.baseUrl + "material?purchaseItemNumber="+itemNumber;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -238,7 +242,6 @@ getAllMaterialsArrivals():Observable<any>{
 }
 
 getAllMaterialsByDate(fromDate, toDate):Observable<any>{
-  debugger
   let url = this.baseUrl + "material/byDate?fromDate="+fromDate+"&toDate="+toDate;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
@@ -262,7 +265,6 @@ updateMaterialArrivalForm(formToUpdate){
 /* Matreials Qa */
 
 newMaterialRequirementsForm(objToUpdate){
-  debugger
   let url = this.baseUrl + "material/requirementsForm";
   return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
 }

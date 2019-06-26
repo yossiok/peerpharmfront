@@ -136,8 +136,6 @@ export class ProductionRequestComponent implements OnInit {
   filterNameList(input){
     this.requestForm.controls.formuleName.setValue(input);
     this.nameL.nativeElement.value;
-    debugger
-
     if(input !=""){
       let inputVal= input.toLowerCase();
       this.nameList= this.allFormules.filter(n => {
@@ -194,7 +192,6 @@ export class ProductionRequestComponent implements OnInit {
     }else{
       this.requestForm.controls.relatedItems.setValue([]) ;
     }
-    debugger
    if (this.requestForm.valid){
     this.productionService.addProdRequest(this.requestForm.value).subscribe(data=>{
       console.log(data)
@@ -229,7 +226,6 @@ export class ProductionRequestComponent implements OnInit {
 
   findFormule(ev){
     let num= ev.target.value;
-    debugger
     this.formuleService.getFormuleByNumber(num).subscribe(formule=>{
       if(formule._id){
         this.requestForm.controls.formuleName.setValue(formule.name) ;
