@@ -259,4 +259,12 @@ updateMaterialArrivalForm(formToUpdate){
   return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
 }
 
+/* Matreials Qa */
+
+newMaterialRequirementsForm(objToUpdate){
+  debugger
+  let url = this.baseUrl + "material/requirementsForm";
+  return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
+}
+
 }

@@ -80,3 +80,26 @@ select {
 .btn-success , .btn-danger { 
     box-shadow: 2px 2px 4px black;
 }
+
+.spanTDStyle{
+    display: inline-block; 
+    margin-right: 20px;
+}
+.divStyle{
+    /* margin-top: 15px; */
+    /* JUSTIFY-CONTENT: CENTER; */
+    DISPLAY: FLEX;
+    JUSTIFY-CONTENT: CENTER;
+    BACKGROUND: WHITE;
+    WIDTH: 80%;
+    PADDING-TOP: 20PX;
+    PADDING-BOTTOM: 20PX;
+}
+.clearfix {
+    overflow: auto;
+  }
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }

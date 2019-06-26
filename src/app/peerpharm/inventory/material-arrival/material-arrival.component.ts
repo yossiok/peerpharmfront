@@ -78,6 +78,15 @@ marginBottom = 10;
 marginLeft = 10;
 marginRight = 10;
 
+requirementsForm: FormGroup;
+requiresFromFull:Boolean=false;
+
+batchNumRemarksInput: Boolean=false;
+orderedQntRemarksInput: Boolean=false;
+approvedPackgeRemarksInput: Boolean=false;
+
+
+
   constructor(private fb: FormBuilder, 
     private invtSer:InventoryService, 
     private procuretServ: Procurementservice, 
@@ -115,8 +124,39 @@ marginRight = 10;
       deliveryNoteNumber:["", Validators.required],
     });
 
-   }
+    
+    this.requirementsForm = fb.group({
 
+      date: ["", Validators.required],
+      user: ["", ],
+      signature: ["", Validators.required],
+      itemNumber: ["", Validators.required],
+      itemName: ["", Validators.required], 
+      orderItemNum: [ false, Validators.required], 
+      approvedSupplier: [ false, Validators.required], 
+      batchNum: [ false, Validators.required], 
+      batchNumRemarks: ["", ], 
+      orderedQnt: [ false, Validators.required], 
+      orderedQntRemarks: ["", ], 
+      approvedPackge: [ false, Validators.required], 
+      approvedPackgeRemarks: ["", ], 
+      approvedDocs: [ false, Validators.required], 
+      approvedDocsRemarks: ["", ], 
+      cocBatchNum: [ false, Validators.required], 
+      cocBatchNumRemarks: ["", ], 
+      labReport: [ false, Validators.required], 
+      labReportRemarks: ["", ], 
+      moreDocs: [ false, Validators.required], 
+      moreDocsRemarks: ["", ], 
+      sds: [ false, Validators.required], 
+      sdsRemarks: ["", ], 
+      approvedAndStocked: [ false, Validators.required], 
+      approvedAndStockedRemarks: ["", ], 
+
+    });
+
+
+   }
   ngOnInit() {
     // this.user =   this.authService.loggedInUser;
     this.authService.userEventEmitter.subscribe(data => { 
@@ -136,6 +176,7 @@ marginRight = 10;
     // two displays "tab-selectbyid1" OR "tab-selectbyid2"
     this.activeTabId="tab-selectbyid1"
   }
+  
   // analysisFlagChange(ev){
   //   if(ev.target.checked){
   //     this.newMaterialArrival.value.analysisApproval= true;
@@ -144,6 +185,55 @@ marginRight = 10;
   //   }
   //   
   // }
+  saveMaterialRequirementsForm(){
+    debugger
+    if(this.requirementsForm.valid){
+      this.invtSer.newMaterialRequirementsForm(this.requirementsForm.value).subscribe(doc=>{
+        if(doc._id){
+          this.toastSrv.success('Material Requirements Form saved')
+          this.requiresFromFull=true;
+        }
+      })
+    }else{
+      this.requiresFromFull=false;
+      this.toastSrv.error('Please fill all the fields')
+    }
+  }
+  checkRadio(ev, flag){
+    let formField=ev.target.name;
+    debugger
+    this.requirementsForm.controls[formField].setValue(flag)
+    if(!this.requirementsForm.value.batchNum){
+      this.batchNumRemarksInput= true;
+    }else{
+      this.batchNumRemarksInput= false;
+      this.requirementsForm.controls.batchNumRemarks.setValue('')
+    }
+    if(!this.requirementsForm.value.orderedQnt){
+      this.orderedQntRemarksInput= true;
+    }else{
+      this.orderedQntRemarksInput= false;
+      this.requirementsForm.controls.orderedQntRemarks.setValue('')
+
+    }
+    if(!this.requirementsForm.value.approvedPackge){
+      this.approvedPackgeRemarksInput= true;
+    }else{
+      this.approvedPackgeRemarksInput= false;
+      this.requirementsForm.controls.approvedPackgeRemarks.setValue('')
+
+    }
+  }
+
+  changeFields(ev, flag){
+    let formField=ev.target.name;
+    let formFieldValue=ev.target.value;
+    debugger
+    this.requirementsForm.controls[formField].setValue(formFieldValue)
+  }
+  findMaterialBtNumber(){
+    
+  }
 
   filterSuppliers(input){
     if(input !=""){

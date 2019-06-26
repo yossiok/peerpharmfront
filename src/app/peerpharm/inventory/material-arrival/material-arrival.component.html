@@ -12,7 +12,230 @@
     <ng-template ngbTabContent>
 
         <div #arrivalForm id="arrivalForm">
-            <!-- <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a> -->
+            <div *ngIf="!requiresFromFull" class="mh-85 container" style="overflow: auto; height: 80vh;">
+              <!-- <div class="container reqForm" style="background-color: white; "></div> -->
+              <h2 style='text-align: center; font-weight: bold;'><u>טופס בדיקת חו"ג</u></h2>
+              <h4 style='text-align: center; font-weight: bold;'>דרישות ביקורת קבלה</h4>
+              <div dir="rtl" class="divStyle">
+                  <span class="spanTDStyle">
+                      <label style="padding-left:15px; ">מק"ט</label>
+                      <input type="text" name="itemNumber" style="padding-right: 10px;" (change)="changeFields($event)" >
+                  </span>
+                  <span class="spanTDStyle">
+                      <label style="padding-left:15px; ">שם החומר</label>
+                      <input type="text" name="itemName" style="padding-right: 10px;" (change)="changeFields($event)" >
+                  </span> 
+                </div>
+              <form [formGroup]="requirementsForm">
+                  <table style="width:80%; background-color: white; margin-bottom:0;  " class="table table-bordered" dir="rtl">
+                      <thead>
+                        <tr>
+                          <th>
+                            דרישות
+                          </th>
+                          <th>
+                            תוצאות בדיקה
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr>
+                          <td>
+                            זיהוי מק"ט מול הזמנה
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">זוהה</label>
+                              <input type="radio" name="orderItemNum" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא זוהה</label>
+                              <input type="radio" name="orderItemNum" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              קיום הספק ברשימת ספקים מאושרים
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">קיים</label>
+                              <input type="radio" name="approvedSupplier" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא קיים</label>
+                              <input type="radio" name="approvedSupplier" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              זיהוי מספר מנה
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">זוהה</label>
+                              <input type="radio" name="batchNum" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא זוהה</label>
+                              <input type="radio" name="batchNum" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                            <span class="spanTDStyle" *ngIf="batchNumRemarksInput">
+                                <label for="">הערות</label>
+                                <input type="text" name="batchNumRemarks" style="padding-right: 10px;" (change)="checkRadio($event)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              כמות לפי הזמנה
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">כן</label>
+                              <input type="radio" name="orderedQnt" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא </label>
+                              <input type="radio" name="orderedQnt" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                            <span class="spanTDStyle" *ngIf="orderedQntRemarksInput">
+                                <label for="">הערות</label>
+                                <input type="text" name="orderedQntRemarks" style="padding-right: 10px;" (change)="checkRadio($event)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              שלמות אריזה מקורית
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">תקין</label>
+                              <input type="radio" name="approvedPackge" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא תקין</label>
+                              <input type="radio" name="approvedPackge" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                            <span class="spanTDStyle" *ngIf="approvedPackgeRemarksInput">
+                                <label for="">הערות</label>
+                                <input type="text" name="approvedPackgeRemarks" style="padding-right: 10px;" (change)="checkRadio($event)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              זיהוי חומר ע"פ ניירת נלווית
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">זוהה</label>
+                              <input type="radio" name="approvedDocs" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא זוהה</label>
+                              <input type="radio" name="approvedDocs" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              קיום COC ספק לפי מס' מנה
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">קיים</label>
+                              <input type="radio" name="cocBatchNum" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא קיים</label>
+                              <input type="radio" name="cocBatchNum" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              דו"ח בדיקת חומרים ע"י מעבדה (אם נדרש)
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">נדרש</label>
+                              <input type="radio" name="labReport" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא נדרש</label>
+                              <input type="radio" name="labReport" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              מסמכים נלווים ישימים
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">קיים</label>
+                              <input type="radio" name="moreDocs" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא קיים</label>
+                              <input type="radio" name="moreDocs" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                              SDS
+                          </td>
+                          <td>
+                            <span class="spanTDStyle">
+                              <label for="">קיים</label>
+                              <input type="radio" name="sds" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                            </span>
+                            <span class="spanTDStyle">
+                              <label for="">לא קיים</label>
+                              <input type="radio" name="sds" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                            </span>
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                    <div dir="rtl" class="divStyle">
+                      <span class="spanTDStyle">חו"ג מתאים התקבל במחסן</span>
+                      <span class="spanTDStyle">
+                          <label for="">כן</label>
+                          <input type="radio" name="approvedAndStocked" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                      </span>
+                      <span class="spanTDStyle">
+                          <label for="">לא</label>
+                          <input type="radio" name="approvedAndStocked" style="padding-right: 10px;"  (check)="checkRadio($event, false)">
+                      </span>  
+                    </div>
+                    <div dir="rtl" class="divStyle">
+                      <span class="spanTDStyle">
+                          <label style="padding-left:15px; ">חתימת הבודק</label>
+                          <input type="text" name="signature" style="padding-right: 10px;" (change)="changeFields($event)" >
+                      </span>
+                      <span class="spanTDStyle">
+                          <label style="padding-left:15px; ">תאריך</label>
+                          <input type="date" name="date" style="padding-right: 10px;" (change)="changeFields($event)" >
+                      </span> 
+                    </div>
+
+                    <div class="divStyle">
+                        <button class="brn btn-success" (click)="saveMaterialRequirementsForm()">אישור</button>    
+                    </div>
+              </form>  
+            </div>          
+          
+          
+          <div *ngIf="requiresFromFull">
+              <!-- <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a> -->
               <h2 style='text-align: center;'>Material Arrival</h2>
               <!-- <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2> -->
               <form  class="mh-85 container-fluid" [formGroup]="newMaterialArrival"  >
@@ -74,7 +297,7 @@
                           (click)="resetDate('expiryDate')" ></i>  
                         <label >תאריך תפוגה</label>
                         <!-- <div class="form-group col-md-1 alignRightInModal" style="position: relative;">
-                                             
+                                            
                         </div> -->
                         <input type="date"  class="form-control is-valid" formControlName="expiryDate" name='expiryDate' >
                       </div>  
@@ -172,6 +395,8 @@
                   </div>
             
               </form>
+          </div>
+
           </div>
         
         <!-- Supplier Items Modal -->
