@@ -12,7 +12,7 @@
     <ng-template ngbTabContent>
 
         <div #arrivalForm id="arrivalForm">
-<!--           
+          
             <div *ngIf="!requiresFromFull" class="mh-85 container" style="overflow: auto; height: 80vh;">
               <h2 style='text-align: center; font-weight: bold;'><u>טופס בדיקת חו"ג</u></h2>
               <h4 style='text-align: center; font-weight: bold;'>דרישות ביקורת קבלה</h4>
@@ -229,13 +229,20 @@
 
                     <div class="divStyle">
                         <button class="brn btn-success" (click)="saveMaterialRequirementsForm()">אישור</button>    
+                        <button class="brn btn-success" (click)="resetMaterialRequirementsForm()">אפס טופס</button>    
                     </div>
               </form>  
-            </div>           -->
+            </div>          
           
           
-          <!-- <div *ngIf="requiresFromFull"> -->
-          <div >
+
+
+
+
+
+
+          <div *ngIf="requiresFromFull">
+          <!-- <div > -->
               <h2 style='text-align: center;'>Material Arrival</h2>
               <form  class="mh-85 container-fluid" [formGroup]="newMaterialArrival"  >
                 

@@ -49,7 +49,7 @@ export class WizardComponent implements OnInit {
 
   searchMaterial(ev){
     this.inputValue= ev.target.value;
-    if(this.inputValue.length>=15){
+    if(this.inputValue.length==24){
       this.checkMaterial().then(data=>{
         this.correctQnt=false;
         this.step=2;

@@ -186,6 +186,10 @@ approvedPackgeRemarksInput: Boolean=false;
   //   
   // }
   saveMaterialRequirementsForm(){
+    this.authService.userEventEmitter.subscribe(data => { 
+      this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+      this.requirementsForm.controls.user.setValue(this.user)
+    });
     debugger
     if(this.requirementsForm.valid){
       this.invtSer.newMaterialRequirementsForm(this.requirementsForm.value).subscribe(doc=>{
@@ -199,6 +203,14 @@ approvedPackgeRemarksInput: Boolean=false;
       this.toastSrv.error('Please fill all the fields')
     }
   }
+  resetMaterialRequirementsForm(){
+    this.requirementsForm.reset();
+    this.authService.userEventEmitter.subscribe(data => { 
+      this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+      this.requirementsForm.controls.user.setValue(this.user)
+    });
+  }
+
   checkRadio(ev, flag){
     let formField=ev.target.name;
     debugger

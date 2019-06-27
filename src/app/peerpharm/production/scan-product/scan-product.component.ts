@@ -14,7 +14,7 @@ export class ScanProductComponent implements OnInit {
   }
   searchMaterial(ev){
     let inputValue= ev.target.value;
-    if(inputValue.length>=15){
+    if(inputValue.length==24){
       debugger
       location.href="http://localhost:4200/#/peerpharm/inventory/scanMaterialView?id="+inputValue;
       // this.router.navigate(["http://localhost:4200/#/peerpharm/inventory/scanMaterialView?id="+inputValue]);
