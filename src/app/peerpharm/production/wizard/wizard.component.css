@@ -3,3 +3,21 @@
     font-size: 50px;
     width: 500px;
  }
+ .bigBtn{
+    display: block;
+    margin-top: 10px;
+    line-height: 50px;
+    font-size: 45px;
+}
+
+
+.wrongQnt{
+    font-size: bold;
+    font-size: 45px;
+    margin-top: 15px;
+}
+.msgQnt{
+    font-size: bold;
+    font-size: 45px;
+    margin-top: 15px;
+}
