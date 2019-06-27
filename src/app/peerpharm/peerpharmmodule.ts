@@ -92,6 +92,7 @@ import { MaterialArrivalComponent } from './inventory/material-arrival/material-
 import { MaterialArrivalTableComponent } from './inventory/material-arrival-table/material-arrival-table.component';
 import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
 import { WizardComponent } from './production/wizard/wizard.component';
+import { ScanProductComponent } from './production/scan-product/scan-product.component';
 
 
 @NgModule({
@@ -188,6 +189,7 @@ import { WizardComponent } from './production/wizard/wizard.component';
     ExpectedArrivalsComponent,
     FormuleFormTableComponent,
     WizardComponent,
+    ScanProductComponent,
 
   ],
   providers: [ OrdersService, HttpClientModule],

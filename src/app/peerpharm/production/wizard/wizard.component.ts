@@ -67,7 +67,8 @@ export class WizardComponent implements OnInit {
       that.inventorytServ.getMaterialStockItemById(that.inputValue).subscribe(doc=>{
         if(doc){
           that.currPhase.items.map(item=>{
-            if(doc.componentN == item.itemNumber && item.approval==false){
+            // if(doc.componentN == item.itemNumber && item.approval==false){
+            if(doc.internalNumber == item.itemNumber && item.approval==false){
               that.checkedItem=item;
               that.step=2;
               that.wrongItem= false;
@@ -86,6 +87,7 @@ export class WizardComponent implements OnInit {
       // this.inputValue = materialStockItem._id (27/06/2019) needs to be stockItem._id for itemType='mateiral'
       var userQnt=  this.qntInput.nativeElement.value;
       // var userQnt=  ev.target.value;
+      debugger
       if(userQnt == this.checkedItem.calculatedQnt){
         this.currPhase.items.map(item=>{
           if(this.checkedItem.itemNumber == item.itemNumber && item.approval==false){
@@ -123,18 +125,32 @@ export class WizardComponent implements OnInit {
       var loop=true;
       for (let i = 0; i < this.formuleFrom.phases.length; i++) {
         let phase = this.formuleFrom.phases[i];
-        if(this.currPhase._id == phase._id && loop ){
+        if(this.currPhase._id == phase._id && loop && phase.status=='new' ){
           loop= false;
           phase.status='done';
           // set to next phase
+          alert('Phase '+ this.currPhase.phaseNumber+' is done!');
+          debugger
           this.currPhase=this.formuleFrom.phases[i+1];
-          if(this.formuleFrom.phases[i+1].items.length >0){
-            this.currItem=this.formuleFrom.phases[i+1].items[0];
-            this.step=1;
-            this.correctQnt=null;
+          if(this.currPhase!= undefined && this.currPhase!= null){
+            if(this.formuleFrom.phases[i+1].items.length >0){
+              this.currItem=this.formuleFrom.phases[i+1].items[0];
+              this.step=1;
+              this.correctQnt=null;
+            }
+          } else{
+            this.step=4
+            
           }
           // to be continue 
         }
+        let formuleDone=true;
+        this.formuleFrom.phases.map((phs,key)=>{
+          if(phs.status!='done'){
+            formuleDone=false;
+          }
+          if(key+1 == this.formuleFrom.phases && formuleDone) this.step=4;
+        })
         
       }
     }

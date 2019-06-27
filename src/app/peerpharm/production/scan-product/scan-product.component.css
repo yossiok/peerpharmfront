@@ -1,0 +1,12 @@
+.inputStyle{
+    line-height: 55px;
+    font-size: 50px;
+    width: 500px;
+ }
+
+ .bigBtn{
+    display: block;
+    margin-top: 10px;
+    line-height: 50px;
+    font-size: 45px;
+}

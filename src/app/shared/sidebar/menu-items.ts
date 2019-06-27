@@ -398,6 +398,14 @@ export const ROUTES: RouteInfo[] = [
           class: '',
           extralink: false,
           submenu: []
+        },
+        {
+          path: '/peerpharm/production/scanMaterial',
+          title: 'Scan Barcode',
+          icon: 'fas fa-i-cursor',
+          class: '',
+          extralink: false,
+          submenu: []
         }
 
       ]

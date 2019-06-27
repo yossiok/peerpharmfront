@@ -37,6 +37,7 @@ import { BatchesMkpComponent } from './batches/batches-mkp/batches-mkp.component
 import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
 import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
 import { WizardComponent } from './production/wizard/wizard.component';
+import { ScanProductComponent } from './production/scan-product/scan-product.component';
 
 export const PeerPharmRputs: Routes =[
   {
@@ -216,6 +217,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Wizard'
     },
     component: WizardComponent
+  },
+  {
+    path: 'production/scanMaterial',
+    data: {
+      title: 'Material Barcode'
+    },
+    component: ScanProductComponent,
   },
   {
     path :'batches/batchesList',

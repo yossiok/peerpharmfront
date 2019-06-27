@@ -2,9 +2,10 @@
   wizard works!
 </p>
 <div *ngIf="formuleFrom" class="container">
-
+  
   <div *ngIf="step ==1">
     <h2>Step1 - Scan Barcode</h2>
+    <h3>Scan: {{currItem.itemName}}</h3>
     <input type="text" class='inputStyle' (change)="searchMaterial($event)" #materialId>
     <h3 *ngIf="wrongItem" style="color:red; font-size:bold;">Wrong Item</h3>
     <h3 *ngIf="sugestedItem">{{sugestedItem}}</h3>
@@ -21,7 +22,10 @@
     <h2>Step3 - Continue</h2>
     <button class="btn btn-lg btn-success bigBtn" (click)="nextMaterial()">NEXT MATERIAL</button>
     <!-- <input type="number" class='inputStyle' (change)="checkItemQnt($event)"> -->
-    <h3 *ngIf="correctQnt" style="color:green;" class="msgQnt">Correct Item and Quantity</h3>
+    <h3 *ngIf="correctQnt" style="color:green;" >Correct Item and Quantity</h3>
     <!-- <h3 *ngIf="sugestedItem">{{sugestedItem}}</h3> -->
+  </div>
+  <div *ngIf="step ==4">
+    <h1>Finished Formula</h1>
   </div>
 </div>

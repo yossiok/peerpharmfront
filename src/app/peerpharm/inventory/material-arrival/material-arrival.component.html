@@ -12,8 +12,8 @@
     <ng-template ngbTabContent>
 
         <div #arrivalForm id="arrivalForm">
+<!--           
             <div *ngIf="!requiresFromFull" class="mh-85 container" style="overflow: auto; height: 80vh;">
-              <!-- <div class="container reqForm" style="background-color: white; "></div> -->
               <h2 style='text-align: center; font-weight: bold;'><u>טופס בדיקת חו"ג</u></h2>
               <h4 style='text-align: center; font-weight: bold;'>דרישות ביקורת קבלה</h4>
               <div dir="rtl" class="divStyle">
@@ -231,13 +231,12 @@
                         <button class="brn btn-success" (click)="saveMaterialRequirementsForm()">אישור</button>    
                     </div>
               </form>  
-            </div>          
+            </div>           -->
           
           
-          <div *ngIf="requiresFromFull">
-              <!-- <a target="_blank" href="http://localhost:4200/assets/materialScanBarcode.html">click</a> -->
+          <!-- <div *ngIf="requiresFromFull"> -->
+          <div >
               <h2 style='text-align: center;'>Material Arrival</h2>
-              <!-- <h2 style='text-align: center; color: red;'>לא לשימוש עדיין</h2> -->
               <form  class="mh-85 container-fluid" [formGroup]="newMaterialArrival"  >
                 
                   <div class="form-row w-100 flex-row-reverse" style="padding-bottom: 15px;">
@@ -246,9 +245,7 @@
                         <input type="date"  class="form-control is-valid" placeholder="First name" 
                         [(ngModel)]="dateStr" [ngModelOptions]="{standalone: true}"
                         required disabled>
-                        <!-- <div class="valid-feedback">
-                          Looks good!
-                        </div> -->
+
                       </div>  
                       <div class="col-sm-2">
                         <label for="user">שם משתמש</label>
@@ -296,9 +293,7 @@
                           <i class="ti-na m-r-10" style="font-size:20px; cursor: pointer; position: relative; bottom: -5px;"
                           (click)="resetDate('expiryDate')" ></i>  
                         <label >תאריך תפוגה</label>
-                        <!-- <div class="form-group col-md-1 alignRightInModal" style="position: relative;">
-                                            
-                        </div> -->
+
                         <input type="date"  class="form-control is-valid" formControlName="expiryDate" name='expiryDate' >
                       </div>  
                   </div>
@@ -309,11 +304,8 @@
                         <input type="text"  class="form-control is-valid" placeholder="supplier number" formControlName="supplierNumber" name='supplierNumber'  >
                       </div>  
                       <div class="col-sm-4">
-                          <!-- <img src="../../../../assets/images/search.png" alt="search internal number" 
-                          style="width:28px; cursor: pointer;"
-                          (click)="filterSuppliers(supplierNameInput.value)"> -->
+
                         <label >שם ספק</label>
-                        <!-- <input type="text"  class="form-control is-valid" placeholder="supplier name" formControlName="supplierName" name='supplierName'  > -->
         
                         <input class="form-control is-valid" #supplierNameInput type="text" placeholder="Search.." formControlName="supplierName" name='supplierName' (keyup)="filterSuppliers(supplierNameInput.value)">
                         <ul *ngIf="supplierNameInput.value !=''" class="list-group" id="myList" style="overflow-y: scroll; max-height: 200px;">
@@ -398,7 +390,6 @@
           </div>
 
           </div>
-        
         <!-- Supplier Items Modal -->
         <ng-template #modal1 let-c="close" let-d="dismiss"> 
                 <div class="modal-header" style="direction: rtl;">
