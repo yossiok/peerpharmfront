@@ -26,6 +26,7 @@ export class MaterialArrivalComponent implements OnInit {
   @ViewChild('printBtn') printBtn: ElementRef;
   @ViewChild('tabset') tabset: NgbTabset ;
   @ViewChild('analysisFlag') analysisFlag: ElementRef ;
+  @ViewChild('requirementsFormDate') requirementsFormDate: ElementRef ;
  
   screenHeight: number;
   activeTabId: String ;
@@ -132,25 +133,25 @@ approvedPackgeRemarksInput: Boolean=false;
       signature: ["", Validators.required],
       itemNumber: ["", Validators.required],
       itemName: ["", Validators.required], 
-      orderItemNum: [ false, Validators.required], 
-      approvedSupplier: [ false, Validators.required], 
-      batchNum: [ false, Validators.required], 
+      orderItemNum: [ true, Validators.required], 
+      approvedSupplier: [ true, Validators.required], 
+      batchNum: [ true, Validators.required], 
       batchNumRemarks: ["", ], 
-      orderedQnt: [ false, Validators.required], 
+      orderedQnt: [ true, Validators.required], 
       orderedQntRemarks: ["", ], 
-      approvedPackge: [ false, Validators.required], 
+      approvedPackge: [ true, Validators.required], 
       approvedPackgeRemarks: ["", ], 
-      approvedDocs: [ false, Validators.required], 
+      approvedDocs: [ true, Validators.required], 
       approvedDocsRemarks: ["", ], 
-      cocBatchNum: [ false, Validators.required], 
+      cocBatchNum: [ true, Validators.required], 
       cocBatchNumRemarks: ["", ], 
-      labReport: [ false, Validators.required], 
+      labReport: [ true, Validators.required], 
       labReportRemarks: ["", ], 
-      moreDocs: [ false, Validators.required], 
+      moreDocs: [ true, Validators.required], 
       moreDocsRemarks: ["", ], 
-      sds: [ false, Validators.required], 
+      sds: [ true, Validators.required], 
       sdsRemarks: ["", ], 
-      approvedAndStocked: [ false, Validators.required], 
+      approvedAndStocked: [ true, Validators.required], 
       approvedAndStockedRemarks: ["", ], 
 
     });
@@ -170,6 +171,8 @@ approvedPackgeRemarksInput: Boolean=false;
     let tmpD=new Date();
     this.dateStr= tmpD.toISOString().slice(0,10);
     this.newMaterialArrival.controls.arrivalDate.setValue(tmpD);
+    this.requirementsForm.controls.date.setValue(this.dateStr);
+    debugger
     //setting form to screen height
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
@@ -190,7 +193,6 @@ approvedPackgeRemarksInput: Boolean=false;
       this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
       this.requirementsForm.controls.user.setValue(this.user)
     });
-    debugger
     if(this.requirementsForm.valid){
       this.invtSer.newMaterialRequirementsForm(this.requirementsForm.value).subscribe(doc=>{
         if(doc._id){
@@ -233,18 +235,26 @@ approvedPackgeRemarksInput: Boolean=false;
     }else{
       this.approvedPackgeRemarksInput= false;
       this.requirementsForm.controls.approvedPackgeRemarks.setValue('')
-
     }
   }
 
   changeFields(ev, flag){
     let formField=ev.target.name;
     let formFieldValue=ev.target.value;
-    debugger
     this.requirementsForm.controls[formField].setValue(formFieldValue)
   }
+
   findMaterialBtNumber(){
-    
+    if(this.requirementsForm.value.itemNumber!=""){
+      this.invtSer.getMaterialStockItemByNum(this.requirementsForm.value.itemNumber).subscribe(stockItem=>{
+        let elem=  document.getElementsByName('itemName')[0];
+        elem.setAttribute('value',stockItem[0].componentName);
+        this.requirementsForm.controls.itemNumber.setValue(stockItem[0].componentN);
+        this.requirementsForm.controls.itemName.setValue(stockItem[0].componentName);
+      });
+    }else{
+      this.toastSrv.error("No item number");
+    }
   }
 
   filterSuppliers(input){

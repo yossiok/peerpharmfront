@@ -21,6 +21,9 @@
                       <label style="padding-left:15px; ">מק"ט</label>
                       <input type="text" name="itemNumber" style="padding-right: 10px;" (change)="changeFields($event)" >
                   </span>
+                  <span>
+                    <img src="../../../../assets/images/search.png" style="width:30px; cursor: pointer;"  (click)="findMaterialBtNumber()">
+                  </span>
                   <span class="spanTDStyle">
                       <label style="padding-left:15px; ">שם החומר</label>
                       <input type="text" name="itemName" style="padding-right: 10px;" (change)="changeFields($event)" >
@@ -47,11 +50,11 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">זוהה</label>
-                              <input type="radio" name="orderItemNum" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="orderItemNum" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא זוהה</label>
-                              <input type="radio" name="orderItemNum" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="orderItemNum" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
                         </tr>
@@ -62,11 +65,11 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">קיים</label>
-                              <input type="radio" name="approvedSupplier" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="approvedSupplier" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא קיים</label>
-                              <input type="radio" name="approvedSupplier" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="approvedSupplier" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
                         </tr>
@@ -77,15 +80,15 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">זוהה</label>
-                              <input type="radio" name="batchNum" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="batchNum" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא זוהה</label>
-                              <input type="radio" name="batchNum" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="batchNum" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
-                            <span class="spanTDStyle" *ngIf="batchNumRemarksInput">
+                            <span class="spanTDStyle" *ngIf="requirementsForm.batchNum">
                                 <label for="">הערות</label>
-                                <input type="text" name="batchNumRemarks" style="padding-right: 10px;" (change)="checkRadio($event)">
+                                <input type="text" name="batchNumRemarks" style="padding-right: 10px;" (change)="changeFields($event)">
                             </span>
                           </td>
                         </tr>
@@ -96,15 +99,15 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">כן</label>
-                              <input type="radio" name="orderedQnt" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="orderedQnt" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא </label>
-                              <input type="radio" name="orderedQnt" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="orderedQnt" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                             <span class="spanTDStyle" *ngIf="orderedQntRemarksInput">
                                 <label for="">הערות</label>
-                                <input type="text" name="orderedQntRemarks" style="padding-right: 10px;" (change)="checkRadio($event)">
+                                <input type="text" name="orderedQntRemarks" style="padding-right: 10px;" (change)="changeFields($event)">
                             </span>
                           </td>
                         </tr>
@@ -115,15 +118,15 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">תקין</label>
-                              <input type="radio" name="approvedPackge" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="approvedPackge" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא תקין</label>
-                              <input type="radio" name="approvedPackge" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="approvedPackge" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                             <span class="spanTDStyle" *ngIf="approvedPackgeRemarksInput">
                                 <label for="">הערות</label>
-                                <input type="text" name="approvedPackgeRemarks" style="padding-right: 10px;" (change)="checkRadio($event)">
+                                <input type="text" name="approvedPackgeRemarks" style="padding-right: 10px;" (change)="changeFields($event)">
                             </span>
                           </td>
                         </tr>
@@ -134,11 +137,11 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">זוהה</label>
-                              <input type="radio" name="approvedDocs" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="approvedDocs" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא זוהה</label>
-                              <input type="radio" name="approvedDocs" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="approvedDocs" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
                         </tr>
@@ -149,11 +152,11 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">קיים</label>
-                              <input type="radio" name="cocBatchNum" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="cocBatchNum" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא קיים</label>
-                              <input type="radio" name="cocBatchNum" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="cocBatchNum" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
                         </tr>
@@ -164,11 +167,11 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">נדרש</label>
-                              <input type="radio" name="labReport" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="labReport" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא נדרש</label>
-                              <input type="radio" name="labReport" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="labReport" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
                         </tr>
@@ -179,11 +182,11 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">קיים</label>
-                              <input type="radio" name="moreDocs" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="moreDocs" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא קיים</label>
-                              <input type="radio" name="moreDocs" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="moreDocs" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
                         </tr>
@@ -194,11 +197,11 @@
                           <td>
                             <span class="spanTDStyle">
                               <label for="">קיים</label>
-                              <input type="radio" name="sds" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                              <input type="radio" name="sds" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא קיים</label>
-                              <input type="radio" name="sds" style="padding-right: 10px;" (check)="checkRadio($event, false)">
+                              <input type="radio" name="sds" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
                         </tr>
@@ -209,11 +212,11 @@
                       <span class="spanTDStyle">חו"ג מתאים התקבל במחסן</span>
                       <span class="spanTDStyle">
                           <label for="">כן</label>
-                          <input type="radio" name="approvedAndStocked" style="padding-right: 10px;"  (check)="checkRadio($event, true)">
+                          <input type="radio" name="approvedAndStocked" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                       </span>
                       <span class="spanTDStyle">
                           <label for="">לא</label>
-                          <input type="radio" name="approvedAndStocked" style="padding-right: 10px;"  (check)="checkRadio($event, false)">
+                          <input type="radio" name="approvedAndStocked" style="padding-right: 10px;"  [checked]="false" (change)="checkRadio($event, false)">
                       </span>  
                     </div>
                     <div dir="rtl" class="divStyle">
@@ -223,13 +226,13 @@
                       </span>
                       <span class="spanTDStyle">
                           <label style="padding-left:15px; ">תאריך</label>
-                          <input type="date" name="date" style="padding-right: 10px;" (change)="changeFields($event)" >
+                          <input type="date" name="date" style="padding-right: 10px;" [value]="dateStr" (change)="changeFields($event)" >
                       </span> 
                     </div>
 
                     <div class="divStyle">
-                        <button class="brn btn-success" (click)="saveMaterialRequirementsForm()">אישור</button>    
-                        <button class="brn btn-success" (click)="resetMaterialRequirementsForm()">אפס טופס</button>    
+                        <button class="brn btn-success mr-1" (click)="saveMaterialRequirementsForm()">אישור</button>    
+                        <button class="brn btn-danger" (click)="resetMaterialRequirementsForm()">אפס טופס</button>    
                     </div>
               </form>  
             </div>          
