@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { FormulesService } from 'src/app/services/formules.service';
 import { ToastrService } from 'ngx-toastr';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
   selector: 'app-add-formule-item',
@@ -15,13 +16,16 @@ export class AddFormuleItemComponent implements OnInit {
   @Input() itemInfo :any;
   @Input() phaseInfo :any;
 
-  constructor(private toastSrv: ToastrService, private formuleService: FormulesService, private fb: FormBuilder) {
+  constructor(private toastSrv: ToastrService, 
+    private formuleService: FormulesService, 
+    private fb: FormBuilder,
+    private invtSer:InventoryService,) {
     this.itemsForm = this.fb.group({
       //set by the user
       itemNumber: [null, Validators.required],
       itemName: ['', Validators.required],
       itemInstructions: ['', ],
-      quantity: [null, Validators.required],
+      quantity: [null, Validators.required,],
       quantityUnits: ['gr', Validators.required],
       percentage: [null, Validators.required],
       itemPH: [7, Validators.required],
@@ -33,11 +37,12 @@ export class AddFormuleItemComponent implements OnInit {
 
   ngOnChange(){
     this.adjustFormData();
-    }
+  }
   ngOnInit() {
     this.adjustFormData();
   }
   adjustFormData(){
+    debugger
     this.itemsForm.controls.formuleId.setValue(this.phaseInfo.formuleId);
     this.itemsForm.controls.phaseId.setValue(this.phaseInfo._id);
     this.itemsForm.controls.itemNumber.setValue(this.itemInfo.itemNumber);
@@ -47,7 +52,6 @@ export class AddFormuleItemComponent implements OnInit {
 
   onSubmit() {
     debugger
-
     if(this.itemsForm.valid){
       const newItemAdded = this.itemsForm.value;
       this.itemAdded.emit(newItemAdded);  
@@ -71,4 +75,20 @@ export class AddFormuleItemComponent implements OnInit {
   deletePhaseItem(){
     
   }
+  searchMaterialNumber(){
+    if(this.itemsForm.value.itemNumber !=""){
+      this.invtSer.getMaterialStockItemByNum(this.itemsForm.value.itemNumber).subscribe(doc=>{
+        if(doc.length>0){
+          this.itemsForm.controls.itemName.setValue(doc[0].componentName);
+        }else{
+          this.toastSrv.error("Can't find material number");
+        }
+      });  
+    }
+  }
+
+
+
+
+
 }

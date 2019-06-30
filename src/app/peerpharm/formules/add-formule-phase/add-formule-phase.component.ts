@@ -56,24 +56,41 @@ export class AddFormulePhaseComponent implements OnInit {
     }
   }
   onSubmit() {
-    if(this.phaseForm.value._id){
-      // when loding phase from table we get id 
-      this.phaseValidation();
-    }else if(this.phaseForm.value._id == null || this.phaseForm.value._id == undefined ){
-      // add new Phase 
-      this.formuleService.getPhaseByNumberAndFormuleId(this.phaseForm.value.formuleId, this.phaseForm.value.phaseNumber)
-      .subscribe(existingPhase=>{
-        console.log('before')
-        debugger
-        if(existingPhase){
-          this.phaseForm.controls._id.setValue(existingPhase._id);
+    if(this.phaseForm.value.phaseNumber!= this.phaseInfo.phaseNumber){
+      this.phaseForm.value._id=undefined;
+      this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(newPhase=>{
+        if(typeof(newPhase) != 'string' && newPhase!=null){
+          this.phaseForm.value._id= newPhase._id;
           this.phaseValidation();
 
+        }else{
+          // newPhase returns "phase exist in formule"
+          this.toastSrv.error(newPhase);
         }
-      });
-
+      })
+      //NEW PHASE 
+    }else{
+      //SAME PHASE
+      if(this.phaseForm.value._id){
+        // when loding phase from table we get id 
+        this.phaseValidation();
+      }else if(this.phaseForm.value._id == null || this.phaseForm.value._id == undefined ){
+        // add new Phase 
+        this.formuleService.getPhaseByNumberAndFormuleId(this.phaseForm.value.formuleId, this.phaseForm.value.phaseNumber)
+        .subscribe(existingPhase=>{
+          console.log('before')
+          debugger
+          if(existingPhase){
+            this.phaseForm.controls._id.setValue(existingPhase._id);
+            this.phaseValidation();
+  
+          }
+        });
+      }
     }
-    console.log('after')
+
+
+
 
 
 
@@ -81,7 +98,6 @@ export class AddFormulePhaseComponent implements OnInit {
   }
 
   phaseValidation(){
-    debugger
     if(this.phaseForm.valid){
         this.phaseCreated.emit(this.phaseForm.value);
     }else{

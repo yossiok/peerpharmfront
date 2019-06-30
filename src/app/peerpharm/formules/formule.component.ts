@@ -82,9 +82,7 @@ export class FormuleComponent implements AfterViewInit {
     newPhase.formuleId= this.newFormuleBasic.id;
     newPhase.formuleNumber= this.newFormuleBasic.number;
     newPhase.formuleName= this.newFormuleBasic.name;
-    debugger
     this.formuleService.addNewPhaseToFormule(newPhase).subscribe(phase=>{
-      debugger
       this.disableAddPhase=false;
       this.phase=newPhase;
       this.newPhase=true;
@@ -105,7 +103,7 @@ export class FormuleComponent implements AfterViewInit {
     if(!exist){
       // ADD PHASE !
       // this.formuleService.addNewPhaseToFormule(phaseToSave).subscribe(phase=>{
-        
+
       if(phaseToSave._id){
         this.phase= new FormulePhase();
         this.phase= phaseToSave;
@@ -144,7 +142,7 @@ export class FormuleComponent implements AfterViewInit {
     // this.allItemsForm.push(newItem);
   }
   addItemToScreen(){
-
+    
     this.newItem=true;
     this.item = new FormuleItem();
     this.item.formuleId= this.phase.formuleId ;
@@ -152,7 +150,8 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   onItemAdded(item) {
-    debugger
+    item.phaseId; 
+    this.phase._id;
     let existinfPhase= this.allPhasesForm.filter(p=> {
       if(p._id == item.phaseId){
         return p;
@@ -169,6 +168,9 @@ export class FormuleComponent implements AfterViewInit {
         });
         this.toastSrv.success("Item added to phase");
         console.log("this.allPhasesForm",this.allPhasesForm);
+        this.newItem=false;
+
+
       });
     }else{
       
