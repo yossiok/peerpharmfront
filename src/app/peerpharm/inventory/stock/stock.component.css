@@ -1,3 +1,6 @@
+body { 
+  line-height: none !important;
+}
 .flex-container {
   display: flex;
   justify-content: center;
@@ -93,8 +96,9 @@ table {
 }
 
 td {
-  border-bottom: 1px solid #ddd;
+  border-bottom: none;
   font-family: "Berlin Sans FB";
+  text-align:center !important;
 }
 .navtab:hover {
   background-color: lightblue;
@@ -146,8 +150,8 @@ td {
 
 .modal-content table {
   background-color: #ececec;
-  text-align: right;
-  direction: rtl;
+ 
+  direction: ltr;
 }
 .close {
   font-size: 2.3125rem;
@@ -157,6 +161,8 @@ td {
     margin: 5px;
 } */
 #detailsTbody {
+  width:100%;
+  background-color: rgb(165, 185, 250);
 }
 .nopadding {
   padding: 0 !important;
@@ -215,18 +221,24 @@ td {
   width: 1200px;
 }
 .itemInput { 
-  width: 150px;
+  width: 200px;
+  margin-top: 7px;
 }
 
 .tableHeader {
   box-shadow: 2px 2px 12px 2px black !important;
-  background: rgb(69, 69, 202);
+  background: rgb(69, 69, 202) !important;
 }
 .topBtn { 
   box-shadow: 2px 2px 2px black;
 }
 tr { 
   text-align: center;
+  box-shadow: 5px 0px 5px;
+ 
+}
+.col { 
+  width: 40% !important;
 }
 
 /* input[type=text] { 

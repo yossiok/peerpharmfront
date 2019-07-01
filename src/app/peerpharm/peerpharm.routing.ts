@@ -38,6 +38,8 @@ import { MaterialArrivalComponent } from './inventory/material-arrival/material-
 import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
 import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
+import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
+
 
 export const PeerPharmRputs: Routes =[
   {
@@ -161,6 +163,14 @@ export const PeerPharmRputs: Routes =[
     },
     component: MaterialArrivalComponent
   },
+  {
+    path: 'inventory/suppliers',
+    data: {
+      title: 'Suppliers'
+    },
+    component: SuppliersComponent
+  },
+
   {
     path: 'inventory/scanMaterialView',
     data: {

@@ -1,3 +1,4 @@
+
 <ngb-tabset #tabset="ngbTabset" justify="end"  (tabChange)="beforeChange($event)" [activeId]="activeTabId" >
 
   <ngb-tab id="tab-selectbyid2" style="flex-direction:row-reverse; " >
@@ -257,7 +258,11 @@
                         required disabled>
 
                       </div>  
-                      <div class="col-sm-2">
+                      <div class="col-sm-1">
+                        <img src="../../../../assets/images/refreshData.png" style="width: 30px;cursor: pointer;" alt="get user name"
+                        (click)="getUserName()">
+                      </div>
+                      <div class="col-sm-3">
                         <label for="user">שם משתמש</label>
                         <input type="text"  class="form-control is-valid" placeholder="user name" formControlName="user"
                         required disabled>

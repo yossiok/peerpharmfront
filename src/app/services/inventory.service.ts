@@ -21,6 +21,12 @@ export class InventoryService {
     let url = this.baseUrl + "component";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getAllMaterials():Observable<any>{
+    debugger
+    let url = this.baseUrl + "material";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   // getAllComponentsByStockType(itemType):Observable<any>{
   //   let url = this.baseUrl + "component/stockType?itemType="+itemType;
   //   return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -53,6 +59,12 @@ export class InventoryService {
   addNewCmpt(cmptObj):Observable<any>{ 
     let url = this.baseUrl + "component/add";
     return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))
+}
+
+addNewMaterial(materialObj):Observable<any>{ 
+  debugger
+  let url = this.baseUrl + "material/add";
+  return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
 }
 
   getComponentsAmounts():Observable<any>{
@@ -221,6 +233,12 @@ getMaterialStockItemById(id):Observable<any>{
   let url = this.baseUrl + "material?materialId="+id ;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+
+getMaterialByNumber(materialNumber, stockType):Observable<any>{
+  let url = this.baseUrl + "material?componentN="+materialNumber+"&stockType="+stockType;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
 findByItemNumber(itemNumber):Observable<any>{
   let url = this.baseUrl + "material?purchaseItemNumber="+itemNumber;
   return this.http.get(url).pipe(map(reponse => reponse.json()));

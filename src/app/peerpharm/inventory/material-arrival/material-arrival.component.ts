@@ -172,7 +172,7 @@ approvedPackgeRemarksInput: Boolean=false;
     this.dateStr= tmpD.toISOString().slice(0,10);
     this.newMaterialArrival.controls.arrivalDate.setValue(tmpD);
     this.requirementsForm.controls.date.setValue(this.dateStr);
-    debugger
+    
     //setting form to screen height
     this.screenHeight = window.innerHeight*(0.8);
     console.log('screenHeight: '+this.screenHeight)
@@ -215,7 +215,7 @@ approvedPackgeRemarksInput: Boolean=false;
 
   checkRadio(ev, flag){
     let formField=ev.target.name;
-    debugger
+    
     this.requirementsForm.controls[formField].setValue(flag)
     if(!this.requirementsForm.value.batchNum){
       this.batchNumRemarksInput= true;
@@ -255,6 +255,11 @@ approvedPackgeRemarksInput: Boolean=false;
     }else{
       this.toastSrv.error("No item number");
     }
+  }
+  getUserName(){
+debugger
+    this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+    this.newMaterialArrival.controls.user.setValue(this.user)
   }
 
   filterSuppliers(input){

@@ -20,7 +20,7 @@ th, td {
     }
   .table-fixed tbody {
     margin-top:30px;
-    height: 590px;
+    height: 645px;
     overflow-y: auto;
     width: 100%;
     display: block;

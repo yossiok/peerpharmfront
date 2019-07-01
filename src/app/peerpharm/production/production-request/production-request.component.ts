@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ProductionOrders } from './../models/production-orders';
@@ -82,18 +83,9 @@ export class ProductionRequestComponent implements OnInit {
       this.requestForm.controls.user.setValue(this.userName)
       this.requestForm.controls.lastUpdatedUser.setValue(this.userName)
     });
-
-
-
-
-    console.log(this.userName)
-
-
     this.getAllFormules();
 
-  
   }
-
 
 
   async authorizedUser(){ 
@@ -152,6 +144,13 @@ export class ProductionRequestComponent implements OnInit {
     this.formuleService.getAllFormules().subscribe( data => {
     this.allFormules = data; 
     })
+
+  }
+  getUserName(){
+    debugger
+    this.userName = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
+    this.requestForm.controls.user.setValue(this.userName)
+    this.requestForm.controls.lastUpdatedUser.setValue(this.userName)
 
   }
 

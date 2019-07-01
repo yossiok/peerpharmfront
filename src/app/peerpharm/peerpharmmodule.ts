@@ -1,4 +1,4 @@
- import { OrdersService } from '../services/orders.service';
+import { OrdersService } from '../services/orders.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -93,6 +93,7 @@ import { MaterialArrivalTableComponent } from './inventory/material-arrival-tabl
 import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
 import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
+import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
 
 
 @NgModule({
@@ -190,6 +191,7 @@ import { ScanProductComponent } from './production/scan-product/scan-product.com
     FormuleFormTableComponent,
     WizardComponent,
     ScanProductComponent,
+    SuppliersComponent,
 
   ],
   providers: [ OrdersService, HttpClientModule],
