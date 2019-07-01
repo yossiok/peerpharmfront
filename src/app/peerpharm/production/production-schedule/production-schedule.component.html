@@ -33,7 +33,7 @@
       </td>
       <td>
         <button *ngIf="request.status=='new'" class="btn btn-success" (click)="startFormuleForm(request)">Start</button>
-        <button *ngIf="request.status=='progress'" class="btn btn-success">Continue</button>
+        <button *ngIf="request.status=='process'" class="btn btn-success" (click)="continueFormuleForm(request)">Continue</button>
       </td>
     </tr>
   </tbody>

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { FormulesService } from '../../../services/formules.service';
 import { Router, ActivatedRoute } from '../../../../../node_modules/@angular/router';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-wizard',
@@ -12,7 +13,8 @@ export class WizardComponent implements OnInit {
 
   constructor(private formuleService: FormulesService,
     private route: ActivatedRoute, 
-    private inventorytServ:InventoryService,) { }
+    private inventorytServ:InventoryService,
+    private toastSrv: ToastrService,) { }
   // the true values
   scheduleId: String;
   formuleFrom: any=null;
@@ -48,6 +50,7 @@ export class WizardComponent implements OnInit {
   }
 
   searchMaterial(ev){
+    debugger
     this.inputValue= ev.target.value;
     if(this.inputValue.length==24){
       this.checkMaterial().then(data=>{
@@ -73,6 +76,10 @@ export class WizardComponent implements OnInit {
               that.step=2;
               that.wrongItem= false;
               resolve(item);
+            }else{
+              that.wrongItem= true;
+              that.step=1; 
+              reject('wrong item')
             }
           })
         }else{
@@ -87,15 +94,32 @@ export class WizardComponent implements OnInit {
       // this.inputValue = materialStockItem._id (27/06/2019) needs to be stockItem._id for itemType='mateiral'
       var userQnt=  this.qntInput.nativeElement.value;
       // var userQnt=  ev.target.value;
-      debugger
       if(userQnt == this.checkedItem.calculatedQnt){
-        this.currPhase.items.map(item=>{
-          if(this.checkedItem.itemNumber == item.itemNumber && item.approval==false){
-            item.approval=true;
+        this.formuleFrom.phases.map(p=>{
+          if(p._id == this.currPhase._id){
+            p.items.map(item=>{
+              if(this.checkedItem.itemNumber == item.itemNumber && item.approval==false){
+                item.approval=true;
+                item.materialArrivalFormId= this.inputValue;
+              }
+              
+            });
           }
+
         });
-        this.correctQnt=true;
-        this.step=3;
+        // let formToUpdate;
+        this.formuleService.updateFormuleForm(this.formuleFrom).subscribe(form=>{
+          this.currPhase.items.map(item=>{
+            if(this.checkedItem.itemNumber == item.itemNumber && item.approval==false){
+  
+              item.approval=true;
+            }
+          });
+          this.correctQnt=true;
+          this.step=3;
+          this.toastSrv.success('Scan item updated in assembly form')
+        });
+
       }else{
         this.step=2;
         this.correctQnt=false;
@@ -139,7 +163,10 @@ export class WizardComponent implements OnInit {
               this.correctQnt=null;
             }
           } else{
-            this.step=4
+            this.formuleFrom.status='done';
+            this.formuleService.updateFormuleForm(this.formuleFrom).subscribe(form=>{
+              this.step=4
+            });
             
           }
           // to be continue 

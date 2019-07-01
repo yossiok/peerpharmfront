@@ -79,7 +79,7 @@ export class ProductionScheduleComponent implements OnInit {
     }
   }
   continueFormuleForm(request){
-    this.formuleService.findFormuleForm(request).subscribe(formuleAssemblyForm=>{
+    this.formuleService.getFormBySchedleId(request).subscribe(formuleAssemblyForm=>{
       if(formuleAssemblyForm != null){
         // send to wizard with formuleAssemblyForm
       }
