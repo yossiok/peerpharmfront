@@ -127,6 +127,13 @@ addNewMaterial(materialObj):Observable<any>{
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  updateMaterial(objToUpdate){
+    debugger;
+    let url = this.baseUrl + "material/update";
+    return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
+  }
+
+
   updateCompt(objToUpdate){
     let url = this.baseUrl + "component/update";
     return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
@@ -156,6 +163,9 @@ addNewMaterial(materialObj):Observable<any>{
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+
+
+  
 
 
 

@@ -104,6 +104,7 @@ export class StockComponent implements OnInit {
   productToFind: String = '';
   materialToFind: String = "";
   productResponse: any = {};
+  linkDownload:String = "";
 
   newItemProcurmentDetails: FormGroup;
   newOrderProcurmentDetails: FormGroup;
@@ -462,6 +463,21 @@ export class StockComponent implements OnInit {
     }
   }
 
+  loadMaterialItems() {
+    debugger;
+    this.inventoryService.updateMaterial(this.resMaterial).subscribe(data =>{
+      this.components.map(doc=>{
+       
+        if(doc.id == this.resMaterial._id){
+          doc=data;
+        } 
+        else {
+          this.toastSrv.error('Item type error \nPlease refresh screen.');
+        }
+
+      });
+    });
+  }
 
   async updateItemStockShelfChange(direction) {
     // this.newItemShelfPosition
@@ -796,6 +812,7 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
+    debugger
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -823,6 +840,19 @@ export class StockComponent implements OnInit {
 
       });
     }
+  }
+
+  async openDataMaterial(materNum) {
+    debugger
+    this.showItemDetails = true;
+    this.itemmoveBtnTitle = "Item movements";
+    this.itemMovements = [];
+    this.openModalHeader = "פריט במלאי  " + materNum;
+    this.openModal = true;
+    this.resMaterial = this.components.find(mat => mat.componentN == materNum);
+    
+    this.linkDownload="http://localhost/material/getpdf?_id="+this.resMaterial._id;
+    this.loadComponentItems();
   }
 
   searchProduct() {
@@ -958,12 +988,15 @@ export class StockComponent implements OnInit {
       reader.readAsDataURL(event.target.files[0]); // read file as data url
 
       reader.onload = (event) => { // called once readAsDataURL is completed
+        debugger;
         this.resMaterial.msds = event.target["result"]
+        this.resMaterial.msds=this.resMaterial.msds.replace("data:application/pdf;base64,","");
       }
     }
   }
 
     onSelectCoaMaster(event) { 
+      debugger;
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
@@ -972,6 +1005,7 @@ export class StockComponent implements OnInit {
       reader.onload = (event) => { // called once readAsDataURL is completed
        
         this.resMaterial.coaMaster = event.target["result"]
+        this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
       }
     }
   }
@@ -1004,6 +1038,24 @@ export class StockComponent implements OnInit {
     }
 
   }
+
+  
+  editMaterialItemDetails() {
+    debugger
+    this.resMaterial;
+    if (confirm("לעדכן פריט?")) {
+
+      this.inventoryService.updateMaterial(this.resMaterial).subscribe(res => {
+        if (res._id) {
+          this.toastSrv.success("פריט עודכן בהצלחה");
+        } else {
+          this.toastSrv.error("עדכון פריט נכשל");
+        }
+      });
+    }
+
+  }
+
 
   resetResCmptData() {
     debugger;

@@ -284,10 +284,10 @@
       *ngFor="let material of components ; let i = index">
 
           <td style="width:5%">{{i+1}}</td>
-          <td style="width:15%" class="compNum">
+          <td style="width:15%" class="compNum" (click)="openDataMaterial(material.componentN)"> 
             <div style="float:none;">
                 {{material.componentN}}
-              <!-- <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{material.componentN}}">
+              <!-- <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{material._id}}">
               {{material.componentN}}
               </a> -->
             </div>
@@ -329,7 +329,7 @@
 
 
 
-  <div *ngIf="openModal==true && stockType=='component'" id="myModal2" class="modal2"
+  <div dir="ltr" *ngIf="openModal==true && stockType=='component'" id="myModal2" class="modal2"
     style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:185px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
     <!-- Modal content -->
@@ -345,7 +345,7 @@
         <div *ngIf="showItemDetails">
           <table id='detailsTable'>
             <tbody id='detailsTbody'>
-              <tr>
+              <tr style="box-shadow: 0px 0px 0px;">
                 <th>מספר פריט</th>
                 <td><input type='text' [(ngModel)]="resCmpt.componentN" id="input_componentNumber"></td>
                 <th>מק"ט ספק</th>
@@ -527,7 +527,7 @@
         <div *ngIf="showItemDetails">
           <table id='detailsTable'>
             <tbody id='detailsTbody'>
-              <tr>
+              <tr style="box-shadow: 0px 0px 0px">
                 <th>מספר פריט</th>
                 <td><input type='text' [(ngModel)]="productToFind">
                   <img (click)="searchProduct()" src="../../../../assets/images/search.png" alt=""
@@ -832,11 +832,11 @@
       style="overflow-y:scroll; overflow-x:hidden; height: 900px; padding-left: 0px">
 
       <div *ngIf="showItemDetails">
-        <table id='detailsTable'>
-          <tbody id='detailsTbody'>
+        <table style="box-shadow: 0px 0px 0px" id='detailsTable'>
+          <tbody style="box-shadow: 0px 0px 0px" id='detailsTbody'>
             <div style="width: 1200px;" class="row">
-              <div></div>
-              <div style="margin-left: 10px;">
+              
+              <div style="margin-left: 10px;box-shadow: 0px 0px 0px;">
                 <tr>
                   <th>Item Number</th>
                   <td><input [(ngModel)]="resMaterial.componentN" style="margin-left: 1px;" class="itemInput"
@@ -879,16 +879,25 @@
                 <tr>
                   <th>Group</th>
                   
-                       <td><input [(ngModel)]="resMaterial.group" class="itemInput" type="text" disabled />
+                       <td><select [(ngModel)]="resMaterial.group" class="itemInput" type="text"  >
+                         <option value="formule material">חומר גלם לפורמולה</option>
+                         <option value="component">קומפוננט </option>
+                         <option value="print material">חומרי דפוס</option>
+                       </select>
                        </td>
                 </tr>
                 <tr>
                   <th>Sub Group</th>
                 <td>
                 <select [(ngModel)]="resMaterial.subGroup" class="itemInput">
-                  <option value="group1">Example 1</option>
-                  <option value="group2">Example 2</option>
-                  <option value="group3">Example 3</option>
+                  <option value="fluid">נוזלי</option>
+                  <option value="bottle">בקבוק</option>
+                  <option value="cover">מכסה</option>
+                  <option value="cover">משאבה</option>
+                  <option value="cover">אטם</option>
+                  <option value="cover">מדבקה</option>
+                  <option value="cover">אריזה אישית</option>
+                  <option value="cover">גלופה</option>
                 </select>
               </td>
                 </tr>
@@ -1008,7 +1017,7 @@
 
                 <tr>
                   <th>MSDS</th>
-                  <td> <a target="_blank" [href]="resMaterial.msds"> <img style="height: 30px; width:30px;"
+                  <td> <a target="_blank" [href]="linkDownload"> <img style="height: 30px; width:30px;"
                      src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" /></a>
                     <input #msdsInput style="display:none" type="file" (change)="onSelectMsds($event)">
                     <br>
@@ -1018,9 +1027,9 @@
 
                 <tr>
                   <th>COA Master</th>
-                  <td><img style="height: 30px; width:30px;"
-                      src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" />
-                    <input #coaMasterInput style="display:none" type="file" (change)="onSelectMsds($event)">
+                  <td><a target="_blank" [href]="linkDownload"><img style="height: 30px; width:30px;"
+                      src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" /></a>
+                    <input #coaMasterInput style="display:none" type="file" (change)="onSelectCoaMaster($event)">
                     <br>
                     <button (click)="coaMasterInput.click()">Select File</button>
                   </td>
@@ -1076,7 +1085,7 @@
     <div id="material-footer" class="modal-footer">
       <button class="btn btn-success" id="newCbtn" (click)="writeNewMaterial()">הקם
         מוצר</button>
-      <button class="btn btn-success" id="updateDataBtn" (click)="editStockItemDetails()" *ngIf="newItem!='new'">עדכן
+      <button class="btn btn-success" id="updateDataBtn" (click)="editMaterialItemDetails()" *ngIf="newItem!='new'">עדכן
         מידע</button>
     </div>
   </div>
