@@ -291,6 +291,7 @@ debugger
   }
 
   chooseSupplierFromList(sup){
+    debugger
     this.supplierModalHeader= "פריטים של ספק "+sup.suplierNumber+"\n";
     this.supplierModalInfo=sup;
     this.chooseOnlySupplier();

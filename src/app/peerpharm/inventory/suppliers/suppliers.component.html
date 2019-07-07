@@ -9,24 +9,26 @@
       <th>#</th>
       <th>Supplier Number</th>
       <th>Name</th>
+      <th>Alternive Supplier</th>
       <th>Address</th>
       <th>Email</th>
       <th>Phone</th>
-      <th>Cell Number</th>
       <th>Remarks</th>
       <th></th>
     </tr>
   </thead>
   <tbody id="table_body">
     <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-      *ngFor="let supplier of suppliers; let i=index">
+      *ngFor="let supplier of suppliers; let i=index;">
       <td>{{i}}</td>
       <td>{{supplier.suplierNumber}}</td>
       <td>{{supplier.suplierName}}</td>
+      <td>
+        <div *ngFor="let altsup of supplier.alternativeSupplier">{{altsup}}</div>
+     </td>
       <td>{{supplier.city}} , {{supplier.address}}</td>
       <td>{{supplier.email}}</td>
       <td>{{supplier.phoneNum}}</td>
-      <td>{{supplier.cellularNum}}</td>
       <td>{{supplier.remarks}}</td>
 
     </tr>
@@ -70,6 +72,17 @@
         <input class="form-control mb-4" placeholder="Name" [(ngModel)]="supplier.suplierName" />
       </div>
     </div>
+
+    <div class="form-group">
+      <label for="a">Alternative Supplier</label>
+      <div class="input-group">
+        <select  class="form-control mb-4" [(ngModel)]="alterSupplierToPush">
+         <option *ngFor="let alterSupp of alternativeSupplier" value="{{alterSupp.suplierName}}">{{alterSupp.suplierName}}</option> 
+        </select>
+        <button (click)="addAlterSupplier()">Add Alternative</button>
+      </div>
+    </div>
+
 
     <div class="form-group">
       <label for="a">Address</label>
@@ -286,7 +299,7 @@
             <option value="Somalia">Somalia</option>
             <option value="South Africa">South Africa</option>
             <option value="South Georgia">South Georgia and the South Sandwich Islands</option>
-            <option value="Span">Spain</option>
+            <option value="Spain">Spain</option>
             <option value="SriLanka">Sri Lanka</option>
             <option value="St. Helena">St. Helena</option>
             <option value="St. Pierre and Miguelon">St. Pierre and Miquelon</option>

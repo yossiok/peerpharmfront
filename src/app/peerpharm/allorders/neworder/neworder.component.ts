@@ -24,6 +24,11 @@ export class NeworderComponent implements OnInit {
   itemName: String;
   netWeightK: Number = 0;
   lastOrderNumber: Number;
+  shippingMethod:any[] = [];
+  shippingDetails:any = {
+    shippingQuantity: "",
+    shippingWay:"",
+  }
   items: any[] = [];
   costumers: any[] = [];
   costumersCopy: any[] = [];
@@ -55,7 +60,8 @@ export class NeworderComponent implements OnInit {
       netWeightK: [null, Validators.required],
       quantity: [null, Validators.required],
       qtyKg: [null, Validators.nullValidator],
-      remarks: [null, Validators.nullValidator]
+      remarks: [null, Validators.nullValidator],
+
     });
   }
 
@@ -88,8 +94,23 @@ export class NeworderComponent implements OnInit {
 }
 
   addNewItemOrder(post) {
+   
     console.log(post);
-    debugger;
+    var shippingQuantitySum = 0;
+
+    this.shippingMethod.forEach(function(details) {
+      shippingQuantitySum += parseInt(details.shippingQuantity);
+
+      return shippingQuantitySum
+    });
+    
+    console.log(shippingQuantitySum)
+    
+
+    if(post.quantity < shippingQuantitySum) {
+      this.toastSrv.error("Shipping quantity can not be more than the quantity")
+    } 
+    else {
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
     //if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
     // if(this.netWeightK!=0 && this.netWeightK!=null) post.netWeightK = this.netWeightK;
@@ -99,6 +120,7 @@ export class NeworderComponent implements OnInit {
       netWeightGr: post.netWeightK,
       quantity: post.quantity,
       qtyKg: post.qtyKg,
+      shippingMethod: this.shippingMethod,
       batch: "",
       price: "",
       discount: "",
@@ -110,8 +132,10 @@ export class NeworderComponent implements OnInit {
     console.log(newOrderItemObj);
     this.orderItemForm.reset();
     this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
+      debugger;
       if(res!='error'){
         this.items.push(res);
+        console.log(this.items)
         this.itemName = "";
         this.netWeightK = 0;
         this.toastSrv.success('item '+res.itemNumber+' added');
@@ -120,7 +144,17 @@ export class NeworderComponent implements OnInit {
       }
 
     });
+   
     //  orderId:this.orderId
+  }
+  
+  }
+  addShipping() { 
+    debugger; 
+    let DetailsToPush ={...this.shippingDetails};
+    
+    this.shippingMethod.push(DetailsToPush)
+
   }
 
 
@@ -196,6 +230,7 @@ export class NeworderComponent implements OnInit {
       netWeightGr: post.netWeightK,
       quantity: post.quantity,
       qtyKg: post.qtyKg,
+      shippingMethod: post.shippingMethod,
       batch: "",
       price: "",
       discount: "",

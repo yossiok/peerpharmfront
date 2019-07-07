@@ -17,6 +17,13 @@ export class InventoryService {
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = '/';
 
+  getAllItemShells():Observable<any> {
+    debugger;
+    let url = this.baseUrl + "itemShell";
+    return this.http.get(url).pipe(map(reponse => reponse.json())); 
+  }
+
+
   getAllComponents():Observable<any>{
     let url = this.baseUrl + "component";
     return this.http.get(url).pipe(map(reponse => reponse.json()));

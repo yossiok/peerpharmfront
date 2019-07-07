@@ -363,7 +363,7 @@
         </tr>
         <tr>
           <td>
-            <b>Licsens Number</b>
+            <b>License Number</b>
           </td>
           <td>
             <input type="text" id="id_licsensNumber" style='margin-left:10px' [(ngModel)]=itemShown.licsensNumber>
@@ -371,12 +371,20 @@
         </tr>
         <tr>
           <td>
-            <b>Licsens Exp Date</b>
+            <b>License Exp Date</b>
           </td>
           <td>
             <input type="date" id="id_licsensDate" style="width:158px;margin-left:10px" [(ngModel)]=itemShown.licsensDate>
           </td>
         </tr>
+        <tr>
+            <td>
+              <b>Years Untill Expired</b>
+            </td>
+            <td>
+              <input type="number" id="id_yearsUntillExp" style="width:158px;margin-left:10px" [(ngModel)]=itemShown.yearsUntilExpired>
+            </td>
+          </tr>
         <tr>
           <td>
             <b>Export Counrty</b>

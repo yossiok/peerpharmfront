@@ -15,8 +15,13 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
 
 export class SuppliersComponent implements OnInit {
   closeResult: string;
+  suppliersAlterArray:any[];
   suppliers: any[];
   suppliersCopy: any[];
+  alternSupplier: any[];
+  alterSupplierToPush:string;
+  alterSupplierArray:any[] = [];
+  
 
   supplier = {
     suplierNumber: '',
@@ -31,7 +36,8 @@ export class SuppliersComponent implements OnInit {
     email:'',
     contactName:'',
     currency:'',
-    remarks:''
+    remarks:'',
+    alternativeSupplier:this.alterSupplierArray,
   }
 
   private container: ElementRef;
@@ -58,7 +64,8 @@ export class SuppliersComponent implements OnInit {
       email:'',
       contactName:'',
       currency:'',
-      remarks:''
+      remarks:'',
+      alternativeSupplier:this.alterSupplierArray,
     }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
@@ -88,15 +95,29 @@ export class SuppliersComponent implements OnInit {
     })
   }
 
+  getAlternativeSuppliers() {
+    debugger;
+    this.supplierService.getAllAlternativeSuppliers().subscribe(res => {
+      this.alternSupplier = res
+      console.log(this.alternSupplier);
 
+
+    });
+  }
 
   getSuppliers() {
+    debugger;
     this.supplierService.getAllSuppliers().subscribe(res => {
       this.suppliers = res
       this.suppliersCopy = res
-      console.log(this.suppliers);
+      
+      var currentAlterSupp = [];
+      this.suppliers.forEach(function (supplier) {
+        currentAlterSupp.push(supplier.alternativeSupplier);
+      });
+      this.suppliersAlterArray = currentAlterSupp;
+});
 
-    });
   }
 
   saveSupplier() {
@@ -160,10 +181,17 @@ export class SuppliersComponent implements OnInit {
     }
   }
 
+  addAlterSupplier() { 
+    debugger;
+    let alterSuppToPush = this.alterSupplierToPush
+    this.alterSupplierArray.push(alterSuppToPush)
+  }
 
   ngOnInit() {
     debugger
     this.getSuppliers();
+    this.getAlternativeSuppliers();
+   
     
   }
 }

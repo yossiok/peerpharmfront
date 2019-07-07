@@ -1,0 +1,69 @@
+
+<div (click)='setType("arrivals")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Components Arrivals</div>
+<div (click)='setType("movements")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Components Movements</div>
+
+<div *ngIf="tableType=='arrivals'"  class="col-2">
+  <input style="box-shadow: black 0px -1px 3px inset;"  placeholder="Search By Number" (change)="changeText($event,'itemNumber')" class="form-control" >
+</div>
+
+<div *ngIf="tableType=='movements'" class="col-2">
+  <input style="box-shadow: black 0px -1px 3px inset;"  placeholder="Search By Item Number" (change)="changeText($event,'itemMovementNumber')" class="form-control" >
+</div>
+
+
+<!-- TABLE START -->
+<table *ngIf="tableType=='arrivals'" class='table stockTable table-fixed'>
+<thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
+
+  <tr style="text-align: center">
+
+    <th style="width:3%; padding:5px">#</th>
+    <th style="width:15%; padding:5px"><b>כמות</b></th>
+    <th style="width:15%; padding:5px"><b>תאריך הגעה</b></th>
+    <th style="width:15%; padding:5px"><b>מספר פריט</b></th>
+    <th style="width:15%; padding:5px"><b>מיקום</b></th>
+  </tr>
+
+</thead>
+
+
+<tbody id="table_body" class="componentTable">
+  <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+    *ngFor="let item of itemsShell; let i = index">
+    <td style="width:3%;">{{i+1}}</td>
+    <td style="width:15%;">{{item.amount}}</td>
+    <td style="width:15%;">{{item.arrivalDate | date : 'yyyy-MM-dd'}}</td>
+    <td style="width:15%;">{{item.item}}</td>
+    <td style="width:15%;;">{{item.position}}</td>
+  </tr>
+</tbody>
+</table>
+
+<table *ngIf="tableType=='movements'" class='table stockTable table-fixed'>
+  <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
+  
+    <tr style="text-align: center">
+  
+      <th style="width:3%; padding:5px">#</th>
+      <th style="width:15%; padding:5px"><b>כמות</b></th>
+      <th style="width:15%; padding:5px"><b>תאריך שינוי</b></th>
+      <th style="width:15%; padding:5px"><b>מספר פריט</b></th>
+      <th style="width:15%; padding:5px"><b>סוג שינוי</b></th>
+    </tr>
+  
+  </thead>
+  
+  
+  <tbody id="table_body" class="componentTable">
+    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+      *ngFor="let item of itemShellMovements; let i = index">
+      <td style="width:3%;">{{i+1}}</td>
+      <td style="width:15%;">{{item.amount}}</td>
+      <td style="width:15%;">{{item.movementDate | date : 'yyyy-MM-dd'}}</td>
+      <td style="width:15%;">{{item.item}}</td>
+      <td style="width:15%;;">{{item.movementType}}</td>
+    </tr>
+  </tbody>
+  </table>

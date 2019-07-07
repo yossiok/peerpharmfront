@@ -76,6 +76,35 @@
                 <h4 class="card-title">Items Assigning</h4>
             </div>
             <hr>
+            <table>
+                <thead>
+                    <tr>
+                     <th>Shipping Method</th>
+                     <th>Shipping Quantity</th>
+                     <th></th>
+                    </tr>
+               
+                
+                    <tr>
+                 <td>
+                    <select style="box-shadow: 1px 1px 1px;" [ngModelOptions]="{standalone: true}" [(ngModel)]="shippingDetails.shippingWay" class="form-control">
+                        <option value="land">יבשה</option>
+                        <option value="flight">אוויר</option>
+                        <option value="sea">ים</option>
+                    </select>
+                    </td>
+                    <td><input [ngModelOptions]="{standalone: true}"  [(ngModel)]="shippingDetails.shippingQuantity" class="form-control"></td>
+                    <td><button style="box-shadow: 1px 1px 1px;" type="button" (click)="addShipping()" class="btn btn-info waves-effect waves-light">Add Shipping</button></td>
+                </tr> 
+            </thead>
+                <tbody *ngFor="let shipping of shippingMethod">
+                    <tr>
+                        <td>{{shipping.shippingWay}}</td>
+                        <td>{{shipping.shippingQuantity}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
             <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)'>
 
                 <table>
@@ -89,7 +118,6 @@
                             <th>Weight</th>
                             <th>Remarks</th>
                             <th></th>
-                            <th></th>
                         </tr>
                         <tr>
                             <td></td>
@@ -99,7 +127,7 @@
                             <td><input formControlName="quantity" class="form-control"></td>
                             <td><input formControlName="qtyKg" class="form-control"></td>
                             <td><input formControlName="remarks" class="form-control"></td>
-                            <td></td>
+                          
                             <td><input type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
                         </tr>
                     </thead>
@@ -112,6 +140,7 @@
                             <td>{{item.quantity}}</td>
                             <td>{{item.qtyKg}}</td>
                             <td></td>
+                            <td>{{shippingDetails.shippingWay}}</td>
                             <td></td>
                         </tr>
                     </tbody>

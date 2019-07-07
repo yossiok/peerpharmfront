@@ -54,6 +54,7 @@ export class ItemdetaisComponent implements OnInit {
 
     licsensNumber: '',
     licsensDate: '',
+    yearsUntillExpired:'',
     country: '',
 
     netCtnWeightK: '',
@@ -160,6 +161,7 @@ export class ItemdetaisComponent implements OnInit {
 
       licsensNumber: [null, Validators.required],
       licsensDate: [Date, Validators.required],
+      yearsUntillExpired: [null, Validators.required],
       country: [null, Validators.required],
 
       netCtnWeightK: [null, Validators.required],

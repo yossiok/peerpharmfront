@@ -16,6 +16,8 @@ import { BarcodePrintService } from "./../../../services/barcodePrint.service";
 })
 export class BarcodePrintComponent implements OnInit {
   @ViewChild("print-section") printSection: ElementRef;
+  @ViewChild("otherValue") otherValue: ElementRef;
+
   today: any;
   scheduleData: any;
   public addScheduleForm: FormGroup;
@@ -29,12 +31,34 @@ export class BarcodePrintComponent implements OnInit {
   netoW: number;
   grossW: number;
   exp: string;
+  date:string;
+  dc:string;
+  po:string;
+  invoice:string;
+  other: string
+  netWeight: string
+  grossWeight: string
+  showExp = true;
+  showBatch = true;
+  showItemNumber = true;
+  showPcsCarton = true;
+  showVolume = true;
+  showProductName = true;
   showCustomerFlag = true;
+  showPcsCtnFlag = true;
+  showVolumeKeyFlag = true;
+  showOtherFlag = true;
+  showProductFlag = true;
   showOrderNumFlag = true;
   showItemFlag = true;
   showBarcodeFlag = true;
   showBatchFlag = true;
   showExpFlag = true;
+  showInvoiceFlag = true;
+  showDcFlag = true;
+  showPoFlag = true;
+  showNetWeightFlag = true;
+  showGrossWeightFlag = true;
   amountOfStickersArr: any[] = [];
   stickerPrintView: any[] = [];
   printBarkod: any;
@@ -47,6 +71,7 @@ export class BarcodePrintComponent implements OnInit {
   printBarcodeId: string;
   barcodeUrl: string;
   create_table: string;
+  shipInIsrael = true;
 
 
   constructor(
@@ -56,7 +81,8 @@ export class BarcodePrintComponent implements OnInit {
     private modalService: NgbModal,
     private toastSrv: ToastrService,
     private barcodePrintService: BarcodePrintService
-  ) {}
+    
+  ) { }
 
   ngOnInit() {
     this.today = new Date();
@@ -64,6 +90,7 @@ export class BarcodePrintComponent implements OnInit {
 
     this.initAddScheduleForm();
     this.getAllSchedule();
+   
   }
 
   initAddScheduleForm() {
@@ -79,13 +106,25 @@ export class BarcodePrintComponent implements OnInit {
       date: new FormControl("", [Validators.required]),
       marks: new FormControl("", [Validators.required]),
       shift: new FormControl("", [Validators.required]),
-      mkp: new FormControl("", [Validators.required])
+      mkp: new FormControl("", [Validators.required]),
+      other: new FormControl("", [Validators.required]),
+      dc: new FormControl("", [Validators.required]),
+      po: new FormControl("", [Validators.required]),
+      invoice: new FormControl("", [Validators.required]),
+      netWeight: new FormControl("", [Validators.required]),
+      grossWeight: new FormControl("", [Validators.required])
+    
+      
+
+      
     });
   }
 
   getAllSchedule() {
+    debugger;
     this.scheduleService.getSchedule().subscribe(res => {
       this.scheduleData = res;
+   
     });
   }
 
@@ -93,9 +132,9 @@ export class BarcodePrintComponent implements OnInit {
     const newSchedule = this.printBarcodeForm.value;
   }
 
-  clearPrintView(){
-    this.stickerPrintView=[];
-    this.amountOfStickersArr=[];
+  clearPrintView() {
+    this.stickerPrintView = [];
+    this.amountOfStickersArr = [];
   }
 
   // Modal Functions
@@ -113,6 +152,32 @@ export class BarcodePrintComponent implements OnInit {
       .then(() => {
         this.modalService
           .open(content, { ariaLabelledBy: "modal-basic-title" })
+          .result.then(
+            result => {
+              this.closeResult = `Closed with: ${result}`;
+              console.log(this.closeResult);
+            },
+            reason => {
+              this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            }
+          );
+      });
+  }
+
+  openPrintBarkodHul(contentHul, line) {
+    this.schedLine = line;
+    this.amountOfStickersArr = [];
+    this.GetItemAllData()
+      .then(async () => {
+        if (this.schedLine.batch) {
+          //waiting foe batch data =batchNumber+Exp Date
+          await this.GetBatchAllData();
+        }
+      })
+      .then(() => this.initPrintScheduleForm())
+      .then(() => {
+        this.modalService
+          .open(contentHul, { ariaLabelledBy: "modal-basic-title" })
           .result.then(
             result => {
               this.closeResult = `Closed with: ${result}`;
@@ -154,9 +219,10 @@ export class BarcodePrintComponent implements OnInit {
   initPrintScheduleForm() {
     this.pcsCarton = this.itemData[0].PcsCarton.replace(/\D/g, "") + " Pcs";
     this.barcodeK = this.itemData[0].barcodeK;
-    this.volumeK = this.itemData[0].volumeKey+' ml';
+    this.volumeK = this.itemData[0].volumeKey + ' ml';
     this.netoW = this.itemData[0].netWeightK;
     this.grossW = this.itemData[0].grossUnitWeightK;
+    
 
     this.printBarcodeForm = new FormGroup({
       costumer: new FormControl(
@@ -181,8 +247,15 @@ export class BarcodePrintComponent implements OnInit {
       barcode: new FormControl(this.barcodeK, [Validators.required]),
       batch: new FormControl(this.schedLine.batch, [Validators.required]),
       exp: new FormControl(this.exp, [Validators.required]),
+      date: new FormControl("", [Validators.required]),
       local: new FormControl("", [Validators.required]),
-      printQty: new FormControl("", [Validators.required])
+      printQty: new FormControl("", [Validators.required]),
+      other: new FormControl('' ,[Validators.required]),
+      dc: new FormControl('' ,[Validators.required]),
+      po: new FormControl('' ,[Validators.required]),
+      invoice: new FormControl('' ,[Validators.required]),
+      netWeight: new FormControl('' ,[Validators.required]),
+      grossWeight: new FormControl('' ,[Validators.required])
     });
   }
 
@@ -196,18 +269,52 @@ export class BarcodePrintComponent implements OnInit {
         break;
       case "item":
         this.showItemFlag = false;
+        this.showItemNumber = false;
         break;
       case "barcode":
         this.showBarcodeFlag = false;
         break;
       case "batch":
         this.showBatchFlag = false;
+        this.showBatch = false;
         break;
       case "exp":
         this.showExpFlag = false;
+        this.showExp = false;
+        break;
+      case "other":
+        this.showOtherFlag = false;
+        break;
+      case "po":
+        this.showPoFlag = false;
+        break;
+      case "invoice":
+        this.showInvoiceFlag = false;
+        break;
+      case "netWeight":
+        this.showNetWeightFlag = false;
+        break;
+      case "grossWieght":
+        this.showGrossWeightFlag = false;
+        break;
+      case "dc":
+        this.showDcFlag = false;
+        break;
+      case "productName":
+        this.showProductFlag = false;
+        this.showProductName = false;
+        break;
+      case "unitMsr":
+        this.showVolumeKeyFlag = false;
+        this.showVolume = false;
+        break;
+      case "pcsCtn":
+        this.showPcsCtnFlag = false;
+        this.showPcsCarton = false;
         break;
     }
   }
+
 
 
   private getDismissReason(reason: any): string {
@@ -221,22 +328,52 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printSubmit() {
+    if(this.printBarcodeForm.value.other!=""){
+      this.other= this.printBarcodeForm.value.other;
+    }
+    if(this.printBarcodeForm.value.date !="") {
+      this.date = this.printBarcodeForm.value.date
+    }
+    if(this.printBarcodeForm.value.dc !="") {
+      this.dc = this.printBarcodeForm.value.dc
+    }
+  
+    if(this.printBarcodeForm.value.po !="") {
+      this.po = this.printBarcodeForm.value.po
+    }
+  
+    if(this.printBarcodeForm.value.invoice !="") {
+      this.invoice = this.printBarcodeForm.value.invoice
+    }
+  
+    if(this.printBarcodeForm.value.netWeight !="") {
+      this.netWeight = this.printBarcodeForm.value.netWeight
+    }
+  
+    if(this.printBarcodeForm.value.grossWeight !="") {
+      this.grossWeight = this.printBarcodeForm.value.grossWeight
+    }
+  
+    debugger;
     this.amountOfStickersArr = [];
-    this.printBarcodeId=null;
+    this.printBarcodeId = null;
     this.showCustomerFlag = true;
     this.showOrderNumFlag = true;
     this.showItemFlag = true;
     this.showBarcodeFlag = true;
     this.showBatchFlag = true;
     this.showExpFlag = true;
+    this.showOtherFlag = true;
+    
 
+   
     this.printBarkod = this.printBarcodeForm.value;
     if (this.printBarkod.printQty > 0 && this.printBarkod.printQty != "") {
       for (let i = 0; i < this.printBarkod.printQty; i++) {
         this.amountOfStickersArr.push(this.printBarkod);
-        this.create_table = "create_table"+i;
+        this.create_table = "create_table" + i;
       }
-      this.stickerPrintView[0]=this.amountOfStickersArr[0];
+      this.stickerPrintView[0] = this.amountOfStickersArr[0];
 
       console.log(this.amountOfStickersArr);
 
@@ -250,7 +387,8 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printBarcode() {
-    document.getElementById("print-section").setAttribute('style' , 'margin: 0px ; padding: 0px');
+    debugger
+    document.getElementById("print-section").setAttribute('style', 'margin: 0px ; padding: 0px');
 
     const prtContent = document.getElementById("print-section").innerHTML;
     const barcodeObj = { allBarcode: prtContent };

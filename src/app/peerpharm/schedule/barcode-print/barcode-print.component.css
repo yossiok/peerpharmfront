@@ -152,6 +152,175 @@ input[type="radio"] {
   margin: 0px auto;
   width: 360px;
   min-height: 360px;
+  font-size: 20px;
+  border: 0px;
+  text-align: center;
+  margin-top:20px;
+}
+
+
+
+.clearfix {
+  overflow: auto;
+}
+input[type="checkbox"] {
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  padding: 10px;
+  margin-left: 10px;
+}
+
+div {
+  float: left;
+  margin-right: 5px;
+  background-color: white;
+  padding: 13px;
+  cursor: pointer;
+  border: 1;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+div::selection {
+  background-color: blue;
+}
+.btnImg {
+  width: 30px;
+  cursor: pointer;
+}
+i {
+  font-size: 20px;
+}
+table {
+  color: black;
+  font-size: 16px;
+  width: 100%;
+}
+thead {
+  text-align: center;
+}
+th {
+  max-width: 120px;
+  text-align: center;
+  
+}
+td {
+  border-bottom: 1px solid #ddd;
+  font-family: "Berlin Sans FB";
+  padding: 5px;
+  max-width: 120px;
+  text-align: center;
+}
+table tr:hover {
+  background-color: lightblue;
+}
+.positionClass {
+  width: 3%;
+}
+.mkpClass {
+  width: 7%;
+}
+.mkpClassInput {
+  width: 100px;
+}
+.selectShiftClass {
+  height: 34px;
+}
+
+#table_body {
+  background-color: white;
+  width: 100%;
+}
+
+@media only screen and (max-width: 1024px) {
+  th {
+    max-width: 80px;
+  }
+  td {
+    max-width: 80px;
+  
+  }
+  .btn {
+    max-width: 75px;
+    padding: 1px;
+    font-size: 9pt;
+  }
+}
+
+@media print {
+  .page {
+    display: none;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    text-align: center;
+  }
+  @page {
+    size: auto;
+    margin: 0mm auto;
+  }
+
+  table {
+    text-align: center;
+    page-break-after: always;
+  }
+
+  /* table {
+    color: black;
+    font-size: 15px;
+  }
+  -ms-transform: rotate(270deg);
+  /* IE 9 */
+  /* -webkit-transform: rotate(270deg); */
+  /* Chrome, Safari, Opera */
+  /* transform: rotate(270deg);
+  top: 1.5in;
+  left: -1in;
+  @page {
+    size: 25cm 35.7cm;
+    margin: 5mm 5mm 5mm 5mm;
+  }*/
+}
+
+.barcodeForm label {
+  width: 150px;
+}
+
+input[type="radio"] {
+  width: 18px;
+  margin-left: 20px;
+}
+
+.barcodeForm input[type="text"] {
+  width: 200px;
+}
+
+.barcodeForm input[type="number"] {
+  width: 200px;
+}
+
+.barcodeForm button {
+  margin-left: 8px;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.modal-footer .row {
+  width: 100%;
+  text-align: center;
+}
+
+.barcodeTbl {
+  margin: 0px auto;
+  width: 360px;
+  min-height: 360px;
   font-size: 24px;
   border: 0px;
   text-align: center;
@@ -163,3 +332,63 @@ input[type="radio"] {
 .clearfix {
   overflow: auto;
 }
+.filterBtn { 
+  box-shadow: 1px 2px 2px black;
+  padding: 3px !important;
+  margin-bottom: 2px;
+}
+.addBtn { 
+  box-shadow: 1px 2px 2px black;
+  cursor: pointer;
+}
+
+
+.form-control
+{
+box-shadow: 1px 1px 3px black;
+
+} 
+.searchInput { 
+  box-shadow: 1px 1px 3px black;
+  margin: 5px;
+}
+
+select { 
+  box-shadow: 1px 1px 3px black;
+  
+}
+.printHeader { 
+  box-shadow: 1px 1px 2px black;
+}
+.printBtn  { 
+
+  box-shadow: inset 1px -1px 2px black;
+
+}
+
+.removeBtn { 
+
+  box-shadow: 1px 1px 2px black;
+}
+.modal-header { 
+  text-align: center;
+}
+.modal-title { 
+  text-align: center;
+  margin-left: auto;
+  text-shadow: 0 1px 0 #ccc,
+  0 2px 0 #c9c9c9,
+  0 3px 0 #bbb,
+  0 4px 0 #b9b9b9,
+  0 5px 0 #aaa,
+  0 6px 1px rgba(0,0,0,.1),
+  0 0 5px rgba(0,0,0,.1),
+  0 1px 3px rgba(0,0,0,.3),
+  0 3px 5px rgba(0,0,0,.2),
+  0 5px 10px rgba(0,0,0,.25),
+  0 10px 10px rgba(0,0,0,.2),
+  0 20px 20px rgba(0,0,0,.15);
+}
+
+
+

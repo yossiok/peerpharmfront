@@ -185,7 +185,16 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
+      },
+      {
+        path: '/peerpharm/items/itemreports',
+        title: 'Items Reports',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
       }
+
 
     ]
   },

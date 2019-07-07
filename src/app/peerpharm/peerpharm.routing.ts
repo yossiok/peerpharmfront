@@ -39,6 +39,7 @@ import { MaterialScanViewComponent } from './inventory/material-scan-view/materi
 import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
 import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
+import { ItemreportsComponent } from './items/itemreports/itemreports.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -121,6 +122,13 @@ export const PeerPharmRputs: Routes =[
     component: ItemDetailsTabComponent
   },
   {
+    path: 'items/itemreports',
+    data: {
+      title: 'Item Reports'
+    },
+    component: ItemreportsComponent
+  },
+  {
     path: 'items/itemDetails/:itemNumber',
     data: {
       title: 'Item Tree'
@@ -191,7 +199,7 @@ export const PeerPharmRputs: Routes =[
       title: 'add-formule'
     },
     component: FormuleComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',

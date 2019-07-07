@@ -18,8 +18,14 @@ export class SuppliersService {
   private baseUrl = '/';
 
 
-  getAllSuppliers(){
+  getAllAlternativeSuppliers(){
     debugger
+    let url = this.baseUrl + "supplier/alternative";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAllSuppliers(){
+    
     let url = this.baseUrl + "supplier";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

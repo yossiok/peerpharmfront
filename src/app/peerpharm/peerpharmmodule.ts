@@ -94,6 +94,7 @@ import { MaterialScanViewComponent } from './inventory/material-scan-view/materi
 import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
 import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
+import { ItemreportsComponent } from './items/itemreports/itemreports.component';
 
 
 @NgModule({
@@ -192,6 +193,7 @@ import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
     WizardComponent,
     ScanProductComponent,
     SuppliersComponent,
+    ItemreportsComponent
 
   ],
   providers: [ OrdersService, HttpClientModule],
