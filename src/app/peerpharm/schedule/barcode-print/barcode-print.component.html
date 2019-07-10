@@ -336,6 +336,18 @@
         </button>
       </div>
 
+      <div *ngIf="showPackingCodeFlag" class="form-group row">
+          <label for="packingCode"><strong>קוד אורז</strong></label>
+          <input class="form-control" type="number" formControlName="packingCode" />
+          <button 
+            type="button"
+            class="btn removeBtn btn-success m-r-10"
+            (click)="RemoveFields('packingCode')"
+          >
+            Remove
+          </button>
+        </div>
+
       <div class="form-group row">
         <label for="local"><strong>Ship Within Israel?</strong></label>
         <input
@@ -423,6 +435,9 @@
         </tr>
         <tr *ngIf="showOtherFlag">
           <td>{{ other }}</td>
+        </tr>
+        <tr *ngIf="showPackingCodeFlag">
+          <td>Packing Code:{{ printBarkod.packingCode }}</td>
         </tr>
       </table>
     </div>
@@ -670,6 +685,18 @@
         </button>
       </div>
 
+      <div *ngIf="showPackingCodeFlag" class="form-group row">
+          <label for="packingCode"><strong>קוד אורז</strong></label>
+          <input class="form-control" type="number" formControlName="packingCode" />
+          <button 
+            type="button"
+            class="btn removeBtn btn-success m-r-10"
+            (click)="RemoveFields('packingCode')"
+          >
+            Remove
+          </button>
+        </div>
+
       <div class="form-group row">
         <label for="printQty"><strong>Amount Of Stickers To Print:</strong></label>
         <input class="form-control" type="number" formControlName="printQty" />
@@ -780,6 +807,9 @@
         </tr> -->
         <tr *ngIf="showOtherFlag">
           <td>{{ other }}</td>
+        </tr>
+        <tr *ngIf="showPackingCodeFlag">
+          <td>Packing Code:{{ printBarkod.packingCode }}</td>
         </tr>
       </table>
     </div>

@@ -1,6 +1,7 @@
 
 table {
   width:100%;
+
 }
 
 th {
@@ -10,3 +11,10 @@ th {
 td {
   padding: 10px;
 }
+.tableFixHead          { overflow-y: auto; height: 100px; }
+.tableFixHead thead th { position: fixed; top: 0; }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 16px; }
+th     { background:rgb(31, 28, 197); }

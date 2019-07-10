@@ -35,9 +35,10 @@ export class BarcodePrintComponent implements OnInit {
   dc:string;
   po:string;
   invoice:string;
-  other: string
-  netWeight: string
-  grossWeight: string
+  other: string;
+  netWeight: string;
+  grossWeight: string;
+  packingCode: number;
   showExp = true;
   showBatch = true;
   showItemNumber = true;
@@ -59,6 +60,7 @@ export class BarcodePrintComponent implements OnInit {
   showPoFlag = true;
   showNetWeightFlag = true;
   showGrossWeightFlag = true;
+  showPackingCodeFlag = true;
   amountOfStickersArr: any[] = [];
   stickerPrintView: any[] = [];
   printBarkod: any;
@@ -112,7 +114,8 @@ export class BarcodePrintComponent implements OnInit {
       po: new FormControl("", [Validators.required]),
       invoice: new FormControl("", [Validators.required]),
       netWeight: new FormControl("", [Validators.required]),
-      grossWeight: new FormControl("", [Validators.required])
+      grossWeight: new FormControl("", [Validators.required]),
+      packingCode: new FormControl("", [Validators.required])
     
       
 
@@ -255,7 +258,8 @@ export class BarcodePrintComponent implements OnInit {
       po: new FormControl('' ,[Validators.required]),
       invoice: new FormControl('' ,[Validators.required]),
       netWeight: new FormControl('' ,[Validators.required]),
-      grossWeight: new FormControl('' ,[Validators.required])
+      grossWeight: new FormControl('' ,[Validators.required]),
+      packingCode: new FormControl('' ,[Validators.required])
     });
   }
 
@@ -312,6 +316,9 @@ export class BarcodePrintComponent implements OnInit {
         this.showPcsCtnFlag = false;
         this.showPcsCarton = false;
         break;
+        case "packingCode":
+          this.showPackingCodeFlag = false;
+          break;
     }
   }
 
@@ -352,6 +359,9 @@ export class BarcodePrintComponent implements OnInit {
   
     if(this.printBarcodeForm.value.grossWeight !="") {
       this.grossWeight = this.printBarcodeForm.value.grossWeight
+    }
+    if(this.printBarcodeForm.value.packingCode !="") {
+      this.packingCode = this.printBarcodeForm.value.packingCode
     }
   
     debugger;

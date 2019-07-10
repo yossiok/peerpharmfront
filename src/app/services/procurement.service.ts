@@ -22,6 +22,13 @@ export class Procurementservice {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getProcurementOrderItemBalanceByDate(fromDate, toDate):Observable<any>{
+    debugger;
+    let url = this.baseUrl + "procurementOrderItemBalance/byDate?fromDate="+fromDate+"&toDate="+toDate;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+
 
   getProcurementOrderItemBalance() {
     const url = this.baseUrl + 'procurementOrderItemBalance';

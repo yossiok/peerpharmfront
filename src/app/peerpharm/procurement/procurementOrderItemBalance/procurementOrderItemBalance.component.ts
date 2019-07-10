@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Procurementservice } from './../../../services/procurement.service';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-procurement-order-item-balance',
@@ -8,10 +9,14 @@ import { Procurementservice } from './../../../services/procurement.service';
 })
 
 export class ProcurementOrderItemBalanceComponent implements OnInit {
-  procurementData: any;
+
+  procurementData: any[];
+  procurementDataCopy: any[];
+  @ViewChild('fromDateStr') fromDateStr: ElementRef;
+  @ViewChild('toDateStr') toDateStr: ElementRef;
 
   constructor(
-    private procurementservice: Procurementservice
+    private procurementservice: Procurementservice,  private excelService: ExcelService
   ) {}
 
   ngOnInit() {
@@ -21,7 +26,65 @@ export class ProcurementOrderItemBalanceComponent implements OnInit {
   getAllProcurementOrderItemBalance() {
     this.procurementservice.getProcurementOrderItemBalance().subscribe(res => {
       this.procurementData = res;
+      this.procurementDataCopy = res;
       console.log(this.procurementData);
     });
   }
+
+  
+  dateChange(){
+    ;
+    if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
+
+      this.procurementservice.getProcurementOrderItemBalanceByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
+        this.procurementData = data;
+        this.procurementDataCopy = data;
+      })
+    } else { 
+      this.getAllProcurementOrderItemBalance()
+    }
+  
+  }
+
+  searchNumber(ev)
+  
+  {
+
+    if(ev.target.value=="") {
+      this.getAllProcurementOrderItemBalance();
+    }
+   
+    let word= ev.target.value;
+    let wordsArr= word.split(" ");
+    wordsArr= wordsArr.filter(x=>x!="");
+    if(wordsArr.length>0){
+      
+      let tempArr=[];
+      this.procurementData.filter(x=>{
+        
+        var check=false;
+        var matchAllArr=0;
+        wordsArr.forEach(w => {
+         
+            if(x.orderNumber==w ){
+              matchAllArr++
+            }
+            (matchAllArr==wordsArr.length)? check=true : check=false ; 
+        }); 
+
+        if(!tempArr.includes(x) && check) tempArr.push(x);
+      });
+         this.procurementData= tempArr;
+         
+    }else{
+      
+      this.procurementData=this.procurementDataCopy.slice();
+    }
+  }
+
+  exportAsXLSX():void {
+    debugger
+    this.excelService.exportAsExcelFile(this.procurementData, 'data');
+  }
+
 }
