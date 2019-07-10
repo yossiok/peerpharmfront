@@ -73,6 +73,11 @@ export class FormulesService {
   // NOA Fomule Service
 
   // GET
+  getFormuleByParent(parent){
+    let url = this.baseUrl + "formules?byParent="+parent;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getFormuleByNumber(number){
     let url = this.baseUrl + "formules?byNumber="+number;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -99,6 +104,12 @@ export class FormulesService {
   newFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/add";
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
+  }
+
+  getTrueArray():Observable<any> {
+  
+    let url = this.baseUrl + "formules/istrue";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   
   addNewPhaseToFormule(newFormulePhase){

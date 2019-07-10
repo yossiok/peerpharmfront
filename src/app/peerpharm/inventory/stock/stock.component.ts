@@ -46,6 +46,8 @@ export class StockComponent implements OnInit {
     remarks: '',
     componentItems: [],
     input_actualMlCapacity: 0,
+    alternativeComponent:'',
+
   }
   buttonColor: string = 'white';
   buttonColor2: string = '#B8ECF1';
@@ -147,6 +149,7 @@ export class StockComponent implements OnInit {
     monthAvgPcs: "",
     msds: "",
     coaMaster: "",
+    alternativeMaterial:"",
 
   }
 
@@ -449,10 +452,12 @@ export class StockComponent implements OnInit {
 
 
   loadComponentItems() {
+    debugger
     // this.resCmpt.componentType=  this.stockType;
     if (this.resCmpt.itemType != '') {
       this.inventoryService.getItemsByCmpt(this.resCmpt.componentN, this.resCmpt.itemType).subscribe(res => {
         if (res.length > 0) {
+          debugger
           this.resCmpt.componentItems = res;
         } else
           this.resCmpt.componentItems = []

@@ -13,6 +13,26 @@
           </i>
         </div>
         <form class="form" [formGroup]="formulesForm" (submit)="onSubmit('new')" style="width: 50%;">
+
+            <div class="form-group row">
+                <label for="example-search-input" class="col-2 col-form-label"
+                  >Parent Formule</label
+                >
+                <div class="col-10">
+                  <!--
+find all formules which type parent true
+
+                  -->
+                
+            <select [ngModelOptions]="{standalone: true}" [ngModel]="currTrue" (ngModelChange)="fillTheFields($event)" class="form-control">
+                    <option *ngFor="let one of allTrueArr" value="{{one.name}}">{{one.name}}</option>
+                </select>
+           <!--  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="addParentGroup">-->
+           is Parent: <input  formControlName="parent" (change)="isChecked($event)" type="checkbox"/>
+              
+                </div>
+              </div>
+
           <div class="form-group m-t-40 row">
             <label for="example-text-input" class="col-2 col-form-label"
               >Formule Number</label

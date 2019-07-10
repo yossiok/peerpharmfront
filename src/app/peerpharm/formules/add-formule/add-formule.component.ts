@@ -4,6 +4,7 @@ import { FormulesService } from '../../../services/formules.service';
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
+import { log } from 'util';
 
 // export interface FormuleCategory {
 //   value: string;
@@ -23,15 +24,19 @@ export class AddFormuleComponent implements OnInit {
   formuleDetailsOk: Boolean= false;
   formuleSaved: Boolean= false;
   editSavedFormule: Boolean= false;
+  allTrueArr:any[];
+  currTrue:any[];
   currentFormule:any={
     number: null,
     name:"",
+    parentGroup:'',
     category: "",
     lastUpdate: new Date(),
     lastUpdateUser: "",
     ph: null,
     client: "",
     id:null,
+    parent:"",
   };
   
   @Output() formuleCreated = new EventEmitter();
@@ -52,6 +57,9 @@ export class AddFormuleComponent implements OnInit {
       ph: [null, ],
       client: ['', Validators.required],
       id: [null, ],
+      parentGroup:['',],
+      parent:['',],
+      
     });
   }
 
@@ -67,6 +75,7 @@ export class AddFormuleComponent implements OnInit {
     await this.authService.userEventEmitter.subscribe(user => {
       this.user=user.firstName+" "+user.lastName;
       this.formulesForm.controls.lastUpdateUser.setValue(this.user);
+      this.getTrueParents();
     });
 
     // await this.authService.getLoggedInUser().subscribe(data=>{
@@ -87,12 +96,36 @@ export class AddFormuleComponent implements OnInit {
   }
 
 
+  getTrueParents() { 
+   
+    this.formuleService.getTrueArray().subscribe(data =>{
+      this.allTrueArr = data
+
+      console.log(this.allTrueArr)
+    })
+  }
+
   async updateCurrFormule(){
     
     // this.currentFormule=
   }
+  isChecked(ev) {
+    ;
+    if (ev.target.checked == true) {
+
+      this.currentFormule.parent = ev.target.checked;
+      ;
+    }
+
+    if (ev.target.checked == false) {
+      ;
+      this.currentFormule.parent = ev.target.checked;
+    }
+    console.log(this.currentFormule.parent)
+  }
 
   async onSubmit(actionType) {
+ 
     //get user info
     if(this.formulesForm.value.lastUpdateUser ==""){
       this.authService.userEventEmitter.subscribe(data => {
@@ -133,6 +166,31 @@ export class AddFormuleComponent implements OnInit {
       }
     });
 
+  }
+
+  fillTheFields(ev) { 
+    debugger
+    
+    for (let i = 0; i < this.allTrueArr.length; i++) {
+      if(this.allTrueArr[i].name == ev) {
+        
+        this.formulesForm = this.fb.group({
+          number: ['', Validators.required],
+          name: [this.allTrueArr[i].name, Validators.required],
+          category: [this.allTrueArr[i].category, Validators.required],
+          lastUpdate: ['', Validators.required],
+          lastUpdateUser: [this.allTrueArr[i].lastUpdateUser, Validators.required],
+          ph: [this.allTrueArr[i].ph, ],
+          client: [this.allTrueArr[i].client, Validators.required],
+          id: [null, ],
+          parentGroup:['',],
+          parent:['',],
+          
+        });
+
+      }
+      
+    }
   }
 
 

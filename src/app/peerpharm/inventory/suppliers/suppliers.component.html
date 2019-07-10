@@ -1,15 +1,37 @@
-<img src='assets/images/add.png' style='width:50px; cursor: pointer;' (click)="open(content)"><br><br>
-<input type="text"  placeholder="Search item name" (change)="changeText($event)" />
+
+<div (click)='setType("suppliers")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30px;margin-right:10px;padding:5px">Suppliers</div>
+<div (click)='setType("supplierReports")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30px;padding:5px">Suppliers Reports</div><br><br>
+
+<div *ngIf="tableType=='suppliers'">
+<img  src='assets/images/add.png' style='width:50px; cursor: pointer;' (click)="open(content)">
+<input type="text" style="width:200px;margin-left:15px;" placeholder="Search Supplier By Name" (change)="changeText($event)"/>
+</div>
+
+<div *ngIf="tableType=='supplierReports'">
+  <input type="text" style="width:200px;" placeholder="Search Supplier By Name" (change)="searchName($event)"/>
+  <input type="text" style="width:200px;margin-left:10px;" placeholder="Search Item By Number" (change)="searchNumber($event)"/>
+  <!-- From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date"> -->
+  <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
+        (click)="exportAsXLSX()">
+  </div>
+  <div *ngIf="tableType=='supplierReports'">
+  <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
+      <div class="loader">Loading More Items...</div>
+      <br/> 
+    </div>
+  </div>
 
 
-<table class='table'>
+<table *ngIf="tableType=='suppliers'" class='table'>
   <thead class='tableHeader  text-center text-white'>
 
     <tr>
       <th>#</th>
       <th>Supplier Number</th>
       <th>Name</th>
-      <th>Alternive Supplier</th>
+      <th>Alternative Supplier</th>
       <th>Address</th>
       <th>Email</th>
       <th>Phone</th>
@@ -21,7 +43,7 @@
     <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
       *ngFor="let supplier of suppliers; let i=index;">
       <td>{{i}}</td>
-      <td>{{supplier.suplierNumber}}</td>
+      <td (click)="openData(supplier.suplierNumber)">{{supplier.suplierNumber}}</td>
       <td>{{supplier.suplierName}}</td>
       <td>
         <div *ngFor="let altsup of supplier.alternativeSupplier">{{altsup}}</div>
@@ -35,6 +57,36 @@
   </tbody>
 </table>
 
+<table *ngIf="tableType=='supplierReports'" class='table'>
+  <thead class='tableHeader  text-center text-white'>
+
+    <tr>
+      <th>#</th>
+      <th>Supplier Name</th>
+      <th>Item Name</th>
+      <th>Item Number</th>
+      <th>Order Date</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Total Payment</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="table_body">
+    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+      *ngFor="let suppOrder of suppliersOrderItems; let i=index;">
+      <td>{{i}}</td>
+      <td>{{suppOrder.supplierName}}</td>
+      <td>{{suppOrder.itemName}}</td>
+      <td>{{suppOrder.itemNumber}}</td>
+      <td>{{suppOrder.orderDate}}</td>
+      <td>{{suppOrder.orderQnt}}</td>
+      <td>{{suppOrder.price}}</td>
+      <td>{{suppOrder.totalPayment}}</td>
+
+    </tr>
+  </tbody>
+</table>
 
 
 
@@ -77,9 +129,9 @@
       <label for="a">Alternative Supplier</label>
       <div class="input-group">
         <select  class="form-control mb-4" [(ngModel)]="alterSupplierToPush">
-         <option *ngFor="let alterSupp of alternativeSupplier" value="{{alterSupp.suplierName}}">{{alterSupp.suplierName}}</option> 
+         <option *ngFor="let alterSupp of alternSupplier" value="{{alterSupp.suplierName}}">{{alterSupp.suplierName}}</option> 
         </select>
-        <button (click)="addAlterSupplier()">Add Alternative</button>
+        <button style="height:40px;" class="btn btn-outline-dark" (click)="addAlterSupplier()">Add Alternative</button>
       </div>
     </div>
 

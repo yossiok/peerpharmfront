@@ -23,6 +23,18 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json())); 
   }
 
+  getItemShellsByDate(fromDate, toDate):Observable<any>{
+    debugger;
+    let url = this.baseUrl + "itemShell/byDate?fromDate="+fromDate+"&toDate="+toDate;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  
+  getItemShellsMovementsByDate(fromDate, toDate):Observable<any>{
+    debugger;
+    let url = this.baseUrl + "itemmovement/byDate?fromDate="+fromDate+"&toDate="+toDate;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 
   getAllComponents():Observable<any>{
     let url = this.baseUrl + "component";

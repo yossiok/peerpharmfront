@@ -4,16 +4,33 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Componen
 <div (click)='setType("movements")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
 style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Components Movements</div>
 
-<div *ngIf="tableType=='arrivals'"  class="col-2">
-  <input style="box-shadow: black 0px -1px 3px inset;"  placeholder="Search By Number" (change)="changeText($event,'itemNumber')" class="form-control" >
+<div *ngIf="tableType=='arrivals'"  class="col-3">
+  <input  style="box-shadow: black 0px -1px 3px inset;width:200px"  placeholder="Search By Number" (change)="changeText($event,'itemNumber')" class="form-control" >
 </div>
 
-<div *ngIf="tableType=='movements'" class="col-2">
-  <input style="box-shadow: black 0px -1px 3px inset;"  placeholder="Search By Item Number" (change)="changeText($event,'itemMovementNumber')" class="form-control" >
+<div *ngIf="tableType=='arrivals'">
+  From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
 </div>
+
+<div *ngIf="tableType=='movements'" class="col-3">
+  <input style="box-shadow: black 0px -1px 3px inset;width:200px;"  placeholder="Search By Item Number" (change)="changeText($event,'itemMovementNumber')" class="form-control">
+</div>
+
+<div *ngIf="tableType=='movements'">
+  From: <input (change)="dateChangeMovements()" #fromDateStr type="date"> To: <input (change)="dateChangeMovements()" #toDateStr type="date">
+</div>
+
+
+    <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
+        <div class="loader">Loading More Items...</div>
+        <br/> 
+      </div>
+   
 
 
 <!-- TABLE START -->
+
+
 <table *ngIf="tableType=='arrivals'" class='table stockTable table-fixed'>
 <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
 

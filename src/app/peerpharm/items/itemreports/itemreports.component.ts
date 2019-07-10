@@ -2,6 +2,7 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
+import { DataPipeline } from 'aws-sdk/clients/all';
 
 @Component({
   selector: 'app-itemreports',
@@ -15,6 +16,11 @@ export class ItemreportsComponent implements OnInit {
   itemsShellCopy:any[];
   arrivalDate:Date;
   tableType:String = "arrivals"
+  hasMoreItemsToload:boolean = true;
+  
+
+  @ViewChild('fromDateStr') fromDateStr: ElementRef;
+  @ViewChild('toDateStr') toDateStr: ElementRef;
 
   constructor(private inventoryService:InventoryService) { }
 
@@ -31,6 +37,9 @@ export class ItemreportsComponent implements OnInit {
       this.itemsShell = data;
       this.itemsShellCopy = data;
 
+      if(data.length < data.length) {
+        this.hasMoreItemsToload == false
+      }
       console.log(this.itemsShell)
       
     })
@@ -42,7 +51,13 @@ export class ItemreportsComponent implements OnInit {
       this.itemShellMovements = data;
       this.itemShellMovementsCopy = data;
 
-      
+      if(data.length == data.length) {
+        this.hasMoreItemsToload == false
+      } else {
+        this.hasMoreItemsToload == false
+        alert("No movements")
+      }
+
     })
   }
   setType(type) {
@@ -100,6 +115,40 @@ export class ItemreportsComponent implements OnInit {
     }
 
   }
+
+  dateChange(){
+    debugger;
+    if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
+
+      this.inventoryService.getItemShellsByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
+        this.itemsShell = data;
+        this.itemsShellCopy = data;
+        if(data.length <= 0) {
+          this.hasMoreItemsToload == false
+          alert("No movements")
+        } 
+      })
+    }
+  
+  }
+
+  dateChangeMovements(){
+    debugger;
+    if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
+
+      this.inventoryService.getItemShellsMovementsByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
+        this.itemShellMovements = data;
+        this.itemShellMovementsCopy = data;
+
+        if(data.length <= 0) {
+          this.hasMoreItemsToload == false
+          alert("No movements")
+        } 
+      })
+    }
+  
+  }
+
 
 
 
