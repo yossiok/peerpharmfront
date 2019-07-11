@@ -202,6 +202,14 @@ export const PeerPharmRputs: Routes =[
     // canActivate:[TwoFactor]
   },
   {
+    path: 'formule/addnewformule/:id',
+    data: {
+      title: 'edit-formule'
+    },
+    component: FormuleComponent,
+    // canActivate:[TwoFactor]
+  },
+  {
     path :'production/lines',
     data :{
       title : 'Production Lines'
