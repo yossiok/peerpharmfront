@@ -15,6 +15,7 @@ export class ProcurementOrderItemComponent implements OnInit {
   procurementDataCopy: any[];
   orderNumber: any;
   orderDate: any;
+  hasMoreItemsToload: boolean = true;
 
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -45,6 +46,10 @@ export class ProcurementOrderItemComponent implements OnInit {
       this.procurementData = res;
       this.procurementDataCopy = res;
       console.log(this.procurementData);
+
+      if(res.length == res.length) {
+        this.hasMoreItemsToload == false;
+      }
     });
   }
 

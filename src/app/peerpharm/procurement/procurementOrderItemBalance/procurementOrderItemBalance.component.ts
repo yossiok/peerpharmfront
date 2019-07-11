@@ -12,6 +12,8 @@ export class ProcurementOrderItemBalanceComponent implements OnInit {
 
   procurementData: any[];
   procurementDataCopy: any[];
+  hasMoreItemsToload: boolean = true;
+  
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
 
@@ -28,6 +30,10 @@ export class ProcurementOrderItemBalanceComponent implements OnInit {
       this.procurementData = res;
       this.procurementDataCopy = res;
       console.log(this.procurementData);
+
+      if(res.length == res.length) {
+        this.hasMoreItemsToload == false;
+      }
     });
   }
 

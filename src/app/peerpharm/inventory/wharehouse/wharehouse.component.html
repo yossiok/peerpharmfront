@@ -144,20 +144,24 @@
                         <label>מדף</label>
                         <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Position" [value]="itemFromInvReq.position" >
                       </div>
-                      <div class="col-sm-2">
+                      <div class="col-sm-1">
                         <label>כמות</label>
-                        <input #lineqnt{{i}} [attr.data-lineid]="i" name="multiLineQntInput" type="number" class="form-control" placeholder="Amount" min="0" [(ngModel)]="itemFromInvReq.qnt">
+                        <input #lineqnt{{i}} [attr.data-lineid]="i" style="width:50px !important;" name="multiLineQntInput" type="number"  class="form-control" placeholder="Amount" min="0" [(ngModel)]="itemFromInvReq.qnt">
                       </div>
                       <!-- if taking out stock from wh -->
                       <div class="col-sm-4 row" >
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label>מס' בקשת מלאי</label>
                             <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Request Number" [value]="itemFromInvReq.reqNum" disabled>
                         </div> 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label>מס' הזמנה</label>
                             <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Order Number" [value]="itemFromInvReq.relatedOrder" disabled>                              
                         </div> 
+                        <div class="col-sm-4">
+                          <label>הערות</label>
+                          <input [attr.data-lineid]="i" type="text" class="form-control"  [value]="itemFromInvReq.remarks" >                              
+                      </div> 
                       </div>
                       <div class="col-sm-1" style="position: relative;">
                           <button [attr.data-lineid]="i" type="submit" (click)="checkLineValidation(itemFromInvReq,i, $event , qnt)" style="cursor: pointer; position: absolute; bottom: 0px;">

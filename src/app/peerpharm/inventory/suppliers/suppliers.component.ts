@@ -190,7 +190,7 @@ setType(type) {
 
   changeText(ev)
   {
-    
+    debugger
     let word= ev.target.value;
     let wordsArr= word.split(" ");
     wordsArr= wordsArr.filter(x=>x!="");
@@ -212,6 +212,7 @@ setType(type) {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.suppliers= tempArr;
+         this.hasMoreItemsToload = false;
          
     }else{
       
@@ -221,7 +222,7 @@ setType(type) {
 
   searchName(ev)
   {
-    
+    debugger
     let word= ev.target.value;
     let wordsArr= word.split(" ");
     wordsArr= wordsArr.filter(x=>x!="");
@@ -243,6 +244,7 @@ setType(type) {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.suppliersOrderItems= tempArr;
+         this.hasMoreItemsToload = false;
          
     }else{
       
@@ -274,7 +276,7 @@ setType(type) {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.suppliersOrderItems= tempArr;
-         
+         this.hasMoreItemsToload = false;
     }else{
       
       this.suppliersOrderItems=this.suppliersOrderItemsCopy.slice();

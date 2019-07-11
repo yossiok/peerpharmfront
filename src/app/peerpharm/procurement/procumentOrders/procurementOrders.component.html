@@ -4,6 +4,10 @@
 From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
 <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
         (click)="exportAsXLSX()">
+        <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
+          <div class="loader">Loading More Items...</div>
+          <br/> 
+        </div>
 
 <table>
   <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">

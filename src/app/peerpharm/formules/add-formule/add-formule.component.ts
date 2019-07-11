@@ -161,6 +161,7 @@ export class AddFormuleComponent implements OnInit {
           if(formule.formuleParentId!='')
           {
             this.routerService.navigate(['/#/peerpharm/formule/addnewformule/'+formule._id]);
+            debugger;
           }
           else{
             this.currentFormule = formule;
@@ -209,6 +210,7 @@ export class AddFormuleComponent implements OnInit {
   }
 
   addFirstPhase() {
+    debugger;
     this.firstPhaseCreated.emit(this.currentFormule);
   }
 

@@ -94,6 +94,7 @@ export class NeworderComponent implements OnInit {
 }
 
   addNewItemOrder(post) {
+    debugger
    
     console.log(post);
     var shippingQuantitySum = 0;
@@ -139,9 +140,12 @@ export class NeworderComponent implements OnInit {
         this.itemName = "";
         this.netWeightK = 0;
         this.toastSrv.success('item '+res.itemNumber+' added');
+ 
       } else{
         this.toastSrv.error('Adding item faild');
       }
+     
+      this.shippingMethod = [];
 
     });
    
@@ -218,6 +222,7 @@ export class NeworderComponent implements OnInit {
   // }
 
   addNewSavedOrderItem(post) {
+    debugger;
     console.log(post);
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
     if (post.discription == null || post.discription != this.itemName)
@@ -243,7 +248,10 @@ export class NeworderComponent implements OnInit {
     this.orderItemForm.reset();
     this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => 
       this.items.push(res)
+      
       );
+      debugger
+   
   }
 
   getCostumers() {

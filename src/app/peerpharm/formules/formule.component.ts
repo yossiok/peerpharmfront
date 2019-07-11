@@ -52,7 +52,7 @@ export class FormuleComponent implements AfterViewInit {
           this.formuleService.getPhasesByFormuleId(data.id).subscribe(phases => {
             debugger;
             //this.phases= phases
-          }) 
+          })
         })
       }
     })
@@ -64,6 +64,7 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   LoadingFormule(newFormule) {
+    debugger;
     if (newFormule != null) {
       this.newFormuleBasic = newFormule;
       this.newPhase = true;
@@ -92,11 +93,16 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   onFirstPhaseCreated(newFormuleCreated) {
-
+    debugger;
     this.newFormuleBasic = newFormuleCreated;
     const newPhase = new FormulePhase();
     newPhase.phaseNumber = this.allPhasesForm.length + 1;
-    newPhase.formuleId = this.newFormuleBasic.id;
+
+    if (this.newFormuleBasic.id)
+      newPhase.formuleId = this.newFormuleBasic.id;
+    else
+      newPhase.formuleId = this.newFormuleBasic._id;
+
     newPhase.formuleNumber = this.newFormuleBasic.number;
     newPhase.formuleName = this.newFormuleBasic.name;
     this.formuleService.addNewPhaseToFormule(newPhase).subscribe(phase => {
@@ -208,7 +214,7 @@ export class FormuleComponent implements AfterViewInit {
 
 
   onFinish() {
-
+    debugger
     var formuleToSave = new Formule();
     formuleToSave = {
       _id: this.newFormuleBasic._id,

@@ -1,8 +1,14 @@
-
-<input type="text" style="width:200px;margin-left:15px;" placeholder="Search Order By Number" (change)="searchNumber($event)"/>
-From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
+<input type="text" style="width:200px;margin-left:15px;" placeholder="Search Order By Number"
+  (change)="searchNumber($event)" />
+From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr
+  type="date">
 <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
-        (click)="exportAsXLSX()">
+  (click)="exportAsXLSX()">
+
+<div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;">
+  <div class="loader">Loading More Items...</div>
+  <br />
+</div>
 
 <table>
   <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
@@ -21,21 +27,16 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
     </tr>
   </thead>
   <tbody id="table_body">
-    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of procurementData; let i = index">
+    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+      *ngFor="let line of procurementData; let i = index">
       <td>{{ i+1 }}</td>
       <td>
-        <a
-          target="_blank"
-          routerLink="/peerpharm/allorders/orderitems/{{ line.orderNumber }}"
-        >
+        <a target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ line.orderNumber }}">
           {{ line.orderNumber }}
         </a>
       </td>
       <td>
-        <a
-          target="_blank"
-          routerLink="/peerpharm/items/itemDetails/{{ line.itemNumber }}"
-        >
+        <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{ line.itemNumber }}">
           {{ line.itemNumber }}
         </a>
       </td>

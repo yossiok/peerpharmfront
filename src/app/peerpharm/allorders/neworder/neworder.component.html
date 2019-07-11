@@ -98,7 +98,7 @@
                 </tr> 
             </thead>
                 <tbody *ngFor="let shipping of shippingMethod">
-                    <tr>
+                    <tr *ngIf="shippingMethod != []">
                         <td>{{shipping.shippingWay}}</td>
                         <td>{{shipping.shippingQuantity}}</td>
                     </tr>
@@ -140,7 +140,6 @@
                             <td>{{item.quantity}}</td>
                             <td>{{item.qtyKg}}</td>
                             <td></td>
-                            <td>{{shippingDetails.shippingWay}}</td>
                             <td></td>
                         </tr>
                     </tbody>

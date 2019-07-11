@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FormulesService } from 'src/app/services/formules.service';
@@ -12,14 +12,14 @@ import { FormulesService } from 'src/app/services/formules.service';
 export class AddFormulePhaseComponent implements OnInit {
   phaseForm: FormGroup;
   phValue: any;
-  currPhase:any;
+  currPhase: any;
   // @Output() formulePhase = new EventEmitter();
   @Output() phaseCreated = new EventEmitter();
-  @Input() formuleBase :any;
-  @Input() phaseInfo :any;
-  
+  @Input() formuleBase: any;
+  @Input() phaseInfo: any;
 
-  constructor(private toastSrv: ToastrService, private formuleService: FormulesService, private fb: FormBuilder, ) { 
+
+  constructor(private toastSrv: ToastrService, private formuleService: FormulesService, private fb: FormBuilder, ) {
 
     this.phaseForm = this.fb.group({
       //set by the user
@@ -28,9 +28,9 @@ export class AddFormulePhaseComponent implements OnInit {
       phaseName: ['', Validators.required],
       phaseInstructions: ['', Validators.required],
       //set by the formule component
-      items: [[], ],
+      items: [[],],
       formuleId: ['', Validators.required],
-      formuleNumber: [null, ],
+      formuleNumber: [null,],
       formuleName: ['', Validators.required],
     });
   }
@@ -43,49 +43,55 @@ export class AddFormulePhaseComponent implements OnInit {
     this.adjustFormData();
   }
 
-  adjustFormData(){
-    if(this.formuleBase.id) this.phaseForm.controls.formuleId.setValue(this.formuleBase.id);
-    if(this.formuleBase._id) this.phaseForm.controls.formuleId.setValue(this.formuleBase._id)
+  adjustFormData() {
+    
+    if (this.formuleBase.id) this.phaseForm.controls.formuleId.setValue(this.formuleBase.id);
+    if (this.formuleBase._id) this.phaseForm.controls.formuleId.setValue(this.formuleBase._id)
     this.phaseForm.controls.formuleNumber.setValue(this.formuleBase.number);
     this.phaseForm.controls.formuleName.setValue(this.formuleBase.name);
-    this.phaseForm.controls.phaseNumber.setValue(this.phaseInfo.phaseNumber);
-    this.phaseForm.controls.phaseName.setValue(this.phaseInfo.phaseName);
-    this.phaseForm.controls.phaseInstructions.setValue(this.phaseInfo.phaseInstructions);
-    if(this.phaseInfo._id!= undefined && this.phaseInfo._id!= null ){
-    this.phaseForm.controls._id.setValue(this.phaseInfo._id);
+    if (this.phaseInfo) {
+      this.phaseForm.controls.phaseNumber.setValue(this.phaseInfo.phaseNumber);
+      this.phaseForm.controls.phaseName.setValue(this.phaseInfo.phaseName);
+      this.phaseForm.controls.phaseInstructions.setValue(this.phaseInfo.phaseInstructions);
+      if (this.phaseInfo._id != undefined && this.phaseInfo._id != null) {
+        this.phaseForm.controls._id.setValue(this.phaseInfo._id);
+      }
     }
   }
   onSubmit() {
-    if(this.phaseForm.value.phaseNumber!= this.phaseInfo.phaseNumber){
-      this.phaseForm.value._id=undefined;
-      this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(newPhase=>{
-        if(typeof(newPhase) != 'string' && newPhase!=null){
-          this.phaseForm.value._id= newPhase._id;
+
+    debugger
+
+    if (this.phaseForm.value.phaseNumber) {
+      this.phaseForm.value._id = undefined;
+      this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(newPhase => {
+        if (typeof (newPhase) != 'string' && newPhase != null) {
+          this.phaseForm.value._id = newPhase._id;
           this.phaseValidation();
 
-        }else{
+        } else {
           // newPhase returns "phase exist in formule"
           this.toastSrv.error(newPhase);
         }
       })
       //NEW PHASE 
-    }else{
+    } else {
       //SAME PHASE
-      if(this.phaseForm.value._id){
+      if (this.phaseForm.value._id) {
         // when loding phase from table we get id 
         this.phaseValidation();
-      }else if(this.phaseForm.value._id == null || this.phaseForm.value._id == undefined ){
+      } else if (this.phaseForm.value._id == null || this.phaseForm.value._id == undefined) {
         // add new Phase 
         this.formuleService.getPhaseByNumberAndFormuleId(this.phaseForm.value.formuleId, this.phaseForm.value.phaseNumber)
-        .subscribe(existingPhase=>{
-          console.log('before')
-          debugger
-          if(existingPhase){
-            this.phaseForm.controls._id.setValue(existingPhase._id);
-            this.phaseValidation();
-  
-          }
-        });
+          .subscribe(existingPhase => {
+            console.log('before')
+            debugger
+            if (existingPhase) {
+              this.phaseForm.controls._id.setValue(existingPhase._id);
+              this.phaseValidation();
+
+            }
+          });
       }
     }
 
@@ -97,22 +103,24 @@ export class AddFormulePhaseComponent implements OnInit {
 
   }
 
-  phaseValidation(){
-    if(this.phaseForm.valid){
-        this.phaseCreated.emit(this.phaseForm.value);
-    }else{
-      this.toastSrv.error("Please fill all fields");
-    }
+  phaseValidation() {
+    debugger;
+    this.phaseCreated.emit(this.phaseForm.value);
+    // if (this.phaseForm.valid) {
+    //   this.phaseCreated.emit(this.phaseForm.value);
+    // } else {
+    //   this.toastSrv.error("Please fill all fields");
+    // }
   }
 
-  emitPhaseAdded(){
+  emitPhaseAdded() {
     // const newPhaseAdded = this.phaseForm.value;
     // this.formulePhase.emit(newPhaseAdded);
-    let newPhase= this.phaseForm.value;
+    let newPhase = this.phaseForm.value;
     this.phaseCreated.emit(newPhase);
 
   }
-  deletePhase(){
-    
+  deletePhase() {
+
   }
 }
