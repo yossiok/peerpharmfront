@@ -17,9 +17,12 @@ import { BarcodePrintService } from "./../../../services/barcodePrint.service";
 export class BarcodePrintComponent implements OnInit {
   @ViewChild("print-section") printSection: ElementRef;
   @ViewChild("otherValue") otherValue: ElementRef;
+  @ViewChild('fromDateStr') fromDateStr: ElementRef;
+  @ViewChild('toDateStr') toDateStr: ElementRef;
 
   today: any;
   scheduleData: any;
+  scheduleDataCopy: any;
   public addScheduleForm: FormGroup;
   public printBarcodeForm: FormGroup;
   schedLine = new Schedule();
@@ -123,10 +126,25 @@ export class BarcodePrintComponent implements OnInit {
     });
   }
 
+  dateChange(){
+    debugger
+    if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
+
+      this.scheduleService.getAllSchedulePrintByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
+        this.scheduleData = data;
+        this.scheduleDataCopy = data;
+      })
+    } else {
+      this.getAllSchedule();
+    }
+  
+  }
+
   getAllSchedule() {
     debugger;
     this.scheduleService.getSchedule().subscribe(res => {
       this.scheduleData = res;
+      this.scheduleDataCopy = res;
    
     });
   }

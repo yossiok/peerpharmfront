@@ -1,169 +1,198 @@
+<div (click)='setType("powder")' class="navtab">אבקות</div>
+<div (click)='setType("wet")' class="navtab">רטוב</div>
+<div (click)='setType("lipstick")' class="navtab">אודם</div>
 
-<input  type ='date' #date [(ngModel)]='today' (change)="schedDateChanged(date.value)">
 
 
-<table class='table table-fixed'>
-    <thead class='bg-info text-white'  >
+<table *ngIf="tableType=='powder'" class='table'>
+  <thead class='tableHeader  text-center text-white'>
+
+    <tr>
+      <th>#</th>
+      <th>Item Type</th>
+      <th>Powder Name</th>
+      <th>Powder Production(KG)</th>
+      <th>Push To Godets </th>
+      <th>Packing - Client Demand</th>
+      <th>Production Date</th>
+      <th>Printing</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tr>
+    <td></td>
+  <td></td>
+    <td>
+      <select class="pdrInput" [(ngModel)]="makeup.itemName">
+        <option value="Pudra">פודרה</option>
+        <option value="Somek">סומק</option>
+        <option value="Tslalit">צללית</option>
+        <option value="Shimmer">שימר</option>
+      </select>
+    </td>
+    <td>
+      <input class="pdrInput" [(ngModel)]="makeup.production" placeholder="Powder Production (kg)" type="number" />
+    </td>
+    <td>
+      <input class="pdrInput" [(ngModel)]="makeup.pushToGodets" placeholder="Push to godets (units)" type="number" />
+    </td>
+    <td>
+      <input class="pdrInput" [(ngModel)]="makeup.packingClient" placeholder="Packing by client demand" type="text" />
+    </td>
+    <td>
+      <input class="pdrInput" [(ngModel)]="makeup.productionDate" type="date" />
+    </td>
+    <td>
+      <input class="pdrInput" [(ngModel)]="makeup.printing" type="text" />
+    </td>
+
+
+
+    <td class="printlessTd">
+      <button style="cursor: pointer;" class="addBtn pdrInput btn btn-info" (click)="addNewPowder()">Add</button><br />
+    </td>
+  </tr>
+
+  <tbody id="table_body">
+    <tr *ngFor="let powder of powdersData; let i = index"
+      style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+
+      <td>{{i+1}}</td>
+      <td>{{powder.itemType}}</td>
+      <td>{{powder.itemName}}</td>
+      <td>{{powder.production}} KG</td>
+      <td>{{powder.pushToGodets}} Units</td>
+      <td>{{powder.packingClient}}</td>
+      <td>{{powder.productionDate | date: "dd/MM/yyyy"}}</td>
+      <td>{{powder.printing}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Wet Table Start Here  -->
+
+<table *ngIf="tableType=='wet'" class='table'>
+  <thead class='tableHeader  text-center text-white'>
+
+    <tr>
+      <th>#</th>
+      <th>Item Type</th>
+      <th>Item Name</th>
+      <th>Production (KG)</th>
+      <th>Production Date</th>
+
+      <th></th>
+    </tr>
+  </thead>
+
+  <tr>
+      <td></td>
+    <td></td>
+    <td>
+      <select class="pdrInput" [(ngModel)]="makeup.itemName">
+        <option value="Makeup">מייק-אפ</option>
+        <option value="Concealer">קונסילרים</option>
+        <option value="Lip-Gloss">ליפגלוס</option>
+        <option value="Liquid shimmer">שימר נוזלי</option>
+        <option value="Eyeliner-jell">אייליינר ג'ל</option>
+      </select>
+    </td>
+    <td>
+      <input class="pdrInput" [(ngModel)]="makeup.production" placeholder="Production (kg)" type="number" />
+    </td>
+    <td>
+      <input class="pdrInput" [(ngModel)]="makeup.productionDate"  type="date" />
+    </td>
+    
+
+    <td class="printlessTd">
+      <button style="cursor: pointer;" class="addBtn pdrInput btn btn-info" (click)="addWetItem()">Add</button><br />
+    </td>
+
+  </tr>
+
+
+  <tbody id="table_body">
+    <tr *ngFor="let item of wetItemsData; let i = index" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+      
+      <td>{{i+1}}</td>
+      <td>{{item.itemType}}</td>
+      <td>{{item.itemName}}</td>
+      <td>{{item.production}}</td>
+      <td>{{item.productionDate | date: "dd/MM/yyyy"}}</td>
+      
+
+      <td></td>
+
+
+    </tr>
+  </tbody>
+</table>
+
+<!-- lipstick table starts here  -->
+
+<table *ngIf="tableType=='lipstick'" class='table'>
+    <thead class='tableHeader  text-center text-white'>
+  
       <tr>
-        <th style="width:3%;"></th>
-        <!-- <th style="width:3%;">
-            <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">
-        </th> -->
-        <th style="padding:5px">Order Number</th>
-        <th style="width:6%; padding:5px">Item Number</th>
-        <th style="width:15%; padding:5px">Item Name</th>
-        <th style="width:15%; padding:5px">Item Important Remarks</th>
-        <th style="padding:5px">Units</th>
-        <th style="padding:5px">Date</th>
-        <th style="padding:5px">Quantity (Kg)</th>
-        <th style="padding:5px">Quantity Produced (Kg)</th>
-        <th style="padding:5px">Batch</th>
-        <th style="width:10%; padding:5px">Reamrks</th>
-        <th style="width:5%;"></th>
-        <th style="width:5%;"></th>
+        
+        <th>#</th>
+        <th>Item Type</th>
+        <th>Item Name</th>
+        <th>Production (KG)</th>
+        <th>Tray</th>
+        <th>Production Date</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
-    <tbody class='table-hover'>
-        <!-- 
-    orderN: String,
-    itemN: String,
-    mkpType: String,
-    productName: String,
-    material: String,
-    materialNumber: String,
-    baseSubstance: String,
-    //itemDetails
-    name: String,
-    subName: String,
-    discriptionK: String,
-    proRemarks: String,
-    impRemarks: String,
-    netWeightK: Number,
-    costumer: String,
-    costumerId: String,
-    qty: Number,
-    qtyWeightKg: Number,
-    qtyProduced: Number,
-    qtyProducedWeightKg: Number,
-    batch: String,    
-    date: Date,
-    dateRdy: Date,
-    marks: String,
-    status: String,
-    setBy: String,
-         -->
-      <tr *ngFor="let sched of scheduleData; let i = index" style="height: 10%;" [style.background-color]="sched.color" (blur)="saveEdit(false, '')" >
-            <td style="width:3%;">{{i+1}}</td>
-            <td (click)="edit('')" >
-                {{order.orderNumber}}
-            </td>
-            <td style="width:6%;" (click)="edit(sched._id)">{{sched.itemN}}</td>      
-            <td style="width:15%;" (click)="edit(sched._id)">{{sched.productName}}</td>    
-            <td style="width:10%; color: red;" (click)="edit(sched._id)">{{sched.impRemarks}}</td>    
-            <td  (click)="edit(sched._id)">{{sched.qty}}</td>    
-            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.date}}</td>
-            <td (click)="edit(sched._id)">{{sched.qtyWeightKg}}</td>
-            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.qtyProducedWeightKg}}</td>
-            <td *ngIf="sched._id===EditRowId">
-                <input #schedLineKgProduced type='number' [value]="sched.qtyProducedWeightKg" >
-            </td>
-      
-            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.batch}}</td>
-            <td style="width:15%;" *ngIf="sched._id===EditRowId">
-              <input #schedLineBatch type='text' [value]="sched.batch" style='width:170px'>
-            </td>
-
-            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.marks}}</td>
-            <td *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.status}}</td>
   
-            <td style="width:15%;" *ngIf="sched._id===EditRowId">
-              <input #orderRemarks type='text' [value]="sched.orderRemarks" style='width:170px'>
-            </td>
-            <td style="width:15%;" *ngIf="sched._id!==EditRowId" (click)="edit(sched._id)">{{sched.schedRemarks}}</td>
+    <tr>
+        <td></td>
+      <td></td>
+      <td>
+        <select class="pdrInput" [(ngModel)]="makeup.itemName">
+          <option value="lipstick">אודם</option>
+        </select>
+      </td>
+      <td>
+        <input class="pdrInput" [(ngModel)]="makeup.production" placeholder="Production (kg)" type="number" />
+      </td>
+      <td>
+        <input class="pdrInput" [(ngModel)]="makeup.tray" placeholder="הכנה בתבנית" type="text" />
+      </td>
+      <td>
+        <input class="pdrInput" [(ngModel)]="makeup.packing" type="number" />
+      </td>
+      <td>
+        <input class="pdrInput" [(ngModel)]="makeup.productionDate"  type="date" />
+      </td>
       
-            <td style="width: 5%"></td>
-            <td style="width: 5%" > 
-              <!--<img *ngIf="sched._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(sched)">
-              <img *ngIf="sched._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, sched._id)">
-              <img *ngIf="sched._id===EditRowId" src='/assets/images/update2.png' style='width:30px; cursor: pointer' (click)="saveEdit()">-->
-              <i class="ti-trash text-danger  m-r-10" *ngIf="sched._id!==EditRowId"  (click)="deleteOrder(sched)" style="cursor:pointer" ></i>&nbsp;
-              <i class="ti-check text-success m-r-10" *ngIf="sched._id!==EditRowId"  (click)="saveEdit(true, sched._id)" style="cursor:pointer" ></i>
-              <i class="ti-save text-success m-r-10" *ngIf="sched._id===EditRowId"  (click)="saveEdit(false, sched._id)" style="cursor:pointer" ></i>
-           </td>
+  
+      <td class="printlessTd">
+        <button style="cursor: pointer;" class="addBtn pdrInput btn btn-info" (click)="addLipstick()">Add</button><br />
+      </td>
+  
+    </tr>
+  
+  
+    <tbody id="table_body">
+      <tr *ngFor="let lipstick of lipstickData; let i = index" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+        
+        <td>{{i+1}}</td>
+        <td>{{lipstick.itemType}}</td>
+        <td>{{lipstick.itemName}}</td>
+        <td>{{lipstick.production}}</td>
+        <td>{{lipstick.tray}}</td>
+        <td>{{lipstick.packing}}</td>
+        <td>{{lipstick.productionDate | date: "dd/MM/yyyy"}}</td>
+        
+  
+        <td></td>
+  
+  
       </tr>
     </tbody>
   </table>
-
-
-    <!-- <table>
-        <thead class='bg-info text-white'>
-      <tr align='center'>
-          <th><b>P</b></th>
-          <th><b>Order</b></th>
-          <th><b>ItemN</b></th>
-          <th><b>Item Name</b></th>
-          <th><b>Unit/measure</b></th>
-          <th><b>Costumer</b></th>
-          <th><b>Quantity</b></th>
-          <th><b>Quantity Produced</b></th>
-          <th><b>Date</b></th>
-          <th><b>Remarks</b></th>
-          <th></th>
-    <th class='printlessTd'></th>
-      </tr>
-
-      </thead>
-
-      <tr id='inputTr'>
-         <td></td>
-         <td><input   [(ngModel)]="scheduleLine.schedN" #ord  onfocusout="setCostumer()" (focusout)="setOrderDetails(ord.value)" ></td>
-         <td><input   [(ngModel)]="scheduleLine.itemN"  #itm  onfocusout="setItemDetails()"   (focusout)="setItemDetails(itm.value)"></td>
-         <td><input   [(ngModel)]="scheduleLine.productName"   ></td>
-         <td><input   [(ngModel)]="scheduleLine.volume"></td>
-         <td><input   [(ngModel)]="scheduleLine.costumer" ></td>
-         <td><input   [(ngModel)]="scheduleLine.qty" ></td>
-         <td ><input  [(ngModel)]="scheduleLine.qtyProduced" ></td>
-         <td><input type='date' [(ngModel)]="scheduleLine.date"></td>
-         <td class='printlessTd'><textarea rows='1' cols='15' id='input_marks' [(ngModel)]="scheduleLine.marks"></textarea></td>
-
-          <td class='printlessTd'><button class="button" (click)="writeScheduleData()"  style='width:80px'	id='addBtn'>Add</button><br>
-          <button onclick='clearRow()' style='width:80px; background-color:red'>Clear</button>
-          </td>
-    </tr>
-
-    <tbody id="table_body">
-        <tr *ngFor = "let line of scheduleData"  [style.background-color]="line.color">
-
-            <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.positionN}}</td>
-            <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id" ><input #position type='text' [value]="line.positionN"  style='width:50px'></td>
-            <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.orderN}}</td>
-            <td *ngIf="line._id===EditRowId"><input #orderN type='text' [value]="line.orderN"  style='width:50px'></td>
-            <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.itemN}}</td>
-            <td *ngIf="line._id===EditRowId"><input #itemN type='text' [value]="line.itemN"  style='width:50px'></td>
-            <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.productName}}</td>
-            <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.productName"  style='width:50px'></td>
-            <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.volume}}</td>
-            <td *ngIf="line._id===EditRowId"><input #volume type='text' [value]="line.volume"  style='width:50px'></td>
-            <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
-            <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer"  style='width:50px'></td>
-            <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.qty}}</td>
-            <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty"  style='width:50px'></td>
-            <td>{{line.qtyProduced}}</td>
-
-
-            <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id)">{{line.date | date: 'dd/MM/yyyy'}}</td>
-            <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date"  style='width:140px'></td>
-
-
-            <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.marks}}</td>
-            <td *ngIf="line._id===EditRowId"><input #marks type='text' [value]="line.marks"  style='width:50px'></td>
-            <td *ngIf="line._id!==EditRowId">
-                <i class="ti-trash text-danger m-r-10"   (click)="deleteSchedule(line._id, line.itemN)"  *ngIf="line.status!='printed'"></i>&nbsp;
-                <img src='assets/images/mkpDone.png'  (click)='setDone(line._id, line.orderN, line.itemN)' class='btnImg' style='width:30px;height: 30px' *ngIf="line.status!='printed'">
-            </td>
-            <td *ngIf="line._id===EditRowId">
-                <i class="ti-save text-success m-r-10"   (click)="updateSchedule()" *ngIf="line.status!='printed'"></i>
-            </td>
-        </tr>
-    </tbody>
-    </table> -->

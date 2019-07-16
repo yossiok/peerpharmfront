@@ -67,9 +67,12 @@ export class ProcurementOrderItemComponent implements OnInit {
       this.procurementservice.getProcurementOrderItemByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
         this.procurementData = data;
         this.procurementDataCopy = data;
+        this.hasMoreItemsToload = false;
       })
     } else { 
+      
       this.getAllProcurementOrderItem()
+      
     }
   
   }
@@ -103,6 +106,7 @@ export class ProcurementOrderItemComponent implements OnInit {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.procurementData= tempArr;
+         this.hasMoreItemsToload = false;
          
     }else{
       
@@ -138,6 +142,7 @@ export class ProcurementOrderItemComponent implements OnInit {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.procurementData= tempArr;
+         this.hasMoreItemsToload = false;
          
     }else{
       

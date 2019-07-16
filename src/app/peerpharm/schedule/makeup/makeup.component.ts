@@ -4,6 +4,8 @@ import { ItemsService } from 'src/app/services/items.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { MakeupService } from 'src/app/services/makeup.service';
+import { log } from 'util';
 
 @Component({
   selector: 'app-makeup',
@@ -11,229 +13,148 @@ import * as moment from 'moment';
   styleUrls: ['./makeup.component.css']
 })
 export class MakeupComponent implements OnInit {
-  scheduleData:any[];
-  EditRowId:any="";
-  currentType: string = "";
-  buttonColor:string='silver';
-  today: any;
 
-  @ViewChild('position') positionN:ElementRef; 
-  @ViewChild('orderN') orderN:ElementRef; 
-  @ViewChild('itemN') item:ElementRef; 
-  @ViewChild('costumer') costumer:ElementRef; 
-  @ViewChild('productName') productName:ElementRef; 
-  @ViewChild('qty') qty:ElementRef; 
-  @ViewChild('volume') volume:ElementRef; 
-  @ViewChild('aaaa') date:ElementRef; 
-  @ViewChild('marks') marks:ElementRef;
-  @ViewChild('id') id:ElementRef; 
+  powdersData:any[];
+  wetItemsData:any[];
+  lipstickData:any[];
+ 
+  today: any;
+  tableType: String = "powder"
+
+  makeup = {
+    itemType: '',
+    itemName: '',
+    production:'',
+    pushToGodets: '',
+    packingClient: '',
+    printing: '',
+    productionDate:'',
+    tray:'',
+    packing:'',
+  }
+ 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.edit('');
+    
 }
 
-  scheduleLine = {
-    positionN: '',
-    orderN: '',
-    itemN: '',
-    productName: '',
-    volume: '',
-    costumer:'' ,
-    qty: '',
-    qtyProduced:'' ,
-    date: '',
-    dateRdy: '',
-    marks: '',
-    status:'open',
-  }
-  constructor(private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
+  constructor(private makeupService:MakeupService, private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
-    this.today = new Date();
-    this.today = moment(this.today).format("YYYY-MM-DD");
-    // this.getAllOpenMkpSchedule();
-    this.getDailySchedule(this.today); 
-  }
-
-  getAllOpenMkpSchedule(){
+    this.makeup.productionDate = new Date();
+    this.makeup.productionDate = moment(this.makeup.productionDate).format('YYYY-MM-DD');
     
-    this.scheduleService.getOpenMkpSchedule().subscribe(res=>{
-      console.log(res);     
-      this.scheduleData=res;
+    this.getAllPowders();
+    this.getAllWetItems();
+    this.getAllLipsticks();
+
+  }
+
+  setType(type) {
+
+    switch (type) {
+      case 'powder':
+        this.tableType = "powder";
+      
+        break;
+      case 'wet':
+        this.tableType = "wet";
     
-    });
-  }
-  
-  writeScheduleData(){
-    console.log(this.scheduleLine);
-    this.scheduleService.setNewMkpSchedule(this.scheduleLine).subscribe(res=>{
-
-      console.log(res)
-      this.scheduleData.push(res);
-      this.toastSrv.success(this.scheduleLine.itemN ," Added");
-    })
-  }
-
-  dateChanged(date){
-
-    this.scheduleService.getMkpScheduleByDate(date).subscribe(
-      res=>{
-        res.map(sced => {
-          if (sced.qtyProduced!=null && sced.qtyProduced!="" && sced.qtyProduced>0) sced.color = 'Aquamarine'; 
-         });
-        this.scheduleData=res;
-      }
-    )
-  }
-  // dateChanged(date) {
-
-  //   console.log(date);
-  //   this.scheduleService.getScheduleByDate(date).subscribe(res => {
-  //     res.map(sced => {
-  //       if (sced.status == 'filled') sced.color = 'Aquamarine';
-  //       if (sced.status == 'beingFilled') sced.color = 'yellow';
-  //       if (sced.status == 'packed') sced.color = 'orange';
-  //       if (sced.status == 'problem') sced.color = 'red';
-  //       if (sced.status == 'open') sced.color = 'white';
-  //       if(sced.cmptsStatus==null) sced.cmptsStatus='true';
-  //       sced.date3 = moment(sced.date).format("YYYY-MM-DD");
-
-  //       //let pipe = new DatePipe('en-US'); // Use your own locale
-  //       //  sced.date3 = pipe.transform(sced.date, 'short');
-  //     });
-  //     this.scheduleData = res;
-  //   });
-  // }
-
-
-
-  getDailySchedule(dateStr){
-    console.log(dateStr); 
-    let date= new Date(dateStr);    
-    console.log(date); 
-    this.scheduleService.getMkpScheduleByDate(date).subscribe(res=>{
-      console.log(res);     
-       
-      this.scheduleData=res;
-    
-    });
-    
-    // this.scheduleService.getScheduleByDate(today).subscribe(res => {
-    //   res.map(sced => {
-    //     sced.color = 'white';
-    //     if (sced.status == 'filled') sced.color = '#CE90FF';
-    //     if (sced.status == 'beingFilled') sced.color = 'yellow';
-    //     if (sced.status == 'packed') sced.color = 'Aquamarine';
-    //     if (sced.status == 'problem') sced.color = 'red';
-    //     sced.date2 = moment(sced.date).format("DD/MM/YY");
-    //     sced.date3 = moment(sced.date).format("YYYY-MM-DD");
-
-    //   });
-    //   res.map(sced => {
-    //     Object.assign({ isSelected: false }, sced);
-    //   });
-    //   this.scheduleData = res;
-
-    // });
-  }
-
-  schedDateChanged(date) {
-    console.log(date);
-    this.scheduleService.getMkpScheduleByDate(date).subscribe(res => {
-      res.map(sced => {
-        if (sced.status == 'done') sced.color = 'Aquamarine';
-        if (sced.status == 'beingProduced') sced.color = 'yellow';
-        if (sced.status == 'partialDone') sced.color = '#ff7272';
-        if (sced.status == 'new') sced.color = 'white';
-        sced.date = moment(sced.date).format('YYYY-MM-DD');
-      });
-      this.scheduleData = res;
-    });
-  }
-    edit(id) {
-    this.EditRowId = id;
-  }
-  
-  updateSchedule(){
-    console.log(this.date.nativeElement.value);
-    console.log(this.orderN.nativeElement.value);
-    console.log(this.item.nativeElement.value);
-    
-    let scheduleToUpdate={
-      scheduleId:this.id.nativeElement.value,
-      positionN:this.positionN.nativeElement.value,
-      orderN:this.orderN.nativeElement.value,
-      itemN:this.item.nativeElement.value,
-      costumer:this.costumer.nativeElement.value,
-      productName:this.productName.nativeElement.value,
-      volume:this.volume.nativeElement.value,
-      qty:this.qty.nativeElement.value,
-      date:this.date.nativeElement.value,
-      marks:this.marks.nativeElement.value,
-    }
-    console.log(scheduleToUpdate);
-    this.scheduleService.updateMkpSchedule(scheduleToUpdate).subscribe(res=>{
-        console.log(res);
-        this.EditRowId='';
-        this.scheduleData[this.scheduleData.findIndex(sced => sced._id == scheduleToUpdate.scheduleId)] = scheduleToUpdate;
-        this.toastSrv.success("Item " + scheduleToUpdate.itemN, "Updated Successfully");
-    });
-  
-  }
-  
-  setDone(id, orderN, itemN){
-    let today = new Date();
-    today.setHours(2,0,0,0);
-    //var _dt2 = new Date(today);
-    //today = [_dt2.getDate(), _dt2.getMonth() + 1, _dt2.getFullYear()].join('/');
-    var amountPrinted = prompt("Enter Amount Printed", "");
-    if (amountPrinted == null || amountPrinted == "" ) {
-    }else {
-      console.log( " , " + amountPrinted);
-    }
-    var tempItem, tempOrderN, itemRemarks = "";
-    var a = confirm("Fill process is done ?");
-    if (a == true) {
-      let scheduleToUpdate={
-        scheduleId:id,
-        qtyProduced:amountPrinted,
-        dateRdy:today,
-        orderN:orderN,
-        itemN:itemN,
-        status:'done'
-      }
-      console.log(scheduleToUpdate);
-      this.scheduleService.updateMkpDoneSchedule(scheduleToUpdate).subscribe(res=>{
-        console.log(res)
-        this.toastSrv.info("Item " + scheduleToUpdate.itemN, "Is ready");
-        
-      });
+        break;
+      case 'lipstick':
+        this.tableType = "lipstick";
+     
+        break;
     }
   }
+  // Powder Section adding and getting all powders // 
 
-  
-  setItemDetails(itemNumber) {
-    console.log(itemNumber);
-    this.itemSer.getItemData(itemNumber).subscribe(res => {
-       console.log(res[0]);
-       let itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-       this.scheduleLine.productName= itemName;
-       this.scheduleLine.volume= res[0].volumeKey;
+  addNewPowder() { 
+    debugger;
+    this.makeup.itemType = "powder"
+    
+    this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
+      
+      this.powdersData.push(res)
+    })
+
+    this.makeup.itemType=''
+    this.makeup.itemName=''
+    this.makeup.production=''
+    this.makeup.pushToGodets=''
+    this.makeup.packingClient=''
+    this.makeup.printing=''
+    this.makeup.tray=''
+    this.makeup.packing=''
+    
+    
+  }
+
+  getAllPowders() { 
+    debugger;
+    this.makeupService.getAllPowders().subscribe(data =>{
+      this.powdersData = data;
     })
   }
 
-  setOrderDetails(orderNumber){
-    console.log(orderNumber);
-    this.orderSer.getOrderByNumber(orderNumber).subscribe(res=>{
-      let costumer = res[0].costumer;
-      this.scheduleLine.costumer = costumer;
-    })
-  }
+  // end of powder section //
 
-  deleteSchedule(id, itemN){
-    this.scheduleService.deleteMkpSchedule(id).subscribe(res=>{
-      this.toastSrv.error("Item " + itemN , "Deleted")
-      this.scheduleData=this.scheduleData.filter(elem=>elem._id!=id);
+
+  // Wet Section adding and getting all wet items production
+
+  addWetItem() { 
+    debugger;
+    this.makeup.itemType = "Wet"
+    this.makeupService.addWetItemReport(this.makeup).subscribe(res =>{
+      this.wetItemsData.push(res)
     })
-  }
+
+    this.makeup.itemType=''
+    this.makeup.itemName=''
+    this.makeup.production=''
+    this.makeup.pushToGodets=''
+    this.makeup.packingClient=''
+    this.makeup.printing=''
+    this.makeup.tray=''
+    this.makeup.packing=''
+
+   }
+
+getAllWetItems() { 
+  debugger;
+  this.makeupService.getAllWetItems().subscribe(data =>{
+    this.wetItemsData = data;
+  })
+}
+
+// end of wet section // 
+
+
+// Lipstick section adding and getting all items // 
+
+addLipstick() { 
+  debugger;
+  this.makeup.itemType = "Lipstick"
+  this.makeupService.addLipstickItem(this.makeup).subscribe(res =>{
+    this.lipstickData.push(res)
+  })
+
+  this.makeup.itemType=''
+  this.makeup.itemName=''
+  this.makeup.production=''
+  this.makeup.pushToGodets=''
+  this.makeup.packingClient=''
+  this.makeup.printing=''
+  this.makeup.tray=''
+  this.makeup.packing=''
+}
+
+getAllLipsticks() { 
+  debugger;
+  this.makeupService.getAllLipsticks().subscribe(data =>{
+    this.lipstickData = data;
+  })
+}
+
+// end of lipstick section //
 }

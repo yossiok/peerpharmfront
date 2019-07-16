@@ -18,19 +18,19 @@ export class InventoryService {
   private baseUrl = '/';
 
   getAllItemShells():Observable<any> {
-    debugger;
+  
     let url = this.baseUrl + "itemShell";
     return this.http.get(url).pipe(map(reponse => reponse.json())); 
   }
 
   getItemShellsByDate(fromDate, toDate):Observable<any>{
-    debugger;
+ 
     let url = this.baseUrl + "itemShell/byDate?fromDate="+fromDate+"&toDate="+toDate;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   
   getItemShellsMovementsByDate(fromDate, toDate):Observable<any>{
-    debugger;
+   
     let url = this.baseUrl + "itemmovement/byDate?fromDate="+fromDate+"&toDate="+toDate;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -42,7 +42,7 @@ export class InventoryService {
   }
 
   getAllMaterials():Observable<any>{
-    debugger
+    
     let url = this.baseUrl + "material";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -92,6 +92,7 @@ addNewMaterial(materialObj):Observable<any>{
   }
   //get item amounts in Shelfs 
   getAmountOnShelfs(itemNubmer):Observable<any>{  
+    debugger
     let url = this.baseUrl + "itemShell?shelfsItemsAmounts=yes&itemNumber="+itemNubmer;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

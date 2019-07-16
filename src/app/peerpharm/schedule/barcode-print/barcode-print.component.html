@@ -1,5 +1,5 @@
-<strong>Filter By Date:</strong> <input class="searchInput" type="date" #date [(ngModel)]="today" />
-<button class="filterBtn btn btn-info">Filter</button>
+From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
+
 
 <form class="form" [formGroup]="addScheduleForm" (submit)="onSubmit()">
   <table>

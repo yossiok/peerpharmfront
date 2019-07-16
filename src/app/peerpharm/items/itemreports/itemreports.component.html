@@ -20,6 +20,12 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Componen
   From: <input (change)="dateChangeMovements()" #fromDateStr type="date"> To: <input (change)="dateChangeMovements()" #toDateStr type="date">
 </div>
 
+<img *ngIf="tableType=='arrivals'" src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
+  (click)="exportAsXLSX()">
+
+<img *ngIf="tableType=='movements'" src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
+  (click)="exportAsXLSXmovements()">
+
 
     <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
         <div class="loader">Loading More Items...</div>

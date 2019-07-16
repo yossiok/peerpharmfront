@@ -26,6 +26,7 @@ export class ProcurementOrderItemBalanceComponent implements OnInit {
   }
 
   getAllProcurementOrderItemBalance() {
+    debugger
     this.procurementservice.getProcurementOrderItemBalance().subscribe(res => {
       this.procurementData = res;
       this.procurementDataCopy = res;
@@ -81,7 +82,7 @@ export class ProcurementOrderItemBalanceComponent implements OnInit {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.procurementData= tempArr;
-         
+         this.hasMoreItemsToload = false;
     }else{
       
       this.procurementData=this.procurementDataCopy.slice();

@@ -81,6 +81,7 @@ export class ProcurementOrdersComponent implements OnInit {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.procurementData= tempArr;
+         this.hasMoreItemsToload = false;
          
     }else{
       

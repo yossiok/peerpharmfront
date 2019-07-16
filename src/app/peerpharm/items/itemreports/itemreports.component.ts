@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { DataPipeline } from 'aws-sdk/clients/all';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-itemreports',
@@ -22,7 +23,7 @@ export class ItemreportsComponent implements OnInit {
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
 
-  constructor(private inventoryService:InventoryService) { }
+  constructor(private inventoryService:InventoryService, private excelService:ExcelService) { }
 
   ngOnInit() {
     this.getAllItemShells();
@@ -88,6 +89,7 @@ export class ItemreportsComponent implements OnInit {
         });
         
         this.itemsShell = tempArr;
+        this.hasMoreItemsToload = false;
         debugger
       } else {
         this.itemsShell = this.itemsShellCopy.slice();
@@ -108,6 +110,7 @@ export class ItemreportsComponent implements OnInit {
         });
         
         this.itemShellMovements = tempMoveArr;
+        this.hasMoreItemsToload = false;
         debugger
       } else {
         this.itemShellMovements = this.itemShellMovementsCopy.slice();
@@ -124,10 +127,13 @@ export class ItemreportsComponent implements OnInit {
         this.itemsShell = data;
         this.itemsShellCopy = data;
         if(data.length <= 0) {
-          this.hasMoreItemsToload == false
+          this.hasMoreItemsToload = false
           alert("No movements")
         } 
       })
+    } else {
+      this.getAllItemShells();
+      this.hasMoreItemsToload = false
     }
   
   }
@@ -141,12 +147,25 @@ export class ItemreportsComponent implements OnInit {
         this.itemShellMovementsCopy = data;
 
         if(data.length <= 0) {
-          this.hasMoreItemsToload == false
+          this.hasMoreItemsToload = false;
           alert("No movements")
         } 
       })
+    } else {
+      this.getAllitemShellMovemvents();
+      this.hasMoreItemsToload = false;
     }
   
+  }
+
+  exportAsXLSX():void {
+    debugger
+    this.excelService.exportAsExcelFile(this.itemsShell, 'data');
+  }
+
+  exportAsXLSXmovements():void {
+    debugger
+    this.excelService.exportAsExcelFile(this.itemShellMovements, 'data');
   }
 
 

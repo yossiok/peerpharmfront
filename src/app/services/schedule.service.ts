@@ -99,7 +99,11 @@ export class ScheduleService {
     return this.http.post(url, JSON.stringify(sced), this.options).pipe(map(res => res.json()));
   }
 
-
+  getAllSchedulePrintByDate(fromDate, toDate):Observable<any>{
+    debugger
+    let url = this.baseUrl + "schedule/byDate?fromDate="+fromDate+"&toDate="+toDate;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getOpenMkpSchedule() {
     let url = this.baseUrl + "mkpSchedule";
