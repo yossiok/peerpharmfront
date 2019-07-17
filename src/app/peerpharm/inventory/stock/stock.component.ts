@@ -15,6 +15,7 @@ import { ItemsService } from 'src/app/services/items.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Console } from '@angular/core/src/console';
+import { Procurementservice } from 'src/app/services/procurement.service';
 
 
 @Component({
@@ -152,10 +153,11 @@ export class StockComponent implements OnInit {
     alternativeMaterial:"",
 
   }
+  itemExpectedArrivals: any;
 
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+  constructor(private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder, ) {
   }
@@ -164,7 +166,7 @@ export class StockComponent implements OnInit {
 
   //expected Arrivals modal
   async getNewExpectedArrivalsData(outputeEvent) {
-
+    debugger
 
     console.log('getting new updated expected arrivals data')
     console.log(outputeEvent)
@@ -175,6 +177,7 @@ export class StockComponent implements OnInit {
     } else if (outputeEvent == 'stockLineChanged') {
       console.log('this.resCmpt', this.resCmpt)
       await this.inventoryService.getSingleComponentData(this.resCmpt._id).subscribe(res => {
+        debugger
         console.log('res[0]', res[0])
         // this.componentsUnFiltered.filter(c=>{
         //   if(c._id==res[0]._id){
@@ -183,8 +186,10 @@ export class StockComponent implements OnInit {
         //   }  
         //  });
         this.components.forEach(c => {
+          debugger
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
+
           }
         });
         this.componentsUnFiltered.forEach(c => {
@@ -212,7 +217,7 @@ export class StockComponent implements OnInit {
     await this.getUserAllowedWH();
     this.getAllComponents();
     // this.exportMovementsAsXLSX();
-
+    this.getAllExpectedArrivalsData();
 
   }
 
@@ -433,6 +438,14 @@ export class StockComponent implements OnInit {
   //     this.materials = data;
   //   })
   // }
+
+  getAllExpectedArrivalsData(){
+    this.procuretServ.getAllExpectedArrivals().subscribe(res=>{
+     
+        this.itemExpectedArrivals=res;
+      
+    });
+  }
 
   getAllCmptTypesAndCategories() {
     this.cmptTypeList = [];
@@ -1289,6 +1302,7 @@ export class StockComponent implements OnInit {
   }
 
   procurementRecommendations(filterType) {
+    debugger
     this.components = this.componentsUnFiltered;
     if (filterType == "minimumStock") {
       if (this.stockType != "product") {

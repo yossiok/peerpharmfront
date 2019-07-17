@@ -50,13 +50,12 @@
 
 
     <td class="printlessTd">
-      <button style="cursor: pointer;" class="addBtn pdrInput btn btn-info" (click)="addNewPowder()">Add</button><br />
+      <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="addNewPowder()">Add</button><br />
     </td>
   </tr>
 
   <tbody id="table_body">
-    <tr *ngFor="let powder of powdersData; let i = index"
-      style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+    <tr class="tableTr" *ngFor="let powder of powdersData; let i = index">
 
       <td>{{i+1}}</td>
       <td>{{powder.itemType}}</td>
@@ -108,14 +107,14 @@
     
 
     <td class="printlessTd">
-      <button style="cursor: pointer;" class="addBtn pdrInput btn btn-info" (click)="addWetItem()">Add</button><br />
+      <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="addWetItem()">Add</button><br />
     </td>
 
   </tr>
 
 
   <tbody id="table_body">
-    <tr *ngFor="let item of wetItemsData; let i = index" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+    <tr class="tableTr" *ngFor="let item of wetItemsData; let i = index">
       
       <td>{{i+1}}</td>
       <td>{{item.itemType}}</td>
@@ -143,6 +142,7 @@
         <th>Item Name</th>
         <th>Production (KG)</th>
         <th>Tray</th>
+        <th>Packing</th>
         <th>Production Date</th>
         <th></th>
         <th></th>
@@ -150,7 +150,7 @@
     </thead>
   
     <tr>
-        <td></td>
+       <td></td>
       <td></td>
       <td>
         <select class="pdrInput" [(ngModel)]="makeup.itemName">
@@ -172,14 +172,14 @@
       
   
       <td class="printlessTd">
-        <button style="cursor: pointer;" class="addBtn pdrInput btn btn-info" (click)="addLipstick()">Add</button><br />
+        <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="addLipstick()">Add</button><br />
       </td>
   
     </tr>
   
   
     <tbody id="table_body">
-      <tr *ngFor="let lipstick of lipstickData; let i = index" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+      <tr class="tableTr" *ngFor="let lipstick of lipstickData; let i = index">
         
         <td>{{i+1}}</td>
         <td>{{lipstick.itemType}}</td>

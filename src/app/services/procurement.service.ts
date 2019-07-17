@@ -61,6 +61,13 @@ export class Procurementservice {
 
   /*EXPECTED ARRIVALS OF PROCURMENT ITEMS*/
   
+  getAllExpectedArrivals(): Observable<any> {
+    debugger
+    let url = this.baseUrl + 'expectedArrivalController/all';
+    return this.http.get(url).pipe( map(reponse => reponse.json()));
+  }
+
+
   getItemExpectedArrivals(componentN): Observable<any> {
     let url = this.baseUrl + 'expectedArrivalController?componentN=' +componentN;
     return this.http.get(url).pipe( map(reponse => reponse.json()));

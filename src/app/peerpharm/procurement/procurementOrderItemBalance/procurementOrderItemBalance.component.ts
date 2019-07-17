@@ -30,12 +30,13 @@ export class ProcurementOrderItemBalanceComponent implements OnInit {
     this.procurementservice.getProcurementOrderItemBalance().subscribe(res => {
       this.procurementData = res;
       this.procurementDataCopy = res;
-      console.log(this.procurementData);
+    
 
       if(res.length == res.length) {
-        this.hasMoreItemsToload == false;
+        this.hasMoreItemsToload = false;
       }
     });
+   
   }
 
   

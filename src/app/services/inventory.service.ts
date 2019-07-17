@@ -16,6 +16,7 @@ export class InventoryService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = '/';
+  
 
   getAllItemShells():Observable<any> {
   
@@ -237,9 +238,11 @@ getOldProcurementAmount():Observable<any>{
 /* SUPPLIERS */
 
 getAllSuppliers():Observable<any>{
-  let url = this.baseUrl + "supplier"
+  debugger
+  let url = this.baseUrl + "supplier/getsuppliers"
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+
 
 
 

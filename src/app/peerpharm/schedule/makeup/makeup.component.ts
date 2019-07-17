@@ -41,8 +41,8 @@ export class MakeupComponent implements OnInit {
   constructor(private makeupService:MakeupService, private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
-    this.makeup.productionDate = new Date();
-    this.makeup.productionDate = moment(this.makeup.productionDate).format('YYYY-MM-DD');
+
+    this.makeup.productionDate = moment(new Date()).format('YYYY-MM-DD');
     
     this.getAllPowders();
     this.getAllWetItems();

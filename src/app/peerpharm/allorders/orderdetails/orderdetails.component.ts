@@ -16,6 +16,7 @@ import { PlateService } from 'src/app/services/plate.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import {ExcelService} from '../../../services/excel.service';
 import { AuthService } from '../../../services/auth.service';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 
 
@@ -54,7 +55,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
 
-
+  stockItems: any;
   ordersItems;
   ordersItemsCopy;
   item: any;
@@ -133,7 +134,7 @@ export class OrderdetailsComponent implements OnInit {
     console.log(event);
     this.edit('');
 }
-  constructor(private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
+  constructor(private inventoryService: InventoryService,private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, 
      private costumerSrevice: CostumersService, private excelService:ExcelService, private authService: AuthService ) { }
 
@@ -144,6 +145,7 @@ export class OrderdetailsComponent implements OnInit {
    }
 
   ngOnInit() {
+  
     console.log('hi');
     this.orderService.openOrdersValidate.subscribe(res=>{
       this.number = this.route.snapshot.paramMap.get('id');
@@ -220,6 +222,8 @@ export class OrderdetailsComponent implements OnInit {
     });
 
   }
+
+
 
   addItemOrder() {
      
@@ -495,6 +499,11 @@ editBatch(batch){
     } else{
       this.EditRowId = '';
     }
+  }
+
+  printStuff() { 
+    console.log(this.bottleList);
+    console.log(this.capList)
   }
 
   saveEdit() {
