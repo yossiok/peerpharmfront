@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { MakeupService } from 'src/app/services/makeup.service';
 import { log } from 'util';
 
+
 @Component({
   selector: 'app-makeup',
   templateUrl: './makeup.component.html',
@@ -17,6 +18,8 @@ export class MakeupComponent implements OnInit {
   powdersData:any[];
   wetItemsData:any[];
   lipstickData:any[];
+  orders:any[];
+  ordersCopy:any[];
  
   today: any;
   tableType: String = "powder"
@@ -38,17 +41,36 @@ export class MakeupComponent implements OnInit {
     
 }
 
-  constructor(private makeupService:MakeupService, private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
+  constructor(private ordersService:OrdersService,private makeupService:MakeupService, private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
+    this.today = new Date();
+    this.today = moment(this.today).format("DD/MM/YYYY");
 
     this.makeup.productionDate = moment(new Date()).format('YYYY-MM-DD');
     
     this.getAllPowders();
     this.getAllWetItems();
     this.getAllLipsticks();
+    this.getAllOrdersByType();
 
   }
+
+  getAllOrdersByType() {
+    debugger
+    this.ordersService.getOrderByType()
+      .subscribe(orders => {
+        orders.map(order => {
+          order.color='white'
+          if(this.today>order.deliveryDate){
+            order.color = '#ff9999';
+          }
+        })
+        this.orders = orders;
+        this.ordersCopy = orders;
+      })
+  }
+
 
   setType(type) {
 
@@ -70,7 +92,7 @@ export class MakeupComponent implements OnInit {
   // Powder Section adding and getting all powders // 
 
   addNewPowder() { 
-    debugger;
+    
     this.makeup.itemType = "powder"
     
     this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
@@ -91,7 +113,7 @@ export class MakeupComponent implements OnInit {
   }
 
   getAllPowders() { 
-    debugger;
+    
     this.makeupService.getAllPowders().subscribe(data =>{
       this.powdersData = data;
     })
@@ -103,7 +125,7 @@ export class MakeupComponent implements OnInit {
   // Wet Section adding and getting all wet items production
 
   addWetItem() { 
-    debugger;
+    
     this.makeup.itemType = "Wet"
     this.makeupService.addWetItemReport(this.makeup).subscribe(res =>{
       this.wetItemsData.push(res)
@@ -121,7 +143,7 @@ export class MakeupComponent implements OnInit {
    }
 
 getAllWetItems() { 
-  debugger;
+  
   this.makeupService.getAllWetItems().subscribe(data =>{
     this.wetItemsData = data;
   })
@@ -133,7 +155,7 @@ getAllWetItems() {
 // Lipstick section adding and getting all items // 
 
 addLipstick() { 
-  debugger;
+  
   this.makeup.itemType = "Lipstick"
   this.makeupService.addLipstickItem(this.makeup).subscribe(res =>{
     this.lipstickData.push(res)
@@ -150,7 +172,6 @@ addLipstick() {
 }
 
 getAllLipsticks() { 
-  debugger;
   this.makeupService.getAllLipsticks().subscribe(data =>{
     this.lipstickData = data;
   })

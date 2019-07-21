@@ -23,6 +23,7 @@ import { ItemsService } from 'src/app/services/items.service';
     @ViewChild('orderN') orderN:ElementRef; 
     @ViewChild('item') item:ElementRef; 
     @ViewChild('costumer') costumer:ElementRef; 
+    @ViewChild('scheduleDate') scheduleDate:ElementRef; 
     @ViewChild('cmptN') cmptN:ElementRef; 
     @ViewChild('cmptName') cmptName:ElementRef; 
     @ViewChild('color') color:ElementRef; 
@@ -57,6 +58,7 @@ import { ItemsService } from 'src/app/services/items.service';
       qty:'',
       qtyRdy:'',
       date:'' ,
+      scheduleDate:'',
       dateRdy:'',
       marks:'',
       mkp:'',
@@ -71,7 +73,8 @@ import { ItemsService } from 'src/app/services/items.service';
     openImgModal:Boolean= false;
     constructor(private scheduleService:ScheduleService , private toastSrv: ToastrService , private itemsService: ItemsService) { }
   
-    
+ 
+
     ngOnInit() {
       this.today= new Date();
       this.today = moment(this.today).format("YYYY-MM-DD");
@@ -169,6 +172,7 @@ import { ItemsService } from 'src/app/services/items.service';
         itemN:this.item.nativeElement.value,
         itemName:line.value,
         costumer:this.costumer.nativeElement.value,
+        scheduleDate:this.scheduleDate.nativeElement.value,
         cmptName:this.cmptName.nativeElement.value,
         cmptN:this.cmptN.nativeElement.value,
         color:this.color.nativeElement.value,
@@ -193,6 +197,7 @@ import { ItemsService } from 'src/app/services/items.service';
                   sch.cmptName= scheduleToUpdate.cmptName;
                   sch.color= scheduleToUpdate.color;
                   sch.costumer= scheduleToUpdate.costumer;
+                  sch.scheduleDate= scheduleToUpdate.scheduleDate;
                   sch.date= scheduleToUpdate.date;
                   sch.itemN= scheduleToUpdate.itemN;
                   sch.itemName= scheduleToUpdate.itemName;

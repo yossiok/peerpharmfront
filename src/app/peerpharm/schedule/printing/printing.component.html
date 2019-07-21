@@ -13,13 +13,14 @@
 </div>
 
 
-<table class='table'>
+<table style="font-size: 12px;" class='table table-sm'>
   <thead class='tableHeader text-white'>
     <tr align='center'>
       <th><b>P</b></th>
       <th><b>Order</b></th>
       <th><b>Item Number</b></th>
       <th><b>Item Image</b></th>
+      <th><b>Schedule Date</b></th>
       <th><b>Costumer</b></th>
       <th>Cmpt N</th>
       <th>Cmpt Name</th>
@@ -38,14 +39,15 @@
 
   <tr id='inputTr' (click)="EditRowId=''">
     <td></td>
-    <td><input [(ngModel)]="scheduleLine.orderN" style='width:60px' onfocusout="setCostumer()"></td>
-    <td><input [(ngModel)]="scheduleLine.itemN" style='width:90px' onfocusout="setItemDetails()"></td>
-    <td><input [(ngModel)]="scheduleLine.itemImg" style='width:90px' disabled></td>
+    <td><input [(ngModel)]="scheduleLine.orderN" style='width:50px' onfocusout="setCostumer()"></td>
+    <td><input style="text-align: center;" [(ngModel)]="scheduleLine.itemN" style='width:60px' onfocusout="setItemDetails()"></td>
+    <td><input [(ngModel)]="scheduleLine.itemImg" style='width:40px' disabled></td>
+    <td><input type="date" [(ngModel)]="scheduleLine.scheduleDate" style='width:120px'></td>
     <td><input [(ngModel)]="scheduleLine.costumer" style='width:80px'></td>
     <td><input [(ngModel)]="scheduleLine.cmptN" style='width:80px'></td>
-    <td><input [(ngModel)]="scheduleLine.cmptName" style='width:110px'></td>
-    <td><input [(ngModel)]="scheduleLine.color" style='width:110px'></td>
-    <td ><input [(ngModel)]="scheduleLine.qty" style='width:90px'></td>
+    <td><input [(ngModel)]="scheduleLine.cmptName" style='width:100px'></td>
+    <td><input [(ngModel)]="scheduleLine.color" style='width:100px'></td>
+    <td ><input [(ngModel)]="scheduleLine.qty" style='width:80px'></td>
     <td><input type='date' style='width:140px;' [(ngModel)]="scheduleLine.date"></td>
     <td>
       <select [(ngModel)]="scheduleLine.nextStation">
@@ -67,8 +69,8 @@
     </td>
   </tr>
 
-  <tbody id="table_body">
-    <tr *ngFor="let line of scheduleData; let i = index" [style.background-color]="line.trColor">
+  <tbody  id="table_body">
+    <tr style="font-size: 12px;" style="text-align: center;" *ngFor="let line of scheduleData; let i = index" [style.background-color]="line.trColor">
 
       <td>{{i+1}}</td>
       <!-- <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.positionN}}</td> -->
@@ -92,6 +94,10 @@
         <input #itemImg type='text' value="" style='width:50px' disabled>
       </td>
 
+      <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.scheduleDate | date: 'dd/MM/yyyy'}}</td>
+      <td *ngIf="line._id===EditRowId"><input #scheduleDate type='date' [value]="line.scheduleDate" style='width:140px'></td>
+      
+
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
       <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer" style='width:50px' disabled></td>
       
@@ -99,7 +105,7 @@
       <td *ngIf="line._id===EditRowId"><input #cmptN type='text' [value]="line.cmptN" style='width:110px'></td>
       
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.cmptName}}</td>
-      <td *ngIf="line._id===EditRowId"><input #cmptName type='text' [value]="line.cmptName" style='width:110px'></td>
+      <td *ngIf="line._id===EditRowId"><input #cmptName type='text' [value]="line.cmptName"  style='width:150px; text-align: center;'></td>
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.color}}</td>
       <td *ngIf="line._id===EditRowId"><input #color type='text' [value]="line.color" style='width:110px'></td>
 

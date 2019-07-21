@@ -263,6 +263,7 @@ debugger
   }
 
   filterSuppliers(input){
+    debugger
     if(input !=""){
       let inputVal= input.toLowerCase();
       this.suppliersList= this.suppliers.filter(sup=> {
