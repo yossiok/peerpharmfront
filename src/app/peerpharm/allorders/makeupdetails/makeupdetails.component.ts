@@ -265,7 +265,6 @@ export class MakeupdetailsComponent implements OnInit {
 GetAll() { 
    
   if(this.makeup.itemNumber != "") {
-  this.makeup.itemType = "Make Up"
   
   this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
     

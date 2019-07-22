@@ -390,9 +390,9 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
         [attr.data-index]="i"
         class="barcodeTbl"
         dir="ltr"
-        [style.margin.px]="0"
-        [style.width.px]="360"
-        [style.max-height.px]="360"
+        [style.margin.px]="3"
+        [style.width.px]="400"
+        [style.max-height.px]="400"
         [style.font-size.px]="24"
         [style.font-family]="Arial"
         [style.border.px]="0"
@@ -409,7 +409,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
           <td *ngIf="showItemNumber">Item Number: {{ schedLine.item }}</td>
         </tr>
         <tr>
-          <td><span *ngIf="showVolume">{{ volumeK }}</span><span style="margin-left:10px;" *ngIf="showPcsCarton">{{ pcsCarton }}</span></td>
+          <td><span *ngIf="showVolume">{{ volumeK }}</span><span style="margin-left:10px;" *ngIf="showPcsCarton">{{ printBarkod.pcsCtn }}</span></td>
         </tr>
         <tr>
           <td><span *ngIf="showBatch">{{ printBarkod.batch }}</span> <span style="margin-left:10px;" *ngIf="showExp">Exp: {{ printBarkod.exp }}</span></td>
@@ -723,7 +723,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
         [style.margin.px]="0"
         [style.width.px]="450"
         [style.max-height.px]="360"
-        [style.font-size.px]="20"
+        [style.font-size.px]="16"
         [style.font-family]="Arial"
         [style.border.px]="0"
         [attr.id]="create_table"
@@ -743,7 +743,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
         <tr>
           <td>
             <span *ngIf="showBatch">Delivery Address:{{ printBarkod.batch }}</span><br>
-            <span style="margin-left:10px;" *ngIf="showExp">Delivery Address: {{ printBarkod.date }}</span>  
+            <span style="margin-left:10px;" *ngIf="showExp"> {{ printBarkod.date }}</span>  
             <span>
                 <ngx-barcode
                   *ngFor="let bcValue of printBarcodeValues"

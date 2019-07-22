@@ -193,17 +193,31 @@
               <td>
                 <span>Name:</span>
                   <select [(ngModel)]="makeup.itemName">
-                    <option value="Pudra">פודרה - пудра</option>
-                    <option value="Somek">סומק- румянa</option>
-                    <option value="Tslalit">צללית - тени</option>
-                    <option value="Shimmer">שימר - шиммер</option>
+                      <optgroup label="Powders - אבקות">
+                          <option value="Pudra">פודרה - пудра</option>
+                          <option value="Somek">סומק- румянa</option>
+                          <option value="Tslalit">צללית - тени</option>
+                          <option value="Shimmer">שימר - шиммер</option>
+                      </optgroup>
+                      <optgroup label="Fluid - נוזלי">
+                          <option value="Makeup">מייק-אפ - макияж</option>
+                          <option value="Concealer">קונסילרים - маскирующих</option>
+                          <option value="Lip-Gloss">ליפגלוס - блеск для губ</option>
+                          <option value="Liquid shimmer">שימר נוזלי - жидкий шиммер </option>
+                          <option value="Eyeliner-gel">אייליינר ג'ל - подводка для глаз гель</option>
+                      </optgroup>
+                      <optgroup label="Lipstick = אודם">
+                          <option value="Eyeliner-gel">אייליינר ג'ל - подводка для глаз гель</option>
+                          <option value="Eyebrow-gel">ג'ל גבות - Гель для бровей</option>
+                      </optgroup>
+                  
                   </select>
                 </td>
                 <td>
-                    <input [(ngModel)]="makeup.production" placeholder="Powder Production (kg)" type="number" />
+                    <input [(ngModel)]="makeup.production" placeholder="Production (kg)" type="number" />
                   </td>
                   <td>
-                    <input [(ngModel)]="makeup.pushToGodets" placeholder="Push to godets (units)" type="number" />
+                    <input [(ngModel)]="makeup.pushToGodets" placeholder="Units" type="number" />
                   </td>
                   <td>
                     <span>Packing:</span>
@@ -225,9 +239,9 @@
                   </td>
                   
           </tr>
-          <tr *ngFor="let powder of powdersData; let i = index">
+          <tr *ngFor="let powder of powdersData;">
 
-              <td>{{i+1}}</td>
+              
               <td>{{powder.itemType}}</td>
               <td>{{powder.itemName}}</td>
               <td>{{powder.production}} KG</td>

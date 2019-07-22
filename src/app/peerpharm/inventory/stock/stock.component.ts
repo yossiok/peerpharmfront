@@ -405,14 +405,14 @@ export class StockComponent implements OnInit {
       this.componentsUnFiltered = components
       this.components = components
   
-      this.components.forEach(c => {
-        debugger
-         let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
+    //   this.components.forEach(c => {
+    //     debugger
+    //      let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
          
  
-         c.remarks= element.remarks;
+    //      c.remarks= element.remarks;
  
-     });
+    //  });
       //why are we using set time out and not async await??
       setTimeout(() => {
 
