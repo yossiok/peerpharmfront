@@ -1,7 +1,7 @@
 
-<div (click)='setType("arrivals")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+<div (click)='setType("arrivals")'   class="navtab"
 style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Components Arrivals</div>
-<div (click)='setType("movements")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+<div (click)='setType("movements")'   class="navtab"
 style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Components Movements</div>
 
 <div *ngIf="tableType=='arrivals'"  class="col-3">

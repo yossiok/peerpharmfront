@@ -398,12 +398,12 @@ export class StockComponent implements OnInit {
   // }
 
   getAllComponents() {
-    debugger
+    
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
 
-      this.componentsUnFiltered = components
-      this.components = components
+      this.componentsUnFiltered = components.splice(0)
+      this.components = components.splice(0)
   
     //   this.components.forEach(c => {
     //     debugger
