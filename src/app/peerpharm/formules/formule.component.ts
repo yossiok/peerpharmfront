@@ -49,11 +49,12 @@ export class FormuleComponent implements AfterViewInit {
         this.formuleService.getFormuleDataById(data.id).subscribe(formuleData => {
           debugger
           //this.formule= formuledata 
+          this.LoadingFormule(formuleData);
           this.newFormuleBasic = formuleData;
-          this.formuleService.getPhasesByFormuleId(data.id).subscribe(phases => {
-            debugger;
-            //this.phases= phases
-          })
+          // this.formuleService.getPhasesByFormuleId(data.id).subscribe(phases => {
+          //   debugger;
+          //   this.phases= phases
+          // })
         })
       }
     })

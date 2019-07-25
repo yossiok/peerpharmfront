@@ -214,6 +214,7 @@ export class OrdersComponent implements OnInit {
 
 
   deleteOrder(order) {
+    debugger
     if (confirm("Delete Order?")) {
       this.ordersService.deleteOrder(order).subscribe(res => {
       //  let i = this.orders.findIndex(elemnt => elemnt._id == order._id);

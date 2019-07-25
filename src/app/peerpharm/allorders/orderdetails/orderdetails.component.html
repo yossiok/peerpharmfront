@@ -74,7 +74,7 @@
     <th class="header">Remarks </th>
     <th class='printTd header'>Status</th>
     <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th>
-    <th></th>
+    <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
     <th>
         <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg"
         (click)="openCmptDemandsModal()" >
@@ -593,6 +593,40 @@
 
 
 
+<!-- Modal -->
+<ng-template #contentTwo let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Order Amounts</h4>
+  </div>
+  <div class="modal-body">
+    <table class='table'>
+      <thead class='tableHeader'>
+    
+        <tr>
+          <th>מק"ט</th>
+          <th>אצווה</th>
+          <th>כמות הזמנה</th>
+          <th>כמות טופס מילוי</th>
+          <th>כמות טופס אריזה</th>
+          <th>בקרה סופית</th>
+        </tr>
+      </thead>
+      <tbody id="table_body">
+        <tr  *ngFor="let item of ordersItems;" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+          <td>{{item.itemNumber}}</td>
+          <td>{{item.batch}}</td>
+          <td>{{item.quantity}}</td>
+          <td>{{item.quantityProduced}}</td>
+          <td>{{item.quantity}}</td>
+          <td></td>
+         
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+  </div>
+</ng-template>
 
 
 

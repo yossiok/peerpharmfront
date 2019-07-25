@@ -1017,10 +1017,42 @@ export class StockComponent implements OnInit {
         debugger
         this.toastSrv.success("New material item created");
         this.materials.push(res);
+
+        this.clearFields();
+     
       });
 
     }
 
+  }
+
+  clearFields() { 
+debugger
+    this.resMaterial  = {
+
+      componentN: "",
+      componentName: "",
+      remarks: "",
+      img: "",
+      minimumStock: "",
+      packageWeight: "",
+      itemType: "",
+      barcode: "",
+      actualMlCapacity: "",
+      unitOfMeasure: "",
+      group: "",
+      subGroup: "",
+      subGroup2: "",
+      suplierName: "",
+      status: "",
+      threatment: "",
+      monthTillExp: "",
+      monthAvgPcs: "",
+      msds: "",
+      coaMaster: "",
+      alternativeMaterial:"",
+  
+    }
   }
   onSelectMsds(event) { 
     if (event.target.files && event.target.files[0]) {
