@@ -41,6 +41,7 @@ export class FormuleComponent implements AfterViewInit {
 
   ngOnInit() {
     this.routerService.params.subscribe(data => {
+      debugger;
       if (data.id) {
         debugger;
         //edit mode

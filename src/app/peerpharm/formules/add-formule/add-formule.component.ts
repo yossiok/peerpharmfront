@@ -146,6 +146,8 @@ export class AddFormuleComponent implements OnInit {
         this.formulesForm.value.name.trim();
         this.formulesForm.value.client.trim();
         this.formulesForm.controls.ph.setValue(this.phValue);
+        this.user = this.authService.loggedInUser.firstName + " " + this.authService.loggedInUser.lastName;
+        this.formulesForm.controls.lastUpdateUser.setValue(this.user);
 
         //check that all fields filled
         if (this.formulesForm.valid) {
@@ -154,13 +156,14 @@ export class AddFormuleComponent implements OnInit {
           //save new formule
           this.formuleService.newFormule(newFormuleDetails).subscribe(formule => {
             if (formule) {
-
+              debugger
         //if new formule that was copied from old formule (has parentID)
           //we change the url to edit mode so we reload thecopied formule phases
           //else we continue with old code to start filling the new formule 
           if(formule.formuleParentId!='')
           {
-            this.routerService.navigate(['/#/peerpharm/formule/addnewformule/'+formule._id]);
+         
+            this.routerService.navigate(['/peerpharm/formule/addnewformule/'+formule._id]);
             debugger;
           }
           else{
