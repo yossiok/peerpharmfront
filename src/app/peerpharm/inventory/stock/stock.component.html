@@ -464,6 +464,11 @@
                   <input type="checkbox" name="printed" value="printed" id='checkBox_need_print'> דרושה הדפסה </td>
               </tr>
               <tr>
+                  <th>הערה קופצת</th>
+                  <td><textarea [(ngModel)]="resCmpt.jumpRemark" class="itemInput" rows="3" cols="20"></textarea>
+                  </td>
+                </tr>
+              <tr>
                 <!-- <th><button (click)="loadComponentItems()">צפיה בפריטים מקושרים</button></th> -->
                 <th>פריטים מקושרים</th>
                 <td><span *ngFor="let item of resCmpt.componentItems"
@@ -504,6 +509,7 @@
               <td>{{itemMovement.shell_position_in_whareHouse_Origin}}</td>
               <td>{{itemMovement.shell_position_in_whareHouse_Dest}}</td>
               <td>{{itemMovement.WH_originName}}</td>
+              
 
             </tr>
 
@@ -907,14 +913,10 @@
                   <th>Sub Group</th>
                 <td>
                 <select [(ngModel)]="resMaterial.subGroup" class="itemInput">
-                  <option value="fluid">נוזלי</option>
-                  <option value="bottle">בקבוק</option>
-                  <option value="cover">מכסה</option>
-                  <option value="cover">משאבה</option>
-                  <option value="cover">אטם</option>
-                  <option value="cover">מדבקה</option>
-                  <option value="cover">אריזה אישית</option>
-                  <option value="cover">גלופה</option>
+                  <option value="Cube">קובייה</option>
+                  <option value="barrel">חבית</option>
+                  <option value="small barrel">חביונית</option>
+                  <option value="packaging/cardboard">אריזות/קרטון</option>
                 </select>
               </td>
                 </tr>
@@ -925,12 +927,9 @@
                 </tr>
 
                 <tr>
-                  <th>Brand</th>
+                  <th>Supplier</th>
                   <td>
-                    <select #filterByCategory class="itemInput" (change)="filterRows($event , 'category')">
-                      <option selected></option>
-                      <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
-                    </select>
+                      <input type="text" class="itemInput" [(ngModel)]="resMaterial.suplierName"/>
                   </td>
                 </tr>
 
@@ -968,11 +967,40 @@
                 </tr>
 
                 <tr>
-                  <th>Weight (gr)</th>
+                  <th>Weight</th>
                   <td>
                     <input [(ngModel)]="resMaterial.packageWeight" type="text" class="itemInput" />
                   </td>
                 </tr>
+
+                <!-- <tr>
+                  <th>Material</th>
+                  <td>
+                    <select #material class="itemInput">
+                        <option selected></option>
+                        <option value='bottle_Glass'>בקבוק זכוכית</option>
+                        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+                        <option value='jar_Glass'>צנצנת זכוכית</option>
+                        <option value='jar_Plastic'>צנצנת פלסטיק</option>
+                        <option value='cap'>פקק</option>
+                        <option value='cover'>מכסה</option>
+                        <option value='pump'>משאבה</option>
+                        <option value='cosmetic_pump'>משאבה קוסמטית</option>
+                        <option value='over_cap'>מכסה עילי</option>
+                        <option value='tube'>שפורפרת</option>
+                        <option value='colons'>קולונים</option>
+                        <option value='hair_life'>היירלייפ</option>
+                        <option value='compacts'>קומפקטים</option>
+                        <option value='personal_package'>אריזות אישיות</option>
+                        <option value='master_carton'>קרטוני מאסטר</option>
+                        <option value='newsletter'>עלון לצרכן</option>
+                        <option value='irosol_valve'>אירוסול- שסתום</option>
+                        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+                        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                    </select>
+                  </td>
+                </tr> -->
 
                 <tr>
                   <th>Material</th>

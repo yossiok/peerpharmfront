@@ -1,4 +1,4 @@
-
+ <h1>Bar</h1>
   <div *ngIf="!showingAllOrders">
     <div style='background-color: aquamarine;display:inline-table'>לוקט</div>&nbsp;
     <div style='background-color: #CE90FF; display:inline-table'>מולא</div>&nbsp;
@@ -172,59 +172,86 @@
       <td colspan="5">
 
         <table class='detilasTable' width='105%'>
-          <tr>
+          <!-- <tr>
             <td></td>
             <td>
               <h5>Batch</h5>
             </td>
-            <!-- <td>{{item.batch}}</td> -->
+         
             <td colspan="2"><label *ngIf="!editBatchN" (click)="editBatch(item.batch)" style="cursor: pointer; margin-right: 10px;">{{item.batch}}</label>
               <input  *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined" type='text' style="width:50%" #inputBatch></td>
             <td><button class='btn btn-success'  (click)="setBatch(item, inputBatch.value, item.batch)">set</button></td>
             <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)" style='cursor: pointer;'></i></td>
             <td></td>
-          </tr>
-          <tr *ngFor="let det of detailsArr">
-            <td></td>
-            <td>
-              <h5>Set Printing Schedule: </h5>
-            </td>
-            <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button class='btn btn-info'  (click)="setToPrintDetails(content, item, det)">print</button></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <h5>Set Filling Schedule: </h5>
-            </td>
-            <td><input #date type='date'></td>
-            <td><input #shift type='text' placeholder="Shift"></td>
-            <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-            <td>
-              <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
-              <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>
-              <input type="radio" name="type" #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
-              <input type="radio" name="type" #type value='sachet' [(ngModel)]="chosenType">Sachet<br>
-            </td>
-            <td><button (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
-          </tr>
-          <!-- <tr>
-            <td></td>
-            <td>
-              <h5>Set MKP Production Schedule: </h5>
-            </td>
-            <td><input #mkpProdDate type='date'></td>
-            <td><input #mkpProdRemarks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-            <td></td>
-            <td>
-              <input type="radio" name="mkpType" #mkpType value='liquid' [(ngModel)]="chosenMkpType" checked>Liquid<br>
-              <input type="radio" name="mkpType" #mkpType value='powder' [(ngModel)]="chosenMkpType">Powder<br>
-            </td>
-            <td><button (click)='setMkpSchedule(item ,mkpType.value, mkpProdDate.value, mkpProdRemarks.value)' class='btn btn-success'>Set</button></td>
           </tr> -->
+          <tr>
+              <td>
+                <span>Number:</span>
+                <select [(ngModel)]="makeup.itemNumber" >
+                <option value="{{item.itemNumber}}">{{item.itemNumber}}</option>
+              </select> </td>
+              <td>
+                <span>Name:</span>
+                  <select [(ngModel)]="makeup.itemName">
+                      <optgroup label="Powders - אבקות">
+                          <option value="Pudra">פודרה - пудра</option>
+                          <option value="Somek">סומק- румянa</option>
+                          <option value="Tslalit">צללית - тени</option>
+                          <option value="Shimmer">שימר - шиммер</option>
+                      </optgroup>
+                      <optgroup label="Fluid - נוזלי">
+                          <option value="Makeup">מייק-אפ - макияж</option>
+                          <option value="Concealer">קונסילרים - маскирующих</option>
+                          <option value="Lip-Gloss">ליפגלוס - блеск для губ</option>
+                          <option value="Liquid shimmer">שימר נוזלי - жидкий шиммер </option>
+                          <option value="Eyeliner-gel">אייליינר ג'ל - подводка для глаз гель</option>
+                      </optgroup>
+                      <optgroup label="Lipstick = אודם">
+                          <option value="Eyeliner-gel">אייליינר ג'ל - подводка для глаз гель</option>
+                          <option value="Eyebrow-gel">ג'ל גבות - Гель для бровей</option>
+                      </optgroup>
+                  
+                  </select>
+                </td>
+                <td>
+                    <input [(ngModel)]="makeup.production" placeholder="Production (kg)" type="number" />
+                  </td>
+                  <td>
+                    <input [(ngModel)]="makeup.pushToGodets" placeholder="Units" type="number" />
+                  </td>
+                  <td>
+                    <span>Packing:</span>
+                    <select [(ngModel)]="makeup.packingClient">
+                      <option value="done packing">נארז סופי</option>
+                      <option value="packed to print">נארז והועבר לאריזה</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input [(ngModel)]="makeup.productionDate" type="date" />
+                  </td>
+                  <td>
+                    <input [(ngModel)]="makeup.printing" placeholder="printing" type="text" />
+                  </td>
+                  <td>
+                      <button style="cursor: pointer;margin:5px;" class="addBtn btn btn-info" (click)="addNewPowder()">Add</button>
+                      <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="GetAll()">Get</button>
+                      
+                  </td>
+                  
+          </tr>
+          <tr *ngFor="let powder of powdersData;">
+
+              
+              <td>{{powder.itemType}}</td>
+              <td>{{powder.itemName}}</td>
+              <td>{{powder.production}} KG</td>
+              <td>{{powder.pushToGodets}} Units</td>
+              <td>{{powder.packingClient}}</td>
+              <td>{{powder.productionDate | date: "dd/MM/yyyy"}}</td>
+              <td>{{powder.printing}}</td>
+              <td></td>
+
+          </tr>
         </table>
 
       </td>
@@ -273,13 +300,6 @@
       <label for="a">Amount</label>
       <div class="input-group">
         <input class="form-control mb-4" placeholder="Amount" [(ngModel)]="printSchedule.qty">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="a">Schedule Date</label>
-      <div class="input-group">
-        <input type="date" class="form-control mb-4" placeholder="Schedule Date" [(ngModel)]="printSchedule.scheduleDate">
       </div>
     </div>
 

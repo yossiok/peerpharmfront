@@ -1,10 +1,39 @@
-<div (click)='setType("powder")' class="navtab">אבקות</div>
-<div (click)='setType("wet")' class="navtab">רטוב</div>
-<div (click)='setType("lipstick")' class="navtab">אודם</div>
+<!-- <div (click)='setType("powder")' class="navtab">אבקות</div>
+<div (click)='setType("wet")' class="navtab">נוזלי</div>
+<div (click)='setType("lipstick")' class="navtab">אודם</div> -->
+<div class="navtab">Make Up</div>
 
 
 
 <table *ngIf="tableType=='powder'" class='table'>
+  <thead class='tableHeader  text-center text-white'>
+
+    <tr>
+      <th>#</th>
+      <th>Order Number</th>
+      <th>Order Type</th>
+      <th>Custumer</th>
+      <th>Order Date</th>
+      <th>Delivery Date</th>
+    </tr>
+  </thead>
+
+
+  <tbody id="table_body">
+    <tr class="tableTr" *ngFor="let order of orders; let i = index">
+
+      <td>{{i+1}}</td>
+      <td> <a target="_blank"  routerLink='/peerpharm/allorders/makeupdetails/{{order.orderNumber}}' >{{order.orderNumber}}</a></td>
+      <td>{{order.type}}</td>
+      <td>{{order.costumer}}</td>
+      <td>{{order.orderDate | date: "dd/MM/yyyy"}}</td>
+      <td>{{order.deliveryDate | date: "dd/MM/yyyy"}}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- <table *ngIf="tableType=='powder'" class='table'>
   <thead class='tableHeader  text-center text-white'>
 
     <tr>
@@ -68,7 +97,7 @@
       <td></td>
     </tr>
   </tbody>
-</table>
+</table> -->
 
 <!-- Wet Table Start Here  -->
 

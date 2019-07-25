@@ -17,21 +17,23 @@ import { CostumersService } from 'src/app/services/costumers.service';
 import {ExcelService} from '../../../services/excel.service';
 import { AuthService } from '../../../services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { MakeupService } from 'src/app/services/makeup.service';
 
 
 
 @Component({
-  selector: 'app-orderdetails',
-  templateUrl: './orderdetails.component.html',
-  styleUrls: ['./orderdetails.component.css'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ])]
+  selector: 'app-makeupdetails',
+  templateUrl: './makeupdetails.component.html',
+  styleUrls: ['./makeupdetails.component.css'],
+
 })
-export class OrderdetailsComponent implements OnInit {
+export class MakeupdetailsComponent implements OnInit {
+
+
+
+  powdersData:any[];
+  wetItemsData:any[];
+  lipstickData:any[];
   closeResult: string;
   plateImg="";
   printSchedule:any ={
@@ -49,10 +51,21 @@ export class OrderdetailsComponent implements OnInit {
     nextStation: '',
     marks: '',
     date: '',
-    scheduleDate: '',
     dateRdy: '',
     palletN:'',
     status:  '',
+  }
+  makeup = {
+    itemType: '',
+    itemName: '',
+    production:'',
+    pushToGodets: '',
+    packingClient: '',
+    printing: '',
+    productionDate:'',
+    tray:'',
+    packing:'',
+    itemNumber:'',
   }
 
 
@@ -135,7 +148,7 @@ export class OrderdetailsComponent implements OnInit {
     console.log(event);
     this.edit('');
 }
-  constructor(private inventoryService: InventoryService,private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
+  constructor(private makeupService:MakeupService,private inventoryService: InventoryService,private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, 
      private costumerSrevice: CostumersService, private excelService:ExcelService, private authService: AuthService ) { }
 
@@ -146,7 +159,7 @@ export class OrderdetailsComponent implements OnInit {
    }
 
   ngOnInit() {
-  
+    this.makeup.productionDate = new Date().toISOString().split('T')[0];
     console.log('hi');
     this.orderService.openOrdersValidate.subscribe(res=>{
       this.number = this.route.snapshot.paramMap.get('id');
@@ -224,7 +237,59 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
+ // Powder Section adding and getting all powders // 
 
+ addNewPowder() { 
+    
+  this.makeup.itemType = "Make Up"
+  
+  this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
+    
+    this.powdersData = res;
+  
+  })
+
+  this.makeup.itemType=''
+  this.makeup.itemName=''
+  this.makeup.production=''
+  this.makeup.pushToGodets=''
+  this.makeup.packingClient=''
+  this.makeup.printing=''
+  this.makeup.tray=''
+  this.makeup.packing=''
+  
+  
+}
+
+
+GetAll() { 
+   
+  if(this.makeup.itemNumber != "") {
+  
+  this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
+    
+    this.powdersData = res;
+  
+  })
+
+  this.makeup.itemType=''
+  this.makeup.itemName=''
+  this.makeup.production=''
+  this.makeup.pushToGodets=''
+  this.makeup.packingClient=''
+  this.makeup.printing=''
+  this.makeup.tray=''
+  this.makeup.packing=''
+} else { 
+  this.toastSrv.error("Please fill the Item Number")
+}
+  
+}
+
+
+
+
+// end of powder section //
 
   addItemOrder() {
      
@@ -766,7 +831,6 @@ editBatch(batch){
 
   }
   setPrintSced(orderItemId){
-    debugger
     // this.printSchedule.date.setHours(2,0,0,0);
     let dateToUpdate=new Date(this.printSchedule.date);
     dateToUpdate.setHours(2,0,0,0);
@@ -802,7 +866,6 @@ editBatch(batch){
   }
 
   setToPrintDetails(content, item, cmpt) {
-    debugger
     this.itemSer.getPlateImg(item.itemNumber).subscribe(data=>{
       
        this.plateImg = data.palletImg;

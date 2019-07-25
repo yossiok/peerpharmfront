@@ -1,7 +1,7 @@
 
-<div (click)='setType("suppliers")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+<div (click)='setType("suppliers")'   class="navtab"
 style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30px;margin-right:10px;padding:5px">Suppliers</div>
-<div (click)='setType("supplierReports")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+<div (click)='setType("supplierReports")'  class="navtab"
 style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30px;padding:5px">Suppliers Reports</div><br><br>
 
 <div *ngIf="tableType=='suppliers'">

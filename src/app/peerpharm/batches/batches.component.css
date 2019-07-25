@@ -163,5 +163,10 @@ th, td {
       transform: rotate(360deg);
     }
   }
+  .addBatchInput { 
+    margin: 5px;
+    padding: 5px;
+    width: 170px;
+  }
 
  

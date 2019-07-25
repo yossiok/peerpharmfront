@@ -216,6 +216,9 @@ export class BatchesComponent implements OnInit {
 
       this.currentDoc.batchNumber = this.batchNumber.nativeElement.value.trim();
       this.currentDoc.itemName = this.batchItemName.nativeElement.value.trim();
+      this.currentDoc.weightQtyLeft = this.batchWeightQtyLeft.nativeElement.value.trim();
+      this.currentDoc.ph = this.batchPh.nativeElement.value.trim();
+      this.currentDoc.barrels = this.batchBarrels.nativeElement.value.trim();
       
       if(confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
         this.updateDocument()

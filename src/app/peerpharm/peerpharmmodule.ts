@@ -19,6 +19,7 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
+import {MakeupdetailsComponent} from './allorders/makeupdetails/makeupdetails.component'
 import {ScheduleComponent} from './schedule/filling/schedule.component';
 import {BarcodePrintComponent} from './schedule/barcode-print/barcode-print.component';
 import {ItemslistComponent} from './items/itemslist/itemslist.component'
@@ -139,6 +140,7 @@ import { ItemreportsComponent } from './items/itemreports/itemreports.component'
     OrdersComponent,
     AllordersComponent,
     OrderdetailsComponent,
+    MakeupdetailsComponent,
     NeworderComponent,
     LinesComponent,
     ProductionComponent,

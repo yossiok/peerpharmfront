@@ -45,6 +45,7 @@ export class StockComponent implements OnInit {
     packageType: '',
     packageWeight: '',
     remarks: '',
+    jumpRemark:'',
     componentItems: [],
     input_actualMlCapacity: 0,
     alternativeComponent:'',
@@ -143,7 +144,7 @@ export class StockComponent implements OnInit {
     group: "",
     subGroup: "",
     subGroup2: "",
-    brand: "",
+    suplierName: "",
     status: "",
     threatment: "",
     monthTillExp: "",
@@ -186,7 +187,6 @@ export class StockComponent implements OnInit {
         //   }  
         //  });
         this.components.forEach(c => {
-          debugger
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
 
@@ -398,11 +398,21 @@ export class StockComponent implements OnInit {
   // }
 
   getAllComponents() {
+    
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
-      this.componentsUnFiltered = components.splice(0);
-      this.components = components.splice(0);
-      debugger
+
+      this.componentsUnFiltered = components.splice(0)
+      this.components = components.splice(0)
+  
+    //   this.components.forEach(c => {
+    //     debugger
+    //      let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
+         
+ 
+    //      c.remarks= element.remarks;
+ 
+    //  });
       //why are we using set time out and not async await??
       setTimeout(() => {
 
@@ -441,7 +451,7 @@ export class StockComponent implements OnInit {
 
   getAllExpectedArrivalsData(){
     this.procuretServ.getAllExpectedArrivals().subscribe(res=>{
-     
+     debugger;
         this.itemExpectedArrivals=res;
       
     });
@@ -833,6 +843,8 @@ export class StockComponent implements OnInit {
 
   async openData(cmptNumber) {
     debugger
+   
+
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -841,7 +853,14 @@ export class StockComponent implements OnInit {
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
+
+    if(this.resCmpt.jumpRemark == "" || this.resCmpt.jumpRemark == undefined) {
+      console.log("ok")
+    }else { 
+      alert("Jumping Remark: "+this.resCmpt.jumpRemark)
+    }
   }
+
   async openImg(componentImg) {
     this.openImgModal = true;
     this.currModalImgSrc = componentImg;
@@ -932,6 +951,7 @@ export class StockComponent implements OnInit {
 
   newCmpt(newItem) {
 
+  
     this.newItem = newItem;
     this.resCmpt = {
       componentN: '',
@@ -1046,6 +1066,7 @@ export class StockComponent implements OnInit {
 
 
   editStockItemDetails() {
+    
     this.resCmpt;
     if (confirm("לעדכן פריט?")) {
 

@@ -1,6 +1,7 @@
 import { OrdersComponent } from './allorders/orders/orders.component';
 import { AllordersComponent } from './allorders/allorders/allorders.component';
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
+import {MakeupdetailsComponent} from './allorders/makeupdetails/makeupdetails.component'
 //import { PeerPharmModule } from './peerpharmmodule';
 import { Routes } from '@angular/router';
 import {ScheduleComponent} from './schedule/filling/schedule.component'
@@ -63,6 +64,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Order'
     },
     component: OrderdetailsComponent
+  },
+  {
+    path: 'allorders/makeupdetails/:id',
+    data: {
+      title: 'Order'
+    },
+    component: MakeupdetailsComponent
   },
   {
     path: 'allorders/neworder',
