@@ -26,8 +26,8 @@
       <td> <a target="_blank"  routerLink='/peerpharm/allorders/makeupdetails/{{order.orderNumber}}' >{{order.orderNumber}}</a></td>
       <td>{{order.type}}</td>
       <td>{{order.costumer}}</td>
-      <td>{{order.orderDate}}</td>
-      <td>{{order.deliveryDate}}</td>
+      <td>{{order.orderDate | date: "dd/MM/yyyy"}}</td>
+      <td>{{order.deliveryDate | date: "dd/MM/yyyy"}}</td>
     </tr>
   </tbody>
 </table>

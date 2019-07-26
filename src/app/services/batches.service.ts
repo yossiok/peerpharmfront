@@ -16,6 +16,12 @@ export class BatchesService {
 
   constructor(private http:Http) { }
 
+  addBatch(newBatch) {
+    debugger
+    let url = this.baseUrl + "batch/add";
+    return this.http.post(url, JSON.stringify(newBatch), this.options).pipe(map(res => res.json()))
+  }
+
   // BATCHES OF GENERAL PHARMA 
   getAllBatches():Observable<any>{
     let url = this.baseUrl + 'batch'

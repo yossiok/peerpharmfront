@@ -30,6 +30,21 @@ export class BatchesComponent implements OnInit {
   user: UserInfo;
   alowUserEditBatches:Boolean=false;
 
+  batch = { 
+    batchNumber:'',
+    batchStatus:'',
+    barrels:'',
+    expration: '', 
+    item:'',
+    itemName:'', 
+    order:'',
+    ph:'', 
+    produced:'',
+    weightQtyLeft: '',
+    weightKg: '',
+
+  }
+
   @ViewChild('batchNumber') batchNumber: ElementRef;
   @ViewChild('batchProduced') batchProduced: ElementRef;
   @ViewChild('batchItemName') batchItemName: ElementRef;
@@ -52,6 +67,18 @@ export class BatchesComponent implements OnInit {
     this.startInterval();
   }
 
+  addBatch() { 
+    debugger;
+    this.batchService.addBatch(this.batch).subscribe(data=>{
+      this.batches.push(data)
+      this.batchesCopy.push(data)
+
+      
+    })
+
+    
+
+  }
  
   edit(id) {
     debugger

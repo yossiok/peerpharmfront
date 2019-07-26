@@ -117,6 +117,7 @@ export class OrderdetailsComponent implements OnInit {
   costumerImpRemark: String;
   multiCostumerImpRemark: Array<any>=[];
   editBatchN: Boolean=false;
+  formDetailsAmounts:Array <any>;
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -148,6 +149,10 @@ export class OrderdetailsComponent implements OnInit {
   ngOnInit() {
   
     console.log('hi');
+    this.getItemAmounts();
+
+
+    
     this.orderService.openOrdersValidate.subscribe(res=>{
       this.number = this.route.snapshot.paramMap.get('id');
 
@@ -224,7 +229,23 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
+  open(contentTwo) {
+    this.modalService.open(contentTwo, {size: 'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
 
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
 
   addItemOrder() {
      
@@ -320,6 +341,14 @@ updateSingleOrderStage(ev){
     });
   }
 
+getItemAmounts() { 
+debugger
+  this.orderService.getOrderAmounts().subscribe( data => {
+    this.formDetailsAmounts = data;
+
+  });
+
+}
 getOrderItems(singleLine): void {
     var orderNum;
      

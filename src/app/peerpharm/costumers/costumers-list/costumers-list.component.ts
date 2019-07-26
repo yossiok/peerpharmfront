@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 export class CostumersListComponent implements OnInit {
   closeResult: string;
   costumers: any[];
+  contacts: any[];
   contact = {
     name: '',
     phone: '',
@@ -27,17 +28,21 @@ export class CostumersListComponent implements OnInit {
     country: '',
     marks: '',
     impRemark: '',
-    contact: []
+    contact: [],
+    brand:'',
   }
 
 
   private container: ElementRef;
+
   @ViewChild('container') set content(content: ElementRef) {
-    this.container = this.content;
+    debugger
+    this.container = content;
   }
 
   constructor(private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
+  
 
   open(content) {
     this.costumer = {
@@ -49,7 +54,8 @@ export class CostumersListComponent implements OnInit {
       country: '',
       marks: '',
       impRemark: '',
-      contact: []
+      contact: [],
+      brand:''
     }
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       console.log(result);
@@ -108,7 +114,7 @@ export class CostumersListComponent implements OnInit {
 
   addContact() {
     debugger
-    //const childElements = this.container.nativeElement.children;
+    // const childElements = this.container.nativeElement.children;
     const rowDiv = this.renderer.createElement('div');
     const inputName = this.renderer.createElement('input');
     const inputPhone = this.renderer.createElement('input');

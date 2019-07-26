@@ -7,6 +7,13 @@
 
 <input
   matInput
+  placeholder="Order Number"
+  (keyup)="FilterForms($event, 'order')"
+  style="margin-right: 20px;"
+/>
+
+<input
+  matInput
   placeholder="Filling Date"
   (keyup)="FilterForms($event, 'fill')"
   style="margin-right: 20px;"
@@ -39,6 +46,7 @@
         </button> -->
       </th>
       <th>Batch</th>
+      <th>Order Number</th>
       <th>Costumer</th>
       <th></th>
     </tr>
@@ -61,6 +69,7 @@
       <td>{{ form.productName }}</td>
       <td>{{ form.fillingDate }}</td>
       <td>{{ form.batchN }}</td>
+      <td>{{ form.orderNumber }}</td>
       <td>{{ form.costumerName }}</td>
       <td></td>
     </tr>

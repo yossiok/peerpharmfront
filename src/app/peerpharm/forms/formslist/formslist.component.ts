@@ -93,12 +93,18 @@ export class FormslistComponent implements OnInit {
           break;
         }
         case 'fill': {
-          this.forms = this.forms.filter(x =>
-            x.fillingDate.includes(enteredValue)
-          );
+          this.forms = this.forms.filter(x => x.fillingDate.includes(enteredValue));
           break;
         }
+        case 'order': {
+          this.forms = this.forms.filter(x => x.orderNumber.includes(enteredValue));
+          break;
+        }
+       
+        
       }
+    } else { 
+      this.getForms();
     }
   }
 }

@@ -398,21 +398,21 @@ export class StockComponent implements OnInit {
   // }
 
   getAllComponents() {
-    debugger
+    
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
 
-      this.componentsUnFiltered = components
-      this.components = components
+      this.componentsUnFiltered = components.splice(0)
+      this.components = components.splice(0)
   
-      this.components.forEach(c => {
-        debugger
-         let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
+    //   this.components.forEach(c => {
+    //     debugger
+    //      let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
          
  
-         c.remarks= element.remarks;
+    //      c.remarks= element.remarks;
  
-     });
+    //  });
       //why are we using set time out and not async await??
       setTimeout(() => {
 
@@ -1017,10 +1017,42 @@ export class StockComponent implements OnInit {
         debugger
         this.toastSrv.success("New material item created");
         this.materials.push(res);
+
+        this.clearFields();
+     
       });
 
     }
 
+  }
+
+  clearFields() { 
+debugger
+    this.resMaterial  = {
+
+      componentN: "",
+      componentName: "",
+      remarks: "",
+      img: "",
+      minimumStock: "",
+      packageWeight: "",
+      itemType: "",
+      barcode: "",
+      actualMlCapacity: "",
+      unitOfMeasure: "",
+      group: "",
+      subGroup: "",
+      subGroup2: "",
+      suplierName: "",
+      status: "",
+      threatment: "",
+      monthTillExp: "",
+      monthAvgPcs: "",
+      msds: "",
+      coaMaster: "",
+      alternativeMaterial:"",
+  
+    }
   }
   onSelectMsds(event) { 
     if (event.target.files && event.target.files[0]) {
