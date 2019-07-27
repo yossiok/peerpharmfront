@@ -101,10 +101,9 @@
           placeholder="Phone" [(ngModel)]="contact.phone">
         <input class="form-control" placeholder="E-Mail" type="email" [(ngModel)]="contact.mail">
       </div>
-
-      <div #container>
-
-      </div>
+    </div>
+    <div *ngFor="let contact of costumer.contact" id="cont"  #container>
+      {{contact.name}}  {{contact.phone}} {{contact.mail}}
     </div>
 
     <div class="form-group">
@@ -125,3 +124,4 @@
   </div>
 
 </ng-template>
+

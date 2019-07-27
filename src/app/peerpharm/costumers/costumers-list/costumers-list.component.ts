@@ -33,12 +33,8 @@ export class CostumersListComponent implements OnInit {
   }
 
 
-  private container: ElementRef;
 
-  @ViewChild('container') set content(content: ElementRef) {
-    debugger
-    this.container = content;
-  }
+  @ViewChild("container")  container: ElementRef=null;
 
   constructor(private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
@@ -72,6 +68,7 @@ export class CostumersListComponent implements OnInit {
   }
 
   openDetails(content, i) {
+    debugger;
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
     this.contact = this.costumers[i].contact[0];
@@ -82,6 +79,8 @@ export class CostumersListComponent implements OnInit {
       }
     })
   }
+
+ 
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -98,8 +97,8 @@ export class CostumersListComponent implements OnInit {
   }
 
   saveCostumer() {
-    debugger
-    this.costumer.contact=[];
+    
+   
     this.costumer.contact.push(this.contact);
     this.costumersService.addorUpdateCostumer(this.costumer).subscribe(res => {
       console.log(res);
@@ -113,23 +112,26 @@ export class CostumersListComponent implements OnInit {
   }
 
   addContact() {
-    debugger
+      let contactToPush = {...this.contact}
+      this.costumer.contact.push(contactToPush)
     // const childElements = this.container.nativeElement.children;
-    const rowDiv = this.renderer.createElement('div');
-    const inputName = this.renderer.createElement('input');
-    const inputPhone = this.renderer.createElement('input');
-    const inputMail = this.renderer.createElement('input');
-    this.renderer.appendChild(rowDiv, inputName);
-    this.renderer.appendChild(rowDiv, inputPhone);
-    this.renderer.appendChild(rowDiv, inputMail);
+//     const rowDiv = this.renderer.createElement('div');
+//     const inputName = this.renderer.createElement('input');
+//     const inputPhone = this.renderer.createElement('input');
+//     const inputMail = this.renderer.createElement('input');
+//     this.renderer.appendChild(rowDiv, inputName);
+//     this.renderer.appendChild(rowDiv, inputPhone);
+//     this.renderer.appendChild(rowDiv, inputMail);
 
-    this.renderer.appendChild(this.container.nativeElement, rowDiv);
+// let m = document.getElementById('cont');
+//     this.renderer.appendChild(m, rowDiv);
 
 
   }
 
   ngOnInit() {
     this.getCostumers();
+    debugger;
   }
 
 }
