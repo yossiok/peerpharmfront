@@ -72,10 +72,24 @@ export class BatchesComponent implements OnInit {
     this.batchService.addBatch(this.batch).subscribe(data=>{
       this.batches.push(data)
       this.batchesCopy.push(data)
+      this.getAllBatches();
+      this.toastSrv.success("Batch has been added successfully")
 
-      
+      this.batch = { 
+        batchNumber:'',
+        batchStatus:'',
+        barrels:'',
+        expration: '', 
+        item:'',
+        itemName:'', 
+        order:'',
+        ph:'', 
+        produced:'',
+        weightQtyLeft: '',
+        weightKg: '',
+    
+      }
     })
-
     
 
   }
