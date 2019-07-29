@@ -245,6 +245,7 @@ approvedPackgeRemarksInput: Boolean=false;
   }
 
   findMaterialBtNumber(){
+    debugger
     if(this.requirementsForm.value.itemNumber!=""){
       this.invtSer.getMaterialStockItemByNum(this.requirementsForm.value.itemNumber).subscribe(stockItem=>{
         let elem=  document.getElementsByName('itemName')[0];

@@ -96,11 +96,13 @@ import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
 import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
 import { ItemreportsComponent } from './items/itemreports/itemreports.component';
+import { DateExpiredDirective } from '../directives/date-expired.directive';
 
 
 @NgModule({
   exports: [
-    MatInputModule
+    MatInputModule,
+    
   ],
   imports: [
 
@@ -132,7 +134,9 @@ import { ItemreportsComponent } from './items/itemreports/itemreports.component'
     DatepickerModule,
     Ng2FilterPipeModule ,
     NgxPrintModule,
-    HttpClientModule
+    HttpClientModule,
+    
+  
   ],
   declarations: [
     FormuleComponent,
@@ -195,7 +199,8 @@ import { ItemreportsComponent } from './items/itemreports/itemreports.component'
     WizardComponent,
     ScanProductComponent,
     SuppliersComponent,
-    ItemreportsComponent
+    ItemreportsComponent,
+    DateExpiredDirective
 
   ],
   providers: [ OrdersService, HttpClientModule],

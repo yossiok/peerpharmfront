@@ -9,6 +9,9 @@ body {
 .fr {
   float: right;
 }
+.expiredDate {
+  color: red;
+}
 .table-fixed thead {
   /* display: block; */
 }

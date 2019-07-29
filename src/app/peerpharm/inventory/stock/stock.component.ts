@@ -77,6 +77,7 @@ export class StockComponent implements OnInit {
   stockType: String = "component";
   newItem: String = '';
   newItemBtn: String = 'new';
+  today: Date = new Date()
   //var's to edit itemshelf in allowed wh for user
   user: UserInfo;
   whareHouses: Array<any>;
@@ -109,7 +110,7 @@ export class StockComponent implements OnInit {
   materialToFind: String = "";
   productResponse: any = {};
   linkDownload:String = "";
-
+  arrivalDateExpired = true;
   newItemProcurmentDetails: FormGroup;
   newOrderProcurmentDetails: FormGroup;
   newTransportDetails: FormGroup;
@@ -218,6 +219,7 @@ export class StockComponent implements OnInit {
     this.getAllComponents();
     // this.exportMovementsAsXLSX();
     this.getAllExpectedArrivalsData();
+    this.getColor(new Date);
 
   }
 
@@ -937,6 +939,16 @@ export class StockComponent implements OnInit {
     }
 
 
+  }
+
+  getColor(date) {
+    debugger
+    switch (date) {
+      case "date < new Date()":
+        return "red";
+      case "date > new Date()":
+        return "black"
+    }
   }
 
  

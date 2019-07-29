@@ -71,7 +71,7 @@ export class CostumersListComponent implements OnInit {
     debugger;
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
-    this.contact = this.costumers[i].contact[0];
+    // this.contact = this.costumers[i].contact[0];
     this.modalService.open(content).result.then((result) => {
       console.log(result);
       if (result == 'Saved') {
@@ -97,9 +97,9 @@ export class CostumersListComponent implements OnInit {
   }
 
   saveCostumer() {
-    
-   
-    this.costumer.contact.push(this.contact);
+    if(this.contact.mail != "" || this.contact.phone != "" || this.contact.name != "") {
+      this.costumer.contact.push(this.contact);
+    }
     this.costumersService.addorUpdateCostumer(this.costumer).subscribe(res => {
       console.log(res);
       if (res == "updated") this.toastSrv.info(this.costumer.costumerName, "Changes Saved");
@@ -112,8 +112,17 @@ export class CostumersListComponent implements OnInit {
   }
 
   addContact() {
-      let contactToPush = {...this.contact}
-      this.costumer.contact.push(contactToPush)
+      if(this.contact.phone != "") {
+        let contactToPush = {...this.contact}
+        this.costumer.contact.push(contactToPush)
+
+        this.contact.phone = "";
+        this.contact.name = "";
+        this.contact.mail = "";
+      } else { 
+        this.toastSrv.error("Please fill all the fields")
+      }
+     
     // const childElements = this.container.nativeElement.children;
 //     const rowDiv = this.renderer.createElement('div');
 //     const inputName = this.renderer.createElement('input');

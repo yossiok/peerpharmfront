@@ -281,7 +281,8 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
-      }
+      },
+     
 
     ]
   },
@@ -422,7 +423,15 @@ export const ROUTES: RouteInfo[] = [
           class: '',
           extralink: false,
           submenu: []
-        }
+        },
+        {
+          path: '/peerpharm/production/wizard',
+          title: 'Wizard',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
 
       ]
     }
