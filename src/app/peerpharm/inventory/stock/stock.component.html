@@ -520,8 +520,10 @@
       <div class="modal-footer">
         <button class="btn btn-success" id="newCbtn" (click)="writeNewComponent()" *ngIf="newItem=='new'">הקם
           מוצר</button>
+          <div *ngIf="allowUserEditItem">
         <button class="btn btn-success" id="updateDataBtn" (click)="editStockItemDetails()" *ngIf="newItem!='new'">עדכן
           מידע</button>
+        </div>
       </div>
     </div>
 

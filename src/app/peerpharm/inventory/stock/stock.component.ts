@@ -29,6 +29,7 @@ export class StockComponent implements OnInit {
   loadingMovements: boolean = false;
   showItemDetails: boolean = true;
   itemMovements: any = [];
+  allowUserEditItem = false;
   resCmpt: any = {
     componentN: '',
     componentName: '',
@@ -220,6 +221,7 @@ export class StockComponent implements OnInit {
     // this.exportMovementsAsXLSX();
     this.getAllExpectedArrivalsData();
     this.getColor(new Date);
+    this.getUser();
 
   }
 
@@ -1139,6 +1141,35 @@ debugger
         }
       });
     }
+
+  }
+
+  async getUser() {
+    await this.authService.userEventEmitter.subscribe(user => {
+      this.user=user;
+      // this.user=user.loggedInUser;
+      // if (!this.authService.loggedInUser) {
+      //   this.authService.userEventEmitter.subscribe(user => {
+      //     if (user.userName) {
+      //       this.user = user;
+            
+      //     }
+      //   });
+      // }
+      // else {
+      //   this.user = this.authService.loggedInUser;
+      // }
+      if (this.user.authorization){
+        if (this.authService.loggedInUser.authorization.includes("updateStock")){
+          this.allowUserEditItem=true;
+        }
+      }
+
+    });
+
+
+
+
 
   }
 
