@@ -55,7 +55,7 @@ export class OrderdetailsComponent implements OnInit {
     status:  '',
   }
 
-
+  allComponents: any[];
   stockItems: any;
   ordersItems;
   ordersItemsCopy;
@@ -147,9 +147,10 @@ export class OrderdetailsComponent implements OnInit {
    }
 
   ngOnInit() {
-  
+    this.getAllComponents();
     console.log('hi');
     this.getItemAmounts();
+    console.log(this.ordersItems)
 
 
     
@@ -289,7 +290,7 @@ updateSingleOrderStage(ev){
 
 }
   async checkCostumersImportantRemarks(orders){
-    debugger
+
     this.costumersNumbers=[]
     await orders.forEach((o,key)=>{
       if(o.costumerImpRemark!=undefined && o.costumerImpRemark!=""){
@@ -342,13 +343,15 @@ updateSingleOrderStage(ev){
   }
 
 getItemAmounts() { 
-debugger
+
   this.orderService.getOrderAmounts().subscribe( data => {
     this.formDetailsAmounts = data;
 
   });
 
 }
+
+
 getOrderItems(singleLine): void {
     var orderNum;
      
@@ -981,7 +984,12 @@ editBatch(batch){
   // }
 
 
-
+  getAllComponents() {
+    debugger
+    this.inventoryService.getAllComponents().subscribe(components => {
+      this.allComponents = components
+    });
+  }
 
 
 
@@ -993,7 +1001,7 @@ editBatch(batch){
 
 
   async openCmptDemandsModal(){
-
+    debugger
     this.bottleList= [];
     this.capList= [];
     this.pumpList= [];
@@ -1255,6 +1263,8 @@ editBatch(batch){
   }
 
 
+  }
+
   // getItemWhShelfsList(orderItemsCmptArr) {
 
   //   return new Promise(function (resolve, reject) {
@@ -1266,6 +1276,6 @@ editBatch(batch){
 
 
 
-}
+
 
 

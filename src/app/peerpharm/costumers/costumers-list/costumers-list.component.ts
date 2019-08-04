@@ -97,6 +97,7 @@ export class CostumersListComponent implements OnInit {
   }
 
   saveCostumer() {
+    debugger
     if(this.contact.mail != "" || this.contact.phone != "" || this.contact.name != "") {
       this.costumer.contact.push(this.contact);
     }

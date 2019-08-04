@@ -276,7 +276,7 @@
         <th style="width:5%; padding:5px"></th>
         <th style="width:15%; padding:5px"><b>מספר פריט</b></th>
         <th style="width:25%; padding:5px"><b>שם פריט</b></th>
-        <th style="width:10%; padding:5px"><b>פריט חלופי</b></th>
+        <th style="width:10%; padding:5px"><b>ספק</b></th>
         <th style="width:10%; padding:5px"><b>רמת סיכון</b></th>
         <th style="width:20%; padding:5px"><b>הערות</b></th>
         <th style="width:10%; padding:5px"><b>תמונה</b></th>
@@ -303,7 +303,7 @@
           </td>
     
           <td style="width:10%;">
-            <div style="float:none;">{{material.alternativeMaterial}}</div>
+            <div style="float:none;">{{material.suplierName}}</div>
           </td>
        
           <td style="width:10%">
@@ -327,7 +327,49 @@
     </tbody>
   </table>
 
+  <ng-template #supplierList let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Alternative Suppliers</h4>
+      </div>
+      <div class="modal-body">
+        <table class='table'>
+          <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
+        
+            <tr>
+              <th><input [(ngModel)]="alternativeSupplier.name" placeholder="Alternative Supplier"/></th>
+              <th><button (click)="addSupplierToArray()">Add</button></th>
+            </tr>
+          </thead>
+          <tbody id="table_body">
+            <tr *ngFor="let alterSupplier of alterSuppliers" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+              <td>{{alterSupplier.name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </ng-template>
 
+  <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -930,7 +972,7 @@
                 </tr>
 
                 <tr>
-                  <th>Supplier</th>
+                  <th (click)="open(supplierList)">Supplier</th>
                   <td>
                       <input type="text" class="itemInput" [(ngModel)]="resMaterial.suplierName"/>
                   </td>
@@ -976,34 +1018,12 @@
                   </td>
                 </tr>
 
-                <!-- <tr>
-                  <th>Material</th>
+                <tr>
+                  <th>Price</th>
                   <td>
-                    <select #material class="itemInput">
-                        <option selected></option>
-                        <option value='bottle_Glass'>בקבוק זכוכית</option>
-                        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-                        <option value='jar_Glass'>צנצנת זכוכית</option>
-                        <option value='jar_Plastic'>צנצנת פלסטיק</option>
-                        <option value='cap'>פקק</option>
-                        <option value='cover'>מכסה</option>
-                        <option value='pump'>משאבה</option>
-                        <option value='cosmetic_pump'>משאבה קוסמטית</option>
-                        <option value='over_cap'>מכסה עילי</option>
-                        <option value='tube'>שפורפרת</option>
-                        <option value='colons'>קולונים</option>
-                        <option value='hair_life'>היירלייפ</option>
-                        <option value='compacts'>קומפקטים</option>
-                        <option value='personal_package'>אריזות אישיות</option>
-                        <option value='master_carton'>קרטוני מאסטר</option>
-                        <option value='newsletter'>עלון לצרכן</option>
-                        <option value='irosol_valve'>אירוסול- שסתום</option>
-                        <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-                        <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                    </select>
+                    <input [(ngModel)]="resMaterial.price" type="text" class="itemInput"/>
                   </td>
-                </tr> -->
+                </tr>
 
                 <tr>
                   <th>Material</th>

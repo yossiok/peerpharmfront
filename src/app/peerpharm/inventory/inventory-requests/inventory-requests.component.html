@@ -84,7 +84,7 @@
         </th>
       </tr>
       </thead>
-      <!-- <ng-container *ngFor="let request of allRequests; let i =index">
+      <ng-container *ngFor="let request of allRequests; let i =index">
           <tr >
             <td>{{i+1}}</td>
             <td><a  (click)="getDetails(request._id, request.reqNum)" style='color: blue; cursor: pointer;'>{{request.reqNum}}</a></td>
@@ -97,7 +97,7 @@
                 (click)="closeInventoryReqManually(request._id)"></i>
             </td>
           </tr>
-      </ng-container> -->
+      </ng-container>
     </table>
  
   </mat-tab>

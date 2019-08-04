@@ -113,6 +113,7 @@ export class FormulesService {
   }
   
   addNewPhaseToFormule(newFormulePhase){
+    debugger
     let url = this.baseUrl + "formules/addPhase";
     return this.http.post(url, JSON.stringify(newFormulePhase), this.options).pipe(map(res => res.json()));
   }

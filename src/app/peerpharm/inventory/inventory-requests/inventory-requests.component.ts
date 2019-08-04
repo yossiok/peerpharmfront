@@ -17,9 +17,11 @@ export class InventoryRequestsComponent implements OnInit {
   expand: boolean = false;
   openOrder:string="";
   newReqIncoming:boolean=false;
+  allRequests: Array<any>
   @Output() outPutItemsArray = new EventEmitter();
 
   ngOnInit() {
+    debugger;
     this.notificationService.newInventoryReqEventEmitter.subscribe(data=>{
       debugger
       if(data=='newInventoryReq'){
@@ -29,8 +31,13 @@ export class InventoryRequestsComponent implements OnInit {
       }
     });
     this.getAllGeneralDemands();
-  }
-
+    
+    this.inventoryReqService.getInventoryRequestsListWeek().subscribe(data =>{
+      debugger;
+      this.allRequests = data;
+      console.log(this.allRequests)
+  });
+}
   getNewIncomingInventoryReq(){
     this.getAllGeneralDemands();        
   }

@@ -1,4 +1,4 @@
-
+  
   <div *ngIf="!showingAllOrders">
     <div style='background-color: aquamarine;display:inline-table'>לוקט</div>&nbsp;
     <div style='background-color: #CE90FF; display:inline-table'>מולא</div>&nbsp;
@@ -448,10 +448,11 @@
   <!-- Modal content -->
   <div class="modal-content"  id='modelC'>
     <div class="modal-header">
+       
       <span class="close" id="closeId3" (click)="cmptModal=false ; newItem='';">&times;</span>
       <h2 id='div_h3'>{{openOrderPackingModalHeader}}</h2><br>
     </div>
-
+    
     <div class="modal-body" style="overflow-y:scroll; ">
         <div *ngIf="itemTreeRemarks.length>0" 
             style="width: 100%;">

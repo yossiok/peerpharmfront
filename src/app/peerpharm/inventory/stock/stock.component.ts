@@ -16,6 +16,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Console } from '@angular/core/src/console';
 import { Procurementservice } from 'src/app/services/procurement.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -50,8 +51,13 @@ export class StockComponent implements OnInit {
     componentItems: [],
     input_actualMlCapacity: 0,
     alternativeComponent:'',
+    alternativeSupplier:[],
 
   }
+  alternativeSupplier: any = {
+    name:''
+  }
+  alterSuppliers: any[];
   buttonColor: string = 'white';
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
@@ -147,6 +153,7 @@ export class StockComponent implements OnInit {
     subGroup: "",
     subGroup2: "",
     suplierName: "",
+    alternativeSuppliers:[],
     status: "",
     threatment: "",
     monthTillExp: "",
@@ -154,13 +161,14 @@ export class StockComponent implements OnInit {
     msds: "",
     coaMaster: "",
     alternativeMaterial:"",
+    price:"",
 
   }
   itemExpectedArrivals: any;
-
+  closeResult: string;
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+  constructor(private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder, ) {
   }
@@ -375,6 +383,34 @@ export class StockComponent implements OnInit {
       console.log(res);
 
     });
+  }
+
+  addSupplierToArray() { 
+    debugger;
+    var detailsToPush = {...this.alternativeSupplier}
+    this.resMaterial.alternativeSuppliers.push(detailsToPush);
+
+  }
+
+
+  open(supplierList) {
+    debugger;
+    this.modalService.open(supplierList, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 
 
@@ -888,6 +924,10 @@ export class StockComponent implements OnInit {
 
   async openDataMaterial(materNum) {
     debugger
+
+    let tempArray = this.resMaterial.alternativeSuppliers.map(x => x)
+    this.alterSuppliers = tempArray;
+
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -1029,10 +1069,15 @@ export class StockComponent implements OnInit {
       debugger
       this.inventoryService.addNewMaterial(this.resMaterial).subscribe(res => {
         debugger
-        this.toastSrv.success("New material item created");
-        this.materials.push(res);
 
-        this.clearFields();
+        if(res == "פריט קיים במערכת !") { 
+          this.toastSrv.error("פריט קיים במערכת !")
+        } else { 
+          
+          this.toastSrv.success("New material item created");
+          this.components.push(res);
+  
+        }
      
       });
 
@@ -1131,6 +1176,8 @@ debugger
   editMaterialItemDetails() {
     debugger
     this.resMaterial;
+    
+  
     if (confirm("לעדכן פריט?")) {
 
       this.inventoryService.updateMaterial(this.resMaterial).subscribe(res => {

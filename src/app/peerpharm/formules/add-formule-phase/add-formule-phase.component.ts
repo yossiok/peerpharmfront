@@ -63,11 +63,17 @@ export class AddFormulePhaseComponent implements OnInit {
     debugger
 
     if (this.phaseForm.value.phaseNumber) {
+      this.phaseForm.value.formuleId = this.formuleBase.base._id
+      this.phaseForm.value.formuleName = this.formuleBase.base.name
+      this.phaseForm.value.formuleNumber = this.formuleBase.base.number
+
       this.phaseForm.value._id = undefined;
       this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(newPhase => {
         if (typeof (newPhase) != 'string' && newPhase != null) {
           this.phaseForm.value._id = newPhase._id;
           this.phaseValidation();
+          
+          
 
         } else {
           // newPhase returns "phase exist in formule"
@@ -90,17 +96,26 @@ export class AddFormulePhaseComponent implements OnInit {
               this.phaseForm.controls._id.setValue(existingPhase._id);
               this.phaseValidation();
 
+
             }
           });
       }
     }
 
+    
+    
 
 
 
 
+  }
 
+  clearFields() { 
 
+    
+    this.phaseForm.value.phaseNumber = "";
+    this.phaseForm.value.phaseName = "";
+    this.phaseForm.value.phaseInstructions = "";
   }
 
   phaseValidation() {

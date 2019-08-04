@@ -351,6 +351,7 @@ debugger
   // }
 
   submitForm(){
+    debugger
     // shelf general position
     this.newMaterialArrival.controls.position.setValue('GENERAL');
     this.materialNum= this.newMaterialArrival.value.internalNumber;
@@ -424,6 +425,7 @@ debugger
 
 
   checkLotNumber(){
+    debugger
     var form= this.newMaterialArrival;
     var inventoryService = this.invtSer; 
     return new Promise(function (resolve, reject) {
@@ -454,6 +456,7 @@ debugger
 
 
   addMaterialToStock(){
+    debugger
     let formToSend= this.newMaterialArrival.value;
     formToSend.lastUpdate= new Date();
     formToSend.lastUpdateUser= this.user;

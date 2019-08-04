@@ -23,6 +23,12 @@ export class InventoryRequestService {
     return this.http.post(url, JSON.stringify(reqObj), this.options).pipe(map(res => res.json()));
   }
 
+  getInventoryRequestsListWeek():Observable<any> {
+    debugger
+    let url = this.baseUrl + "inventoryRequest?week=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getLastRequsetId():Observable<any>  {
     let url = this.baseUrl + "inventoryRequest?lastReqId=yes" ;
     //returns one object not array

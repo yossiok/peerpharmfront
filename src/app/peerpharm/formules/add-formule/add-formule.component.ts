@@ -196,7 +196,7 @@ export class AddFormuleComponent implements OnInit {
       ph: [parnetFormule.ph,],
       client: [parnetFormule.client, Validators.required],
       formuleParentId: [parnetFormule._id,],
-      parent: ['false',]
+      parent: [false,]
     });
 
 
