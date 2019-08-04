@@ -25,7 +25,7 @@ export class InventoryRequestService {
 
   getInventoryRequestsListWeek():Observable<any> {
     debugger
-    let url = this.baseUrl + "inventoryRequest?week=yes";
+    let url = this.baseUrl + "inventoryRequest/byDate";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

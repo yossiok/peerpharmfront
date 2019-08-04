@@ -21,6 +21,7 @@ export class InventoryRequestsComponent implements OnInit {
   @Output() outPutItemsArray = new EventEmitter();
 
   ngOnInit() {
+    this.getAllHistoryRequests();
     debugger;
     this.notificationService.newInventoryReqEventEmitter.subscribe(data=>{
       debugger
@@ -30,19 +31,28 @@ export class InventoryRequestsComponent implements OnInit {
         this.getAllGeneralDemands();
       }
     });
-    this.getAllGeneralDemands();
     
+
+    this.getAllGeneralDemands();
+}
+
+  getAllHistoryRequests() { 
+
     this.inventoryReqService.getInventoryRequestsListWeek().subscribe(data =>{
       debugger;
       this.allRequests = data;
+      debugger;
       console.log(this.allRequests)
   });
-}
+
+  }
   getNewIncomingInventoryReq(){
     this.getAllGeneralDemands();        
   }
+  
   getAllGeneralDemands(){
     this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
+      debugger;
         console.log(res);
         res.forEach(InvRequest => {
           if(InvRequest.reqList!=null && InvRequest.reqList!=undefined){
