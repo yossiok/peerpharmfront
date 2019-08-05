@@ -62,7 +62,7 @@
           <input [(ngModel)]="batch.barrels" style="box-shadow: 1px 1px 2px;" class="addBatchInput" placeholder="barrels" type="number">
           <input [(ngModel)]="batch.order" class="addBatchInput" placeholder="order" type="text">
           <input [(ngModel)]="batch.item" class="addBatchInput" placeholder="item" type="text">
-          <button style="cursor: pointer;" style="box-shadow: 1px 1px 3px black;" class="addBtn btn btn-info" (click)="addBatch()">Add</button><br />
+          <button *ngIf="alowUserEditBatches" style="cursor: pointer;" style="box-shadow: 1px 1px 3px black;" class="addBtn btn btn-info" (click)="addBatch()">Add</button><br />
         </tr>
         <ng-container>
           <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let batch of batches; let i = index" [style.background-color]="batch.color">

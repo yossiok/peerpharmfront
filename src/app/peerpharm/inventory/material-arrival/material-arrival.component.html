@@ -15,8 +15,8 @@
         <div #arrivalForm id="arrivalForm">
           
             <div *ngIf="!requiresFromFull" class="mh-85 container" style="overflow: auto; height: 80vh;">
-              <h2 style='text-align: center; font-weight: bold;'><u>טופס בדיקת חו"ג</u></h2>
-              <h4 style='text-align: center; font-weight: bold;'>דרישות ביקורת קבלה</h4>
+              <h2 style='text-align: center; font-weight: bold;'><u>בדיקת חו"ג</u></h2>
+              <h4 style='text-align: center; font-weight: bold;'></h4>
               <div dir="rtl" class="divStyle">
                   <span class="spanTDStyle">
                       <label style="padding-left:15px; ">מק"ט</label>
@@ -76,7 +76,7 @@
                         </tr>
                         <tr>
                           <td>
-                              זיהוי מספר מנה
+                              זיהוי מספר אצוות יצרן
                           </td>
                           <td>
                             <span class="spanTDStyle">
@@ -148,7 +148,7 @@
                         </tr>
                         <tr>
                           <td>
-                              קיום COC ספק לפי מס' מנה
+                              קיום COA ספק לפי מס' אצוות יצרן
                           </td>
                           <td>
                             <span class="spanTDStyle">
@@ -172,36 +172,21 @@
                             </span>
                             <span class="spanTDStyle">
                               <label for="">לא נדרש</label>
-                              <input type="radio" name="labReport" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
+                              <input type="radio" name="labReport"  style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
                         </tr>
                         <tr>
                           <td>
-                              מסמכים נלווים ישימים
+                              SDS/MSDS
                           </td>
                           <td>
                             <span class="spanTDStyle">
-                              <label for="">קיים</label>
-                              <input type="radio" name="moreDocs" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
-                            </span>
-                            <span class="spanTDStyle">
-                              <label for="">לא קיים</label>
-                              <input type="radio" name="moreDocs" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
-                            </span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                              SDS
-                          </td>
-                          <td>
-                            <span class="spanTDStyle">
-                              <label for="">קיים</label>
+                              <label for="">נדרש</label>
                               <input type="radio" name="sds" style="padding-right: 10px;"  [checked]="true" (change)="checkRadio($event, true)">
                             </span>
                             <span class="spanTDStyle">
-                              <label for="">לא קיים</label>
+                              <label for="">לא נדרש</label>
                               <input type="radio" name="sds" style="padding-right: 10px;" [checked]="false" (change)="checkRadio($event, false)">
                             </span>
                           </td>
@@ -470,11 +455,11 @@
                     <td id='itemNumber'>מק"ט: <u >{{ materialNum }}</u></td>
                   </tr>
                   <tr>
-                    <td *ngIf="!smallText" [style.font-size.px]="40" [style.font-weight]="900" >שם: <u dir="ltr">{{ materialName }}</u></td>
+                    <td *ngIf="!smallText" [style.font-size.px]="35" [style.font-weight]="900" >שם: <u dir="ltr">{{ materialName }}</u></td>
                     <td *ngIf="smallText" [style.font-size.px]="25" [style.font-weight]="900" >שם: <u dir="ltr">{{ materialName }}</u></td>
                   </tr>
                   <tr>
-                    <td>אצווה: <u dir="ltr">{{ lotNumber }}</u></td>
+                    <td>אצווה: <u dir="rtl">{{ lotNumber }}</u></td>
                   </tr>
                   <tr>
                     <td>ת.יצור: <u dir="ltr">{{ productionDate | date: 'dd/MM/yyyy' }}</u></td>

@@ -70,6 +70,11 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getMaterialtByNumber(materialNumber):Observable<any>{
+    let url = this.baseUrl + "material?componentN="+materialNumber
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   checkIfShelfExist(shelfPosition,whareHouseId){
     let url = this.baseUrl + "shell?shelfPosition="+shelfPosition+"&whareHouseId="+whareHouseId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

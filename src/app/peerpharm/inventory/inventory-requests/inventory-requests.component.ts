@@ -49,7 +49,7 @@ export class InventoryRequestsComponent implements OnInit {
   getNewIncomingInventoryReq(){
     this.getAllGeneralDemands();        
   }
-  
+
   getAllGeneralDemands(){
     this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
       debugger;
@@ -70,6 +70,7 @@ export class InventoryRequestsComponent implements OnInit {
   }
 
   getDetails(reqId, orderNumber): void {
+    debugger
     this.EditRowId2nd = reqId;
     if (this.expand === true) {
        this.expand = false;

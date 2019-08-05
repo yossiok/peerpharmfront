@@ -45,7 +45,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
               <input disabled #supplierNumber  type='text'  [value]="arrival.supplierNumber" style='width: auto'>
             </td>
 
-            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:6%; padding:5px">{{arrival.totalQnt}}</td>
+            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:6%; padding:5px">{{arrival.totalQnt}} {{arrival.packageType}}</td>
             <td *ngIf="arrival._id==EditRowId"  style="width:6%; padding:5px">
               <input  #quantity  type='number'  [value]="arrival.totalQnt" style='width: 50px'>
             </td>
@@ -133,7 +133,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
                   <tr>
                     
                     
-                      <td dir="ltr"><span [style.font-size.px]="25" >אצווה: </span> {{ lotNumber }}</td>
+                      <td dir="rtl"><span [style.font-size.px]="25" >אצווה: </span> {{ lotNumber }}</td>
                       <td><span [style.font-size.px]="25" >ת.תפוגה: </span> {{ expiryDate | date: 'dd/MM/yyyy' }}</td>
                   </tr>
                   <tr>

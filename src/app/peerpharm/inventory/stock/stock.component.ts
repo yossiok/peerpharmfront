@@ -1073,7 +1073,7 @@ export class StockComponent implements OnInit {
         if(res == "פריט קיים במערכת !") { 
           this.toastSrv.error("פריט קיים במערכת !")
         } else { 
-          
+
           this.toastSrv.success("New material item created");
           this.components.push(res);
   
@@ -1084,6 +1084,19 @@ export class StockComponent implements OnInit {
     }
 
   }
+
+  checkIfExist(ev) {
+    debugger;
+   if(ev.target.value !="") { 
+     this.inventoryService.getMaterialtByNumber(ev.target.value).subscribe(data=>{
+       if(data.length > 0) { 
+         this.toastSrv.error("שים לב , הפריט כבר קיים במערכת !")
+       } else { 
+
+       }
+     })
+   }
+    }
 
   clearFields() { 
 debugger

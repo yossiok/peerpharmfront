@@ -902,7 +902,7 @@
               <div style="margin-left: 10px;box-shadow: 0px 0px 0px;">
                 <tr>
                   <th>Item Number</th>
-                  <td><input [(ngModel)]="resMaterial.componentN" style="margin-left: 1px;" class="itemInput"
+                  <td><input  (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentN" style="margin-left: 1px;" class="itemInput"
                       type='text'>
 
                   </td>
@@ -962,6 +962,10 @@
                   <option value="barrel">חבית</option>
                   <option value="small barrel">חביונית</option>
                   <option value="packaging/cardboard">אריזות/קרטון</option>
+                  <option value="plastic barrel">חבית פלסטיק</option>
+                  <option value="jerrican">ג'ריקן</option>
+                  <option value="bag">שק</option>
+                  <option value="bottle barrel">דלי בקבוק</option>
                 </select>
               </td>
                 </tr>
