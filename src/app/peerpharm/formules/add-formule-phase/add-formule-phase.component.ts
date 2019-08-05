@@ -68,6 +68,8 @@ export class AddFormulePhaseComponent implements OnInit {
       this.phaseForm.value.formuleNumber = this.formuleBase.base.number
 
       this.phaseForm.value._id = undefined;
+     
+      this.phaseForm.value.items=[];
       this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(newPhase => {
         if (typeof (newPhase) != 'string' && newPhase != null) {
           this.phaseForm.value._id = newPhase._id;

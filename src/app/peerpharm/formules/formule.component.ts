@@ -119,6 +119,7 @@ export class FormuleComponent implements AfterViewInit {
 
 
   onPhaseAdded(phaseToSave) {
+    debugger;
     // check if exist in formule
     let exist = false;
     this.allPhasesForm.map(p => {
@@ -176,6 +177,7 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   onItemAdded(item) {
+    debugger;
     item.phaseId;
     this.phase._id;
     let existinfPhase = this.allPhasesForm.filter(p => {
