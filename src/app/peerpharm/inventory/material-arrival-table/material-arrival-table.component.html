@@ -48,6 +48,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:6%; padding:5px">{{arrival.totalQnt}} {{arrival.packageType}}</td>
             <td *ngIf="arrival._id==EditRowId"  style="width:6%; padding:5px">
               <input  #quantity  type='number'  [value]="arrival.totalQnt" style='width: 50px'>
+              <input  #packageType  type='text'  [value]="arrival.packageType" style='width: 50px'>
             </td>
 
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:8%; padding:5px">{{arrival.supplierName}}</td>

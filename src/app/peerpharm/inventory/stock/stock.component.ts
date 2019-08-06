@@ -55,7 +55,8 @@ export class StockComponent implements OnInit {
 
   }
   alternativeSupplier: any = {
-    name:''
+    name:'',
+    material:''
   }
   alterSuppliers: any[];
   buttonColor: string = 'white';
@@ -389,6 +390,7 @@ export class StockComponent implements OnInit {
     debugger;
     var detailsToPush = {...this.alternativeSupplier}
     this.resMaterial.alternativeSuppliers.push(detailsToPush);
+    this.toastSrv.success("הוספת ספק בהצלחה , אנא לא לשכוח לשמור !")
 
   }
 

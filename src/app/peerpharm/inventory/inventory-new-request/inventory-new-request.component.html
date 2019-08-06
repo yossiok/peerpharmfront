@@ -100,10 +100,14 @@
                                   <th>Amount</th>
                                   <th>Related Order</th>
                                   <th>Remarks</th>
+                                  <th><button  
+                                    printTitle="Print"  
+                                    printSectionId="print-section"  
+                                    ngxPrint><img style="width:60px;height:30px;" src="../assets/images/print.jpg"/></button></th>
                                   <th></th>
                                 </tr>
                               </thead>
-                              <ng-container *ngFor="let reqItem of reqList; let i =index">
+                              <ng-container id="print-section" *ngFor="let reqItem of reqList; let i =index">
                                 <tr>
                                   <td>{{i+1}}</td>
                                   <td>{{reqItem.itemNumber}}</td>

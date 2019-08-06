@@ -63,6 +63,7 @@ export class WizardComponent implements OnInit {
   }
 
   checkMaterial(){
+    debugger;
     this.wrongItem= null;
     const that= this;
     return new Promise(async function (resolve, reject) {

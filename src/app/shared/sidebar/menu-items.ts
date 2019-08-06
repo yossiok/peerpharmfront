@@ -282,7 +282,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-     
+      {
+        path: '/peerpharm/procurement/newProcurement',
+        title: 'New Procurement',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
 
     ]
   },

@@ -41,6 +41,7 @@ import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
 import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
 import { ItemreportsComponent } from './items/itemreports/itemreports.component';
+import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -334,6 +335,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Procurement Order Items'
     },
     component: ProcurementOrderItemComponent
+  },
+  {
+    path : 'procurement/newProcurement',
+    data : {
+      title : 'New Procurement'
+    },
+    component: NewProcurementComponent
   }
 
 ];

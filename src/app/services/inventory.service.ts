@@ -268,6 +268,7 @@ getMaterialStockItemByNum(internalNumber):Observable<any>{
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 getMaterialStockItemById(id):Observable<any>{
+  debugger
   let url = this.baseUrl + "material?materialId="+id ;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }

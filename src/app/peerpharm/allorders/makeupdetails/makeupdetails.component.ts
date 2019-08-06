@@ -263,7 +263,7 @@ export class MakeupdetailsComponent implements OnInit {
 
 
 GetAll() { 
-   
+   debugger;
   if(this.makeup.itemNumber != "") {
   
   this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{

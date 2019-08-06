@@ -337,12 +337,14 @@
         
             <tr>
               <th><input [(ngModel)]="alternativeSupplier.name" placeholder="Alternative Supplier"/></th>
+              <th><input [(ngModel)]="alternativeSupplier.material" placeholder="Alternative Material"/></th>
               <th><button (click)="addSupplierToArray()">Add</button></th>
             </tr>
           </thead>
           <tbody id="table_body">
             <tr *ngFor="let alterSupplier of alterSuppliers" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
               <td>{{alterSupplier.name}}</td>
+              <td>{{alterSupplier.material}}</td>
             </tr>
           </tbody>
         </table>
@@ -976,7 +978,7 @@
                 </tr>
 
                 <tr>
-                  <th (click)="open(supplierList)">Supplier</th>
+                  <th style="cursor: pointer" (click)="open(supplierList)"><u>Supplier</u></th>
                   <td>
                       <input type="text" class="itemInput" [(ngModel)]="resMaterial.suplierName"/>
                   </td>

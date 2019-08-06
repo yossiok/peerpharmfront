@@ -49,6 +49,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { ProcurementOrderItemBalanceComponent } from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
 import { ProcurementOrdersComponent } from './procurement/procumentOrders/procurementOrders.component';
 import { ProcurementOrderItemComponent } from './procurement/procumentOrderItem/procurementOrderItem.component';
+import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
 
 import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -183,6 +184,7 @@ import { DateExpiredDirective } from '../directives/date-expired.directive';
     ProcurementOrderItemBalanceComponent,
     ProcurementOrdersComponent,
     ProcurementOrderItemComponent,
+    NewProcurementComponent,
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,

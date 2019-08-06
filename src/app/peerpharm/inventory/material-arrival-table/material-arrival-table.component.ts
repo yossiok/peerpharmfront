@@ -13,6 +13,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   @ViewChild('internalNumber') internalNumber: ElementRef;
   @ViewChild('materName') materName: ElementRef;
   @ViewChild('quantity') quantity: ElementRef;
+  @ViewChild('packageType') packageType: ElementRef;
   @ViewChild('supplierNumber') supplierNumber: ElementRef;
   @ViewChild('supplierName') supplierName: ElementRef;
   @ViewChild('lotNum') lotNum: ElementRef;
@@ -180,6 +181,10 @@ export class MaterialArrivalTableComponent implements OnInit {
   }
 
   saveEdit(currDoc) {
+    debugger;
+    if(this.packageType.nativeElement.value != "" ){
+    this.currentDoc.packageType = this.packageType.nativeElement.value;
+    } 
     this.currentDoc.analysisApproval = this.analysisApproval.nativeElement.checked
     if (this.supplierNumber.nativeElement.value != "") {
        
