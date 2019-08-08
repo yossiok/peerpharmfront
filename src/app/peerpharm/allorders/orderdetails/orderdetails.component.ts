@@ -56,8 +56,8 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   documentationBeforeSend = {
-    customerNumber: '',
-    customerName:'',
+    costumerNumber: '',
+    costumerName:'',
     date:'',
     itemNumber:'',
     batchNumber:'',
@@ -164,7 +164,7 @@ export class OrderdetailsComponent implements OnInit {
     this.getItemAmounts();
     console.log(this.ordersItems)
 
-
+    
     
     this.orderService.openOrdersValidate.subscribe(res=>{
       this.number = this.route.snapshot.paramMap.get('id');
@@ -179,6 +179,7 @@ export class OrderdetailsComponent implements OnInit {
           orders.orderItems.forEach(item => {
             item.isExpand = '+';
             item.colorBtn = '#33FFE0';
+            
           });
           this.ordersData= orders.ordersData;
           await this.colorOrderItemsLines(orders.orderItems).then(data=>{   });
@@ -352,7 +353,8 @@ updateSingleOrderStage(ev){
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
-      
+      this.documentationBeforeSend.costumerNumber = res[0].costumerInternalId
+      this.documentationBeforeSend.costumerName = res[0].costumer
       this.costumerImpRemark = res[0].costumerImpRemark;
       this.ordersData=res;
       this.checkCostumersImportantRemarks(res);
@@ -375,7 +377,7 @@ getItemAmounts() {
 
 getOrderItems(singleLine): void {
     var orderNum;
-     
+     debugger;
     this.number = this.route.snapshot.paramMap.get('id');
     if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
     if(singleLine){
@@ -427,8 +429,9 @@ getOrderItems(singleLine): void {
       if(singleLine){
         this.ordersItems.filter(item=> {
           if(item.itemNumber == orderItems[0].itemNumber){
-             
+             debugger;
             item =orderItems[0];
+            
           }
         });
       }else{
@@ -507,6 +510,7 @@ editBatch(batch){
 }
 
   getDetails(itemNumber, itemId): void {
+    debugger;
     // if(this.inputBatch.nativeElement.value !=undefined){
     //   this.inputBatch.nativeElement.value='';
     // }
@@ -531,6 +535,9 @@ editBatch(batch){
 
     this.ordersItems.filter(item => item.itemNumber == itemNumber).map(item => {
       this.EditRowId='';
+
+      this.documentationBeforeSend.itemNumber = item.itemNumber;
+      this.documentationBeforeSend.batchNumber = item.batch;
       if (item.isExpand == "+") {
         item.isExpand = "-";
         item.colorBtn = '#F7866A';
@@ -546,6 +553,8 @@ editBatch(batch){
     }, 100);  
   }
 
+
+
   edit(id) {
 
     if(id!=''){
@@ -555,9 +564,14 @@ editBatch(batch){
     }
   }
 
-  printStuff() { 
-    console.log(this.bottleList);
-    console.log(this.capList)
+  calculateAllUnits() {
+    var cartons = this.documentationBeforeSend.cartonsNumber
+    var units = this.documentationBeforeSend.unitCartonNumber
+    var partCarton = this.documentationBeforeSend.partCartonNumber
+
+    var sum = (Number(cartons)*Number(units)+Number(partCarton));
+
+    this.documentationBeforeSend.sum = JSON.stringify(sum);
   }
 
   saveEdit() {

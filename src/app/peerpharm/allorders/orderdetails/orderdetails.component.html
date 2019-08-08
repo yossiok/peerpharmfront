@@ -238,10 +238,10 @@
               <td></td>
             </tr>
             <tr>
-              <td>Costumer Number:<input [(ngModel)]="documentationBeforeSend.customerNumber" type="number"/></td>
+              <td>Costumer Number:<input [(ngModel)]="documentationBeforeSend.costumerNumber" type="number"/></td>
               <td></td>
               <td></td>
-              <td>Costumer Name:<input [(ngModel)]="documentationBeforeSend.customerName" type="text"/></td>
+              <td>Costumer Name:<input [(ngModel)]="documentationBeforeSend.costumerName" type="text"/></td>
               <td></td>
               <td></td>
               <td>Date:<input [(ngModel)]="documentationBeforeSend.date" type="date"/></td>
@@ -252,8 +252,8 @@
               <td>Cartons Number:<input [(ngModel)]="documentationBeforeSend.cartonsNumber" type="number"/></td>
               <td>Units Number In Carton:<input [(ngModel)]="documentationBeforeSend.unitCartonNumber" type="number"/></td>
               <td>Units Number in Part Carton:<input  [(ngModel)]="documentationBeforeSend.partCartonNumber"type="number"/></td>
-              <td>Sum:<input [(ngModel)]="documentationBeforeSend.sum" type="text"/></td>
-              <td><button (click)="saveProductDoc()">Save</button></td>
+              <td>Sum:<input (click)="calculateAllUnits()" [(ngModel)]="documentationBeforeSend.sum" type="text"/></td>
+              <td><button class="btn btn-success" (click)="saveProductDoc()">Save</button></td>
             </tr>
             <!-- <tr>
               <td></td>
