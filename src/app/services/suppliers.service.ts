@@ -30,6 +30,11 @@ export class SuppliersService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getSuppliersDiffCollection() {
+    let url = this.baseUrl + "supplier/getsuppliers";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getSuppliersByNumber(supplierN){
     let url = this.baseUrl + "supplier?suplierNumber="+supplierN
     return this.http.get(url).pipe(map(reponse => reponse.json()));

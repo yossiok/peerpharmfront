@@ -140,6 +140,12 @@ export class OrdersService {
     return this.http.post(url, JSON.stringify(order), this.options).pipe(map(res => res.json()))
   }
 
+  addNewProductDoc(productDoc): Observable<any> {
+    debugger;
+    let url = this.baseUrl + "order/productDocg";
+    return this.http.post(url, JSON.stringify(productDoc), this.options).pipe(map(res => res.json()))
+  }
+
   //add new item to order
   addNewOrderItem(orderItem): Observable<any> {
     let url = this.baseUrl + "orderitem/add";

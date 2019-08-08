@@ -55,6 +55,18 @@ export class OrderdetailsComponent implements OnInit {
     status:  '',
   }
 
+  documentationBeforeSend = {
+    customerNumber: '',
+    customerName:'',
+    date:'',
+    itemNumber:'',
+    batchNumber:'',
+    cartonsNumber:'',
+    unitCartonNumber:'',
+    partCartonNumber:'',
+    sum:'',
+  }
+
   allComponents: any[];
   stockItems: any;
   ordersItems;
@@ -246,6 +258,15 @@ export class OrderdetailsComponent implements OnInit {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  saveProductDoc() {
+    debugger;
+    this.orderService.addNewProductDoc(this.documentationBeforeSend).subscribe(data=>{
+      debugger
+      console.log(data);
+
+    })
   }
 
   addItemOrder() {
