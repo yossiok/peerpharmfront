@@ -9,10 +9,10 @@ const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Starter Page',
+      title: 'PeerPharm',
       urls: [
         { title: 'Dashboard', url: '/dashboard' },
-        { title: 'Starter Page' }
+        { title: 'PeerPharm' }
       ]
     },
     component: StarterComponent

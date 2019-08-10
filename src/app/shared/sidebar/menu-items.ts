@@ -129,7 +129,7 @@ export const ROUTES: RouteInfo[] = [
       // },
     ]
   },
-  {
+ /*{
     path: '',
     title: 'Task-Board',
     icon: '  fas fa-thumbtack',
@@ -162,7 +162,7 @@ export const ROUTES: RouteInfo[] = [
       }
 
     ]
-  },
+  },*/
   {
     path: '',
     title: ' Items',
@@ -365,14 +365,14 @@ export const ROUTES: RouteInfo[] = [
 
     {
       path: '',
-      title: 'Forms',
+      title: 'QA',
       icon: ' fab fa-wpforms',
       class: 'has-arrow',
       extralink: false,
       submenu: [
         {
           path: '/peerpharm/forms/forms_list',
-          title: 'Forms List',
+          title: 'Forms',
           icon: 'fas fa-list-ol',
           class: '',
           extralink: false,
@@ -381,8 +381,35 @@ export const ROUTES: RouteInfo[] = [
 
       ]
     },
-    ,
+   
 
+    {
+      path: '',
+      title: 'Reports',
+      icon: 'fab fa-gitter',
+      class: 'has-arrow',
+      extralink: false,
+      submenu: [
+        {
+          path: '/peerpharm/historylogs',
+          title: 'History Action Logs',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
+          path: '/peerpharm/activeusers',
+          title: 'Active Users',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        }
+
+      ]
+    },
+   
 
     {
       path: '',

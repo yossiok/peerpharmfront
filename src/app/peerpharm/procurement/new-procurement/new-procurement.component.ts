@@ -27,8 +27,7 @@ export class NewProcurementComponent implements OnInit {
   ngOnInit() {
   }
 
-  moveToProcItems() { 
-    debugger;
+  moveToProcItems() {  
     if(this.newProcurementForm.value.orderNumber != "") {
       this.procurementSupplier = false;
       this.procurementItems = true;

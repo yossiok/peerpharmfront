@@ -1,54 +1,363 @@
+<div class="container">
+  <div class="col-lg-12" style="direction:rtl; text-align:right ">
+    <div class="card">
+      <div class="card-header bg-info">
+        <h4 class="mb-0 text-white">הקמת פריט רכש חדש</h4>
+      </div>
+      <form action="#">
+        <div class="card-body">
+          <h4 class="card-title">פרטים בסיסיים</h4>
+        </div>
+        <hr />
+        <div class="form-body">
+          <div class="card-body">
+            <div class="row pt-3">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">פריט</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    class="form-control"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <!--/span-->
+              <div class="col-md-6">
+                <div class="form-group has-danger">
+                  <label class="control-label">שם</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    class="form-control form-control-danger"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <!--/span-->
+            </div>
+            <!--/row-->
+            <div class="row">
+              <!--/span-->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">שקיל?</label>
+                  <div class="custom-control custom-radio">
+                    <input
+                      type="radio"
+                      id="customRadio11"
+                      name="customRadio"
+                      class="custom-control-input"
+                    />
+                    <label class="custom-control-label" for="customRadio11"
+                      >כן</label
+                    >
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input
+                      type="radio"
+                      id="customRadio22"
+                      name="customRadio"
+                      class="custom-control-input"
+                    />
+                    <label class="custom-control-label" for="customRadio22"
+                      >לא</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <!--/span-->
 
+              <div class="col-md-6">
+                <div class="form-group has-success">
+                  <label class="control-label">מידה</label>
+                  <select class="form-control custom-select">
+                    <option value=""></option>
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+              <!--/span-->
+            </div>
+            <!--/row-->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">ברקוד</label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      class="form-control"
+                      placeholder=""
+                    />
+                  </div>
+                </div>
+              </div>
 
-<form class="procurementForm" *ngIf="procurementSupplier" [formGroup]="newProcurementForm">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">קוד חלופי</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    class="form-control"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </div>
 
-  <div>
-    <label for="orderNumber">
-      Order Number:
-    </label>
-    <input id="orderNumber" type="text" formControlName="orderNumber">
-  </div>
+            <!--/row-->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group has-success">
+                  <label class="control-label">מחלקה</label>
+                  <select class="form-control custom-select">
+                    <option value=""></option>
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
 
-  <div>
-    <label for="date">
-      Date:
-    </label>
-    <input id="date" type="date" formControlName="date">
-  </div>
+              <div class="col-md-6">
+                <div class="form-group has-success">
+                  <label class="control-label">קבוצה</label>
+                  <select class="form-control custom-select">
+                    <option value=""></option>
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-  <div>
-    <label for="supplier">
-      Supplier:
-    </label>
-    <input id="supplier" type="text" formControlName="supplier">
-  </div>
+            <!--/row-->
+            <h4 class="card-title mt-5">פרטי ספק</h4>
+          </div>
+          <hr />
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group has-success">
+                  <label class="control-label">ספק ראשי</label>
+                  <select class="form-control custom-select">
+                    <option value=""></option>
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
 
-  <button class="button" (click)="moveToProcItems()" >Next</button>
+              <div class="col-md-6 ">
+                <div class="form-group">
+                  <label>פריט ספק</label>
+                  <input type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group has-success">
+                  <label class="control-label">מותג</label>
+                  <select class="form-control custom-select">
+                    <option value=""></option>
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group has-success">
+                  <label class="control-label">יצרן</label>
+                  <select class="form-control custom-select">
+                    <option value=""></option>
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-</form>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">תאריך יציאה</label>
+                  <input type="date" class="form-control" />
+                </div>
+              </div>
 
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">תאריך תוקף</label>
+                  <input type="date" class="form-control" />
+                </div>
+              </div>
+            </div>
 
-<div style="background:rgba(255, 255, 255, 0.103);box-shadow: 3px 3px 5px;opacity: 0.7;" *ngIf="procurementItems">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">חסימת רכש</label>
+                  <input type="date" class="form-control" />
+                </div>
+              </div>
 
-  <div>
-  <label>
-    Item Number:
-  </label>
-  <input type="text" placeholder="Item Number"/>
-</div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">חסימת מכירות</label>
+                  <input type="date" class="form-control" />
+                </div>
+              </div>
+            </div>
 
-<div>
-    <label>
-      Item Name:
-    </label>
-    <input type="text" placeholder="Item Name"/>
-  </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">חיסול מתאריך</label>
+                  <input type="date" class="form-control" />
+                </div>
+              </div>
 
-  <div>
-      <label>
-        Price:
-      </label>
-      <input type="text" placeholder="Price"/>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">פריט אב ראשי</label>
+
+                  <select class="form-control custom-select">
+                    <option value="">כן</option>
+                    <option value="">לא</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="card-title mt-5">נתוני רכש ומכירה</h4>
+            </div>
+            <hr />
+            <div class="row">
+              <label class="control-label">נתוני מכירה לפי מטבע : </label>
+              <select class="form-control custom-select">
+                  <option value="">USD</option>
+                  <option value="">GBP</option>
+                  <option value="">EUR</option>
+                </select>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label">מחיר ספק:</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label">מתאריך</label>
+                  <input type="date" class="form-control" />
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label">לכמות</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label">מקדם מכירה</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label">מחיר מכירה:</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label">מתאריך</label>
+                  <input type="date" class="form-control" />
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label">לכמות</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="control-label">אחוז הנחה מירבי</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">פריט ספק:</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">שם פריט ספק</label>
+                  <input class="form-control" type="text" />
+                </div>
+              </div>
+            </div>
+            <div>
+                <h4 class="card-title mt-5">שמות</h4>
+              </div>
+              <hr />
+              <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="control-label">שם חלופי:</label>
+                      <input class="form-control" type="text" />
+                    </div>
+                  </div>
+    
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="control-label">שם לועזי:</label>
+                      <input class="form-control" type="text" />
+                    </div>
+                  </div>
+    
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="control-label">שם משלים:</label>
+                      <input class="form-control" type="text" />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="control-label">קוד חלופי:</label>
+                      <input class="form-control" type="text" />
+                    </div>
+                  </div>
+                </div>
+          </div>
+       
+
+          <div class="form-actions">
+            <div class="card-body">
+              <button type="submit" class="btn btn-success">
+                <i class="fa fa-check"></i> אישור
+              </button>
+              <button type="button" class="btn btn-dark">ביטול</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
-
+  </div>
 </div>

@@ -6,13 +6,15 @@ import {UserInfo} from '../peerpharm/taskboard/models/UserInfo'
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({providedIn:'root'})
 export class UsersService {
+ 
   private baseUrl2 = '/';
 
-  constructor(private http:Http) { }
+  constructor(private http:Http, private httpClient:HttpClient) { }
 
 
   addNewUser(user:UserInfo):Observable<UserInfo>{
@@ -41,6 +43,10 @@ export class UsersService {
     return this.http.get(url)
     .map((res: Response) => res.json())
     .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
+  }
+
+  getAllActiveUsers():Observable<any>{
+    return this.httpClient.get(this.baseUrl2+"sessions");
   }
 
 }

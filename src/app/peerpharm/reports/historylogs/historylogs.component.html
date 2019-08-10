@@ -1,0 +1,35 @@
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Action History Logs</h4>
+            
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Table</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Log Data</th>
+                   
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let log of logs; let i=index">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{log.userName}}</td>
+                        <td>{{log.action}}</td>
+                        <td>{{log.model}}</td>
+                        <td>{{log.timeStamp|date: 'dd-MM-yyyy h:mm:ss a'}}</td>
+                        <td>{{log.objectToSave}}</td>
+                     
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -50,6 +50,7 @@ import { ProcurementOrderItemBalanceComponent } from './procurement/procurementO
 import { ProcurementOrdersComponent } from './procurement/procumentOrders/procurementOrders.component';
 import { ProcurementOrderItemComponent } from './procurement/procumentOrderItem/procurementOrderItem.component';
 import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
+ 
 
 import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -98,6 +99,8 @@ import { ScanProductComponent } from './production/scan-product/scan-product.com
 import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
 import { ItemreportsComponent } from './items/itemreports/itemreports.component';
 import { DateExpiredDirective } from '../directives/date-expired.directive';
+import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
+import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 
 
 
@@ -203,7 +206,10 @@ import { DateExpiredDirective } from '../directives/date-expired.directive';
     ScanProductComponent,
     SuppliersComponent,
     ItemreportsComponent,
-    DateExpiredDirective
+    DateExpiredDirective,
+    HistorylogsComponent,
+    ActiveusersComponent
+
 
   ],
   providers: [ OrdersService, HttpClientModule],

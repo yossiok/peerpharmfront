@@ -1,0 +1,29 @@
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Shows all currently logged in users</h4>
+           
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Session ID</th>
+                        <th scope="col">Expires</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let user of Allusers; let i=index" >
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{user.user}}</td>
+                        <td>{{user.sessionID}}</td>
+                        <td>{{user.expires}}</td>
+                    </tr>
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

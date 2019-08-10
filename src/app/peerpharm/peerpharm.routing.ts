@@ -42,6 +42,8 @@ import { ScanProductComponent } from './production/scan-product/scan-product.com
 import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
 import { ItemreportsComponent } from './items/itemreports/itemreports.component';
 import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
+import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
+import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -195,13 +197,13 @@ export const PeerPharmRputs: Routes =[
     },
     component: MaterialScanViewComponent,
   },
-  {
+ /* {
     path: 'taskboard/main',
     data: {
       title: 'task-board'
     },
     component: ContentComponent
-  },
+  },*/
   {
     path: 'formule/addnewformule',
     data: {
@@ -307,6 +309,28 @@ export const PeerPharmRputs: Routes =[
     },
     component: NotificationComponent
   }
+
+  ,
+  {
+    path :'activeusers',
+    data :{
+      title : 'Active Users'
+    },
+    component: ActiveusersComponent
+  }
+
+
+  ,
+  {
+    path :'historylogs',
+    data :{
+      title : 'History Logs'
+    },
+    component: HistorylogsComponent
+  }
+
+
+
   ,
   {
     path :'procurement/procurementOrderItemBalance',
