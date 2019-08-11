@@ -17,7 +17,7 @@
                    
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="hasAuthorization">
                     <tr *ngFor="let log of logs; let i=index">
                         <th scope="row">{{i+1}}</th>
                         <td>{{log.userName}}</td>

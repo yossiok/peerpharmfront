@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { UserInfo } from '../../taskboard/models/UserInfo';
 
 
 @Component({
@@ -15,6 +17,8 @@ export class NewProcurementComponent implements OnInit {
   procurementSupplier:boolean = true;
   procurementItems:boolean = false;
   allSuppliers:any[];
+  hasAuthorization:boolean = false;
+  user: UserInfo;
 
   newProcurement = {
 
@@ -23,12 +27,13 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
-  constructor(private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
+  constructor(private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
 
   }
 
   ngOnInit() {
     this.getAllSuppliers();
+    this.getUserInfo();
   }
 
   moveToProcItems() {  
@@ -51,5 +56,32 @@ export class NewProcurementComponent implements OnInit {
     this.supplierService.getSuppliersDiffCollection().subscribe(data=>{
     this.allSuppliers = data;
     })
+  }
+
+  async getUserInfo() {
+    debugger
+    await this.authService.userEventEmitter.subscribe(user => {
+      this.user=user;
+      // this.user=user.loggedInUser;
+      // if (!this.authService.loggedInUser) {
+      //   this.authService.userEventEmitter.subscribe(user => {
+      //     if (user.userName) {
+      //       this.user = user;
+            
+      //     }
+      //   });
+      // }
+      // else {
+      //   this.user = this.authService.loggedInUser;
+      // }
+      if (this.user.authorization){
+        debugger
+        if (this.authService.loggedInUser.authorization.includes("viewReports")){
+          this.hasAuthorization=true;
+        }
+      }
+
+    });
+
   }
 }
