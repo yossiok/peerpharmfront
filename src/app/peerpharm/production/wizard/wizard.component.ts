@@ -34,6 +34,7 @@ export class WizardComponent implements OnInit {
   @ViewChild('materialId') materialId: ElementRef;
   
   ngOnInit() {
+    debugger;
     this.scheduleId = this.route.snapshot.queryParamMap.get('schedule');
     this.formuleService.getFormBySchedleId(this.scheduleId).subscribe(form=>{
       if(form!=null){

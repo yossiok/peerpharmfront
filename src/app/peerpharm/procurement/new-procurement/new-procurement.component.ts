@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { SuppliersService } from 'src/app/services/suppliers.service';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 
 @Component({
@@ -12,19 +14,21 @@ export class NewProcurementComponent implements OnInit {
   newProcurementForm:any;
   procurementSupplier:boolean = true;
   procurementItems:boolean = false;
+  allSuppliers:any[];
 
-  constructor(public formBuilder: FormBuilder,) { 
+  newProcurement = {
 
+    itemNumber: '',
+    itemName:'',
 
-  this.newProcurementForm = this.formBuilder.group({
-    orderNumber:'',
-    date:'',
-    supplier:'',
+  }
 
-  })
+  constructor(private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
+
   }
 
   ngOnInit() {
+    this.getAllSuppliers();
   }
 
   moveToProcItems() {  
@@ -32,5 +36,20 @@ export class NewProcurementComponent implements OnInit {
       this.procurementSupplier = false;
       this.procurementItems = true;
     }
+  }
+
+  findMaterialByNumber(){
+    debugger;
+    this.inventoryService.getMaterialStockItemByNum(this.newProcurement.itemNumber).subscribe(data=>{
+      debugger;
+     data;
+     this.newProcurement.itemName = data[0].componentName; 
+    })
+  }
+
+  getAllSuppliers() { 
+    this.supplierService.getSuppliersDiffCollection().subscribe(data=>{
+    this.allSuppliers = data;
+    })
   }
 }

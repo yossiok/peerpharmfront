@@ -6,144 +6,19 @@
       </div>
       <form action="#">
         <div class="card-body">
-          <h4 class="card-title">פרטים בסיסיים</h4>
+          <h4 class="card-title">פרטי ספק</h4>
         </div>
         <hr />
         <div class="form-body">
-          <div class="card-body">
-            <div class="row pt-3">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">פריט</label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    class="form-control"
-                    placeholder=""
-                  />
-                </div>
-              </div>
-              <!--/span-->
-              <div class="col-md-6">
-                <div class="form-group has-danger">
-                  <label class="control-label">שם</label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    class="form-control form-control-danger"
-                    placeholder=""
-                  />
-                </div>
-              </div>
-              <!--/span-->
-            </div>
-            <!--/row-->
-            <div class="row">
-              <!--/span-->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">שקיל?</label>
-                  <div class="custom-control custom-radio">
-                    <input
-                      type="radio"
-                      id="customRadio11"
-                      name="customRadio"
-                      class="custom-control-input"
-                    />
-                    <label class="custom-control-label" for="customRadio11"
-                      >כן</label
-                    >
-                  </div>
-                  <div class="custom-control custom-radio">
-                    <input
-                      type="radio"
-                      id="customRadio22"
-                      name="customRadio"
-                      class="custom-control-input"
-                    />
-                    <label class="custom-control-label" for="customRadio22"
-                      >לא</label
-                    >
-                  </div>
-                </div>
-              </div>
-              <!--/span-->
-
-              <div class="col-md-6">
-                <div class="form-group has-success">
-                  <label class="control-label">מידה</label>
-                  <select class="form-control custom-select">
-                    <option value=""></option>
-                    <option value=""></option>
-                  </select>
-                </div>
-              </div>
-              <!--/span-->
-            </div>
-            <!--/row-->
-            <div class="row">
-              <div class="col-md-6">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label class="control-label">ברקוד</label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      class="form-control"
-                      placeholder=""
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">קוד חלופי</label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    class="form-control"
-                    placeholder=""
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!--/row-->
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group has-success">
-                  <label class="control-label">מחלקה</label>
-                  <select class="form-control custom-select">
-                    <option value=""></option>
-                    <option value=""></option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group has-success">
-                  <label class="control-label">קבוצה</label>
-                  <select class="form-control custom-select">
-                    <option value=""></option>
-                    <option value=""></option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <!--/row-->
-            <h4 class="card-title mt-5">פרטי ספק</h4>
-          </div>
-          <hr />
+         
           <div class="card-body">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group has-success">
                   <label class="control-label">ספק ראשי</label>
                   <select class="form-control custom-select">
-                    <option value=""></option>
-                    <option value=""></option>
+                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
+                    
                   </select>
                 </div>
               </div>
@@ -227,6 +102,138 @@
                 </div>
               </div>
             </div>
+            <h4 class="card-title mt-5">פרטי פריט</h4>
+            <hr>
+            <div class="card-body">
+                <div class="row pt-3">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label  class="control-label">פריט</label>
+                      <input
+                      [(ngModel)]="newProcurement.itemNumber"
+                      [ngModelOptions]="{standalone: true}"
+                        type="text"
+                        id="firstName"
+                        class="form-control"
+                        placeholder=""
+                        (change)="findMaterialByNumber()"
+                      />
+                    </div>
+                  </div>
+                  <!--/span-->
+                  <div class="col-md-6">
+                    <div class="form-group has-danger">
+                      <label  class="control-label">שם</label>
+                      <input
+                      [(ngModel)]="newProcurement.itemName"
+                      [ngModelOptions]="{standalone: true}"
+                        type="text"
+                        id="lastName"
+                        class="form-control form-control-danger"
+                        placeholder=""
+                       
+                      />
+                    </div>
+                  </div>
+                  <!--/span-->
+                </div>
+                <!--/row-->
+                <div class="row">
+                  <!--/span-->
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label">שקיל?</label>
+                      <div class="custom-control custom-radio">
+                        <input
+                          type="radio"
+                          id="customRadio11"
+                          name="customRadio"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="customRadio11"
+                          >כן</label
+                        >
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <input
+                          type="radio"
+                          id="customRadio22"
+                          name="customRadio"
+                          class="custom-control-input"
+                        />
+                        <label class="custom-control-label" for="customRadio22"
+                          >לא</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <!--/span-->
+    
+                  <div class="col-md-6">
+                    <div class="form-group has-success">
+                      <label class="control-label">מידה</label>
+                      <select class="form-control custom-select">
+                        <option value=""></option>
+                        <option value=""></option>
+                      </select>
+                    </div>
+                  </div>
+                  <!--/span-->
+                </div>
+                <!--/row-->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="control-label">ברקוד</label>
+                        <input
+                          type="text"
+                          id="firstName"
+                          class="form-control"
+                          placeholder=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+    
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label">קוד חלופי</label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        class="form-control"
+                        placeholder=""
+                      />
+                    </div>
+                  </div>
+                </div>
+    
+                <!--/row-->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group has-success">
+                      <label class="control-label">מחלקה</label>
+                      <select class="form-control custom-select">
+                        <option value=""></option>
+                        <option value=""></option>
+                      </select>
+                    </div>
+                  </div>
+    
+                  <div class="col-md-6">
+                    <div class="form-group has-success">
+                      <label class="control-label">קבוצה</label>
+                      <select class="form-control custom-select">
+                        <option value=""></option>
+                        <option value=""></option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+    
+                <!--/row-->
+              </div>
 
             <div>
               <h4 class="card-title mt-5">נתוני רכש ומכירה</h4>
@@ -235,9 +242,10 @@
             <div class="row">
               <label class="control-label">נתוני מכירה לפי מטבע : </label>
               <select class="form-control custom-select">
-                  <option value="">USD</option>
-                  <option value="">GBP</option>
-                  <option value="">EUR</option>
+                  <option value="usd">USD</option>
+                  <option value="nis">NIS</option>
+                  <option value="gbp">GBP</option>
+                  <option value="eur">EUR</option>
                 </select>
             </div>
             <div class="row">
