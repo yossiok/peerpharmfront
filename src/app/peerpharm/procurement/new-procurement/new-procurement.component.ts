@@ -18,7 +18,7 @@ export class NewProcurementComponent implements OnInit {
   procurementItems:boolean = false;
   allSuppliers:any[];
   hasAuthorization:boolean = false;
-  user: UserInfo;
+  
 
   newProcurement = {
 
@@ -33,7 +33,7 @@ export class NewProcurementComponent implements OnInit {
 
   ngOnInit() {
     this.getAllSuppliers();
-    this.getUserInfo();
+    
   }
 
   moveToProcItems() {  
@@ -58,30 +58,5 @@ export class NewProcurementComponent implements OnInit {
     })
   }
 
-  async getUserInfo() {
-    debugger
-    await this.authService.userEventEmitter.subscribe(user => {
-      this.user=user;
-      // this.user=user.loggedInUser;
-      // if (!this.authService.loggedInUser) {
-      //   this.authService.userEventEmitter.subscribe(user => {
-      //     if (user.userName) {
-      //       this.user = user;
-            
-      //     }
-      //   });
-      // }
-      // else {
-      //   this.user = this.authService.loggedInUser;
-      // }
-      if (this.user.authorization){
-        debugger
-        if (this.authService.loggedInUser.authorization.includes("viewReports")){
-          this.hasAuthorization=true;
-        }
-      }
 
-    });
-
-  }
 }
