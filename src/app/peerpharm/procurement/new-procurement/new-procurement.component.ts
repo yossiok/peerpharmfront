@@ -24,6 +24,7 @@ export class NewProcurementComponent implements OnInit {
 
     itemNumber: '',
     itemName:'',
+    supplierNumber:'',
 
   }
 
@@ -56,6 +57,15 @@ export class NewProcurementComponent implements OnInit {
     this.supplierService.getSuppliersDiffCollection().subscribe(data=>{
     this.allSuppliers = data;
     })
+  }
+
+  findSupplierByNumber(ev) {
+    debugger;
+    let supplier = ev.target.value;
+    let result =  this.allSuppliers.filter(x => supplier == x.suplierName)
+    
+    this.newProcurement.supplierNumber = result[0].suplierNumber
+    
   }
 
 

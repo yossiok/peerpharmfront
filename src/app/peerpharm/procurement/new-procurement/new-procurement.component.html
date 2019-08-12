@@ -16,8 +16,8 @@
               <div class="col-md-6">
                 <div class="form-group has-success">
                   <label class="control-label">ספק ראשי</label>
-                  <select class="form-control custom-select">
-                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
+                  <select (change)="findSupplierByNumber($event)" class="form-control custom-select">
+                    <option   *ngFor="let supplier of allSuppliers"  value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
                     
                   </select>
                 </div>
@@ -25,8 +25,8 @@
 
               <div class="col-md-6 ">
                 <div class="form-group">
-                  <label>פריט ספק</label>
-                  <input type="text" class="form-control" />
+                  <label>מספר ספק</label>
+                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierNumber" type="text" class="form-control"   />
                 </div>
               </div>
             </div>
