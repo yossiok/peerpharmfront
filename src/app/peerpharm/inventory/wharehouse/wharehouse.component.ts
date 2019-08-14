@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
 import { map } from 'rxjs-compat/operator/map';
 import { last } from '../../../../../node_modules/@angular/router/src/utils/collection';
+import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -35,7 +36,25 @@ StkMngNavBtnColor:String ="#1affa3";
 WhMngNavBtnColor:String ="";
 ItemsOnShelf:Array<any>;
 listToPrint:Array<any>=[];
+closeResult: string;
 
+
+packingMaterialCheck = {
+  orderCompareIfFalse:'',
+  orderCompareTrue:'',
+  packageQuantityIfFalse:'',
+  packageQuantityTrue:'',
+  packageCompleteIfFalse:'',
+  packageCompleteTrue:'',
+  packageSealedIfFalse:'',
+  packageSealedTrue:'',
+  printingCompleteIfFalse:'',
+  printingCompleteTrue:'',
+  remarks:'',
+  signature:'',
+  itemNumber:''
+
+}
 
 
   @ViewChild('container')
@@ -61,7 +80,7 @@ listToPrint:Array<any>=[];
   loadingToTable:boolean=false;
   editWharehouses: Boolean=false;
   
-  constructor(private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService , private inventoryReqService: InventoryRequestService ,private toastSrv: ToastrService, ) { 
+  constructor(private modalService:NgbModal,private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService , private inventoryReqService: InventoryRequestService ,private toastSrv: ToastrService, ) { 
 
 // new ----------------------
     this.itemLine = fb.group({
@@ -70,6 +89,7 @@ listToPrint:Array<any>=[];
       position: ['', Validators.required],
       relatedOrder: [''],
       arrivalDate: [Date],
+      packingMaterialCheck:[[],],
       destShelf:[''],
       destShelfId:[''],
       deliveryNote:[''],
@@ -81,9 +101,12 @@ listToPrint:Array<any>=[];
   }
 
   ngOnInit() {
+    
+ 
     // let todayStr=moment(this.today).format("YYYY-MM-DD");
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
     this.getUserWhs()
+    
   }
 
   getUserWhs(){
@@ -354,6 +377,12 @@ listToPrint:Array<any>=[];
     
  }
 
+ sendPackingMaterialCheck() { 
+   debugger;
+  let DetailsToPush = {...this.packingMaterialCheck}
+  this.itemLine.value.packingMaterialCheck.push(DetailsToPush)
+   
+ }
 
 
  loadShelfToInput(position, ev){
@@ -509,6 +538,7 @@ deleteLine(itemFromInvReq,index,ev){
   }
 
   async checkLineValidation(itemLine,index,ev:any, lineqnt){
+    debugger;
     let stockType;
     if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem")  stockType="component";
     if(this.curentWhareHouseName == "Rosh HaAyin products")  stockType="product";
@@ -696,6 +726,27 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
 
 }
 
+
+
+open(packMaterialForm) {
+  debugger;
+  this.modalService.open(packMaterialForm, {size:'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.closeResult = `Closed with: ${result}`;
+  }, (reason) => {
+    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  });
+}
+
+
+private getDismissReason(reason: any): string {
+  if (reason === ModalDismissReasons.ESC) {
+    return 'by pressing ESC';
+  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    return 'by clicking on a backdrop';
+  } else {
+    return  `with: ${reason}`;
+  }
+}
 
 
 

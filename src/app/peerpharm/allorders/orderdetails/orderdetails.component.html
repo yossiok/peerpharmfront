@@ -508,56 +508,64 @@
           <div *ngIf="bottleList.length>0" class="cmptListDiv">
               <h5>Bottles</h5>
               <div *ngFor="let bottle of bottleList" class="cmptListData">
-                <label>bottle Number: {{bottle.bottleNumber}}</label> &nbsp;&nbsp;
-                <label>Quantity: {{bottle.qnt}}</label>
+                <label>Number: {{bottle.bottleNumber}}</label> &nbsp;&nbsp;
+                <label>Quantity: {{bottle.qnt}}</label> &nbsp;&nbsp;
+                <label [ngClass]="{ minAmount: bottle.qnt > bottle.amount}">Amount: {{bottle.amount}}</label>
               </div>    
           </div>
+
           <div *ngIf="capList.length>0" class="cmptListDiv">
               <h5>Caps</h5>
               <div *ngFor="let cap of capList" class="cmptListData">
-                  <label>cap Number: {{cap.capNumber}}</label> &nbsp;&nbsp;
-                  <label>Quantity: {{cap.qnt}}</label>
+                  <label>Number: {{cap.capNumber}}</label> &nbsp;&nbsp;
+                  <label>Quantity: {{cap.qnt}}</label> &nbsp;&nbsp;
+                  <label>Amount: {{cap.amount}}</label>
               </div>    
           </div>
           <div *ngIf="pumpList.length>0" class="cmptListDiv">
               <h5>Pumps</h5>
               <div *ngFor="let pump of pumpList" class="cmptListData">
-                <label>pump Number: {{pump.pumpNumber}}</label> &nbsp;&nbsp;
-                <label>Quantity: {{pump.qnt}}</label>
+                <label>Number: {{pump.pumpNumber}}</label> &nbsp;&nbsp;
+                <label>Quantity: {{pump.qnt}}</label> &nbsp;&nbsp;
+                <label>Amount: {{pump.amount}}</label>
               </div>    
           </div>
           <div *ngIf="sealList.length>0" class="cmptListDiv">
               <h5>Seals</h5>
               <div *ngFor="let seal of sealList" class="cmptListData">
-                  <label>seal Number: {{seal.sealNumber}}</label> &nbsp;&nbsp;
-                  <label>Quantity: {{seal.qnt}}</label>
+                  <label>Number: {{seal.sealNumber}}</label> &nbsp;&nbsp;
+                  <label>Quantity: {{seal.qnt}}</label> &nbsp;&nbsp;
+                  <label>Amount: {{seal.amount}}</label>
               </div>    
           </div>
           <div *ngIf="stickerList.length>0" class="cmptListDiv">
               <h5>Stickers</h5>
               <div *ngFor="let sticker of stickerList" class="cmptListData">
-                  <label>sticker Number: {{sticker.stickerNumber}}</label> &nbsp;&nbsp;
-                  <label>Quantity: {{sticker.qnt}}</label>
+                  <label>Number: {{sticker.stickerNumber}}</label> &nbsp;&nbsp;
+                  <label>Quantity: {{sticker.qnt}}</label> &nbsp;&nbsp;
+                
               </div>    
           </div>
           <div *ngIf="boxList.length>0" class="cmptListDiv">
               <h5>Boxes</h5>
               <div *ngFor="let box of boxList" class="cmptListData">
-                  <label>box Number: {{box.boxNumber}}</label> &nbsp;&nbsp;
-                  <label>Quantity: {{box.qnt}}</label>
+                  <label>Number: {{box.boxNumber}}</label> &nbsp;&nbsp;
+                  <label>Quantity: {{box.qnt}}</label> &nbsp;&nbsp;
+                  <label>Amount: {{box.amount}}</label>
               </div>    
           </div>
           <div *ngIf="cartonList.length>0" class="cmptListDiv">
               <h5>Master Catons</h5>
               <div *ngFor="let carton of cartonList" class="cmptListData">
-                  <label>carton Number: {{carton.cartonNumber}}</label> &nbsp;&nbsp;
-                  <label>Quantity: {{carton.qnt}}</label>
+                  <label>Number: {{carton.cartonNumber}}</label> &nbsp;&nbsp;
+                  <label>Quantity: {{carton.qnt}}</label> &nbsp;&nbsp;
+                  <label>Amount: {{carton.amount}}</label>
               </div>    
           </div>
           <div *ngIf="platesList.length>0" class="cmptListDiv">
               <h5>Plates</h5>
               <div *ngFor="let plate of platesList" class="cmptListData">
-                  <label>plate Number: {{plate.palletNumber}}</label> &nbsp;&nbsp;
+                  <label>Number: {{plate.palletNumber}}</label> &nbsp;&nbsp;
               </div>    
           </div>
         </div>

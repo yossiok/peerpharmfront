@@ -32,6 +32,8 @@ import { InventoryService } from 'src/app/services/inventory.service';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
+
+  allItems:any[];
   closeResult: string;
   plateImg="";
   printSchedule:any ={
@@ -113,7 +115,7 @@ export class OrderdetailsComponent implements OnInit {
   showingAllOrders:Boolean;
   orderPackingList:Array<any>=[];
   orderItemsComponents:Array<any>=[];
-  orderItemsStock:Array<any>=[];
+  orderItemsStock;
 
   bottleList: Array<any>=[];
   capList: Array<any>=[];
@@ -158,7 +160,9 @@ export class OrderdetailsComponent implements OnInit {
       this.excelService.exportAsExcelFile(data, 'Order '+this.ordersItems[0].orderNumber+' Explode');
    }
 
-  ngOnInit() {
+  async ngOnInit() {
+     this.getAllItems();
+     this.getAllOrdersItems();
     this.getAllComponents();
     console.log('hi');
     this.getItemAmounts();
@@ -249,6 +253,19 @@ export class OrderdetailsComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  getAllOrdersItems() { 
+    debugger;
+    this.orderService.getOpenOrdersItems().subscribe(data=>{
+      this.orderItemsStock = data;
+    })
+  }
+
+  getAllItems() { 
+    this.itemSer.getAllItems().subscribe(data=>{
+      this.allItems = data;
+    })
   }
 
   private getDismissReason(reason: any): string {
@@ -1022,7 +1039,9 @@ editBatch(batch){
   getAllComponents() {
     debugger
     this.inventoryService.getAllComponents().subscribe(components => {
-      this.allComponents = components
+      this.allComponents = components;
+
+      
     });
   }
 
@@ -1046,6 +1065,7 @@ editBatch(batch){
     this.cartonList= [];
     this.itemTreeRemarks= [];
     if(this.ordersItems.length>0){
+      debugger;
       this.internalNumArr=[];
       this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber.trim()) );
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe( async res=>{
@@ -1060,6 +1080,7 @@ editBatch(batch){
 
 
           if (item.bottleNumber!='' && item.bottleNumber!='---' ) {
+            debugger;
             let newCmpt= true;
             if( this.bottleList.map(function (el) { return el.bottleNumber; }).includes(item.bottleNumber) ){
               this.bottleList.map(i=>{
@@ -1067,11 +1088,16 @@ editBatch(batch){
                   newCmpt=false;
                   i.qnt+=parseInt(item.quantity);
                 }
+
               });
             }else{
               if(newCmpt){
-                this.bottleList.push({bottleNumber:item.bottleNumber , qnt:item.quantity});
+                debugger;
+                let bottleAmount = []
+                bottleAmount = this.allComponents.filter(x => x.componentN == item.bottleNumber)
+                this.bottleList.push({bottleNumber:item.bottleNumber , qnt:item.quantity, amount:(bottleAmount[0].amountKasem+bottleAmount[0].amountRH)});
                 newCmpt=false;
+
               }
             }
           }
@@ -1087,7 +1113,9 @@ editBatch(batch){
               });
             }else{
               if(newCmpt){
-                this.capList.push({capNumber:item.capNumber , qnt:item.quantity});
+                let capAmount = []
+                capAmount = this.allComponents.filter(x => x.componentN == item.capNumber)
+                this.capList.push({capNumber:item.capNumber , qnt:item.quantity, amount:(capAmount[0].amountKasem+capAmount[0].amountRH) });
                 newCmpt=false;
               }
             }
@@ -1105,7 +1133,9 @@ editBatch(batch){
               });
             }else{
               if(newCmpt){
-                this.pumpList.push({pumpNumber:item.pumpNumber , qnt:item.quantity});
+                let pumpAmount = []
+                pumpAmount = this.allComponents.filter(x => x.componentN == item.pumpNumber)
+                this.pumpList.push({pumpNumber:item.pumpNumber , qnt:item.quantity , amount:(pumpAmount[0].amountKasem+pumpAmount[0].amountRH) });
                 newCmpt=false;
               }
             }
@@ -1122,7 +1152,9 @@ editBatch(batch){
               });
             }else{
               if(newCmpt){
-                this.sealList.push({sealNumber:item.sealNumber , qnt:item.quantity});
+                let sealAmount = []
+                sealAmount = this.allComponents.filter(x => x.componentN == item.sealNumber)
+                this.sealList.push({sealNumber:item.sealNumber , qnt:item.quantity, amount:(sealAmount[0].amountKasem+sealAmount[0].amountRH)});
                 newCmpt=false;
               }
             }
@@ -1139,6 +1171,7 @@ editBatch(batch){
               });
             }else{
               if(newCmpt){
+              
                 this.stickerList.push({stickerNumber:item.stickerNumber , qnt:item.quantity});
                 newCmpt=false;
               }
@@ -1172,7 +1205,9 @@ editBatch(batch){
               });
             }else{
               if(newCmpt){
-                this.boxList.push({boxNumber:item.boxNumber , qnt:item.quantity});
+                let boxAmount = []
+                boxAmount = this.allComponents.filter(x => x.componentN == item.boxNumber)
+                this.boxList.push({boxNumber:item.boxNumber , qnt:item.quantity, amount:(boxAmount[0].amountKasem+boxAmount[0].amountRH) });
                 newCmpt=false;
               }
             }
@@ -1205,7 +1240,9 @@ editBatch(batch){
               });
             }else{
               if(newCmpt){
-                this.cartonList.push({cartonNumber:item.cartonNumber , qnt: (item.quantity/parseInt(item.PcsCarton)) });
+                let cartonAmount = []
+                cartonAmount = this.allComponents.filter(x => x.componentN == item.cartonNumber)
+                this.cartonList.push({cartonNumber:item.cartonNumber , qnt: (item.quantity/parseInt(item.PcsCarton)), amount:(cartonAmount[0].amountKasem+cartonAmount[0].amountRH) });
                 newCmpt=false;
               }
             }

@@ -70,6 +70,9 @@ td {
     border-bottom: 1px solid #ddd;
     font-family: "Berlin Sans FB"
 }
+.minAmount { 
+  color:red;
+}
 .detilasTable tr{
   border: 0px ;
   background-color: cornsilk;

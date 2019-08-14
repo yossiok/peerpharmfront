@@ -4,6 +4,7 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
+import { Procurementservice } from 'src/app/services/procurement.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
-  constructor(private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
+  constructor(private procurementService: Procurementservice,private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
 
   }
 
@@ -66,6 +67,13 @@ export class NewProcurementComponent implements OnInit {
     
     this.newProcurement.supplierNumber = result[0].suplierNumber
     
+  }
+
+  sendNewProc() { 
+    debugger;
+   this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
+     data;
+   })
   }
 
 

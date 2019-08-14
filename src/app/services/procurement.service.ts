@@ -106,6 +106,12 @@ export class Procurementservice {
     let url = this.baseUrl + 'expectedArrivalController/expectedSupplied';
     return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
   }
+
+  addNewProcurement(obj):Observable<any>{
+    debugger;
+    let url = this.baseUrl + 'newProcurement/add';
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
+  }
   
 
 
