@@ -15,7 +15,7 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group has-success">
-                  <label class="control-label">ספק ראשי</label>
+                  <label class="control-label">ספק</label>
                   <select (change)="findSupplierByNumber($event)" class="form-control custom-select">
                     <option   *ngFor="let supplier of allSuppliers"  value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
                     
@@ -30,26 +30,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group has-success">
-                  <label class="control-label">מותג</label>
-                  <select class="form-control custom-select">
-                    <option value=""></option>
-                    <option value=""></option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group has-success">
-                  <label class="control-label">יצרן</label>
-                  <select class="form-control custom-select">
-                    <option value=""></option>
-                    <option value=""></option>
-                  </select>
-                </div>
-              </div>
-            </div>
+    
 
             <div class="row">
               <div class="col-md-6">
@@ -173,8 +154,10 @@
                     <div class="form-group has-success">
                       <label class="control-label">מידה</label>
                       <select class="form-control custom-select">
-                        <option value=""></option>
-                        <option value=""></option>
+                        <option value="kg">קילו</option>
+                        <option value="liter">ליטר</option>
+                        <option value="unit">יחידה</option>
+                        <option value="box">קופסא</option>
                       </select>
                     </div>
                   </div>
@@ -321,38 +304,6 @@
                 </div>
               </div>
             </div>
-            <div>
-                <h4 class="card-title mt-5">שמות</h4>
-              </div>
-              <hr />
-              <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="control-label">שם חלופי:</label>
-                      <input class="form-control" type="text" />
-                    </div>
-                  </div>
-    
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="control-label">שם לועזי:</label>
-                      <input class="form-control" type="text" />
-                    </div>
-                  </div>
-    
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="control-label">שם משלים:</label>
-                      <input class="form-control" type="text" />
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="control-label">קוד חלופי:</label>
-                      <input class="form-control" type="text" />
-                    </div>
-                  </div>
-                </div>
           </div>
        
 

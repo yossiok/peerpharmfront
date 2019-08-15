@@ -108,13 +108,15 @@ export class FormuleComponent implements AfterViewInit {
 
     newPhase.formuleNumber = this.newFormuleBasic.number;
     newPhase.formuleName = this.newFormuleBasic.name;
+   
     this.formuleService.addNewPhaseToFormule(newPhase).subscribe(phase => {
+      debugger;
       this.disableAddPhase = false;
-      this.phase = newPhase;
+      this.phase = phase;
       this.newPhase = true;
-
+      this.allPhasesForm.push(phase);
     })
-
+    
   }
 
 
@@ -122,25 +124,28 @@ export class FormuleComponent implements AfterViewInit {
     debugger;
     // check if exist in formule
     let exist = false;
-    this.allPhasesForm.map(p => {
+    this.allPhasesForm.forEach(p => {
       if (p.phaseNumber == phaseToSave.phaseNumber) {
         exist = true;
       }
     });
+
+    
     if (!exist) {
+      debugger;
       // ADD PHASE !
-      // this.formuleService.addNewPhaseToFormule(phaseToSave).subscribe(phase=>{
+       this.formuleService.addNewPhaseToFormule(phaseToSave).subscribe(phase=>{
 
       if (phaseToSave._id) {
         this.phase = new FormulePhase();
-        this.phase = phaseToSave;
+        this.phase = phase;
         this.allPhasesForm.push(this.phase);
         this.addItemToScreen();
 
       } else {
         this.toastSrv.error('phase without id')
       }
-      // });
+     });
 
     } else {
       if (confirm('לשמור שינויים בפאזה?')) {

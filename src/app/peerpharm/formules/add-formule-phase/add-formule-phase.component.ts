@@ -44,7 +44,7 @@ export class AddFormulePhaseComponent implements OnInit {
   }
 
   adjustFormData() {
-    
+    debugger;
     if (this.formuleBase.id) this.phaseForm.controls.formuleId.setValue(this.formuleBase.id);
     if (this.formuleBase._id) this.phaseForm.controls.formuleId.setValue(this.formuleBase._id)
     this.phaseForm.controls.formuleNumber.setValue(this.formuleBase.number);
@@ -60,26 +60,29 @@ export class AddFormulePhaseComponent implements OnInit {
   }
   onSubmit() {
 
-    debugger
 
     if (this.phaseForm.value.phaseNumber) {
-      this.phaseForm.value.formuleId = this.formuleBase.base._id
-      this.phaseForm.value.formuleName = this.formuleBase.base.name
-      this.phaseForm.value.formuleNumber = this.formuleBase.base.number
+      this.phaseForm.value.formuleId = this.formuleBase.id
+      this.phaseForm.value.formuleName = this.formuleBase.name
+      this.phaseForm.value.formuleNumber = this.formuleBase.number
 
-      this.phaseForm.value._id = undefined;
+  
      
       this.phaseForm.value.items=[];
-      this.formuleService.addNewPhaseToFormule(this.phaseForm.value).subscribe(newPhase => {
+      this.formuleService.updateFormulePhase(this.phaseForm.value).subscribe(newPhase => {
+        debugger;
+        if(newPhase.msg=="cant update- not same number")
+        {
+          this.phaseValidation(); 
+        }
         if (typeof (newPhase) != 'string' && newPhase != null) {
           this.phaseForm.value._id = newPhase._id;
-          this.phaseValidation();
-          
-          
+          this.phaseValidation(); 
 
         } else {
           // newPhase returns "phase exist in formule"
-          this.toastSrv.error(newPhase);
+          this.phaseValidation(); 
+         // this.toastSrv.error(newPhase);
         }
       })
       //NEW PHASE 
@@ -104,7 +107,7 @@ export class AddFormulePhaseComponent implements OnInit {
       }
     }
 
-    
+   
     
 
 
