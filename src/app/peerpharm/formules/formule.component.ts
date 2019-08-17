@@ -134,9 +134,12 @@ export class FormuleComponent implements AfterViewInit {
     if (!exist) {
       debugger;
       // ADD PHASE !
+      //remove _id so mongo wont crash
+      //this is the old phase id
+      delete phaseToSave._id;
        this.formuleService.addNewPhaseToFormule(phaseToSave).subscribe(phase=>{
 
-      if (phaseToSave._id) {
+      if (phase._id) {
         this.phase = new FormulePhase();
         this.phase = phase;
         this.allPhasesForm.push(this.phase);

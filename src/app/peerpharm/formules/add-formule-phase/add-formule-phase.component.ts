@@ -73,7 +73,7 @@ export class AddFormulePhaseComponent implements OnInit {
         debugger;
         if(newPhase.msg=="cant update- not same number")
         {
-          this.phaseValidation(); 
+         // this.phaseValidation(); 
         }
         if (typeof (newPhase) != 'string' && newPhase != null) {
           this.phaseForm.value._id = newPhase._id;
