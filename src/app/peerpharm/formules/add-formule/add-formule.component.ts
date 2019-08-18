@@ -22,6 +22,7 @@ export class AddFormuleComponent implements OnInit {
   user: string = "";
   userInfo: UserInfo;
   phValue: string = "7";
+  phValueTo: String;
   formuleDetailsOk: Boolean = false;
   formuleSaved: Boolean = false;
   editSavedFormule: Boolean = false;
@@ -35,6 +36,7 @@ export class AddFormuleComponent implements OnInit {
     lastUpdate: new Date(),
     lastUpdateUser: "",
     ph: null,
+    phTo: null,
     client: "",
     id: null,
     parent: "",
@@ -56,6 +58,7 @@ export class AddFormuleComponent implements OnInit {
       lastUpdate: ['', Validators.required],
       lastUpdateUser: ['', Validators.required],
       ph: [null,],
+      phTo: [null,],
       client: ['', Validators.required],
       id: [null,],
       formuleParentId: ['',],
@@ -146,6 +149,7 @@ export class AddFormuleComponent implements OnInit {
         this.formulesForm.value.name.trim();
         this.formulesForm.value.client.trim();
         this.formulesForm.controls.ph.setValue(this.phValue);
+        this.formulesForm.controls.phTo.setValue(this.phValueTo);
         this.user = this.authService.loggedInUser.firstName + " " + this.authService.loggedInUser.lastName;
         this.formulesForm.controls.lastUpdateUser.setValue(this.user);
 
@@ -254,6 +258,7 @@ export class AddFormuleComponent implements OnInit {
     this.formulesForm.value.name.trim();
     this.formulesForm.value.client.trim();
     this.formulesForm.controls.ph.setValue(this.phValue);
+    this.formulesForm.controls.phTo.setValue(this.phValueTo);
 
     //check that all fields filled
     if (this.formulesForm.valid) {

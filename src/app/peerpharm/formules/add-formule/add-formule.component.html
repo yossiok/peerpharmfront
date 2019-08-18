@@ -113,8 +113,8 @@ find all formules which type parent true
           <div class="form-group row">
             <label for="example-color-input" class="col-2 col-form-label"
               >Ph Range</label>
-              <input class="col-1 form-control" type="text" [value]="phValue" (change)="changePH($event)">
-            <div class="col-9">
+              <input class="col-2 form-control" type="text" [value]="phValue" (change)="changePH($event)">
+            <div class="col-6">
               <input
                 type="range"
                 class="form-control col"
@@ -125,10 +125,15 @@ find all formules which type parent true
                 [(ngModel)]="phValue"
                 step="0.01"
               />
+              
             </div>
+            <div class="col-2">
+              <input style="width:70px;" formControlName="phTo" [(ngModel)]="phValueTo" type="text"/>
+                </div>
             <!-- <label class="col-2 col-form-label">{{ phValue }}</label> -->
             
           </div>
+        
           <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id==null" class="btn btn-info m-r-10" type="sumbit">Save and Continue</button>
           <!-- <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id!=null" class="btn btn-info m-r-10" type="submit">Edit</button> -->
           <button *ngIf="formuleSaved && currentFormule.id != null" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()" [disabled]="disableAdding">Add Formule's Phases</button>

@@ -25,10 +25,9 @@ export class AddFormuleItemComponent implements OnInit {
       itemNumber: [null, Validators.required],
       itemName: ['', Validators.required],
       itemInstructions: ['', ],
-      quantity: [null, Validators.required,],
+      quantity: [0,],
       quantityUnits: ['gr', Validators.required],
       percentage: [null, Validators.required],
-      itemPH: [7, Validators.required],
       temp: [null, ],
       formuleId: ['', Validators.required],
       phaseId: ['', Validators.required],
@@ -67,8 +66,7 @@ export class AddFormuleItemComponent implements OnInit {
     this.itemsForm.controls.itemInstructions.reset();
     this.itemsForm.controls.quantity.reset();
     this.itemsForm.controls.quantityUnits.reset();
-    this.itemsForm.controls.percentage.reset();
-    this.itemsForm.controls.itemPH.reset();
+    this.itemsForm.controls.percentage.reset()
     this.itemsForm.controls.temp.reset();
   }
 
