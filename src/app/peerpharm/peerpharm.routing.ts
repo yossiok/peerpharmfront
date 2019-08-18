@@ -210,7 +210,7 @@ export const PeerPharmRputs: Routes =[
       title: 'add-formule'
     },
     component: FormuleComponent,
-    // canActivate:[TwoFactor]
+    canActivate:[TwoFactor]
   },
   {
     path: 'formule/addnewformule/:id',
@@ -218,7 +218,7 @@ export const PeerPharmRputs: Routes =[
       title: 'edit-formule'
     },
     component: FormuleComponent,
-    // canActivate:[TwoFactor]
+    canActivate:[TwoFactor]
   },
   {
     path :'production/lines',

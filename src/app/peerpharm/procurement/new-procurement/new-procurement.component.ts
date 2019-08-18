@@ -26,6 +26,26 @@ export class NewProcurementComponent implements OnInit {
     itemNumber: '',
     itemName:'',
     supplierNumber:'',
+    supplierName:'',
+    outDate:'',
+    validDate:'',
+    blockProcurement:'',
+    blockSales:'',
+    hasWeight:'',
+    notWeight:'',
+    measurement:'',
+    barcode:'',
+    alternativeCode:'',
+    coin:'',
+    supplierPrice:'',
+    fromDate:'',
+    supplierAmount:'',
+    salePrice:'',
+    saleDate:'',
+    saleAmount:'',
+    discount:'',
+    supplierItemNumber:'',
+    supplierItemName:'',
 
   }
 
@@ -39,6 +59,7 @@ export class NewProcurementComponent implements OnInit {
   }
 
   moveToProcItems() {  
+    
     if(this.newProcurementForm.value.orderNumber != "") {
       this.procurementSupplier = false;
       this.procurementItems = true;
