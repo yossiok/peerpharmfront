@@ -166,9 +166,9 @@ export class AddFormuleComponent implements OnInit {
           //else we continue with old code to start filling the new formule 
           if(formule.formuleParentId!='')
           {
-         
-            this.routerService.navigate(['/peerpharm/formule/addnewformule/'+formule._id]);
             debugger;
+            this.routerService.navigate(['/peerpharm/formule/addnewformule/'+formule._id]);
+            
           }
           else{
             this.currentFormule = formule;
@@ -198,6 +198,7 @@ export class AddFormuleComponent implements OnInit {
       lastUpdate: ['', Validators.required],
       lastUpdateUser: [parnetFormule.lastUpdateUser, Validators.required],
       ph: [parnetFormule.ph,],
+      phTo: [parnetFormule.phTo,],
       client: [parnetFormule.client, Validators.required],
       formuleParentId: [parnetFormule._id,],
       parent: [false,]

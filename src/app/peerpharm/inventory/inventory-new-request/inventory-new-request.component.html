@@ -90,7 +90,7 @@
   
                   <div class="form-group row">
                   <div class="col-sm-1"></div>
-                      <div class="col-sm-9">
+                      <div id="print-section" class="col-sm-9">
                           <table class='table'>
                               <thead style="box-shadow: 1px 1px 2px 1px black;" class='bg-info text-white'>
                                 <tr>
@@ -100,14 +100,11 @@
                                   <th>Amount</th>
                                   <th>Related Order</th>
                                   <th>Remarks</th>
-                                  <th><button  
-                                    printTitle="Print"  
-                                    printSectionId="print-section"  
-                                    ngxPrint><img style="width:60px;height:30px;" src="../assets/images/print.jpg"/></button></th>
+                                  <th><button class="btn btn-success" printSectionId="print-section" [printStyle]="{h1 : {'color': 'red'}, h2 : {'border': 'solid 1px'}}" ngxPrint>Print</button></th>
                                   <th></th>
                                 </tr>
                               </thead>
-                              <ng-container id="print-section" *ngFor="let reqItem of reqList; let i =index">
+                              <ng-container *ngFor="let reqItem of reqList; let i =index">
                                 <tr>
                                   <td>{{i+1}}</td>
                                   <td>{{reqItem.itemNumber}}</td>

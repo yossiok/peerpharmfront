@@ -134,7 +134,7 @@ find all formules which type parent true
             
           </div>
         
-          <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id==null" class="btn btn-info m-r-10" type="sumbit">Save and Continue</button>
+          <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id==null" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
           <!-- <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id!=null" class="btn btn-info m-r-10" type="submit">Edit</button> -->
           <button *ngIf="formuleSaved && currentFormule.id != null" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()" [disabled]="disableAdding">Add Formule's Phases</button>
         </form>
