@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Formule } from './models/formule';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-formule',
@@ -19,7 +20,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FormuleComponent implements AfterViewInit {
 
-  constructor(private formuleService: FormulesService, private authService: AuthService, private routerService: ActivatedRoute,
+  constructor(public router: Router,private formuleService: FormulesService, private authService: AuthService, private routerService: ActivatedRoute,
     private toastSrv: ToastrService) { }
   newFormuleBasic = null;
   allItemsForm: FormuleItem[] = [];
@@ -227,10 +228,11 @@ export class FormuleComponent implements AfterViewInit {
 
 
   onFinish() {
+    debugger;
     debugger
     var formuleToSave = new Formule();
     formuleToSave = {
-      _id: this.newFormuleBasic._id,
+      _id: this.newFormuleBasic.id,
       number: this.newFormuleBasic.number,
       name: this.newFormuleBasic.name,
       category: this.newFormuleBasic.category,
@@ -243,6 +245,8 @@ export class FormuleComponent implements AfterViewInit {
     this.formuleService.updateFormule(formuleToSave).subscribe(data => {
       if (data._id) {
         this.toastSrv.success("Formule Saved")
+        this.router.navigate(['/peerpharm/formule/addnewformule']);
+        
       } else {
         this.toastSrv.error("Formule NOT Saved!")
         this.toastSrv.error("error: " + data)
