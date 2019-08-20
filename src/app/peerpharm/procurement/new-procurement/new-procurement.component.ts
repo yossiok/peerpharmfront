@@ -14,6 +14,8 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 })
 export class NewProcurementComponent implements OnInit {
 
+  
+
   newProcurementForm:any;
   procurementSupplier:boolean = true;
   procurementItems:boolean = false;
@@ -52,14 +54,16 @@ export class NewProcurementComponent implements OnInit {
   constructor(private procurementService: Procurementservice,private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
 
   }
-
+  
   ngOnInit() {
     this.getAllSuppliers();
     
   }
 
+  
+
   moveToProcItems() {  
-    
+
     if(this.newProcurementForm.value.orderNumber != "") {
       this.procurementSupplier = false;
       this.procurementItems = true;
@@ -96,6 +100,5 @@ export class NewProcurementComponent implements OnInit {
      data;
    })
   }
-
 
 }

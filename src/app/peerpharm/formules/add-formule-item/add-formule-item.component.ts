@@ -12,6 +12,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 export class AddFormuleItemComponent implements OnInit {
   itemsForm: FormGroup;
   phValue: any;
+  materials: any[];
   @Output() itemAdded = new EventEmitter();
   @Input() itemInfo :any;
   @Input() phaseInfo :any;
@@ -39,6 +40,7 @@ export class AddFormuleItemComponent implements OnInit {
   }
   ngOnInit() {
     this.adjustFormData();
+    this.getAllMaterials();
   }
   adjustFormData(){
     debugger
@@ -60,6 +62,15 @@ export class AddFormuleItemComponent implements OnInit {
     }
   }
 
+  getAllMaterials() { 
+    debugger;
+    this.invtSer.getAllMaterialsForFormules().subscribe(data=>{
+      debugger;
+      this.materials = data;
+      debugger;
+    })
+  }
+
   resetItemFormButNotPhase(){
     this.itemsForm.controls.itemNumber.reset();
     this.itemsForm.controls.itemName.reset();
@@ -70,8 +81,11 @@ export class AddFormuleItemComponent implements OnInit {
     this.itemsForm.controls.temp.reset();
   }
 
-  deletePhaseItem(){
-    
+  fillTheMaterialNumber(ev) {
+    debugger;
+    let componentName = ev.target.value;
+    let details = this.materials.filter(x =>x.componentName == componentName)
+    this.itemsForm.controls.itemNumber.setValue(details[0].componentN)
   }
   searchMaterialNumber(){
     if(this.itemsForm.value.itemNumber !=""){

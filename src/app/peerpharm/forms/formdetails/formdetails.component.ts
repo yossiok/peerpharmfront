@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { TranslateService } from '@ngx-translate/core';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-formdetails',
@@ -23,6 +24,7 @@ export class FormdetailsComponent implements OnInit {
   allChecks: Array<any>=[];
 
   constructor(
+    private excelService:ExcelService,
     private formsService: FormsService,
     private route: ActivatedRoute,
     private authService: AuthService,
@@ -55,6 +57,8 @@ export class FormdetailsComponent implements OnInit {
       });
     }
   }
+
+  
 
   CalcAvgWeight() {
     const arrlength = this.netoWeightArr.length;
@@ -114,6 +118,8 @@ export class FormdetailsComponent implements OnInit {
     }
   }
 
+
+  
 
 
   

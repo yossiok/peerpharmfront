@@ -26,6 +26,11 @@ export class FormslistComponent implements OnInit {
   sortFormsByFormNumber(){
     this.forms.reverse()
   }
+
+  exportAsXLSX():void {
+    debugger
+    this.excelService.exportAsExcelFile(this.forms, 'form');
+  }
   sortFormsByFillingDate() {
     // NOT WOTKING WELL !! NEED TO DIVIDE YEAR/MONTH/DAY
     this.sortByFillingDate=(this.sortByFillingDate) ? false:true;
@@ -43,37 +48,37 @@ export class FormslistComponent implements OnInit {
   }
 
 
-  exportAsXLSX() {
-    let arrToExcel=this.forms.map(f=>f);
+  // exportAsXLSX() {
+  //   let arrToExcel=this.forms.map(f=>f);
 
-    this.forms.forEach(x=>{
-      let newObj= Object.assign({},x);
+  //   this.forms.forEach(x=>{
+  //     let newObj= Object.assign({},x);
 
-      for(var i=0 ; i < x.checkTime.length ; i++){
-        let checkTime_filedName= "checkTime"+i;
-        let checkBox_clean_filedName= "checkBox_clean"+i;
-        let checkBox_closedWaterProof_filedName= "checkBox_closedWaterProof"+i;
-        let checkBox_correctFinalPacking_filedName= "checkBox_correctFinalPacking"+i;
-        let checkBox_lotNumberPrinting_filedName= "checkBox_lotNumberPrinting"+i;
-        let checkNetoWeight_filedName= "checkNetoWeight"+i;
-        let checkBox_stickerPrinting_filedName= "checkBox_stickerPrinting"+i;
-        newObj=Object.assign(newObj,{
-          [checkTime_filedName]:x.checkTime[i],
-          [checkBox_clean_filedName]:x.checkBox_clean[i],
-          [checkBox_closedWaterProof_filedName]:x.checkBox_closedWaterProof[i],
-          [checkBox_correctFinalPacking_filedName]:x.checkBox_correctFinalPacking[i],
-          [checkBox_lotNumberPrinting_filedName]:x.checkBox_lotNumberPrinting[i],
-          [checkNetoWeight_filedName]:x.checkNetoWeight[i],
-          [checkBox_stickerPrinting_filedName]:x.checkBox_stickerPrinting[i],
-        });
-        debugger
-      }
-      arrToExcel.push(newObj);
-    });
-    this.excelService.exportAsExcelFile(arrToExcel, 'forms');
+  //     for(var i=0 ; i < x.checkTime.length ; i++){
+  //       let checkTime_filedName= "checkTime"+i;
+  //       let checkBox_clean_filedName= "checkBox_clean"+i;
+  //       let checkBox_closedWaterProof_filedName= "checkBox_closedWaterProof"+i;
+  //       let checkBox_correctFinalPacking_filedName= "checkBox_correctFinalPacking"+i;
+  //       let checkBox_lotNumberPrinting_filedName= "checkBox_lotNumberPrinting"+i;
+  //       let checkNetoWeight_filedName= "checkNetoWeight"+i;
+  //       let checkBox_stickerPrinting_filedName= "checkBox_stickerPrinting"+i;
+  //       newObj=Object.assign(newObj,{
+  //         [checkTime_filedName]:x.checkTime[i],
+  //         [checkBox_clean_filedName]:x.checkBox_clean[i],
+  //         [checkBox_closedWaterProof_filedName]:x.checkBox_closedWaterProof[i],
+  //         [checkBox_correctFinalPacking_filedName]:x.checkBox_correctFinalPacking[i],
+  //         [checkBox_lotNumberPrinting_filedName]:x.checkBox_lotNumberPrinting[i],
+  //         [checkNetoWeight_filedName]:x.checkNetoWeight[i],
+  //         [checkBox_stickerPrinting_filedName]:x.checkBox_stickerPrinting[i],
+  //       });
+  //       debugger
+  //     }
+  //     arrToExcel.push(newObj);
+  //   });
+  //   this.excelService.exportAsExcelFile(arrToExcel, 'forms');
     // var data=[];
     // this.excelService.exportAsExcelFile(data, 'fault_forms');
- }
+ // }
 
 
   FilterForms(enteredText, field) {
