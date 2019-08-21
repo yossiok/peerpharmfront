@@ -21,8 +21,13 @@ export class ScheduleService {
     
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
+  // setNewMkpProductionSchedule(schedule): Observable<any> {
+  //   let url = this.baseUrl + "mkpSchedule/add";
+    
+  //   return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  // }
   setNewMkpProductionSchedule(schedule): Observable<any> {
-    let url = this.baseUrl + "mkpSchedule/add";
+    let url = this.baseUrl + "mkpSchedule/addMkp";
     
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
