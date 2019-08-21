@@ -44,6 +44,7 @@ import { ItemreportsComponent } from './items/itemreports/itemreports.component'
 import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
+import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -210,7 +211,7 @@ export const PeerPharmRputs: Routes =[
       title: 'add-formule'
     },
     component: FormuleComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path: 'formule/addnewformule/:id',
@@ -218,7 +219,15 @@ export const PeerPharmRputs: Routes =[
       title: 'edit-formule'
     },
     component: FormuleComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
+  },
+  {
+    path: 'formule/all-formules',
+    data: {
+      title: 'Formule Table'
+    },
+    component: AllFormulesComponent,
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',

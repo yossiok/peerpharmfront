@@ -212,6 +212,14 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
+      },
+      {
+        path: '/peerpharm/formule/all-formules',
+        title: 'All Formules',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
       }
     ]
     },

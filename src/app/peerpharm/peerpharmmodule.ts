@@ -101,6 +101,7 @@ import { ItemreportsComponent } from './items/itemreports/itemreports.component'
 import { DateExpiredDirective } from '../directives/date-expired.directive';
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
+import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 
 
 
@@ -144,6 +145,7 @@ import { HistorylogsComponent } from './reports/historylogs/historylogs.componen
   
   ],
   declarations: [
+    AllFormulesComponent,
     FormuleComponent,
     AddFormuleComponent,
     OrdersComponent,

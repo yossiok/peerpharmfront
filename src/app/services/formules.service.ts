@@ -69,7 +69,12 @@ export class FormulesService {
 
 
 
-
+  
+  updateFormulesForm(formToUpdate){
+    debugger;
+    let url = this.baseUrl + "formules/";
+    return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
+  }
   // NOA Fomule Service
 
   // GET

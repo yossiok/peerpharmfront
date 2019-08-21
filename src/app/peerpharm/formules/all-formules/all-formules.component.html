@@ -1,0 +1,76 @@
+
+
+    <table class='table table-fixed'>
+
+        <thead class="tableHeader">
+          <tr>  
+            
+            <td>#</td>
+            <td>Number</td>
+            <td>Name</td>
+            <td>Client</td>
+            <td>Last Updated</td>
+            <td>Parent</td>
+            <td></td>
+          </tr>
+        </thead>
+        <ng-container>
+          <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let formule of allFormules; let i = index">
+            <td>{{i+1}}</td>
+            
+            <td (click)="open(formuleData,formule.number)">{{formule.number}}</td>
+      
+            <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.name}}</td>
+            <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
+                <input #formuleName type='text' [value]="formule.name">
+              </td>
+            <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.client}}</td>
+            <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
+                <input #formuleClient type='text' [value]="formule.client">
+              </td>
+            <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.lastUpdate | date: "dd/MM/yyyy"}}</td>
+            <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
+                <input #formuleLastUpdate type='date' [value]="formule.lastUpdate">
+              </td>
+            <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.parent}}</td>
+            <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
+                <input #formuleParent type='text' [value]="formule.parent">
+              </td>
+          
+
+            <!-- <td  (click)="edit(batch._id)" ><i class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td> -->
+
+            <td *ngIf="formule._id==EditRowId">
+              <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;" (click)="saveEdit(currDoc)"></i>
+            </td> 
+
+          </tr>
+        </ng-container>
+      </table>
+
+
+      <ng-template #formuleData let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Formule Information</h4>
+          </div>
+          <div class="modal-body">
+            <table class='table'>
+              <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
+                <tr>
+                  <td>Phase Number</td>
+                  <td>Phase Name</td>
+                  <td>Phase Instructions</td>
+                </tr>
+              </thead>
+              <tbody id="table_body">
+                <tr *ngFor="let formule of updateFormule" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+                  <td>{{formule.phaseNumber}}</td>
+                  <td>{{formule.phaseName}}</td>
+                  <td>{{formule.phaseInstructions}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </ng-template>
