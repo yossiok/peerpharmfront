@@ -639,11 +639,11 @@ editBatch(batch){
     });
   }
 
-  setMkpSchedule(item, mkpType , date, remarks){
+  setMkpSchedule(item, date, remarks){
+    debugger;
     // we should check what about type = '' 
       if(date!=''){
         
-        if(mkpType!=''){
           
           let costumer= this.ordersData.map(order=> {
             if(order.orderNumber==item.orderNumber) {
@@ -651,6 +651,7 @@ editBatch(batch){
             }
            })[0];
            if(costumer.costumerId == undefined) costumer.costumerId= ''; 
+           debugger;
           let obj={
             itemFullName: item.discription,
             itemNumber: item.itemNumber,
@@ -658,8 +659,8 @@ editBatch(batch){
             orderId: item.orderId,
             orderNumber: item.orderNumber,
             quantity: item.quantity,
+            batch:item.batch,
             quantityProduced: item.quantityProduced,
-            mkpType:mkpType,
             date:new Date(date),
             orderItemRemarks:remarks,
             userName: this.authService.loggedInUser.firstName+' '+this.authService.loggedInUser.lastName,
@@ -668,7 +669,8 @@ editBatch(batch){
           }
           if (obj.quantityProduced == '') obj.quantityProduced = 0 ;
           this.scheduleService.setNewMkpProductionSchedule(obj).subscribe(res => {
-            if(res.itemN){
+            debugger;
+            if(res.item){
               this.toastSrv.success('Item sent to Mkp production schedule.');
             }else if(res=='No netWeightK'){
               alert('לפריט מספר '+obj.itemNumber+'\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט');
@@ -679,9 +681,7 @@ editBatch(batch){
           });
           // set obj to send
           //send to mkp.schedule.controller.js 
-        }else{
-        this.toastSrv.error('Please choose makeup type');
-        }
+    
       }else{
         this.toastSrv.error('Invalid Date');
        }
@@ -689,6 +689,7 @@ editBatch(batch){
   
 
   async setSchedule(item, type) {
+debugger;
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
