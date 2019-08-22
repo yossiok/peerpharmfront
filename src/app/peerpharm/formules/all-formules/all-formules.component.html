@@ -51,7 +51,7 @@
 
       <ng-template #formuleData let-modal>
           <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Formule Information</h4>
+            <h4 class="modal-title" id="modal-basic-title">Phases Information</h4>
           </div>
           <div class="modal-body">
             <table class='table'>
@@ -60,17 +60,61 @@
                   <td>Phase Number</td>
                   <td>Phase Name</td>
                   <td>Phase Instructions</td>
+                  <td></td>
                 </tr>
               </thead>
-              <tbody id="table_body">
-                <tr *ngFor="let formule of updateFormule" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
-                  <td>{{formule.phaseNumber}}</td>
-                  <td>{{formule.phaseName}}</td>
-                  <td>{{formule.phaseInstructions}}</td>
+              <tbody  id="table_body">
+           
+                <tr *ngFor="let phase of updateFormule.phases" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+                  <td (click)="openItem(itemData,phase.phaseNumber)">{{phase.phaseNumber}}</td>
+                  <td *ngIf="phase._id!=EditRowId" (click)="editPhases(phase._id)">{{phase.phaseName}}</td>
+                  <td *ngIf="phase._id==EditRowId" (click)="editPhases(phase._id)">
+                      <input #formulePhaseName type='text' [value]="phase.phaseName">
+                    </td>
+                  <td *ngIf="phase._id!=EditRowId" (click)="editPhases(phase._id)">{{phase.phaseInstructions}}</td>
+                  <td *ngIf="phase._id==EditRowId" (click)="editPhases(phase._id)">
+                      <input #formulePhaseIns type='text' [value]="phase.phaseInstructions">
+                    </td>
+                    <td *ngIf="phase._id==EditRowId">
+                        <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;" (click)="savePhaseEdit(currDoc)"></i>
+                      </td> 
                 </tr>
+              
               </tbody>
             </table>
           </div>
           <div class="modal-footer">
           </div>
         </ng-template>
+
+
+        <ng-template #itemData let-modal>
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">Item Information</h4>
+            </div>
+            <div class="modal-body">
+              <table class='table'>
+                <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
+                  <tr>
+                    <td>Item Number</td>
+                    <td>Item Name</td>
+                    <td>Item Instructions</td>
+                    <td>Quantity</td>
+                    <td>Unit Measure</td>
+                    <td>Percentage </td>
+                    <td>Instructions</td>
+                    <td>Temprature</td>
+                  </tr>
+                </thead>
+                <tbody id="table_body">
+                  <tr  style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </ng-template>

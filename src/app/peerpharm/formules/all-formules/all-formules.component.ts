@@ -14,7 +14,7 @@ export class AllFormulesComponent implements OnInit {
   allFormulesCopy:any[];
   EditRowId: any = "";
   currentDoc:any;
-  updateFormule:any[];
+  updateFormule:any;
   isCollapsed:boolean = false;
   closeResult: string;
 
@@ -23,6 +23,8 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('formuleClient') formuleClient: ElementRef;
   @ViewChild('formuleLastUpdate') formuleLastUpdate: ElementRef;
   @ViewChild('formuleParent') formuleParent: ElementRef;
+  @ViewChild('formulePhaseName') formulePhaseName: ElementRef;
+  @ViewChild('formulePhaseIns') formulePhaseIns: ElementRef;
 
   constructor(private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal) { }
 
@@ -61,13 +63,37 @@ export class AllFormulesComponent implements OnInit {
   // }
 }
 
+editPhases(id) {
+  debugger
+  // if(this.alowUserEditBatches == true) {
+  this.EditRowId = id;
+
+  var allPhases = [];
+  this.allFormules.forEach((phases)=>{
+    allPhases = phases
+
+  })
+  allPhases[0].phases
+
+  if (id != '') {
+    this.currentDoc = this.allFormules.filter(i => {
+      if (i._id == id) {
+        return i;
+      }
+    })[0];
+  }  else {
+    this.EditRowId = '';
+  }
+// }
+}
+
 saveEdit(currdoc) {
   debugger
   
 
-  if (this.formuleNumber.nativeElement.value && this.formuleName.nativeElement.value != "") {
+  if (this.formuleName.nativeElement.value != "") {
 
-    this.currentDoc.number = this.formuleNumber.nativeElement.value.trim();
+   
     this.currentDoc.name = this.formuleName.nativeElement.value.trim();
     this.currentDoc.client = this.formuleClient.nativeElement.value.trim();
     this.currentDoc.lastUpdate = this.formuleLastUpdate.nativeElement.value.trim();
@@ -83,6 +109,11 @@ saveEdit(currdoc) {
 
   }
 
+}
+
+savePhaseEdit(currDoc) { 
+  debugger;
+  this.currentDoc;
 }
 
 
@@ -108,6 +139,7 @@ updateDocument(){
 
 
 open(formuleData,formuleNum) {
+  debugger;
   this.updateFormule = [];
   debugger;
   this.modalService.open(formuleData, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -121,15 +153,33 @@ open(formuleData,formuleNum) {
 loadData(formuleNum) { 
   debugger;
   var formuleToUpdate = [];
- formuleToUpdate = this.allFormules.filter(formule => formule.number == formuleNum);
+ formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
  this.updateFormule = formuleToUpdate
 }
 
 
+openItem(itemData,formuleNum) {
+  debugger;
+  
+  debugger;
+  this.modalService.open(itemData, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.closeResult = `Closed with: ${result}`;
+  }, (reason) => {
+    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  });
+  
+}
+
+loadItemData() { 
+
+
+
+}
+
+
 private getDismissReason(reason: any): string {
-  if (reason === ModalDismissReasons.ESC) {
-    return 'by pressing ESC';
-  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+ 
+    if (reason === ModalDismissReasons.BACKDROP_CLICK) {
     return 'by clicking on a backdrop';
   } else {
     return  `with: ${reason}`;
