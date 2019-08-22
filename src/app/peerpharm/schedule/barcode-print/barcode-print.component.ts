@@ -250,21 +250,21 @@ export class BarcodePrintComponent implements OnInit {
 
     this.printBarcodeForm = new FormGroup({
       costumer: new FormControl(
-        { value: this.schedLine.costumer, disabled: true },
+        { value: this.schedLine.costumer},
         [Validators.required]
       ),
       orderN: new FormControl(
-        { value: this.schedLine.orderN, disabled: true },
+        { value: this.schedLine.orderN },
         [Validators.required]
       ),
-      item: new FormControl({ value: this.schedLine.item, disabled: true }, [
+      item: new FormControl({ value: this.schedLine.item }, [
         Validators.required
       ]),
       productName: new FormControl(
-        { value: this.schedLine.productName, disabled: true },
+        { value: this.schedLine.productName },
         [Validators.required]
       ),
-      unitMsr: new FormControl({ value: this.volumeK, disabled: true }, [
+      unitMsr: new FormControl({ value: this.volumeK }, [
         Validators.required
       ]),
       pcsCtn: new FormControl(this.pcsCarton, [Validators.required]),
