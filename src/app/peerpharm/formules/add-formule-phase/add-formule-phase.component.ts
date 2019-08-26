@@ -62,7 +62,7 @@ export class AddFormulePhaseComponent implements OnInit {
 
 
     if (this.phaseForm.value.phaseNumber) {
-      this.phaseForm.value.formuleId = this.formuleBase._id
+      this.phaseForm.value.formuleId = this.formuleBase.id
       this.phaseForm.value.formuleName = this.formuleBase.name
       this.phaseForm.value.formuleNumber = this.formuleBase.number
 
