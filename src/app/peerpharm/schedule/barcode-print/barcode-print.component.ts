@@ -41,6 +41,7 @@ export class BarcodePrintComponent implements OnInit {
   other: string;
   netWeight: string;
   grossWeight: string;
+  item:number;
   packingCode: number;
   showExp = true;
   showBatch = true;
@@ -356,6 +357,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printSubmit() {
+    debugger;
     if(this.printBarcodeForm.value.other!=""){
       this.other= this.printBarcodeForm.value.other;
     }
@@ -383,6 +385,9 @@ export class BarcodePrintComponent implements OnInit {
     }
     if(this.printBarcodeForm.value.packingCode !="") {
       this.packingCode = this.printBarcodeForm.value.packingCode
+    }
+    if(this.printBarcodeForm.value.item !="") {
+      this.item = this.printBarcodeForm.value.item
     }
   
     debugger;

@@ -132,6 +132,15 @@ export class FormulesService {
     let url = this.baseUrl + "formules/updatePhase";
     return this.http.put(url, JSON.stringify(phase), this.options).pipe(map(res => res.json()));
   }
+  updateFormulePhaseId(phase){
+    let url = this.baseUrl + "formules/updatePhaseId";
+    return this.http.put(url, JSON.stringify(phase), this.options).pipe(map(res => res.json()));
+  }
+
+  updateFormulePhaseItems(phase){
+    let url = this.baseUrl + "formules/updatePhaseItems";
+    return this.http.put(url, JSON.stringify(phase), this.options).pipe(map(res => res.json()));
+  }
 
   // FORMULE PRODUCTION FORMS
 

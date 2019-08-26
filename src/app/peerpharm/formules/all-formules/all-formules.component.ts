@@ -17,6 +17,24 @@ export class AllFormulesComponent implements OnInit {
   updateFormule:any;
   isCollapsed:boolean = false;
   closeResult: string;
+  updateItems:any;
+
+  phaseToUpdate = {
+    phaseName:'',
+    phaseIns:''
+  }
+
+  itemToUpdate = {
+    itemNumber:'',
+    itemName:'',
+    quantity:'',
+    quantityUnits:'',
+    percentage:'',
+    itemPH:'',
+    temp:'',
+    index:''
+
+  }
 
   @ViewChild('formuleNumber') formuleNumber: ElementRef;
   @ViewChild('formuleName') formuleName: ElementRef;
@@ -32,6 +50,8 @@ export class AllFormulesComponent implements OnInit {
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('');
+    this.editPhases('')
+    
   }
 
   ngOnInit() {
@@ -65,31 +85,62 @@ export class AllFormulesComponent implements OnInit {
 
 editPhases(id) {
   debugger
-  // if(this.alowUserEditBatches == true) {
+  
   this.EditRowId = id;
 
-  var allPhases = [];
-  this.allFormules.forEach((phases)=>{
-    allPhases = phases
-
-  })
-  allPhases[0].phases
-
-  if (id != '') {
-    this.currentDoc = this.allFormules.filter(i => {
-      if (i._id == id) {
-        return i;
+    var formules = this.allFormules;
+    var results = [];
+  
+    for (let i = 0; i < formules.length; i++) {
+      for (const j = 0; j < formules[i].phases.length; i++) {
+        if (formules[i].phases[j]._id === id) {
+          results.push(formules[i].phases[j]);
+          
+        }
       }
-    })[0];
-  }  else {
-    this.EditRowId = '';
+      
+    }
+  
+    this.currentDoc = results;
+    this.phaseToUpdate.phaseName = this.currentDoc[0].phaseName;
+  this.phaseToUpdate.phaseIns = this.currentDoc[0].phaseInstructions
+
+   
+}
+
+editItems(phaseId,index) { 
+  debugger;
+  this.EditRowId = phaseId
+
+  var formules = this.allFormules;
+  var results = [];
+
+  for (let i = 0; i < formules.length; i++) {
+    for (const j = 0; j < formules[i].phases.length; i++) {
+      if (formules[i].phases[j]._id === phaseId) {
+        results.push(formules[i].phases[j]);
+        
+      }
+    }
+    
   }
-// }
+
+  this.currentDoc = results[0].items
+  this.itemToUpdate.itemNumber = this.currentDoc[0].itemNumber 
+  this.itemToUpdate.itemName = this.currentDoc[0].itemName
+  this.itemToUpdate.quantity = this.currentDoc[0].quantity
+  this.itemToUpdate.quantityUnits = this.currentDoc[0].quantityUnits
+  this.itemToUpdate.percentage = this.currentDoc[0].percentage
+  this.itemToUpdate.itemPH = this.currentDoc[0].itemPH
+  this.itemToUpdate.temp = this.currentDoc[0].temp
+  this.currentDoc[0].index = index
+
+  
 }
 
 saveEdit(currdoc) {
   debugger
-  
+
 
   if (this.formuleName.nativeElement.value != "") {
 
@@ -113,7 +164,64 @@ saveEdit(currdoc) {
 
 savePhaseEdit(currDoc) { 
   debugger;
+
+
+  if(this.phaseToUpdate.phaseName != "") {
+    this.currentDoc[0].phaseName = this.phaseToUpdate.phaseName;
+    this.currentDoc[0].phaseInstructions =  this.phaseToUpdate.phaseIns;
+    if(confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
+      this.updatePhase() 
+    }
+
+  } else {
+
+    this.toastSrv.error("Can't save changes with missing fields.")
+
+  }
+
+  
+
+}
+
+saveItemEdit(currDoc) { 
+  debugger;
   this.currentDoc;
+
+  if(this.itemToUpdate.itemNumber != "") {
+
+    this.currentDoc[0].itemName = this.itemToUpdate.itemName
+    this.currentDoc[0].itemNumber = this.itemToUpdate.itemNumber
+    this.currentDoc[0].percentage = this.itemToUpdate.percentage
+    this.currentDoc[0].quantity = this.itemToUpdate.quantity
+    this.currentDoc[0].quantityUnits = this.itemToUpdate.quantityUnits
+    this.currentDoc[0].temp = this.itemToUpdate.temp
+    if(confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
+      this.updatePhaseItems() 
+    }
+
+  } else {
+
+    this.toastSrv.error("Can't save changes with missing fields.")
+
+  }
+}
+
+updatePhase() { 
+  this.formuleService.updateFormulePhaseId(this.currentDoc).subscribe(data=>{
+    debugger;
+    data;
+    this.EditRowId = '';
+    this.toastSrv.success("Details were successfully saved");
+  })
+}
+
+updatePhaseItems() { 
+  this.formuleService.updateFormulePhaseItems(this.currentDoc).subscribe(data=>{
+    debugger;
+    data;
+    this.EditRowId = '';
+    this.toastSrv.success("Details were successfully saved");
+  })
 }
 
 
@@ -158,21 +266,22 @@ loadData(formuleNum) {
 }
 
 
-openItem(itemData,formuleNum) {
+openItem(itemData,phaseNumber) {
   debugger;
   
-  debugger;
   this.modalService.open(itemData, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
   }, (reason) => {
     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
   });
-  
+  this.loadItemData(phaseNumber)
 }
 
-loadItemData() { 
+loadItemData(phaseNumber) { 
+debugger;
 
-
+let details = this.updateFormule.phases.find(phase=>phase.phaseNumber == phaseNumber)
+this.updateItems = details.items;
 
 }
 

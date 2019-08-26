@@ -73,7 +73,7 @@ export class FormuleComponent implements AfterViewInit {
       this.newPhase = true;
       // this.formuleService.getFormuleDataById(this.newFormuleBasic._d).subscribe(phases=>{
       // });
-      this.formuleService.getPhasesByFormuleId(this.newFormuleBasic.base._id).subscribe(phases => {
+      this.formuleService.getPhasesByFormuleId(this.newFormuleBasic._id).subscribe(phases => {
         if (phases.length > 0) {
           this.allPhasesForm = [];
       

@@ -3,7 +3,20 @@
         background:#4949db;
         color:white;
     }
-  
+
+    .openUpdateModal { 
+      color:blue;
+      border-radius: 50%;
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .openUpdateModal:hover { 
+      background:rgba(255, 255, 255, 0.274);
+      cursor: pointer;
+    }
+    
     .loader {
       color: #4949db;
       font-size: 90px;

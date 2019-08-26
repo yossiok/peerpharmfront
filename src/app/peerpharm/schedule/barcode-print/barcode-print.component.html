@@ -237,7 +237,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       </div>
 
       <div *ngIf="showItemFlag" class="form-group row">
-        <label for="itemNumber"><strong>Item Number:</strong></label>
+        <label for="item"><strong>Item Number:</strong></label>
         <input class="form-control" type="text" formControlName="item" />
         <button
           type="button"
@@ -406,7 +406,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
           <td *ngIf="showProductName">{{ schedLine.productName }}</td>
         </tr>
         <tr>
-          <td *ngIf="showItemNumber">Item Number: {{ schedLine.item }}</td>
+          <td *ngIf="showItemNumber">Item Number: {{ printBarkod.item }}</td>
         </tr>
         <tr>
           <td><span *ngIf="showVolume">{{ volumeK }}</span><span style="margin-left:10px;" *ngIf="showPcsCarton">{{ printBarkod.pcsCtn }}</span></td>
