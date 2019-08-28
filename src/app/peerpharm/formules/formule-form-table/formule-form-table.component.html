@@ -1,8 +1,5 @@
 <div class="mainContainer container-fluid">
-  <h3>Number: 12345 Name: formule1</h3>
-  <h3>Client: client</h3>
-  <h3>Category: Category PH: ph-value</h3>
-  <h3>Updated: date User: user</h3>
+    <button class="btn btn-success" printSectionId="print-section" [useExistingCss]="true" ngxPrint>Print Formule</button>
   <table class="table table-bordered">
       <thead>
           <tr>
@@ -21,6 +18,7 @@
         <tbody>
             <ng-container *ngFor="  let phase of formulePhases; let indx=index;" style="border: solid black 2px;">
                 <ng-container *ngIf="phase.items.length > 0">
+                  
                   <tr *ngFor="let item of phase.items ; let i = index; ">
                     <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase" (click)="loadPhaseToForm(phase)">{{phase.phaseNumber}}</td>
                     <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td>
@@ -40,6 +38,7 @@
                     <td class="phase">{{phase.phaseName}}</td>
                     <td class="phase">{{phase.phaseInstructions}}</td>
                   </tr>
+               
                 </ng-container>
             </ng-container>
           

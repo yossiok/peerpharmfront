@@ -111,6 +111,18 @@ export class FormulesService {
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
   }
 
+  addPhase(newPhase){
+    debugger;
+    let url = this.baseUrl + "formules/addNewPhase";
+    return this.http.post(url, JSON.stringify(newPhase), this.options).pipe(map(res => res.json()));
+  }
+
+  addItem(newItem){
+    debugger;
+    let url = this.baseUrl + "formules/addNewItem";
+    return this.http.post(url, JSON.stringify(newItem), this.options).pipe(map(res => res.json()));
+  }
+
   getTrueArray():Observable<any> {
   
     let url = this.baseUrl + "formules/istrue";

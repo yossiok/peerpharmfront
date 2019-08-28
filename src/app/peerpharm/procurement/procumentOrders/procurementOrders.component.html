@@ -21,6 +21,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <th><b>Order Quantity</b></th>
       <!-- <th><b>Total Payment With VAT</b></th> -->
       <th><b>Is Supplied</b></th>
+      <th></th>
     </tr>
   </thead>
   <tbody id="table_body">
@@ -49,6 +50,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <td>{{ line.orderQnt }}</td>
       <!-- <td>{{ line.totalPaymentVat}}</td> -->
       <td>{{ line.isSupplied}}</td>
+      <td><button style="background:green;box-shadow:inset 0px 1px 5px 0px;">Close Order</button></td>
     </tr>
   </tbody>
 </table>

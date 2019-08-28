@@ -61,23 +61,40 @@
                   <td>Phase Name</td>
                   <td>Phase Instructions</td>
                   <td></td>
+                 
+                 
                 </tr>
               </thead>
+              <tr>
+                <td><input [(ngModel)]="addPhase.phaseNumber" type="number" placeholder="Phase Number"></td>
+                <td><input [(ngModel)]="addPhase.phaseName" type="text" placeholder="Phase Name"></td>
+                <td><input [(ngModel)]="addPhase.phaseInstructions" type="text" placeholder="Phase Instructions"></td>
+                <td style="display:inline-block"><input [(ngModel)]="addPhase.formuleNumber" type="number" placeholder="formuleNumber">
+                  <button style="float:right;background: green;box-shadow: inset 0px 1px 3px 0px;border:1px solid rgb(217, 228, 217);width:30px;" (click)="addNewPhase()">+</button>
+                </td>
+                
+
+               
+              </tr>
               <tbody  id="table_body">
            
                 <tr *ngFor="let phase of updateFormule.phases" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
                   <td class="openUpdateModal" (click)="openItem(itemData,phase.phaseNumber)">{{phase.phaseNumber}}</td>
                   <td *ngIf="phase._id!=EditRowId" (click)="editPhases(phase._id)">{{phase.phaseName}}</td>
                   <td *ngIf="phase._id==EditRowId" (click)="editPhases(phase._id)">
-                      <input [ngValue]="phase.phaseName" [(ngModel)]="phaseToUpdate.phaseName" type='text' >
+                      <input  [(ngModel)]="phaseToUpdate.phaseName" type='text' >
+                      <span>{{phase.phaseName}}</span>
                     </td>
                   <td *ngIf="phase._id!=EditRowId" (click)="editPhases(phase._id)">{{phase.phaseInstructions}}</td>
                   <td *ngIf="phase._id==EditRowId" (click)="editPhases(phase._id)">
-                      <input [ngValue]="phase.phaseInstructions" [(ngModel)]="phaseToUpdate.phaseIns" type='text'>
+                      <input [(ngModel)]="phaseToUpdate.phaseIns" type='text'>
+                      <span>{{phase.phaseInstructions}}</span>
                     </td>
                     <td *ngIf="phase._id==EditRowId">
                         <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;" (click)="savePhaseEdit(currDoc)"></i>
                       </td> 
+                      <td></td>
+                     
                 </tr>
               
               </tbody>
@@ -89,6 +106,7 @@
 
 
         <ng-template #itemData let-modal>
+          <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title" id="modal-basic-title">Item Information</h4>
             </div>
@@ -105,37 +123,55 @@
                     <td></td>
                   </tr>
                 </thead>
+                <tr>
+                  <td><input [(ngModel)]="addItem.itemNumber" type="text" placeholder="Item Number"></td>
+                  <td><select [(ngModel)]="addItem.itemName" type="text" placeholder="Item Name">
+                    <option *ngFor="let material of materials">{{material.componentName}}</option>
+                  </select></td>
+                  <td><input [(ngModel)]="addItem.quantity" type="number" placeholder="Quantity"></td>
+                  <td><input [(ngModel)]="addItem.unitMeasure" type="text" placeholder="Unit Measure"></td>
+                  <td><input [(ngModel)]="addItem.percentage" type="number" placeholder="Percentage"></td>
+                  <td><input [(ngModel)]="addItem.temp" type="number" placeholder="temp"></td>
+                  <td> <button style="float:right;background: green;box-shadow: inset 0px 1px 3px 0px;border:1px solid rgb(217, 228, 217);width:30px;" (click)="addNewItem()">+</button></td>
+                </tr>
                 <tbody id="table_body">
                   <tr *ngFor="let item of updateItems,let index = index" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
                     <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.itemNumber}}</td>
                     <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
-                        <input [(ngModel)]="itemToUpdate.itemNumber" style="width:60px;" [value]="item.itemNumber" type='text'>
+                        <input [(ngModel)]="itemToUpdate.itemNumber" style="width:60px;" type='text'>
+                        <span>{{item.itemNumber}}</span>
                       </td>
 
                     <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.itemName}}</td>
                     <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
-                        <input [(ngModel)]="itemToUpdate.itemName" [value]="item.itemName" type='text'>
+                        <select [(ngModel)]="itemToUpdate.itemName" [value]="item.itemName" type='text'>
+                            <option *ngFor="let material of materials">{{material.componentName}}</option>
+                        </select>
                       </td>
 
 
                     <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.quantity}}</td>
                     <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
-                        <input [(ngModel)]="itemToUpdate.quantity" style="width:30px;" [value]="item.quantity" type='text'>
+                        <input [(ngModel)]="itemToUpdate.quantity" style="width:30px;" type='text'>
+                        <span>{{item.quantity}}</span>
                       </td>
 
                     <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.quantityUnits}}</td>
                     <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
-                        <input [(ngModel)]="itemToUpdate.quantityUnits" style="width:30px;" [value]="item.quantityUnits" type='text'>
+                        <input [(ngModel)]="itemToUpdate.quantityUnits" style="width:30px;"  type='text'>
+                        <span>{{item.quantityUnits}}</span>
                       </td>
 
                     <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.percentage}}</td>
                     <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
-                        <input [(ngModel)]="itemToUpdate.percentage" style="width:30px;" [value]="item.percentage" type='text'>
+                        <input [(ngModel)]="itemToUpdate.percentage" style="width:30px;"  type='text'>
+                        <span>{{item.percentage}}</span>
                       </td>
 
                     <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.temp}}</td>
                     <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
-                        <input [(ngModel)]="itemToUpdate.temp" style="width:30px;" [value]="item.temp" type='text'>
+                        <input [(ngModel)]="itemToUpdate.temp" style="width:30px;" type='text'>
+                        <span>{{item.temp}}</span>
                       </td>
                       <td *ngIf="item.phaseId==EditRowId">
                           <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;" (click)="saveItemEdit(currDoc)"></i>
@@ -147,4 +183,5 @@
             </div>
             <div class="modal-footer">
             </div>
+          </div>
           </ng-template>

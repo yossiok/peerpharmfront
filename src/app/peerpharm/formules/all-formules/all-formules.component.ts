@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular
 import { FormulesService } from 'src/app/services/formules.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
   selector: 'app-all-formules',
@@ -12,12 +13,32 @@ export class AllFormulesComponent implements OnInit {
 
   allFormules:any[];
   allFormulesCopy:any[];
+  materials:any[];
   EditRowId: any = "";
   currentDoc:any;
   updateFormule:any;
   isCollapsed:boolean = false;
   closeResult: string;
   updateItems:any;
+
+  addItem = {
+    itemNumber:'',
+    itemName:'',
+    quantity:'',
+    unitMeasure:'',
+    percentage:'',
+    temp:'',
+    currentPhase:'',
+    formuleId:''
+
+  }
+
+  addPhase = {
+    phaseNumber:'',
+    phaseName:'',
+    phaseInstructions:'',
+    formuleNumber:''
+  }
 
   phaseToUpdate = {
     phaseName:'',
@@ -44,7 +65,7 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('formulePhaseName') formulePhaseName: ElementRef;
   @ViewChild('formulePhaseIns') formulePhaseIns: ElementRef;
 
-  constructor(private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal) { }
+  constructor(private invtSer:InventoryService,private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal) { }
 
   
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -56,7 +77,43 @@ export class AllFormulesComponent implements OnInit {
 
   ngOnInit() {
     this.getAllFormules();
+    this.getAllMaterials();
   }
+
+  getAllMaterials() { 
+    debugger;
+    this.invtSer.getAllMaterialsForFormules().subscribe(data=>{
+      debugger;
+      this.materials = data;
+      debugger;
+    })
+  }
+
+
+  addNewItem() {
+
+    debugger;
+
+    this.updateFormule;
+    this.addItem.currentPhase = this.updateFormule.currentPhase;
+    this.addItem.formuleId = this.updateFormule._id
+    this.formuleService.addItem(this.addItem).subscribe(data=>{
+      debugger;
+      data;
+    })
+  }
+
+  addNewPhase() { 
+    debugger;
+    this.formuleService.addPhase(this.addPhase).subscribe(data=>{
+     
+      debugger;
+      if(data) { 
+        this.toastSrv.success("Phase added successfully")
+   
+    }
+  })
+}
 
   getAllFormules() { 
     this.formuleService.getAllFormules().subscribe(data=>{
@@ -102,9 +159,7 @@ editPhases(id) {
     }
   
     this.currentDoc = results;
-    this.phaseToUpdate.phaseName = this.currentDoc[0].phaseName;
-  this.phaseToUpdate.phaseIns = this.currentDoc[0].phaseInstructions
-
+  
    
 }
 
@@ -282,12 +337,13 @@ debugger;
 
 let details = this.updateFormule.phases.find(phase=>phase.phaseNumber == phaseNumber)
 this.updateItems = details.items;
+this.updateFormule.currentPhase = phaseNumber
 
 }
 
 
 private getDismissReason(reason: any): string {
- 
+ debugger;
     if (reason === ModalDismissReasons.BACKDROP_CLICK) {
     return 'by clicking on a backdrop';
   } else {

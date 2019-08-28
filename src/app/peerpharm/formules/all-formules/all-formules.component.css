@@ -3,6 +3,9 @@
         background:#4949db;
         color:white;
     }
+    .modal-content { 
+      width:160% !important;
+    }
 
     .openUpdateModal { 
       color:blue;
