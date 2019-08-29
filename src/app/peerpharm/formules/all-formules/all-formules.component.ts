@@ -25,11 +25,12 @@ export class AllFormulesComponent implements OnInit {
     itemNumber:'',
     itemName:'',
     quantity:'',
-    unitMeasure:'',
+    quantityUnits:'',
     percentage:'',
     temp:'',
     currentPhase:'',
-    formuleId:''
+    formuleId:'',
+    phaseId:''
 
   }
 
@@ -95,11 +96,17 @@ export class AllFormulesComponent implements OnInit {
     debugger;
 
     this.updateFormule;
-    this.addItem.currentPhase = this.updateFormule.currentPhase;
+    this.addItem.currentPhase = JSON.stringify(this.updateFormule.currentPhase-1)
     this.addItem.formuleId = this.updateFormule._id
+    this.addItem.phaseId = this.updateFormule.phases[this.addItem.currentPhase]._id
     this.formuleService.addItem(this.addItem).subscribe(data=>{
       debugger;
-      data;
+      if(data) {
+       var allPhases = data.phases;
+       var phase = allPhases.filter(phase => phase._id == this.updateItems.phaseId)
+       this.updateItems = phase[0].items
+        this.toastSrv.success("Item added successfully")
+      }
     })
   }
 
@@ -109,6 +116,7 @@ export class AllFormulesComponent implements OnInit {
      
       debugger;
       if(data) { 
+        this.updateFormule.phases = data.phases;
         this.toastSrv.success("Phase added successfully")
    
     }
@@ -144,53 +152,63 @@ editPhases(id) {
   debugger
   
   this.EditRowId = id;
+  
 
-    var formules = this.allFormules;
-    var results = [];
+    this.updateFormule;
+    this.EditRowId = id;
   
-    for (let i = 0; i < formules.length; i++) {
-      for (const j = 0; j < formules[i].phases.length; i++) {
-        if (formules[i].phases[j]._id === id) {
-          results.push(formules[i].phases[j]);
-          
-        }
-      }
+      var formule = this.allFormules.find(formule => formule._id == this.updateFormule._id)
       
-    }
-  
-    this.currentDoc = results;
+    
+      var results = formule.phases.filter(phase=> phase._id == id )
+    
+      this.currentDoc = results;
+    
+     var phase = this.updateFormule.phases.find(phase => phase._id == id)
+
+      this.phaseToUpdate.phaseName = phase.phaseName
+      this.phaseToUpdate.phaseIns = phase.phaseInstructions
+      
   
    
 }
 
-editItems(phaseId,index) { 
+editItems(itemNumber,index,phaseId) { 
   debugger;
-  this.EditRowId = phaseId
+  this.updateItems
+  this.EditRowId = itemNumber
 
-  var formules = this.allFormules;
-  var results = [];
+  // var formules = this.allFormules;
+  // var results = [];
 
-  for (let i = 0; i < formules.length; i++) {
-    for (const j = 0; j < formules[i].phases.length; i++) {
-      if (formules[i].phases[j]._id === phaseId) {
-        results.push(formules[i].phases[j]);
+  // for (let i = 0; i < formules.length; i++) {
+  //   for (const j = 0; j < formules[i].phases.length; i++) {
+  //     if (formules[i].phases[j]._id === phaseId) {
+  //       results.push(formules[i].phases[j]);
         
-      }
-    }
+  //     }
+  //   }
     
-  }
+  // }
+
+  var formule = this.allFormules.find(formule => formule._id == this.updateFormule._id)
+  var results = formule.phases.filter(phase=> phase._id == phaseId )
 
   this.currentDoc = results[0].items
-  this.itemToUpdate.itemNumber = this.currentDoc[0].itemNumber 
-  this.itemToUpdate.itemName = this.currentDoc[0].itemName
-  this.itemToUpdate.quantity = this.currentDoc[0].quantity
-  this.itemToUpdate.quantityUnits = this.currentDoc[0].quantityUnits
-  this.itemToUpdate.percentage = this.currentDoc[0].percentage
-  this.itemToUpdate.itemPH = this.currentDoc[0].itemPH
-  this.itemToUpdate.temp = this.currentDoc[0].temp
   this.currentDoc[0].index = index
-
+ 
   
+
+  var phase = this.updateFormule.phases.find(phase => phase._id == phaseId)
+
+  this.itemToUpdate.itemNumber = phase.items[index].itemNumber
+  this.itemToUpdate.itemName = phase.items[index].itemName
+  this.itemToUpdate.quantity = phase.items[index].quantity
+  this.itemToUpdate.quantityUnits = phase.items[index].quantityUnits
+  this.itemToUpdate.percentage = phase.items[index].percentage
+  this.itemToUpdate.itemPH = phase.items[index].itemPH
+  this.itemToUpdate.temp = phase.items[index].temp
+
 }
 
 saveEdit(currdoc) {
@@ -201,6 +219,7 @@ saveEdit(currdoc) {
 
    
     this.currentDoc.name = this.formuleName.nativeElement.value.trim();
+    this.currentDoc.number = this.formuleNumber.nativeElement.value.trim();
     this.currentDoc.client = this.formuleClient.nativeElement.value.trim();
     this.currentDoc.lastUpdate = this.formuleLastUpdate.nativeElement.value.trim();
     this.currentDoc.parent = this.formuleParent.nativeElement.value.trim();
@@ -227,7 +246,7 @@ savePhaseEdit(currDoc) {
     if(confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
       this.updatePhase() 
     }
-
+    
   } else {
 
     this.toastSrv.error("Can't save changes with missing fields.")
@@ -238,20 +257,20 @@ savePhaseEdit(currDoc) {
 
 }
 
-saveItemEdit(currDoc) { 
+saveItemEdit(currDoc,index) { 
   debugger;
   this.currentDoc;
 
   if(this.itemToUpdate.itemNumber != "") {
-
-    this.currentDoc[0].itemName = this.itemToUpdate.itemName
-    this.currentDoc[0].itemNumber = this.itemToUpdate.itemNumber
-    this.currentDoc[0].percentage = this.itemToUpdate.percentage
-    this.currentDoc[0].quantity = this.itemToUpdate.quantity
-    this.currentDoc[0].quantityUnits = this.itemToUpdate.quantityUnits
-    this.currentDoc[0].temp = this.itemToUpdate.temp
+    this.currentDoc[index].index = index
+    this.currentDoc[index].itemName = this.itemToUpdate.itemName
+    this.currentDoc[index].itemNumber = this.itemToUpdate.itemNumber
+    this.currentDoc[index].percentage = this.itemToUpdate.percentage
+    this.currentDoc[index].quantity = this.itemToUpdate.quantity
+    this.currentDoc[index].quantityUnits = this.itemToUpdate.quantityUnits
+    this.currentDoc[index].temp = this.itemToUpdate.temp
     if(confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
-      this.updatePhaseItems() 
+      this.updatePhaseItems(index) 
     }
 
   } else {
@@ -267,15 +286,20 @@ updatePhase() {
     data;
     this.EditRowId = '';
     this.toastSrv.success("Details were successfully saved");
+    this.phaseToUpdate.phaseName = ""
+    this.phaseToUpdate.phaseIns = ""
+   
+    
   })
 }
 
-updatePhaseItems() { 
-  this.formuleService.updateFormulePhaseItems(this.currentDoc).subscribe(data=>{
+updatePhaseItems(index) { 
+  this.formuleService.updateFormulePhaseItems(this.currentDoc[index]).subscribe(data=>{
     debugger;
     data;
     this.EditRowId = '';
     this.toastSrv.success("Details were successfully saved");
+    this.getAllFormules();
   })
 }
 
@@ -337,6 +361,7 @@ debugger;
 
 let details = this.updateFormule.phases.find(phase=>phase.phaseNumber == phaseNumber)
 this.updateItems = details.items;
+this.updateItems.phaseId = details._id
 this.updateFormule.currentPhase = phaseNumber
 
 }
@@ -349,6 +374,19 @@ private getDismissReason(reason: any): string {
   } else {
     return  `with: ${reason}`;
   }
+}
+
+copyFormule(currDoc,index) { 
+  debugger;
+  var formuleToCopy = this.allFormules[index]
+
+  this.formuleService.copyFormule(formuleToCopy).subscribe(data=>{
+    debugger;
+    data;
+  this.getAllFormules();
+  })
+  
+
 }
 
 }

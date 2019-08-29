@@ -111,6 +111,12 @@ export class FormulesService {
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
   }
 
+  copyFormule(copiedFormule){
+    debugger;
+    let url = this.baseUrl + "formules/copyFormule";
+    return this.http.post(url, JSON.stringify(copiedFormule), this.options).pipe(map(res => res.json()));
+  }
+
   addPhase(newPhase){
     debugger;
     let url = this.baseUrl + "formules/addNewPhase";

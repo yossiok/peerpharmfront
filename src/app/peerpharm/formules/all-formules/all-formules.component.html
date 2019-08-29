@@ -12,13 +12,17 @@
             <td>Last Updated</td>
             <td>Parent</td>
             <td></td>
+            <td></td>
           </tr>
         </thead>
         <ng-container>
           <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let formule of allFormules; let i = index">
             <td>{{i+1}}</td>
             
-            <td class="openUpdateModal" (click)="open(formuleData,formule.number)">{{formule.number}}</td>
+            <td *ngIf="formule._id!=EditRowId" class="openUpdateModal" (click)="open(formuleData,formule.number)">{{formule.number}}</td>
+            <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
+                <input #formuleNumber type='text' [value]="formule.number">
+              </td>
       
             <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.name}}</td>
             <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
@@ -36,7 +40,7 @@
             <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
                 <input #formuleParent type='text' [value]="formule.parent">
               </td>
-          
+              <td><button (click)="copyFormule(currDoc,i)">Copy Formule</button></td>
 
             <!-- <td  (click)="edit(batch._id)" ><i class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td> -->
 
@@ -129,52 +133,52 @@
                     <option *ngFor="let material of materials">{{material.componentName}}</option>
                   </select></td>
                   <td><input [(ngModel)]="addItem.quantity" type="number" placeholder="Quantity"></td>
-                  <td><input [(ngModel)]="addItem.unitMeasure" type="text" placeholder="Unit Measure"></td>
+                  <td><input [(ngModel)]="addItem.quantityUnits" type="text" placeholder="Unit Measure"></td>
                   <td><input [(ngModel)]="addItem.percentage" type="number" placeholder="Percentage"></td>
                   <td><input [(ngModel)]="addItem.temp" type="number" placeholder="temp"></td>
                   <td> <button style="float:right;background: green;box-shadow: inset 0px 1px 3px 0px;border:1px solid rgb(217, 228, 217);width:30px;" (click)="addNewItem()">+</button></td>
                 </tr>
                 <tbody id="table_body">
                   <tr *ngFor="let item of updateItems,let index = index" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
-                    <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.itemNumber}}</td>
-                    <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
+                    <td *ngIf="item.itemNumber!=EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">{{item.itemNumber}}</td>
+                    <td *ngIf="item.itemNumber==EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">
                         <input [(ngModel)]="itemToUpdate.itemNumber" style="width:60px;" type='text'>
                         <span>{{item.itemNumber}}</span>
                       </td>
 
-                    <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.itemName}}</td>
-                    <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
+                    <td *ngIf="item.itemNumber!=EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">{{item.itemName}}</td>
+                    <td *ngIf="item.itemNumber==EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">
                         <select [(ngModel)]="itemToUpdate.itemName" [value]="item.itemName" type='text'>
                             <option *ngFor="let material of materials">{{material.componentName}}</option>
                         </select>
                       </td>
 
 
-                    <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.quantity}}</td>
-                    <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
+                    <td *ngIf="item.itemNumber!=EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">{{item.quantity}}</td>
+                    <td *ngIf="item.itemNumber==EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">
                         <input [(ngModel)]="itemToUpdate.quantity" style="width:30px;" type='text'>
                         <span>{{item.quantity}}</span>
                       </td>
 
-                    <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.quantityUnits}}</td>
-                    <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
+                    <td *ngIf="item.itemNumber!=EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">{{item.quantityUnits}}</td>
+                    <td *ngIf="item.itemNumber==EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">
                         <input [(ngModel)]="itemToUpdate.quantityUnits" style="width:30px;"  type='text'>
                         <span>{{item.quantityUnits}}</span>
                       </td>
 
-                    <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.percentage}}</td>
-                    <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
+                    <td *ngIf="item.itemNumber!=EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">{{item.percentage}}</td>
+                    <td *ngIf="item.itemNumber==EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">
                         <input [(ngModel)]="itemToUpdate.percentage" style="width:30px;"  type='text'>
                         <span>{{item.percentage}}</span>
                       </td>
 
-                    <td *ngIf="item.phaseId!=EditRowId" (click)="editItems(item.phaseId,index)">{{item.temp}}</td>
-                    <td *ngIf="item.phaseId==EditRowId" (click)="editItems(item.phaseId,index)">
+                    <td *ngIf="item.itemNumber!=EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">{{item.temp}}</td>
+                    <td *ngIf="item.itemNumber==EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">
                         <input [(ngModel)]="itemToUpdate.temp" style="width:30px;" type='text'>
                         <span>{{item.temp}}</span>
                       </td>
-                      <td *ngIf="item.phaseId==EditRowId">
-                          <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;" (click)="saveItemEdit(currDoc)"></i>
+                      <td *ngIf="item.itemNumber==EditRowId">
+                          <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;" (click)="saveItemEdit(currDoc,index)"></i>
                         </td> 
 
                   </tr>
