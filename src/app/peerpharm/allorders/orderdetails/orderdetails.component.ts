@@ -17,6 +17,7 @@ import { CostumersService } from 'src/app/services/costumers.service';
 import {ExcelService} from '../../../services/excel.service';
 import { AuthService } from '../../../services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { FormulesService } from 'src/app/services/formules.service';
 
 
 
@@ -32,7 +33,8 @@ import { InventoryService } from 'src/app/services/inventory.service';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
-
+   
+  allMaterials:any[];
   allItems:any[];
   closeResult: string;
   plateImg="";
@@ -150,7 +152,7 @@ export class OrderdetailsComponent implements OnInit {
     console.log(event);
     this.edit('');
 }
-  constructor(private inventoryService: InventoryService,private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
+  constructor(private formuleService:FormulesService,private inventoryService: InventoryService,private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, 
      private costumerSrevice: CostumersService, private excelService:ExcelService, private authService: AuthService ) { }
 
@@ -164,6 +166,7 @@ export class OrderdetailsComponent implements OnInit {
      this.getAllItems();
      this.getAllOrdersItems();
     this.getAllComponents();
+    this.getAllMaterialsFormules();
     console.log('hi');
     this.getItemAmounts();
     console.log(this.ordersItems)
@@ -390,6 +393,47 @@ getItemAmounts() {
   });
 
 }
+
+getAllMaterialsFormules() { 
+  this.inventoryService.getAllMaterialsForFormules().subscribe(data=>{
+    this.allMaterials = data;
+  })
+}
+
+showFormule(itemNumber,formuleByItem) {
+  this.formuleService.getFormuleByNumber(itemNumber).subscribe(data=>{
+    debugger;
+    if(data) {
+      this.modalService.open(formuleByItem, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    }
+         var allItems = []
+      for (let i = 0; i < data.phases.length; i++) {
+        for (let j = 0; j < data.phases[i].items.length; j++) {
+         if(data.phases[i].items[j]) {
+           allItems.push(data.phases[i].items[j])
+         } 
+          
+        }
+        
+      }
+      var itemNumbers = []
+      for (let i = 0; i < allItems.length; i++) {
+       var numbers = this.allMaterials.filter(material=> material.componentN == allItems[i].itemNumber)
+       itemNumbers.push(numbers) 
+        
+      }
+
+      var x = itemNumbers.find(number=>number.notInStock == true)
+  }) 
+}
+
+
+
+
 
 
 getOrderItems(singleLine): void {

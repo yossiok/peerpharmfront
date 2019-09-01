@@ -76,8 +76,14 @@ export class FormulesService {
     return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
   }
   // NOA Fomule Service
-
+  findOneFormule
   // GET
+  // getFormuleByNotInStock(){
+  //   let url = this.baseUrl + "formules/findOneFormule";
+  //   return this.http.get(url).pipe(map(reponse => reponse.json()));
+  // }
+
+
   getFormuleByParent(parent){
     let url = this.baseUrl + "formules?byParent="+parent;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

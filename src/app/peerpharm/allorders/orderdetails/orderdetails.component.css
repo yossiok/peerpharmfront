@@ -60,7 +60,13 @@ input[type=checkbox]
 #cmptModal table, #cmptModal h4{
   float: right;
 }
-
+.formuleBtn { 
+  margin-right: 10px;
+  background:rgb(216, 34, 34);
+  border-radius: 30px;
+  box-shadow: inset 0px 1px 3px 0px black;
+  border: 1px solid black;
+}
 
 .table{
   color:black;

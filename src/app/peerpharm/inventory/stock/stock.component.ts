@@ -163,6 +163,7 @@ export class StockComponent implements OnInit {
     coaMaster: "",
     alternativeMaterial:"",
     price:"",
+    notInStock:"",
 
   }
   itemExpectedArrivals: any;

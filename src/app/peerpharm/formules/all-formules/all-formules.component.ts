@@ -383,7 +383,7 @@ copyFormule(currDoc,index) {
   this.formuleService.copyFormule(formuleToCopy).subscribe(data=>{
     debugger;
     data;
-  this.getAllFormules();
+  this.allFormules.push(data);
   })
   
 
