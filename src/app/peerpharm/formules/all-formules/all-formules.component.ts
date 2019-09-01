@@ -202,7 +202,7 @@ editItems(itemNumber,index,phaseId) {
   var phase = this.updateFormule.phases.find(phase => phase._id == phaseId)
 
   this.itemToUpdate.itemNumber = phase.items[index].itemNumber
-  this.itemToUpdate.itemName = phase.items[index].itemName
+  
   this.itemToUpdate.quantity = phase.items[index].quantity
   this.itemToUpdate.quantityUnits = phase.items[index].quantityUnits
   this.itemToUpdate.percentage = phase.items[index].percentage

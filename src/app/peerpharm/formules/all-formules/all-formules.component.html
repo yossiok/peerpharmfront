@@ -40,7 +40,7 @@
             <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
                 <input #formuleParent type='text' [value]="formule.parent">
               </td>
-              <td><button (click)="copyFormule(currDoc,i)">Copy Formule</button></td>
+              <td><button style="float:right;background: green;box-shadow: inset 0px 1px 4px 0px;border:1px solid rgb(217, 228, 217);" (click)="copyFormule(currDoc,i)">Copy Formule</button></td>
 
             <!-- <td  (click)="edit(batch._id)" ><i class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td> -->
 
@@ -148,7 +148,7 @@
 
                     <td *ngIf="item.itemNumber!=EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">{{item.itemName}}</td>
                     <td *ngIf="item.itemNumber==EditRowId" (click)="editItems(item.itemNumber,index,item.phaseId)">
-                        <select [(ngModel)]="itemToUpdate.itemName" [value]="item.itemName" type='text'>
+                        <select [(ngModel)]="itemToUpdate.itemName">
                             <option *ngFor="let material of materials">{{material.componentName}}</option>
                         </select>
                       </td>
