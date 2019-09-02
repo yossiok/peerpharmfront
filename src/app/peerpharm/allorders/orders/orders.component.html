@@ -118,7 +118,11 @@
             </td> -->
           <td style="width:7%;" *ngIf="order._id!==EditRowId">{{order.type}}</td>
           <td style="width:7%;" *ngIf="order._id===EditRowId">
-              <input #orderType type='text' [value]="order.type" style='width:100px'>
+              <select #orderType type='text' [value]="order.type" style='width:100px'>
+                <option value="Make Up">Make Up</option>
+                <option value="Cosmetic">Cosmetic</option>
+                <option value="Cosmetic & MakeUp">Cosmetic & Make Up</option>
+              </select>
             </td>
 
           <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)"  style="box-shadow: inset 0px 0px 2px 1px black; text-align: center;  height: 100%;" [style.background-color]="order.stageColor">{{order.stage | orderStage}}</td>
