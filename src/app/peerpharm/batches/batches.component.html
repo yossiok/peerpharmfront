@@ -45,7 +45,7 @@
             <td style="width:10%;">Production Date</td>
             <td style="width:15%">Item Name</td>
             <td style="width:10%">P.h</td>
-            <td style="width:10%">Produced/Left</td>
+            <td style="width:10%">Left/Produced</td>
             <td style="width:10%">Barrels</td>
             <td style="width:10%">Order</td>
             <td style="width:10%">Item</td>
@@ -87,10 +87,10 @@
             <td *ngIf="batch._id===EditRowId" style="width:10%" (click)="edit(batch._id)">
               <input class="editInput"  #batchPh  type='text' [value]="batch.ph" style='width:30px'>
           </td>
-            <td *ngIf="batch._id!==EditRowId" style="width:10%" (click)="edit(batch._id)">{{batch.weightKg}} / {{batch.weightQtyLeft}}</td>
+            <td *ngIf="batch._id!==EditRowId" style="width:10%" (click)="edit(batch._id)"> {{batch.weightQtyLeft}} / {{batch.weightKg}}</td>
             <td *ngIf="batch._id===EditRowId" style="width:10%" (click)="edit(batch._id)">
-              <span>{{batch.weightKg}} /</span>&nbsp;
-              <input class="editInput"  #batchWeightQtyLeft  type='text' [value]="batch.weightQtyLeft" style='width:40px'>
+                <input class="editInput"  #batchWeightQtyLeft  type='text' [value]="batch.weightQtyLeft" style='width:40px'>
+              <span>/ {{batch.weightKg}}</span>&nbsp;
           </td>
 
             <td  *ngIf="batch._id!==EditRowId" style="width:10%" (click)="edit(batch._id)">{{batch.barrels}}</td>

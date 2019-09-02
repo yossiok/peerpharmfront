@@ -5,7 +5,9 @@
     }
     .modal-content { 
       width:160% !important;
+      margin-left:-30% !important;
     }
+
 
     .openUpdateModal { 
       color:blue;

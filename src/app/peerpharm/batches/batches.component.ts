@@ -130,7 +130,7 @@ export class BatchesComponent implements OnInit {
       this.batches.map(batch => {
         if (batch.weightKg != null && batch.weightQtyLeft != null) {
           if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
-          else if (batch.weightQtyLeft < batch.weightKg) batch.color = "yellow";
+          else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
           else batch.color = "white";
           if (res.length == res.length) {
 

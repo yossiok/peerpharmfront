@@ -118,15 +118,14 @@
       <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
 
       <td *ngIf="multi==true">{{item.orderNumber}}</td>
+      <td><button (click)="showFormule(item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td>
       <td *ngIf="item.licsensNumber!=''">
-        <button (click)="showFormule(item.itemNumber,formuleByItem)" class="formuleBtn">F</button>
         <button class='expendBtn' [style.background-color]="item.colorBtn" (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
         <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
           {{item.itemNumber}}
         </a>
       </td>
       <td class="noLicense" *ngIf="item.licsensNumber==''">
-        <button class="formuleBtn">F</button>
         <button class='expendBtn' [style.background-color]="item.colorBtn" (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
         <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
           {{item.itemNumber}}
@@ -681,26 +680,41 @@
   </div>
 </ng-template>
 
-<ng-template #formuleByItem let-modal>
+<!-- <ng-template #formuleByItem let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Formule</h4>
     </div>
     <div class="modal-body">
       <table class='table'>
         <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
-      
-    
+         <tr>
+           <th>Formule Number</th>
+           <th>Formule Name</th>
+           <th>Last Updated</th>
+         </tr>
         </thead>
         <tbody id="table_body">
-          <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
-           <td>ok</td>
+          <tr *ngFor="let formule of currFormule" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+           <td>{{formule.number}}</td>
+           <td>{{formule.name}}</td>
+           <td>{{formule.lastUpdate | date: 'dd/MM/yyyy' }}</td>
           </tr>
+          <tr *ngFor="let phase of currPhase">
+            <td>{{phase.phaseNumber}}</td>
+            <td>{{phase.phaseName}}</td>
+            <td>{{phase.phaseInstructions}}</td>
+          </tr>
+         <tr *ngFor="let item of currItems">
+           <td>{{item.itemNumber}}</td>
+           <td></td>
+           <td></td>
+         </tr>
         </tbody>
       </table>
     </div>
     <div class="modal-footer">
     </div>
-  </ng-template>
+  </ng-template> -->
 
 
 

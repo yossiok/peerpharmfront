@@ -317,6 +317,10 @@ getAllMaterialsArrivalsWeek():Observable<any>{
   let url = this.baseUrl + "material?week=yes";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+getMaterialNotInStock(objToSearch):Observable<any>{
+  let url = this.baseUrl + "material/findNotInStock";
+  return this.http.post(url,JSON.stringify(objToSearch),this.options).pipe(map(reponse => reponse.json()));
+}
 
 getMaterialArrivalFormById(id):Observable<any>{
   let url = this.baseUrl + "material/scanBarcodeId?viewOnly=yes&id="+id;

@@ -33,7 +33,9 @@ import { FormulesService } from 'src/app/services/formules.service';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
-   
+  currItems:any[];
+  currFormule:any[];
+  currPhase:any[];
   allMaterials:any[];
   allItems:any[];
   closeResult: string;
@@ -403,31 +405,44 @@ getAllMaterialsFormules() {
 showFormule(itemNumber,formuleByItem) {
   this.formuleService.getFormuleByNumber(itemNumber).subscribe(data=>{
     debugger;
+    this.currFormule = [data];
+   console.log(this.currFormule)
+    this.currPhase = data.phases
+    var items = []
+    for (let i = 0; i < data.phases.length; i++) {
+
+        items.push(data.phases[i].items)
+      
+    }
+   this.currItems = items
     if(data) {
-      this.modalService.open(formuleByItem, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.modalService.open(formuleByItem, {size:'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
     }
-         var allItems = []
-      for (let i = 0; i < data.phases.length; i++) {
-        for (let j = 0; j < data.phases[i].items.length; j++) {
-         if(data.phases[i].items[j]) {
-           allItems.push(data.phases[i].items[j])
-         } 
+      //    var allItems = []
+      // for (let i = 0; i < data.phases.length; i++) {
+      //   for (let j = 0; j < data.phases[i].items.length; j++) {
+      //    if(data.phases[i].items[j]) {
+      //      allItems.push(data.phases[i].items[j])
+      //    } 
           
-        }
+      //   }
         
-      }
-      var itemNumbers = []
-      for (let i = 0; i < allItems.length; i++) {
-       var numbers = this.allMaterials.filter(material=> material.componentN == allItems[i].itemNumber)
-       itemNumbers.push(numbers) 
+      // }
+      // var itemNumbers = []
+      // for (let i = 0; i < allItems.length; i++) {
+      //  var numbers = this.allMaterials.filter(material=> material.componentN == allItems[i].itemNumber)
+      //  itemNumbers.push(numbers) 
         
-      }
+      // }
 
-      var x = itemNumbers.find(number=>number.notInStock == true)
+      // this.inventoryService.getMaterialNotInStock(itemNumbers).subscribe(data=>{
+      //   debugger;
+      //   data;
+      // })
   }) 
 }
 
