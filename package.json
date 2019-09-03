@@ -49,6 +49,7 @@
     "pace-js": "^1.0.2",
     "pdf-invoice": "^1.0.2",
     "perfect-scrollbar": "^1.4.0",
+    "print-js": "^1.0.61",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
     "socket.io-client": "^2.2.0",

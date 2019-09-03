@@ -18,6 +18,8 @@ import {ExcelService} from '../../../services/excel.service';
 import { AuthService } from '../../../services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { FormulesService } from 'src/app/services/formules.service';
+import { UserInfo } from '../../taskboard/models/UserInfo';
+
 
 
 
@@ -33,6 +35,9 @@ import { FormulesService } from 'src/app/services/formules.service';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
+
+  user:UserInfo
+  openFormule:boolean = false;
   currItems:any[];
   currFormule:any[];
   currPhase:any[];
@@ -165,6 +170,7 @@ export class OrderdetailsComponent implements OnInit {
    }
 
   async ngOnInit() {
+    this.getUserInfo();
      this.getAllItems();
      this.getAllOrdersItems();
     this.getAllComponents();
@@ -405,6 +411,9 @@ getAllMaterialsFormules() {
 showFormule(itemNumber,formuleByItem) {
   this.formuleService.getFormuleByNumber(itemNumber).subscribe(data=>{
     debugger;
+    if(data == null) {
+      this.toastSrv.error("There is no formule yet")
+    } else {
     this.currFormule = [data];
    console.log(this.currFormule)
     this.currPhase = data.phases
@@ -421,7 +430,8 @@ showFormule(itemNumber,formuleByItem) {
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
-    }
+    } 
+  }
       //    var allItems = []
       // for (let i = 0; i < data.phases.length; i++) {
       //   for (let j = 0; j < data.phases[i].items.length; j++) {
@@ -1103,6 +1113,33 @@ debugger;
 
       
     });
+  }
+
+  async getUserInfo() {
+    debugger
+    await this.authService.userEventEmitter.subscribe(user => {
+      this.user=user;
+      // this.user=user.loggedInUser;
+      // if (!this.authService.loggedInUser) {
+      //   this.authService.userEventEmitter.subscribe(user => {
+      //     if (user.userName) {
+      //       this.user = user;
+            
+      //     }
+      //   });
+      // }
+      // else {
+      //   this.user = this.authService.loggedInUser;
+      // }
+      if (this.user.authorization){
+        debugger
+        if (this.authService.loggedInUser.authorization.includes("showFormule")){
+          this.openFormule=true;
+        }
+      }
+
+    });
+
   }
 
 

@@ -66,6 +66,7 @@ input[type=checkbox]
   border-radius: 30px;
   box-shadow: inset 0px 1px 3px 0px black;
   border: 1px solid black;
+  width:50px;
 }
 
 .table{
@@ -225,6 +226,8 @@ background-color: white;
 }
 
 
+
+
 .modal-content, #myModal , #cmptModal
 {
     height: 75vh;
@@ -261,4 +264,19 @@ tr {
 .header { 
   color: black;
   font-weight: bold;
+}
+
+.modal-content { 
+  width:137% !important;
+  height:auto;
+}
+.modal-dialog { 
+  margin-right: 15% !important;
+}
+.formuleTable td {
+  width:14%;
+}
+.modal-backdrop
+{
+    opacity:0.1 !important;
 }

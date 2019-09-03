@@ -87,20 +87,15 @@ export class AddFormuleItemComponent implements OnInit {
     let details = this.materials.filter(x =>x.componentName == componentName)
     this.itemsForm.controls.itemNumber.setValue(details[0].componentN)
   }
-  searchMaterialNumber(){
-    if(this.itemsForm.value.itemNumber !=""){
-      this.invtSer.getMaterialStockItemByNum(this.itemsForm.value.itemNumber).subscribe(doc=>{
-        if(doc.length>0){
-          this.itemsForm.controls.itemName.setValue(doc[0].componentName);
-        }else{
-          this.toastSrv.error("Can't find material number");
-        }
-      });  
-    }
+  searchMaterialNumber(ev){
+    let materialNumber = ev.target.value;
+
+    let details = this.materials.filter(material=> material.componentN == materialNumber)
+    this.itemsForm.controls.itemName.setValue(details[0].componentName);
+    
+      
+    
   }
-
-
-
 
 
 }
