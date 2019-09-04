@@ -46,7 +46,7 @@ export class ItemslistComponent implements OnInit {
     reader.onload = (event) => { // called once readAsDataURL is completed
       debugger;
     var excelToSend = event.target["result"]
-    excelToSend = excelToSend.replace("data:application/pdf;base64,","");
+   // excelToSend = excelToSend.replace("data:application/pdf;base64,","");
     this.itemsService.sendExcel({data:excelToSend}).subscribe(data=>{
 debugger;
     })
