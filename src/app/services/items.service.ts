@@ -55,6 +55,11 @@ export class ItemsService {
     let url = this.baseUrl + "item/updateDocs?updateLicenseLimition=yes";
     return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json()))
   }
+  sendExcel(excel) {
+    debugger
+    let url = this.baseUrl + "item/excelToData";
+    return this.http.post(url, JSON.stringify(excel), this.options).pipe(map(res => res.json()))
+  }
 
 
 
