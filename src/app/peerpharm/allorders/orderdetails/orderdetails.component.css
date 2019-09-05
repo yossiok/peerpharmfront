@@ -266,9 +266,12 @@ tr {
   font-weight: bold;
 }
 
-.modal-content { 
-  width:137% !important;
-  height:auto;
+.cmptListDiv[_ngcontent-c4] {
+  font-size:14px !important;
+}
+
+.cmptListDiv { 
+  font-size: 13px !important;
 }
 .modal-dialog { 
   margin-right: 15% !important;
