@@ -38,7 +38,7 @@ export class ItemslistComponent implements OnInit {
 
   sendExcelToData(ev) { 
     debugger;
-
+  if(confirm("האם אתה בטוח שבחרת בקובץ הנכון ?") == true) {
     var reader = new FileReader();
 
     reader.readAsDataURL(ev.target.files[0]); // read file as data url
@@ -53,7 +53,7 @@ debugger;
     }
   
   }
-
+  }
 
   getAllItems(){
     

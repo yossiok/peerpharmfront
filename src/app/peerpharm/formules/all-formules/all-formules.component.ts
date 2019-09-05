@@ -95,7 +95,8 @@ export class AllFormulesComponent implements OnInit {
     this.updateFormule;
     this.addItem.currentPhase = JSON.stringify(this.updateFormule.currentPhase)
     this.addItem.formuleId = this.updateFormule._id
-    this.addItem.phaseId = this.updateFormule.phases.filter(phase=>phase.phaseNumber == this.addItem.currentPhase)
+    var phase = this.updateFormule.phases.filter(phase=>phase.phaseNumber == this.addItem.currentPhase)
+    this.addItem.phaseId = phase[0]._id
     this.formuleService.addItem(this.addItem).subscribe(data=>{
       debugger;
       if(data) {
@@ -242,6 +243,7 @@ savePhaseEdit(currDoc) {
     this.currentDoc[0].phaseInstructions =  this.phaseToUpdate.phaseIns;
     if(confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
       this.updatePhase() 
+
     }
     
   } else {
@@ -278,6 +280,7 @@ saveItemEdit(currDoc,index) {
 }
 
 updatePhase() { 
+  debugger;
   this.formuleService.updateFormulePhaseId(this.currentDoc).subscribe(data=>{
     debugger;
     data;
@@ -375,7 +378,12 @@ deleteItem(itemNumber,index,phaseId) {
   }
   this.formuleService.deleteItemById(itemToDelete).subscribe(data =>{
     debugger;
-    this.updateFormule.phases = data.phases;
+
+   var phase = data.phases.filter(phase=> phase._id == phaseId)
+   
+    this.updateItems = phase[0].items
+    debugger;
+
  
   })
 
