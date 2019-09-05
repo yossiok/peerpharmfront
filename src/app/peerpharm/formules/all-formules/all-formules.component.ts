@@ -82,11 +82,8 @@ export class AllFormulesComponent implements OnInit {
   }
 
   getAllMaterials() { 
-    debugger;
     this.invtSer.getAllMaterialsForFormules().subscribe(data=>{
-      debugger;
-      this.materials = data;
-      debugger;
+    this.materials = data;
     })
   }
 
@@ -96,9 +93,9 @@ export class AllFormulesComponent implements OnInit {
     debugger;
 
     this.updateFormule;
-    this.addItem.currentPhase = JSON.stringify(this.updateFormule.currentPhase-1)
+    this.addItem.currentPhase = JSON.stringify(this.updateFormule.currentPhase)
     this.addItem.formuleId = this.updateFormule._id
-    this.addItem.phaseId = this.updateFormule.phases[this.addItem.currentPhase]._id
+    this.addItem.phaseId = this.updateFormule.phases.filter(phase=>phase.phaseNumber == this.addItem.currentPhase)
     this.formuleService.addItem(this.addItem).subscribe(data=>{
       debugger;
       if(data) {
@@ -342,6 +339,46 @@ loadData(formuleNum) {
   var formuleToUpdate = [];
  formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
  this.updateFormule = formuleToUpdate
+}
+
+deleteFormule(id) {
+  debugger;
+  this.formuleService.deleteFormuleById({id}).subscribe(data =>{
+    debugger;
+    data;
+    this.getAllFormules();
+  })
+}
+deletePhase(phaseId) {
+  debugger;
+  var formuleId = this.updateFormule._id
+
+  var phaseToDelete = {
+    phaseId:phaseId,
+    formuleId:formuleId
+  }
+  this.formuleService.deletePhaseById(phaseToDelete).subscribe(data =>{
+    debugger;
+    this.updateFormule.phases = data.phases;
+ 
+  })
+}
+
+deleteItem(itemNumber,index,phaseId) {
+  debugger;
+  var formuleId = this.updateFormule._id
+  var itemToDelete = {
+    index:index,
+    itemNumber:itemNumber,
+    phaseId:phaseId,
+    formuleId:formuleId
+  }
+  this.formuleService.deleteItemById(itemToDelete).subscribe(data =>{
+    debugger;
+    this.updateFormule.phases = data.phases;
+ 
+  })
+
 }
 
 

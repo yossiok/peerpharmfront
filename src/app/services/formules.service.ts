@@ -123,6 +123,23 @@ export class FormulesService {
     return this.http.post(url, JSON.stringify(copiedFormule), this.options).pipe(map(res => res.json()));
   }
 
+  deleteFormuleById(id){
+    debugger;
+    let url = this.baseUrl + "formules/deleteById";
+    return this.http.post(url, JSON.stringify(id), this.options).pipe(map(res => res.json()));
+  }
+  deletePhaseById(phaseToDelete){
+    debugger;
+    let url = this.baseUrl + "formules/deletePhaseById";
+    return this.http.post(url, JSON.stringify(phaseToDelete), this.options).pipe(map(res => res.json()));
+  }
+  deleteItemById(itemToDelete){
+    debugger;
+    let url = this.baseUrl + "formules/deleteItemById";
+    return this.http.post(url, JSON.stringify(itemToDelete), this.options).pipe(map(res => res.json()));
+  }
+
+
   addPhase(newPhase){
     debugger;
     let url = this.baseUrl + "formules/addNewPhase";

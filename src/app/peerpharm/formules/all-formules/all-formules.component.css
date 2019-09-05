@@ -4,10 +4,21 @@
         color:white;
     }
     .modal-content { 
-      width:160% !important;
-      margin-left:-30% !important;
+      width:190% !important;
+      margin-left:-40% !important;
+      height:auto !important;
     }
 
+    .modal-body { 
+      height: 700px !important;
+    }
+    .deleteBtn {
+      background: rgb(156, 17, 17);
+      border:rgba(255, 255, 255, 0.644);
+      border-radius: 20px;
+      box-shadow: inset 0px 0px 4px 0px black;
+      
+    }
 
     .openUpdateModal { 
       color:blue;
