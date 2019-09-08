@@ -266,38 +266,38 @@ export const ROUTES: RouteInfo[] = [
     class: 'has-arrow',
     extralink: false,
     submenu: [
-      {
-        path: '/peerpharm/procurement/procurementOrderItemBalance',
-        title: 'Procurement Order Item Balance',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-       {
-        path: '/peerpharm/procurement/procurementOrders',
-        title: 'Procurement Orders',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/peerpharm/procurement/procurementOrderItems',
-        title: 'Procurement Order Items',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/peerpharm/procurement/newProcurement',
-        title: 'New Procurement',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/procurement/procurementOrderItemBalance',
+      //   title: 'Procurement Order Item Balance',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      //  {
+      //   path: '/peerpharm/procurement/procurementOrders',
+      //   title: 'Procurement Orders',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      // {
+      //   path: '/peerpharm/procurement/procurementOrderItems',
+      //   title: 'Procurement Order Items',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      // {
+      //   path: '/peerpharm/procurement/newProcurement',
+      //   title: 'New Procurement',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
 
     ]
   },
@@ -426,54 +426,54 @@ export const ROUTES: RouteInfo[] = [
       class: 'has-arrow',
       extralink: false,
       submenu: [
-        {
-          path: '/peerpharm/production/lines',
-          title: 'Lines',
-          icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-         {
-          path: '/peerpharm/production/productionHall',
-          title: 'Production Hall',
-          icon: 'fas fa-tree',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/production/productionRequest',
-          title: 'Production Request',
-          icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/production/productionSchedule',
-          title: 'Production Schedule',
-          icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/production/scanMaterial',
-          title: 'Scan Barcode',
-          icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/production/wizard',
-          title: 'Wizard',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
+        // {
+        //   path: '/peerpharm/production/lines',
+        //   title: 'Lines',
+        //   icon: 'fas fa-i-cursor',
+        //   class: '',
+        //   extralink: false,
+        //   submenu: []
+        // },
+        //  {
+        //   path: '/peerpharm/production/productionHall',
+        //   title: 'Production Hall',
+        //   icon: 'fas fa-tree',
+        //   class: '',
+        //   extralink: false,
+        //   submenu: []
+        // },
+        // {
+        //   path: '/peerpharm/production/productionRequest',
+        //   title: 'Production Request',
+        //   icon: 'fas fa-i-cursor',
+        //   class: '',
+        //   extralink: false,
+        //   submenu: []
+        // },
+        // {
+        //   path: '/peerpharm/production/productionSchedule',
+        //   title: 'Production Schedule',
+        //   icon: 'fas fa-i-cursor',
+        //   class: '',
+        //   extralink: false,
+        //   submenu: []
+        // },
+        // {
+        //   path: '/peerpharm/production/scanMaterial',
+        //   title: 'Scan Barcode',
+        //   icon: 'fas fa-i-cursor',
+        //   class: '',
+        //   extralink: false,
+        //   submenu: []
+        // },
+        // {
+        //   path: '/peerpharm/production/wizard',
+        //   title: 'Wizard',
+        //   icon: 'fas fa-list-ol',
+        //   class: '',
+        //   extralink: false,
+        //   submenu: []
+        // },
 
       ]
     }

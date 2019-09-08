@@ -68,7 +68,7 @@
   <thead class='bg-info tableHeader text-white' (click)="edit('')">
     <tr>
       <th> #</th>
-
+      <th></th>
       <th *ngIf="showingAllOrders || multi">Order Number</th>
       <th style="width:200px;" class="header">Item Number </th>
       <th class="header">Item Important Remark</th>
@@ -728,6 +728,8 @@
     
   </div>
   <div class="modal-body">
+      <button printSectionId="print-section" [printStyle]="{td : {'border': 'solid 1px black'}}" ngxPrint>print</button> 
+      <div id="print-section">
     <table style="width:100%" class='table'>
       <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
         <div>
@@ -1338,6 +1340,7 @@
                             </div>
       </tbody>
     </table>
+  </div>
   </div>
   <div class="modal-footer">
   </div>

@@ -56,13 +56,16 @@ debugger;
   }
 
   getAllItems(){
-    
+    debugger;
     this.subscription = this.itemsService.startNewItemObservable().subscribe((items) => {
       // debugger;
     items.map(item=>{
         item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
         item.licsensDate  = moment(item.licsensDate).format("DD/MM/YYYY");
-        item.StickerLanguageK=item.StickerLanguageK.split("/").join(" ");
+        if(item.StickerLanguageK != null) {
+          item.StickerLanguageK=item.StickerLanguageK.split("/").join(" ");
+        }
+        
       })
       this.items.push(...items); 
       if(items.length<500)
