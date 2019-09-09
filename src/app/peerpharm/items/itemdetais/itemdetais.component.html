@@ -511,14 +511,14 @@
               <tr>
                 <td>
                   <b>Bottle no' </b>
-                  <input type="text" id="id_bottleNo" (focusout)="loadPackagDetails(itemShown.bottleNumber, 'bottle')"
+                  <input (change)="fillBottle($event)" type="text" id="id_bottleNo" (focusout)="loadPackagDetails(itemShown.bottleNumber, 'bottle')"
                     [(ngModel)]=itemShown.bottleNumber>
                 </td>
               </tr>
               <tr>
                 <td>
                   <b>Details : </b>
-                  <input type="text" id="id_item1text" style='margin-left:10px' [(ngModel)]=itemShown.bottleTube>
+                  <input  type="text" id="id_item1text" style='margin-left:10px' [(ngModel)]=itemShown.bottleTube>
                 </td>
               </tr>
               <tr>
@@ -565,7 +565,7 @@
                 <td>
 
                   <b>CAP no'</b>
-                  <input type="text" id="id_capNo" [(ngModel)]=itemShown.capNumber  (focusout)="loadPackagDetails(itemShown.bottleNumber, 'cap')">
+                  <input (change)="fillCap($event)" type="text" id="id_capNo" [(ngModel)]=itemShown.capNumber  (focusout)="loadPackagDetails(itemShown.bottleNumber, 'cap')">
                 </td>
               </tr>
               <tr>
@@ -616,7 +616,7 @@
               <tr>
                 <td>
                   <b>PUMP no'</b>
-                  <input type="text" id="id_pumpNo" [(ngModel)]=itemShown.pumpNumber   (focusout)="loadPackagDetails(itemShown.bottleNumber, 'pump')">
+                  <input (change)="fillPump($event)" type="text" id="id_pumpNo" [(ngModel)]=itemShown.pumpNumber   (focusout)="loadPackagDetails(itemShown.bottleNumber, 'pump')">
                 </td>
               </tr>
               <tr>
@@ -669,7 +669,7 @@
                 <tr>
                   <td>
                     <b>Seal no'</b>
-                    <input type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber   (focusout)="loadPackagDetails(itemShown.bottleNumber, 'seal')">
+                    <input (change)="fillSeal($event)" type="text" id="id_sealNo" [(ngModel)]=itemShown.sealNumber   (focusout)="loadPackagDetails(itemShown.bottleNumber, 'seal')">
                   </td>
                 </tr>
                 <tr>

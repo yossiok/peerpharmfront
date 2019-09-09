@@ -62,6 +62,7 @@ export class StockComponent implements OnInit {
   buttonColor: string = 'white';
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
+  buttonColor4: string = '#B8ECF1';
   openModal: boolean = false;
   openImgModal: boolean = false;
   openAmountsModal: boolean = false;
@@ -776,17 +777,26 @@ export class StockComponent implements OnInit {
         this.buttonColor = "white";
         this.buttonColor2 = "#B8ECF1";
         this.buttonColor3 = "#B8ECF1";
+        this.buttonColor4 = "#B8ECF1";
         break;
       case 'material':
         this.buttonColor = "#B8ECF1";
         this.buttonColor2 = "white";
         this.buttonColor3 = "#B8ECF1";
+        this.buttonColor4 = "#B8ECF1";
         break;
       case 'product':
         this.buttonColor = "#B8ECF1";
         this.buttonColor2 = "#B8ECF1";
         this.buttonColor3 = "white";
+        this.buttonColor4 = "#B8ECF1";
         break;
+        case 'cartons':
+          this.buttonColor = "#B8ECF1";
+          this.buttonColor2 = "#B8ECF1";
+          this.buttonColor3 = "#B8ECF1";
+          this.buttonColor4 = "white";
+          break;
     }
     if (this.stockType != type) {
       this.filterbyNum.nativeElement.value = "";

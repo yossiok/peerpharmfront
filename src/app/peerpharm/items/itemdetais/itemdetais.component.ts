@@ -271,6 +271,51 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
+  fillBottle(ev){
+  
+    var bottleNumber = ev.target.value;
+
+    if(bottleNumber != "---" || "") {
+      this.invtSer.getCmptByNumber(bottleNumber,"component").subscribe(data=>{
+      this.itemShown.bottleTube = data[0].componentName
+      this.itemShown.bottleImage = data[0].img
+      })
+    }
+  }
+
+  fillCap(ev){
+    var capNumber = ev.target.value;
+
+    if(capNumber != "---" || "") {
+      this.invtSer.getCmptByNumber(capNumber,"component").subscribe(data=>{
+      this.itemShown.capTube = data[0].componentName
+      this.itemShown.capImage = data[0].img
+      })
+    }
+  }
+
+  fillPump(ev){
+    var pumpNumber = ev.target.value;
+
+    if(pumpNumber != "---" || "") {
+      this.invtSer.getCmptByNumber(pumpNumber,"component").subscribe(data=>{
+      this.itemShown.pumpTube = data[0].componentName
+      this.itemShown.pumpImage = data[0].img
+      })
+    }
+  }
+
+  fillSeal(ev){
+    var sealNumber = ev.target.value;
+
+    if(sealNumber != "---" || "") {
+      this.invtSer.getCmptByNumber(sealNumber,"component").subscribe(data=>{
+      this.itemShown.sealTube = data[0].componentName
+      this.item.sealImage = data[0].img
+      })
+    }
+  }
+
   getGoddetData() {
     debugger
     let div = this.container.nativeElement;
