@@ -272,7 +272,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillBottle(ev){
-  
+  debugger
     var bottleNumber = ev.target.value;
 
     if(bottleNumber != "---" || "") {
@@ -280,6 +280,9 @@ export class ItemdetaisComponent implements OnInit {
       this.itemShown.bottleTube = data[0].componentName
       this.itemShown.bottleImage = data[0].img
       })
+    } else if(bottleNumber == "---") { 
+      this.itemShown.bottleTube = ""
+      this.itemShown.bottleImage = ""
     }
   }
 
@@ -291,6 +294,9 @@ export class ItemdetaisComponent implements OnInit {
       this.itemShown.capTube = data[0].componentName
       this.itemShown.capImage = data[0].img
       })
+    } else if(capNumber == "---") {
+      this.itemShown.capTube = ""
+      this.itemShown.capImage = ""
     }
   }
 
@@ -302,6 +308,9 @@ export class ItemdetaisComponent implements OnInit {
       this.itemShown.pumpTube = data[0].componentName
       this.itemShown.pumpImage = data[0].img
       })
+    } else if(pumpNumber == "---") {
+      this.itemShown.pumpTube = ""
+      this.itemShown.pumpImage = ""
     }
   }
 
@@ -313,6 +322,10 @@ export class ItemdetaisComponent implements OnInit {
       this.itemShown.sealTube = data[0].componentName
       this.item.sealImage = data[0].img
       })
+    } else if(sealNumber == "---") {
+      this.itemShown.sealTube = ""
+      this.item.sealImage = ""
+    
     }
   }
 

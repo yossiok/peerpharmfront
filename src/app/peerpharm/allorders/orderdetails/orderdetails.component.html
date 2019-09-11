@@ -68,7 +68,7 @@
   <thead class='bg-info tableHeader text-white' (click)="edit('')">
     <tr>
       <th> #</th>
-      <th></th>
+      <th *ngIf="openFormule"></th>
       <th *ngIf="showingAllOrders || multi">Order Number</th>
       <th style="width:200px;" class="header">Item Number </th>
       <th class="header">Item Important Remark</th>
@@ -133,6 +133,7 @@
         <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
 
         <td *ngIf="multi==true">{{item.orderNumber}}</td>
+        
         <td *ngIf="openFormule"><button  (click)="showFormule(item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td>
         <td *ngIf="item.licsensNumber!=''">
           <button class='expendBtn' [style.background-color]="item.colorBtn"

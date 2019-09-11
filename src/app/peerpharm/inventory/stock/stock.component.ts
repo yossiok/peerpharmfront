@@ -245,6 +245,7 @@ export class StockComponent implements OnInit {
   //         });
   //  }
   exportCurrTable() {
+    debugger;
     this.loadingExcel = true;
 
     this.makeFileForExcelDownload().then((data: any[]) => {
@@ -274,6 +275,7 @@ export class StockComponent implements OnInit {
 
   }
   makeFileForExcelDownload() {
+    debugger;
     var that = this;
     var arr: any[] = []
     return new Promise(function (resolve, reject) {
@@ -285,7 +287,8 @@ export class StockComponent implements OnInit {
             'מק"ט פריט אצל הספק': that.components[i].componentNs,
             'שם הפריט': that.components[i].componentName,
             'סוג פריט': that.components[i].componentType,
-            'כמות במלאי': that.components[i].amount,
+            'כמות Kasem': that.components[i].amountKasem,
+            'כמות Rosh-HaAyin': that.components[i].amountRH,
           }
           arr.push(line)
         }
@@ -295,7 +298,8 @@ export class StockComponent implements OnInit {
           line = {
             'מספר פריט': that.components[i].componentN,
             'שם המוצר': that.components[i].componentName,
-            'כמות במלאי': that.components[i].amount,
+            'כמות Kasem': that.components[i].amountKasem,
+            'כמות Rosh-HaAyin': that.components[i].amountRH,
           }
           arr.push(line)
         }
@@ -305,7 +309,8 @@ export class StockComponent implements OnInit {
           line = {
             'מספר פריט': that.components[i].componentN,
             'שם החו"ג': that.components[i].componentName,
-            'כמות במלאי': that.components[i].amount,
+            'כמות ': that.components[i].amount,
+           
           }
           arr.push(line)
         }

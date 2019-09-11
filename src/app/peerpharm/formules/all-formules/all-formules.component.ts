@@ -434,4 +434,22 @@ copyFormule(currDoc,index) {
 
 }
 
+
+fillTheMaterialNumber(ev) {
+  debugger;
+  let componentName = ev.target.value;
+  let details = this.materials.filter(x =>x.componentName == componentName)
+  this.addItem.itemNumber = details[0].componentN
+}
+searchMaterialNumber(ev){
+  debugger;
+  let materialNumber = ev.target.value;
+
+  let details = this.materials.filter(material=> material.componentN == materialNumber)
+  this.addItem.itemName = details[0].componentName;
+  
+    
+  
+}
+
 }
