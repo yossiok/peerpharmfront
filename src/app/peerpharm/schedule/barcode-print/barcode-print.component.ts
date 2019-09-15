@@ -162,7 +162,7 @@ export class BarcodePrintComponent implements OnInit {
 
   // Modal Functions
   openPrintBarkod(content, line) {
-    
+    debugger;
     this.schedLine = line;
     this.amountOfStickersArr = [];
     this.GetItemAllData()
@@ -215,6 +215,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   GetItemAllData(): Promise<any> {
+    debugger;
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.itemsService.getItemData(this.schedLine.item).subscribe(data => {
@@ -227,12 +228,16 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   GetBatchAllData(): Promise<any> {
+    debugger;
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.batchesService
           .getBatchData(this.schedLine.batch)
           .subscribe(data => {
-            this.exp = data[0].expration;
+            if(data.length != 0) {
+              this.exp = data[0].expration;
+            }
+            
             console.log(data);
             resolve(data);
           });
