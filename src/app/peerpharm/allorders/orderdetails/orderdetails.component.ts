@@ -195,6 +195,7 @@ export class OrderdetailsComponent implements OnInit {
             item.isExpand = '+';
             item.colorBtn = '#33FFE0';
             
+            
           });
           this.ordersData= orders.ordersData;
           await this.colorOrderItemsLines(orders.orderItems).then(data=>{   });
@@ -259,6 +260,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   open(contentTwo) {
+    debugger;
     this.modalService.open(contentTwo, {size: 'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -270,6 +272,8 @@ export class OrderdetailsComponent implements OnInit {
     debugger;
     this.orderService.getOpenOrdersItems().subscribe(data=>{
       this.orderItemsStock = data;
+
+
     })
   }
 
@@ -697,6 +701,13 @@ editBatch(batch){
       });
 
 
+  }
+
+  combineAllProducedItems(orderNumber,itemNumber) {
+    debugger;
+  var orders = this.formDetailsAmounts.filter(order=>order.orderNumber == orderNumber)
+  var items = orders.filter(item=>item.itemN == itemNumber)
+ 
   }
 
   deleteItem(item) {
@@ -1167,6 +1178,7 @@ debugger;
       this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber.trim()) );
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe( async res=>{
         await res.forEach(async item=> {
+          debugger;
           let i=this.ordersItems.filter(x=> x.itemNumber==item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
           item.itemName = i.discription;

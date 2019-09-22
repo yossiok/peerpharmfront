@@ -29,6 +29,11 @@ export class ItemsService {
     let url = this.baseUrl + "item";
     return this.http.get(url).pipe(map(reponse => reponse.json())); 
   }
+  
+  getAllItemsTwo() {
+    let url = this.baseUrl + "item/getAllItems";
+    return this.http.get(url).pipe(map(reponse => reponse.json())); 
+  }
 
   getItemData(itemNumber) {
     let url = this.baseUrl + "item?itemNumber=" + itemNumber;

@@ -4,7 +4,7 @@
         color:white;
     }
     .modal-content { 
-      width:190% !important;
+      width:205% !important;
       margin-left:-40% !important;
       height:auto !important;
     }
@@ -21,7 +21,7 @@
     }
     .modal-lg { 
       height:130% !important;
-      width:850px !important;
+      width:1000px !important;
     }
 
     .openUpdateModal { 

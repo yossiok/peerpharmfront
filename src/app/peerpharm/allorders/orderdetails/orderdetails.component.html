@@ -631,6 +631,7 @@
               <th scope="col"><b>Quantity in Stock</b></th>
               <th scope="col"><b>Quantity</b></th>
               <th scope="col"><b>Bottle</b></th>
+              <th scope="col"><b>Net Weight</b></th>
               <th scope="col"><b>Cap</b></th>
               <th scope="col"><b>Pump</b></th>
               <th scope="col"><b>Seal</b></th>
@@ -647,7 +648,7 @@
               <th scope="col"><b>Important Note</b></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody *ngFor="let item of ordersItems">
             <tr scope="row" *ngFor="let itemCmpts of orderItemsComponents; let i =index">
               <td scope="col">{{i+1}}</td>
               <td scope="col">{{itemCmpts.itemNumber}}</td>
@@ -655,6 +656,7 @@
               <td scope="col" style=" background-color:aliceblue; ">{{itemCmpts.currStock}}</td>
               <td scope="col">{{itemCmpts.quantity}}</td>
               <td scope="col">{{itemCmpts.bottleNumber}}</td>
+              <td scope="col">{{item.netWeightGr}}</td>
               <td scope="col">{{itemCmpts.capNumber}}</td>
               <td scope="col">{{itemCmpts.pumpNumber}}</td>
               <td scope="col">{{itemCmpts.sealNumber}}</td>
@@ -696,22 +698,25 @@
         <thead class='tableHeader'>
 
           <tr>
+            
             <th>מק"ט</th>
             <th>אצווה</th>
             <th>כמות הזמנה</th>
             <th>כמות טופס מילוי</th>
             <th>כמות טופס אריזה</th>
             <th>בקרה סופית</th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="table_body">
           <tr *ngFor="let item of ordersItems;" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+            
             <td>{{item.itemNumber}}</td>
             <td>{{item.batch}}</td>
             <td>{{item.quantity}}</td>
             <td>{{item.quantityProduced}}</td>
             <td>{{item.quantity}}</td>
-            <td></td>
+            <td><button (click)="combineAllProducedItems(item.orderNumber,item.itemNumber)">Combine</button></td>
 
           </tr>
         </tbody>

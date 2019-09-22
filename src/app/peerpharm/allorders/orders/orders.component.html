@@ -27,6 +27,7 @@
 </div>
 <br><br>
 <input matInput class="searchInput" placeholder="Search Costumer By Name" (change)="changeText($event)"/>
+<input matInput class="searchInput" placeholder="Search Costumer By Type" (change)="searchByType($event)"/>
  
     <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px; box-shadow: 2px 2px 2px black'> Load </button> 
     <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px; box-shadow: 2px 2px 2px black'> Show Items </button>

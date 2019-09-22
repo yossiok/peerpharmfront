@@ -213,12 +213,13 @@
           <th style="width:6%; padding:5px"></th>
           <th style="width:10%; padding:5px"><b>מספר פריט</b></th>
           <!-- <th style="padding:5px"><b>מק"ט פריט/ספק</b></th> -->
-          <th style="width:30%; padding:5px"><b>שם</b></th>
+          <th style="width:25%; padding:5px"><b>שם</b></th>
           <!-- <th style="padding:5px"><b>סוג</b></th> -->
-          <th style="width:10%; padding:5px"><b>כמות</b></th>
-          <th style="width:10%; padding:5px"></th>
-          <th style="width:10%; padding:5px"><b>כמות מוקצת</b></th>
-          <th style="width:10%; padding:5px"><b>תמונה</b></th>
+          <th style="width:9%; padding:5px"><b>כמות</b></th>
+          <th style="width:9%; padding:5px"><b>Sticker Language</b></th>
+          <th style="width:9%; padding:5px"></th>
+          <th style="width:9%; padding:5px"><b>כמות מוקצת</b></th>
+          <th style="width:9; padding:5px"><b>תמונה</b></th>
           <!-- <th style="padding:5px"><b>הזמנת רכש</b></th>
             <th style="padding:5px"><b>כמות להזמנת רכש</b></th> -->
           <th style="width:7%;"></th>
@@ -238,15 +239,16 @@
             </a></td>
 
           <!-- <td>{{component.componentNS}}</td> -->
-          <td style="width:30%;">{{component.componentName}}</td>
+          <td style="width:25%;">{{component.componentName}}</td>
           <!-- <td>{{component.componentType}}</td> -->
-          <td style="width:10%;">{{component.amount}}</td>
-          <td style="width:10%;"><button class="btn btn-info"
+          <td style="width:9%;">{{component.amount}}</td>
+          <td style="width:9%">{{component.stickerLang}}</td>
+          <td style="width:9%;"><button class="btn btn-info"
               (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
-          <td style="width:10%;">
+          <td style="width:9%;">
             <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
           </td>
-          <td style="width:10%;"><img [src]=component.img style='width:50px ; cursor: pointer;'
+          <td style="width:9%;"><img [src]=component.img style='width:50px ; cursor: pointer;'
               (click)="openImg(component.img)"></td>
           <!-- <td><button *ngIf="component.procurementSent==true" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">מחק</button>{{component.procurementAmount}}</td>
             <td><div>
