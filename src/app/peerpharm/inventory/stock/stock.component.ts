@@ -230,7 +230,7 @@ export class StockComponent implements OnInit {
     console.log(this.materials)
     await this.getUserAllowedWH();
     this.getAllComponents();
-    this.getAllItems();
+   
     // this.exportMovementsAsXLSX();
     this.getAllExpectedArrivalsData();
     this.getColor(new Date);
@@ -448,15 +448,15 @@ export class StockComponent implements OnInit {
   //   });
   // }
 
-  getAllItems() {
-    debugger;
-    this.itemService.getAllItemsTwo().subscribe(res => {
-      debugger;
-      this.items = res
+  // getAllItems() {
+  //   debugger;
+  //   this.itemService.getAllItemsTwo().subscribe(res => {
+  //     debugger;
+  //     this.items = res
       
-    });
+  //   });
     
-  }
+  // }
 
   getAllComponents() {
     
@@ -476,7 +476,7 @@ export class StockComponent implements OnInit {
     //  });
       //why are we using set time out and not async await??
       setTimeout(() => {
-
+        
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
           // console.log(res);
@@ -509,6 +509,7 @@ export class StockComponent implements OnInit {
   //     this.materials = data;
   //   })
   // }
+
 
   getAllExpectedArrivalsData(){
     this.procuretServ.getAllExpectedArrivals().subscribe(res=>{

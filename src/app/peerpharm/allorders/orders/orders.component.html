@@ -71,7 +71,7 @@
       <th style="padding:5px">Stage
         <i class="ti-exchange-vertical" (click)="sortOrdersByStage()" style="cursor:pointer" ></i>
       </th>
-      <th style="padding:5px ; width:11%">On Hold</th>
+      <th style="padding:5px ; width:11%">User's Order</th>
       <th style="width:4%;"></th>
       <th style="width:5%;"></th>
     </tr>
@@ -138,9 +138,9 @@
             </select>
           </td>
 
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.onHoldDate | date: 'dd/MM/yyyy'}}</td>
+          <td *ngIf="order._id!==EditRowId">{{order.user}}</td>
           <td *ngIf="order._id===EditRowId" style="width:11%">
-            <input #onHoldDate type="date" [value]="onHoldStrDate" >
+           
           </td>  
           <td style="width: 4%"></td>
           <td style="width: 5%" > 

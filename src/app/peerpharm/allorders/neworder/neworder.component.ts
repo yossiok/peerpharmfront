@@ -8,6 +8,7 @@ import { String } from "aws-sdk/clients/lexmodelbuildingservice";
 import { map, startWith } from "rxjs/operators";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-neworder",
@@ -24,6 +25,7 @@ export class NeworderComponent implements OnInit {
   itemName: String;
   netWeightK: Number = 0;
   lastOrderNumber: Number;
+  user:any;
   shippingMethod:any[] = [];
   shippingDetails:any = {
     shippingQuantity: "",
@@ -42,7 +44,8 @@ export class NeworderComponent implements OnInit {
     private fb: FormBuilder,
     private orderSer: OrdersService,
     private costumerService: CostumersService,
-    private toastSrv: ToastrService
+    private toastSrv: ToastrService,
+    private authService:AuthService,
   ) {
     this.orderForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -51,7 +54,9 @@ export class NeworderComponent implements OnInit {
       costumerInternalId: [""],
       orderdate: [null, Validators.required],
       remarks: [null],
-      type: [null]
+      type: [null],
+      user:[null,Validators.required]
+
     });
 
     this.orderItemForm = fb.group({
@@ -66,6 +71,7 @@ export class NeworderComponent implements OnInit {
   }
 
   addNewOrder(post) {
+    debugger;
   if(this.orderForm.controls.costumerInternalId.value==null){
     this.orderForm.controls.costumerInternalId.setValue(this.choosedCostumer.costumerId);
   };
@@ -81,11 +87,14 @@ export class NeworderComponent implements OnInit {
       status: 'open',
       stage: 'new',
       onHoldDate: null,
+      user:post.user
     }
     this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
+      debugger;
       this.orderId = res._id;
       this.orderNumber = res.orderNumber;
       this.submited = true;
+      this.orderSer.refreshOrders.emit(res)
       console.log(res)
     });
   }else{
@@ -329,4 +338,10 @@ export class NeworderComponent implements OnInit {
       this.choosedCostumer.costumerId
     );
   }
+
+  getUserName(){
+    debugger
+        this.user = this.authService.loggedInUser.firstName;
+        this.orderForm.controls.user.setValue(this.user)
+      }
 }

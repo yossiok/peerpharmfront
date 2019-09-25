@@ -56,6 +56,15 @@ export class OrdersComponent implements OnInit {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getOrders();
+ 
+    
+  }
+
+  checkfunc(){
+    this.ordersService.refreshOrders.subscribe(order=>{
+      debugger;
+      this.orders.push(order)
+    })
   }
 
 

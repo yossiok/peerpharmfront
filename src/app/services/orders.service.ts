@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Http, Headers, RequestOptions, Jsonp } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -20,6 +20,8 @@ export class OrdersService {
 
   private openOrdersSrc = new BehaviorSubject<Boolean>(false);
   openOrdersValidate = this.openOrdersSrc.asObservable();
+
+  refreshOrders:EventEmitter<any> = new EventEmitter;
 
   constructor(private http: Http) { }
 

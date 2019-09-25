@@ -55,6 +55,15 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-sm-1">
+                            <img src="../../../../assets/images/refreshData.png" style="width: 30px;cursor: pointer;" alt="get user name"
+                            (click)="getUserName()">
+                          </div>
+                          <div class="col-sm-3">
+                            <label for="user">שם משתמש</label>
+                            <input type="text"  class="form-control is-valid" placeholder="user name" formControlName="user"
+                            required disabled>
+                          </div>
                     <div class="card-body">
                         <div class="form-group m-b-0 text-right">
                             <button style="box-shadow: 2px 2px 2px black;" type="submit" class="btn btn-info waves-effect waves-light">Save</button>
