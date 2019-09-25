@@ -26,7 +26,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
 
             <td *ngIf="arrival._id != EditRowId"  (click)="edit(arrival._id)" style="width:10%;">{{arrival.remarks}}</td>
             <td *ngIf="arrival._id==EditRowId"  (click)="edit(arrival._id)" style="width:10%;">
-              <input  #remarks type='text' disabled [value]="arrival.remarks" style='width: 60px'>
+              <input  #remarks type='text' [value]="arrival.remarks" style='width: 60px'>
             </td>
 
 

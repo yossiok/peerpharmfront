@@ -165,7 +165,17 @@ export class OrderdetailsComponent implements OnInit {
 
 
     exportAsXLSX(data) {
-       
+       debugger;
+       for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < this.ordersItems.length; j++) {
+          if(data[i].itemNumber == this.ordersItems[j].itemNumber) {
+
+            data[i].netWeightGr = this.ordersItems[j].netWeightGr
+          }
+          
+        }
+         
+       }
       this.excelService.exportAsExcelFile(data, 'Order '+this.ordersItems[0].orderNumber+' Explode');
    }
 

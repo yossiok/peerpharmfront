@@ -152,6 +152,7 @@ export class OrdersComponent implements OnInit {
 
 
   saveEdit(closedOrder, orderId) {
+    debugger;
     // a - is if the request is to set order - ready
     if (!closedOrder) {
       let orderToUpdate = {
@@ -162,11 +163,11 @@ export class OrdersComponent implements OnInit {
         deliveryDate: this.deliveryDate.nativeElement.value,
         orderRemarks: this.orderRemarks.nativeElement.value,
         orderType: this.orderType.nativeElement.value,
-        stage: this.stage.nativeElement.value,
-        onHoldDate: this.onHoldDate.nativeElement.value,
+        stage: this.stage.nativeElement.value
+        
       }
       debugger
-      if (orderToUpdate.onHoldDate == "") { orderToUpdate.onHoldDate = null; } else { orderToUpdate.onHoldDate = new Date(orderToUpdate.onHoldDate) }
+
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
         if (res != "order missing") {
           let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
