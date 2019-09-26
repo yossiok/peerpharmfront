@@ -303,6 +303,7 @@ updateDocument(){
 
 
   checkLotNumber() {
+    debugger
     const that = this
     // var newForm = this.currentDoc;
     // var inventoryService = this.invtSer;

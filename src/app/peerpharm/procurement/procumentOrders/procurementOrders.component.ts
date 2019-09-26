@@ -30,11 +30,9 @@ export class ProcurementOrdersComponent implements OnInit {
   getAllProcurementOrders() {
     this.procurementservice.getProcurementOrder().subscribe(res => {
       this.procurementData = res;
+      debugger;
       console.log(this.procurementData);
 
-      if(res.length == res.length) {
-        this.hasMoreItemsToload == false;
-      }
     });
   }
 

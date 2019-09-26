@@ -4,18 +4,17 @@
 From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
 <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
         (click)="exportAsXLSX()">
-        <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
+        <!-- <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
           <div class="loader">Loading More Items...</div>
           <br/> 
-        </div>
+        </div> -->
 
 <table>
   <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
     <tr>
       <th><b>#</b></th>
-      <th><b>Order Number</b></th>
-      <th><b>Order Date</b></th>
-      <th><b>Supply Date</b></th>
+      <th><b>Item Name</b></th>
+      <th><b>Item Name</b></th>
       <th><b>Supplier Number</b></th>
       <th><b>Supplier Name</b></th>
       <th><b>Order Quantity</b></th>
@@ -29,25 +28,11 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <td>
         {{i+1}}
       </td>
-      <td>
-        <a
-          target="_blank"
-          routerLink="/peerpharm/procurement/procurementOrderItems/{{ line.orderNumber }}"
-        >
-          {{ line.orderNumber }}
-        </a>
-      </td>
-      <td>
-        <a
-          target="_blank"
-        >
-          {{ line.orderDate }}
-        </a>
-      </td>
-      <td>{{ line.supplyDate }}</td>
+      <td>{{ line.itemName }}</td>
+      <td>{{ line.itemNumber }}</td>
       <td>{{ line.supplierNumber }}</td>
       <td>{{ line.supplierName }}</td>
-      <td>{{ line.orderQnt }}</td>
+      <td>{{ line.supplierAmount }}</td>
       <!-- <td>{{ line.totalPaymentVat}}</td> -->
       <td>{{ line.isSupplied}}</td>
       <td><button style="background:green;box-shadow:inset 0px 1px 5px 0px;">Close Order</button></td>

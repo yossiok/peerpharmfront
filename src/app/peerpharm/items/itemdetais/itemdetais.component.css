@@ -28,3 +28,11 @@ input:focus {
     background-color: wheat;
     border: 1px solid rgb(131, 212, 233);
 }
+
+@media (max-width: 768px) {
+    body {
+        zoom: 0.6 !important;
+    }
+    }
+
+
