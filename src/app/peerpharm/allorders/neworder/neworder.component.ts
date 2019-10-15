@@ -104,7 +104,10 @@ export class NeworderComponent implements OnInit {
 
   addNewItemOrder(post) {
     debugger
-   
+   if(this.shippingDetails.shippingWay == "" || this.shippingDetails.shippingQuantity == "") {
+     this.toastSrv.error("Please Add Shipping Details")
+   } else {
+      
     console.log(post);
     var shippingQuantitySum = 0;
 
@@ -160,8 +163,12 @@ export class NeworderComponent implements OnInit {
    
     //  orderId:this.orderId
   }
+
+   }
+   
   
   }
+
   addShipping() { 
     debugger; 
     let DetailsToPush ={...this.shippingDetails};

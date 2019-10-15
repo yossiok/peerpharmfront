@@ -56,11 +56,11 @@ export class OrdersComponent implements OnInit {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getOrders();
- 
+    this.checkfunc();
     
   }
 
-  checkfunc(){
+  checkfunc(){ 
     this.ordersService.refreshOrders.subscribe(order=>{
       debugger;
       this.orders.push(order)
@@ -313,7 +313,9 @@ export class OrdersComponent implements OnInit {
       }
       if (word == "cosmetic &") {
         var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")
-        this.orders = tempArr
+        var tempArrTwo = this.orders.filter(x=> x.type == "Cosmetic")
+
+        this.orders = tempArr.concat(tempArrTwo)
       }
       if (word == "Cosmetic &") {
         var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")

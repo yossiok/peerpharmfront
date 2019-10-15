@@ -1,4 +1,5 @@
-import { OrdersService } from '../services/orders.service';
+ 
+
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -102,6 +103,7 @@ import { DateExpiredDirective } from '../directives/date-expired.directive';
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
+import { OrdersService } from '../services/orders.service';
 
 
 
@@ -110,8 +112,7 @@ import { AllFormulesComponent } from './formules/all-formules/all-formules.compo
     MatInputModule,
     
   ],
-  imports: [
-
+  imports: [ 
     CommonModule,
     RouterModule.forChild(PeerPharmRputs),
     ReactiveFormsModule,

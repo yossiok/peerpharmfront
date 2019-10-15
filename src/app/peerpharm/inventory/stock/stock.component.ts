@@ -17,6 +17,7 @@ import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms"
 import { Console } from '@angular/core/src/console';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { OrdersService } from 'src/app/services/orders.service';
 
 
 @Component({
@@ -68,6 +69,7 @@ export class StockComponent implements OnInit {
   openImgModal: boolean = false;
   openAmountsModal: boolean = false;
   openProcurementModal: boolean = false;
+  openOrderAmountsModal: boolean = false;
   procurementModalHeader: string;
   openModalHeader: string;
   components: any[];
@@ -83,6 +85,7 @@ export class StockComponent implements OnInit {
   newAllocationAmount: Number;
   itemIdForAllocation: String;
   EditRowId: any = "";
+  orderItems: any;
   procurementInputEvent: any;
   stockType: String = "component";
   newItem: String = '';
@@ -165,14 +168,19 @@ export class StockComponent implements OnInit {
     coaMaster: "",
     alternativeMaterial:"",
     price:"",
-    notInStock:"",
+    notInStock:false,
+    inciName:"",
+    casNumber:"",
+    manufacturer:"",
+    umNumber:"",
+    imerCode:"",
 
   }
   itemExpectedArrivals: any;
   closeResult: string;
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+  constructor(private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder, ) {
   }
@@ -228,6 +236,7 @@ export class StockComponent implements OnInit {
     this.components = [];
     // this.getAllMaterial();
     console.log(this.materials)
+ 
     await this.getUserAllowedWH();
     this.getAllComponents();
    
@@ -412,6 +421,14 @@ export class StockComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
+  // openOrderAmounts(orderAmounts) {
+  //   debugger;
+  //   this.modalService.open(orderAmounts, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  //     this.closeResult = `Closed with: ${result}`;
+  //   }, (reason) => {
+  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  //   });
+  // }
 
   
   private getDismissReason(reason: any): string {
@@ -1154,6 +1171,12 @@ debugger
       msds: "",
       coaMaster: "",
       alternativeMaterial:"",
+      notInStock:false,
+      inciName:"",
+      casNumber:"",
+      manufacturer:"",
+      umNumber:"",
+      imerCode:"",
   
     }
   }
@@ -1198,6 +1221,7 @@ debugger
       }
     }
   }
+
 
 
   editStockItemDetails() {
@@ -1325,7 +1349,39 @@ debugger
 
     ;
   }
+  getAllOrderItems(componentN) {
+    debugger
+    this.orderService.getOrderItemsByNumber(componentN).subscribe(data=>{
+      debugger
+      this.orderItems = data;
+    })
+  }
+ 
+  getAllItems() { 
+    debugger
+    this.itemService.getAllItemsTwo().subscribe(data=>{
+      debugger
+      this.items = data;
+    })
+  }
 
+  getCmptOrderAmounts(componentN , id) {
+    this.getAllOrderItems(componentN)
+    this.getAllItems();
+    debugger
+    this.openModalHeader = "כמות מוקצת להזמנות";
+    this.openOrderAmountsModal = true;
+
+    var allOrderItems = this.orderItems
+    var allItems = this.items
+    allOrderItems
+    allItems
+
+    }
+
+  
+  
+  
 
 
 

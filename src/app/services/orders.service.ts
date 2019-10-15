@@ -3,13 +3,14 @@ import { Http, Headers, RequestOptions, Jsonp } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
+import { PeerPharmModule } from '../peerpharm/peerpharmmodule';
 
 //import 'rxjs/add/operator/map';
 //import 'rxjs/add/operator/catch';
-
 @Injectable()
 export class OrdersService {
 
+  public test:string="a";
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = '/';
@@ -21,9 +22,11 @@ export class OrdersService {
   private openOrdersSrc = new BehaviorSubject<Boolean>(false);
   openOrdersValidate = this.openOrdersSrc.asObservable();
 
-  refreshOrders:EventEmitter<any> = new EventEmitter;
+  refreshOrders:EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {
+    debugger;
+   }
 
   getOrders(): Observable<any> {
     let url = this.baseUrl + 'order'

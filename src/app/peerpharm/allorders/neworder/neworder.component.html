@@ -96,13 +96,13 @@
                 
                     <tr>
                  <td>
-                    <select style="box-shadow: 1px 1px 1px;" [ngModelOptions]="{standalone: true}" [(ngModel)]="shippingDetails.shippingWay" class="form-control">
+                    <select required style="box-shadow: 1px 1px 1px;" [ngModelOptions]="{standalone: true}" [(ngModel)]="shippingDetails.shippingWay" class="form-control">
                         <option value="land">יבשה</option>
                         <option value="flight">אוויר</option>
                         <option value="sea">ים</option>
                     </select>
                     </td>
-                    <td><input [ngModelOptions]="{standalone: true}"  [(ngModel)]="shippingDetails.shippingQuantity" class="form-control"></td>
+                    <td><input required [ngModelOptions]="{standalone: true}"  [(ngModel)]="shippingDetails.shippingQuantity" class="form-control"></td>
                     <td><button style="box-shadow: 1px 1px 1px;" type="button" (click)="addShipping()" class="btn btn-info waves-effect waves-light">Add Shipping</button></td>
                 </tr> 
             </thead>

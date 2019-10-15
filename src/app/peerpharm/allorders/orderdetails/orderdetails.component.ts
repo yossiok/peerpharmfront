@@ -164,6 +164,11 @@ export class OrderdetailsComponent implements OnInit {
      private costumerSrevice: CostumersService, private excelService:ExcelService, private authService: AuthService ) { }
 
 
+     exportAsXLSXOrders(data) {
+       
+      this.excelService.exportAsExcelFile(this.ordersItems, 'data');
+   }
+
     exportAsXLSX(data) {
        debugger;
        for (let i = 0; i < data.length; i++) {

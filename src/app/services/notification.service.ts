@@ -26,6 +26,7 @@ export class NotificationService {
     this.socket = io(`http://18.221.58.99:8200`);
     this.socket.on("connect", () => {
       this.socket.on("message", data => {
+        debugger;
         this.newMessageRecivedEventEmitter.emit(data);
       });
       this.socket.on("newInventoryReq", data => {

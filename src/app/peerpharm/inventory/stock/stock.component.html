@@ -132,8 +132,8 @@
           <th style="width:10%; padding:5px"><b>שם</b></th>
           <th style="width:10%; padding:5px"><b>פריט חלופי</b></th>
           <th style="width:5%; padding:5px"><b>סוג</b></th>
+          <th style="width:5%; padding:5px"><b>כמות מוקצת</b></th>
           <th style="width:5%; padding:5px"><b>כמות</b></th>
-          <!-- <th style="padding:5px"><b>כמות מוקצת</b></th> -->
           <th style="width:5%; padding:5px"><b>תמונה</b></th>
           <th style="width:12%; padding:5px"><b>צפי הגעה הזמנת רכש</b></th>
           <!-- <th style="padding:5px" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th> -->
@@ -152,6 +152,9 @@
           <td style="width:10%;">{{component.componentName}}</td>
           <td style="width:10%;">{{component.alternativeComponent}}</td>
           <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
+          <td style="width:5%" (click)="getCmptOrderAmounts(component.componentN, component._id)" style="cursor: pointer;"> 
+            <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
+            style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
           <td style="width:5%;" (click)="getCmptAmounts(component.componentN, component._id)" style="cursor: pointer;">
             {{component.amount}}
             <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
@@ -358,6 +361,7 @@
       <div class="modal-footer">
       </div>
     </ng-template>
+
 
   <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -926,6 +930,16 @@
                   </td>
                 </tr>
                 <tr>
+                    <th>INCI Name</th>
+                    <td><input [(ngModel)]="resMaterial.inciName" class="itemInput" type='text'>
+                    </td>
+                  </tr>
+                  <tr>
+                      <th>CAS Number</th>
+                      <td><input [(ngModel)]="resMaterial.casNumber" class="itemInput" type='text'>
+                      </td>
+                    </tr>
+                <tr>
                   <th>Remarks</th>
                   <td><textarea [(ngModel)]="resMaterial.remarks" class="itemInput" rows="5" cols="20"></textarea>
                   </td>
@@ -996,6 +1010,14 @@
                 </tr>
 
                 <tr>
+                  <th>Manufacturer</th>
+                  <td>
+                      <input type="text" class="itemInput" [(ngModel)]="resMaterial.manufacturer"/>
+                  </td>
+                </tr>
+
+
+                <tr>
                   <th>Status</th>
                   <td>
                     <select [(ngModel)]="resMaterial.status" class="itemInput">
@@ -1007,7 +1029,7 @@
                 </tr>
 
                 <tr>
-                  <th>Threatment</th>
+                  <th>קבוצת סיכון</th>
                   <td>
                     <select [(ngModel)]="resMaterial.threatment" class="itemInput">
                       <option value="flammable">דליק</option>
@@ -1019,6 +1041,23 @@
                     </select>
                   </td>
                 </tr>
+
+                <tr>
+                  <th>מס או"מ</th>
+                  <td>
+                    <input [(ngModel)]="resMaterial.umNumber" type="text" class="itemInput" />
+
+                  </td>
+                </tr>
+                
+                <tr>
+                  <th>קוד חירום</th>
+                  <td>
+                    <input [(ngModel)]="resMaterial.imerCode" type="text" class="itemInput" />
+
+                  </td>
+                </tr>
+
 
                 <tr>
                   <th>Month Till Exp</th>
@@ -1176,4 +1215,27 @@
     </div>
   </div>
 
+</div>
+
+<div *ngIf="openOrderAmountsModal==true" id="myModal3" class="modal3"
+  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:185px;top:130px;'>
+
+  <!-- Modal content -->
+  <div class="modal-content" id='modelC'>
+    <div id="material-header" class="modal-header">
+        <span class="close" id="closeId3" (click)="openOrderAmountsModal=false;">&times;</span>
+      <h2 style="text-align: center">{{openModalHeader}}</h2><br>
+   
+
+    </div>
+    <div class="container" id="material-body" class="modal-body"
+      style="height: 600px; padding-left: 0px">
+
+     
+    <div id="material-footer" class="modal-footer">
+
+    </div>
+  </div>
+
+</div>
 </div>
