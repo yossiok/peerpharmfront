@@ -67,7 +67,7 @@
 <table style="border: 1px solid black;" class='table' *ngIf="loadData==false">
   <thead class='bg-info tableHeader text-white' (click)="edit('')">
     <tr>
-      <th> # <button><img (click)="exportAsXLSXOrders()" src="../../../assets/images/excel.png"/></button></th>
+      <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()" src="../../../assets/images/excel.png"/></button></th>
       <th *ngIf="openFormule"></th>
       <th *ngIf="showingAllOrders || multi">Order Number</th>
       <th style="width:200px;" class="header">Item Number </th>
