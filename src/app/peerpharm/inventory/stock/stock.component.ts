@@ -98,6 +98,7 @@ export class StockComponent implements OnInit {
   curentWhareHouseName: String;
   relatedOrderNum: String = '';
   //adding Stock amounts
+  ordersAllocatedAmount:any[];
   newItemShelfQnt: number;
   newItemShelfBatchNumber: string = '';
   newItemShelfArrivalDate: number;
@@ -244,6 +245,7 @@ export class StockComponent implements OnInit {
     this.getAllExpectedArrivalsData();
     this.getColor(new Date);
     this.getUser();
+  
 
   }
 
@@ -1366,16 +1368,18 @@ debugger
   }
 
   getCmptOrderAmounts(componentN , id) {
-    this.getAllOrderItems(componentN)
-    this.getAllItems();
     debugger
-    this.openModalHeader = "כמות מוקצת להזמנות";
-    this.openOrderAmountsModal = true;
-
-    var allOrderItems = this.orderItems
-    var allItems = this.items
-    allOrderItems
-    allItems
+    this.itemService.getItemDetails(componentN).subscribe(items=>{
+      debugger;
+      items;
+      for (let i = 0; i < this.components.length; i++) {
+        for (let j = 0; j < items.length; j++) {
+          this.components[i].alloAmount += parseInt(items[j].quantity)
+          
+        }
+        
+      }
+    })
 
     }
 

@@ -27,4 +27,11 @@ export class FormsService {
     let url = this.baseUrl + "formDetails?idForTitle="+formId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getFormDetailsByOrder(orderNumber) { 
+    debugger
+    let url = this.baseUrl + "formDetails?formDetailsByOrder="+orderNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 }

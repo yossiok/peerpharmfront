@@ -19,6 +19,7 @@ import { AuthService } from '../../../services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { FormulesService } from 'src/app/services/formules.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
+import { FormsService } from 'src/app/services/forms.service';
 
 
 
@@ -35,7 +36,7 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
-
+  allForms:any[];
   user:UserInfo
   openFormule:boolean = false;
   currItems:any[];
@@ -159,7 +160,7 @@ export class OrderdetailsComponent implements OnInit {
     console.log(event);
     this.edit('');
 }
-  constructor(private formuleService:FormulesService,private inventoryService: InventoryService,private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
+  constructor(private formService:FormsService,private formuleService:FormulesService,private inventoryService: InventoryService,private modalService: NgbModal,private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
      private scheduleService: ScheduleService, private location: Location, private plateSer:PlateService,  private toastSrv: ToastrService, 
      private costumerSrevice: CostumersService, private excelService:ExcelService, private authService: AuthService ) { }
 
@@ -185,6 +186,7 @@ export class OrderdetailsComponent implements OnInit {
    }
 
   async ngOnInit() {
+    this.getAllFormsDetails()
     this.getUserInfo();
      this.getAllItems();
      this.getAllOrdersItems();
@@ -271,18 +273,45 @@ export class OrderdetailsComponent implements OnInit {
           });
       }
     });
+    debugger
+    this.ordersItems
 
+  }
+
+  getAllFormsDetails() {
+    this.formService.getAllForms().subscribe(data=>{
+      debugger
+      this.allForms = data;
+
+    });
   }
 
   open(contentTwo) {
     debugger;
+    
+    var allForms = this.allForms;
+    var orderItems = this.ordersItems
+
+    for (let i = 0; i < allForms.length; i++) {
+      for (let j = 0; j < orderItems.length; j++) {
+       if(allForms[i].itemN == orderItems[j].itemNumber) {
+         orderItems[j].totalUnits = allForms[i].totalUnits
+       }
+        
+      }
+      
+    }
+
+    this.ordersItems = orderItems
+    
     this.modalService.open(contentTwo, {size: 'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  
   }
-
+  
   getAllOrdersItems() { 
     debugger;
     this.orderService.getOpenOrdersItems().subscribe(data=>{
@@ -723,6 +752,11 @@ editBatch(batch){
   var orders = this.formDetailsAmounts.filter(order=>order.orderNumber == orderNumber)
   var items = orders.filter(item=>item.itemN == itemNumber)
  
+  }
+
+  fillTotalUnits() {
+    debugger 
+    this.ordersItems
   }
 
   deleteItem(item) {

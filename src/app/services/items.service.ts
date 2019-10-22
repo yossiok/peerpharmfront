@@ -25,6 +25,12 @@ export class ItemsService {
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
 
+  // getItemDetails(itemNumber): Observable<any> {
+  //   debugger
+  //   let url = this.baseUrl + "item/itemTreeDetails";
+  //   return this.http.post(url, JSON.stringify(itemNumber), this.options).pipe(map(res => res.json()))
+  // }
+
   getAllItems() {
     let url = this.baseUrl + "item";
     return this.http.get(url).pipe(map(reponse => reponse.json())); 
@@ -42,6 +48,10 @@ export class ItemsService {
 
   getPlateImg(itemNumber) {
     let url = this.baseUrl + "item?plateImg=yes&itemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getItemDetails(itemNumber) {
+    let url = this.baseUrl + "item?itemDetails="+itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
