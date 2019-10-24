@@ -39,8 +39,9 @@ export class AddFormuleItemComponent implements OnInit {
     this.adjustFormData();
   }
   ngOnInit() {
-    this.adjustFormData();
     this.getAllMaterials();
+    this.adjustFormData();
+    
   }
   adjustFormData(){
     debugger
@@ -63,11 +64,8 @@ export class AddFormuleItemComponent implements OnInit {
   }
 
   getAllMaterials() { 
-    debugger;
     this.invtSer.getAllMaterialsForFormules().subscribe(data=>{
-      debugger;
       this.materials = data;
-      debugger;
     })
   }
 
@@ -88,6 +86,7 @@ export class AddFormuleItemComponent implements OnInit {
     this.itemsForm.controls.itemNumber.setValue(details[0].componentN)
   }
   searchMaterialNumber(ev){
+    debugger;
     let materialNumber = ev.target.value;
 
     let details = this.materials.filter(material=> material.componentN == materialNumber)

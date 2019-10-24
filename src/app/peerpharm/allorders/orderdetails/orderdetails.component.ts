@@ -101,6 +101,8 @@ export class OrderdetailsComponent implements OnInit {
     orderNumber: '',
     batch:'',
     itemRemarks:'',
+    formuleCheck:'',
+    componentCheck:'',
     compiled: [],
   };
   show: boolean;
@@ -151,6 +153,8 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('itemNumber') itemN: ElementRef;
   @ViewChild('id') id: ElementRef;
   @ViewChild('inputBatch') inputBatch: ElementRef;
+  @ViewChild('formuleCheck') formuleCheck: ElementRef;
+  @ViewChild('componentCheck') componentCheck: ElementRef;
 
   @ViewChild('date') date: ElementRef;
   @ViewChild('shift') shift: ElementRef;
@@ -360,7 +364,7 @@ export class OrderdetailsComponent implements OnInit {
         item.colorBtn = '#33FFE0';
         item.compiled = [];
         this.ordersItems.push(item);
-        this.itemData = { itemNumber: '', discription: '', netWeightGr: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
+        this.itemData = { itemNumber: '', discription: '', netWeightGr: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'',formuleCheck:'',componentCheck:'', compiled: []}
         this.getOrderItems(true);
 
         this.toastSrv.success('item '+item.itemNumber+' added');
@@ -718,6 +722,8 @@ editBatch(batch){
         "quantity": this.quantity.nativeElement.value,
         "qtyKg": this.weight.nativeElement.value,
         "itemRemarks": this.itemRemarks.nativeElement.value,
+        "formuleCheck": this.formuleCheck.nativeElement.value,
+        "componentCheck": this.componentCheck.nativeElement.value,
       }
       console.log(itemToUpdate);
       // console.log("edit " + itemToUpdate.orderItemId );
@@ -737,6 +743,8 @@ editBatch(batch){
           this.ordersItems[index].quantity = itemToUpdate.quantity;
           this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].netWeightGr = itemToUpdate.netWeightGr;
+          this.ordersItems[index].formuleCheck = itemToUpdate.formuleCheck;
+          this.ordersItems[index].componentCheck = itemToUpdate.componentCheck;
 
            
         }else{

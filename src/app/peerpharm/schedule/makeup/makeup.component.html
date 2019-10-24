@@ -1,7 +1,8 @@
-<!-- <div (click)='setType("powder")' class="navtab">אבקות</div>
-<div (click)='setType("wet")' class="navtab">נוזלי</div>
-<div (click)='setType("lipstick")' class="navtab">אודם</div> -->
-<div class="navtab">Make Up</div>
+ <div (click)='setType("powder")' class="navtab">Make Up</div>
+<div (click)='setType("wet")' class="navtab">Reports</div> 
+<!-- <div (click)='setType("lipstick")' class="navtab">אודם</div>  -->
+
+
 
 
 
@@ -106,52 +107,29 @@
 
     <tr>
       <th>#</th>
+      <th>Item Number</th>
       <th>Item Type</th>
       <th>Item Name</th>
       <th>Production (KG)</th>
+      <th>Push to godets</th>
       <th>Production Date</th>
-
+      <th>Status</th>
       <th></th>
     </tr>
   </thead>
 
-  <tr>
-      <td></td>
-    <td></td>
-    <td>
-      <select class="pdrInput" [(ngModel)]="makeup.itemName">
-        <option value="Makeup">מייק-אפ</option>
-        <option value="Concealer">קונסילרים</option>
-        <option value="Lip-Gloss">ליפגלוס</option>
-        <option value="Liquid shimmer">שימר נוזלי</option>
-        <option value="Eyeliner-jell">אייליינר ג'ל</option>
-      </select>
-    </td>
-    <td>
-      <input class="pdrInput" [(ngModel)]="makeup.production" placeholder="Production (kg)" type="number" />
-    </td>
-    <td>
-      <input class="pdrInput" [(ngModel)]="makeup.productionDate"  type="date" />
-    </td>
-    
-
-    <td class="printlessTd">
-      <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="addWetItem()">Add</button><br />
-    </td>
-
-  </tr>
-
-
   <tbody id="table_body">
-    <tr class="tableTr" *ngFor="let item of wetItemsData; let i = index">
+    <tr class="tableTr" *ngFor="let item of allMakeUps; let i = index">
       
       <td>{{i+1}}</td>
+      <td>{{item.itemNumber}}</td>
       <td>{{item.itemType}}</td>
       <td>{{item.itemName}}</td>
-      <td>{{item.production}}</td>
+      <td>{{item.production}}(KG)</td>
+      <td>{{item.pushToGodets}}</td>
+      <td>{{item.pushToGodets}}</td>
       <td>{{item.productionDate | date: "dd/MM/yyyy"}}</td>
-      
-
+      <td>{{item.packingClient}}</td>
       <td></td>
 
 

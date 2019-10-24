@@ -246,6 +246,8 @@ export class MakeupdetailsComponent implements OnInit {
   this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
     
     this.powdersData = res;
+
+    this.toastSrv.success("New Item Added")
   
   })
 

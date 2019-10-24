@@ -11,8 +11,8 @@
                     <h4 class="card-title">Order Info</h4>
 
                     <div class="form-group row">
-                        <label for="lname" class="col-sm-3 text-right control-label col-form-label"><strong>Costumer</strong></label>
-                        <div class="col-sm-8">
+                        <label for="lname" class="col-sm-4 text-right control-label col-form-label"><strong>Costumer</strong></label>
+                        <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
                             <input type='hidden' formControlName="costumerInternalId">
                             <!--<mat-form-field class="example-full-width">
@@ -28,26 +28,26 @@
                         <button style="box-shadow: 2px 2px 2px black;" (click)="openSearch(content);  submited=false;" class='btn btn-info'><strong>List</strong></button>
                     </div>
                     <div class="form-group row">
-                        <label for="email1" class="col-sm-3 text-right control-label col-form-label"><strong>Date Of Order</strong></label>
-                        <div class="col-sm-9">
+                        <label for="email1" class="col-sm-4 text-right control-label col-form-label"><strong>Date Of Order</strong></label>
+                        <div class="col-sm-4">
                             <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label"><strong>Delivery Date</strong></label>
-                        <div class="col-sm-9">
+                        <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Delivery Date</strong></label>
+                        <div class="col-sm-4">
                             <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cono1" class="col-sm-3 text-right control-label col-form-label"><strong>Remarks</strong></label>
-                        <div class="col-sm-9">
+                        <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Remarks</strong></label>
+                        <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-3 text-right control-label col-form-label"><strong>Type</strong></label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-4 text-right control-label col-form-label"><strong>Type</strong></label>
+                        <div class="col-sm-4">
                             <select style="box-shadow: 1px 1px 1px black;" class="form-control" formControlName="type">
                                 <option>Cosmetic</option>
                                 <option>Make Up</option>
@@ -102,7 +102,7 @@
                         <option value="sea">ים</option>
                     </select>
                     </td>
-                    <td><input required [ngModelOptions]="{standalone: true}"  [(ngModel)]="shippingDetails.shippingQuantity" class="form-control"></td>
+                    <td><input [ngModelOptions]="{standalone: true}"  [(ngModel)]="shippingDetails.shippingQuantity" class="form-control"></td>
                     <td><button style="box-shadow: 1px 1px 1px;" type="button" (click)="addShipping()" class="btn btn-info waves-effect waves-light">Add Shipping</button></td>
                 </tr> 
             </thead>
