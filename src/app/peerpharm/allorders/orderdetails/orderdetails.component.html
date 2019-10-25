@@ -78,7 +78,8 @@
       <th class='printTd header'>Weight</th>
       <th class="header">Remarks </th>
       <th class='printTd header'>Status</th>
-      <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th>
+      <!-- <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th> -->
+      <th class="header">C & F</th>
       <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
       <th>
         <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg" (click)="openCmptDemandsModal()">
@@ -174,10 +175,24 @@
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
         <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
 
-        <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
+        <!-- <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
         <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd'
           style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
-          {{item.compiled[0].sum}}</td>
+          {{item.compiled[0].sum}}</td> -->
+          <td *ngIf="item._id!==EditRowId">
+          <label>Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
+          <label>Formule - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.formuleCheck}}</label></label>
+          </td>
+          <td *ngIf="item._id===EditRowId"><label>Components</label>
+            <select #componentCheck >
+            <option value="0">0</option>
+            <option value="ordered">הוזמן</option>
+            <option value="inStock">במלאי</option>
+          </select>
+          <br><br>
+          <label>Formules</label><input [value]="item.formuleCheck" #formuleCheck type="checkbox">
+        </td>
+        
 
         <td></td>
         <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->

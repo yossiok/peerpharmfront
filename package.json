@@ -39,6 +39,7 @@
     "html-pdf": "^2.2.0",
     "jquery": "^3.3.1",
     "jsbarcode": "^4.0.0-alpha.5",
+    "mdbootstrap": "^4.8.11",
     "moment": "^2.22.2",
     "ng2-dnd": "^5.0.2",
     "ng2-filter-pipe": "^0.1.10",

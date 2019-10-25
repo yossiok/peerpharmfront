@@ -47,9 +47,9 @@ export class MakeupService {
   return this.http.post(url, JSON.stringify(wetItems), this.options).pipe(map(res => res.json()))
 }
 
-getAllWetItems():Observable<any>{
+getAllmakeUp():Observable<any>{
   debugger
-  let url = this.baseUrl + "makeup/allwet";
+  let url = this.baseUrl + "makeup/allmakeup";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 

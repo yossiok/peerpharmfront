@@ -104,7 +104,7 @@ export class NeworderComponent implements OnInit {
 
   addNewItemOrder(post) {
     debugger
-   if(this.shippingDetails.shippingWay == "" || this.shippingDetails.shippingQuantity == "") {
+   if(this.shippingDetails.shippingWay == "") {
      this.toastSrv.error("Please Add Shipping Details")
    } else {
       
@@ -120,10 +120,8 @@ export class NeworderComponent implements OnInit {
     console.log(shippingQuantitySum)
     
 
-    if(post.quantity < shippingQuantitySum) {
-      this.toastSrv.error("Shipping quantity can not be more than the quantity")
-    } 
-    else {
+    if(post.quantity) {
+   
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
     //if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
     // if(this.netWeightK!=0 && this.netWeightK!=null) post.netWeightK = this.netWeightK;

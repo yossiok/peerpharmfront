@@ -48,7 +48,6 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getAllMaterialsForFormules():Observable<any>{
-    debugger;
     let url = this.baseUrl + "material/allMaterialForFormules";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

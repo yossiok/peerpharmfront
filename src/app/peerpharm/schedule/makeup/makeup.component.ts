@@ -16,7 +16,7 @@ import { log } from 'util';
 export class MakeupComponent implements OnInit {
 
   powdersData:any[];
-  wetItemsData:any[];
+  allMakeUps:any[];
   lipstickData:any[];
   orders:any[];
   ordersCopy:any[];
@@ -50,7 +50,7 @@ export class MakeupComponent implements OnInit {
     this.makeup.productionDate = moment(new Date()).format('YYYY-MM-DD');
     
     this.getAllPowders();
-    this.getAllWetItems();
+    this.getAllmakeUps();
     this.getAllLipsticks();
     this.getAllOrdersByType();
 
@@ -124,28 +124,12 @@ export class MakeupComponent implements OnInit {
 
   // Wet Section adding and getting all wet items production
 
-  addWetItem() { 
-    
-    this.makeup.itemType = "Wet"
-    this.makeupService.addWetItemReport(this.makeup).subscribe(res =>{
-      this.wetItemsData.push(res)
-    })
 
-    this.makeup.itemType=''
-    this.makeup.itemName=''
-    this.makeup.production=''
-    this.makeup.pushToGodets=''
-    this.makeup.packingClient=''
-    this.makeup.printing=''
-    this.makeup.tray=''
-    this.makeup.packing=''
-
-   }
-
-getAllWetItems() { 
+getAllmakeUps() { 
   
-  this.makeupService.getAllWetItems().subscribe(data =>{
-    this.wetItemsData = data;
+  this.makeupService.getAllmakeUp().subscribe(data =>{
+    debugger;
+    this.allMakeUps = data;
   })
 }
 
