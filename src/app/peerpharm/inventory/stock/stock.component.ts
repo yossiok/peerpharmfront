@@ -189,7 +189,7 @@ export class StockComponent implements OnInit {
   @Input() expectedArrivalItemData: any;
 
   //expected Arrivals modal
-  async getNewExpectedArrivalsData(outputeEvent) {
+   getNewExpectedArrivalsData(outputeEvent) {
     debugger
 
     console.log('getting new updated expected arrivals data')
@@ -200,7 +200,7 @@ export class StockComponent implements OnInit {
       //update expected arrivals info for item 
     } else if (outputeEvent == 'stockLineChanged') {
       console.log('this.resCmpt', this.resCmpt)
-      await this.inventoryService.getSingleComponentData(this.resCmpt._id).subscribe(res => {
+       this.inventoryService.getSingleComponentData(this.resCmpt._id).subscribe(res => {
         debugger
         console.log('res[0]', res[0])
         // this.componentsUnFiltered.filter(c=>{
@@ -481,6 +481,7 @@ export class StockComponent implements OnInit {
     
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
+      debugger;
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
@@ -536,6 +537,22 @@ export class StockComponent implements OnInit {
         this.itemExpectedArrivals=res;
       
     });
+  }
+
+  calcIfLowThenMin(component)
+  {
+    if(component.minimumStock && component.alloAmount)
+    {
+      if(component.alloAmount< component.minimumStock)
+      {
+        return "manyleft";
+      }
+      else
+      {
+        return "notmanyleft";
+      }
+    }
+    return ""; 
   }
 
   getAllCmptTypesAndCategories() {

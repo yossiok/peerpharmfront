@@ -243,7 +243,14 @@ tr {
 .col { 
   width: 40% !important;
 }
-
+.notmanyleft
+{
+  background-color: red;
+}
+.manyleft
+{
+  background-color: greenyellow;
+}
 /* input[type=text] { 
   box-shadow: 2px 2px 12px 2px black !important;
 }

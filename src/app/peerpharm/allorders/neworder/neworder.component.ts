@@ -216,6 +216,20 @@ export class NeworderComponent implements OnInit {
        });
   */
     this.getCostumers();
+    if(this.authService.loggedInUser)
+    {
+      this.user = this.authService.loggedInUser.firstName;
+      this.orderForm.controls.user.setValue(this.user);
+    }
+    else
+    {
+      this.authService.userEventEmitter.subscribe(data=>
+        {
+          this.user = this.authService.loggedInUser.firstName;
+          this.orderForm.controls.user.setValue(this.user);
+        })
+    } 
+  
   }
 
   // addNewSavedOrder(post) {
@@ -345,10 +359,5 @@ export class NeworderComponent implements OnInit {
       this.choosedCostumer.costumerId
     );
   }
-
-  getUserName(){
-    debugger
-        this.user = this.authService.loggedInUser.firstName;
-        this.orderForm.controls.user.setValue(this.user)
-      }
+ 
 }
