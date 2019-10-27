@@ -713,6 +713,12 @@ editBatch(batch){
   }
 
   saveEdit() {
+
+      if(this.formuleCheck.nativeElement.value == undefined || this.formuleCheck.nativeElement.value == "off") {
+        this.formuleCheck.nativeElement.value = false
+      } else {
+        this.formuleCheck.nativeElement.value = true
+      }
       let itemToUpdate = {
 
         'orderItemId': this.id.nativeElement.value,
@@ -727,7 +733,7 @@ editBatch(batch){
       }
       console.log(itemToUpdate);
       // console.log("edit " + itemToUpdate.orderItemId );
-  
+      
       this.orderService.editItemOrder(itemToUpdate).subscribe(res => {
   
         console.log(res)

@@ -1376,27 +1376,16 @@ debugger
     })
   }
  
-  getAllItems() { 
-    debugger
-    this.itemService.getAllItemsTwo().subscribe(data=>{
-      debugger
-      this.items = data;
-    })
-  }
+  // getAllItems() { 
+  //   debugger
+  //   this.itemService.getAllItemsTwo().subscribe(data=>{
+  //     debugger
+  //     this.items = data;
+  //   })
+  // }
 
   getCmptOrderAmounts(componentN , id) {
-    debugger
-    this.itemService.getItemDetails(componentN).subscribe(items=>{
-      debugger;
-      items;
-      for (let i = 0; i < this.components.length; i++) {
-        for (let j = 0; j < items.length; j++) {
-          this.components[i].alloAmount += parseInt(items[j].quantity)
-          
-        }
-        
-      }
-    })
+      
 
     }
 
