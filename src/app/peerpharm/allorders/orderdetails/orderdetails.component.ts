@@ -713,7 +713,7 @@ editBatch(batch){
   }
 
   saveEdit() {
-
+  debugger;
       if(this.formuleCheck.nativeElement.value == undefined || this.formuleCheck.nativeElement.value == "off") {
         this.formuleCheck.nativeElement.value = false
       } else {

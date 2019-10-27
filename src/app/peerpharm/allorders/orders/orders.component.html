@@ -63,10 +63,18 @@
       <th style="padding:5px">Order Number
         <i class="ti-exchange-vertical" (click)="sortOrdersByOrderNumber()" style="cursor:pointer" ></i>
       </th>
-      <th style="width:20%; padding:5px">Costumer</th>
+      <th style="width:20%; padding:5px">Costumer <select (change)="filterOrdersByArea($event)">
+        <option></option>
+        <option value="דרום">דרום</option>
+        <option value="מרכז">מרכז</option>
+        <option value="השרון">השרון</option>
+        <option value="צפון מערבי">צפון מערבי</option>
+        <option value="צפון מזרחי">צפון מזרחי</option>
+        <option value="ירושלים">ירושלים</option>
+      </select></th>
       <th style="padding:5px">Order date</th>
       <th style="padding:5px">Delivery Date</th>
-      <th style="width:15%; padding:5px">Reamrks</th>
+      <th style="width:15%; padding:5px">Remarks</th>
       <th style="padding:5px ; width: 7%">Type</th>
       <th style="padding:5px">Stage
         <i class="ti-exchange-vertical" (click)="sortOrdersByStage()" style="cursor:pointer" ></i>

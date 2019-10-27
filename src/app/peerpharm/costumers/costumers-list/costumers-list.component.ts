@@ -30,6 +30,7 @@ export class CostumersListComponent implements OnInit {
     impRemark: '',
     contact: [],
     brand:'',
+    area:'',
   }
 
 
@@ -51,7 +52,9 @@ export class CostumersListComponent implements OnInit {
       marks: '',
       impRemark: '',
       contact: [],
-      brand:''
+      brand:'',
+      area:''
+
     }
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       console.log(result);
