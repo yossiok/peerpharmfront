@@ -22,6 +22,10 @@ export class FormsService {
     let url = this.baseUrl + 'formDetails';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getTotalUnits() {
+    let url = this.baseUrl + 'formDetails?totalUnits';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getFormData(formId){
     let url = this.baseUrl + "formDetails?idForTitle="+formId;

@@ -192,13 +192,8 @@ export class OrderdetailsComponent implements OnInit {
   async ngOnInit() {
     this.getAllFormsDetails()
     this.getUserInfo();
-     this.getAllItems();
-     this.getAllOrdersItems();
     this.getAllComponents();
     this.getAllMaterialsFormules();
-    console.log('hi');
-    this.getItemAmounts();
-    console.log(this.ordersItems)
 
     
     
@@ -291,8 +286,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   open(contentTwo) {
-    debugger;
-    
+
     var allForms = this.allForms;
     var orderItems = this.ordersItems
 
@@ -316,20 +310,20 @@ export class OrderdetailsComponent implements OnInit {
   
   }
   
-  getAllOrdersItems() { 
-    debugger;
-    this.orderService.getOpenOrdersItems().subscribe(data=>{
-      this.orderItemsStock = data;
+  // getAllOrdersItems() { 
+  //   debugger;
+  //   this.orderService.getOpenOrdersItems().subscribe(data=>{
+  //     this.orderItemsStock = data;
 
 
-    })
-  }
+  //   })
+  // }
 
-  getAllItems() { 
-    this.itemSer.getAllItems().subscribe(data=>{
-      this.allItems = data;
-    })
-  }
+  // getAllItems() { 
+  //   this.itemSer.getAllItems().subscribe(data=>{
+  //     this.allItems = data;
+  //   })
+  // }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -445,14 +439,14 @@ updateSingleOrderStage(ev){
     });
   }
 
-getItemAmounts() { 
+// getItemAmounts() { 
 
-  this.orderService.getOrderAmounts().subscribe( data => {
-    this.formDetailsAmounts = data;
+//   this.orderService.getOrderAmounts().subscribe( data => {
+//     this.formDetailsAmounts = data;
 
-  });
+//   });
 
-}
+// }
 
 getAllMaterialsFormules() { 
   this.inventoryService.getAllMaterialsForFormules().subscribe(data=>{
@@ -772,12 +766,12 @@ editBatch(batch){
 
   }
 
-  combineAllProducedItems(orderNumber,itemNumber) {
-    debugger;
-  var orders = this.formDetailsAmounts.filter(order=>order.orderNumber == orderNumber)
-  var items = orders.filter(item=>item.itemN == itemNumber)
+  // combineAllProducedItems(orderNumber,itemNumber) {
+  //   debugger;
+  // var orders = this.formDetailsAmounts.filter(order=>order.orderNumber == orderNumber)
+  // var items = orders.filter(item=>item.itemN == itemNumber)
  
-  }
+  // }
 
   fillTotalUnits() {
     debugger 
