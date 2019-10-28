@@ -290,7 +290,15 @@ export class OrdersComponent implements OnInit {
       this.orders = this.ordersCopy.slice();
     }
   }
+  
+  filterOrdersByArea(ev){
+    debugger
+  let orderArea = ev.target.value
+  this.ordersService.getOrdersByArea(orderArea).subscribe(data=>{
+  this.orders = data;
+  })
 
+  }
   searchByType(ev) {
     debugger
     let word = ev.target.value;
@@ -314,6 +322,12 @@ export class OrdersComponent implements OnInit {
       if (word == "cosmetic &") {
         var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")
         var tempArrTwo = this.orders.filter(x=> x.type == "Cosmetic")
+
+        this.orders = tempArr.concat(tempArrTwo)
+      }
+      if (word == "make up &") {
+        var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")
+        var tempArrTwo = this.orders.filter(x=> x.type == "Make Up")
 
         this.orders = tempArr.concat(tempArrTwo)
       }

@@ -712,13 +712,24 @@ editBatch(batch){
     this.documentationBeforeSend.sum = JSON.stringify(sum);
   }
 
+
+  isChecked(ev) {
+    ;
+    if (ev.target.checked == true) {
+
+      this.formuleCheck.nativeElement.checked = ev.target.checked;
+      ;
+    }
+
+    if (ev.target.checked == false) {
+      ;
+      this.formuleCheck.nativeElement.checked = ev.target.checked;
+    }
+
+  }
+
   saveEdit() {
-  debugger;
-      if(this.formuleCheck.nativeElement.value == undefined || this.formuleCheck.nativeElement.value == "off") {
-        this.formuleCheck.nativeElement.value = false
-      } else {
-        this.formuleCheck.nativeElement.value = true
-      }
+  
       let itemToUpdate = {
 
         'orderItemId': this.id.nativeElement.value,
@@ -728,7 +739,7 @@ editBatch(batch){
         "quantity": this.quantity.nativeElement.value,
         "qtyKg": this.weight.nativeElement.value,
         "itemRemarks": this.itemRemarks.nativeElement.value,
-        "formuleCheck": this.formuleCheck.nativeElement.value,
+        "formuleCheck": this.formuleCheck.nativeElement.checked,
         "componentCheck": this.componentCheck.nativeElement.value,
       }
       console.log(itemToUpdate);

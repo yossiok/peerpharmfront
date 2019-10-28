@@ -190,7 +190,7 @@
             <option value="inStock">במלאי</option>
           </select>
           <br><br>
-          <label>Formules</label><input [value]="item.formuleCheck" #formuleCheck type="checkbox">
+          <label>Formules</label><input (change)="isChecked($event)" #formuleCheck type="checkbox">
         </td>
         
 

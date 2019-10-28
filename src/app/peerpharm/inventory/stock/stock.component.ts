@@ -10,6 +10,7 @@ import { DEC } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { toDate } from '@angular/common/src/i18n/format_date';
 import { fstat } from 'fs';
+
 import { BatchesService } from 'src/app/services/batches.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { ExcelService } from 'src/app/services/excel.service';
@@ -78,6 +79,7 @@ export class StockComponent implements OnInit {
   componentsAmount: any[];
   tempHiddenImgSrc: any;
   procurmentQnt: Number;
+  allocatedOrders:any[];
   amountsModalData: any;
   itemAmountsData: any[];
   itemAmountsWh: any[];
@@ -1006,6 +1008,20 @@ export class StockComponent implements OnInit {
     this.loadComponentItems();
   }
 
+  async openAllocatedOrders(componentN) {
+    debugger
+
+    this.openModalHeader = "הקצאות מלאי"
+     this.openOrderAmountsModal = true; 
+    this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data=>{
+     
+      this.allocatedOrders = data[0].allAllocatedOrders
+  });
+    
+ 
+
+  }
+ 
   searchProduct() {
     if (this.productToFind != "") {
       // check the stock item is really new
@@ -1384,13 +1400,7 @@ debugger
   //   })
   // }
 
-  getCmptOrderAmounts(componentN , id) {
-      
 
-    }
-
-  
-  
   
 
 

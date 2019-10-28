@@ -54,6 +54,7 @@
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
     "socket.io-client": "^2.2.0",
+    "table-dragger": "^1.0.3",
     "ts-xlsx-export": "^1.0.1",
     "xlsx": "^0.14.5",
     "zone.js": "^0.8.26"

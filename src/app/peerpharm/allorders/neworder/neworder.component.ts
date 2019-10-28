@@ -55,7 +55,8 @@ export class NeworderComponent implements OnInit {
       orderdate: [null, Validators.required],
       remarks: [null],
       type: [null],
-      user:[null,Validators.required]
+      user:[null,Validators.required],
+      area:[null]
 
     });
 
@@ -78,6 +79,7 @@ export class NeworderComponent implements OnInit {
 
   if(this.orderForm.valid){
     let newOrderObj = {
+      area:this.choosedCostumer.area,
       costumer: post.costumer,
       orderDate: post.orderdate,
       costumerInternalId:post.costumerInternalId,
@@ -337,6 +339,7 @@ export class NeworderComponent implements OnInit {
   }
 
   searchCostumer(costumerValue) {
+    debugger;
     if (costumerValue != "") {
       this.costumers = this.costumers.filter(costumer =>
         costumer.costumerName.toLowerCase().includes(costumerValue)
@@ -347,6 +350,7 @@ export class NeworderComponent implements OnInit {
   }
 
   chooseCostumer() {
+    debugger;
     if(this.choosedCostumer.impRemark != null && this.choosedCostumer.impRemark!= undefined && this.choosedCostumer.impRemark!="" ){
       alert("ללקוח יש הערה חשובה:\n"+this.choosedCostumer.impRemark);
     }

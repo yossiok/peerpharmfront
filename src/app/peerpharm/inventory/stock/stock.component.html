@@ -152,7 +152,7 @@
           <td style="width:10%;">{{component.componentName}}</td>
           <td style="width:10%;">{{component.alternativeComponent}}</td>
           <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
-          <td style="width:5%" (click)="getCmptOrderAmounts(component.componentN, component._id)" style="cursor: pointer;" [ngClass]="calcIfLowThenMin(component)" > 
+          <td style="width:5%"  (click)="openAllocatedOrders(component.componentN)" style="cursor: pointer;" [ngClass]="calcIfLowThenMin(component)" > 
               {{component.alloAmount}}
             <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
             style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
@@ -1218,25 +1218,35 @@
 
 </div>
 
-<div *ngIf="openOrderAmountsModal==true" id="myModal3" class="modal3"
-  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:185px;top:130px;'>
+<div style="height:0px !important" *ngIf="openOrderAmountsModal==true" id="myModal3" class="modal3"
+  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
 
   <!-- Modal content -->
-  <div class="modal-content" id='modelC'>
-    <div id="material-header" class="modal-header">
+  <div style="width:800px !important" class="modal-content" id='modelC'>
+    <div style="width:800px !important;" id="material-header" class="modal-header">
         <span class="close" id="closeId3" (click)="openOrderAmountsModal=false;">&times;</span>
       <h2 style="text-align: center">{{openModalHeader}}</h2><br>
-   
-
     </div>
-    <div class="container" id="material-body" class="modal-body"
-      style="height: 600px; padding-left: 0px">
-
-     
-    <div id="material-footer" class="modal-footer">
-
-    </div>
+    <div style="height: 300px !important;width:800px !important;" class="container" id="material-body" class="modal-body">
+        <table style="background:white;" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Orders</th>
+                <th scope="col">Allocated Amount</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr *ngFor="let order of allocatedOrders;let i=index">
+                <td>{{i+1}}</td>
+                <td>{{order.orderNumber}}</td>
+                <td>{{order.allocatedAmount}}</td>
+              </tr>
+            </tbody>
+          </table>
+    
   </div>
 
 </div>
 </div>
+
