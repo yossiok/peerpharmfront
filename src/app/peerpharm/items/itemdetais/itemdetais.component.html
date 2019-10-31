@@ -1,3 +1,254 @@
+<div class="container-fluid">
+  <div style="height:20px" class="row"></div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col"><h1 style="text-align: center;">Item Tree</h1></div>
+    <div class="col"></div>
+  </div>
+  <div style="height:20px" class="row"></div>
+  <div class="row">
+    <div class="col-1">
+      <div style="margin:5px;">
+        <label>Item</label>
+      </div>
+
+      <div style="margin:5px;">
+        <label>Barcode</label>
+      </div>
+
+      <div style="margin:5px;">
+        <label>Product Title</label>
+      </div>
+
+      <div style="margin:5px;">
+        <label>Sub Title </label>
+      </div>
+
+      <div style="margin:5px;">
+        <label>Description</label>
+      </div>
+
+      <div style="margin:5px;">
+        <label>Remarks</label>
+      </div>
+ 
+    </div>
+    <div class="col-3">
+      <div>
+        <input type="text" [(ngModel)]=itemShown.itemNumber #itemNum id="id_item"
+          (keydown)='search($event,itemNum.value )'>
+        <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search" src='/assets/images/searchA2.png'
+          style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
+      </div>
+
+      <div>
+      <input type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK> 
+      </div>
+
+      <div>
+          <input type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
+      </div>
+      
+      <div>
+          <input type="text" [(ngModel)]=itemShown.subName id="id_subTitle" style="width:480px"> 
+      </div>
+
+     <div>
+        <input type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:480px">  
+     </div>   
+
+      <div>
+          <textarea rows="4" cols="40" id="id_mainRemarks" [(ngModel)]=itemShown.proRemarks> </textarea>
+      </div>
+    
+      <div style='display: inline-table'>
+          <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+          <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
+          <br>
+          <img id="id_img1" [src]=itemShown.imgMain1>
+        </div>
+
+    </div>
+    <div class="col-7 treeTabContainer">
+        <ngb-tabset [justify]="fill">
+            <ngb-tab id="tab-selectbyid1">
+                <ng-template ngbTabTitle><span style="color:black;">Production</span></ng-template>
+              <ng-template ngbTabContent>
+               <div class="container-fluid">
+                 <div class="row">
+                   <div class="col-2">
+                      <div class="productionLabel">
+                          <label>Jumping Remark</label>
+                        </div>
+                   </div>
+                   <div class="col-10">
+                     <input class="productionInput" style="width:700px;" type="text"/>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="col-2">
+                     <div>
+                    <div *ngIf="mainLanguage==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;" class="fa fa-minus" *ngIf="mainLanguage==true"></i>
+                      <label>Main Language</label>
+                    </div>
+                    <div *ngIf="mainLanguage==false" class="productionLabel">
+                    <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;" class="fa fa-plus" *ngIf="mainLanguage==false"></i>
+                    <label>Main Language</label>
+                    </div>
+                  </div>
+                    <div class="productionLabel">
+                      <label>Language 2</label>
+                    </div>
+                    <div class="productionLabel">
+                      <label>Language 3</label>
+                    </div>
+                    <div class="productionLabel">
+                      <label>Department</label>
+                    </div>
+                
+                   </div>
+                   <div class="col-3">
+                      <div>
+                          <select *ngIf="mainLanguage==true" class="productionInput" [(ngModel)]=itemShown.StickerLanguageK>
+                            <option></option>
+                            <option></option>
+                            <option></option>
+                          </select> <!-- id="id_stickerLanguge"  -->
+                      </div>
+                      <div>
+                        <select class="productionInput">
+                          <option></option>
+                          <option></option>
+                          <option></option>
+                        </select>
+                      </div>
+                      <div>
+                          <select class="productionInput">
+                              <option></option>
+                              <option></option>
+                              <option></option>
+                            </select>
+                      </div>
+                      <div>
+                          <select class="productionInput">
+                              <option>Depart</option>
+                              <option></option>
+                              <option></option>
+                            </select>
+                      </div>
+                   </div>
+                   <div class="col-2">
+                      <div class="productionLabel">
+                          <label>Volume(ml)</label>
+                        </div>
+                        <div class="productionLabel">
+                          <label>Net Wieght(gr)</label>
+                        </div>
+                        <div class="productionLabel">
+                          <label>Gross Weight Unit(gr)</label>
+                        </div>
+                        <div class="productionLabel">
+                          <label>Peer Pharm Tone#</label>
+                        </div>
+                   </div>
+                   <div class="col-3">
+                      <div>
+                          <input class="productionInput" type="text">
+                      </div>
+                      <div>
+                          <input class="productionInput" type="text">
+                      </div>
+                      <div>
+                          <input class="productionInput" type="text">
+                      </div>
+                      <div>
+                          <select class="productionInput">
+                              <option></option>
+                              <option></option>
+                              <option></option>
+                            </select>
+                      </div>
+                    
+
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="col-2">
+                      <div class="productionLabel">
+                          <label>Production 1</label>
+                        </div>
+                        <div class="productionLabel">
+                          <label>Production 2</label>
+                        </div>
+                        <div class="productionLabel">
+                          <label>Production 3</label>
+                        </div>
+                        <div class="productionLabel">
+                          <label>Production 4</label>
+                        </div>
+                        <div class="productionLabel">
+                          <label>Production 5</label>
+                        </div>
+                   </div>
+                   <div class="col-2">
+                     <div>
+                        <select class="productionInput">
+                            <option></option>
+                            <option></option>
+                            <option></option>
+                          </select>
+                     </div>
+                     <div>
+                        <select class="productionInput">
+                            <option></option>
+                            <option></option>
+                            <option></option>
+                          </select>
+                     </div>
+                     <div>
+                        <select class="productionInput">
+                            <option></option>
+                            <option></option>
+                            <option></option>
+                          </select>
+                     </div>
+                     <div>
+                        <select class="productionInput">
+                            <option></option>
+                            <option></option>
+                            <option></option>
+                          </select>
+                     </div>
+                     <div>
+                        <select class="productionInput">
+                            <option></option>
+                            <option></option>
+                            <option></option>
+                          </select>
+                     </div>
+                  
+                   </div>
+                 </div>
+               </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab id="tab-selectbyid2">
+              <ng-template ngbTabTitle><span style="color:black;">General</span></ng-template>
+              <ng-template ngbTabContent><p>Food truck .</p>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab id="tab-selectbyid3">
+                <ng-template ngbTabTitle><span style="color:black">Components</span></ng-template>
+                <ng-template ngbTabContent><p>Food truck .</p>
+                </ng-template>
+              </ngb-tab>
+          </ngb-tabset>
+          
+    </div>
+  </div>
+</div>
+
 <!--
 <ngb-tabset #t="ngbTabset">
   <ngb-tab id="tab-selectbyid1" title="General">
@@ -21,7 +272,7 @@
     <i>Create new products</i>
   </h1>
 </div>-->
-<table border=0 background='bg112.jpg' style="background-size: cover">
+<!-- <table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>
@@ -166,8 +417,8 @@
         <option value='rectangle'>Rectangle</option>
       </select>
       <img src='assets/images/goddet2.png' (click)="showGoddet()" style='width:40px; display:none'>
-      <!--Button if the focusout is not the option-->
-      <div #container>
+      Button if the focusout is not the option-->
+<!-- <div #container>
 
       </div>
     </td>
@@ -653,10 +904,10 @@
                 </td>
               </tr>
             </table>
-          </td>
+          </td> -->
 
-      <!-- <td class='sealTd' id="sealTdId" *ngIf="(item.sealImage!='' && item.sealImage!='undefined') || itemShown.sealTube!='' || itemShown.sealNumber!=''"> -->
-          <td class='sealTd' id="sealTdId" >
+<!-- <td class='sealTd' id="sealTdId" *ngIf="(item.sealImage!='' && item.sealImage!='undefined') || itemShown.sealTube!='' || itemShown.sealNumber!=''"> -->
+<!-- <td class='sealTd' id="sealTdId" >
               <table border="0" width="200px">
                 <tr>
                   <td align='center'>
@@ -706,10 +957,10 @@
                   </td>
                 </tr>
               </table>
-            </td>                
+            </td>                 -->
 
-          <!-- <td class='extraTd' id="extraTdId" *ngIf="(item.extraImage1!='' && item.extraImage1!='undefined') || itemShown.extraText1!='' || (item.extraImage2!='' && item.extraImage2!='undefined') || itemShown.extraText2!=''"> -->
-          <td class='extraTd' id="extraTdId" >
+<!-- <td class='extraTd' id="extraTdId" *ngIf="(item.extraImage1!='' && item.extraImage1!='undefined') || itemShown.extraText1!='' || (item.extraImage2!='' && item.extraImage2!='undefined') || itemShown.extraText2!=''"> -->
+<!-- <td class='extraTd' id="extraTdId" >
             <h5>Extra Images</h5>
             <table border="0" width="200px">
               <tr>
@@ -790,4 +1041,4 @@
   
       <button *ngIf="alowUserEditItemTree" class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
       <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>    
-  
+   -->

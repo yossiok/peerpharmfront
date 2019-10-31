@@ -34,5 +34,16 @@ input:focus {
         zoom: 0.6 !important;
     }
     }
+    .treeTabContainer { 
+        background: rgb(249, 239, 212)
+    }
+.productionLabel { 
+    margin:8px;
+}
 
+.productionInput {
+    margin:4px;
+    width: 200px;
+    
+}
 

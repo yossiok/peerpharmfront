@@ -182,6 +182,7 @@ export class MaterialArrivalTableComponent implements OnInit {
 
   saveEdit(currDoc) {
     debugger;
+    this.currentDoc.remarks = this.remarks.nativeElement.value;
     if(this.packageType.nativeElement.value != "" ){
     this.currentDoc.packageType = this.packageType.nativeElement.value;
     } 

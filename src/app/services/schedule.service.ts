@@ -83,6 +83,10 @@ export class ScheduleService {
     let url = this.baseUrl + "printSchedule";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getPrintingByStatus(status) {
+    let url = this.baseUrl + "printSchedule?status=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getPrintScheduleByDate(date) {
     let url = this.baseUrl + "printSchedule?date=" + date;

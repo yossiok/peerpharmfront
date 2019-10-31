@@ -144,6 +144,11 @@ export class OrdersService {
     let url = this.baseUrl + "orderitem/updateStatus";
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
+  editFormuleCheck(formuleStatus,id): Observable<any> {
+    debugger
+    let url = this.baseUrl + "orderitem/updateCheckFormule";
+    return this.http.post(url, JSON.stringify({formuleStatus:formuleStatus,id:id}), this.options).pipe(map(res => res.json()))
+  }
 
 
   //add new order

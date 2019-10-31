@@ -21,6 +21,7 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('colums') colums: ElementRef;
   @ViewChild('container')
   private container: ElementRef;
+  mainLanguage:Boolean=true;
   alowUserEditItemTree:Boolean=false;
   mainDivArr: any = [];
   dataDiv: any = [];
@@ -549,6 +550,21 @@ export class ItemdetaisComponent implements OnInit {
     this.docPath = fileName;
     console.log(fileName);
     this.selectedFiles = event.target.files;
+  }
+
+  addRemoveInputs(type) {
+    switch(type) {
+      case 'mainLang':
+       if(this.mainLanguage == true){
+         this.mainLanguage = false;
+       }
+      else {
+        this.mainLanguage = true;
+      }
+       
+    }
+  
+
   }
 
 
