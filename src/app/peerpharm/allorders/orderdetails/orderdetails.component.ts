@@ -43,8 +43,10 @@ export class OrderdetailsComponent implements OnInit {
   currFormule:any[];
   currPhase:any[];
   allMaterials:any[];
+  formuleCheck:boolean;
   allItems:any[];
   closeResult: string;
+  printingStatus:boolean = false;
   plateImg="";
   printSchedule:any ={
     position:'',
@@ -153,7 +155,6 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('itemNumber') itemN: ElementRef;
   @ViewChild('id') id: ElementRef;
   @ViewChild('inputBatch') inputBatch: ElementRef;
-  @ViewChild('formuleCheck') formuleCheck: ElementRef;
   @ViewChild('componentCheck') componentCheck: ElementRef;
 
   @ViewChild('date') date: ElementRef;
@@ -175,7 +176,7 @@ export class OrderdetailsComponent implements OnInit {
    }
 
     exportAsXLSX(data) {
-       debugger;
+    
        for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < this.ordersItems.length; j++) {
           if(data[i].itemNumber == this.ordersItems[j].itemNumber) {
@@ -194,6 +195,8 @@ export class OrderdetailsComponent implements OnInit {
     this.getUserInfo();
     this.getAllComponents();
     this.getAllMaterialsFormules();
+    
+
 
     
     
@@ -272,14 +275,13 @@ export class OrderdetailsComponent implements OnInit {
           });
       }
     });
-    debugger
+   
     this.ordersItems
 
   }
 
   getAllFormsDetails() {
     this.formService.getAllForms().subscribe(data=>{
-      debugger
       this.allForms = data;
 
     });
@@ -336,16 +338,14 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   saveProductDoc() {
-    debugger;
+    
     this.orderService.addNewProductDoc(this.documentationBeforeSend).subscribe(data=>{
-      debugger
       console.log(data);
 
     })
   }
 
   addItemOrder() {
-     
     this.itemData.orderId = this.orderId;
     if(!this.multi) this.itemData.orderNumber = this.number;
     let newItemImpRemark= this.itemData.itemImpRemark;
@@ -456,7 +456,7 @@ getAllMaterialsFormules() {
 
 showFormule(itemNumber,formuleByItem) {
   this.formuleService.getFormuleByNumber(itemNumber).subscribe(data=>{
-    debugger;
+  
     if(data == null) {
       this.toastSrv.error("There is no formule yet")
     } else {
@@ -509,7 +509,6 @@ showFormule(itemNumber,formuleByItem) {
 
 getOrderItems(singleLine): void {
     var orderNum;
-     debugger;
     this.number = this.route.snapshot.paramMap.get('id');
     if(this.number.includes(',')) this.number=this.number.split(",").filter(x=>x!="");
     if(singleLine){
@@ -561,7 +560,6 @@ getOrderItems(singleLine): void {
       if(singleLine){
         this.ordersItems.filter(item=> {
           if(item.itemNumber == orderItems[0].itemNumber){
-             debugger;
             item =orderItems[0];
             
           }
@@ -642,7 +640,7 @@ editBatch(batch){
 }
 
   getDetails(itemNumber, itemId): void {
-    debugger;
+
     // if(this.inputBatch.nativeElement.value !=undefined){
     //   this.inputBatch.nativeElement.value='';
     // }
@@ -706,18 +704,35 @@ editBatch(batch){
     this.documentationBeforeSend.sum = JSON.stringify(sum);
   }
 
+  // getPrintFillStatus() {
+  //   var status = "printed"
+  
+  //   this.scheduleService.getPrintingByStatus(status).subscribe(data=>{
+  //     debugger;
+  //     data
+      
+  //   })
+  // }
 
-  isChecked(ev) {
-    ;
+
+  isChecked(ev,id) {
+    var formuleStatus = ev.target.checked
     if (ev.target.checked == true) {
 
-      this.formuleCheck.nativeElement.checked = ev.target.checked;
+      this.formuleCheck = ev.target.checked
+      this.orderService.editFormuleCheck(formuleStatus,id).subscribe(data=>{
+      data
+      })
+      
       ;
     }
 
-    if (ev.target.checked == false) {
-      ;
-      this.formuleCheck.nativeElement.checked = ev.target.checked;
+    else  {
+      var formuleStatus = ev.target.checked
+      this.formuleCheck = ev.target.checked
+      this.orderService.editFormuleCheck(formuleStatus,id).subscribe(data=>{
+        data
+        })
     }
 
   }
@@ -733,7 +748,6 @@ editBatch(batch){
         "quantity": this.quantity.nativeElement.value,
         "qtyKg": this.weight.nativeElement.value,
         "itemRemarks": this.itemRemarks.nativeElement.value,
-        "formuleCheck": this.formuleCheck.nativeElement.checked,
         "componentCheck": this.componentCheck.nativeElement.value,
       }
       console.log(itemToUpdate);
@@ -754,7 +768,6 @@ editBatch(batch){
           this.ordersItems[index].quantity = itemToUpdate.quantity;
           this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].netWeightGr = itemToUpdate.netWeightGr;
-          this.ordersItems[index].formuleCheck = itemToUpdate.formuleCheck;
           this.ordersItems[index].componentCheck = itemToUpdate.componentCheck;
 
            
@@ -1186,7 +1199,6 @@ debugger;
 
 
   getAllComponents() {
-    debugger
     this.inventoryService.getAllComponents().subscribe(components => {
       this.allComponents = components;
 
@@ -1195,7 +1207,6 @@ debugger;
   }
 
   async getUserInfo() {
-    debugger
     await this.authService.userEventEmitter.subscribe(user => {
       this.user=user;
       // this.user=user.loggedInUser;
@@ -1211,7 +1222,7 @@ debugger;
       //   this.user = this.authService.loggedInUser;
       // }
       if (this.user.authorization){
-        debugger
+  
         if (this.authService.loggedInUser.authorization.includes("showFormule")){
           this.openFormule=true;
         }
@@ -1231,7 +1242,7 @@ debugger;
 
 
   async openCmptDemandsModal(){
-    debugger
+    
     this.bottleList= [];
     this.capList= [];
     this.pumpList= [];
@@ -1241,12 +1252,12 @@ debugger;
     this.cartonList= [];
     this.itemTreeRemarks= [];
     if(this.ordersItems.length>0){
-      debugger;
+      ;
       this.internalNumArr=[];
       this.ordersItems.map(i=> this.internalNumArr.push(i.itemNumber.trim()) );
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe( async res=>{
         await res.forEach(async item=> {
-          debugger;
+          
           let i=this.ordersItems.filter(x=> x.itemNumber==item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
           item.itemName = i.discription;
@@ -1257,7 +1268,7 @@ debugger;
 
 
           if (item.bottleNumber!='' && item.bottleNumber!='---' ) {
-            debugger;
+            
             let newCmpt= true;
             if( this.bottleList.map(function (el) { return el.bottleNumber; }).includes(item.bottleNumber) ){
               this.bottleList.map(i=>{
@@ -1269,7 +1280,7 @@ debugger;
               });
             }else{
               if(newCmpt){
-                debugger;
+              
                 let bottleAmount = []
                 bottleAmount = this.allComponents.filter(x => x.componentN == item.bottleNumber)
                 this.bottleList.push({bottleNumber:item.bottleNumber , qnt:item.quantity, amount:(bottleAmount[0].amountKasem+bottleAmount[0].amountRH)});

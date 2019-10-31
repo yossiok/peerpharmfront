@@ -75,7 +75,8 @@
       <th class="header">Description </th>
       <th class="header">neto Weight(Gr) </th>
       <th class="header">Quantity </th>
-      <th class='printTd header'>Weight</th>
+      <th class="header">Printing/Filling </th>
+      <!-- <th class='printTd header'>Weight</th> -->
       <th class="header">Remarks </th>
       <th class='printTd header'>Status</th>
       <!-- <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th> -->
@@ -90,6 +91,7 @@
   <tbody>
 
     <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
+      <td></td>
       <td></td>
       <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
           class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
@@ -108,9 +110,9 @@
           [(ngModel)]="itemData.quantity"></td>
       <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Weight"
           [(ngModel)]="itemData.qtyKg"></td>
-      <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Remarks"
-          [(ngModel)]="itemData.itemRemarks"></td>
-      <td></td>
+      <td><textarea style="box-shadow:1px 1px 2px black;width:185px" class="form-control form-control-sm" placeholder="Remarks"
+          [(ngModel)]="itemData.itemRemarks"></textarea></td>
+      
       <td></td>
       <td *ngIf="!multi"></td>
       <td><button style="box-shadow: 1px 1px 2px black;" (click)="addItemOrder()" class='btn btn-success'>Add</button>
@@ -167,9 +169,10 @@
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
         <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
-        <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px'
-            class='printTd'></td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td>
+        <!-- <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px'
+            class='printTd'></td> -->
+        <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td> -->
+        <td *ngIf="item._id!==EditRowId"><img *ngIf="item.printStatus ==='printed'" style="width:15px" src="../../../../assets/images/aprroved.png"/> / <img *ngIf="item.fillingStatus ==='filled'" style="width:15px" src="../../../../assets/images/aprroved.png"/></td>
         <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' />
         </td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
@@ -180,8 +183,8 @@
           style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
           {{item.compiled[0].sum}}</td> -->
           <td *ngIf="item._id!==EditRowId">
-          <label>Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
-          <label>Formule - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.formuleCheck}}</label></label>
+          <label (click)="edit(item._id)">Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
+          <label>Formules</label><input (change)="isChecked($event,item._id)" id="formuleCheckBox" type="checkbox">
           </td>
           <td *ngIf="item._id===EditRowId"><label>Components</label>
             <select [value]="item.componentCheck" #componentCheck >
@@ -190,7 +193,7 @@
             <option value="inStock">במלאי</option>
           </select>
           <br><br>
-          <label>Formules</label><input (change)="isChecked($event)" #formuleCheck type="checkbox">
+          
         </td>
         
 
