@@ -738,7 +738,7 @@ editBatch(batch){
   }
 
   saveEdit() {
-  
+    debugger;
       let itemToUpdate = {
 
         'orderItemId': this.id.nativeElement.value,
@@ -746,7 +746,7 @@ editBatch(batch){
         "netWeightGr": this.netWeightGr.nativeElement.value,
         "discription": this.itemName.nativeElement.value,
         "quantity": this.quantity.nativeElement.value,
-        "qtyKg": this.weight.nativeElement.value,
+        // "qtyKg": this.weight.nativeElement.value,
         "itemRemarks": this.itemRemarks.nativeElement.value,
         "componentCheck": this.componentCheck.nativeElement.value,
       }
@@ -764,9 +764,9 @@ editBatch(batch){
           this.ordersItems[index]._id = itemToUpdate.orderItemId;
           this.ordersItems[index].itemRemarks = itemToUpdate.itemRemarks;
           this.ordersItems[index].discription = itemToUpdate.discription;
-          this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
+          // this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].quantity = itemToUpdate.quantity;
-          this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
+          // this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].netWeightGr = itemToUpdate.netWeightGr;
           this.ordersItems[index].componentCheck = itemToUpdate.componentCheck;
 
