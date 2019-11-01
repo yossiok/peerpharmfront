@@ -136,7 +136,10 @@ export class NotificationComponent implements OnInit {
       this.loggedInUser = user;
     });
     if (this.loggedInUser == null) {
-      this.authService.getLoggedInUser().subscribe();
+      this.authService.getLoggedInUser().subscribe(data=>
+        {
+          this.loggedInUser=this.authService.loggedInUser;
+        });
     }
   }
 

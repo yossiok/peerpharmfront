@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { ChatService } from 'src/app/shared/chat.service';
 
 
 
@@ -14,15 +15,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AllordersComponent implements OnInit {
 
-  constructor(private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService) { }
+  constructor(private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService, private chat: ChatService) { }
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
-  today:any;
-  sortCurrType:String="OrderNumber";
-  numberSortDir:string="oldFirst";
+  today: any;
+  sortCurrType: String = "OrderNumber";
+  numberSortDir: string = "oldFirst";
   // stageSortDir:string="done";
-  selectAllOrders:boolean=false;
+  selectAllOrders: boolean = false;
 
 
 
@@ -35,7 +36,7 @@ export class AllordersComponent implements OnInit {
   //private orderSrc = new BehaviorSubject<string>("");
 
   @ViewChild('orderRemarks') orderRemarks: ElementRef;
-  @ViewChild('orderType') orderType:ElementRef; 
+  @ViewChild('orderType') orderType: ElementRef;
   @ViewChild('deliveryDate') deliveryDate: ElementRef;
   @ViewChild('orderDate') orderDate: ElementRef;
   @ViewChild('costumer') costumer: ElementRef;
@@ -51,6 +52,13 @@ export class AllordersComponent implements OnInit {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getAllOrders();
+    this.chat.joinroom("orders");
+    this.chat.messages.subscribe(data => {
+      console.log(data);
+      if (data.msg == "order_refresh" && data.to == "allusers") {
+     this.getAllOrders();
+      } 
+    })
   }
 
 
@@ -58,8 +66,8 @@ export class AllordersComponent implements OnInit {
     this.ordersService.getAllOrders()
       .subscribe(orders => {
         orders.map(order => {
-          order.color='white'
-          if(this.today>order.deliveryDate){
+          order.color = 'white'
+          if (this.today > order.deliveryDate) {
             order.color = '#ff9999';
           }
           Object.assign({ isSelected: false }, order);
@@ -121,9 +129,9 @@ export class AllordersComponent implements OnInit {
   deleteOrder(order) {
     if (confirm("Delete Order?")) {
       this.ordersService.deleteOrder(order).subscribe(res => {
-      //  let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
-      //  delete this.orders[i];
-        this.orders=this.orders.filter(elem=>elem._id!=order._id);
+        //  let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
+        //  delete this.orders[i];
+        this.orders = this.orders.filter(elem => elem._id != order._id);
       });
     }
   }
@@ -148,51 +156,51 @@ export class AllordersComponent implements OnInit {
     }
   }
 
-  checkboxAllOrders(ev){
+  checkboxAllOrders(ev) {
     this.orders.filter(e => e.isSelected = ev.target.checked);
   }
 
-  sortOrdersByOrderNumber(){
-    if(this.sortCurrType!="orderNumber")  this.orders= this.ordersCopy;
-    if(this.numberSortDir=="oldFirst"){
-      this.orders= this.orders.reverse();
-      this.numberSortDir="newFirst";
-    }else if(this.numberSortDir=="newFirst"){
-      this.orders= this.orders.reverse();
-      this.numberSortDir="oldFirst";
+  sortOrdersByOrderNumber() {
+    if (this.sortCurrType != "orderNumber") this.orders = this.ordersCopy;
+    if (this.numberSortDir == "oldFirst") {
+      this.orders = this.orders.reverse();
+      this.numberSortDir = "newFirst";
+    } else if (this.numberSortDir == "newFirst") {
+      this.orders = this.orders.reverse();
+      this.numberSortDir = "oldFirst";
     }
-    this.sortCurrType="orderNumber"
+    this.sortCurrType = "orderNumber"
   }
 
-  
+
 
   loadCheckedOrders() {
     console.log(this.orders);
     // let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
     let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e.orderNumber);
-    if(tempArr.length>0){
+    if (tempArr.length > 0) {
       this.ordersService.sendOrderData(tempArr);
       this.ordersService.getAllOpenOrdersItems(false);
-      let tempArrStr="";
+      let tempArrStr = "";
       tempArr.forEach(number => {
-        tempArrStr=tempArrStr+","+number;
+        tempArrStr = tempArrStr + "," + number;
       });
-      
-      let urlPrefixIndex=window.location.href.indexOf("#");
-      let urlPrefix=window.location.href.substring(0,urlPrefixIndex)
+
+      let urlPrefixIndex = window.location.href.indexOf("#");
+      let urlPrefix = window.location.href.substring(0, urlPrefixIndex)
       debugger
-      window.open(urlPrefix+"#/peerpharm/allorders/orderitems/"+tempArrStr); 
+      window.open(urlPrefix + "#/peerpharm/allorders/orderitems/" + tempArrStr);
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
-    } else{
+    } else {
       this.toastSrv.error("0 Orders selected");
     }
   }
 
   loadOrdersItems() {
     this.ordersService.getAllOpenOrdersItems(true);
-    let urlPrefixIndex=window.location.href.indexOf("#");
-    let urlPrefix=window.location.href.substring(0,urlPrefixIndex);
-    window.open(urlPrefix+"#/peerpharm/allorders/orderitems/00"); 
+    let urlPrefixIndex = window.location.href.indexOf("#");
+    let urlPrefix = window.location.href.substring(0, urlPrefixIndex);
+    window.open(urlPrefix + "#/peerpharm/allorders/orderitems/00");
     // this.router.navigate(["/peerpharm/allorders/orderitems/00"]);
   }
 

@@ -15,6 +15,8 @@ export class NavComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    if(!this.authService.loggedInUser)
+    {
     this.authService.getLoggedInUser().subscribe(data => {
       
       if (data.msg != null) {
@@ -27,5 +29,6 @@ export class NavComponent implements OnInit {
       }
     });
   }
+}
 
 }

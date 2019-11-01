@@ -30,7 +30,7 @@ export class AuthService {
 
   // Resolve HTTP using the constructor
   constructor(private http: Http, private httpClient:HttpClient) {
-
+debugger;
   }
 
   getLoggedInUser(): Observable<any> {
