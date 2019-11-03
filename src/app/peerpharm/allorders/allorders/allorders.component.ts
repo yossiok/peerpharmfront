@@ -52,14 +52,7 @@ export class AllordersComponent implements OnInit {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getAllOrders();
-    this.chat.joinroom("orders");
-    this.chat.messages.subscribe(data => {
-      console.log(data);
-      debugger;
-      if (data.msg == "order_refresh" && data.to == "allusers") {
-     this.getAllOrders();
-      } 
-    })
+   
   }
 
 
