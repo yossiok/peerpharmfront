@@ -55,6 +55,7 @@ export class AllordersComponent implements OnInit {
     this.chat.joinroom("orders");
     this.chat.messages.subscribe(data => {
       console.log(data);
+      debugger;
       if (data.msg == "order_refresh" && data.to == "allusers") {
      this.getAllOrders();
       } 

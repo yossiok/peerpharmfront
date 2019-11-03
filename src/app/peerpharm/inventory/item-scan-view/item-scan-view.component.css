@@ -1,0 +1,22 @@
+
+body{
+    font-size: 20px;
+}
+.tbView{
+    width: 100%;
+    background-color: white;
+    font-size: 20px;
+}
+.tbView label{
+    float: right;
+    margin-left: 10px;
+    direction: rtl;
+}
+.tbView p{
+    float: right;
+}
+.analysis{
+    font-weight: bold ;
+    text-align: center;
+    border-bottom: solid;
+}

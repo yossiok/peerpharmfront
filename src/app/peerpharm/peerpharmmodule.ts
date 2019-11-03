@@ -104,6 +104,7 @@ import { ActiveusersComponent } from './reports/activeusers/activeusers.componen
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { OrdersService } from '../services/orders.service';
+import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 
 
 
@@ -198,6 +199,7 @@ import { OrdersService } from '../services/orders.service';
     MaterialArrivalComponent,
     MaterialArrivalTableComponent,
     MaterialScanViewComponent,
+    ItemScanViewComponent,
     ChatComponent ,
     HeadingsWHPipe,
     PackingComponent,

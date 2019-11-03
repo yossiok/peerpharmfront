@@ -45,6 +45,7 @@ import { NewProcurementComponent } from './procurement/new-procurement/new-procu
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
+import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -270,6 +271,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Material Barcode'
     },
     component: ScanProductComponent,
+  },
+  {
+    path: 'production/scanItem',
+    data: {
+      title: 'Item Barcode'
+    },
+    component: ItemScanViewComponent,
   },
   {
     path :'batches/batchesList',

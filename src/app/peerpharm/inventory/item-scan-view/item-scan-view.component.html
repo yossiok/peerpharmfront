@@ -1,0 +1,310 @@
+<div  >
+  <!-- Modal content -->
+  <div class="modal-content" style="width:750px" id="modelC">
+    <div class="modal-header">
+      <span class="close" id="closeId2" (click)="openAmountsModal = false"
+        >&times;</span
+      >
+      <h2 id="div_h3">{{ openModalHeader }}</h2>
+      <br />
+    </div>
+
+    <!-- MODAL BODY -->
+    <div class="modal-body" style="overflow-y:auto">
+      <div *ngFor="let whName of itemAmountsWh">
+        <div class="container fr justify-content-end">
+          <h4 class="fr">
+            <u>{{ whName }}</u>
+          </h4>
+          <table id="amountsTable" class="table fr">
+            <tbody id="amountsInWhTbody" align="center">
+              <tr>
+                <th><b>מדף</b></th>
+                <th><b>כמות</b></th>
+                <!-- <th>מחסן</th> -->
+              </tr>
+
+              <tr *ngFor="let shelfAmount of itemAmountsData">
+                <td *ngIf="shelfAmount.whName == whName">
+                  {{ shelfAmount.ps }}
+                </td>
+                <td *ngIf="shelfAmount.whName == whName">
+                  {{ shelfAmount.sumShelfAmounts }}
+                </td>
+                <td *ngIf="shelfAmount.whName == whName">
+                  {{ shelfAmount.batchNumArr }}
+                </td>
+                <!-- <td>{{shelfAmount.wh}}</td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ADD NEW ITEMSHELF -->
+      <div class="container fr addItemshelf">
+        <h4 style="text-align: right; border-bottom: gray solid;">
+          שינוי כמויות
+        </h4>
+
+        <div class="fr row justify-content-end" style="width: 100%;">
+          <select
+            class="col-sm-3 ml-1 form-control"
+            *ngIf="stockType == 'product'"
+            [(ngModel)]="newItemShelfWH"
+            (change)="searchItemShelfs()"
+          >
+            <option value="" selected>בחר מחסן</option>
+            <ng-container *ngFor="let wh of whareHouses">
+              <option
+                *ngIf="wh.name != 'Rosh HaAyin' && wh.name != 'Kasem'"
+                [value]="wh._id"
+                >{{ wh.name }}</option
+              >
+            </ng-container>
+          </select>
+          <select
+            class="col-sm-3 ml-1 fr form-control"
+            *ngIf="stockType == 'component'"
+            [(ngModel)]="newItemShelfWH"
+            (change)="searchItemShelfs()"
+          >
+            <option value="" selected>בחר מחסן</option>
+            <ng-container *ngFor="let wh of whareHouses">
+              <option
+                *ngIf="wh.name != 'Rosh HaAyin products'"
+                [value]="wh._id"
+                >{{ wh.name }}</option
+              >
+            </ng-container>
+          </select>
+          <label class="col-sm-3 ml-1">בחר מחסן</label>
+        </div>
+
+        <div class="fr row justify-content-end">
+          <ul class="nav nav-tabs justify-content-end">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                style="cursor:pointer;"
+                (click)="dirSet('shelfChange')"
+                [ngStyle]="{ 'background-color': sehlfChangeNavBtnColor }"
+                >העברת סחורה למדף אחר</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                style="cursor:pointer;"
+                (click)="dirSet('')"
+                [ngStyle]="{ 'background-color': amountChangeNavBtnColor }"
+                >הוצאת/קבלת סחורה</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div
+          class="fr row justify-content-end"
+          *ngIf="amountChangeDir == 'shelfChange'"
+        >
+          <h5>העברת סחורה למדף אחר</h5>
+          <div class="fr row justify-content-end">
+            <button
+              class="col-sm-1.5 ml-1 btn btn-success"
+              (click)="updateItemStockShelfChange('shelfChange')"
+            >
+              בצע העברה
+            </button>
+            <input
+              class="col-sm-2 ml-1"
+              type="text"
+              placeholder="מדף חדש"
+              [(ngModel)]="destShelf"
+            />
+            <input
+              class="col-sm-2 ml-1"
+              type="number"
+              placeholder="כמות"
+              [(ngModel)]="newItemShelfQnt"
+            />
+            <input
+              class="col-sm-2 ml-1"
+              type="text"
+              placeholder="מדף נוכחי"
+              [(ngModel)]="newItemShelfPosition"
+            />
+          </div>
+        </div>
+        <div
+          class="fr row justify-content-end"
+          *ngIf="amountChangeDir != 'shelfChange'"
+        >
+          <h5>הוצאת/קבלת סחורה</h5>
+          <div class="fr row justify-content-end">
+            <button
+              class="col-sm-1.5 ml-1 btn btn-success"
+              (click)="updateItemStock('in')"
+            >
+              קבלת סחורה
+            </button>
+            <button
+              class="col-sm-1.5 ml-1 btn btn-danger"
+              (click)="updateItemStock('out')"
+            >
+              הוצאת סחורה
+            </button>
+            <input
+              *ngIf="stockType == 'component'"
+              class="col-sm-2 ml-1"
+              type="text"
+              placeholder="תעודת משלוח"
+              [(ngModel)]="relatedOrderNum"
+            />
+            <input
+              class="col-sm-2 ml-1"
+              type="text"
+              placeholder="מדף"
+              [(ngModel)]="newItemShelfPosition"
+            />
+            <input
+              class="col-sm-2 ml-1"
+              type="number"
+              placeholder="כמות"
+              [(ngModel)]="newItemShelfQnt"
+            />
+            <!-- <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber"> -->
+            <select
+              *ngIf="stockType == 'product'"
+              class="col-sm-2 ml-1"
+              type="text"
+              placeholder="אצווה"
+              [(ngModel)]="newItemShelfBatchNumber"
+            >
+              <option value="" selected>Batch</option>
+              <option
+                *ngFor="let batch of ItemBatchArr"
+                [value]="batch.batchNumber"
+                >{{ batch.batchNumber }}</option
+              >
+            </select>
+          </div>
+        </div>
+        <div class="fr row justify-content-end">
+          <div class="col-sm-12">
+            <label class="fr">הפריט נמצא על המדפים</label>&nbsp;<br />
+          </div>
+          <ng-container *ngFor="let itemShelf of currItemShelfs">
+            <div
+              class="col-sm-3"
+              (click)="loadShelfToInput(itemShelf.position, $event)"
+              style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; "
+            >
+              <span
+                ><u>{{ itemShelf.position }}</u
+                >: <b>{{ itemShelf.amount }}</b> units </span
+              >&nbsp;<br />
+              <span
+                *ngIf="
+                  itemShelf.arrivalDate != 'undefined' &&
+                  itemShelf.itemType == 'product'
+                "
+                >Batch: {{ itemShelf.batchNumber }}</span
+              >&nbsp;<br />
+              <!-- <span *ngIf="itemShelf.arrivalDate!='undefined'">arrival date: {{itemShelf.arrivalDate  | date: 'dd/MM/yyyy' }}</span>&nbsp;<br>
+                    <span *ngIf="itemShelf.itemType!='component' && itemShelf.expirationDate!='undefined'">expiration date: {{itemShelf.expirationDate}}</span>&nbsp;       -->
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <!-- END ADD NEW ITEMSHELF -->
+      <br />
+      <div class="container fr">
+        <h3 style="text-align: right ; border-bottom: gray solid;">
+          הקצאות מלאי
+        </h3>
+        <br />
+        <div class="fr">
+          <label>מספר הזמנה</label>&nbsp;<input
+            [(ngModel)]="newAllocationOrderNum"
+            type="text"
+            placeholder="Order number"
+          />&nbsp; <label>כמות</label>&nbsp;<input
+            [(ngModel)]="newAllocationAmount"
+            type="number"
+            placeholder="amount"
+          />&nbsp;<button
+            class="btn-success"
+            (click)="addItemStockAllocation(resCmpt.componentN)"
+          >
+            הוסף
+          </button>
+        </div>
+        <!-- IF ALLOCATIONS EXIST -->
+        <div *ngIf="resCmpt.allocations != null" class="fr">
+          <div class="container">
+            <h4><u>הקצאות קיימות לפריט</u></h4>
+            <table id="allocationsTable" class="table">
+              <tbody id="allocationsTBody" align="center">
+                <tr>
+                  <th></th>
+                  <th><b>#</b></th>
+                  <th><b>מספר הזמנה</b></th>
+                  <th><b>כמות</b></th>
+                  <th><b>סופק</b></th>
+                </tr>
+
+                <tr
+                  *ngFor="let allocation of resCmpt.allocations; let i = index"
+                >
+                  <td>
+                    <button (click)="deleteItemStockAllocation(resCmpt._id, i)">
+                      מחק
+                    </button>
+                  </td>
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ allocation.relatedOrderN }}</td>
+                  <td>{{ allocation.amount }}</td>
+                  <td
+                    *ngIf="i !== EditRowId"
+                    (click)="edit(i)"
+                    style="cursor: pointer;"
+                  >
+                    {{ allocation.supplied }}
+                  </td>
+                  <td *ngIf="i === EditRowId">
+                    <input
+                      #suppliedAlloc
+                      type="text"
+                      [value]="allocation.supplied"
+                      style="width:170px"
+                    />
+                    <button
+                      (click)="editItemStockAllocationSupplied(resCmpt._id, i)"
+                    >
+                      עדכן
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <!-- <tbody id='changesTbody' dir='rtl'>
+                        </tbody> -->
+            </table>
+          </div>
+        </div>
+
+        <!-- IF ALLOCATIONS DONT EXIST -->
+        <div *ngIf="resCmpt.allocations == null">
+          <h4><u>אין הקצאות מלאי</u></h4>
+        </div>
+      </div>
+    </div>
+    <!-- END OF MODAL BODY -->
+  </div>
+
+  <div class="modal-footer">
+    <!-- <button id="newCbtn" (click)="writeNewComponent()">הקם מוצר</button>
+          <button id="updateDataBtn" style='display:none'>עדכן מידע</button> -->
+  </div>
+  <!-- END OF MODAL CONTENT -->
+</div>
