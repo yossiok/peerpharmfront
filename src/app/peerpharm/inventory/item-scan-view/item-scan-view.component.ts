@@ -56,7 +56,9 @@ export class ItemScanViewComponent implements OnInit {
   linkDownload:String = "";
   arrivalDateExpired = true; 
   loadingExcel: Boolean = false;
-
+  openModalHeader: string;
+  newAllocationOrderNum: string;
+  openAmountsModal: boolean = false;
   itemAmountsData: any[];
   itemAmountsWh: any[]; 
 
@@ -131,6 +133,31 @@ export class ItemScanViewComponent implements OnInit {
     
   }
 
+  addItemStockAllocation(componentNum) {
+    if (this.newAllocationOrderNum != null && this.newAllocationAmount != null) {
+      let objToUpdate = {
+        _id: this.itemIdForAllocation,
+        componentN: componentNum,
+        allocations: [{
+          relatedOrderN: this.newAllocationOrderNum,
+          amount: this.newAllocationAmount,
+          supplied: 0
+        }
+        ],
+      }
+      this.inventoryService.updateComptAllocations(objToUpdate).subscribe(res => {
+        if (res.ok != 0 && res.n != 0) {
+          ;
+          console.log("res updateComptAllocations: " + res);
+          this.resCmpt.allocations.push(objToUpdate.allocations[0]);
+          this.resCmpt.allocAmount += objToUpdate.allocations[0].amount;
+        }
+      });
+    }
+    this.newAllocationOrderNum = null;
+    this.newAllocationAmount = null;
+    ;
+  }
 
 
   searchItemShelfs() {
