@@ -2,7 +2,9 @@
   <div style="height:20px" class="row"></div>
   <div class="row">
     <div class="col"></div>
-    <div class="col"><h1 style="text-align: center;">Item Tree</h1></div>
+    <div class="col">
+      <h1 style="text-align: center;">Item Tree</h1>
+    </div>
     <div class="col"></div>
   </div>
   <div style="height:20px" class="row"></div>
@@ -31,7 +33,7 @@
       <div style="margin:5px;">
         <label>Remarks</label>
       </div>
- 
+
     </div>
     <div class="col-3">
       <div>
@@ -42,217 +44,1085 @@
       </div>
 
       <div>
-      <input type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK> 
+        <input type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
       </div>
 
       <div>
-          <input type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
-      </div>
-      
-      <div>
-          <input type="text" [(ngModel)]=itemShown.subName id="id_subTitle" style="width:480px"> 
+        <input type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
       </div>
 
-     <div>
-        <input type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:480px">  
-     </div>   
+      <div>
+        <input type="text" [(ngModel)]=itemShown.subName id="id_subTitle" style="width:480px">
+      </div>
 
       <div>
-          <textarea rows="4" cols="40" id="id_mainRemarks" [(ngModel)]=itemShown.proRemarks> </textarea>
+        <input type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:480px">
       </div>
-    
-      <div style='display: inline-table'>
-          <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
-          <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
-          <br>
-          <img id="id_img1" [src]=itemShown.imgMain1>
-        </div>
+
+      <div>
+        <textarea rows="4" cols="40" id="id_mainRemarks" [(ngModel)]=itemShown.proRemarks> </textarea>
+      </div>
+
+      <div style='display: inline-table;text-align: center;margin-top:10px;'>
+          <h4>Main Picture</h4>
+        <input style="text-align: center;" type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+        <button style="text-align: center;" class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
+        <br>
+        <img style="text-align: center;" id="id_img1" [src]=itemShown.imgMain1>
+      </div>
 
     </div>
     <div class="col-7 treeTabContainer">
-        <ngb-tabset>
-            <ngb-tab id="tab-selectbyid1">
-                <ng-template ngbTabTitle><span style="color:black;">Production</span></ng-template>
-              <ng-template ngbTabContent>
-               <div class="container-fluid">
-                 <div class="row">
-                   <div class="col-2">
-                      <div class="productionLabel">
-                          <label>Jumping Remark</label>
-                        </div>
-                   </div>
-                   <div class="col-10">
-                     <input class="productionInput" style="width:700px;" type="text"/>
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="col-2">
-                     <div>
+      <ngb-tabset>
+        <ngb-tab id="tab-selectbyid1">
+          <ng-template ngbTabTitle><span style="color:black;">Production</span></ng-template>
+          <ng-template ngbTabContent>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-2">
+                  <div class="productionLabel">
+                    <label>Jumping Remark</label>
+                  </div>
+                </div>
+                <div class="col-10">
+                  <input id="id_impRemarks" [(ngModel)]=itemShown.impRemarks class="productionInput" style="width:700px;" type="text" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  <div>
                     <div *ngIf="mainLanguage==true" class="productionLabel">
-                      <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;" class="fa fa-minus" *ngIf="mainLanguage==true"></i>
+                      <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="mainLanguage==true"></i>
                       <label>Main Language</label>
                     </div>
                     <div *ngIf="mainLanguage==false" class="productionLabel">
-                    <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;" class="fa fa-plus" *ngIf="mainLanguage==false"></i>
-                    <label>Main Language</label>
+                      <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="mainLanguage==false"></i>
+                      <label>Main Language</label>
                     </div>
                   </div>
-                    <div class="productionLabel">
+                  <div>
+                    <div *ngIf="mainLanguageTwo==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('mainLangTwo')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="mainLanguageTwo==true"></i>
                       <label>Language 2</label>
                     </div>
-                    <div class="productionLabel">
+                    <div *ngIf="mainLanguageTwo==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('mainLangTwo')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="mainLanguageTwo==false"></i>
+                      <label>Language 2</label>
+                    </div>
+                  </div>
+                  <div>
+                    <div *ngIf="mainLanguageThree==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('mainLangThree')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="mainLanguageThree==true"></i>
                       <label>Language 3</label>
                     </div>
-                    <div class="productionLabel">
+                    <div *ngIf="mainLanguageThree==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('mainLangThree')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="mainLanguageThree==false"></i>
+                      <label>Language 3</label>
+                    </div>
+                  </div>
+                  <div>
+                    <div *ngIf="department==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('department')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="department==true"></i>
                       <label>Department</label>
                     </div>
-                
-                   </div>
-                   <div class="col-3">
-                      <div>
-                          <select *ngIf="mainLanguage==true" class="productionInput" [(ngModel)]=itemShown.StickerLanguageK>
-                            <option></option>
-                            <option></option>
-                            <option></option>
-                          </select>  id="id_stickerLanguge" 
+                    <div *ngIf="department==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('department')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="department==false"></i>
+                      <label>Department</label>
                     </div>
-                      <div>
-                        <select class="productionInput">
-                          <option></option>
-                          <option></option>
-                          <option></option>
-                        </select>
-                      </div>
-                      <div>
-                          <select class="productionInput">
-                              <option></option>
-                              <option></option>
-                              <option></option>
-                            </select>
-                      </div>
-                      <div>
-                          <select class="productionInput">
-                              <option>Depart</option>
-                              <option></option>
-                              <option></option>
-                            </select>
-                      </div>
-                   </div>
-                   <div class="col-2">
-                      <div class="productionLabel">
-                          <label>Volume(ml)</label>
-                        </div>
-                        <div class="productionLabel">
-                          <label>Net Wieght(gr)</label>
-                        </div>
-                        <div class="productionLabel">
-                          <label>Gross Weight Unit(gr)</label>
-                        </div>
-                        <div class="productionLabel">
-                          <label>Peer Pharm Tone#</label>
-                        </div>
-                   </div>
-                   <div class="col-3">
-                      <div>
-                          <input class="productionInput" type="text">
-                      </div>
-                      <div>
-                          <input class="productionInput" type="text">
-                      </div>
-                      <div>
-                          <input class="productionInput" type="text">
-                      </div>
-                      <div>
-                          <select class="productionInput">
-                              <option></option>
-                              <option></option>
-                              <option></option>
-                            </select>
-                      </div>
-                    
+                  </div>
 
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="col-2">
-                      <div class="productionLabel">
-                          <label>Production 1</label>
-                        </div>
-                        <div class="productionLabel">
-                          <label>Production 2</label>
-                        </div>
-                        <div class="productionLabel">
-                          <label>Production 3</label>
-                        </div>
-                        <div class="productionLabel">
-                          <label>Production 4</label>
-                        </div>
-                        <div class="productionLabel">
-                          <label>Production 5</label>
-                        </div>
-                   </div>
-                   <div class="col-2">
-                     <div>
-                        <select class="productionInput">
-                            <option></option>
-                            <option></option>
-                            <option></option>
-                          </select>
-                     </div>
-                     <div>
-                        <select class="productionInput">
-                            <option></option>
-                            <option></option>
-                            <option></option>
-                          </select>
-                     </div>
-                     <div>
-                        <select class="productionInput">
-                            <option></option>
-                            <option></option>
-                            <option></option>
-                          </select>
-                     </div>
-                     <div>
-                        <select class="productionInput">
-                            <option></option>
-                            <option></option>
-                            <option></option>
-                          </select>
-                     </div>
-                     <div>
-                        <select class="productionInput">
-                            <option></option>
-                            <option></option>
-                            <option></option>
-                          </select>
-                     </div>
+
+                </div>
+                <div class="col-3">
+                  <div>
+                    <input id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
+                      [(ngModel)]=itemShown.StickerLanguageK>
+                  </div>
+                  <div *ngIf="mainLanguage==false">
+                    <p>---</p>
+                  </div>
+
+                  <div>
+                    <select *ngIf="mainLanguageTwo==true" class="productionInput">
+                      <option></option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="mainLanguageTwo==false">
+                    <p>---</p>
+                  </div>
+                  <div>
+                    <select *ngIf="mainLanguageThree==true" class="productionInput">
+                      <option></option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="mainLanguageThree==false">
+                    <p>---</p>
+                  </div>
+                  <div>
+                    <select *ngIf="department==true" class="productionInput">
+                      <option>Depart</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="department==false">
+                    <p>---</p>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div>
+                    <div *ngIf="volumeMl==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('volumeMl')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="volumeMl==true"></i>
+                      <label>Volume(ml)</label>
+                    </div>
+                    <div *ngIf="volumeMl==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('volumeMl')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="volumeMl==false"></i>
+                      <label>Volume(ml)</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div *ngIf="netWeightK==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('netWeightK')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="netWeightK==true"></i>
+                      <label>Net Weight(gr)</label>
+                    </div>
+                    <div *ngIf="netWeightK==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('netWeightK')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="netWeightK==false"></i>
+                      <label>Net Weight(gr)</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div *ngIf="grossWeightUnit==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('grossWeightUnit')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="grossWeightUnit==true"></i>
+                      <label style="font-size: 12px;font-weight: bold;">Gross Weight Unit(gr)</label>
+                    </div>
+                    <div *ngIf="grossWeightUnit==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('grossWeightUnit')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="grossWeightUnit==false"></i>
+                      <label style="font-size: 12px;font-weight: bold;">Gross Weight Unit(gr)</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div *ngIf="peerPharmTone==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('peerPharmTone')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="peerPharmTone==true"></i>
+                      <label>Peer Pharm Tone#</label>
+                    </div>
+                    <div *ngIf="peerPharmTone==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('peerPharmTone')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="peerPharmTone==false"></i>
+                      <label>Peer Pharm Tone#</label>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-3">
+                  <div *ngIf="volumeMl==true">
+                    <input type="number" id="id_volume" [(ngModel)]=itemShown.volumeKey class="productionInput">
+                  </div>
+                  <div *ngIf="volumeMl==false">
+                    <p>---</p>
+                  </div>
+                  <div *ngIf="netWeightK==true">
+                    <input type="number" id="id_netWeight" [(ngModel)]=itemShown.netWeightK class="productionInput">
+                  </div>
+                  <div *ngIf="netWeightK==false">
+                    <p>---</p>
+                  </div>
+                  <div *ngIf="grossWeightUnit==true">
+                    <input type="number" id="id_grossUnitInput" [(ngModel)]=itemShown.grossUnitWeightK class="productionInput">
+                  </div>
+                  <div *ngIf="grossWeightUnit==false">
+                    <p>---</p>
+                  </div>
+
+                  <div *ngIf="peerPharmTone==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="peerPharmTone==false">
+                    <p>---</p>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  <div>
+                    <div *ngIf="production==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="production==true"></i>
+                      <label>Production 1</label>
+                    </div>
+                    <div *ngIf="production==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="production==false"></i>
+                      <label>Production 1</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div *ngIf="productionTwo==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="productionTwo==true"></i>
+                      <label>Production 2</label>
+                    </div>
+                    <div *ngIf="productionTwo==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="productionTwo==false"></i>
+                      <label>Production 2</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div *ngIf="productionThree==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionThree')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="productionThree==true"></i>
+                      <label>Production 3</label>
+                    </div>
+                    <div *ngIf="productionThree==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionThree')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="productionThree==false"></i>
+                      <label>Production 3</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div *ngIf="productionFour==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionFour')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="productionFour==true"></i>
+                      <label>Production 4</label>
+                    </div>
+                    <div *ngIf="productionFour==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionFour')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="productionFour==false"></i>
+                      <label>Production 4</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div *ngIf="productionFive==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionFive')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="productionFive==true"></i>
+                      <label>Production 5</label>
+                    </div>
+                    <div *ngIf="productionFive==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionFive')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="productionFive==false"></i>
+                      <label>Production 5</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div *ngIf="productionSix==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionSix')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="productionSix==true"></i>
+                      <label>Production 6</label>
+                    </div>
+                    <div *ngIf="productionSix==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionSix')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="productionSix==false"></i>
+                      <label>Production 6</label>
+                    </div>
+                  </div>
+                  <div>
+                    <div *ngIf="productionSeven==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionSeven')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="productionSeven==true"></i>
+                      <label>Production 7</label>
+                    </div>
+                    <div *ngIf="productionSeven==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionSeven')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="productionSeven==false"></i>
+                      <label>Production 7</label>
+                    </div>
+                  </div>
+                  <div>
+                    <div *ngIf="productionEight==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionEight')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="productionEight==true"></i>
+                      <label>Production 8</label>
+                    </div>
+                    <div *ngIf="productionEight==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('productionEight')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="productionEight==false"></i>
+                      <label>Production 8</label>
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="col-2">
+
+                  <div>
+                    <select style="width:90px" *ngIf="production==true" class="productionInput">
+                      <option>Type</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="production==false">
+                    <p>---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionTwo==true" class="productionInput">
+                      <option>Type</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionTwo==false">
+                    <p>---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionThree==true" class="productionInput">
+                      <option>Type</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionThree==false">
+                    <p>---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionFour==true" class="productionInput">
+                      <option>Type</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionFour==false">
+                    <p>---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionFive==true" class="productionInput">
+                      <option>Type</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionFive==false">
+                    <p>---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionSix==true" class="productionInput">
+                      <option>Type</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionSix==false">
+                    <p>---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionSeven==true" class="productionInput">
+                      <option>Type</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionSeven==false">
+                    <p>---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionEight==true" class="productionInput">
+                      <option>Type</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionEight==false">
+                    <p>---</p>
+                  </div>
+
+                </div>
+
+                <div class="col-3" style="margin-left:-81px;">
+
+                  <div *ngIf="production==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="production==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div *ngIf="productionTwo==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="productionTwo==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div *ngIf="productionThree==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="productionThree==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div *ngIf="productionFour==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="productionFour==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div *ngIf="productionFive==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="productionFive==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div *ngIf="productionSix==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="productionSix==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div *ngIf="productionSeven==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="productionSeven==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div *ngIf="productionEight==true">
+                    <input type="text" class="productionInput">
+                  </div>
+                  <div *ngIf="productionEight==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                </div>
+
+                <div class="col-2" style="margin-left:-60px;">
+                  <div>
+                    <select style="width:90px" *ngIf="production==true" class="productionInput">
+                      <option>Pcs</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="production==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionTwo==true" class="productionInput">
+                      <option>Pcs</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionTwo==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionThree==true" class="productionInput">
+                      <option>Pcs</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionThree==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionFour==true" class="productionInput">
+                      <option>Pcs</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionFour==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionFive==true" class="productionInput">
+                      <option>Pcs</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionFive==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionSix==true" class="productionInput">
+                      <option>Pcs</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionSix==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionSeven==true" class="productionInput">
+                      <option>Pcs</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionSeven==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                  <div>
+                    <select style="width:90px" *ngIf="productionEight==true" class="productionInput">
+                      <option>Pcs</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+                  <div *ngIf="productionEight==false">
+                    <p style="opacity: 0">---</p>
+                  </div>
+
+                </div>
+
+                <div class="col-1" style="margin-left:-75px;">
+
+                  <div *ngIf="production==true" class="image-upload">
+                    <label for="file-input">
+                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+                  <div *ngIf="production==false" style="opacity: 0">
+                    <p>---</p>
+                  </div>
+
+                  <div *ngIf="productionTwo==true" class="image-upload">
+                    <label for="file-input">
+                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+                  <div *ngIf="productionTwo==false" style="opacity: 0">
+                    <p>---</p>
+                  </div>
+
+
+                  <div *ngIf="productionThree==true" class="image-upload">
+                    <label for="file-input">
+                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+                  <div *ngIf="productionThree==false" style="opacity: 0">
+                    <p>---</p>
+                  </div>
+
+                  <div *ngIf="productionFour==true" class="image-upload">
+                    <label for="file-input">
+                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+                  <div *ngIf="productionFour==false" style="opacity: 0">
+                    <p>---</p>
+                  </div>
+
+                  <div *ngIf="productionFive==true" class="image-upload">
+                    <label for="file-input">
+                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+                  <div *ngIf="productionFive==false" style="opacity: 0">
+                    <p>---</p>
+                  </div>
+
+
+                  <div *ngIf="productionSix==true" class="image-upload">
+                    <label for="file-input">
+                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+                  <div *ngIf="productionSix==false" style="opacity: 0">
+                    <p>---</p>
+                  </div>
+
+                  <div *ngIf="productionSeven==true" class="image-upload">
+                    <label for="file-input">
+                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+                  <div *ngIf="productionSeven==false" style="opacity: 0">
+                    <p>---</p>
+                  </div>
+
+                  <div *ngIf="productionEight==true" class="image-upload">
+                    <label for="file-input">
+                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    </label>
+
+                    <input id="file-input" type="file" />
+                  </div>
+                  <div *ngIf="productionEight==false" style="opacity: 0">
+                    <p>---</p>
+                  </div>
+
+
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-2">
+                  <div>
+                    <div *ngIf="laserAndExp==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('laserAndExp')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="laserAndExp==true"></i>
+                      <label>Laser & Exp</label>
+                    </div>
+                    <div *ngIf="laserAndExp==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('laserAndExp')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="laserAndExp==false"></i>
+                      <label>Laser & Exp</label>
+                    </div>
+                  </div>
+                  <div class="col-3">
+
                   
-                   </div>
-                 </div>
-               </div>
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab id="tab-selectbyid2">
-              <ng-template ngbTabTitle><span style="color:black;">General</span></ng-template>
-              <ng-template ngbTabContent><p>Food truck .</p>
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab id="tab-selectbyid3">
-                <ng-template ngbTabTitle><span style="color:black">Components</span></ng-template>
-                <ng-template ngbTabContent><p>Food truck .</p>
-                </ng-template>
-              </ngb-tab>
-          </ngb-tabset>
-          
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+
+        <ngb-tab id="tab-selectbyid2">
+          <ng-template ngbTabTitle><span style="color:black;">General</span></ng-template>
+          <ng-template ngbTabContent>
+            <div class="container-fluid">
+              <div style="padding: 10px;" class="row">
+
+                <div class="col-2">
+
+                  <div>
+                    <label style="margin:8px">Status</label>
+                  </div>
+
+                  <div>
+                    <label style="margin:8px">Main Component</label>
+                  </div>
+
+                </div>
+                <div class="col-3">
+
+                  <div>
+                    <select class="productionInput">
+                      <option>Status</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <select class="productionInput">
+                      <option>Main Comp</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="row" style="padding:10px;">
+                <div class="col-2">
+
+                  <div>
+                    <label style="margin:8px">Group</label>
+                  </div>
+
+                  <div>
+                    <label style="margin:8px">Sub Group</label>
+                  </div>
+
+                  <div>
+                    <label style="margin:8px">Sub Group 2</label>
+                  </div>
+
+                </div>
+                <div class="col-3">
+
+                  <div>
+                    <select class="productionInput">
+                      <option>Group</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <select class="productionInput">
+                      <option>Sub Group</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <select class="productionInput">
+                      <option>Sub Group 2</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row" style="padding:10px;">
+
+                <div class="col-2">
+
+
+
+                  <div>
+                    <label style="margin:8px">Brand</label>
+                  </div>
+
+                  <div>
+                    <label style="margin:8px">Customer #</label>
+                  </div>
+
+                  <div>
+                    <label style="margin:8px">Customer Name</label>
+                  </div>
+
+                </div>
+
+                <div class="col-3">
+
+                  <div>
+                    <select class="productionInput">
+                      <option>Brand</option>
+                      <option></option>
+                      <option></option>
+                    </select>
+                  </div>
+
+                  <input type="text" class="productionInput" disabled>
+
+                  <input type="text" class="productionInput" disabled>
+                </div>
+
+              </div>
+
+              <div class="row" style="padding:10px;">
+
+                <div class="col-2">
+
+                  <div>
+                    <label style="margin:8px">License Number</label>
+                  </div>
+
+                  <div>
+                    <label style="margin:8px">License Exp Date</label>
+                  </div>
+
+                  <div>
+                    <label style="margin:8px">License Shades</label>
+                  </div>
+
+                  <div>
+                    <label style="margin:8px">License Used</label>
+                  </div>
+                  <div>
+                    <label style="margin:8px">Years Untill Exp</label>
+                  </div>
+
+                </div>
+
+                <div class="col-3">
+
+                  <div>
+                   <input type="text"  class="productionInput" id="id_licsensNumber" [(ngModel)]=itemShown.licsensNumber>
+                  </div>
+
+                  <input type="date"  class="productionInput" id="id_licsensDate"  [(ngModel)]=itemShown.licsensDate>
+
+                  <input type="text" class="productionInput">
+
+                  <input type="text" class="productionInput">
+
+                  <input type="number" class="productionInput" id="id_yearsUntillExp" [(ngModel)]=itemShown.yearsUntillExpired>
+
+                </div>
+
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+
+        <ngb-tab id="tab-selectbyid3">
+          <ng-template ngbTabTitle><span style="color:black">Components</span></ng-template>
+          <ng-template ngbTabContent>
+            <div class="container-fluid">
+
+                <div class="row" style="padding:30px;">
+
+                    <div class="col-2">
+                      <div>
+                        <label style="margin:8px;">Main Component</label>
+                      </div>
+                      <div>
+                          <input type="text" style="width:410px" class="productionInput">
+                        </div>
+                    </div>
+                    <div class="col-3" style="margin-left:-45px;">
+                      <select style="width:120px !important;" class="productionInput">
+                        <option>Type</option>
+                        <option></option>
+                        <option></option>
+                      </select>
+        
+                    </div>
+                    <div class="col-3" style="margin-left:-117px;">
+                        <select style="width:150px;" class="productionInput">
+                            <option></option>
+                            <option></option>
+                            <option></option>
+                          </select>
+                    </div>
+                    <div style="text-align: center;" class="col-4">
+                    <input type="file">
+                    </div>
+        
+                  </div>
+
+                  <div class="row" style="padding:30px;">
+                  
+                      <div class="col-1">
+                          <div>
+                            <label style="margin:8px;">Component2</label>
+                          </div>
+                          <div>
+                              <input type="text" style="width:410px" class="productionInput">
+                            </div>
+                        </div>
+                        <div class="col-2" style="margin-left:40px;">
+                          <select style="width:120px !important;" class="productionInput">
+                            <option>Type</option>
+                            <option></option>
+                            <option></option>
+                          </select>
+            
+                        </div>
+                        <div class="col-3" style="margin-left:-33px;">
+                            <select style="width:150px;" class="productionInput">
+                                <option></option>
+                                <option></option>
+                                <option></option>
+                              </select>
+                        </div>
+
+                        <div class="col-1">
+                            <div>
+                              <label style="margin:8px;">Component3</label>
+                            </div>
+                            <div>
+                                <input type="text" style="width:410px" class="productionInput">
+                              </div>
+                          </div>
+                          <div class="col-2" style="margin-left:40px;">
+                            <select style="width:120px !important;" class="productionInput">
+                              <option>Type</option>
+                              <option></option>
+                              <option></option>
+                            </select>
+              
+                          </div>
+                          <div class="col-2" style="margin-left:-33px;">
+                              <select style="width:150px;" class="productionInput">
+                                  <option></option>
+                                  <option></option>
+                                  <option></option>
+                                </select>
+                          </div>
+
+                  </div>
+                  <div style='padding-left:30px' class="row">
+                  
+                    <div style="text-align: center;" class="col-6">
+                        <input type="file">  
+                    </div>
+                  
+                    <div style="text-align: center;" class="col-6">
+                        <input type="file">  
+                    </div>
+                  
+
+                  </div>
+
+                  <div class="row" style="padding:30px;">
+                  
+                      <div class="col-1">
+                          <div>
+                            <label style="margin:8px;">Component4</label>
+                          </div>
+                          <div>
+                              <input type="text" style="width:410px" class="productionInput">
+                            </div>
+                        </div>
+                        <div class="col-2" style="margin-left:40px;">
+                          <select style="width:120px !important;" class="productionInput">
+                            <option>Type</option>
+                            <option></option>
+                            <option></option>
+                          </select>
+            
+                        </div>
+                        <div class="col-3" style="margin-left:-33px;">
+                            <select style="width:150px;" class="productionInput">
+                                <option></option>
+                                <option></option>
+                                <option></option>
+                              </select>
+                        </div>
+
+                        <div class="col-1">
+                            <div>
+                              <label style="margin:8px;">Component5</label>
+                            </div>
+                            <div>
+                                <input type="text" style="width:410px" class="productionInput">
+                              </div>
+                          </div>
+                          <div class="col-2" style="margin-left:40px;">
+                            <select style="width:120px !important;" class="productionInput">
+                              <option>Type</option>
+                              <option></option>
+                              <option></option>
+                            </select>
+              
+                          </div>
+                          <div class="col-2" style="margin-left:-33px;">
+                              <select style="width:150px;" class="productionInput">
+                                  <option></option>
+                                  <option></option>
+                                  <option></option>
+                                </select>
+                          </div>
+
+                  </div>
+                  <div style='padding-left:30px' class="row">
+                  
+                    <div style="text-align: center;" class="col-6">
+                        <input type="file">  
+                    </div>
+                  
+                    <div style="text-align: center;" class="col-6">
+                        <input type="file">  
+                    </div>
+                  
+
+                  </div>
+ 
+
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
     </div>
   </div>
-</div>  -->
+  <div class="row">
+    <div class="col-9">
+  
+    </div>
 
-<!--------------------------------------------------------------------------------------------------------------------------------------------------> 
+    <div  style="background:white;margin-left:81px;" class="col-2">
+      <div>
+          <table style="float:right" dir="rtl" border=0>
+              <tr>
+                <td>
+                  <label style="color:rgb(16, 139, 16)">עדכון אחרון:</label>
+                </td>
+                <td>
+                  <input type="date" style="width:163px" class="form-control" [(ngModel)]="itemShown.updateDate" disabled>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label style="color:rgb(16, 139, 16)">שם המעדכן:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td>
+                  <input type="text" [(ngModel)]=itemShown.nameOfupdating  disabled>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                <label style="color:rgb(16, 139, 16)">מספר גרסה:</label>
+                </td>
+                <td>
+                  <input type="number " id="id_version" [(ngModel)]=itemShown.versionNumber disabled>
+                </td>
+              </tr>
+            </table>
+      </div>
+    </div>
+  </div>
+  <div style="padding:20px;" class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+      
+        <button *ngIf="alowUserEditItemTree" class="btn btn-success" (click)="writeItemData()">Submit</button>
+        <button style="float: right" type='reset' class="btn btn-success">Reset</button> 
+    </div>
+    <div class="col-4"></div>
+  </div>
+</div> -->
+
+<!-------------------------------------------------------------------------------------------------------------------------------------------------->
 
 
-<!-- <ngb-tabset #t="ngbTabset">
+<ngb-tabset #t="ngbTabset">
   <ngb-tab id="tab-selectbyid1" title="General">
      <ng-template ngbTabContent>
         ngfmjuy hgdeg
@@ -268,12 +1138,12 @@
               mamkdakdmasmlplp
             </ng-template>
      </ngb-tab>
-</ngb-tabset> -->
-<!-- <div style="background-color: lightblue; width: 1084px ; height: 70px" class='headDiv'>
+</ngb-tabset>
+ <div style="background-color: lightblue; width: 1084px ; height: 70px" class='headDiv'>
   <h1 style='color:white'>
     <i>Create new products</i>
   </h1>
-</div> -->
+</div> 
  <table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
@@ -419,7 +1289,7 @@
         <option value='rectangle'>Rectangle</option>
       </select>
       <img src='assets/images/goddet2.png' (click)="showGoddet()" style='width:40px; display:none'>
-      Button if the focusout is not the option-->
+      Button if the focusout is not the option
  <div #container>
 
       </div>
@@ -906,9 +1776,9 @@
                 </td>
               </tr>
             </table>
-          </td> -->
+          </td> 
 
- <td class='sealTd' id="sealTdId" *ngIf="(item.sealImage!='' && item.sealImage!='undefined') || itemShown.sealTube!='' || itemShown.sealNumber!=''"> -->
+ <td class='sealTd' id="sealTdId" *ngIf="(item.sealImage!='' && item.sealImage!='undefined') || itemShown.sealTube!='' || itemShown.sealNumber!=''"> 
  <td class='sealTd' id="sealTdId" >
               <table border="0" width="200px">
                 <tr>
@@ -959,9 +1829,9 @@
                   </td>
                 </tr>
               </table>
-            </td>                 -->
+            </td>                
 
- <td class='extraTd' id="extraTdId" *ngIf="(item.extraImage1!='' && item.extraImage1!='undefined') || itemShown.extraText1!='' || (item.extraImage2!='' && item.extraImage2!='undefined') || itemShown.extraText2!=''"> -->
+ <td class='extraTd' id="extraTdId" *ngIf="(item.extraImage1!='' && item.extraImage1!='undefined') || itemShown.extraText1!='' || (item.extraImage2!='' && item.extraImage2!='undefined') || itemShown.extraText2!=''"> 
  <td class='extraTd' id="extraTdId" >
             <h5>Extra Images</h5>
             <table border="0" width="200px">
@@ -1043,4 +1913,4 @@
   
       <button *ngIf="alowUserEditItemTree" class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
       <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>    
-   -->
+   

@@ -35,7 +35,8 @@ input:focus {
     }
     }
     .treeTabContainer { 
-        background: rgb(249, 239, 212)
+        background: rgb(249, 239, 212);
+        margin-left: 80px;
     }
 .productionLabel { 
     margin:8px;
@@ -47,3 +48,10 @@ input:focus {
     
 }
 
+.image-upload>input {
+ 
+  display: none;
+}
+.image-upload { 
+    margin-top:2px;
+}

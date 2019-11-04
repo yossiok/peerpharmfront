@@ -21,7 +21,26 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('colums') colums: ElementRef;
   @ViewChild('container')
   private container: ElementRef;
+  // New Item Tree // 
   mainLanguage:Boolean=true;
+  mainLanguageTwo:Boolean=true;
+  mainLanguageThree:Boolean=true;
+  department:Boolean=true;
+  production:Boolean=true
+  productionTwo:Boolean=true
+  productionThree:Boolean=true
+  productionFour:Boolean=true
+  productionFive:Boolean=true
+  productionSix:Boolean=true
+  productionSeven:Boolean=true
+  productionEight:Boolean=true
+  volumeMl:Boolean=true
+  netWeightK:Boolean=true
+  grossWeightUnit:Boolean=true
+  peerPharmTone:Boolean=true
+  laserAndExp:Boolean=true;
+
+  // End of New Item Tree //
   alowUserEditItemTree:Boolean=false;
   mainDivArr: any = [];
   dataDiv: any = [];
@@ -553,15 +572,143 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   addRemoveInputs(type) {
+    debugger;
     switch(type) {
       case 'mainLang':
        if(this.mainLanguage == true){
          this.mainLanguage = false;
        }
       else {
-        this.mainLanguage = true;
+        this.mainLanguage = true
       }
-       
+      break;
+
+      case 'mainLangTwo':
+      if(this.mainLanguageTwo == true){
+        this.mainLanguageTwo = false;
+      } else {
+        this.mainLanguageTwo = true
+      }
+      break; 
+
+      case 'mainLangThree':
+      if(this.mainLanguageThree == true){
+        this.mainLanguageThree = false;
+      } else {
+        this.mainLanguageThree = true
+      } 
+      break;
+
+      case 'department':
+      if(this.department == true){
+        this.department = false;
+      } else {
+        this.department = true
+      }
+      break; 
+
+      case 'production':
+      if(this.production == true){
+        this.production = false;
+      } else {
+        this.production = true
+      }
+      break; 
+
+      case 'productionTwo':
+      if(this.productionTwo == true){
+        this.productionTwo = false;
+      } else {
+        this.productionTwo = true
+      }
+      break; 
+
+      case 'productionThree':
+      if(this.productionThree == true){
+        this.productionThree = false;
+      } else {
+        this.productionThree = true
+      }
+      break; 
+
+      case 'productionFour':
+      if(this.productionFour == true){
+        this.productionFour = false;
+      } else {
+        this.productionFour = true
+      }
+      break; 
+
+      case 'productionFive':
+      if(this.productionFive == true){
+        this.productionFive = false;
+      } else {
+        this.productionFive = true
+      }
+      break; 
+
+      case 'productionSix':
+      if(this.productionSix == true){
+        this.productionSix = false;
+      } else {
+        this.productionSix = true
+      }
+      break; 
+      case 'productionSeven':
+      if(this.productionSeven == true){
+        this.productionSeven = false;
+      } else {
+        this.productionSeven = true
+      }
+      break; 
+      case 'productionEight':
+      if(this.productionEight == true){
+        this.productionEight = false;
+      } else {
+        this.productionEight = true
+      }
+      break; 
+
+      case 'volumeMl':
+      if(this.volumeMl == true){
+        this.volumeMl = false;
+      } else {
+        this.volumeMl = true
+      }
+      break; 
+
+      case 'netWeightK':
+      if(this.netWeightK == true){
+        this.netWeightK = false;
+      } else {
+        this.netWeightK = true
+      }
+      break; 
+
+      case 'grossWeightUnit':
+      if(this.grossWeightUnit == true){
+        this.grossWeightUnit = false;
+      } else {
+        this.grossWeightUnit = true
+      }
+      break; 
+
+      case 'peerPharmTone':
+      if(this.peerPharmTone == true){
+        this.peerPharmTone = false;
+      } else {
+        this.peerPharmTone = true
+      }
+      break; 
+
+      case 'laserAndExp':
+      if(this.laserAndExp == true){
+        this.laserAndExp = false;
+      } else {
+        this.laserAndExp = true
+      }
+      break; 
+      
     }
   
 
