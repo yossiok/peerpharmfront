@@ -47,20 +47,8 @@ export class NewProcurementComponent implements OnInit {
     supplierName:'',
     outDate:'',
     validDate:'',
-    blockProcurement:'',
-    blockSales:'',
-    hasWeight:'',
-    notWeight:'',
     item:[],
-    barcode:'',
-    alternativeCode:'',
-    fromDate:'',
-    salePrice:'',
-    saleDate:'',
-    saleAmount:'',
-    discount:'',
-    supplierItemNumber:'',
-    supplierItemName:'',
+    comaxNumber:''
 
   }
 
@@ -135,7 +123,15 @@ export class NewProcurementComponent implements OnInit {
     debugger;
 
    this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
-    this.toastr.success("הזמנה חדשה נשמרה בהצלחה!")
+    if(data) {
+      this.toastr.success("הזמנה מספר" +data.orderNumber+ "נשמרה בהצלחה!")
+      this.newProcurement.validDate = ""
+      this.newProcurement.outDate = ""
+      this.newProcurement.supplierName = ""
+      this.newProcurement.supplierNumber = ""
+      this.newProcurement.item = [];
+      
+    }
    })
   }
 

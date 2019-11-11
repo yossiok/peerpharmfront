@@ -39,6 +39,8 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
   <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
     <tr>
       <th><b>#</b></th>
+      <th><b>Procurement Number</b></th>
+      <th><b>Comax Number</b></th>
       <th><b>Supplier Number</b></th>
       <th><b>Supplier Name</b></th>
       <th><b>תאריך יציאה</b></th>
@@ -54,13 +56,14 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <td>
         {{i+1}}
       </td>
+      <td style="cursor: pointer;" (click)="viewOrderDetails(i)">{{line.orderNumber}}</td>
+      <td>{{ line.comaxNumber }}</td>
       <td>{{ line.supplierNumber }}</td>
       <td>{{ line.supplierName }}</td>
       <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
       <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
       <!-- <td>{{ line.totalPaymentVat}}</td> -->
       <td>{{ line.isSupplied}}</td>
-      <td><button  (click)="viewOrderDetails(i)" style="background:green;box-shadow:inset 0px 1px 5px 0px;">View Order</button></td>
       <td><button style="background:red;box-shadow:inset 0px 1px 5px 0px;">Close Order</button></td>
     </tr>
   </tbody>
