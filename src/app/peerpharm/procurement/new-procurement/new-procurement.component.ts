@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { Procurementservice } from 'src/app/services/procurement.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -22,11 +23,26 @@ export class NewProcurementComponent implements OnInit {
   allSuppliers:any[];
   hasAuthorization:boolean = false;
   
+  @ViewChild('itemNumber') itemNumber: ElementRef;
+  @ViewChild('itemName') itemName: ElementRef;
+  @ViewChild('coin') coin: ElementRef;
+  @ViewChild('measurement') measurement: ElementRef;
+  @ViewChild('supplierPrice') supplierPrice: ElementRef;
+  @ViewChild('supplierAmount') supplierAmount: ElementRef;
 
+  newItem = {
+
+  itemNumber: '',
+  itemName:'',
+  coin:'',
+  measurement:'',
+  supplierPrice:'',
+  supplierAmount:'',
+  color:''
+
+  }
   newProcurement = {
 
-    itemNumber: '',
-    itemName:'',
     supplierNumber:'',
     supplierName:'',
     outDate:'',
@@ -35,13 +51,10 @@ export class NewProcurementComponent implements OnInit {
     blockSales:'',
     hasWeight:'',
     notWeight:'',
-    measurement:'',
+    item:[],
     barcode:'',
     alternativeCode:'',
-    coin:'',
-    supplierPrice:'',
     fromDate:'',
-    supplierAmount:'',
     salePrice:'',
     saleDate:'',
     saleAmount:'',
@@ -51,7 +64,7 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
-  constructor(private procurementService: Procurementservice,private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
+  constructor(private toastr: ToastrService,private procurementService: Procurementservice,private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
 
   }
   
@@ -72,10 +85,10 @@ export class NewProcurementComponent implements OnInit {
 
   findMaterialByNumber(){
     debugger;
-    this.inventoryService.getMaterialStockItemByNum(this.newProcurement.itemNumber).subscribe(data=>{
+    this.inventoryService.getMaterialStockItemByNum(this.newItem.itemNumber).subscribe(data=>{
       debugger;
      data;
-     this.newProcurement.itemName = data[0].componentName; 
+     this.newItem.itemName = data[0].componentName; 
     })
   }
 
@@ -94,11 +107,38 @@ export class NewProcurementComponent implements OnInit {
     
   }
 
+
+  addItemToProcurement(){
+    
+    var newItem = {
+      coin:this.coin.nativeElement.value,
+      itemName:this.itemName.nativeElement.value,
+      itemNumber:this.itemNumber.nativeElement.value,
+      measurement:this.measurement.nativeElement.value,
+      supplierAmount:this.supplierAmount.nativeElement.value,
+      supplierPrice:this.supplierPrice.nativeElement.value,
+    }
+
+    this.newProcurement.item.push(newItem);
+
+    this.newItem.coin = "";
+    this.newItem.itemName ="";
+    this.newItem.itemNumber="";
+    this.newItem.measurement="";
+    this.newItem.supplierAmount="";
+    this.newItem.supplierPrice="";
+  
+    this.toastr.success("פריט התווסף בהצלחה!")
+    
+  }
   sendNewProc() { 
     debugger;
+
    this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
-     data;
+    this.toastr.success("הזמנה חדשה נשמרה בהצלחה!")
    })
   }
 
+
+ 
 }

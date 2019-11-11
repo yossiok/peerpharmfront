@@ -373,88 +373,56 @@
                 <div class="col-2">
 
                   <div>
-                    <select style="width:90px" *ngIf="production==true" class="productionInput">
-                      <option>Type</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input disabled [(ngModel)]="productionType" style="width:130px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="production==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionTwo==true" class="productionInput">
-                      <option>Type</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input disabled [(ngModel)]="productionTwoType" style="width:130px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="productionTwo==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionThree==true" class="productionInput">
-                      <option>Type</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input disabled [(ngModel)]="productionThreeType" style="width:130px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="productionThree==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionFour==true" class="productionInput">
-                      <option>Type</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input disabled [(ngModel)]="productionFourType" style="width:130px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="productionFour==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionFive==true" class="productionInput">
-                      <option>Type</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input disabled [(ngModel)]="productionFiveType" style="width:130px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="productionFive==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionSix==true" class="productionInput">
-                      <option>Type</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input disabled [(ngModel)]="productionSixType" style="width:130px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="productionSix==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionSeven==true" class="productionInput">
-                      <option>Type</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input disabled [(ngModel)]="productionSevenType" style="width:130px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="productionSeven==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionEight==true" class="productionInput">
-                      <option>Type</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input disabled [(ngModel)]="productionEightType" style="width:130px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="productionEight==false">
                     <p>---</p>
@@ -462,59 +430,59 @@
 
                 </div>
 
-                <div class="col-3" style="margin-left:-81px;">
+                <div class="col-3" style="margin-left:-27px;">
 
                   <div *ngIf="production==true">
-                    <input type="text" class="productionInput">
+                    <input [(ngModel)]="productionInput" (change)="searchCompNumber($event,'productionInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="production==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionTwo==true">
-                    <input type="text" class="productionInput">
+                     <input [(ngModel)]="productionTwoInput" (change)="searchCompNumber($event,'productionTwoInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionTwo==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionThree==true">
-                    <input type="text" class="productionInput">
+                     <input [(ngModel)]="productionThreeInput" (change)="searchCompNumber($event,'productionThreeInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionThree==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionFour==true">
-                    <input type="text" class="productionInput">
+                     <input [(ngModel)]="productionFourInput" (change)="searchCompNumber($event,'productionFourInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionFour==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionFive==true">
-                    <input type="text" class="productionInput">
+                     <input [(ngModel)]="productionFiveInput" (change)="searchCompNumber($event,'productionFiveInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionFive==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionSix==true">
-                    <input type="text" class="productionInput">
+                     <input [(ngModel)]="productionSixInput" (change)="searchCompNumber($event,'productionSixInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionSix==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionSeven==true">
-                    <input type="text" class="productionInput">
+                     <input [(ngModel)]="productionSevenInput" (change)="searchCompNumber($event,'productionSevenInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionSeven==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionEight==true">
-                    <input type="text" class="productionInput">
+                     <input [(ngModel)]="productionEightInput" (change)="searchCompNumber($event,'productionEightInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionEight==false">
                     <p style="opacity: 0">---</p>
@@ -522,7 +490,7 @@
 
                 </div>
 
-                <div class="col-2" style="margin-left:-60px;">
+                <div class="col-2" style="margin-left:-70px;">
                   <div>
                     <select style="width:90px" *ngIf="production==true" class="productionInput">
                       <option>Pcs</option>
@@ -616,11 +584,9 @@
                 <div class="col-1" style="margin-left:-75px;">
 
                   <div *ngIf="production==true" class="image-upload">
-                    <label for="file-input">
-                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    <label>
+                      <img class="prodImage" (click)="showProductionImage()" [src]="productionImage" />
                     </label>
-
-                    <input id="file-input" type="file" />
                   </div>
                   <div *ngIf="production==false" style="opacity: 0">
                     <p>---</p>
@@ -743,11 +709,11 @@
                 <div class="col-2">
 
                   <div>
-                    <label style="margin:8px">Status</label>
+                    <label class="labelGeneral">Status</label>
                   </div>
 
                   <div>
-                    <label style="margin:8px">Main Component</label>
+                    <label class="labelGeneral">Main Component</label>
                   </div>
 
                 </div>
@@ -776,15 +742,15 @@
                 <div class="col-2">
 
                   <div>
-                    <label style="margin:8px">Group</label>
+                    <label class="labelGeneral">Group</label>
                   </div>
 
                   <div>
-                    <label style="margin:8px">Sub Group</label>
+                    <label class="labelGeneral">Sub Group</label>
                   </div>
 
                   <div>
-                    <label style="margin:8px">Sub Group 2</label>
+                    <label class="labelGeneral">Sub Group 2</label>
                   </div>
 
                 </div>
@@ -824,15 +790,15 @@
 
 
                   <div>
-                    <label style="margin:8px">Brand</label>
+                    <label class="labelGeneral">Brand</label>
                   </div>
 
                   <div>
-                    <label style="margin:8px">Customer #</label>
+                    <label class="labelGeneral">Customer #</label>
                   </div>
 
                   <div>
-                    <label style="margin:8px">Customer Name</label>
+                    <label class="labelGeneral">Customer Name</label>
                   </div>
 
                 </div>
@@ -859,22 +825,22 @@
                 <div class="col-2">
 
                   <div>
-                    <label style="margin:8px">License Number</label>
+                    <label class="labelGeneral">License Number</label>
                   </div>
 
                   <div>
-                    <label style="margin:8px">License Exp Date</label>
+                    <label class="labelGeneral">License Exp Date</label>
                   </div>
 
                   <div>
-                    <label style="margin:8px">License Shades</label>
+                    <label class="labelGeneral">License Shades</label>
                   </div>
 
                   <div>
-                    <label style="margin:8px">License Used</label>
+                    <label class="labelGeneral">License Used</label>
                   </div>
                   <div>
-                    <label style="margin:8px">Years Untill Exp</label>
+                    <label class="labelGeneral">Years Untill Exp</label>
                   </div>
 
                 </div>
@@ -1145,7 +1111,7 @@
     <i>Create new products</i>
   </h1>
 </div>  -->
- <table border=0 background='bg112.jpg' style="background-size: cover">
+<table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>
@@ -1914,4 +1880,4 @@
   
       <button *ngIf="alowUserEditItemTree" class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
       <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>    
-   
+    

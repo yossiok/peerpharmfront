@@ -22,34 +22,46 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('container')
   private container: ElementRef;
   // New Item Tree // 
-  mainLanguage:Boolean=true;
-  mainLanguageTwo:Boolean=true;
-  mainLanguageThree:Boolean=true;
-  department:Boolean=true;
-  production:Boolean=true
-  productionTwo:Boolean=true
-  productionThree:Boolean=true
-  productionFour:Boolean=true
-  productionFive:Boolean=true
-  productionSix:Boolean=true
-  productionSeven:Boolean=true
-  productionEight:Boolean=true
-  volumeMl:Boolean=true
-  netWeightK:Boolean=true
-  grossWeightUnit:Boolean=true
-  peerPharmTone:Boolean=true
-  laserAndExp:Boolean=true;
+  mainLanguage: Boolean = true;
+  mainLanguageTwo: Boolean = true;
+  mainLanguageThree: Boolean = true;
+  department: Boolean = true;
+  production: Boolean = true
+  productionTwo: Boolean = true
+  productionThree: Boolean = true
+  productionFour: Boolean = true
+  productionFive: Boolean = true
+  productionSix: Boolean = true
+  productionSeven: Boolean = true
+  productionEight: Boolean = true
+  volumeMl: Boolean = true
+  netWeightK: Boolean = true
+  grossWeightUnit: Boolean = true
+  peerPharmTone: Boolean = true
+  laserAndExp: Boolean = true;
+
+
+  productionType: '';
+  productionTwoType: '';
+  productionThreeType: '';
+  productionFourType: '';
+  productionFiveType: '';
+  productionSixType: '';
+  productionSevenType: '';
+  productionEightType: '';
+
+  productionImage:'';
 
   // End of New Item Tree //
-  alowUserEditItemTree:Boolean=false;
+  alowUserEditItemTree: Boolean = false;
   mainDivArr: any = [];
   dataDiv: any = [];
   newItem: FormGroup;
   item: any = {};
-  itemCopy:any = {};
-  licsensDateToSend:Date;
+  itemCopy: any = {};
+  licsensDateToSend: Date;
   user: UserInfo;
-  userName=""
+  userName = ""
   itemShown = {
     itemNumber: '',
     name: '',
@@ -58,7 +70,7 @@ export class ItemdetaisComponent implements OnInit {
     proRemarks: '',
     impRemarks: '',
 
-    updateDate:'',
+    updateDate: '',
     nameOfupdating: '',
     versionNumber: '',
 
@@ -74,7 +86,7 @@ export class ItemdetaisComponent implements OnInit {
 
     licsensNumber: '',
     licsensDate: '',
-    yearsUntillExpired:'',
+    yearsUntillExpired: '',
     country: '',
 
     netCtnWeightK: '',
@@ -131,7 +143,7 @@ export class ItemdetaisComponent implements OnInit {
     extraImage1: '',
     extraImage2: '',
     sealImage: '',
-    
+
     pallet: '',
     pallet1x: '',
     pallet1y: '',
@@ -154,7 +166,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
 
-  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer:InventoryService,
+  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
@@ -246,7 +258,7 @@ export class ItemdetaisComponent implements OnInit {
       pallet2x: [null, Validators.required],
       pallet2y: [null, Validators.required],
       pallet3: [null, Validators.required],
-      pallet3x:[null, Validators.required],
+      pallet3x: [null, Validators.required],
       pallet3y: [null, Validators.required],
     });
   }
@@ -291,62 +303,169 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
-  fillBottle(ev){
-  debugger
+  fillBottle(ev) {
+    debugger
     var bottleNumber = ev.target.value;
 
-    if(bottleNumber != "---" || "") {
-      this.invtSer.getCmptByNumber(bottleNumber,"component").subscribe(data=>{
-      this.itemShown.bottleTube = data[0].componentName
-      this.itemShown.bottleImage = data[0].img
+    if (bottleNumber != "---" || "") {
+      this.invtSer.getCmptByNumber(bottleNumber, "component").subscribe(data => {
+        this.itemShown.bottleTube = data[0].componentName
+        this.itemShown.bottleImage = data[0].img
       })
-    } else if(bottleNumber == "---") { 
+    } else if (bottleNumber == "---") {
       this.itemShown.bottleTube = ""
       this.itemShown.bottleImage = ""
     }
   }
 
-  fillCap(ev){
+  fillCap(ev) {
     var capNumber = ev.target.value;
 
-    if(capNumber != "---" || "") {
-      this.invtSer.getCmptByNumber(capNumber,"component").subscribe(data=>{
-      this.itemShown.capTube = data[0].componentName
-      this.itemShown.capImage = data[0].img
+    if (capNumber != "---" || "") {
+      this.invtSer.getCmptByNumber(capNumber, "component").subscribe(data => {
+        this.itemShown.capTube = data[0].componentName
+        this.itemShown.capImage = data[0].img
       })
-    } else if(capNumber == "---") {
+    } else if (capNumber == "---") {
       this.itemShown.capTube = ""
       this.itemShown.capImage = ""
     }
   }
 
-  fillPump(ev){
+  fillPump(ev) {
     var pumpNumber = ev.target.value;
 
-    if(pumpNumber != "---" || "") {
-      this.invtSer.getCmptByNumber(pumpNumber,"component").subscribe(data=>{
-      this.itemShown.pumpTube = data[0].componentName
-      this.itemShown.pumpImage = data[0].img
+    if (pumpNumber != "---" || "") {
+      this.invtSer.getCmptByNumber(pumpNumber, "component").subscribe(data => {
+        this.itemShown.pumpTube = data[0].componentName
+        this.itemShown.pumpImage = data[0].img
       })
-    } else if(pumpNumber == "---") {
+    } else if (pumpNumber == "---") {
       this.itemShown.pumpTube = ""
       this.itemShown.pumpImage = ""
     }
   }
 
-  fillSeal(ev){
+  fillSeal(ev) {
     var sealNumber = ev.target.value;
 
-    if(sealNumber != "---" || "") {
-      this.invtSer.getCmptByNumber(sealNumber,"component").subscribe(data=>{
-      this.itemShown.sealTube = data[0].componentName
-      this.item.sealImage = data[0].img
+    if (sealNumber != "---" || "") {
+      this.invtSer.getCmptByNumber(sealNumber, "component").subscribe(data => {
+        this.itemShown.sealTube = data[0].componentName
+        this.item.sealImage = data[0].img
       })
-    } else if(sealNumber == "---") {
+    } else if (sealNumber == "---") {
       this.itemShown.sealTube = ""
       this.item.sealImage = ""
-    
+
     }
+  }
+
+  searchCompNumber(ev, src) {
+    debugger;
+    var compNumber = ev.target.value;
+    var itemType = "component"
+    src
+    switch (src) {
+      case 'productionInput':
+        if (compNumber != "") {
+          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+            data
+            this.productionType = data[0].componentType
+            this.productionImage = data[0].img
+
+          })
+
+        } else {
+          this.productionType = "";
+        }
+        break;
+      case 'productionTwoInput':
+        if (compNumber != "") {
+          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+            data
+            this.productionTwoType = data[0].componentType
+
+          })
+
+        } else {
+          this.productionTwoType = "";
+        }
+        break;
+      case 'productionThreeInput':
+        if (compNumber != "") {
+          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+            data
+            this.productionThreeType = data[0].componentType
+
+          })
+
+        } else {
+          this.productionThreeType = "";
+        }
+        break;
+      case 'productionFourInput':
+        if (compNumber != "") {
+          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+            data
+            this.productionFourType = data[0].componentType
+
+          })
+
+        } else {
+          this.productionFourType = "";
+        }
+        break;
+      case 'productionFiveInput':
+        if (compNumber != "") {
+          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+            data
+            this.productionFiveType = data[0].componentType
+
+          })
+
+        } else {
+          this.productionFiveType = "";
+        }
+        break;
+      case 'productionSixInput':
+        if (compNumber != "") {
+          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+            data
+            this.productionSixType = data[0].componentType
+
+          })
+
+        } else {
+          this.productionSixType = "";
+        }
+        break;
+      case 'productionSevenInput':
+        if (compNumber != "") {
+          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+            data
+            this.productionSevenType = data[0].componentType
+
+          })
+
+        } else {
+          this.productionSevenType = "";
+        }
+        break;
+      case 'productionEightInput':
+        if (compNumber != "") {
+          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+            data
+            this.productionEightType = data[0].componentType
+
+          })
+
+        } else {
+          this.productionEightType = "";
+        }
+        break;
+    }
+
   }
 
   getGoddetData() {
@@ -423,10 +542,10 @@ export class ItemdetaisComponent implements OnInit {
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
-        if(this.itemShown.licsensDate!=null) {
-          this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
+        if (this.itemShown.licsensDate != null) {
+          this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         }
-        
+
         debugger
         this.dataDiv = res[0].goddet;
         this.showGoddetData();
@@ -442,20 +561,20 @@ export class ItemdetaisComponent implements OnInit {
 
     this.itemsService.getItemData(item).subscribe(res => {
       console.log(res.length)
-      if(res.length==0){
+      if (res.length == 0) {
         this.toastr.error(item, "Item Not found");
         this.itemShown = Object.assign({}, this.itemCopy);
         this.dataDiv = ["", ""];
         this.showGoddet();
       }
-      else{
+      else {
         debugger
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
         //null as moment format returns="invalid date"
-        if(this.itemShown.licsensDate!=null) {
-          this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD") ;
+        if (this.itemShown.licsensDate != null) {
+          this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         };
         console.log(res[0]);
         this.dataDiv = res[0].goddet;
@@ -466,15 +585,15 @@ export class ItemdetaisComponent implements OnInit {
 
   async writeItemData() {
     console.log(this.itemShown);
-    if(this.itemShown.itemNumber!=""){
-      if (confirm("Save changes?")){
-        await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes=>{
-          if(itemNumRes.length>0){
-            if (confirm("Item alerady exist!\nDo you want to update item number: "+this.itemShown.itemNumber+" ?")){
+    if (this.itemShown.itemNumber != "") {
+      if (confirm("Save changes?")) {
+        await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes => {
+          if (itemNumRes.length > 0) {
+            if (confirm("Item alerady exist!\nDo you want to update item number: " + this.itemShown.itemNumber + " ?")) {
               this.updateItemTree();
             }
-          }else{
-            if (confirm("Create New item number : "+this.itemShown.itemNumber+" ?")){
+          } else {
+            if (confirm("Create New item number : " + this.itemShown.itemNumber + " ?")) {
               this.updateItemTree();
             }
           }
@@ -485,16 +604,16 @@ export class ItemdetaisComponent implements OnInit {
 
   }
 
-  updateItemTree(){
-    if(this.itemShown.itemNumber!=""){
+  updateItemTree() {
+    if (this.itemShown.itemNumber != "") {
       this.itemShown.nameOfupdating = this.user.userName;
       this.getGoddetData();
       // this.itemShown.updateDate;
-      this.itemsService.addorUpdateItem(this.itemShown).subscribe(res =>{
+      this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => {
         console.log(res)
-        this.toastr.success("Saved", "Changes Saved fot item number: "+this.itemShown.itemNumber);
-      }) ;
-    }else{
+        this.toastr.success("Saved", "Changes Saved fot item number: " + this.itemShown.itemNumber);
+      });
+    } else {
       this.toastr.error("No item number!");
     }
   }
@@ -573,144 +692,144 @@ export class ItemdetaisComponent implements OnInit {
 
   addRemoveInputs(type) {
     debugger;
-    switch(type) {
+    switch (type) {
       case 'mainLang':
-       if(this.mainLanguage == true){
-         this.mainLanguage = false;
-       }
-      else {
-        this.mainLanguage = true
-      }
-      break;
+        if (this.mainLanguage == true) {
+          this.mainLanguage = false;
+        }
+        else {
+          this.mainLanguage = true
+        }
+        break;
 
       case 'mainLangTwo':
-      if(this.mainLanguageTwo == true){
-        this.mainLanguageTwo = false;
-      } else {
-        this.mainLanguageTwo = true
-      }
-      break; 
+        if (this.mainLanguageTwo == true) {
+          this.mainLanguageTwo = false;
+        } else {
+          this.mainLanguageTwo = true
+        }
+        break;
 
       case 'mainLangThree':
-      if(this.mainLanguageThree == true){
-        this.mainLanguageThree = false;
-      } else {
-        this.mainLanguageThree = true
-      } 
-      break;
+        if (this.mainLanguageThree == true) {
+          this.mainLanguageThree = false;
+        } else {
+          this.mainLanguageThree = true
+        }
+        break;
 
       case 'department':
-      if(this.department == true){
-        this.department = false;
-      } else {
-        this.department = true
-      }
-      break; 
+        if (this.department == true) {
+          this.department = false;
+        } else {
+          this.department = true
+        }
+        break;
 
       case 'production':
-      if(this.production == true){
-        this.production = false;
-      } else {
-        this.production = true
-      }
-      break; 
+        if (this.production == true) {
+          this.production = false;
+        } else {
+          this.production = true
+        }
+        break;
 
       case 'productionTwo':
-      if(this.productionTwo == true){
-        this.productionTwo = false;
-      } else {
-        this.productionTwo = true
-      }
-      break; 
+        if (this.productionTwo == true) {
+          this.productionTwo = false;
+        } else {
+          this.productionTwo = true
+        }
+        break;
 
       case 'productionThree':
-      if(this.productionThree == true){
-        this.productionThree = false;
-      } else {
-        this.productionThree = true
-      }
-      break; 
+        if (this.productionThree == true) {
+          this.productionThree = false;
+        } else {
+          this.productionThree = true
+        }
+        break;
 
       case 'productionFour':
-      if(this.productionFour == true){
-        this.productionFour = false;
-      } else {
-        this.productionFour = true
-      }
-      break; 
+        if (this.productionFour == true) {
+          this.productionFour = false;
+        } else {
+          this.productionFour = true
+        }
+        break;
 
       case 'productionFive':
-      if(this.productionFive == true){
-        this.productionFive = false;
-      } else {
-        this.productionFive = true
-      }
-      break; 
+        if (this.productionFive == true) {
+          this.productionFive = false;
+        } else {
+          this.productionFive = true
+        }
+        break;
 
       case 'productionSix':
-      if(this.productionSix == true){
-        this.productionSix = false;
-      } else {
-        this.productionSix = true
-      }
-      break; 
+        if (this.productionSix == true) {
+          this.productionSix = false;
+        } else {
+          this.productionSix = true
+        }
+        break;
       case 'productionSeven':
-      if(this.productionSeven == true){
-        this.productionSeven = false;
-      } else {
-        this.productionSeven = true
-      }
-      break; 
+        if (this.productionSeven == true) {
+          this.productionSeven = false;
+        } else {
+          this.productionSeven = true
+        }
+        break;
       case 'productionEight':
-      if(this.productionEight == true){
-        this.productionEight = false;
-      } else {
-        this.productionEight = true
-      }
-      break; 
+        if (this.productionEight == true) {
+          this.productionEight = false;
+        } else {
+          this.productionEight = true
+        }
+        break;
 
       case 'volumeMl':
-      if(this.volumeMl == true){
-        this.volumeMl = false;
-      } else {
-        this.volumeMl = true
-      }
-      break; 
+        if (this.volumeMl == true) {
+          this.volumeMl = false;
+        } else {
+          this.volumeMl = true
+        }
+        break;
 
       case 'netWeightK':
-      if(this.netWeightK == true){
-        this.netWeightK = false;
-      } else {
-        this.netWeightK = true
-      }
-      break; 
+        if (this.netWeightK == true) {
+          this.netWeightK = false;
+        } else {
+          this.netWeightK = true
+        }
+        break;
 
       case 'grossWeightUnit':
-      if(this.grossWeightUnit == true){
-        this.grossWeightUnit = false;
-      } else {
-        this.grossWeightUnit = true
-      }
-      break; 
+        if (this.grossWeightUnit == true) {
+          this.grossWeightUnit = false;
+        } else {
+          this.grossWeightUnit = true
+        }
+        break;
 
       case 'peerPharmTone':
-      if(this.peerPharmTone == true){
-        this.peerPharmTone = false;
-      } else {
-        this.peerPharmTone = true
-      }
-      break; 
+        if (this.peerPharmTone == true) {
+          this.peerPharmTone = false;
+        } else {
+          this.peerPharmTone = true
+        }
+        break;
 
       case 'laserAndExp':
-      if(this.laserAndExp == true){
-        this.laserAndExp = false;
-      } else {
-        this.laserAndExp = true
-      }
-      break; 
-      
+        if (this.laserAndExp == true) {
+          this.laserAndExp = false;
+        } else {
+          this.laserAndExp = true
+        }
+        break;
+
     }
-  
+
 
   }
 
@@ -800,50 +919,50 @@ export class ItemdetaisComponent implements OnInit {
   }
 
 
-  loadPackagDetails(number, src){
-    this.invtSer.getCmptByNumber(number , 'product').subscribe(res=>{
+  loadPackagDetails(number, src) {
+    this.invtSer.getCmptByNumber(number, 'product').subscribe(res => {
       switch (src) {
         case 'bottle':
-        this.itemShown.item1w=res[0].packageWeight;
-        this.itemShown.item1s=res[0].packageType;  
-        break;
+          this.itemShown.item1w = res[0].packageWeight;
+          this.itemShown.item1s = res[0].packageType;
+          break;
         case 'cap':
-        this.itemShown.item2w=res[0].packageWeight;
-        this.itemShown.item2s=res[0].packageType;  
-        break;
+          this.itemShown.item2w = res[0].packageWeight;
+          this.itemShown.item2s = res[0].packageType;
+          break;
         case 'pump':
-        this.itemShown.item3w=res[0].packageWeight;
-        this.itemShown.item3s=res[0].packageType;  
-        break;
+          this.itemShown.item3w = res[0].packageWeight;
+          this.itemShown.item3s = res[0].packageType;
+          break;
         case 'seal':
-        this.itemShown.item4w=res[0].packageWeight;
-        this.itemShown.item4s=res[0].packageType;  
-        break;
+          this.itemShown.item4w = res[0].packageWeight;
+          this.itemShown.item4s = res[0].packageType;
+          break;
         case 'carton':
-        this.itemShown.itemCtnW=res[0].packageWeight;
-        break;
+          this.itemShown.itemCtnW = res[0].packageWeight;
+          break;
       }
     })
   }
 
   async getUserInfo() {
     await this.authService.userEventEmitter.subscribe(user => {
-      this.user=user;
+      this.user = user;
       // this.user=user.loggedInUser;
       // if (!this.authService.loggedInUser) {
       //   this.authService.userEventEmitter.subscribe(user => {
       //     if (user.userName) {
       //       this.user = user;
-            
+
       //     }
       //   });
       // }
       // else {
       //   this.user = this.authService.loggedInUser;
       // }
-      if (this.user.authorization){
-        if (this.authService.loggedInUser.authorization.includes("updateItemTree")){
-          this.alowUserEditItemTree=true;
+      if (this.user.authorization) {
+        if (this.authService.loggedInUser.authorization.includes("updateItemTree")) {
+          this.alowUserEditItemTree = true;
         }
       }
 

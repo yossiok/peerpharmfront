@@ -82,6 +82,7 @@ export class FormslistComponent implements OnInit {
 
 
   FilterForms(enteredText, field) {
+    debugger;
     const enteredValue = enteredText.target.value;
     if (enteredValue !== '') {
       switch (field) {
@@ -103,6 +104,10 @@ export class FormslistComponent implements OnInit {
         }
         case 'order': {
           this.forms = this.forms.filter(x => x.orderNumber.includes(enteredValue));
+          break;
+        }
+        case 'productionLine': {
+          this.forms = this.forms.filter(x => x.productionLine == enteredValue);
           break;
         }
        

@@ -9,17 +9,43 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
           <br/> 
         </div> -->
 
+        
+<div style="float:right;" *ngIf="orderDetailsModal==true">
+  <table id="procurementItems" class="table table-responsive">
+    <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+      <tr>
+        <th></th>
+        <th>Item Name</th>
+        <th>Item Number</th>
+        <th>Measurement</th>
+        <th>Amount</th>
+        <!-- <th></th> -->
+      </tr>
+    </thead>
+    <tbody id="table_body">
+      <tr [style.background-color]="line.color" id="procurementOrderItems" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of orderData; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{ line.itemName }}</td>
+        <td>{{ line.itemNumber }}</td>
+        <td>{{ line.measurement }}</td>
+        <td>{{ line.supplierAmount }}</td>
+        <!-- <td><i (click)="checkIfArrived(line.itemNumber)" class="fa fa-check" aria-hidden="true"></i></td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <table>
   <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
     <tr>
       <th><b>#</b></th>
-      <th><b>Item Name</b></th>
-      <th><b>Item Name</b></th>
       <th><b>Supplier Number</b></th>
       <th><b>Supplier Name</b></th>
-      <th><b>Order Quantity</b></th>
+      <th><b>תאריך יציאה</b></th>
+      <th><b>תאריך קבלה</b></th>
       <!-- <th><b>Total Payment With VAT</b></th> -->
       <th><b>Is Supplied</b></th>
+      <th></th>
       <th></th>
     </tr>
   </thead>
@@ -28,14 +54,18 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <td>
         {{i+1}}
       </td>
-      <td>{{ line.itemName }}</td>
-      <td>{{ line.itemNumber }}</td>
       <td>{{ line.supplierNumber }}</td>
       <td>{{ line.supplierName }}</td>
-      <td>{{ line.supplierAmount }}</td>
+      <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
       <!-- <td>{{ line.totalPaymentVat}}</td> -->
       <td>{{ line.isSupplied}}</td>
-      <td><button style="background:green;box-shadow:inset 0px 1px 5px 0px;">Close Order</button></td>
+      <td><button  (click)="viewOrderDetails(i)" style="background:green;box-shadow:inset 0px 1px 5px 0px;">View Order</button></td>
+      <td><button style="background:red;box-shadow:inset 0px 1px 5px 0px;">Close Order</button></td>
     </tr>
   </tbody>
 </table>
+
+
+
+

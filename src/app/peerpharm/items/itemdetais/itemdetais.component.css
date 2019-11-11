@@ -29,12 +29,19 @@ input:focus {
     border: 1px solid rgb(131, 212, 233);
 }
 
-@media (max-width: 768px) {
-    body {
-        zoom: 0.6 !important;
+.labelGeneral {
+    margin:8px;
+}
+
+@media (max-width: 1100px) {
+    .productionInput {
+        margin:11px !important;
+    }
+    .labelGeneral {
+        margin:15px !important;
     }
     }
-    .treeTabContainer { 
+.treeTabContainer { 
         background: rgb(249, 239, 212);
         margin-left: 80px;
     }
@@ -44,7 +51,7 @@ input:focus {
 
 .productionInput {
     margin:4px;
-    width: 200px;
+    width: 180px;
     
 }
 
@@ -55,3 +62,13 @@ input:focus {
 .image-upload { 
     margin-top:2px;
 }
+.prodImage { 
+    transition: 0.3s;
+    width:30px;
+    
+}
+
+.prodImage:hover { 
+transform: scale(20);
+}
+

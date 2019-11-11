@@ -10,9 +10,11 @@ import { ExcelService } from 'src/app/services/excel.service';
 
 export class ProcurementOrdersComponent implements OnInit {
 
+  orderDetailsModal:boolean = false;
   procurementData: any[];
   procurementDataCopy: any[];
   hasMoreItemsToload: boolean = true;
+  orderData:any[];
   
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -28,6 +30,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   getAllProcurementOrders() {
+    debugger;
     this.procurementservice.getProcurementOrder().subscribe(res => {
       this.procurementData = res;
       debugger;
@@ -35,6 +38,8 @@ export class ProcurementOrdersComponent implements OnInit {
 
     });
   }
+
+
 
   dateChange(){
     ;
@@ -92,5 +97,28 @@ export class ProcurementOrdersComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.procurementData, 'data');
   }
 
+  viewOrderDetails(index){
+
+    debugger;
+    this.orderDetailsModal = true;
+    var order = [];
+    order.push(this.procurementData[index])
+
+    this.orderData = order[0].item
+  }
+
+  checkIfArrived(number,name){
+    debugger;
+    this.orderData
+    if (confirm("האם לשנות?") == true) {
+      this.procurementservice.changeColor(number,name).subscribe(data=>{
+    data
+      })
+    } else {
+     
+    }  
+
+   
+  }
 
 }

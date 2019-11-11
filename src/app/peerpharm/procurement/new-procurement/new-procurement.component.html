@@ -42,24 +42,8 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label class="control-label">תאריך תוקף</label>
+                  <label class="control-label">תאריך קבלה</label>
                   <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.validDate" class="form-control" />
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">חסימת רכש</label>
-                  <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.blockProcurement" class="form-control" />
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">חסימת מכירות</label>
-                  <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.blockSales" class="form-control" />
                 </div>
               </div>
             </div>
@@ -71,8 +55,8 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label  class="control-label">פריט</label>
-                      <input
-                      [(ngModel)]="newProcurement.itemNumber"
+                      <input #itemNumber
+                      [(ngModel)]="newItem.itemNumber"
                       [ngModelOptions]="{standalone: true}"
                         type="number"
                         id="firstName"
@@ -86,8 +70,8 @@
                   <div class="col-md-6">
                     <div class="form-group has-danger">
                       <label  class="control-label">שם</label>
-                      <input
-                      [(ngModel)]="newProcurement.itemName"
+                      <input #itemName
+                      [(ngModel)]="newItem.itemName"
                       [ngModelOptions]="{standalone: true}"
                         type="text"
                         id="lastName"
@@ -99,37 +83,17 @@
                   </div>
                   <!--/span-->
                 </div>
+                
                 <!--/row-->
                 <div class="row">
                   <!--/span-->
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label class="control-label">שקיל?</label>
-                      <div class="custom-control custom-radio">
-                        <input
-                          type="radio"
-                          name="customRadio"
-                          class="custom-control-input"
-                          [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.hasWeight"/>
-                          
-                        <label class="custom-control-label">כן</label>
-                      </div>
-                      <div class="custom-control custom-radio">
-                        <input
-                          type="radio"
-                          name="customRadio"
-                          class="custom-control-input"
-                          [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.notWeight"/>
-                        <label class="custom-control-label">לא</label>
-                      </div>
-                    </div>
-                  </div>
+     
                   <!--/span-->
     
                   <div class="col-md-6">
                     <div class="form-group has-success">
                       <label class="control-label">מידה</label>
-                      <select [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.measurement" class="form-control custom-select">
+                      <select #measurement [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.measurement" class="form-control custom-select">
                         <option value="kg">קילו</option>
                         <option value="liter">ליטר</option>
                         <option value="unit">יחידה</option>
@@ -139,149 +103,41 @@
                   </div>
                   <!--/span-->
                 </div>
-                <!--/row-->
                 <div class="row">
-                  <div class="col-md-6">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label class="control-label">ברקוד</label>
-                        <input
-                          type="text"
-                          id="firstName"
-                          class="form-control"
-                          placeholder=""
-                          [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.barcode"
-                        />
-                      </div>
-                    </div>
-                  </div>
-    
-                  <div class="col-md-6">
+                  <label class="control-label">נתוני מכירה לפי מטבע : </label>
+                  <select #coin [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.coin" class="form-control custom-select">
+                      <option value="usd">USD</option>
+                      <option value="nis">NIS</option>
+                      <option value="gbp">GBP</option>
+                      <option value="eur">EUR</option>
+                    </select>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
                     <div class="form-group">
-                      <label class="control-label">קוד חלופי</label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        class="form-control"
-                        placeholder=""
-                        [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.alternativeCode"
-                      />
-                    </div>
-                  </div>
-                </div>
-    
-                <!--/row-->
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group has-success">
-                      <label class="control-label">מחלקה</label>
-                      <select class="form-control custom-select">
-                        <option value=""></option>
-                        <option value=""></option>
-                      </select>
+                      <label class="control-label">מחיר ספק:</label>
+                      <input #supplierPrice [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.supplierPrice" class="form-control" type="number" />
                     </div>
                   </div>
     
-                  <div class="col-md-6">
-                    <div class="form-group has-success">
-                      <label class="control-label">קבוצה</label>
-                      <select class="form-control custom-select">
-                        <option value=""></option>
-                        <option value=""></option>
-                      </select>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="control-label">לכמות</label>
+                      <input #supplierAmount [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.supplierAmount" class="form-control" type="number" />
                     </div>
                   </div>
                 </div>
+
+                <div class="col-md-3">
+                  <img style="width:40px;" src="../../../../assets/images/add.png" (click)="addItemToProcurement()">
+                </div>
+
     
                 <!--/row-->
               </div>
 
-            <div>
-              <h4 class="card-title mt-5">נתוני רכש ומכירה</h4>
-            </div>
             <hr />
-            <div class="row">
-              <label class="control-label">נתוני מכירה לפי מטבע : </label>
-              <select [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.coin" class="form-control custom-select">
-                  <option value="usd">USD</option>
-                  <option value="nis">NIS</option>
-                  <option value="gbp">GBP</option>
-                  <option value="eur">EUR</option>
-                </select>
-            </div>
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label">מחיר ספק:</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierPrice" class="form-control" type="number" />
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label">מתאריך</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.fromDate" type="date" class="form-control" />
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label">לכמות</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierAmount" class="form-control" type="number" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label">מקדם מכירה</label>
-                  <input class="form-control" type="text" />
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label">מחיר מכירה:</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.salePrice" class="form-control" type="number" />
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label">מתאריך</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.saleDate" type="date" class="form-control" />
-                </div>
-              </div>
-
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label">לכמות</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.saleAmount" class="form-control" type="number" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label class="control-label">אחוז הנחה מירבי</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.discount" class="form-control" type="text" />
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">פריט ספק:</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierItemNumber" class="form-control" type="number" />
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">שם פריט ספק</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierItemName" class="form-control" type="text" />
-                </div>
-              </div>
-            </div>
+    
           </div>
        
 

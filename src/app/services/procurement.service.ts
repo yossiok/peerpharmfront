@@ -56,8 +56,7 @@ export class Procurementservice {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-
-
+ 
 
   /*EXPECTED ARRIVALS OF PROCURMENT ITEMS*/
   
@@ -93,6 +92,7 @@ export class Procurementservice {
     let url = this.baseUrl + 'expectedArrivalController/updateExpected';
     return this.http.post(url, JSON.stringify(arrivalsArr), this.options).pipe(map(res=>res.json()));
   }
+ 
   addNewJobNumber(obj):Observable<any>{
     let url = this.baseUrl + 'expectedArrivalController/addJobNumber';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
@@ -111,6 +111,12 @@ export class Procurementservice {
     debugger;
     let url = this.baseUrl + 'newProcurement/add';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
+  }
+  
+  changeColor(number,name):Observable<any>{
+    debugger;
+    let url = this.baseUrl + 'procurementOrderController/changeColor';
+    return this.http.post(url, JSON.stringify({number,name}), this.options).pipe(map(res=>res.json()));
   }
   
 
