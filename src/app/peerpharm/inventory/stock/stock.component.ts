@@ -543,9 +543,10 @@ export class StockComponent implements OnInit {
 
   calcIfLowThenMin(component)
   {
+    debugger;
     if(component.minimumStock && component.alloAmount)
     {
-      if(component.alloAmount< component.minimumStock)
+      if((component.amount-component.alloAmount)> component.minimumStock)
       {
         return "manyleft";
       }
