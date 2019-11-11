@@ -38,7 +38,8 @@ export class NewProcurementComponent implements OnInit {
   measurement:'',
   supplierPrice:'',
   supplierAmount:'',
-  color:''
+  color:'',
+  orderNumber:''
 
   }
   newProcurement = {

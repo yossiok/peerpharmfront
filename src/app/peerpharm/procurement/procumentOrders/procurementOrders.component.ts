@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Procurementservice } from '../../../services/procurement.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -15,13 +17,19 @@ export class ProcurementOrdersComponent implements OnInit {
   procurementDataCopy: any[];
   hasMoreItemsToload: boolean = true;
   orderData:any[];
+  EditRowId:any="";
+  arrivedAmount:"";
   
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
  
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+  }
 
   constructor(
-    private procurementservice: Procurementservice, private excelService: ExcelService
+    private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService
   ) {}
 
   ngOnInit() {
@@ -38,6 +46,15 @@ export class ProcurementOrdersComponent implements OnInit {
 
     });
   }
+
+  edit(itemNumber) {
+    if (itemNumber != '') {
+      this.EditRowId = itemNumber;
+    } else {
+      this.EditRowId = '';
+    }
+  }
+
 
 
 
@@ -107,12 +124,45 @@ export class ProcurementOrdersComponent implements OnInit {
     this.orderData = order[0].item
   }
 
-  checkIfArrived(number,name){
+  closeOrder(orderNumber){
+    this.procurementservice.closeOrder(orderNumber).subscribe(data=>{
+      debugger
+      if(data) {
+        this.procurementData = data;
+      } else { 
+        this.toastr.error('error')
+      }
+      
+    })
+  }  
+
+  checkIfArrived(itemNumber,orderNumber,index){
+    var arrivedAmount = this.arrivedAmount
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(number,name).subscribe(data=>{
-    data
+      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount).subscribe(data=>{
+        debugger
+      for (let i = 0; i < this.procurementData.length; i++) {
+        if(this.procurementData[i].orderNumber == orderNumber) {
+          if(this.procurementData[i].item[index].supplierAmount > arrivedAmount) {
+            this.procurementData[i].item[index].color = 'lightyellow'
+            this.procurementData[i].item[index].arrivedAmount = arrivedAmount
+            this.toastr.success("כמות עודכנה בהצלחה !")
+            this.edit('');
+          }
+          if(this.procurementData[i].item[index].supplierAmount == arrivedAmount) {
+            this.procurementData[i].item[index].color = 'lightgreen'
+            this.procurementData[i].item[index].arrivedAmount = arrivedAmount
+           
+            this.toastr.success("כמות עודכנה בהצלחה !")
+            this.edit('');
+          }
+        
+        }
+        
+      }
+      
       })
     } else {
      
