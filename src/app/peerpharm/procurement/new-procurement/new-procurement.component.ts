@@ -124,11 +124,12 @@ export class NewProcurementComponent implements OnInit {
 
    this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
     if(data) {
-      this.toastr.success("הזמנה מספר" +data.orderNumber+ "נשמרה בהצלחה!")
+      this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
       this.newProcurement.validDate = ""
       this.newProcurement.outDate = ""
       this.newProcurement.supplierName = ""
       this.newProcurement.supplierNumber = ""
+      this.newProcurement.comaxNumber = ""
       this.newProcurement.item = [];
       
     }
