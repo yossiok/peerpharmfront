@@ -1,5 +1,6 @@
-<div class="mainContainer container-fluid">
-    <button class="btn btn-success" printSectionId="print-section" [useExistingCss]="true" ngxPrint>Print Formule</button>
+<button class="btn btn-success" printSectionId="print-section" [printStyle]="{th : {'border': 'solid 1px'}, td : {'border': 'solid 1px'}}"  ngxPrint>Print Formule</button>
+<div id="print-section"  class="mainContainer container-fluid">
+    
   <table class="table table-bordered">
       <thead>
           <tr>
