@@ -71,15 +71,23 @@ export class NewProcurementComponent implements OnInit {
       this.procurementItems = true;
     }
   }
-
+  
   findMaterialByNumber(){
     debugger;
     this.inventoryService.getMaterialStockItemByNum(this.newItem.itemNumber).subscribe(data=>{
       debugger;
-     data;
-     this.newItem.itemName = data[0].componentName; 
+     if(data[0]) {
+      this.newItem.itemName = data[0].componentName; 
+        if(data[0].frameQuantity || data[0].frameSupplier) {
+          alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' +"  "+ data[0].frameSupplier +" "+ 'כמות:'+" "+ data[0].frameQuantity)
+        }
+
+     } else {
+       this.toastr.error('פריט לא קיים במערכת')
+     }
+     
     })
-  }
+  } 
 
   getAllSuppliers() { 
     this.supplierService.getSuppliersDiffCollection().subscribe(data=>{

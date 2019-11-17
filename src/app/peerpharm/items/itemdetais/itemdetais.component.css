@@ -60,12 +60,37 @@ input:focus {
   display: none;
 }
 .image-upload { 
-    margin-top:2px;
+    margin-top:8px;
+   
 }
 .prodImage { 
     transition: 0.3s;
-    width:30px;
+    width:12px;
     
+}
+.laserImg {
+    margin-top:-100px;
+    margin-left:100px;
+    width:100px;
+    transition: 0.3s;
+    
+}
+.laserImg:hover {
+    transform: scale(2);
+}
+.laserImg2 {
+    margin-top:-100px;
+    margin-left:100px;
+    width:100px;
+    
+}
+
+.red { 
+    color:rgb(190, 27, 27);
+}
+
+.green { 
+    color:rgb(12, 114, 12);
 }
 
 .prodImage:hover { 

@@ -177,6 +177,8 @@ export class StockComponent implements OnInit {
     manufacturer:"",
     umNumber:"",
     imerCode:"",
+    frameQuantity:"",
+    frameSupplier:"",
 
   }
   itemExpectedArrivals: any;
@@ -1213,6 +1215,8 @@ debugger
       manufacturer:"",
       umNumber:"",
       imerCode:"",
+      frameQuantity:"",
+      frameSupplier:""
   
     }
   }

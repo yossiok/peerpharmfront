@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import * as moment from 'moment';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { CostumersService } from 'src/app/services/costumers.service';
 
 @Component({
   selector: 'app-itemdetais',
@@ -22,6 +23,8 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('container')
   private container: ElementRef;
   // New Item Tree // 
+  allCostumers:any[]; 
+
   mainLanguage: Boolean = true;
   mainLanguageTwo: Boolean = true;
   mainLanguageThree: Boolean = true;
@@ -51,6 +54,13 @@ export class ItemdetaisComponent implements OnInit {
   productionEightType: '';
 
   productionImage:'';
+  productionTwoImage:'';
+  productionThreeImage:'';
+  productionFourImage:'';
+  productionFiveImage:'';
+  productionSixImage:'';
+  productionSevenImage:'';
+  productionEightImage:'';
 
   // End of New Item Tree //
   alowUserEditItemTree: Boolean = false;
@@ -74,15 +84,49 @@ export class ItemdetaisComponent implements OnInit {
     nameOfupdating: '',
     versionNumber: '',
 
+    status:'',
+    department:'',
     stickerNumber: '',
     stickerTypeK: '',
     boxNumber: '',
     boxTypeK: '',
     barcodeK: '',
     StickerLanguageK: '',
+    StickerLanguageKTwo:'',
+    StickerLanguageKThree:'',
     volumeKey: '',
     netWeightK: '',
     grossUnitWeightK: '',
+    peerPharmTone:'',
+
+    productionInput:'',
+    productionTwoInput:'',
+    productionThreeInput:'',
+    productionFourInput:'',
+    productionFiveInput:'',
+    productionSixInput:'',
+    productionSevenInput:'',
+    productionEightInput:'',
+
+    productionImage:'',
+    productionTwoImage:'',
+    productionThreeImage:'',
+    productionFourImage:'',
+    productionFiveImage:'',
+    productionSixImage:'',
+    productionSevenImage:'',
+    productionEightImage:'',
+
+    productionType:'',
+    productionTwoType:'',
+    productionThreeType:'',
+    productionFourType:'',
+    productionFiveType:'',
+    productionSixType:'',
+    productionSevenType:'',
+    productionEightType:'',
+
+
 
     licsensNumber: '',
     licsensDate: '',
@@ -98,6 +142,10 @@ export class ItemdetaisComponent implements OnInit {
     paletteType: '',
     st1layerCarton: '',
     totalCartonPalette: '',
+
+    brand:'',
+    costumerId:'',
+    costumerName:'',
 
     cbm: '',
     motherP: '',
@@ -130,6 +178,12 @@ export class ItemdetaisComponent implements OnInit {
 
     extraText1: '',
     extraText2: '',
+
+    componentType:'',
+    componentTwoType:'',
+    componentThreeType:'',
+    componentFourType:'',
+    componentFiveType:'',
 
     bottleImage: '',
     capImage: '',
@@ -166,7 +220,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
 
-  constructor(private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
+  constructor(private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
@@ -311,6 +365,7 @@ export class ItemdetaisComponent implements OnInit {
       this.invtSer.getCmptByNumber(bottleNumber, "component").subscribe(data => {
         this.itemShown.bottleTube = data[0].componentName
         this.itemShown.bottleImage = data[0].img
+        this.itemShown.componentType = data[0].componentType
       })
     } else if (bottleNumber == "---") {
       this.itemShown.bottleTube = ""
@@ -319,12 +374,14 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillCap(ev) {
+    debugger;
     var capNumber = ev.target.value;
 
     if (capNumber != "---" || "") {
       this.invtSer.getCmptByNumber(capNumber, "component").subscribe(data => {
         this.itemShown.capTube = data[0].componentName
         this.itemShown.capImage = data[0].img
+        this.itemShown.componentTwoType = data[0].componentType
       })
     } else if (capNumber == "---") {
       this.itemShown.capTube = ""
@@ -333,12 +390,14 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillPump(ev) {
+    debugger;
     var pumpNumber = ev.target.value;
 
     if (pumpNumber != "---" || "") {
       this.invtSer.getCmptByNumber(pumpNumber, "component").subscribe(data => {
         this.itemShown.pumpTube = data[0].componentName
         this.itemShown.pumpImage = data[0].img
+        this.itemShown.componentThreeType = data[0].componentType
       })
     } else if (pumpNumber == "---") {
       this.itemShown.pumpTube = ""
@@ -353,6 +412,7 @@ export class ItemdetaisComponent implements OnInit {
       this.invtSer.getCmptByNumber(sealNumber, "component").subscribe(data => {
         this.itemShown.sealTube = data[0].componentName
         this.item.sealImage = data[0].img
+        this.itemShown.componentFourType = data[0].componentType
       })
     } else if (sealNumber == "---") {
       this.itemShown.sealTube = ""
@@ -361,8 +421,24 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
-  searchCompNumber(ev, src) {
+
+
+  getAllCostumers(){
+    this.costumersService.getAllCostumers().subscribe(data=>{
+      this.allCostumers = data;
+    })
+  }
+
+  fillCostumerDetails(ev){
     debugger;
+   var brand = ev.target.value;
+   var costumer = this.allCostumers.find(costumer=>costumer.brand == brand);
+
+   this.itemShown.costumerId = costumer.costumerId;
+   this.itemShown.costumerName = costumer.costumerName
+  }
+
+  searchCompNumber(ev, src) {
     var compNumber = ev.target.value;
     var itemType = "component"
     src
@@ -371,8 +447,8 @@ export class ItemdetaisComponent implements OnInit {
         if (compNumber != "") {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
-            this.productionType = data[0].componentType
-            this.productionImage = data[0].img
+            this.itemShown.productionType = data[0].componentType
+            this.itemShown.productionImage = data[0].img
 
           })
 
@@ -384,7 +460,8 @@ export class ItemdetaisComponent implements OnInit {
         if (compNumber != "") {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
-            this.productionTwoType = data[0].componentType
+            this.itemShown.productionTwoType = data[0].componentType
+            this.itemShown.productionTwoImage = data[0].img
 
           })
 
@@ -396,32 +473,34 @@ export class ItemdetaisComponent implements OnInit {
         if (compNumber != "") {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
-            this.productionThreeType = data[0].componentType
+            this.itemShown.productionThreeType = data[0].componentType
+            this.itemShown.productionThreeImage = data[0].img
 
           })
 
         } else {
-          this.productionThreeType = "";
+          this.itemShown.productionThreeType = "";
         }
         break;
       case 'productionFourInput':
         if (compNumber != "") {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
-            this.productionFourType = data[0].componentType
+            this.itemShown.productionFourType = data[0].componentType
+            this.itemShown.productionFourImage = data[0].img
 
           })
 
         } else {
-          this.productionFourType = "";
+          this.itemShown.productionFourType = "";
         }
         break;
       case 'productionFiveInput':
         if (compNumber != "") {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
-            this.productionFiveType = data[0].componentType
-
+            this.itemShown.productionFiveType = data[0].componentType
+            this.itemShown.productionFiveImage = data[0].img  
           })
 
         } else {
@@ -432,19 +511,20 @@ export class ItemdetaisComponent implements OnInit {
         if (compNumber != "") {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
-            this.productionSixType = data[0].componentType
-
+            this.itemShown.productionSixType = data[0].componentType
+            this.itemShown.productionSixImage = data[0].img  
           })
 
         } else {
-          this.productionSixType = "";
+          this.itemShown.productionSixType = "";
         }
         break;
       case 'productionSevenInput':
         if (compNumber != "") {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
-            this.productionSevenType = data[0].componentType
+            this.itemShown.productionSevenType = data[0].componentType
+            this.itemShown.productionSevenImage = data[0].img
 
           })
 
@@ -456,12 +536,13 @@ export class ItemdetaisComponent implements OnInit {
         if (compNumber != "") {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
-            this.productionEightType = data[0].componentType
+            this.itemShown.productionEightType = data[0].componentType
+            this.itemShown.productionEightImage = data[0].img
 
           })
 
         } else {
-          this.productionEightType = "";
+          this.itemShown.productionEightType = "";
         }
         break;
     }
@@ -527,11 +608,35 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
   ngOnInit() {
-
+    this.getAllCostumers()
     this.getUserInfo();
     this.getItemData();
+
+   
     //  this.showGoddetData();
   }
+
+  jumpingRemark(){
+    debugger;
+    if(this.itemShown.impRemarks) {
+      alert('שים לב:'+" "+ this.itemShown.impRemarks)
+    }
+  }
+
+  checkItemStatus()
+  {
+    
+      if(this.itemShown.status === 'perfect') {
+       
+        return "green";
+      
+      } else {
+
+        return "red"
+      }
+
+  }
+
 
   getItemData() {
     const number = this.route.snapshot.paramMap.get('itemNumber');
@@ -559,7 +664,9 @@ export class ItemdetaisComponent implements OnInit {
   }
   searchForItem(item) {
 
+    
     this.itemsService.getItemData(item).subscribe(res => {
+      debugger;
       console.log(res.length)
       if (res.length == 0) {
         this.toastr.error(item, "Item Not found");
@@ -576,14 +683,88 @@ export class ItemdetaisComponent implements OnInit {
         if (this.itemShown.licsensDate != null) {
           this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         };
+        this.checkIfTrueOrFalse();
         console.log(res[0]);
         this.dataDiv = res[0].goddet;
-        this.showGoddetData();
+        // this.showGoddetData();
+        this.jumpingRemark();
       }
     })
   }
 
+  checkIfTrueOrFalse(){
+
+    if(this.itemShown.StickerLanguageK == '' || this.itemShown.StickerLanguageK == '---' ) {
+      this.mainLanguage = false
+     
+    }
+    if(this.itemShown.StickerLanguageKTwo == '' || this.itemShown.StickerLanguageKTwo == '---') {
+      this.mainLanguageTwo = false
+    }
+    if(this.itemShown.StickerLanguageKThree == '' || this.itemShown.StickerLanguageKThree == '---') {
+      this.mainLanguageThree = false
+    }
+    if(this.itemShown.department == '' || this.itemShown.department == '---') {
+      this.department = false
+    }
+    if(this.itemShown.volumeKey == '' || this.itemShown.volumeKey == '---') {
+      this.volumeMl = false
+    }
+    if(this.itemShown.netWeightK == '' || this.itemShown.netWeightK == '---') {
+      this.netWeightK = false
+    }
+    if(this.itemShown.grossUnitWeightK == '' || this.itemShown.grossUnitWeightK == '---') {
+      this.grossWeightUnit = false
+    }
+    if(this.itemShown.peerPharmTone == '' || this.itemShown.peerPharmTone == '---') {
+      this.peerPharmTone = false
+    }
+    if(this.itemShown.productionInput == '' || this.itemShown.productionInput == '---') {
+      this.production = false
+      this.productionType = ''
+      this.productionImage = ''
+    }
+    if(this.itemShown.productionTwoInput == '' || this.itemShown.productionTwoInput == '---') {
+      this.productionTwo = false
+      this.productionTwoType = ''
+      this.productionTwoImage = ''
+    }
+    if(this.itemShown.productionThreeInput == '' || this.itemShown.productionThreeInput == '---') {
+      this.productionThree = false
+      this.productionThreeType = ''
+      this.productionThreeImage = ''
+      
+    }
+    if(this.itemShown.productionFourInput == '' || this.itemShown.productionFourInput == '---') {
+      this.productionFour = false
+      this.productionFourType = ''
+      this.productionFourImage = ''
+    }
+    if(this.itemShown.productionFiveInput == '' || this.itemShown.productionFiveInput == '---') {
+      this.productionFive = false
+      this.productionFiveType = ''
+      this.productionFiveImage = ''
+    }
+    if(this.itemShown.productionSixInput == '' || this.itemShown.productionSixInput == '---') {
+      this.productionSix = false
+      this.productionSixType = ''
+      this.productionSixImage = ''
+    }
+    if(this.itemShown.productionSevenInput == '' || this.itemShown.productionSevenInput == '---') {
+      this.productionSeven = false
+      this.productionSevenType = ''
+      this.productionSevenImage = ''
+    }
+    if(this.itemShown.productionEightInput == '' || this.itemShown.productionEightInput == '---') {
+      this.productionEight = false
+      this.productionEightType = ''
+      this.productionEightImage = ''
+    }
+
+  }
+
   async writeItemData() {
+ 
     console.log(this.itemShown);
     if (this.itemShown.itemNumber != "") {
       if (confirm("Save changes?")) {
@@ -607,7 +788,7 @@ export class ItemdetaisComponent implements OnInit {
   updateItemTree() {
     if (this.itemShown.itemNumber != "") {
       this.itemShown.nameOfupdating = this.user.userName;
-      this.getGoddetData();
+      // this.getGoddetData();
       // this.itemShown.updateDate;
       this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => {
         console.log(res)
@@ -696,6 +877,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'mainLang':
         if (this.mainLanguage == true) {
           this.mainLanguage = false;
+          this.itemShown.StickerLanguageK = '---'
         }
         else {
           this.mainLanguage = true
@@ -705,6 +887,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'mainLangTwo':
         if (this.mainLanguageTwo == true) {
           this.mainLanguageTwo = false;
+          this.itemShown.StickerLanguageKTwo = '---'
         } else {
           this.mainLanguageTwo = true
         }
@@ -713,6 +896,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'mainLangThree':
         if (this.mainLanguageThree == true) {
           this.mainLanguageThree = false;
+          this.itemShown.StickerLanguageKThree = '---'
         } else {
           this.mainLanguageThree = true
         }
@@ -721,6 +905,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'department':
         if (this.department == true) {
           this.department = false;
+          this.itemShown.department = '---'
         } else {
           this.department = true
         }
@@ -729,6 +914,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'production':
         if (this.production == true) {
           this.production = false;
+          this.itemShown.productionInput = '---'
         } else {
           this.production = true
         }
@@ -737,6 +923,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionTwo':
         if (this.productionTwo == true) {
           this.productionTwo = false;
+          this.itemShown.productionTwoInput = '---'
         } else {
           this.productionTwo = true
         }
@@ -745,6 +932,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionThree':
         if (this.productionThree == true) {
           this.productionThree = false;
+          this.itemShown.productionThreeInput = '---'
         } else {
           this.productionThree = true
         }
@@ -753,6 +941,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionFour':
         if (this.productionFour == true) {
           this.productionFour = false;
+          this.itemShown.productionFourInput = '---'
         } else {
           this.productionFour = true
         }
@@ -761,6 +950,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionFive':
         if (this.productionFive == true) {
           this.productionFive = false;
+          this.itemShown.productionFiveInput = '---'
         } else {
           this.productionFive = true
         }
@@ -769,6 +959,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionSix':
         if (this.productionSix == true) {
           this.productionSix = false;
+          this.itemShown.productionSixInput = '---'
         } else {
           this.productionSix = true
         }
@@ -776,6 +967,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionSeven':
         if (this.productionSeven == true) {
           this.productionSeven = false;
+          this.itemShown.productionSevenInput = '---'
         } else {
           this.productionSeven = true
         }
@@ -783,6 +975,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionEight':
         if (this.productionEight == true) {
           this.productionEight = false;
+          this.itemShown.productionEightInput = '---'
         } else {
           this.productionEight = true
         }
@@ -791,6 +984,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'volumeMl':
         if (this.volumeMl == true) {
           this.volumeMl = false;
+          this.itemShown.volumeKey = '---'
         } else {
           this.volumeMl = true
         }
@@ -799,6 +993,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'netWeightK':
         if (this.netWeightK == true) {
           this.netWeightK = false;
+          this.itemShown.netWeightK = '---'
         } else {
           this.netWeightK = true
         }
@@ -807,6 +1002,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'grossWeightUnit':
         if (this.grossWeightUnit == true) {
           this.grossWeightUnit = false;
+          this.itemShown.grossUnitWeightK = '---'
         } else {
           this.grossWeightUnit = true
         }
@@ -815,6 +1011,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'peerPharmTone':
         if (this.peerPharmTone == true) {
           this.peerPharmTone = false;
+          this.itemShown.peerPharmTone = '---'
         } else {
           this.peerPharmTone = true
         }
@@ -823,6 +1020,7 @@ export class ItemdetaisComponent implements OnInit {
       case 'laserAndExp':
         if (this.laserAndExp == true) {
           this.laserAndExp = false;
+          
         } else {
           this.laserAndExp = true
         }

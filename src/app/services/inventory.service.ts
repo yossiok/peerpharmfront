@@ -285,6 +285,10 @@ getMaterialStockItemByNum(internalNumber):Observable<any>{
   let url = this.baseUrl + "material?materialNumber="+internalNumber ;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+checkFrameQuantityByNumber(itemNumber):Observable<any>{
+  let url = this.baseUrl + "material?checkFrameQuantity="+itemNumber ;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 getMaterialStockItemById(id):Observable<any>{
   debugger
   let url = this.baseUrl + "material?materialId="+id ;

@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col">
-      <h1 style="text-align: center;">Item Tree</h1>
+      <h1 [ngClass]="checkItemStatus()" style="text-align: center;">Item Tree</h1>
     </div>
     <div class="col"></div>
   </div>
@@ -11,27 +11,27 @@
   <div class="row">
     <div class="col-1">
       <div style="margin:5px;">
-        <label>Item</label>
+        <label [ngClass]="checkItemStatus()">Item</label>
       </div>
 
       <div style="margin:5px;">
-        <label>Barcode</label>
+        <label [ngClass]="checkItemStatus()">Barcode</label>
       </div>
 
       <div style="margin:5px;">
-        <label>Product Title</label>
+        <label [ngClass]="checkItemStatus()">Product Title</label>
       </div>
 
       <div style="margin:5px;">
-        <label>Sub Title </label>
+        <label [ngClass]="checkItemStatus()">Sub Title </label>
       </div>
 
       <div style="margin:5px;">
-        <label>Description</label>
+        <label [ngClass]="checkItemStatus()">Description</label>
       </div>
 
       <div style="margin:5px;">
-        <label>Remarks</label>
+        <label [ngClass]="checkItemStatus()">Remarks</label>
       </div>
 
     </div>
@@ -64,9 +64,10 @@
       </div>
 
       <div style='display: inline-table;text-align: center;margin-top:10px;'>
-          <h4>Main Picture</h4>
-        <input style="text-align: center;" type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
-        <button style="text-align: center;" class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
+        <h4 [ngClass]="checkItemStatus()">Main Picture</h4>
+        <input style="text-align: center;"  type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+        <button style="text-align: center;" class="btn" [disabled]="!selectedFiles" (click)="upload('main1')"
+          *ngIf='main1File'>>></button>
         <br>
         <img style="text-align: center;" id="id_img1" [src]=itemShown.imgMain1>
       </div>
@@ -81,11 +82,12 @@
               <div class="row">
                 <div class="col-2">
                   <div class="productionLabel">
-                    <label>Jumping Remark</label>
+                    <label style="font-weight: bold;">Jumping Remark</label>
                   </div>
                 </div>
                 <div class="col-10">
-                  <input id="id_impRemarks" [(ngModel)]=itemShown.impRemarks class="productionInput" style="width:700px;" type="text" />
+                  <input id="id_impRemarks" [(ngModel)]=itemShown.impRemarks class="productionInput"
+                    style="width:700px;" type="text" />
                 </div>
               </div>
               <div class="row">
@@ -151,31 +153,21 @@
                   </div>
 
                   <div>
-                    <select *ngIf="mainLanguageTwo==true" class="productionInput">
-                      <option></option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input [(ngModel)]=itemShown.StickerLanguageKTwo type="text" *ngIf="mainLanguageTwo==true"
+                      class="productionInput">
                   </div>
                   <div *ngIf="mainLanguageTwo==false">
                     <p>---</p>
                   </div>
                   <div>
-                    <select *ngIf="mainLanguageThree==true" class="productionInput">
-                      <option></option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input [(ngModel)]=itemShown.StickerLanguageKThree *ngIf="mainLanguageThree==true"
+                      class="productionInput">
                   </div>
                   <div *ngIf="mainLanguageThree==false">
                     <p>---</p>
                   </div>
                   <div>
-                    <select *ngIf="department==true" class="productionInput">
-                      <option>Depart</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input [(ngModel)]=itemShown.department *ngIf="department==true" class="productionInput">
                   </div>
                   <div *ngIf="department==false">
                     <p>---</p>
@@ -249,14 +241,15 @@
                     <p>---</p>
                   </div>
                   <div *ngIf="grossWeightUnit==true">
-                    <input type="number" id="id_grossUnitInput" [(ngModel)]=itemShown.grossUnitWeightK class="productionInput">
+                    <input type="number" id="id_grossUnitInput" [(ngModel)]=itemShown.grossUnitWeightK
+                      class="productionInput">
                   </div>
                   <div *ngIf="grossWeightUnit==false">
                     <p>---</p>
                   </div>
 
                   <div *ngIf="peerPharmTone==true">
-                    <input type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.peerPharmTone" type="text" class="productionInput">
                   </div>
                   <div *ngIf="peerPharmTone==false">
                     <p>---</p>
@@ -373,56 +366,64 @@
                 <div class="col-2">
 
                   <div>
-                    <input disabled [(ngModel)]="productionType" style="width:130px" *ngIf="production==true" class="productionInput">
+                    <input disabled [(ngModel)]="itemShown.productionType" style="width:130px" *ngIf="production==true"
+                      class="productionInput">
                   </div>
                   <div *ngIf="production==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <input disabled [(ngModel)]="productionTwoType" style="width:130px" *ngIf="production==true" class="productionInput">
+                    <input disabled [(ngModel)]="itemShown.productionTwoType" style="width:130px"
+                      *ngIf="productionTwo==true" class="productionInput">
                   </div>
                   <div *ngIf="productionTwo==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <input disabled [(ngModel)]="productionThreeType" style="width:130px" *ngIf="production==true" class="productionInput">
+                    <input disabled [(ngModel)]="itemShown.productionThreeType" style="width:130px"
+                      *ngIf="productionThree==true" class="productionInput">
                   </div>
                   <div *ngIf="productionThree==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <input disabled [(ngModel)]="productionFourType" style="width:130px" *ngIf="production==true" class="productionInput">
+                    <input disabled [(ngModel)]="itemShown.productionFourType" style="width:130px"
+                      *ngIf="productionFour==true" class="productionInput">
                   </div>
                   <div *ngIf="productionFour==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <input disabled [(ngModel)]="productionFiveType" style="width:130px" *ngIf="production==true" class="productionInput">
+                    <input disabled [(ngModel)]="itemShown.productionFiveType" style="width:130px"
+                      *ngIf="productionFive==true" class="productionInput">
                   </div>
                   <div *ngIf="productionFive==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <input disabled [(ngModel)]="productionSixType" style="width:130px" *ngIf="production==true" class="productionInput">
+                    <input disabled [(ngModel)]="itemShown.productionSixType" style="width:130px"
+                      *ngIf="productionSix==true" class="productionInput">
                   </div>
                   <div *ngIf="productionSix==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <input disabled [(ngModel)]="productionSevenType" style="width:130px" *ngIf="production==true" class="productionInput">
+                    <input disabled [(ngModel)]="itemShown.productionSevenType" style="width:130px"
+                      *ngIf="productionSeven==true" class="productionInput">
                   </div>
                   <div *ngIf="productionSeven==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <input disabled [(ngModel)]="productionEightType" style="width:130px" *ngIf="production==true" class="productionInput">
+                    <input disabled [(ngModel)]="itemShown.productionEightType" style="width:130px"
+                      *ngIf="productionEight==true" class="productionInput">
                   </div>
                   <div *ngIf="productionEight==false">
                     <p>---</p>
@@ -433,56 +434,64 @@
                 <div class="col-3" style="margin-left:-27px;">
 
                   <div *ngIf="production==true">
-                    <input [(ngModel)]="productionInput" (change)="searchCompNumber($event,'productionInput')" type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.productionInput" (change)="searchCompNumber($event,'productionInput')"
+                      type="text" class="productionInput">
                   </div>
                   <div *ngIf="production==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionTwo==true">
-                     <input [(ngModel)]="productionTwoInput" (change)="searchCompNumber($event,'productionTwoInput')" type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.productionTwoInput"
+                      (change)="searchCompNumber($event,'productionTwoInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionTwo==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionThree==true">
-                     <input [(ngModel)]="productionThreeInput" (change)="searchCompNumber($event,'productionThreeInput')" type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.productionThreeInput"
+                      (change)="searchCompNumber($event,'productionThreeInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionThree==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionFour==true">
-                     <input [(ngModel)]="productionFourInput" (change)="searchCompNumber($event,'productionFourInput')" type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.productionFourInput"
+                      (change)="searchCompNumber($event,'productionFourInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionFour==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionFive==true">
-                     <input [(ngModel)]="productionFiveInput" (change)="searchCompNumber($event,'productionFiveInput')" type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.productionFiveInput"
+                      (change)="searchCompNumber($event,'productionFiveInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionFive==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionSix==true">
-                     <input [(ngModel)]="productionSixInput" (change)="searchCompNumber($event,'productionSixInput')" type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.productionSixInput"
+                      (change)="searchCompNumber($event,'productionSixInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionSix==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionSeven==true">
-                     <input [(ngModel)]="productionSevenInput" (change)="searchCompNumber($event,'productionSevenInput')" type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.productionSevenInput"
+                      (change)="searchCompNumber($event,'productionSevenInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionSeven==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div *ngIf="productionEight==true">
-                     <input [(ngModel)]="productionEightInput" (change)="searchCompNumber($event,'productionEightInput')" type="text" class="productionInput">
+                    <input [(ngModel)]="itemShown.productionEightInput"
+                      (change)="searchCompNumber($event,'productionEightInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionEight==false">
                     <p style="opacity: 0">---</p>
@@ -583,9 +592,9 @@
 
                 <div class="col-1" style="margin-left:-75px;">
 
-                  <div *ngIf="production==true" class="image-upload">
+                  <div style="margin-top:2px;" *ngIf="production==true" class="image-upload">
                     <label>
-                      <img class="prodImage" (click)="showProductionImage()" [src]="productionImage" />
+                      <img class="prodImage" (click)="showProductionImage()" [src]="itemShown.productionImage" />
                     </label>
                   </div>
                   <div *ngIf="production==false" style="opacity: 0">
@@ -593,11 +602,10 @@
                   </div>
 
                   <div *ngIf="productionTwo==true" class="image-upload">
-                    <label for="file-input">
-                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    <label>
+                      <img class="prodImage" [src]="itemShown.productionTwoImage" />
                     </label>
 
-                    <input id="file-input" type="file" />
                   </div>
                   <div *ngIf="productionTwo==false" style="opacity: 0">
                     <p>---</p>
@@ -605,67 +613,60 @@
 
 
                   <div *ngIf="productionThree==true" class="image-upload">
-                    <label for="file-input">
-                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    <label>
+                      <img style="margin-top:-2px;" class="prodImage" [src]="itemShown.productionThreeImage" />
                     </label>
 
-                    <input id="file-input" type="file" />
                   </div>
                   <div *ngIf="productionThree==false" style="opacity: 0">
                     <p>---</p>
                   </div>
 
                   <div *ngIf="productionFour==true" class="image-upload">
-                    <label for="file-input">
-                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    <label>
+                      <img style="margin-top:-1px;" class="prodImage" [src]="itemShown.productionFourImage" />
                     </label>
 
-                    <input id="file-input" type="file" />
                   </div>
                   <div *ngIf="productionFour==false" style="opacity: 0">
                     <p>---</p>
                   </div>
 
                   <div *ngIf="productionFive==true" class="image-upload">
-                    <label for="file-input">
-                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    <label>
+                      <img class="prodImage" [src]="itemShown.productionFiveImage" />
                     </label>
 
-                    <input id="file-input" type="file" />
                   </div>
                   <div *ngIf="productionFive==false" style="opacity: 0">
                     <p>---</p>
                   </div>
 
-
                   <div *ngIf="productionSix==true" class="image-upload">
-                    <label for="file-input">
-                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    <label>
+                      <img class="prodImage" [src]="itemShown.productionSixImage" />
                     </label>
 
-                    <input id="file-input" type="file" />
                   </div>
                   <div *ngIf="productionSix==false" style="opacity: 0">
                     <p>---</p>
                   </div>
 
                   <div *ngIf="productionSeven==true" class="image-upload">
-                    <label for="file-input">
-                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    <label>
+                      <img class="prodImage" [src]="itemShown.productionSevenImage" />
                     </label>
 
-                    <input id="file-input" type="file" />
                   </div>
                   <div *ngIf="productionSeven==false" style="opacity: 0">
                     <p>---</p>
                   </div>
 
                   <div *ngIf="productionEight==true" class="image-upload">
-                    <label for="file-input">
-                      <img style="width:30px;" src="../../../../assets/images/greenDoc.png" />
+                    <label>
+                      <img class="prodImage" [src]="itemShown.productionEightImage" />
                     </label>
 
-                    <input id="file-input" type="file" />
                   </div>
                   <div *ngIf="productionEight==false" style="opacity: 0">
                     <p>---</p>
@@ -689,12 +690,49 @@
                       <label>Laser & Exp</label>
                     </div>
                   </div>
-                  <div class="col-3">
-
-                  
-
-                  </div>
                 </div>
+                <div class="col-6">
+                  <small style="font-size:9px">Year</small>
+                  <input style="margin:8px;" type="checkbox">
+                  
+                  <small style="font-size:9px">PP</small>
+                  <input style="margin:8px;" type="checkbox">
+                  
+                  <small style="font-size:9px">#</small>
+                  <input style="margin:8px;" type="checkbox">
+
+                   <small style="font-size:9px">Prod. Month</small>
+                  <input style="margin:8px;" type="checkbox">
+
+                   <small style="font-size:9px">Exp. Month</small>
+                  <input style="margin:8px;" type="checkbox">
+
+                   <small style="font-size:9px">Exp. Year</small>
+                  <input style="margin:8px;" type="checkbox">
+
+                  <select style="width:100px">
+                      <option>Where</option>
+                  </select>
+
+                </div>
+
+                <div class="col-4">
+                    
+                    <input type="file" style="z-index: -1;opacity: 0;" name="fileee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
+                    <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')" *ngIf='laser1File'>>></button>
+                    <br>
+                    <img *ngIf="itemShown.laserImage1" for="fileee" class="laserImg" id="id_img4" [src]=itemShown.laserImage1>
+                    <img for="fileee" class="laserImg2" id="id_img4" src="../../../../assets/images/uploadImage.jpg" *ngIf="!itemShown.laserImage1">
+                    
+                      
+                   <button class="btn btn-success" style="position: absolute;" for="filee">Upload
+                        File</button>
+                     <input type="file" style="z-index: -1;opacity: 0;" name="filee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
+                    <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser2')" *ngIf='laser2File'>>></button>
+                    <br>
+                    <img id="id_img5" [src]=itemShown.laserImage2> 
+                </div>
+                
               </div>
             </div>
           </ng-template>
@@ -720,21 +758,39 @@
                 <div class="col-3">
 
                   <div>
-                    <select class="productionInput">
-                      <option>Status</option>
+                    <select [(ngModel)]="itemShown.status" class="productionInput">
                       <option></option>
-                      <option></option>
+                      <option value="active">פעיל</option>
+                      <option value="notActive">לא פעיל</option>
+                      <option value="perfect">מושלם</option>
                     </select>
                   </div>
 
                   <div>
-                    <select class="productionInput">
-                      <option>Main Comp</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input [(ngModel)]=itemShown.bottleTube type="text" class="productionInput">
                   </div>
 
+                </div>
+                <div class="col-2">
+                  <div>
+                    <label class="labelGeneral">Carton no'</label>
+                  </div>
+
+                  <div>
+                    <label class="labelGeneral">PCS/carton</label>
+                  </div>
+
+                </div>
+
+                <div class="col-3">
+                  <div>
+                    <input type=t class="productionInput" ext id="id_cartonNo"
+                      (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')"
+                      [(ngModel)]=itemShown.cartonNumber>
+                  </div>
+                  <div>
+                    <input type="text" class="productionInput" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
+                  </div>
                 </div>
 
               </div>
@@ -757,27 +813,52 @@
                 <div class="col-3">
 
                   <div>
+                    <input disabled class="productionInput">
+                  </div>
+
+                  <div>
+                    <input disabled class="productionInput">
+                  </div>
+
+                  <div>
                     <select class="productionInput">
-                      <option>Group</option>
+                      <option></option>
                       <option></option>
                       <option></option>
                     </select>
                   </div>
 
+                </div>
+                <div class="col-2">
                   <div>
-                    <select class="productionInput">
-                      <option>Sub Group</option>
-                      <option></option>
-                      <option></option>
+                    <label class="labelGeneral">Pump direction</label>
+                  </div>
+
+                  <div>
+                    <label class="labelGeneral">Palette</label>
+                  </div>
+
+                  <div>
+                    <label style="font-size:13px;" class="labelGeneral">1st layer carton/palette </label>
+                  </div>
+
+                </div>
+                <div class="col-3">
+                  <div>
+                    <select id="id_pumpDirection" class="productionInput" [(ngModel)]=itemShown.pumpDirection>
+                      <option value="-">-</option>
+                      <option value="Right">Right</option>
+                      <option value="Left">Left</option>
                     </select>
                   </div>
 
                   <div>
-                    <select class="productionInput">
-                      <option>Sub Group 2</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input type=t ext id="id_Palette" class="productionInput" [(ngModel)]=itemShown.paletteType>
+                  </div>
+
+                  <div>
+                    <input class="productionInput" type="number" ext id="id_layerCartonPalette"
+                      [(ngModel)]=itemShown.st1layerCarton>
                   </div>
 
                 </div>
@@ -806,16 +887,45 @@
                 <div class="col-3">
 
                   <div>
-                    <select class="productionInput">
-                      <option>Brand</option>
-                      <option></option>
-                      <option></option>
+                    <select (change)="fillCostumerDetails($event)" [(ngModel)]="itemShown.brand"
+                      class="productionInput">
+                      <option *ngFor="let costumer of allCostumers" [value]="costumer.brand">{{costumer.brand}}</option>
                     </select>
                   </div>
 
-                  <input type="text" class="productionInput" disabled>
+                  <input [(ngModel)]="itemShown.costumerId" type="text" class="productionInput" disabled>
 
-                  <input type="text" class="productionInput" disabled>
+                  <input [(ngModel)]="itemShown.costumerName" type="text" class="productionInput" disabled>
+                </div>
+
+                <div class="col-2">
+                  <div>
+                    <label class="labelGeneral">Total Cartons/palette</label>
+                  </div>
+
+                  <div>
+                    <label class="labelGeneral">Cbm</label>
+                  </div>
+
+                  <div>
+                    <label class="labelGeneral">Mother Product</label>
+                  </div>
+
+                </div>
+
+                <div class="col-3">
+                  <div>
+                    <input class="productionInput" type="number" ext id="id_totalCarton"
+                      [(ngModel)]=itemShown.totalCartonPalette>
+                  </div>
+
+                  <div>
+                    <input class="productionInput" type="number" ext id="id_cbm" [(ngModel)]=itemShown.cbm>
+                  </div>
+
+                  <div>
+                    <input class="productionInput" type=t ext id="id_motherP">
+                  </div>
                 </div>
 
               </div>
@@ -848,16 +958,18 @@
                 <div class="col-3">
 
                   <div>
-                   <input type="text"  class="productionInput" id="id_licsensNumber" [(ngModel)]=itemShown.licsensNumber>
+                    <input type="text" class="productionInput" id="id_licsensNumber"
+                      [(ngModel)]=itemShown.licsensNumber>
                   </div>
 
-                  <input type="date"  class="productionInput" id="id_licsensDate"  [(ngModel)]=itemShown.licsensDate>
+                  <input type="date" class="productionInput" id="id_licsensDate" [(ngModel)]=itemShown.licsensDate>
 
                   <input type="text" class="productionInput">
 
                   <input type="text" class="productionInput">
 
-                  <input type="number" class="productionInput" id="id_yearsUntillExp" [(ngModel)]=itemShown.yearsUntillExpired>
+                  <input type="number" class="productionInput" id="id_yearsUntillExp"
+                    [(ngModel)]=itemShown.yearsUntillExpired>
 
                 </div>
 
@@ -871,215 +983,253 @@
           <ng-template ngbTabContent>
             <div class="container-fluid">
 
-                <div class="row" style="padding:30px;">
+              <div class="row" style="padding:30px;">
 
-                    <div class="col-2">
-                      <div>
-                        <label style="margin:8px;">Main Component</label>
-                      </div>
-                      <div>
-                          <input type="text" style="width:410px" class="productionInput">
-                        </div>
-                    </div>
-                    <div class="col-3" style="margin-left:-45px;">
-                      <select style="width:120px !important;" class="productionInput">
-                        <option>Type</option>
-                        <option></option>
-                        <option></option>
-                      </select>
-        
-                    </div>
-                    <div class="col-3" style="margin-left:-117px;">
-                        <select style="width:150px;" class="productionInput">
-                            <option></option>
-                            <option></option>
-                            <option></option>
-                          </select>
-                    </div>
-                    <div style="text-align: center;" class="col-4">
-                    <input type="file">
-                    </div>
-        
+                <div class="col-2">
+                  <div>
+                    <label style="margin:8px;">Main Component</label>
                   </div>
 
-                  <div class="row" style="padding:30px;">
-                  
-                      <div class="col-1">
-                          <div>
-                            <label style="margin:8px;">Component2</label>
-                          </div>
-                          <div>
-                              <input type="text" style="width:410px" class="productionInput">
-                            </div>
-                        </div>
-                        <div class="col-2" style="margin-left:40px;">
-                          <select style="width:120px !important;" class="productionInput">
-                            <option>Type</option>
-                            <option></option>
-                            <option></option>
-                          </select>
-            
-                        </div>
-                        <div class="col-3" style="margin-left:-33px;">
-                            <select style="width:150px;" class="productionInput">
-                                <option></option>
-                                <option></option>
-                                <option></option>
-                              </select>
-                        </div>
-
-                        <div class="col-1">
-                            <div>
-                              <label style="margin:8px;">Component3</label>
-                            </div>
-                            <div>
-                                <input type="text" style="width:410px" class="productionInput">
-                              </div>
-                          </div>
-                          <div class="col-2" style="margin-left:40px;">
-                            <select style="width:120px !important;" class="productionInput">
-                              <option>Type</option>
-                              <option></option>
-                              <option></option>
-                            </select>
-              
-                          </div>
-                          <div class="col-2" style="margin-left:-33px;">
-                              <select style="width:150px;" class="productionInput">
-                                  <option></option>
-                                  <option></option>
-                                  <option></option>
-                                </select>
-                          </div>
-
+                  <div>
+                    <input disabled [(ngModel)]=itemShown.bottleTube placeholder="Details" type="text"
+                      style="width:410px" class="productionInput">
                   </div>
-                  <div style='padding-left:30px' class="row">
-                  
-                    <div style="text-align: center;" class="col-6">
-                        <input type="file">  
-                    </div>
-                  
-                    <div style="text-align: center;" class="col-6">
-                        <input type="file">  
-                    </div>
-                  
+                </div>
 
+                <div class="col-3" style="margin-left:-45px;">
+                  <input [(ngModel)]="itemShown.componentType" placeholder="Type" style="width:120px !important;"
+                    class="productionInput">
+                </div>
+
+                <div class="col-3" style="margin-left:-117px;">
+                  <input placeholder="Number" (change)="fillBottle($event)" type="text" id="id_bottleNo"
+                    (focusout)="loadPackagDetails(itemShown.bottleNumber, 'bottle')" [(ngModel)]=itemShown.bottleNumber>
+                </div>
+
+                <div class="col-4">
+                  <div>
+                    <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
+                      File</button>
+                    <input style="z-index: -1;opacity: 0;" name="fileee" type="file" id="id_itemImg1"
+                      (change)="selectFile($event, 'bottle')">
+                  </div><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('bottle')"
+                    *ngIf='bottleFile'>>></button>
+                  <img id="id_img1" [src]=itemShown.bottleImage>
+                </div>
+
+              </div>
+
+              <div class="row" style="padding:30px;">
+
+                <div class="col-1">
+                  <div>
+                    <label style="margin:8px;">Component2</label>
+                  </div>
+                  <div>
+                    <input disabled id="id_item2text" [(ngModel)]=itemShown.capTube placeholder="Details" type="text"
+                      style="width:410px" class="productionInput">
+                  </div>
+                </div>
+                <div class="col-2" style="margin-left:40px;">
+                  <input [(ngModel)]="itemShown.componentTwoType" placeholder="Type" style="width:120px !important;"
+                    class="productionInput">
+
+                </div>
+                <div class="col-3" style="margin-left:-33px;">
+                  <input placeholder="Number" (change)="fillCap($event)" type="text" id="id_capNo"
+                    [(ngModel)]=itemShown.capNumber (focusout)="loadPackagDetails(itemShown.capNumber, 'cap')">
+                </div>
+
+                <div class="col-1">
+                  <div>
+                    <label style="margin:8px;">Component3</label>
+                  </div>
+                  <div>
+                    <input disabled id="id_item3text" [(ngModel)]=itemShown.pumpTube placeholder="Details" type="text"
+                      style="width:410px" class="productionInput">
+                  </div>
+                </div>
+                <div class="col-2" style="margin-left:40px;">
+                  <input [(ngModel)]="itemShown.componentThreeType" placeholder="Type" style="width:120px !important;"
+                    class="productionInput">
+                </div>
+                <div class="col-2" style="margin-left:-33px;">
+                  <input placeholder="Number" (change)="fillPump($event)" type="text" id="id_pumpNo"
+                    [(ngModel)]=itemShown.pumpNumber (focusout)="loadPackagDetails(itemShown.pumpNumber, 'pump')">
+                </div>
+
+              </div>
+              <div style='padding-left:30px' class="row">
+
+                <div style="text-align: center;" class="col-6">
+                  <div>
+                    <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
+                      File</button>
+                    <input style="z-index: -1;opacity: 0;" name="fileee" type="file" id="id_itemImg2"
+                      (change)="selectFile($event, 'cap')">
+                  </div><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('cap')" *ngIf='capFile'>>></button>
+                  <img id="id_img2" [src]=itemShown.capImage>
+                </div>
+
+                <div style="text-align: center;" class="col-6">
+                  <div>
+                    <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
+                      File</button>
+                    <input style="z-index: -1;opacity: 0;" name="fileee" type="file" id="id_itemImg1"
+                      (change)="selectFile($event, 'pump')">
+                  </div><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('pump')" *ngIf='pumpFile'>>></button>
+                  <img id="id_img3" [src]=itemShown.pumpImage>
+                </div>
+
+
+              </div>
+
+              <div class="row" style="padding:30px;">
+
+                <div class="col-1">
+                  <div>
+                    <label style="margin:8px;">Component4</label>
+                  </div>
+                  <div>
+                    <input disabled id="id_item4text" [(ngModel)]=itemShown.sealTube placeholder="Details" type="text"
+                      style="width:410px" class="productionInput">
+                  </div>
+                </div>
+                <div class="col-2" style="margin-left:40px;">
+                  <input [(ngModel)]="itemShown.componentFourType" placeholder="Type" style="width:120px !important;"
+                    class="productionInput">
+                </div>
+                <div class="col-3" style="margin-left:-33px;">
+                  <input placeholder="Number" (change)="fillSeal($event)" type="text" id="id_sealNo"
+                    [(ngModel)]=itemShown.sealNumber (focusout)="loadPackagDetails(itemShown.sealNumber, 'seal')">
+                </div>
+
+
+
+                <div class="col-2">
+                  <div>
+                    <label style="margin:8px;">Extra Image</label>
                   </div>
 
-                  <div class="row" style="padding:30px;">
-                  
-                      <div class="col-1">
-                          <div>
-                            <label style="margin:8px;">Component4</label>
-                          </div>
-                          <div>
-                              <input type="text" style="width:410px" class="productionInput">
-                            </div>
-                        </div>
-                        <div class="col-2" style="margin-left:40px;">
-                          <select style="width:120px !important;" class="productionInput">
-                            <option>Type</option>
-                            <option></option>
-                            <option></option>
-                          </select>
-            
-                        </div>
-                        <div class="col-3" style="margin-left:-33px;">
-                            <select style="width:150px;" class="productionInput">
-                                <option></option>
-                                <option></option>
-                                <option></option>
-                              </select>
-                        </div>
+                </div>
 
-                        <div class="col-1">
-                            <div>
-                              <label style="margin:8px;">Component5</label>
-                            </div>
-                            <div>
-                                <input type="text" style="width:410px" class="productionInput">
-                              </div>
-                          </div>
-                          <div class="col-2" style="margin-left:40px;">
-                            <select style="width:120px !important;" class="productionInput">
-                              <option>Type</option>
-                              <option></option>
-                              <option></option>
-                            </select>
-              
-                          </div>
-                          <div class="col-2" style="margin-left:-33px;">
-                              <select style="width:150px;" class="productionInput">
-                                  <option></option>
-                                  <option></option>
-                                  <option></option>
-                                </select>
-                          </div>
+              </div>
+              <div style='padding-left:30px' class="row">
 
-                  </div>
-                  <div style='padding-left:30px' class="row">
-                  
-                    <div style="text-align: center;" class="col-6">
-                        <input type="file">  
-                    </div>
-                  
-                    <div style="text-align: center;" class="col-6">
-                        <input type="file">  
-                    </div>
-                  
+                <div style="text-align: center;" class="col-6">
+                  <div>
+                    <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
+                      File</button>
+                    <input style="z-index: -1;opacity: 0;" name="fileee" type="file" id="id_itemImg1"
+                      (change)="selectFile($event, 'extra1')">
+                  </div><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra1')"
+                    *ngIf='extra1File'>>></button>
+                  <img id="id_img6" [src]=itemShown.extraImage1>
+                </div>
 
-                  </div>
- 
+                <div style="text-align: center;" class="col-6">
+                  <div>
+                    <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
+                      File</button>
+                    <input style="z-index: -1;opacity: 0;" name="fileee" type="file" id="id_itemImg1"
+                      (change)="selectFile($event, 'extra2')">
+                  </div><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra2')"
+                    *ngIf='extra2File'>>></button>
+                  <img id="id_img7" [src]=itemShown.extraImage2>
+                </div>
+
+
+              </div>
+
 
             </div>
           </ng-template>
         </ngb-tab>
+
+        <ngb-tab id="tab-selectbyid4">
+            <ng-template ngbTabTitle><span style="color:black">Pictures</span></ng-template>
+            <ng-template ngbTabContent>
+              <div class="container-fluid">
+
+                  <div class="imgContainer">
+                      <div style='display: inline-table'>
+                          <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+                          <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
+                          <br>
+                          <img id="id_img1" [src]=itemShown.imgMain1>
+                      </div>
+                      <div style='display: inline-table'>
+                          <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
+                          <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')" *ngIf='main2File'>>></button>
+                          <br>
+                          <img id="id_img2" [src]=itemShown.imgMain2>
+                      </div>
+                      <div style='display: inline-table'>
+                        <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
+                        <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
+                        <br>
+                        <img id="id_img3" [src]=itemShown.imgMain3>
+                  
+                        
+                      </div>
+                    </div>
+                   
+
+              </div>
+            </ng-template>
+          </ngb-tab>
+
       </ngb-tabset>
 
     </div>
   </div>
   <div class="row">
     <div class="col-9">
-  
+
     </div>
 
-    <div  style="background:white;margin-left:81px;" class="col-2">
+    <div style="background:white;margin-left:81px;" class="col-2">
       <div>
-          <table style="float:right" dir="rtl" border=0>
-              <tr>
-                <td>
-                  <label style="color:rgb(16, 139, 16)">עדכון אחרון:</label>
-                </td>
-                <td>
-                  <input type="date" style="width:163px" class="form-control" [(ngModel)]="itemShown.updateDate" disabled>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label style="color:rgb(16, 139, 16)">שם המעדכן:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
-                <td>
-                  <input type="text" [(ngModel)]=itemShown.nameOfupdating  disabled>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                <label style="color:rgb(16, 139, 16)">מספר גרסה:</label>
-                </td>
-                <td>
-                  <input type="number " id="id_version" [(ngModel)]=itemShown.versionNumber disabled>
-                </td>
-              </tr>
-            </table>
+        <table style="float:right" dir="rtl" border=0>
+          <tr>
+            <td>
+              <label style="color:rgb(16, 139, 16)">עדכון אחרון:</label>
+            </td>
+            <td>
+              <input type="date" style="width:163px" class="form-control" [(ngModel)]="itemShown.updateDate" disabled>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label style="color:rgb(16, 139, 16)">שם המעדכן:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </td>
+            <td>
+              <input type="text" [(ngModel)]=itemShown.nameOfupdating disabled>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label style="color:rgb(16, 139, 16)">מספר גרסה:</label>
+            </td>
+            <td>
+              <input type="number " id="id_version" [(ngModel)]=itemShown.versionNumber disabled>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
   <div style="padding:20px;" class="row">
     <div class="col-4"></div>
     <div class="col-4">
-      
-        <button *ngIf="alowUserEditItemTree" class="btn btn-success" (click)="writeItemData()">Submit</button>
-        <button style="float: right" type='reset' class="btn btn-success">Reset</button> 
+
+      <button *ngIf="alowUserEditItemTree" class="btn btn-success" (click)="writeItemData()">Submit</button>
+      <button style="float: right" type='reset' class="btn btn-success">Reset</button>
     </div>
     <div class="col-4"></div>
   </div>
@@ -1880,4 +2030,4 @@
   
       <button *ngIf="alowUserEditItemTree" class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
       <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>    
-    
+     
