@@ -149,7 +149,7 @@
       <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px' class='printTd'></td>
       <td *ngIf="item._id!==EditRowId" 
       (click)="edit(item._id)">{{item.qtyKg}}</td>
-      <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' /></td>
+      <td *ngIf="item._id===EditRowId"><textarea #itemRemarks type='text' [value]=item.itemRemarks style='width:160px'></textarea></td>
       <td *ngIf="item._id!==EditRowId" 
       (click)="edit(item._id)">{{item.itemRemarks}}</td>
       <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
@@ -188,7 +188,7 @@
               <td>
                 <span>Number:</span>
                 <select [(ngModel)]="makeup.itemNumber" >
-                <option value="{{item.itemNumber}}">{{item.itemNumber}}</option>
+                <option [value]="item.itemNumber">{{item.itemNumber}}</option>
               </select> </td>
               <td>
                 <span>Name:</span>
@@ -224,6 +224,10 @@
                     <select [(ngModel)]="makeup.packingClient">
                       <option value="done packing">נארז סופי</option>
                       <option value="packed to print">נארז והועבר לאריזה</option>
+                      <option value="Inlay process">בתהליך שיבוץ</option>
+                      <option value="In material production">בייצור חומר</option>
+                      <option value="In Printing">בהדפסה</option>
+                      <option value="In Filling">במילוי</option>
                     </select>
                   </td>
                   <td>
@@ -234,7 +238,6 @@
                   </td>
                   <td>
                       <button style="cursor: pointer;margin:5px;" class="addBtn btn btn-info" (click)="addNewPowder()">Add</button>
-                      <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="GetAll()">Get</button>
                       
                   </td>
                   

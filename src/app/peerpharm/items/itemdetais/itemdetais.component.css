@@ -86,7 +86,7 @@ input:focus {
 }
 
 .red { 
-    color:rgb(190, 27, 27);
+    color:rgb(207, 28, 28);
 }
 
 .green { 
@@ -96,4 +96,17 @@ input:focus {
 .prodImage:hover { 
 transform: scale(20);
 }
+
+.pictureDivider { 
+    padding:30px;
+    box-shadow: inset 0px 0px 8px 3px rgb(219, 200, 148) !important;
+    background: rgb(253, 232, 175) !important;
+}
+.itemHeadline { 
+    text-align: center;
+    font-size: 50px;
+    text-shadow: 3px 3px 3px rgb(0, 0, 0);
+    
+}
+
 

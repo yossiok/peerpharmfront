@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col"></div>
     <div class="col">
-      <h1 [ngClass]="checkItemStatus()" style="text-align: center;">Item Tree</h1>
+      <h1 [ngClass]="checkItemStatus()" class="itemHeadline">ITEM TREE</h1>
     </div>
     <div class="col"></div>
   </div>
@@ -11,27 +11,27 @@
   <div class="row">
     <div class="col-1">
       <div style="margin:5px;">
-        <label [ngClass]="checkItemStatus()">Item</label>
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">Item</label>
       </div>
 
       <div style="margin:5px;">
-        <label [ngClass]="checkItemStatus()">Barcode</label>
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">Barcode</label>
       </div>
 
       <div style="margin:5px;">
-        <label [ngClass]="checkItemStatus()">Product Title</label>
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">Product Title</label>
       </div>
 
       <div style="margin:5px;">
-        <label [ngClass]="checkItemStatus()">Sub Title </label>
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">Sub Title </label>
       </div>
 
       <div style="margin:5px;">
-        <label [ngClass]="checkItemStatus()">Description</label>
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">Description</label>
       </div>
 
       <div style="margin:5px;">
-        <label [ngClass]="checkItemStatus()">Remarks</label>
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">Remarks</label>
       </div>
 
     </div>
@@ -39,7 +39,7 @@
       <div>
         <input type="text" [(ngModel)]=itemShown.itemNumber #itemNum id="id_item"
           (keydown)='search($event,itemNum.value )'>
-        <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search" src='/assets/images/searchA2.png'
+        <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search" src='/assets/images/search.png'
           style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
       </div>
 
@@ -721,11 +721,11 @@
                     <input type="file" style="z-index: -1;opacity: 0;" name="fileee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')" *ngIf='laser1File'>>></button>
                     <br>
-                    <img *ngIf="itemShown.laserImage1" for="fileee" class="laserImg" id="id_img4" [src]=itemShown.laserImage1>
+                    <img style="margin-bottom: 50px;" *ngIf="itemShown.laserImage1" for="fileee" class="laserImg" id="id_img4" [src]=itemShown.laserImage1>
                     <img for="fileee" class="laserImg2" id="id_img4" src="../../../../assets/images/uploadImage.jpg" *ngIf="!itemShown.laserImage1">
                     
                       
-                   <button class="btn btn-success" style="position: absolute;" for="filee">Upload
+                     <button class="btn btn-success" style="position: absolute;" for="filee">Upload
                         File</button>
                      <input type="file" style="z-index: -1;opacity: 0;" name="filee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser2')" *ngIf='laser2File'>>></button>
@@ -983,11 +983,11 @@
           <ng-template ngbTabContent>
             <div class="container-fluid">
 
-              <div class="row" style="padding:30px;">
+              <div class="row pictureDivider" >
 
                 <div class="col-2">
                   <div>
-                    <label style="margin:8px;">Main Component</label>
+                    <label style="margin:8px;font-weight: bold;">Main Component</label>
                   </div>
 
                   <div>
@@ -1024,7 +1024,7 @@
 
                 <div class="col-1">
                   <div>
-                    <label style="margin:8px;">Component2</label>
+                    <label style="margin:8px;font-weight: bold;">Component2</label>
                   </div>
                   <div>
                     <input disabled id="id_item2text" [(ngModel)]=itemShown.capTube placeholder="Details" type="text"
@@ -1043,7 +1043,7 @@
 
                 <div class="col-1">
                   <div>
-                    <label style="margin:8px;">Component3</label>
+                    <label style="margin:8px;font-weight: bold;">Component3</label>
                   </div>
                   <div>
                     <input disabled id="id_item3text" [(ngModel)]=itemShown.pumpTube placeholder="Details" type="text"
@@ -1062,7 +1062,7 @@
               </div>
               <div style='padding-left:30px' class="row">
 
-                <div style="text-align: center;" class="col-6">
+                <div class="col-6">
                   <div>
                     <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
                       File</button>
@@ -1073,7 +1073,7 @@
                   <img id="id_img2" [src]=itemShown.capImage>
                 </div>
 
-                <div style="text-align: center;" class="col-6">
+                <div class="col-6">
                   <div>
                     <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
                       File</button>
@@ -1091,7 +1091,7 @@
 
                 <div class="col-1">
                   <div>
-                    <label style="margin:8px;">Component4</label>
+                    <label style="margin:8px;font-weight: bold;">Component4</label>
                   </div>
                   <div>
                     <input disabled id="id_item4text" [(ngModel)]=itemShown.sealTube placeholder="Details" type="text"
@@ -1111,7 +1111,7 @@
 
                 <div class="col-2">
                   <div>
-                    <label style="margin:8px;">Extra Image</label>
+                    <label style="margin:8px;font-weight: bold;">Extra Image</label>
                   </div>
 
                 </div>
@@ -1119,7 +1119,7 @@
               </div>
               <div style='padding-left:30px' class="row">
 
-                <div style="text-align: center;" class="col-6">
+                <div  class="col-6">
                   <div>
                     <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
                       File</button>
@@ -1131,7 +1131,7 @@
                   <img id="id_img6" [src]=itemShown.extraImage1>
                 </div>
 
-                <div style="text-align: center;" class="col-6">
+                <div  class="col-6">
                   <div>
                     <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
                       File</button>
@@ -1225,7 +1225,13 @@
     </div>
   </div>
   <div style="padding:20px;" class="row">
-    <div class="col-4"></div>
+    <div style="margin-left: 30px;" class="col-4">
+        <img title="Batches" (click)="openBatchModal(batches)" style="width:50px;margin:5px;" src="/assets/images/allOrder.png">
+        <img title="Orders" (click)="openOrderModal(orders)" style="width:50px;margin:5px;" src="/assets/images/ordered.png">
+        <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
+        <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
+        <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
+    </div>
     <div class="col-4">
 
       <button *ngIf="alowUserEditItemTree" class="btn btn-success" (click)="writeItemData()">Submit</button>
@@ -1233,12 +1239,89 @@
     </div>
     <div class="col-4"></div>
   </div>
-</div> -->
+</div> 
 
+<!-------------- Batches Modal  --------------->
+<ng-template #batches let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Batch List</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+      <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+        <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Batch Number</th>
+                <th scope="col">Order Number</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let batch of itemBatches;let i = index">
+                <th>{{i+1}}</th>
+                <td>{{batch.batchNumber}}</td>
+                <td>{{batch.order}}</td>
+                <td>{{batch.batchStatus}}</td>
+                
+              </tr>
+              
+            </tbody>
+          </table>
+      </div>
+      <div class="modal-footer">
+      </div>
+    
+    </ng-template>
+
+
+    <!--------------- Orders Modal --------------->
+
+    <ng-template #orders let-c="close" let-d="dismiss">
+
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Batch List</h4>
+          <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+          <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+            <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order Number</th>
+                    <th scope="col">Batch Number</th>
+                    <th scope="col">Filling Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let order of ordersItem;let i = index">
+                    <th>{{i+1}}</th>
+                    <td>{{order.orderNumber}}</td>
+                    <td>{{order.batch}}</td>
+                    <td>{{order.fillingStatus}}</td>
+                    
+                  </tr>
+                  
+                </tbody>
+              </table>
+          </div>
+          <div class="modal-footer">
+          </div>
+        
+        </ng-template> -->
 <!-------------------------------------------------------------------------------------------------------------------------------------------------->
 
 
-<!-- <ngb-tabset #t="ngbTabset">
+ <!-- <ngb-tabset #t="ngbTabset">
   <ngb-tab id="tab-selectbyid1" title="General">
      <ng-template ngbTabContent>
         ngfmjuy hgdeg
@@ -1261,7 +1344,8 @@
     <i>Create new products</i>
   </h1>
 </div>  -->
-<table border=0 background='bg112.jpg' style="background-size: cover">
+
+ <table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>

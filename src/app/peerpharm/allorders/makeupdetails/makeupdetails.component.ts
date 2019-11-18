@@ -240,7 +240,7 @@ export class MakeupdetailsComponent implements OnInit {
  // Powder Section adding and getting all powders // 
 
  addNewPowder() { 
-    
+    debugger;
   this.makeup.itemType = "Make Up"
   
   this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
@@ -264,11 +264,11 @@ export class MakeupdetailsComponent implements OnInit {
 }
 
 
-GetAll() { 
+GetAll() {
    debugger;
   if(this.makeup.itemNumber != "") {
   
-  this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
+  this.makeupService.getAllmakeUp().subscribe(res =>{
     
     this.powdersData = res;
   
@@ -294,7 +294,7 @@ GetAll() {
 // end of powder section //
 
   addItemOrder() {
-     
+     debugger
     this.itemData.orderId = this.orderId;
     if(!this.multi) this.itemData.orderNumber = this.number;
     let newItemImpRemark= this.itemData.itemImpRemark;

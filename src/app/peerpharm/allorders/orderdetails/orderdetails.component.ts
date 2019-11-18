@@ -288,20 +288,22 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   open(contentTwo) {
-
+  debugger;
     var allForms = this.allForms;
     var orderItems = this.ordersItems
+    var number = 0;
+    var tempArray = []
 
     for (let i = 0; i < allForms.length; i++) {
       for (let j = 0; j < orderItems.length; j++) {
        if(allForms[i].itemN == orderItems[j].itemNumber) {
          orderItems[j].totalUnits = allForms[i].totalUnits
-       }
-        
-      }
-      
     }
+  }
 
+    
+  
+    
     this.ordersItems = orderItems
     
     this.modalService.open(contentTwo, {size: 'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {

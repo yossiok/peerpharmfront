@@ -194,13 +194,14 @@ export class StockComponent implements OnInit {
 
   //expected Arrivals modal
    getNewExpectedArrivalsData(outputeEvent) {
-    debugger
+    debugger;
 
     console.log('getting new updated expected arrivals data')
     console.log(outputeEvent)
     if (outputeEvent == 'closeModal') {
       this.openProcurementModal = false;
       this.resCmpt = {}
+      
       //update expected arrivals info for item 
     } else if (outputeEvent == 'stockLineChanged') {
       console.log('this.resCmpt', this.resCmpt)
@@ -214,12 +215,15 @@ export class StockComponent implements OnInit {
         //   }  
         //  });
         this.components.forEach(c => {
+          debugger;
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
+            
 
           }
         });
         this.componentsUnFiltered.forEach(c => {
+          debugger;
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
           }
@@ -227,6 +231,12 @@ export class StockComponent implements OnInit {
       });
     }
   }
+
+  // getProcurementData(){
+  //   this.inventoryService.getProcurementData().subscribe(data=>{
+
+  //   })
+  // }
 
   updateExpectedProcurment(stockItem) {
     this.resCmpt = stockItem;
@@ -486,21 +496,15 @@ export class StockComponent implements OnInit {
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
       debugger;
+    
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
   
-    //   this.components.forEach(c => {
-    //     debugger
-    //      let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
-         
- 
-    //      c.remarks= element.remarks;
- 
-    //  });
+      
       //why are we using set time out and not async await??
       setTimeout(() => {
-        
+        debugger;
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
           // console.log(res);
@@ -515,6 +519,14 @@ export class StockComponent implements OnInit {
 
           });
           this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
+        //   this.components.forEach(c => {
+        //     debugger;
+        //      let element= this.itemExpectedArrivals.find(x=>x.componentN==c.componentN )
+             
+     
+        //      c.procurementArr.push(element.remarks)
+     
+        //  });
           this.setType(this.stockType);
           this.getAllCmptTypesAndCategories();
 
@@ -539,13 +551,14 @@ export class StockComponent implements OnInit {
     this.procuretServ.getAllExpectedArrivals().subscribe(res=>{
      debugger;
         this.itemExpectedArrivals=res;
+
+   
       
     });
   }
 
   calcIfLowThenMin(component)
   {
-    debugger;
     if(component.minimumStock && component.alloAmount)
     {
       if((component.amount-component.alloAmount)> component.minimumStock)

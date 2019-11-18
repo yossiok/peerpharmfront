@@ -179,10 +179,10 @@
               <tbody>
                 <tr *ngFor="let expt of component.procurementArr " class="d-flex flex-row-reverse"
                   style="font-size:16px;">
-                  <td class="p-2">{{expt.remarks}}</td>
-                  <td class="p-2">כמות</td>
+                  <td *ngIf="expt.remarks" class="p-2">:הערות</td>
+                  <td class="p-2"><span style="font-weight: bold;">{{expt.remarks}}</span></td>
+                  <td class="p-2">:כמות</td>
                   <td class="p-2">{{expt.quantity}}</td>
-                  <td class="p-2" >תאריך</td>
                   <td [ngClass]="{ expiredDate: expt.expectedDate < today.toISOString() }">{{expt.expectedDate | date :'dd/MM/yyyy'}}</td>
           
                   
@@ -960,7 +960,7 @@
                   </td>
                 </tr>
                 <tr>
-                    <th>Frame Quantity</th>
+                    <th>Frame Quantity (kg)</th>
                   <td>
                     <input [(ngModel)]="resMaterial.frameQuantity" type="text">
                   </td>

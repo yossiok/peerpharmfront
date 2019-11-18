@@ -49,9 +49,7 @@ export class MakeupComponent implements OnInit {
 
     this.makeup.productionDate = moment(new Date()).format('YYYY-MM-DD');
     
-    this.getAllPowders();
     this.getAllmakeUps();
-    this.getAllLipsticks();
     this.getAllOrdersByType();
 
   }
@@ -83,10 +81,6 @@ export class MakeupComponent implements OnInit {
         this.tableType = "wet";
     
         break;
-      case 'lipstick':
-        this.tableType = "lipstick";
-     
-        break;
     }
   }
   // Powder Section adding and getting all powders // 
@@ -112,17 +106,6 @@ export class MakeupComponent implements OnInit {
     
   }
 
-  getAllPowders() { 
-    
-    this.makeupService.getAllPowders().subscribe(data =>{
-      this.powdersData = data;
-    })
-  }
-
-  // end of powder section //
-
-
-  // Wet Section adding and getting all wet items production
 
 
 getAllmakeUps() { 
@@ -133,33 +116,4 @@ getAllmakeUps() {
   })
 }
 
-// end of wet section // 
-
-
-// Lipstick section adding and getting all items // 
-
-addLipstick() { 
-  
-  this.makeup.itemType = "Lipstick"
-  this.makeupService.addLipstickItem(this.makeup).subscribe(res =>{
-    this.lipstickData.push(res)
-  })
-
-  this.makeup.itemType=''
-  this.makeup.itemName=''
-  this.makeup.production=''
-  this.makeup.pushToGodets=''
-  this.makeup.packingClient=''
-  this.makeup.printing=''
-  this.makeup.tray=''
-  this.makeup.packing=''
-}
-
-getAllLipsticks() { 
-  this.makeupService.getAllLipsticks().subscribe(data =>{
-    this.lipstickData = data;
-  })
-}
-
-// end of lipstick section //
 }

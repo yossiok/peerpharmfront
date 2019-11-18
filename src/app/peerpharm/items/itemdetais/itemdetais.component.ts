@@ -10,6 +10,9 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
 import * as moment from 'moment';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { CostumersService } from 'src/app/services/costumers.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { BatchesService } from 'src/app/services/batches.service';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-itemdetais',
@@ -23,6 +26,8 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('container')
   private container: ElementRef;
   // New Item Tree // 
+  itemBatches:any[];
+  ordersItem:any[];
   allCostumers:any[]; 
 
   mainLanguage: Boolean = true;
@@ -220,7 +225,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
 
-  constructor(private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
+  constructor(private orderService:OrdersService,private batchService:BatchesService ,private modalService:NgbModal,private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
@@ -421,6 +426,41 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
+  openBatchModal(batches) {
+    debugger;
+    var itemNumber = this.itemShown.itemNumber
+    this.batchService.getBatchesByItemNumber(itemNumber).subscribe(data=>{
+      this.itemBatches = data;
+    })
+    // this.contact = this.costumers[i].contact[0];
+    this.modalService.open(batches).result.then((result) => {
+      console.log(result);
+    
+    })
+  }
+
+  openOrderModal(orders){
+    var itemNumber = this.itemShown.itemNumber
+  
+    this.orderService.getOrderItemsByitemNumber(itemNumber).subscribe(data=>{
+      debugger;
+      this.ordersItem = data;
+    })
+    this.modalService.open(orders).result.then((result) => {
+      console.log(result);
+    })
+  }
+ 
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
 
   getAllCostumers(){

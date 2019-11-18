@@ -134,12 +134,19 @@ export class NewProcurementComponent implements OnInit {
    this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
     if(data) {
       this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
+      this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data=>{
+        if(data) {
+          this.toastr.success("כמות זו ירדה מכמות המסגרת")
+        }
+
+      })
       this.newProcurement.validDate = ""
       this.newProcurement.outDate = ""
       this.newProcurement.supplierName = ""
       this.newProcurement.supplierNumber = ""
       this.newProcurement.comaxNumber = ""
       this.newProcurement.item = [];
+
       
     }
    })
