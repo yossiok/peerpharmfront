@@ -367,6 +367,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
+      {
+        path: '/peerpharm/inventory/allocatedOrders',
+        title: 'Allocated Orders',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
       ]
     },
 

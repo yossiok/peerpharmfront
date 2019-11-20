@@ -46,6 +46,7 @@ import { ActiveusersComponent } from './reports/activeusers/activeusers.componen
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
+import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -198,6 +199,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Material Scan'
     },
     component: MaterialScanViewComponent,
+  },
+  {
+    path: 'inventory/allocatedOrders',
+    data: {
+      title: 'Allocated Orders'
+    },
+    component: AllocatedOrdersComponent,
   },
  /* {
     path: 'taskboard/main',

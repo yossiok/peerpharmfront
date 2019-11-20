@@ -105,6 +105,7 @@ import { HistorylogsComponent } from './reports/historylogs/historylogs.componen
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { OrdersService } from '../services/orders.service';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
+import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 
 
 
@@ -213,7 +214,8 @@ import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view
     ItemreportsComponent,
     DateExpiredDirective,
     HistorylogsComponent,
-    ActiveusersComponent
+    ActiveusersComponent,
+    AllocatedOrdersComponent,
 
 
   ],
