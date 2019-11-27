@@ -105,12 +105,7 @@
                   <div class="col-md-6">
                     <div class="form-group has-success">
                       <label class="control-label">מידה</label>
-                      <select #measurement [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.measurement" class="form-control custom-select">
-                        <option value="kg">קילו</option>
-                        <option value="liter">ליטר</option>
-                        <option value="unit">יחידה</option>
-                        <option value="box">קופסא</option>
-                      </select>
+                      <input #measurement [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.measurement" class="form-control custom-select">
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
@@ -123,12 +118,7 @@
                 </div>
                 <div class="row">
                   <label class="control-label">נתוני מכירה לפי מטבע : </label>
-                  <select #coin [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.coin" class="form-control custom-select">
-                      <option value="usd">USD</option>
-                      <option value="nis">NIS</option>
-                      <option value="gbp">GBP</option>
-                      <option value="eur">EUR</option>
-                    </select>
+                  <input #coin [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.coin" class="form-control custom-select">
                 </div>
                 <div class="row">
                   <div class="col-md-3">

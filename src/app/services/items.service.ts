@@ -54,6 +54,10 @@ export class ItemsService {
     let url = this.baseUrl + "item?itemDetails="+itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getComponentsAmountByCmptNumber(componentNumber,itemQuantity): Observable<any> {
+    let url = this.baseUrl + "item?itemNumber="+componentNumber + '&itemQuantity='+itemQuantity;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   addorUpdateItem(itemObj) {
     console.log(itemObj);

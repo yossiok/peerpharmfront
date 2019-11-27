@@ -184,11 +184,11 @@
           style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
           {{item.compiled[0].sum}}</td> -->
           <td *ngIf="item._id!==EditRowId">
-          <label (click)="edit(item._id)">Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
-          <label>Formules</label><input (change)="isChecked($event,item._id)" id="formuleCheckBox" type="checkbox">
+          <label (click)="openComponentsStatus(components,item.itemNumber,item.quantity,item.orderNumber)">Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
+          <label>Formules</label><input [(ngModel)]="item.formuleCheck" (change)="isChecked($event,item._id)" id="formuleCheckBox" type="checkbox">
          
           </td>
-          <td *ngIf="item._id===EditRowId"><label>Components</label>
+          <!-- <td *ngIf="item._id===EditRowId"><label>Components</label>
             <select [value]="item.componentCheck" #componentCheck >
             <option value="0">0</option>
             <option value="ordered">הוזמן</option>
@@ -196,7 +196,7 @@
           </select>
           <br><br>
           
-        </td>
+        </td> -->
         
 
         <td></td>
@@ -707,6 +707,61 @@
 
 
 <!-- Modal -->
+
+<ng-template #components let-modal>
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Order Amounts</h4>
+      </div>
+      <div class="modal-body">
+        <table class='table'>
+          <thead class='tableHeader'>
+  
+            <tr>
+              <th>Bottle</th>
+              <th>Pump</th>
+              <th>Seal</th>
+              <th>Cap</th>
+              <th>Carton</th>
+            </tr>
+          </thead>
+          <tbody id="table_body">
+            <tr>
+            <td [ngClass]="itemDetails.hasEnoughBottles?'lightgreen':'lightred'" *ngIf="itemDetails.bottleNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Bottle: {{itemDetails.bottleNumber}}</td>
+            <td *ngIf="itemDetails.bottleNumber == '---'" ></td>
+            <td [ngClass]="itemDetails.hasEnoughPumps?'lightgreen':'lightred'" *ngIf="itemDetails.pumpNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Pump: {{itemDetails.pumpNumber}}</td>
+            <td *ngIf="itemDetails.pumpNumber == '---'" ></td>
+            <td [ngClass]="itemDetails.hasEnoughSeals?'lightgreen':'lightred'"  *ngIf="itemDetails.sealNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Seal: {{itemDetails.sealNumber}}</td>
+            <td *ngIf="itemDetails.sealNumber == '---'" ></td>
+            <td [ngClass]="itemDetails.hasEnoughCaps?'lightgreen':'lightred'" *ngIf="itemDetails.capNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Cap: {{itemDetails.capNumber}}</td>
+            <td *ngIf="itemDetails.capNumber == '---'" ></td>
+            <td [ngClass]="itemDetails.hasEnoughCartons?'lightgreen':'lightred'" *ngIf="itemDetails.cartonNumber != '---'">Quantity: {{itemDetails.cartons}} <br> Carton: {{itemDetails.cartonNumber}}</td>
+            <td *ngIf="itemDetails.cartonNumber == '---'" ></td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <table class='table'>
+            <thead class='tableHeader'>
+              <tr>
+                <th>Total Order Amounts</th>
+              </tr>
+            </thead>
+            <tbody id="table_body">
+              <tr>
+
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  
+  </ng-template>
+  
+
 <ng-template #contentTwo let-modal>
 
   <div class="modal-content">

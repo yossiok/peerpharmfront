@@ -171,6 +171,8 @@ export class StockComponent implements OnInit {
     coaMaster: "",
     alternativeMaterial:"",
     price:"",
+    coin:"",
+    measurement:"",
     notInStock:false,
     inciName:"",
     casNumber:"",

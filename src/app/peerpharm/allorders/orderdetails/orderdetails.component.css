@@ -69,6 +69,14 @@ input[type=checkbox]
   width:50px;
 }
 
+.lightgreen { 
+  background:lightgreen;
+}
+
+.lightred { 
+  background:rgb(238, 86, 86);
+}
+
 .table{
   color:black;
   font-size: 15px;

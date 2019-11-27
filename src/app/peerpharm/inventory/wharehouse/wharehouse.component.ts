@@ -469,6 +469,7 @@ deleteLine(itemFromInvReq,index,ev){
 
   async sendList(){
     let ObjToUpdate;
+    debugger;
     let sendConfirm=confirm("עדכון שינויים במלאי");
     if(sendConfirm && this.inventoryUpdateList.length>0) {
       
@@ -488,11 +489,12 @@ deleteLine(itemFromInvReq,index,ev){
             this.toastSrv.success("פעולות מחסנאי נשמרו");
           });
           this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
+            debugger
             console.log(x.n+" items with amount=0 deleted");
           });
 
           //PRINT !!!
-          if(this.dir == 'production' || this.dir == 'out' ){
+          if(this.dir == 'production' || this.dir == 'out' || this.dir == 'in' ){
             // this.listToPrint = await this.inventoryUpdateList.filter(i=>{
             //   if(i.amount<0)  i.amount=Math.abs(i.amount);
             //   return i;
@@ -510,6 +512,7 @@ deleteLine(itemFromInvReq,index,ev){
   }
   
   async printStockTransferCertificate(){
+    debugger;
     //print
     // setTimeout( ()=> {
 

@@ -42,12 +42,35 @@ export class OrderdetailsComponent implements OnInit {
   currItems:any[];
   currFormule:any[];
   currPhase:any[];
+  bottleInStock:boolean;
+  pumpInStock:boolean;
+  sealInStock:boolean;
+  capInStock:boolean;
+  cartonInStock:boolean;
+  totalOrderAmounts:any[];
   allMaterials:any[];
   formuleCheck:boolean;
+  itemDetails:any;
+  capDetails:any;
+  sealDetails:any;
+  pumpDetails:any;
+  cartonDetails:any;
   allItems:any[];
   closeResult: string;
   printingStatus:boolean = false;
   plateImg="";
+
+
+  componentsAmounts:any = {
+  
+    bottleQuantity:0,
+    pumpQuantity:0,
+    sealQuantity:0,
+    capQuantity:0,
+    cartonQuantity:0,
+
+  }
+
   printSchedule:any ={
     position:'',
     orderN:'',
@@ -289,9 +312,25 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   open(contentTwo) {
-
+debugger;
     var allForms = this.allForms;
-    var orderItems = this.ordersItems
+    var orderItems = this.ordersItems;
+
+    orderItems.forEach(o=>
+      {
+      
+        let allImp=this.allForms.filter(x=>x.orderNumber ==  o.orderNumber && x.itemN == o.itemNumber );
+        let sum=0;
+        allImp.forEach(f=>{
+    sum+=Number(f.quantity_Produced)
+        });
+        o.quantityProduced = sum;
+
+      })
+ 
+
+
+
 
     for (let i = 0; i < allForms.length; i++) {
       for (let j = 0; j < orderItems.length; j++) {
@@ -302,6 +341,8 @@ export class OrderdetailsComponent implements OnInit {
       }
       
     }
+  
+
 
     this.ordersItems = orderItems
     
@@ -312,6 +353,36 @@ export class OrderdetailsComponent implements OnInit {
     });
   
   }
+
+  checkIfAvailable(componentNumber , quantity) {
+
+    this.inventoryService.getCmptByitemNumber(componentNumber)
+
+  }
+  
+  openComponentsStatus(components,itemNumber,itemQuantity,orderNumber) {
+
+
+    debugger
+     this.itemSer.getComponentsAmountByCmptNumber(itemNumber,itemQuantity).subscribe(data=>{
+      debugger;
+      data;
+   
+      this.itemDetails = data;
+
+      });
+    
+  
+
+    this.modalService.open(components, {size: 'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  
+  }
+
+  
   
   // getAllOrdersItems() { 
   //   debugger;
@@ -723,6 +794,7 @@ editBatch(batch){
 
 
   isChecked(ev,id) {
+    debugger;
     var formuleStatus = ev.target.checked
     if (ev.target.checked == true) {
 

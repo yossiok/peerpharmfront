@@ -78,6 +78,9 @@ export class NewProcurementComponent implements OnInit {
       debugger;
      if(data[0]) {
       this.newItem.itemName = data[0].componentName; 
+      this.newItem.coin = data[0].coin
+      this.newItem.measurement = data[0].unitOfMeasure
+      this.newItem.supplierPrice = data[0].price
         if(data[0].frameQuantity || data[0].frameSupplier) {
           alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' +"  "+ data[0].frameSupplier +" "+ 'כמות:'+" "+ data[0].frameQuantity)
         }
