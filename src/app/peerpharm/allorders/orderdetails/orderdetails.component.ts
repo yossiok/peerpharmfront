@@ -418,7 +418,7 @@ debugger;
   }
 
   addItemOrder() {
-    debugger
+    this.itemData.formuleCheck = this.formuleCheck
     this.itemData.orderId = this.orderId;
     var user = this.authService.loggedInUser.firstName
     var time = new Date().getTime();
