@@ -125,7 +125,7 @@
       <td *ngIf="line._id===EditRowId"><input #marks type='text' [value]="line.marks" style='width:150px'></td>
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.printType}}</td>
       <td *ngIf="line._id===EditRowId"><input #printType type='text' [value]="line.printType" style='width:50px'></td>
-      <td *ngIf="line._id!==EditRowId" (click) = "showImg(line.blockImg)" style='cursor: pointer; color: blue'>{{line.block}}</td>
+      <td *ngIf="line._id!==EditRowId" (click) = "showImg(line.blockImg)" style='cursor: pointer; color: blue'>{{line.plate}}/{{line.plate2}}</td>
       <td *ngIf="line._id===EditRowId"><input #blockImg type='text' [value]="line.block" style='width:50px' disabled></td>
       <td *ngIf="line._id!==EditRowId">
         <img src='assets/images/deleteBtn.png' class='btnImg' style='width:30px;height: 30px' *ngIf="line.status!='printed'"
