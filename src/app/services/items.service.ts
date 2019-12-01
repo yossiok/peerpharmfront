@@ -55,7 +55,7 @@ export class ItemsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getComponentsAmountByCmptNumber(componentNumber,itemQuantity): Observable<any> {
-    let url = this.baseUrl + "item?itemNumber="+componentNumber + '&itemQuantity='+itemQuantity;
+    let url = this.baseUrl + "item?itemNumberToCheck="+componentNumber + '&itemQuantity='+itemQuantity;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

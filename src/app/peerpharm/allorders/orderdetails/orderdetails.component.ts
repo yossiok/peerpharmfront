@@ -827,7 +827,7 @@ editBatch(batch){
         "quantity": this.quantity.nativeElement.value,
         // "qtyKg": this.weight.nativeElement.value,
         "itemRemarks": this.itemRemarks.nativeElement.value,
-        "componentCheck": this.componentCheck.nativeElement.value,
+       
       }
       console.log(itemToUpdate);
       // console.log("edit " + itemToUpdate.orderItemId );
@@ -847,7 +847,7 @@ editBatch(batch){
           this.ordersItems[index].quantity = itemToUpdate.quantity;
           // this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].netWeightGr = itemToUpdate.netWeightGr;
-          this.ordersItems[index].componentCheck = itemToUpdate.componentCheck;
+         
 
            
         }else{

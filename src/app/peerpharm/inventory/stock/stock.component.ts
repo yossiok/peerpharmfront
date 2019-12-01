@@ -246,6 +246,7 @@ export class StockComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.getUser();
     this.filterbyNum.nativeElement.value = '';
     // this.filterByType.nativeElement='';
     // this.filterByCategory.nativeElement='';
@@ -260,7 +261,7 @@ export class StockComponent implements OnInit {
     // this.exportMovementsAsXLSX();
     this.getAllExpectedArrivalsData();
     this.getColor(new Date);
-    this.getUser();
+    
   
 
   }
@@ -970,8 +971,8 @@ export class StockComponent implements OnInit {
 
   async openData(cmptNumber) {
     debugger
-   
-
+    this.authService.loggedInUser.firstName
+    this.user
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
