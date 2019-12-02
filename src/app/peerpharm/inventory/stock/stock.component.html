@@ -122,6 +122,7 @@
 
 
     <!-- TABLE START -->
+    <div class="tableFixHead" >
     <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
       <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
         <tr style="text-align: center;">
@@ -143,8 +144,8 @@
       </thead>
 
 
-      <tbody style="overflow-y: scroll;" id="table_body" class="componentTable">
-        <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;height:100px;"
+      <tbody  id="table_body" class="componentTable">
+        <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
           *ngFor="let component of components; let i = index">
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
@@ -204,7 +205,7 @@
       </tbody>
     </table>
 
-
+  </div>
 
     <app-expected-arrivals *ngIf="openProcurementModal" [componentData]='resCmpt'
       (outPutItemsExpectedData)="getNewExpectedArrivalsData($event)"></app-expected-arrivals>
