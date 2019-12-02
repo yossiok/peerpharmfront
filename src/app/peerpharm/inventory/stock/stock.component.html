@@ -122,9 +122,9 @@
 
 
     <!-- TABLE START -->
-    <div class="tableFixHead" >
+    <div *ngIf="stockType=='component'" class="tableFixHead" >
     <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
-      <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
+      <thead style="background: rgb(69, 69, 202);" class='tableHeader text-white'>
         <tr style="text-align: center;">
 
           <th style="width:3%; padding:5px"></th>
