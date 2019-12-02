@@ -124,7 +124,7 @@
     <!-- TABLE START -->
     <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
       <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
-        <tr style="text-align: center">
+        <tr style="text-align: center;">
 
           <th style="width:3%; padding:5px"></th>
           <th style="width:6%; padding:5px"><b>מספר פריט</b></th>
@@ -143,8 +143,8 @@
       </thead>
 
 
-      <tbody id="table_body" class="componentTable">
-        <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+      <tbody style="overflow-y: scroll;" id="table_body" class="componentTable">
+        <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;height:100px;"
           *ngFor="let component of components; let i = index">
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
@@ -152,7 +152,7 @@
           <td style="width:10%;">{{component.componentName}}</td>
           <td style="width:10%;">{{component.alternativeComponent}}</td>
           <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
-          <td style="width:5%; cursor: pointer;"  (click)="openAllocatedOrders(component.componentN)"  [ngClass]="calcIfLowThenMin(component)" > 
+          <td style="width:5%; cursor: pointer;border-right: 2px solid black;"  (click)="openAllocatedOrders(component.componentN)"  [ngClass]="calcIfLowThenMin(component)" > 
               {{component.alloAmount}}
             <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
             style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>

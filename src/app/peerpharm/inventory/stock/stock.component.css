@@ -12,14 +12,19 @@ body {
 .expiredDate {
   color: red;
 }
+.table-fixed tr {
+  /* display: block; */
+  display: block;
+}
 .table-fixed thead {
   /* display: block; */
+  overflow: scroll; 
 }
 .table-fixed tbody {
   height: 700px;
-  /* overflow-y: auto; */
-  /* width: 100%;
-  display: block; */
+    
+ 
+  display: block;
 }
 
 /* .table-fixed th {

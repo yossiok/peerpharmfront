@@ -90,7 +90,7 @@ export class MakeupdetailsComponent implements OnInit {
     orderNumber: '',
     batch:'',
     itemRemarks:'',
-    compiled: [],
+    packing: '',
   };
   show: boolean;
   EditRowId: any = "";
@@ -133,6 +133,7 @@ export class MakeupdetailsComponent implements OnInit {
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
+  @ViewChild('packing') packing: ElementRef;
   @ViewChild('quantity') quantity: ElementRef;
   @ViewChild('netWeightGr') netWeightGr: ElementRef;
   @ViewChild('itemname') itemName: ElementRef;
@@ -307,7 +308,7 @@ GetAll() {
         item.colorBtn = '#33FFE0';
         item.compiled = [];
         this.ordersItems.push(item);
-        this.itemData = { itemNumber: '', discription: '', netWeightGr: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', compiled: []}
+        this.itemData = { itemNumber: '', discription: '', netWeightGr: '', quantity: '', qtyKg: '', orderId: '', orderNumber: '', batch:'', itemRemarks:'', packing: ''}
         this.getOrderItems(true);
 
         this.toastSrv.success('item '+item.itemNumber+' added');
@@ -584,6 +585,7 @@ editBatch(batch){
         "quantity": this.quantity.nativeElement.value,
         "qtyKg": this.weight.nativeElement.value,
         "itemRemarks": this.itemRemarks.nativeElement.value,
+        "packing": this.packing.nativeElement.value,
       }
       console.log(itemToUpdate);
       // console.log("edit " + itemToUpdate.orderItemId );
@@ -598,6 +600,7 @@ editBatch(batch){
           // this.ordersItems[index] = itemToUpdate;
           this.ordersItems[index]._id = itemToUpdate.orderItemId;
           this.ordersItems[index].itemRemarks = itemToUpdate.itemRemarks;
+          this.ordersItems[index].packing = itemToUpdate.packing;
           this.ordersItems[index].discription = itemToUpdate.discription;
           this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].quantity = itemToUpdate.quantity;

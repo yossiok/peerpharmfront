@@ -20,7 +20,7 @@ export class MakeupComponent implements OnInit {
   lipstickData:any[];
   orders:any[];
   ordersCopy:any[];
- 
+  now: Date = new Date()
   today: any;
   tableType: String = "powder"
 
@@ -44,6 +44,10 @@ export class MakeupComponent implements OnInit {
   constructor(private ordersService:OrdersService,private makeupService:MakeupService, private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
+
+    this.now.setDate(this.now.getDate() - 30);
+   this.now.toISOString().split('T')[0];
+   
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
 
@@ -69,6 +73,9 @@ export class MakeupComponent implements OnInit {
       })
   }
 
+  checkIfPastDue(){
+    
+  }
 
   setType(type) {
 
