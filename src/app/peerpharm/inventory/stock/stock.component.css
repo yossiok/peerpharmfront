@@ -20,7 +20,7 @@ body {
 
 }
 
-.tableFixHead          { overflow-y: auto; height: 700px;background:rgba(0, 0, 255, 0.13); }
+.tableFixHead          { overflow-y: auto; height: 800px;background:rgba(0, 0, 255, 0);padding:0px; }
 .tableFixHead thead th { position: sticky; top: -5px; background:rgb(17, 17, 223); }
 
 /* Just common table stuff. Really. */

@@ -327,20 +327,36 @@ debugger;
         o.quantityProduced = sum;
 
       })
+
+      orderItems.forEach(o=>
+        {
+        
+          let allImp=this.allForms.filter(x=>x.orderNumber ==  o.orderNumber && x.itemN == o.itemNumber );
+          let sum=0;
+          allImp.forEach(f=>{
+            if(f.totalUnits) {
+              sum+=Number(f.totalUnits)
+            }
+      
+          });
+          o.totalUnits = sum;
+  
+        })
+   
  
 
 
 
 
-    for (let i = 0; i < allForms.length; i++) {
-      for (let j = 0; j < orderItems.length; j++) {
-       if(allForms[i].itemN == orderItems[j].itemNumber) {
-         orderItems[j].totalUnits = allForms[i].totalUnits
-       }
+    // for (let i = 0; i < allForms.length; i++) {
+    //   for (let j = 0; j < orderItems.length; j++) {
+    //    if(allForms[i].itemN == orderItems[j].itemNumber) {
+    //      orderItems[j].totalUnits = allForms[i].totalUnits
+    //    }
         
-      }
+    //   }
       
-    }
+    // }
   
 
 
