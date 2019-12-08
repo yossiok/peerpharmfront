@@ -220,10 +220,10 @@
           <!-- <th style="padding:5px"><b>מק"ט פריט/ספק</b></th> -->
           <th style="width:25%; padding:5px"><b>שם</b></th>
           <!-- <th style="padding:5px"><b>סוג</b></th> -->
-          <th style="width:9%; padding:5px"><b>כמות</b></th>
-          <th style="width:9%; padding:5px"><b>Sticker Language</b></th>
-          <th style="width:9%; padding:5px"></th>
           <th style="width:9%; padding:5px"><b>כמות מוקצת</b></th>
+          <th style="width:9%; padding:5px"><b>כמות</b></th>
+          <th style="width:9%; padding:5px"></th>
+         
           <th style="width:9; padding:5px"><b>תמונה</b></th>
           <!-- <th style="padding:5px"><b>הזמנת רכש</b></th>
             <th style="padding:5px"><b>כמות להזמנת רכש</b></th> -->
@@ -246,8 +246,10 @@
           <!-- <td>{{component.componentNS}}</td> -->
           <td style="width:25%;">{{component.componentName}}</td>
           <!-- <td>{{component.componentType}}</td> -->
+          
+          <td style="width:9%">{{component.productAlloAmount}} <img (click)="openAllocatedProducts(component.componentN)" src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
+            style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
           <td style="width:9%;">{{component.amount}}</td>
-          <td style="width:9%"></td>
           <td style="width:9%;"><button class="btn btn-info"
               (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
           <td style="width:9%;">
@@ -262,7 +264,7 @@
               
             </div>
           </td> -->
-          <td style="width:7%;"></td>
+         
           <td style="width:7%;">
             <img (click)="deleteStockItemValidation(component.componentN)" src="../../../../assets/images/deleteBtn.png"
               alt="delete stock item" style="width: 60px ; cursor: pointer; ">
@@ -1273,6 +1275,38 @@
                 <td>{{i+1}}</td>
                 <td>{{order.orderNumber}}</td>
                 <td>{{order.allocatedAmount}}</td>
+              </tr>
+            </tbody>
+          </table>
+    
+  </div>
+
+</div>
+</div>
+
+<div style="height:0px !important" *ngIf="openProductAmountModal==true" id="myModal3" class="modal3"
+  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
+
+  <!-- Modal content -->
+  <div style="width:800px !important" class="modal-content" id='modelC'>
+    <div style="width:800px !important;" id="material-header" class="modal-header">
+        <span class="close" id="closeId3" (click)="openProductAmountModal=false;">&times;</span>
+      <h2 style="text-align: center">{{openModalHeader}}</h2><br>
+    </div>
+    <div style="height: auto !important;width:800px !important;overflow:scroll" class="container" id="material-body" class="modal-body">
+        <table style="background:white;" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Orders</th>
+                <th scope="col">Allocated Amount</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr *ngFor="let order of allocatedProducts;let i=index">
+                <td>{{i+1}}</td>
+                <td>{{order.orderNumber}}</td>
+                <td>{{order.allocatedQuantity}}</td>
               </tr>
             </tbody>
           </table>

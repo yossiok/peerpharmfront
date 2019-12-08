@@ -72,6 +72,7 @@ export class StockComponent implements OnInit {
   openAmountsModal: boolean = false;
   openProcurementModal: boolean = false;
   openOrderAmountsModal: boolean = false;
+  openProductAmountModal: boolean = false;
   procurementModalHeader: string;
   openModalHeader: string;
   components: any[];
@@ -81,6 +82,7 @@ export class StockComponent implements OnInit {
   tempHiddenImgSrc: any;
   procurmentQnt: Number;
   allocatedOrders:any[];
+  allocatedProducts:any[];
   amountsModalData: any;
   itemAmountsData: any[];
   itemAmountsWh: any[];
@@ -1036,6 +1038,20 @@ export class StockComponent implements OnInit {
     this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data=>{
      
       this.allocatedOrders = data[0].allAllocatedOrders
+  });
+    
+ 
+
+  }
+  async openAllocatedProducts(componentN) {
+
+    debugger
+
+    this.openModalHeader = "הקצאות מלאי"
+     this.openProductAmountModal = true; 
+    this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data=>{
+     
+      this.allocatedProducts = data[0].productAllocation
   });
     
  
