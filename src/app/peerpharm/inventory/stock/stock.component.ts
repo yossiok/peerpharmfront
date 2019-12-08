@@ -59,7 +59,8 @@ export class StockComponent implements OnInit {
   }
   alternativeSupplier: any = {
     name:'',
-    material:''
+    material:'',
+    price:''
   }
   alterSuppliers: any[];
   buttonColor: string = 'white';

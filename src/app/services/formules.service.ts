@@ -88,6 +88,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules?byParent="+parent;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllParents(){
+    let url = this.baseUrl + "formules/allParentsFormules";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getFormuleByNumber(number){
     let url = this.baseUrl + "formules?byNumber="+number;

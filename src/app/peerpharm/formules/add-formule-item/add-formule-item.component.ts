@@ -13,6 +13,7 @@ export class AddFormuleItemComponent implements OnInit {
   itemsForm: FormGroup;
   phValue: any;
   materials: any[];
+  percentageCalculated:Number = 0;
   @Output() itemAdded = new EventEmitter();
   @Input() itemInfo :any;
   @Input() phaseInfo :any;
@@ -27,7 +28,7 @@ export class AddFormuleItemComponent implements OnInit {
       itemName: ['', Validators.required],
       itemInstructions: ['', ],
       quantity: [0,],
-      quantityUnits: ['gr', Validators.required],
+      quantityUnits: ['gr'],
       percentage: [null, Validators.required],
       temp: [null, ],
       formuleId: ['', Validators.required],
@@ -39,6 +40,7 @@ export class AddFormuleItemComponent implements OnInit {
     this.adjustFormData();
   }
   ngOnInit() {
+    
     this.getAllMaterials();
     this.adjustFormData();
     
@@ -56,6 +58,7 @@ export class AddFormuleItemComponent implements OnInit {
     debugger
     if(this.itemsForm.valid){
       const newItemAdded = this.itemsForm.value;
+
       this.itemAdded.emit(newItemAdded);  
     }else{
       // toaster

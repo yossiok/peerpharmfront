@@ -479,13 +479,14 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   searchCompNumber(ev, src) {
+    debugger;
     var compNumber = ev.target.value;
     var itemType = "component"
     src
     switch (src) {
       case 'productionInput':
         if (compNumber != "") {
-          this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
+          this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
             data
             this.itemShown.productionType = data[0].componentType
             this.itemShown.productionImage = data[0].img
@@ -670,8 +671,10 @@ export class ItemdetaisComponent implements OnInit {
        
         return "green";
       
-      } else {
+      } if (this.itemShown.status === 'notActive') {
 
+        return "backgroundRed"
+      } if (this.itemShown.status === 'active'){
         return "red"
       }
 

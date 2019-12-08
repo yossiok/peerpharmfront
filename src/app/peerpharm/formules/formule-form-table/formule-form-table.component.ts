@@ -7,6 +7,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 })
 export class FormuleFormTableComponent implements OnInit {
   phases:Array<any>;
+  calcultatedPercentages:any
   constructor() { }
   @Input() formulePhases: Array<any>;
   @Output() loadPhase = new EventEmitter();
@@ -24,10 +25,13 @@ export class FormuleFormTableComponent implements OnInit {
 }
 
   ngOnInit() {
+    debugger;
     this.phases= this.formulePhases;
+
     // getPhaseItems
   }
   loadPhaseToForm(phase){
+    debugger
     this.loadPhase.emit(phase);
   }
 

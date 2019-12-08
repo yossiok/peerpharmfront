@@ -20,6 +20,7 @@ export class AllFormulesComponent implements OnInit {
   isCollapsed:boolean = false;
   closeResult: string;
   updateItems:any;
+  allParentsFormules:any[];
 
   addItem = {
     itemNumber:'',
@@ -65,6 +66,7 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('formuleParent') formuleParent: ElementRef;
   @ViewChild('formulePhaseName') formulePhaseName: ElementRef;
   @ViewChild('formulePhaseIns') formulePhaseIns: ElementRef;
+  @ViewChild('formuleParentName') formuleParentName: ElementRef;
 
   constructor(private invtSer:InventoryService,private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal) { }
 
@@ -79,6 +81,7 @@ export class AllFormulesComponent implements OnInit {
   ngOnInit() {
     this.getAllFormules();
     this.getAllMaterials();
+    this. getAllParentsFormules();
   }
 
   getAllMaterials() { 
@@ -87,6 +90,14 @@ export class AllFormulesComponent implements OnInit {
     })
   }
 
+
+  getAllParentsFormules(){
+    this.formuleService.getAllParents().subscribe(data=>{
+      debugger;
+      this.allParentsFormules = data;
+
+    })
+  }
 
   addNewItem() {
 
@@ -221,6 +232,7 @@ saveEdit(currdoc) {
     this.currentDoc.client = this.formuleClient.nativeElement.value.trim();
     this.currentDoc.lastUpdate = this.formuleLastUpdate.nativeElement.value.trim();
     this.currentDoc.parent = this.formuleParent.nativeElement.value.trim();
+    this.currentDoc.parentName = this.formuleParentName.nativeElement.value.trim();
     
     if(confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
       this.updateDocument()
