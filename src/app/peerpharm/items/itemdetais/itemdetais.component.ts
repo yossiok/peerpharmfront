@@ -29,6 +29,7 @@ export class ItemdetaisComponent implements OnInit {
   itemBatches:any[];
   ordersItem:any[];
   allCostumers:any[]; 
+  allCostumersCopy:any[]; 
 
   mainLanguage: Boolean = true;
   mainLanguageTwo: Boolean = true;
@@ -47,6 +48,7 @@ export class ItemdetaisComponent implements OnInit {
   grossWeightUnit: Boolean = true
   peerPharmTone: Boolean = true
   laserAndExp: Boolean = true;
+  remarksAlert: Boolean = false;
 
 
   productionType: '';
@@ -198,6 +200,7 @@ export class ItemdetaisComponent implements OnInit {
     imgMain1: '',
     imgMain2: '',
     imgMain3: '',
+    imgMain4: '',
 
     extraImage1: '',
     extraImage2: '',
@@ -466,20 +469,28 @@ export class ItemdetaisComponent implements OnInit {
   getAllCostumers(){
     this.costumersService.getAllCostumers().subscribe(data=>{
       this.allCostumers = data;
+      this.allCostumersCopy = data;
     })
   }
 
   fillCostumerDetails(ev){
     debugger;
-   var brand = ev.target.value;
-   var costumer = this.allCostumers.find(costumer=>costumer.brand == brand);
 
-   this.itemShown.costumerId = costumer.costumerId;
-   this.itemShown.costumerName = costumer.costumerName
+    ev.target.value;
+    var costumerName = ev.target.value;
+
+   var costumer = this.allCostumers.find(costumer=>costumer.costumerName == costumerName )
+
+   this.itemShown.costumerId = costumer.costumerId
+   
+   
   }
 
   searchCompNumber(ev, src) {
     debugger;
+
+    
+
     var compNumber = ev.target.value;
     var itemType = "component"
     src
@@ -659,8 +670,15 @@ export class ItemdetaisComponent implements OnInit {
 
   jumpingRemark(){
     debugger;
-    if(this.itemShown.impRemarks) {
-      alert('שים לב:'+" "+ this.itemShown.impRemarks)
+    if(this.itemShown.proRemarks != "" &&  this.itemShown.proRemarks != undefined && this.itemShown.proRemarks != null) {
+      if(this.remarksAlert == true){
+        this.remarksAlert = false;
+      } 
+      else { 
+        this.remarksAlert = true;
+      }
+      
+   
     }
   }
 
@@ -721,6 +739,9 @@ export class ItemdetaisComponent implements OnInit {
         debugger
         this.item = res[0];
         this.itemShown = res[0];
+        var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
+        this.allCostumers = costumer
+   
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
         //null as moment format returns="invalid date"
         if (this.itemShown.licsensDate != null) {
@@ -860,6 +881,7 @@ export class ItemdetaisComponent implements OnInit {
   main1File: boolean = false;
   main2File: boolean = false;
   main3File: boolean = false;
+  main4File: boolean = false;
 
   labelText: boolean = false;
   plateText: boolean = false;
@@ -900,6 +922,9 @@ export class ItemdetaisComponent implements OnInit {
         break;
       case 'main3':
         this.main3File = true;
+        break;
+      case 'main4':
+        this.main4File = true;
         break;
       default:
         break;
@@ -1144,6 +1169,11 @@ export class ItemdetaisComponent implements OnInit {
             this.main3File = false;
             this.item.imgMain3 = '' + event.body;
             this.itemShown.imgMain3 = '' + event.body;
+            break;
+          case 'main4':
+            this.main4File = false;
+            this.item.imgMain4 = '' + event.body;
+            this.itemShown.imgMain4 = '' + event.body;
             break;
           default:
             break;

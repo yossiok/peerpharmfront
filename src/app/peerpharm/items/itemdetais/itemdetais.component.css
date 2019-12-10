@@ -110,5 +110,28 @@ transform: scale(20);
     text-shadow: 3px 3px 3px rgb(0, 0, 0);
     
 }
-
+.alert {
+    padding: 70px;
+    background-color: #f44336;
+    color: white;
+    position: absolute;
+    z-index: 9999;
+    width:500px;
+    font-size: 22px;
+  }
+  
+  .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 40px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .closebtn:hover {
+    color: black;
+  }
 

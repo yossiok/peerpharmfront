@@ -1029,7 +1029,9 @@
                 <tr>
                   <th style="cursor: pointer" (click)="open(supplierList)"><u>Supplier</u></th>
                   <td>
-                      <input type="text" class="itemInput" [(ngModel)]="resMaterial.suplierName"/>
+                      <select class="itemInput" [(ngModel)]="resMaterial.suplierName">
+                        <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
+                      </select>
                   </td>
                 </tr>
 
@@ -1112,9 +1114,29 @@
                         <option value="nis">NIS</option>
                         <option value="gbp">GBP</option>
                         <option value="eur">EUR</option>
+                        <option value="yen">YEN</option>
                       </select>
                   </td>
                 </tr>
+                <tr>
+                  <th>Price After Loading</th>
+                  <td>
+                      <input [(ngModel)]="resMaterial.priceLoading" type="text" class="itemInput"/>
+                    </td>
+                </tr>
+                <tr>
+                  <th>Coin After Loading</th>
+                  <td>
+                    <select [(ngModel)]="resMaterial.coinLoading" class="itemInput">
+                        <option value="usd">USD</option>
+                        <option value="nis">NIS</option>
+                        <option value="gbp">GBP</option>
+                        <option value="eur">EUR</option>
+                        <option value="yen">YEN</option>
+                      </select>
+                  </td>
+                </tr>
+                
 
                 <tr>
                   <th>Material</th>

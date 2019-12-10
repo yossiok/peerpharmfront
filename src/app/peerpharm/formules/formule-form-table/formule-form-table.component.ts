@@ -24,6 +24,7 @@ export class FormuleFormTableComponent implements OnInit {
 
 }
 
+
   ngOnInit() {
     debugger;
     this.phases= this.formulePhases;

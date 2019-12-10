@@ -26,7 +26,7 @@ export class SuppliersService {
 
   getAllSuppliers(){
     
-    let url = this.baseUrl + "supplier";
+    let url = this.baseUrl + "supplier/getsuppliers";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

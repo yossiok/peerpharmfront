@@ -1,9 +1,16 @@
-<!-- <div class="container-fluid">
+
+<!-- 
+<div class="container-fluid">
   <div style="height:20px" class="row"></div>
   <div class="row">
     <div class="col"></div>
     <div class="col">
       <h1 [ngClass]="checkItemStatus()" class="itemHeadline">ITEM TREE</h1>
+      <div *ngIf="remarksAlert==true" class="alert">
+        <span dir="rtl" class="closebtn" (click)="jumpingRemark()">&times;</span> 
+        <strong>שים לב!</strong> {{this.itemShown.proRemarks}}
+      </div>
+      
     </div>
     <div class="col"></div>
   </div>
@@ -95,48 +102,48 @@
                   <div>
                     <div *ngIf="mainLanguage==true" class="productionLabel">
                       <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="mainLanguage==true"></i>
+                        class="fa fa-minus" *ngIf="mainLanguage==true && alowUserEditItemTree==true"></i>
                       <label>Main Language</label>
                     </div>
                     <div *ngIf="mainLanguage==false" class="productionLabel">
                       <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="mainLanguage==false"></i>
+                        class="fa fa-plus" *ngIf="mainLanguage==false && alowUserEditItemTree==true"></i>
                       <label>Main Language</label>
                     </div>
                   </div>
                   <div>
                     <div *ngIf="mainLanguageTwo==true" class="productionLabel">
                       <i (click)="addRemoveInputs('mainLangTwo')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="mainLanguageTwo==true"></i>
+                        class="fa fa-minus" *ngIf="mainLanguageTwo==true && alowUserEditItemTree==true"></i>
                       <label>Language 2</label>
                     </div>
                     <div *ngIf="mainLanguageTwo==false" class="productionLabel">
                       <i (click)="addRemoveInputs('mainLangTwo')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="mainLanguageTwo==false"></i>
+                        class="fa fa-plus" *ngIf="mainLanguageTwo==false && alowUserEditItemTree==true"></i>
                       <label>Language 2</label>
                     </div>
                   </div>
                   <div>
                     <div *ngIf="mainLanguageThree==true" class="productionLabel">
                       <i (click)="addRemoveInputs('mainLangThree')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="mainLanguageThree==true"></i>
+                        class="fa fa-minus" *ngIf="mainLanguageThree==true && alowUserEditItemTree==true"></i>
                       <label>Language 3</label>
                     </div>
                     <div *ngIf="mainLanguageThree==false" class="productionLabel">
                       <i (click)="addRemoveInputs('mainLangThree')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="mainLanguageThree==false"></i>
+                        class="fa fa-plus" *ngIf="mainLanguageThree==false && alowUserEditItemTree==true"></i>
                       <label>Language 3</label>
                     </div>
                   </div>
                   <div>
                     <div *ngIf="department==true" class="productionLabel">
                       <i (click)="addRemoveInputs('department')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="department==true"></i>
+                        class="fa fa-minus" *ngIf="department==true && alowUserEditItemTree==true"></i>
                       <label>Department</label>
                     </div>
                     <div *ngIf="department==false" class="productionLabel">
                       <i (click)="addRemoveInputs('department')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="department==false"></i>
+                        class="fa fa-plus" *ngIf="department==false && alowUserEditItemTree==true"></i>
                       <label>Department</label>
                     </div>
                   </div>
@@ -177,12 +184,12 @@
                   <div>
                     <div *ngIf="volumeMl==true" class="productionLabel">
                       <i (click)="addRemoveInputs('volumeMl')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="volumeMl==true"></i>
+                        class="fa fa-minus" *ngIf="volumeMl==true && alowUserEditItemTree==true"></i>
                       <label>Volume(ml)</label>
                     </div>
                     <div *ngIf="volumeMl==false" class="productionLabel">
                       <i (click)="addRemoveInputs('volumeMl')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="volumeMl==false"></i>
+                        class="fa fa-plus" *ngIf="volumeMl==false && alowUserEditItemTree==true"></i>
                       <label>Volume(ml)</label>
                     </div>
                   </div>
@@ -190,12 +197,12 @@
                   <div>
                     <div *ngIf="netWeightK==true" class="productionLabel">
                       <i (click)="addRemoveInputs('netWeightK')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="netWeightK==true"></i>
+                        class="fa fa-minus" *ngIf="netWeightK==true && alowUserEditItemTree==true"></i>
                       <label>Net Weight(gr)</label>
                     </div>
                     <div *ngIf="netWeightK==false" class="productionLabel">
                       <i (click)="addRemoveInputs('netWeightK')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="netWeightK==false"></i>
+                        class="fa fa-plus" *ngIf="netWeightK==false && alowUserEditItemTree==true"></i>
                       <label>Net Weight(gr)</label>
                     </div>
                   </div>
@@ -203,12 +210,12 @@
                   <div>
                     <div *ngIf="grossWeightUnit==true" class="productionLabel">
                       <i (click)="addRemoveInputs('grossWeightUnit')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="grossWeightUnit==true"></i>
+                        class="fa fa-minus" *ngIf="grossWeightUnit==true && alowUserEditItemTree==true"></i>
                       <label style="font-size: 12px;font-weight: bold;">Gross Weight Unit(gr)</label>
                     </div>
                     <div *ngIf="grossWeightUnit==false" class="productionLabel">
                       <i (click)="addRemoveInputs('grossWeightUnit')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="grossWeightUnit==false"></i>
+                        class="fa fa-plus" *ngIf="grossWeightUnit==false && alowUserEditItemTree==true"></i>
                       <label style="font-size: 12px;font-weight: bold;">Gross Weight Unit(gr)</label>
                     </div>
                   </div>
@@ -216,12 +223,12 @@
                   <div>
                     <div *ngIf="peerPharmTone==true" class="productionLabel">
                       <i (click)="addRemoveInputs('peerPharmTone')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="peerPharmTone==true"></i>
+                        class="fa fa-minus" *ngIf="peerPharmTone==true && alowUserEditItemTree==true"></i>
                       <label>Peer Pharm Tone#</label>
                     </div>
                     <div *ngIf="peerPharmTone==false" class="productionLabel">
                       <i (click)="addRemoveInputs('peerPharmTone')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="peerPharmTone==false"></i>
+                        class="fa fa-plus" *ngIf="peerPharmTone==false && alowUserEditItemTree==true"></i>
                       <label>Peer Pharm Tone#</label>
                     </div>
                   </div>
@@ -260,104 +267,112 @@
               <div class="row">
                 <div class="col-2">
                   <div>
+                    
                     <div *ngIf="production==true" class="productionLabel">
                       <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="production==true"></i>
-                      <label>Production 1</label>
+                        class="fa fa-minus" *ngIf="production==true && alowUserEditItemTree==true"></i>
+                      <label>Bottle/Jar</label> 
                     </div>
                     <div *ngIf="production==false" class="productionLabel">
                       <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="production==false"></i>
-                      <label>Production 1</label>
+                        class="fa fa-plus" *ngIf="production==false && alowUserEditItemTree==true"></i>
+                      <label>Bottle/Jar</label>
                     </div>
                   </div>
 
                   <div>
+                     
                     <div *ngIf="productionTwo==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="productionTwo==true"></i>
-                      <label>Production 2</label>
+                        class="fa fa-minus" *ngIf="productionTwo==true && alowUserEditItemTree==true"></i>
+                      <label>Pump/Seal</label>
                     </div>
                     <div *ngIf="productionTwo==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="productionTwo==false"></i>
-                      <label>Production 2</label>
+                        class="fa fa-plus" *ngIf="productionTwo==false && alowUserEditItemTree==true"></i>
+                      <label>Pump/Seal</label>
                     </div>
                   </div>
 
                   <div>
+                    
                     <div *ngIf="productionThree==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionThree')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="productionThree==true"></i>
-                      <label>Production 3</label>
+                        class="fa fa-minus" *ngIf="productionThree==true && alowUserEditItemTree==true"></i>
+                      <label>Cap/OverCap</label>
                     </div>
                     <div *ngIf="productionThree==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionThree')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="productionThree==false"></i>
-                      <label>Production 3</label>
+                        class="fa fa-plus" *ngIf="productionThree==false && alowUserEditItemTree==true"></i>
+                      <label>Cap/OverCap</label>
                     </div>
                   </div>
 
                   <div>
+                    
                     <div *ngIf="productionFour==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFour')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="productionFour==true"></i>
-                      <label>Production 4</label>
+                        class="fa fa-minus" *ngIf="productionFour==true && alowUserEditItemTree==true"></i>
+                      <label>Stage</label>
                     </div>
                     <div *ngIf="productionFour==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFour')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="productionFour==false"></i>
-                      <label>Production 4</label>
+                        class="fa fa-plus" *ngIf="productionFour==false && alowUserEditItemTree==true"></i>
+                      <label>Stage</label>
                     </div>
                   </div>
 
                   <div>
+                   
                     <div *ngIf="productionFive==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFive')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="productionFive==true"></i>
-                      <label>Production 5</label>
+                        class="fa fa-minus" *ngIf="productionFive==true && alowUserEditItemTree==true"></i>
+                      <label>Package</label>
                     </div>
                     <div *ngIf="productionFive==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFive')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="productionFive==false"></i>
-                      <label>Production 5</label>
+                        class="fa fa-plus" *ngIf="productionFive==false && alowUserEditItemTree==true"></i>
+                      <label>Package</label>
                     </div>
                   </div>
 
                   <div>
+                   
                     <div *ngIf="productionSix==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSix')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="productionSix==true"></i>
-                      <label>Production 6</label>
+                        class="fa fa-minus" *ngIf="productionSix==true && alowUserEditItemTree==true"></i>
+                      <label>Cellophane</label>
                     </div>
                     <div *ngIf="productionSix==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSix')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="productionSix==false"></i>
-                      <label>Production 6</label>
+                        class="fa fa-plus" *ngIf="productionSix==false && alowUserEditItemTree==true"></i>
+                      <label>Cellophane</label>
                     </div>
                   </div>
                   <div>
+                  
                     <div *ngIf="productionSeven==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSeven')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="productionSeven==true"></i>
-                      <label>Production 7</label>
+                        class="fa fa-minus" *ngIf="productionSeven==true && alowUserEditItemTree==true"></i>
+                      <label>Carton</label>
                     </div>
                     <div *ngIf="productionSeven==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSeven')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="productionSeven==false"></i>
-                      <label>Production 7</label>
+                        class="fa fa-plus" *ngIf="productionSeven==false && alowUserEditItemTree==true"></i>
+                      <label>Carton</label>
                     </div>
                   </div>
                   <div>
+                    
                     <div *ngIf="productionEight==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionEight')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="productionEight==true"></i>
-                      <label>Production 8</label>
+                        class="fa fa-minus" *ngIf="productionEight==true && alowUserEditItemTree==true"></i>
+                      <label>Pallet</label>
                     </div>
                     <div *ngIf="productionEight==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionEight')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="productionEight==false"></i>
-                      <label>Production 8</label>
+                        class="fa fa-plus" *ngIf="productionEight==false && alowUserEditItemTree==true"></i>
+                      <label>Pallet</label>
                     </div>
                   </div>
 
@@ -681,12 +696,12 @@
                   <div>
                     <div *ngIf="laserAndExp==true" class="productionLabel">
                       <i (click)="addRemoveInputs('laserAndExp')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="laserAndExp==true"></i>
+                        class="fa fa-minus" *ngIf="laserAndExp==true && alowUserEditItemTree==true"></i>
                       <label>Laser & Exp</label>
                     </div>
                     <div *ngIf="laserAndExp==false" class="productionLabel">
                       <i (click)="addRemoveInputs('laserAndExp')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="laserAndExp==false"></i>
+                        class="fa fa-plus" *ngIf="laserAndExp==false && alowUserEditItemTree==true"></i>
                       <label>Laser & Exp</label>
                     </div>
                   </div>
@@ -887,15 +902,15 @@
                 <div class="col-3">
 
                   <div>
-                    <select (change)="fillCostumerDetails($event)" [(ngModel)]="itemShown.brand"
-                      class="productionInput">
-                      <option *ngFor="let costumer of allCostumers" [value]="costumer.brand">{{costumer.brand}}</option>
-                    </select>
+                    <input [(ngModel)]="itemShown.name" class="productionInput" disabled/>
                   </div>
 
                   <input [(ngModel)]="itemShown.costumerId" type="text" class="productionInput" disabled>
 
-                  <input [(ngModel)]="itemShown.costumerName" type="text" class="productionInput" disabled>
+                  <select (change)="fillCostumerDetails($event)" [(ngModel)]="itemShown.costumerName"class="productionInput">
+                    <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}</option>
+                  </select>
+
                 </div>
 
                 <div class="col-2">
@@ -1173,7 +1188,15 @@
                         <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
                         <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
                         <br>
-                        <img id="id_img3" [src]=itemShown.imgMain3>
+                        <img alt="אריזה אישית" id="id_img3" [src]=itemShown.imgMain3>
+                  
+                        
+                      </div>
+                      <div style='display: inline-table'>
+                        <input type="file" id="id_itemImg4" (change)="selectFile($event, 'main4')"><br>
+                        <button class="btn" [disabled]="!selectedFiles" (click)="upload('main4')" *ngIf='main4File'>>></button>
+                        <br>
+                        <img alt="קרטון לפני סגירה" id="id_img4" [src]=itemShown.imgMain4>
                   
                         
                       </div>
@@ -1239,7 +1262,7 @@
     </div>
     <div class="col-4"></div>
   </div>
-</div>  --> 
+</div>   -->
 
 <!------------- Batches Modal  --------------->
 <ng-template #batches let-c="close" let-d="dismiss">
@@ -1345,7 +1368,7 @@
   </h1>
 </div>   -->
 
- <table border=0 background='bg112.jpg' style="background-size: cover">
+  <table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>
@@ -2114,4 +2137,4 @@
   
       <button *ngIf="alowUserEditItemTree" class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
       <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>    
-      -->
+      --> 

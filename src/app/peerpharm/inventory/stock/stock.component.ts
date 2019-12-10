@@ -19,6 +19,7 @@ import { Console } from '@angular/core/src/console';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { OrdersService } from 'src/app/services/orders.service';
+import { SuppliersService } from 'src/app/services/suppliers.service';
 
 
 @Component({
@@ -135,6 +136,7 @@ export class StockComponent implements OnInit {
   newTransportDetails: FormGroup;
   transportationItem: FormGroup;
   loadingExcel: Boolean = false;
+  allSuppliers:any[];
 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
@@ -175,6 +177,8 @@ export class StockComponent implements OnInit {
     alternativeMaterial:"",
     price:"",
     coin:"",
+    coinLoading:"",
+    priceLoading:"",
     measurement:"",
     notInStock:false,
     inciName:"",
@@ -190,7 +194,7 @@ export class StockComponent implements OnInit {
   closeResult: string;
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+  constructor(private supplierService:SuppliersService,private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder, ) {
   }
@@ -250,6 +254,7 @@ export class StockComponent implements OnInit {
 
   async ngOnInit() {
     this.getUser();
+    this.getAllSuppliers()
     this.filterbyNum.nativeElement.value = '';
     // this.filterByType.nativeElement='';
     // this.filterByCategory.nativeElement='';
@@ -269,6 +274,12 @@ export class StockComponent implements OnInit {
 
   }
 
+
+  getAllSuppliers() {
+    this.supplierService.getAllSuppliers().subscribe(data=>{
+      this.allSuppliers = data;
+    })
+  }
 
   //************************************************* */
   //   exportMovementsAsXLSX() {
