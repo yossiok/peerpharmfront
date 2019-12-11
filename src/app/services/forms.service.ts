@@ -18,6 +18,28 @@ export class FormsService {
   private baseUrl = '/';
 
 
+  saveCalibrationWeek(calibrationWeekForm){
+    debugger;
+    let url = this.baseUrl + "forms/saveCalibrationWeekForm";
+    return this.http.post(url, JSON.stringify(calibrationWeekForm), this.options).pipe(map(res => res.json()));
+  }
+  addNewLibraTest(libraCalibTest){
+    debugger;
+    let url = this.baseUrl + "forms/addNewLibraCalibTest";
+    return this.http.post(url, JSON.stringify(libraCalibTest), this.options).pipe(map(res => res.json()));
+  }
+
+  editCalibrationWeek(calibrationWeekFormEdit){
+    debugger;
+    let url = this.baseUrl + "forms/editCalibrationWeekForm";
+    return this.http.post(url, JSON.stringify(calibrationWeekFormEdit), this.options).pipe(map(res => res.json()));
+  }
+
+  getCalibrationFormByYear(calibrationForm) {
+    let url = this.baseUrl + 'forms?getCalibrationFormByYear='+calibrationForm;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getAllForms() {
     let url = this.baseUrl + 'formDetails';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -38,4 +60,15 @@ export class FormsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+
+  // Libra List // 
+
+  getAllLibraList(balanceSerialNum) {
+    let url = this.baseUrl + 'forms?getAllLibraList='+balanceSerialNum;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getAllLibraCalibTests() {
+    let url = this.baseUrl + 'forms/getAllLibraCalibTests';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 }

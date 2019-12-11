@@ -393,6 +393,14 @@ export const ROUTES: RouteInfo[] = [
           class: '',
           extralink: false,
           submenu: []
+        },
+        {
+          path: '/peerpharm/forms/checkingforms',
+          title: 'Check Forms',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
         }
 
       ]

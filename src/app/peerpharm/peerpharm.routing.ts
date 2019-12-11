@@ -20,6 +20,7 @@ import {ContentComponent} from './taskboard/core/content/content.component'
 import { BatchesComponent } from './batches/batches.component';
 import {CostumersListComponent} from './costumers/costumers-list/costumers-list.component'
 import { FormslistComponent } from './forms/formslist/formslist.component';
+import { CheckingformsComponent } from './forms/checkingforms/checkingforms.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
 import { MakeupComponent } from './schedule/makeup/makeup.component';
@@ -325,6 +326,14 @@ export const PeerPharmRputs: Routes =[
       title : 'Forms'
     },
     component:FormdetailsComponent
+  }
+  ,
+  {
+    path :'forms/checkingforms',
+    data :{
+      title : 'Check Forms'
+    },
+    component:CheckingformsComponent
   }
   ,
   {

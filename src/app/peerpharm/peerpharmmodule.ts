@@ -40,6 +40,7 @@ import {BatchesMkpComponent} from './batches/batches-mkp/batches-mkp.component'
 import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component';
 import {PrintingComponent} from './schedule/printing/printing.component';
 import { MakeupComponent } from './schedule/makeup/makeup.component';
+import { CheckingformsComponent } from './forms/checkingforms/checkingforms.component';
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
@@ -148,6 +149,7 @@ import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated
   
   ],
   declarations: [
+    CheckingformsComponent,
     AllFormulesComponent,
     FormuleComponent,
     AddFormuleComponent,
