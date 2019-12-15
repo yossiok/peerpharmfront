@@ -41,6 +41,8 @@ import { CostumersListComponent } from './costumers/costumers-list/costumers-lis
 import {PrintingComponent} from './schedule/printing/printing.component';
 import { MakeupComponent } from './schedule/makeup/makeup.component';
 import { CheckingformsComponent } from './forms/checkingforms/checkingforms.component';
+import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
+import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
@@ -165,6 +167,8 @@ import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated
     ScheduleOrdersComponent,
     ProductionOrdersComponent,
     AddFormuleItemComponent,
+    CleaningFormsComponent,
+    FirstAidComponent,
     ScheduleComponent,
     BarcodePrintComponent,
     ItemslistComponent,

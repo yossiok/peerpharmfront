@@ -1,0 +1,233 @@
+<ngb-tabset>
+  <ngb-tab title="Entrance Floor - Этаж">
+    <ng-template ngbTabContent>
+  
+      <div style="text-align: center;padding:20px;" class="container-fluid">
+
+        <div style="text-align: center;" class="row">
+          <div class="col-12">
+            <h2> קומת כניסה</h2>
+            <h2>Entrance Floor - Daily Cleaning</h2>
+          </div>
+        </div>
+
+   
+
+        <div style="text-align: center;" class="row">
+          <div style="text-align: center;" class="col-12">
+
+              <input [(ngModel)]="dailyCleanForm.date" style="margin:10px;" type="date" placeholder="Date/תאריך" ><br>
+          
+            <table style="margin-left:30%;" class="table table-responsive">
+              <thead>
+
+              </thead>
+              <tbody>
+                <tr>
+                  <td> туалеты -  мусор + уборка / Toilets - Garbage + Cleaning</td>
+                  <td><input [(ngModel)]="dailyCleanForm.bathroom" type="checkbox" ></td>
+                </tr>
+                <tr>
+                  <td>
+                    офисы - мусор + уборка / Offices - Garbage + Cleaning</td>
+                  <td><input [(ngModel)]="dailyCleanForm.offices" type="checkbox" ><br></td>
+                </tr>
+                <tr>
+                  <td> Вход - Пол + мусор + Холодильник / Entrance - Floor + Garbage + Refrigerator</td>
+                  <td><input [(ngModel)]="dailyCleanForm.entrance" type="checkbox" ><br></td>
+                </tr>
+                <tr>
+                  <td>Столовая - пол + мусор / Employees Dining Room - Floor + Garbage</td>
+                  <td><input [(ngModel)]="dailyCleanForm.employeesKitchen" type="checkbox" ><br></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button (click)="saveDailyCleanForm()" class="btn btn-success">Save/שמור</button>
+            
+          </div>
+        </div>
+
+        <div style="margin-top:100px;" class="row">
+          <div class="col-12">
+            <table style="margin-left:20%;" class="table table-responsive">
+              <thead>
+                <tr>
+                  <th>Date/תאריך</th>
+                  <th>Toilets/שירותים</th>
+                  <th>Offices/משרדים</th>
+                  <th>Entrance/כניסה</th>
+                  <th>Employees Dining Room/חדר אוכל עובדים</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let clean of allDailyCleanForms">
+                  <td>{{clean.date | date: 'dd/MM/yyyy'}}</td>
+                  <td>{{clean.bathroom}}</td>
+                  <td>{{clean.offices}}</td>
+                  <td>{{clean.entrance}}</td>
+                  <td>{{clean.employeesKitchen}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab title="Offices Floor 2 - Второй этаж">
+    <ng-template ngbTabContent>
+
+        <div style="text-align: center;padding:20px;" class="container-fluid">
+
+            <div style="text-align: center;" class="row">
+              <div class="col-12">
+                <h2>דף ניקיון יומי - קומת שניה</h2>
+                <h2>Second Floor - Daily Cleaning</h2>
+              </div>
+            </div>
+    
+     
+    
+            <div style="text-align: center;" class="row">
+              <div style="text-align: center;" class="col-12">
+    
+                  <input [(ngModel)]="dailyCleanFormSecond.date" style="margin:10px;" type="date" placeholder="Date/תאריך" ><br>
+              
+                <table style="margin-left:30%;" class="table table-responsive">
+                  <thead>
+    
+                  </thead>
+                  <tbody>
+
+                    <tr>
+                      <td>туалеты -  мусор + уборка / Toilets - Garbage + Cleaning</td>
+                      <td><input [(ngModel)]="dailyCleanFormSecond.bathroom" type="checkbox" ></td>
+                    </tr>
+
+                    <tr>
+                      <td>офисы - мусор + уборка / Offices - Garbage + Cleaning</td>
+                      <td><input [(ngModel)]="dailyCleanFormSecond.offices" type="checkbox" ><br></td>
+                    </tr>
+
+                  </tbody>
+                </table>
+    
+                <button (click)="saveDailyCleanFormSecond()" class="btn btn-success">Save/שמור</button>
+                
+              </div>
+            </div>
+
+            <div style="margin-top:100px;" class="row">
+                <div class="col-12">
+                  <table style="margin-left:30%;" class="table table-responsive">
+                    <thead>
+                      <tr>
+                        <th>Date/תאריך</th>
+                        <th>Toilets/שירותים</th>
+                        <th>Offices/משרדים</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let clean of allDailyCleanSecondForms">
+                        <td>{{clean.date | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{clean.bathroom}}</td>
+                        <td>{{clean.offices}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+    
+          </div>
+
+
+    </ng-template>
+  </ngb-tab>
+
+  <ngb-tab title="Production - Производственный цех">
+      <ng-template ngbTabContent>
+  
+          <div style="text-align: center;padding:20px;" class="container-fluid">
+  
+              <div style="text-align: center;" class="row">
+                <div class="col-12">
+                  <h2>דף ניקיון יומי - ייצור</h2>
+                  <h2>Production - Daily Cleaning</h2>
+                </div>
+              </div>
+      
+        
+              <div style="text-align: center;" class="row">
+                <div style="text-align: center;" class="col-12">
+      
+                    <input [(ngModel)]="productionDailyClean.date" style="margin:10px;" type="date" placeholder="Date/תאריך" ><br>
+                
+                  <table style="margin-left:30%;" class="table table-responsive">
+                    <thead>
+      
+                    </thead>
+                    <tbody>
+  
+                      <tr>
+                        <td>туалеты -  мусор + уборка  / Toilets - Garbage + Cleaning</td>
+                        <td><input [(ngModel)]="productionDailyClean.bathroom" type="checkbox" ></td>
+                      </tr>
+                      <tr>
+                        <td>Женские туалеты -  мусор + уборка  / Women Toilets - Garbage + Cleaning</td>
+                        <td><input [(ngModel)]="productionDailyClean.womenBathroom" type="checkbox" ></td>
+                      </tr>
+  
+                      <tr>
+                        <td>Производственный цех - пол + мусор / Production Area</td>
+                        <td><input [(ngModel)]="productionDailyClean.productionArea" type="checkbox" ><br></td>
+                      </tr>
+                      <tr>
+                        <td> цех Заполнения - - пол + мусор / Filling Area</td>
+                        <td><input [(ngModel)]="productionDailyClean.fillingArea" type="checkbox" ><br></td>
+                      </tr>
+  
+                    </tbody>
+                  </table>
+      
+                  <button (click)="saveProdDailyClean()" class="btn btn-success">Save/שמור</button>
+                  
+                </div>
+              </div>
+  
+              <div style="margin-top:100px;" class="row">
+                  <div class="col-12">
+                    <table style="margin-left:20%;" class="table table-responsive">
+                      <thead>
+                        <tr>
+                          <th>Date/תאריך</th>
+                          <th>Entrance Toilets/שירותי כניסה</th>
+                          <th>Women Toilets/שירותי נשים</th>
+                          <th>Production Area/אולם ייצור</th>
+                          <th>Filling Area/אולם מילוי</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let clean of allDailyProdCleanForms">
+                          <td>{{clean.date | date: 'dd/MM/yyyy'}}</td>
+                          <td>{{clean.bathroom}}</td>
+                          <td>{{clean.womenBathroom}}</td>
+                          <td>{{clean.productionArea}}</td>
+                          <td>{{clean.fillingArea}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+      
+            </div>
+  
+  
+      </ng-template>
+    </ngb-tab>
+
+  
+</ngb-tabset>

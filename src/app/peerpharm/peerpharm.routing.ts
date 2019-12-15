@@ -48,6 +48,8 @@ import { HistorylogsComponent } from './reports/historylogs/historylogs.componen
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
+import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
+import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -237,7 +239,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',
@@ -334,8 +336,21 @@ export const PeerPharmRputs: Routes =[
       title : 'Check Forms'
     },
     component:CheckingformsComponent
-  }
-  ,
+  },
+  {
+    path :'forms/cleaning-forms',
+    data :{
+      title : 'Cleaning Forms'
+    },
+    component:CleaningFormsComponent
+  } ,
+  {
+    path :'forms/first-aid',
+    data :{
+      title : 'First Aid'
+    },
+    component:FirstAidComponent
+  } ,
   {
     path :'notification',
     data :{

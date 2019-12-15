@@ -55,6 +55,7 @@
                 </select>
               </td>
               <td><button class="deleteBtn" (click)="deleteFormule(formule._id)">Delete</button></td>
+              <td><button class="btn btn-success" (click)="openPrint(printFormule,formule.number)">Print Formule</button></td>
               <td><button style="float:right;background: green;box-shadow: inset 0px 1px 4px 0px;border:1px solid rgb(217, 228, 217);" (click)="copyFormule(currDoc,i)">Copy Formule</button></td>
 
             <!-- <td  (click)="edit(batch._id)" ><i class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td> -->
@@ -66,6 +67,8 @@
           </tr>
         </ng-container>
       </table>
+
+      
 
 
       <ng-template  #formuleData let-modal>
@@ -209,4 +212,88 @@
           </div>
        
           </ng-template>
+
+        
+          <div   class="mainContainer container-fluid">
+
+          <ng-template   #printFormule let-modal>
+            <div id="print-section" class="modal-content">
+              <div style="text-align: center;" class="modal-header">
+                  <button class="btn btn-success" printSectionId="print-section" [printStyle]="{th : {'border': 'solid 1px'}, td : {'border': 'solid 1px', 'font-size': '20px'}}"  ngxPrint>{{updateFormule.name}}</button>
+                <h4 class="modal-title" id="modal-basic-title">{{updateFormule.number}}</h4>
+              </div>
+              <div class="modal-body">
+                <table class='table'>
+                  <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
+                    <tr>
+                      <th scope="col">Phase</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Phase Instructions</th>
+                      <th scope="col">Batch Number</th>
+                      <th scope="col">Execute</th>
+                      <th scope="col">No.</th>
+                      <th scope="col">Raw Material Name</th>
+                      
+                      <th scope="col">Weight</th>
+                      <th scope="col">Weight%</th>
+                      <th scope="col">Temp</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+            
+                  <tbody  id="table_body">
+                    <ng-container *ngFor="let phase of updateFormule.phases;" style="border: solid black 2px;">
+                      <ng-container >
+                        
+                        <tr  *ngFor="let item of phase.items ; let i = index;">
+                          <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase" (click)="loadPhaseToForm(phase)">{{phase.phaseNumber}}</td>
+                          <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td>
+                          <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseInstructions}}</td>
+                          <td></td>
+                          <td></td>
+                          <td>{{item.itemNumber}}</td>
+                          <td>{{item.itemName}}</td>
+                          <td>{{item.itemInstructions}}</td>
+                          <td>{{item.quantity}}&nbsp; {{item.quantityUnits}}</td>
+                          <td>{{item.percentage}}</td>
+                          <td>{{item.temp}}</td>
+                          
+                        </tr>        
+                      </ng-container>
+                      </ng-container>
+                  
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer"><br>
+
+                  <div style="text-align: center;">Exp:________</div><br><br>
+                  <table style="text-align: center;margin-left:auto;margin-right:auto"  class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th style="height:30px">PH Range required</th>
+                        <th style="height:30px">PH Test</th>
+                        <th style="height:30px">Approval Filling Material</th>
+                        <th style="height:30px">Operation Signature</th>
+                        <th style="height:30px">Examiner Signature</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <td style="height:40px"></td>
+                      <td style="height:40px"></td>
+                      <td style="height:40px"></td>
+                      <td style="height:40px"></td>
+                      <td style="height:40px"></td>
+                    </tbody>
+                
+                  </table>
+                 
+              </div>
+            </div>
+            </ng-template>
+    
+       
+     
+
+          </div>
           

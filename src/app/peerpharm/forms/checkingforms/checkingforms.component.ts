@@ -12,6 +12,65 @@ export class CheckingformsComponent implements OnInit {
   saveBtn:boolean = true;
   editBtn:boolean = false;
   libraCalibrationTests:any[]
+  allWaterTests:any[]
+  allTempTests:any[]
+  allCalibrationDayTests:any[];
+  allSewerPHTests:any[];
+
+
+  
+  sewerPhTest = {
+    year:'',
+    month:'',
+    date:'',
+    pH:'',
+    signature:'',
+  }
+
+  calibrationDayTest = { 
+
+    date:'',
+    hour:'',
+    calibrationResult:'',
+    normalcy:'',
+    signature:'',
+    year:'',
+    month:'',
+    deviceLocation:'',
+    deviceModel:'',
+    phNumber:'',
+  }
+
+  temperatureTest = {
+    
+    fillingDepartTemp:'',
+    packingDepartTemp:'',
+    materialStorageTemp:'',
+    minWeekProduction:'',
+    maxWeekProduction:'',
+    date:'',
+    signature:'',
+    year:'',
+    month:'',
+    requiredLimits:'',
+  }
+
+
+  waterTest = {
+
+    tdsCheck:'',
+    phCheck:'',
+    saltInTank:'',
+    tdsCheckSupply:'',
+    clearAndColor:'',
+    hardness:'',
+    date:'',
+    pressureTest:'',
+    pressureBetweenFilters:'',
+    signature:'',
+    year:'',
+    month:''
+  }
 
   libraCalibration = {
 
@@ -395,6 +454,10 @@ export class CheckingformsComponent implements OnInit {
 
   ngOnInit() {
   this.getAllLibraCalibTests();
+  this.getAllWaterTests();
+  this.getAllTempTests();
+  this.getAllCalibDayTests();
+  this.getAllSewerPHTests();
   }
 
 
@@ -455,6 +518,32 @@ export class CheckingformsComponent implements OnInit {
     })
   }
 
+  fillCalibDayDetails(ev){
+    var phNumber = ev.target.value;
+
+    var date = new Date();
+    this.calibrationDayTest.year = JSON.stringify(date.getFullYear());
+    
+
+
+    if(phNumber == 'PH01') {
+      this.calibrationDayTest.deviceLocation = 'מעבדה'
+      this.calibrationDayTest.deviceModel = 'HI 2211 HANNA'
+    }
+    if(phNumber == 'PH02') {
+      this.calibrationDayTest.deviceLocation = 'הושבת 10.2018'
+      this.calibrationDayTest.deviceModel = 'HANNA HI 8424 NEW ידני'
+    }
+    if(phNumber == 'PH03') {
+      this.calibrationDayTest.deviceLocation = 'מחלקת ייצור נוזלים/קרמים'
+      this.calibrationDayTest.deviceModel = 'PHB-4 מכשיר נייד'
+    }
+    if(phNumber == 'PH04') {
+      this.calibrationDayTest.deviceLocation = 'SPEAR'
+      this.calibrationDayTest.deviceModel = 'PHB-4 מכשיר נייד'
+    }
+  }
+
   editTest(){
     this.formsService.editCalibrationWeek(this.calibrationWeek).subscribe(data=>{
       debugger;
@@ -479,6 +568,35 @@ export class CheckingformsComponent implements OnInit {
     })
   }
 
+  getAllWaterTests() {
+    this.formsService.getAllWaterTests().subscribe(data=>{
+
+    this.allWaterTests = data;
+
+    })
+  }
+  getAllTempTests() {
+    this.formsService.getAllTempTests().subscribe(data=>{
+
+    this.allTempTests = data;
+
+    })
+  }
+  getAllCalibDayTests() {
+    this.formsService.getAllCalibDayTests().subscribe(data=>{
+
+    this.allCalibrationDayTests = data;
+
+    })
+  }
+  getAllSewerPHTests() {
+    this.formsService.getAllSewerPHTests().subscribe(data=>{
+
+    this.allSewerPHTests = data;
+
+    })
+  }
+
 
   addNewLibraCalibrationTest() {
     this.libraCalibrationDetails.libraCalibration = this.libraCalibration
@@ -487,5 +605,38 @@ export class CheckingformsComponent implements OnInit {
       this.libraCalibrationTests = data;
 
     })
+  }
+
+  addNewWaterTest() {
+    this.formsService.addNewWaterTest(this.waterTest).subscribe(data=>{
+      debugger;
+      this.allWaterTests = data;
+
+    })
+
+  }
+  addNewTempTest() {
+    this.formsService.addNewTempTest(this.temperatureTest).subscribe(data=>{
+      debugger;
+      this.allTempTests = data;
+
+    })
+
+  }
+  addNewCalibDayTest() {
+    this.formsService.addNewCalibDayTest(this.calibrationDayTest).subscribe(data=>{
+      debugger;
+      this.allCalibrationDayTests = data;
+
+    })
+
+  }
+  addNewSewerPHTest() {
+    this.formsService.addNewSewerPHTest(this.sewerPhTest).subscribe(data=>{
+      debugger;
+      this.allSewerPHTests = data;
+
+    })
+
   }
 }

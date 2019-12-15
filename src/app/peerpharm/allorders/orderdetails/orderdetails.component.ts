@@ -129,7 +129,7 @@ export class OrderdetailsComponent implements OnInit {
     formuleCheck:'',
     componentCheck:'',
     compiled: [],
-    actionTime:[]
+    actionTime:[],
   };
   show: boolean;
   EditRowId: any = "";
@@ -434,12 +434,13 @@ debugger;
   }
 
   addItemOrder() {
+    debugger;
     this.itemData.formuleCheck = this.formuleCheck
     this.itemData.orderId = this.orderId;
-    var user = this.authService.loggedInUser.firstName
-    var time = new Date().getTime();
-
-    this.itemData.actionTime.push({user:user,time:time})
+    var userName = this.authService.loggedInUser.firstName
+    var timeNow = new Date().getTime();
+    this.itemData.actionTime = []
+    this.itemData.actionTime.push({user:userName,time:timeNow})
     
     if(!this.multi) this.itemData.orderNumber = this.number;
     let newItemImpRemark= this.itemData.itemImpRemark;

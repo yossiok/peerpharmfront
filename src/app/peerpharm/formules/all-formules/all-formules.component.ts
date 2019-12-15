@@ -3,6 +3,7 @@ import { FormulesService } from 'src/app/services/formules.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-all-formules',
@@ -68,7 +69,7 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('formulePhaseIns') formulePhaseIns: ElementRef;
   @ViewChild('formuleParentName') formuleParentName: ElementRef;
 
-  constructor(private invtSer:InventoryService,private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal) { }
+  constructor(private invtSer:InventoryService,private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal,private authService: AuthService) { }
 
   
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -81,7 +82,7 @@ export class AllFormulesComponent implements OnInit {
   ngOnInit() {
     this.getAllFormules();
     this.getAllMaterials();
-    this. getAllParentsFormules();
+    this.getAllParentsFormules();
   }
 
   getAllMaterials() { 
@@ -226,7 +227,7 @@ saveEdit(currdoc) {
 
   if (this.formuleName.nativeElement.value != "") {
 
-   
+    this.currentDoc.lastUpdateUser = this.authService.loggedInUser.userName
     this.currentDoc.name = this.formuleName.nativeElement.value.trim();
     this.currentDoc.number = this.formuleNumber.nativeElement.value.trim();
     this.currentDoc.client = this.formuleClient.nativeElement.value.trim();
@@ -336,6 +337,26 @@ updateDocument(){
   });
 }
 
+
+openPrint(printFormule,formuleNum) {
+  debugger;
+  this.updateFormule = [];
+  debugger;
+  this.modalService.open(printFormule, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.closeResult = `Closed with: ${result}`;
+  }, (reason) => {
+    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  });
+  this.loadDataPrint(formuleNum)
+}
+
+
+loadDataPrint(formuleNum) { 
+  debugger;
+  var formuleToUpdate = [];
+ formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
+ this.updateFormule = formuleToUpdate
+}
 
 open(formuleData,formuleNum) {
   debugger;
@@ -463,5 +484,7 @@ searchMaterialNumber(ev){
     
   
 }
+
+
 
 }

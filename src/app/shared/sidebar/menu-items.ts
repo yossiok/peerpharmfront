@@ -396,12 +396,28 @@ export const ROUTES: RouteInfo[] = [
         },
         {
           path: '/peerpharm/forms/checkingforms',
-          title: 'Check Forms',
+          title: 'טפסי בדיקת איכות',
           icon: 'fas fa-list-ol',
           class: '',
           extralink: false,
           submenu: []
-        }
+        },
+        {
+          path: '/peerpharm/forms/cleaning-forms',
+          title: 'טפסי ניקיון',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
+          path: '/peerpharm/forms/first-aid',
+          title: 'טופס עזרה ראשונה',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
 
       ]
     },
