@@ -63,7 +63,7 @@ export class CleaningFormsComponent implements OnInit {
   saveProdDailyClean(){
     debugger;
     
-    if(this.productionDailyClean.date != '' && this.productionDailyClean.month != '') {
+   
       this.formsService.saveProdDailyClean(this.productionDailyClean).subscribe(data=>{
         if(data.length > 0) {
         this.toastr.success('Successfuly Saved - נשמר בהצלחה')
@@ -71,14 +71,12 @@ export class CleaningFormsComponent implements OnInit {
         }
   
       })
-    } else {
-      this.toastr.error('Please Fill Date & Month - אנא תמלא תאריך וחודש')
-    }
+    
   }
   saveDailyCleanForm(){
     debugger;
     
-    if(this.dailyCleanForm.date != '' && this.dailyCleanForm.month != '') {
+
       this.formsService.saveNewDailyClean(this.dailyCleanForm).subscribe(data=>{
         if(data.length > 0) {
         this.toastr.success('Successfuly Saved - נשמר בהצלחה')
@@ -86,15 +84,13 @@ export class CleaningFormsComponent implements OnInit {
         }
   
       })
-    } else {
-      this.toastr.error('Please Fill Date & Month - אנא תמלא תאריך וחודש')
-    }
+   
   }
 
   saveDailyCleanFormSecond(){
     debugger;
     
-    if(this.dailyCleanFormSecond.date != '' && this.dailyCleanFormSecond.month != '') {
+    
       this.formsService.saveNewDailyCleanSecond(this.dailyCleanFormSecond).subscribe(data=>{
         if(data.length > 0) {
         this.toastr.success('Successfuly Saved - נשמר בהצלחה')
@@ -102,9 +98,7 @@ export class CleaningFormsComponent implements OnInit {
         }
   
       })
-    } else {
-      this.toastr.error('Please Fill Date & Month - אנא תמלא תאריך וחודש')
-    }
+    
   }
 
   

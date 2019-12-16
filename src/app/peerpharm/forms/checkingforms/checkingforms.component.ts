@@ -52,7 +52,7 @@ export class CheckingformsComponent implements OnInit {
     signature:'',
     year:'',
     month:'',
-    requiredLimits:'',
+    requiredLimits:'15°-30°',
   }
 
 
@@ -543,6 +543,8 @@ export class CheckingformsComponent implements OnInit {
       this.calibrationDayTest.deviceModel = 'PHB-4 מכשיר נייד'
     }
   }
+
+  
 
   editTest(){
     this.formsService.editCalibrationWeek(this.calibrationWeek).subscribe(data=>{

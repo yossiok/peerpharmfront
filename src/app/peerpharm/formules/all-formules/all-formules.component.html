@@ -219,7 +219,7 @@
           <ng-template   #printFormule let-modal>
             <div id="print-section" class="modal-content">
               <div style="text-align: center;" class="modal-header">
-                  <button class="btn btn-success" printSectionId="print-section" [printStyle]="{th : {'border': 'solid 1px'}, td : {'border': 'solid 1px', 'font-size': '20px'}}"  ngxPrint>{{updateFormule.name}}</button>
+                  <button class="btn btn-success" printSectionId="print-section" [printStyle]="{th : {'border': 'solid 1px'}, td : {'border': 'solid 1px', 'font-size': '16px'}}"  ngxPrint>{{updateFormule.name}}</button>
                 <h4 class="modal-title" id="modal-basic-title">{{updateFormule.number}}</h4>
               </div>
               <div class="modal-body">
@@ -233,11 +233,11 @@
                       <th scope="col">Execute</th>
                       <th scope="col">No.</th>
                       <th scope="col">Raw Material Name</th>
-                      
+                      <th scope="col">Item Instructions</th>
                       <th scope="col">Weight</th>
                       <th scope="col">Weight%</th>
                       <th scope="col">Temp</th>
-                      <th scope="col"></th>
+                   
                     </tr>
                   </thead>
             

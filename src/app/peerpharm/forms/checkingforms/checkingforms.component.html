@@ -1430,14 +1430,14 @@
                 </tr>
                 <tr>
                   <th style="border-top:none;border-bottom: none;">תאריך</th>
-                  <th>Units/inch<sup>3</sup></th>
+                  <th>PPM/inch<sup>3</sup></th>
                   <th>-</th>
                   <th>(ויזואלי)</th>
-                  <th>Units/inch<sup>3</sup></th>
+                  <th>PPM/inch<sup>3</sup></th>
                   <th>(ויזואלי)</th>
                   <th>Mol/m<sup>3</sup></th>
-                  <th>psi</th>
-                  <th>bar</th>
+                  <th>PSI</th>
+                  <th>Bar</th>
                   <th style="border-top:none;border-bottom: none;">חתימה</th>
                 </tr>
                 <tr>
@@ -1449,7 +1449,7 @@
                   <th>Clear,Colorless</th>
                   <th> 0.7 : RO מים ></th>
                   <th>120-170</th>
-                  <th> 2 bar ></th>
+                  <th> 2 Bar ></th>
                   <th style="border-top:none"></th>
                 </tr>
               </thead>
@@ -1496,8 +1496,8 @@
             <input [(ngModel)]="temperatureTest.year" type="text">
           </div>
           <div class="col-4">
-            <label>גבולות נדרשים:רגעי:</label>
-            <input [(ngModel)]="temperatureTest.requiredLimits" value="10°C-30°C" type="text">
+            <label>גבולות נדרשים: רגעי: 15°C-30°C </label>
+           
           </div>
         </div>
         <hr>
@@ -1612,8 +1612,9 @@
                 <tr>
                   <th>תאריך</th>
                   <th>שעה</th>
-                  <th>תוצאות אימות כיול
-                    גבולות 0.3 +- PH
+                  <th>תוצאות אימות כיול PH=4,7,10 <br>
+                    גבולות +- 0.3 
+                 
                   </th>
                   <th>תקינות</th>
                   <th>חתימה</th>
