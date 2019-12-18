@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, AfterViewChecked } from '@angular/core';
 
 @Component({
   selector: 'app-formule-form-table',
   templateUrl: './formule-form-table.component.html',
   styleUrls: ['./formule-form-table.component.css']
 })
-export class FormuleFormTableComponent implements OnInit {
+export class FormuleFormTableComponent implements OnInit, OnChanges {
+ 
   phases:Array<any>;
   calcultatedPercentages:any
   formuleName:'bar';
@@ -15,7 +16,7 @@ export class FormuleFormTableComponent implements OnInit {
 
   
 
-  ngOnChanges() {
+  ngOnChanges(data) {
     debugger
     this.phases= this.formulePhases;
      
@@ -24,6 +25,7 @@ export class FormuleFormTableComponent implements OnInit {
     // categoryId.firstChange for comparing old and new values
 
 }
+
 
 
   ngOnInit() {

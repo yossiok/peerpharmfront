@@ -1,0 +1,32 @@
+<div *ngIf="allowChange==true" class="container-fluid">
+  <div class="row">
+
+    <div class="col-12">
+      <div>
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShell.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShell.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShell.position' type="text">
+        &nbsp; &nbsp;
+
+        <button (click)="findByIdAndUpdate()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellTwo.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellTwo.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellTwo.position' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateTwo()" class="btn btn-success">עדכן</button>
+      </div>
+    </div>
+  </div>
+</div>

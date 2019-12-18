@@ -50,6 +50,7 @@ import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
 import { FirstAidComponent } from './forms/first-aid/first-aid.component';
+import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -210,6 +211,13 @@ export const PeerPharmRputs: Routes =[
     },
     component: AllocatedOrdersComponent,
   },
+  {
+    path: 'inventory/change-shelf',
+    data: {
+      title: 'Change Shelf'
+    },
+    component: ChangeShelfComponent,
+  },
  /* {
     path: 'taskboard/main',
     data: {
@@ -239,7 +247,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',

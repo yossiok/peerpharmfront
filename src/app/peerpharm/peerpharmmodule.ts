@@ -109,6 +109,7 @@ import { AllFormulesComponent } from './formules/all-formules/all-formules.compo
 import { OrdersService } from '../services/orders.service';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
+import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 
 
 
@@ -153,6 +154,7 @@ import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated
   declarations: [
     CheckingformsComponent,
     AllFormulesComponent,
+    ChangeShelfComponent,
     FormuleComponent,
     AddFormuleComponent,
     OrdersComponent,
