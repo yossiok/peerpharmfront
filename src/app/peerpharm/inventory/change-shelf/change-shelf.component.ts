@@ -210,8 +210,10 @@ export class ChangeShelfComponent implements OnInit {
       }
     })
   }
+
   findByIdAndUpdateFour(){
-    this.itemService.findByIdAndUpdate(this.itemShellFour.subscribe(data=>{
+  
+    this.itemService.findByIdAndUpdate(this.itemShellFour).subscribe(data=>{
       if(data){
         this.toastSrv.success("כמות עודכנה בהצלחה !")
       } else {
@@ -219,6 +221,7 @@ export class ChangeShelfComponent implements OnInit {
       }
     })
   }
+
   findByIdAndUpdateFive(){
     this.itemService.findByIdAndUpdate(this.itemShellFive).subscribe(data=>{
       if(data){
