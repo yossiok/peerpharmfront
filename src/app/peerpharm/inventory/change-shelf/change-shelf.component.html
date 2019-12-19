@@ -11,6 +11,9 @@
 
         <label>מדף:</label>
         <input [(ngModel)]='itemShell.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShell.whareHouse' type="text">
         &nbsp; &nbsp;
 
         <button (click)="findByIdAndUpdate()" class="btn btn-success">עדכן</button>
@@ -24,6 +27,9 @@
 
         <label>מדף:</label>
         <input [(ngModel)]='itemShellTwo.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellTwo.whareHouse' type="text">
         &nbsp; &nbsp;
         <button (click)="findByIdAndUpdateTwo()" class="btn btn-success">עדכן</button>
       </div>

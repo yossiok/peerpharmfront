@@ -16,14 +16,14 @@ export class ChangeShelfComponent implements OnInit {
   itemShell = {
     item:'',
     amount:'',
-    storage:'',
+    whareHouse:'',
     position:'',
     _id:'',
   }
   itemShellTwo = {
     item:'',
     amount:'',
-    storage:'',
+    whareHouse:'',
     position:'',
     _id:'',
   }
