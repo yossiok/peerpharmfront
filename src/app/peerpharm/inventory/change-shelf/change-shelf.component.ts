@@ -180,6 +180,96 @@ export class ChangeShelfComponent implements OnInit {
 
     })
   }
+
+  getShelfDetailByShelf(ev){
+
+    this.itemShell = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellTwo = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellThree = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellFour = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellFive = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellSix = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellSeven = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellEight = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellNine = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellTen = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    debugger;
+  var shelfNumber = ev.target.value;
+  this.itemService.getShelfDetailByShelf(shelfNumber).subscribe(data=>{
+    debugger
+    if(data[0]){this.itemShell = data[0]}
+    if(data[1]){this.itemShellTwo = data[1]}
+    if(data[2]){this.itemShellThree = data[2]}
+    if(data[3]){this.itemShellFour = data[3]}
+    if(data[4]){this.itemShellFive = data[4]}
+    if(data[5]){this.itemShellSix = data[5]}
+    if(data[6]){this.itemShellSeven = data[6]}
+    if(data[7]){this.itemShellEight = data[7]}
+    if(data[8]){this.itemShellNine = data[8]}
+    if(data[9]){this.itemShellTen = data[9]}
+
+  })
+  }
   
   findByIdAndUpdate(){
  
@@ -285,13 +375,8 @@ export class ChangeShelfComponent implements OnInit {
       if(user.userName == 'SHARK' || user.userName == 'sima') {
         this.allowChange = true;
       }
- 
-
     });
-
-
-
-
-
   }
+
+
 }

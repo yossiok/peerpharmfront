@@ -28,6 +28,8 @@ export class MaterialArrivalComponent implements OnInit {
   @ViewChild('analysisFlag') analysisFlag: ElementRef ;
   @ViewChild('requirementsFormDate') requirementsFormDate: ElementRef ;
  
+
+  materialsLocations:any[];
   screenHeight: number;
   activeTabId: String ;
   dateStr: String ;
@@ -159,6 +161,8 @@ approvedPackgeRemarksInput: Boolean=false;
 
    }
   ngOnInit() {
+
+    this.getAllMaterialsLocations();
     // this.user =   this.authService.loggedInUser;
     this.authService.userEventEmitter.subscribe(data => { 
       this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
@@ -236,6 +240,12 @@ approvedPackgeRemarksInput: Boolean=false;
       this.approvedPackgeRemarksInput= false;
       this.requirementsForm.controls.approvedPackgeRemarks.setValue('')
     }
+  }
+
+  getAllMaterialsLocations(){
+    this.invtSer.getAllMaterialLocations().subscribe(data=>{
+      this.materialsLocations = data;
+    })
   }
 
   changeFields(ev, flag){

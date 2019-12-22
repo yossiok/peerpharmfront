@@ -362,14 +362,10 @@
                     <div class="col-sm-2">
                         <label >מיקום הסחורה</label>
                         <select class="form-control is-valid" formControlName="warehouse" name='warehouse'>
-                          <option value="">בחר מיקום</option> 
-                          <option value="production floor">ייצור</option>
-                          <option value="zero">מחסן אפס</option>
-                          <option value="gaya">מחסן גאיה</option>
-                          <option value="outside">רחבה</option>
-                          <option value="lab">מעבדה</option>
-                          <option value="makeup">איפור</option>
-                          <option value="Kasem materials">קאסם</option>
+                          <option *ngFor="let material of materialsLocations" [value]="material.location">{{material.location}}</option> 
+                          <option value="outside">רחבה</option> 
+                     
+
                         </select>
                       </div>     
                       <div class="col-sm-2">

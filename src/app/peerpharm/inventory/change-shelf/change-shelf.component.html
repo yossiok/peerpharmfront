@@ -10,13 +10,13 @@
         <input [(ngModel)]='itemShell.amount' type="number">
 
         <label>מדף:</label>
-        <input [(ngModel)]='itemShell.position' type="text">
+        <input (change)="getShelfDetailByShelf($event)" [(ngModel)]='itemShell.position' type="text">
 
         <label>מחסן:</label>
         <input [(ngModel)]='itemShell.whareHouse' type="text">
         &nbsp; &nbsp;
 
-        <button (click)="findByIdAndUpdate()" class="btn btn-success">עדכן</button>
+        <button  class="btn btn-success">עדכן</button>
       </div>
       <div>
         <label>פריט:</label>

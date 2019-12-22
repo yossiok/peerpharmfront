@@ -58,6 +58,10 @@ export class ItemsService {
     let url = this.baseUrl + "item?itemInShell="+itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getShelfDetailByShelf(shelfNumber) {
+    let url = this.baseUrl + "item?itemByShelfNumber="+shelfNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getComponentsAmountByCmptNumber(componentNumber,itemQuantity): Observable<any> {
     let url = this.baseUrl + "item?itemNumberToCheck="+componentNumber + '&itemQuantity='+itemQuantity;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -78,6 +82,7 @@ export class ItemsService {
     let url = this.baseUrl + "item/updateItemShellById";
     return this.http.post(url, JSON.stringify(itemShell), this.options).pipe(map(res => res.json))
   }
+ 
   updateLicenseLimition(itemDocObj) {
     let url = this.baseUrl + "item/updateDocs?updateLicenseLimition=yes";
     return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json()))

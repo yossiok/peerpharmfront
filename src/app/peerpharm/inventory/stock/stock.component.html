@@ -982,6 +982,15 @@
                     <input [(ngModel)]="resMaterial.frameSupplier" type="text">
                   </td>
                 </tr>
+                <tr>
+                    <th>Location</th>
+                  <td>
+                    <input list="locations" [(ngModel)]="resMaterial.location" (change)="getAllMaterialLocations($event)" type="text">
+                    <datalist id="locations">
+                      <option *ngFor="let material of materialLocations" [value]="material.location">{{material.location}}</option>
+                    </datalist>
+                  </td>
+                </tr>
               </div>
 
               <div style="margin-left: 20px;">

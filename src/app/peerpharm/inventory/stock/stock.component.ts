@@ -33,6 +33,7 @@ export class StockComponent implements OnInit {
   loadingMovements: boolean = false;
   showItemDetails: boolean = true;
   itemMovements: any = [];
+  materialLocations: any[];
   items:any[];
   allowUserEditItem = false;
   resCmpt: any = {
@@ -188,6 +189,7 @@ export class StockComponent implements OnInit {
     imerCode:"",
     frameQuantity:"",
     frameSupplier:"",
+    location:"",
 
   }
   itemExpectedArrivals: any;
@@ -255,6 +257,7 @@ export class StockComponent implements OnInit {
   async ngOnInit() {
     this.getUser();
     this.getAllSuppliers()
+    this.getAllMaterialLocations();
     this.filterbyNum.nativeElement.value = '';
     // this.filterByType.nativeElement='';
     // this.filterByCategory.nativeElement='';
@@ -1315,6 +1318,7 @@ debugger
 
       this.inventoryService.updateCompt(this.resCmpt).subscribe(res => {
         if (res._id) {
+          this.getAllMaterialLocations()
           this.toastSrv.success("פריט עודכן בהצלחה");
         } else {
           this.toastSrv.error("עדכון פריט נכשל");
@@ -1458,6 +1462,14 @@ debugger
     this.procurementInputEvent = event;
     this.procurmentQnt = event.target.value;
     ;
+  }
+
+
+  getAllMaterialLocations(){
+    this.inventoryService.getAllMaterialLocations().subscribe(data=>{
+      debugger;
+      this.materialLocations = data;
+    })
   }
 
 
