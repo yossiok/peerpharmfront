@@ -272,7 +272,7 @@ export class ChangeShelfComponent implements OnInit {
   }
   
   findByIdAndUpdate(){
- 
+ debugger;
     this.itemService.findByIdAndUpdate(this.itemShell).subscribe(data=>{
       debugger
     if(data){
