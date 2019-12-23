@@ -15,6 +15,15 @@
   <img  style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading more items...</b></span>
   <br/> 
 </div>
+
+<div>
+  <select (change)="filterByStatus($event)">
+    <option value=""></option>
+    <option value="active">פעיל</option>
+    <option value="notActive">לא פעיל</option>
+    <option value="perfect">מושלם</option>
+  </select>
+</div>
 <span><b>showing {{items.length}} items</b></span>
 <table class='table table-fixed'>
 <thead class='tableHeader text-white'>

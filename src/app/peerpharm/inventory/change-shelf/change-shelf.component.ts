@@ -166,17 +166,21 @@ export class ChangeShelfComponent implements OnInit {
   }
     var itemNumber = ev.target.value
     this.itemService.getShellDetailsByNumber(itemNumber).subscribe(data=>{
-      debugger
-      if(data[0]){this.itemShell = data[0]}
-      if(data[1]){this.itemShellTwo = data[1]}
-      if(data[2]){this.itemShellThree = data[2]}
-      if(data[3]){this.itemShellFour = data[3]}
-      if(data[4]){this.itemShellFive = data[4]}
-      if(data[5]){this.itemShellSix = data[5]}
-      if(data[6]){this.itemShellSeven = data[6]}
-      if(data[7]){this.itemShellEight = data[7]}
-      if(data[8]){this.itemShellNine = data[8]}
-      if(data[9]){this.itemShellTen = data[9]}
+      if(data.length > 0) {
+        if(data[0]){this.itemShell = data[0]}
+        if(data[1]){this.itemShellTwo = data[1]}
+        if(data[2]){this.itemShellThree = data[2]}
+        if(data[3]){this.itemShellFour = data[3]}
+        if(data[4]){this.itemShellFive = data[4]}
+        if(data[5]){this.itemShellSix = data[5]}
+        if(data[6]){this.itemShellSeven = data[6]}
+        if(data[7]){this.itemShellEight = data[7]}
+        if(data[8]){this.itemShellNine = data[8]}
+        if(data[9]){this.itemShellTen = data[9]}
+      } else { 
+        this.toastSrv.error('פריט לא קיים על מדף')
+      }
+      
 
     })
   }
@@ -257,16 +261,20 @@ export class ChangeShelfComponent implements OnInit {
   var shelfNumber = ev.target.value;
   this.itemService.getShelfDetailByShelf(shelfNumber).subscribe(data=>{
     debugger
-    if(data[0]){this.itemShell = data[0]}
-    if(data[1]){this.itemShellTwo = data[1]}
-    if(data[2]){this.itemShellThree = data[2]}
-    if(data[3]){this.itemShellFour = data[3]}
-    if(data[4]){this.itemShellFive = data[4]}
-    if(data[5]){this.itemShellSix = data[5]}
-    if(data[6]){this.itemShellSeven = data[6]}
-    if(data[7]){this.itemShellEight = data[7]}
-    if(data[8]){this.itemShellNine = data[8]}
-    if(data[9]){this.itemShellTen = data[9]}
+    if(data.length > 0) {
+      if(data[0]){this.itemShell = data[0]}
+      if(data[1]){this.itemShellTwo = data[1]}
+      if(data[2]){this.itemShellThree = data[2]}
+      if(data[3]){this.itemShellFour = data[3]}
+      if(data[4]){this.itemShellFive = data[4]}
+      if(data[5]){this.itemShellSix = data[5]}
+      if(data[6]){this.itemShellSeven = data[6]}
+      if(data[7]){this.itemShellEight = data[7]}
+      if(data[8]){this.itemShellNine = data[8]}
+      if(data[9]){this.itemShellTen = data[9]}
+    } else { 
+      this.toastSrv.error('פריט לא קיים על מדף')
+    }
 
   })
   }
