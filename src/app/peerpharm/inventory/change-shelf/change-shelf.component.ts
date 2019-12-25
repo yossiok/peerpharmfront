@@ -12,6 +12,12 @@ export class ChangeShelfComponent implements OnInit {
   
   allowChange:boolean = false;
   user:any;
+  whichRow:any;
+
+  newFloor = {
+    amount:'',
+    floorName:'',
+  }
 
   itemShell = {
     item:'',
@@ -386,5 +392,132 @@ export class ChangeShelfComponent implements OnInit {
     });
   }
 
+
+  updateNewFloor(){
+
+   this.whichRow
+   this.newFloor
+   if(this.whichRow == 1) {
+     var objToCreate = this.itemShell
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+       if(data) {
+         this.toastSrv.success('פריט עודכן בהצלחה!')
+       }
+
+     })
+   }
+   if(this.whichRow == 2) {
+     var objToCreate = this.itemShellTwo
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+   if(this.whichRow == 3) {
+     var objToCreate = this.itemShellThree
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+   if(this.whichRow == 4) {
+     var objToCreate = this.itemShellFour
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+   if(this.whichRow == 5) {
+     var objToCreate = this.itemShellFive
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+   if(this.whichRow == 6) {
+     var objToCreate = this.itemShellSix
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+   if(this.whichRow == 7) {
+     var objToCreate = this.itemShellSeven
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+   if(this.whichRow == 8) {
+     var objToCreate = this.itemShellEight
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+   if(this.whichRow == 9) {
+     var objToCreate = this.itemShellNine
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+   if(this.whichRow == 10) {
+     var objToCreate = this.itemShellTen
+     objToCreate.amount = this.newFloor.amount
+     objToCreate.position = this.newFloor.floorName
+     
+     this.itemService.newFloor(objToCreate).subscribe(data=>{
+      if(data) {
+        this.toastSrv.success('פריט עודכן בהצלחה!')
+      }
+
+    })
+   }
+  }
 
 }

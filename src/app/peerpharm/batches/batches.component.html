@@ -50,6 +50,7 @@
             <td style="width:10%">Order</td>
             <td style="width:10%">Item</td>
             <td></td>
+            <td></td>
           </tr>
         </thead>
         <tr style="margin-top: 20px;margin-left:20px;">
@@ -109,16 +110,68 @@
           </td>
 
             <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)" ><i class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td>
+            <td *ngIf="batch._id!==EditRowId"><button (click)="openPrint(printBatch,batch.batchNumber)" class="btn btn-success">Print</button></td>
             <td *ngIf="batch._id==EditRowId"  style="width:3%; padding:5px;margin-left: 70px;margin-top: 11px;">
               <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;" (click)="saveEdit(currDoc)"></i>
             </td>
-
+            
           </tr>
         </ng-container>
       </table>
 </div>
 
+
+
+
 <!-- ADD BATCH MODAL -->
+
+
+<ng-template  #printBatch let-modal>
+  <div class="modal-content">
+  
+    <div id="print-section" class="modal-body">
+     <table>
+       <thead></thead>
+       <tbody dir="rtl" style="text-align: center;">
+         <tr style="text-align: center;border:1px solid black">
+          
+           <td style="border:1px solid black" colspan="3">{{batchPrint.itemName}}</td>
+           <td style="border:1px solid black" colspan="1">שם החומר:</td>
+         </tr>
+         <tr style="border:1px solid black">
+           <td style="border:1px solid black" colspan="3">{{batchPrint.batchNumber}}</td>
+           <td style="border:1px solid black" colspan="1">אצווה:</td>
+         </tr>
+         <tr style="border:1px solid black">
+           <td style="border:1px solid black">{{batchPrint.item}}</td>
+           <td style="border:1px solid black">מק"ט:</td>
+           <td style="border:1px solid black">{{batchPrint.produced}}</td>
+           <td style="border:1px solid black">ת.ייצור:</td>
+         </tr>
+         <tr style="border:1px solid black">
+           <td style="border:1px solid black">{{batchPrint.ph}}</td>
+           <td style="border:1px solid black">PH:</td>
+           <td style="border:1px solid black">{{batchPrint.expration}}</td>
+           <td style="border:1px solid black">תאריך תפוגה:</td>
+         </tr>
+         <tr style="border:1px solid black">
+           <td style="border:1px solid black" colspan="3">{{batchPrint.order}}</td>
+           <td style="border:1px solid black" colspan="1">הזמנה:</td>
+         </tr>
+         <tr style="border:1px solid black">
+           <td style="border:1px solid black">{{batchPrint.barrels}}</td>
+           <td style="border:1px solid black">חבית:</td>
+           <td style="border:1px solid black">{{batchPrint.weightKg}}</td>
+           <td style="border:1px solid black">משקל:</td>
+         </tr>
+       </tbody>
+     </table>
+    </div>
+    <div style="text-align: center;" class="modal-footer">
+      <button class="btn btn-success" printSectionId="print-section" ngxPrint>print</button> 
+    </div>
+  </div>
+  </ng-template>
 
 
 

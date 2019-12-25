@@ -22,6 +22,7 @@ export class CleaningFormsComponent implements OnInit {
     offices:'',
     entrance:'',
     employeesKitchen:'',
+    worker:'',
   }
 
   dailyCleanFormSecond = {
@@ -30,6 +31,7 @@ export class CleaningFormsComponent implements OnInit {
     month:'',
     bathroom:'',
     offices:'',
+    worker:'',
   }
 
   productionDailyClean = {
@@ -41,6 +43,7 @@ export class CleaningFormsComponent implements OnInit {
     womenBathroom:'',
     productionArea:'',
     fillingArea:'',
+    worker:'',
 
   }
 

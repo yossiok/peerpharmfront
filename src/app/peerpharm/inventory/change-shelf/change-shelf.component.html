@@ -3,6 +3,7 @@
 
     <div class="col-12">
       <div>
+        1.
         <label>פריט:</label>
         <input [(ngModel)]='itemShell.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -19,6 +20,7 @@
         <button (click)="findByIdAndUpdate()"  class="btn btn-success">עדכן</button>
       </div>
       <div>
+        2.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellTwo.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -34,6 +36,7 @@
         <button (click)="findByIdAndUpdateTwo()" class="btn btn-success">עדכן</button>
       </div>
       <div>
+        3.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellThree.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -49,6 +52,7 @@
         <button (click)="findByIdAndUpdateThree()" class="btn btn-success">עדכן</button>
       </div>
       <div>
+        4.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellFour.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -64,6 +68,7 @@
         <button (click)="findByIdAndUpdateFour()" class="btn btn-success">עדכן</button>
       </div>
       <div>
+        5.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellFive.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -79,6 +84,7 @@
         <button (click)="findByIdAndUpdateFive()" class="btn btn-success">עדכן</button>
       </div>
       <div>
+        6.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellSix.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -94,6 +100,7 @@
         <button (click)="findByIdAndUpdateSix()" class="btn btn-success">עדכן</button>
       </div>
       <div>
+        7.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellSeven.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -109,6 +116,7 @@
         <button (click)="findByIdAndUpdateSeven()" class="btn btn-success">עדכן</button>
       </div>
       <div>
+        8.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellEight.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -124,6 +132,7 @@
         <button (click)="findByIdAndUpdateEight()" class="btn btn-success">עדכן</button>
       </div>
       <div>
+        9.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellNine.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -139,6 +148,7 @@
         <button (click)="findByIdAndUpdateNine()" class="btn btn-success">עדכן</button>
       </div>
       <div>
+        10.
         <label>פריט:</label>
         <input [(ngModel)]='itemShellTen.item' (change)="getShellDetailByNumber($event)" type="text">
 
@@ -155,4 +165,23 @@
       </div>
     </div>
   </div>
+  <br><br><br>
+  <div class="row">
+    <div class="col-12">
+
+      <h4>פיצול כמויות</h4>
+
+      <label>מספר שורה:</label>
+      <input [(ngModel)]="whichRow" type="number">
+      <label>רצפה:</label>
+      <input [(ngModel)]="newFloor.floorName" type=text>
+      <label>כמות:</label>
+      <input [(ngModel)]="newFloor.amount" type=number>
+      <button (click)="updateNewFloor()" class="btn btn-success">עדכן</button>
+      
+
+    </div>
+  </div>
 </div>
+
+
