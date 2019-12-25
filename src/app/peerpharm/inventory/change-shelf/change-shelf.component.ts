@@ -406,6 +406,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
        if(data) {
          this.toastSrv.success('פריט עודכן בהצלחה!')
+         this.clearField();
        }
 
      })
@@ -418,6 +419,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
@@ -430,6 +432,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
@@ -442,6 +445,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
@@ -454,6 +458,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
@@ -466,6 +471,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
@@ -478,6 +484,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
@@ -490,6 +497,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
@@ -502,6 +510,7 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
@@ -514,10 +523,84 @@ export class ChangeShelfComponent implements OnInit {
      this.itemService.newFloor(objToCreate).subscribe(data=>{
       if(data) {
         this.toastSrv.success('פריט עודכן בהצלחה!')
+        this.clearField();
       }
 
     })
    }
   }
 
+
+  clearField(){
+    this.itemShell = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellTwo = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellThree = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellFour = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellFive = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellSix = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellSeven = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellEight = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellNine = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+    this.itemShellTen = {
+      item:'',
+      amount:'',
+      whareHouse:'',
+      position:'',
+      _id:'',
+    }
+  }
 }
