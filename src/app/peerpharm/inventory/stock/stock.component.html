@@ -801,7 +801,7 @@
             </div>
           </div>
           <div class="fr row justify-content-end" *ngIf="amountChangeDir!='shelfChange'">
-            <h5>הוצאת/קבלת סחורה</h5>
+            <h5>הוצאת/קבלת סחורה</h5>  
             <div class="fr row justify-content-end">
               <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
               <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
@@ -816,7 +816,11 @@
                 <option *ngFor="let batch of ItemBatchArr" [value]="batch.batchNumber">{{batch.batchNumber}}</option>
 
               </select>
+              
 
+            </div>
+            <div>
+              <label>Exp Date: {{expirationBatchDate}}</label>
             </div>
           </div>
           <div class="fr row justify-content-end">

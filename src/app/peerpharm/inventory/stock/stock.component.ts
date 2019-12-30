@@ -35,6 +35,7 @@ export class StockComponent implements OnInit {
   itemMovements: any = [];
   materialLocations: any[];
   items:any[];
+  expirationBatchDate:any;
   allowUserEditItem = false;
   resCmpt: any = {
     componentN: '',
@@ -1030,14 +1031,19 @@ export class StockComponent implements OnInit {
   }
 
   showBatchExpDate(ev){
+    debugger;
     var batch = ev.target.value;
-    
-    for (let i = 0; i < this.ItemBatchArr.length; i++) {
-    if(this.ItemBatchArr[i].batchNumber == batch) {
-      alert(this.ItemBatchArr[i].expration)
+    if(batch != "") {
+      for (let i = 0; i < this.ItemBatchArr.length; i++) {
+        if(this.ItemBatchArr[i].batchNumber == batch) {
+         this.expirationBatchDate =  this.ItemBatchArr[i].expration
+        }
+        }
+    } 
+    else {
+      this.expirationBatchDate = ""
     }
-      
-    }
+  
   }
 
   async openDataMaterial(materNum) {

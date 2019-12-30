@@ -1216,32 +1216,28 @@ export class ItemdetaisComponent implements OnInit {
     })
   }
 
-  async getUserInfo() {
-    await this.authService.userEventEmitter.subscribe(user => {
-      this.user = user;
-      // this.user=user.loggedInUser;
-      // if (!this.authService.loggedInUser) {
-      //   this.authService.userEventEmitter.subscribe(user => {
-      //     if (user.userName) {
-      //       this.user = user;
+   getUserInfo() {
+    debugger
 
-      //     }
-      //   });
-      // }
-      // else {
-      //   this.user = this.authService.loggedInUser;
-      // }
+    if(this.authService.loggedInUser) {
+        this.user = this.authService.loggedInUser
       if (this.user.authorization) {
         if (this.authService.loggedInUser.authorization.includes("updateItemTree")) {
           this.alowUserEditItemTree = true;
         }
       }
 
-    });
-
-
-
-
-
+     } else { 
+      this.authService.userEventEmitter.subscribe(user => {
+        this.user = user;
+        if (this.user.authorization) {
+          if (this.authService.loggedInUser.authorization.includes("updateItemTree")) {
+            this.alowUserEditItemTree = true;
+          }
+        }
+      });
+  
+    }
+  
   }
 }
