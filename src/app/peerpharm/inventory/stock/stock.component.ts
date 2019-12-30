@@ -791,6 +791,7 @@ export class StockComponent implements OnInit {
                   this.toastSrv.success("Changes Saved");
 
                   this.inventoryService.getAmountOnShelfs(this.resCmpt.componentN).subscribe(async res => {
+                    debugger;
                     this.itemAmountsData = res.data;
                     this.itemAmountsWh = res.whList;
 
@@ -1021,9 +1022,21 @@ export class StockComponent implements OnInit {
     //??? this.resCmpt has mkp category
     if (this.stockType != "components") {
       await this.batchService.getBatchesByItemNumber(cmptNumber + "").subscribe(data => {
+        debugger;
         this.ItemBatchArr = data;
 
       });
+    }
+  }
+
+  showBatchExpDate(ev){
+    var batch = ev.target.value;
+    
+    for (let i = 0; i < this.ItemBatchArr.length; i++) {
+    if(this.ItemBatchArr[i].batchNumber == batch) {
+      alert(this.ItemBatchArr[i].expration)
+    }
+      
     }
   }
 

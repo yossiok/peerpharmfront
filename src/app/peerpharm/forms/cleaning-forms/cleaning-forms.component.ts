@@ -18,10 +18,10 @@ export class CleaningFormsComponent implements OnInit {
     date:'',
     year:'',
     month:'',
-    bathroom:'',
-    offices:'',
-    entrance:'',
-    employeesKitchen:'',
+    bathroom:false,
+    offices:false,
+    entrance:false,
+    employeesKitchen:false,
     worker:'',
   }
 
@@ -29,8 +29,8 @@ export class CleaningFormsComponent implements OnInit {
     date:'',
     year:'',
     month:'',
-    bathroom:'',
-    offices:'',
+    bathroom:false,
+    offices:false,
     worker:'',
   }
 
@@ -39,10 +39,10 @@ export class CleaningFormsComponent implements OnInit {
     date:'',
     year:'',
     month:'',
-    bathroom:'',
-    womenBathroom:'',
-    productionArea:'',
-    fillingArea:'',
+    bathroom:false,
+    womenBathroom:false,
+    productionArea:false,
+    fillingArea:false,
     worker:'',
 
   }
@@ -65,6 +65,7 @@ export class CleaningFormsComponent implements OnInit {
   
   saveProdDailyClean(){
     debugger;
+    
     
    
       this.formsService.saveProdDailyClean(this.productionDailyClean).subscribe(data=>{
