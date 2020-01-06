@@ -1,6 +1,6 @@
 
-<!-- 
-<div class="container-fluid">
+
+<!-- <div class="container-fluid">
   <div style="height:20px" class="row"></div>
   <div class="row">
     <div class="col"></div>
@@ -38,7 +38,7 @@
       </div>
 
       <div style="margin:5px;">
-        <label [ngClass]="checkItemStatus()" style="font-weight: bold">Remarks</label>
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">Jumpimg Remarks</label>
       </div>
 
     </div>
@@ -89,16 +89,16 @@
               <div class="row">
                 <div class="col-2">
                   <div class="productionLabel">
-                    <label style="font-weight: bold;">Jumping Remark</label>
+                    <label style="font-weight: bold;">Remark</label>
                   </div>
                 </div>
                 <div class="col-10">
                   <input id="id_impRemarks" [(ngModel)]=itemShown.impRemarks class="productionInput"
-                    style="width:700px;" type="text" />
+                    style="width:90%;" type="text" />
                 </div>
               </div>
               <div class="row">
-                <div class="col-2">
+                <div class="col-3">
                   <div>
                     <div *ngIf="mainLanguage==true" class="productionLabel">
                       <i (click)="addRemoveInputs('mainLang')" style="margin-right:2px;cursor: pointer;"
@@ -152,35 +152,82 @@
                 </div>
                 <div class="col-3">
                   <div>
-                    <input id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
+                    <select id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
                       [(ngModel)]=itemShown.StickerLanguageK>
+                    <option value="FRE">French</option>
+                    <option value="HEB">Hebrew</option>
+                    <option value="ENG">English</option>
+                    <option value="ARB">Arabic</option>
+                    <option value="POL">Polish</option>
+                    <option value="GER">German</option>
+                    <option value="RUS">Russian</option>
+                    <option value="SPA">Spanish</option>
+                    <option value="CHI">Chinese</option>
+                    <option value="DUT">Dutch</option>
+                    <option value="JPN">Japanese</option>
+                    <option value="SWE">Swedish</option>
+                    <option value="GRK">Greek</option>
+                  </select>
                   </div>
                   <div *ngIf="mainLanguage==false">
                     <p>---</p>
                   </div>
 
                   <div>
-                    <input [(ngModel)]=itemShown.StickerLanguageKTwo type="text" *ngIf="mainLanguageTwo==true"
+                    <select [(ngModel)]=itemShown.StickerLanguageKTwo type="text" *ngIf="mainLanguageTwo==true"
                       class="productionInput">
+                      <option value="FRE">French</option>
+                      <option value="HEB">Hebrew</option>
+                      <option value="ENG">English</option>
+                      <option value="ARB">Arabic</option>
+                      <option value="POL">Polish</option>
+                      <option value="GER">German</option>
+                      <option value="RUS">Russian</option>
+                      <option value="SPA">Spanish</option>
+                      <option value="CHI">Chinese</option>
+                      <option value="DUT">Dutch</option>
+                      <option value="JPN">Japanese</option>
+                      <option value="SWE">Swedish</option>
+                      <option value="GRK">Greek</option>
+                    </select>
                   </div>
                   <div *ngIf="mainLanguageTwo==false">
                     <p>---</p>
                   </div>
                   <div>
-                    <input [(ngModel)]=itemShown.StickerLanguageKThree *ngIf="mainLanguageThree==true"
+                    <select [(ngModel)]=itemShown.StickerLanguageKThree *ngIf="mainLanguageThree==true"
                       class="productionInput">
+                      <option value=""></option>
+                      <option value="FRE">French</option>
+                      <option value="HEB">Hebrew</option>
+                      <option value="ENG">English</option>
+                      <option value="ARB">Arabic</option>
+                      <option value="POL">Polish</option>
+                      <option value="GER">German</option>
+                      <option value="RUS">Russian</option>
+                      <option value="SPA">Spanish</option>
+                      <option value="CHI">Chinese</option>
+                      <option value="DUT">Dutch</option>
+                      <option value="JPN">Japanese</option>
+                      <option value="SWE">Swedish</option>
+                      <option value="GRK">Greek</option>
+                    </select>
                   </div>
                   <div *ngIf="mainLanguageThree==false">
                     <p>---</p>
                   </div>
                   <div>
-                    <input [(ngModel)]=itemShown.department *ngIf="department==true" class="productionInput">
+                    <select [(ngModel)]=itemShown.department *ngIf="department==true" class="productionInput">
+                      <option value=""></option>
+                      <option value="makeUpProd">מחלקת איפור</option>
+                      <option value="generalProd">מחלקת בישול כללי</option>
+                    </select>
                   </div>
                   <div *ngIf="department==false">
                     <p>---</p>
                   </div>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                   <div>
                     <div *ngIf="volumeMl==true" class="productionLabel">
                       <i (click)="addRemoveInputs('volumeMl')" style="margin-right:2px;cursor: pointer;"
@@ -211,27 +258,16 @@
                     <div *ngIf="grossWeightUnit==true" class="productionLabel">
                       <i (click)="addRemoveInputs('grossWeightUnit')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="grossWeightUnit==true && alowUserEditItemTree==true"></i>
-                      <label style="font-size: 12px;font-weight: bold;">Gross Weight Unit(gr)</label>
+                      <label style="font-size: 11px;font-weight: bold;">Gross Weight Unit</label>
                     </div>
                     <div *ngIf="grossWeightUnit==false" class="productionLabel">
                       <i (click)="addRemoveInputs('grossWeightUnit')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="grossWeightUnit==false && alowUserEditItemTree==true"></i>
-                      <label style="font-size: 12px;font-weight: bold;">Gross Weight Unit(gr)</label>
+                      <label style="font-size: 11px;font-weight: bold;">Gross Weight Unit</label>
                     </div>
                   </div>
 
-                  <div>
-                    <div *ngIf="peerPharmTone==true" class="productionLabel">
-                      <i (click)="addRemoveInputs('peerPharmTone')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-minus" *ngIf="peerPharmTone==true && alowUserEditItemTree==true"></i>
-                      <label>Peer Pharm Tone#</label>
-                    </div>
-                    <div *ngIf="peerPharmTone==false" class="productionLabel">
-                      <i (click)="addRemoveInputs('peerPharmTone')" style="margin-right:2px;cursor: pointer;"
-                        class="fa fa-plus" *ngIf="peerPharmTone==false && alowUserEditItemTree==true"></i>
-                      <label>Peer Pharm Tone#</label>
-                    </div>
-                  </div>
+              
 
                 </div>
                 <div class="col-3">
@@ -255,13 +291,7 @@
                     <p>---</p>
                   </div>
 
-                  <div *ngIf="peerPharmTone==true">
-                    <input [(ngModel)]="itemShown.peerPharmTone" type="text" class="productionInput">
-                  </div>
-                  <div *ngIf="peerPharmTone==false">
-                    <p>---</p>
-                  </div>
-
+             
                 </div>
               </div>
               <div class="row">
@@ -271,12 +301,25 @@
                     <div *ngIf="production==true" class="productionLabel">
                       <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="production==true && alowUserEditItemTree==true"></i>
-                      <label>Bottle/Jar</label> 
+                      <select [(ngModel)]="itemShown.typeOfComponent">
+                        <option value=""></option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Jar">Jar</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Seal">Seal</option>
+                        <option value="Cap">Cap</option>
+                        <option value="OverCap">OverCap</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Package">Package</option>
+                        <option value="Cellophane">Cellophane</option>
+                        <option value="Carton">Carton</option>
+                        <option value="Pallet">Pallet</option>
+                      </select> 
                     </div>
                     <div *ngIf="production==false" class="productionLabel">
                       <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="production==false && alowUserEditItemTree==true"></i>
-                      <label>Bottle/Jar</label>
+                      <label></label>
                     </div>
                   </div>
 
@@ -285,12 +328,25 @@
                     <div *ngIf="productionTwo==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionTwo==true && alowUserEditItemTree==true"></i>
-                      <label>Pump/Seal</label>
+                        <select [(ngModel)]="itemShown.typeOfComponentTwo">
+                          <option value=""></option>
+                          <option value="Bottle">Bottle</option>
+                          <option value="Jar">Jar</option>
+                          <option value="Pump">Pump</option>
+                          <option value="Seal">Seal</option>
+                          <option value="Cap">Cap</option>
+                          <option value="OverCap">OverCap</option>
+                          <option value="Stage">Stage</option>
+                          <option value="Package">Package</option>
+                          <option value="Cellophane">Cellophane</option>
+                          <option value="Carton">Carton</option>
+                          <option value="Pallet">Pallet</option>
+                        </select> 
                     </div>
                     <div *ngIf="productionTwo==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionTwo==false && alowUserEditItemTree==true"></i>
-                      <label>Pump/Seal</label>
+                      <label></label>
                     </div>
                   </div>
 
@@ -299,12 +355,25 @@
                     <div *ngIf="productionThree==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionThree')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionThree==true && alowUserEditItemTree==true"></i>
-                      <label>Cap/OverCap</label>
+                        <select [(ngModel)]="itemShown.typeOfComponentThree">
+                          <option value=""></option>
+                          <option value="Bottle">Bottle</option>
+                          <option value="Jar">Jar</option>
+                          <option value="Pump">Pump</option>
+                          <option value="Seal">Seal</option>
+                          <option value="Cap">Cap</option>
+                          <option value="OverCap">OverCap</option>
+                          <option value="Stage">Stage</option>
+                          <option value="Package">Package</option>
+                          <option value="Cellophane">Cellophane</option>
+                          <option value="Carton">Carton</option>
+                          <option value="Pallet">Pallet</option>
+                        </select> 
                     </div>
                     <div *ngIf="productionThree==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionThree')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionThree==false && alowUserEditItemTree==true"></i>
-                      <label>Cap/OverCap</label>
+                      <label></label>
                     </div>
                   </div>
 
@@ -313,12 +382,25 @@
                     <div *ngIf="productionFour==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFour')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionFour==true && alowUserEditItemTree==true"></i>
-                      <label>Stage</label>
+                        <select [(ngModel)]="itemShown.typeOfComponentFour">
+                          <option value=""></option>
+                          <option value="Bottle">Bottle</option>
+                          <option value="Jar">Jar</option>
+                          <option value="Pump">Pump</option>
+                          <option value="Seal">Seal</option>
+                          <option value="Cap">Cap</option>
+                          <option value="OverCap">OverCap</option>
+                          <option value="Stage">Stage</option>
+                          <option value="Package">Package</option>
+                          <option value="Cellophane">Cellophane</option>
+                          <option value="Carton">Carton</option>
+                          <option value="Pallet">Pallet</option>
+                        </select> 
                     </div>
                     <div *ngIf="productionFour==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFour')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionFour==false && alowUserEditItemTree==true"></i>
-                      <label>Stage</label>
+                      <label></label>
                     </div>
                   </div>
 
@@ -327,12 +409,25 @@
                     <div *ngIf="productionFive==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFive')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionFive==true && alowUserEditItemTree==true"></i>
-                      <label>Package</label>
+                        <select [(ngModel)]="itemShown.typeOfComponentFive">
+                          <option value=""></option>
+                          <option value="Bottle">Bottle</option>
+                          <option value="Jar">Jar</option>
+                          <option value="Pump">Pump</option>
+                          <option value="Seal">Seal</option>
+                          <option value="Cap">Cap</option>
+                          <option value="OverCap">OverCap</option>
+                          <option value="Stage">Stage</option>
+                          <option value="Package">Package</option>
+                          <option value="Cellophane">Cellophane</option>
+                          <option value="Carton">Carton</option>
+                          <option value="Pallet">Pallet</option>
+                        </select> 
                     </div>
                     <div *ngIf="productionFive==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFive')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionFive==false && alowUserEditItemTree==true"></i>
-                      <label>Package</label>
+                      <label></label>
                     </div>
                   </div>
 
@@ -341,12 +436,25 @@
                     <div *ngIf="productionSix==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSix')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionSix==true && alowUserEditItemTree==true"></i>
-                      <label>Cellophane</label>
+                        <select [(ngModel)]="itemShown.typeOfComponentSix">
+                          <option value=""></option>
+                          <option value="Bottle">Bottle</option>
+                          <option value="Jar">Jar</option>
+                          <option value="Pump">Pump</option>
+                          <option value="Seal">Seal</option>
+                          <option value="Cap">Cap</option>
+                          <option value="OverCap">OverCap</option>
+                          <option value="Stage">Stage</option>
+                          <option value="Package">Package</option>
+                          <option value="Cellophane">Cellophane</option>
+                          <option value="Carton">Carton</option>
+                          <option value="Pallet">Pallet</option>
+                        </select> 
                     </div>
                     <div *ngIf="productionSix==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSix')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionSix==false && alowUserEditItemTree==true"></i>
-                      <label>Cellophane</label>
+                      <label></label>
                     </div>
                   </div>
                   <div>
@@ -354,12 +462,25 @@
                     <div *ngIf="productionSeven==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSeven')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionSeven==true && alowUserEditItemTree==true"></i>
-                      <label>Carton</label>
+                        <select [(ngModel)]="itemShown.typeOfComponentSeven">
+                          <option value=""></option>
+                          <option value="Bottle">Bottle</option>
+                          <option value="Jar">Jar</option>
+                          <option value="Pump">Pump</option>
+                          <option value="Seal">Seal</option>
+                          <option value="Cap">Cap</option>
+                          <option value="OverCap">OverCap</option>
+                          <option value="Stage">Stage</option>
+                          <option value="Package">Package</option>
+                          <option value="Cellophane">Cellophane</option>
+                          <option value="Carton">Carton</option>
+                          <option value="Pallet">Pallet</option>
+                        </select> 
                     </div>
                     <div *ngIf="productionSeven==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSeven')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionSeven==false && alowUserEditItemTree==true"></i>
-                      <label>Carton</label>
+                      <label></label>
                     </div>
                   </div>
                   <div>
@@ -367,12 +488,25 @@
                     <div *ngIf="productionEight==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionEight')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionEight==true && alowUserEditItemTree==true"></i>
-                      <label>Pallet</label>
+                        <select [(ngModel)]="itemShown.typeOfComponentEight">
+                          <option value=""></option>
+                          <option value="Bottle">Bottle</option>
+                          <option value="Jar">Jar</option>
+                          <option value="Pump">Pump</option>
+                          <option value="Seal">Seal</option>
+                          <option value="Cap">Cap</option>
+                          <option value="OverCap">OverCap</option>
+                          <option value="Stage">Stage</option>
+                          <option value="Package">Package</option>
+                          <option value="Cellophane">Cellophane</option>
+                          <option value="Carton">Carton</option>
+                          <option value="Pallet">Pallet</option>
+                        </select> 
                     </div>
                     <div *ngIf="productionEight==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionEight')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionEight==false && alowUserEditItemTree==true"></i>
-                      <label>Pallet</label>
+                      <label></label>
                     </div>
                   </div>
 
@@ -446,10 +580,10 @@
 
                 </div>
 
-                <div class="col-3" style="margin-left:-27px;">
+                <div class="col-3">
 
                   <div *ngIf="production==true">
-                    <input [(ngModel)]="itemShown.productionInput" (change)="searchCompNumber($event,'productionInput')"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionInput" (change)="searchCompNumber($event,'productionInput')"
                       type="text" class="productionInput">
                   </div>
                   <div *ngIf="production==false">
@@ -457,7 +591,7 @@
                   </div>
 
                   <div *ngIf="productionTwo==true">
-                    <input [(ngModel)]="itemShown.productionTwoInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionTwoInput"
                       (change)="searchCompNumber($event,'productionTwoInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionTwo==false">
@@ -465,7 +599,7 @@
                   </div>
 
                   <div *ngIf="productionThree==true">
-                    <input [(ngModel)]="itemShown.productionThreeInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionThreeInput"
                       (change)="searchCompNumber($event,'productionThreeInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionThree==false">
@@ -473,7 +607,7 @@
                   </div>
 
                   <div *ngIf="productionFour==true">
-                    <input [(ngModel)]="itemShown.productionFourInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionFourInput"
                       (change)="searchCompNumber($event,'productionFourInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionFour==false">
@@ -481,7 +615,7 @@
                   </div>
 
                   <div *ngIf="productionFive==true">
-                    <input [(ngModel)]="itemShown.productionFiveInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionFiveInput"
                       (change)="searchCompNumber($event,'productionFiveInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionFive==false">
@@ -489,7 +623,7 @@
                   </div>
 
                   <div *ngIf="productionSix==true">
-                    <input [(ngModel)]="itemShown.productionSixInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionSixInput"
                       (change)="searchCompNumber($event,'productionSixInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionSix==false">
@@ -497,7 +631,7 @@
                   </div>
 
                   <div *ngIf="productionSeven==true">
-                    <input [(ngModel)]="itemShown.productionSevenInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionSevenInput"
                       (change)="searchCompNumber($event,'productionSevenInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionSeven==false">
@@ -505,7 +639,7 @@
                   </div>
 
                   <div *ngIf="productionEight==true">
-                    <input [(ngModel)]="itemShown.productionEightInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionEightInput"
                       (change)="searchCompNumber($event,'productionEightInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionEight==false">
@@ -514,90 +648,58 @@
 
                 </div>
 
-                <div class="col-2" style="margin-left:-70px;">
+                <div class="col-2">
                   <div>
-                    <select style="width:90px" *ngIf="production==true" class="productionInput">
-                      <option>Pcs</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcs" style="width:90px" *ngIf="production==true" class="productionInput">
                   </div>
                   <div *ngIf="production==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionTwo==true" class="productionInput">
-                      <option>Pcs</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsTwo" style="width:90px" *ngIf="productionTwo==true" class="productionInput">
                   </div>
                   <div *ngIf="productionTwo==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionThree==true" class="productionInput">
-                      <option>Pcs</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsThree" style="width:90px" *ngIf="productionThree==true" class="productionInput">
                   </div>
                   <div *ngIf="productionThree==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionFour==true" class="productionInput">
-                      <option>Pcs</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsFour" style="width:90px" *ngIf="productionFour==true" class="productionInput">
                   </div>
                   <div *ngIf="productionFour==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionFive==true" class="productionInput">
-                      <option>Pcs</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsFive" style="width:90px" *ngIf="productionFive==true" class="productionInput">
                   </div>
                   <div *ngIf="productionFive==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionSix==true" class="productionInput">
-                      <option>Pcs</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsSix" style="width:90px" *ngIf="productionSix==true" class="productionInput">
                   </div>
                   <div *ngIf="productionSix==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionSeven==true" class="productionInput">
-                      <option>Pcs</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsSeven" style="width:90px" *ngIf="productionSeven==true" class="productionInput">
                   </div>
                   <div *ngIf="productionSeven==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <select style="width:90px" *ngIf="productionEight==true" class="productionInput">
-                      <option>Pcs</option>
-                      <option></option>
-                      <option></option>
-                    </select>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsEight" style="width:90px" *ngIf="productionEight==true" class="productionInput">
                   </div>
                   <div *ngIf="productionEight==false">
                     <p style="opacity: 0">---</p>
@@ -605,7 +707,7 @@
 
                 </div>
 
-                <div class="col-1" style="margin-left:-75px;">
+                <div class="col-1" style="margin-left:-55px;">
 
                   <div style="margin-top:2px;" *ngIf="production==true" class="image-upload">
                     <label>
@@ -765,10 +867,6 @@
                     <label class="labelGeneral">Status</label>
                   </div>
 
-                  <div>
-                    <label class="labelGeneral">Main Component</label>
-                  </div>
-
                 </div>
                 <div class="col-3">
 
@@ -778,33 +876,26 @@
                       <option value="active">פעיל</option>
                       <option value="notActive">לא פעיל</option>
                       <option value="perfect">מושלם</option>
+                      <option value="production">פיתוח</option>
                     </select>
                   </div>
-
-                  <div>
-                    <input [(ngModel)]=itemShown.bottleTube type="text" class="productionInput">
-                  </div>
+                  
 
                 </div>
                 <div class="col-2">
                   <div>
-                    <label class="labelGeneral">Carton no'</label>
-                  </div>
-
-                  <div>
-                    <label class="labelGeneral">PCS/carton</label>
+                    <div  class="productionLabel">
+                      <label style="font-size:11px">Peer Pharm Tone#</label>
+                    </div>
+               
                   </div>
 
                 </div>
 
                 <div class="col-3">
+               
                   <div>
-                    <input type=t class="productionInput" ext id="id_cartonNo"
-                      (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')"
-                      [(ngModel)]=itemShown.cartonNumber>
-                  </div>
-                  <div>
-                    <input type="text" class="productionInput" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
+                    <input [(ngModel)]="itemShown.peerPharmTone" type="text" class="productionInput">
                   </div>
                 </div>
 
@@ -1251,7 +1342,8 @@
     <div style="margin-left: 30px;" class="col-4">
         <img title="Batches" (click)="openBatchModal(batches)" style="width:50px;margin:5px;" src="/assets/images/allOrder.png">
         <img title="Orders" (click)="openOrderModal(orders)" style="width:50px;margin:5px;" src="/assets/images/ordered.png">
-        <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
+        <img src="../../../assets/images/excel.png" alt="excel export"
+        (click)="exportAsXLSX(item)" style="width: 50px;margin:5px;cursor: pointer;">
         <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
         <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
     </div>
@@ -1262,7 +1354,7 @@
     </div>
     <div class="col-4"></div>
   </div>
-</div>   -->
+</div>   --> 
 
 <!------------- Batches Modal  --------------->
 <ng-template #batches let-c="close" let-d="dismiss">
@@ -1368,7 +1460,7 @@
   </h1>
 </div>   -->
 
-<table border=0 background='bg112.jpg' style="background-size: cover">
+ <table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>

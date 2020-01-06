@@ -109,17 +109,54 @@ export class CleaningFormsComponent implements OnInit {
   getAllDailyCleanForms(){
     debugger;
     this.formsService.getAllDailyCleanForms().subscribe(data=>{
+      debugger
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === true) {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === false) {
+            obj[i] = 'No'
+          }
+
+      }
+        
+      });
       this.allDailyCleanForms = data;
     })
   }
 
   getAllDailyCleanSecondForms(){
     this.formsService.getAllDailyCleanSecondForms().subscribe(data=>{
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === true) {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === false) {
+            obj[i] = 'No'
+          }
+
+      }
+        
+      })
       this.allDailyCleanSecondForms = data;
     })
   }
   getAllProdDailyClean(){
     this.formsService.getAllProdDailyClean().subscribe(data=>{
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === true) {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === false) {
+            obj[i] = 'No'
+          }
+
+      }
+        
+      })
       this.allDailyProdCleanForms = data;
     })
   }

@@ -33,6 +33,7 @@ export class StockComponent implements OnInit {
   loadingMovements: boolean = false;
   showItemDetails: boolean = true;
   itemMovements: any = [];
+  itemShell:any[];
   materialLocations: any[];
   items:any[];
   expirationBatchDate:any;
@@ -95,6 +96,7 @@ export class StockComponent implements OnInit {
   EditRowId: any = "";
   orderItems: any;
   procurementInputEvent: any;
+  
   stockType: String = "component";
   newItem: String = '';
   newItemBtn: String = 'new';
@@ -191,6 +193,7 @@ export class StockComponent implements OnInit {
     frameQuantity:"",
     frameSupplier:"",
     location:"",
+    quantityInStock:"",
 
   }
   itemExpectedArrivals: any;
@@ -244,6 +247,8 @@ export class StockComponent implements OnInit {
     }
   }
 
+
+  
   // getProcurementData(){
   //   this.inventoryService.getProcurementData().subscribe(data=>{
 
@@ -256,6 +261,7 @@ export class StockComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.getAllItemShell();
     this.getUser();
     this.getAllSuppliers()
     this.getAllMaterialLocations();
@@ -283,6 +289,16 @@ export class StockComponent implements OnInit {
     this.supplierService.getAllSuppliers().subscribe(data=>{
       this.allSuppliers = data;
     })
+  }
+
+  getAllItemShell(){
+    this.itemService.getAllItemShells().subscribe(data=>{
+      this.itemShell = data;
+    })
+  }
+
+  exportAsXLSX(data) {
+    this.excelService.exportAsExcelFile(this.itemShell, 'itemShell');
   }
 
   //************************************************* */

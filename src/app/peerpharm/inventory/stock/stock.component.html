@@ -116,13 +116,14 @@
       <img *ngIf="loadingExcel" style="width:50px"
         src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
       <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-        (click)="exportCurrTable()">
+        (click)="exportAsXLSX()">
+        <button printSectionId="print-section" ngxPrint>print</button> 
     </div>
 
 
 
     <!-- TABLE START -->
-    <div *ngIf="stockType=='component'" class="tableFixHead" >
+    <div  *ngIf="stockType=='component'" class="tableFixHead" >
     <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
       <thead style="background: rgb(69, 69, 202);" class='tableHeader text-white'>
         <tr style="text-align: center;">
@@ -206,12 +207,12 @@
     </table>
 
   </div>
-
+  
     <app-expected-arrivals *ngIf="openProcurementModal" [componentData]='resCmpt'
       (outPutItemsExpectedData)="getNewExpectedArrivalsData($event)"></app-expected-arrivals>
 
 
-    <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
+    <table  class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
       <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
         <tr>
 
@@ -988,6 +989,7 @@
                     <input [(ngModel)]="resMaterial.frameSupplier" type="text">
                   </td>
                 </tr>
+                <br>
                 <tr>
                     <th>Location</th>
                   <td>
@@ -995,6 +997,12 @@
                     <datalist id="locations">
                       <option *ngFor="let material of materialLocations" [value]="material.location">{{material.location}}</option>
                     </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Quantity In Stock</th>
+                  <td>
+                    <input type="text" [(ngModel)]="resMaterial.quantityInStock"> 
                   </td>
                 </tr>
               </div>

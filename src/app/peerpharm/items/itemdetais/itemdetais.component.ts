@@ -13,6 +13,7 @@ import { CostumersService } from 'src/app/services/costumers.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { BatchesService } from 'src/app/services/batches.service';
 import { OrdersService } from 'src/app/services/orders.service';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-itemdetais',
@@ -86,6 +87,25 @@ export class ItemdetaisComponent implements OnInit {
     discriptionK: '',
     proRemarks: '',
     impRemarks: '',
+
+    typeOfComponent:'',
+    typeOfComponentTwo:'',
+    typeOfComponentThree:'',
+    typeOfComponentFour:'',
+    typeOfComponentFive:'',
+    typeOfComponentSix:'',
+    typeOfComponentSeven:'',
+    typeOfComponentEight:'',
+
+    numberOfPcs:'',
+    numberOfPcsTwo:'',
+    numberOfPcsThree:'',
+    numberOfPcsFour:'',
+    numberOfPcsFive:'',
+    numberOfPcsSix:'',
+    numberOfPcsSeven:'',
+    numberOfPcsEight:'',
+
 
     updateDate: '',
     nameOfupdating: '',
@@ -228,7 +248,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
 
-  constructor(private orderService:OrdersService,private batchService:BatchesService ,private modalService:NgbModal,private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
+  constructor(private excelService:ExcelService,private orderService:OrdersService,private batchService:BatchesService ,private modalService:NgbModal,private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
@@ -364,6 +384,15 @@ export class ItemdetaisComponent implements OnInit {
       }
     }
   }
+
+
+  exportAsXLSX() {
+       debugger
+    this.excelService.exportAsExcelFile([this.itemShown], 'data');
+ }
+
+
+
 
   fillBottle(ev) {
     debugger
@@ -729,6 +758,7 @@ export class ItemdetaisComponent implements OnInit {
     this.itemsService.getItemData(item).subscribe(res => {
       debugger;
       console.log(res.length)
+     
       if (res.length == 0) {
         this.toastr.error(item, "Item Not found");
         this.itemShown = Object.assign({}, this.itemCopy);
@@ -737,6 +767,7 @@ export class ItemdetaisComponent implements OnInit {
       }
       else {
         debugger
+        
         this.item = res[0];
         this.itemShown = res[0];
         var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
@@ -761,69 +792,117 @@ export class ItemdetaisComponent implements OnInit {
     if(this.itemShown.StickerLanguageK == '' || this.itemShown.StickerLanguageK == '---' ) {
       this.mainLanguage = false
      
+    } else {
+      this.mainLanguage = true
     }
+
     if(this.itemShown.StickerLanguageKTwo == '' || this.itemShown.StickerLanguageKTwo == '---') {
       this.mainLanguageTwo = false
+    } else {
+      this.mainLanguageTwo = true
     }
+
     if(this.itemShown.StickerLanguageKThree == '' || this.itemShown.StickerLanguageKThree == '---') {
       this.mainLanguageThree = false
+    } else {
+      this.mainLanguageThree = true
     }
+
     if(this.itemShown.department == '' || this.itemShown.department == '---') {
       this.department = false
+    } else {
+      this.department = true
     }
+
     if(this.itemShown.volumeKey == '' || this.itemShown.volumeKey == '---') {
       this.volumeMl = false
+    } else {
+      this.volumeMl = true
     }
+
     if(this.itemShown.netWeightK == '' || this.itemShown.netWeightK == '---') {
       this.netWeightK = false
+    } else {
+      this.netWeightK = true
     }
+
     if(this.itemShown.grossUnitWeightK == '' || this.itemShown.grossUnitWeightK == '---') {
       this.grossWeightUnit = false
+    } else {
+      this.grossWeightUnit = true
     }
+
     if(this.itemShown.peerPharmTone == '' || this.itemShown.peerPharmTone == '---') {
       this.peerPharmTone = false
+    } else {
+      this.peerPharmTone = true
     }
+
     if(this.itemShown.productionInput == '' || this.itemShown.productionInput == '---') {
       this.production = false
       this.productionType = ''
       this.productionImage = ''
+    } else {
+      this.production = true
     }
+    
     if(this.itemShown.productionTwoInput == '' || this.itemShown.productionTwoInput == '---') {
       this.productionTwo = false
       this.productionTwoType = ''
       this.productionTwoImage = ''
+    } else {
+      this.productionTwo = true
     }
+
     if(this.itemShown.productionThreeInput == '' || this.itemShown.productionThreeInput == '---') {
       this.productionThree = false
       this.productionThreeType = ''
       this.productionThreeImage = ''
       
+    } else {
+      this.productionThree = true
     }
+
     if(this.itemShown.productionFourInput == '' || this.itemShown.productionFourInput == '---') {
       this.productionFour = false
       this.productionFourType = ''
       this.productionFourImage = ''
+    } else {
+      this.productionFour = true
     }
+
     if(this.itemShown.productionFiveInput == '' || this.itemShown.productionFiveInput == '---') {
       this.productionFive = false
       this.productionFiveType = ''
       this.productionFiveImage = ''
+    } else {
+      this.productionFive = true
     }
+
     if(this.itemShown.productionSixInput == '' || this.itemShown.productionSixInput == '---') {
       this.productionSix = false
       this.productionSixType = ''
       this.productionSixImage = ''
+    } else {
+      this.productionSix = true
     }
+
     if(this.itemShown.productionSevenInput == '' || this.itemShown.productionSevenInput == '---') {
       this.productionSeven = false
       this.productionSevenType = ''
       this.productionSevenImage = ''
+    } else {
+      this.productionSeven = true
     }
+
     if(this.itemShown.productionEightInput == '' || this.itemShown.productionEightInput == '---') {
       this.productionEight = false
       this.productionEightType = ''
       this.productionEightImage = ''
+    } else {
+      this.productionEight = true
     }
+
 
   }
 
@@ -850,7 +929,9 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   updateItemTree() {
-    if (this.itemShown.itemNumber != "") {
+    if(this.itemShown.status == 'production') {
+      if(confirm('שים לב , אתה מנסה לעדכן מוצר עם סטטוס פיתוח')){
+         if (this.itemShown.itemNumber != "") {
       this.itemShown.nameOfupdating = this.user.userName;
       // this.getGoddetData();
       // this.itemShown.updateDate;
@@ -860,7 +941,24 @@ export class ItemdetaisComponent implements OnInit {
       });
     } else {
       this.toastr.error("No item number!");
+    } 
+      } 
+    } else {
+      if (this.itemShown.itemNumber != "") {
+        this.itemShown.nameOfupdating = this.user.userName;
+        // this.getGoddetData();
+        // this.itemShown.updateDate;
+        this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => {
+          console.log(res)
+          this.toastr.success("Saved", "Changes Saved fot item number: " + this.itemShown.itemNumber);
+        });
+      } else {
+        this.toastr.error("No item number!");
+      } 
     }
+       
+    
+ 
   }
 
   selectedFiles: FileList;
