@@ -345,14 +345,16 @@ export class StockComponent implements OnInit {
     return new Promise(function (resolve, reject) {
       var line = {}
       if (that.stockType == 'component') {
+    
         for (let i = 0; i < that.components.length; i++) {
+      
           line = {
             'מספר פריט': that.components[i].componentN,
             'מק"ט פריט אצל הספק': that.components[i].componentNs,
             'שם הפריט': that.components[i].componentName,
             'סוג פריט': that.components[i].componentType,
-            'כמות Kasem': that.components[i].amountKasem,
-            'כמות Rosh-HaAyin': that.components[i].amountRH,
+            'כמות': that.components[i].amount,
+           
           }
           arr.push(line)
         }
