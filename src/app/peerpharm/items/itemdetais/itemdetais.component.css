@@ -84,7 +84,8 @@ input:focus {
     
 }
 .backgroundRed { 
-    color:rgb(207, 28, 28);   
+    background:rgb(207, 28, 28);   
+    color:white;
 }
 .red { 
     color:rgb(207, 28, 28);

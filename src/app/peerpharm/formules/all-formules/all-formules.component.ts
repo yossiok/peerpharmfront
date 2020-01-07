@@ -71,12 +71,12 @@ export class AllFormulesComponent implements OnInit {
 
   constructor(private invtSer:InventoryService,private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal,private authService: AuthService) { }
 
-  
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('');
     this.editPhases('')
-    
+
   }
 
   ngOnInit() {
@@ -85,7 +85,7 @@ export class AllFormulesComponent implements OnInit {
     this.getAllParentsFormules();
   }
 
-  getAllMaterials() { 
+  getAllMaterials() {
     this.invtSer.getAllMaterialsForFormules().subscribe(data=>{
     this.materials = data;
     })
@@ -120,20 +120,20 @@ export class AllFormulesComponent implements OnInit {
     })
   }
 
-  addNewPhase() { 
+  addNewPhase() {
     debugger;
     this.formuleService.addPhase(this.addPhase).subscribe(data=>{
-     
+
       debugger;
-      if(data) { 
+      if(data) {
         this.updateFormule.phases = data.phases;
         this.toastSrv.success("Phase added successfully")
-   
+
     }
   })
 }
 
-  getAllFormules() { 
+  getAllFormules() {
     this.formuleService.getAllFormules().subscribe(data=>{
       debugger;
       this.allFormules = data;
@@ -160,30 +160,30 @@ export class AllFormulesComponent implements OnInit {
 
 editPhases(id) {
   debugger
-  
+
   this.EditRowId = id;
-  
+
 
     this.updateFormule;
     this.EditRowId = id;
-  
+
       var formule = this.allFormules.find(formule => formule._id == this.updateFormule._id)
-      
-    
+
+
       var results = formule.phases.filter(phase=> phase._id == id )
-    
+
       this.currentDoc = results;
-    
+
      var phase = this.updateFormule.phases.find(phase => phase._id == id)
 
       this.phaseToUpdate.phaseName = phase.phaseName
       this.phaseToUpdate.phaseIns = phase.phaseInstructions
-      
-  
-   
+
+
+
 }
 
-editItems(itemNumber,index,phaseId) { 
+editItems(itemNumber,index,phaseId) {
   debugger;
   this.updateItems
   this.EditRowId = itemNumber
@@ -195,10 +195,10 @@ editItems(itemNumber,index,phaseId) {
   //   for (const j = 0; j < formules[i].phases.length; i++) {
   //     if (formules[i].phases[j]._id === phaseId) {
   //       results.push(formules[i].phases[j]);
-        
+
   //     }
   //   }
-    
+
   // }
 
   var formule = this.allFormules.find(formule => formule._id == this.updateFormule._id)
@@ -206,13 +206,13 @@ editItems(itemNumber,index,phaseId) {
 
   this.currentDoc = results[0].items
   this.currentDoc[0].index = index
- 
-  
+
+
 
   var phase = this.updateFormule.phases.find(phase => phase._id == phaseId)
 
   this.itemToUpdate.itemNumber = phase.items[index].itemNumber
-  
+
   this.itemToUpdate.quantity = phase.items[index].quantity
   this.itemToUpdate.quantityUnits = phase.items[index].quantityUnits
   this.itemToUpdate.percentage = phase.items[index].percentage
@@ -234,7 +234,7 @@ saveEdit(currdoc) {
     this.currentDoc.lastUpdate = this.formuleLastUpdate.nativeElement.value.trim();
     this.currentDoc.parent = this.formuleParent.nativeElement.value.trim();
     this.currentDoc.parentName = this.formuleParentName.nativeElement.value.trim();
-    
+
     if(confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
       this.updateDocument()
     }
@@ -247,7 +247,7 @@ saveEdit(currdoc) {
 
 }
 
-savePhaseEdit(currDoc) { 
+savePhaseEdit(currDoc) {
   debugger;
 
 
@@ -255,21 +255,21 @@ savePhaseEdit(currDoc) {
     this.currentDoc[0].phaseName = this.phaseToUpdate.phaseName;
     this.currentDoc[0].phaseInstructions =  this.phaseToUpdate.phaseIns;
     if(confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
-      this.updatePhase() 
+      this.updatePhase()
 
     }
-    
+
   } else {
 
     this.toastSrv.error("Can't save changes with missing fields.")
 
   }
 
-  
+
 
 }
 
-saveItemEdit(currDoc,index) { 
+saveItemEdit(currDoc,index) {
   debugger;
   this.currentDoc;
 
@@ -282,7 +282,7 @@ saveItemEdit(currDoc,index) {
     this.currentDoc[index].quantityUnits = this.itemToUpdate.quantityUnits
     this.currentDoc[index].temp = this.itemToUpdate.temp
     if(confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
-      this.updatePhaseItems(index) 
+      this.updatePhaseItems(index)
     }
 
   } else {
@@ -292,7 +292,7 @@ saveItemEdit(currDoc,index) {
   }
 }
 
-updatePhase() { 
+updatePhase() {
   debugger;
   this.formuleService.updateFormulePhaseId(this.currentDoc).subscribe(data=>{
     debugger;
@@ -301,12 +301,12 @@ updatePhase() {
     this.toastSrv.success("Details were successfully saved");
     this.phaseToUpdate.phaseName = ""
     this.phaseToUpdate.phaseIns = ""
-   
-    
+
+
   })
 }
 
-updatePhaseItems(index) { 
+updatePhaseItems(index) {
   this.formuleService.updateFormulePhaseItems(this.currentDoc[index]).subscribe(data=>{
     debugger;
     data;
@@ -331,7 +331,7 @@ updateDocument(){
         doc=data;
       }
     });
-    
+
     this.EditRowId=""
     this.toastSrv.success("Details were successfully saved");
   });
@@ -351,7 +351,7 @@ openPrint(printFormule,formuleNum) {
 }
 
 
-loadDataPrint(formuleNum) { 
+loadDataPrint(formuleNum) {
   debugger;
   var formuleToUpdate = [];
  formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
@@ -370,7 +370,7 @@ open(formuleData,formuleNum) {
   this.loadData(formuleNum)
 }
 
-loadData(formuleNum) { 
+loadData(formuleNum) {
   debugger;
   var formuleToUpdate = [];
  formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
@@ -396,7 +396,7 @@ deletePhase(phaseId) {
   this.formuleService.deletePhaseById(phaseToDelete).subscribe(data =>{
     debugger;
     this.updateFormule.phases = data.phases;
- 
+
   })
 }
 
@@ -413,11 +413,11 @@ deleteItem(itemNumber,index,phaseId) {
     debugger;
 
    var phase = data.phases.filter(phase=> phase._id == phaseId)
-   
+
     this.updateItems = phase[0].items
     debugger;
 
- 
+
   })
 
 }
@@ -425,7 +425,7 @@ deleteItem(itemNumber,index,phaseId) {
 
 openItem(itemData,phaseNumber) {
   debugger;
-  
+
   this.modalService.open(itemData, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
   }, (reason) => {
@@ -434,7 +434,7 @@ openItem(itemData,phaseNumber) {
   this.loadItemData(phaseNumber)
 }
 
-loadItemData(phaseNumber) { 
+loadItemData(phaseNumber) {
 debugger;
 
 let details = this.updateFormule.phases.find(phase=>phase.phaseNumber == phaseNumber)
@@ -454,7 +454,7 @@ private getDismissReason(reason: any): string {
   }
 }
 
-copyFormule(currDoc,index) { 
+copyFormule(currDoc,index) {
   debugger;
   var formuleToCopy = this.allFormules[index]
 
@@ -463,7 +463,7 @@ copyFormule(currDoc,index) {
     data;
   this.allFormules.push(data);
   })
-  
+
 
 }
 
@@ -474,15 +474,28 @@ fillTheMaterialNumber(ev) {
   let details = this.materials.filter(x =>x.componentName == componentName)
   this.addItem.itemNumber = details[0].componentN
 }
+
+updateFormuleWhenPrint(){
+    console.log(this.updateFormule);
+    let user = this.authService.loggedInUser.userName;
+    let updatedFormule = {
+      _id:this.updateFormule._id,
+      client:user
+    };
+  this.formuleService.updateFormuleWhenPrint(updatedFormule).subscribe(data=>{
+    console.log(data);
+  });
+}
+
 searchMaterialNumber(ev){
   debugger;
   let materialNumber = ev.target.value;
 
   let details = this.materials.filter(material=> material.componentN == materialNumber)
   this.addItem.itemName = details[0].componentName;
-  
-    
-  
+
+
+
 }
 
 

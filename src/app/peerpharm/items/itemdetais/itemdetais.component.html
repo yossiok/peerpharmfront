@@ -8,7 +8,11 @@
       <h1 [ngClass]="checkItemStatus()" class="itemHeadline">ITEM TREE</h1>
       <div *ngIf="remarksAlert==true" class="alert">
         <span dir="rtl" class="closebtn" (click)="jumpingRemark()">&times;</span> 
-        <strong>שים לב!</strong> {{this.itemShown.proRemarks}}
+        <strong>הערה חשובה:</strong> {{this.itemShown.proRemarks}}
+      </div>
+      <div *ngIf="notActiveAlert==true" class="alert">
+        <span dir="rtl" class="closebtn" (click)="notActive()">&times;</span> 
+        <strong>שים לב פריט זה אינו פעיל !!</strong> 
       </div>
       
     </div>
@@ -44,30 +48,30 @@
     </div>
     <div class="col-3">
       <div>
-        <input type="text" [(ngModel)]=itemShown.itemNumber #itemNum id="id_item"
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.itemNumber #itemNum id="id_item"
           (keydown)='search($event,itemNum.value )'>
         <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search" src='/assets/images/search.png'
           style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
       </div>
 
       <div>
-        <input type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
+        <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
       </div>
 
       <div>
-        <input type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
       </div>
 
       <div>
-        <input type="text" [(ngModel)]=itemShown.subName id="id_subTitle" style="width:480px">
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.subName id="id_subTitle" style="width:480px">
       </div>
 
       <div>
-        <input type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:480px">
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:480px">
       </div>
 
       <div>
-        <textarea rows="4" cols="40" id="id_mainRemarks" [(ngModel)]=itemShown.proRemarks> </textarea>
+        <textarea [ngClass]="itemBackgroundByStatus()" rows="4" cols="40" id="id_mainRemarks" [(ngModel)]=itemShown.proRemarks> </textarea>
       </div>
 
       <div style='display: inline-table;text-align: center;margin-top:10px;'>
@@ -1016,6 +1020,15 @@
                   <div>
                     <label class="labelGeneral">Mother Product</label>
                   </div>
+                  <div style="margin-top:7px;">
+                    <label class="labelGeneral">Plate 1</label>
+                  </div>
+                  <div>
+                    <label class="labelGeneral">Plate 2</label>
+                  </div>
+                  <div>
+                    <label class="labelGeneral">Plate 3</label>
+                  </div>
 
                 </div>
 
@@ -1031,6 +1044,24 @@
 
                   <div>
                     <input class="productionInput" type=t ext id="id_motherP">
+                  </div>
+
+                  <div>
+                    <input type=text class="productionInput" [(ngModel)]="itemShown.pallet" style='width:80px' ondblclick='openPalletImg(this.value, this.id)'>
+                    <input class="productionInput" [(ngModel)]="itemShown.pallet1x" disabled style='width:40px'><input class="productionInput" [(ngModel)]="itemShown.pallet1y"
+                      disabled style='width:40px'>
+                  </div>
+
+                  <div>
+                    <input class="productionInput" type=text [(ngModel)]="itemShown.pallet2" style='width:80px' ondblclick='openPalletImg(this.value  ,  this.id)'>
+                    <input class="productionInput" [(ngModel)]="itemShown.pallet2x" disabled style='width:40px'><input class="productionInput" [(ngModel)]="itemShown.pallet2y"
+                      disabled style='width:40px'>
+                  </div>
+
+                  <div>
+                    <input class="productionInput" type=text [(ngModel)]="itemShown.pallet3" style='width:80px' ondblclick='openPalletImg(this.value ,  this.id)'>
+                    <input class="productionInput" [(ngModel)]="itemShown.pallet3x" disabled style='width:40px'><input class="productionInput" [(ngModel)]="itemShown.pallet3y"
+                      disabled style='width:40px'>
                   </div>
                 </div>
 
@@ -1354,7 +1385,7 @@
     </div>
     <div class="col-4"></div>
   </div>
-</div>   --> 
+</div>   -->
 
 <!------------- Batches Modal  --------------->
 <ng-template #batches let-c="close" let-d="dismiss">
@@ -1436,7 +1467,7 @@
 <!-------------------------------------------------------------------------------------------------------------------------------------------------->
 
 
- <!-- <ngb-tabset #t="ngbTabset">
+ <ngb-tabset #t="ngbTabset">
   <ngb-tab id="tab-selectbyid1" title="General">
      <ng-template ngbTabContent>
         ngfmjuy hgdeg
@@ -1460,7 +1491,7 @@
   </h1>
 </div>   -->
 
- <table border=0 background='bg112.jpg' style="background-size: cover">
+<!-- <table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>

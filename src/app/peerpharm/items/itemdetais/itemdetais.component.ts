@@ -50,6 +50,7 @@ export class ItemdetaisComponent implements OnInit {
   peerPharmTone: Boolean = true
   laserAndExp: Boolean = true;
   remarksAlert: Boolean = false;
+  notActiveAlert:Boolean = false;
 
 
   productionType: '';
@@ -710,6 +711,19 @@ export class ItemdetaisComponent implements OnInit {
    
     }
   }
+  notActive(){
+    debugger;
+    if(this.itemShown.status == "notActive") {
+      if(this.notActiveAlert == true){
+        this.notActiveAlert = false;
+      } 
+      else { 
+        this.notActiveAlert = true;
+      }
+      
+   
+    }
+  }
 
   checkItemStatus()
   {
@@ -720,13 +734,18 @@ export class ItemdetaisComponent implements OnInit {
       
       } if (this.itemShown.status === 'notActive') {
 
-        return "backgroundRed"
+        return "red"
       } if (this.itemShown.status === 'active'){
         return "red"
       }
 
   }
 
+  itemBackgroundByStatus() { 
+    if(this.itemShown.status === 'notActive'){
+      return "backgroundRed"
+    }
+  }
 
   getItemData() {
     const number = this.route.snapshot.paramMap.get('itemNumber');
@@ -783,6 +802,7 @@ export class ItemdetaisComponent implements OnInit {
         this.dataDiv = res[0].goddet;
         // this.showGoddetData();
         this.jumpingRemark();
+        this.notActive();
       }
     })
   }

@@ -140,6 +140,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   dateChanged(date) {
+    debugger
     console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
@@ -161,6 +162,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   getAllSchedule(today) {
+    debugger
     this.scheduleService.getScheduleByDate(today).subscribe(res => {
       res.map(sced => {
         console.log(sced);
