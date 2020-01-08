@@ -560,6 +560,11 @@ export class CheckingformsComponent implements OnInit {
       debugger;
       this.libraCalibration = data[0]
     })
+
+    this.formsService.getLibraTestsByNumber(balanceSerialNum).subscribe(data=>{
+      debugger;
+      this.libraCalibrationTests = data;
+    })
   }
 
   getAllLibraCalibTests() {

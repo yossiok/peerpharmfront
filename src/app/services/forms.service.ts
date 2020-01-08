@@ -107,6 +107,10 @@ export class FormsService {
     let url = this.baseUrl + 'forms?getAllLibraList='+balanceSerialNum;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getLibraTestsByNumber(balanceSerialNum) {
+    let url = this.baseUrl + 'forms?getLibraTestsByNumber='+balanceSerialNum;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllLibraCalibTests() {
     let url = this.baseUrl + 'forms/getAllLibraCalibTests';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
