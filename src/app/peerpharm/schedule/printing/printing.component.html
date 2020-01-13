@@ -99,7 +99,7 @@
       
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
-      <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer" style='width:50px' disabled></td>
+      <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer" style='width:50px'></td>
       
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.cmptN}}</td>
       <td *ngIf="line._id===EditRowId"><input #cmptN type='text' [value]="line.cmptN" style='width:110px'></td>

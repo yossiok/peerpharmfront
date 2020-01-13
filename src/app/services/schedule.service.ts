@@ -94,6 +94,7 @@ export class ScheduleService {
   }
 
   setNewPrintSchedule(schedule): Observable<any> {
+    debugger
     let url = this.baseUrl + "printSchedule/add";
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }

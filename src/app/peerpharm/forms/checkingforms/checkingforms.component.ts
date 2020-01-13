@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormsService } from 'src/app/services/forms.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-checkingforms',
@@ -16,8 +17,12 @@ export class CheckingformsComponent implements OnInit {
   allTempTests:any[]
   allCalibrationDayTests:any[];
   allSewerPHTests:any[];
-
-
+  EditRowId:any = "";
+  calibrationTestRemarks:any;
+  waterTestRemarks:any;
+  tempTestRemarks:any;
+  calibDayRemarks:any;
+  sewerTestRemarks:any;
   
   sewerPhTest = {
     year:'',
@@ -450,7 +455,12 @@ export class CheckingformsComponent implements OnInit {
 
   }
 
-  constructor(private formsService: FormsService) { }
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+  }
+
+  constructor(private toastSrv:ToastrService,private formsService: FormsService) { }
 
   ngOnInit() {
   this.getAllLibraCalibTests();
@@ -487,6 +497,15 @@ export class CheckingformsComponent implements OnInit {
     if(phNumber == 'PH05'){
       this.calibrationWeek.toolModel = 'HI 8424 מכשיר נייד'
       this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים'
+    }
+  }
+
+  edit(id) {
+
+    if(id!=''){
+      this.EditRowId = id;
+    } else{
+      this.EditRowId = '';
     }
   }
 
@@ -645,5 +664,97 @@ export class CheckingformsComponent implements OnInit {
 
     })
 
+  }
+
+  updateCalibTest(id){
+    debugger;
+    this.calibrationTestRemarks
+
+    var obj = {
+      _id:id,
+      remarks:this.calibrationTestRemarks
+    }
+
+    this.formsService.updateCalibTestRemarks(obj).subscribe(data=>{
+      debugger;
+      if(data.length > 0) {
+        this.libraCalibrationTests = data;
+        this.EditRowId = '';
+        this.toastSrv.success("עודכן בהצלחה!")
+      }
+    })
+  }
+
+  updateWaterTest(id){
+    debugger;
+    this.waterTestRemarks
+
+    var obj = {
+      _id:id,
+      remarks:this.waterTestRemarks
+    }
+
+    this.formsService.updateWaterTestRemarks(obj).subscribe(data=>{
+      debugger;
+      if(data.length > 0) {
+        this.allWaterTests = data;
+        this.EditRowId = '';
+        this.toastSrv.success("עודכן בהצלחה!")
+      }
+    })
+  }
+
+  updateTempTest(id){
+    debugger;
+
+    var obj = {
+      _id:id,
+      remarks:this.tempTestRemarks
+    }
+
+    this.formsService.updateTempTestRemarks(obj).subscribe(data=>{
+      debugger;
+      if(data.length > 0) {
+        this.allTempTests = data;
+        this.EditRowId = '';
+        this.toastSrv.success("עודכן בהצלחה!")
+      }
+    })
+  }
+
+  updateCalibDayTest(id){
+    debugger;
+
+    var obj = {
+      _id:id,
+      remarks:this.calibDayRemarks
+    }
+
+    this.formsService.updateCalibDayRemarks(obj).subscribe(data=>{
+      debugger;
+      if(data.length > 0) {
+        this.allCalibrationDayTests = data;
+        this.EditRowId = '';
+        this.toastSrv.success("עודכן בהצלחה!")
+      }
+    })
+  }
+
+  updateSewerTest(id){
+    debugger;
+
+    var obj = {
+      _id:id,
+      remarks:this.sewerTestRemarks
+    }
+
+    this.formsService.updateSewerTestRemarks(obj).subscribe(data=>{
+      debugger;
+      if(data.length > 0) {
+        this.allSewerPHTests = data;
+        this.EditRowId = '';
+        this.toastSrv.success("עודכן בהצלחה!")
+      }
+    })
   }
 }

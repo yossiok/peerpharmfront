@@ -74,6 +74,31 @@ export class FormsService {
     let url = this.baseUrl + "forms/editCalibrationWeekForm";
     return this.http.post(url, JSON.stringify(calibrationWeekFormEdit), this.options).pipe(map(res => res.json()));
   }
+  updateCalibTestRemarks(calibrationWeekFormEdit){
+    debugger;
+    let url = this.baseUrl + "forms/updateCalibTestRemark";
+    return this.http.post(url, JSON.stringify(calibrationWeekFormEdit), this.options).pipe(map(res => res.json()));
+  }
+  updateWaterTestRemarks(waterTestEdit){
+    debugger;
+    let url = this.baseUrl + "forms/updateWaterTestRemarks";
+    return this.http.post(url, JSON.stringify(waterTestEdit), this.options).pipe(map(res => res.json()));
+  }
+  updateTempTestRemarks(tempTestEdit){
+    debugger;
+    let url = this.baseUrl + "forms/updateTempTestRemarks";
+    return this.http.post(url, JSON.stringify(tempTestEdit), this.options).pipe(map(res => res.json()));
+  }
+  updateCalibDayRemarks(calibDayEdit){
+    debugger;
+    let url = this.baseUrl + "forms/updateCalibDayRemarks";
+    return this.http.post(url, JSON.stringify(calibDayEdit), this.options).pipe(map(res => res.json()));
+  }
+  updateSewerTestRemarks(sewerTestEdit){
+    debugger;
+    let url = this.baseUrl + "forms/updateSewerTestRemarks";
+    return this.http.post(url, JSON.stringify(sewerTestEdit), this.options).pipe(map(res => res.json()));
+  }
 
   getCalibrationFormByYear(calibrationForm) {
     let url = this.baseUrl + 'forms?getCalibrationFormByYear='+calibrationForm;

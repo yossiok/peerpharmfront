@@ -700,7 +700,7 @@ export class ItemdetaisComponent implements OnInit {
 
   jumpingRemark(){
     debugger;
-    if(this.itemShown.proRemarks != "" &&  this.itemShown.proRemarks != undefined && this.itemShown.proRemarks != null) {
+    if(this.itemShown.proRemarks != "" && this.itemShown.proRemarks != undefined && this.itemShown.proRemarks != null) {
       if(this.remarksAlert == true){
         this.remarksAlert = false;
       } 
@@ -927,24 +927,45 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   async writeItemData() {
- 
-    console.log(this.itemShown);
-    if (this.itemShown.itemNumber != "") {
-      if (confirm("Save changes?")) {
-        await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes => {
-          if (itemNumRes.length > 0) {
-            if (confirm("Item alerady exist!\nDo you want to update item number: " + this.itemShown.itemNumber + " ?")) {
-              this.updateItemTree();
-            }
-          } else {
-            if (confirm("Create New item number : " + this.itemShown.itemNumber + " ?")) {
-              this.updateItemTree();
-            }
+    if(this.itemShown.status == "production") {
+      if(this.authService.loggedInUser.userName == "Sigi" || this.authService.loggedInUser.userName == 'akiva'){
+        
+        if (this.itemShown.itemNumber != "") {
+          if (confirm("Save changes?")) {
+            await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes => {
+              if (itemNumRes.length > 0) {
+                if (confirm("Item alerady exist!\nDo you want to update item number: " + this.itemShown.itemNumber + " ?")) {
+                  this.updateItemTree();
+                }
+              } else {
+                if (confirm("Create New item number : " + this.itemShown.itemNumber + " ?")) {
+                  this.updateItemTree();
+                }
+              }
+            });
           }
-        });
+        }
+    
+      } else {
+        this.toastr.error("Only Sigalit & Akiva can change this item Status")
+      }
+    } else { 
+      if (this.itemShown.itemNumber != "") {
+        if (confirm("Save changes?")) {
+          await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes => {
+            if (itemNumRes.length > 0) {
+              if (confirm("Item alerady exist!\nDo you want to update item number: " + this.itemShown.itemNumber + " ?")) {
+                this.updateItemTree();
+              }
+            } else {
+              if (confirm("Create New item number : " + this.itemShown.itemNumber + " ?")) {
+                this.updateItemTree();
+              }
+            }
+          });
+        }
       }
     }
-
 
   }
 
