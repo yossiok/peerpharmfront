@@ -107,6 +107,13 @@ export class ItemdetaisComponent implements OnInit {
     numberOfPcsSeven:'',
     numberOfPcsEight:'',
 
+    laserYear:'',
+    laserPP:'',
+    laserMonth:'',
+    expMonth:'',
+    expYear:'',
+    laserLocation:'',
+
 
     updateDate: '',
     nameOfupdating: '',

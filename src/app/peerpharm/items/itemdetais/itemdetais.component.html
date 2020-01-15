@@ -1,6 +1,6 @@
 
 
-<!-- <div class="container-fluid">
+ <!-- <div class="container-fluid">
   <div style="height:20px" class="row"></div>
   <div class="row">
     <div class="col"></div>
@@ -814,25 +814,29 @@
                 </div>
                 <div class="col-6">
                   <small style="font-size:9px">Year</small>
-                  <input style="margin:8px;" type="checkbox">
+                  <input  [(ngModel)]="itemShown.laserYear"  style="margin:8px;" type="checkbox">
                   
                   <small style="font-size:9px">PP</small>
-                  <input style="margin:8px;" type="checkbox">
+                  <input [(ngModel)]="itemShown.laserPP" style="margin:8px;" type="checkbox">
                   
                   <small style="font-size:9px">#</small>
-                  <input style="margin:8px;" type="checkbox">
+                  <input  style="margin:8px;" type="checkbox">
 
                    <small style="font-size:9px">Prod. Month</small>
-                  <input style="margin:8px;" type="checkbox">
+                  <input [(ngModel)]="itemShown.laserMonth" style="margin:8px;" type="checkbox">
 
                    <small style="font-size:9px">Exp. Month</small>
-                  <input style="margin:8px;" type="checkbox">
+                  <input [(ngModel)]="itemShown.expMonth" style="margin:8px;" type="checkbox">
 
                    <small style="font-size:9px">Exp. Year</small>
-                  <input style="margin:8px;" type="checkbox">
+                  <input [(ngModel)]="itemShown.expYear" style="margin:8px;" type="checkbox">
 
-                  <select style="width:100px">
-                      <option>Where</option>
+                  <select [(ngModel)]="itemShown.laserLocation"  style="width:100px">
+                      <option>Where?</option>
+                      <option value="Back">Back</option>
+                      <option value="Front">Front</option>
+                      <option value="Up">Up</option>
+                      <option value="Under">Under</option>
                   </select>
 
                 </div>
