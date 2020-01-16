@@ -627,6 +627,7 @@ export class StockComponent implements OnInit {
         }
       }
     });
+    this.cmptCategoryList.sort();
     console.log(this.cmptCategoryList)
   }
 

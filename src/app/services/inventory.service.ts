@@ -347,6 +347,10 @@ getMaterialArrivalFormById(id):Observable<any>{
   let url = this.baseUrl + "material/scanBarcodeId?viewOnly=yes&id="+id;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+getAllMaterialsArrivalsByInternalNumber(internalNumber):Observable<any>{
+  let url = this.baseUrl + "material/scanBarcodeId?searchSimilar=yes&internalNumber="+internalNumber;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 
 //returns doc with _id or "doc not found"
 updateMaterialArrivalForm(formToUpdate){
