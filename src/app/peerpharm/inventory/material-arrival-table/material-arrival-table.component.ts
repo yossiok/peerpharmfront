@@ -120,7 +120,7 @@ debugger
         this.productionDate = m.productionDate;
         this.arrivalDate = m.arrivalDate;
         this.expiryDate = m.expiryDate;
-        this.position = m.warehouse
+        this.position = m.position
 
 
         // if(this.materialName.length> 80) this.smallText= true;
