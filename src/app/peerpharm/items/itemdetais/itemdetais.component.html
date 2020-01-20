@@ -28,6 +28,10 @@
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Barcode</label>
       </div>
 
+      <div style="margin:5px">
+      <label [ngClass]="checkItemStatus()" style="font-weight:bold">Sticker</label>
+      </div>
+
       <div style="margin:5px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Product Title</label>
       </div>
@@ -56,7 +60,9 @@
       <div>
         <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
       </div>
-
+      <div>
+        <input type="text"  id="id_stickerNumber" [(ngModel)]=itemShown.stickerNumber onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+      </div>
       <div>
         <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
       </div>

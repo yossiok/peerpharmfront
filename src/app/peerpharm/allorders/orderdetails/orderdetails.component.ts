@@ -36,7 +36,9 @@ import { FormsService } from 'src/app/services/forms.service';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
+
   allForms:any[];
+  selectedArr:any[] = [];
   user:UserInfo
   openFormule:boolean = false;
   currItems:any[];
@@ -398,7 +400,22 @@ debugger;
   
   }
 
-  
+  isSelected(ev,item){
+    debugger
+    if(ev.target.checked == true) {
+    var isSelected = this.selectedArr
+    isSelected.push(item);
+    this.selectedArr = isSelected
+    }
+
+    if(ev.target.checked == false){
+      var isSelected = this.selectedArr
+      var tempArr = isSelected.filter(x=>x.itemNumber != item.itemNumber )
+      this.selectedArr = tempArr
+    }
+    
+ 
+  }
   
   // getAllOrdersItems() { 
   //   debugger;
@@ -598,7 +615,15 @@ showFormule(itemNumber,formuleByItem) {
 }
 
 
+loadMaterialsForFormule(){
+  debugger
+  this.selectedArr
 
+  this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(data=>{
+    debugger
+  this.selectedArr = data;
+  })
+}
 
 
 

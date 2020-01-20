@@ -68,6 +68,7 @@
   <thead class='bg-info tableHeader text-white' (click)="edit('')">
     <tr>
       <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()" src="../../../assets/images/excel.png"/></button></th>
+      <th></th>
       <th *ngIf="openFormule"></th>
       <th *ngIf="showingAllOrders || multi">Order Number</th>
       <th style="width:200px;" class="header">Item Number </th>
@@ -82,9 +83,12 @@
       <!-- <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th> -->
       <th class="header">C & F</th>
       <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
+      <th><button style="color:black;" class="btn btn-success" (click)="loadMaterialsForFormule()">Formule</button></th>
+      
       <th>
         <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg" (click)="openCmptDemandsModal()">
       </th>
+    
     </tr>
   </thead>
 
@@ -117,6 +121,7 @@
       <td *ngIf="!multi"></td>
       <td><button style="box-shadow: 1px 1px 2px black;" (click)="addItemOrder()" class='btn btn-success'>Add</button>
       </td>
+   
 
     </tr>
 
@@ -133,6 +138,7 @@
           <input #id type='hidden' [value]="item._id" style='width:370px'>
           <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}</td>
         <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
+        <td><input type="checkbox" (change)="isSelected($event,item)"></td>
         <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
 
         <td *ngIf="multi==true">{{item.orderNumber}}</td>
@@ -198,7 +204,7 @@
           
         </td> -->
         
-
+        <td></td>
         <td></td>
         <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->
 
