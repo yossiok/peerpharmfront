@@ -31,6 +31,9 @@
       <div style="margin:5px">
       <label [ngClass]="checkItemStatus()" style="font-weight:bold">Sticker</label>
       </div>
+      <div style="margin:5px">
+      <label [ngClass]="checkItemStatus()" style="font-weight:bold">Box</label>
+      </div>
 
       <div style="margin:5px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Product Title</label>
@@ -62,6 +65,9 @@
       </div>
       <div>
         <input type="text"  id="id_stickerNumber" [(ngModel)]=itemShown.stickerNumber onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+      </div>
+      <div>
+           <input type="text" [(ngModel)]=itemShown.boxNumber id="id_boxNumber" onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
       </div>
       <div>
         <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
@@ -1500,7 +1506,7 @@
   </h1>
 </div>   -->
 
-<!-- <table border=0 background='bg112.jpg' style="background-size: cover">
+ <!-- <table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>
