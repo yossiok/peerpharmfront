@@ -796,9 +796,10 @@ export class ItemdetaisComponent implements OnInit {
         
         this.item = res[0];
         this.itemShown = res[0];
+      
         var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
         this.allCostumers = costumer
-   
+        
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
         //null as moment format returns="invalid date"
         if (this.itemShown.licsensDate != null) {
