@@ -523,14 +523,10 @@ export class ItemdetaisComponent implements OnInit {
    
   }
 
-  searchCompNumber(ev, src) {
-    debugger;
-
-    
-
-    var compNumber = ev.target.value;
-    var itemType = "component"
-    src
+  searchCompNumberByComp(compNumber, src)
+  {
+    var itemType = "component";
+  
     switch (src) {
       case 'productionInput':
         if (compNumber != "") {
@@ -635,6 +631,12 @@ export class ItemdetaisComponent implements OnInit {
         }
         break;
     }
+  }
+
+
+  searchCompNumber(ev, src) {
+    var compNumber = ev.target.value;
+    this.searchCompNumberByComp(compNumber, src);
 
   }
 
@@ -796,6 +798,7 @@ export class ItemdetaisComponent implements OnInit {
         
         this.item = res[0];
         this.itemShown = res[0];
+        this.searchCompNumberByComp(this.itemShown.bottleNumber,'productionInput')
       
         var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
         this.allCostumers = costumer
