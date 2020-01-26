@@ -36,6 +36,7 @@ export class BarcodePrintComponent implements OnInit {
   exp: string;
   date:string;
   dc:string;
+  deliveryAdress:string;
   po:string;
   invoice:string;
   other: string;
@@ -115,6 +116,7 @@ export class BarcodePrintComponent implements OnInit {
       mkp: new FormControl("", [Validators.required]),
       other: new FormControl("", [Validators.required]),
       dc: new FormControl("", [Validators.required]),
+      deliveryAdress: new FormControl("", [Validators.required]),
       po: new FormControl("", [Validators.required]),
       invoice: new FormControl("", [Validators.required]),
       netWeight: new FormControl("", [Validators.required]),
@@ -148,6 +150,20 @@ export class BarcodePrintComponent implements OnInit {
       this.scheduleDataCopy = res;
    
     });
+  }
+
+  filterByOrderNumber(ev){
+    
+    var orderNumber = ev.target.value;
+    if(orderNumber != "") {
+    this.scheduleService.getScheduleByOrderNumber(orderNumber).subscribe(data=>{
+      this.scheduleData = data;
+     
+
+    })
+  }else {
+    this.scheduleData = this.scheduleDataCopy
+  }
   }
 
   onSubmit(): void {
@@ -252,6 +268,29 @@ export class BarcodePrintComponent implements OnInit {
     this.volumeK = this.itemData[0].volumeKey + ' ml';
     this.netoW = this.itemData[0].netWeightK;
     this.grossW = this.itemData[0].grossUnitWeightK;
+
+
+    var dcNumber;
+    var deliveryAdress;
+
+    var poNumber = this.schedLine.marks
+    
+    if(poNumber.startsWith( "03")){
+      dcNumber = "883"
+      deliveryAdress = "PHILADELPHIA 2760 RED LION RD PHILADELPHIA,PA 19114 U.S.A"
+    }
+    
+    if(poNumber.startsWith( "30")){
+      dcNumber = "893"
+      deliveryAdress = "PITTSTON 4000 OLDFIELD DRIVE PITTSTON, PA 18640 U.S.A"
+    }
+
+    
+    if(poNumber.startsWith( "20")){
+      deliveryAdress = "Winners Mechant int'l LP 60 Standish Court Mississauga,ON L5R OG1"
+    }
+
+    
     
 
     this.printBarcodeForm = new FormGroup({
@@ -281,8 +320,9 @@ export class BarcodePrintComponent implements OnInit {
       local: new FormControl("", [Validators.required]),
       printQty: new FormControl("", [Validators.required]),
       other: new FormControl('' ,[Validators.required]),
-      dc: new FormControl('' ,[Validators.required]),
-      po: new FormControl('' ,[Validators.required]),
+      dc: new FormControl(dcNumber ,[Validators.required]),
+      deliveryAdress: new FormControl(deliveryAdress ,[Validators.required]),
+      po: new FormControl(this.schedLine.marks ,[Validators.required]),
       invoice: new FormControl('' ,[Validators.required]),
       netWeight: new FormControl('' ,[Validators.required]),
       grossWeight: new FormControl('' ,[Validators.required]),
@@ -371,6 +411,10 @@ export class BarcodePrintComponent implements OnInit {
     }
     if(this.printBarcodeForm.value.dc !="") {
       this.dc = this.printBarcodeForm.value.dc
+    }
+
+    if(this.printBarcodeForm.value.deliveryAdress !=""){
+      this.deliveryAdress = this.printBarcodeForm.value.deliveryAdress;
     }
   
     if(this.printBarcodeForm.value.po !="") {

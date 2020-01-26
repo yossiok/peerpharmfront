@@ -11,7 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./all-formules.component.css']
 })
 export class AllFormulesComponent implements OnInit {
-
+  
+currentFormuleNumber:any;
   allFormules:any[];
   allFormulesCopy:any[];
   materials:any[];
@@ -372,6 +373,7 @@ open(formuleData,formuleNum) {
 
 loadData(formuleNum) {
   debugger;
+  this.currentFormuleNumber = formuleNum
   var formuleToUpdate = [];
  formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
  this.updateFormule = formuleToUpdate

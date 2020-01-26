@@ -36,7 +36,7 @@ import { FormsService } from 'src/app/services/forms.service';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
-
+  materialsForFormules:any[];
   allForms:any[];
   selectedArr:any[] = [];
   user:UserInfo
@@ -621,7 +621,7 @@ loadMaterialsForFormule(){
 
   this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(data=>{
     debugger
-  this.selectedArr = data;
+  this.materialsForFormules = data;
   })
 }
 

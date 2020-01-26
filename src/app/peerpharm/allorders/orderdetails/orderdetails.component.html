@@ -80,7 +80,7 @@
       <!-- <th class='printTd header'>Weight</th> -->
       <th class="header">Remarks </th>
       <th class='printTd header'>Status</th>
-      <!-- <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th> -->
+      <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th>
       <th class="header">C & F</th>
       <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
       <th><button style="color:black;" class="btn btn-success" (click)="loadMaterialsForFormule()">Formule</button></th>
@@ -185,10 +185,10 @@
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
         <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
 
-        <!-- <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
+        <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
         <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd'
           style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
-          {{item.compiled[0].sum}}</td> -->
+          {{item.compiled[0].sum}}</td>
           <td *ngIf="item._id!==EditRowId">
           <label (click)="openComponentsStatus(components,item.itemNumber,item.quantity,item.orderNumber)">Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
           <label>Formules</label><input [(ngModel)]="item.formuleCheck" (change)="isChecked($event,item._id)" id="formuleCheckBox" type="checkbox">
@@ -269,7 +269,7 @@
             <tr>
               <td></td>
               <td>
-                <h5>Set MKP Production Schedule: </h5>
+                <h5>Set Barcode Print: </h5>
               </td>
               <td><input #mkpProdDate type='date'></td>
               <td><input #mkpProdRemarks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
