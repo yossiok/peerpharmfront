@@ -110,6 +110,7 @@ import { OrdersService } from '../services/orders.service';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
+import { PackingListComponent } from './qa/packing-list/packing-list.component';
 
 
 
@@ -183,6 +184,7 @@ import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.comp
     TaskCardComponent,
     CreateBoardComponent,
     SubtaskComponent,
+    PackingListComponent,
     SubTaskCardComponent,
     ContentComponent, BoardComponent,
     TaskCardComponent,

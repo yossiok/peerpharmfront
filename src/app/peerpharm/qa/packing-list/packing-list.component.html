@@ -1,0 +1,23 @@
+<input type="text" placeholder="Search By Order" (change)="filterByOrder($event)">
+<input type="text" placeholder="Search By Item" (change)="filterByItem($event)">
+<table class="table table-striped">
+  <thead>
+   <tr>
+ <th>Order Number</th>
+ <th>Item Number</th>
+ <th>Carton Pallet</th>
+ <th>Pcs Per Carton</th>
+
+
+   </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let packinglist of allPLs;let i = index">
+      <td>{{i+1}}</td>
+      <td>{{packinglist.orderNumber}}</td>
+      <td>{{packinglist.itemNumber}}</td>
+      <td>{{packinglist.ctnPallet}}</td>
+      <td>{{packinglist.pcsCtn}}</td>
+    </tr>
+  </tbody>
+</table>

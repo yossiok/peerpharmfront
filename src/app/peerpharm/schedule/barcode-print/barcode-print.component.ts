@@ -272,6 +272,7 @@ export class BarcodePrintComponent implements OnInit {
 
     var dcNumber;
     var deliveryAdress;
+    var qtyToPrint;
 
     var poNumber = this.schedLine.marks
     
@@ -290,6 +291,8 @@ export class BarcodePrintComponent implements OnInit {
       deliveryAdress = "Winners Mechant int'l LP 60 Standish Court Mississauga,ON L5R OG1"
     }
 
+    qtyToPrint = Math.ceil(Number(this.schedLine.qty)/parseInt(this.pcsCarton))
+    
     
     
 
@@ -318,7 +321,7 @@ export class BarcodePrintComponent implements OnInit {
       exp: new FormControl(this.exp, [Validators.required]),
       date: new FormControl("", [Validators.required]),
       local: new FormControl("", [Validators.required]),
-      printQty: new FormControl("", [Validators.required]),
+      printQty: new FormControl(qtyToPrint, [Validators.required]),
       other: new FormControl('' ,[Validators.required]),
       dc: new FormControl(dcNumber ,[Validators.required]),
       deliveryAdress: new FormControl(deliveryAdress ,[Validators.required]),

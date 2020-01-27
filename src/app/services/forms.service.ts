@@ -168,4 +168,9 @@ export class FormsService {
     let url = this.baseUrl + 'forms/getAllProdDailyClean';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllPLs() {
+    debugger
+    let url = this.baseUrl + 'packingPallltItems/getAllPL';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 }

@@ -426,6 +426,14 @@ export const ROUTES: RouteInfo[] = [
           extralink: false,
           submenu: []
         },
+        {
+          path: '/peerpharm//qa/packing-list',
+          title: 'Packing Lists',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
 
       ]
     },

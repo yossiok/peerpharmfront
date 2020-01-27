@@ -51,6 +51,7 @@ import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated
 import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
 import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
+import { PackingListComponent } from './qa/packing-list/packing-list.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -351,6 +352,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Cleaning Forms'
     },
     component:CleaningFormsComponent
+  } ,
+  {
+    path :'qa/packing-list',
+    data :{
+      title : 'Packing Lists'
+    },
+    component:PackingListComponent
   } ,
   {
     path :'forms/first-aid',

@@ -740,7 +740,7 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
         
         <tr>
           <td>
-            <span *ngIf="showBatch">Delivery Address:{{ printBarkod.batch }}</span><br>
+            <span *ngIf="showBatch">Delivery Address:{{ printBarkod.deliveryAdress }}</span><br>
             <span style="margin-left:10px;" *ngIf="showExp"> {{ printBarkod.date }}</span>  
             <span>
                 <ngx-barcode
