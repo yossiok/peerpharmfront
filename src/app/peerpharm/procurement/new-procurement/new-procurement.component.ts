@@ -50,7 +50,8 @@ export class NewProcurementComponent implements OnInit {
     outDate:this.formatDate(new Date()),
     validDate:'',
     item:[],
-    comaxNumber:''
+    comaxNumber:'',
+    orderType:''
 
   }
 
