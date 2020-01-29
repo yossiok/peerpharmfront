@@ -1,3 +1,46 @@
-<p>
-  batches-mkp works!
-</p>
+
+  <tr dir="ltr">
+
+    <td><input type="text" placeholder="Order Number" [(ngModel)]="newMkpBatch.order"></td>
+    <td><input type="text" placeholder="Item Number" [(ngModel)]="newMkpBatch.item"></td>
+    <td><input type="text" placeholder="Name" [(ngModel)]="newMkpBatch.itemName"></td>
+    <td><label>Production Date:</label><input type="date" [(ngModel)]="newMkpBatch.produced"></td>
+    <td><label>Exp Date:</label><input type="date" [(ngModel)]="newMkpBatch.expration"></td>
+    <td><input type="number" placeholder="Barrels" [(ngModel)]="newMkpBatch.barrels"></td>
+    <td><input type="text" placeholder="Weight KG" [(ngModel)]="newMkpBatch.weightKg"></td>
+    <td><input type="text" placeholder="PH" [(ngModel)]="newMkpBatch.ph"></td>
+    <td><input type="text" placeholder="Batch" [(ngModel)]="newMkpBatch.batchNumber"></td>
+    <td><button class="btn btn-success" (click)="addNewMkpBatch()">New Batch</button></td>
+
+  </tr>
+<table dir="rtl" class="table table-striped">
+  <thead style="background:rgb(89, 116, 175)">
+    <tr>
+      <th class="batchTh">#</th>
+      <th class="batchTh">אצווה</th>
+      <th class="batchTh">תאריך ייצור</th>
+      <th class="batchTh">שם מוצר</th>
+      <th class="batchTh">PH</th>
+      <th class="batchTh">כמות(ק"ג)</th>
+      <th class="batchTh">חביות</th>
+      <th class="batchTh">מספר הזמנה</th>
+      <th class="batchTh">מספר פריט</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let batch of mkpBatches;let i=index">
+      <td>{{i+1}}</td>
+      <td>{{batch.batchNumber}}</td>
+      <td>{{batch.produced}}</td>
+      <td>{{batch.itemName}}</td>
+      <td>{{batch.ph}}</td>
+      <td>{{batch.weightKg}}</td>
+      <td>{{batch.barrels}}</td>
+      <td>{{batch.order}}</td>
+      <td>{{batch.item}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>

@@ -115,6 +115,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 
 
 
+
 @NgModule({
   exports: [
     MatInputModule,
@@ -164,6 +165,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     OrderdetailsComponent,
     MakeupdetailsComponent,
     NeworderComponent,
+    BatchesMkpComponent,
     LinesComponent,
     ProductionComponent,
     ProductionRequestComponent,
@@ -193,7 +195,6 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     SubTaskCardComponent,
     CreateBoardComponent,
     BatchesComponent,
-    BatchesMkpComponent,
     CostumersListComponent,
     PrintingComponent,
     MakeupComponent,

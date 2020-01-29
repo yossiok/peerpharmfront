@@ -47,7 +47,7 @@ export class NewProcurementComponent implements OnInit {
 
     supplierNumber:'',
     supplierName:'',
-    outDate:'',
+    outDate:this.formatDate(new Date()),
     validDate:'',
     item:[],
     comaxNumber:''
@@ -61,6 +61,7 @@ export class NewProcurementComponent implements OnInit {
   ngOnInit() {
     this.getAllSuppliers();
     this.getAllMaterials();
+    
 
   }
 
@@ -171,7 +172,7 @@ export class NewProcurementComponent implements OnInit {
 
       })
       this.newProcurement.validDate = ""
-      this.newProcurement.outDate = ""
+     
       this.newProcurement.supplierName = ""
       this.newProcurement.supplierNumber = ""
       this.newProcurement.comaxNumber = ""
@@ -182,6 +183,18 @@ export class NewProcurementComponent implements OnInit {
    })
   }
 
+ formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
  
 }

@@ -21,6 +21,11 @@ export class BatchesService {
     let url = this.baseUrl + "batch/add";
     return this.http.post(url, JSON.stringify(newBatch), this.options).pipe(map(res => res.json()))
   }
+  addNewMkpBatch(newMkpBatch) {
+    debugger
+    let url = this.baseUrl + "batch/addMkpBatch";
+    return this.http.post(url, JSON.stringify(newMkpBatch), this.options).pipe(map(res => res.json()))
+  }
 
   // BATCHES OF GENERAL PHARMA 
   getAllBatches():Observable<any>{

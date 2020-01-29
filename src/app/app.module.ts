@@ -62,6 +62,7 @@ import { ConfirmModalComponent } from './services/confirm.modal.service';
 
 
 
+
 // import { OrderStagePipe } from './pipes/order-stage.pipe';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -87,7 +88,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SidebarComponent ,
     LoginComponent, 
 
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent,
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent, 
 
   ],
   entryComponents:[ConfirmModalComponent],

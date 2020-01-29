@@ -256,6 +256,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
+      {
+        path: '/peerpharm/batches/mkpBatchesList',
+        title: 'MakeUp List',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
     ]
   },
 
