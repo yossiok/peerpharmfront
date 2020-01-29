@@ -173,4 +173,9 @@ export class FormsService {
     let url = this.baseUrl + 'packingPallltItems/getAllPL';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllReadyPallets() {
+    debugger
+    let url = this.baseUrl + 'formDetails/getAllReadyPallets';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 }

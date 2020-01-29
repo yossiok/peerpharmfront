@@ -261,38 +261,38 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: '',
-    title: 'Procurement',
+    title: 'Purchase',
     icon: ' icon-plane',
     class: 'has-arrow',
     extralink: false,
     submenu: [
-      {
-        path: '/peerpharm/procurement/procurementOrderItemBalance',
-        title: 'Procurement Order Item Balance',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/procurement/procurementOrderItemBalance',
+      //   title: 'Procurement Order Item Balance',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
        {
         path: '/peerpharm/procurement/procurementOrders',
-        title: 'Procurement Orders',
+        title: 'Purchase Orders',
         icon: 'fas fa-list-ol',
         class: '',
         extralink: false,
         submenu: []
       },
-      {
-        path: '/peerpharm/procurement/procurementOrderItems',
-        title: 'Procurement Order Items',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/procurement/procurementOrderItems',
+      //   title: 'Procurement Order Items',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       {
         path: '/peerpharm/procurement/newProcurement',
-        title: 'New Procurement',
+        title: 'New Purchase',
         icon: 'fas fa-list-ol',
         class: '',
         extralink: false,
@@ -427,8 +427,16 @@ export const ROUTES: RouteInfo[] = [
           submenu: []
         },
         {
-          path: '/peerpharm//qa/packing-list',
+          path: '/peerpharm/qa/packing-list',
           title: 'Packing Lists',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
+          path: '/peerpharm/forms/qa-pallets',
+          title: 'תיעוד מוצרים לפני משלוח',
           icon: 'fas fa-list-ol',
           class: '',
           extralink: false,

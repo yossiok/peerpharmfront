@@ -36,14 +36,14 @@ export class ItemdetaisComponent implements OnInit {
   mainLanguageTwo: Boolean = true;
   mainLanguageThree: Boolean = true;
   department: Boolean = true;
-  production: Boolean = true
-  productionTwo: Boolean = true
-  productionThree: Boolean = true
-  productionFour: Boolean = true
-  productionFive: Boolean = true
-  productionSix: Boolean = true
-  productionSeven: Boolean = true
-  productionEight: Boolean = true
+  production: Boolean = false
+  productionTwo: Boolean = false
+  productionThree: Boolean = false
+  productionFour: Boolean = false
+  productionFive: Boolean = false
+  productionSix: Boolean = false
+  productionSeven: Boolean = false
+  productionEight: Boolean = false
   volumeMl: Boolean = true
   netWeightK: Boolean = true
   grossWeightUnit: Boolean = true
@@ -798,7 +798,16 @@ export class ItemdetaisComponent implements OnInit {
         
         this.item = res[0];
         this.itemShown = res[0];
+       
+ 
         this.searchCompNumberByComp(this.itemShown.bottleNumber,'productionInput')
+        this.searchCompNumberByComp(this.itemShown.capNumber,'productionTwoInput')
+        this.searchCompNumberByComp(this.itemShown.pumpNumber,'productionThreeInput')
+        this.searchCompNumberByComp(this.itemShown.sealNumber,'productionFourInput')
+        this.itemShown.productionInput = this.itemShown.bottleNumber
+        this.itemShown.productionTwoInput = this.itemShown.capNumber
+        this.itemShown.productionThreeInput = this.itemShown.pumpNumber
+        this.itemShown.productionFourInput = this.itemShown.sealNumber
       
         var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
         this.allCostumers = costumer
@@ -820,56 +829,56 @@ export class ItemdetaisComponent implements OnInit {
 
   checkIfTrueOrFalse(){
 
-    if(this.itemShown.StickerLanguageK == '' || this.itemShown.StickerLanguageK == '---' ) {
+    if(this.itemShown.StickerLanguageK == '' || this.itemShown.StickerLanguageK == '---' || this.itemShown.StickerLanguageK == undefined ) {
       this.mainLanguage = false
      
     } else {
       this.mainLanguage = true
     }
 
-    if(this.itemShown.StickerLanguageKTwo == '' || this.itemShown.StickerLanguageKTwo == '---') {
+    if(this.itemShown.StickerLanguageKTwo == '' || this.itemShown.StickerLanguageKTwo == '---' || this.itemShown.StickerLanguageKTwo == undefined) {
       this.mainLanguageTwo = false
     } else {
       this.mainLanguageTwo = true
     }
 
-    if(this.itemShown.StickerLanguageKThree == '' || this.itemShown.StickerLanguageKThree == '---') {
+    if(this.itemShown.StickerLanguageKThree == '' || this.itemShown.StickerLanguageKThree == '---' || this.itemShown.StickerLanguageKThree == undefined) {
       this.mainLanguageThree = false
     } else {
       this.mainLanguageThree = true
     }
 
-    if(this.itemShown.department == '' || this.itemShown.department == '---') {
+    if(this.itemShown.department == '' || this.itemShown.department == '---' || this.itemShown.department == undefined) {
       this.department = false
     } else {
       this.department = true
     }
 
-    if(this.itemShown.volumeKey == '' || this.itemShown.volumeKey == '---') {
+    if(this.itemShown.volumeKey == '' || this.itemShown.volumeKey == '---' || this.itemShown.volumeKey == undefined) {
       this.volumeMl = false
     } else {
       this.volumeMl = true
     }
 
-    if(this.itemShown.netWeightK == '' || this.itemShown.netWeightK == '---') {
+    if(this.itemShown.netWeightK == '' || this.itemShown.netWeightK == '---' || this.itemShown.netWeightK == undefined) {
       this.netWeightK = false
     } else {
       this.netWeightK = true
     }
 
-    if(this.itemShown.grossUnitWeightK == '' || this.itemShown.grossUnitWeightK == '---') {
+    if(this.itemShown.grossUnitWeightK == '' || this.itemShown.grossUnitWeightK == '---' || this.itemShown.grossUnitWeightK == undefined) {
       this.grossWeightUnit = false
     } else {
       this.grossWeightUnit = true
     }
 
-    if(this.itemShown.peerPharmTone == '' || this.itemShown.peerPharmTone == '---') {
+    if(this.itemShown.peerPharmTone == '' || this.itemShown.peerPharmTone == '---' || this.itemShown.peerPharmTone == undefined) {
       this.peerPharmTone = false
     } else {
       this.peerPharmTone = true
     }
 
-    if(this.itemShown.productionInput == '' || this.itemShown.productionInput == '---') {
+    if(this.itemShown.productionInput == '' || this.itemShown.productionInput == '---' || this.itemShown.productionInput == undefined) {
       this.production = false
       this.productionType = ''
       this.productionImage = ''
@@ -877,7 +886,7 @@ export class ItemdetaisComponent implements OnInit {
       this.production = true
     }
     
-    if(this.itemShown.productionTwoInput == '' || this.itemShown.productionTwoInput == '---') {
+    if(this.itemShown.productionTwoInput == '' || this.itemShown.productionTwoInput == '---' || this.itemShown.productionTwoInput == undefined) {
       this.productionTwo = false
       this.productionTwoType = ''
       this.productionTwoImage = ''
@@ -885,7 +894,7 @@ export class ItemdetaisComponent implements OnInit {
       this.productionTwo = true
     }
 
-    if(this.itemShown.productionThreeInput == '' || this.itemShown.productionThreeInput == '---') {
+    if(this.itemShown.productionThreeInput == '' || this.itemShown.productionThreeInput == '---' || this.itemShown.productionThreeInput == undefined) {
       this.productionThree = false
       this.productionThreeType = ''
       this.productionThreeImage = ''
@@ -894,7 +903,7 @@ export class ItemdetaisComponent implements OnInit {
       this.productionThree = true
     }
 
-    if(this.itemShown.productionFourInput == '' || this.itemShown.productionFourInput == '---') {
+    if(this.itemShown.productionFourInput == '' || this.itemShown.productionFourInput == '---' || this.itemShown.productionFourInput == undefined) {
       this.productionFour = false
       this.productionFourType = ''
       this.productionFourImage = ''
@@ -902,7 +911,7 @@ export class ItemdetaisComponent implements OnInit {
       this.productionFour = true
     }
 
-    if(this.itemShown.productionFiveInput == '' || this.itemShown.productionFiveInput == '---') {
+    if(this.itemShown.productionFiveInput == '' || this.itemShown.productionFiveInput == '---' || this.itemShown.productionFiveInput == undefined) {
       this.productionFive = false
       this.productionFiveType = ''
       this.productionFiveImage = ''
@@ -910,7 +919,7 @@ export class ItemdetaisComponent implements OnInit {
       this.productionFive = true
     }
 
-    if(this.itemShown.productionSixInput == '' || this.itemShown.productionSixInput == '---') {
+    if(this.itemShown.productionSixInput == '' || this.itemShown.productionSixInput == '---' || this.itemShown.productionSixInput == undefined) {
       this.productionSix = false
       this.productionSixType = ''
       this.productionSixImage = ''
@@ -918,7 +927,7 @@ export class ItemdetaisComponent implements OnInit {
       this.productionSix = true
     }
 
-    if(this.itemShown.productionSevenInput == '' || this.itemShown.productionSevenInput == '---') {
+    if(this.itemShown.productionSevenInput == '' || this.itemShown.productionSevenInput == '---' || this.itemShown.productionSevenInput == undefined) {
       this.productionSeven = false
       this.productionSevenType = ''
       this.productionSevenImage = ''
@@ -926,7 +935,7 @@ export class ItemdetaisComponent implements OnInit {
       this.productionSeven = true
     }
 
-    if(this.itemShown.productionEightInput == '' || this.itemShown.productionEightInput == '---') {
+    if(this.itemShown.productionEightInput == '' || this.itemShown.productionEightInput == '---' || this.itemShown.productionEightInput == undefined) {
       this.productionEight = false
       this.productionEightType = ''
       this.productionEightImage = ''

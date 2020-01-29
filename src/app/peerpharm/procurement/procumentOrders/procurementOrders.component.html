@@ -1,6 +1,8 @@
 
 
-<input type="text" style="width:200px;margin-left:15px;" placeholder="Search Order By Number" (change)="searchNumber($event)"/>
+<input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Order Number" (change)="searchNumber($event)"/>
+<input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Supplier Name" (change)="searchBySupplier($event)"/>
+
 From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
 <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
         (click)="exportAsXLSX()">
@@ -66,7 +68,8 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
       <!-- <td>{{ line.totalPaymentVat}}</td> -->
       <td>{{ line.isSupplied}}</td>
-      <td><button (click)="closeOrder(line.orderNumber)" style="background:red;box-shadow:inset 0px 1px 5px 0px;">Close Order</button></td>
+      <td><button class="btn btn-primary" (click)="closeOrder(line.orderNumber)">Close Order</button></td>
+      <td><button class="btn btn-success" printSectionId="print-section" ngxPrint>Print Order</button></td>
     </tr>
   </tbody>
 </table>

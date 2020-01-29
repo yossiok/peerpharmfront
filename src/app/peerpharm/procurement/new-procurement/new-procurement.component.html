@@ -14,6 +14,13 @@
             <label>מספר הזמנה בקומקס</label>
             <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.comaxNumber" type="text" class="form-control"   />
           </div>
+          <div class="col-md-6">
+            <label>סוג הזמנה</label>
+            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.orderType" type="text" class="form-control">
+            <option value="material">Material</option>
+            <option value="component">Component</option>
+            </select>
+          </div>
         </div>
         </div>
         <hr>
@@ -82,15 +89,10 @@
                   <div class="col-md-6">
                     <div class="form-group has-danger">
                       <label  class="control-label">שם</label>
-                      <input #itemName
-                      [(ngModel)]="newItem.itemName"
-                      [ngModelOptions]="{standalone: true}"
-                        type="text"
-                        id="lastName"
-                        class="form-control form-control-danger"
-                        placeholder=""
-                       
-                      />
+                      <select #itemName (change)="fillMaterialNumber($event)"
+                      [(ngModel)]="newItem.itemName" [ngModelOptions]="{standalone: true}" id="lastName"  class="form-control form-control-danger">
+                    <option *ngFor="let material of allMaterials">{{material.componentName}}</option>
+                    </select>
                     </div>
                   </div>
                   <!--/span-->
@@ -142,6 +144,18 @@
     
           </div>
        
+          <div>
+            <table>
+              <thead>
+
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of ">
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <div class="form-actions">
             <div class="card-body">

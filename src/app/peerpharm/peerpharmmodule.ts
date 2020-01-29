@@ -111,6 +111,7 @@ import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
+import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 
 
 
@@ -176,6 +177,7 @@ import { PackingListComponent } from './qa/packing-list/packing-list.component';
     BarcodePrintComponent,
     ItemslistComponent,
     ItemdetaisComponent,
+    QaPalletsComponent,
     PlateComponent,
     StockComponent,
     ContentComponent,

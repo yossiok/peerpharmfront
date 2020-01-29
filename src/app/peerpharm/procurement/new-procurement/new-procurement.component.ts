@@ -22,6 +22,7 @@ export class NewProcurementComponent implements OnInit {
   procurementItems:boolean = false;
   allSuppliers:any[];
   hasAuthorization:boolean = false;
+  allMaterials:any[];
   
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
@@ -59,7 +60,8 @@ export class NewProcurementComponent implements OnInit {
   
   ngOnInit() {
     this.getAllSuppliers();
-    
+    this.getAllMaterials();
+
   }
 
   
@@ -92,6 +94,13 @@ export class NewProcurementComponent implements OnInit {
     })
   } 
 
+  getAllMaterials(){
+    this.inventoryService.getAllMaterialsForFormules().subscribe(data=>{
+      debugger;
+      this.allMaterials = data;
+    })
+  }
+
   getAllSuppliers() { 
     this.supplierService.getSuppliersDiffCollection().subscribe(data=>{
     this.allSuppliers = data;
@@ -119,18 +128,36 @@ export class NewProcurementComponent implements OnInit {
       supplierPrice:this.supplierPrice.nativeElement.value,
     }
 
-    this.newProcurement.item.push(newItem);
 
-    this.newItem.coin = "";
-    this.newItem.itemName ="";
-    this.newItem.itemNumber="";
-    this.newItem.measurement="";
-    this.newItem.supplierAmount="";
-    this.newItem.supplierPrice="";
-  
-    this.toastr.success("פריט התווסף בהצלחה!")
     
+    if(this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.measurement.nativeElement.value == "" || this.supplierAmount.nativeElement.value == "" ){
+      this.toastr.error('שים לב , לא כל הפרטים מלאים.')
+    } else { 
+      this.newProcurement.item.push(newItem);
+
+      this.newItem.coin = "";
+      this.newItem.itemName ="";
+      this.newItem.itemNumber="";
+      this.newItem.measurement="";
+      this.newItem.supplierAmount="";
+      this.newItem.supplierPrice="";
+    
+      this.toastr.success("פריט התווסף בהצלחה!")
+      
+    }
   }
+
+  fillMaterialNumber(ev){
+    debugger;
+  var materialName = ev.target.value;
+
+  var material = this.allMaterials.find(material=>material.componentName == materialName)
+
+  this.newItem.itemNumber = material.componentN;
+  this.findMaterialByNumber();
+
+  }
+
   sendNewProc() { 
     debugger;
 

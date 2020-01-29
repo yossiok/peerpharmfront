@@ -41,7 +41,8 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
     this.procurementservice.getProcurementOrder().subscribe(res => {
       this.procurementData = res;
-      debugger;
+      this.procurementDataCopy = res
+    
       console.log(this.procurementData);
 
     });
@@ -55,7 +56,17 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
+  searchBySupplier(ev){
+   
+    var supplierName = ev.target.value;
+    if(supplierName != ""){
+      var tempArr = this.procurementData.filter(purchase=>purchase.supplierName.includes(supplierName))
+      this.procurementData = tempArr
+    } else {
+      this.procurementData = this.procurementDataCopy
+    }
 
+  }
 
 
   dateChange(){

@@ -1,5 +1,5 @@
 
- <!-- <div class="container-fluid">
+ <div class="container-fluid">
   <div style="height:20px" class="row"></div>
   <div class="row">
     <div class="col"></div>
@@ -605,7 +605,7 @@
                   </div>
 
                   <div *ngIf="productionTwo==true">
-                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionTwoInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.capNumber"
                       (change)="searchCompNumber($event,'productionTwoInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionTwo==false">
@@ -613,7 +613,7 @@
                   </div>
 
                   <div *ngIf="productionThree==true">
-                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionThreeInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.pumpNumber"
                       (change)="searchCompNumber($event,'productionThreeInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionThree==false">
@@ -621,7 +621,7 @@
                   </div>
 
                   <div *ngIf="productionFour==true">
-                    <input placeholder="Component Number" [(ngModel)]="itemShown.productionFourInput"
+                    <input placeholder="Component Number" [(ngModel)]="itemShown.sealNumber"
                       (change)="searchCompNumber($event,'productionFourInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="productionFour==false">
@@ -1505,7 +1505,7 @@
   </h1>
 </div>   -->
 
- <table border=0 background='bg112.jpg' style="background-size: cover">
+ <!-- <table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>

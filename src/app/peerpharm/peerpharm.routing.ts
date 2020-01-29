@@ -52,6 +52,7 @@ import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.co
 import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
+import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -366,6 +367,13 @@ export const PeerPharmRputs: Routes =[
       title : 'First Aid'
     },
     component:FirstAidComponent
+  } ,
+  {
+    path :'forms/qa-pallets',
+    data :{
+      title : 'QA Pallets'
+    },
+    component:QaPalletsComponent
   } ,
   {
     path :'notification',
