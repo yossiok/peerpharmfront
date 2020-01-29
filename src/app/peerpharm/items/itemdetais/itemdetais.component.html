@@ -1,5 +1,5 @@
 
- <div class="container-fluid">
+ <!-- <div class="container-fluid">
   <div style="height:20px" class="row"></div>
   <div class="row">
     <div class="col"></div>
@@ -20,34 +20,34 @@
   <div style="height:20px" class="row"></div>
   <div class="row">
     <div class="col-1">
-      <div style="margin:5px;">
+      <div style="margin:4px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Item</label>
       </div>
 
-      <div style="margin:5px;">
+      <div style="margin:4px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Barcode</label>
       </div>
 
-      <div style="margin:5px">
+      <div style="margin:4px">
       <label [ngClass]="checkItemStatus()" style="font-weight:bold">Sticker</label>
       </div>
-      <div style="margin:5px">
+      <div style="margin:4px">
       <label [ngClass]="checkItemStatus()" style="font-weight:bold">Box</label>
       </div>
 
-      <div style="margin:5px;">
+      <div style="margin:4px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Product Title</label>
       </div>
 
-      <div style="margin:5px;">
+      <div style="margin:4px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Sub Title </label>
       </div>
 
-      <div style="margin:5px;">
+      <div style="margin:4px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Description</label>
       </div>
 
-      <div style="margin:5px;">
+      <div style="margin:4px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">Jumpimg Remarks</label>
       </div>
 
@@ -64,9 +64,11 @@
         <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
       </div>
       <div>
-        <input type="text"  id="id_stickerNumber" [(ngModel)]=itemShown.stickerNumber onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+        <input [ngClass]="itemBackgroundByStatus()" type="text"  id="id_stickerNumber" [(ngModel)]=itemShown.stickerNumber onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
       </div>
-  
+      <div>
+      <input [ngClass]="itemBackgroundByStatus()" type="text" style='width: 150px' [(ngModel)]=itemShown.boxNumber id="id_boxNumber" onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
+    </div>
       <div>
         <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
       </div>
@@ -1505,7 +1507,7 @@
   </h1>
 </div>   -->
 
- <!-- <table border=0 background='bg112.jpg' style="background-size: cover">
+<table border=0 background='bg112.jpg' style="background-size: cover">
 <tr>
   <td  colspan='2'>
     <div style='background-color: red; color: white; font-size: 31px; font-weight: bold; text-align: center' *ngIf="itemShown.impRemarks!=''">{{itemShown.impRemarks}}</div>

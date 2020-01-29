@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BatchesService } from 'src/app/services/batches.service';
+import { ItemsService } from 'src/app/services/items.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-batches-mkp',
@@ -24,7 +26,7 @@ export class BatchesMkpComponent implements OnInit {
     batchNumber:"",
   }
 
-  constructor(private batchService:BatchesService) { }
+  constructor(private toastSr:ToastrService,private itemService:ItemsService,private batchService:BatchesService) { }
 
   ngOnInit() {
     this.getAllMkpBatches();
@@ -42,11 +44,22 @@ export class BatchesMkpComponent implements OnInit {
   addNewMkpBatch(){
     this.batchService.addNewMkpBatch(this.newMkpBatch).subscribe(data=>{
       this.mkpBatches = data;
+      this.toastSr.success("נוספה אצווה חדשה")
 
     })
   }
 
 
+  fillItemName(ev){
+    debugger;
+    var itemNumber = ev.target.value;
+    this.itemService.getItemData(itemNumber).subscribe(data=>{
+      debugger;
+      this.newMkpBatch.itemName = data[0].name +' '+ data[0].subName +' '+ data[0].discriptionK
+
+    })
+
+  }
   
  formatDate(date) {
   var d = new Date(date),

@@ -2,7 +2,7 @@
   <tr dir="ltr">
 
     <td><input type="text" placeholder="Order Number" [(ngModel)]="newMkpBatch.order"></td>
-    <td><input type="text" placeholder="Item Number" [(ngModel)]="newMkpBatch.item"></td>
+    <td><input (change)="fillItemName($event)" type="text" placeholder="Item Number" [(ngModel)]="newMkpBatch.item"></td>
     <td><input type="text" placeholder="Name" [(ngModel)]="newMkpBatch.itemName"></td>
     <td><label>Production Date:</label><input type="date" [(ngModel)]="newMkpBatch.produced"></td>
     <td><label>Exp Date:</label><input type="date" [(ngModel)]="newMkpBatch.expration"></td>
@@ -10,7 +10,8 @@
     <td><input type="text" placeholder="Weight KG" [(ngModel)]="newMkpBatch.weightKg"></td>
     <td><input type="text" placeholder="PH" [(ngModel)]="newMkpBatch.ph"></td>
     <td><input type="text" placeholder="Batch" [(ngModel)]="newMkpBatch.batchNumber"></td>
-    <td><button class="btn btn-success" (click)="addNewMkpBatch()">New Batch</button></td>
+    <td><button class="btn btn-success" (click)="addNewMkpBatch()" printSectionId="print-section"
+      ngxPrin>New Batch</button></td>
 
   </tr>
 <table dir="rtl" class="table table-striped">
@@ -44,3 +45,11 @@
     </tr>
   </tbody>
 </table>
+
+<div id="print-section" style="visibility: hidden">
+  <table>
+    <tr>
+      <td>שם החומר: <u>{{batch.itemName}}</u></td>
+    </tr>
+  </table>
+</div>
