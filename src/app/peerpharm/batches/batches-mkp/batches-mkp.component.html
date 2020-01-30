@@ -1,17 +1,18 @@
 
   <tr dir="ltr">
 
-    <td><input type="text" placeholder="Order Number" [(ngModel)]="newMkpBatch.order"></td>
-    <td><input (change)="fillItemName($event)" type="text" placeholder="Item Number" [(ngModel)]="newMkpBatch.item"></td>
-    <td><input type="text" placeholder="Name" [(ngModel)]="newMkpBatch.itemName"></td>
-    <td><label>Production Date:</label><input type="date" [(ngModel)]="newMkpBatch.produced"></td>
-    <td><label>Exp Date:</label><input type="date" [(ngModel)]="newMkpBatch.expration"></td>
-    <td><input type="number" placeholder="Barrels" [(ngModel)]="newMkpBatch.barrels"></td>
-    <td><input type="text" placeholder="Weight KG" [(ngModel)]="newMkpBatch.weightKg"></td>
-    <td><input type="text" placeholder="PH" [(ngModel)]="newMkpBatch.ph"></td>
-    <td><input type="text" placeholder="Batch" [(ngModel)]="newMkpBatch.batchNumber"></td>
-    <td><button class="btn btn-success" (click)="addNewMkpBatch()" printSectionId="print-section"
-      ngxPrin>New Batch</button></td>
+    <td><input   type="text" placeholder="Order Number" [(ngModel)]="newMkpBatch.order"></td>
+    <td><input  (change)="fillItemName($event)" type="text" placeholder="Item Number" [(ngModel)]="newMkpBatch.item"></td>
+    <td><input  type="text" placeholder="Name" [(ngModel)]="newMkpBatch.itemName"></td>
+    <td><label>Production Date:</label><input  type="date" [(ngModel)]="newMkpBatch.produced"></td>
+    <td><label>Exp Date:</label><input  type="date" [(ngModel)]="newMkpBatch.expration"></td>
+    <td><input  type="number" placeholder="Barrels" [(ngModel)]="newMkpBatch.barrels"></td>
+    <td><input  type="text" placeholder="Weight KG" [(ngModel)]="newMkpBatch.weightKg"></td>
+    <td><input  type="text" placeholder="PH" [(ngModel)]="newMkpBatch.ph"></td>
+    <td><input  type="text" placeholder="Batch" [(ngModel)]="newMkpBatch.batchNumber"></td>
+    <td><button class="btn btn-success" (click)="addNewMkpBatch()">New Batch</button></td>
+    <td><button style="visibility: hidden;" #printBtn class="btn btn-success" printSectionId="print-section"
+      ngxPrint>Print</button></td>
 
   </tr>
 <table dir="rtl" class="table table-striped">
@@ -46,10 +47,36 @@
   </tbody>
 </table>
 
-<div id="print-section" style="visibility: hidden">
-  <table>
+<div class="clearfix" id="print-section" style="visibility: hidden">
+  <table 
+  dir="rtl"
+  [style.width.px]="450"
+  [style.max-height.px]="600"
+  [style.font-size.px]="30"
+  style.font-weight="900"
+  style.font-family="Arial"
+  [style.border.px]="0">
     <tr>
-    
+      <td style="text-align: center;">שם החומר:{{currentItemName}}</td>
     </tr>
+    <tr>
+      <td style="text-align: center;">אצווה:<u>{{currentBatchNumber}}</u></td>
+    </tr>
+    <tr>
+    <td>ת.ייצור:<u>{{currentProduced}}</u></td>
+    <td>מק"ט:<u>{{currentItem}}</u></td>
+  </tr>
+  <tr>
+    <td>ת.תפוגה:<u>{{currentExpDate}}</u></td>
+    <td dir="rtl">PH:<u>{{currentPH}}</u></td>
+  </tr>
+  <tr>
+    <td>מ' הזמנה:<u>{{currentOrderN}}</u></td>
+  </tr>
+  <tr>
+    <td>משקל:<u>{{currentWeightKG}}</u></td>
+    <td>חביות:<u>{{currentBarrels}}</u></td>
+  </tr>
+
   </table>
 </div>
