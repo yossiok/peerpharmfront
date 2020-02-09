@@ -63,6 +63,26 @@ export class FormsService {
     let url = this.baseUrl + "forms/addNewSewerPHTest";
     return this.http.post(url, JSON.stringify(sewerPHTest), this.options).pipe(map(res => res.json()));
   }
+  addNewPackedList(packedList){
+    debugger;
+    let url = this.baseUrl + "formDetails/addNewPackedList";
+    return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
+  }
+  updatePLStatus(packedList){
+    debugger;
+    let url = this.baseUrl + "formDetails/updatePLStatus";
+    return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
+  }
+  addPalletToExistPackList(packedList){
+    debugger;
+    let url = this.baseUrl + "formDetails/addPalletToExistPackList";
+    return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
+  }
+  deletePalletById(pallet){
+    debugger;
+    let url = this.baseUrl + "formDetails/deletePalletById";
+    return this.http.post(url, JSON.stringify(pallet), this.options).pipe(map(res => res.json()));
+  }
   saveFirstAidCheck(firstAidCheck){
     debugger;
     let url = this.baseUrl + "forms/saveFirstAidCheck";
@@ -107,6 +127,14 @@ export class FormsService {
 
   getAllForms() {
     let url = this.baseUrl + 'formDetails';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getAllPackedLists() {
+    let url = this.baseUrl + 'formDetails/getAllPackedLists';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getAllReadyForBillPLs() {
+    let url = this.baseUrl + 'formDetails/getAllReadyForBillPLs';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getTotalUnits() {

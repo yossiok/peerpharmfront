@@ -12,6 +12,7 @@ export class BatchesMkpComponent implements OnInit {
 
 
   mkpBatches:any[];
+  allStickers:any[];
   currentItem:any;
   currentItemName:any;
   currentBarrels:any;
@@ -63,6 +64,19 @@ export class BatchesMkpComponent implements OnInit {
   this.currentOrderN = this.newMkpBatch.order
   this.currentPH = this.newMkpBatch.ph
   this.currentWeightKG =this.newMkpBatch.weightKg
+
+  let obj={
+    item:this.currentItem,
+    printNum:"1/1"
+  }
+  
+  this.allStickers=[];
+  this.allStickers.push(obj)
+  
+  //onchange
+  let o2= {...this.allStickers[0]};
+  // o2. printNum= i+"/"+allStickers.length
+  this.allStickers.push(o2);
 
   if(this.newMkpBatch.batchNumber != "") {
     this.batchService.addNewMkpBatch(this.newMkpBatch).subscribe(data=>{

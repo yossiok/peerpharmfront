@@ -170,13 +170,16 @@ export class OrdersComponent implements OnInit {
         deliveryDate: this.deliveryDate.nativeElement.value,
         orderRemarks: this.orderRemarks.nativeElement.value,
         orderType: this.orderType.nativeElement.value,
-        stage: this.stage.nativeElement.value
+        stage: this.stage.nativeElement.value,
+        
         
       }
       debugger
 
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
         if (res != "order missing") {
+
+
           let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
           // orderToUpdate['status'] = this.orders[i].status;
           orderToUpdate['color'] = this.orders[i].color;

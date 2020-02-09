@@ -1,0 +1,19 @@
+.redColor { 
+    color:rgb(189, 22, 22);
+    font-weight: bold;;
+    
+}
+.greenColor {
+    color:green;
+    font-weight: bold;
+}
+
+.tr { 
+    border: 1px solid black;
+}
+.th { 
+    border: 1px solid black;
+}
+.td { 
+    border: 1px solid black;
+}

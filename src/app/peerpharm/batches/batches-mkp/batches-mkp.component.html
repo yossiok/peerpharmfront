@@ -47,35 +47,37 @@
   </tbody>
 </table>
 
-<div class="clearfix" id="print-section" style="visibility: hidden">
+<div  class="clearfix" id="print-section" style="visibility: hidden">
+  
   <table 
   dir="rtl"
   [style.width.px]="400"
+  [style.margin.px]="5"
   [style.max-height.px]="600"
   [style.font-size.px]="25"
   style.font-weight="900"
   style.font-family="Arial"
   [style.border.px]="0">
-    <tr>
-      <td style="margin-right:10px;text-align: center;"> <label style="border-bottom: none;">שם החומר:</label>{{currentItemName}}</td>
+    <tr >
+      <td style="margin-right:10px;width:300px !important;"> <label style="border-bottom: none;">שם החומר:</label>{{currentItemName}}</td>
     </tr>
-    <tr>
+    <tr style="margin-top:6px;">
       <td style="border-bottom: 2px solid black;"><label style="border-bottom: none;">אצווה:</label> {{currentBatchNumber}}</td>
     </tr>
-    <tr>
+    <tr style="margin-top:6px;">
     <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">ת.ייצור: </label>{{currentProduced}}</td>
     <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">מק"ט: </label>{{currentItem}}  </td>
   </tr>
-  <tr>
+  <tr style="margin-top:6px;">
     <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">ת.תפוגה: </label>{{currentExpDate}}</td> 
     <td style="border-bottom: 2px solid black;width:150px" dir="rtl"><label>PH: </label>{{currentPH}} </td>
   </tr>
-  <tr>
+  <tr style="margin-top:6px;">
     <td style="border-bottom: 2px solid black;"><label style="border-bottom: none;">מ' הזמנה: </label> {{currentOrderN}}</td>
   </tr>
-  <tr>
+  <tr style="margin-top:6px;">
     <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">משקל: </label>{{currentWeightKG}} </td>
-    <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">חביות: </label> {{currentBarrels}} </td>
+    <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">חביות: </label> {{barrelCounter}}/{{currentBarrels}} </td>
   </tr>
 
   </table>

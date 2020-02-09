@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsService } from 'src/app/services/forms.service';
+import { CostumersService } from 'src/app/services/costumers.service';
+import { ToastrService } from 'ngx-toastr';
+import { PlatformLocation } from '@angular/common';
 
 @Component({
   selector: 'app-qa-pallets',
@@ -12,11 +15,32 @@ export class QaPalletsComponent implements OnInit {
  allReadyPalletsCopy:any[]
  selectedArr:any[] = [];
  showProductsBeforeDelivery:boolean = false;
+ currCustomer:string;
+ currCustomerNumber:string;
+ currCustomerId:string;
+ allPackedLists:any[];
+ showAllReadyCostumers:boolean = false;
+ palletToAdd:any[];
+ allReadyPackedLists:any[];
 
-  constructor(private formService:FormsService) { }
+
+ packedList = {
+   costumerName: '',
+   costumerNumber:'',
+   pallets:this.selectedArr,
+   readyForBill: false
+ }
+
+
+
+
+
+  constructor(private toastr:ToastrService,private customerService:CostumersService,private formService:FormsService) { }
 
   ngOnInit() {
     this.getAllReadyPallets();
+    this.getAllPackedLists();
+    this.getAllReadyForBill();
   }
 
 
@@ -33,9 +57,15 @@ export class QaPalletsComponent implements OnInit {
   isSelected(ev,pallet){
     debugger
     if(ev.target.checked == true) {
-    var isSelected = this.selectedArr
+    var isSelected = this.selectedArr;
+    pallet.fullKartons = Number(pallet.floorNumber)*Number(pallet.kartonQuantity)+Number(pallet.lastFloorQuantity)
+    pallet.allUnits = (Number(pallet.floorNumber)*Number(pallet.kartonQuantity)+Number(pallet.lastFloorQuantity))*Number(pallet.unitsInKarton)
+    if(pallet.unitsQuantityPartKarton >0){
+      pallet.allKartons = Number(pallet.floorNumber)*Number(pallet.kartonQuantity)+Number(pallet.lastFloorQuantity)+1
+    }
     isSelected.push(pallet);
     this.selectedArr = isSelected
+ 
     }
 
     if(ev.target.checked == false){
@@ -61,6 +91,124 @@ export class QaPalletsComponent implements OnInit {
 
   openData(){
     debugger;
+    
+    this.currCustomer = this.selectedArr[0].customerName
+    this.packedList.costumerName =  this.selectedArr[0].customerName
+    
+    this.customerService.getCostumerByName(this.currCustomer).subscribe(data=>{
+      debugger;
+     this.currCustomerNumber=data[0].costumerId
+     this.packedList.costumerNumber = data[0].costumerId
+    this.packedForBill();
+
+   })
+  }
+
+  addPalletToCostumer(pallet){
+    this.showAllReadyCostumers = true;
+    this.palletToAdd = pallet
+    debugger;
+
+
+
+  }
+
+  chooseCostumerToAdd(packedlist) {
+    debugger;
+    this.palletToAdd;
+    packedlist.pallets.push(this.palletToAdd);
+
+    this.formService.addPalletToExistPackList(packedlist).subscribe(data=>{
+      if(data){
+        this.allPackedLists = data;
+        this.toastr.success("משטח נוסף ללקוח")
+      }
+
+    })
+  }
+
+  deletePallet(pallet){
+    if(confirm("האם למחוק משטח זה ?")) {
+      debugger;
+     var palletToDelete = {
+       id:pallet._id,
+       costumerName:pallet.customerName,
+       costumerId:this.currCustomerId
+     }
+    this.formService.deletePalletById(palletToDelete).subscribe(data=>{
+      this.allPackedLists = data;
+
+    })
+    }
+
+    
+  }
+
+  packedForBill(){
+    debugger;
+
+    this.packedList;
+
+    this.formService.addNewPackedList(this.packedList).subscribe(data=>{
+      if(data){
+        this.toastr.success("טופס נשמר בהצלחה")
+        this.allPackedLists = data;
+       
+      }
+     
+
+    })
+    
+  }
+
+  sendForBill(packlist){
+    debugger;
+    if(confirm('האם לשלוח להפקת חשבונית ?')) {
+      packlist.readyForBill = true;
+
+      this.formService.updatePLStatus(packlist).subscribe(data=>{
+
+      })
+    }
+    
+  }
+
+  
+  checkTrueOrFalse(packlist)
+  {
+    if(packlist.readyForBill == false){
+      return 'redColor'
+    } else {
+      return 'greenColor'
+    }
+  }
+
+
+
+  getAllPackedLists(){
+    this.formService.getAllPackedLists().subscribe(data=>{
+      this.allPackedLists = data;
+    })
+  }
+
+  openProductForm(packlist){
+    debugger;
+    this.selectedArr = packlist.pallets
+    this.currCustomer = packlist.costumerName
+    this.currCustomerNumber = packlist.costumerNumber
+    this.packedList.costumerName = this.currCustomer
+    this.packedList.costumerNumber = this.currCustomerNumber
+
+    this.currCustomerId = packlist._id
     this.showProductsBeforeDelivery = true;
+  }
+
+  getAllReadyForBill(){
+    this.formService.getAllReadyForBillPLs().subscribe(data=>{
+      if(data) {
+        this.allReadyPackedLists = data;
+      }
+
+    })
   }
 }

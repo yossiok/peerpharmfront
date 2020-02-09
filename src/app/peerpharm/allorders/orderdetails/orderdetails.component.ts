@@ -869,6 +869,7 @@ editBatch(batch){
         "quantity": this.quantity.nativeElement.value,
         // "qtyKg": this.weight.nativeElement.value,
         "itemRemarks": this.itemRemarks.nativeElement.value,
+        lastUpdated:[{user:this.user.firstName,time:new Date()}]
        
       }
       console.log(itemToUpdate);
