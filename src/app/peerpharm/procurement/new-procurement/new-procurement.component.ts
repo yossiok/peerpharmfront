@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 export class NewProcurementComponent implements OnInit {
 
   
-
+  openOrdersModal:boolean = false;
   newProcurementForm:any;
   procurementSupplier:boolean = true;
   procurementItems:boolean = false;
@@ -99,6 +99,9 @@ export class NewProcurementComponent implements OnInit {
     this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data=>{
       debugger;
      this.itemExistInOrders = data;
+     if(data.length > 0){
+       this.openOrdersModal = true;
+     }
 
     })
   
