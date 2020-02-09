@@ -757,25 +757,31 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   getItemData() {
-    const number = this.route.snapshot.paramMap.get('itemNumber');
-    if (number) {
-      this.itemsService.getItemData(number).subscribe(res => {
-        console.log(res);
-        
-        this.item = res[0];
-        this.itemShown = res[0];
-        this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
-        if (this.itemShown.licsensDate != null) {
-          this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
+    debugger;
+   this.route.queryParams.subscribe(data=>
+      {
+        let number=data.itemNumber;
+        if (number) {
+          this.itemsService.getItemData(number).subscribe(res => {
+            console.log(res);
+            
+            this.item = res[0];
+            this.itemShown = res[0];
+            this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
+            if (this.itemShown.licsensDate != null) {
+              this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
+            }
+            
+            
+    
+            debugger
+            this.dataDiv = res[0].goddet;
+            this.showGoddetData();
+          });
         }
-        
-        
-
-        debugger
-        this.dataDiv = res[0].goddet;
-        this.showGoddetData();
-      });
-    }
+      })
+ 
+ 
   }
   search(event, item) {
     if (event.key === "Enter") {
