@@ -255,7 +255,7 @@ approvedPackgeRemarksInput: Boolean=false;
   }
 
   findMaterialBtNumber(){
-    debugger
+    
     if(this.requirementsForm.value.itemNumber!=""){
       this.invtSer.getMaterialStockItemByNum(this.requirementsForm.value.itemNumber).subscribe(stockItem=>{
         let elem=  document.getElementsByName('itemName')[0];
@@ -268,13 +268,13 @@ approvedPackgeRemarksInput: Boolean=false;
     }
   }
   getUserName(){
-debugger
+
     this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
     this.newMaterialArrival.controls.user.setValue(this.user)
   }
 
   filterSuppliers(input){
-    debugger
+    
     if(input !=""){
       let inputVal= input.toLowerCase();
       this.suppliersList= this.suppliers.filter(sup=> {
@@ -303,7 +303,7 @@ debugger
   }
 
   chooseSupplierFromList(sup){
-    debugger
+    
     this.supplierModalHeader= "פריטים של ספק "+sup.suplierNumber+"\n";
     this.supplierModalInfo=sup;
     this.chooseOnlySupplier();
@@ -361,7 +361,7 @@ debugger
   // }
 
   submitForm(){
-    debugger
+    
     // shelf general position
     
     this.materialNum= this.newMaterialArrival.value.internalNumber;
@@ -435,7 +435,7 @@ debugger
 
 
   checkLotNumber(){
-    debugger
+    
     var form= this.newMaterialArrival;
     var inventoryService = this.invtSer; 
     return new Promise(function (resolve, reject) {
@@ -466,7 +466,7 @@ debugger
 
 
   addMaterialToStock(){
-    debugger
+    
     let formToSend= this.newMaterialArrival.value;
     formToSend.lastUpdate= new Date();
     formToSend.lastUpdateUser= this.user;

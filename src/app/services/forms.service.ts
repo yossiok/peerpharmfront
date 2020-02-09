@@ -148,7 +148,7 @@ export class FormsService {
   }
 
   getFormDetailsByOrder(orderNumber) { 
-    debugger
+    
     let url = this.baseUrl + "formDetails?formDetailsByOrder="+orderNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

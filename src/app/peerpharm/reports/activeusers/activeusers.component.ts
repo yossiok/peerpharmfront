@@ -25,7 +25,7 @@ this.userService.getAllActiveUsers().subscribe(data=>
   }
 
   async getUserInfo() {
-    debugger
+    
     await this.authService.userEventEmitter.subscribe(user => {
       this.user=user;
       // this.user=user.loggedInUser;
@@ -41,7 +41,7 @@ this.userService.getAllActiveUsers().subscribe(data=>
       //   this.user = this.authService.loggedInUser;
       // }
       if (this.user.authorization){
-        debugger
+        
         if (this.authService.loggedInUser.authorization.includes("viewReports")){
           this.hasAuthorization=true;
         }

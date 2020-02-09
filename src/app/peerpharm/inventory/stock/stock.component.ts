@@ -209,7 +209,7 @@ export class StockComponent implements OnInit {
 
   //expected Arrivals modal
    getNewExpectedArrivalsData(outputeEvent) {
-    debugger;
+    
 
     console.log('getting new updated expected arrivals data')
     console.log(outputeEvent)
@@ -221,7 +221,7 @@ export class StockComponent implements OnInit {
     } else if (outputeEvent == 'stockLineChanged') {
       console.log('this.resCmpt', this.resCmpt)
        this.inventoryService.getSingleComponentData(this.resCmpt._id).subscribe(res => {
-        debugger
+        
         console.log('res[0]', res[0])
         // this.componentsUnFiltered.filter(c=>{
         //   if(c._id==res[0]._id){
@@ -309,12 +309,12 @@ export class StockComponent implements OnInit {
   //         });
   //  }
   exportCurrTable() {
-    debugger;
+    
     this.loadingExcel = true;
 
     this.makeFileForExcelDownload().then((data: any[]) => {
       console.log(data)
-      debugger
+      
 
       // var anyArr: any[]=data;
       switch (this.stockType) {
@@ -339,7 +339,7 @@ export class StockComponent implements OnInit {
 
   }
   makeFileForExcelDownload() {
-    debugger;
+    
     var that = this;
     var arr: any[] = []
     return new Promise(function (resolve, reject) {
@@ -460,7 +460,7 @@ export class StockComponent implements OnInit {
   }
 
   addSupplierToArray() { 
-    debugger;
+    
     var detailsToPush = {...this.alternativeSupplier}
     this.resMaterial.alternativeSuppliers.push(detailsToPush);
     this.toastSrv.success("הוספת ספק בהצלחה , אנא לא לשכוח לשמור !")
@@ -469,7 +469,7 @@ export class StockComponent implements OnInit {
 
 
   open(supplierList) {
-    debugger;
+    
     this.modalService.open(supplierList, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -477,7 +477,7 @@ export class StockComponent implements OnInit {
     });
   }
   // openOrderAmounts(orderAmounts) {
-  //   debugger;
+  //   
   //   this.modalService.open(orderAmounts, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
   //     this.closeResult = `Closed with: ${result}`;
   //   }, (reason) => {
@@ -521,9 +521,9 @@ export class StockComponent implements OnInit {
   // }
 
   // getAllItems() {
-  //   debugger;
+  //   
   //   this.itemService.getAllItemsTwo().subscribe(res => {
-  //     debugger;
+  //     
   //     this.items = res
       
   //   });
@@ -534,13 +534,19 @@ export class StockComponent implements OnInit {
     
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
-      debugger;
-    
+      
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
   
-      
+    //   this.components.forEach(c => {
+    //     
+    //      let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
+         
+ 
+    //      c.remarks= element.remarks;
+ 
+    //  });
       //why are we using set time out and not async await??
       setTimeout(() => {
         debugger;
@@ -579,7 +585,7 @@ export class StockComponent implements OnInit {
   }
 
   // getAllMaterial() { 
-  //   debugger
+  //   
   //   this.inventoryService.getAllMaterials().subscribe(data => {
   //     this.materials = data;
   //   })
@@ -588,7 +594,7 @@ export class StockComponent implements OnInit {
 
   getAllExpectedArrivalsData(){
     this.procuretServ.getAllExpectedArrivals().subscribe(res=>{
-     debugger;
+     
         this.itemExpectedArrivals=res;
 
    
@@ -633,12 +639,12 @@ export class StockComponent implements OnInit {
 
 
   loadComponentItems() {
-    debugger
+    
     // this.resCmpt.componentType=  this.stockType;
     if (this.resCmpt.itemType != '') {
       this.inventoryService.getItemsByCmpt(this.resCmpt.componentN, this.resCmpt.itemType).subscribe(res => {
         if (res.length > 0) {
-          debugger
+          
           this.resCmpt.componentItems = res;
         } else
           this.resCmpt.componentItems = []
@@ -650,7 +656,7 @@ export class StockComponent implements OnInit {
   }
 
   loadMaterialItems() {
-    debugger;
+    
     this.inventoryService.updateMaterial(this.resMaterial).subscribe(data =>{
       this.components.map(doc=>{
        
@@ -1008,9 +1014,9 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
-    debugger
-    this.authService.loggedInUser.firstName
-    this.user
+    
+   
+
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -1032,7 +1038,7 @@ export class StockComponent implements OnInit {
     this.currModalImgSrc = componentImg;
   }
   async openAmountsData(cmptNumber, cmptId) {
-    debugger
+    
     this.openModalHeader = "כמויות פריט במלאי  " + cmptNumber;
     this.openAmountsModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
@@ -1066,7 +1072,7 @@ export class StockComponent implements OnInit {
   }
 
   async openDataMaterial(materNum) {
-    debugger
+    
 
     let tempArray = this.resMaterial.alternativeSuppliers.map(x => x)
     this.alterSuppliers = tempArray;
@@ -1083,7 +1089,7 @@ export class StockComponent implements OnInit {
   }
 
   async openAllocatedOrders(componentN) {
-    debugger
+    
 
     this.openModalHeader = "הקצאות מלאי"
      this.openOrderAmountsModal = true; 
@@ -1155,7 +1161,7 @@ export class StockComponent implements OnInit {
   }
 
   getColor(date) {
-    debugger
+    
     switch (date) {
       case "date < new Date()":
         return "red";
@@ -1232,14 +1238,14 @@ export class StockComponent implements OnInit {
   }
 
   writeNewMaterial() {
-    debugger
+    
     //this.stockType = "material"/"component"/"product"
     this.resMaterial.itemType = "material"
     if (this.resMaterial.componentN != "") {
 
-      debugger
+      
       this.inventoryService.addNewMaterial(this.resMaterial).subscribe(res => {
-        debugger
+        
 
         if(res == "פריט קיים במערכת !") { 
           this.toastSrv.error("פריט קיים במערכת !")
@@ -1257,7 +1263,7 @@ export class StockComponent implements OnInit {
   }
 
   checkIfExist(ev) {
-    debugger;
+    
    if(ev.target.value !="") { 
      this.inventoryService.getMaterialtByNumber(ev.target.value).subscribe(data=>{
        if(data.length > 0) { 
@@ -1270,7 +1276,7 @@ export class StockComponent implements OnInit {
     }
 
   clearFields() { 
-debugger
+
     this.resMaterial  = {
 
       componentN: "",
@@ -1312,7 +1318,7 @@ debugger
       reader.readAsDataURL(event.target.files[0]); // read file as data url
 
       reader.onload = (event) => { // called once readAsDataURL is completed
-        debugger;
+        
         this.resMaterial.msds = event.target["result"]
         this.resMaterial.msds=this.resMaterial.msds.replace("data:application/pdf;base64,","");
       }
@@ -1320,7 +1326,7 @@ debugger
   }
 
     onSelectCoaMaster(event) { 
-      debugger;
+      
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
@@ -1368,7 +1374,7 @@ debugger
 
   
   editMaterialItemDetails() {
-    debugger
+    
     this.resMaterial;
     
   
@@ -1416,7 +1422,7 @@ debugger
 
 
   resetResCmptData() {
-    debugger;
+    
     this.resCmpt = {
       componentN: '',
       componentName: '',
@@ -1454,7 +1460,7 @@ debugger
     })
   }
   async getCmptAmounts(cmptN, cmptId) {
-    debugger
+    
     // this.currItemShelfs=[];
     this.newItemShelfPosition = '';
     this.newItemShelfQnt = 0;
@@ -1476,17 +1482,17 @@ debugger
     ;
   }
   getAllOrderItems(componentN) {
-    debugger
+    
     this.orderService.getOrderItemsByNumber(componentN).subscribe(data=>{
-      debugger
+      
       this.orderItems = data;
     })
   }
  
   // getAllItems() { 
-  //   debugger
+  //   
   //   this.itemService.getAllItemsTwo().subscribe(data=>{
-  //     debugger
+  //     
   //     this.items = data;
   //   })
   // }
@@ -1664,7 +1670,7 @@ debugger
   }
 
   procurementRecommendations(filterType) {
-    debugger
+    
     this.components = this.componentsUnFiltered;
     if (filterType == "minimumStock") {
       if (this.stockType != "product") {

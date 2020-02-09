@@ -130,7 +130,7 @@ export class SuppliersComponent implements OnInit {
 }
 
 getSuppliersOrderedItems() {
- debugger;
+ 
   this.procurementService.getProcurementOrderItem().subscribe(res => {
     this.suppliersOrderItems = res
     this.suppliersOrderItemsCopy = res
@@ -190,7 +190,7 @@ setType(type) {
 
   changeText(ev)
   {
-    debugger
+    
     let word= ev.target.value;
     let wordsArr= word.split(" ");
     wordsArr= wordsArr.filter(x=>x!="");
@@ -222,7 +222,7 @@ setType(type) {
 
   searchName(ev)
   {
-    debugger
+    
     let word= ev.target.value;
     let wordsArr= word.split(" ");
     wordsArr= wordsArr.filter(x=>x!="");
@@ -254,7 +254,7 @@ setType(type) {
 
   searchNumber(ev)
   {
-    debugger;
+    
     let word= ev.target.value;
     let wordsArr= word.split(" ");
     wordsArr= wordsArr.filter(x=>x!="");
@@ -285,7 +285,7 @@ setType(type) {
 
 
   dateChange(){
-    debugger;
+    
     if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
 
       this.procurementService.getProcurementOrderItemByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
@@ -297,7 +297,7 @@ setType(type) {
   }
 
   addAlterSupplier() { 
-    debugger;
+    
     let alterSuppToPush = this.alterSupplierToPush
     this.alterSupplierArray.push(alterSuppToPush)
     this.toastSrv.success("Alternative supplier added")
@@ -305,7 +305,7 @@ setType(type) {
   }
 
   async openData(supplierN) {
-    debugger
+    
 
     this.supplier = this.suppliers.find(supplier => supplier.suplierNumber == supplierN);
     this.loadSuppliers();
@@ -318,7 +318,7 @@ setType(type) {
   }
 
   loadSuppliers() {
-    debugger;
+    
     // this.resCmpt.componentType=  this.stockType;
     if (this.supplier.suplierNumber != '') {
       this.supplierService.getSuppliersByNumber(this.supplier.suplierNumber).subscribe(res => {
@@ -338,7 +338,7 @@ setType(type) {
   }
 
   ngOnInit() {
-    debugger
+    
     this.getSuppliers();
     this.getAlternativeSuppliers();
     this.getSuppliersOrderedItems();

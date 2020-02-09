@@ -5,8 +5,7 @@ import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/cor
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { JsonpModule } from '@angular/http';
+ import { JsonpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { FormuleComponent } from './formules/formule.component';
@@ -54,7 +53,8 @@ import { ProcurementOrderItemBalanceComponent } from './procurement/procurementO
 import { ProcurementOrdersComponent } from './procurement/procumentOrders/procurementOrders.component';
 import { ProcurementOrderItemComponent } from './procurement/procumentOrderItem/procurementOrderItem.component';
 import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
- 
+import { NewProcurementOrderComponent } from './procurement/new-procurement-order/new-procurement-order.component';
+import { MatAutocomplete, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 
 import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -72,7 +72,9 @@ import {
   MatTabsModule,
   MatInputModule,
   MatDatepickerModule,
+  MatAutocompleteModule,
   MatFormFieldModule,
+  MatOptionModule,
   MatNativeDateModule,
 } from '@angular/material';
 import { NavComponent } from './taskboard/core/nav/nav.component';
@@ -108,6 +110,7 @@ import { HistorylogsComponent } from './reports/historylogs/historylogs.componen
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { OrdersService } from '../services/orders.service';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
+import { AddProcurementItemDialog } from './procurement/add-procurement-item-dialog/add-procurement-item-dialog';
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
@@ -119,7 +122,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 @NgModule({
   exports: [
     MatInputModule,
-    
+    AddProcurementItemDialog,
   ],
   imports: [ 
     CommonModule,
@@ -151,7 +154,8 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     Ng2FilterPipeModule ,
     NgxPrintModule,
     HttpClientModule,
-    
+    MatOptionModule,
+ 
   
   ],
   declarations: [
@@ -164,6 +168,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     AllordersComponent,
     OrderdetailsComponent,
     MakeupdetailsComponent,
+    NeworderComponent, 
     NeworderComponent,
     BatchesMkpComponent,
     LinesComponent,
@@ -188,6 +193,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     TaskCardComponent,
     CreateBoardComponent,
     SubtaskComponent,
+    AddProcurementItemDialog,
     PackingListComponent,
     SubTaskCardComponent,
     ContentComponent, BoardComponent,
@@ -207,6 +213,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     ProcurementOrdersComponent,
     ProcurementOrderItemComponent,
     NewProcurementComponent,
+    NewProcurementOrderComponent,
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
@@ -232,7 +239,8 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 
 
   ],
-  providers: [ OrdersService, HttpClientModule],
+  entryComponents:[AddProcurementItemDialog],
+  providers: [ OrdersService, HttpClientModule,   MatAutocompleteModule,  {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Procurementservice } from '../../../services/procurement.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ToastrService } from 'ngx-toastr';
 
@@ -28,7 +29,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.edit('');
   }
 
-  constructor(
+  constructor( 
     private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService
   ) {}
 
@@ -41,6 +42,7 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
     this.procurementservice.getProcurementOrder().subscribe(res => {
       this.procurementData = res;
+      
       this.procurementDataCopy = res
     
       console.log(this.procurementData);
@@ -121,9 +123,11 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   exportAsXLSX():void {
-    debugger
+    
     this.excelService.exportAsExcelFile(this.procurementData, 'data');
   }
+
+  
 
   viewOrderDetails(index){
 

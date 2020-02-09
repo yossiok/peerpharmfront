@@ -147,7 +147,7 @@ export class ProductionRequestComponent implements OnInit {
 
   }
   getUserName(){
-    debugger
+    
     this.userName = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
     this.requestForm.controls.user.setValue(this.userName)
     this.requestForm.controls.lastUpdatedUser.setValue(this.userName)

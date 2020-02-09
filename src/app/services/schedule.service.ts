@@ -114,7 +114,7 @@ export class ScheduleService {
   }
 
   getAllSchedulePrintByDate(fromDate, toDate):Observable<any>{
-    debugger
+    
     let url = this.baseUrl + "schedule/byDate?fromDate="+fromDate+"&toDate="+toDate;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

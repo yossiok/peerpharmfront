@@ -71,7 +71,7 @@ export class FormulesService {
 
 
   updateFormulesForm(formToUpdate){
-    debugger;
+    
     let url = this.baseUrl + "formules/";
     return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
   }
@@ -128,36 +128,36 @@ export class FormulesService {
   }
 
   copyFormule(copiedFormule){
-    debugger;
+    
     let url = this.baseUrl + "formules/copyFormule";
     return this.http.post(url, JSON.stringify(copiedFormule), this.options).pipe(map(res => res.json()));
   }
 
   deleteFormuleById(id){
-    debugger;
+    
     let url = this.baseUrl + "formules/deleteById";
     return this.http.post(url, JSON.stringify(id), this.options).pipe(map(res => res.json()));
   }
   deletePhaseById(phaseToDelete){
-    debugger;
+    
     let url = this.baseUrl + "formules/deletePhaseById";
     return this.http.post(url, JSON.stringify(phaseToDelete), this.options).pipe(map(res => res.json()));
   }
   deleteItemById(itemToDelete){
-    debugger;
+    
     let url = this.baseUrl + "formules/deleteItemById";
     return this.http.post(url, JSON.stringify(itemToDelete), this.options).pipe(map(res => res.json()));
   }
 
 
   addPhase(newPhase){
-    debugger;
+    
     let url = this.baseUrl + "formules/addNewPhase";
     return this.http.post(url, JSON.stringify(newPhase), this.options).pipe(map(res => res.json()));
   }
 
   addItem(newItem){
-    debugger;
+    
     let url = this.baseUrl + "formules/addNewItem";
     return this.http.post(url, JSON.stringify(newItem), this.options).pipe(map(res => res.json()));
   }
@@ -169,7 +169,7 @@ export class FormulesService {
   }
 
   addNewPhaseToFormule(newFormulePhase){
-    debugger
+    
     let url = this.baseUrl + "formules/addPhase";
     return this.http.post(url, JSON.stringify(newFormulePhase), this.options).pipe(map(res => res.json()));
   }

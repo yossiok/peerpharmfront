@@ -8,7 +8,7 @@ export class DateExpiredDirective {
   @Input() checkExpired
 
   constructor(el: ElementRef) { 
-    debugger;
+ 
     if(JSON.stringify(this.checkExpired) < JSON.stringify(new Date) ){
       el.nativeElement.style.color = "red";
     }

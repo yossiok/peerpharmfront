@@ -11,10 +11,10 @@ data:Array<any>;
   constructor(private itemsService:ItemsService ) { }
 
   ngOnInit() {
-    debugger
+    
     this.itemsService.getAllItems().subscribe((items) => {
       this.data=items;
-      debugger;
+      
       
     } );  }
 

@@ -44,15 +44,15 @@ export class NewProcurementComponent implements OnInit {
 
   }
   newProcurement = {
-
+    itemNumber:'',
     supplierNumber:'',
     supplierName:'',
     outDate:this.formatDate(new Date()),
     validDate:'',
     item:[],
     comaxNumber:'',
-    orderType:''
-
+    orderType:'',
+    itemName:''
   }
 
   constructor(private toastr: ToastrService,private procurementService: Procurementservice,private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
@@ -77,6 +77,11 @@ export class NewProcurementComponent implements OnInit {
   }
   
   findMaterialByNumber(){
+    
+    this.inventoryService.getMaterialStockItemByNum(this.newProcurement.itemNumber).subscribe(data=>{
+      
+     data;
+     this.newProcurement.itemName = data[0].componentName; 
     debugger;
     this.inventoryService.getMaterialStockItemByNum(this.newItem.itemNumber).subscribe(data=>{
       debugger;
@@ -94,11 +99,11 @@ export class NewProcurementComponent implements OnInit {
      }
      
     })
-  } 
+  });
+    } 
 
   getAllMaterials(){
     this.inventoryService.getAllMaterialsForFormules().subscribe(data=>{
-      debugger;
       this.allMaterials = data;
     })
   }
@@ -110,7 +115,7 @@ export class NewProcurementComponent implements OnInit {
   }
 
   findSupplierByNumber(ev) {
-    debugger;
+    
     let supplier = ev.target.value;
     let result =  this.allSuppliers.filter(x => supplier == x.suplierName)
     
@@ -161,6 +166,7 @@ export class NewProcurementComponent implements OnInit {
   }
 
   sendNewProc() { 
+    
     debugger;
 
    this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{

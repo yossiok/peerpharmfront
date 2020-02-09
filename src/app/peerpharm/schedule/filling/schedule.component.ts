@@ -108,7 +108,7 @@ export class ScheduleComponent implements OnInit {
       this.scheduleLine.productionLine = '5';
     }
     console.log(this.scheduleLine);
-    debugger
+    
     this.scheduleService
       .setNewProductionSchedule(this.scheduleLine)
       .subscribe(res => {
@@ -241,13 +241,13 @@ export class ScheduleComponent implements OnInit {
         await this.scheduleData.filter(
           sced => {
             if(sced._id == this.EditRowId) {
-              debugger
+              
               return sced;
             } 
           });
       let updateOrderItemDate= (scdLneInfo[0].date == this.date.nativeElement.value );
       scdLneInfo[0].itemImpRemark
-      debugger
+      
       this.date.nativeElement.value
   
       console.log(this.date.nativeElement.value);
@@ -420,7 +420,7 @@ export class ScheduleComponent implements OnInit {
    addImpRemarkFromItemTree(){
      this.scheduleService.addImpRemarkFromItemTree().subscribe(data=>{
       console.log(data);
-      debugger
+      
      });
    }
 

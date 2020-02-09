@@ -70,8 +70,7 @@ export class CostumersListComponent implements OnInit {
     });
   }
 
-  openDetails(content, i) {
-    debugger;
+  openDetails(content, i) { 
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
     // this.contact = this.costumers[i].contact[0];
@@ -99,8 +98,7 @@ export class CostumersListComponent implements OnInit {
     this.costumersService.getAllCostumers().subscribe(res => this.costumers = res);
   }
 
-  saveCostumer() {
-    debugger
+  saveCostumer() { 
     if(this.contact.mail != "" || this.contact.phone != "" || this.contact.name != "") {
       this.costumer.contact.push(this.contact);
     }
@@ -143,8 +141,7 @@ export class CostumersListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCostumers();
-    debugger;
+    this.getCostumers(); 
   }
 
 }

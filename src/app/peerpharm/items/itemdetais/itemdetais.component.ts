@@ -641,7 +641,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   getGoddetData() {
-    debugger
+    
     let div = this.container.nativeElement;
     this.mainDivArr = [];
     let divArr = [];
@@ -761,13 +761,15 @@ export class ItemdetaisComponent implements OnInit {
     if (number) {
       this.itemsService.getItemData(number).subscribe(res => {
         console.log(res);
-        debugger
+        
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
         if (this.itemShown.licsensDate != null) {
           this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         }
+        
+        
 
         debugger
         this.dataDiv = res[0].goddet;
@@ -793,8 +795,7 @@ export class ItemdetaisComponent implements OnInit {
         this.dataDiv = ["", ""];
         this.showGoddet();
       }
-      else {
-        debugger
+      else { 
         
         this.item = res[0];
         this.itemShown = res[0];

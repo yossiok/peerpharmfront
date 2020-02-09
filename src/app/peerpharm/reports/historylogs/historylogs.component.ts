@@ -22,13 +22,13 @@ hasAuthorization:boolean = false;
     this.logsService.getAll().subscribe(data=>
       
       {
-        debugger;
+        
         this.logs=data;
       })
   }
 
   async getUserInfo() {
-    debugger
+    
     await this.authService.userEventEmitter.subscribe(user => {
       this.user=user;
       // this.user=user.loggedInUser;
@@ -44,7 +44,7 @@ hasAuthorization:boolean = false;
       //   this.user = this.authService.loggedInUser;
       // }
       if (this.user.authorization){
-        debugger
+        
         if (this.authService.loggedInUser.authorization.includes("viewReports")){
           this.hasAuthorization=true;
         }

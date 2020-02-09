@@ -38,7 +38,7 @@ export class MaterialScanViewComponent implements OnInit {
   constructor( private activatedRoute:ActivatedRoute , private invtSer:InventoryService , ) { }
 
   ngOnInit() {
-    debugger
+    
       this.activatedRoute.queryParams.subscribe(params => {
         if(params.id){     
           this.invtSer.getMaterialArrivalFormById(params.id).subscribe(data=>{

@@ -183,8 +183,7 @@ debugger
 
   }
 
-  saveEdit(currDoc) {
-    debugger;
+  saveEdit(currDoc) { 
     this.currentDoc.remarks = this.remarks.nativeElement.value;
     if(this.packageType.nativeElement.value != "" ){
     this.currentDoc.packageType = this.packageType.nativeElement.value;
@@ -306,8 +305,7 @@ updateDocument(){
 
 
 
-  checkLotNumber() {
-    debugger
+  checkLotNumber() { 
     const that = this
     // var newForm = this.currentDoc;
     // var inventoryService = this.invtSer;

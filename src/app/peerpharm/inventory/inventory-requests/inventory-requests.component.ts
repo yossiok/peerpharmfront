@@ -22,9 +22,9 @@ export class InventoryRequestsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllHistoryRequests();
-    debugger;
+    ;
     this.notificationService.newInventoryReqEventEmitter.subscribe(data=>{
-      debugger
+      
       if(data=='newInventoryReq'){
         this.newReqIncoming=true;
       }else{
@@ -39,9 +39,9 @@ export class InventoryRequestsComponent implements OnInit {
   getAllHistoryRequests() { 
 
     this.inventoryReqService.getInventoryRequestsListWeek().subscribe(data =>{
-      debugger;
+      ;
       this.allRequests = data;
-      debugger;
+      ;
       console.log(this.allRequests)
   });
 
@@ -52,7 +52,7 @@ export class InventoryRequestsComponent implements OnInit {
 
   getAllGeneralDemands(){
     this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
-      debugger;
+      ;
         console.log(res);
         res.forEach(InvRequest => {
           if(InvRequest.reqList!=null && InvRequest.reqList!=undefined){
@@ -70,7 +70,7 @@ export class InventoryRequestsComponent implements OnInit {
   }
 
   getDetails(reqId, orderNumber): void {
-    debugger
+    
     this.EditRowId2nd = reqId;
     if (this.expand === true) {
        this.expand = false;
@@ -102,7 +102,7 @@ export class InventoryRequestsComponent implements OnInit {
   closeInventoryReqManually(invReqId){
       if(confirm('לא כל הכמויות סופקו לבקשת מלאי\nהאם לסגור בקשת מלאי?')){
         this.inventoryReqService.closeRequest({id:invReqId}).subscribe(res=>{
-          debugger
+          
           if(res._id){  
               this.getAllGeneralDemands();
             }

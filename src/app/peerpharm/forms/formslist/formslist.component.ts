@@ -27,8 +27,7 @@ export class FormslistComponent implements OnInit {
     this.forms.reverse()
   }
 
-  exportAsXLSX():void {
-    debugger
+  exportAsXLSX():void { 
     this.excelService.exportAsExcelFile(this.forms, 'form');
   }
   sortFormsByFillingDate() {

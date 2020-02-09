@@ -19,7 +19,7 @@ export class SuppliersService {
 
 
   getAllAlternativeSuppliers(){
-    debugger
+    
     let url = this.baseUrl + "supplier/alternative";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -42,7 +42,7 @@ export class SuppliersService {
 
   
   addorUpdateSupplier(supplierObj){
-    debugger
+    
     let url = this.baseUrl + "supplier/add";
     return this.http.post(url, JSON.stringify(supplierObj), this.options).pipe(map(res => res.json()))
   }

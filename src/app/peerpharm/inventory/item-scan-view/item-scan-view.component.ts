@@ -119,7 +119,7 @@ export class ItemScanViewComponent implements OnInit {
     this.getUserAllowedWH();
       this.activatedRoute.queryParams.subscribe(params => {
         if(params.id){
-             debugger;
+             
             this.resCmpt.componentN=params.id;
             this.inventoryService.getAmountOnShelfs(this.resCmpt.componentN).subscribe(async res => {
               this.itemAmountsData = res.data;

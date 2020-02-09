@@ -115,7 +115,7 @@ export class ProcurementOrderItemComponent implements OnInit {
   }
 
   searchSupplier(ev) {
-    debugger;
+    
     console.log(this.procurementData)
     if(ev.target.value=="") {
       this.getAllProcurementOrderItem();
@@ -151,7 +151,7 @@ export class ProcurementOrderItemComponent implements OnInit {
   }
 
   exportAsXLSX():void {
-    debugger
+    
     this.excelService.exportAsExcelFile(this.procurementData, 'data');
   }
 }

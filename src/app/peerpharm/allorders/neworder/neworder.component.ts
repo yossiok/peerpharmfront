@@ -73,7 +73,7 @@ export class NeworderComponent implements OnInit {
   }
 
   addNewOrder(post) {
-    debugger;
+ 
   if(this.orderForm.controls.costumerInternalId.value==null){
     this.orderForm.controls.costumerInternalId.setValue(this.choosedCostumer.costumerId);
   };
@@ -93,7 +93,7 @@ export class NeworderComponent implements OnInit {
       user:post.user
     }
     this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
-      debugger;
+ 
       this.orderId = res._id;
       this.orderNumber = res.orderNumber;
       this.submited = true;
@@ -106,7 +106,7 @@ export class NeworderComponent implements OnInit {
 }
 
   addNewItemOrder(post) {
-    debugger
+ 
    if(this.shippingDetails.shippingWay == "") {
      this.toastSrv.error("Please Add Shipping Details")
    } else {
@@ -146,7 +146,7 @@ export class NeworderComponent implements OnInit {
     console.log(newOrderItemObj);
     this.orderItemForm.reset();
     this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
-      debugger;
+  
       if(res!='error'){
         this.items.push(res);
         console.log(this.items)
@@ -171,7 +171,7 @@ export class NeworderComponent implements OnInit {
   }
 
   addShipping() { 
-    debugger; 
+ 
     let DetailsToPush ={...this.shippingDetails};
     
     this.shippingMethod.push(DetailsToPush)
@@ -264,7 +264,7 @@ export class NeworderComponent implements OnInit {
   // }
 
   addNewSavedOrderItem(post) {
-    debugger;
+ 
     console.log(post);
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
     if (post.discription == null || post.discription != this.itemName)
@@ -292,7 +292,7 @@ export class NeworderComponent implements OnInit {
       this.items.push(res)
       
       );
-      debugger
+   
    
   }
 
@@ -351,7 +351,7 @@ export class NeworderComponent implements OnInit {
   }
 
   searchCostumer(costumerValue) {
-    debugger;
+ 
     if (costumerValue != "") {
       this.costumers = this.costumers.filter(costumer =>
         costumer.costumerName.toLowerCase().includes(costumerValue)
@@ -362,7 +362,7 @@ export class NeworderComponent implements OnInit {
   }
 
   chooseCostumer() {
-    debugger;
+ 
     if(this.choosedCostumer.impRemark != null && this.choosedCostumer.impRemark!= undefined && this.choosedCostumer.impRemark!="" ){
       alert("ללקוח יש הערה חשובה:\n"+this.choosedCostumer.impRemark);
     }

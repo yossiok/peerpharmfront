@@ -150,7 +150,7 @@ export class InventoryNewRequestComponent implements OnInit {
     console.log('reqItemLine.itemNumInput: '+reqItemLine.itemNumInput);
     reqItemLine.relatedOrder= reqItemLine.relatedOrder.trim();
     console.log('reqItemLine.relatedOrder: '+reqItemLine.relatedOrder);
-debugger
+
     //validating order number
     let validOrderN=false;
 

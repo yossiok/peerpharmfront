@@ -590,27 +590,7 @@ showFormule(itemNumber,formuleByItem) {
       });
     } 
   }
-      //    var allItems = []
-      // for (let i = 0; i < data.phases.length; i++) {
-      //   for (let j = 0; j < data.phases[i].items.length; j++) {
-      //    if(data.phases[i].items[j]) {
-      //      allItems.push(data.phases[i].items[j])
-      //    } 
-          
-      //   }
-        
-      // }
-      // var itemNumbers = []
-      // for (let i = 0; i < allItems.length; i++) {
-      //  var numbers = this.allMaterials.filter(material=> material.componentN == allItems[i].itemNumber)
-      //  itemNumbers.push(numbers) 
-        
-      // }
-
-      // this.inventoryService.getMaterialNotInStock(itemNumbers).subscribe(data=>{
-      //   debugger;
-      //   data;
-      // })
+  
   }) 
 }
 
@@ -824,15 +804,7 @@ editBatch(batch){
     this.documentationBeforeSend.sum = JSON.stringify(sum);
   }
 
-  // getPrintFillStatus() {
-  //   var status = "printed"
-  
-  //   this.scheduleService.getPrintingByStatus(status).subscribe(data=>{
-  //     debugger;
-  //     data
-      
-  //   })
-  // }
+ 
 
 
   isChecked(ev,id) {
@@ -859,7 +831,7 @@ editBatch(batch){
   }
 
   saveEdit() {
-    debugger;
+     
       let itemToUpdate = {
 
         'orderItemId': this.id.nativeElement.value,
@@ -901,15 +873,10 @@ editBatch(batch){
 
   }
 
-  // combineAllProducedItems(orderNumber,itemNumber) {
-  //   debugger;
-  // var orders = this.formDetailsAmounts.filter(order=>order.orderNumber == orderNumber)
-  // var items = orders.filter(item=>item.itemN == itemNumber)
  
-  // }
 
   fillTotalUnits() {
-    debugger 
+    
     this.ordersItems
   }
 
@@ -923,7 +890,7 @@ editBatch(batch){
   }
 
   setMkpSchedule(item, date, remarks){
-    debugger;
+    
     // we should check what about type = '' 
       if(date!=''){
         
@@ -934,7 +901,7 @@ editBatch(batch){
             }
            })[0];
            if(costumer.costumerId == undefined) costumer.costumerId= ''; 
-           debugger;
+       
           let obj={
             itemFullName: item.discription,
             itemNumber: item.itemNumber,
@@ -952,7 +919,7 @@ editBatch(batch){
           }
           if (obj.quantityProduced == '') obj.quantityProduced = 0 ;
           this.scheduleService.setNewMkpProductionSchedule(obj).subscribe(res => {
-            debugger;
+     
             if(res.item){
               this.toastSrv.success('Item sent to Mkp production schedule.');
             }else if(res=='No netWeightK'){
@@ -972,7 +939,7 @@ editBatch(batch){
   
 
   async setSchedule(item, type) {
-debugger;
+ 
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
@@ -1017,7 +984,7 @@ debugger;
           this.orderService.editItemOrder(orderObj).subscribe(res=>{
               console.log(res);
               this.toastSrv.success(dateSced , "Schedule Saved");
-              debugger
+              
           });
           console.log(scheduleLine);
         });
@@ -1134,7 +1101,7 @@ debugger;
 
   }
   setPrintSced(orderItemId){
-    debugger
+   
     // this.printSchedule.date.setHours(2,0,0,0);
     let dateToUpdate=new Date(this.printSchedule.date);
     dateToUpdate.setHours(2,0,0,0);
@@ -1170,7 +1137,7 @@ debugger;
   }
 
   setToPrintDetails(content, item, cmpt) {
-    debugger
+ 
     this.itemSer.getPlateImg(item.itemNumber).subscribe(data=>{
       
        this.plateImg = data.palletImg;

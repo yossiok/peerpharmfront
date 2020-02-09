@@ -37,18 +37,18 @@ export class ItemslistComponent implements OnInit {
   }
 
   sendExcelToData(ev) { 
-    debugger;
+    
   if(confirm("האם אתה בטוח שבחרת בקובץ הנכון ?") == true) {
     var reader = new FileReader();
 
     reader.readAsDataURL(ev.target.files[0]); // read file as data url
 
     reader.onload = (event) => { // called once readAsDataURL is completed
-      debugger;
+      
     var excelToSend = event.target["result"]
    // excelToSend = excelToSend.replace("data:application/pdf;base64,","");
     this.itemsService.sendExcel({data:excelToSend}).subscribe(data=>{
-debugger;
+
     })
     }
   
@@ -56,9 +56,9 @@ debugger;
   }
 
   getAllItems(){
-    debugger;
+    
     this.subscription = this.itemsService.startNewItemObservable().subscribe((items) => {
-      // debugger;
+      // 
     items.map(item=>{
         item.itemFullName = item.name + " "  +item.subName + " "  +item.discriptionK
         item.licsensDate  = moment(item.licsensDate).format("DD/MM/YYYY");
@@ -97,7 +97,7 @@ debugger;
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.items= tempArr;
-         debugger
+         
     }else{
       this.items=this.itemsCopy.slice();
     }

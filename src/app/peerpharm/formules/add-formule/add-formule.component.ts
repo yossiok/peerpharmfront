@@ -129,7 +129,7 @@ export class AddFormuleComponent implements OnInit {
   }
 
   async onSubmit(actionType) {
-    debugger;
+    
 
     //get user info
     if (this.formulesForm.value.lastUpdateUser == "") {
@@ -160,13 +160,13 @@ export class AddFormuleComponent implements OnInit {
           //save new formule
           this.formuleService.newFormule(newFormuleDetails).subscribe(formule => {
             if (formule) {
-              debugger
+              
         //if new formule that was copied from old formule (has parentID)
           //we change the url to edit mode so we reload thecopied formule phases
           //else we continue with old code to start filling the new formule 
           if(formule.formuleParentId!='')
           {
-            debugger;
+            
             this.routerService.navigate(['/peerpharm/formule/addnewformule/'+formule._id]);
             
           }
@@ -218,7 +218,7 @@ export class AddFormuleComponent implements OnInit {
   }
 
   addFirstPhase() {
-    debugger;
+    
     this.firstPhaseCreated.emit(this.currentFormule);
   }
 

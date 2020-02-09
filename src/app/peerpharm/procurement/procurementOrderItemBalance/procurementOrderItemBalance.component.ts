@@ -26,7 +26,7 @@ export class ProcurementOrderItemBalanceComponent implements OnInit {
   }
 
   getAllProcurementOrderItemBalance() {
-    debugger
+    
     this.procurementservice.getProcurementOrderItemBalance().subscribe(res => {
       this.procurementData = res;
       this.procurementDataCopy = res;
@@ -91,7 +91,7 @@ export class ProcurementOrderItemBalanceComponent implements OnInit {
   }
 
   exportAsXLSX():void {
-    debugger
+    
     this.excelService.exportAsExcelFile(this.procurementData, 'data');
   }
 

@@ -90,7 +90,7 @@ export class FullComponent implements OnInit {
 
 
   toggleSidebarType() {
-    debugger    
+ 
     switch (this.options.sidebartype) {
       case 'full':
       case 'iconbar':

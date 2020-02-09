@@ -17,13 +17,13 @@ export class Procurementservice {
 
 
   getProcurementOrderItemByDate(fromDate, toDate):Observable<any>{
-    debugger;
+    
     let url = this.baseUrl + "procurementOrderItemController/byDate?fromDate="+fromDate+"&toDate="+toDate;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   getProcurementOrderItemBalanceByDate(fromDate, toDate):Observable<any>{
-    debugger;
+    
     let url = this.baseUrl + "procurementOrderItemBalance/byDate?fromDate="+fromDate+"&toDate="+toDate;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -61,7 +61,7 @@ export class Procurementservice {
   /*EXPECTED ARRIVALS OF PROCURMENT ITEMS*/
   
   getAllExpectedArrivals(): Observable<any> {
-    debugger
+    
     let url = this.baseUrl + 'expectedArrivalController/all';
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
@@ -108,6 +108,7 @@ export class Procurementservice {
   }
 
   addNewProcurement(obj):Observable<any>{
+    
     let url = this.baseUrl + 'newProcurement/add';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
@@ -126,6 +127,6 @@ export class Procurementservice {
     return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
   }
   
-
+  
 
 }

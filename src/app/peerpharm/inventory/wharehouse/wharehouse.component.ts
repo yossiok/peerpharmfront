@@ -379,7 +379,7 @@ packingMaterialCheck = {
  }
 
  sendPackingMaterialCheck() { 
-   debugger;
+   
   let DetailsToPush = {...this.packingMaterialCheck}
   this.itemLine.value.packingMaterialCheck.push(DetailsToPush)
    
@@ -547,7 +547,7 @@ deleteLine(itemFromInvReq,index,ev){
   }
 
   async checkLineValidation(itemLine,index,ev:any, lineqnt){
-    debugger;
+    
     let stockType;
     if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem")  stockType="component";
     if(this.curentWhareHouseName == "Rosh HaAyin products")  stockType="product";
@@ -738,7 +738,7 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
 
 
 open(packMaterialForm) {
-  debugger;
+  
   this.modalService.open(packMaterialForm, {size:'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
   }, (reason) => {

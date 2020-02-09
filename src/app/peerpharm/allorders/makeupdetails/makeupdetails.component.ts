@@ -336,7 +336,7 @@ updateSingleOrderStage(ev){
 
 }
   async checkCostumersImportantRemarks(orders){
-    debugger
+ 
     this.costumersNumbers=[]
     await orders.forEach((o,key)=>{
       if(o.costumerImpRemark!=undefined && o.costumerImpRemark!=""){
@@ -719,7 +719,7 @@ editBatch(batch){
           this.orderService.editItemOrder(orderObj).subscribe(res=>{
               console.log(res);
               this.toastSrv.success(dateSced , "Schedule Saved");
-              debugger
+       
           });
           console.log(scheduleLine);
         });
