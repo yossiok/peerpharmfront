@@ -19,6 +19,7 @@ import { Console } from '@angular/core/src/console';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { OrdersService } from 'src/app/services/orders.service';
+import { SuppliersService } from 'src/app/services/suppliers.service';
 
 
 @Component({
@@ -32,7 +33,10 @@ export class StockComponent implements OnInit {
   loadingMovements: boolean = false;
   showItemDetails: boolean = true;
   itemMovements: any = [];
+  itemShell:any[];
+  materialLocations: any[];
   items:any[];
+  expirationBatchDate:any;
   allowUserEditItem = false;
   resCmpt: any = {
     componentN: '',
@@ -59,7 +63,8 @@ export class StockComponent implements OnInit {
   }
   alternativeSupplier: any = {
     name:'',
-    material:''
+    material:'',
+    price:''
   }
   alterSuppliers: any[];
   buttonColor: string = 'white';
@@ -71,6 +76,7 @@ export class StockComponent implements OnInit {
   openAmountsModal: boolean = false;
   openProcurementModal: boolean = false;
   openOrderAmountsModal: boolean = false;
+  openProductAmountModal: boolean = false;
   procurementModalHeader: string;
   openModalHeader: string;
   components: any[];
@@ -80,6 +86,7 @@ export class StockComponent implements OnInit {
   tempHiddenImgSrc: any;
   procurmentQnt: Number;
   allocatedOrders:any[];
+  allocatedProducts:any[];
   amountsModalData: any;
   itemAmountsData: any[];
   itemAmountsWh: any[];
@@ -89,6 +96,7 @@ export class StockComponent implements OnInit {
   EditRowId: any = "";
   orderItems: any;
   procurementInputEvent: any;
+  
   stockType: String = "component";
   newItem: String = '';
   newItemBtn: String = 'new';
@@ -132,6 +140,7 @@ export class StockComponent implements OnInit {
   newTransportDetails: FormGroup;
   transportationItem: FormGroup;
   loadingExcel: Boolean = false;
+  allSuppliers:any[];
 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
@@ -171,19 +180,27 @@ export class StockComponent implements OnInit {
     coaMaster: "",
     alternativeMaterial:"",
     price:"",
+    coin:"",
+    coinLoading:"",
+    priceLoading:"",
+    measurement:"",
     notInStock:false,
     inciName:"",
     casNumber:"",
     manufacturer:"",
     umNumber:"",
     imerCode:"",
+    frameQuantity:"",
+    frameSupplier:"",
+    location:"",
+    quantityInStock:"",
 
   }
   itemExpectedArrivals: any;
   closeResult: string;
   // currentFileUpload: File; //for img upload creating new component
 
-  constructor(private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+  constructor(private supplierService:SuppliersService,private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder, ) {
   }
@@ -192,13 +209,18 @@ export class StockComponent implements OnInit {
 
   //expected Arrivals modal
    getNewExpectedArrivalsData(outputeEvent) {
+<<<<<<< HEAD
     
+=======
+    debugger;
+>>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
 
     console.log('getting new updated expected arrivals data')
     console.log(outputeEvent)
     if (outputeEvent == 'closeModal') {
       this.openProcurementModal = false;
       this.resCmpt = {}
+      
       //update expected arrivals info for item 
     } else if (outputeEvent == 'stockLineChanged') {
       console.log('this.resCmpt', this.resCmpt)
@@ -212,12 +234,15 @@ export class StockComponent implements OnInit {
         //   }  
         //  });
         this.components.forEach(c => {
+          debugger;
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
+            
 
           }
         });
         this.componentsUnFiltered.forEach(c => {
+          debugger;
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
           }
@@ -226,12 +251,24 @@ export class StockComponent implements OnInit {
     }
   }
 
+
+  
+  // getProcurementData(){
+  //   this.inventoryService.getProcurementData().subscribe(data=>{
+
+  //   })
+  // }
+
   updateExpectedProcurment(stockItem) {
     this.resCmpt = stockItem;
     this.openProcurementModal = true;
   }
 
   async ngOnInit() {
+    this.getAllItemShell();
+    this.getUser();
+    this.getAllSuppliers()
+    this.getAllMaterialLocations();
     this.filterbyNum.nativeElement.value = '';
     // this.filterByType.nativeElement='';
     // this.filterByCategory.nativeElement='';
@@ -246,11 +283,27 @@ export class StockComponent implements OnInit {
     // this.exportMovementsAsXLSX();
     this.getAllExpectedArrivalsData();
     this.getColor(new Date);
-    this.getUser();
+    
   
 
   }
 
+
+  getAllSuppliers() {
+    this.supplierService.getAllSuppliers().subscribe(data=>{
+      this.allSuppliers = data;
+    })
+  }
+
+  getAllItemShell(){
+    this.itemService.getAllItemShells().subscribe(data=>{
+      this.itemShell = data;
+    })
+  }
+
+  exportAsXLSX(data) {
+    this.excelService.exportAsExcelFile(this.itemShell, 'itemShell');
+  }
 
   //************************************************* */
   //   exportMovementsAsXLSX() {
@@ -296,14 +349,16 @@ export class StockComponent implements OnInit {
     return new Promise(function (resolve, reject) {
       var line = {}
       if (that.stockType == 'component') {
+    
         for (let i = 0; i < that.components.length; i++) {
+      
           line = {
             'מספר פריט': that.components[i].componentN,
             'מק"ט פריט אצל הספק': that.components[i].componentNs,
             'שם הפריט': that.components[i].componentName,
             'סוג פריט': that.components[i].componentType,
-            'כמות Kasem': that.components[i].amountKasem,
-            'כמות Rosh-HaAyin': that.components[i].amountRH,
+            'כמות': that.components[i].amount,
+           
           }
           arr.push(line)
         }
@@ -483,11 +538,17 @@ export class StockComponent implements OnInit {
     
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
+<<<<<<< HEAD
       
+=======
+      debugger;
+    
+>>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
   
+<<<<<<< HEAD
     //   this.components.forEach(c => {
     //     
     //      let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
@@ -496,9 +557,12 @@ export class StockComponent implements OnInit {
     //      c.remarks= element.remarks;
  
     //  });
+=======
+      
+>>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
       //why are we using set time out and not async await??
       setTimeout(() => {
-        
+        debugger;
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
           // console.log(res);
@@ -513,6 +577,14 @@ export class StockComponent implements OnInit {
 
           });
           this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
+        //   this.components.forEach(c => {
+        //     debugger;
+        //      let element= this.itemExpectedArrivals.find(x=>x.componentN==c.componentN )
+             
+     
+        //      c.procurementArr.push(element.remarks)
+     
+        //  });
           this.setType(this.stockType);
           this.getAllCmptTypesAndCategories();
 
@@ -537,6 +609,8 @@ export class StockComponent implements OnInit {
     this.procuretServ.getAllExpectedArrivals().subscribe(res=>{
      
         this.itemExpectedArrivals=res;
+
+   
       
     });
   }
@@ -545,7 +619,7 @@ export class StockComponent implements OnInit {
   {
     if(component.minimumStock && component.alloAmount)
     {
-      if(component.alloAmount< component.minimumStock)
+      if((component.amount-component.alloAmount)> component.minimumStock)
       {
         return "manyleft";
       }
@@ -572,6 +646,7 @@ export class StockComponent implements OnInit {
         }
       }
     });
+    this.cmptCategoryList.sort();
     console.log(this.cmptCategoryList)
   }
 
@@ -755,6 +830,7 @@ export class StockComponent implements OnInit {
                   this.toastSrv.success("Changes Saved");
 
                   this.inventoryService.getAmountOnShelfs(this.resCmpt.componentN).subscribe(async res => {
+                    debugger;
                     this.itemAmountsData = res.data;
                     this.itemAmountsWh = res.whList;
 
@@ -951,9 +1027,15 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
+<<<<<<< HEAD
     
    
 
+=======
+    debugger
+    this.authService.loggedInUser.firstName
+    this.user
+>>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -985,10 +1067,27 @@ export class StockComponent implements OnInit {
     //??? this.resCmpt has mkp category
     if (this.stockType != "components") {
       await this.batchService.getBatchesByItemNumber(cmptNumber + "").subscribe(data => {
+        debugger;
         this.ItemBatchArr = data;
 
       });
     }
+  }
+
+  showBatchExpDate(ev){
+    debugger;
+    var batch = ev.target.value;
+    if(batch != "") {
+      for (let i = 0; i < this.ItemBatchArr.length; i++) {
+        if(this.ItemBatchArr[i].batchNumber == batch) {
+         this.expirationBatchDate =  this.ItemBatchArr[i].expration
+        }
+        }
+    } 
+    else {
+      this.expirationBatchDate = ""
+    }
+  
   }
 
   async openDataMaterial(materNum) {
@@ -1016,6 +1115,20 @@ export class StockComponent implements OnInit {
     this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data=>{
      
       this.allocatedOrders = data[0].allAllocatedOrders
+  });
+    
+ 
+
+  }
+  async openAllocatedProducts(componentN) {
+
+    debugger
+
+    this.openModalHeader = "הקצאות מלאי"
+     this.openProductAmountModal = true; 
+    this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data=>{
+     
+      this.allocatedProducts = data[0].productAllocation
   });
     
  
@@ -1212,6 +1325,8 @@ export class StockComponent implements OnInit {
       manufacturer:"",
       umNumber:"",
       imerCode:"",
+      frameQuantity:"",
+      frameSupplier:""
   
     }
   }
@@ -1266,6 +1381,7 @@ export class StockComponent implements OnInit {
 
       this.inventoryService.updateCompt(this.resCmpt).subscribe(res => {
         if (res._id) {
+          this.getAllMaterialLocations()
           this.toastSrv.success("פריט עודכן בהצלחה");
         } else {
           this.toastSrv.error("עדכון פריט נכשל");
@@ -1409,6 +1525,14 @@ export class StockComponent implements OnInit {
     this.procurementInputEvent = event;
     this.procurmentQnt = event.target.value;
     ;
+  }
+
+
+  getAllMaterialLocations(){
+    this.inventoryService.getAllMaterialLocations().subscribe(data=>{
+      debugger;
+      this.materialLocations = data;
+    })
   }
 
 

@@ -69,7 +69,7 @@ export class FormulesService {
 
 
 
-  
+
   updateFormulesForm(formToUpdate){
     
     let url = this.baseUrl + "formules/";
@@ -88,6 +88,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules?byParent="+parent;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllParents(){
+    let url = this.baseUrl + "formules/allParentsFormules";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getFormuleByNumber(number){
     let url = this.baseUrl + "formules?byNumber="+number;
@@ -101,7 +105,7 @@ export class FormulesService {
     let url = this.baseUrl + "formules?all=yes";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  
+
   getPhasesByFormuleId(formuleId){
     let url = this.baseUrl + "formules/phases/?byFormuleId="+formuleId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -110,8 +114,14 @@ export class FormulesService {
     let url = this.baseUrl + "formules/phases/?formuleId="+formuleId+"&number="+phaseNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  
+
   // PUT
+
+  updateFormuleWhenPrint(updatedFormule){
+    let url = this.baseUrl + "formules/updateFormuleWhenPrint";
+    return this.http.post(url, JSON.stringify(updatedFormule), this.options).pipe(map(res => res.json()));
+  }
+
   newFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/add";
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
@@ -153,11 +163,11 @@ export class FormulesService {
   }
 
   getTrueArray():Observable<any> {
-  
+
     let url = this.baseUrl + "formules/istrue";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  
+
   addNewPhaseToFormule(newFormulePhase){
     
     let url = this.baseUrl + "formules/addPhase";
@@ -205,5 +215,5 @@ export class FormulesService {
     return this.http.put(url, JSON.stringify(form), this.options).pipe(map(res => res.json()));
   }
 
-  
+
 }

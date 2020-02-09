@@ -157,6 +157,20 @@ export class ItemslistComponent implements OnInit {
 
   }
 
+  filterByStatus(ev){
+  var status = ev.target.value;
+
+  if(status != "") {
+    this.itemsService.getItemsByStatus(status).subscribe(data=>{
+    this.items = data;
+    })
+  } else { 
+    this.items = this.itemsCopy
+  }
+
+  
+  }
+
 // EXCEL EXPORT ---------------------------------------------------------------
   getCurrListToExcel(){
     this.exportAsXLSX(this.items);

@@ -339,6 +339,7 @@
                         <select class="form-control is-valid" formControlName="packageType" name='packageType'>
                           <option value="">בחר אריזה</option> 
                           <option value="plasticBarrel">חבית פלסטיק</option>
+                          <option value="cartonBarrel">חבית קרטון</option>
                           <option value="metalBarrel">חבית מתכת</option>
                           <option value="jerrycan‏‏‏‏">ג'ריקן</option>
                           <option value="bag">שק</option>
@@ -361,16 +362,7 @@
                   <div class="form-row w-100 flex-row-reverse"> 
                     <div class="col-sm-2">
                         <label >מיקום הסחורה</label>
-                        <select class="form-control is-valid" formControlName="warehouse" name='warehouse'>
-                          <option value="">בחר מיקום</option> 
-                          <option value="production floor">ייצור</option>
-                          <option value="zero">מחסן אפס</option>
-                          <option value="gaya">מחסן גאיה</option>
-                          <option value="outside">רחבה</option>
-                          <option value="lab">מעבדה</option>
-                          <option value="makeup">איפור</option>
-                          <option value="Kasem materials">קאסם</option>
-                        </select>
+                        <input type="text" class="form-control is-valid" formControlName="position" name='position'>
                       </div>     
                       <div class="col-sm-2">
                           <label >הערות</label>

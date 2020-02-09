@@ -157,6 +157,24 @@
             </form>
             <br>
         </div>
+        <h1 style="color:red" *ngIf="existOrderItem">שים לב! פריט זה קיים בהזמנות קודמות ,ייתכן ותוכל לשלוח  אותם ביחד לייצור</h1>
+        <div style="width:500px;" *ngIf="existOrderItem">
+            <table class="table table-striped">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th>כמות</th>
+                        <th>מספר הזמנה</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align: center;" *ngFor="let item of existOrderItem">
+                        
+                      <td>{{item.quantity}}</td>  
+                      <td>{{item.orderNumber}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

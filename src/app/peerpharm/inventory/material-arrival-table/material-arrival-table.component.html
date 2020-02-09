@@ -141,6 +141,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
                       <td><span [style.font-size.px]="25" >ת.יצור: </span> {{ productionDate | date: 'dd/MM/yyyy' }}</td>
                       <td><span [style.font-size.px]="25" >ת.קבלה: </span> {{ arrivalDate | date: 'dd/MM/yyyy' }}</td>
                   </tr>
+                
                   <!-- <tr>
                     <td colspan="2"><span [style.font-size.px]="25" >ת.יצור: </span> {{ productionDate | date: 'dd/MM/yyyy' }}</td>
                   </tr>
@@ -175,6 +176,9 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
                     [bc-margin-right]="marginRight">
                   </ngx-barcode>
                     </td>
+                  </tr>
+                  <tr>
+                    <td><span [style.font-size.px]="15" >מיקום: </span> {{ position }}</td>
                   </tr>
                   <!-- <tr>
                     <td  >{{ bcValue }}</td>

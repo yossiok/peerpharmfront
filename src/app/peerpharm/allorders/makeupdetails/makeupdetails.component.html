@@ -1,4 +1,4 @@
- <h1>Bar</h1>
+
   <div *ngIf="!showingAllOrders">
     <div style='background-color: aquamarine;display:inline-table'>לוקט</div>&nbsp;
     <div style='background-color: #CE90FF; display:inline-table'>מולא</div>&nbsp;
@@ -73,7 +73,7 @@
     <th class='printTd header'>Weight</th>
     <th class="header">Remarks </th>
     <th class='printTd header'>Status</th>
-    <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th>
+    <th class='printTd header'>Packing</th>
     <th></th>
     <th>
         <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg"
@@ -131,32 +131,42 @@
         </a>
       </td>
       <td *ngIf="item._id===EditRowId">
-        <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark" style='width:150px ; color:red;' disabled>
-        <input #itemImpRemark type='text' *ngIf="item.itemImpRemark==undefined" [value]="" style='width:150px ; color:red;' disabled>
+        <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark" style='width:130px ; color:red;' disabled>
+        <input #itemImpRemark type='text' *ngIf="item.itemImpRemark==undefined" [value]="" style='width:130px ; color:red;' disabled>
       </td>
       <td *ngIf="item._id!==EditRowId" style='width:150px ; color:red;' 
       (click)="edit(item._id)">{{item.itemImpRemark}}</td>
 
-      <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'></td>
+      <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:270px'></td>
       <td *ngIf="item._id!==EditRowId" 
       (click)="edit(item._id)">{{item.discription}}</td>
-      <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:70px'></td>
+      <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:50px'></td>
       <td *ngIf="item._id!==EditRowId" 
       (click)="edit(item._id)">{{item.netWeightGr}}</td>
-      <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
+      <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:50px'></td>
       <td *ngIf="item._id!==EditRowId" 
       (click)="edit(item._id)">{{item.quantity}}</td>
-      <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px' class='printTd'></td>
+      <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:50px' class='printTd'></td>
       <td *ngIf="item._id!==EditRowId" 
       (click)="edit(item._id)">{{item.qtyKg}}</td>
-      <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' /></td>
-      <td *ngIf="item._id!==EditRowId" 
-      (click)="edit(item._id)">{{item.itemRemarks}}</td>
+      <td *ngIf="item._id===EditRowId"><textarea #itemRemarks type='text' [value]=item.itemRemarks style='width:280px'></textarea></td>
+      <td *ngIf="item._id!==EditRowId" style='width:280px' (click)="edit(item._id)">{{item.itemRemarks}}</td>
       <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
+      <td *ngIf="item._id===EditRowId"><select #packing [value]="item.packing" style="width:100px">
+          <option value="done packing">נארז סופי</option>
+          <option value="packed to print">נארז והועבר לאריזה</option>
+          <option value="Inlay process">בתהליך שיבוץ</option>
+          <option value="In material production">בייצור חומר</option>
+          <option value="In Printing">בהדפסה</option>
+          <option value="In Filling">במילוי</option>
+      </select></td>
+      <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.packing}}</td>
 
+     
+      <!-- 
       <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'  > </td>
       <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd' style="cursor: pointer;" 
-        (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">{{item.compiled[0].sum}}</td>
+        (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">{{item.compiled[0].sum}}</td> -->
       
       <td></td>
       <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->
@@ -168,95 +178,7 @@
       </td>
 
     </tr>
-    <tr *ngIf="item._id== EditRowId2nd && expand==true;">
-      <td colspan="5">
 
-        <table class='detilasTable' width='105%'>
-          <!-- <tr>
-            <td></td>
-            <td>
-              <h5>Batch</h5>
-            </td>
-         
-            <td colspan="2"><label *ngIf="!editBatchN" (click)="editBatch(item.batch)" style="cursor: pointer; margin-right: 10px;">{{item.batch}}</label>
-              <input  *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined" type='text' style="width:50%" #inputBatch></td>
-            <td><button class='btn btn-success'  (click)="setBatch(item, inputBatch.value, item.batch)">set</button></td>
-            <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)" style='cursor: pointer;'></i></td>
-            <td></td>
-          </tr> -->
-          <tr>
-              <td>
-                <span>Number:</span>
-                <select [(ngModel)]="makeup.itemNumber" >
-                <option value="{{item.itemNumber}}">{{item.itemNumber}}</option>
-              </select> </td>
-              <td>
-                <span>Name:</span>
-                  <select [(ngModel)]="makeup.itemName">
-                      <optgroup label="Powders - אבקות">
-                          <option value="Pudra">פודרה - пудра</option>
-                          <option value="Somek">סומק- румянa</option>
-                          <option value="Tslalit">צללית - тени</option>
-                          <option value="Shimmer">שימר - шиммер</option>
-                      </optgroup>
-                      <optgroup label="Fluid - נוזלי">
-                          <option value="Makeup">מייק-אפ - макияж</option>
-                          <option value="Concealer">קונסילרים - маскирующих</option>
-                          <option value="Lip-Gloss">ליפגלוס - блеск для губ</option>
-                          <option value="Liquid shimmer">שימר נוזלי - жидкий шиммер </option>
-                          <option value="Eyeliner-gel">אייליינר ג'ל - подводка для глаз гель</option>
-                      </optgroup>
-                      <optgroup label="Lipstick = אודם">
-                          <option value="Eyeliner-gel">אייליינר ג'ל - подводка для глаз гель</option>
-                          <option value="Eyebrow-gel">ג'ל גבות - Гель для бровей</option>
-                      </optgroup>
-                  
-                  </select>
-                </td>
-                <td>
-                    <input [(ngModel)]="makeup.production" placeholder="Production (kg)" type="number" />
-                  </td>
-                  <td>
-                    <input [(ngModel)]="makeup.pushToGodets" placeholder="Units" type="number" />
-                  </td>
-                  <td>
-                    <span>Packing:</span>
-                    <select [(ngModel)]="makeup.packingClient">
-                      <option value="done packing">נארז סופי</option>
-                      <option value="packed to print">נארז והועבר לאריזה</option>
-                    </select>
-                  </td>
-                  <td>
-                    <input [(ngModel)]="makeup.productionDate" type="date" />
-                  </td>
-                  <td>
-                    <input [(ngModel)]="makeup.printing" placeholder="printing" type="text" />
-                  </td>
-                  <td>
-                      <button style="cursor: pointer;margin:5px;" class="addBtn btn btn-info" (click)="addNewPowder()">Add</button>
-                      <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="GetAll()">Get</button>
-                      
-                  </td>
-                  
-          </tr>
-          <tr *ngFor="let powder of powdersData;">
-
-              
-              <td>{{powder.itemType}}</td>
-              <td>{{powder.itemName}}</td>
-              <td>{{powder.production}} KG</td>
-              <td>{{powder.pushToGodets}} Units</td>
-              <td>{{powder.packingClient}}</td>
-              <td>{{powder.productionDate | date: "dd/MM/yyyy"}}</td>
-              <td>{{powder.printing}}</td>
-              <td></td>
-
-          </tr>
-        </table>
-
-      </td>
-    </tr>
-  
   </ng-container>
 
 </tbody>

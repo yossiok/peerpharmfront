@@ -1,0 +1,14 @@
+.batchTh {
+    font-size: 16px;
+    color:white;
+}
+
+.clearfix {
+    overflow: auto;
+  }
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+

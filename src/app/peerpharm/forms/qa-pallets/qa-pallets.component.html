@@ -1,0 +1,83 @@
+<label>Filter By Customer</label><input type="text" (change)="filterByCustomer($event)" placeholder="חפש לפי לקוח">
+<button (click)="openData()" class="btn btn-primary">דף תיעוד מוצרים לפני משלוח</button>
+
+<table style="text-align: center;" class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th></th>
+      <th>שם לקוח</th>
+      <th>מספר פריט</th>
+      <th>סטטוס משלוח</th>
+      <th>מספר חשבונית</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let pallet of allReadyPallets;let i = index">
+      <td>{{i+1}}</td>
+      <td><input (change)="isSelected($event,pallet)" type="checkbox"></td>
+      <td>{{pallet.customerName}}</td>
+      <td>{{pallet.itemNumber}}</td>
+      <td></td>
+      <td></td>
+
+    </tr>
+  </tbody>
+</table>
+
+<div style="height:0px !important" *ngIf="showProductsBeforeDelivery==true" id="myModal3" class="modal3"
+  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
+
+  <!-- Modal content -->
+  <div  class="modal-content" id='modelC'>
+    <div dir="rtl" id="material-header" class="modal-header">
+      <div>
+        <span  class="close" id="closeId3" (click)="showProductsBeforeDelivery=false;">&times;</span>
+      </div>
+      <div>
+        <h4 style="margin-top:32px;">מספר טופס:</h4>
+       </div>
+       <div>
+        <h3 style="margin-top:32px;">דף תיעוד מוצרים מוגמרים לפני משלוח</h3>
+       </div>
+      <div>
+        <img style="width:170px;height:100px;" src="../../../../assets/images/logo.png">
+      </div>
+    </div>
+    <div style="overflow:scroll" class="container" id="material-body" class="modal-body">
+        <table style="background:white;border:1px solid black;" class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Item No.</th>
+                <th scope="col">Batch</th>
+                <th scope="col">מספר קרטונים</th>
+                <th scope="col">מספר יחידות בקרטון</th>
+                <th scope="col">מספר קרטונים חלקיים</th>
+                <th scope="col">מספר יחידות בקרטון חלקי</th>
+                <th scope="col">סה"כ יחידות</th>
+                <th scope="col">סה"כ קרטונים</th>
+                <th scope="col">מספר קרטון</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr *ngFor="let pallet of selectedArr;let i = index">
+                <td>{{i+1}}</td>
+                <td>{{pallet.itemNumber}}</td>
+                <td></td>
+                <td>{{pallet.unitsInKarton}}*{{pallet.floorNumber}}</td>
+                <td>{{pallet.unitsInKarton}}</td>
+                <td></td>
+                <td>{{pallet.unitsQuantityPartKarton}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+              </tr>
+            </tbody>
+          </table>
+    
+  </div>
+
+</div>
+</div>

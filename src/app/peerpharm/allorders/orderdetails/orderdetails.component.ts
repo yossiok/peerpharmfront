@@ -36,18 +36,43 @@ import { FormsService } from 'src/app/services/forms.service';
     ])]
 })
 export class OrderdetailsComponent implements OnInit {
+  materialsForFormules:any[];
   allForms:any[];
+  selectedArr:any[] = [];
   user:UserInfo
   openFormule:boolean = false;
   currItems:any[];
   currFormule:any[];
   currPhase:any[];
+  bottleInStock:boolean;
+  pumpInStock:boolean;
+  sealInStock:boolean;
+  capInStock:boolean;
+  cartonInStock:boolean;
+  totalOrderAmounts:any[];
   allMaterials:any[];
   formuleCheck:boolean;
+  itemDetails:any;
+  capDetails:any;
+  sealDetails:any;
+  pumpDetails:any;
+  cartonDetails:any;
   allItems:any[];
   closeResult: string;
   printingStatus:boolean = false;
   plateImg="";
+
+
+  componentsAmounts:any = {
+  
+    bottleQuantity:0,
+    pumpQuantity:0,
+    sealQuantity:0,
+    capQuantity:0,
+    cartonQuantity:0,
+
+  }
+
   printSchedule:any ={
     position:'',
     orderN:'',
@@ -106,6 +131,7 @@ export class OrderdetailsComponent implements OnInit {
     formuleCheck:'',
     componentCheck:'',
     compiled: [],
+    actionTime:[],
   };
   show: boolean;
   EditRowId: any = "";
@@ -288,19 +314,53 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   open(contentTwo) {
-
+debugger;
     var allForms = this.allForms;
-    var orderItems = this.ordersItems
+    var orderItems = this.ordersItems;
 
-    for (let i = 0; i < allForms.length; i++) {
-      for (let j = 0; j < orderItems.length; j++) {
-       if(allForms[i].itemN == orderItems[j].itemNumber) {
-         orderItems[j].totalUnits = allForms[i].totalUnits
-       }
-        
-      }
+    orderItems.forEach(o=>
+      {
       
-    }
+        let allImp=this.allForms.filter(x=>x.orderNumber ==  o.orderNumber && x.itemN == o.itemNumber );
+        let sum=0;
+        allImp.forEach(f=>{
+    sum+=Number(f.quantity_Produced)
+        });
+        o.quantityProduced = sum;
+
+      })
+
+      orderItems.forEach(o=>
+        {
+        
+          let allImp=this.allForms.filter(x=>x.orderNumber ==  o.orderNumber && x.itemN == o.itemNumber );
+          let sum=0;
+          allImp.forEach(f=>{
+            if(f.totalUnits) {
+              sum+=Number(f.totalUnits)
+            }
+      
+          });
+          o.totalUnits = sum;
+  
+        })
+   
+ 
+
+
+
+
+    // for (let i = 0; i < allForms.length; i++) {
+    //   for (let j = 0; j < orderItems.length; j++) {
+    //    if(allForms[i].itemN == orderItems[j].itemNumber) {
+    //      orderItems[j].totalUnits = allForms[i].totalUnits
+    //    }
+        
+    //   }
+      
+    // }
+  
+
 
     this.ordersItems = orderItems
     
@@ -311,7 +371,66 @@ export class OrderdetailsComponent implements OnInit {
     });
   
   }
+
+  checkIfAvailable(componentNumber , quantity) {
+
+    this.inventoryService.getCmptByitemNumber(componentNumber)
+
+  }
+  
+  openComponentsStatus(components,itemNumber,itemQuantity,orderNumber) {
+
+
+    debugger
+     this.itemSer.getComponentsAmountByCmptNumber(itemNumber,itemQuantity).subscribe(data=>{
+      debugger;
+      data;
    
+      this.itemDetails = data;
+
+      });
+    
+  
+
+    this.modalService.open(components, {size: 'lg',ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  
+  }
+
+  isSelected(ev,item){
+    debugger
+    if(ev.target.checked == true) {
+    var isSelected = this.selectedArr
+    isSelected.push(item);
+    this.selectedArr = isSelected
+    }
+
+    if(ev.target.checked == false){
+      var isSelected = this.selectedArr
+      var tempArr = isSelected.filter(x=>x.itemNumber != item.itemNumber )
+      this.selectedArr = tempArr
+    }
+    
+ 
+  }
+  
+  // getAllOrdersItems() { 
+  //   debugger;
+  //   this.orderService.getOpenOrdersItems().subscribe(data=>{
+  //     this.orderItemsStock = data;
+
+
+  //   })
+  // }
+
+  // getAllItems() { 
+  //   this.itemSer.getAllItems().subscribe(data=>{
+  //     this.allItems = data;
+  //   })
+  // }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -332,7 +451,14 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   addItemOrder() {
+    debugger;
+    this.itemData.formuleCheck = this.formuleCheck
     this.itemData.orderId = this.orderId;
+    var userName = this.authService.loggedInUser.firstName
+    var timeNow = new Date().getTime();
+    this.itemData.actionTime = []
+    this.itemData.actionTime.push({user:userName,time:timeNow})
+    
     if(!this.multi) this.itemData.orderNumber = this.number;
     let newItemImpRemark= this.itemData.itemImpRemark;
      
@@ -469,7 +595,15 @@ showFormule(itemNumber,formuleByItem) {
 }
 
 
+loadMaterialsForFormule(){
+  debugger
+  this.selectedArr
 
+  this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(data=>{
+    debugger
+  this.materialsForFormules = data;
+  })
+}
 
 
 
@@ -674,6 +808,7 @@ editBatch(batch){
 
 
   isChecked(ev,id) {
+    debugger;
     var formuleStatus = ev.target.checked
     if (ev.target.checked == true) {
 
@@ -706,7 +841,7 @@ editBatch(batch){
         "quantity": this.quantity.nativeElement.value,
         // "qtyKg": this.weight.nativeElement.value,
         "itemRemarks": this.itemRemarks.nativeElement.value,
-        "componentCheck": this.componentCheck.nativeElement.value,
+       
       }
       console.log(itemToUpdate);
       // console.log("edit " + itemToUpdate.orderItemId );
@@ -726,7 +861,7 @@ editBatch(batch){
           this.ordersItems[index].quantity = itemToUpdate.quantity;
           // this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
           this.ordersItems[index].netWeightGr = itemToUpdate.netWeightGr;
-          this.ordersItems[index].componentCheck = itemToUpdate.componentCheck;
+         
 
            
         }else{

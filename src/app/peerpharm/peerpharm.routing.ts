@@ -20,6 +20,7 @@ import {ContentComponent} from './taskboard/core/content/content.component'
 import { BatchesComponent } from './batches/batches.component';
 import {CostumersListComponent} from './costumers/costumers-list/costumers-list.component'
 import { FormslistComponent } from './forms/formslist/formslist.component';
+import { CheckingformsComponent } from './forms/checkingforms/checkingforms.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
 import { MakeupComponent } from './schedule/makeup/makeup.component';
@@ -47,6 +48,12 @@ import { HistorylogsComponent } from './reports/historylogs/historylogs.componen
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 import { NewProcurementOrderComponent } from './procurement/new-procurement-order/new-procurement-order.component';
+import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
+import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
+import { FirstAidComponent } from './forms/first-aid/first-aid.component';
+import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
+import { PackingListComponent } from './qa/packing-list/packing-list.component';
+import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -200,6 +207,20 @@ export const PeerPharmRputs: Routes =[
     },
     component: MaterialScanViewComponent,
   },
+  {
+    path: 'inventory/allocatedOrders',
+    data: {
+      title: 'Allocated Orders'
+    },
+    component: AllocatedOrdersComponent,
+  },
+  {
+    path: 'inventory/change-shelf',
+    data: {
+      title: 'Change Shelf'
+    },
+    component: ChangeShelfComponent,
+  },
  /* {
     path: 'taskboard/main',
     data: {
@@ -320,6 +341,41 @@ export const PeerPharmRputs: Routes =[
     component:FormdetailsComponent
   }
   ,
+  {
+    path :'forms/checkingforms',
+    data :{
+      title : 'Check Forms'
+    },
+    component:CheckingformsComponent
+  },
+  {
+    path :'forms/cleaning-forms',
+    data :{
+      title : 'Cleaning Forms'
+    },
+    component:CleaningFormsComponent
+  } ,
+  {
+    path :'qa/packing-list',
+    data :{
+      title : 'Packing Lists'
+    },
+    component:PackingListComponent
+  } ,
+  {
+    path :'forms/first-aid',
+    data :{
+      title : 'First Aid'
+    },
+    component:FirstAidComponent
+  } ,
+  {
+    path :'forms/qa-pallets',
+    data :{
+      title : 'QA Pallets'
+    },
+    component:QaPalletsComponent
+  } ,
   {
     path :'notification',
     data :{

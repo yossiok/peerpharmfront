@@ -30,6 +30,7 @@ export class FormuleComponent implements AfterViewInit {
   childItems: QueryList<any>;
   childPhases: QueryList<any>;
   disableAddPhase: Boolean = false;
+  allPercentage:Number;
 
   // new method -noa
   // we will show only one card of adding/edditing to user (for: formule,phase,item )
@@ -167,6 +168,8 @@ export class FormuleComponent implements AfterViewInit {
 
 
         this.phase = phaseToSave;
+
+        debugger;
         this.addItemToScreen()
       } else {
         this.toastSrv.error('phase exist in formule\nChanges not saved')
@@ -203,7 +206,16 @@ export class FormuleComponent implements AfterViewInit {
             p = updatedPhase;
           }
         });
+        debugger
+        var num = 0;
         this.toastSrv.success("Item added to phase");
+        for (let i = 0; i < this.allPhasesForm.length; i++) {
+         for (let j = 0; j < this.allPhasesForm[i].items.length; j++) {
+           num += this.allPhasesForm[i].items[j].percentage
+         }
+          
+        }
+        this.allPercentage = num
         console.log("this.allPhasesForm", this.allPhasesForm);
         this.newItem = false;
 

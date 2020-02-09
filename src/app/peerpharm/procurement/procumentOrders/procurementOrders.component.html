@@ -44,6 +44,47 @@
   ></i>
 </div>
 
+<input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Order Number" (change)="searchNumber($event)"/>
+<input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Supplier Name" (change)="searchBySupplier($event)"/>
+
+From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
+<img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
+        (click)="exportAsXLSX()">
+        <!-- <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
+          <div class="loader">Loading More Items...</div>
+          <br/> 
+        </div> -->
+
+        
+<div style="float:right;" *ngIf="orderDetailsModal==true">
+  <table id="procurementItems" class="table table-responsive">
+    <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+      <tr>
+        <th></th>
+        <th>Item Name</th>
+        <th>Item Number</th>
+        <th>Measurement</th>
+        <th>Amount</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="table_body">
+      <tr [style.background-color]="line.color" id="procurementOrderItems" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of orderData; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{ line.itemName }}</td>
+        <td>{{ line.itemNumber }}</td>
+        <td>{{ line.measurement }}</td>
+        <td *ngIf="line.itemNumber==EditRowId">
+            <input [(ngModel)]="arrivedAmount" [value]="line.arrivedAmount" style="width:50px;" type="text">/{{ line.supplierAmount }}
+          </td>
+        <td (click)="edit(line.itemNumber)" *ngIf="line.itemNumber!=EditRowId">{{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
+        <td *ngIf="line.itemNumber==EditRowId"><i (click)="checkIfArrived(line.itemNumber,line.orderNumber,i)" class="fa fa-check" aria-hidden="true"></i></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <table>
   <thead
     style="box-shadow: 1px 1px 2px 0px black;"
@@ -58,6 +99,15 @@
       <th><b>Order Quantity</b></th>
       <th><b>Total Payment With VAT</b></th>
       <th><b>Status</b></th>
+      <th><b>Procurement Number</b></th>
+      <th><b>Comax Number</b></th>
+      <th><b>Supplier Number</b></th>
+      <th><b>Supplier Name</b></th>
+      <th><b>תאריך יציאה</b></th>
+      <th><b>תאריך קבלה</b></th>
+      <!-- <th><b>Total Payment With VAT</b></th> -->
+      <th><b>Is Supplied</b></th>
+      <th></th>
       <th></th>
     </tr>
   </thead>
@@ -81,6 +131,22 @@
           Close Order
         </button>
       </td>
+    <tr  style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
+      <td>{{i+1}}</td>
+      <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span style="color:blue;">{{line.orderNumber}}</span></td>
+      <td>{{ line.comaxNumber }}</td>
+      <td>{{ line.supplierNumber }}</td>
+      <td>{{ line.supplierName }}</td>
+      <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
+      <!-- <td>{{ line.totalPaymentVat}}</td> -->
+      <td>{{ line.isSupplied}}</td>
+      <td><button class="btn btn-primary" (click)="closeOrder(line.orderNumber)">Close Order</button></td>
+      <td><button class="btn btn-success" printSectionId="print-section" ngxPrint>Print Order</button></td>
     </tr>
   </tbody>
 </table>
+
+
+
+

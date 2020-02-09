@@ -67,7 +67,7 @@ export class AddFormuleComponent implements OnInit {
     });
   }
 
-  allFormuleCategory: Array<any> = ['Oil Based Lotion', 'Water Baised Lotion', 'Hyperallergic'];
+  allFormuleCategory: Array<any> = ['Oil Based Lotion', 'Water Baised Lotion', 'Hyperallergic','Powder'];
   // allFormuleCategory: FormuleCategory[] = ['Oil Based Lotion', 'Water Baised Lotion' , 'Hyperallergic'];
   // allFormuleCategory: FormuleCategory[] = [
   //   { value: 'Oil Based Lotion'},

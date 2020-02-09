@@ -117,14 +117,16 @@
         src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
       <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
         (click)="exportCurrTable()">
+        <button printSectionId="print-section" ngxPrint>print</button> 
     </div>
 
 
 
     <!-- TABLE START -->
+    <div  *ngIf="stockType=='component'" class="tableFixHead" >
     <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
-      <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
-        <tr style="text-align: center">
+      <thead style="background: rgb(69, 69, 202);" class='tableHeader text-white'>
+        <tr style="text-align: center;">
 
           <th style="width:3%; padding:5px"></th>
           <th style="width:6%; padding:5px"><b>מספר פריט</b></th>
@@ -143,7 +145,7 @@
       </thead>
 
 
-      <tbody id="table_body" class="componentTable">
+      <tbody  id="table_body" class="componentTable">
         <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
           *ngFor="let component of components; let i = index">
           <td style="width:3%;">{{i+1}}</td>
@@ -152,11 +154,11 @@
           <td style="width:10%;">{{component.componentName}}</td>
           <td style="width:10%;">{{component.alternativeComponent}}</td>
           <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
-          <td style="width:5%"  (click)="openAllocatedOrders(component.componentN)" style="cursor: pointer;" [ngClass]="calcIfLowThenMin(component)" > 
+          <td style="width:5%; cursor: pointer;border-right: 2px solid black;"  (click)="openAllocatedOrders(component.componentN)"  [ngClass]="calcIfLowThenMin(component)" > 
               {{component.alloAmount}}
             <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
             style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
-          <td style="width:5%;" (click)="getCmptAmounts(component.componentN, component._id)" style="cursor: pointer;">
+          <td style="width:5%;cursor: pointer;" (click)="getCmptAmounts(component.componentN, component._id)">
             {{component.amount}}
             <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
               style="width: 40px; margin-left: 15px; cursor: pointer; float: right;">
@@ -179,10 +181,10 @@
               <tbody>
                 <tr *ngFor="let expt of component.procurementArr " class="d-flex flex-row-reverse"
                   style="font-size:16px;">
-                  <td class="p-2">{{expt.remarks}}</td>
-                  <td class="p-2">כמות</td>
+                  <td *ngIf="expt.remarks" class="p-2">:הערות</td>
+                  <td class="p-2"><span style="font-weight: bold;">{{expt.remarks}}</span></td>
+                  <td class="p-2">:כמות</td>
                   <td class="p-2">{{expt.quantity}}</td>
-                  <td class="p-2" >תאריך</td>
                   <td [ngClass]="{ expiredDate: expt.expectedDate < today.toISOString() }">{{expt.expectedDate | date :'dd/MM/yyyy'}}</td>
           
                   
@@ -204,13 +206,13 @@
       </tbody>
     </table>
 
-
-
+  </div>
+  
     <app-expected-arrivals *ngIf="openProcurementModal" [componentData]='resCmpt'
       (outPutItemsExpectedData)="getNewExpectedArrivalsData($event)"></app-expected-arrivals>
 
 
-    <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
+    <table  class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
       <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
         <tr>
 
@@ -219,10 +221,10 @@
           <!-- <th style="padding:5px"><b>מק"ט פריט/ספק</b></th> -->
           <th style="width:25%; padding:5px"><b>שם</b></th>
           <!-- <th style="padding:5px"><b>סוג</b></th> -->
-          <th style="width:9%; padding:5px"><b>כמות</b></th>
-          <th style="width:9%; padding:5px"><b>Sticker Language</b></th>
-          <th style="width:9%; padding:5px"></th>
           <th style="width:9%; padding:5px"><b>כמות מוקצת</b></th>
+          <th style="width:9%; padding:5px"><b>כמות</b></th>
+          <th style="width:9%; padding:5px"></th>
+         
           <th style="width:9; padding:5px"><b>תמונה</b></th>
           <!-- <th style="padding:5px"><b>הזמנת רכש</b></th>
             <th style="padding:5px"><b>כמות להזמנת רכש</b></th> -->
@@ -245,8 +247,10 @@
           <!-- <td>{{component.componentNS}}</td> -->
           <td style="width:25%;">{{component.componentName}}</td>
           <!-- <td>{{component.componentType}}</td> -->
+          
+          <td style="width:9%">{{component.productAlloAmount}} <img (click)="openAllocatedProducts(component.componentN)" src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
+            style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
           <td style="width:9%;">{{component.amount}}</td>
-          <td style="width:9%"></td>
           <td style="width:9%;"><button class="btn btn-info"
               (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
           <td style="width:9%;">
@@ -261,7 +265,7 @@
               
             </div>
           </td> -->
-          <td style="width:7%;"></td>
+         
           <td style="width:7%;">
             <img (click)="deleteStockItemValidation(component.componentN)" src="../../../../assets/images/deleteBtn.png"
               alt="delete stock item" style="width: 60px ; cursor: pointer; ">
@@ -286,7 +290,7 @@
         <th style="width:10%; padding:5px"><b>מחיר</b></th>
         <th style="width:10%; padding:5px"><b>רמת סיכון</b></th>
         <th style="width:20%; padding:5px"><b>הערות</b></th>
-        <th style="width:10%; padding:5px"><b>תמונה</b></th>
+        <th style="width:10%; padding:5px"><b>Not In Stock</b></th>
         <th style="width:5%; padding:5px"></th>
       </tr>
 
@@ -313,7 +317,7 @@
             <div style="float:none;">{{material.suplierName}}</div>
           </td>
           <td style="width:10%;">
-            <div style="float:none;">{{material.price}}</div>
+            <div style="float:none;">{{material.price}}{{material.coin}}<br>{{material.measurement}}</div>
           </td>
        
           <td style="width:10%">
@@ -324,10 +328,14 @@
               <div style="float:none;">{{material.remarks}}</div>
           </td>
 
-          <td style="width:10%;">
+          <td style="width:10%">
+            <div style="float:none;">{{material.notInStock}}</div>
+          </td>
+
+          <!-- <td style="width:10%;">
             <img [src]=material.img style='width:50px ; cursor: pointer;text-align: center;'
               (click)="openImg(material.img)">
-          </td>
+          </td> -->
 
           <td style="width:7%;">
             <img (click)="deleteStockItemValidation(component.componentN)" src="../../../../assets/images/deleteBtn.png"
@@ -337,7 +345,8 @@
     </tbody>
   </table>
 
-  <ng-template #supplierList let-modal>
+  <ng-template  #supplierList let-modal>
+    <div style="width:140% !important;" class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Alternative Suppliers</h4>
       </div>
@@ -348,6 +357,7 @@
             <tr>
               <th><input [(ngModel)]="alternativeSupplier.name" placeholder="Alternative Supplier"/></th>
               <th><input [(ngModel)]="alternativeSupplier.material" placeholder="Alternative Material"/></th>
+              <th><input [(ngModel)]="alternativeSupplier.price" placeholder="Price"/></th>
               <th><button (click)="addSupplierToArray()">Add</button></th>
             </tr>
           </thead>
@@ -355,12 +365,14 @@
             <tr *ngFor="let alterSupplier of alterSuppliers" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
               <td>{{alterSupplier.name}}</td>
               <td>{{alterSupplier.material}}</td>
+              <td>{{alterSupplier.price}}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="modal-footer">
       </div>
+    </div>
     </ng-template>
 
 
@@ -430,7 +442,7 @@
                 <!-- <th >בפועל ml כמות</th>
                 <td><input type='number' [(ngModel)]="resCmpt.actualMlCapacity" id="input_actualMlCapacity"></td> -->
 
-                <th>סוג</th>
+                <th>קטגוריה</th>
                 <td>
 
                   <input type="text" *ngIf="newItem!='new'" [(ngModel)]="resCmpt.componentType" disabled />
@@ -480,7 +492,7 @@
                 </td>
               </tr>
               <tr>
-                <th>קטגוריה</th>
+                <th>מותג</th>
                 <td>
                   <!-- <input type='text' id="input_componentCategory" [(ngModel)]="resCmpt.componentCategory"> -->
                   <select [(ngModel)]="resCmpt.componentCategory">
@@ -733,6 +745,7 @@
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.ps}}</td>
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.sumShelfAmounts}}</td>
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td>
+                  
                   <!-- <td>{{shelfAmount.wh}}</td> -->
                 </tr>
 
@@ -789,7 +802,7 @@
             </div>
           </div>
           <div class="fr row justify-content-end" *ngIf="amountChangeDir!='shelfChange'">
-            <h5>הוצאת/קבלת סחורה</h5>
+            <h5>הוצאת/קבלת סחורה</h5>  
             <div class="fr row justify-content-end">
               <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
               <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
@@ -798,12 +811,17 @@
               <input class="col-sm-2 ml-1" type="text" placeholder="מדף" [(ngModel)]="newItemShelfPosition" />
               <input class="col-sm-2 ml-1" type="number" placeholder="כמות" [(ngModel)]="newItemShelfQnt">
               <!-- <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber"> -->
-              <select *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"
+              <select (change)="showBatchExpDate($event)" *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"
                 [(ngModel)]="newItemShelfBatchNumber">
                 <option value="" selected>Batch</option>
                 <option *ngFor="let batch of ItemBatchArr" [value]="batch.batchNumber">{{batch.batchNumber}}</option>
-              </select>
 
+              </select>
+              
+
+            </div>
+            <div>
+              <label>Exp Date: {{expirationBatchDate}}</label>
             </div>
           </div>
           <div class="fr row justify-content-end">
@@ -959,6 +977,34 @@
                     <label>Not in stock</label><input [(ngModel)]="resMaterial.notInStock" type="checkbox">
                   </td>
                 </tr>
+                <tr>
+                    <th>Frame Quantity (kg)</th>
+                  <td>
+                    <input [(ngModel)]="resMaterial.frameQuantity" type="text">
+                  </td>
+                </tr>
+                <tr>
+                    <th>Frame Supplier</th>
+                  <td>
+                    <input [(ngModel)]="resMaterial.frameSupplier" type="text">
+                  </td>
+                </tr>
+                <br>
+                <tr>
+                    <th>Location</th>
+                  <td>
+                    <input list="locations" [(ngModel)]="resMaterial.location" (change)="getAllMaterialLocations($event)" type="text">
+                    <datalist id="locations">
+                      <option *ngFor="let material of materialLocations" [value]="material.location">{{material.location}}</option>
+                    </datalist>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Quantity In Stock</th>
+                  <td>
+                    <input type="text" [(ngModel)]="resMaterial.quantityInStock"> 
+                  </td>
+                </tr>
               </div>
 
               <div style="margin-left: 20px;">
@@ -1006,7 +1052,9 @@
                 <tr>
                   <th style="cursor: pointer" (click)="open(supplierList)"><u>Supplier</u></th>
                   <td>
-                      <input type="text" class="itemInput" [(ngModel)]="resMaterial.suplierName"/>
+                      <select class="itemInput" [(ngModel)]="resMaterial.suplierName">
+                        <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
+                      </select>
                   </td>
                 </tr>
 
@@ -1081,6 +1129,37 @@
                     <input [(ngModel)]="resMaterial.price" type="text" class="itemInput"/>
                   </td>
                 </tr>
+                <tr>
+                  <th>coin</th>
+                  <td>
+                    <select [(ngModel)]="resMaterial.coin" class="itemInput">
+                        <option value="usd">USD</option>
+                        <option value="nis">NIS</option>
+                        <option value="gbp">GBP</option>
+                        <option value="eur">EUR</option>
+                        <option value="yen">YEN</option>
+                      </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Price After Loading</th>
+                  <td>
+                      <input [(ngModel)]="resMaterial.priceLoading" type="text" class="itemInput"/>
+                    </td>
+                </tr>
+                <tr>
+                  <th>Coin After Loading</th>
+                  <td>
+                    <select [(ngModel)]="resMaterial.coinLoading" class="itemInput">
+                        <option value="usd">USD</option>
+                        <option value="nis">NIS</option>
+                        <option value="gbp">GBP</option>
+                        <option value="eur">EUR</option>
+                        <option value="yen">YEN</option>
+                      </select>
+                  </td>
+                </tr>
+                
 
                 <tr>
                   <th>Material</th>
@@ -1227,7 +1306,7 @@
         <span class="close" id="closeId3" (click)="openOrderAmountsModal=false;">&times;</span>
       <h2 style="text-align: center">{{openModalHeader}}</h2><br>
     </div>
-    <div style="height: 300px !important;width:800px !important;" class="container" id="material-body" class="modal-body">
+    <div style="height: auto !important;width:800px !important;overflow:scroll" class="container" id="material-body" class="modal-body">
         <table style="background:white;" class="table table-hover">
             <thead>
               <tr>
@@ -1241,6 +1320,38 @@
                 <td>{{i+1}}</td>
                 <td>{{order.orderNumber}}</td>
                 <td>{{order.allocatedAmount}}</td>
+              </tr>
+            </tbody>
+          </table>
+    
+  </div>
+
+</div>
+</div>
+
+<div style="height:0px !important" *ngIf="openProductAmountModal==true" id="myModal3" class="modal3"
+  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
+
+  <!-- Modal content -->
+  <div style="width:800px !important" class="modal-content" id='modelC'>
+    <div style="width:800px !important;" id="material-header" class="modal-header">
+        <span class="close" id="closeId3" (click)="openProductAmountModal=false;">&times;</span>
+      <h2 style="text-align: center">{{openModalHeader}}</h2><br>
+    </div>
+    <div style="height: auto !important;width:800px !important;overflow:scroll" class="container" id="material-body" class="modal-body">
+        <table style="background:white;" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Orders</th>
+                <th scope="col">Allocated Amount</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr *ngFor="let order of allocatedProducts;let i=index">
+                <td>{{i+1}}</td>
+                <td>{{order.orderNumber}}</td>
+                <td>{{order.allocatedQuantity}}</td>
               </tr>
             </tbody>
           </table>

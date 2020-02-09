@@ -256,43 +256,51 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
+      {
+        path: '/peerpharm/batches/mkpBatchesList',
+        title: 'MakeUp List',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
     ]
   },
 
   {
     path: '',
-    title: 'Procurement',
+    title: 'Purchase',
     icon: ' icon-plane',
     class: 'has-arrow',
     extralink: false,
     submenu: [
-      {
-        path: '/peerpharm/procurement/procurementOrderItemBalance',
-        title: 'Procurement Order Item Balance',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/procurement/procurementOrderItemBalance',
+      //   title: 'Procurement Order Item Balance',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
        {
         path: '/peerpharm/procurement/procurementOrders',
-        title: 'Procurement Orders',
+        title: 'Purchase Orders',
         icon: 'fas fa-list-ol',
         class: '',
         extralink: false,
         submenu: []
       },
-      {
-        path: '/peerpharm/procurement/procurementOrderItems',
-        title: 'Procurement Order Items',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/procurement/procurementOrderItems',
+      //   title: 'Procurement Order Items',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       {
         path: '/peerpharm/procurement/newProcurement',
-        title: 'New Procurement',
+        title: 'New Purchase',
         icon: 'fas fa-list-ol',
         class: '',
         extralink: false,
@@ -367,6 +375,22 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
+      {
+        path: '/peerpharm/inventory/allocatedOrders',
+        title: 'Allocated Orders',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '/peerpharm/inventory/change-shelf',
+        title: 'Change Shelf',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
       ]
     },
 
@@ -385,7 +409,47 @@ export const ROUTES: RouteInfo[] = [
           class: '',
           extralink: false,
           submenu: []
-        }
+        },
+        {
+          path: '/peerpharm/forms/checkingforms',
+          title: 'טפסי בדיקת איכות',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
+          path: '/peerpharm/forms/cleaning-forms',
+          title: 'טפסי ניקיון',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
+          path: '/peerpharm/forms/first-aid',
+          title: 'טופס עזרה ראשונה',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
+          path: '/peerpharm/qa/packing-list',
+          title: 'Packing Lists',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
+          path: '/peerpharm/forms/qa-pallets',
+          title: 'תיעוד מוצרים לפני משלוח',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
 
       ]
     },

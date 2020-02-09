@@ -12,15 +12,20 @@ body {
 .expiredDate {
   color: red;
 }
-.table-fixed thead {
-  /* display: block; */
-}
+
 .table-fixed tbody {
   height: 700px;
-  /* overflow-y: auto; */
-  /* width: 100%;
-  display: block; */
+  overflow-y: scroll;  
+
+
 }
+
+.tableFixHead          { overflow-y: auto; height: 800px;background:rgba(0, 0, 255, 0);padding:0px; }
+.tableFixHead thead th { position: sticky; top: -5px; background:rgb(17, 17, 223); }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+
 
 /* .table-fixed th {
   display: inline-block;

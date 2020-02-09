@@ -25,6 +25,12 @@
   (keyup)="FilterForms($event, 'batch')"
   style="margin-right: 20px;"
 />
+<input
+  matInput
+  placeholder="Production Line Number"
+  (keyup)="FilterForms($event, 'productionLine')"
+  style="margin-right: 20px;"
+/>
 
 
 <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
@@ -46,17 +52,17 @@
           Filling Date
         </button> -->
       </th>
-      <th>Batch</th>
       <th>Order Number</th>
+      <th>Production Line</th>
       <th>Costumer</th>
+      <th>Batch</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-
+   
     <div *ngIf="forms.length==0">
-      <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
-          items...</b></span>
+      <img style="width:500px;height:500px;margin-left:700px;" src="https://acegif.com/wp-content/uploads/loading-14.gif" /><span></span>
       <br />
     </div>
 
@@ -69,9 +75,10 @@
       <td>{{ form.itemN }}</td>
       <td>{{ form.productName }}</td>
       <td>{{ form.fillingDate }}</td>
-      <td>{{ form.batchN }}</td>
       <td>{{ form.orderNumber }}</td>
+      <td>{{ form.productionLine }}</td>
       <td>{{ form.costumerName }}</td>
+      <td style="width:500px">{{ form.batchN }}</td>
       <td></td>
     </tr>
   </tbody>

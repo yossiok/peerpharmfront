@@ -39,6 +39,9 @@ import {BatchesMkpComponent} from './batches/batches-mkp/batches-mkp.component'
 import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component';
 import {PrintingComponent} from './schedule/printing/printing.component';
 import { MakeupComponent } from './schedule/makeup/makeup.component';
+import { CheckingformsComponent } from './forms/checkingforms/checkingforms.component';
+import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
+import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
@@ -108,6 +111,11 @@ import { AllFormulesComponent } from './formules/all-formules/all-formules.compo
 import { OrdersService } from '../services/orders.service';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 import { AddProcurementItemDialog } from './procurement/add-procurement-item-dialog/add-procurement-item-dialog';
+import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
+import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
+import { PackingListComponent } from './qa/packing-list/packing-list.component';
+import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
+
 
 
 
@@ -151,7 +159,9 @@ import { AddProcurementItemDialog } from './procurement/add-procurement-item-dia
   
   ],
   declarations: [
+    CheckingformsComponent,
     AllFormulesComponent,
+    ChangeShelfComponent,
     FormuleComponent,
     AddFormuleComponent,
     OrdersComponent,
@@ -159,6 +169,8 @@ import { AddProcurementItemDialog } from './procurement/add-procurement-item-dia
     OrderdetailsComponent,
     MakeupdetailsComponent,
     NeworderComponent, 
+    NeworderComponent,
+    BatchesMkpComponent,
     LinesComponent,
     ProductionComponent,
     ProductionRequestComponent,
@@ -166,10 +178,13 @@ import { AddProcurementItemDialog } from './procurement/add-procurement-item-dia
     ScheduleOrdersComponent,
     ProductionOrdersComponent,
     AddFormuleItemComponent,
+    CleaningFormsComponent,
+    FirstAidComponent,
     ScheduleComponent,
     BarcodePrintComponent,
     ItemslistComponent,
     ItemdetaisComponent,
+    QaPalletsComponent,
     PlateComponent,
     StockComponent,
     ContentComponent,
@@ -179,13 +194,13 @@ import { AddProcurementItemDialog } from './procurement/add-procurement-item-dia
     CreateBoardComponent,
     SubtaskComponent,
     AddProcurementItemDialog,
+    PackingListComponent,
     SubTaskCardComponent,
     ContentComponent, BoardComponent,
     TaskCardComponent,
     SubTaskCardComponent,
     CreateBoardComponent,
     BatchesComponent,
-    BatchesMkpComponent,
     CostumersListComponent,
     PrintingComponent,
     MakeupComponent,
@@ -219,7 +234,8 @@ import { AddProcurementItemDialog } from './procurement/add-procurement-item-dia
     ItemreportsComponent,
     DateExpiredDirective,
     HistorylogsComponent,
-    ActiveusersComponent
+    ActiveusersComponent,
+    AllocatedOrdersComponent,
 
 
   ],

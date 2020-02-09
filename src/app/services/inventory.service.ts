@@ -52,6 +52,11 @@ export class InventoryService {
     let url = this.baseUrl + "material/getAllMaterials";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllMaterialLocations():Observable<any>{
+    
+    let url = this.baseUrl + "material/allMaterialLocations";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllMaterialsForFormules():Observable<any>{
     let url = this.baseUrl + "material/allMaterialForFormules";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -74,6 +79,10 @@ export class InventoryService {
     let url = this.baseUrl + "component?componentN="+cmptNumber+"&stockType="+stockType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getCmptByitemNumber(cmptNumber):Observable<any>{
+    let url = this.baseUrl + "component?componentN="+cmptNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getCmptBySupplierItemNumber(cmptNumber, stockType):Observable<any>{
     let url = this.baseUrl + "component?componentNs="+cmptNumber+"&stockType="+stockType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -82,6 +91,11 @@ export class InventoryService {
   getMaterialtByNumber(materialNumber):Observable<any>{
     let url = this.baseUrl + "material?componentN="+materialNumber
     return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getMaterialsForFormules(materials):Observable<any>{
+  
+    let url = this.baseUrl + "material/materialsForFormule";
+    return this.http.post(url, JSON.stringify(materials), this.options).pipe(map(res => res.json()))
   }
   getAllocatedOrdersByNumber(componentN):Observable<any>{
     let url = this.baseUrl + "component?allocatedOrders="+componentN
@@ -285,6 +299,10 @@ getMaterialStockItemByNum(internalNumber):Observable<any>{
   let url = this.baseUrl + "material?materialNumber="+internalNumber ;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+checkFrameQuantityByNumber(itemNumber):Observable<any>{
+  let url = this.baseUrl + "material?checkFrameQuantity="+itemNumber ;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 getMaterialStockItemById(id):Observable<any>{
   
   let url = this.baseUrl + "material?materialId="+id ;
@@ -332,6 +350,10 @@ getMaterialNotInStock(objToSearch):Observable<any>{
 
 getMaterialArrivalFormById(id):Observable<any>{
   let url = this.baseUrl + "material/scanBarcodeId?viewOnly=yes&id="+id;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+getAllMaterialsArrivalsByInternalNumber(internalNumber):Observable<any>{
+  let url = this.baseUrl + "material/scanBarcodeId?searchSimilar=yes&internalNumber="+internalNumber;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 

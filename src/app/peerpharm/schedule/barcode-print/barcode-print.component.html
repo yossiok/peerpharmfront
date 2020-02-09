@@ -1,4 +1,5 @@
 From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
+Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
 
 
 <form class="form" [formGroup]="addScheduleForm" (submit)="onSubmit()">
@@ -494,12 +495,9 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
     >
 
     <div *ngIf="showBatchFlag" class="form-group row">
-      <label for="printBatch"><strong>Delivery Adress</strong></label>
-      <select style="width: 200px;" class="form-control" type="text" formControlName="batch">
-        <option>PHILADELPHIA 2760 RED LION RD PHILADELPHIA,PA 19114 U.S.A</option>
-        <option>PITTSTON 4000 OLDFIELD DRIVE PITTSTON, PA 18640 U.S.A</option>
-        <option>Winners Mechant int'l LP 60 Standish Court Mississauga,ON L5R OG1</option>
-      </select>
+      <label for="deliveryAdress"><strong>Delivery Adress</strong></label>
+      <input style="width: 200px;" class="form-control" type="text" formControlName="deliveryAdress">
+
       <button 
         type="button"
         class="btn removeBtn btn-success m-r-10"
@@ -742,7 +740,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
         
         <tr>
           <td>
-            <span *ngIf="showBatch">Delivery Address:{{ printBarkod.batch }}</span><br>
+            <span *ngIf="showBatch">Delivery Address:{{ printBarkod.deliveryAdress }}</span><br>
             <span style="margin-left:10px;" *ngIf="showExp"> {{ printBarkod.date }}</span>  
             <span>
                 <ngx-barcode

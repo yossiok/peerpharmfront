@@ -73,7 +73,7 @@ export class WizardComponent implements OnInit {
         if(doc){
           that.currPhase.items.map(item=>{
             // if(doc.componentN == item.itemNumber && item.approval==false){
-            if(doc.internalNumber == item.itemNumber && item.approval==false){
+            if(doc.componentN == item.itemNumber && item.approval==false){
               that.checkedItem=item;
               that.step=2;
               that.wrongItem= false;
@@ -93,6 +93,7 @@ export class WizardComponent implements OnInit {
     });
   }
   checkItemQnt(ev){
+    debugger
       // this.inputValue = materialStockItem._id (27/06/2019) needs to be stockItem._id for itemType='mateiral'
       var userQnt=  this.qntInput.nativeElement.value;
       // var userQnt=  ev.target.value;

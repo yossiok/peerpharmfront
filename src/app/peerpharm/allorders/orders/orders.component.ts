@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { IfStmt } from '@angular/compiler';
 import { ToastrService } from 'ngx-toastr';
 import { log } from 'util';
+import { ChatService } from 'src/app/shared/chat.service';
 
 
 
@@ -16,7 +17,7 @@ import { log } from 'util';
 })
 export class OrdersComponent implements OnInit {
 
-  constructor(private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService) { }
+  constructor(private chat:ChatService,private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService) { }
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
@@ -57,7 +58,13 @@ export class OrdersComponent implements OnInit {
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getOrders();
     this.checkfunc();
-    
+    this.chat.joinroom("orders");
+    this.chat.messages.subscribe(data => {
+      console.log(data);
+      if (data.msg == "order_refresh" && data.to == "allusers") {
+     this.getOrders();
+      } 
+    })
   }
 
   checkfunc(){ 

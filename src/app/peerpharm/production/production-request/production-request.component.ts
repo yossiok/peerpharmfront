@@ -155,6 +155,7 @@ export class ProductionRequestComponent implements OnInit {
   }
 
   addRelatedItem(item ,order) { 
+    debugger
     // if(this.itemNum.nativeElement.value && this.orderNum.nativeElement.value != "") {
     if(item != "" && order != "") {
       // check if exist in order item:
@@ -184,7 +185,7 @@ export class ProductionRequestComponent implements OnInit {
 
 
   onSubmit(): void {
-    
+    debugger
     this.requestForm.controls.formuleName.setValue(this.nameL.nativeElement.value);
     if(this.relatedItems.length>0){
       this.requestForm.controls.relatedItems.setValue(this.relatedItems) ;

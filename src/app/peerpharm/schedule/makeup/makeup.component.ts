@@ -20,7 +20,7 @@ export class MakeupComponent implements OnInit {
   lipstickData:any[];
   orders:any[];
   ordersCopy:any[];
- 
+  now: Date = new Date()
   today: any;
   tableType: String = "powder"
 
@@ -44,14 +44,16 @@ export class MakeupComponent implements OnInit {
   constructor(private ordersService:OrdersService,private makeupService:MakeupService, private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
+
+    this.now.setDate(this.now.getDate() - 30);
+   this.now.toISOString().split('T')[0];
+   
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
 
     this.makeup.productionDate = moment(new Date()).format('YYYY-MM-DD');
     
-    this.getAllPowders();
     this.getAllmakeUps();
-    this.getAllLipsticks();
     this.getAllOrdersByType();
 
   }
@@ -71,6 +73,9 @@ export class MakeupComponent implements OnInit {
       })
   }
 
+  checkIfPastDue(){
+    
+  }
 
   setType(type) {
 
@@ -82,10 +87,6 @@ export class MakeupComponent implements OnInit {
       case 'wet':
         this.tableType = "wet";
     
-        break;
-      case 'lipstick':
-        this.tableType = "lipstick";
-     
         break;
     }
   }
@@ -112,17 +113,6 @@ export class MakeupComponent implements OnInit {
     
   }
 
-  getAllPowders() { 
-    
-    this.makeupService.getAllPowders().subscribe(data =>{
-      this.powdersData = data;
-    })
-  }
-
-  // end of powder section //
-
-
-  // Wet Section adding and getting all wet items production
 
 
 getAllmakeUps() { 
@@ -133,33 +123,4 @@ getAllmakeUps() {
   })
 }
 
-// end of wet section // 
-
-
-// Lipstick section adding and getting all items // 
-
-addLipstick() { 
-  
-  this.makeup.itemType = "Lipstick"
-  this.makeupService.addLipstickItem(this.makeup).subscribe(res =>{
-    this.lipstickData.push(res)
-  })
-
-  this.makeup.itemType=''
-  this.makeup.itemName=''
-  this.makeup.production=''
-  this.makeup.pushToGodets=''
-  this.makeup.packingClient=''
-  this.makeup.printing=''
-  this.makeup.tray=''
-  this.makeup.packing=''
-}
-
-getAllLipsticks() { 
-  this.makeupService.getAllLipsticks().subscribe(data =>{
-    this.lipstickData = data;
-  })
-}
-
-// end of lipstick section //
 }

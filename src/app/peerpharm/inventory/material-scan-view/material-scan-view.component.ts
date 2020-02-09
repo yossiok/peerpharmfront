@@ -9,6 +9,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 })
 export class MaterialScanViewComponent implements OnInit {
   params:String;
+  materialArrivalsByNumber:any[];
   currMaterial: any={ // MaterialArrivalForm- server side schema
       arrivalDate: Date,
       user: String,
@@ -39,9 +40,15 @@ export class MaterialScanViewComponent implements OnInit {
   ngOnInit() {
     
       this.activatedRoute.queryParams.subscribe(params => {
-        if(params.id){
+        if(params.id){     
           this.invtSer.getMaterialArrivalFormById(params.id).subscribe(data=>{
+            debugger
             this.currMaterial = data;
+            this.invtSer.getAllMaterialsArrivalsByInternalNumber(data.internalNumber).subscribe(data=>{
+              debugger;
+              this.materialArrivalsByNumber = data.reverse();
+
+            })
           })
         }
       });

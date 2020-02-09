@@ -44,6 +44,20 @@ export class OrdersService {
       map(reponse => reponse.json())
     );
   }
+ 
+  getAllOpenOrderItems(): Observable<any> {
+    let url = this.baseUrl + 'order/allOpenOrderItems'
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    );
+  }
+
+  getAllOpenOrderItemsByItemNumber(itemNumber): Observable<any> {
+    debugger
+    let url = this.baseUrl + 'order?allOpenOrderItemsByItemNumber=' + itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  } 
+
 
   // getOrderCompileData(orderNumber): Observable<any> {
   //   let url = this.baseUrl + 'packingPallltItems?getAmounts=yes&orderNumber=' + orderNumber;
@@ -51,6 +65,10 @@ export class OrdersService {
   // }
 
   //edit  order
+  allocatedDone(id): Observable<any> {
+    let url = this.baseUrl + "order/updateStatus";
+    return this.http.post(url, JSON.stringify({id}), this.options).pipe(map(res => res.json()))
+  }
   editOrder(order): Observable<any> {
     let url = this.baseUrl + "order/update";
     return this.http.post(url, JSON.stringify(order), this.options).pipe(map(res => res.json()))
@@ -74,8 +92,16 @@ export class OrdersService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+
+
   getOrderItemsByNumber(orderNumber): Observable<any> {
     let url = this.baseUrl + 'orderitem?orderNumber=' + orderNumber;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    );
+  }
+  getOrderItemsByitemNumber(itemNumber): Observable<any> {
+    let url = this.baseUrl + 'orderitem?itemNumber=' + itemNumber;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
     );

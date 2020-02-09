@@ -62,6 +62,7 @@ packingMaterialCheck = {
   @ViewChild('wh') wh: ElementRef;
   @ViewChild('shelfSearch') shelfSearch: ElementRef;
   @ViewChild('printBtn') printBtn: ElementRef;
+  @ViewChild('printBtn2') printBtn2: ElementRef;
 
   private container: ElementRef;
   mainDivArr: any = [];
@@ -469,6 +470,7 @@ deleteLine(itemFromInvReq,index,ev){
 
   async sendList(){
     let ObjToUpdate;
+    debugger;
     let sendConfirm=confirm("עדכון שינויים במלאי");
     if(sendConfirm && this.inventoryUpdateList.length>0) {
       
@@ -488,11 +490,12 @@ deleteLine(itemFromInvReq,index,ev){
             this.toastSrv.success("פעולות מחסנאי נשמרו");
           });
           this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
+            debugger
             console.log(x.n+" items with amount=0 deleted");
           });
 
           //PRINT !!!
-          if(this.dir == 'production' || this.dir == 'out' ){
+          if(this.dir == 'production' || this.dir == 'out' || this.dir == 'in' ){
             // this.listToPrint = await this.inventoryUpdateList.filter(i=>{
             //   if(i.amount<0)  i.amount=Math.abs(i.amount);
             //   return i;
@@ -510,11 +513,17 @@ deleteLine(itemFromInvReq,index,ev){
   }
   
   async printStockTransferCertificate(){
+    debugger;
     //print
     // setTimeout( ()=> {
-
+      if(this.dir == 'production' || this.dir == 'out'){
         this.printBtn.nativeElement.click();
         this.listToPrint=[];
+      }
+      if(this.dir == 'in'){
+        this.printBtn2.nativeElement.click();
+        this.listToPrint=[];
+      }
     // },200);
     // await this.list.filter((i,key)=>{
     //   let tempObj= Object.assign({},i);
@@ -692,7 +701,7 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
   
    this.inventoryUpdateList.push(obj);
 
-   if(this.dir == 'production' || this.dir == 'out'){
+   if(this.dir == 'production' || this.dir == 'out' || this.dir == 'in'){
       let tempObj= Object.assign({},obj);
       tempObj.amount= Math.abs(tempObj.amount);
       this.listToPrint.push(tempObj);

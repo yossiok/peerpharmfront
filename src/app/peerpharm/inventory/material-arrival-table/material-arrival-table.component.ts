@@ -38,6 +38,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   lotNumber: String;
   productionDate: String;
   arrivalDate: String;
+  position:String;
   expiryDate: String;
   onHoldStrDate: String;
   totalQnt: Number;
@@ -109,8 +110,9 @@ export class MaterialArrivalTableComponent implements OnInit {
 
 
     this.materialsArrivals.filter((m, key) => {
-
+debugger
       if (m._id == id) {
+        debugger;
         this.bcValue = [m._id];
         this.materialNum = m.internalNumber;
         this.materialName = m.materialName;
@@ -118,6 +120,7 @@ export class MaterialArrivalTableComponent implements OnInit {
         this.productionDate = m.productionDate;
         this.arrivalDate = m.arrivalDate;
         this.expiryDate = m.expiryDate;
+        this.position = m.position
 
 
         // if(this.materialName.length> 80) this.smallText= true;

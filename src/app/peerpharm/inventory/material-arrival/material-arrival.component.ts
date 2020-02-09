@@ -28,6 +28,8 @@ export class MaterialArrivalComponent implements OnInit {
   @ViewChild('analysisFlag') analysisFlag: ElementRef ;
   @ViewChild('requirementsFormDate') requirementsFormDate: ElementRef ;
  
+
+  materialsLocations:any[];
   screenHeight: number;
   activeTabId: String ;
   dateStr: String ;
@@ -119,8 +121,8 @@ approvedPackgeRemarksInput: Boolean=false;
       // unitVolume: [0, ],    
       // unitMesureType: [0, ],    
       
-      warehouse: [""], //select 
-      position: ["GENERAL"], //select 
+      warehouse: ["Rosh HaAyin"], //select 
+      position: [""], //select 
       barcode:[""],
       deliveryNoteNumber:["", Validators.required],
     });
@@ -159,6 +161,8 @@ approvedPackgeRemarksInput: Boolean=false;
 
    }
   ngOnInit() {
+
+    this.getAllMaterialsLocations();
     // this.user =   this.authService.loggedInUser;
     this.authService.userEventEmitter.subscribe(data => { 
       this.user = this.authService.loggedInUser.firstName+" "+this.authService.loggedInUser.lastName;
@@ -236,6 +240,12 @@ approvedPackgeRemarksInput: Boolean=false;
       this.approvedPackgeRemarksInput= false;
       this.requirementsForm.controls.approvedPackgeRemarks.setValue('')
     }
+  }
+
+  getAllMaterialsLocations(){
+    this.invtSer.getAllMaterialLocations().subscribe(data=>{
+      this.materialsLocations = data;
+    })
   }
 
   changeFields(ev, flag){
@@ -353,7 +363,7 @@ approvedPackgeRemarksInput: Boolean=false;
   submitForm(){
     
     // shelf general position
-    this.newMaterialArrival.controls.position.setValue('GENERAL');
+    
     this.materialNum= this.newMaterialArrival.value.internalNumber;
     this.materialName= this.newMaterialArrival.value.materialName;
     this.lotNumber= this.newMaterialArrival.value.lotNumber;
@@ -461,18 +471,19 @@ approvedPackgeRemarksInput: Boolean=false;
     formToSend.lastUpdate= new Date();
     formToSend.lastUpdateUser= this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{
-      if(res.savedDoc ){
-        this.bcValue= [ res.savedDoc._id ] ;
-        this.materialNum= res.savedDoc.internalNumber;
-        this.materialName= res.savedDoc.materialName;
-        this.lotNumber= res.savedDoc.lotNumber;
-        this.productionDate= res.savedDoc.productionDate;
-        this.arrivalDate= res.savedDoc.arrivalDate;
-        this.expiryDate= res.savedDoc.expiryDate;
+      debugger
+      if(res){
+        this.bcValue= [ res._id ] ;
+        this.materialNum= res.internalNumber;
+        this.materialName= res.materialName;
+        this.lotNumber= res.lotNumber;
+        this.productionDate= res.productionDate;
+        this.arrivalDate= res.arrivalDate;
+        this.expiryDate= res.expiryDate;
 
         this.smallText = (this.materialName.length> 80) ? true : false;
 
-        this.printBarcode(res.savedDoc._id , res.savedDoc.internalNumber);// we might need to change the value to numbers
+        this.printBarcode(res._id , res.internalNumber);// we might need to change the value to numbers
         this.toastSrv.success("New material arrival saved!");
           this.resetForm();
           this.analysisFlag.nativeElement.checked = false;

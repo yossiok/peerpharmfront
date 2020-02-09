@@ -40,9 +40,17 @@ export class ItemsService {
     let url = this.baseUrl + "item/getAllItems";
     return this.http.get(url).pipe(map(reponse => reponse.json())); 
   }
+  getItemsByStatus(itemStatus) {
+    let url = this.baseUrl + "item?itemStatus="+ itemStatus;
+    return this.http.get(url).pipe(map(reponse => reponse.json())); 
+  }
 
   getItemData(itemNumber) {
     let url = this.baseUrl + "item?itemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getAllItemShells() {
+    let url = this.baseUrl + "item/getAllItemShells";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -52,6 +60,18 @@ export class ItemsService {
   }
   getItemDetails(itemNumber) {
     let url = this.baseUrl + "item?itemDetails="+itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getShellDetailsByNumber(itemNumber) {
+    let url = this.baseUrl + "item?itemInShell="+itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getShelfDetailByShelf(shelfNumber) {
+    let url = this.baseUrl + "item?itemByShelfNumber="+shelfNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getComponentsAmountByCmptNumber(componentNumber,itemQuantity): Observable<any> {
+    let url = this.baseUrl + "item?itemNumberToCheck="+componentNumber + '&itemQuantity='+itemQuantity;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -66,6 +86,17 @@ export class ItemsService {
     let url = this.baseUrl + "item/updateDocs";
     return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json))
   }
+  findByIdAndUpdate(itemShell) {
+    let url = this.baseUrl + "item/updateItemShellById";
+    return this.http.post(url, JSON.stringify(itemShell), this.options).pipe(map(res => res.json))
+  }
+ 
+  newFloor(newFloor) {
+    debugger
+    let url = this.baseUrl + "item/newFloorItem";
+    return this.http.post(url, JSON.stringify(newFloor), this.options).pipe(map(res => res.json))
+  }
+ 
   updateLicenseLimition(itemDocObj) {
     let url = this.baseUrl + "item/updateDocs?updateLicenseLimition=yes";
     return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json()))

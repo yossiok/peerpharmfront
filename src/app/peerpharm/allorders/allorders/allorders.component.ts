@@ -60,6 +60,7 @@ export class AllordersComponent implements OnInit {
      this.getAllOrders();
       } 
     })
+   
   }
 
 

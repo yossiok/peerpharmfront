@@ -21,13 +21,13 @@
 
 
   <tbody id="table_body">
-    <tr class="tableTr" *ngFor="let order of orders; let i = index">
+    <tr  class="tableTr" *ngFor="let order of orders; let i = index">
 
       <td>{{i+1}}</td>
       <td> <a target="_blank"  routerLink='/peerpharm/allorders/makeupdetails/{{order.orderNumber}}' >{{order.orderNumber}}</a></td>
       <td>{{order.type}}</td>
       <td>{{order.costumer}}</td>
-      <td>{{order.orderDate | date: "dd/MM/yyyy"}}</td>
+      <td [ngClass]="{expiredDate:order.orderDate < now.toISOString()}">{{order.orderDate | date: "dd/MM/yyyy"}}</td>
       <td>{{order.deliveryDate | date: "dd/MM/yyyy"}}</td>
     </tr>
   </tbody>
@@ -126,7 +126,6 @@
       <td>{{item.itemType}}</td>
       <td>{{item.itemName}}</td>
       <td>{{item.production}}(KG)</td>
-      <td>{{item.pushToGodets}}</td>
       <td>{{item.pushToGodets}}</td>
       <td>{{item.productionDate | date: "dd/MM/yyyy"}}</td>
       <td>{{item.packingClient}}</td>

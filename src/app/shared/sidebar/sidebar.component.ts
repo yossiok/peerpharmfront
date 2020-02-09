@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserInfo } from '../../peerpharm/taskboard/models/UserInfo';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from 'src/app/services/notification.service';
+import { ChatService } from '../chat.service';
 declare var $: any;
 
 @Component({
@@ -37,6 +38,7 @@ export class SidebarComponent implements OnInit {
   }
 
   constructor(
+    private chat:ChatService,
     private modalService: NgbModal,
     private router: Router,
     private route: ActivatedRoute,

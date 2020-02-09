@@ -8,6 +8,7 @@ import { Toast } from 'ngx-toastr';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../taskboard/models/UserInfo';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -19,7 +20,7 @@ import { UserInfo } from '../taskboard/models/UserInfo';
 export class BatchesComponent implements OnInit {
   myRefresh: any = null;
 
-  constructor(private authService: AuthService, private batchService: BatchesService, private excelService: ExcelService, private toastSrv: ToastrService) { }
+  constructor(private modalService:NgbModal,private authService: AuthService, private batchService: BatchesService, private excelService: ExcelService, private toastSrv: ToastrService) { }
   // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
   batches: Array<any>;
   batchesCopy: Array<any>;
@@ -29,6 +30,8 @@ export class BatchesComponent implements OnInit {
   currentDoc: any;
   user: UserInfo;
   alowUserEditBatches:Boolean=false;
+  closeResult:any;
+  batchPrint:any;
 
   batch = { 
     batchNumber:'',
@@ -137,6 +140,32 @@ export class BatchesComponent implements OnInit {
       });
     });
   }
+  private getDismissReason(reason: any): string {
+    debugger;
+       if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+       return 'by clicking on a backdrop';
+     } else {
+       return  `with: ${reason}`;
+     }
+   }
+
+  
+openPrint(printBatch,batchNumber) {
+  debugger;
+  this.modalService.open(printBatch, {size: 'sm', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.closeResult = `Closed with: ${result}`;
+  }, (reason) => {
+    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  });
+  this.loadDataPrint(batchNumber)
+}
+
+loadDataPrint(batchNumber) { 
+  debugger;
+  var batchToPrint = [];
+ batchToPrint = this.batches.find(batch => batch.batchNumber == batchNumber);
+ this.batchPrint = batchToPrint
+}
 
   filterBatchesBiggerThenBatchN() {
     var excelTable = [];

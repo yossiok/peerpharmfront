@@ -1,0 +1,187 @@
+<div *ngIf="allowChange==true" class="container-fluid">
+  <div class="row">
+
+    <div class="col-12">
+      <div>
+        1.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShell.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShell.amount' type="number">
+
+        <label>מדף:</label>
+        <input (change)="getShelfDetailByShelf($event)" [(ngModel)]='itemShell.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShell.whareHouse' type="text">
+        &nbsp; &nbsp;
+
+        <button (click)="findByIdAndUpdate()"  class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        2.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellTwo.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellTwo.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellTwo.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellTwo.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateTwo()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        3.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellThree.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellThree.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellThree.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellThree.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateThree()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        4.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellFour.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellFour.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellFour.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellFour.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateFour()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        5.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellFive.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellFive.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellFive.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellFive.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateFive()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        6.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellSix.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellSix.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellSix.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellSix.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateSix()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        7.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellSeven.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellSeven.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellSeven.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellSeven.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateSeven()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        8.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellEight.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellEight.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellEight.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellEight.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateEight()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        9.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellNine.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellNine.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellNine.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellNine.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateNine()" class="btn btn-success">עדכן</button>
+      </div>
+      <div>
+        10.
+        <label>פריט:</label>
+        <input [(ngModel)]='itemShellTen.item' (change)="getShellDetailByNumber($event)" type="text">
+
+        <label>כמות:</label>
+        <input [(ngModel)]='itemShellTen.amount' type="number">
+
+        <label>מדף:</label>
+        <input [(ngModel)]='itemShellTen.position' type="text">
+
+        <label>מחסן:</label>
+        <input [(ngModel)]='itemShellTen.whareHouse' type="text">
+        &nbsp; &nbsp;
+        <button (click)="findByIdAndUpdateTen()" class="btn btn-success">עדכן</button>
+      </div>
+    </div>
+  </div>
+  <br><br><br>
+  <div class="row">
+    <div class="col-12">
+
+      <h4>פיצול כמויות</h4>
+
+      <label>מספר שורה:</label>
+      <input [(ngModel)]="whichRow" type="number">
+      <label>רצפה:</label>
+      <input [(ngModel)]="newFloor.floorName" type=text>
+      <label>כמות:</label>
+      <input [(ngModel)]="newFloor.amount" type=number>
+      <button (click)="updateNewFloor()" class="btn btn-success">עדכן</button>
+      
+
+    </div>
+  </div>
+</div>
+
+

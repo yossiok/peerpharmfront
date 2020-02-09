@@ -17,6 +17,8 @@ export class ScanProductComponent implements OnInit {
     if(inputValue.length==24){
       
       location.href="http://localhost:4200/#/peerpharm/inventory/scanMaterialView?id="+inputValue;
+      debugger
+      location.href="http://www.peerpharmsystem.com/#/peerpharm/inventory/scanMaterialView?id="+inputValue;
       // this.router.navigate(["http://localhost:4200/#/peerpharm/inventory/scanMaterialView?id="+inputValue]);
     }
   }

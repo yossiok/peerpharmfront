@@ -126,6 +126,7 @@ import { ItemsService } from 'src/app/services/items.service';
     }
 
     getOpenAllSchedule(){
+      debugger
       this.date.nativeElement.value="";
 
       this.scheduleService.getOpenPrintSchedule().subscribe(res=>{

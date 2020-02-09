@@ -26,6 +26,7 @@ export class NeworderComponent implements OnInit {
   netWeightK: Number = 0;
   lastOrderNumber: Number;
   user:any;
+  existOrderItem:any[];
   shippingMethod:any[] = [];
   shippingDetails:any = {
     shippingQuantity: "",
@@ -179,9 +180,12 @@ export class NeworderComponent implements OnInit {
 
 
   searchItem(itemNumber) {
+    debugger
     this.itemName = "";
+    this.existOrderItem = []
     //console.log(itemNumber);
     if (itemNumber != "") {
+      
       this.orderSer.getItemByNumber(itemNumber).subscribe(res => {
         // console.log(res[0]);
         this.orderItemForm.controls.discription.setValue(
@@ -190,7 +194,15 @@ export class NeworderComponent implements OnInit {
         this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
         //   this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
         //   this.netWeightK = res[0].netWeightK;
-        console.log(this.itemName + ",  " + this.netWeightK);
+        this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe(data=>{
+          debugger
+          if(data.length > 0) {
+            this.existOrderItem = data;
+          } else {
+            this.existOrderItem = undefined
+          }
+          
+        })
       });
     }
   }
