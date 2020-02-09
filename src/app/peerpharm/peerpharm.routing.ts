@@ -439,7 +439,7 @@ export const PeerPharmRputs: Routes =[
     data : {
       title : 'New Procurement'
     },
-    component: NewProcurementOrderComponent
+    component: NewProcurementComponent
   } 
 
 ];

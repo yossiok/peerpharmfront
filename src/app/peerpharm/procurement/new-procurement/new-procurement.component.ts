@@ -23,6 +23,7 @@ export class NewProcurementComponent implements OnInit {
   allSuppliers:any[];
   hasAuthorization:boolean = false;
   allMaterials:any[];
+  itemExistInOrders:any[];
   
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
@@ -37,14 +38,13 @@ export class NewProcurementComponent implements OnInit {
   itemName:'',
   coin:'',
   measurement:'',
-  supplierPrice:'',
+  supplierPrice:0,
   supplierAmount:'',
   color:'',
   orderNumber:''
 
   }
   newProcurement = {
-    itemNumber:'',
     supplierNumber:'',
     supplierName:'',
     outDate:this.formatDate(new Date()),
@@ -52,7 +52,7 @@ export class NewProcurementComponent implements OnInit {
     item:[],
     comaxNumber:'',
     orderType:'',
-    itemName:''
+
   }
 
   constructor(private toastr: ToastrService,private procurementService: Procurementservice,private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
@@ -78,10 +78,6 @@ export class NewProcurementComponent implements OnInit {
   
   findMaterialByNumber(){
     
-    this.inventoryService.getMaterialStockItemByNum(this.newProcurement.itemNumber).subscribe(data=>{
-      
-     data;
-     this.newProcurement.itemName = data[0].componentName; 
     debugger;
     this.inventoryService.getMaterialStockItemByNum(this.newItem.itemNumber).subscribe(data=>{
       debugger;
@@ -89,7 +85,7 @@ export class NewProcurementComponent implements OnInit {
       this.newItem.itemName = data[0].componentName; 
       this.newItem.coin = data[0].coin
       this.newItem.measurement = data[0].unitOfMeasure
-      this.newItem.supplierPrice = data[0].price
+      this.newItem.supplierPrice = parseInt(data[0].price)
         if(data[0].frameQuantity || data[0].frameSupplier) {
           alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' +"  "+ data[0].frameSupplier +" "+ 'כמות:'+" "+ data[0].frameQuantity)
         }
@@ -99,7 +95,13 @@ export class NewProcurementComponent implements OnInit {
      }
      
     })
-  });
+
+    this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data=>{
+      debugger;
+     this.itemExistInOrders = data;
+
+    })
+  
     } 
 
   getAllMaterials(){
@@ -135,7 +137,6 @@ export class NewProcurementComponent implements OnInit {
       supplierPrice:this.supplierPrice.nativeElement.value,
     }
 
-
     
     if(this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.measurement.nativeElement.value == "" || this.supplierAmount.nativeElement.value == "" ){
       this.toastr.error('שים לב , לא כל הפרטים מלאים.')
@@ -147,7 +148,7 @@ export class NewProcurementComponent implements OnInit {
       this.newItem.itemNumber="";
       this.newItem.measurement="";
       this.newItem.supplierAmount="";
-      this.newItem.supplierPrice="";
+      this.newItem.supplierPrice=0;
     
       this.toastr.success("פריט התווסף בהצלחה!")
       

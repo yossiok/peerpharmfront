@@ -49,9 +49,12 @@ export class Procurementservice {
   }
 
   getProcurementOrderItemByOrderNumber(orderNumber) {
-    console.log(orderNumber);
-  //  console.log(OrderDate);
     const url = this.baseUrl + 'procurementOrderItemController?orderNumber=' + orderNumber;
+    console.log(url);
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getPurchaseOrderByItem(itemNumber) {
+    const url = this.baseUrl + 'procurementOrderController?itemNumber=' + itemNumber;
     console.log(url);
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }

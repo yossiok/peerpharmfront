@@ -136,7 +136,30 @@
                   <img style="width:40px;" src="../../../../assets/images/add.png" (click)="addItemToProcurement()">
                 </div>
 
-    
+                <div class="row">
+                  <div class="col-md-6">
+                    <table class="table table-bordered">
+                      <thead>
+                        <th>מידה</th>
+                        <th>מחיר</th>
+                        <th>כמות</th>
+                        <th>מספר פריט</th>
+                        <th>שם פריט</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of this.newProcurement.item">
+
+                          <td>{{item.measurement}}</td>
+                          <td>{{item.supplierPrice}}</td>
+                          <td>{{item.supplierAmount}}</td>
+                          <td>{{item.itemNumber}}</td>
+                          <td>{{item.itemName}}</td>
+                        
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                 <!--/row-->
               </div>
 
