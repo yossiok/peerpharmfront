@@ -75,8 +75,7 @@ export class FormdetailsComponent implements OnInit {
   // }
 
   wrapAllChecks(){
-    for (let index = 0; index < this.form.checkTime.length; index++) {
-      debugger
+    for (let index = 0; index < this.form.checkTime.length; index++) { 
       this.allChecks.push({
         checkTime: this.form.checkTime[index],
         checkBox_clean: this.form.checkBox_clean[index],

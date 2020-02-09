@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Procurementservice } from '../../../services/procurement.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -19,7 +20,7 @@ export class ProcurementOrdersComponent implements OnInit {
  
 
   constructor(
-    private procurementservice: Procurementservice, private excelService: ExcelService
+    private procurementservice: Procurementservice, private excelService: ExcelService,private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -30,7 +31,7 @@ export class ProcurementOrdersComponent implements OnInit {
   getAllProcurementOrders() {
     this.procurementservice.getProcurementOrder().subscribe(res => {
       this.procurementData = res;
-      debugger;
+      
       console.log(this.procurementData);
 
     });
@@ -88,9 +89,11 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   exportAsXLSX():void {
-    debugger
+    
     this.excelService.exportAsExcelFile(this.procurementData, 'data');
   }
+
+  
 
 
 }

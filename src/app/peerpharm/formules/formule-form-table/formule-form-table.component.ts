@@ -13,8 +13,7 @@ export class FormuleFormTableComponent implements OnInit {
 
   
 
-  ngOnChanges() {
-    debugger
+  ngOnChanges() { 
     this.phases= this.formulePhases;
      
     // this.doSomething(changes.categoryId.currentValue);

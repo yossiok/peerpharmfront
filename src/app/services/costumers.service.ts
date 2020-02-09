@@ -28,7 +28,7 @@ export class CostumersService {
   }
 
   addorUpdateCostumer(CostumerObj){
-    debugger
+    
     let url = this.baseUrl + "costumers/add";
     return this.http.post(url, JSON.stringify(CostumerObj), this.options).pipe(map(res => res.json()))
   }

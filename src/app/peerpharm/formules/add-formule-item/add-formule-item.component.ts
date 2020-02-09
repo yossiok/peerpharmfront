@@ -43,8 +43,7 @@ export class AddFormuleItemComponent implements OnInit {
     this.adjustFormData();
     
   }
-  adjustFormData(){
-    debugger
+  adjustFormData(){ 
     this.itemsForm.controls.formuleId.setValue(this.phaseInfo.formuleId);
     this.itemsForm.controls.phaseId.setValue(this.phaseInfo._id);
     this.itemsForm.controls.itemNumber.setValue(this.itemInfo.itemNumber);
@@ -52,8 +51,7 @@ export class AddFormuleItemComponent implements OnInit {
     this.itemsForm.controls.itemInstructions.setValue(this.itemInfo.itemInstructions);
   }
 
-  onSubmit() {
-    debugger
+  onSubmit() { 
     if(this.itemsForm.valid){
       const newItemAdded = this.itemsForm.value;
       this.itemAdded.emit(newItemAdded);  
@@ -79,14 +77,12 @@ export class AddFormuleItemComponent implements OnInit {
     this.itemsForm.controls.temp.reset();
   }
 
-  fillTheMaterialNumber(ev) {
-    debugger;
+  fillTheMaterialNumber(ev) { 
     let componentName = ev.target.value;
     let details = this.materials.filter(x =>x.componentName == componentName)
     this.itemsForm.controls.itemNumber.setValue(details[0].componentN)
   }
-  searchMaterialNumber(ev){
-    debugger;
+  searchMaterialNumber(ev){ 
     let materialNumber = ev.target.value;
 
     let details = this.materials.filter(material=> material.componentN == materialNumber)

@@ -61,11 +61,11 @@ export class ChatComponent implements OnInit {
   }
 
   getUserInfo() {
-    debugger
+    
       this.authService.userEventEmitter.subscribe(user => {
       this.user=user.loggedInUser;
     })
-    debugger
+    
     if (!this.authService.loggedInUser) {
       this.authService.userEventEmitter.subscribe(user => {
         if (user.userName) {

@@ -1,41 +1,86 @@
+<div class="searchpanel">
+  Order:<input
+    type="text"
+    style="width:200px;margin-left:15px;"
+    (change)="searchNumber($event)"
+  />
+  From: <input (change)="dateChange()" #fromDateStr type="date" /> To:
+  <input (change)="dateChange()" #toDateStr type="date" /> Supplier
+  number:<input
+    type="text"
+    style="width:100px;margin-left:15px;"
+    (change)="searchNumber($event)"
+  />
+  Supplier name:<input
+    type="text"
+    style="width:100px;margin-left:15px;"
+    (change)="searchNumber($event)"
+  />
+  Item number:<input
+    type="text"
+    style="width:100px;margin-left:15px;"
+    (change)="searchNumber($event)"
+  />
+  Item name:<input
+    type="text"
+    style="width:100px;margin-left:15px;"
+    (change)="searchNumber($event)"
+  />
+</div>
 
-
-<input type="text" style="width:200px;margin-left:15px;" placeholder="Search Order By Number" (change)="searchNumber($event)"/>
-From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
-<img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
-        (click)="exportAsXLSX()">
-        <!-- <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
-          <div class="loader">Loading More Items...</div>
-          <br/> 
-        </div> -->
+<div class="quickactions">
+  <h5>Quick actions</h5>
+  <i
+    title="New order"
+    style="width: 40px;margin-left:20px;"
+    (click)="neworder(content)"
+    class="far fa-sticky-note"
+  ></i>
+  <i
+    class="fa fa-file-excel"
+    aria-hidden="true"
+    alt="export to excel"
+    (click)="exportAsXLSX()"
+  ></i>
+</div>
 
 <table>
-  <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+  <thead
+    style="box-shadow: 1px 1px 2px 0px black;"
+    class="bg-success text-white"
+  >
     <tr>
       <th><b>#</b></th>
-      <th><b>Item Name</b></th>
-      <th><b>Item Name</b></th>
+      <th><b>Order Number</b></th>
+      <th><b>Order Date</b></th>
       <th><b>Supplier Number</b></th>
       <th><b>Supplier Name</b></th>
       <th><b>Order Quantity</b></th>
-      <!-- <th><b>Total Payment With VAT</b></th> -->
-      <th><b>Is Supplied</b></th>
+      <th><b>Total Payment With VAT</b></th>
+      <th><b>Status</b></th>
       <th></th>
     </tr>
   </thead>
   <tbody id="table_body">
-    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of procurementData; let i = index">
+    <tr
+      style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+      *ngFor="let line of procurementData; let i = index"
+    >
       <td>
-        {{i+1}}
+        {{ i + 1 }}
       </td>
       <td>{{ line.itemName }}</td>
       <td>{{ line.itemNumber }}</td>
       <td>{{ line.supplierNumber }}</td>
       <td>{{ line.supplierName }}</td>
       <td>{{ line.supplierAmount }}</td>
-      <!-- <td>{{ line.totalPaymentVat}}</td> -->
-      <td>{{ line.isSupplied}}</td>
-      <td><button style="background:green;box-shadow:inset 0px 1px 5px 0px;">Close Order</button></td>
+      <td>{{ line.totalPaymentVat }}</td>
+      <td>{{ line.isSupplied }}</td>
+      <td>
+        <button style="background:green;box-shadow:inset 0px 1px 5px 0px;">
+          Close Order
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>

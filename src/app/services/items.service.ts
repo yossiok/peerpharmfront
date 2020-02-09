@@ -26,7 +26,7 @@ export class ItemsService {
   }
 
   // getItemDetails(itemNumber): Observable<any> {
-  //   debugger
+  //   
   //   let url = this.baseUrl + "item/itemTreeDetails";
   //   return this.http.post(url, JSON.stringify(itemNumber), this.options).pipe(map(res => res.json()))
   // }
@@ -57,7 +57,7 @@ export class ItemsService {
 
   addorUpdateItem(itemObj) {
     console.log(itemObj);
-    debugger
+    
     let url = this.baseUrl + "item/add";
     return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json))
   }
@@ -71,7 +71,7 @@ export class ItemsService {
     return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json()))
   }
   sendExcel(excel) {
-    debugger
+    
     let url = this.baseUrl + "item/excelToData";
     return this.http.post(url, JSON.stringify(excel), this.options).pipe(map(res => res.json()))
   }

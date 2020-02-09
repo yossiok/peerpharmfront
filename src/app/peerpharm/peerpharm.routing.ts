@@ -46,6 +46,7 @@ import { ActiveusersComponent } from './reports/activeusers/activeusers.componen
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
+import { NewProcurementOrderComponent } from './procurement/new-procurement-order/new-procurement-order.component';
 
 
 export const PeerPharmRputs: Routes =[
@@ -382,8 +383,8 @@ export const PeerPharmRputs: Routes =[
     data : {
       title : 'New Procurement'
     },
-    component: NewProcurementComponent
-  }
+    component: NewProcurementOrderComponent
+  } 
 
 ];
 

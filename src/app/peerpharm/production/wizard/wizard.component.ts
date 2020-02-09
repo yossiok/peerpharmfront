@@ -34,7 +34,7 @@ export class WizardComponent implements OnInit {
   @ViewChild('materialId') materialId: ElementRef;
   
   ngOnInit() {
-    debugger;
+    
     this.scheduleId = this.route.snapshot.queryParamMap.get('schedule');
     this.formuleService.getFormBySchedleId(this.scheduleId).subscribe(form=>{
       if(form!=null){
@@ -51,7 +51,7 @@ export class WizardComponent implements OnInit {
   }
 
   searchMaterial(ev){
-    debugger
+    
     this.inputValue= ev.target.value;
     if(this.inputValue.length==24){
       this.checkMaterial().then(data=>{
@@ -64,7 +64,7 @@ export class WizardComponent implements OnInit {
   }
 
   checkMaterial(){
-    debugger;
+    
     this.wrongItem= null;
     const that= this;
     return new Promise(async function (resolve, reject) {
@@ -131,7 +131,7 @@ export class WizardComponent implements OnInit {
 
   nextMaterial(){
     // this.materialId.nativeElement.value=null;
-    debugger
+    
     var nextItemIndex= 0;
     var nextPhaseIndex= 0;
     var continuePhase= false;
@@ -156,7 +156,7 @@ export class WizardComponent implements OnInit {
           phase.status='done';
           // set to next phase
           alert('Phase '+ this.currPhase.phaseNumber+' is done!');
-          debugger
+          
           this.currPhase=this.formuleFrom.phases[i+1];
           if(this.currPhase!= undefined && this.currPhase!= null){
             if(this.formuleFrom.phases[i+1].items.length >0){

@@ -62,7 +62,7 @@ export class OrdersComponent implements OnInit {
 
   checkfunc(){ 
     this.ordersService.refreshOrders.subscribe(order=>{
-      debugger;
+    
       this.orders.push(order)
     })
   }
@@ -141,7 +141,7 @@ export class OrdersComponent implements OnInit {
 
   edit(id) {
     this.EditRowId = id;
-    debugger
+ 
     if (id != '') {
       let i = this.orders.findIndex(elemnt => elemnt._id == id);
       if (this.orders[i].onHoldDate != null && this.orders[i].onHoldDate != "" && this.orders[i].onHoldDate != undefined) {
@@ -152,7 +152,7 @@ export class OrdersComponent implements OnInit {
 
 
   saveEdit(closedOrder, orderId) {
-    debugger;
+ 
     // a - is if the request is to set order - ready
     if (!closedOrder) {
       let orderToUpdate = {
@@ -166,7 +166,7 @@ export class OrdersComponent implements OnInit {
         stage: this.stage.nativeElement.value
         
       }
-      debugger
+  
 
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
         if (res != "order missing") {
@@ -202,7 +202,7 @@ export class OrdersComponent implements OnInit {
               orderToUpdate['status'] = "";
               orderToUpdate['stage'] = "done";
               // this.orders[i] = orderToUpdate;
-              debugger
+           
               this.orders.splice(i, 1);
               console.log('this.orders after', this.orders)
 
@@ -225,7 +225,7 @@ export class OrdersComponent implements OnInit {
 
 
   deleteOrder(order) {
-    debugger
+  
     if (confirm("Delete Order?")) {
       this.ordersService.deleteOrder(order).subscribe(res => {
         //  let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
@@ -249,7 +249,7 @@ export class OrdersComponent implements OnInit {
 
       let urlPrefixIndex = window.location.href.indexOf("#");
       let urlPrefix = window.location.href.substring(0, urlPrefixIndex)
-      debugger
+  
       window.open(urlPrefix + "#/peerpharm/allorders/orderitems/" + tempArrStr);
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
     } else {
@@ -267,7 +267,7 @@ export class OrdersComponent implements OnInit {
   }
 
   changeText(ev) {
-    debugger;
+ 
     let word = ev.target.value;
     let wordsArr = word.split(" ");
     wordsArr = wordsArr.filter(x => x != "");
@@ -291,16 +291,14 @@ export class OrdersComponent implements OnInit {
     }
   }
   
-  filterOrdersByArea(ev){
-    debugger
+  filterOrdersByArea(ev){ 
   let orderArea = ev.target.value
   this.ordersService.getOrdersByArea(orderArea).subscribe(data=>{
   this.orders = data;
   })
 
   }
-  searchByType(ev) {
-    debugger
+  searchByType(ev) { 
     let word = ev.target.value;
     if (word != "") {
       if (word == "cosmetic") {
@@ -374,14 +372,14 @@ export class OrdersComponent implements OnInit {
       } else if (order.stage == "done") {
         stageDoneArr.push(order);
       } else {
-        debugger
+     
       }
 
       if (key + 1 == this.orders.length) {
-        debugger
+   
       }
       if ((stageNewArr.length + stagePartialCmptArr.length + stageAllCmptArr.length + stageProductionArr.length + stageProdFinishArr.length + stageDoneArr.length) == this.orders.length) {
-        debugger
+      
         if (this.stageSortDir == "new") {
           stageDoneArr.map(order => tempArr.push(order))
           stageProdFinishArr.map(order => tempArr.push(order))

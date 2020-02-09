@@ -67,8 +67,7 @@ export class BatchesComponent implements OnInit {
     this.startInterval();
   }
 
-  addBatch() { 
-    debugger;
+  addBatch() {  
     this.batchService.addBatch(this.batch).subscribe(data=>{
       this.batches.push(data)
       this.batchesCopy.push(data)
@@ -94,11 +93,10 @@ export class BatchesComponent implements OnInit {
 
   }
  
-  edit(id) {
-    debugger
+  edit(id) { 
     if(this.alowUserEditBatches == true) {
     this.EditRowId = id;
-    debugger
+   
     if (id != '') {
       this.currentDoc = this.batches.filter(i => {
         if (i._id == id) {
@@ -123,8 +121,7 @@ export class BatchesComponent implements OnInit {
   getAllBatches() {
 
     this.batchService.getAllBatches().subscribe((res) => {
-      console.log(res);
-      debugger;
+      console.log(res); 
       this.batches = res;
       this.batchesCopy = res;
       this.batches.map(batch => {
@@ -148,8 +145,7 @@ export class BatchesComponent implements OnInit {
         var lastBatchYear;
         var lastBatchNum;
         var year;
-        var number;
-        debugger
+        var number; 
         if (this.lastBatchToExport.includes("pp")) {
           lastBatchYear = this.lastBatchToExport.split("pp")[0];
           lastBatchNum = this.lastBatchToExport.split("pp")[1];
@@ -216,8 +212,7 @@ export class BatchesComponent implements OnInit {
 
           if (!tempArr.includes(b) && check) tempArr.push(b);
         });
-        this.batches = tempArr;
-        debugger
+        this.batches = tempArr; 
       } else {
         this.batches = this.batchesCopy.slice();
       }
@@ -232,8 +227,7 @@ export class BatchesComponent implements OnInit {
             tempArr.push(b);
           }
         });
-        this.batches = tempArr;
-        debugger
+        this.batches = tempArr; 
       } else {
         this.batches = this.batchesCopy.slice();
       }
@@ -249,10 +243,7 @@ export class BatchesComponent implements OnInit {
     }
   }
 
-  saveEdit(currdoc) {
-    debugger
-    
-
+  saveEdit(currdoc) { 
     if (this.batchNumber.nativeElement.value && this.batchItemName.nativeElement.value != "") {
 
       this.currentDoc.batchNumber = this.batchNumber.nativeElement.value.trim();
@@ -293,8 +284,7 @@ export class BatchesComponent implements OnInit {
     });
   }
 
-  async getUserInfo() {
-    debugger
+  async getUserInfo() { 
     await this.authService.userEventEmitter.subscribe(user => {
       this.user=user;
       // this.user=user.loggedInUser;
@@ -309,8 +299,7 @@ export class BatchesComponent implements OnInit {
       // else {
       //   this.user = this.authService.loggedInUser;
       // }
-      if (this.user.authorization){
-        debugger
+      if (this.user.authorization){ 
         if (this.authService.loggedInUser.authorization.includes("editBatches")){
           this.alowUserEditBatches=true;
         }

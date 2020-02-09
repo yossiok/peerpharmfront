@@ -90,7 +90,7 @@ export class AllFormulesComponent implements OnInit {
 
   addNewItem() {
 
-    debugger;
+   
 
     this.updateFormule;
     this.addItem.currentPhase = JSON.stringify(this.updateFormule.currentPhase)
@@ -98,7 +98,7 @@ export class AllFormulesComponent implements OnInit {
     var phase = this.updateFormule.phases.filter(phase=>phase.phaseNumber == this.addItem.currentPhase)
     this.addItem.phaseId = phase[0]._id
     this.formuleService.addItem(this.addItem).subscribe(data=>{
-      debugger;
+     
       if(data) {
        var allPhases = data.phases;
        var phase = allPhases.filter(phase => phase._id == this.updateItems.phaseId)
@@ -109,10 +109,10 @@ export class AllFormulesComponent implements OnInit {
   }
 
   addNewPhase() { 
-    debugger;
+   
     this.formuleService.addPhase(this.addPhase).subscribe(data=>{
      
-      debugger;
+     
       if(data) { 
         this.updateFormule.phases = data.phases;
         this.toastSrv.success("Phase added successfully")
@@ -123,17 +123,17 @@ export class AllFormulesComponent implements OnInit {
 
   getAllFormules() { 
     this.formuleService.getAllFormules().subscribe(data=>{
-      debugger;
+     
       this.allFormules = data;
       this.allFormulesCopy = data;
     })
   }
 
   edit(id) {
-    debugger
+   
     // if(this.alowUserEditBatches == true) {
     this.EditRowId = id;
-    debugger
+   
     if (id != '') {
       this.currentDoc = this.allFormules.filter(i => {
         if (i._id == id) {
@@ -147,7 +147,7 @@ export class AllFormulesComponent implements OnInit {
 }
 
 editPhases(id) {
-  debugger
+ 
   
   this.EditRowId = id;
   
@@ -172,7 +172,7 @@ editPhases(id) {
 }
 
 editItems(itemNumber,index,phaseId) { 
-  debugger;
+ 
   this.updateItems
   this.EditRowId = itemNumber
 
@@ -210,7 +210,7 @@ editItems(itemNumber,index,phaseId) {
 }
 
 saveEdit(currdoc) {
-  debugger
+ 
 
 
   if (this.formuleName.nativeElement.value != "") {
@@ -235,7 +235,7 @@ saveEdit(currdoc) {
 }
 
 savePhaseEdit(currDoc) { 
-  debugger;
+ 
 
 
   if(this.phaseToUpdate.phaseName != "") {
@@ -257,7 +257,7 @@ savePhaseEdit(currDoc) {
 }
 
 saveItemEdit(currDoc,index) { 
-  debugger;
+ 
   this.currentDoc;
 
   if(this.itemToUpdate.itemNumber != "") {
@@ -280,9 +280,9 @@ saveItemEdit(currDoc,index) {
 }
 
 updatePhase() { 
-  debugger;
+ 
   this.formuleService.updateFormulePhaseId(this.currentDoc).subscribe(data=>{
-    debugger;
+   
     data;
     this.EditRowId = '';
     this.toastSrv.success("Details were successfully saved");
@@ -295,7 +295,7 @@ updatePhase() {
 
 updatePhaseItems(index) { 
   this.formuleService.updateFormulePhaseItems(this.currentDoc[index]).subscribe(data=>{
-    debugger;
+   
     data;
     this.EditRowId = '';
     this.toastSrv.success("Details were successfully saved");
@@ -305,9 +305,9 @@ updatePhaseItems(index) {
 
 
 updateDocument(){
- debugger
+
   this.formuleService.updateFormulesForm(this.currentDoc).subscribe(data =>{
-    debugger;
+   
     this.allFormules.map(doc=>{
       if(doc._id == this.currentDoc._id){
         doc=data;
@@ -326,9 +326,9 @@ updateDocument(){
 
 
 open(formuleData,formuleNum) {
-  debugger;
+ 
   this.updateFormule = [];
-  debugger;
+ 
   this.modalService.open(formuleData, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
   }, (reason) => {
@@ -338,22 +338,22 @@ open(formuleData,formuleNum) {
 }
 
 loadData(formuleNum) { 
-  debugger;
+ 
   var formuleToUpdate = [];
  formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
  this.updateFormule = formuleToUpdate
 }
 
 deleteFormule(id) {
-  debugger;
+ 
   this.formuleService.deleteFormuleById({id}).subscribe(data =>{
-    debugger;
+   
     data;
     this.getAllFormules();
   })
 }
 deletePhase(phaseId) {
-  debugger;
+ 
   var formuleId = this.updateFormule._id
 
   var phaseToDelete = {
@@ -361,14 +361,14 @@ deletePhase(phaseId) {
     formuleId:formuleId
   }
   this.formuleService.deletePhaseById(phaseToDelete).subscribe(data =>{
-    debugger;
+   
     this.updateFormule.phases = data.phases;
  
   })
 }
 
 deleteItem(itemNumber,index,phaseId) {
-  debugger;
+ 
   var formuleId = this.updateFormule._id
   var itemToDelete = {
     index:index,
@@ -377,12 +377,12 @@ deleteItem(itemNumber,index,phaseId) {
     formuleId:formuleId
   }
   this.formuleService.deleteItemById(itemToDelete).subscribe(data =>{
-    debugger;
+   
 
    var phase = data.phases.filter(phase=> phase._id == phaseId)
    
     this.updateItems = phase[0].items
-    debugger;
+   
 
  
   })
@@ -391,7 +391,7 @@ deleteItem(itemNumber,index,phaseId) {
 
 
 openItem(itemData,phaseNumber) {
-  debugger;
+ 
   
   this.modalService.open(itemData, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
@@ -401,8 +401,7 @@ openItem(itemData,phaseNumber) {
   this.loadItemData(phaseNumber)
 }
 
-loadItemData(phaseNumber) { 
-debugger;
+loadItemData(phaseNumber) {  
 
 let details = this.updateFormule.phases.find(phase=>phase.phaseNumber == phaseNumber)
 this.updateItems = details.items;
@@ -413,7 +412,7 @@ this.updateFormule.currentPhase = phaseNumber
 
 
 private getDismissReason(reason: any): string {
- debugger;
+
     if (reason === ModalDismissReasons.BACKDROP_CLICK) {
     return 'by clicking on a backdrop';
   } else {
@@ -422,11 +421,11 @@ private getDismissReason(reason: any): string {
 }
 
 copyFormule(currDoc,index) { 
-  debugger;
+ 
   var formuleToCopy = this.allFormules[index]
 
   this.formuleService.copyFormule(formuleToCopy).subscribe(data=>{
-    debugger;
+   
     data;
   this.allFormules.push(data);
   })
@@ -436,13 +435,13 @@ copyFormule(currDoc,index) {
 
 
 fillTheMaterialNumber(ev) {
-  debugger;
+ 
   let componentName = ev.target.value;
   let details = this.materials.filter(x =>x.componentName == componentName)
   this.addItem.itemNumber = details[0].componentN
 }
 searchMaterialNumber(ev){
-  debugger;
+ 
   let materialNumber = ev.target.value;
 
   let details = this.materials.filter(material=> material.componentN == materialNumber)

@@ -19,20 +19,20 @@ export class MakeupService {
  // powder section //
 
   addNewPowderReport(powders):Observable<any> {
-    debugger;
+    
     let url = this.baseUrl + "makeup/addpowder";
 
     return this.http.post(url, JSON.stringify(powders), this.options).pipe(map(res => res.json()))
   }
 
   getPowderByItem(itemNumber):Observable<any>{
-    debugger
+    
     let url = this.baseUrl + "makeup/byitem?itemNumber="+itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   getAllPowders():Observable<any>{
-    debugger
+    
     let url = this.baseUrl + "makeup/allpowders";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -41,14 +41,14 @@ export class MakeupService {
  // Wet Items Section //
 
  addWetItemReport(wetItems):Observable<any> {
-  debugger;
+  
   let url = this.baseUrl + "makeup/addwet";
 
   return this.http.post(url, JSON.stringify(wetItems), this.options).pipe(map(res => res.json()))
 }
 
 getAllmakeUp():Observable<any>{
-  debugger
+  
   let url = this.baseUrl + "makeup/allmakeup";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
@@ -56,14 +56,14 @@ getAllmakeUp():Observable<any>{
 // lipstick item section // 
 
 addLipstickItem(lipstickItem):Observable<any> {
-  debugger;
+  
   let url = this.baseUrl + "makeup/addlipstick";
 
   return this.http.post(url, JSON.stringify(lipstickItem), this.options).pipe(map(res => res.json()))
 }
 
 getAllLipsticks():Observable<any>{
-  debugger
+  
   let url = this.baseUrl + "makeup/alllipsticks";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }

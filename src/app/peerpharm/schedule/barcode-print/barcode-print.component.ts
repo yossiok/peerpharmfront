@@ -128,7 +128,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   dateChange(){
-    debugger
+    
     if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
 
       this.scheduleService.getAllSchedulePrintByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
@@ -142,7 +142,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   getAllSchedule() {
-    debugger;
+    
     this.scheduleService.getSchedule().subscribe(res => {
       this.scheduleData = res;
       this.scheduleDataCopy = res;
@@ -151,7 +151,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   onSubmit(): void {
-    debugger;
+    
     const newSchedule = this.printBarcodeForm.value;
   }
 
@@ -162,7 +162,7 @@ export class BarcodePrintComponent implements OnInit {
 
   // Modal Functions
   openPrintBarkod(content, line) {
-    debugger;
+    
     this.schedLine = line;
     this.amountOfStickersArr = [];
     this.GetItemAllData()
@@ -215,7 +215,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   GetItemAllData(): Promise<any> {
-    debugger;
+    
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.itemsService.getItemData(this.schedLine.item).subscribe(data => {
@@ -228,7 +228,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   GetBatchAllData(): Promise<any> {
-    debugger;
+    
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.batchesService
@@ -246,7 +246,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   initPrintScheduleForm() {
-    debugger;
+    
     this.pcsCarton = this.itemData[0].PcsCarton.replace(/\D/g, "") + " Pcs";
     this.barcodeK = this.itemData[0].barcodeK;
     this.volumeK = this.itemData[0].volumeKey + ' ml';
@@ -362,7 +362,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printSubmit() {
-    debugger;
+    
     if(this.printBarcodeForm.value.other!=""){
       this.other= this.printBarcodeForm.value.other;
     }
@@ -395,7 +395,7 @@ export class BarcodePrintComponent implements OnInit {
       this.item = this.printBarcodeForm.value.item
     }
   
-    debugger;
+    
     this.amountOfStickersArr = [];
     this.printBarcodeId = null;
     this.showCustomerFlag = true;
@@ -428,12 +428,12 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   printBarcode() {
-    debugger
+    
     document.getElementById("print-section").setAttribute('style', 'margin: 0px ; padding: 0px');
 
     const prtContent = document.getElementById("print-section").innerHTML;
     const barcodeObj = { allBarcode: prtContent };
-    debugger
+    
     this.barcodePrintService.addBarcodePrint(barcodeObj).subscribe(data => {
       console.log(data);
       this.printBarcodeId = data.id;

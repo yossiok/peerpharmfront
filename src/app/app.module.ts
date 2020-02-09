@@ -42,6 +42,7 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { ContentComponent } from './peerpharm/taskboard/core/content/content.component';
 import { MatSnackBar } from '@angular/material';
+
 import { OVERLAY_PROVIDERS } from '../../node_modules/@angular/cdk/overlay';
 import { ScheduleCardComponent } from './peerpharm/production/production/schedule-card/schedule-card.component';
 import { MyiframeComponent } from './myiframe/myiframe.component';
@@ -108,7 +109,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NgxBarcodeModule.forRoot()
   ],
   providers: [
-    MatSnackBar,
+    MatSnackBar, 
     OVERLAY_PROVIDERS,
    // AmplifyService,
    OVERLAY_PROVIDERS,

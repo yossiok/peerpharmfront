@@ -54,7 +54,7 @@ export class PlateComponent implements OnInit {
     console.log(this.plates.find(res => res == plate));
     this.showPlateData = this.plates.find(res => res == plate);
     //formating the date 
-    debugger
+    
     this.showPlateData.lastUpdate= moment(this.showPlateData.lastUpdate).format("DD-MM-YYYY");
     // console.log("this.showPlateData:"+this.showPlateData);
     this.plate= this.showPlateData;
@@ -62,11 +62,11 @@ export class PlateComponent implements OnInit {
 
   async updatePallet(src) {
     this.plate.lastUpdate=this.today;
-    debugger
+    
     console.log(this.plate);
     if(src=="new") {
       this.plateService.addNewPlate(this.plate).subscribe(res=>{
-      debugger
+      
       if(res.existPlate){
         this.toastSrv.error("Plate Numer: "+this.plate.palletNumber+" already exsit in system!");
       }else{

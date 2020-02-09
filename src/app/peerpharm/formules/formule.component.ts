@@ -42,18 +42,18 @@ export class FormuleComponent implements AfterViewInit {
 
   ngOnInit() {
     this.routerService.params.subscribe(data => {
-      debugger;
+ 
       if (data.id) {
-        debugger;
+   
         //edit mode
         //get Formule Phases By Id....
         this.formuleService.getFormuleDataById(data.id).subscribe(formuleData => {
-          debugger
+         
           //this.formule= formuledata 
           this.LoadingFormule(formuleData);
           this.newFormuleBasic = formuleData;
           // this.formuleService.getPhasesByFormuleId(data.id).subscribe(phases => {
-          //   debugger;
+          //  ;
           //   this.phases= phases
           // })
         })
@@ -62,12 +62,12 @@ export class FormuleComponent implements AfterViewInit {
 
   }
   onNewFormuleAdded(newFormuleCreated) {
-    debugger;
+   ;
     this.onFirstPhaseCreated(newFormuleCreated);
   }
 
   LoadingFormule(newFormule) {
-    debugger;
+   ;
     if (newFormule != null) {
       this.newFormuleBasic = newFormule;
       this.newPhase = true;
@@ -97,7 +97,7 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   onFirstPhaseCreated(newFormuleCreated) {
-    debugger;
+   ;
     this.newFormuleBasic = newFormuleCreated;
     const newPhase = new FormulePhase();
     newPhase.phaseNumber = this.allPhasesForm.length + 1;
@@ -111,7 +111,7 @@ export class FormuleComponent implements AfterViewInit {
     newPhase.formuleName = this.newFormuleBasic.name;
    
     this.formuleService.addNewPhaseToFormule(newPhase).subscribe(phase => {
-      debugger;
+     ;
       this.disableAddPhase = false;
       this.phase = phase;
       this.newPhase = true;
@@ -122,7 +122,7 @@ export class FormuleComponent implements AfterViewInit {
 
 
   onPhaseAdded(phaseToSave) {
-    debugger;
+   ;
     // check if exist in formule
     let exist = false;
     this.allPhasesForm.forEach(p => {
@@ -133,7 +133,7 @@ export class FormuleComponent implements AfterViewInit {
 
     
     if (!exist) {
-      debugger;
+     ;
       // ADD PHASE !
       //remove _id so mongo wont crash
       //this is the old phase id
@@ -186,7 +186,7 @@ export class FormuleComponent implements AfterViewInit {
   }
 
   onItemAdded(item) {
-    debugger;
+   ;
     item.phaseId;
     this.phase._id;
     let existinfPhase = this.allPhasesForm.filter(p => {
@@ -228,8 +228,8 @@ export class FormuleComponent implements AfterViewInit {
 
 
   onFinish() {
-    debugger;
-    debugger
+   ;
+   
     var formuleToSave = new Formule();
     formuleToSave = {
       _id: this.newFormuleBasic.id,

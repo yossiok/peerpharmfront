@@ -70,7 +70,7 @@ export class ProductionScheduleComponent implements OnInit {
         if(formuleAssemblyForm != null ){
           let urlPrefixIndex=window.location.href.indexOf("#");
           let urlPrefix=window.location.href.substring(0,urlPrefixIndex)
-          debugger
+          
           window.open(urlPrefix+"#/peerpharm/production/wizard?schedule="+formuleAssemblyForm.productionScheduleId);
           // send to wizard with formuleAssemblyForm
         }

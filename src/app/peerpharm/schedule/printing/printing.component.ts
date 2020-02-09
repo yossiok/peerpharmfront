@@ -191,7 +191,7 @@ import { ItemsService } from 'src/app/services/items.service';
             this.toastSrv.success("Changes Saved to item ", res.itemN);
             this.scheduleData.filter((sch,key)=>{
               if(sch._id == res._id){
-                debugger
+                
                 // sch=res; //NOT WORKING WELL - we turned to quick fix
                   sch.cmptN= scheduleToUpdate.cmptN;
                   sch.cmptName= scheduleToUpdate.cmptName;
@@ -307,7 +307,7 @@ import { ItemsService } from 'src/app/services/items.service';
       if(doc[0].imgMain3!="" && doc[0].imgMain3!=undefined && doc[0].imgMain3!=null && doc[0].imgMain3!="null"){
         this.currModalImgArr.push(doc[0].imgMain3); 
       }
-      debugger
+      
       if(this.currModalImgArr.length>0){
         this.openImgModal = true;
       }else{

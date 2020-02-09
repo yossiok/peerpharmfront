@@ -25,7 +25,7 @@ export class OrdersService {
   refreshOrders:EventEmitter<any> = new EventEmitter();
 
   constructor(private http: Http) {
-    debugger;
+    
    }
 
   getOrders(): Observable<any> {
@@ -88,7 +88,7 @@ export class OrdersService {
     );
   }
   getOrderAmounts(): Observable<any> {
-    debugger
+    
     let url = this.baseUrl + 'orderitem/getamounts' ;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
@@ -108,7 +108,7 @@ export class OrdersService {
     )
   }
   getOrderByType(): Observable<any> {
-    debugger
+    
     let url = this.baseUrl + 'order/type';
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
@@ -145,7 +145,7 @@ export class OrdersService {
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
   editFormuleCheck(formuleStatus,id): Observable<any> {
-    debugger
+    
     let url = this.baseUrl + "orderitem/updateCheckFormule";
     return this.http.post(url, JSON.stringify({formuleStatus:formuleStatus,id:id}), this.options).pipe(map(res => res.json()))
   }
@@ -158,7 +158,7 @@ export class OrdersService {
   }
 
   addNewProductDoc(productDoc): Observable<any> {
-    debugger;
+    
     let url = this.baseUrl + "order/productDocg";
     return this.http.post(url, JSON.stringify(productDoc), this.options).pipe(map(res => res.json()))
   }
@@ -172,7 +172,7 @@ export class OrdersService {
   //get list of sum of all components needed to the order
   getComponentsSum(orderNumber) {
     let url = this.baseUrl + "itemsDemand?orderNumber=" + orderNumber;
-    debugger
+    
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

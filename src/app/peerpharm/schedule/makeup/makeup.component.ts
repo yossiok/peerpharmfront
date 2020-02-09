@@ -57,7 +57,7 @@ export class MakeupComponent implements OnInit {
   }
 
   getAllOrdersByType() {
-    debugger
+    
     this.ordersService.getOrderByType()
       .subscribe(orders => {
         orders.map(order => {
@@ -128,7 +128,7 @@ export class MakeupComponent implements OnInit {
 getAllmakeUps() { 
   
   this.makeupService.getAllmakeUp().subscribe(data =>{
-    debugger;
+    
     this.allMakeUps = data;
   })
 }

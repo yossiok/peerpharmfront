@@ -1,0 +1,97 @@
+
+<h2 mat-dialog-title>{{description}}</h2>
+
+
+
+<mat-dialog-content [formGroup]="form">
+
+  <label class="control-label">פריט</label>
+  <mat-form-field style="width:100%">
+    <input
+      type="text"  
+      matInput  
+      [formControl]="myControl"
+      [matAutocomplete]="auto"
+    />
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete"  (optionSelected)='changefiled($event.option.value)' style="width:100%">
+  <mat-option
+  *ngFor="let material of filteredValues"
+  [value]="material.componentN"
+  >
+  <option value="{{ material.componentNameFormat }}">{{
+    material.componentNameFormat
+  }}</option>
+  </mat-option>
+  </mat-autocomplete>
+  <br/>
+
+    <mat-form-field>
+
+        <input matInput
+                placeholder="כמות"
+               formControlName="amount">
+
+    </mat-form-field>
+    <mat-form-field>
+
+      <input matInput
+              placeholder="מחיר"
+             formControlName="price">
+
+  </mat-form-field>
+  <br/>
+  <mat-form-field>
+
+    <input matInput
+            placeholder="סכום"
+           formControlName="sum">
+
+</mat-form-field>
+<br/>
+<mat-form-field>
+
+  <input matInput
+  readonly
+          placeholder="מס פריט"
+         formControlName="compnentN">
+
+</mat-form-field>
+<mat-form-field>
+
+  <input matInput
+  readonly
+          placeholder="שם פריט"
+         formControlName="componentName">
+
+</mat-form-field>
+
+<br/>
+<mat-form-field>
+
+  <textarea matInput
+          placeholder="הערה"
+         formControlName="comment">
+         </textarea>
+
+</mat-form-field>
+
+
+   
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+    <button mat-button  class="mat-raised-button"
+            (click)="close()">
+        Close
+    </button>
+
+    <button mat-button class="mat-raised-button mat-primary"
+            (click)="save()">
+        Save
+    </button>
+
+</mat-dialog-actions>
+

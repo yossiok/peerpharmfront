@@ -55,7 +55,7 @@ export class AllordersComponent implements OnInit {
     this.chat.joinroom("orders");
     this.chat.messages.subscribe(data => {
       console.log(data);
-      debugger;
+ 
       if (data.msg == "order_refresh" && data.to == "allusers") {
      this.getAllOrders();
       } 
@@ -89,7 +89,7 @@ export class AllordersComponent implements OnInit {
 
 
   saveEdit(a, orderId) {
-    debugger
+   
     let orderToUpdate = {};
     // a - is if the request is to set order - ready
     if (!a) {
@@ -189,7 +189,7 @@ export class AllordersComponent implements OnInit {
 
       let urlPrefixIndex = window.location.href.indexOf("#");
       let urlPrefix = window.location.href.substring(0, urlPrefixIndex)
-      debugger
+    
       window.open(urlPrefix + "#/peerpharm/allorders/orderitems/" + tempArrStr);
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
     } else {

@@ -71,9 +71,9 @@ export class NewProcurementComponent implements OnInit {
   }
 
   findMaterialByNumber(){
-    debugger;
+    
     this.inventoryService.getMaterialStockItemByNum(this.newProcurement.itemNumber).subscribe(data=>{
-      debugger;
+      
      data;
      this.newProcurement.itemName = data[0].componentName; 
     })
@@ -86,7 +86,7 @@ export class NewProcurementComponent implements OnInit {
   }
 
   findSupplierByNumber(ev) {
-    debugger;
+    
     let supplier = ev.target.value;
     let result =  this.allSuppliers.filter(x => supplier == x.suplierName)
     
@@ -95,7 +95,7 @@ export class NewProcurementComponent implements OnInit {
   }
 
   sendNewProc() { 
-    debugger;
+    
    this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
      data;
    })

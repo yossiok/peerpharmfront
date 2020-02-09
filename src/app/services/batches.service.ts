@@ -17,7 +17,7 @@ export class BatchesService {
   constructor(private http:Http) { }
 
   addBatch(newBatch) {
-    debugger
+    
     let url = this.baseUrl + "batch/add";
     return this.http.post(url, JSON.stringify(newBatch), this.options).pipe(map(res => res.json()))
   }
@@ -59,7 +59,7 @@ export class BatchesService {
 
 
   updateBatchesForm(formToUpdate){
-    debugger;
+    
     let url = this.baseUrl + "batch/";
     return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
   }

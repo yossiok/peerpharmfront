@@ -47,7 +47,7 @@ export class ItemreportsComponent implements OnInit {
   }
 
   getAllitemShellMovemvents() { 
-    debugger;
+    
     this.inventoryService.getAllMovements().subscribe(data =>{
       this.itemShellMovements = data;
       this.itemShellMovementsCopy = data;
@@ -75,7 +75,7 @@ export class ItemreportsComponent implements OnInit {
   }
 
   changeText(ev, filterBy) {
-    debugger
+    
    if (filterBy == 'itemNumber') {
       let itemNumb = ev.target.value;
       if (itemNumb != '') {
@@ -90,14 +90,14 @@ export class ItemreportsComponent implements OnInit {
         
         this.itemsShell = tempArr;
         this.hasMoreItemsToload = false;
-        debugger
+        
       } else {
         this.itemsShell = this.itemsShellCopy.slice();
       }
     }
 
     if (filterBy == 'itemMovementNumber') {
-      debugger
+      
       let itemNumb = ev.target.value;
       if (itemNumb != '') {
         let tempMoveArr = [];
@@ -111,7 +111,7 @@ export class ItemreportsComponent implements OnInit {
         
         this.itemShellMovements = tempMoveArr;
         this.hasMoreItemsToload = false;
-        debugger
+        
       } else {
         this.itemShellMovements = this.itemShellMovementsCopy.slice();
       }
@@ -120,7 +120,7 @@ export class ItemreportsComponent implements OnInit {
   }
 
   dateChange(){
-    debugger;
+    
     if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
 
       this.inventoryService.getItemShellsByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
@@ -139,7 +139,7 @@ export class ItemreportsComponent implements OnInit {
   }
 
   dateChangeMovements(){
-    debugger;
+    
     if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "" ) {
 
       this.inventoryService.getItemShellsMovementsByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data=>{
@@ -159,12 +159,12 @@ export class ItemreportsComponent implements OnInit {
   }
 
   exportAsXLSX():void {
-    debugger
+    
     this.excelService.exportAsExcelFile(this.itemsShell, 'data');
   }
 
   exportAsXLSXmovements():void {
-    debugger
+    
     this.excelService.exportAsExcelFile(this.itemShellMovements, 'data');
   }
 

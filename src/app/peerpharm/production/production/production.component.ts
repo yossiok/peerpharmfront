@@ -30,7 +30,7 @@ export class ProductionComponent implements OnInit {
 
   getAllSchedule(){
     this.scheduleService.getScheduleByDate(this.today).subscribe(res => {
-     debugger
+     
       res.map(sced=>
       {
 
@@ -66,7 +66,7 @@ export class ProductionComponent implements OnInit {
   }
 
   deleteSchedule($event) {
-    debugger;
+    
     console.log($event.dragData);
     this.scheduleService.deleteSchedule($event.dragData._id).subscribe(res => {
       this.scheduleData = this.scheduleData.filter(elem => elem._id != $event.dragData._id);

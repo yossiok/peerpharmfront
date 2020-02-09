@@ -49,7 +49,7 @@ export class InventoryService {
   }
   getAllMaterials():Observable<any>{
     
-    let url = this.baseUrl + "material";
+    let url = this.baseUrl + "material/getAllMaterials";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getAllMaterialsForFormules():Observable<any>{
@@ -105,7 +105,7 @@ export class InventoryService {
 }
 
 addNewMaterial(materialObj):Observable<any>{ 
-  debugger
+  
   let url = this.baseUrl + "material/add";
   return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
 }
@@ -116,7 +116,7 @@ addNewMaterial(materialObj):Observable<any>{
   }
   //get item amounts in Shelfs 
   getAmountOnShelfs(itemNubmer):Observable<any>{  
-    debugger
+    
     let url = this.baseUrl + "itemShell?shelfsItemsAmounts=yes&itemNumber="+itemNubmer;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -172,7 +172,7 @@ addNewMaterial(materialObj):Observable<any>{
   }
 
   updateMaterial(objToUpdate){
-    debugger;
+    
     let url = this.baseUrl + "material/update";
     return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
   }
@@ -261,7 +261,7 @@ getOldProcurementAmount():Observable<any>{
 /* SUPPLIERS */
 
 getAllSuppliers():Observable<any>{
-  debugger
+  
   let url = this.baseUrl + "supplier/getsuppliers"
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
@@ -286,7 +286,7 @@ getMaterialStockItemByNum(internalNumber):Observable<any>{
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 getMaterialStockItemById(id):Observable<any>{
-  debugger
+  
   let url = this.baseUrl + "material?materialId="+id ;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }

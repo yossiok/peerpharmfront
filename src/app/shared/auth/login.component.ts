@@ -28,10 +28,10 @@ export class LoginComponent implements OnInit {
     this.auth.login(loginfrm).subscribe((resp) => {
       if(resp)
       {
-        debugger;
+        
         if(this.redirectUrl&&this.redirectUrl!="")
         {
-          debugger
+          
           this.router.navigate([this.redirectUrl]);
         }
         else

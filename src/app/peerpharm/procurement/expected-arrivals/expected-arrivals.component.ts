@@ -386,7 +386,7 @@ resetDate(form){
     if(id!='') {
       this.changedLine=  this.itemExpectedArrivals.filter(i=>i._id==id)[0];
       this.lineToUpdate=  this.itemExpectedArrivals.filter(i=>i._id==id);
-      debugger
+      
 
       this.dateStr;
       if(this.changedLine.expectedDate != null && this.changedLine.expectedDate != undefined ){

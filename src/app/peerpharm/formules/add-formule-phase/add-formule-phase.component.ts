@@ -44,7 +44,7 @@ export class AddFormulePhaseComponent implements OnInit {
   }
 
   adjustFormData() {
-    debugger;
+    
     if (this.formuleBase.id) this.phaseForm.controls.formuleId.setValue(this.formuleBase.id);
     if (this.formuleBase._id) this.phaseForm.controls.formuleId.setValue(this.formuleBase._id)
     this.phaseForm.controls.formuleNumber.setValue(this.formuleBase.number);
@@ -70,7 +70,7 @@ export class AddFormulePhaseComponent implements OnInit {
      
       this.phaseForm.value.items=[];
       this.formuleService.updateFormulePhase(this.phaseForm.value).subscribe(newPhase => {
-        debugger;
+        
         if(newPhase.msg=="cant update- not same number")
         {
          // this.phaseValidation(); 
@@ -96,7 +96,7 @@ export class AddFormulePhaseComponent implements OnInit {
         this.formuleService.getPhaseByNumberAndFormuleId(this.phaseForm.value.formuleId, this.phaseForm.value.phaseNumber)
           .subscribe(existingPhase => {
             console.log('before')
-            debugger
+            
             if (existingPhase) {
               this.phaseForm.controls._id.setValue(existingPhase._id);
               this.phaseValidation();
@@ -124,7 +124,7 @@ export class AddFormulePhaseComponent implements OnInit {
   }
 
   phaseValidation() {
-    debugger;
+    
     this.phaseCreated.emit(this.phaseForm.value);
     // if (this.phaseForm.valid) {
     //   this.phaseCreated.emit(this.phaseForm.value);

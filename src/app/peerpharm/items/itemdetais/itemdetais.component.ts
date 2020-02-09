@@ -273,7 +273,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillBottle(ev){
-  debugger
+  
     var bottleNumber = ev.target.value;
 
     if(bottleNumber != "---" || "") {
@@ -331,7 +331,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   getGoddetData() {
-    debugger
+    
     let div = this.container.nativeElement;
     this.mainDivArr = [];
     let divArr = [];
@@ -400,7 +400,7 @@ export class ItemdetaisComponent implements OnInit {
     if (number) {
       this.itemsService.getItemData(number).subscribe(res => {
         console.log(res);
-        debugger
+        
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
@@ -408,7 +408,7 @@ export class ItemdetaisComponent implements OnInit {
           this.itemShown.licsensDate  = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         }
         
-        debugger
+        
         this.dataDiv = res[0].goddet;
         this.showGoddetData();
       });
@@ -430,7 +430,7 @@ export class ItemdetaisComponent implements OnInit {
         this.showGoddet();
       }
       else{
-        debugger
+        
         this.item = res[0];
         this.itemShown = res[0];
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
