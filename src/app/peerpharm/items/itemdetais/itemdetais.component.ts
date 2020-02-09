@@ -393,10 +393,6 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
-<<<<<<< HEAD
-  fillBottle(ev){
-  
-=======
 
   exportAsXLSX() {
        debugger
@@ -408,7 +404,6 @@ export class ItemdetaisComponent implements OnInit {
 
   fillBottle(ev) {
     debugger
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
     var bottleNumber = ev.target.value;
 
     if (bottleNumber != "---" || "") {
@@ -800,12 +795,7 @@ export class ItemdetaisComponent implements OnInit {
         this.dataDiv = ["", ""];
         this.showGoddet();
       }
-<<<<<<< HEAD
-      else{
-=======
-      else {
-        debugger
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
+      else { 
         
         this.item = res[0];
         this.itemShown = res[0];

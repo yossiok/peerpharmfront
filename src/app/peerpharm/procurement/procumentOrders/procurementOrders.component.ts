@@ -29,8 +29,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.edit('');
   }
 
-  constructor(
-    private procurementservice: Procurementservice, private excelService: ExcelService,private modalService: NgbModal
+  constructor( 
     private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService
   ) {}
 

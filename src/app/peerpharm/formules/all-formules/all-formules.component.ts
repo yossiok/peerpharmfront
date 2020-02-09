@@ -121,21 +121,11 @@ currentFormuleNumber:any;
     })
   }
 
-<<<<<<< HEAD
   addNewPhase() { 
-   
-    this.formuleService.addPhase(this.addPhase).subscribe(data=>{
-     
-     
-      if(data) { 
-=======
-  addNewPhase() {
-    debugger;
     this.formuleService.addPhase(this.addPhase).subscribe(data=>{
 
       debugger;
       if(data) {
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
         this.updateFormule.phases = data.phases;
         this.toastSrv.success("Phase added successfully")
 
@@ -168,14 +158,8 @@ currentFormuleNumber:any;
   // }
 }
 
-editPhases(id) {
-<<<<<<< HEAD
- 
-  
-=======
-  debugger
+editPhases(id) { 
 
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
   this.EditRowId = id;
 
 
@@ -198,13 +182,8 @@ editPhases(id) {
 
 }
 
-<<<<<<< HEAD
-editItems(itemNumber,index,phaseId) { 
- 
-=======
 editItems(itemNumber,index,phaseId) {
   debugger;
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
   this.updateItems
   this.EditRowId = itemNumber
 
@@ -267,13 +246,8 @@ saveEdit(currdoc) {
 
 }
 
-<<<<<<< HEAD
-savePhaseEdit(currDoc) { 
- 
-=======
 savePhaseEdit(currDoc) {
   debugger;
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
 
 
   if(this.phaseToUpdate.phaseName != "") {
@@ -294,13 +268,8 @@ savePhaseEdit(currDoc) {
 
 }
 
-<<<<<<< HEAD
-saveItemEdit(currDoc,index) { 
- 
-=======
 saveItemEdit(currDoc,index) {
   debugger;
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
   this.currentDoc;
 
   if(this.itemToUpdate.itemNumber != "") {
@@ -322,13 +291,8 @@ saveItemEdit(currDoc,index) {
   }
 }
 
-<<<<<<< HEAD
-updatePhase() { 
- 
-=======
 updatePhase() {
   debugger;
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
   this.formuleService.updateFormulePhaseId(this.currentDoc).subscribe(data=>{
    
     data;
@@ -473,12 +437,7 @@ openItem(itemData,phaseNumber) {
   this.loadItemData(phaseNumber)
 }
 
-<<<<<<< HEAD
 loadItemData(phaseNumber) {  
-=======
-loadItemData(phaseNumber) {
-debugger;
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
 
 let details = this.updateFormule.phases.find(phase=>phase.phaseNumber == phaseNumber)
 this.updateItems = details.items;
@@ -497,13 +456,8 @@ private getDismissReason(reason: any): string {
   }
 }
 
-<<<<<<< HEAD
-copyFormule(currDoc,index) { 
- 
-=======
 copyFormule(currDoc,index) {
   debugger;
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
   var formuleToCopy = this.allFormules[index]
 
   this.formuleService.copyFormule(formuleToCopy).subscribe(data=>{

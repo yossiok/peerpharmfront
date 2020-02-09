@@ -44,15 +44,15 @@ export class NewProcurementComponent implements OnInit {
 
   }
   newProcurement = {
-
+    itemNumber:'',
     supplierNumber:'',
     supplierName:'',
     outDate:this.formatDate(new Date()),
     validDate:'',
     item:[],
     comaxNumber:'',
-    orderType:''
-
+    orderType:'',
+    itemName:''
   }
 
   constructor(private toastr: ToastrService,private procurementService: Procurementservice,private authService: AuthService,private inventoryService:InventoryService,private supplierService: SuppliersService ,public formBuilder: FormBuilder,) { 
@@ -99,11 +99,11 @@ export class NewProcurementComponent implements OnInit {
      }
      
     })
-  } 
+  });
+    } 
 
   getAllMaterials(){
     this.inventoryService.getAllMaterialsForFormules().subscribe(data=>{
-      debugger;
       this.allMaterials = data;
     })
   }

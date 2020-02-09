@@ -209,11 +209,7 @@ export class StockComponent implements OnInit {
 
   //expected Arrivals modal
    getNewExpectedArrivalsData(outputeEvent) {
-<<<<<<< HEAD
     
-=======
-    debugger;
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
 
     console.log('getting new updated expected arrivals data')
     console.log(outputeEvent)
@@ -538,17 +534,11 @@ export class StockComponent implements OnInit {
     
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
-<<<<<<< HEAD
       
-=======
-      debugger;
-    
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
   
-<<<<<<< HEAD
     //   this.components.forEach(c => {
     //     
     //      let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
@@ -557,9 +547,6 @@ export class StockComponent implements OnInit {
     //      c.remarks= element.remarks;
  
     //  });
-=======
-      
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
       //why are we using set time out and not async await??
       setTimeout(() => {
         debugger;
@@ -1027,15 +1014,9 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
-<<<<<<< HEAD
     
    
 
-=======
-    debugger
-    this.authService.loggedInUser.firstName
-    this.user
->>>>>>> bad7af6a88cfd2eb0f1104b1e30933cd8749b653
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
