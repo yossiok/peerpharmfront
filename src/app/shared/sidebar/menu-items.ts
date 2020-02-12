@@ -206,7 +206,7 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: '/peerpharm/formule/addnewformule',
+        path: '/peerpharm/new-formule/new-formule',
         title: 'Add formula',
         icon: ' fab fa-page4',
         class: '',

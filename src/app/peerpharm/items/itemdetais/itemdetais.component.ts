@@ -118,6 +118,7 @@ export class ItemdetaisComponent implements OnInit {
     updateDate: '',
     nameOfupdating: '',
     versionNumber: '',
+    scheduleRemark:'',
 
     status:'',
     department:'',
@@ -299,6 +300,8 @@ export class ItemdetaisComponent implements OnInit {
       cbm: [null, Validators.required],
       motherP: [null, Validators.required],
       itemType: [null, Validators.required],
+      scheduleRemark: [null, Validators.required],
+     
 
       item1w: [null, Validators.required],
       item1s: [null, Validators.required],
@@ -758,7 +761,7 @@ export class ItemdetaisComponent implements OnInit {
 
   getItemData() {
     debugger;
-   this.route.queryParams.subscribe(data=>
+   this.route.params.subscribe(data=>
       {
         let number=data.itemNumber;
         if (number) {
@@ -773,10 +776,11 @@ export class ItemdetaisComponent implements OnInit {
             }
             
             
-    
+            this.searchForItem(data.itemNumber)
             debugger
             this.dataDiv = res[0].goddet;
             this.showGoddetData();
+          
           });
         }
       })

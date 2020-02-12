@@ -15,6 +15,8 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./schedule.component.css"]
 })
 export class ScheduleComponent implements OnInit {
+
+  fillingReport:boolean = false;
   scheduleData: any[];
   EditRowId: any = "";
   buttonColor: string = "white";
@@ -24,6 +26,7 @@ export class ScheduleComponent implements OnInit {
   today: any;
   currentType: string = "";
   editRadioBtnType: string = "";
+  selectedArr:any[] = [];
 
   closeResult: string;
   public printScheduleFillingForm: FormGroup;
@@ -194,6 +197,59 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData = res;
       console.log(res);
     });
+  }
+
+  isSelected(ev,item){
+    debugger
+    if(ev.target.checked == true) {
+    var isSelected = this.selectedArr
+
+    this.itemSer.createFillingReport(item.item).subscribe(data=>{
+      debugger;
+      item.impRemarks = data[0].impRemarks
+      item.bottleNumber = data[0].bottleNumber
+      item.pumpNumber = data[0].pumpNumber
+      item.sealNumber = data[0].sealNumber
+      item.capNumber = data[0].capNumber
+      item.cartonNumber = data[0].cartonNumber
+      item.stickerNumber = data[0].stickerNumber
+      item.boxNumber = data[0].boxNumber
+      item.PcsCarton = data[0].PcsCarton
+      item.bottleImage = data[0].bottleImage
+      item.bottlePosition = data[0].bottlePosition
+      item.sealImage = data[0].sealImage
+      item.sealPosition = data[0].sealPosition
+      item.capPosition = data[0].capPosition
+      item.capImage = data[0].capImage
+      item.pumpImage = data[0].pumpImage
+      item.pumpPosition = data[0].pumpPosition
+      item.imgMain1 = data[0].imgMain1
+      item.imgMain2 = data[0].imgMain2
+      item.scheduleRemark = data[0].scheduleRemark
+      item.boxImage = data[0].boxImage
+      item.proRemarks = data[0].proRemarks
+    })
+
+    isSelected.push(item);
+    this.selectedArr = isSelected
+    }
+
+    if(ev.target.checked == false){
+      var isSelected = this.selectedArr
+      var tempArr = isSelected.filter(x=>x.item != item.item )
+      this.selectedArr = tempArr
+    }
+    
+ 
+  }
+
+  makeFillingReport(){
+    debugger;
+
+    this.fillingReport = true;
+    this.selectedArr;
+
+   
   }
 
   setType(type, elem) {

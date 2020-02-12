@@ -145,6 +145,7 @@
 <table class="scheduleTB">
   <thead class="tableHeader text-white">
     <tr>
+      <th><img (click)="makeFillingReport()" style="width:50px;" src="../../../../assets/images/stockUpdate.png"></th>
       <th class="positionClass"><b>P</b></th>
       <th><b>Order</b></th>
       <th><b>Item</b></th>
@@ -171,6 +172,7 @@
   </thead>
 
   <tr id="inputTr" (click)="EditRowId = 0">
+
     <td class="positionClass">
       <input
         type="text"
@@ -312,6 +314,7 @@
   <tbody id="table_body">
     <tr  style="box-shadow: inset 1px -2px 4px 0px black; margin-top: 1px;" *ngFor="let line of scheduleData" [style.background-color]="line.color">
       <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
+        <td><input type="checkbox" (change)="isSelected($event,line)"></td>
         <td 
           class="positionClass"
           *ngIf="line._id !== EditRowId"
@@ -678,3 +681,83 @@
     </button>
   </div>
 </ng-template>
+  
+<div id="print-sectionReport">
+
+
+<div  *ngIf="fillingReport==true" id="myModal3" class="modal3"  style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:80px;top:100px;width:max-content'>
+
+  <div class="modal-content" id='modelC'>
+    <div style="display: inline-block;" id="material-header" class="modal-header">
+  
+      <div class="row">
+        <div class="col-5">
+          <button  style="border:none;background: none;font-size: 30px;" [useExistingCss]="true" ngxPrint printSectionId="print-sectionReport">דו"ח לו"ז</button>
+        </div>
+        <div class="col-6">
+        
+        </div>
+        <div class="col-1">
+          <span class="close" id="closeId3" (click)="fillingReport=false;">&times;</span>
+        </div>
+      </div>
+     
+    </div>
+  
+    <div class="container" id="material-body" class="modal-body">
+
+      <div class="row">
+        <div class="col-12">
+
+          <ul style="list-style-type: none;font-size: 25px;border:1px solid black" *ngFor="let item of selectedArr">
+          <li><input type="checkbox"> Line: {{item.positionN}}</li>
+            <li><input type="checkbox"> Item: {{item.item}}</li>
+            <li><input type="checkbox"> Item Name: {{item.productName}}</li>
+            <li *ngIf="item.imgMain1">Item Image: <img [src]="item.imgMain1" style='width:100px'></li>
+            <li *ngIf="item.imgMain2">Item Image2: <img [src]="item.imgMain2" style='width:100px'></li>
+            <br><br>
+            <li><input type="checkbox"> Barcode: {{item.barcodeK}}</li>
+            <li><input type="checkbox"> batch: {{item.batch}}</li>
+            <li><input type="checkbox"> Qty: {{item.qty}}</li>
+            <li><input type="checkbox"> remarks: {{item.marks}}</li>
+            <li><input type="checkbox"> Item Tree Remarks: {{item.proRemarks}}</li>
+            <li><input type="checkbox"> Item Jumping Remarks: {{item.impRemarks}}</li>
+            <li><input type="checkbox"> Sticker Number: {{item.stickerNumber}} Type: {{item.stickerTypeK}}</li>
+            <li><input type="checkbox"> Carton Number: {{item.cartonNumber}}</li>
+            <li><input type="checkbox"> Units In Carton: {{item.PcsCarton}}</li>
+            <br><br>
+            <li><input type="checkbox"> Box Number: {{item.boxNumber}} Type: {{item.boxTypeK}}</li>
+            <li>
+              Box Image: <img [src]="item.boxImage" style='width:100px'>
+            </li>
+            <li><input type="checkbox"> Bottle Number: {{item.bottleNumber}} , Position: {{item.bottlePosition}}</li>
+            <li>
+              Bottle Image: <img [src]="item.bottleImage" style='width:100px'>
+            </li>
+            <li><input type="checkbox"> Cap Number: {{item.capNumber}} , Position: {{item.capPosition}}</li>
+            <li>
+              Cap Image: <img [src]="item.capImage" style='width:100px'>
+            </li>
+            <li><input type="checkbox"> Seal Number: {{item.sealNumber}} , Position: {{item.sealPosition}}</li>
+            <li><input type="checkbox"> 
+             Seal Image: <img [src]="item.sealImage" style='width:100px'>
+            </li>
+            <li><input type="checkbox"> Pump Number: {{item.pumpNumber}} , Position: {{item.pumpPosition}}</li>
+            <li>
+              Pump Image: <img [src]="item.pumpImage" style='width:100px'>
+            </li>
+        </ul>
+        </div>
+      </div>
+      <div class='row'>
+        <div *ngFor="let item of selectedArr" class="col-12">
+          {{item.scheduleRemark}}
+        </div>
+      </div>
+ 
+     
+    </div>
+  
+  </div>
+  </div>
+</div>

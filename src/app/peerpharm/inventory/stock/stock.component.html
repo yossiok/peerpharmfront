@@ -526,6 +526,10 @@
                 <td><input type='text' id='input_suplierName' [(ngModel)]="resCmpt.suplierName"></td>
               </tr>
               <tr>
+                <th>מחיר ספק</th>
+                <td><input type='text' id='supplierPrice' [(ngModel)]="resCmpt.price"></td>
+              </tr>
+              <tr>
                 <th>הערות</th>
                 <td><textarea rows='4' cols='30' style='width:150px' id='input_remarks'
                     [(ngModel)]="resCmpt.remarks"></textarea><br>
@@ -543,6 +547,9 @@
                     style="border: grey solid; border-style: outset; margin:3px;  padding: 3px; display:inline-block; ">
                     {{item.itemNumber}}&nbsp;</span></td>
 
+              </tr>
+              <tr>
+                <th></th>
               </tr>
             </tbody>
             <!-- <tbody id='changesTbody' dir='rtl'>

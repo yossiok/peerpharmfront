@@ -290,6 +290,7 @@ packingMaterialCheck = {
   //   })
   // }
   addNewWhareHouse(whareHouseName) {
+    debugger
     this.inventoryService.addNewWhareHouse(whareHouseName).subscribe(res => {
       console.log(res)
       if (res.name) {

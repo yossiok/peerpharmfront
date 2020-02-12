@@ -1,9 +1,9 @@
 
-<!-- .row -->
-<div class="row">
+
+ <div class="row">
   <div class="col-sm-12">
     <div class="card">
-      <!-- add new  -->
+
       <div class="card-body" *ngIf="!formuleSaved">
         <h4 class="card-title">Add a new Formule</h4>
         <h5 class="card-subtitle">Enter general formule details here</h5>
@@ -19,15 +19,12 @@
                   >Parent Formule</label
                 >
                 <div class="col-10">
-                  <!--
-find all formules which type parent true
 
-                  -->
                 
             <select [ngModelOptions]="{standalone: true}" [(ngModel)]="currTrue" (ngModelChange)="fillTheFields($event)" class="form-control">
                     <option *ngFor="let one of allTrueArr" value="{{one._id}}">{{one.name}}</option>
              </select>
-           <!--  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="addParentGroup">-->
+       
            is Parent: <input  formControlName="parent" (change)="isChecked($event)" type="checkbox"/>
               
                 </div>
@@ -130,18 +127,18 @@ find all formules which type parent true
             <div class="col-2">
               <input style="width:70px;" formControlName="phTo" [(ngModel)]="phValueTo" type="text"/>
                 </div>
-            <!-- <label class="col-2 col-form-label">{{ phValue }}</label> -->
+     
             
           </div>
         
           <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id==null" class="btn btn-info m-r-10" type="submit">Save and Continue</button>
-          <!-- <button *ngIf="!formuleSaved && editSavedFormule!=true && currentFormule.id!=null" class="btn btn-info m-r-10" type="submit">Edit</button> -->
+         
           <button *ngIf="formuleSaved && currentFormule.id != null" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()" [disabled]="disableAdding">Add Formule's Phases</button>
         </form>
       </div>
 
       
-          <!-- <div class="d-flex justify-content-start">...</div> -->
+     
       <div class="card-body" *ngIf="formuleSaved" style="color: blue; font-size: 35px;">
         <div class="d-flex flex-row justify-content-end">
           <i *ngIf="formuleSaved && currentFormule._id" class="ti-pencil" style="width: 40px; font-weight: bold; cursor: pointer;"
@@ -162,11 +159,12 @@ find all formules which type parent true
         <button *ngIf="disableAdding" class="btn btn-success m-r-10" type="button" (click)="addFirstPhase()">Add Formule's Phases</button>
 
       </div>      
-    <!--close div class='card' -->
-    </div> 
-    <!--close div class='col-sm-12' -->
-  </div>
-  <!--close div class='row' -->                                                                                                                                                                                                                                                                                                                                     
-</div>
 
-<!-- /.row -->
+    </div> 
+   
+  </div>
+                                                                                                                                                                                                                                                                                                                                
+</div> 
+
+
+

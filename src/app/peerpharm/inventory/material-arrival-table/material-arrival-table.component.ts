@@ -3,6 +3,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ExcelService } from 'src/app/services/excel.service';
 @Component({
   selector: 'app-material-arrival-table',
   templateUrl: './material-arrival-table.component.html',
@@ -77,6 +78,7 @@ export class MaterialArrivalTableComponent implements OnInit {
     private invtSer: InventoryService,
     private toastSrv: ToastrService,
     private modalService: NgbModal,
+    private excelService:ExcelService,
     
   ) { }
 
@@ -162,6 +164,12 @@ debugger
       this.EditRowId = '';
     }
   }
+
+  exportAsXLSX():void {
+    debugger
+    this.excelService.exportAsExcelFile(this.materialsArrivals, 'data');
+  }
+
 
   filterSuppliers(input) {
     if (input != "") {

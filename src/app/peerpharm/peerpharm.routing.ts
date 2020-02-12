@@ -54,6 +54,8 @@ import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
+import { NewFormuleComponent } from './new-formule/new-formule.component';
+
 
 
 export const PeerPharmRputs: Routes =[
@@ -229,11 +231,11 @@ export const PeerPharmRputs: Routes =[
     component: ContentComponent
   },*/
   {
-    path: 'formule/addnewformule',
+    path: 'new-formule/new-formule',
     data: {
       title: 'add-formule'
     },
-    component: FormuleComponent,
+    component: NewFormuleComponent,
     // canActivate:[TwoFactor]
   },
   {

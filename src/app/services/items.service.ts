@@ -53,6 +53,10 @@ export class ItemsService {
     let url = this.baseUrl + "item/getAllItemShells";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  createFillingReport(itemN) {
+    let url = this.baseUrl + "item?createFillingReport="+itemN;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getPlateImg(itemNumber) {
     let url = this.baseUrl + "item?plateImg=yes&itemNumber=" + itemNumber;

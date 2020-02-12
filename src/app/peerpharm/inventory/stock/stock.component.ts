@@ -59,6 +59,7 @@ export class StockComponent implements OnInit {
     input_actualMlCapacity: 0,
     alternativeComponent:'',
     alternativeSupplier:[],
+    price:''
 
   }
   alternativeSupplier: any = {

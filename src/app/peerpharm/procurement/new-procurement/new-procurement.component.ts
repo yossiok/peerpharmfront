@@ -24,6 +24,7 @@ export class NewProcurementComponent implements OnInit {
   hasAuthorization:boolean = false;
   allMaterials:any[];
   itemExistInOrders:any[];
+  allComponents:any[];
   
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
@@ -41,7 +42,8 @@ export class NewProcurementComponent implements OnInit {
   supplierPrice:0,
   supplierAmount:'',
   color:'',
-  orderNumber:''
+  orderNumber:'',
+  itemRemarks:''
 
   }
   newProcurement = {
@@ -50,8 +52,9 @@ export class NewProcurementComponent implements OnInit {
     outDate:this.formatDate(new Date()),
     validDate:'',
     item:[],
-    comaxNumber:'',
+    outOfCountry:false,
     orderType:'',
+    remarks:'',
 
   }
 
@@ -62,6 +65,7 @@ export class NewProcurementComponent implements OnInit {
   ngOnInit() {
     this.getAllSuppliers();
     this.getAllMaterials();
+    this.getAllComponents();
     
 
   }
@@ -77,24 +81,32 @@ export class NewProcurementComponent implements OnInit {
   }
   
   findMaterialByNumber(){
-    
-    debugger;
-    this.inventoryService.getMaterialStockItemByNum(this.newItem.itemNumber).subscribe(data=>{
-      debugger;
-     if(data[0]) {
-      this.newItem.itemName = data[0].componentName; 
-      this.newItem.coin = data[0].coin
-      this.newItem.measurement = data[0].unitOfMeasure
-      this.newItem.supplierPrice = parseInt(data[0].price)
-        if(data[0].frameQuantity || data[0].frameSupplier) {
-          alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' +"  "+ data[0].frameSupplier +" "+ 'כמות:'+" "+ data[0].frameQuantity)
-        }
 
-     } else {
-       this.toastr.error('פריט לא קיים במערכת')
-     }
-     
-    })
+    if(this.newProcurement.orderType == 'material' ) {
+      this.inventoryService.getMaterialStockItemByNum(this.newItem.itemNumber).subscribe(data=>{
+        debugger;
+       if(data[0]) {
+        this.newItem.itemName = data[0].componentName; 
+        this.newItem.coin = data[0].coin
+        this.newItem.measurement = data[0].unitOfMeasure
+        this.newItem.supplierPrice = parseInt(data[0].price)
+          if(data[0].frameQuantity || data[0].frameSupplier) {
+            alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' +"  "+ data[0].frameSupplier +" "+ 'כמות:'+" "+ data[0].frameQuantity)
+          }
+  
+       } else {
+         this.toastr.error('פריט לא קיים במערכת')
+       }
+       
+      })
+    } else {
+      this.inventoryService.getCmptByitemNumber(this.newItem.itemNumber).subscribe(data=>{
+      debugger;
+      this.newItem.itemName = data[0].componentName; 
+      })
+    }
+    
+ 
 
     this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data=>{
       debugger;
@@ -113,6 +125,11 @@ export class NewProcurementComponent implements OnInit {
     })
   }
 
+  getAllComponents(){
+    this.inventoryService.getAllComponents().subscribe(data=>{
+      this.allComponents = data;
+    })
+  }
   getAllSuppliers() { 
     this.supplierService.getSuppliersDiffCollection().subscribe(data=>{
     this.allSuppliers = data;
@@ -172,26 +189,27 @@ export class NewProcurementComponent implements OnInit {
   sendNewProc() { 
     
     debugger;
-
-   this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
-    if(data) {
-      this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
-      this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data=>{
+    if(confirm("האם להקים הזמנה זו ?")) {
+      this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
         if(data) {
-          this.toastr.success("כמות זו ירדה מכמות המסגרת")
+          this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
+          this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data=>{
+            if(data) {
+              this.toastr.success("כמות זו ירדה מכמות המסגרת")
+            }
+    
+          })
+          this.newProcurement.validDate = ""
+         
+          this.newProcurement.supplierName = ""
+          this.newProcurement.supplierNumber = ""
+          this.newProcurement.item = [];
+    
+          
         }
-
-      })
-      this.newProcurement.validDate = ""
-     
-      this.newProcurement.supplierName = ""
-      this.newProcurement.supplierNumber = ""
-      this.newProcurement.comaxNumber = ""
-      this.newProcurement.item = [];
-
-      
+       })
     }
-   })
+
   }
 
  formatDate(date) {

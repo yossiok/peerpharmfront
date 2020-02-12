@@ -11,14 +11,15 @@
             <h4 class="card-title">פרטי הזמנה</h4>
             <div class="row">
           <div class="col-md-6">
-            <label>מספר הזמנה בקומקס</label>
-            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.comaxNumber" type="text" class="form-control"   />
+            <label>ייבוא חוץ</label>
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.outOfCountry" type="checkbox" class="form-control"   />
           </div>
           <div class="col-md-6">
             <label>סוג הזמנה</label>
             <select [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.orderType" type="text" class="form-control">
-            <option value="material">Material</option>
+            <option value="material">Material</option>''ג'
             <option value="component">Component</option>
+            <option value="other ">Other</option>
             </select>
           </div>
         </div>
@@ -67,6 +68,15 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="control-label">הערות</label>
+                  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.remarks" class="form-control" />
+                </div>
+              </div>
+            </div>
+
             <h4 class="card-title mt-5">פרטי פריט</h4>
             <hr>
             <div class="card-body">
@@ -88,17 +98,20 @@
                   <div *ngIf="openOrdersModal == true" class="col-md-6">
                     <h3>שים לב , פריט זה קיים בהזמנות הבאות:</h3>
                     <div *ngFor="let item of itemExistInOrders">
-                      מספר הזמנה:  {{item.orderNumber}}     מחיר :  {{item.price}}     כמות:  {{item.amount}} 
+                     <b>מספר הזמנה:</b>   {{item.orderNumber}}    <b>מחיר:</b>  {{item.price}}{{item.coin}}     <b>כמות:</b>  {{item.amount}} 
                     </div>
                   </div>
                   <!--/span-->
                   <div class="col-md-6">
                     <div class="form-group has-danger">
                       <label  class="control-label">שם</label>
-                      <select #itemName (change)="fillMaterialNumber($event)"
+                      <input #itemName (change)="fillMaterialNumber($event)"
                       [(ngModel)]="newItem.itemName" [ngModelOptions]="{standalone: true}" id="lastName"  class="form-control form-control-danger">
-                    <option *ngFor="let material of allMaterials">{{material.componentName}}</option>
-                    </select>
+
+                      <input type="text"  #itemName  (change)="fillMaterialNumber($event)"  [(ngModel)]="newItem.itemName" [ngModelOptions]="{standalone: true}"   class="form-control form-control-danger"  list="stock">
+<datalist id="stock">
+  <option *ngFor="let material of allMaterials" [value]="material.componentName" >{{material.componentName}}</option>
+</datalist>
                     </div>
                   </div>
                   <!--/span-->

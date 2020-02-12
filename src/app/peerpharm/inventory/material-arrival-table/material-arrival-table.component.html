@@ -1,5 +1,7 @@
 <input type="text"  placeholder="Search item name" (change)="changeText($event)" />
 From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
+
+<img style="width:50px;" (click)="exportAsXLSX()" src="../../../../assets/images/excel.png">
 <br>
 
 <table class='table table-responsive'>

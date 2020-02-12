@@ -1008,6 +1008,12 @@
                     <label class="labelGeneral">Customer Name</label>
                   </div>
 
+                  <br><br>
+
+                  <div>
+                    <label class="labelGeneral">Schedule Remark</label>
+                  </div>
+
                 </div>
 
                 <div class="col-3">
@@ -1021,6 +1027,10 @@
                   <select (change)="fillCostumerDetails($event)" [(ngModel)]="itemShown.costumerName"class="productionInput">
                     <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}</option>
                   </select>
+
+                  <br><br>
+
+                  <textarea [(ngModel)]="itemShown.scheduleRemark" class="productionInput"></textarea>
 
                 </div>
 
@@ -1045,6 +1055,16 @@
                   <div>
                     <label class="labelGeneral">Plate 3</label>
                   </div>
+                  <div>
+                    <label class="labelGeneral">Sticker Wgt/Type</label>
+                  </div>
+                  <div>
+                    <label class="labelGeneral">Box Wgt/Type</label>
+                  </div>
+                  <div>
+                    <label class="labelGeneral">Carton Wgt/Type</label>
+                  </div>
+           
 
                 </div>
 
@@ -1078,6 +1098,81 @@
                     <input class="productionInput" type=text [(ngModel)]="itemShown.pallet3" style='width:80px' ondblclick='openPalletImg(this.value ,  this.id)'>
                     <input class="productionInput" [(ngModel)]="itemShown.pallet3x" disabled style='width:40px'><input class="productionInput" [(ngModel)]="itemShown.pallet3y"
                       disabled style='width:40px'>
+                  </div>
+
+                  <div>
+                    <input class="productionInput" type="text" id="id_boxWeight" style='width:40px; margin-left:0px' placeholder=8 [(ngModel)]=itemShown.itemBoxW>
+                    <select id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS style='margin-left:10px'>
+                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+        
+                      <option value='paperCarton'>נייר/קרטון</option>
+                      <option value='drinkCarton'>קרטוניות משקה</option>
+                      <option value='totalCarton'>סה"כ קרטון</option>
+                      <option value='transperentGlass'>זכוכית שקופה</option>
+                      <option value='colorGlass'>זכוכית צבעונית</option>
+                      <option value='totalGlass'>סה"כ זכוכית</option>
+        
+                      <option value='pet'>PET</option>
+                      <option value='hdpe'>HDPE</option>
+                      <option value='ldpe'>LDPE</option>
+                      <option value='pp'>PP</option>
+                      <option value='ps'>PS</option>
+                      <option value='otherPlastic'>פלסטיק אחר</option>
+                      <option value='totalPlastic'>סה"כ פלסטיק</option>
+                      <option value='metal'>מתכת</option>
+                      <option value='wood'>עץ</option>
+                      <option value='otherMaterial'>חומר אחר</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <input class='productionInput' type="text" id="id_boxWeight" style='width:40px; margin-left:0px' placeholder=8 [(ngModel)]=itemShown.itemBoxW>
+                    <select id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS style='margin-left:10px'>
+                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+        
+                      <option value='paperCarton'>נייר/קרטון</option>
+                      <option value='drinkCarton'>קרטוניות משקה</option>
+                      <option value='totalCarton'>סה"כ קרטון</option>
+                      <option value='transperentGlass'>זכוכית שקופה</option>
+                      <option value='colorGlass'>זכוכית צבעונית</option>
+                      <option value='totalGlass'>סה"כ זכוכית</option>
+        
+                      <option value='pet'>PET</option>
+                      <option value='hdpe'>HDPE</option>
+                      <option value='ldpe'>LDPE</option>
+                      <option value='pp'>PP</option>
+                      <option value='ps'>PS</option>
+                      <option value='otherPlastic'>פלסטיק אחר</option>
+                      <option value='totalPlastic'>סה"כ פלסטיק</option>
+                      <option value='metal'>מתכת</option>
+                      <option value='wood'>עץ</option>
+                      <option value='otherMaterial'>חומר אחר</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <input class="productionInput" type="text" id="id_cartonWeight" [(ngModel)]=itemShown.itemCtnW style='width:40px; margin-left:0px'>
+                    <select id='id_cartonSelect' [(ngModel)]=itemShown.itemCtnS style='margin-left:10px'>
+                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+        
+                      <option value='paperCarton'>נייר/קרטון</option>
+                      <option value='drinkCarton'>קרטוניות משקה</option>
+                      <option value='totalCarton'>סה"כ קרטון</option>
+                      <option value='transperentGlass'>זכוכית שקופה</option>
+                      <option value='colorGlass'>זכוכית צבעונית</option>
+                      <option value='totalGlass'>סה"כ זכוכית</option>
+        
+                      <option value='pet'>PET</option>
+                      <option value='hdpe'>HDPE</option>
+                      <option value='ldpe'>LDPE</option>
+                      <option value='pp'>PP</option>
+                      <option value='ps'>PS</option>
+                      <option value='otherPlastic'>פלסטיק אחר</option>
+                      <option value='totalPlastic'>סה"כ פלסטיק</option>
+                      <option value='metal'>מתכת</option>
+                      <option value='wood'>עץ</option>
+                      <option value='otherMaterial'>חומר אחר</option>
+                    </select>
                   </div>
                 </div>
 

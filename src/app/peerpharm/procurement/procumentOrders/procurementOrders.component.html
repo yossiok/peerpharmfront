@@ -1,49 +1,3 @@
-<div class="searchpanel">
-  Order:<input
-    type="text"
-    style="width:200px;margin-left:15px;"
-    (change)="searchNumber($event)"
-  />
-  From: <input (change)="dateChange()" #fromDateStr type="date" /> To:
-  <input (change)="dateChange()" #toDateStr type="date" /> Supplier
-  number:<input
-    type="text"
-    style="width:100px;margin-left:15px;"
-    (change)="searchNumber($event)"
-  />
-  Supplier name:<input
-    type="text"
-    style="width:100px;margin-left:15px;"
-    (change)="searchNumber($event)"
-  />
-  Item number:<input
-    type="text"
-    style="width:100px;margin-left:15px;"
-    (change)="searchNumber($event)"
-  />
-  Item name:<input
-    type="text"
-    style="width:100px;margin-left:15px;"
-    (change)="searchNumber($event)"
-  />
-</div>
-
-<div class="quickactions">
-  <h5>Quick actions</h5>
-  <i
-    title="New order"
-    style="width: 40px;margin-left:20px;"
-    (click)="neworder(content)"
-    class="far fa-sticky-note"
-  ></i>
-  <i
-    class="fa fa-file-excel"
-    aria-hidden="true"
-    alt="export to excel"
-    (click)="exportAsXLSX()"
-  ></i>
-</div>
-
 <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Order Number" (change)="searchNumber($event)"/>
 <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Supplier Name" (change)="searchBySupplier($event)"/>
 
@@ -86,21 +40,10 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
 </div>
 
 <table>
-  <thead
-    style="box-shadow: 1px 1px 2px 0px black;"
-    class="bg-success text-white"
-  >
+  <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
     <tr>
       <th><b>#</b></th>
-      <th><b>Order Number</b></th>
-      <th><b>Order Date</b></th>
-      <th><b>Supplier Number</b></th>
-      <th><b>Supplier Name</b></th>
-      <th><b>Order Quantity</b></th>
-      <th><b>Total Payment With VAT</b></th>
-      <th><b>Status</b></th>
       <th><b>Procurement Number</b></th>
-      <th><b>Comax Number</b></th>
       <th><b>Supplier Number</b></th>
       <th><b>Supplier Name</b></th>
       <th><b>תאריך יציאה</b></th>
@@ -112,29 +55,9 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
     </tr>
   </thead>
   <tbody id="table_body">
-    <tr
-      style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-      *ngFor="let line of procurementData; let i = index"
-    >
-      <td>
-        {{ i + 1 }}
-      </td>
-      <td>{{ line.itemName }}</td>
-      <td>{{ line.itemNumber }}</td>
-      <td>{{ line.supplierNumber }}</td>
-      <td>{{ line.supplierName }}</td>
-      <td>{{ line.supplierAmount }}</td>
-      <td>{{ line.totalPaymentVat }}</td>
-      <td>{{ line.isSupplied }}</td>
-      <td>
-        <button style="background:green;box-shadow:inset 0px 1px 5px 0px;">
-          Close Order
-        </button>
-      </td>
     <tr  style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
       <td>{{i+1}}</td>
       <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span style="color:blue;">{{line.orderNumber}}</span></td>
-      <td>{{ line.comaxNumber }}</td>
       <td>{{ line.supplierNumber }}</td>
       <td>{{ line.supplierName }}</td>
       <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
@@ -142,7 +65,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <!-- <td>{{ line.totalPaymentVat}}</td> -->
       <td>{{ line.isSupplied}}</td>
       <td><button class="btn btn-primary" (click)="closeOrder(line.orderNumber)">Close Order</button></td>
-      <td><button class="btn btn-success" printSectionId="print-section" ngxPrint>Print Order</button></td>
+      <td><button class="btn btn-success" (click)="printOrder(line)">Print Order</button></td>
     </tr>
   </tbody>
 </table>
@@ -150,3 +73,92 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
 
 
 
+<div id="print-section">
+<div  *ngIf="printBill==true" id="myModal3" class="modal3"  style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:80px;top:50px;font-size:20px;'>
+
+<div class="modal-content" id='modelC'>
+  <div style="display: inline-block;" id="material-header" class="modal-header">
+
+    <div class="row">
+      <div class="col-5">
+        <img src="../../../../assets/images/logo.png">
+      </div>
+      <div class="col-6">
+        <p>Amarl 17 Street, Afek Industry Park,Rosh Haayin 4809256</p>
+        <p>Tel:+972-3-9024055  Fax: +972-3-9024015 </p>
+        <p>Email: peerpharm@barak.net.il</p>
+      </div>
+   
+      <div class="col-1">
+        <span class="close" id="closeId3" (click)="printBill=false;">&times;</span>
+      </div>
+    </div>
+   
+  </div>
+  <hr>
+
+  <div>
+    <button style="border:none;background: none;margin-left:200px" ngxPrint printSectionId="print-section"  [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
+    <p style="margin-left:330px;k">Order Date:{{orderDate}}</p>
+    <p>{{currentOrder.supplierName}}</p> 
+    <p>{{currentSupplier.address}}</p>
+    <p *ngIf="currentSupplier.phoneNum">Tel:{{currentSupplier.phoneNum}}</p>
+    <p *ngIf="currentSupplier.faxNum">Fax:{{currentSupplier.faxNum}}</p>
+  </div>
+  
+
+  <div class="container" id="material-body" class="modal-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+          <th>Item Name</th>
+          <th>Unit</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>% Disc</th>
+          <th>Amount</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of currentItems;let i = index;">
+          <td>{{i+1}}</td>
+          <td>{{item.itemNumber}}</td>
+          <td>{{item.itemName}}</td>
+          <td></td>
+          <td>{{item.supplierAmount}}</td>
+          <td>{{item.supplierPrice}}</td>
+          <td></td>
+          <td></td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+    <div class="row">
+      <div class="col-6">
+        <p style="margin-left:320px;">Total Amont:{{totalAmount}}</p>
+      </div>
+      <div class="col-6">
+        <p style="margin-left:320px;">Total Price:{{totalPrice}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{outOfCountry}}
+      </div>
+      <br>
+      <div class="col-6">
+        {{importantRemarks}}
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+</div>

@@ -105,6 +105,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules?all=yes";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getLastFatherFormule(){
+    let url = this.baseUrl + "formules/getLastFatherFormule";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getPhasesByFormuleId(formuleId){
     let url = this.baseUrl + "formules/phases/?byFormuleId="+formuleId;
@@ -123,7 +127,7 @@ export class FormulesService {
   }
 
   newFormule(newFormuleDetails){
-    let url = this.baseUrl + "formules/add";
+    let url = this.baseUrl + "formules/addFormule";
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
   }
 
@@ -151,6 +155,11 @@ export class FormulesService {
 
 
   addPhase(newPhase){
+    
+    let url = this.baseUrl + "formules/addNewPhase";
+    return this.http.post(url, JSON.stringify(newPhase), this.options).pipe(map(res => res.json()));
+  }
+  addNewPhase(newPhase){
     
     let url = this.baseUrl + "formules/addNewPhase";
     return this.http.post(url, JSON.stringify(newPhase), this.options).pipe(map(res => res.json()));

@@ -4,6 +4,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ToastrService } from 'ngx-toastr';
+import { SuppliersService } from 'src/app/services/suppliers.service';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -13,13 +14,23 @@ import { ToastrService } from 'ngx-toastr';
 
 export class ProcurementOrdersComponent implements OnInit {
 
+
+  printBill:boolean = false;
   orderDetailsModal:boolean = false;
   procurementData: any[];
   procurementDataCopy: any[];
+  currentOrder: any[];
+  currentItems: any[];
+  currentSupplier:object;
   hasMoreItemsToload: boolean = true;
   orderData:any[];
   EditRowId:any="";
   arrivedAmount:"";
+  totalAmount:any;
+  totalPrice:any;
+  importantRemarks:any;
+  orderDate:any;
+  outOfCountry:any;
   
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -30,7 +41,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   constructor( 
-    private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService
+    private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService,private supplierService:SuppliersService
   ) {}
 
   ngOnInit() {
@@ -58,6 +69,34 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
+  printOrder(line) {
+    debugger;
+
+    var supplierNumber = line.supplierNumber
+    this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data=>{
+      debugger;
+      this.currentSupplier = data[0]
+    })
+    this.printBill=true;
+    this.currentOrder = line;
+    this.currentItems = line.item
+    var total = 0;
+    var totalP = 0; 
+    var coin ="";
+    for (let i = 0; i < this.currentItems.length; i++) {
+     total = total + Number(this.currentItems[i].supplierAmount)
+     totalP = totalP + Number(this.currentItems[i].supplierPrice)
+     coin = this.currentItems[i].coin
+
+    }
+    this.importantRemarks = line.remarks
+    this.totalAmount = total
+    this.totalPrice = totalP+coin
+    this.orderDate = line.outDate.slice(0,10)
+    if(line.outOfCountry == false){
+      this.outOfCountry = "Payment Terms:Current+95 Days"
+    }
+  }
   searchBySupplier(ev){
    
     var supplierName = ev.target.value;

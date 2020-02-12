@@ -501,7 +501,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   edit(id) {
-
+ 
     if(id!=''){
       this.EditRowId = id;
     } else{
