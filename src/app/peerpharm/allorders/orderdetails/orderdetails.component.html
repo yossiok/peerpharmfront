@@ -272,11 +272,11 @@
                 <h5>Set Barcode Print: </h5>
               </td>
               <td><input #mkpProdDate type='date'></td>
-              <td><input #mkpProdRemarks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-              <td></td>
+              <td><input #mkpProdRemarks placeholder="PO" type='marks' [value]="item.itemRemarks"></td>
+              <td><input #mkpProdInvoice placeholder="Invoice" type='text'></td>
               <td>
               </td>
-              <td><button (click)='setMkpSchedule(item , mkpProdDate.value, mkpProdRemarks.value)'
+              <td><button (click)='setMkpSchedule(item , mkpProdDate.value, mkpProdRemarks.value , mkpProdInvoice.value)'
                   class='btn btn-success'>Set</button></td>
             </tr>
           </table>

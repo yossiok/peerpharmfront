@@ -81,7 +81,7 @@ export class NewProcurementComponent implements OnInit {
   }
   
   findMaterialByNumber(){
-
+debugger
     if(this.newProcurement.orderType == 'material' ) {
       this.inventoryService.getMaterialStockItemByNum(this.newItem.itemNumber).subscribe(data=>{
         debugger;

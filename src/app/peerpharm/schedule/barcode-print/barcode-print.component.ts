@@ -178,7 +178,7 @@ export class BarcodePrintComponent implements OnInit {
 
   // Modal Functions
   openPrintBarkod(content, line) {
-    
+    debugger
     this.schedLine = line;
     this.amountOfStickersArr = [];
     this.GetItemAllData()
@@ -188,7 +188,7 @@ export class BarcodePrintComponent implements OnInit {
           await this.GetBatchAllData();
         }
       })
-      .then(() => this.initPrintScheduleForm())
+      .then(() => this.initPrintScheduleForm(line))
       .then(() => {
         this.modalService
           .open(content, { ariaLabelledBy: "modal-basic-title" })
@@ -205,6 +205,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   openPrintBarkodHul(contentHul, line) {
+    debugger;
     this.schedLine = line;
     this.amountOfStickersArr = [];
     this.GetItemAllData()
@@ -214,7 +215,7 @@ export class BarcodePrintComponent implements OnInit {
           await this.GetBatchAllData();
         }
       })
-      .then(() => this.initPrintScheduleForm())
+      .then(() => this.initPrintScheduleForm(line))
       .then(() => {
         this.modalService
           .open(contentHul, { ariaLabelledBy: "modal-basic-title" })
@@ -261,7 +262,7 @@ export class BarcodePrintComponent implements OnInit {
     });
   }
 
-  initPrintScheduleForm() {
+  initPrintScheduleForm(line) {
     
     this.pcsCarton = this.itemData[0].PcsCarton.replace(/\D/g, "") + " Pcs";
     this.barcodeK = this.itemData[0].barcodeK;
@@ -291,7 +292,7 @@ export class BarcodePrintComponent implements OnInit {
       deliveryAdress = "Winners Mechant int'l LP 60 Standish Court Mississauga,ON L5R OG1"
     }
 
-    qtyToPrint = Math.ceil(Number(this.schedLine.qty)/parseInt(this.pcsCarton))
+    qtyToPrint = (Math.ceil(Number(this.schedLine.qty)/parseInt(this.pcsCarton)))*2
     
     
     
@@ -319,14 +320,14 @@ export class BarcodePrintComponent implements OnInit {
       barcode: new FormControl(this.barcodeK, [Validators.required]),
       batch: new FormControl(this.schedLine.batch, [Validators.required]),
       exp: new FormControl(this.exp, [Validators.required]),
-      date: new FormControl("", [Validators.required]),
+      date: new FormControl(JSON.stringify(this.schedLine.date).slice(1,11), [Validators.required]),
       local: new FormControl("", [Validators.required]),
       printQty: new FormControl(qtyToPrint, [Validators.required]),
       other: new FormControl('' ,[Validators.required]),
       dc: new FormControl(dcNumber ,[Validators.required]),
       deliveryAdress: new FormControl(deliveryAdress ,[Validators.required]),
       po: new FormControl(this.schedLine.marks ,[Validators.required]),
-      invoice: new FormControl('' ,[Validators.required]),
+      invoice: new FormControl(line.invoiceNumber ,[Validators.required]),
       netWeight: new FormControl('' ,[Validators.required]),
       grossWeight: new FormControl('' ,[Validators.required]),
       packingCode: new FormControl('' ,[Validators.required])

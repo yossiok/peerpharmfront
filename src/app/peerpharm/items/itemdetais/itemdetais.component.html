@@ -166,7 +166,7 @@
 
                 </div>
                 <div class="col-3">
-                  <div>
+                  <!-- <div>
                     <select id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
                       [(ngModel)]=itemShown.StickerLanguageK>
                     <option value="FRE">French</option>
@@ -183,6 +183,10 @@
                     <option value="SWE">Swedish</option>
                     <option value="GRK">Greek</option>
                   </select>
+                  </div> -->
+                  <div>
+                    <input id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
+                    [(ngModel)]=itemShown.StickerLanguageK>
                   </div>
                   <div *ngIf="mainLanguage==false">
                     <p>---</p>
@@ -1036,6 +1040,9 @@
 
                 <div class="col-2">
                   <div>
+                    <label class="labelGeneral">PCS/Carton</label>
+                  </div>
+                  <div>
                     <label class="labelGeneral">Total Cartons/palette</label>
                   </div>
 
@@ -1069,6 +1076,10 @@
                 </div>
 
                 <div class="col-3">
+
+                  <div>
+                    <input class="productionInput" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
+                  </div>
                   <div>
                     <input class="productionInput" type="number" ext id="id_totalCarton"
                       [(ngModel)]=itemShown.totalCartonPalette>
