@@ -159,20 +159,21 @@
                   <div class="col-md-6">
                     <table class="table table-bordered">
                       <thead>
-                        <th>מידה</th>
-                        <th>מחיר</th>
-                        <th>כמות</th>
                         <th>מספר פריט</th>
                         <th>שם פריט</th>
+                        <th>כמות</th>
+                        <th>מידה</th>
+                        <th>מחיר</th>
                       </thead>
                       <tbody>
                         <tr *ngFor="let item of this.newProcurement.item">
 
-                          <td>{{item.measurement}}</td>
-                          <td>{{item.supplierPrice}}</td>
-                          <td>{{item.supplierAmount}}</td>
                           <td>{{item.itemNumber}}</td>
                           <td>{{item.itemName}}</td>
+                          <td>{{item.measurement}}</td>
+                          <td>{{item.supplierAmount}}</td>
+                          <td>{{item.supplierPrice}}</td>
+                          
                         
                         </tr>
                       </tbody>
