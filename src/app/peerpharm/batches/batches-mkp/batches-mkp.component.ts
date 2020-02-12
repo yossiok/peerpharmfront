@@ -12,7 +12,7 @@ export class BatchesMkpComponent implements OnInit {
 
 
   mkpBatches:any[];
-  allStickers:any[];
+  allStickers:any[]=[];
   currentItem:any;
   currentItemName:any;
   currentBarrels:any;
@@ -21,7 +21,8 @@ export class BatchesMkpComponent implements OnInit {
   currentProduced:any;
   currentOrderN:any;
   currentPH:any;
-  currentWeightKG:any;
+  currentWeightKG:any; 
+
 
   @ViewChild('printBtn') printBtn: ElementRef;
 
@@ -54,7 +55,7 @@ export class BatchesMkpComponent implements OnInit {
   }
 
   addNewMkpBatch(){
-  debugger;
+
   this.currentItem = this.newMkpBatch.item
   this.currentItemName = this.newMkpBatch.itemName
   this.currentBarrels = this.newMkpBatch.barrels
@@ -65,26 +66,56 @@ export class BatchesMkpComponent implements OnInit {
   this.currentPH = this.newMkpBatch.ph
   this.currentWeightKG =this.newMkpBatch.weightKg
 
-  let obj={
-    item:this.currentItem,
-    printNum:"1/1"
-  }
-  
-  this.allStickers=[];
-  this.allStickers.push(obj)
-  
-  //onchange
-  let o2= {...this.allStickers[0]};
-  // o2. printNum= i+"/"+allStickers.length
-  this.allStickers.push(o2);
 
+
+  if(parseInt(this.newMkpBatch.barrels)>1)
+  {
+    for(let x=0; x<parseInt(this.newMkpBatch.barrels) ;x++)
+    {
+      let obj={
+        item:{currentItem:this.currentItem,
+          currentItemName: this.currentItemName ,
+          currentBarrels: this.currentBarrels ,
+          currentBatchNumber: this.currentBatchNumber ,
+          currentExpDate:  this.currentExpDate ,
+          currentProduced: this.currentProduced  ,
+          currentOrderN: this.currentOrderN ,
+          currentPH: this.currentPH ,
+          currentWeightKG: this.currentWeightKG   
+        },
+        printNum:""+x+"/"+(parseInt(this.newMkpBatch.barrels))
+      } 
+      this.allStickers.push(obj);
+
+    }
+ 
+  }
+  else{
+    let obj={
+      item:{currentItem:this.currentItem,
+        currentItemName: this.currentItemName ,
+        currentBarrels: this.currentBarrels ,
+        currentBatchNumber: this.currentBatchNumber ,
+        currentExpDate:  this.currentExpDate ,
+        currentProduced: this.currentProduced  ,
+        currentOrderN: this.currentOrderN ,
+        currentPH: this.currentPH ,
+        currentWeightKG: this.currentWeightKG   
+      },
+      printNum:"1/1"
+    } 
+    this.allStickers.push(obj);
+  }
+ 
+ debugger;
   if(this.newMkpBatch.batchNumber != "") {
     this.batchService.addNewMkpBatch(this.newMkpBatch).subscribe(data=>{
       this.mkpBatches = data;
       setTimeout(() => {
-        this.printBtn.nativeElement.click();          
+        this.printBtn.nativeElement.click();   
+       
       }, 500);
-
+      debugger;
       this.toastSr.success("נוספה אצווה חדשה")
      this.newMkpBatch.item = ""
    this.newMkpBatch.itemName = ""
@@ -95,6 +126,11 @@ export class BatchesMkpComponent implements OnInit {
      this.newMkpBatch.order =""
       this.newMkpBatch.ph= ""
      this.newMkpBatch.weightKg =""
+     setTimeout(() => {
+      this.allStickers=[];
+     
+    }, 3500);
+  
 
     })
   }
