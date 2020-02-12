@@ -65,9 +65,11 @@
       </div>
       <div>
         <input [ngClass]="itemBackgroundByStatus()" type="text"  id="id_stickerNumber" [(ngModel)]=itemShown.stickerNumber onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+        <input type="text" style='width: 150px' id="id_stickerType" [(ngModel)]=itemShown.stickerTypeK>
       </div>
       <div>
-      <input [ngClass]="itemBackgroundByStatus()" type="text" style='width: 150px' [(ngModel)]=itemShown.boxNumber id="id_boxNumber" onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
+      <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.boxNumber id="id_boxNumber" onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
+      <input type="text" style='width: 150px' [(ngModel)]=itemShown.boxTypeK id="id_boxType">
     </div>
       <div>
         <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
