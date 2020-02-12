@@ -70,7 +70,7 @@ export class BatchesMkpComponent implements OnInit {
 
   if(parseInt(this.newMkpBatch.barrels)>1)
   {
-    for(let x=0; x<parseInt(this.newMkpBatch.barrels) ;x++)
+    for(let x=1; x<parseInt(this.newMkpBatch.barrels)+1 ;x++)
     {
       let obj={
         item:{currentItem:this.currentItem,

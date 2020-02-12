@@ -11,7 +11,7 @@
     <td><input  type="text" placeholder="PH" [(ngModel)]="newMkpBatch.ph"></td>
     <td><input  type="text" placeholder="Batch" [(ngModel)]="newMkpBatch.batchNumber"></td>
     <td><button class="btn btn-success" (click)="addNewMkpBatch()">New Batch</button></td>
-    <td><button  #printBtn class="btn btn-success" printSectionId="print-section"
+    <td><button style="visibility: hidden;" #printBtn class="btn btn-success" printSectionId="print-section"
       ngxPrint>Print</button></td>
 
   </tr>
@@ -77,7 +77,7 @@
     </tr>
     <tr style="margin-top:6px;">
       <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">משקל: </label>{{sticker.item.currentWeightKG}} </td>
-      <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">חביות: </label>{{sticker.item.currentBarrels}} </td>
+      <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">חביות: </label>{{sticker.printNum}} </td>
     </tr>
   
     </table>
