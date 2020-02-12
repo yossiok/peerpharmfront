@@ -47,7 +47,6 @@ import { ActiveusersComponent } from './reports/activeusers/activeusers.componen
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
-import { NewProcurementOrderComponent } from './procurement/new-procurement-order/new-procurement-order.component';
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
 import { FirstAidComponent } from './forms/first-aid/first-aid.component';

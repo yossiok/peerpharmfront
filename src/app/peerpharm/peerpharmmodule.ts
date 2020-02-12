@@ -53,7 +53,6 @@ import { ProcurementOrderItemBalanceComponent } from './procurement/procurementO
 import { ProcurementOrdersComponent } from './procurement/procumentOrders/procurementOrders.component';
 import { ProcurementOrderItemComponent } from './procurement/procumentOrderItem/procurementOrderItem.component';
 import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
-import { NewProcurementOrderComponent } from './procurement/new-procurement-order/new-procurement-order.component';
 import { MatAutocomplete, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 
 import {MatSelectModule} from '@angular/material/select';
@@ -215,7 +214,6 @@ import { NewFormuleComponent } from './new-formule/new-formule.component';
     ProcurementOrdersComponent,
     ProcurementOrderItemComponent,
     NewProcurementComponent,
-    NewProcurementOrderComponent,
     WharehouseComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
