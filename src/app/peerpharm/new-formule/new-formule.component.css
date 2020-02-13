@@ -1,0 +1,15 @@
+.formBackGround {
+    background:rgb(253, 232, 175);
+    padding:15px;
+    color:black;
+}
+
+label {
+    margin:3px;
+}
+
+input , select { 
+    margin:3px;
+    border:1px solid rgb(145, 102, 24);
+    border-radius:10px;
+}

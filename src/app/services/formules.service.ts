@@ -109,6 +109,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules/getLastFatherFormule";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getLastBaseFormule(){
+    let url = this.baseUrl + "formules/getLastBaseFormule";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getPhasesByFormuleId(formuleId){
     let url = this.baseUrl + "formules/phases/?byFormuleId="+formuleId;

@@ -1,0 +1,225 @@
+<div *ngIf="formuleAdd == true" class="container formBackGround">
+  <div style="text-align: center;" class="row">
+    <div class="col-12">
+      <h2>New Formule</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Formule Type:</label>
+    </div>
+    <div class="col-1">
+      <select (change)="fillTheNumberByType($event)" [(ngModel)]="newFormule.formuleType">
+        <option value=""></option>
+        <option value="father">אב</option>
+        <option value="base">בסיס</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Formule Number:</label>
+    </div>
+    <div class="col-1">
+      <input (change)="fillTheNameByNumber($event)" style="width:346px" [(ngModel)]="newFormule.formuleNumber" type="number" placeholder="Formule Number">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Formule Name:</label>
+    </div>
+    <div class="col-1">
+      <input [(ngModel)]="newFormule.formuleName" style="width:346px" type="text" placeholder="Formule Name">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Formule Category:</label>
+    </div>
+    <div class="col-1">
+      <select [(ngModel)]="newFormule.formuleCategory">
+        <option *ngFor="let category of allFormuleCategory" [value]="category">{{category}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Date:</label>
+    </div>
+    <div class="col-1">
+      <input [(ngModel)]="newFormule.date" type="date">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2">
+      <label>User:</label>
+    </div>
+    <div class="col-1">
+      <input [(ngModel)]="newFormule.user" type="text" disabled>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>PH Range:</label>
+    </div>
+    <div class="col-2">
+      <input [(ngModel)]="newFormule.phFrom" type="number" placeholder="From">
+    </div>
+    <div class="col-3">
+      <input [(ngModel)]="newFormule.phTo" type="number" placeholder="To">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Important Remarks:</label>
+    </div>
+    <div class="col-4">
+      <input [(ngModel)]="newFormule.impRemarks" style="width:346px !important;" type="text">
+    </div>
+  </div>
+
+  <div style="text-align: center;margin-top:50px;" class="row">
+    <div class="col-12">
+      <button class="btn-success" (click)="moveToPhases()">מעבר לפאזות</button>
+    </div>
+  </div>
+
+</div>
+
+
+<div *ngIf="phaseAdd == true" class="container formBackGround">
+  <div style="text-align: center;" class="row">
+    <div class="col-12">
+      <h2>Add New Phase</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Phase Number:</label>
+    </div>
+    <div class="col-1">
+      <input type="number" [(ngModel)]="newPhase.phaseNumber" placeholder="Phase Number">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Phase Remarks:</label>
+    </div>
+    <div class="col-1">
+      <input type="text" [(ngModel)]="newPhase.remarks" placeholder="Phase Remarks">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <label>Amount Of Items</label>
+    </div>
+    <div class="col-1">
+      <input type="number" [(ngModel)]="newPhase.amountOfItems" placeholder="Amount of items in phase">
+    </div>
+  </div>
+
+  <div style="text-align: center;margin-top:30px;" class="row">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+
+        
+          <th>מק"ט</th>
+          <th>שם פריט</th>
+          <th>אחוזים</th>
+          <th>הערות</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input #itemNumber [(ngModel)]="newItem.itemNumber" (change)="fillMaterialName($event)" type="text"></td>
+          <td><input #itemName [(ngModel)]="newItem.itemName" type="text"></td>
+          <td><input #percentage [(ngModel)]="newItem.percentage" type="number"></td>
+          <td><input #remarks [(ngModel)]="newItem.remarks" type="text"></td>
+          <td><button (click)="addItemsToPhase()" class="btn-success">Add</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-striped">
+      <thead>
+
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of newPhase.items">
+          <td>{{item.itemName}}</td>
+          <td>{{item.itemNumber}}</td>
+          <td>{{item.percentage}}</td>
+          <td>{{item.remarks}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <div style="text-align: center;" class="row">
+    <div class="col-12">
+      <button (click)="addNewPhase()" class="btn-success">הקם פאזה</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="currentFormule" class="container formBackGround">
+  <div class="row">
+    <div class="col-12">
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Phase Number</th>
+            <th>Phase Remarks</th>
+            <th>Batch Number</th>
+            <th>Execute</th>
+            <th>No.</th>
+            <th>Material Name</th>
+            <th>Percentage</th>
+            <th>Material Remarks</th>
+            <th></th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let phase of currentFormule.phases">
+            <tr *ngFor="let item of phase.items">
+              <td *ngIf="phase.formuleId!==EditRowId" (click)="edit(phase.formuleId)">{{phase.phaseNumber}}</td>
+              <td *ngIf="phase.formuleId===EditRowId" (click)="edit(phase.formuleId)">
+                <input #updatePhaseNumber [value]="phase.phaseNumber"  type="text">
+              </td>
+              <td>{{phase.remarks}}</td>
+              <td></td>
+              <td></td>
+              <td>{{item.itemNumber}}</td>
+              <td>{{item.itemName}}</td>
+              <td>{{item.percentage}}</td>
+              <td>{{item.remarks}}</td>
+              <td *ngIf="phase.formuleId===EditRowId"><i class="ti-save" (click)="saveEdit()"></i></td>
+            </tr>
+          </ng-container>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+  <div *ngIf="allPercentage" style="text-align: center;" class="row">
+    <div class="col-12">
+        <label style="color:black;font-size:20px">Percentage:{{allPercentage}}</label> 
+    </div>
+  </div>
