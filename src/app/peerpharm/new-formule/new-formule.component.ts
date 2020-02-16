@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
 
+
+
 @Component({
   selector: 'app-new-formule',
   templateUrl: './new-formule.component.html',
@@ -112,6 +114,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
 
+
   moveToPhases() {
     debugger
     if (this.newFormule.user == "" || this.newFormule.date == "" || this.newFormule.formuleCategory == "" || 
@@ -206,12 +209,36 @@ export class NewFormuleComponent implements OnInit {
     });
   }
 
-  edit(id) {
-    debugger;
-    if (id != '') {
-      this.EditRowId = id;
+  // edit(id) {
+  //   debugger;
+  //   if (id != '') {
+  //     this.EditRowId = id;
+  //   } else {
+  //     this.EditRowId = '';
+  //   }
+  // }
+
+  FinishFormule(){
+    if(this.allPercentage != 100){
+      if(confirm("כמות האחוזים לא שווה 100 , האם תרצה להמשיך ?")) {
+        this.Toastr.success("פורמולה הוקמה בהצלחה !")
+        this.formuleAdd = true;
+        this.phaseAdd = false;
+        this.currentFormule = false;
+
+        this.newFormule.formuleName = ""
+        this.newFormule.formuleNumber = ""
+        this.newFormule.formuleCategory = ""
+        this.newFormule.formuleType = ""
+        this.newFormule.phFrom = ""
+        this.newFormule.phTo = ""
+        this.newFormule.impRemarks = ""
+      }
     } else {
-      this.EditRowId = '';
+      this.Toastr.success("פורמולה הוקמה בהצלחה !")
+      this.formuleAdd = true;
+      this.phaseAdd = false;
+      this.currentFormule = false;
     }
   }
 

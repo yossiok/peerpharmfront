@@ -10,34 +10,7 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
         </div> -->
 
         
-<div style="float:right;" *ngIf="orderDetailsModal==true">
-  <table id="procurementItems" class="table table-responsive">
-    <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
-      <tr>
-        <th></th>
-        <th>Item Name</th>
-        <th>Item Number</th>
-        <th>Measurement</th>
-        <th>Amount</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="table_body">
-      <tr [style.background-color]="line.color" id="procurementOrderItems" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of orderData; let i = index">
-        <td>{{i+1}}</td>
-        <td>{{ line.itemName }}</td>
-        <td>{{ line.itemNumber }}</td>
-        <td>{{ line.measurement }}</td>
-        <td *ngIf="line.itemNumber==EditRowId">
-            <input [(ngModel)]="arrivedAmount" [value]="line.arrivedAmount" style="width:50px;" type="text">/{{ line.supplierAmount }}
-          </td>
-        <td (click)="edit(line.itemNumber)" *ngIf="line.itemNumber!=EditRowId">{{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
-        <td *ngIf="line.itemNumber==EditRowId"><i (click)="checkIfArrived(line.itemNumber,line.orderNumber,i)" class="fa fa-check" aria-hidden="true"></i></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+
 
 <table>
   <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
@@ -162,3 +135,57 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
 </div>
 </div>
 </div>
+
+
+<div  *ngIf="orderDetailsModal==true" id="myModal3" class="modal3"  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:50px;font-size:20px;'>
+
+  <div class="modal-content" id='modelC'>
+    <div style="display: inline-block;" id="material-header" class="modal-header">
+  
+      <span class="close" id="closeId3" (click)="orderDetailsModal=false;">&times;</span>
+     
+    </div>
+
+  
+    <div class="container" id="material-body" class="modal-body">
+      <table id="procurementItems" class="table table-striped">
+        <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+          <tr>
+            <th></th>
+            <th>Item Name</th>
+            <th>Item Number</th>
+            <th>Measurement</th>
+            <th>Coin</th>
+            <th>Amount</th>
+            <th></th>
+            <th></th>
+           
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          <ng-container *ngFor="let order of orderData">
+          <tr [style.background-color]="line.color" id="procurementOrderItems" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of order.item; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{ line.itemName }}</td>
+            <td>{{ line.itemNumber }}</td>
+            <td>{{ line.measurement }}</td>
+            <td>{{ line.coin }}</td>
+            <td *ngIf="line.itemNumber==EditRowId">
+                <input #arrivedAmount [value]="line.arrivedAmount" style="width:50px;" type="text">/
+              </td>
+              <td *ngIf="line.itemNumber==EditRowId">
+                <input #orderAmount [value]="line.supplierAmount" style="width:50px;" type="text">
+              </td>
+            <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
+            
+            <td *ngIf="line.itemNumber==EditRowId"><i (click)="checkIfArrived(line.itemNumber,line.orderNumber,i)" class="fa fa-check" aria-hidden="true"></i></td>
+            <td><i (click)="deleteFromOrder(line.itemNumber,line.orderNumber)" class="fa fa-trash"></i></td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+  
+    </div>
+  
+  </div>
+  </div>

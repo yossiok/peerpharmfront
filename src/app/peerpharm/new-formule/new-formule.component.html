@@ -155,12 +155,18 @@
 
     <table class="table table-striped">
       <thead>
-
+        <tr>
+          <th>מק"ט</th>
+          <th>שם פריט</th>
+          <th>אחוזים</th>
+          <th>הערות</th>
+        </tr>
+     
       </thead>
       <tbody>
         <tr *ngFor="let item of newPhase.items">
-          <td>{{item.itemName}}</td>
           <td>{{item.itemNumber}}</td>
+          <td>{{item.itemName}}</td>
           <td>{{item.percentage}}</td>
           <td>{{item.remarks}}</td>
         </tr>
@@ -182,8 +188,10 @@
       <table class="table table-striped">
         <thead>
           <tr>
+            
             <th>Phase Number</th>
             <th>Phase Remarks</th>
+            <th>#</th>
             <th>Batch Number</th>
             <th>Execute</th>
             <th>No.</th>
@@ -195,13 +203,14 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let phase of currentFormule.phases">
-            <tr *ngFor="let item of phase.items">
+          <ng-container *ngFor="let phase of currentFormule.phases;">
+            <tr *ngFor="let item of phase.items;let i = index">
               <td *ngIf="phase.formuleId!==EditRowId" (click)="edit(phase.formuleId)">{{phase.phaseNumber}}</td>
               <td *ngIf="phase.formuleId===EditRowId" (click)="edit(phase.formuleId)">
                 <input #updatePhaseNumber [value]="phase.phaseNumber"  type="text">
               </td>
               <td>{{phase.remarks}}</td>
+              <td>{{i+1}}</td>
               <td></td>
               <td></td>
               <td>{{item.itemNumber}}</td>
@@ -221,5 +230,11 @@
   <div *ngIf="allPercentage" style="text-align: center;" class="row">
     <div class="col-12">
         <label style="color:black;font-size:20px">Percentage:{{allPercentage}}</label> 
+    </div>
+  </div>
+  <br><br>
+  <div *ngIf="currentFormule" style="text-align: center;" class="row">
+    <div class="col-12">
+      <button (click)="FinishFormule()" class="btn-success">סיום הקמת פורמולה</button>
     </div>
   </div>

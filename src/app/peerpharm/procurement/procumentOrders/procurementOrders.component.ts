@@ -25,12 +25,15 @@ export class ProcurementOrdersComponent implements OnInit {
   hasMoreItemsToload: boolean = true;
   orderData:any[];
   EditRowId:any="";
-  arrivedAmount:"";
+
   totalAmount:any;
   totalPrice:any;
   importantRemarks:any;
   orderDate:any;
   outOfCountry:any;
+
+  @ViewChild('arrivedAmount') arrivedAmount: ElementRef;
+  @ViewChild('orderAmount') orderAmount: ElementRef;
   
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -175,7 +178,7 @@ export class ProcurementOrdersComponent implements OnInit {
     var order = [];
     order.push(this.procurementData[index])
 
-    this.orderData = order[0].item
+    this.orderData = order
   }
 
   closeOrder(orderNumber){
@@ -190,24 +193,43 @@ export class ProcurementOrdersComponent implements OnInit {
     })
   }  
 
+  deleteFromOrder(itemNumber,orderNumber){
+    if(confirm("האם למחוק פריט מספר "+itemNumber)) {
+      this.procurementservice.deleteItemFromOrder(itemNumber,orderNumber).subscribe(data=>{
+        debugger;
+        if(data) {
+          this.toastr.success("פריט נמחק בהצלחה")
+          this.procurementData = data;
+ 
+        }   
+      })
+    }
+  
+  }
+
   checkIfArrived(itemNumber,orderNumber,index){
-    var arrivedAmount = this.arrivedAmount
+    debugger;
+    var arrivedAmount = this.arrivedAmount.nativeElement.value;
+    var orderAmount = this.orderAmount.nativeElement.value;
+  
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount).subscribe(data=>{
+      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount).subscribe(data=>{
         debugger
       for (let i = 0; i < this.procurementData.length; i++) {
         if(this.procurementData[i].orderNumber == orderNumber) {
-          if(this.procurementData[i].item[index].supplierAmount > arrivedAmount) {
+          if(Number(this.procurementData[i].item[index].supplierAmount) > Number(arrivedAmount)) {
             this.procurementData[i].item[index].color = 'lightyellow'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount
+            this.procurementData[i].item[index].supplierAmount = orderAmount
             this.toastr.success("כמות עודכנה בהצלחה !")
             this.edit('');
           }
-          if(this.procurementData[i].item[index].supplierAmount == arrivedAmount) {
+          if(Number(this.procurementData[i].item[index].supplierAmount) == Number(arrivedAmount)) {
             this.procurementData[i].item[index].color = 'lightgreen'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount
+            this.procurementData[i].item[index].supplierAmount = orderAmount
            
             this.toastr.success("כמות עודכנה בהצלחה !")
             this.edit('');
