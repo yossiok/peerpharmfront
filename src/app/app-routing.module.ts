@@ -7,20 +7,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
 import { UserloggedinGuard } from './guards/userloggedin.guard';
-import { SignupComponent } from './shared/auth/signup.component';
-import { ItemdetaisComponent } from './peerpharm/items/itemdetais/itemdetais.component';
+import { SignupComponent } from './shared/auth/signup.component'; 
 import { MyiframeComponent } from './myiframe/myiframe.component';
 
 
 export const Approutes: Routes = [
-  {
-    path: 'items/itemDetails',
-    component: ItemdetaisComponent
-  },
-  {
-    path: 'items/itemDetails/:itemNumber',
-    component: ItemdetaisComponent
-  },
+   
   {
     path: 'login',
     component: LoginComponent

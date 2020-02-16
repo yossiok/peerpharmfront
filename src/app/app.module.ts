@@ -51,8 +51,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
-import { ConfirmModalComponent } from './services/confirm.modal.service';
-import { ItemdetaisComponent } from './peerpharm/items/itemdetais/itemdetais.component';
+import { ConfirmModalComponent } from './services/confirm.modal.service'; 
 import { OrdersService } from './services/orders.service'
 
 
@@ -87,8 +86,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SpinnerComponent,
     FullComponent,
     BlankComponent,
-    NavigationComponent,
-    ItemdetaisComponent,
+    NavigationComponent, 
     BreadcrumbComponent,
     SidebarComponent ,
     LoginComponent, 

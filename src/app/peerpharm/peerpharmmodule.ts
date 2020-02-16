@@ -45,6 +45,7 @@ import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
+
 import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
@@ -113,6 +114,7 @@ import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component'; 
+import { ItemdetaisComponent } from './items/itemdetais/itemdetais.component';
 //import { NewFormuleComponent } from './new-formule/new-formule.component';
 
 
@@ -206,6 +208,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     MakeupComponent,
     FormslistComponent,
     FormdetailsComponent,
+    ItemdetaisComponent,
     ItemDetailsTabComponent,
     ItemDocumentsComponent,
     NotificationComponent,
