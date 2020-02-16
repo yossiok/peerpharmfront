@@ -4,7 +4,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
  import { JsonpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxBarcodeModule } from 'ngx-barcode';
@@ -112,7 +112,7 @@ import { AddProcurementItemDialog } from './procurement/add-procurement-item-dia
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
-import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
+import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component'; 
 //import { NewFormuleComponent } from './new-formule/new-formule.component';
 
 
@@ -133,6 +133,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     NgbModule,
     NgxBarcodeModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatGridListModule,
     MatMenuModule,
@@ -212,7 +213,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
     ProcurementOrdersComponent,
     ProcurementOrderItemComponent,
     NewProcurementComponent,
-    WharehouseComponent,
+    WharehouseComponent, 
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
     MaterialArrivalComponent,
