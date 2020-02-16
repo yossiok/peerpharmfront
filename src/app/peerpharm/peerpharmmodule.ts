@@ -4,7 +4,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
  import { JsonpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxBarcodeModule } from 'ngx-barcode';
@@ -23,7 +23,7 @@ import {MakeupdetailsComponent} from './allorders/makeupdetails/makeupdetails.co
 import {ScheduleComponent} from './schedule/filling/schedule.component';
 import {BarcodePrintComponent} from './schedule/barcode-print/barcode-print.component';
 import {ItemslistComponent} from './items/itemslist/itemslist.component'
-import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
+
 import {PlateComponent} from './plate/plate.component'
 import {StockComponent} from './inventory/stock/stock.component'
 import {NeworderComponent} from './allorders/neworder/neworder.component'
@@ -107,14 +107,13 @@ import { DateExpiredDirective } from '../directives/date-expired.directive';
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
-import { OrdersService } from '../services/orders.service';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 import { AddProcurementItemDialog } from './procurement/add-procurement-item-dialog/add-procurement-item-dialog';
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
-import { NewFormuleComponent } from './new-formule/new-formule.component';
+//import { NewFormuleComponent } from './new-formule/new-formule.component';
 
 
 
@@ -127,7 +126,7 @@ import { NewFormuleComponent } from './new-formule/new-formule.component';
   imports: [ 
     CommonModule,
     RouterModule.forChild(PeerPharmRputs),
-    ReactiveFormsModule,
+   
     JsonpModule,
     HttpClientModule,
     MatCheckboxModule,
@@ -167,7 +166,7 @@ import { NewFormuleComponent } from './new-formule/new-formule.component';
     OrdersComponent,
     AllordersComponent,
     OrderdetailsComponent,
-    NewFormuleComponent,
+    //NewFormuleComponent,
     MakeupdetailsComponent,
     NeworderComponent, 
     NeworderComponent,
@@ -183,8 +182,7 @@ import { NewFormuleComponent } from './new-formule/new-formule.component';
     FirstAidComponent,
     ScheduleComponent,
     BarcodePrintComponent,
-    ItemslistComponent,
-    ItemdetaisComponent,
+    ItemslistComponent, 
     QaPalletsComponent,
     PlateComponent,
     StockComponent,
@@ -240,7 +238,7 @@ import { NewFormuleComponent } from './new-formule/new-formule.component';
 
   ],
   entryComponents:[AddProcurementItemDialog],
-  providers: [ OrdersService, HttpClientModule,   MatAutocompleteModule,  {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
+  providers: [ HttpClientModule,   MatAutocompleteModule,  {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA

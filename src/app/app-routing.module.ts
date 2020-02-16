@@ -8,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { UserloggedinGuard } from './guards/userloggedin.guard';
 import { SignupComponent } from './shared/auth/signup.component';
+import { ItemdetaisComponent } from './peerpharm/items/itemdetais/itemdetais.component';
 import { MyiframeComponent } from './myiframe/myiframe.component';
 
 
@@ -21,6 +22,14 @@ export const Approutes: Routes = [
     component: SignupComponent
   },
   {
+    path: 'items/itemDetails',
+    component: ItemdetaisComponent
+  },
+  {
+    path: 'items/itemDetails/:itemNumber',
+    component: ItemdetaisComponent
+  },
+  {
     path: '',
     component: FullComponent,
     canActivate:[UserloggedinGuard], 
@@ -30,6 +39,7 @@ export const Approutes: Routes = [
         path: 'starter',
         loadChildren: './starter/starter.module#StarterModule'
       },
+     
       {
         path: 'component',
         loadChildren: './component/component.module#ComponentsModule'

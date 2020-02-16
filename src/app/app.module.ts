@@ -13,7 +13,7 @@ import {
   HashLocationStrategy
 } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 //
@@ -52,6 +52,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
 import { ConfirmModalComponent } from './services/confirm.modal.service';
+import { ItemdetaisComponent } from './peerpharm/items/itemdetais/itemdetais.component';
+import { OrdersService } from './services/orders.service'
 
 
 
@@ -86,6 +88,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FullComponent,
     BlankComponent,
     NavigationComponent,
+    ItemdetaisComponent,
     BreadcrumbComponent,
     SidebarComponent ,
     LoginComponent, 
@@ -95,6 +98,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   entryComponents:[ConfirmModalComponent],
   imports: [
+    ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -110,12 +114,14 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FormsModule,
    // AmplifyAngularModule   ,
     HttpModule,
+
     NgbModule.forRoot(),
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule,
     NgxBarcodeModule.forRoot()
   ],
   providers: [
+    OrdersService,
     MatSnackBar, 
     OVERLAY_PROVIDERS,
    // AmplifyService,
