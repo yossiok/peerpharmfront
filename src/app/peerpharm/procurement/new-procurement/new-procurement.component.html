@@ -139,7 +139,14 @@
                 </div>
                 <div class="row">
                   <label class="control-label">נתוני מכירה לפי מטבע : </label>
-                  <input #coin [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.coin" class="form-control custom-select">
+                  <select #coin [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.coin" class="form-control custom-select">
+                    <option value=""></option>
+                    <option value="usd">USD</option>
+                    <option value="nis">NIS</option>
+                    <option value="gbp">GBP</option>
+                    <option value="eur">EUR</option>
+                    <option value="yen">YEN</option>
+                  </select>
                 </div>
                 <div class="row">
                   <div class="col-md-3">
@@ -159,20 +166,21 @@
                   <div class="col-md-6">
                     <table class="table table-bordered">
                       <thead>
-                        <th>מידה</th>
-                        <th>מחיר</th>
-                        <th>כמות</th>
                         <th>מספר פריט</th>
                         <th>שם פריט</th>
+                        <th>כמות</th>
+                        <th>מידה</th>
+                        <th>מחיר</th>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let item of this.newProcurement.item">
+                        <tr *ngFor="let item of newProcurement.item">
 
-                          <td>{{item.measurement}}</td>
-                          <td>{{item.supplierPrice}}</td>
-                          <td>{{item.supplierAmount}}</td>
                           <td>{{item.itemNumber}}</td>
                           <td>{{item.itemName}}</td>
+                          <td>{{item.measurement}}</td>
+                          <td>{{item.supplierAmount}}</td>
+                          <td>{{item.supplierPrice}}</td>
+                          
                         
                         </tr>
                       </tbody>

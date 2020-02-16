@@ -353,7 +353,7 @@ openPrint(printFormule,formuleNum) {
 loadDataPrint(formuleNum) {
   debugger;
   var formuleToUpdate = [];
- formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
+ formuleToUpdate = this.allFormules.find(formule => formule.formuleNumber == formuleNum);
  this.updateFormule = formuleToUpdate
 }
 

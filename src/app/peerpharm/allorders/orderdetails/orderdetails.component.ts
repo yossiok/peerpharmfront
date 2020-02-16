@@ -128,6 +128,7 @@ export class OrderdetailsComponent implements OnInit {
     orderNumber: '',
     batch:'',
     itemRemarks:'',
+    invoice:'',
     formuleCheck:'',
     componentCheck:'',
     compiled: [],
@@ -182,6 +183,7 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('id') id: ElementRef;
   @ViewChild('inputBatch') inputBatch: ElementRef;
   @ViewChild('componentCheck') componentCheck: ElementRef;
+  @ViewChild('mkpProdInvoice') mkpProdInvoice: ElementRef;
 
   @ViewChild('date') date: ElementRef;
   @ViewChild('shift') shift: ElementRef;
@@ -889,8 +891,8 @@ editBatch(batch){
     });
   }
 
-  setMkpSchedule(item, date, remarks){
-    
+  setMkpSchedule(item, date, remarks,invoice){
+    debugger;
     // we should check what about type = '' 
       if(date!=''){
         
@@ -912,6 +914,7 @@ editBatch(batch){
             batch:item.batch,
             quantityProduced: item.quantityProduced,
             date:new Date(date),
+            invoiceNumber:invoice,
             orderItemRemarks:remarks,
             userName: this.authService.loggedInUser.firstName+' '+this.authService.loggedInUser.lastName,
             costumerName:costumer.costumerName,
@@ -921,7 +924,7 @@ editBatch(batch){
           this.scheduleService.setNewMkpProductionSchedule(obj).subscribe(res => {
      
             if(res.item){
-              this.toastSrv.success('Item sent to Mkp production schedule.');
+              this.toastSrv.success('Item sent barcode print');
             }else if(res=='No netWeightK'){
               alert('לפריט מספר '+obj.itemNumber+'\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט');
             }

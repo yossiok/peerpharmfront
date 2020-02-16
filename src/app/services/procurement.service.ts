@@ -120,14 +120,18 @@ export class Procurementservice {
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
   
-  changeColor(itemNumber,orderNumber,arrivedAmount):Observable<any>{
+  changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/changeColor';
-    return this.http.post(url, JSON.stringify({itemNumber,orderNumber,arrivedAmount}), this.options).pipe(map(res=>res.json()));
+    return this.http.post(url, JSON.stringify({itemNumber,orderNumber,arrivedAmount,orderAmount}), this.options).pipe(map(res=>res.json()));
   }
   
   closeOrder(orderNumber):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/closeOrderByNumber';
     return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
+  }
+  deleteItemFromOrder(itemNumber,orderNumber):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/deleteItemFromOrder';
+    return this.http.post(url, JSON.stringify({itemNumber,orderNumber}), this.options).pipe(map(res=>res.json()));
   }
   
   
