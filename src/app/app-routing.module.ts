@@ -14,14 +14,6 @@ import { MyiframeComponent } from './myiframe/myiframe.component';
 
 export const Approutes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent
-    },
-  {
-    path: 'signup',
-    component: SignupComponent
-  },
-  {
     path: 'items/itemDetails',
     component: ItemdetaisComponent
   },
@@ -29,6 +21,15 @@ export const Approutes: Routes = [
     path: 'items/itemDetails/:itemNumber',
     component: ItemdetaisComponent
   },
+  {
+    path: 'login',
+    component: LoginComponent
+    },
+  {
+    path: 'signup',
+    component: SignupComponent
+  },
+
   {
     path: '',
     component: FullComponent,
