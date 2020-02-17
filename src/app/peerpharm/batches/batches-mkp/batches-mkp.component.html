@@ -11,8 +11,8 @@
     <td><input  type="text" placeholder="PH" [(ngModel)]="newMkpBatch.ph"></td>
     <td><input  type="text" placeholder="Batch" [(ngModel)]="newMkpBatch.batchNumber"></td>
     <td><button class="btn btn-success" (click)="addNewMkpBatch()">New Batch</button></td>
-    <td><button style="visibility: hidden;" #printBtn class="btn btn-success" printSectionId="print-section"
-      ngxPrint>Print</button></td>
+    <td><button style="visibility: hidden;" #printBtn [useExistingCss]="true"
+       class="btn btn-success" printSectionId="print-section" ngxPrint>Print</button></td>
 
   </tr>
 <table dir="rtl" class="table table-striped">
@@ -51,33 +51,36 @@
   <div *ngFor="let sticker of allStickers;let i=index">
     <table 
     dir="rtl"
-    [style.width.px]="400"
-    [style.margin.px]="5"
+    [style.width.px]="350"
+    [style.margin.px]="50"
     [style.max-height.px]="600"
-    [style.font-size.px]="25"
+    [style.font-size.px]="27"
     style.font-weight="900"
     style.font-family="Arial"
     [style.border.px]="0">
-      <tr >
+      <tr style="margin-bottom: 50px !important;" >
         <td style="margin-right:10px;width:300px !important;"> <label style="border-bottom: none;">שם החומר:</label>{{sticker.item.currentItemName}}</td>
       </tr>
-      <tr style="margin-top:6px;">
-        <td style="border-bottom: 2px solid black;"><label style="border-bottom: none;">אצווה:</label> {{sticker.item.currentBatchNumber}}</td>
+      <br>
+      <br>
+      <br>
+      <tr style="margin-bottom:15px !important;">
+        <td style="border-bottom: 2px solid black;margin-bottom:5px !important;"><label style="border-bottom: none;">אצווה:</label> {{sticker.item.currentBatchNumber}}</td>
       </tr>
-      <tr style="margin-top:6px;">
-      <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">ת.ייצור: </label>{{sticker.item.currentProduced}}</td>
-      <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">מק"ט: </label>{{sticker.item.currentItem}}  </td>
+      <tr style="margin-bottom:15px !important;">
+      <td style="border-bottom: 2px solid black;width:150px;margin-bottom:5px !important;"><label style="border-bottom: none;">ת.ייצור: </label>{{sticker.item.currentProduced}}</td>
+      <td style="border-bottom: 2px solid black;width:150px;margin-bottom:5px !important;"><label style="border-bottom: none;">מק"ט: </label>{{sticker.item.currentItem}}  </td>
     </tr>
-    <tr style="margin-top:6px;">
-      <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">ת.תפוגה: </label>{{sticker.item.currentExpDate}}</td> 
-      <td style="border-bottom: 2px solid black;width:150px" dir="rtl"><label>PH: </label>{{sticker.item.currentPH}} </td>
+    <tr style="margin-bottom:15px !important;">
+      <td style="border-bottom: 2px solid black;width:150px;margin-bottom:5px !important;"><label style="border-bottom: none;">ת.תפוגה: </label>{{sticker.item.currentExpDate}}</td> 
+      <td style="border-bottom: 2px solid black;width:150px;margin-bottom:5px !important;" dir="rtl"><label>PH: </label>{{sticker.item.currentPH}} </td>
     </tr>
-    <tr style="margin-top:6px;">
-      <td style="border-bottom: 2px solid black;"><label style="border-bottom: none;">מ' הזמנה: </label> {{sticker.item.currentOrderN}}</td>
+    <tr style="margin-bottom:15px !important;">
+      <td style="border-bottom: 2px solid black;margin-bottom:5px !important;"><label style="border-bottom: none;">מ' הזמנה: </label> {{sticker.item.currentOrderN}}</td>
     </tr>
-    <tr style="margin-top:6px;">
-      <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">משקל: </label>{{sticker.item.currentWeightKG}} </td>
-      <td style="border-bottom: 2px solid black;width:150px"><label style="border-bottom: none;">חביות: </label>{{sticker.printNum}} </td>
+    <tr style="margin-bottom:15px !important;">
+      <td style="border-bottom: 2px solid black;width:150px;margin-bottom:5px !important;"><label style="border-bottom: none;">משקל: </label>{{sticker.item.currentWeightKG}} </td>
+      <td style="border-bottom: 2px solid black;width:150px;margin-bottom:5px !important;"><label style="border-bottom: none;">חביות: </label>{{sticker.printNum}} </td>
     </tr>
   
     </table>
