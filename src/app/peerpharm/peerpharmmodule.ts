@@ -115,7 +115,7 @@ import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.comp
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component'; 
 import { ItemdetaisComponent } from './items/itemdetais/itemdetais.component';
-//import { NewFormuleComponent } from './new-formule/new-formule.component';
+import { NewFormuleComponent } from './new-formule/new-formule.component';
 
 
 
@@ -169,7 +169,7 @@ import { ItemdetaisComponent } from './items/itemdetais/itemdetais.component';
     OrdersComponent,
     AllordersComponent,
     OrderdetailsComponent,
-    //NewFormuleComponent,
+    NewFormuleComponent,
     MakeupdetailsComponent,
     NeworderComponent, 
     NeworderComponent,
