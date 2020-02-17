@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ToastrService } from 'ngx-toastr';
 import { SuppliersService } from 'src/app/services/suppliers.service';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -14,7 +15,7 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
 
 export class ProcurementOrdersComponent implements OnInit {
 
-
+  allComponents:any[];
   printBill:boolean = false;
   orderDetailsModal:boolean = false;
   procurementData: any[];
@@ -34,6 +35,8 @@ export class ProcurementOrdersComponent implements OnInit {
 
   @ViewChild('arrivedAmount') arrivedAmount: ElementRef;
   @ViewChild('orderAmount') orderAmount: ElementRef;
+  @ViewChild('referenceNumber') referenceNumber: ElementRef;
+  @ViewChild('arrivalDate') arrivalDate: ElementRef;
   
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -44,12 +47,13 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   constructor( 
-    private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService,private supplierService:SuppliersService
+    private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService,private supplierService:SuppliersService,private inventoryService:InventoryService
   ) {}
 
   ngOnInit() {
     console.log('Enter');
     this.getAllProcurementOrders();
+    this.getAllComponents();
   }
 
   getAllProcurementOrders() {
@@ -110,6 +114,58 @@ export class ProcurementOrdersComponent implements OnInit {
       this.procurementData = this.procurementDataCopy
     }
 
+  }
+  searchByReference(ev){
+   
+    var referenceNumber = ev.target.value;
+    var tempArr = []
+    if(referenceNumber != ""){
+     for (let i = 0; i < this.procurementData.length; i++) {
+       for (let j = 0; j < this.procurementData[i].item.length; j++) {
+        if(this.procurementData[i].item[j].referenceNumber == referenceNumber) {
+          tempArr.push(this.procurementData[i])
+        }
+         
+       }
+       
+     }
+      this.procurementData = tempArr
+    } else {
+      this.procurementData = this.procurementDataCopy
+    }
+
+  }
+  searchByItem(ev){
+   
+    var itemNumber = ev.target.value;
+    var tempArr = []
+    if(itemNumber != ""){
+     for (let i = 0; i < this.procurementData.length; i++) {
+       for (let j = 0; j < this.procurementData[i].item.length; j++) {
+        if(this.procurementData[i].item[j].itemNumber == itemNumber) {
+          tempArr.push(this.procurementData[i])
+        }
+         
+       }
+       
+     }
+      this.procurementData = tempArr
+    } else {
+      this.procurementData = this.procurementDataCopy
+    }
+
+  }
+
+  getAllComponents(){
+    this.inventoryService.getAllComponents().subscribe(data=>{
+      debugger;
+      this.allComponents = data;
+      if(data.length > 3000) {
+        this.hasMoreItemsToload = false;
+      }
+     
+
+    })
   }
 
 
@@ -221,6 +277,18 @@ export class ProcurementOrdersComponent implements OnInit {
     })
     }
   }
+  closeOrder(orderNumber){
+    if(confirm("האם לסגור הזמנה זו  ?")) {
+    this.procurementservice.closeOrder(orderNumber).subscribe(data=>{
+      if(data) {
+        this.procurementData = data;
+        this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
+      } else { 
+        this.toastr.error('error')
+      }
+    })
+    }
+  }
 
   deleteFromOrder(itemNumber,orderNumber){
     if(confirm("האם למחוק פריט מספר "+itemNumber)) {
@@ -240,11 +308,20 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
     var arrivedAmount = this.arrivedAmount.nativeElement.value;
     var orderAmount = this.orderAmount.nativeElement.value;
+    var arrivalDate = this.arrivalDate.nativeElement.value;
+    var referenceNumber = this.referenceNumber.nativeElement.value;
+
+    if(arrivedAmount == 'undefined'){
+      arrivedAmount = null;
+    }
+    if(referenceNumber == "undefined" || referenceNumber == undefined){
+      referenceNumber = null;
+    }
   
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount).subscribe(data=>{
+      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount,arrivalDate,referenceNumber).subscribe(data=>{
         debugger
       for (let i = 0; i < this.procurementData.length; i++) {
         if(this.procurementData[i].orderNumber == orderNumber) {
@@ -252,13 +329,17 @@ export class ProcurementOrdersComponent implements OnInit {
             this.procurementData[i].item[index].color = 'lightyellow'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount
             this.procurementData[i].item[index].supplierAmount = orderAmount
-            this.toastr.success("כמות עודכנה בהצלחה !")
+            this.procurementData[i].item[index].arrivalDate = arrivalDate
+            this.procurementData[i].item[index].referenceNumber = referenceNumber
+            this.toastr.success(" עודכן בהצלחה !")
             this.edit('');
           }
           if(Number(this.procurementData[i].item[index].supplierAmount) == Number(arrivedAmount)) {
             this.procurementData[i].item[index].color = 'lightgreen'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount
             this.procurementData[i].item[index].supplierAmount = orderAmount
+            this.procurementData[i].item[index].arrivalDate = arrivalDate
+            this.procurementData[i].item[index].referenceNumber = referenceNumber
            
             this.toastr.success("כמות עודכנה בהצלחה !")
             this.edit('');

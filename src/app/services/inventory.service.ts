@@ -123,6 +123,11 @@ addNewMaterial(materialObj):Observable<any>{
   let url = this.baseUrl + "material/add";
   return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
 }
+addNewRecommendation(purchaseRecommend):Observable<any>{ 
+  
+  let url = this.baseUrl + "component/newPurchaseRecommend";
+  return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(map(res => res.json()))
+}
 
   getComponentsAmounts():Observable<any>{
     let url = this.baseUrl + "itemShell?amounts=yes";

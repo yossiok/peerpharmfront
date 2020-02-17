@@ -1,197 +1,271 @@
-<button class="btn" style="background:lightcoral">הזמנה בוטלה</button>
-<button class="btn" style="background:lightyellow">הזמנה נשלחה ללקוח</button>
-<button class="btn" style="background:lightgreen">הזמנה הגיעה ללקוח</button>
-<br>
-<br>
-<input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Order Number" (change)="searchNumber($event)"/>
-<input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Supplier Name" (change)="searchBySupplier($event)"/>
 
-From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
-<img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
-        (click)="exportAsXLSX()">
-        <!-- <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
-          <div class="loader">Loading More Items...</div>
-          <br/> 
-        </div> -->
-
-        
-
-
-<table>
-  <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
-    <tr>
-      <th><b>#</b></th>
-      <th><b>Procurement Number</b></th>
-      <th><b>Supplier Number</b></th>
-      <th><b>Supplier Name</b></th>
-      <th><b>תאריך יציאה</b></th>
-      <th><b>תאריך קבלה</b></th>
-      <th></th>
-      <th></th>
-      <th><b>נשלח ללקוח</b></th>
-      <th><b>התקבל אצל הלקוח</b></th>
-    </tr>
-  </thead>
-  <tbody id="table_body">
-    <tr  style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
-      <td>{{i+1}}</td>
-      <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span style="color:blue;">{{line.orderNumber}}</span></td>
-      <td>{{ line.supplierNumber }}</td>
-      <td>{{ line.supplierName }}</td>
-      <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
-      <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
-      <td><button class="btn-danger" (click)="cancelOrder(line.orderNumber)">Cancel Order</button></td>
-      <td><button class="btn-success" (click)="printOrder(line)">Print Order</button></td>
-      <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
-      <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td>
+<ngb-tabset>
+  <ngb-tab title="הזמנות רכש">
+    <ng-template ngbTabContent>
       
-    </tr>
-  </tbody>
-</table>
-
-
-
-
-<div id="print-section">
-<div  *ngIf="printBill==true" id="myModal3" class="modal3"  style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:80px;top:50px;font-size:20px;'>
-
-<div class="modal-content" id='modelC'>
-  <div style="display: inline-block;" id="material-header" class="modal-header">
-
-    <div class="row">
-      <div class="col-5">
-        <img src="../../../../assets/images/logo.png">
-      </div>
-      <div class="col-6">
-        <p>Amarl 17 Street, Afek Industry Park,Rosh Haayin 4809256</p>
-        <p>Tel:+972-3-9024055  Fax: +972-3-9024015 </p>
-        <p>Email: peerpharm@barak.net.il</p>
-      </div>
-   
-      <div class="col-1">
-        <span class="close" id="closeId3" (click)="printBill=false;">&times;</span>
-      </div>
-    </div>
-   
-  </div>
-  <hr>
-
-  <div>
-    <button style="border:none;background: none;margin-left:200px" ngxPrint printSectionId="print-section"  [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
-    <p style="margin-left:330px;k">Order Date:{{orderDate}}</p>
-    <p>{{currentOrder.supplierName}}</p> 
-    <p>{{currentSupplier.address}}</p>
-    <p *ngIf="currentSupplier.phoneNum">Tel:{{currentSupplier.phoneNum}}</p>
-    <p *ngIf="currentSupplier.faxNum">Fax:{{currentSupplier.faxNum}}</p>
-  </div>
-  
-
-  <div class="container" id="material-body" class="modal-body">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Item</th>
-          <th>Item Name</th>
-          <th>Unit</th>
-          <th>Qty</th>
-          <th>Unit Price</th>
-          <th>% Disc</th>
-          <th>Amount</th>
-          
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of currentItems;let i = index;">
-          <td>{{i+1}}</td>
-          <td>{{item.itemNumber}}</td>
-          <td>{{item.itemName}}</td>
-          <td></td>
-          <td>{{item.supplierAmount}}</td>
-          <td>{{item.supplierPrice}}</td>
-          <td></td>
-          <td></td>
-
-        </tr>
-      </tbody>
-
-    </table>
-
-    <div class="row">
-      <div class="col-6">
-        <p style="margin-left:320px;">Total Amont:{{totalAmount}}</p>
-      </div>
-      <div class="col-6">
-        <p style="margin-left:320px;">Total Price:{{totalPrice}}</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-        {{outOfCountry}}
-      </div>
+      <button class="btn" style="background:lightcoral">הזמנה בוטלה</button>
+      <button class="btn" style="background:lightyellow">הזמנה נשלחה ללקוח</button>
+      <button class="btn" style="background:lightgreen">הזמנה הגיעה ללקוח</button>
+      <button class="btn" style="background:lightblue">הזמנה סגורה</button>
       <br>
-      <div class="col-6">
-        {{importantRemarks}}
-      </div>
-    </div>
-
-  </div>
-
-</div>
-</div>
-</div>
-
-
-<div  *ngIf="orderDetailsModal==true" id="myModal3" class="modal3"  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:50px;font-size:20px;'>
-
-  <div class="modal-content" id='modelC'>
-    <div style="display: inline-block;" id="material-header" class="modal-header">
-  
-      <span class="close" id="closeId3" (click)="orderDetailsModal=false;">&times;</span>
-     
-    </div>
-
-  
-    <div class="container" id="material-body" class="modal-body">
-      <table id="procurementItems" class="table table-striped">
+      <br>
+      <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Order Number"
+        (change)="searchNumber($event)" />
+      <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Supplier Name"
+        (change)="searchBySupplier($event)" />
+      <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Item Number"
+        (change)="searchByItem($event)" />
+      <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Reference Number"
+        (change)="searchByReference($event)" />
+      
+      From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr
+        type="date">
+      <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
+        (click)="exportAsXLSX()">
+      <!-- <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
+                <div class="loader">Loading More Items...</div>
+                <br/> 
+              </div> -->
+      
+      
+      
+      
+      <table>
         <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
           <tr>
+            <th><b>#</b></th>
+            <th><b>Procurement Number</b></th>
+            <th><b>Supplier Number</b></th>
+            <th><b>Supplier Name</b></th>
+            <th><b>תאריך יציאה</b></th>
+            <th><b>תאריך קבלה</b></th>
             <th></th>
-            <th>Item Name</th>
-            <th>Item Number</th>
-            <th>Measurement</th>
-            <th>Coin</th>
-            <th>Amount</th>
             <th></th>
-            <th></th>
-           
+            <th><b>נשלח ללקוח</b></th>
+            <th><b>התקבל אצל הלקוח</b></th>
+            <th><b>סגור הזמנה</b></th>
           </tr>
         </thead>
         <tbody id="table_body">
-          <ng-container *ngFor="let order of orderData">
-          <tr [style.background-color]="line.color" id="procurementOrderItems" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of order.item; let i = index">
+          <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+            *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
             <td>{{i+1}}</td>
-            <td>{{ line.itemName }}</td>
-            <td>{{ line.itemNumber }}</td>
-            <td>{{ line.measurement }}</td>
-            <td>{{ line.coin }}</td>
-            <td *ngIf="line.itemNumber==EditRowId">
-                <input #arrivedAmount [value]="line.arrivedAmount" style="width:50px;" type="text">/
-              </td>
-              <td *ngIf="line.itemNumber==EditRowId">
-                <input #orderAmount [value]="line.supplierAmount" style="width:50px;" type="text">
-              </td>
-            <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
-            
-            <td *ngIf="line.itemNumber==EditRowId"><i (click)="checkIfArrived(line.itemNumber,line.orderNumber,i)" class="fa fa-check" aria-hidden="true"></i></td>
-            <td><i (click)="deleteFromOrder(line.itemNumber,line.orderNumber)" class="fa fa-trash"></i></td>
+            <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span style="color:blue;">{{line.orderNumber}}</span>
+            </td>
+            <td>{{ line.supplierNumber }}</td>
+            <td>{{ line.supplierName }}</td>
+            <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
+            <td><button class="btn-danger" (click)="cancelOrder(line.orderNumber)">Cancel Order</button></td>
+            <td><button class="btn-success" (click)="printOrder(line)">Print Order</button></td>
+            <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
+            <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td>
+            <td><i (click)="closeOrder(line.orderNumber)" class="fa fa-thumbs-up" aria-hidden="true"></i></td>
+      
           </tr>
-        </ng-container>
         </tbody>
       </table>
-  
-    </div>
-  
-  </div>
-  </div>
+      
+      
+      
+      
+      <div id="print-section">
+        <div *ngIf="printBill==true" id="myModal3" class="modal3"
+          style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:80px;top:50px;font-size:20px;'>
+      
+          <div class="modal-content" id='modelC'>
+            <div style="display: inline-block;" id="material-header" class="modal-header">
+      
+              <div class="row">
+                <div class="col-5">
+                  <img src="../../../../assets/images/logo.png">
+                </div>
+                <div class="col-6">
+                  <p>Amarl 17 Street, Afek Industry Park,Rosh Haayin 4809256</p>
+                  <p>Tel:+972-3-9024055 Fax: +972-3-9024015 </p>
+                  <p>Email: peerpharm@barak.net.il</p>
+                </div>
+      
+                <div class="col-1">
+                  <span class="close" id="closeId3" (click)="printBill=false;">&times;</span>
+                </div>
+              </div>
+      
+            </div>
+            <hr>
+      
+            <div>
+              <button style="border:none;background: none;margin-left:200px" ngxPrint printSectionId="print-section"
+                [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
+              <p style="margin-left:330px;">Order Date:{{orderDate}}</p>
+              <p>{{currentOrder.supplierName}}</p>
+              <p>{{currentSupplier.address}}</p>
+              <p *ngIf="currentSupplier.phoneNum">Tel:{{currentSupplier.phoneNum}}</p>
+              <p *ngIf="currentSupplier.faxNum">Fax:{{currentSupplier.faxNum}}</p>
+            </div>
+      
+      
+            <div class="container" id="material-body" class="modal-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Item</th>
+                    <th>Item Name</th>
+                    <th>Unit</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                    <th>% Disc</th>
+                    <th>Amount</th>
+      
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of currentItems;let i = index;">
+                    <td>{{i+1}}</td>
+                    <td>{{item.itemNumber}}</td>
+                    <td>{{item.itemName}}</td>
+                    <td></td>
+                    <td>{{item.supplierAmount}}</td>
+                    <td>{{item.supplierPrice}}</td>
+                    <td></td>
+                    <td></td>
+      
+                  </tr>
+                </tbody>
+      
+              </table>
+      
+              <div class="row">
+                <div class="col-6">
+                  <p style="margin-left:320px;">Total Amont:{{totalAmount}}</p>
+                </div>
+                <div class="col-6">
+                  <p style="margin-left:320px;">Total Price:{{totalPrice}}</p>
+                </div>
+              </div>
+      
+              <div class="row">
+                <div class="col-6">
+                  {{outOfCountry}}
+                </div>
+                <br>
+                <div class="col-6">
+                  {{importantRemarks}}
+                </div>
+              </div>
+      
+            </div>
+      
+          </div>
+        </div>
+      </div>
+      
+      
+      <div *ngIf="orderDetailsModal==true" id="myModal3" class="modal3"
+        style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:50px;font-size:20px;'>
+      
+        <div class="modal-content" id='modelC'>
+          <div style="display: inline-block;" id="material-header" class="modal-header">
+      
+            <span class="close" id="closeId3" (click)="orderDetailsModal=false;">&times;</span>
+      
+          </div>
+      
+      
+          <div class="container" id="material-body" class="modal-body">
+            <table id="procurementItems" class="table table-striped">
+              <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+                <tr>
+                  <th></th>
+                  <th>Item Name</th>
+                  <th>Item Number</th>
+                  <th>Measurement</th>
+                  <th>Coin</th>
+                  <th>Amount</th>
+                  <th>Amount Ordered</th>
+                  <th>Arrival Date</th>
+                  <th>Reference Number</th>
+                  <th></th>
+                  <th></th>
+      
+                </tr>
+              </thead>
+              <tbody id="table_body">
+                <ng-container *ngFor="let order of orderData">
+                  <tr [style.background-color]="line.color" id="procurementOrderItems"
+                    style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+                    *ngFor="let line of order.item; let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{ line.itemName }}</td>
+                    <td>{{ line.itemNumber }}</td>
+                    <td>{{ line.measurement }}</td>
+                    <td>{{ line.coin }}</td>
+      
+                    <td *ngIf="line.itemNumber==EditRowId">
+                      <input #arrivedAmount [value]="line.arrivedAmount" style="width:50px;" type="text">/
+                    </td>
+                    <td *ngIf="line.itemNumber==EditRowId">
+                      <input #orderAmount [value]="line.supplierAmount" style="width:50px;" type="text">
+                    </td>
+                    <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">
+                      {{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
+                      <td *ngIf="line.itemNumber!=EditRowId"></td>
+      
+                    <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.arrivalDate }}</td>
+                    <td *ngIf="line.itemNumber==EditRowId">
+                      <input #arrivalDate [value]="line.arrivalDate" style="width:150px;" type="date">
+                    </td>
+      
+                    <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.referenceNumber }}</td>
+                    <td *ngIf="line.itemNumber==EditRowId">
+                      <input #referenceNumber [value]="line.referenceNumber" style="width:150px;" type="text">
+                    </td>
+      
+                    <td *ngIf="line.itemNumber==EditRowId"><i (click)="checkIfArrived(line.itemNumber,line.orderNumber,i)"
+                        class="fa fa-check" aria-hidden="true"></i></td>
+                    <td><i (click)="deleteFromOrder(line.itemNumber,line.orderNumber)" class="fa fa-trash"></i></td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+      
+          </div>
+      
+        </div>
+      </div>
+      
+
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="המלצות רכש">
+    <ng-template ngbTabContent>
+    <table class="table table-striped">
+      <thead class="bg-success text-white">
+        <tr>
+          <th>מספר פריט</th>
+          <th>כמות</th>
+          <th>הערות</th>
+          <th>הוזמן</th>
+        </tr>
+      </thead>
+      <tbody>
+        <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
+          <div class="loader">Loading More Items...</div>
+          <br/> 
+        </div>
+        <ng-container *ngFor="let component of allComponents">
+          <tr *ngFor="let purchase of component.purchaseRecommendations">
+            <td>{{purchase.componentNumber}}</td>
+            <td>{{purchase.amount}}</td>
+            <td>{{purchase.remarks}}</td>
+            <td><i class="fa fa-check-square" aria-hidden="true"></i></td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    </ng-template>
+  </ngb-tab>
+
+
+</ngb-tabset>

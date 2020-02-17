@@ -20,6 +20,14 @@ body {
 
 }
 
+#table-wrapper {
+  height: 100px !important;
+ padding: 0px;
+ margin: 0px auto 0px auto;
+ overflow-y: auto;
+
+}
+
 .tableFixHead          { overflow-y: auto; height: 800px;background:rgba(0, 0, 255, 0);padding:0px; }
 .tableFixHead thead th { position: sticky; top: -5px; background:rgb(17, 17, 223); }
 

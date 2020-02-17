@@ -105,7 +105,7 @@
     <!-- <input #filterbyNum type="text" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)"> -->
     <br>
 
-    <div (click)='setType("component")'  [ngStyle]="{'background-color': buttonColor}" class="navtab"
+    <div (click)='setType("component")' [ngStyle]="{'background-color': buttonColor}" class="navtab"
       style="cursor:pointer;box-shadow: black 0px -1px 3px inset;">Components</div>
     <div (click)='setType("product")' [ngStyle]="{'background-color': buttonColor3}" class="navtab"
       style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Products</div>
@@ -117,63 +117,103 @@
         src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
       <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
         (click)="exportCurrTable()">
-        <button printSectionId="print-section" ngxPrint>print</button> 
+
     </div>
 
 
 
     <!-- TABLE START -->
-    <div  *ngIf="stockType=='component'" class="tableFixHead" >
-    <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
-      <thead style="background: rgb(69, 69, 202);" class='tableHeader text-white'>
-        <tr style="text-align: center;">
+    <div *ngIf="stockType=='component'" class="tableFixHead">
+      <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
+        <thead style="background: rgb(69, 69, 202);z-index: 9999;" class='tableHeader text-white'>
+          <tr style="text-align: center;">
 
-          <th style="width:3%; padding:5px"></th>
-          <th style="width:6%; padding:5px"><b>מספר פריט</b></th>
-          <th style="width:5%; padding:5px;"><b>מק"ט פריט-ספק</b></th>
-          <th style="width:10%; padding:5px"><b>שם</b></th>
-          <th style="width:10%; padding:5px"><b>פריט חלופי</b></th>
-          <th style="width:5%; padding:5px"><b>סוג</b></th>
-          <th style="width:5%; padding:5px"><b>כמות מוקצת</b></th>
-          <th style="width:5%; padding:5px"><b>כמות</b></th>
-          <th style="width:5%; padding:5px"><b>תמונה</b></th>
-          <th style="width:12%; padding:5px"><b>צפי הגעה הזמנת רכש</b></th>
-          <!-- <th style="padding:5px" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th> -->
-          <th style="width:3%; padding:5px"></th>
-        </tr>
+            <th style="width:3%; padding:5px"></th>
+            <th style="width:6%; padding:5px"><b>מספר פריט</b></th>
+            <th style="width:5%; padding:5px;"><b>מק"ט פריט-ספק</b></th>
+            <th style="width:10%; padding:5px"><b>שם</b></th>
+            <th style="width:10%; padding:5px"><b>פריט חלופי</b></th>
+            <th style="width:5%; padding:5px"><b>סוג</b></th>
+            <th style="width:5%; padding:5px"><b>כמות מוקצת</b></th>
+            <th style="width:5%; padding:5px"><b>כמות</b></th>
+            <th style="width:5%; padding:5px"><b>תמונה</b></th>
+            <th></th>
+            <th style="width:12%; padding:5px"><b>צפי הגעה הזמנת רכש</b></th>
+            <!-- <th style="padding:5px" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th> -->
+            <th style="width:3%; padding:5px"></th>
+          </tr>
 
-      </thead>
+        </thead>
 
 
-      <tbody  id="table_body" class="componentTable">
-        <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-          *ngFor="let component of components; let i = index">
-          <td style="width:3%;">{{i+1}}</td>
-          <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}</td>
-          <td style="width:5%; word-break: normal;">{{component.componentNs}}</td>
-          <td style="width:10%;">{{component.componentName}}</td>
-          <td style="width:10%;">{{component.alternativeComponent}}</td>
-          <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
-          <td style="width:5%; cursor: pointer;border-right: 2px solid black;"  (click)="openAllocatedOrders(component.componentN)"  [ngClass]="calcIfLowThenMin(component)" > 
+        <tbody id="table_body" class="componentTable">
+          <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+            *ngFor="let component of components; let i = index">
+            <td style="width:3%;">{{i+1}}</td>
+            <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}
+            </td>
+            <td style="width:5%; word-break: normal;">{{component.componentNs}}</td>
+            <td style="width:10%;">{{component.componentName}}</td>
+            <td style="width:10%;">{{component.alternativeComponent}}</td>
+            <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
+            <td style="width:5%; cursor: pointer;border-right: 2px solid black;"
+              (click)="openAllocatedOrders(component.componentN)" [ngClass]="calcIfLowThenMin(component)">
               {{component.alloAmount}}
-            <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
-            style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
-          <td style="width:5%;cursor: pointer;" (click)="getCmptAmounts(component.componentN, component._id)">
-            {{component.amount}}
-            <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
-              style="width: 40px; margin-left: 15px; cursor: pointer; float: right;">
-            <!-- <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)"
+              <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
+                style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
+            <td style="width:5%;cursor: pointer;" (click)="getCmptAmounts(component.componentN, component._id)">
+              {{component.amount}}
+              <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
+                style="width: 40px; margin-left: 15px; cursor: pointer; float: right;">
+              <!-- <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)"
               style="float:right;">צפיה בכמויות</button> -->
-          </td>
+            </td>
 
-          <!-- <td>
+            <!-- <td>
             <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
           </td> -->
-          <td style="width:5%; text-align: center;">
-            <img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)">
-          </td>
-          <td></td>
-          <!-- <td style="width:12%;">
+          
+            <td style="width:5%; text-align: center;">
+              <img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)">
+            </td>
+            <td>
+              <button (click)="purchaseRecommend(component)" class="btn-success">המלצה לרכש</button>
+            </td>
+            <td>
+   
+              <div id="table-wrapper">
+                <table style="font-size:10px;max-height:100px;" class="table stockTable table-fixed"
+                  *ngIf="component.purchaseOrders.length > 0">
+                  <thead>
+                    <tr>
+                      <th
+                        style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
+                        הזמנת רכש</th>
+                      <th
+                        style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
+                        כמות</th>
+                      <th
+                        style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
+                        תאריך קבלה</th>
+                      <th
+                        style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
+                        סטטוס</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let comp of component.purchaseOrders">
+                      <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseOrder}}</td>
+                      <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseAmount}}</td>
+                      <td style="border:1px solid black;font-size: 10px;padding:0;">
+                        {{comp.purchaseArrival | date :'dd/MM/yyyy'}}</td>
+                      <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseStatus}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </td>
+            <!-- <td style="width:12%;">
             <img src="../../../../assets/images/delivery-clock.png" alt="expectedDelivery"
               style="cursor: pointer; width: 35px; float: right;" (click)="updateExpectedProcurment(component)">
             <button *ngIf="component.procurementSent==true && updateStockItem" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
@@ -193,27 +233,27 @@
               </tbody>
             </table>
           </td> -->
-          <!-- <div *ngIf="updateStockItem" style="width: 100%; padding: 0px 0px"> -->
-          <!-- <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 50%; padding: 0px"/>
+            <!-- <div *ngIf="updateStockItem" style="width: 100%; padding: 0px 0px"> -->
+            <!-- <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 50%; padding: 0px"/>
                 <span> <button class="btn btn-success"(click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span> -->
-          <!-- </div> -->
-          <!-- <button class="btn btn-success" (click)="updateExpectedProcurment(component)">עדכן צפי הגעה</button>        -->
-          <td style="width:3%;">
-            <img *ngIf="stockAdmin" (click)="deleteStockItemValidation(component.componentN)"
-              src="../../../../assets/images/deleteBtn.png" alt="delete stock item"
-              style="width: 60px ; cursor: pointer; ">
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <!-- </div> -->
+            <!-- <button class="btn btn-success" (click)="updateExpectedProcurment(component)">עדכן צפי הגעה</button>        -->
+            <td style="width:3%;">
+              <img *ngIf="stockAdmin" (click)="deleteStockItemValidation(component.componentN)"
+                src="../../../../assets/images/deleteBtn.png" alt="delete stock item"
+                style="width: 60px ; cursor: pointer; ">
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-  </div>
-  
+    </div>
+
     <app-expected-arrivals *ngIf="openProcurementModal" [componentData]='resCmpt'
       (outPutItemsExpectedData)="getNewExpectedArrivalsData($event)"></app-expected-arrivals>
 
 
-    <table  class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
+    <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
       <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
         <tr>
 
@@ -225,7 +265,7 @@
           <th style="width:9%; padding:5px"><b>כמות מוקצת</b></th>
           <th style="width:9%; padding:5px"><b>כמות</b></th>
           <th style="width:9%; padding:5px"></th>
-         
+
           <th style="width:9; padding:5px"><b>תמונה</b></th>
           <!-- <th style="padding:5px"><b>הזמנת רכש</b></th>
             <th style="padding:5px"><b>כמות להזמנת רכש</b></th> -->
@@ -248,9 +288,10 @@
           <!-- <td>{{component.componentNS}}</td> -->
           <td style="width:25%;">{{component.componentName}}</td>
           <!-- <td>{{component.componentType}}</td> -->
-          
-          <td style="width:9%">{{component.productAlloAmount}} <img (click)="openAllocatedProducts(component.componentN)" src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
-            style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
+
+          <td style="width:9%">{{component.productAlloAmount}} <img
+              (click)="openAllocatedProducts(component.componentN)" src="../../../../assets/images/search_plus_blue.png"
+              alt="watch quantities" style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
           <td style="width:9%;">{{component.amount}}</td>
           <td style="width:9%;"><button class="btn btn-info"
               (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
@@ -266,7 +307,7 @@
               
             </div>
           </td> -->
-         
+
           <td style="width:7%;">
             <img (click)="deleteStockItemValidation(component.componentN)" src="../../../../assets/images/deleteBtn.png"
               alt="delete stock item" style="width: 60px ; cursor: pointer; ">
@@ -298,55 +339,55 @@
     </thead>
     <tbody id="table_body" class="materialsTable">
       <tr style="box-shadow: inset 1px -2px 4px 0px black; margin-top: 10px; height: 10%;"
-      *ngFor="let material of components ; let i = index">
+        *ngFor="let material of components ; let i = index">
 
-          <td style="width:5%">{{i+1}}</td>
-          <td style="width:10%" class="compNum" (click)="openDataMaterial(material.componentN)"> 
-            <div style="float:none;">
-                {{material.componentN}}
-              <!-- <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{material._id}}">
+        <td style="width:5%">{{i+1}}</td>
+        <td style="width:10%" class="compNum" (click)="openDataMaterial(material.componentN)">
+          <div style="float:none;">
+            {{material.componentN}}
+            <!-- <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{material._id}}">
               {{material.componentN}}
               </a> -->
-            </div>
-          </td>
+          </div>
+        </td>
 
-          <td style="width:20%">
-            <div style="float:none;">{{material.componentName}}</div>
-          </td>
-    
-          <td style="width:10%;">
-            <div style="float:none;">{{material.suplierName}}</div>
-          </td>
-          <td style="width:10%;">
-            <div style="float:none;">{{material.price}}{{material.coin}}<br>{{material.measurement}}</div>
-          </td>
-       
-          <td style="width:10%">
-            <div style="width:10%;;float:none;">{{material.threatment}}</div>
-          </td>
+        <td style="width:20%">
+          <div style="float:none;">{{material.componentName}}</div>
+        </td>
 
-          <td style="width:20%;">
-              <div style="float:none;">{{material.remarks}}</div>
-          </td>
+        <td style="width:10%;">
+          <div style="float:none;">{{material.suplierName}}</div>
+        </td>
+        <td style="width:10%;">
+          <div style="float:none;">{{material.price}}{{material.coin}}<br>{{material.measurement}}</div>
+        </td>
 
-          <td style="width:10%">
-            <div style="float:none;">{{material.notInStock}}</div>
-          </td>
+        <td style="width:10%">
+          <div style="width:10%;;float:none;">{{material.threatment}}</div>
+        </td>
 
-          <!-- <td style="width:10%;">
+        <td style="width:20%;">
+          <div style="float:none;">{{material.remarks}}</div>
+        </td>
+
+        <td style="width:10%">
+          <div style="float:none;">{{material.notInStock}}</div>
+        </td>
+
+        <!-- <td style="width:10%;">
             <img [src]=material.img style='width:50px ; cursor: pointer;text-align: center;'
               (click)="openImg(material.img)">
           </td> -->
 
-          <td style="width:7%;">
-            <img (click)="deleteStockItemValidation(component.componentN)" src="../../../../assets/images/deleteBtn.png"
-              alt="delete stock item" style="width: 60px ; cursor: pointer; text-align: center; ">
-          </td>
-    </tr>
+        <td style="width:7%;">
+          <img (click)="deleteStockItemValidation(component.componentN)" src="../../../../assets/images/deleteBtn.png"
+            alt="delete stock item" style="width: 60px ; cursor: pointer; text-align: center; ">
+        </td>
+      </tr>
     </tbody>
   </table>
 
-  <ng-template  #supplierList let-modal>
+  <ng-template #supplierList let-modal>
     <div style="width:140% !important;" class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Alternative Suppliers</h4>
@@ -354,16 +395,17 @@
       <div class="modal-body">
         <table class='table'>
           <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
-        
+
             <tr>
-              <th><input [(ngModel)]="alternativeSupplier.name" placeholder="Alternative Supplier"/></th>
-              <th><input [(ngModel)]="alternativeSupplier.material" placeholder="Alternative Material"/></th>
-              <th><input [(ngModel)]="alternativeSupplier.price" placeholder="Price"/></th>
+              <th><input [(ngModel)]="alternativeSupplier.name" placeholder="Alternative Supplier" /></th>
+              <th><input [(ngModel)]="alternativeSupplier.material" placeholder="Alternative Material" /></th>
+              <th><input [(ngModel)]="alternativeSupplier.price" placeholder="Price" /></th>
               <th><button (click)="addSupplierToArray()">Add</button></th>
             </tr>
           </thead>
           <tbody id="table_body">
-            <tr *ngFor="let alterSupplier of alterSuppliers" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+            <tr *ngFor="let alterSupplier of alterSuppliers"
+              style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
               <td>{{alterSupplier.name}}</td>
               <td>{{alterSupplier.material}}</td>
               <td>{{alterSupplier.price}}</td>
@@ -374,28 +416,29 @@
       <div class="modal-footer">
       </div>
     </div>
-    </ng-template>
+  </ng-template>
 
 
-  <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            ...
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
+  <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
+  </div>
 
 
 
@@ -406,7 +449,7 @@
     style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:185px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
     <!-- Modal content -->
-    <div  class="modal-content" style='width:700px; background: rgb(165, 185, 250);' id='modelC'>
+    <div class="modal-content" style='width:700px; background: rgb(165, 185, 250);' id='modelC'>
       <div class="modal-header">
         <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
         <!-- <img src="peerpharm.png"  width='140px' align='left'> -->
@@ -414,7 +457,8 @@
         <button class="btn btn-primary" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
         <!-- <div class='tabDiv' id='dTag' onclick="changeTag(details)" >פרטים</div><div  class='tabDiv' id='cTag' onclick="changeTag(changes)">רשימת תנועות</div> -->
       </div>
-      <div dir="rtl" class="modal-body" style="overflow-y:scroll; overflow-x:hidden; float:right; height: 500px; padding-left: 0px; background: rgb(165, 185, 250);">
+      <div dir="rtl" class="modal-body"
+        style="overflow-y:scroll; overflow-x:hidden; float:right; height: 500px; padding-left: 0px; background: rgb(165, 185, 250);">
         <div *ngIf="showItemDetails">
           <table id='detailsTable'>
             <tbody id='detailsTbody'>
@@ -424,7 +468,7 @@
                 <th>מק"ט ספק</th>
                 <td><input [(ngModel)]="resCmpt.componentNs" type='text' id="input_idSuplierNumber"></td>
               </tr>
-  
+
               <tr>
                 <th>שם פריט</th>
                 <td><textarea rows='4' cols='30' [(ngModel)]="resCmpt.componentName" style='width:150px'
@@ -434,10 +478,9 @@
               </tr>
               <tr style="width:250px;">
                 <th>פריט חלופי</th>
-                <td><input [(ngModel)]="resCmpt.alternativeComponent" style='width:150px'
-                    id='input_componentName'></td>
-                    <td></td>
-                    <td></td>
+                <td><input [(ngModel)]="resCmpt.alternativeComponent" style='width:150px' id='input_componentName'></td>
+                <td></td>
+                <td></td>
               </tr>
               <tr>
                 <!-- <th >בפועל ml כמות</th>
@@ -537,10 +580,10 @@
                   <input type="checkbox" name="printed" value="printed" id='checkBox_need_print'> דרושה הדפסה </td>
               </tr>
               <tr>
-                  <th>הערה קופצת</th>
-                  <td><textarea [(ngModel)]="resCmpt.jumpRemark" class="itemInput" rows="3" cols="20"></textarea>
-                  </td>
-                </tr>
+                <th>הערה קופצת</th>
+                <td><textarea [(ngModel)]="resCmpt.jumpRemark" class="itemInput" rows="3" cols="20"></textarea>
+                </td>
+              </tr>
               <tr>
                 <!-- <th><button (click)="loadComponentItems()">צפיה בפריטים מקושרים</button></th> -->
                 <th>פריטים מקושרים</th>
@@ -585,7 +628,7 @@
               <td>{{itemMovement.shell_position_in_whareHouse_Origin}}</td>
               <td>{{itemMovement.shell_position_in_whareHouse_Dest}}</td>
               <td>{{itemMovement.WH_originName}}</td>
-              
+
 
             </tr>
 
@@ -595,9 +638,10 @@
       <div class="modal-footer">
         <button class="btn btn-success" id="newCbtn" (click)="writeNewComponent()" *ngIf="newItem=='new'">הקם
           מוצר</button>
-          <div *ngIf="allowUserEditItem">
-        <button class="btn btn-success" id="updateDataBtn" (click)="editStockItemDetails()" *ngIf="newItem!='new'">עדכן
-          מידע</button>
+        <div *ngIf="allowUserEditItem">
+          <button class="btn btn-success" id="updateDataBtn" (click)="editStockItemDetails()"
+            *ngIf="newItem!='new'">עדכן
+            מידע</button>
         </div>
       </div>
     </div>
@@ -753,7 +797,7 @@
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.ps}}</td>
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.sumShelfAmounts}}</td>
                   <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td>
-                  
+
                   <!-- <td>{{shelfAmount.wh}}</td> -->
                 </tr>
 
@@ -810,7 +854,7 @@
             </div>
           </div>
           <div class="fr row justify-content-end" *ngIf="amountChangeDir!='shelfChange'">
-            <h5>הוצאת/קבלת סחורה</h5>  
+            <h5>הוצאת/קבלת סחורה</h5>
             <div class="fr row justify-content-end">
               <button class="col-sm-1.5 ml-1 btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
               <button class="col-sm-1.5 ml-1 btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>
@@ -819,13 +863,13 @@
               <input class="col-sm-2 ml-1" type="text" placeholder="מדף" [(ngModel)]="newItemShelfPosition" />
               <input class="col-sm-2 ml-1" type="number" placeholder="כמות" [(ngModel)]="newItemShelfQnt">
               <!-- <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber"> -->
-              <select (change)="showBatchExpDate($event)" *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"
-                [(ngModel)]="newItemShelfBatchNumber">
+              <select (change)="showBatchExpDate($event)" *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text"
+                placeholder="אצווה" [(ngModel)]="newItemShelfBatchNumber">
                 <option value="" selected>Batch</option>
                 <option *ngFor="let batch of ItemBatchArr" [value]="batch.batchNumber">{{batch.batchNumber}}</option>
 
               </select>
-              
+
 
             </div>
             <div>
@@ -937,12 +981,12 @@
         <table style="box-shadow: 0px 0px 0px" id='detailsTable'>
           <tbody style="box-shadow: 0px 0px 0px" id='detailsTbody'>
             <div style="width: 1200px;" class="row">
-              
+
               <div style="margin-left: 10px;box-shadow: 0px 0px 0px;">
                 <tr>
                   <th>Item Number</th>
-                  <td><input  (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentN" style="margin-left: 1px;" class="itemInput"
-                      type='text'>
+                  <td><input (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentN"
+                      style="margin-left: 1px;" class="itemInput" type='text'>
 
                   </td>
                 </tr>
@@ -957,15 +1001,15 @@
                   </td>
                 </tr>
                 <tr>
-                    <th>INCI Name</th>
-                    <td><input [(ngModel)]="resMaterial.inciName" class="itemInput" type='text'>
-                    </td>
-                  </tr>
-                  <tr>
-                      <th>CAS Number</th>
-                      <td><input [(ngModel)]="resMaterial.casNumber" class="itemInput" type='text'>
-                      </td>
-                    </tr>
+                  <th>INCI Name</th>
+                  <td><input [(ngModel)]="resMaterial.inciName" class="itemInput" type='text'>
+                  </td>
+                </tr>
+                <tr>
+                  <th>CAS Number</th>
+                  <td><input [(ngModel)]="resMaterial.casNumber" class="itemInput" type='text'>
+                  </td>
+                </tr>
                 <tr>
                   <th>Remarks</th>
                   <td><textarea [(ngModel)]="resMaterial.remarks" class="itemInput" rows="5" cols="20"></textarea>
@@ -986,31 +1030,33 @@
                   </td>
                 </tr>
                 <tr>
-                    <th>Frame Quantity (kg)</th>
+                  <th>Frame Quantity (kg)</th>
                   <td>
                     <input [(ngModel)]="resMaterial.frameQuantity" type="text">
                   </td>
                 </tr>
                 <tr>
-                    <th>Frame Supplier</th>
+                  <th>Frame Supplier</th>
                   <td>
                     <input [(ngModel)]="resMaterial.frameSupplier" type="text">
                   </td>
                 </tr>
                 <br>
                 <tr>
-                    <th>Location</th>
+                  <th>Location</th>
                   <td>
-                    <input list="locations" [(ngModel)]="resMaterial.location" (change)="getAllMaterialLocations($event)" type="text">
+                    <input list="locations" [(ngModel)]="resMaterial.location"
+                      (change)="getAllMaterialLocations($event)" type="text">
                     <datalist id="locations">
-                      <option *ngFor="let material of materialLocations" [value]="material.location">{{material.location}}</option>
+                      <option *ngFor="let material of materialLocations" [value]="material.location">
+                        {{material.location}}</option>
                     </datalist>
                   </td>
                 </tr>
                 <tr>
                   <th>Quantity In Stock</th>
                   <td>
-                    <input type="text" [(ngModel)]="resMaterial.quantityInStock"> 
+                    <input type="text" [(ngModel)]="resMaterial.quantityInStock">
                   </td>
                 </tr>
               </div>
@@ -1028,28 +1074,28 @@
                 </tr>
                 <tr>
                   <th>Group</th>
-                  
-                       <td><select [(ngModel)]="resMaterial.group" class="itemInput" type="text"  >
-                         <option value="formule material">חומר גלם לפורמולה</option>
-                         <option value="component">קומפוננט </option>
-                         <option value="print material">חומרי דפוס</option>
-                       </select>
-                       </td>
+
+                  <td><select [(ngModel)]="resMaterial.group" class="itemInput" type="text">
+                      <option value="formule material">חומר גלם לפורמולה</option>
+                      <option value="component">קומפוננט </option>
+                      <option value="print material">חומרי דפוס</option>
+                    </select>
+                  </td>
                 </tr>
                 <tr>
                   <th>Sub Group</th>
-                <td>
-                <select [(ngModel)]="resMaterial.subGroup" class="itemInput">
-                  <option value="Cube">קובייה</option>
-                  <option value="barrel">חבית</option>
-                  <option value="small barrel">חביונית</option>
-                  <option value="packaging/cardboard">אריזות/קרטון</option>
-                  <option value="plastic barrel">חבית פלסטיק</option>
-                  <option value="jerrican">ג'ריקן</option>
-                  <option value="bag">שק</option>
-                  <option value="bottle barrel">דלי בקבוק</option>
-                </select>
-              </td>
+                  <td>
+                    <select [(ngModel)]="resMaterial.subGroup" class="itemInput">
+                      <option value="Cube">קובייה</option>
+                      <option value="barrel">חבית</option>
+                      <option value="small barrel">חביונית</option>
+                      <option value="packaging/cardboard">אריזות/קרטון</option>
+                      <option value="plastic barrel">חבית פלסטיק</option>
+                      <option value="jerrican">ג'ריקן</option>
+                      <option value="bag">שק</option>
+                      <option value="bottle barrel">דלי בקבוק</option>
+                    </select>
+                  </td>
                 </tr>
                 <tr>
                   <th>Sub Group 2</th>
@@ -1060,16 +1106,17 @@
                 <tr>
                   <th style="cursor: pointer" (click)="open(supplierList)"><u>Supplier</u></th>
                   <td>
-                      <select class="itemInput" [(ngModel)]="resMaterial.suplierName">
-                        <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
-                      </select>
+                    <select class="itemInput" [(ngModel)]="resMaterial.suplierName">
+                      <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+                        {{supplier.suplierName}}</option>
+                    </select>
                   </td>
                 </tr>
 
                 <tr>
                   <th>Manufacturer</th>
                   <td>
-                      <input type="text" class="itemInput" [(ngModel)]="resMaterial.manufacturer"/>
+                    <input type="text" class="itemInput" [(ngModel)]="resMaterial.manufacturer" />
                   </td>
                 </tr>
 
@@ -1106,7 +1153,7 @@
 
                   </td>
                 </tr>
-                
+
                 <tr>
                   <th>קוד חירום</th>
                   <td>
@@ -1134,66 +1181,66 @@
                 <tr>
                   <th>Price</th>
                   <td>
-                    <input [(ngModel)]="resMaterial.price" type="text" class="itemInput"/>
+                    <input [(ngModel)]="resMaterial.price" type="text" class="itemInput" />
                   </td>
                 </tr>
                 <tr>
                   <th>coin</th>
                   <td>
                     <select [(ngModel)]="resMaterial.coin" class="itemInput">
-                        <option value="usd">USD</option>
-                        <option value="nis">NIS</option>
-                        <option value="gbp">GBP</option>
-                        <option value="eur">EUR</option>
-                        <option value="yen">YEN</option>
-                      </select>
+                      <option value="usd">USD</option>
+                      <option value="nis">NIS</option>
+                      <option value="gbp">GBP</option>
+                      <option value="eur">EUR</option>
+                      <option value="yen">YEN</option>
+                    </select>
                   </td>
                 </tr>
                 <tr>
                   <th>Price After Loading</th>
                   <td>
-                      <input [(ngModel)]="resMaterial.priceLoading" type="text" class="itemInput"/>
-                    </td>
+                    <input [(ngModel)]="resMaterial.priceLoading" type="text" class="itemInput" />
+                  </td>
                 </tr>
                 <tr>
                   <th>Coin After Loading</th>
                   <td>
                     <select [(ngModel)]="resMaterial.coinLoading" class="itemInput">
-                        <option value="usd">USD</option>
-                        <option value="nis">NIS</option>
-                        <option value="gbp">GBP</option>
-                        <option value="eur">EUR</option>
-                        <option value="yen">YEN</option>
-                      </select>
+                      <option value="usd">USD</option>
+                      <option value="nis">NIS</option>
+                      <option value="gbp">GBP</option>
+                      <option value="eur">EUR</option>
+                      <option value="yen">YEN</option>
+                    </select>
                   </td>
                 </tr>
-                
+
 
                 <tr>
                   <th>Material</th>
                   <td>
                     <select #material class="itemInput">
-                        <option selected></option>
-                        <option value='bottle_Glass'>בקבוק זכוכית</option>
-                        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-                        <option value='jar_Glass'>צנצנת זכוכית</option>
-                        <option value='jar_Plastic'>צנצנת פלסטיק</option>
-                        <option value='cap'>פקק</option>
-                        <option value='cover'>מכסה</option>
-                        <option value='pump'>משאבה</option>
-                        <option value='cosmetic_pump'>משאבה קוסמטית</option>
-                        <option value='over_cap'>מכסה עילי</option>
-                        <option value='tube'>שפורפרת</option>
-                        <option value='colons'>קולונים</option>
-                        <option value='hair_life'>היירלייפ</option>
-                        <option value='compacts'>קומפקטים</option>
-                        <option value='personal_package'>אריזות אישיות</option>
-                        <option value='master_carton'>קרטוני מאסטר</option>
-                        <option value='newsletter'>עלון לצרכן</option>
-                        <option value='irosol_valve'>אירוסול- שסתום</option>
-                        <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-                        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                      <option selected></option>
+                      <option value='bottle_Glass'>בקבוק זכוכית</option>
+                      <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+                      <option value='jar_Glass'>צנצנת זכוכית</option>
+                      <option value='jar_Plastic'>צנצנת פלסטיק</option>
+                      <option value='cap'>פקק</option>
+                      <option value='cover'>מכסה</option>
+                      <option value='pump'>משאבה</option>
+                      <option value='cosmetic_pump'>משאבה קוסמטית</option>
+                      <option value='over_cap'>מכסה עילי</option>
+                      <option value='tube'>שפורפרת</option>
+                      <option value='colons'>קולונים</option>
+                      <option value='hair_life'>היירלייפ</option>
+                      <option value='compacts'>קומפקטים</option>
+                      <option value='personal_package'>אריזות אישיות</option>
+                      <option value='master_carton'>קרטוני מאסטר</option>
+                      <option value='newsletter'>עלון לצרכן</option>
+                      <option value='irosol_valve'>אירוסול- שסתום</option>
+                      <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                      <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+                      <option value='irosol_bottle'>איירוסול- בקבוק</option>
                     </select>
                   </td>
                 </tr>
@@ -1230,7 +1277,7 @@
                 <tr>
                   <th>MSDS</th>
                   <td> <a target="_blank" [href]="linkDownload"> <img style="height: 30px; width:30px;"
-                     src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" /></a>
+                        src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" /></a>
                     <input #msdsInput style="display:none" type="file" (change)="onSelectMsds($event)">
                     <br>
                     <button (click)="msdsInput.click()">Select File</button>
@@ -1240,7 +1287,7 @@
                 <tr>
                   <th>COA Master</th>
                   <td><a target="_blank" [href]="linkDownload"><img style="height: 30px; width:30px;"
-                      src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" /></a>
+                        src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" /></a>
                     <input #coaMasterInput style="display:none" type="file" (change)="onSelectCoaMaster($event)">
                     <br>
                     <button (click)="coaMasterInput.click()">Select File</button>
@@ -1297,7 +1344,7 @@
     <div id="material-footer" class="modal-footer">
       <button class="btn btn-success" id="newCbtn" (click)="writeNewMaterial()">הקם
         מוצר</button>
-        <button class="btn btn-success" id="newCbtn" (click)="clearFields()">Clear</button>
+      <button class="btn btn-success" id="newCbtn" (click)="clearFields()">Clear</button>
       <button class="btn btn-success" id="updateDataBtn" (click)="editMaterialItemDetails()" *ngIf="newItem!='new'">עדכן
         מידע</button>
     </div>
@@ -1311,30 +1358,31 @@
   <!-- Modal content -->
   <div style="width:800px !important" class="modal-content" id='modelC'>
     <div style="width:800px !important;" id="material-header" class="modal-header">
-        <span class="close" id="closeId3" (click)="openOrderAmountsModal=false;">&times;</span>
+      <span class="close" id="closeId3" (click)="openOrderAmountsModal=false;">&times;</span>
       <h2 style="text-align: center">{{openModalHeader}}</h2><br>
     </div>
-    <div style="height: auto !important;width:800px !important;overflow:scroll" class="container" id="material-body" class="modal-body">
-        <table style="background:white;" class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Orders</th>
-                <th scope="col">Allocated Amount</th>
-              </tr>
-            </thead>
-            <tbody >
-              <tr *ngFor="let order of allocatedOrders;let i=index">
-                <td>{{i+1}}</td>
-                <td>{{order.orderNumber}}</td>
-                <td>{{order.allocatedAmount}}</td>
-              </tr>
-            </tbody>
-          </table>
-    
-  </div>
+    <div style="height: auto !important;width:800px !important;overflow:scroll" class="container" id="material-body"
+      class="modal-body">
+      <table style="background:white;" class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Orders</th>
+            <th scope="col">Allocated Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of allocatedOrders;let i=index">
+            <td>{{i+1}}</td>
+            <td>{{order.orderNumber}}</td>
+            <td>{{order.allocatedAmount}}</td>
+          </tr>
+        </tbody>
+      </table>
 
-</div>
+    </div>
+
+  </div>
 </div>
 
 <div style="height:0px !important" *ngIf="openProductAmountModal==true" id="myModal3" class="modal3"
@@ -1343,29 +1391,63 @@
   <!-- Modal content -->
   <div style="width:800px !important" class="modal-content" id='modelC'>
     <div style="width:800px !important;" id="material-header" class="modal-header">
-        <span class="close" id="closeId3" (click)="openProductAmountModal=false;">&times;</span>
+      <span class="close" id="closeId3" (click)="openProductAmountModal=false;">&times;</span>
       <h2 style="text-align: center">{{openModalHeader}}</h2><br>
     </div>
-    <div style="height: auto !important;width:800px !important;overflow:scroll" class="container" id="material-body" class="modal-body">
-        <table style="background:white;" class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Orders</th>
-                <th scope="col">Allocated Amount</th>
-              </tr>
-            </thead>
-            <tbody >
-              <tr *ngFor="let order of allocatedProducts;let i=index">
-                <td>{{i+1}}</td>
-                <td>{{order.orderNumber}}</td>
-                <td>{{order.allocatedQuantity}}</td>
-              </tr>
-            </tbody>
-          </table>
-    
+    <div style="height: auto !important;width:800px !important;overflow:scroll" class="container" id="material-body"
+      class="modal-body">
+      <table style="background:white;" class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Orders</th>
+            <th scope="col">Allocated Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of allocatedProducts;let i=index">
+            <td>{{i+1}}</td>
+            <td>{{order.orderNumber}}</td>
+            <td>{{order.allocatedQuantity}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  
+
   </div>
-
-</div>
 </div>
 
+<div style="height:0px !important" *ngIf="openOrderRecommendModal==true" id="myModal4" class="modal4"
+  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
+
+  <!-- Modal content -->
+  <div style="width:450px !important;height:300px !important" class="modal-content" id='modelC'>
+    <div style="width:450px !important;" id="material-header" class="modal-header">
+      <span class="close" id="closeId3" (click)="openOrderRecommendModal=false;">&times;</span>
+    </div>
+    <div style="height: auto !important;width:450px !important;overflow:scroll" class="container" id="material-body"
+      class="modal-body">
+      <table>
+        <thead>
+          <tr>
+            <th>הערות</th>
+            <th>כמות</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input [(ngModel)]="recommandPurchase.remarks" type="text"></td>
+            <td><input [(ngModel)]="recommandPurchase.amount" type="number"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div style="width:450px !important;text-align: center;" id="material-footer" class="modal-footer">
+      <button (click)="sendRecommandation()" class="btn-success">שלח</button>
+    </div>
+
+  </div>
+</div>

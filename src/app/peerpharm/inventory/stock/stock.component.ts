@@ -32,6 +32,7 @@ export class StockComponent implements OnInit {
   itemmoveBtnTitle: string = "Item Movements";
   loadingMovements: boolean = false;
   showItemDetails: boolean = true;
+  openOrderRecommendModal: boolean = false;
   itemMovements: any = [];
   itemShell:any[];
   materialLocations: any[];
@@ -157,6 +158,12 @@ export class StockComponent implements OnInit {
 
   // material array // 
   materials: any[];
+
+  recommandPurchase: any = {
+    remarks:'',
+    amount:'',
+    componentNumber:''
+  }
   resMaterial: any = {
 
     componentN: "",
@@ -232,7 +239,7 @@ export class StockComponent implements OnInit {
         //   }  
         //  });
         this.components.forEach(c => {
-          debugger;
+
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
             
@@ -240,7 +247,7 @@ export class StockComponent implements OnInit {
           }
         });
         this.componentsUnFiltered.forEach(c => {
-          debugger;
+  
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
           }
@@ -534,9 +541,27 @@ export class StockComponent implements OnInit {
   // }
 
   getAllPurchaseOrders(){
-    debugger;
+ 
     this.procuretServ.getAllComponentsPurchase().subscribe(data=>{
       this.allComponentsPurchases = data;
+    })
+  }
+
+  purchaseRecommend(component){
+    debugger;
+    this.recommandPurchase.componentNumber = component.componentN
+    this.openOrderRecommendModal = true;
+  }
+
+  sendRecommandation(){
+    debugger;
+    this.recommandPurchase
+    this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data=>{
+    debugger;
+    if(data){
+      this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
+      this.openOrderRecommendModal = false;
+    }
     })
   }
 
@@ -546,9 +571,30 @@ export class StockComponent implements OnInit {
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
 
-
-      
-      
+      var allPurchases = this.allComponentsPurchases.filter(order=>order.status != 'canceled');
+    
+      for (let i = 0; i < allPurchases.length; i++) {
+      for (let j = 0; j < allPurchases[i].item.length; j++) {
+       for (let k = 0; k < components.length; k++) {
+        if(components[k].componentN == allPurchases[i].item[j].itemNumber){
+          var obj = {
+            purchaseOrder:'',
+            purchaseAmount:'',
+            purchaseArrival:'',
+            purchaseStatus:''
+          }
+          obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
+          obj.purchaseOrder = allPurchases[i].item[j].orderNumber
+          obj.purchaseArrival = allPurchases[i].validDate
+          obj.purchaseStatus = allPurchases[i].status
+          components[k].purchaseOrders.push(obj)
+        }
+         
+       }
+        
+      } 
+        
+      }
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
@@ -563,7 +609,7 @@ export class StockComponent implements OnInit {
     //  });
       //why are we using set time out and not async await??
       setTimeout(() => {
-        debugger;
+    
         this.inventoryService.getComponentsAmounts().subscribe(res => {
           this.componentsAmount = res;
           // console.log(res);
@@ -831,7 +877,7 @@ export class StockComponent implements OnInit {
                   this.toastSrv.success("Changes Saved");
 
                   this.inventoryService.getAmountOnShelfs(this.resCmpt.componentN).subscribe(async res => {
-                    debugger;
+                  
                     this.itemAmountsData = res.data;
                     this.itemAmountsWh = res.whList;
 
@@ -1062,7 +1108,7 @@ export class StockComponent implements OnInit {
     //??? this.resCmpt has mkp category
     if (this.stockType != "components") {
       await this.batchService.getBatchesByItemNumber(cmptNumber + "").subscribe(data => {
-        debugger;
+     
         this.ItemBatchArr = data;
 
       });
@@ -1070,7 +1116,7 @@ export class StockComponent implements OnInit {
   }
 
   showBatchExpDate(ev){
-    debugger;
+  
     var batch = ev.target.value;
     if(batch != "") {
       for (let i = 0; i < this.ItemBatchArr.length; i++) {
@@ -1117,7 +1163,6 @@ export class StockComponent implements OnInit {
   }
   async openAllocatedProducts(componentN) {
 
-    debugger
 
     this.openModalHeader = "הקצאות מלאי"
      this.openProductAmountModal = true; 
@@ -1525,7 +1570,6 @@ export class StockComponent implements OnInit {
 
   getAllMaterialLocations(){
     this.inventoryService.getAllMaterialLocations().subscribe(data=>{
-      debugger;
       this.materialLocations = data;
     })
   }
