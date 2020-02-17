@@ -69,7 +69,6 @@ export class Procurementservice {
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
 
-
   getItemExpectedArrivals(componentN): Observable<any> {
     let url = this.baseUrl + 'expectedArrivalController?componentN=' +componentN;
     return this.http.get(url).pipe( map(reponse => reponse.json()));
@@ -125,15 +124,29 @@ export class Procurementservice {
     return this.http.post(url, JSON.stringify({itemNumber,orderNumber,arrivedAmount,orderAmount}), this.options).pipe(map(res=>res.json()));
   }
   
-  closeOrder(orderNumber):Observable<any>{
-    let url = this.baseUrl + 'procurementOrderController/closeOrderByNumber';
+  cancelOrder(orderNumber):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/cancelOrderByNumber';
+    return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
+  }
+  orderSentToClient(orderNumber):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/orderSentToClient';
+    return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
+  }
+  clientGotTheOrder(orderNumber):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/clientGotTheOrder';
     return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
   }
   deleteItemFromOrder(itemNumber,orderNumber):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/deleteItemFromOrder';
     return this.http.post(url, JSON.stringify({itemNumber,orderNumber}), this.options).pipe(map(res=>res.json()));
   }
-  
+  getAllComponentsPurchase(): Observable<any> {
+    
+    let url = this.baseUrl + 'procurementOrderController/getAllComponentsPurchase';
+    return this.http.get(url).pipe( map(reponse => reponse.json()));
+  }
+
+
   
 
 }

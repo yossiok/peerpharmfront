@@ -34,7 +34,7 @@ export class NewFormuleComponent implements OnInit {
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.edit('');
+    // this.edit('');
   }
 
 

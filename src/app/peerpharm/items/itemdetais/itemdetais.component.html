@@ -860,22 +860,28 @@
                 </div>
 
                 <div class="col-4">
-                    
-                    <input type="file" style="z-index: -1;opacity: 0;" name="fileee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
-                    <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')" *ngIf='laser1File'>>></button>
-                    <br>
-                    <img style="margin-bottom: 50px;" *ngIf="itemShown.laserImage1" for="fileee" class="laserImg" id="id_img4" [src]=itemShown.laserImage1>
-                    <img for="fileee" class="laserImg2" id="id_img4" src="../../../../assets/images/uploadImage.jpg" *ngIf="!itemShown.laserImage1">
-                    
-                      
-                     <button class="btn btn-success" style="position: absolute;" for="filee">Upload
-                        File</button>
-                     <input type="file" style="z-index: -1;opacity: 0;" name="filee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
-                    <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser2')" *ngIf='laser2File'>>></button>
-                    <br>
-                    <img id="id_img5" [src]=itemShown.laserImage2> 
+                 
                 </div>
                 
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <input type="file"  name="fileee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')" *ngIf='laser1File'>>></button>        
+                  <!-- <img for="fileee" class="laserImg2" id="id_img4" src="../../../../assets/images/uploadImage.jpg" *ngIf="!itemShown.laserImage1"> -->
+                </div>
+                <div class="col-6">
+                  <input type="file"  name="filee" id="id_itemImg2" (change)="selectFile($event, 'laser2')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser2')" *ngIf='laser2File'>>></button>          
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <img *ngIf="itemShown.laserImage1"  class="laserImg" id="id_img4" [src]=itemShown.laserImage1>
+                </div>
+                <div class="col-6">
+                  <img class="laserImg" id="id_img5" [src]=itemShown.laserImage2 *ngIf="itemShown.laserImage2"> 
+                </div>
               </div>
             </div>
           </ng-template>

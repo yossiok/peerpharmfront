@@ -1,3 +1,8 @@
+<button class="btn" style="background:lightcoral">הזמנה בוטלה</button>
+<button class="btn" style="background:lightyellow">הזמנה נשלחה ללקוח</button>
+<button class="btn" style="background:lightgreen">הזמנה הגיעה ללקוח</button>
+<br>
+<br>
 <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Order Number" (change)="searchNumber($event)"/>
 <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Supplier Name" (change)="searchBySupplier($event)"/>
 
@@ -21,10 +26,10 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <th><b>Supplier Name</b></th>
       <th><b>תאריך יציאה</b></th>
       <th><b>תאריך קבלה</b></th>
-      <!-- <th><b>Total Payment With VAT</b></th> -->
-      <th><b>Is Supplied</b></th>
       <th></th>
       <th></th>
+      <th><b>נשלח ללקוח</b></th>
+      <th><b>התקבל אצל הלקוח</b></th>
     </tr>
   </thead>
   <tbody id="table_body">
@@ -35,10 +40,11 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <td>{{ line.supplierName }}</td>
       <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
       <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
-      <!-- <td>{{ line.totalPaymentVat}}</td> -->
-      <td>{{ line.isSupplied}}</td>
-      <td><button class="btn btn-primary" (click)="closeOrder(line.orderNumber)">Close Order</button></td>
-      <td><button class="btn btn-success" (click)="printOrder(line)">Print Order</button></td>
+      <td><button class="btn-danger" (click)="cancelOrder(line.orderNumber)">Cancel Order</button></td>
+      <td><button class="btn-success" (click)="printOrder(line)">Print Order</button></td>
+      <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
+      <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td>
+      
     </tr>
   </tbody>
 </table>

@@ -181,17 +181,46 @@ export class ProcurementOrdersComponent implements OnInit {
     this.orderData = order
   }
 
-  closeOrder(orderNumber){
-    this.procurementservice.closeOrder(orderNumber).subscribe(data=>{
+  cancelOrder(orderNumber){
+    if(confirm("האם לבטל הזמנה זו ?")) {
+         this.procurementservice.cancelOrder(orderNumber).subscribe(data=>{
       debugger
       if(data) {
         this.procurementData = data;
+        this.toastr.success("הזמנה בוטלה !")
       } else { 
         this.toastr.error('error')
       }
       
-    })
+    }) 
+    }
+
   }  
+
+  orderSentToClient(orderNumber){
+    if(confirm("האם לעדכן סטטוס נשלח ללקוח ?")) {
+    this.procurementservice.orderSentToClient(orderNumber).subscribe(data=>{
+      if(data) {
+        this.procurementData = data;
+        this.toastr.success("סטטוס 'נשלח ללקוח' עודכן בהצלחה !")
+      } else { 
+        this.toastr.error('error')
+      }
+    })
+    }
+  }
+  clientGotTheOrder(orderNumber){
+    if(confirm("האם לעדכן סטטוס הזמנה הגיעה ללקוח ?")) {
+    this.procurementservice.clientGotTheOrder(orderNumber).subscribe(data=>{
+      if(data) {
+        this.procurementData = data;
+        this.toastr.success("סטטוס 'הזמנה הגיעה ללקוח' עודכן בהצלחה !")
+      } else { 
+        this.toastr.error('error')
+      }
+    })
+    }
+  }
 
   deleteFromOrder(itemNumber,orderNumber){
     if(confirm("האם למחוק פריט מספר "+itemNumber)) {

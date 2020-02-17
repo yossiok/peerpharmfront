@@ -19,6 +19,7 @@ table  { border-collapse: collapse; width: 100%; }
 th     { background:rgb(31, 28, 197); }
 
 .loader {
+ 
   color: #4949db;
   font-size: 90px;
   text-indent: -9999em;

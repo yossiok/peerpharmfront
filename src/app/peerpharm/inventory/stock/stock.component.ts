@@ -36,6 +36,7 @@ export class StockComponent implements OnInit {
   itemShell:any[];
   materialLocations: any[];
   items:any[];
+  allComponentsPurchases:any[];
   expirationBatchDate:any;
   allowUserEditItem = false;
   resCmpt: any = {
@@ -262,6 +263,7 @@ export class StockComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.getAllPurchaseOrders();
     this.getAllItemShell();
     this.getUser();
     this.getAllSuppliers()
@@ -278,7 +280,7 @@ export class StockComponent implements OnInit {
     this.getAllComponents();
    
     // this.exportMovementsAsXLSX();
-    this.getAllExpectedArrivalsData();
+    // this.getAllExpectedArrivalsData();
     this.getColor(new Date);
     
   
@@ -531,10 +533,21 @@ export class StockComponent implements OnInit {
     
   // }
 
+  getAllPurchaseOrders(){
+    debugger;
+    this.procuretServ.getAllComponentsPurchase().subscribe(data=>{
+      this.allComponentsPurchases = data;
+    })
+  }
+
   getAllComponents() {
     
+    debugger;
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
+
+
+      
       
 
       this.componentsUnFiltered = components.splice(0)

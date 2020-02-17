@@ -172,11 +172,12 @@
           <td style="width:5%; text-align: center;">
             <img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)">
           </td>
-          <td style="width:12%;">
+          <td></td>
+          <!-- <td style="width:12%;">
             <img src="../../../../assets/images/delivery-clock.png" alt="expectedDelivery"
               style="cursor: pointer; width: 35px; float: right;" (click)="updateExpectedProcurment(component)">
-            <!-- <button *ngIf="component.procurementSent==true && updateStockItem" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
-            מחק</button>{{component.procurementAmount}} -->
+            <button *ngIf="component.procurementSent==true && updateStockItem" class="btn btn-warning" (click)="updateProcurment(component._id,component.componentN,'false')">
+            מחק</button>{{component.procurementAmount}} 
             <table>
               <tbody>
                 <tr *ngFor="let expt of component.procurementArr " class="d-flex flex-row-reverse"
@@ -191,7 +192,7 @@
                 </tr>
               </tbody>
             </table>
-          </td>
+          </td> -->
           <!-- <div *ngIf="updateStockItem" style="width: 100%; padding: 0px 0px"> -->
           <!-- <input #procurmentInput type="number" (keyup)="inputProcurment($event)" style="width: 50%; padding: 0px"/>
                 <span> <button class="btn btn-success"(click)="updateProcurment(component._id,component.componentN,'true')">עדכן</button></span> -->
