@@ -53,7 +53,7 @@ import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
-//import { NewFormuleComponent } from './new-formule/new-formule.component';
+import { NewFormuleComponent } from './new-formule/new-formule.component';
 
 
 
@@ -234,7 +234,7 @@ export const PeerPharmRputs: Routes =[
     data: {
       title: 'add-formule'
     },
-   // component: NewFormuleComponent,
+   component: NewFormuleComponent,
     // canActivate:[TwoFactor]
   },
   {
@@ -251,7 +251,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',

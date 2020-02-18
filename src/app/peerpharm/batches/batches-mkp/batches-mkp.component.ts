@@ -53,7 +53,70 @@ export class BatchesMkpComponent implements OnInit {
 
     })
   }
+  rePrint(batch){
+      
+    this.currentItem = batch.item
+    this.currentItemName = batch.itemName
+    this.currentBarrels = batch.barrels
+    this.currentBatchNumber = batch.batchNumber
+    this.currentExpDate = batch.expration
+    this.currentProduced = batch.produced
+    this.currentOrderN = batch.order
+    this.currentPH = batch.ph
+    this.currentWeightKG =batch.weightKg
 
+    if(parseInt(batch.barrels)>1)
+  {
+    for(let x=1; x<parseInt(batch.barrels)+1 ;x++)
+    {
+      let obj={
+        item:{currentItem:this.currentItem,
+          currentItemName: this.currentItemName ,
+          currentBarrels: this.currentBarrels ,
+          currentBatchNumber: this.currentBatchNumber ,
+          currentExpDate:  this.currentExpDate ,
+          currentProduced: this.currentProduced  ,
+          currentOrderN: this.currentOrderN ,
+          currentPH: this.currentPH ,
+          currentWeightKG: this.currentWeightKG   
+        },
+        printNum:""+x+"/"+(parseInt(batch.barrels))
+      } 
+      this.allStickers.push(obj);
+
+    }
+ 
+  }
+  else{
+    let obj={
+      item:{currentItem:this.currentItem,
+        currentItemName: this.currentItemName ,
+        currentBarrels: this.currentBarrels ,
+        currentBatchNumber: this.currentBatchNumber ,
+        currentExpDate:  this.currentExpDate ,
+        currentProduced: this.currentProduced  ,
+        currentOrderN: this.currentOrderN ,
+        currentPH: this.currentPH ,
+        currentWeightKG: this.currentWeightKG   
+      },
+      printNum:"1/1"
+    } 
+    this.allStickers.push(obj);
+  }
+ 
+ debugger;
+
+      setTimeout(() => {
+        this.printBtn.nativeElement.click();   
+       
+      }, 500);
+   
+     setTimeout(() => {
+      this.allStickers=[];
+     
+    }, 3500);
+
+  }
   addNewMkpBatch(){
 
   this.currentItem = this.newMkpBatch.item

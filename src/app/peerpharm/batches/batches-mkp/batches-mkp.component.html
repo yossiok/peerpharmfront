@@ -27,7 +27,7 @@
       <th class="batchTh">חביות</th>
       <th class="batchTh">מספר הזמנה</th>
       <th class="batchTh">מספר פריט</th>
-      <th></th>
+      <th class="batchTh">הדפסה חוזרת</th>
     </tr>
   </thead>
 
@@ -42,7 +42,7 @@
       <td>{{batch.barrels}}</td>
       <td>{{batch.order}}</td>
       <td>{{batch.item}}</td>
-      <td></td>
+      <td><button (click)="rePrint(batch)" class="btn-success">הדפס</button></td>
     </tr>
   </tbody>
 </table>

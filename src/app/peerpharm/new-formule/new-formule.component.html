@@ -103,10 +103,10 @@
 
   <div class="row">
     <div class="col-2">
-      <label>Phase Number:</label>
+      <label>Phase Name:</label>
     </div>
     <div class="col-1">
-      <input type="number" [(ngModel)]="newPhase.phaseNumber" placeholder="Phase Number">
+      <input type="text" [(ngModel)]="newPhase.phaseNumber" placeholder="Phase Name">
     </div>
   </div>
 
@@ -145,7 +145,11 @@
       <tbody>
         <tr>
           <td><input #itemNumber [(ngModel)]="newItem.itemNumber" (change)="fillMaterialName($event)" type="text"></td>
-          <td><input #itemName [(ngModel)]="newItem.itemName" type="text"></td>
+          <td><input list="materials" #itemName [(ngModel)]="newItem.itemName" (change)="fillMaterialNumber($event)" type="text"></td>
+          <datalist id="materials">
+            <option *ngFor="let material of allMaterials" [value]="material.componentName">{{material.componentName}}</option>
+
+          </datalist>
           <td><input #percentage [(ngModel)]="newItem.percentage" type="number"></td>
           <td><input #remarks [(ngModel)]="newItem.remarks" type="text"></td>
           <td><button (click)="addItemsToPhase()" class="btn-success">Add</button></td>

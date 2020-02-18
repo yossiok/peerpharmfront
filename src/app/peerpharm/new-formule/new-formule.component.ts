@@ -13,8 +13,9 @@ import { ItemsService } from 'src/app/services/items.service';
   styleUrls: ['./new-formule.component.css']
 })
 export class NewFormuleComponent implements OnInit {
-
-  phaseItems: any[] = []
+  
+  allMaterials:any[];
+  phaseItems:any[] = [];
   formuleAdd: boolean = true;
   phaseAdd: boolean = false;
   currentFormule: any;
@@ -78,7 +79,14 @@ export class NewFormuleComponent implements OnInit {
       debugger;
       this.newFormule.user = user.userName
     });
+    this.getAllMaterials()
+  }
 
+
+  getAllMaterials(){
+    this.inventoryService.getAllMaterials().subscribe(data=>{
+      this.allMaterials = data;
+    })
   }
   fillTheNameByNumber(ev){
     var formuleNumber = ev.target.value;
@@ -113,12 +121,21 @@ export class NewFormuleComponent implements OnInit {
 
   }
 
+  fillMaterialNumber(ev){
+  var materialName = ev.target.value;
+
+  var material = this.allMaterials.find(m=>m.componentName == materialName)
+  this.newItem.itemNumber = material.componentN
+  debugger;
+  
+
+  }
 
 
   moveToPhases() {
     debugger
     if (this.newFormule.user == "" || this.newFormule.date == "" || this.newFormule.formuleCategory == "" || 
-      this.newFormule.formuleNumber == "" || this.newFormule.phFrom == "" || this.newFormule.phTo == "") {
+      this.newFormule.formuleNumber == "") {
 
       this.Toastr.error("אנא תמלא את כל הפרטים")
     } else {

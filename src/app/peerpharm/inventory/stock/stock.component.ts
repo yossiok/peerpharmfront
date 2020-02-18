@@ -60,6 +60,7 @@ export class StockComponent implements OnInit {
     componentItems: [],
     input_actualMlCapacity: 0,
     alternativeComponent:'',
+    comaxName:'',
     alternativeSupplier:[],
     price:''
 
@@ -162,7 +163,8 @@ export class StockComponent implements OnInit {
   recommandPurchase: any = {
     remarks:'',
     amount:'',
-    componentNumber:''
+    componentNumber:'',
+    requestNumber:''
   }
   resMaterial: any = {
 
@@ -554,13 +556,17 @@ export class StockComponent implements OnInit {
   }
 
   sendRecommandation(){
-    debugger;
-    this.recommandPurchase
+    debugger
+   
     this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data=>{
     debugger;
     if(data){
       this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
       this.openOrderRecommendModal = false;
+      this.recommandPurchase.remarks = ""
+      this.recommandPurchase.amount = ""
+      this.recommandPurchase.componentNumber = ""
+
     }
     })
   }

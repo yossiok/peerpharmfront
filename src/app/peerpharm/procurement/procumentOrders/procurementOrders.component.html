@@ -95,9 +95,9 @@
             <hr>
       
             <div>
-              <button style="border:none;background: none;margin-left:200px" ngxPrint printSectionId="print-section"
+              <button style="border:none;background: none;margin-left:200px;font-size: 30px;" ngxPrint printSectionId="print-section"
                 [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
-              <p style="margin-left:330px;">Order Date:{{orderDate}}</p>
+              <p style="margin-left:420px;">Order Date:{{orderDate}}</p>
               <p>{{currentOrder.supplierName}}</p>
               <p>{{currentSupplier.address}}</p>
               <p *ngIf="currentSupplier.phoneNum">Tel:{{currentSupplier.phoneNum}}</p>
@@ -255,11 +255,11 @@
           <br/> 
         </div>
         <ng-container *ngFor="let component of allComponents">
-          <tr *ngFor="let purchase of component.purchaseRecommendations">
+          <tr *ngFor="let purchase of component.purchaseRecommendations" [style.background-color]="purchase.color">
             <td>{{purchase.componentNumber}}</td>
             <td>{{purchase.amount}}</td>
             <td>{{purchase.remarks}}</td>
-            <td><i class="fa fa-check-square" aria-hidden="true"></i></td>
+            <td><i (click)="changeStatusToDone(purchase)" class="fa fa-check-square" aria-hidden="true"></i></td>
           </tr>
         </ng-container>
       </tbody>

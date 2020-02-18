@@ -70,6 +70,7 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
+
   
 
   moveToProcItems() {  
@@ -102,11 +103,9 @@ debugger
     } else {
       this.inventoryService.getCmptByitemNumber(this.newItem.itemNumber).subscribe(data=>{
       debugger;
-      this.newItem.itemName = data[0].componentName; 
+      this.newItem.itemName = data[0].comaxName; 
       })
     }
-    
- 
 
     this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data=>{
       debugger;

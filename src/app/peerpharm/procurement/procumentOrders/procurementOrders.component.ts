@@ -76,6 +76,26 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
+  
+  changeStatusToDone(purchase){
+    purchase
+    this.procurementservice.updateComponentPurchase(purchase).subscribe(data=>{
+      debugger;
+      if(data){
+        var component = this.allComponents.find(c=>c.componentN == data.componentNumber);
+        for (let i = 0; i < component.purchaseRecommendations.length; i++) {
+         if(data.requestNumber == component.purchaseRecommendations[i].requestNumber){
+          component.purchaseRecommendations[i].color = 'lightblue'
+         }
+          
+        }
+        component = data;
+        this.toastr.success("סטטוס עודכן בהצלחה")
+      }
+
+    })
+  }
+
   printOrder(line) {
     debugger;
 
@@ -104,6 +124,7 @@ export class ProcurementOrdersComponent implements OnInit {
       this.outOfCountry = "Payment Terms:Current+95 Days"
     }
   }
+
   searchBySupplier(ev){
    
     var supplierName = ev.target.value;
@@ -115,6 +136,7 @@ export class ProcurementOrdersComponent implements OnInit {
     }
 
   }
+
   searchByReference(ev){
    
     var referenceNumber = ev.target.value;
@@ -135,6 +157,7 @@ export class ProcurementOrdersComponent implements OnInit {
     }
 
   }
+
   searchByItem(ev){
    
     var itemNumber = ev.target.value;
@@ -160,13 +183,14 @@ export class ProcurementOrdersComponent implements OnInit {
     this.inventoryService.getAllComponents().subscribe(data=>{
       debugger;
       this.allComponents = data;
-      if(data.length > 3000) {
+      if(data.length == this.allComponents.length) {
         this.hasMoreItemsToload = false;
       }
      
 
     })
   }
+
 
 
   dateChange(){
