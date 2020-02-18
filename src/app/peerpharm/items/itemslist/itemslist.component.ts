@@ -17,6 +17,7 @@ export class ItemslistComponent implements OnInit {
   itemsCopy:any=[];
   hasMoreItemsToload:boolean=true;
   subscription: any;
+  showCurtain:boolean=false;
  
 
   items:any[]=[];
@@ -39,6 +40,7 @@ export class ItemslistComponent implements OnInit {
   sendExcelToData(ev) { 
     
   if(confirm("האם אתה בטוח שבחרת בקובץ הנכון ?") == true) {
+    this.showCurtain=true;
     var reader = new FileReader();
 
     reader.readAsDataURL(ev.target.files[0]); // read file as data url
@@ -48,7 +50,8 @@ export class ItemslistComponent implements OnInit {
     var excelToSend = event.target["result"]
    // excelToSend = excelToSend.replace("data:application/pdf;base64,","");
     this.itemsService.sendExcel({data:excelToSend}).subscribe(data=>{
-
+      this.showCurtain=false;
+      alert(data.msg);
     })
     }
   
