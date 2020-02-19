@@ -97,6 +97,11 @@ export class FormulesService {
     let url = this.baseUrl + "formules?byNumber="+number;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getFormuleByName(formuleName){
+    let url = this.baseUrl + "formules?FormuleByName="+formuleName;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getFormuleDataById(id){
     let url = this.baseUrl + "formules?allData="+id;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -118,6 +123,7 @@ export class FormulesService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+ 
   getPhasesByFormuleId(formuleId){
     let url = this.baseUrl + "formules/phases/?byFormuleId="+formuleId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -137,6 +143,10 @@ export class FormulesService {
   newFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/addFormule";
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
+  }
+  updateFormuleFromBase(baseFormule){
+    let url = this.baseUrl + "formules/updateFormuleFromBase";
+    return this.http.post(url, JSON.stringify(baseFormule), this.options).pipe(map(res => res.json()));
   }
 
   copyFormule(copiedFormule){

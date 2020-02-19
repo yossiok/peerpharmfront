@@ -16,9 +16,15 @@ export class NewFormuleComponent implements OnInit {
   
   allMaterials:any[];
   baseFormules:any[];
+  allChildren:any[] = [];
+  currentBaseFormule:any;
   phaseItems:any[] = [];
   formuleAdd: boolean = true;
   phaseAdd: boolean = false;
+  CurrBaseFormulePhases: boolean = false;
+  updateCurrBaseFormule: boolean = false;
+  chooseChildren: boolean = false;
+  chooseFromBuffer: boolean = false;
   currentFormule: any;
   EditRowId: any = "";
   allPercentage:number;
@@ -28,6 +34,7 @@ export class NewFormuleComponent implements OnInit {
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('percentage') percentage: ElementRef;
   @ViewChild('remarks') remarks: ElementRef;
+  @ViewChild('addChildren') addChildren: ElementRef;
 
 
 
@@ -41,6 +48,7 @@ export class NewFormuleComponent implements OnInit {
 
 
   allFormuleCategory: Array<any> = ['Oil Based Lotion', 'Water Baised Lotion', 'Hyperallergic', 'Powder']
+  allFormuleBuffers: Array<any> = ['Citric Acid', 'Lactic Acid', 'Soda Caustic 15%', 'Triethanolamine TEA']
 
   newFormule = {
     formuleType: '',
@@ -53,9 +61,18 @@ export class NewFormuleComponent implements OnInit {
     impRemarks: '',
     user: '',
     phases: [],
+    children:[],
   }
 
   newPhase = {
+    formuleId: '',
+    phaseName: '',
+    remarks: '',
+    amountOfItems: '',
+    items: []
+
+  }
+  basePhase = {
     formuleId: '',
     phaseNumber: '',
     remarks: '',
@@ -65,6 +82,14 @@ export class NewFormuleComponent implements OnInit {
   }
 
   newItem = {
+
+    itemName: '',
+    itemNumber: '',
+    percentage: '',
+    remarks: '',
+
+  }
+  baseItem = {
 
     itemName: '',
     itemNumber: '',
@@ -91,6 +116,7 @@ export class NewFormuleComponent implements OnInit {
     })
   }
   fillTheNameByNumber(ev){
+    debugger;
     var formuleNumber = ev.target.value;
 
     if(formuleNumber != "") {
@@ -104,7 +130,53 @@ export class NewFormuleComponent implements OnInit {
   createFormuleFromBase(ev){
   var formuleName = ev.target.value;
   debugger;
+  this.formuleService.getFormuleByName(formuleName).subscribe(data=>{
+    debugger;
+    data;
+    this.currentBaseFormule = data;
+    this.updateCurrBaseFormule = true;
+    this.phaseAdd = false;
+    this.formuleAdd = false;
+    
+  })
   }
+
+  newFormuleFromBase(){
+    debugger;
+    this.newFormule.children = this.allChildren
+    
+    this.formuleService.newFormule(this.newFormule).subscribe(data=>{
+    if(data == "formule number exist"){
+      this.Toastr.error("מספר פורמולה קיים")
+    } else {
+      this.Toastr.success("פורמולה הוקמה בהצלחה , אנא המשך עם הפאזות")
+      this.updateCurrBaseFormule = false;
+      this.CurrBaseFormulePhases = true;
+      
+      this.newPhase.formuleId = data._id
+    }
+    })
+  }
+
+  updatePhasesInNewFormule(){
+
+   
+
+    this.formuleService.updateFormuleFromBase(this.currentBaseFormule).subscribe(data=>{
+      if(data){
+
+        this.Toastr.success("פורמולה הוקמה בהצלחה !")
+        this.CurrBaseFormulePhases = false;
+        this.formuleAdd = true;
+        this.allPercentage = null
+        this.resetFormuleForm();
+        
+      }
+
+    })
+
+  }
+
 
   fillTheNumberByType(ev){
   debugger;
@@ -114,13 +186,17 @@ export class NewFormuleComponent implements OnInit {
      this.formuleService.getLastFatherFormule().subscribe(data=>{
        debugger;
        this.newFormule.formuleNumber = "F"+(Number(data.formuleNumber.slice(1,5))+1)
+       this.chooseChildren = true;
 
      })
+    } else { 
+      this.chooseChildren = false;
     }
     if(formuleType == "base"){
       this.formuleService.getLastBaseFormule().subscribe(data=>{
         debugger;
         this.newFormule.formuleNumber = "B"+(Number(data.formuleNumber.slice(1,5))+1)
+        this.chooseChildren = false;
  
       })
 
@@ -135,6 +211,35 @@ export class NewFormuleComponent implements OnInit {
   this.newItem.itemNumber = material.componentN
   debugger;
   
+
+  }
+
+  addChildrenToFather(){
+    debugger;
+    var childrenNumber = this.addChildren.nativeElement.value;
+    var tempArr = [];
+    tempArr = this.allChildren
+
+    var obj = {
+      childNumber:childrenNumber
+    }
+  
+
+    for (let i = 0; i < tempArr.length; i++) {
+      if(tempArr[i].childNumber==childrenNumber){
+        this.Toastr.error("פורמולת בן כבר קיימת")
+        this.addChildren.nativeElement.value = "";
+        var exist = true;
+        return exist;
+      } 
+     }
+      
+    if(!exist){
+      tempArr.push(obj)
+      this.addChildren.nativeElement.value = "";
+      this.Toastr.success("פורמולת בן נוספה בהצלחה !")
+    
+    }
 
   }
 
@@ -185,12 +290,80 @@ export class NewFormuleComponent implements OnInit {
         this.Toastr.success("פריט חדש נוסף לפאזה")
         
       }
-      this.newItem.itemName = ''
-      this.newItem.itemNumber = ''
-      this.newItem.percentage = ''
-      this.newItem.remarks = ''
-
+      this.resetItemForm();
     }
+  }
+  
+  addItemToBasePhase(){
+    debugger;
+    var newItem = {
+      itemName: this.itemName.nativeElement.value,
+      itemNumber: this.itemNumber.nativeElement.value,
+      percentage: this.percentage.nativeElement.value,
+      remarks: this.remarks.nativeElement.value,
+    }
+      
+   var phases = this.currentBaseFormule.phases
+
+   for (let i = 0; i < phases.length; i++) {
+     phases[i].formuleId = this.newPhase.formuleId
+    if(phases[i].phaseName == this.newPhase.phaseName) {
+      if(phases[i].items.length < this.newPhase.amountOfItems) {
+        phases[i].items.push(newItem)
+        phases[i].remarks = this.newPhase.remarks
+        this.Toastr.success("פריט נוסף בהצלחה")
+        this.chooseFromBuffer = false;
+ 
+      } else {
+        this.Toastr.error("-כמות הפריטים בפאזה מוגבלת ל" + this.newPhase.amountOfItems)
+      }
+      
+      } 
+     
+   }
+
+   var num = 0
+   for (let i = 0; i < phases.length; i++) {
+    for (let j = 0; j < phases[i].items.length; j++) {
+     num += Number(phases[i].items[j].percentage)
+      
+    }
+     
+   }
+
+   this.allPercentage = num
+   this.currentBaseFormule.phases = phases
+  this.resetItemForm();
+  }
+
+  addItemToNewPhase(){
+    debugger;
+    var newItem = {
+      itemName: this.itemName.nativeElement.value,
+      itemNumber: this.itemNumber.nativeElement.value,
+      percentage: this.percentage.nativeElement.value,
+      remarks: this.remarks.nativeElement.value,
+    }
+
+    var phases = this.currentBaseFormule.phases
+    this.newPhase.items.push(newItem)
+    phases.push(this.newPhase)
+
+    for (let i = 0; i < phases.length; i++) {
+      phases[i].formuleId = this.newPhase.formuleId
+      
+    }
+
+    var num = 0
+    for (let i = 0; i < phases.length; i++) {
+     for (let j = 0; j < phases[i].items.length; j++) {
+      num += Number(phases[i].items[j].percentage)
+       
+     }
+      
+    }
+    this.allPercentage = num
+    this.resetItemForm();
   }
 
   addNewPhase() {
@@ -202,11 +375,7 @@ export class NewFormuleComponent implements OnInit {
         debugger
         if (data) {
           this.Toastr.success("פאזה הוקמה בהצלחה")
-          this.newPhase.amountOfItems = ''
-          this.newPhase.items = []
-          this.newPhase.phaseNumber = ''
-          this.newPhase.remarks = ''
-  
+          this.resetPhaseForm();
           this.currentFormule = data;
           var num = 0
           for (let i = 0; i < data.phases.length; i++) {
@@ -225,17 +394,21 @@ export class NewFormuleComponent implements OnInit {
   }
 
   fillMaterialName(ev) {
+    debugger;
     var itemNumber = ev.target.value
-    this.inventoryService.getMaterialStockItemByNum(itemNumber).subscribe(data => {
-      debugger;
-      this.newItem.itemName = data[0].componentName
-
-    });
+    if(itemNumber != "buffer" || itemNumber != "") {
+      this.chooseFromBuffer = false;
+      this.inventoryService.getMaterialStockItemByNum(itemNumber).subscribe(data => {
+        this.newItem.itemName = data[0].componentName
+      });
+    } 
+    if(itemNumber == "buffer"){
+      this.chooseFromBuffer = true;
+    }
   }
 
   getAllBaseFormules(){
     this.formuleService.getAllBaseFormules().subscribe(data=>{
-      debugger;
       this.baseFormules = data;
     })
   }
@@ -256,14 +429,7 @@ export class NewFormuleComponent implements OnInit {
         this.formuleAdd = true;
         this.phaseAdd = false;
         this.currentFormule = false;
-
-        this.newFormule.formuleName = ""
-        this.newFormule.formuleNumber = ""
-        this.newFormule.formuleCategory = ""
-        this.newFormule.formuleType = ""
-        this.newFormule.phFrom = ""
-        this.newFormule.phTo = ""
-        this.newFormule.impRemarks = ""
+        this.resetFormuleForm();
         this.allPercentage = null
       }
     } else {
@@ -271,13 +437,7 @@ export class NewFormuleComponent implements OnInit {
       this.formuleAdd = true;
       this.phaseAdd = false;
       this.currentFormule = false;
-      this.newFormule.formuleName = ""
-      this.newFormule.formuleNumber = ""
-      this.newFormule.formuleCategory = ""
-      this.newFormule.formuleType = ""
-      this.newFormule.phFrom = ""
-      this.newFormule.phTo = ""
-      this.newFormule.impRemarks = ""
+      this.resetFormuleForm();
       this.allPercentage = null
     }
   }
@@ -285,6 +445,30 @@ export class NewFormuleComponent implements OnInit {
   saveEdit() {
     debugger;
     this.updatePhaseNumber.nativeElement.value;
+  }
+
+  resetFormuleForm(){
+    this.newFormule.formuleType = ''
+    this.newFormule.formuleNumber= ''
+    this.newFormule.formuleName= ''
+    this.newFormule.formuleCategory= ''
+    this.newFormule. phFrom= ''
+    this.newFormule.phTo= ''
+    this.newFormule.impRemarks= ''
+  }
+
+  resetItemForm(){
+    this.newItem.itemName = ""
+    this.newItem.itemNumber = ""
+    this.newItem.remarks = ""
+    this.newItem.percentage = ""
+  }
+
+  resetPhaseForm(){
+    this.newPhase.formuleId = ""
+    this.newPhase.items = []
+    this.newPhase.remarks = ""
+    this.newPhase.amountOfItems = ""
   }
 
   formatDate(date) {
