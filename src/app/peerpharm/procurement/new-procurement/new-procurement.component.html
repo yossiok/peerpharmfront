@@ -10,11 +10,15 @@
         <div class="form-body">
             <h4 class="card-title">פרטי הזמנה</h4>
             <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label>ייבוא חוץ</label>
             <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.outOfCountry" type="checkbox" class="form-control"   />
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
+            <label>מספר הזמנה - קומקס</label>
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.comaxNumber" type="text" class="form-control"   />
+          </div>
+          <div class="col-md-4">
             <label>סוג הזמנה</label>
             <select [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.orderType" type="text" class="form-control">
             <option value="material">Material</option>''ג'

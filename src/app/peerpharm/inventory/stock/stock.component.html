@@ -1429,29 +1429,32 @@
   style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
 
   <!-- Modal content -->
-  <div style="width:450px !important;height:300px !important" class="modal-content" id='modelC'>
-    <div style="width:450px !important;" id="material-header" class="modal-header">
+  <div style="width:600px !important;height:300px !important" class="modal-content" id='modelC'>
+    <div style="width:600px !important;" id="material-header" class="modal-header">
       <span class="close" id="closeId3" (click)="openOrderRecommendModal=false;">&times;</span>
     </div>
-    <div style="height: auto !important;width:450px !important;overflow:scroll" class="container" id="material-body"
+    <div style="height: auto !important;width:600px !important;overflow:scroll" class="container" id="material-body"
       class="modal-body">
       <table>
         <thead>
           <tr>
             <th>הערות</th>
+            <th>תאריך המלצה</th>
             <th>כמות</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><input [(ngModel)]="recommandPurchase.remarks" type="text"></td>
+            <td><input [(ngModel)]="recommandPurchase.date" type="date"></td>
             <td><input [(ngModel)]="recommandPurchase.amount" type="number"></td>
+            
           </tr>
         </tbody>
       </table>
 
     </div>
-    <div style="width:450px !important;text-align: center;" id="material-footer" class="modal-footer">
+    <div style="width:600px !important;text-align: center;" id="material-footer" class="modal-footer">
       <button (click)="sendRecommandation()" class="btn-success">שלח</button>
     </div>
 

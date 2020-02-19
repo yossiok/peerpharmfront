@@ -9,11 +9,19 @@
     <div class="col-2">
       <label>Formule Type:</label>
     </div>
-    <div class="col-1">
+    <div class="col-5">
       <select (change)="fillTheNumberByType($event)" [(ngModel)]="newFormule.formuleType">
         <option value=""></option>
         <option value="father">אב</option>
         <option value="base">בסיס</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label>Base Formule:</label>
+    </div>
+    <div class="col-3">
+      <select (change)="createFormuleFromBase($event)">
+        <option *ngFor="let formule of baseFormules" [value]="formule.formuleName">{{formule.formuleName}}</option>
       </select>
     </div>
   </div>
@@ -23,7 +31,7 @@
       <label>Formule Number:</label>
     </div>
     <div class="col-1">
-      <input (change)="fillTheNameByNumber($event)" style="width:346px" [(ngModel)]="newFormule.formuleNumber" type="number" placeholder="Formule Number">
+      <input (change)="fillTheNameByNumber($event)" style="width:346px" [(ngModel)]="newFormule.formuleNumber" type="text" placeholder="Formule Number">
     </div>
   </div>
 

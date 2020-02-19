@@ -164,7 +164,8 @@ export class StockComponent implements OnInit {
     remarks:'',
     amount:'',
     componentNumber:'',
-    requestNumber:''
+    requestNumber:'',
+    date:this.formatDate(new Date()),
   }
   resMaterial: any = {
 
@@ -1566,6 +1567,19 @@ export class StockComponent implements OnInit {
   
 
 
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
   inputProcurment(event: any) { // without type info
     this.procurementInputEvent = event;

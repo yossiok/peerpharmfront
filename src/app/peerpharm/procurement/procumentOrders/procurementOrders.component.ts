@@ -182,7 +182,7 @@ export class ProcurementOrdersComponent implements OnInit {
   getAllComponents(){
     this.inventoryService.getAllComponents().subscribe(data=>{
       debugger;
-      this.allComponents = data;
+      this.allComponents = data.reverse();
       if(data.length == this.allComponents.length) {
         this.hasMoreItemsToload = false;
       }

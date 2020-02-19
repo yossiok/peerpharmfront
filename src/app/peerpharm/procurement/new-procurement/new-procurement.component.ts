@@ -55,6 +55,7 @@ export class NewProcurementComponent implements OnInit {
     outOfCountry:false,
     orderType:'',
     remarks:'',
+    comaxNumber:'',
 
   }
 

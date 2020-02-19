@@ -15,6 +15,7 @@ import { ItemsService } from 'src/app/services/items.service';
 export class NewFormuleComponent implements OnInit {
   
   allMaterials:any[];
+  baseFormules:any[];
   phaseItems:any[] = [];
   formuleAdd: boolean = true;
   phaseAdd: boolean = false;
@@ -80,6 +81,7 @@ export class NewFormuleComponent implements OnInit {
       this.newFormule.user = user.userName
     });
     this.getAllMaterials()
+    this.getAllBaseFormules()
   }
 
 
@@ -99,21 +101,26 @@ export class NewFormuleComponent implements OnInit {
     }
   }
 
-  fillTheNumberByType(ev){
+  createFormuleFromBase(ev){
+  var formuleName = ev.target.value;
+  debugger;
+  }
 
+  fillTheNumberByType(ev){
+  debugger;
     var formuleType = ev.target.value;
 
     if(formuleType == "father"){
      this.formuleService.getLastFatherFormule().subscribe(data=>{
        debugger;
-       this.newFormule.formuleNumber = data.formuleNumber+1
+       this.newFormule.formuleNumber = "F"+(Number(data.formuleNumber.slice(1,5))+1)
 
      })
     }
     if(formuleType == "base"){
       this.formuleService.getLastBaseFormule().subscribe(data=>{
         debugger;
-        this.newFormule.formuleNumber = data.formuleNumber+1
+        this.newFormule.formuleNumber = "B"+(Number(data.formuleNumber.slice(1,5))+1)
  
       })
 
@@ -226,6 +233,13 @@ export class NewFormuleComponent implements OnInit {
     });
   }
 
+  getAllBaseFormules(){
+    this.formuleService.getAllBaseFormules().subscribe(data=>{
+      debugger;
+      this.baseFormules = data;
+    })
+  }
+
   // edit(id) {
   //   debugger;
   //   if (id != '') {
@@ -250,12 +264,21 @@ export class NewFormuleComponent implements OnInit {
         this.newFormule.phFrom = ""
         this.newFormule.phTo = ""
         this.newFormule.impRemarks = ""
+        this.allPercentage = null
       }
     } else {
       this.Toastr.success("פורמולה הוקמה בהצלחה !")
       this.formuleAdd = true;
       this.phaseAdd = false;
       this.currentFormule = false;
+      this.newFormule.formuleName = ""
+      this.newFormule.formuleNumber = ""
+      this.newFormule.formuleCategory = ""
+      this.newFormule.formuleType = ""
+      this.newFormule.phFrom = ""
+      this.newFormule.phTo = ""
+      this.newFormule.impRemarks = ""
+      this.allPercentage = null
     }
   }
 
