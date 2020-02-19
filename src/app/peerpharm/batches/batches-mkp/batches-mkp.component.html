@@ -49,41 +49,86 @@
 
 <div  class="clearfix" id="print-section" style="visibility: hidden">
   <div *ngFor="let sticker of allStickers;let i=index">
-    <table 
+    <!-- <table 
     dir="rtl"
-    [style.width.px]="500"
-    [style.margin.px]="0"
+    [style.width.px]="400"
     [style.max-height.px]="600"
-    [style.font-size.px]="27"
+    [style.font-size.px]="25"
     style.font-weight="900"
     style.font-family="Arial"
     [style.border.px]="0">
       <tr>
-        <td style="margin-right:10px;width:550px !important;"> <label style="border-bottom: none;">שם החומר:</label>{{sticker.item.currentItemName}}</td>
+        <td> <label style="border-bottom: none;">שם החומר:</label>{{sticker.item.currentItemName}}</td>
       </tr>
       <br>
       <br>
       <br>
-      <tr style="margin-bottom:15px !important;">
+      <tr>
         <td style="border-bottom: 2px solid black;"><label style="border-bottom: none;">אצווה:</label> {{sticker.item.currentBatchNumber}}</td>
       </tr>
-      <tr style="margin-bottom:15px !important;">
-      <td style="border-bottom: 2px solid black;width:150px;"><label style="border-bottom: none;">ת.ייצור: </label>{{sticker.item.currentProduced}}</td>
-      <td style="border-bottom: 2px solid black;width:150px;"><label style="border-bottom: none;">מק"ט: </label>{{sticker.item.currentItem}}  </td>
+      <tr>
+      <td style="border-bottom: 2px solid"><label style="border-bottom: none;">ת.ייצור: </label>{{sticker.item.currentProduced}}</td>
+      <td style="border-bottom: 2px solid"><label style="border-bottom: none;">מק"ט: </label>{{sticker.item.currentItem}}  </td>
     </tr>
-    <tr style="margin-bottom:15px !important;">
-      <td style="border-bottom: 2px solid black;width:150px;"><label style="border-bottom: none;">ת.תפוגה: </label>{{sticker.item.currentExpDate}}</td> 
-      <td style="border-bottom: 2px solid black;width:150px;" dir="rtl"><label>PH: </label>{{sticker.item.currentPH}} </td>
+    <tr>
+      <td style="border-bottom: 2px solid"><label style="border-bottom: none;">ת.תפוגה: </label>{{sticker.item.currentExpDate}}</td> 
+      <td style="border-bottom: 2px solid" dir="rtl"><label>PH: </label>{{sticker.item.currentPH}} </td>
     </tr>
-    <tr style="margin-bottom:15px !important;">
+    <tr>
       <td style="border-bottom: 2px solid black;"><label style="border-bottom: none;">מ' הזמנה: </label> {{sticker.item.currentOrderN}}</td>
     </tr>
-    <tr style="margin-bottom:15px !important;">
-      <td style="border-bottom: 2px solid black;width:150px;"><label style="border-bottom: none;">משקל: </label>{{sticker.item.currentWeightKG}} </td>
-      <td style="border-bottom: 2px solid black;width:150px;"><label style="border-bottom: none;">חביות: </label>{{sticker.printNum}} </td>
+    <tr>
+      <td style="border-bottom: 2px solid"><label style="border-bottom: none;">משקל: </label>{{sticker.item.currentWeightKG}} </td>
+      <td style="border-bottom: 2px solid"><label style="border-bottom: none;">חביות: </label>{{sticker.printNum}} </td>
     </tr>
   
-    </table>
+    </table> -->
+<div dir="rtl" class="container-fluid" style="width:370px;font-family: Arial;font-size: 24px;margin-bottom: 20px;">
+<div class="row">
+  <div style="text-align: center;border-bottom: 1px solid black;" class="col-12">
+    <span>שם החומר:</span>{{sticker.item.currentItemName}}
+  </div>
+</div>
+<div class="row">
+  <div style="border-bottom: 1px solid black;" class="col-12">
+    <span>אצווה:</span> {{sticker.item.currentBatchNumber}}
+  </div>
+</div>
+
+<div class="row">
+<div style="border-bottom: 1px solid black;" class="col-6">
+  <span>ת.ייצור: </span>{{sticker.item.currentProduced}}
+</div>
+<div style="border-bottom: 1px solid black;" class="col-6">
+  <span>מק"ט: </span>{{sticker.item.currentItem}}
+</div>
+</div>
+
+<div class="row">
+<div style="border-bottom: 1px solid black;" class="col-6">
+  <span>ת.תפוגה: </span>{{sticker.item.currentExpDate}}
+</div>
+<div style="border-bottom: 1px solid black;" class="col-6">
+  <span>PH: </span>{{sticker.item.currentPH}}
+</div>
+</div>
+
+<div class="row">
+  <div style="border-bottom: 1px solid black;" class="col-12">
+    <span>מ' הזמנה: </span> {{sticker.item.currentOrderN}}
+  </div>
+</div>
+
+<div class="row">
+  <div style="border-bottom: 1px solid black;" class="col-6">
+    <span>משקל: </span>{{sticker.item.currentWeightKG}}
+  </div>
+  <div style="border-bottom: 1px solid black;" class="col-6">
+    <span>חביות: </span>{{sticker.printNum}}
+  </div>
+  </div>
+
+</div>
 
   </div>
 
