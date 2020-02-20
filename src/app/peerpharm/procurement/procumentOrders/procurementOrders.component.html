@@ -4,8 +4,8 @@
     <ng-template ngbTabContent>
       
       <button class="btn" style="background:lightcoral">הזמנה בוטלה</button>
-      <button class="btn" style="background:lightyellow">הזמנה נשלחה ללקוח</button>
-      <button class="btn" style="background:lightgreen">הזמנה הגיעה ללקוח</button>
+      <button class="btn" style="background:lightyellow">הזמנה נשלחה לספק</button>
+      <button class="btn" style="background:lightgreen">הזמנה הגיעה לספק</button>
       <button class="btn" style="background:lightblue">הזמנה סגורה</button>
       <br>
       <br>
@@ -131,7 +131,7 @@
                     <td>{{item.supplierAmount}}</td>
                     <td>{{item.supplierPrice}}</td>
                     <td></td>
-                    <td></td>
+                    <td>{{item.itemPrice}}</td>
       
                   </tr>
                 </tbody>
@@ -255,10 +255,6 @@
         </tr>
       </thead>
       <tbody>
-        <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
-          <div class="loader">Loading More Items...</div>
-          <br/> 
-        </div>
         <ng-container *ngFor="let component of allComponents">
           <tr *ngFor="let purchase of component.purchaseRecommendations" [style.background-color]="purchase.color">
             <td>{{purchase.componentNumber}}</td>

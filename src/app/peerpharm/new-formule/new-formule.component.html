@@ -68,8 +68,9 @@
     <div class="col-2">
       <label>User:</label>
     </div>
-    <div class="col-1">
-      <input [(ngModel)]="newFormule.user" type="text" disabled>
+    <div class="col-3">
+      <input [(ngModel)]="newFormule.user" type="text" disabled> 
+      <img (click)="getUserDetails()" style="width:30px;" src="../../../assets/images/refreshData.png">
     </div>
   </div>
 
@@ -220,10 +221,13 @@
             <tr *ngFor="let item of phase.items;let i = index">
               <td *ngIf="phase.formuleId!==EditRowId" (click)="edit(phase.formuleId)">{{phase.phaseName}}</td>
               <td *ngIf="phase.formuleId===EditRowId" (click)="edit(phase.formuleId)">
-                <input #updatePhaseNumber [value]="phase.phaseName"  type="text">
+                <input #updatePhaseName [value]="phase.phaseName"  type="text">
               </td>
               <td>{{phase.remarks}}</td>
-              <td>{{i+1}}</td>
+              <td *ngIf="phase.formuleId!==EditRowId" (click)="edit(phase.formuleId)">{{i+1}}</td>
+              <td *ngIf="phase.formuleId===EditRowId" (click)="edit(phase.formuleId)">
+                <input #updateItemsIndex [value]="i+1" type="number">
+              </td>
               <td></td>
               <td></td>
               <td>{{item.itemNumber}}</td>
@@ -463,19 +467,22 @@
           <tbody>
             <ng-container *ngFor="let phase of currentBaseFormule.phases;">
               <tr *ngFor="let item of phase.items;let i = index">
-                <td *ngIf="phase.formuleId!==EditRowId" (click)="edit(phase.formuleId)">{{phase.phaseName}}</td>
-                <td *ngIf="phase.formuleId===EditRowId" (click)="edit(phase.formuleId)">
-                  <input #updatePhaseNumber [value]="phase.phaseName"  type="text">
+                <td *ngIf="item.itemNumber!==EditRowId" (click)="edit(item.itemNumber)">{{phase.phaseName}}</td>
+                <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
+                  <input #updatePhaseName [value]="phase.phaseName"  type="text">
                 </td>
                 <td>{{phase.remarks}}</td>
-                <td>{{i+1}}</td>
+                <td *ngIf="item.itemNumber!==EditRowId" (click)="edit(item.itemNumber)">{{i+1}}</td>
+                <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
+                  <input #updateItemsIndex [value]="i+1" type="number">
+                </td>
                 <td></td>
                 <td></td>
                 <td>{{item.itemNumber}}</td>
                 <td>{{item.itemName}}</td>
                 <td>{{item.percentage}}</td>
                 <td>{{item.remarks}}</td>
-                <td *ngIf="phase.formuleId===EditRowId"><i class="ti-save" (click)="saveEdit()"></i></td>
+                <td *ngIf="item.itemNumber===EditRowId"><i class="ti-save" (click)="saveEdit(item.itemNumber,phase.phaseName,i)"></i></td>
               </tr>
             </ng-container>
   

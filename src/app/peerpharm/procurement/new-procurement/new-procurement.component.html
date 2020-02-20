@@ -130,7 +130,16 @@
                   <div class="col-md-6">
                     <div class="form-group has-success">
                       <label class="control-label">מידה</label>
-                      <input #measurement [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.measurement" class="form-control custom-select">
+                      <select #measurement [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.measurement" class="form-control custom-select">
+                        <option value="kg">kg</option>''ג'
+                        <option value="liter">liter</option>
+                        <option value="meter">meter</option>
+                        <option value="ml">ml</option>
+                        <option value="unit">Unit</option>
+                        <option value="ton">טון</option>
+                        <option value="unit">יחידה</option>
+                        <option value="box">קופסא</option>
+                        </select>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">

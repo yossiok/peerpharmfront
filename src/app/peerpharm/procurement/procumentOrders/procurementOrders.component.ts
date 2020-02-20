@@ -23,11 +23,11 @@ export class ProcurementOrdersComponent implements OnInit {
   currentOrder: any[];
   currentItems: any[];
   currentSupplier:object;
-  hasMoreItemsToload: boolean = true;
   orderData:any[];
   EditRowId:any="";
 
   totalAmount:any;
+  itemAmounts:any;
   totalPrice:any;
   importantRemarks:any;
   orderDate:any;
@@ -53,7 +53,8 @@ export class ProcurementOrdersComponent implements OnInit {
   ngOnInit() {
     console.log('Enter');
     this.getAllProcurementOrders();
-    this.getAllComponents();
+    // this.getAllComponents();
+    this.getComponentsWithPurchaseRec();
   }
 
   getAllProcurementOrders() {
@@ -110,15 +111,17 @@ export class ProcurementOrdersComponent implements OnInit {
     var total = 0;
     var totalP = 0; 
     var coin ="";
+
     for (let i = 0; i < this.currentItems.length; i++) {
      total = total + Number(this.currentItems[i].supplierAmount)
-     totalP = totalP + Number(this.currentItems[i].supplierPrice)
+     totalP = totalP + Number(this.currentItems[i].itemPrice)
      coin = this.currentItems[i].coin
 
     }
+   
     this.importantRemarks = line.remarks
     this.totalAmount = total
-    this.totalPrice = totalP+coin
+    this.totalPrice = (totalP)+coin
     this.orderDate = line.outDate.slice(0,10)
     if(line.outOfCountry == false){
       this.outOfCountry = "Payment Terms:Current+95 Days"
@@ -183,14 +186,16 @@ export class ProcurementOrdersComponent implements OnInit {
     this.inventoryService.getAllComponents().subscribe(data=>{
       debugger;
       this.allComponents = data.reverse();
-      if(data.length == this.allComponents.length) {
-        this.hasMoreItemsToload = false;
-      }
-     
+
 
     })
   }
 
+  getComponentsWithPurchaseRec(){
+    this.procurementservice.componentsWithPurchaseRec().subscribe(data=>{
+      this.allComponents = data;
+    })
+  }
 
 
   dateChange(){
@@ -236,7 +241,7 @@ export class ProcurementOrdersComponent implements OnInit {
         if(!tempArr.includes(x) && check) tempArr.push(x);
       });
          this.procurementData= tempArr;
-         this.hasMoreItemsToload = false;
+        
          
     }else{
       

@@ -26,6 +26,7 @@ export class NewFormuleComponent implements OnInit {
   chooseChildren: boolean = false;
   chooseFromBuffer: boolean = false;
   currentFormule: any;
+  user:any;
   EditRowId: any = "";
   allPercentage:number;
 
@@ -38,12 +39,13 @@ export class NewFormuleComponent implements OnInit {
 
 
 
-  @ViewChild('updatePhaseNumber') updatePhaseNumber: ElementRef;
+  @ViewChild('updatePhaseName') updatePhaseName: ElementRef;
+  @ViewChild('updateItemsIndex') updateItemsIndex: ElementRef;
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    // this.edit('');
+    this.edit('');
   }
 
 
@@ -101,12 +103,22 @@ export class NewFormuleComponent implements OnInit {
   constructor(private itemService:ItemsService,private formuleService: FormulesService, private Toastr: ToastrService, private authService: AuthService, private inventoryService: InventoryService) { }
 
   async ngOnInit() {
+
     await this.authService.userEventEmitter.subscribe(user => {
       debugger;
+      this.user = user.userName
       this.newFormule.user = user.userName
     });
+    this.getUserDetails();
     this.getAllMaterials()
     this.getAllBaseFormules()
+  }
+
+  async getUserDetails(){
+    this.user = this.authService.loggedInUser.userName
+    debugger;
+    this.newFormule.user = this.user
+    
   }
 
 
@@ -161,7 +173,7 @@ export class NewFormuleComponent implements OnInit {
   updatePhasesInNewFormule(){
 
    
-
+    this.currentBaseFormule.children = this.allChildren
     this.formuleService.updateFormuleFromBase(this.currentBaseFormule).subscribe(data=>{
       if(data){
 
@@ -170,6 +182,7 @@ export class NewFormuleComponent implements OnInit {
         this.formuleAdd = true;
         this.allPercentage = null
         this.resetFormuleForm();
+        this.resetChildrenForm();
         
       }
 
@@ -307,7 +320,7 @@ export class NewFormuleComponent implements OnInit {
 
    for (let i = 0; i < phases.length; i++) {
      phases[i].formuleId = this.newPhase.formuleId
-    if(phases[i].phaseName == this.newPhase.phaseName) {
+    if(phases[i].phaseName.toUpperCase() == this.newPhase.phaseName) {
       if(phases[i].items.length < this.newPhase.amountOfItems) {
         phases[i].items.push(newItem)
         phases[i].remarks = this.newPhase.remarks
@@ -338,6 +351,7 @@ export class NewFormuleComponent implements OnInit {
 
   addItemToNewPhase(){
     debugger;
+
     var newItem = {
       itemName: this.itemName.nativeElement.value,
       itemNumber: this.itemNumber.nativeElement.value,
@@ -413,14 +427,14 @@ export class NewFormuleComponent implements OnInit {
     })
   }
 
-  // edit(id) {
-  //   debugger;
-  //   if (id != '') {
-  //     this.EditRowId = id;
-  //   } else {
-  //     this.EditRowId = '';
-  //   }
-  // }
+  edit(id) {
+    debugger;
+    if (id != '') {
+      this.EditRowId = id;
+    } else {
+      this.EditRowId = '';
+    }
+  }
 
   FinishFormule(){
     if(this.allPercentage != 100){
@@ -442,9 +456,25 @@ export class NewFormuleComponent implements OnInit {
     }
   }
 
-  saveEdit() {
+  saveEdit(itemNumber,phaseName,index) {
     debugger;
-    this.updatePhaseNumber.nativeElement.value;
+    var changeIndex = (Number(this.updateItemsIndex.nativeElement.value)-1)
+    itemNumber
+    var phases = this.currentBaseFormule.phases
+    var phase = phases.find(p=>p.phaseName == phaseName)
+    var items = phase.items
+    
+    var oldItem = items[index]
+    var newItem = items[changeIndex]
+
+    items[index] = newItem
+    items[changeIndex] = oldItem
+
+    this.currentBaseFormule;
+  
+    
+ 
+    
   }
 
   resetFormuleForm(){
@@ -465,10 +495,13 @@ export class NewFormuleComponent implements OnInit {
   }
 
   resetPhaseForm(){
-    this.newPhase.formuleId = ""
     this.newPhase.items = []
     this.newPhase.remarks = ""
     this.newPhase.amountOfItems = ""
+  }
+
+  resetChildrenForm(){
+    this.allChildren = [];
   }
 
   formatDate(date) {

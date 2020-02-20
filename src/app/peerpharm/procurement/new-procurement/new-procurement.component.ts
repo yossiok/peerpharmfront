@@ -43,7 +43,8 @@ export class NewProcurementComponent implements OnInit {
   supplierAmount:'',
   color:'',
   orderNumber:'',
-  itemRemarks:''
+  itemRemarks:'',
+  itemPrice:'',
 
   }
   newProcurement = {
@@ -147,7 +148,7 @@ debugger
 
 
   addItemToProcurement(){
-    
+    debugger;
     var newItem = {
       coin:this.coin.nativeElement.value,
       itemName:this.itemName.nativeElement.value,
@@ -155,6 +156,7 @@ debugger
       measurement:this.measurement.nativeElement.value,
       supplierAmount:this.supplierAmount.nativeElement.value,
       supplierPrice:this.supplierPrice.nativeElement.value,
+      itemPrice:Number(this.supplierPrice.nativeElement.value)*Number(this.supplierAmount.nativeElement.value)
     }
 
     
