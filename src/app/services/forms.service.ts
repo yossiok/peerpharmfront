@@ -119,6 +119,11 @@ export class FormsService {
     let url = this.baseUrl + "forms/updateSewerTestRemarks";
     return this.http.post(url, JSON.stringify(sewerTestEdit), this.options).pipe(map(res => res.json()));
   }
+  insertBillNumber(id,billNumber){
+    debugger;
+    let url = this.baseUrl + "formDetails/updateBillNumber";
+    return this.http.post(url, JSON.stringify({id,billNumber}), this.options).pipe(map(res => res.json()));
+  }
 
   getCalibrationFormByYear(calibrationForm) {
     let url = this.baseUrl + 'forms?getCalibrationFormByYear='+calibrationForm;

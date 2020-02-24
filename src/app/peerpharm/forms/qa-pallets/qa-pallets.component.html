@@ -125,6 +125,8 @@
                   <th>שם לקוח</th>
                   <th>מספר לקוח</th>
                   <th>מוכן לחשבונית</th>
+                  <th>מספר לחשבונית</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -133,6 +135,11 @@
                   <td><label (click)="openProductForm(packlist)" style="color:blue;text-decoration: underline;">{{packlist.costumerName}}</label></td>
                   <td>{{packlist.costumerNumber}}</td>
                   <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
+                  <td (click)="insertBill()" *ngIf="showBillNumber==false">{{packlist.billNumber}}</td>
+                  <td *ngIf="showBillNumber==true">
+                    <input type="text" [value]="packlist.billNumber" #billNumberToUpdate>
+                  </td>
+                  <td *ngIf="showBillNumber==true" ><i (click)="saveBillNumber(packlist._id)" class="fa fa-save"></i></td>
                 </tr>
               </tbody>
 

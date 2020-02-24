@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { FormsService } from 'src/app/services/forms.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { ToastrService } from 'ngx-toastr';
@@ -20,8 +20,10 @@ export class QaPalletsComponent implements OnInit {
  currCustomerId:string;
  allPackedLists:any[];
  showAllReadyCostumers:boolean = false;
+ showBillNumber:boolean = false;
  palletToAdd:any[];
  allReadyPackedLists:any[];
+
 
 
  packedList = {
@@ -32,10 +34,16 @@ export class QaPalletsComponent implements OnInit {
  }
 
 
+ @ViewChild('billNumberToUpdate') billNumberToUpdate: ElementRef;
 
 
 
   constructor(private toastr:ToastrService,private customerService:CostumersService,private formService:FormsService) { }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.insertBill();
+  }
 
   ngOnInit() {
     this.getAllReadyPallets();
@@ -43,6 +51,14 @@ export class QaPalletsComponent implements OnInit {
     this.getAllReadyForBill();
   }
 
+  insertBill(){
+    if(this.showBillNumber == false) {
+      this.showBillNumber = true;
+    } else {
+      this.showBillNumber = false;
+    }
+   
+  }
 
   getAllReadyPallets(){
   debugger;
@@ -59,7 +75,7 @@ export class QaPalletsComponent implements OnInit {
     if(ev.target.checked == true) {
     var isSelected = this.selectedArr;
     pallet.fullKartons = Number(pallet.floorNumber)*Number(pallet.kartonQuantity)+Number(pallet.lastFloorQuantity)
-    pallet.allUnits = (Number(pallet.floorNumber)*Number(pallet.kartonQuantity)+Number(pallet.lastFloorQuantity))*Number(pallet.unitsInKarton)
+    pallet.allUnits = (Number(pallet.floorNumber)*Number(pallet.kartonQuantity)*Number(pallet.unitsInKarton))+(Number(pallet.lastFloorQuantity)*Number(pallet.unitsInKarton))+pallet.unitsQuantityPartKarton
     if(pallet.unitsQuantityPartKarton >0){
       pallet.allKartons = Number(pallet.floorNumber)*Number(pallet.kartonQuantity)+Number(pallet.lastFloorQuantity)+1
     }
@@ -75,6 +91,25 @@ export class QaPalletsComponent implements OnInit {
     }
     
  
+  }
+
+  saveBillNumber(id){
+    debugger;
+    var billNumber = this.billNumberToUpdate.nativeElement.value;
+    this.formService.insertBillNumber(id,billNumber).subscribe(data=>{
+      debugger;
+     if(data) {
+     for (let i = 0; i < this.allPackedLists.length; i++) {
+      if(this.allPackedLists[i]._id == data._id){
+        this.allPackedLists[i].billNumber = data.billNumber
+      }
+       
+     }
+      this.showBillNumber = false; 
+      this.toastr.success("מספר חשבונית עודכן בהצלחה!")
+     }
+   
+    })
   }
 
   filterByCustomer(ev){

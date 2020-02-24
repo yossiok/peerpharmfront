@@ -36,7 +36,11 @@
       background:rgba(255, 255, 255, 0.274);
       cursor: pointer;
     }
-    
+    .formBackGround {
+      background:rgb(253, 232, 175);
+      padding:15px;
+      color:black;
+  }
     .loader {
       color: #4949db;
       font-size: 90px;

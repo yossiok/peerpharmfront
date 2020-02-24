@@ -41,6 +41,7 @@ export class OrderdetailsComponent implements OnInit {
   selectedArr:any[] = [];
   user:UserInfo
   openFormule:boolean = false;
+  showMaterialsForFormules:boolean = false;
   currItems:any[];
   currFormule:any[];
   currPhase:any[];
@@ -604,6 +605,7 @@ loadMaterialsForFormule(){
   this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(data=>{
     debugger
   this.materialsForFormules = data;
+  this.showMaterialsForFormules = true;
   })
 }
 

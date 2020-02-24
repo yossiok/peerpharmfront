@@ -6,6 +6,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ToastrService } from 'ngx-toastr';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -25,6 +26,7 @@ export class ProcurementOrdersComponent implements OnInit {
   currentSupplier:object;
   orderData:any[];
   EditRowId:any="";
+  user:any;
 
   totalAmount:any;
   itemAmounts:any;
@@ -47,7 +49,8 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   constructor( 
-    private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService,private supplierService:SuppliersService,private inventoryService:InventoryService
+    private toastr: ToastrService,private procurementservice: Procurementservice, private excelService: ExcelService,private supplierService:SuppliersService,
+    private inventoryService:InventoryService , private authService:AuthService,
   ) {}
 
   ngOnInit() {
@@ -55,6 +58,8 @@ export class ProcurementOrdersComponent implements OnInit {
     this.getAllProcurementOrders();
     // this.getAllComponents();
     this.getComponentsWithPurchaseRec();
+    this.user = this.authService.loggedInUser.firstName;
+
   }
 
   getAllProcurementOrders() {
@@ -80,21 +85,26 @@ export class ProcurementOrdersComponent implements OnInit {
   
   changeStatusToDone(purchase){
     purchase
-    this.procurementservice.updateComponentPurchase(purchase).subscribe(data=>{
-      debugger;
-      if(data){
-        var component = this.allComponents.find(c=>c.componentN == data.componentNumber);
-        for (let i = 0; i < component.purchaseRecommendations.length; i++) {
-         if(data.requestNumber == component.purchaseRecommendations[i].requestNumber){
-          component.purchaseRecommendations[i].color = 'lightblue'
-         }
-          
+    if(this.user == "shanie"){
+      this.procurementservice.updateComponentPurchase(purchase).subscribe(data=>{
+        debugger;
+        if(data){
+          var component = this.allComponents.find(c=>c.componentN == data.componentNumber);
+          for (let i = 0; i < component.purchaseRecommendations.length; i++) {
+           if(data.requestNumber == component.purchaseRecommendations[i].requestNumber){
+            component.purchaseRecommendations[i].color = data.color
+           }
+            
+          }
+          component = data;
+          this.toastr.success("סטטוס עודכן בהצלחה")
         }
-        component = data;
-        this.toastr.success("סטטוס עודכן בהצלחה")
-      }
-
-    })
+  
+      })
+    } else {
+      this.toastr.error("רק משתמש מורשה רשאי לערוך זאת")
+    }
+ 
   }
 
   printOrder(line) {
@@ -121,7 +131,7 @@ export class ProcurementOrdersComponent implements OnInit {
    
     this.importantRemarks = line.remarks
     this.totalAmount = total
-    this.totalPrice = (totalP)+coin
+    this.totalPrice = ((totalP)+" "+coin)
     this.orderDate = line.outDate.slice(0,10)
     if(line.outOfCountry == false){
       this.outOfCountry = "Payment Terms:Current+95 Days"
@@ -355,7 +365,7 @@ export class ProcurementOrdersComponent implements OnInit {
       for (let i = 0; i < this.procurementData.length; i++) {
         if(this.procurementData[i].orderNumber == orderNumber) {
           if(Number(this.procurementData[i].item[index].supplierAmount) > Number(arrivedAmount)) {
-            this.procurementData[i].item[index].color = 'lightyellow'
+            this.procurementData[i].item[index].color = 'yellow'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount
             this.procurementData[i].item[index].supplierAmount = orderAmount
             this.procurementData[i].item[index].arrivalDate = arrivalDate

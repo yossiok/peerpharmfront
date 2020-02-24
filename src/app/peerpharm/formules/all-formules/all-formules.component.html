@@ -8,7 +8,7 @@
           <td>#</td>
           <td>Number</td>
           <td>Name</td>
-          <td>Parent</td>
+          <td>Formule Category</td>
           <td>Date Created</td>
           <td>Formule Type</td>
           <td></td>
@@ -19,36 +19,28 @@
         <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let formule of allFormules; let i = index">
           <td>{{i+1}}</td>
 
-          <td *ngIf="formule._id!=EditRowId" class="openUpdateModal" (click)="open(formuleData,formule.number)">{{formule.formuleNumber}}</td>
+          <td *ngIf="formule._id!=EditRowId" class="openUpdateModal" (click)="open(formuleData,formule.formuleNumber)">{{formule.formuleNumber}}</td>
           <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
-              <input #formuleNumber type='text' [value]="formule.number">
+              <input #formuleNumber type='text' [value]="formule.formuleNumber">
             </td>
 
           <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.formuleName}}</td>
           <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
-              <input #formuleName type='text' [value]="formule.name">
+              <input #formuleName type='text' [value]="formule.formuleName">
             </td>
 
-            <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.parentName}}</td>
+            <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.formuleCategory}}</td>
             <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
-                <select #formuleParentName type='text' [value]="formule.parentName">
-                  <option *ngFor="let parent of allParentsFormules" value="{{parent.name}}">{{parent.name}}</option>
-                </select>
-
+                <input #formuleCategory type='text' [value]="formule.formuleCategory">
               </td>
 
        
           <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.date | date: "dd/MM/yyyy"}}</td>
           <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
-              <input #formuleLastUpdate type='date' [value]="formule.lastUpdate">
+              <input #formuleLastUpdate type='date' [value]="formule.date">
             </td>
           <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.formuleType}}</td>
-          <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
-              <select #formuleParent type='text' [value]="formule.parent">
-                <option value="true">Parent</option>
-                <option value="false">Not Parent</option>
-              </select>
-            </td>
+           
             <td><button class="deleteBtn" (click)="deleteFormule(formule._id)">Delete</button></td>
             <td><button class="btn btn-success" (click)="openPrint(printFormule,formule.formuleNumber)">Print Formule</button></td>
             <!-- <td><button style="float:right;background: green;box-shadow: inset 0px 1px 4px 0px;border:1px solid rgb(217, 228, 217);" (click)="copyFormule(currDoc,i)">Copy Formule</button></td> -->
@@ -67,57 +59,68 @@
 
 
     <ng-template  #formuleData let-modal>
-      <div class="modal-content">
+      <div style="overflow: auto;" class="modal-content formBackGround ">
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Phases Information</h4>
+          <h4 class="modal-title" id="modal-basic-title">Formule Information</h4>
           <h4>Formule Number: {{currentFormuleNumber}}</h4>
         </div>
         <div class="modal-body">
-          <table class='table'>
-            <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
-              <tr>
-                <td>Phase Number</td>
-                <td>Phase Name</td>
-                <td>Phase Instructions</td>
-                <td></td>
-
-
-              </tr>
-            </thead>
+         <table class="table table-striped">
+          <thead>
             <tr>
-              <td><input [(ngModel)]="addPhase.phaseNumber" type="number" placeholder="Phase Number"></td>
-              <td><input [(ngModel)]="addPhase.phaseName" type="text" placeholder="Phase Name"></td>
-              <td><input [(ngModel)]="addPhase.phaseInstructions" type="text" placeholder="Phase Instructions"></td>
-              <td style="display:inline-block"><input [(ngModel)]="addPhase.formuleNumber" type="number" placeholder="formuleNumber">
-                <button style="float:right;background: green;box-shadow: inset 0px 1px 3px 0px;border:1px solid rgb(217, 228, 217);width:30px;" (click)="addNewPhase()">+</button>
-              </td>
-
-
-
+              
+              <th>Phase Name</th>
+              <th>Phase Remarks</th>
+              <th>#</th>
+              <th>Batch Number</th>
+              <th>Execute</th>
+              <th>No.</th>
+              <th>Material Name</th>
+              <th>Percentage</th>
+              <th>Material Remarks</th>
+              <th></th>
+  
             </tr>
-            <tbody  id="table_body">
+          </thead>
+          <tr>
+            <td>
+              <input [(ngModel)]="newItem.phaseName" type="text" placeholder="Phase Name">
+            </td>
+            <td><input [(ngModel)]="newItem.phaseRemarks" type="text" placeholder="Phase Remarks"></td>
+            <td><input [(ngModel)]="newItem.itemNumber" placeholder="Item Number" (change)="fillMaterialName($event)" type="text"></td>
+          <td><input [(ngModel)]="newItem.itemName" placeholder="Item Name" list="materials" (change)="fillMaterialNumber($event)" type="text"></td>
+          <datalist id="materials">
+            <option *ngFor="let material of materials">{{material.componentName}}</option>
 
-              <tr *ngFor="let phase of updateFormule.phases" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
-                <td class="openUpdateModal" (click)="openItem(itemData,phase.phaseNumber)">{{phase.phaseNumber}}</td>
-                <!-- <td *ngIf="phase._id!=EditRowId" (click)="editPhases(phase._id)">{{phase.phaseName}}</td>
-                <td *ngIf="phase._id==EditRowId" (click)="editPhases(phase._id)">
-                    <input  [(ngModel)]="phaseToUpdate.phaseName" type='text' >
-                    <span>{{phase.phaseName}}</span>
-                  </td> -->
-                <td *ngIf="phase._id!=EditRowId" (click)="editPhases(phase._id)">{{phase.remarks}}</td>
-                <td *ngIf="phase._id==EditRowId" (click)="editPhases(phase._id)">
-                    <input [(ngModel)]="phaseToUpdate.phaseIns" type='text'>
-                    <span>{{phase.remarks}}</span>
-                  </td>
-                  <td *ngIf="phase._id==EditRowId">
-                      <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;" (click)="savePhaseEdit(currDoc)"></i>
-                    </td>
-                    <td><button *ngIf="phase._id!=EditRowId" class="deleteBtn" (click)="deletePhase(phase._id)">Delete</button></td>
-
+          </datalist>
+          <td><input [(ngModel)]="newItem.percentage" placeholder="Percentage" type="number"></td>
+          <td><input [(ngModel)]="newItem.remarks" placeholder="Remarks" type="text"></td>
+          <td><button (click)="addItemToFormule()" class="btn-success">Add</button></td>
+          </tr>
+          <tbody>
+            <ng-container *ngFor="let phase of updateFormule.phases;">
+              <tr *ngFor="let item of phase.items;let i = index">
+                <td>{{phase.phaseName}}</td>
+                <td>{{phase.remarks}}</td>
+                <td *ngIf="item.itemNumber!==EditRowId" (click)="edit(item.itemNumber)">{{i+1}}</td>
+                <!-- <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
+                  <input [(ngModel)]="updateItemIndex" type="number">
+                </td> -->
+                <td></td>
+                <td></td>
+                <td>{{item.itemNumber}}</td>
+                <td>{{item.itemName}}</td>
+                <td *ngIf="item.itemNumber!==EditRowId" (click)="edit(item.itemNumber)">{{item.percentage}}</td>
+                 <td  *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
+                  <input style="width:50px" [(ngModel)]="updatePercentage" [value]="item.percentage" type="text">
+                </td> 
+                <td>{{item.remarks}}</td>
+                <td *ngIf="item.itemNumber===EditRowId"><i class="ti-save" (click)="saveFormuleUpdate(updateFormule._id,item.itemNumber,phase.phaseName,i)"></i></td>
               </tr>
-
-            </tbody>
-          </table>
+            </ng-container>
+  
+          </tbody>
+         </table>
         </div>
         <div class="modal-footer">
         </div>
@@ -216,7 +219,7 @@
         <ng-template   #printFormule let-modal>
           <div id="print-section" class="modal-content">
             <div style="text-align: center;" class="modal-header">
-                <button class="btn btn-success" (click)="updateFormuleWhenPrint()" printSectionId="print-section" [printStyle]="{th : {'border': 'solid 1px'}, td : {'border': 'solid 1px', 'font-size': '16px'}}"  ngxPrint>{{updateFormule.name}}</button>
+                <button class="btn btn-success" (click)="updateFormuleWhenPrint()" printSectionId="print-section" [printStyle]="{th : {'border': 'solid 1px'}, td : {'border': 'solid 1px', 'font-size': '16px'}}"  ngxPrint>{{updateFormule.formuleName}}</button>
               <h4 style="font-size: 20px;" class="modal-title" id="modal-basic-title">{{updateFormule.formuleNumber}}</h4>
               <p>Date_____________</p>
               <p>Batch____________</p>
@@ -245,7 +248,7 @@
                     <ng-container >
 
                       <tr  *ngFor="let item of phase.items ; let i = index;">
-                        <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase" (click)="loadPhaseToForm(phase)">{{phase.phaseNumber}}</td>
+                        <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase" (click)="loadPhaseToForm(phase)">{{phase.phaseName}}</td>
                         <!-- <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td> -->
                         <td>{{item.itemName}}</td>
                         <td>{{item.itemNumber}}</td>
@@ -258,6 +261,9 @@
                         <td>{{item.percentage}}</td>
                         <!-- <td>{{item.temp}}</td> -->
                         <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.remarks}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
 
                       </tr>
                     </ng-container>

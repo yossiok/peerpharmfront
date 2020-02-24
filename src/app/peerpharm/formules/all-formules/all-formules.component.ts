@@ -22,6 +22,9 @@ currentFormuleNumber:any;
   isCollapsed:boolean = false;
   closeResult: string;
   updateItems:any;
+  chooseFromBuffer: boolean = false;
+  updatePercentage:any;
+  updateItemIndex:any;
   allParentsFormules:any[];
 
   addItem = {
@@ -34,6 +37,18 @@ currentFormuleNumber:any;
     currentPhase:'',
     formuleId:'',
     phaseId:''
+
+  }
+
+  newItem = {
+
+    itemName: '',
+    itemNumber: '',
+    percentage: '',
+    remarks: '',
+    phaseName:'',
+    phaseRemarks:'',
+    formuleNumber:'',
 
   }
 
@@ -68,7 +83,8 @@ currentFormuleNumber:any;
   @ViewChild('formuleParent') formuleParent: ElementRef;
   @ViewChild('formulePhaseName') formulePhaseName: ElementRef;
   @ViewChild('formulePhaseIns') formulePhaseIns: ElementRef;
-  @ViewChild('formuleParentName') formuleParentName: ElementRef;
+  @ViewChild('formuleCategory') formuleCategory: ElementRef;
+  
 
   constructor(private invtSer:InventoryService,private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal,private authService: AuthService) { }
 
@@ -142,8 +158,7 @@ currentFormuleNumber:any;
   }
 
   edit(id) {
-   
-    // if(this.alowUserEditBatches == true) {
+   debugger;
     this.EditRowId = id;
    
     if (id != '') {
@@ -232,7 +247,7 @@ saveEdit(currdoc) {
     this.currentDoc.client = this.formuleClient.nativeElement.value.trim();
     this.currentDoc.lastUpdate = this.formuleLastUpdate.nativeElement.value.trim();
     this.currentDoc.parent = this.formuleParent.nativeElement.value.trim();
-    this.currentDoc.parentName = this.formuleParentName.nativeElement.value.trim();
+    this.currentDoc.parentName = this.formuleCategory.nativeElement.value.trim();
 
     if(confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
       this.updateDocument()
@@ -244,6 +259,30 @@ saveEdit(currdoc) {
 
   }
 
+}
+
+addItemToFormule(){
+  debugger;
+
+  this.newItem.formuleNumber = this.currentFormuleNumber
+  this.formuleService.addItemToFormule(this.newItem).subscribe(data=>{
+    debugger;
+    data;
+    if(data) {
+      var formule = this.allFormules.find(f=>f._id == data._id)
+      var phase = formule.phases.find(p=>p.phaseName == this.newItem.phaseName);
+     phase.items.push(this.newItem)
+    this.newItem.formuleNumber = "";
+    this.newItem.phaseName = "";
+    this.newItem.phaseRemarks = "";
+    this.newItem.itemName = "";
+    this.newItem.itemNumber = "";
+    this.newItem.percentage = "";
+    this.newItem.remarks = "";
+    this.toastSrv.success("פריט נוסף בהצלחה!")
+    }
+
+  })
 }
 
 savePhaseEdit(currDoc) {
@@ -350,6 +389,30 @@ openPrint(printFormule,formuleNum) {
 }
 
 
+fillMaterialName(ev) {
+  debugger;
+  var itemNumber = ev.target.value
+  if(itemNumber != "buffer" || itemNumber != "") {
+    this.chooseFromBuffer = false;
+    this.invtSer.getMaterialStockItemByNum(itemNumber).subscribe(data => {
+      this.newItem.itemName = data[0].componentName
+    });
+  } 
+  if(itemNumber == "buffer"){
+    this.chooseFromBuffer = true;
+  }
+}
+
+fillMaterialNumber(ev){
+  var materialName = ev.target.value;
+
+  var material = this.materials.find(m=>m.componentName == materialName)
+  this.newItem.itemNumber = material.componentN
+  debugger;
+  
+
+  }
+
 loadDataPrint(formuleNum) {
   debugger;
   var formuleToUpdate = [];
@@ -369,12 +432,42 @@ open(formuleData,formuleNum) {
   this.loadData(formuleNum)
 }
 
+saveFormuleUpdate(formuleId,itemNumber,phaseName,index){
+  debugger;
+  
+  this.updatePercentage
+
+var formuleData = {
+  formuleId:formuleId,
+  itemNumber:itemNumber,
+  phaseName:phaseName,
+  index:index,
+  percentage:Number(this.updatePercentage)
+}
+this.formuleService.updateFormuleData(formuleData).subscribe(data=>{
+debugger;
+data
+var updatedFormule = this.allFormules.find(f=>f._id == formuleId);
+var phase = updatedFormule.phases.find(p=>p.phaseName == phaseName);
+for (let i = 0; i < phase.items.length; i++) {
+  if(phase.items[i].itemNumber == itemNumber){
+    phase.items[i].percentage = Number(this.updatePercentage)
+  }
+  
+  
+}
+this.toastSrv.success("פריט עודכן בהצלחה!")
+this.EditRowId = '';
+this.updatePercentage = ''
+})
+}
+
 
 loadData(formuleNum) {
   debugger;
   this.currentFormuleNumber = formuleNum
   var formuleToUpdate = [];
- formuleToUpdate = this.allFormules.find(formule => formule.number == formuleNum);
+ formuleToUpdate = this.allFormules.find(formule => formule.formuleNumber == formuleNum);
  this.updateFormule = formuleToUpdate
 }
 

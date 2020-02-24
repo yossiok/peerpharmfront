@@ -35,6 +35,7 @@ export class ItemdetaisComponent implements OnInit {
   mainLanguage: Boolean = true;
   mainLanguageTwo: Boolean = true;
   mainLanguageThree: Boolean = true;
+  mainLanguageFour: Boolean = true;
   department: Boolean = true;
   production: Boolean = false
   productionTwo: Boolean = false
@@ -130,6 +131,7 @@ export class ItemdetaisComponent implements OnInit {
     StickerLanguageK: '',
     StickerLanguageKTwo:'',
     StickerLanguageKThree:'',
+    StickerLanguageKFour:'',
     volumeKey: '',
     netWeightK: '',
     grossUnitWeightK: '',
@@ -858,6 +860,11 @@ export class ItemdetaisComponent implements OnInit {
     } else {
       this.mainLanguageThree = true
     }
+    if(this.itemShown.StickerLanguageKFour == '' || this.itemShown.StickerLanguageKFour == '---' || this.itemShown.StickerLanguageKFour == undefined) {
+      this.mainLanguageFour = false
+    } else {
+      this.mainLanguageFour = true
+    }
 
     if(this.itemShown.department == '' || this.itemShown.department == '---' || this.itemShown.department == undefined) {
       this.department = false
@@ -1137,6 +1144,15 @@ export class ItemdetaisComponent implements OnInit {
           this.itemShown.StickerLanguageKThree = '---'
         } else {
           this.mainLanguageThree = true
+        }
+        break;
+
+      case 'mainLangFour':
+        if (this.mainLanguageFour == true) {
+          this.mainLanguageFour = false;
+          this.itemShown.StickerLanguageKFour = '---'
+        } else {
+          this.mainLanguageFour = true
         }
         break;
 

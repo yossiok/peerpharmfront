@@ -155,11 +155,16 @@
       <tbody>
         <tr>
           <td><input #itemNumber [(ngModel)]="newItem.itemNumber" (change)="fillMaterialName($event)" type="text"></td>
-          <td><input list="materials" #itemName [(ngModel)]="newItem.itemName" (change)="fillMaterialNumber($event)" type="text"></td>
+          <td *ngIf="chooseFromBuffer == false"><input list="materials" #itemName [(ngModel)]="newItem.itemName" (change)="fillMaterialNumber($event)" type="text"></td>
           <datalist id="materials">
             <option *ngFor="let material of allMaterials" [value]="material.componentName">{{material.componentName}}</option>
 
           </datalist>
+          <td *ngIf="chooseFromBuffer == true">
+            <select #itemName [(ngModel)]="newItem.itemName">
+              <option *ngFor="let buffer of allFormuleBuffers" [value]="buffer">{{buffer}}</option>
+            </select>
+          </td>
           <td><input #percentage [(ngModel)]="newItem.percentage" type="number"></td>
           <td><input #remarks [(ngModel)]="newItem.remarks" type="text"></td>
           <td><button (click)="addItemsToPhase()" class="btn-success">Add</button></td>

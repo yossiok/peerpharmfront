@@ -172,6 +172,7 @@ export class NewFormuleComponent implements OnInit {
 
   updatePhasesInNewFormule(){
 
+    
    
     this.currentBaseFormule.children = this.allChildren
     this.formuleService.updateFormuleFromBase(this.currentBaseFormule).subscribe(data=>{

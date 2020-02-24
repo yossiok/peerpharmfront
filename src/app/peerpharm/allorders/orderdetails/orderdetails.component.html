@@ -1434,7 +1434,45 @@
 </ng-template>
 
 
+<div *ngIf="showMaterialsForFormules==true" id="myModal3" class="modal3"
+style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:70px;font-size:20px;'>
 
+<div class="modal-content" id='modelC'>
+  <div style="display: inline-block;" id="material-header" class="modal-header">
+
+    <span class="close" id="closeId3" (click)="showMaterialsForFormules=false">&times;</span>
+
+  </div>
+
+
+  <div class="container" id="material-body" class="modal-body">
+    <table id="procurementItems" class="table table-striped">
+      <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+        <tr>
+          <th>Bottle Number & Name</th> 
+          <th>Pump Number & Name</th>
+          <th>Seal Number & Name</th>
+          <th>Cap Number & Name</th>
+          <th>Quantity</th>
+
+        </tr>
+      </thead>
+      <tbody id="table_body">
+       <tr *ngFor="let material of materialsForFormules">
+         <td>{{material.bottleNumber}} {{material.bottleName}}</td>
+         <td>{{material.pumpNumber}} {{material.pumpName}}</td>
+         <td>{{material.sealNumber}} {{material.sealName}}</td>
+         <td>{{material.capNumber}} {{material.capName}}</td>
+         <td>{{material.kgProduction}}</td>
+
+       </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+</div>
 
 
 

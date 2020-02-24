@@ -144,9 +144,17 @@ export class FormulesService {
     let url = this.baseUrl + "formules/addFormule";
     return this.http.post(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
   }
+  addItemToFormule(newItem){
+    let url = this.baseUrl + "formules/addItemToFormule";
+    return this.http.post(url, JSON.stringify(newItem), this.options).pipe(map(res => res.json()));
+  }
   updateFormuleFromBase(baseFormule){
     let url = this.baseUrl + "formules/updateFormuleFromBase";
     return this.http.post(url, JSON.stringify(baseFormule), this.options).pipe(map(res => res.json()));
+  }
+  updateFormuleData(formuleData){
+    let url = this.baseUrl + "formules/updateFormuleData";
+    return this.http.post(url, JSON.stringify(formuleData), this.options).pipe(map(res => res.json()));
   }
 
   copyFormule(copiedFormule){

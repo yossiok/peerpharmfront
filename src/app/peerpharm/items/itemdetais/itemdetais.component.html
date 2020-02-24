@@ -153,6 +153,18 @@
                     </div>
                   </div>
                   <div>
+                    <div *ngIf="mainLanguageFour==true" class="productionLabel">
+                      <i (click)="addRemoveInputs('mainLangFour')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-minus" *ngIf="mainLanguageFour==true && alowUserEditItemTree==true"></i>
+                      <label>Language 4</label>
+                    </div>
+                    <div *ngIf="mainLanguageFour==false" class="productionLabel">
+                      <i (click)="addRemoveInputs('mainLangFour')" style="margin-right:2px;cursor: pointer;"
+                        class="fa fa-plus" *ngIf="mainLanguageFour==false && alowUserEditItemTree==true"></i>
+                      <label>Language 4</label>
+                    </div>
+                  </div>
+                  <div>
                     <div *ngIf="department==true" class="productionLabel">
                       <i (click)="addRemoveInputs('department')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="department==true && alowUserEditItemTree==true"></i>
@@ -168,28 +180,29 @@
 
                 </div>
                 <div class="col-3">
-                  <!-- <div>
+                  <div>
                     <select id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
                       [(ngModel)]=itemShown.StickerLanguageK>
-                    <option value="FRE">French</option>
-                    <option value="HEB">Hebrew</option>
-                    <option value="ENG">English</option>
-                    <option value="ARB">Arabic</option>
-                    <option value="POL">Polish</option>
-                    <option value="GER">German</option>
-                    <option value="RUS">Russian</option>
-                    <option value="SPA">Spanish</option>
-                    <option value="CHI">Chinese</option>
-                    <option value="DUT">Dutch</option>
-                    <option value="JPN">Japanese</option>
-                    <option value="SWE">Swedish</option>
-                    <option value="GRK">Greek</option>
+                    <option value="Arabic">Arabic</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Dutch">Dutch</option>
+                    <option value="English">English</option>
+                    <option value="French">French</option>
+                    <option value="German">German</option>
+                    <option value="Greek">Greek</option>
+                    <option value="Hebrew">Hebrew</option>
+                    <option value="Italiano">Italiano</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Polish">Polish</option>
+                    <option value="Russian">Russian</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="Swedish">Swedish</option>
                   </select>
-                  </div> -->
-                  <div>
+                  </div>
+                  <!-- <div>
                     <input id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
                     [(ngModel)]=itemShown.StickerLanguageK>
-                  </div>
+                  </div> -->
                   <div *ngIf="mainLanguage==false">
                     <p>---</p>
                   </div>
@@ -197,19 +210,20 @@
                   <div>
                     <select [(ngModel)]=itemShown.StickerLanguageKTwo type="text" *ngIf="mainLanguageTwo==true"
                       class="productionInput">
-                      <option value="FRE">French</option>
-                      <option value="HEB">Hebrew</option>
-                      <option value="ENG">English</option>
-                      <option value="ARB">Arabic</option>
-                      <option value="POL">Polish</option>
-                      <option value="GER">German</option>
-                      <option value="RUS">Russian</option>
-                      <option value="SPA">Spanish</option>
-                      <option value="CHI">Chinese</option>
-                      <option value="DUT">Dutch</option>
-                      <option value="JPN">Japanese</option>
-                      <option value="SWE">Swedish</option>
-                      <option value="GRK">Greek</option>
+                      <option value="Arabic">Arabic</option>
+                      <option value="Chinese">Chinese</option>
+                      <option value="Dutch">Dutch</option>
+                      <option value="English">English</option>
+                      <option value="French">French</option>
+                      <option value="German">German</option>
+                      <option value="Greek">Greek</option>
+                      <option value="Hebrew">Hebrew</option>
+                      <option value="Italiano">Italiano</option>
+                      <option value="Japanese">Japanese</option>
+                      <option value="Polish">Polish</option>
+                      <option value="Russian">Russian</option>
+                      <option value="Spanish">Spanish</option>
+                      <option value="Swedish">Swedish</option>
                     </select>
                   </div>
                   <div *ngIf="mainLanguageTwo==false">
@@ -218,23 +232,45 @@
                   <div>
                     <select [(ngModel)]=itemShown.StickerLanguageKThree *ngIf="mainLanguageThree==true"
                       class="productionInput">
-                      <option value=""></option>
-                      <option value="FRE">French</option>
-                      <option value="HEB">Hebrew</option>
-                      <option value="ENG">English</option>
-                      <option value="ARB">Arabic</option>
-                      <option value="POL">Polish</option>
-                      <option value="GER">German</option>
-                      <option value="RUS">Russian</option>
-                      <option value="SPA">Spanish</option>
-                      <option value="CHI">Chinese</option>
-                      <option value="DUT">Dutch</option>
-                      <option value="JPN">Japanese</option>
-                      <option value="SWE">Swedish</option>
-                      <option value="GRK">Greek</option>
+                      <option value="Arabic">Arabic</option>
+                      <option value="Chinese">Chinese</option>
+                      <option value="Dutch">Dutch</option>
+                      <option value="English">English</option>
+                      <option value="French">French</option>
+                      <option value="German">German</option>
+                      <option value="Greek">Greek</option>
+                      <option value="Hebrew">Hebrew</option>
+                      <option value="Italiano">Italiano</option>
+                      <option value="Japanese">Japanese</option>
+                      <option value="Polish">Polish</option>
+                      <option value="Russian">Russian</option>
+                      <option value="Spanish">Spanish</option>
+                      <option value="Swedish">Swedish</option>
                     </select>
                   </div>
                   <div *ngIf="mainLanguageThree==false">
+                    <p>---</p>
+                  </div>
+                  <div>
+                    <select [(ngModel)]=itemShown.StickerLanguageKFour *ngIf="mainLanguageFour==true"
+                      class="productionInput">
+                      <option value="Arabic">Arabic</option>
+                      <option value="Chinese">Chinese</option>
+                      <option value="Dutch">Dutch</option>
+                      <option value="English">English</option>
+                      <option value="French">French</option>
+                      <option value="German">German</option>
+                      <option value="Greek">Greek</option>
+                      <option value="Hebrew">Hebrew</option>
+                      <option value="Italiano">Italiano</option>
+                      <option value="Japanese">Japanese</option>
+                      <option value="Polish">Polish</option>
+                      <option value="Russian">Russian</option>
+                      <option value="Spanish">Spanish</option>
+                      <option value="Swedish">Swedish</option>
+                    </select>
+                  </div>
+                  <div *ngIf="mainLanguageFour==false">
                     <p>---</p>
                   </div>
                   <div>
