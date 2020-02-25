@@ -293,7 +293,7 @@ export class NewFormuleComponent implements OnInit {
 
     }
 
-    if (this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.percentage.nativeElement.value == "") {
+    if (this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "") {
       this.Toastr.error("לא כל הפרטים מלאים")
     } else {
 

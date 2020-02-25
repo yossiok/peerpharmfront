@@ -597,6 +597,11 @@ showFormule(itemNumber,formuleByItem) {
   }) 
 }
 
+checkboxAllOrders(ev) {
+  debugger;
+  this.ordersItems.filter(e => e.isSelected = ev.target.checked)
+}
+
 
 loadMaterialsForFormule(){
   debugger
@@ -604,8 +609,13 @@ loadMaterialsForFormule(){
 
   this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(data=>{
     debugger
-  this.materialsForFormules = data;
-  this.showMaterialsForFormules = true;
+    if(data.msg == "לא קיימת פורמולה") {
+      this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
+    } else  {
+      this.materialsForFormules = data;
+      this.showMaterialsForFormules = true;
+    }
+  
   })
 }
 

@@ -96,7 +96,7 @@
 
     <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
       <td></td>
-      <td></td>
+      <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
       <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
           class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
           (focusout)="searchItem(orderNumber.value)"></td>
@@ -1439,33 +1439,47 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
 
 <div class="modal-content" id='modelC'>
   <div style="display: inline-block;" id="material-header" class="modal-header">
-
+    <button class="btn btn-success" printSectionId="materialsPrint" [printStyle]="{td : {'border': 'solid 1px black'},tr : {'border': 'solid 1px black'}}" ngxPrint>Print</button>
     <span class="close" id="closeId3" (click)="showMaterialsForFormules=false">&times;</span>
 
   </div>
 
 
-  <div class="container" id="material-body" class="modal-body">
+  <div class="container" style="overflow: auto;" id="materialsPrint" class="modal-body">
     <table id="procurementItems" class="table table-striped">
       <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
         <tr>
-          <th>Bottle Number & Name</th> 
-          <th>Pump Number & Name</th>
-          <th>Seal Number & Name</th>
-          <th>Cap Number & Name</th>
-          <th>Quantity</th>
+         
+          <th>Material Number</th>
+          <th>Material Name</th> 
+          <th>KG Production</th>
 
         </tr>
       </thead>
-      <tbody id="table_body">
+      <tbody  id="table_body">
        <tr *ngFor="let material of materialsForFormules">
-         <td>{{material.bottleNumber}} {{material.bottleName}}</td>
-         <td>{{material.pumpNumber}} {{material.pumpName}}</td>
-         <td>{{material.sealNumber}} {{material.sealName}}</td>
-         <td>{{material.capNumber}} {{material.capName}}</td>
+      
+         <td>{{material.itemNumber}}</td>
+         <td>{{material.itemName}}</td>
          <td>{{material.kgProduction}}</td>
 
        </tr>
+      </tbody>
+    </table>
+  <br>
+  <br>
+    <table>
+      <thead style="box-shadow: 1px 1px 2px 0px black;">
+        <tr>
+          <th>מספר הזמנה</th>
+          <th>מספר פריט</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let obj of selectedArr">
+          <td>{{obj.orderNumber}}</td>
+          <td>{{obj.itemNumber}}</td>
+        </tr>
       </tbody>
     </table>
 
