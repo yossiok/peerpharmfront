@@ -166,6 +166,7 @@ export class StockComponent implements OnInit {
     componentNumber:'',
     requestNumber:'',
     date:this.formatDate(new Date()),
+    user:''
   }
   resMaterial: any = {
 
@@ -558,7 +559,7 @@ export class StockComponent implements OnInit {
 
   sendRecommandation(){
     debugger
-   
+    this.recommandPurchase.user = this.authService.loggedInUser.userName;
     this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data=>{
     debugger;
     if(data){

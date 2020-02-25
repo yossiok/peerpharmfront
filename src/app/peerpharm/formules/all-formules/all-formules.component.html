@@ -11,12 +11,13 @@
           <td>Formule Category</td>
           <td>Date Created</td>
           <td>Formule Type</td>
-          <td></td>
+          <td>Approval</td>
+          <!-- <td></td> -->
           <td></td>
         </tr>
       </thead>
       <ng-container>
-        <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let formule of allFormules; let i = index">
+        <tr [ngClass]="{approvedClass:formule.approval=='confirmed'}" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let formule of allFormules; let i = index">
           <td>{{i+1}}</td>
 
           <td *ngIf="formule._id!=EditRowId" class="openUpdateModal" (click)="open(formuleData,formule.formuleNumber)">{{formule.formuleNumber}}</td>
@@ -40,8 +41,8 @@
               <input #formuleLastUpdate type='date' [value]="formule.date">
             </td>
           <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.formuleType}}</td>
-           
-            <td><button class="deleteBtn" (click)="deleteFormule(formule._id)">Delete</button></td>
+          <td><i style="cursor: pointer;" (click)="approveFormule(formule._id,formule.formuleNumber)" class="fa fa-check" aria-hidden="true"></i></td>
+            <!-- <td><button class="deleteBtn" (click)="deleteFormule(formule._id)">Delete</button></td> -->
             <td><button class="btn btn-success" (click)="openPrint(printFormule,formule.formuleNumber)">Print Formule</button></td>
             <!-- <td><button style="float:right;background: green;box-shadow: inset 0px 1px 4px 0px;border:1px solid rgb(217, 228, 217);" (click)="copyFormule(currDoc,i)">Copy Formule</button></td> -->
 
@@ -239,6 +240,7 @@
                     <th scope="col">Weight%</th>
                     <th scope="col">Temp</th>
                     <th scope="col">Phase Instructions</th>
+                    
 
                   </tr>
                 </thead>

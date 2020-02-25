@@ -260,6 +260,8 @@ export class NewFormuleComponent implements OnInit {
 
   moveToPhases() {
     debugger
+
+    this.newFormule.children = this.allChildren
     if (this.newFormule.user == "" || this.newFormule.date == "" || this.newFormule.formuleCategory == "" || 
       this.newFormule.formuleNumber == "") {
 

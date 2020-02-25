@@ -139,6 +139,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules/updateFormuleWhenPrint";
     return this.http.post(url, JSON.stringify(updatedFormule), this.options).pipe(map(res => res.json()));
   }
+  approveFormule(id){
+    let url = this.baseUrl + "formules/approveFormule";
+    return this.http.post(url, JSON.stringify({id}), this.options).pipe(map(res => res.json()));
+  }
 
   newFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/addFormule";

@@ -26,6 +26,7 @@ currentFormuleNumber:any;
   updatePercentage:any;
   updateItemIndex:any;
   allParentsFormules:any[];
+  user:any;
 
   addItem = {
     itemNumber:'',
@@ -100,6 +101,8 @@ currentFormuleNumber:any;
     this.getAllFormules();
     this.getAllMaterials();
     this.getAllParentsFormules();
+    debugger;
+    this.user = this.authService.loggedInUser.userName;
   }
 
   getAllMaterials() {
@@ -172,7 +175,26 @@ currentFormuleNumber:any;
     }
   // }
 }
-
+approveFormule(id,formuleNumber){
+  debugger;
+  this.user = this.authService.loggedInUser.userName;
+  if(this.user == "Sigi" || this.user == "akiva" || this.user == "sima"){
+    if(confirm("האם לאשר פורמולה מספר: " + formuleNumber)) {
+      this.formuleService.approveFormule(id).subscribe(data=>{
+        debugger;
+        if(data){
+          var formule = this.allFormules.find(f=>f._id == id);
+          formule.approval = "confirmed"
+          this.toastSrv.success("פורמולה אושרה בהצלחה !")
+        }
+      })
+    }
+  
+  } else { 
+    this.toastSrv.error("רק משתמש מורשה רשאי לעדכן זאת")
+  }
+ 
+}
 editPhases(id) { 
 
   this.EditRowId = id;

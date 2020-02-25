@@ -26,20 +26,23 @@
 
     .openUpdateModal { 
       color:blue;
-      border-radius: 50%;
       cursor: pointer;
       text-decoration: underline;
       font-weight: bold;
     }
 
     .openUpdateModal:hover { 
-      background:rgba(255, 255, 255, 0.274);
+    
       cursor: pointer;
     }
     .formBackGround {
       background:rgb(253, 232, 175);
       padding:15px;
       color:black;
+  }
+
+  .approvedClass{
+    background:lightgreen;
   }
     .loader {
       color: #4949db;

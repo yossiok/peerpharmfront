@@ -17,6 +17,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ProcurementOrdersComponent implements OnInit {
 
   allComponents:any[];
+  allComponentsCopy:any[];
   printBill:boolean = false;
   orderDetailsModal:boolean = false;
   procurementData: any[];
@@ -56,7 +57,6 @@ export class ProcurementOrdersComponent implements OnInit {
   ngOnInit() {
     console.log('Enter');
     this.getAllProcurementOrders();
-    // this.getAllComponents();
     this.getComponentsWithPurchaseRec();
     this.user = this.authService.loggedInUser.firstName;
 
@@ -84,7 +84,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   
   changeStatusToDone(purchase){
-    purchase
+    this.user = this.authService.loggedInUser.firstName;
     if(this.user == "shanie"){
       this.procurementservice.updateComponentPurchase(purchase).subscribe(data=>{
         debugger;
@@ -107,6 +107,21 @@ export class ProcurementOrdersComponent implements OnInit {
  
   }
 
+  sortTable(typeOfSort){
+    debugger;
+    switch (typeOfSort) {
+      case 'supplier':
+        
+        break;
+      case 'date':
+     
+        break;
+      case 'ordered':
+        
+        break;
+
+    }  
+  }
   printOrder(line) {
     debugger;
 
@@ -192,18 +207,11 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-  getAllComponents(){
-    this.inventoryService.getAllComponents().subscribe(data=>{
-      debugger;
-      this.allComponents = data.reverse();
-
-
-    })
-  }
 
   getComponentsWithPurchaseRec(){
     this.procurementservice.componentsWithPurchaseRec().subscribe(data=>{
       this.allComponents = data;
+      this.allComponentsCopy = data;
     })
   }
 
