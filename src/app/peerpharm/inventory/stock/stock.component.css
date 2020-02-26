@@ -25,7 +25,11 @@ body {
  padding: 0px;
  margin: 0px auto 0px auto;
  overflow-y: auto;
+ transition: 0.5s;
 
+}
+#table-wrapper:hover {
+  transform: scale(1.8);
 }
 
 .tableFixHead          { overflow-y: auto; height: 800px;background:rgba(0, 0, 255, 0);padding:0px; }

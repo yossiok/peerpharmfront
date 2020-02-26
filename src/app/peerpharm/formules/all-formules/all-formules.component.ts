@@ -24,6 +24,8 @@ currentFormuleNumber:any;
   updateItems:any;
   chooseFromBuffer: boolean = false;
   updatePercentage:any;
+  updatePhaseRemarks:any;
+  updateItemRemarks:any;
   updateItemIndex:any;
   allParentsFormules:any[];
   user:any;
@@ -464,16 +466,21 @@ var formuleData = {
   itemNumber:itemNumber,
   phaseName:phaseName,
   index:index,
-  percentage:Number(this.updatePercentage)
+  percentage:Number(this.updatePercentage),
+  itemRemarks:this.updateItemRemarks,
+  phaseRemarks:this.updatePhaseRemarks
 }
 this.formuleService.updateFormuleData(formuleData).subscribe(data=>{
 debugger;
 data
 var updatedFormule = this.allFormules.find(f=>f._id == formuleId);
 var phase = updatedFormule.phases.find(p=>p.phaseName == phaseName);
+phase.remarks = this.updatePhaseRemarks
 for (let i = 0; i < phase.items.length; i++) {
   if(phase.items[i].itemNumber == itemNumber){
     phase.items[i].percentage = Number(this.updatePercentage)
+    phase.items[i].remarks = this.updateItemRemarks
+    
   }
   
   
@@ -481,6 +488,8 @@ for (let i = 0; i < phase.items.length; i++) {
 this.toastSrv.success("פריט עודכן בהצלחה!")
 this.EditRowId = '';
 this.updatePercentage = ''
+this.updateItemRemarks = ''
+this.updatePhaseRemarks = ''
 })
 }
 

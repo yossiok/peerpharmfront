@@ -1065,6 +1065,20 @@
                     <input type="text" [(ngModel)]="resMaterial.quantityInStock">
                   </td>
                 </tr>
+                <tr>
+                  <th>Mixed Material</th>
+                  <td>
+                    <input type="text" [(ngModel)]="mixMaterial">
+                  </td>
+                  <td>
+                    <input type="number" style="width:50px;" [(ngModel)]="mixMaterialPercentage"><i (click)="createMixedMaterial()" class="fa fa-plus"></i>
+                  </td>
+                </tr>
+                <tr *ngFor="let mixedMaterial of resMaterial.mixedMaterial">
+                  <td>
+                    {{mixedMaterial.materialName}}
+                  </td>
+                </tr>
               </div>
 
               <div style="margin-left: 20px;">

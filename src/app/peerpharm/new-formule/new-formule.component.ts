@@ -15,6 +15,7 @@ import { ItemsService } from 'src/app/services/items.service';
 export class NewFormuleComponent implements OnInit {
   
   allMaterials:any[];
+  mixedMaterials:any[];
   baseFormules:any[];
   allChildren:any[] = [];
   currentBaseFormule:any;
@@ -25,6 +26,7 @@ export class NewFormuleComponent implements OnInit {
   updateCurrBaseFormule: boolean = false;
   chooseChildren: boolean = false;
   chooseFromBuffer: boolean = false;
+  hasMixedMaterial: boolean = false;
   currentFormule: any;
   user:any;
   EditRowId: any = "";
@@ -224,36 +226,52 @@ export class NewFormuleComponent implements OnInit {
   var material = this.allMaterials.find(m=>m.componentName == materialName)
   this.newItem.itemNumber = material.componentN
   debugger;
-  
+  if(material.mixedMaterial.length > 0) {
+    this.hasMixedMaterial = true;
+    this.mixedMaterials = material.mixedMaterial;
+  } else {
+    this.hasMixedMaterial = false;
+  }
 
   }
 
   addChildrenToFather(){
     debugger;
     var childrenNumber = this.addChildren.nativeElement.value;
-    var tempArr = [];
-    tempArr = this.allChildren
-
-    var obj = {
-      childNumber:childrenNumber
-    }
-  
-
-    for (let i = 0; i < tempArr.length; i++) {
-      if(tempArr[i].childNumber==childrenNumber){
-        this.Toastr.error("פורמולת בן כבר קיימת")
-        this.addChildren.nativeElement.value = "";
-        var exist = true;
-        return exist;
-      } 
-     }
+    if(childrenNumber != "") {
+      this.formuleService.getFormuleByNumber(childrenNumber).subscribe(data=>{
+        debugger;
+        if(data){
+          this.Toastr.error("פורמולת בן קיימת אצל אב אחר")
+        } else {
+          var tempArr = [];
+          tempArr = this.allChildren
       
-    if(!exist){
-      tempArr.push(obj)
-      this.addChildren.nativeElement.value = "";
-      this.Toastr.success("פורמולת בן נוספה בהצלחה !")
-    
+          var obj = {
+            childNumber:childrenNumber
+          }
+        
+      
+          for (let i = 0; i < tempArr.length; i++) {
+            if(tempArr[i].childNumber==childrenNumber){
+              this.Toastr.error("פורמולת בן כבר קיימת ברשימה")
+              this.addChildren.nativeElement.value = "";
+              var exist = true;
+              return exist;
+            } 
+           }
+            
+          if(!exist){
+            tempArr.push(obj)
+            this.addChildren.nativeElement.value = "";
+            this.Toastr.success("פורמולת בן נוספה בהצלחה !")
+          
+          }
+        }
+      })
     }
+    
+ 
 
   }
 
@@ -448,6 +466,7 @@ export class NewFormuleComponent implements OnInit {
         this.currentFormule = false;
         this.resetFormuleForm();
         this.allPercentage = null
+        this.allChildren = []
       }
     } else {
       this.Toastr.success("פורמולה הוקמה בהצלחה !")
@@ -456,6 +475,7 @@ export class NewFormuleComponent implements OnInit {
       this.currentFormule = false;
       this.resetFormuleForm();
       this.allPercentage = null
+      this.allChildren = []
     }
   }
 

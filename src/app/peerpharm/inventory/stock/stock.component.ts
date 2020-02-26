@@ -138,6 +138,8 @@ export class StockComponent implements OnInit {
   materialToFind: String = "";
   productResponse: any = {};
   linkDownload:String = "";
+  mixMaterial:String;
+  mixMaterialPercentage:String;
   arrivalDateExpired = true;
   newItemProcurmentDetails: FormGroup;
   newOrderProcurmentDetails: FormGroup;
@@ -207,6 +209,7 @@ export class StockComponent implements OnInit {
     frameSupplier:"",
     location:"",
     quantityInStock:"",
+    mixedMaterial:[]
 
   }
   itemExpectedArrivals: any;
@@ -573,6 +576,25 @@ export class StockComponent implements OnInit {
     })
   }
 
+
+  createMixedMaterial(){
+    this.mixMaterial;
+    let obj = {
+      materialName:this.mixMaterial,
+      materialPercentage:this.mixMaterialPercentage
+    }
+    if(this.mixMaterial == "" || this.mixMaterialPercentage == ""){
+      this.toastSrv.error("אנא תמלא את השם והאחוזים בכדי להוסיף")
+    } else {
+      this.resMaterial.mixedMaterial.push(obj);
+      this.mixMaterial = "";
+      this.mixMaterialPercentage = "";
+      this.toastSrv.success("חומר גלם נוסף בהצלחה!")
+    }
+  
+
+
+  }
   getAllComponents() {
     
     debugger;
@@ -1305,7 +1327,7 @@ export class StockComponent implements OnInit {
   }
 
   writeNewMaterial() {
-    
+    debugger;
     //this.stockType = "material"/"component"/"product"
     this.resMaterial.itemType = "material"
     if (this.resMaterial.componentN != "") {

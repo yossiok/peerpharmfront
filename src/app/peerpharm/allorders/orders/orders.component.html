@@ -27,7 +27,6 @@
 </div>
 <br><br>
 <input matInput class="searchInput" placeholder="Search Costumer By Name" (change)="changeText($event)"/>
-<input matInput class="searchInput" placeholder="Search Costumer By Type" (change)="searchByType($event)"/>
  
     <button (click)="loadOrders()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px; box-shadow: 2px 2px 2px black'> Load </button> 
     <button (click)="loadOrdersItems()"  class='btn btn-info waves-effect waves-light ml-2' style='height:45px; box-shadow: 2px 2px 2px black'> Show Items </button>
@@ -75,7 +74,13 @@
       <th style="padding:5px">Order date</th>
       <th style="padding:5px">Delivery Date</th>
       <th style="width:15%; padding:5px">Remarks</th>
-      <th style="padding:5px ; width: 7%">Type</th>
+      <th style="padding:5px ; width: 7%">
+      <select style="width:63px;" (change)="searchByType($event)">
+        <option value="">Type-All</option>
+        <option value="Make Up">Make Up</option>
+        <option value="Cosmetic">Cosmetic</option>
+        <option value="Cosmetic & MakeUp">Cosmetic & MakeUp</option>
+      </select></th>
       <th style="padding:5px">Stage
         <i class="ti-exchange-vertical" (click)="sortOrdersByStage()" style="cursor:pointer" ></i>
       </th>

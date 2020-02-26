@@ -309,48 +309,28 @@ export class OrdersComponent implements OnInit {
 
   }
   searchByType(ev) { 
+    debugger;
     let word = ev.target.value;
     if (word != "") {
-      if (word == "cosmetic") {
-        var tempArr = this.orders.filter(x => x.type == "Cosmetic")
-        this.orders = tempArr
-      }
+  
       if (word == "Cosmetic") {
+        this.orders = this.ordersCopy
         var tempArr = this.orders.filter(x => x.type == "Cosmetic")
         this.orders = tempArr
       }
-      if (word == "make up") {
+
+      if (word == "Make Up") {
+        this.orders = this.ordersCopy
         var tempArr = this.orders.filter(x => x.type == "Make Up")
         this.orders = tempArr
       }
-      if (word == "Make up") {
-        var tempArr = this.orders.filter(x => x.type == "Make Up")
-        this.orders = tempArr
-      }
-      if (word == "cosmetic &") {
-        var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")
-        var tempArrTwo = this.orders.filter(x=> x.type == "Cosmetic")
 
-        this.orders = tempArr.concat(tempArrTwo)
-      }
-      if (word == "make up &") {
+      if (word == "Cosmetic & MakeUp") {
+        this.orders = this.ordersCopy
         var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")
-        var tempArrTwo = this.orders.filter(x=> x.type == "Make Up")
+        this.orders = tempArr
+      }
 
-        this.orders = tempArr.concat(tempArrTwo)
-      }
-      if (word == "Cosmetic &") {
-        var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")
-        this.orders = tempArr
-      }
-      if (word == "Cosmetic & make up") {
-        var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")
-        this.orders = tempArr
-      }
-      if (word == "cosmetic & make up") {
-        var tempArr = this.orders.filter(x => x.type == "Cosmetic & Make Up")
-        this.orders = tempArr
-      }
     } else {
       this.orders = this.ordersCopy
     }
