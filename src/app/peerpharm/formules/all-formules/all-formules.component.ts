@@ -115,7 +115,8 @@ currentFormuleNumber:any;
 
 
   getAllParentsFormules(){
-    this.formuleService.getAllParents().subscribe(data=>{
+
+    this.formuleService.getAllFathers().subscribe(data=>{
       debugger;
       this.allParentsFormules = data;
 

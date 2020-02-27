@@ -17,6 +17,7 @@ export class NewFormuleComponent implements OnInit {
   allMaterials:any[];
   mixedMaterials:any[];
   baseFormules:any[];
+  fatherFormules:any[];
   allChildren:any[] = [];
   currentBaseFormule:any;
   phaseItems:any[] = [];
@@ -28,6 +29,7 @@ export class NewFormuleComponent implements OnInit {
   chooseFromBuffer: boolean = false;
   hasMixedMaterial: boolean = false;
   currentFormule: any;
+  childrenToAdd: any;
   user:any;
   EditRowId: any = "";
   allPercentage:number;
@@ -38,6 +40,7 @@ export class NewFormuleComponent implements OnInit {
   @ViewChild('percentage') percentage: ElementRef;
   @ViewChild('remarks') remarks: ElementRef;
   @ViewChild('addChildren') addChildren: ElementRef;
+  @ViewChild('fatherFormule') fatherFormule: ElementRef;
 
 
 
@@ -113,6 +116,7 @@ export class NewFormuleComponent implements OnInit {
     });
     this.getUserDetails();
     this.getAllMaterials()
+    this.getAllFatherFormules();
     this.getAllBaseFormules()
   }
 
@@ -217,6 +221,33 @@ export class NewFormuleComponent implements OnInit {
       })
 
     }
+
+  }
+
+  addChildToExistFather(){
+    debugger;
+    var obj = {
+      fatherFormule: this.fatherFormule.nativeElement.value,
+      childNumber: this.childrenToAdd,
+    }
+
+    this.formuleService.getFormuleByNumber(this.childrenToAdd).subscribe(data=>{
+      if(data){
+        this.Toastr.error("פורמולת בן קיימת אצל אב אחר")
+      } else {
+
+        this.formuleService.addChildToFather(obj).subscribe(data=>{
+          debugger;
+          if(data){
+           this.Toastr.success("פורמולה מספר"+data.formuleNumber+"נוצרה בהצלחה");
+           this.childrenToAdd = "";
+          }
+    
+        })
+      }
+    })
+    
+
 
   }
 
@@ -445,6 +476,12 @@ export class NewFormuleComponent implements OnInit {
   getAllBaseFormules(){
     this.formuleService.getAllBaseFormules().subscribe(data=>{
       this.baseFormules = data;
+    })
+  }
+
+  getAllFatherFormules(){
+    this.formuleService.getAllFathers().subscribe(data=>{
+    this.fatherFormules = data;
     })
   }
 

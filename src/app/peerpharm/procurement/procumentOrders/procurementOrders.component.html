@@ -247,6 +247,7 @@
         <tr>
           <th>מספר פריט</th>
           <th>שם פריט</th>
+          <th>הערות המלצה</th>
           <th>שם הממליץ</th>
           <th style="cursor: pointer;" (click)="sortTable('supplier')">ספק</th>
           <th style="cursor: pointer;" (click)="sortTable('date')">תאריך המלצה</th>
@@ -260,6 +261,7 @@
           <tr *ngFor="let purchase of purchaseRecommendations" [style.background-color]="purchase.color">
             <td>{{purchase.componentNumber}}</td>
             <td>{{purchase.componentName}}</td>
+            <td>{{purchase.recommendRemarks}}</td>
             <td>{{purchase.user}}</td>
             <td>{{purchase.supplierName}}</td>
             <td>{{purchase.date}}</td>

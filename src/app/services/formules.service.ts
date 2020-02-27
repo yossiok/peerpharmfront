@@ -88,8 +88,8 @@ export class FormulesService {
     let url = this.baseUrl + "formules?byParent="+parent;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  getAllParents(){
-    let url = this.baseUrl + "formules/allParentsFormules";
+  getAllFathers(){
+    let url = this.baseUrl + "formules/getAllFathers";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -159,6 +159,10 @@ export class FormulesService {
   updateFormuleData(formuleData){
     let url = this.baseUrl + "formules/updateFormuleData";
     return this.http.post(url, JSON.stringify(formuleData), this.options).pipe(map(res => res.json()));
+  }
+  addChildToFather(obj){
+    let url = this.baseUrl + "formules/addChildToFather";
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res => res.json()));
   }
 
   copyFormule(copiedFormule){

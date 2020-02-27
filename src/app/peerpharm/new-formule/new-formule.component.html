@@ -41,8 +41,16 @@
     <div class="col-2">
       <label>Formule Number:</label>
     </div>
-    <div class="col-1">
+    <div class="col-5">
       <input (change)="fillTheNameByNumber($event)" style="width:346px" [(ngModel)]="newFormule.formuleNumber" type="text" placeholder="Formule Number">
+    </div>
+    <div class="col-2">
+     <label>Add Child To Father</label>
+    </div>
+    <div class="col-3">
+      <select #fatherFormule>
+        <option  *ngFor="let formule of fatherFormules" [value]="formule.formuleName">{{formule.formuleName}}</option>
+      </select>
     </div>
   </div>
 
@@ -50,9 +58,17 @@
     <div class="col-2">
       <label>Formule Name:</label>
     </div>
-    <div class="col-1">
+    <div class="col-5">
       <input [(ngModel)]="newFormule.formuleName" style="width:346px" type="text" placeholder="Formule Name">
     </div>
+    <div class="col-2">
+      <label>Type Child Number</label>
+    </div>
+    <div class="col-3">
+      <input type="text"  [(ngModel)]="childrenToAdd" placeholder="Child Number">
+      <i (click)="addChildToExistFather()" class="fa fa-plus"></i>
+    </div>
+
   </div>
 
   <div class="row">
