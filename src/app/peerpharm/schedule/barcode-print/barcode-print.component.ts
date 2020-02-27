@@ -443,17 +443,12 @@ export class BarcodePrintComponent implements OnInit {
       this.item = this.printBarcodeForm.value.item
     }
   
+    if(this.printBarcodeForm.value.unitMsr !="") {
+      this.volumeK = this.printBarcodeForm.value.unitMsr
+    }
+  
     
-    this.amountOfStickersArr = [];
-    this.printBarcodeId = null;
-    this.showCustomerFlag = true;
-    this.showOrderNumFlag = true;
-    this.showItemFlag = true;
-    this.showBarcodeFlag = true;
-    this.showBatchFlag = true;
-    this.showExpFlag = true;
-    this.showOtherFlag = true;
-    
+ 
 
    
     this.printBarkod = this.printBarcodeForm.value;
@@ -469,6 +464,9 @@ export class BarcodePrintComponent implements OnInit {
     } else {
       this.toastSrv.error("Please enter amount of stickers");
     }
+
+ 
+    
   }
 
   get printBarcodeValues(): string[] {

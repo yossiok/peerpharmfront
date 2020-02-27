@@ -475,6 +475,7 @@ this.formuleService.updateFormuleData(formuleData).subscribe(data=>{
 debugger;
 data
 var updatedFormule = this.allFormules.find(f=>f._id == formuleId);
+updatedFormule.approval = "";
 var phase = updatedFormule.phases.find(p=>p.phaseName == phaseName);
 phase.remarks = this.updatePhaseRemarks
 for (let i = 0; i < phase.items.length; i++) {
