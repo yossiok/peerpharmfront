@@ -29,6 +29,7 @@ export class ProcurementOrdersComponent implements OnInit {
   currentSupplier:object;
   orderData:any[];
   EditRowId:any="";
+  requestNum:any="";
   user:any;
 
   totalAmount:any;
@@ -42,6 +43,7 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild('orderAmount') orderAmount: ElementRef;
   @ViewChild('referenceNumber') referenceNumber: ElementRef;
   @ViewChild('arrivalDate') arrivalDate: ElementRef;
+  @ViewChild('recommendRemarks') recommendRemarks: ElementRef;
   
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -49,6 +51,7 @@ export class ProcurementOrdersComponent implements OnInit {
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('');
+    this.editRecommend('','')
   }
 
   constructor( 
@@ -84,6 +87,38 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
+  editRecommend(id,requestNumber){
+    debugger;
+    if (id != '') {
+      this.requestNum = requestNumber
+      this.EditRowId = id;
+    } else {
+      this.EditRowId = '';
+      this.requestNum = '';
+    }
+  }
+
+  saveRecommendRemarks(purchase){
+  debugger;
+  
+  purchase.recommendRemarks = this.recommendRemarks.nativeElement.value;
+
+  this.procurementservice.updateRecommendRemarks(purchase).subscribe(data=>{
+    debugger;
+    if(data){
+      for (let i = 0; i < this.purchaseRecommendations.length; i++) {
+        if(this.purchaseRecommendations[i].componentNumber == data.componentNumber && this.purchaseRecommendations[i].requestNumber == data.requestNumber ){
+          this.purchaseRecommendations[i].recommendRemarks = data.recommendRemarks
+          this.editRecommend('','')
+          this.toastr.success("הערה להמלצה עודכנה בהצלחה !")
+        }
+        
+      }
+    }
+
+  })
+  }
+
   
   changeStatusToDone(purchase){
     this.user = this.authService.loggedInUser.firstName;
@@ -93,7 +128,7 @@ export class ProcurementOrdersComponent implements OnInit {
         if(data){
           for (let i = 0; i < this.purchaseRecommendations.length; i++) {
             if(this.purchaseRecommendations[i].componentNumber == data.componentNumber && this.purchaseRecommendations[i].requestNumber == data.requestNumber){
-              this.purchaseRecommendations[i].color = "lightslategrey"
+              this.purchaseRecommendations[i].color = data.color
             }
           }
           this.toastr.success("סטטוס עודכן בהצלחה")

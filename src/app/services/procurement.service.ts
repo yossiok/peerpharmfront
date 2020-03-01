@@ -137,6 +137,10 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/updateComponentPurchase';
     return this.http.post(url, JSON.stringify({purchase}), this.options).pipe(map(res=>res.json()));
   }
+  updateRecommendRemarks(purchase):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/updateRecommendRemarks';
+    return this.http.post(url, JSON.stringify({purchase}), this.options).pipe(map(res=>res.json()));
+  }
   orderSentToClient(orderNumber):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/orderSentToClient';
     return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));

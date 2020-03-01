@@ -261,7 +261,11 @@
           <tr *ngFor="let purchase of purchaseRecommendations" [style.background-color]="purchase.color">
             <td>{{purchase.componentNumber}}</td>
             <td>{{purchase.componentName}}</td>
-            <td>{{purchase.recommendRemarks}}</td>
+            <td style="background:rgba(83, 168, 165, 0.651);color:black;font-weight: bold;" *ngIf="purchase.componentNumber != EditRowId && purchase.requestNumber != requestNum" (click)="editRecommend(purchase.componentNumber,purchase.requestNumber)">{{purchase.recommendRemarks}}</td>
+            <td *ngIf="purchase.componentNumber == EditRowId && purchase.requestNumber == requestNum" (click)="editRecommend(purchase.componentNumber,purchase.requestNumber)">
+              <textarea type="text" [value]="purchase.recommendRemarks" #recommendRemarks></textarea>
+              <i (click)="saveRecommendRemarks(purchase)" class="fa fa-save"></i>
+            </td>
             <td>{{purchase.user}}</td>
             <td>{{purchase.supplierName}}</td>
             <td>{{purchase.date}}</td>
