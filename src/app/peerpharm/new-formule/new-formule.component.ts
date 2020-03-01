@@ -69,6 +69,7 @@ export class NewFormuleComponent implements OnInit {
     user: '',
     phases: [],
     children:[],
+    baseFormule:'',
   }
 
   newPhase = {
@@ -162,6 +163,7 @@ export class NewFormuleComponent implements OnInit {
   newFormuleFromBase(){
     debugger;
     this.newFormule.children = this.allChildren
+    this.newFormule.baseFormule = this.currentBaseFormule.formuleNumber
     
     this.formuleService.newFormule(this.newFormule).subscribe(data=>{
     if(data == "formule number exist"){

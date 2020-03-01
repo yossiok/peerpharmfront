@@ -23,11 +23,16 @@ currentFormuleNumber:any;
   closeResult: string;
   updateItems:any;
   chooseFromBuffer: boolean = false;
+  chooseFathersToUpdate: boolean = false;
   updatePercentage:any;
   updatePhaseRemarks:any;
   updateItemRemarks:any;
   updateItemIndex:any;
+  updateBaseToAll:any;
   allParentsFormules:any[];
+  allFathersFromBase:any[];
+  allChosenFathersToUpdate:any[] = [];
+  allChosenChildsToUpdate:any[] = [];
   user:any;
 
   addItem = {
@@ -469,17 +474,38 @@ var formuleData = {
   index:index,
   percentage:Number(this.updatePercentage),
   itemRemarks:this.updateItemRemarks,
-  phaseRemarks:this.updatePhaseRemarks
+  phaseRemarks:this.updatePhaseRemarks,
+  updateFather:'',
+  updateChildren:'',
 }
-this.formuleService.updateFormuleData(formuleData).subscribe(data=>{
+
+this.updateBaseToAll = formuleData;
+this.formuleService.getAllMadeFromBase(this.currentFormuleNumber).subscribe(data=>{
+if(data){
+  this.chooseFathersToUpdate = true;
+  this.allFathersFromBase = data;
+}
+})
+
+
+}
+
+updateAllFromBase(){
+  debugger;
+  this.updateBaseToAll.updateChildren = this.allChosenChildsToUpdate
+  this.updateBaseToAll.updateFather = this.allChosenFathersToUpdate
+  this.formuleService.updateFormuleData(this.updateBaseToAll).subscribe(data=>{
 debugger;
 data
-var updatedFormule = this.allFormules.find(f=>f._id == formuleId);
+this.chooseFathersToUpdate = false;
+this.updateBaseToAll.updateChildren = ''
+this.updateBaseToAll.updateFather = ''
+var updatedFormule = this.allFormules.find(f=>f._id == this.updateBaseToAll.formuleId);
 updatedFormule.approval = "";
-var phase = updatedFormule.phases.find(p=>p.phaseName == phaseName);
+var phase = updatedFormule.phases.find(p=>p.phaseName == this.updateBaseToAll.phaseName);
 phase.remarks = this.updatePhaseRemarks
 for (let i = 0; i < phase.items.length; i++) {
-  if(phase.items[i].itemNumber == itemNumber){
+  if(phase.items[i].itemNumber == this.updateBaseToAll.itemNumber){
     phase.items[i].percentage = Number(this.updatePercentage)
     phase.items[i].remarks = this.updateItemRemarks
     
@@ -492,6 +518,8 @@ this.EditRowId = '';
 this.updatePercentage = ''
 this.updateItemRemarks = ''
 this.updatePhaseRemarks = ''
+this.updateBaseToAll.updateChildren = ""
+this.updateBaseToAll.updateFather = ""
 })
 }
 
@@ -626,6 +654,33 @@ searchMaterialNumber(ev){
 
 }
 
+choseToUpdate(ev,father){
+  if(ev.target.checked == true) {
+    var isSelected = this.allChosenFathersToUpdate
+    isSelected.push(father);
+    this.allChosenFathersToUpdate = isSelected
+    }
+  
+    if(ev.target.checked == false){
+      var isSelected = this.allChosenFathersToUpdate
+      var tempArr = isSelected.filter(x=>x.formuleNumber != father.formuleNumber)
+      this.allChosenFathersToUpdate = tempArr
+    }
+}
 
+choseChildToUpdate(ev,child){
+  debugger;
+  if(ev.target.checked == true) {
+    var isSelected = this.allChosenChildsToUpdate
+    isSelected.push(child);
+    this.allChosenChildsToUpdate = isSelected
+    }
+  
+    if(ev.target.checked == false){
+      var isSelected = this.allChosenChildsToUpdate
+      var tempArr = isSelected.filter(x=>x.childNumber != child.childNumber)
+      this.allChosenChildsToUpdate = tempArr
+    }
+}
 
 }

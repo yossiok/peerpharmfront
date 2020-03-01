@@ -104,7 +104,7 @@
                 <td>{{phase.phaseName}}</td>
                 <td *ngIf="item.itemNumber!==EditRowId">{{phase.remarks}}</td>
                 <td  *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
-                  <input placeholder="Phase Remarks" [(ngModel)]="updatePhaseRemarks" type="text">
+                  <textarea placeholder="Phase Remarks" [(ngModel)]="updatePhaseRemarks"></textarea>
                 </td> 
                 <td *ngIf="item.itemNumber!==EditRowId" (click)="edit(item.itemNumber)">{{i+1}}</td>
                 <!-- <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
@@ -118,7 +118,7 @@
                  <td  *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
                   <input placeholder="Percentage" style="width:50px" [(ngModel)]="updatePercentage" type="text">
                 </td> 
-                <td *ngIf="item.itemNumber!==EditRowId">{{item.remarks}}</td>
+                <td *ngIf="item.itemNumber!==EditRowId"  (click)="edit(item.itemNumber)" >{{item.remarks}}</td>
                 <td  *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
                   <input placeholder="Item Remarks" [(ngModel)]="updateItemRemarks" type="text">
                 </td>
@@ -312,4 +312,49 @@
 
 
 
+        </div>
+
+        <div style="border:2px solid black;background-color: rgb(214, 219, 214);position: fixed;top:10%;z-index: 9999;left:20%;" *ngIf="chooseFathersToUpdate == true" class="container">
+          <div class="row">
+            <div style="text-align: center;" class="col-12">
+             <h2>בחר פורמולת אב לעדכן</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <table  class="table table-striped">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>מספר אב</th>
+                    <th>שם אב</th>
+                    <th>ילדים</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody style="overflow: auto;height:400px;display: block;">
+                    <tr *ngFor="let father of allFathersFromBase">
+                    <td><input (change)="choseToUpdate($event,father)" type="checkbox"></td>
+                    <td>{{father.formuleNumber}}</td>
+                    <td>{{father.formuleName}}</td>
+                    <td><table>
+                      <tbody>
+                        <tr *ngFor="let child of father.children">
+                          <td>{{child.childNumber}}</td>
+                          <td><input (change)="choseChildToUpdate($event,child)" type="checkbox"></td>
+                        </tr>
+                      </tbody>
+                    </table></td>
+                    <td></td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div style="text-align: center;" class="col-12">
+              <button (click)="updateAllFromBase()" class="btn-success">Update</button>
+              <button (click)="chooseFathersToUpdate=false" class="btn-danger">Exit</button>
+            </div>
+          </div>
         </div>
