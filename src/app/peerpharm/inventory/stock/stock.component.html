@@ -332,6 +332,7 @@
         <th style="width:8%; padding:5px"><b>מחיר</b></th>
         <th style="width:9%; padding:5px"><b>רמת סיכון</b></th>
         <th style="width:9%; padding:5px"><b>כמות</b></th>
+        <th></th>
         <th style="width:20%; padding:5px"><b>הערות</b></th>
         <th style="width:10%; padding:5px"><b>Not In Stock</b></th>
         <th style="width:5%; padding:5px"></th>
@@ -364,15 +365,21 @@
         </td>
 
         <td style="width:9%">
-          <div style="width:9%;;float:none;">{{material.threatment}}</div>
+          <div style="width:9%;;float:none;text-align: center;">{{material.threatment}}</div>
         </td>
         <td style="width:9%">
-          <div style="width:9%;;float:none;"></div>
+          <div style="width:9%;;float:none;text-align: center;">{{material.totalQnt}} {{material.measureType}}</div>
+        </td>
+
+        <td>
+          <button (click)="purchaseRecommend(material)" class="btn-success">המלצה לרכש</button>
         </td>
 
         <td style="width:20%;">
           <div style="float:none;">{{material.remarks}}</div>
         </td>
+
+      
 
         <td style="width:10%">
           <div style="float:none;">{{material.notInStock}}</div>

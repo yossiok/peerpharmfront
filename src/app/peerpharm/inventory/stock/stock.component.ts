@@ -168,7 +168,8 @@ export class StockComponent implements OnInit {
     componentNumber:'',
     requestNumber:'',
     date:this.formatDate(new Date()),
-    user:''
+    user:'',
+    type:''
   }
   resMaterial: any = {
 
@@ -556,6 +557,12 @@ export class StockComponent implements OnInit {
 
   purchaseRecommend(component){
     debugger;
+    if(component.itemType == 'material'){
+      this.recommandPurchase.type = 'material'
+    } 
+    if(component.itemType == 'component'){
+      this.recommandPurchase.type = 'component'
+    } 
     this.recommandPurchase.componentNumber = component.componentN
     this.openOrderRecommendModal = true;
   }
@@ -604,8 +611,26 @@ export class StockComponent implements OnInit {
       this.inventoryService.getAllMaterialsArrivals().subscribe(data=>{
         debugger;
         data;
+        var count = 0;
+        for (let i = 0; i < data.length; i++) {
+         for (let j = 0; j < this.componentsUnFiltered.length; j++) {
+          if(data[i].internalNumber == this.componentsUnFiltered[j].componentN) {
+              this.componentsUnFiltered[j].measureType = data[i].mesureType
+  
+              if(this.componentsUnFiltered[j].totalQnt) {
+                this.componentsUnFiltered[j].totalQnt = Number(this.componentsUnFiltered[j].totalQnt) + data[i].totalQnt
+               
+              } else {
+                this.componentsUnFiltered[j].totalQnt = data[i].totalQnt
+              }
+             
+            
+          }
+           
+         }
+          
+        }
       })
-
       var allPurchases = this.allComponentsPurchases.filter(order=>order.status != 'canceled');
     
       for (let i = 0; i < allPurchases.length; i++) {
@@ -667,6 +692,7 @@ export class StockComponent implements OnInit {
         //      c.procurementArr.push(element.remarks)
      
         //  });
+        
           this.setType(this.stockType);
           this.getAllCmptTypesAndCategories();
 
@@ -1018,7 +1044,8 @@ export class StockComponent implements OnInit {
     this.stockType = type;
 
     this.components = this.componentsUnFiltered.filter(x => x.itemType == type);
-    console.log("stockType ",this.stockType,'\nthis.components ',this.components)
+
+
   }
 
 

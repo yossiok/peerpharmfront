@@ -246,6 +246,7 @@
       <thead class="bg-success text-white">
         <tr>
           <th>מספר פריט</th>
+          <th>סוג המלצה</th>
           <th>שם פריט</th>
           <th>הערות המלצה</th>
           <th>שם הממליץ</th>
@@ -260,6 +261,7 @@
       
           <tr *ngFor="let purchase of purchaseRecommendations" [style.background-color]="purchase.color">
             <td>{{purchase.componentNumber}}</td>
+            <td>{{purchase.type}}</td>
             <td>{{purchase.componentName}}</td>
             <td style="background:rgba(83, 168, 165, 0.651);color:black;font-weight: bold;" *ngIf="purchase.componentNumber != EditRowId && purchase.requestNumber != requestNum" (click)="editRecommend(purchase.componentNumber,purchase.requestNumber)">{{purchase.recommendRemarks}}</td>
             <td *ngIf="purchase.componentNumber == EditRowId && purchase.requestNumber == requestNum" (click)="editRecommend(purchase.componentNumber,purchase.requestNumber)">
