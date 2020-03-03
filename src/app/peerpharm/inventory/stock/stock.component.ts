@@ -601,6 +601,11 @@ export class StockComponent implements OnInit {
     this.inventoryService.getAllComponents().subscribe(components => {
       console.log(components[0]);
 
+      this.inventoryService.getAllMaterialsArrivals().subscribe(data=>{
+        debugger;
+        data;
+      })
+
       var allPurchases = this.allComponentsPurchases.filter(order=>order.status != 'canceled');
     
       for (let i = 0; i < allPurchases.length; i++) {

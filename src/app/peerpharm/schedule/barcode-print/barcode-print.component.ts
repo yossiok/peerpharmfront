@@ -9,6 +9,7 @@ import { BatchesService } from "./../../../services/batches.service";
 import { ToastrService } from "ngx-toastr";
 import { BarcodePrintService } from "./../../../services/barcodePrint.service";
 
+
 @Component({
   selector: "app-barcode-print",
   templateUrl: "./barcode-print.component.html",

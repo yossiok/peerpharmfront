@@ -514,13 +514,13 @@
             [(ngModel)]="line.isSelected"
             *ngIf="line._id !== EditRowId"
           />
-          <!-- <button
+          <button
             class="btn btn-success m-r-10"
             type="button"
             (click)="openPrintBarkod(content, line)"
           >
-            Print Barkod
-          </button> -->
+            Print Barcode
+          </button>
         </td>
         <td *ngIf="line._id === EditRowId">
           <i class="ti-save text-success m-r-10" (click)="updateSchedule()"></i>
@@ -542,7 +542,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" id="print-section">
+  <!-- <div class="modal-body">
     <form
       class="form"
       [formGroup]="printScheduleFillingForm"
@@ -618,7 +618,7 @@
         />
       </div>
 
-      <div class="form-group row">
+     <div class="form-group row">
         <label for="quantity">Quantity:</label>
         <input
           class="form-control"
@@ -628,7 +628,7 @@
         />
       </div>
 
-      <div class="form-group row">
+       <div class="form-group row">
         <label for="quantity">Date:</label>
         <input
           class="form-control"
@@ -637,7 +637,6 @@
           [value]="schedFillLine.date"
         />
       </div>
-
       <div class="form-group row">
         <label for="remarks">Remarks:</label>
         <input
@@ -668,7 +667,7 @@
         />
       </div>
     </form>
-  </div>
+  </div> -->
   <div class="modal-footer">
     <button
       type="button"
@@ -681,6 +680,55 @@
     </button>
   </div>
 </ng-template>
+
+
+<div style="visibility: hidden;" id="print-section">
+  <table style="text-align: center;" class="barcodeTbl"
+  dir="ltr"
+  [style.margin.px]="3"
+  [style.width.px]="400"
+  [style.max-height.px]="400"
+  [style.font-size.px]="24"
+  [style.font-family]="Arial"
+  [style.border.px]="0"
+  [attr.id]="create_table">
+    <tr>   
+      <td style="border-bottom: 1px solid black !important">
+        Order Number: {{schedFillLine.orderN}}
+      </td>
+    </tr>
+    <tr>   
+      <td style="border-bottom: 1px solid black !important">
+        {{schedFillLine.productName}}
+      </td>
+    </tr>
+    <tr>   
+      <td style="border-bottom: 1px solid black !important">
+        Item Number: {{schedFillLine.item}}
+      </td>
+    </tr>
+    <tr>   
+      <td style="border-bottom: 1px solid black !important">
+       {{volumeK}} {{pcsCarton}}
+      </td>
+    </tr>
+    <tr>   
+      <td style="border-bottom: 1px solid black !important">
+        {{schedFillLine.batch}} Exp:  {{expireDate}}
+      </td>
+    </tr>
+    <tr>   
+      <td style="border-bottom: 1px solid black !important">
+        <ngx-barcode [bc-value]="barcodeK" [bc-display-value]="true"></ngx-barcode>
+      </td>
+    </tr>
+    <tr>   
+      <td style="border-bottom: 1px solid black !important">
+        {{schedFillLine.costumer}}
+      </td>
+    </tr>
+  </table>
+</div>
   
 <div id="print-sectionReport">
 

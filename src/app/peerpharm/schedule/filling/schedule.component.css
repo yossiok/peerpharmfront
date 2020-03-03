@@ -25,6 +25,17 @@ div {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
+
+.barcodeTbl {
+  margin: 0px auto;
+  width: 360px;
+  min-height: 360px;
+  font-size: 20px;
+  border: 0px;
+  text-align: center;
+  margin-top:20px;
+}
+
 div::selection {
   background-color: blue;
 }

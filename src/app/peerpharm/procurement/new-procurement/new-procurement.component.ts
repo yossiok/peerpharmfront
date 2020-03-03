@@ -57,6 +57,7 @@ export class NewProcurementComponent implements OnInit {
     orderType:'',
     remarks:'',
     comaxNumber:'',
+    recommendRemarks:'',
 
   }
 

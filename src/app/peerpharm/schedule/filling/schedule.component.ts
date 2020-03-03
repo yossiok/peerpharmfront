@@ -8,6 +8,7 @@ import { Schedule } from './../models/schedule';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
+import { BatchesService } from "src/app/services/batches.service";
 
 @Component({
   selector: "app-schedule",
@@ -24,6 +25,13 @@ export class ScheduleComponent implements OnInit {
   buttonColor3: string = "#B8ECF1";
   buttonColor4: string = "#B8ECF1";
   today: any;
+  pcsCarton: any;
+  barcodeK: any;
+  volumeK: any;
+  netoW: any;
+  grossW: any;
+  expireDate: any;
+  printBarkod: any;
   currentType: string = "";
   editRadioBtnType: string = "";
   selectedArr:any[] = [];
@@ -76,6 +84,7 @@ export class ScheduleComponent implements OnInit {
     private itemSer: ItemsService,
     private orderSer: OrdersService,
     private modalService: NgbModal,
+    private batchService:BatchesService
   ) {}
 
   ngOnInit() {
@@ -98,6 +107,12 @@ export class ScheduleComponent implements OnInit {
       mkp: new FormControl('', [Validators.required])
     });
   }
+
+  get printBarcodeValues(): string[] {
+    debugger;
+    return this.printBarkod.barcode.split("\n");
+  }
+
 
   writeScheduleData() {
     if(this.scheduleLine.orderN!=''){
@@ -422,6 +437,24 @@ export class ScheduleComponent implements OnInit {
   // Modal Functions
   openPrintBarkod(content, line) {
     this.schedFillLine = line;
+    debugger;
+
+    this.itemSer.getItemData(this.schedFillLine.item).subscribe(data=>{
+      debugger;
+      data;
+
+      this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
+    this.barcodeK = data[0].barcodeK;
+    this.volumeK = data[0].volumeKey + ' ml';
+    this.netoW = data[0].netWeightK;
+    this.grossW = data[0].grossUnitWeightK;
+     
+    })
+
+    this.batchService.getBatchData(this.schedFillLine.batch).subscribe(data=>{
+      debugger;
+      this.expireDate = data[0].expration
+    })
     console.log(this.schedFillLine);
 
     this.printScheduleFillingForm.value.position = this.schedFillLine.positionN;
