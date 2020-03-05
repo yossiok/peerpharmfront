@@ -142,7 +142,8 @@
   Sachet
 </div>
 
-<table class="scheduleTB">
+
+<table  class="table table-responsive scheduleTB">
   <thead class="tableHeader text-white">
     <tr>
       <th><img (click)="makeFillingReport()" style="width:50px;" src="../../../../assets/images/stockUpdate.png"></th>
@@ -310,7 +311,7 @@
       ><br />
     </td>
   </tr>
-
+  
   <tbody id="table_body">
     <tr  style="box-shadow: inset 1px -2px 4px 0px black; margin-top: 1px;" *ngFor="let line of scheduleData" [style.background-color]="line.color">
       <ng-container *ngIf="line !== undefined && line.mkp === typeShown">

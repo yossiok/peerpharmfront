@@ -121,6 +121,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   
   changeStatusToDone(purchase){
+    debugger;
     this.user = this.authService.loggedInUser.firstName;
     if(this.user == "shanie" || this.user == "sima"){
       this.procurementservice.updateComponentPurchase(purchase).subscribe(data=>{

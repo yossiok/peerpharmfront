@@ -1042,8 +1042,12 @@ export class StockComponent implements OnInit {
       this.filterbyNum.nativeElement.value = "";
     }
     this.stockType = type;
-
-    this.components = this.componentsUnFiltered.filter(x => x.itemType == type);
+    if(this.stockType == 'cartons'){
+      this.components = this.componentsUnFiltered.filter(x => x.componentType == 'master_carton');
+    } else {
+      this.components = this.componentsUnFiltered.filter(x => x.itemType == type);
+    }
+    
 
 
   }

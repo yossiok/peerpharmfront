@@ -111,6 +111,8 @@
       style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Products</div>
     <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2}" class="navtab"
       style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Materials</div>
+    <div (click)='setType("cartons")' [ngStyle]="{'background-color': buttonColor4}" class="navtab"
+      style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Cartons</div>
     <div style="padding-left: 10px;"><b> showing {{components.length}} stock items </b></div>
     <div class="export" style="cursor:pointer;">
       <img *ngIf="loadingExcel" style="width:50px"
@@ -1484,4 +1486,40 @@
     </div>
 
   </div>
+</div>
+
+
+<div *ngIf="stockType=='cartons'" class="tableFixHead">
+  <table class='table stockTable table-fixed' *ngIf="stockType=='cartons'">
+    <thead style="background: rgb(69, 69, 202);z-index: 9999;" class='tableHeader text-white'>
+      <tr style="text-align: center;">
+
+    <th></th>
+    <th>מספר פריט</th>
+    <th>מק"ט פריט ספק</th>
+    <th>שם</th>
+    <th>כמות</th>
+    <th>תמונה</th>
+    <th></th>
+    <th>צפי הגעה הזמנת רכש</th>
+      </tr>
+
+    </thead>
+
+
+    <tbody id="table_body" class="componentTable">
+      <tr *ngFor="let carton of components;let i = index" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+        <td>{{i+1}}</td>
+        <td>{{carton.componentN}}</td>
+        <td>{{carton.componentNs}}</td>
+        <td>{{carton.componentName}}</td>
+        <td></td>
+        <td><img [src]=carton.img></td>
+        <td><button (click)="purchaseRecommend(carton)" class="btn-success">המלצה לרכש</button></td>
+        <td></td>
+
+      </tr>
+    </tbody>
+  </table>
+
 </div>

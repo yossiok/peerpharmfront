@@ -1478,7 +1478,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
       <tbody>
         <tr *ngFor="let obj of selectedArr">
           <td>{{obj.orderNumber}}</td>
-          <td>{{obj.itemNumber}}</td>
+          <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
         </tr>
       </tbody>
     </table>

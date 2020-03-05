@@ -407,7 +407,7 @@ debugger;
     debugger
     if(ev.target.checked == true) {
     var isSelected = this.selectedArr
-    isSelected.push(item);
+    isSelected.push({...item});
     this.selectedArr = isSelected
     }
 
@@ -608,6 +608,26 @@ loadMaterialsForFormule(){
   this.selectedArr
 
   this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(data=>{
+    debugger
+    if(data.msg == "לא קיימת פורמולה") {
+      this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
+    } else  {
+      this.materialsForFormules = data;
+      this.showMaterialsForFormules = true;
+    }
+  
+  })
+}
+
+changeItemQuantity(itemNumber){
+  debugger;
+  var updatedQuantity = prompt('הזן כמות');
+  updatedQuantity
+  itemNumber;
+  var tempArr = [...this.selectedArr];
+  var item = tempArr.find(i=>i.itemNumber == itemNumber);
+  item.quantity = updatedQuantity
+  this.inventoryService.getMaterialsForFormules(tempArr).subscribe(data=>{
     debugger
     if(data.msg == "לא קיימת פורמולה") {
       this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
