@@ -1473,12 +1473,14 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
         <tr>
           <th>מספר הזמנה</th>
           <th>מספר פריט</th>
+          <th>כמות לפני אחוזים</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let obj of selectedArr">
           <td>{{obj.orderNumber}}</td>
           <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
+          <td>{{obj.calculatedAmount}}</td>
         </tr>
       </tbody>
     </table>

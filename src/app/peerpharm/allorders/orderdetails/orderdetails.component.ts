@@ -626,7 +626,7 @@ changeItemQuantity(itemNumber){
   itemNumber;
   var tempArr = [...this.selectedArr];
   var item = tempArr.find(i=>i.itemNumber == itemNumber);
-  item.quantity = updatedQuantity
+  item.calculatedAmount = updatedQuantity
   this.inventoryService.getMaterialsForFormules(tempArr).subscribe(data=>{
     debugger
     if(data.msg == "לא קיימת פורמולה") {
