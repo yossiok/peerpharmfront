@@ -502,8 +502,13 @@ export class ScheduleComponent implements OnInit {
 
   onSubmit(): void {
     const newPrintBarkod = this.printScheduleFillingForm.value;
-    
+    debugger;
+   
     console.log(newPrintBarkod);
+   }
+
+   saveBatchNumber(){
+    this.schedFillLine.batch = this.printScheduleFillingForm.value.batch
    }
 
 
