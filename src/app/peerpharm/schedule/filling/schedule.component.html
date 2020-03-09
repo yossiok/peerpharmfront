@@ -612,6 +612,16 @@
         />
         <button class="btn-success" (click)="saveBatchNumber()">Save</button>
       </div>
+      <div class="form-group row">
+        <label>Pcs Carton</label>
+        <input #pcsCartonQuantity
+          class="form-control"
+          type="text"
+          formControlName="pcsCartonQuantity"
+          [value]="pcsCarton"
+        />
+        <button class="btn-success" (click)="savePcsCarton()">Save</button>
+      </div>
       
     <!-- <div class="form-group row">
         <label for="customerNumber">Customer Number:</label>

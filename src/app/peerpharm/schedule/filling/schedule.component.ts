@@ -56,6 +56,7 @@ export class ScheduleComponent implements OnInit {
   @ViewChild('shiftA') shift: ElementRef;
   @ViewChild('mkpA') mkp: ElementRef;
   @ViewChild('id') id: ElementRef;
+ 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('', this.currentType);
@@ -107,7 +108,8 @@ export class ScheduleComponent implements OnInit {
       date: new FormControl('', [Validators.required]),
       marks: new FormControl('', [Validators.required]),
       shift: new FormControl('', [Validators.required]),
-      mkp: new FormControl('', [Validators.required])
+      mkp: new FormControl('', [Validators.required]),
+      pcsCartonQuantity: new FormControl('', [Validators.required])
     });
   }
 
@@ -503,12 +505,19 @@ export class ScheduleComponent implements OnInit {
   onSubmit(): void {
     const newPrintBarkod = this.printScheduleFillingForm.value;
     debugger;
-   
+    this.printCostumerBarcode = true;
+    this.printExpBarcode = true;
+    this.printItemBarcode = true;
+
     console.log(newPrintBarkod);
    }
 
    saveBatchNumber(){
     this.schedFillLine.batch = this.printScheduleFillingForm.value.batch
+   }
+   savePcsCarton(){
+     debugger;
+    this.pcsCarton = this.printScheduleFillingForm.value.pcsCartonQuantity
    }
 
 
