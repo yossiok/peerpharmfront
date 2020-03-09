@@ -264,7 +264,9 @@ export class StockComponent implements OnInit {
     }
   }
 
-
+  searchComponentFromUrl(){
+   
+  }
   
   // getProcurementData(){
   //   this.inventoryService.getProcurementData().subscribe(data=>{
@@ -293,10 +295,13 @@ export class StockComponent implements OnInit {
  
     await this.getUserAllowedWH();
     this.getAllComponents();
-   
+    if(this.route.queryParams){
+      this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+    }
     // this.exportMovementsAsXLSX();
     // this.getAllExpectedArrivalsData();
     this.getColor(new Date);
+    debugger;
     
   
 
@@ -619,9 +624,15 @@ export class StockComponent implements OnInit {
   
               if(this.componentsUnFiltered[j].totalQnt) {
                 this.componentsUnFiltered[j].totalQnt = Number(this.componentsUnFiltered[j].totalQnt) + data[i].totalQnt
+                if(this.route.snapshot.queryParams.componentN){
+                  this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+                }
                
               } else {
                 this.componentsUnFiltered[j].totalQnt = data[i].totalQnt
+                if(this.route.snapshot.queryParams.componentN){
+                  this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+                }
               }
              
             
@@ -658,6 +669,7 @@ export class StockComponent implements OnInit {
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
+  
   
     //   this.components.forEach(c => {
     //     
@@ -988,7 +1000,9 @@ export class StockComponent implements OnInit {
 
 
 
-
+  filterByComponentN(componentN){
+    this.components = this.componentsUnFiltered.filter(c => c.componentN == componentN);
+  }
 
 
 
@@ -1058,6 +1072,9 @@ export class StockComponent implements OnInit {
     this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
     this.filterVal = '';
     this.filterVal = event.target.value;
+    if(this.route.snapshot.queryParams.componentN){
+      this.filterVal = this.route.snapshot.queryParams.componentN
+    }
     if (this.stockType != 'product') {
       if (this.filterByType.nativeElement.value != "") {
         let CmptType = this.filterByType.nativeElement.value;

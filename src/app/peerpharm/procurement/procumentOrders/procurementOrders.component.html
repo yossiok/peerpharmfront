@@ -187,6 +187,7 @@
                   <th>Amount</th>
                   <th>Amount Ordered</th>
                   <th>Arrival Date</th>
+                  <th>Expected Date</th>
                   <th>Reference Number</th>
                   <th></th>
                   <th></th>
@@ -202,7 +203,10 @@
                     <td>{{ line.itemName }}</td>
                     <td>{{ line.itemNumber }}</td>
                     <td>{{ line.measurement }}</td>
-                    <td>{{ line.coin }}</td>
+                    <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.supplierPrice}}{{ line.coin }}</td>
+                    <td *ngIf="line.itemNumber==EditRowId">
+                      <input #supplierPrice [value]="line.supplierPrice" style="width:150px;" type="text">
+                    </td>
       
                     <td *ngIf="line.itemNumber==EditRowId">
                       <input #arrivedAmount [value]="line.arrivedAmount" style="width:50px;" type="text">/
@@ -217,6 +221,11 @@
                     <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.arrivalDate }}</td>
                     <td *ngIf="line.itemNumber==EditRowId">
                       <input #arrivalDate [value]="line.arrivalDate" style="width:150px;" type="date">
+                    </td>
+      
+                    <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.expectedDate }}</td>
+                    <td *ngIf="line.itemNumber==EditRowId">
+                      <input #expectedDate [value]="line.expectedDate" style="width:150px;" type="date">
                     </td>
       
                     <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.referenceNumber }}</td>
@@ -245,7 +254,7 @@
     <table class="table table-striped">
       <thead class="bg-success text-white">
         <tr>
-          <th>מספר פריט</th>
+          <th style="cursor: pointer;" (click)="sortTable('itemNumber')">מספר פריט</th>
           <th>סוג המלצה</th>
           <th>שם פריט</th>
           <th>הערות המלצה</th>
@@ -260,7 +269,7 @@
       <tbody>
       
           <tr *ngFor="let purchase of purchaseRecommendations" [style.background-color]="purchase.color">
-            <td>{{purchase.componentNumber}}</td>
+            <td><a  style="color:blue;border-bottom: 1px solid blue;cursor: pointer;" target="_blank" (click)="findInInventory(purchase.componentNumber)">{{purchase.componentNumber}}</a></td>
             <td>{{purchase.type}}</td>
             <td>{{purchase.componentName}}</td>
             <td style="background:rgba(83, 168, 165, 0.651);color:black;font-weight: bold;" *ngIf="purchase.componentNumber != EditRowId && purchase.requestNumber != requestNum" (click)="editRecommend(purchase.componentNumber,purchase.requestNumber)">{{purchase.recommendRemarks}}</td>

@@ -44,6 +44,8 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild('referenceNumber') referenceNumber: ElementRef;
   @ViewChild('arrivalDate') arrivalDate: ElementRef;
   @ViewChild('recommendRemarks') recommendRemarks: ElementRef;
+  @ViewChild('supplierPrice') supplierPrice: ElementRef;
+  @ViewChild('expectedDate') expectedDate: ElementRef;
   
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -142,6 +144,12 @@ export class ProcurementOrdersComponent implements OnInit {
  
   }
 
+  findInInventory(componentN){
+
+    location.href = 'http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='+componentN
+  
+  }
+
   sortTable(typeOfSort){
     debugger;
     switch (typeOfSort) {
@@ -153,6 +161,9 @@ export class ProcurementOrdersComponent implements OnInit {
         break;
       case 'ordered':
         this.purchaseRecommendations=this.arrayService.sortByAttribute(this.purchaseRecommendations,'color')
+        break;
+      case 'itemNumber':
+        this.purchaseRecommendations=this.arrayService.sortByAttribute(this.purchaseRecommendations,'componentNumber')
         break;
 
     }  
@@ -392,18 +403,23 @@ export class ProcurementOrdersComponent implements OnInit {
     var orderAmount = this.orderAmount.nativeElement.value;
     var arrivalDate = this.arrivalDate.nativeElement.value;
     var referenceNumber = this.referenceNumber.nativeElement.value;
+    var supplierPrice = this.supplierPrice.nativeElement.value;
+    var expectedDate = this.supplierPrice.nativeElement.expectedDate;
 
-    if(arrivedAmount == 'undefined'){
+    if(arrivedAmount == 'undefined' || arrivedAmount == undefined){
       arrivedAmount = null;
     }
     if(referenceNumber == "undefined" || referenceNumber == undefined){
       referenceNumber = null;
     }
+    if(expectedDate == 'undefined' || expectedDate == undefined) {
+      expectedDate = null
+    }
   
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount,arrivalDate,referenceNumber).subscribe(data=>{
+      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount,arrivalDate,referenceNumber,supplierPrice,expectedDate).subscribe(data=>{
         debugger
       for (let i = 0; i < this.procurementData.length; i++) {
         if(this.procurementData[i].orderNumber == orderNumber) {
@@ -413,6 +429,8 @@ export class ProcurementOrdersComponent implements OnInit {
             this.procurementData[i].item[index].supplierAmount = orderAmount
             this.procurementData[i].item[index].arrivalDate = arrivalDate
             this.procurementData[i].item[index].referenceNumber = referenceNumber
+            this.procurementData[i].item[index].supplierPrice = supplierPrice
+            this.procurementData[i].item[index].expectedDate = expectedDate
             this.toastr.success(" עודכן בהצלחה !")
             this.edit('');
           }
@@ -422,6 +440,8 @@ export class ProcurementOrdersComponent implements OnInit {
             this.procurementData[i].item[index].supplierAmount = orderAmount
             this.procurementData[i].item[index].arrivalDate = arrivalDate
             this.procurementData[i].item[index].referenceNumber = referenceNumber
+            this.procurementData[i].item[index].supplierPrice = supplierPrice
+            this.procurementData[i].item[index].expectedDate = expectedDate
             this.toastr.success(" עודכן בהצלחה !")
             this.edit('');
           }
@@ -431,6 +451,8 @@ export class ProcurementOrdersComponent implements OnInit {
             this.procurementData[i].item[index].supplierAmount = orderAmount
             this.procurementData[i].item[index].arrivalDate = arrivalDate
             this.procurementData[i].item[index].referenceNumber = referenceNumber
+            this.procurementData[i].item[index].supplierPrice = supplierPrice
+            this.procurementData[i].item[index].expectedDate = expectedDate
            
             this.toastr.success("כמות עודכנה בהצלחה !")
             this.edit('');
