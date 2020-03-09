@@ -45,6 +45,7 @@ export class NewProcurementComponent implements OnInit {
   orderNumber:'',
   itemRemarks:'',
   itemPrice:'',
+  remarks:''
 
   }
   newProcurement = {
