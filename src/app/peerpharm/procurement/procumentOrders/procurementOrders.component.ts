@@ -416,6 +416,15 @@ export class ProcurementOrdersComponent implements OnInit {
             this.toastr.success(" עודכן בהצלחה !")
             this.edit('');
           }
+          if(Number(this.procurementData[i].item[index].supplierAmount) < Number(arrivedAmount)) {
+            this.procurementData[i].item[index].color = 'yellow'
+            this.procurementData[i].item[index].arrivedAmount = arrivedAmount
+            this.procurementData[i].item[index].supplierAmount = orderAmount
+            this.procurementData[i].item[index].arrivalDate = arrivalDate
+            this.procurementData[i].item[index].referenceNumber = referenceNumber
+            this.toastr.success(" עודכן בהצלחה !")
+            this.edit('');
+          }
           if(Number(this.procurementData[i].item[index].supplierAmount) == Number(arrivedAmount)) {
             this.procurementData[i].item[index].color = 'lightgreen'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount

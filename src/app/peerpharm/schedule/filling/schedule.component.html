@@ -543,13 +543,13 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <!-- <div class="modal-body">
+<div class="modal-body">
     <form
       class="form"
       [formGroup]="printScheduleFillingForm"
       (submit)="onSubmit()"
     >
-      <div class="form-group row">
+     <!--    <div class="form-group row">
         <label for="positionNumber">Position Number:</label>
         <input
           class="form-control"
@@ -567,19 +567,42 @@
           formControlName="orderN"
           [value]="schedFillLine.orderN"
         />
-      </div>
+      </div> -->
 
-      <div class="form-group row">
+      <div *ngIf="printItemBarcode == true" class="form-group row">
         <label for="itemNumber">Item Number:</label>
         <input
           class="form-control"
           type="text"
           formControlName="item"
+          disabled
           [value]="schedFillLine.item"
         />
+        <button (click)="printItemBarcode = false" class="btn-success">Remove</button>
       </div>
 
-      <div class="form-group row">
+      <div *ngIf="printCostumerBarcode == true" class="form-group row">
+        <label>Costumer</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="packageP"
+          [value]="schedFillLine.costumer"
+        />
+        <button (click)="printCostumerBarcode = false" class="btn-success">Remove</button>
+      </div>
+      <div *ngIf="printExpBarcode == true" class="form-group row">
+        <label>Exp</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="packageP"
+          [value]="expireDate"
+        />
+        <button (click)="printExpBarcode = false" class="btn-success">Remove</button>
+      </div>
+      
+    <!-- <div class="form-group row">
         <label for="customerNumber">Customer Number:</label>
         <input
           class="form-control"
@@ -666,9 +689,9 @@
           formControlName="mkp"
           [value]="schedFillLine.mkp"
         />
-      </div>
+      </div>  -->
     </form>
-  </div> -->
+  </div>
   <div class="modal-footer">
     <button
       type="button"
@@ -691,38 +714,34 @@
   [style.max-height.px]="400"
   [style.font-size.px]="24"
   [style.border.px]="0">
+
     <tr>   
-      <td style="border-bottom: 1px solid black !important">
-        Order Number: {{schedFillLine.orderN}}
-      </td>
-    </tr>
-    <tr>   
-      <td style="border-bottom: 1px solid black !important">
+      <td>
         {{schedFillLine.productName}}
       </td>
     </tr>
-    <tr>   
-      <td style="border-bottom: 1px solid black !important">
+    <tr *ngIf="printItemBarcode == true">   
+      <td>
         Item Number: {{schedFillLine.item}}
       </td>
     </tr>
     <tr>   
-      <td style="border-bottom: 1px solid black !important">
+      <td>
        {{volumeK}} {{pcsCarton}}
       </td>
     </tr>
     <tr>   
-      <td style="border-bottom: 1px solid black !important">
-        {{schedFillLine.batch}} Exp:  {{expireDate}}
+      <td>
+        {{schedFillLine.batch}} <label *ngIf="printExpBarcode == true">Exp:  {{expireDate}}</label>
       </td>
     </tr>
     <tr>   
-      <td style="border-bottom: 1px solid black !important">
+      <td>
         <ngx-barcode [bc-value]="barcodeK" [bc-display-value]="true"></ngx-barcode>
       </td>
     </tr>
-    <tr>   
-      <td style="border-bottom: 1px solid black !important">
+    <tr *ngIf="printCostumerBarcode == true">   
+      <td>
         {{schedFillLine.costumer}}
       </td>
     </tr>

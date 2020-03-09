@@ -35,6 +35,9 @@ export class ScheduleComponent implements OnInit {
   currentType: string = "";
   editRadioBtnType: string = "";
   selectedArr:any[] = [];
+  printItemBarcode:boolean = true;
+  printCostumerBarcode:boolean = true;
+  printExpBarcode:boolean = true;
 
   closeResult: string;
   public printScheduleFillingForm: FormGroup;
@@ -499,6 +502,7 @@ export class ScheduleComponent implements OnInit {
 
   onSubmit(): void {
     const newPrintBarkod = this.printScheduleFillingForm.value;
+    
     console.log(newPrintBarkod);
    }
 
