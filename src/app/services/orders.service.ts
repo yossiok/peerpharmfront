@@ -93,6 +93,7 @@ export class OrdersService {
   }
 
 
+ 
 
   getOrderItemsByNumber(orderNumber): Observable<any> {
     let url = this.baseUrl + 'orderitem?orderNumber=' + orderNumber;
@@ -169,6 +170,10 @@ export class OrdersService {
   editItemOrderStatus(orderItem): Observable<any> {
     let url = this.baseUrl + "orderitem/updateStatus";
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
+  }
+  changeReqStatus(status,id,type): Observable<any> {
+    let url = this.baseUrl + "orderitem/changeReqStatus";
+    return this.http.post(url, JSON.stringify({status:status,id:id,type:type}), this.options).pipe(map(res => res.json()))
   }
   editFormuleCheck(formuleStatus,id): Observable<any> {
     

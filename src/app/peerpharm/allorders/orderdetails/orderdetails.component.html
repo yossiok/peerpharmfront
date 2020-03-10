@@ -64,279 +64,395 @@
 
 <input matInput placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
 
-<table style="border: 1px solid black;" class='table' *ngIf="loadData==false">
-  <thead class='bg-info tableHeader text-white' (click)="edit('')">
-    <tr>
-      <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()" src="../../../assets/images/excel.png"/></button></th>
-      <th></th>
-      <th *ngIf="openFormule"></th>
-      <th *ngIf="showingAllOrders || multi">Order Number</th>
-      <th style="width:200px;" class="header">Item Number </th>
-      <th class="header">Item Important Remark</th>
-      <th class="header">Description </th>
-      <th class="header">neto Weight(Gr) </th>
-      <th class="header">Quantity </th>
-      <th class="header">Printing/Filling </th>
-      <!-- <th class='printTd header'>Weight</th> -->
-      <th class="header">Remarks </th>
-      <th class='printTd header'>Status</th>
-      <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th>
-      <th class="header">C & F</th>
-      <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
-      <th><button style="color:black;" class="btn btn-success" (click)="loadMaterialsForFormule()">Formule</button></th>
-      
-      <th>
-        <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg" (click)="openCmptDemandsModal()">
-      </th>
-    
-    </tr>
-  </thead>
-
-  <tbody>
-
-    <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
-      <td></td>
-      <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
-      <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
-          class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
-          (focusout)="searchItem(orderNumber.value)"></td>
-      <td><input style="box-shadow:1px 1px 2px black;" class="form-control form-control-sm" placeholder="Item Number"
-          [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
-      <td><input style="box-shadow:1px 1px 2px black; color: red;" class="form-control form-control-sm"
-          placeholder="Item Important Remark" [(ngModel)]="itemData.itemImpRemark" disabled>
-        <!-- <img src="../../../../assets/images/alert3.gif" width="30px" alt="see important remarks from item tree"> -->
-      </td>
-      <td><input style="box-shadow:1px 1px 2px black; width:350px;" class="form-control form-control-sm"
-          placeholder="Description" [(ngModel)]="itemData.discription"></td>
-      <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="neto Weight(Gr)"
-          [(ngModel)]="itemData.netWeightGr"></td>
-      <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Quantity"
-          [(ngModel)]="itemData.quantity"></td>
-      <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Weight"
-          [(ngModel)]="itemData.qtyKg"></td>
-      <td><textarea style="box-shadow:1px 1px 2px black;width:185px" class="form-control form-control-sm" placeholder="Remarks"
-          [(ngModel)]="itemData.itemRemarks"></textarea></td>
-      
-      <td></td>
-      <td *ngIf="!multi"></td>
-      <td><button style="box-shadow: 1px 1px 2px black;" (click)="addItemOrder()" class='btn btn-success'>Add</button>
-      </td>
-   
-
-    </tr>
-
-    <tr>
-    </tr>
-
-    <ng-container *ngFor="let item of ordersItems; let i = index">
-      <!-- <tr [style.background-color]="item.color"  (click)="edit(item._id)" (blur)="edit('')"> -->
-      <tr style="border: 2px solid black; box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-        [style.background-color]="item.color">
-
-
-        <td *ngIf="item._id===EditRowId">
-          <input #id type='hidden' [value]="item._id" style='width:370px'>
-          <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}</td>
-        <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
-        <td><input type="checkbox" (change)="isSelected($event,item)"></td>
-        <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
-
-        <td *ngIf="multi==true">{{item.orderNumber}}</td>
+<mat-tab-group>
+  <mat-tab label="Order Items"> <table style="border: 1px solid black;" class='table' *ngIf="loadData==false">
+    <thead class='bg-info tableHeader text-white' (click)="edit('')">
+      <tr>
+        <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()" src="../../../assets/images/excel.png"/></button></th>
+        <th></th>
+        <th *ngIf="openFormule"></th>
+        <th *ngIf="showingAllOrders || multi">Order Number</th>
+        <th style="width:200px;" class="header">Item Number </th>
+        <th class="header">Item Important Remark</th>
+        <th class="header">Description </th>
+        <th class="header">neto Weight(Gr) </th>
+        <th class="header">Quantity </th>
+        <th class="header">Printing/Filling </th>
+        <!-- <th class='printTd header'>Weight</th> -->
+        <th class="header">Remarks </th>
+        <th class='printTd header'>Status</th>
+        <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th>
+        <th class="header">C & F</th>
+        <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
+        <th><button style="color:black;" class="btn btn-success" (click)="loadMaterialsForFormule()">Formule</button></th>
         
-        <td *ngIf="openFormule"><button  (click)="showFormule(item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td>
-        <td *ngIf="item.licsensNumber!=''">
-          <button class='expendBtn' [style.background-color]="item.colorBtn"
-            (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-          <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
-            {{item.itemNumber}}
-          </a>
+        <th>
+          <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg" (click)="openCmptDemandsModal()">
+        </th>
+      
+      </tr>
+    </thead>
+  
+    <tbody>
+  
+      <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
+        <td></td>
+        <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
+        <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
+            class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
+            (focusout)="searchItem(orderNumber.value)"></td>
+        <td><input style="box-shadow:1px 1px 2px black;" class="form-control form-control-sm" placeholder="Item Number"
+            [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
+        <td><input style="box-shadow:1px 1px 2px black; color: red;" class="form-control form-control-sm"
+            placeholder="Item Important Remark" [(ngModel)]="itemData.itemImpRemark" disabled>
+          <!-- <img src="../../../../assets/images/alert3.gif" width="30px" alt="see important remarks from item tree"> -->
         </td>
-        <td class="noLicense" *ngIf="item.licsensNumber==''">
-          <button class='expendBtn' [style.background-color]="item.colorBtn"
-            (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-          <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
-            {{item.itemNumber}}
-          </a>
+        <td><input style="box-shadow:1px 1px 2px black; width:350px;" class="form-control form-control-sm"
+            placeholder="Description" [(ngModel)]="itemData.discription"></td>
+        <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="neto Weight(Gr)"
+            [(ngModel)]="itemData.netWeightGr"></td>
+        <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Quantity"
+            [(ngModel)]="itemData.quantity"></td>
+        <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Weight"
+            [(ngModel)]="itemData.qtyKg"></td>
+        <td><textarea style="box-shadow:1px 1px 2px black;width:185px" class="form-control form-control-sm" placeholder="Remarks"
+            [(ngModel)]="itemData.itemRemarks"></textarea></td>
+        
+        <td></td>
+        <td *ngIf="!multi"></td>
+        <td><button style="box-shadow: 1px 1px 2px black;" (click)="addItemOrder()" class='btn btn-success'>Add</button>
         </td>
-        <td *ngIf="item._id===EditRowId">
-          <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark"
-            style='width:150px ; color:red;' disabled>
-          <input #itemImpRemark type='text' *ngIf="item.itemImpRemark==undefined" [value]=""
-            style='width:150px ; color:red;' disabled>
-        </td>
-        <td *ngIf="item._id!==EditRowId" style='width:150px ; color:red;' (click)="edit(item._id)">
-          {{item.itemImpRemark}}</td>
-
-        <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'>
-        </td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
-        <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:70px'>
-        </td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
-        <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
-        <!-- <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px'
-            class='printTd'></td> -->
-        <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td> -->
-        <td *ngIf="item._id!==EditRowId"><img *ngIf="item.printStatus ==='printed'" style="width:15px" src="../../../../assets/images/aprroved.png"/> / <img *ngIf="item.fillingStatus ==='filled'" style="width:15px" src="../../../../assets/images/aprroved.png"/></td>
-        <td *ngIf="item._id===EditRowId"></td>
-        <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' />
-        </td>
-        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
-        <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
-
-        <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
-        <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd'
-          style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
-          {{item.compiled[0].sum}}</td>
-          <td *ngIf="item._id!==EditRowId">
-          <label (click)="openComponentsStatus(components,item.itemNumber,item.quantity,item.orderNumber)">Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
-          <label>Formules</label><input [(ngModel)]="item.formuleCheck" (change)="isChecked($event,item._id)" id="formuleCheckBox" type="checkbox">
-         
-          </td>
-          <!-- <td *ngIf="item._id===EditRowId"><label>Components</label>
-            <select [value]="item.componentCheck" #componentCheck >
-            <option value="0">0</option>
-            <option value="ordered">הוזמן</option>
-            <option value="inStock">במלאי</option>
-          </select>
-          <br><br>
+     
+  
+      </tr>
+  
+      <tr>
+      </tr>
+  
+      <ng-container *ngFor="let item of ordersItems; let i = index">
+        <!-- <tr [style.background-color]="item.color"  (click)="edit(item._id)" (blur)="edit('')"> -->
+        <tr style="border: 2px solid black; box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+          [style.background-color]="item.color">
+  
+  
+          <td *ngIf="item._id===EditRowId">
+            <input #id type='hidden' [value]="item._id" style='width:370px'>
+            <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}</td>
+          <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
+          <td><input type="checkbox" (change)="isSelected($event,item)"></td>
+          <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
+  
+          <td *ngIf="multi==true">{{item.orderNumber}}</td>
           
-        </td> -->
-        
-        <td></td>
-        <td></td>
-        <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->
+          <td *ngIf="openFormule"><button  (click)="showFormule(item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td>
+          <td *ngIf="item.licsensNumber!=''">
+            <button class='expendBtn' [style.background-color]="item.colorBtn"
+              (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
+            <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+              {{item.itemNumber}}
+            </a>
+          </td>
+          <td class="noLicense" *ngIf="item.licsensNumber==''">
+            <button class='expendBtn' [style.background-color]="item.colorBtn"
+              (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
+            <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+              {{item.itemNumber}}
+            </a>
+          </td>
+          <td *ngIf="item._id===EditRowId">
+            <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark"
+              style='width:150px ; color:red;' disabled>
+            <input #itemImpRemark type='text' *ngIf="item.itemImpRemark==undefined" [value]=""
+              style='width:150px ; color:red;' disabled>
+          </td>
+          <td *ngIf="item._id!==EditRowId" style='width:150px ; color:red;' (click)="edit(item._id)">
+            {{item.itemImpRemark}}</td>
+  
+          <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'>
+          </td>
+          <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
+          <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:70px'>
+          </td>
+          <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
+          <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
+          <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
+          <!-- <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px'
+              class='printTd'></td> -->
+          <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td> -->
+          <td *ngIf="item._id!==EditRowId"><img *ngIf="item.printStatus ==='printed'" style="width:15px" src="../../../../assets/images/aprroved.png"/> / <img *ngIf="item.fillingStatus ==='filled'" style="width:15px" src="../../../../assets/images/aprroved.png"/></td>
+          <td *ngIf="item._id===EditRowId"></td>
+          <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' />
+          </td>
+          <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
+          <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
+  
+          <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
+          <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd'
+            style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
+            {{item.compiled[0].sum}}</td>
+            <td *ngIf="item._id!==EditRowId">
+            <label (click)="openComponentsStatus(components,item.itemNumber,item.quantity,item.orderNumber)">Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
+            <label>Formules</label><input [(ngModel)]="item.formuleCheck" (change)="isChecked($event,item._id)" id="formuleCheckBox" type="checkbox">
+           
+            </td>
+            <!-- <td *ngIf="item._id===EditRowId"><label>Components</label>
+              <select [value]="item.componentCheck" #componentCheck >
+              <option value="0">0</option>
+              <option value="ordered">הוזמן</option>
+              <option value="inStock">במלאי</option>
+            </select>
+            <br><br>
+            
+          </td> -->
+          
+          <td></td>
+          <td></td>
+          <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->
+  
+          <td class='printTd'>
+            <i class="ti-trash text-danger m-r-10" *ngIf="item._id!=EditRowId" (click)="deleteItem(item)"
+              style="cursor: pointer;"></i>
+            <i class="ti-check text-success m-r-10" *ngIf="item._id!=EditRowId"
+              (click)="setOrderItemDone(item)" style="cursor: pointer;"></i>
+            <i class="ti-save text-success m-r-10" *ngIf="item._id===EditRowId"
+              (click)="saveEdit()" style="cursor: pointer;"></i>
+          </td>
+  
+        </tr>
+        <tr *ngIf="item._id== EditRowId2nd && expand==true;">
+          <td colspan="5">
+  
+            <table class='detilasTable' width='105%'>
+              <tr>
+                <td></td>
+                <td>
+                  <h5>Batch</h5>
+                </td>
+                <!-- <td>{{item.batch}}</td> -->
+                <td colspan="2"><label *ngIf="!editBatchN" (click)="editBatch(item.batch)"
+                    style="cursor: pointer; margin-right: 10px;">{{item.batch}}</label>
+                  <input *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined"
+                    type='text' style="width:50%" #inputBatch></td>
+                <td><button class='btn btn-success' (click)="setBatch(item, inputBatch.value, item.batch)">set</button>
+                </td>
+                <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)"
+                    style='cursor: pointer;'></i></td>
+                <td></td>
+              </tr>
+              <tr *ngFor="let det of detailsArr">
+                <td></td>
+                <td>
+                  <h5>Set Printing Schedule: </h5>
+                </td>
+                <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button class='btn btn-info'
+                    (click)="setToPrintDetails(content, item, det)">print</button></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <h5>Set Filling Schedule: </h5>
+                </td>
+                <td><input #date type='date'></td>
+                <td><input #shift type='text' placeholder="Shift"></td>
+                <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
+                <td>
+                  <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
+                  <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>
+                  <input type="radio" name="type" #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
+                  <input type="radio" name="type" #type value='sachet' [(ngModel)]="chosenType">Sachet<br>
+                </td>
+                <td><button (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <h5>Set Barcode Print: </h5>
+                </td>
+                <td><input #mkpProdDate type='date'></td>
+                <td><input #mkpProdRemarks placeholder="PO" type='marks' [value]="item.itemRemarks"></td>
+                <td><input #mkpProdInvoice placeholder="Invoice" type='text'></td>
+                <td>
+                </td>
+                <td><button (click)='setMkpSchedule(item , mkpProdDate.value, mkpProdRemarks.value , mkpProdInvoice.value)'
+                    class='btn btn-success'>Set</button></td>
+              </tr>
+            </table>
+            <br>
+            <!-- <table class='detilasTable' width='105%'>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <h5>תיעוד מוצרים מוגמרים לפני משלוח</h5>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Costumer Number:<input [(ngModel)]="documentationBeforeSend.costumerNumber" type="number" /></td>
+                <td></td>
+                <td></td>
+                <td>Costumer Name:<input [(ngModel)]="documentationBeforeSend.costumerName" type="text" /></td>
+                <td></td>
+                <td></td>
+                <td>Date:<input [(ngModel)]="documentationBeforeSend.date" type="date" /></td>
+              </tr>
+              <tr>
+                <td>Item Number:<input [(ngModel)]="documentationBeforeSend.itemNumber" type="text" /></td>
+                <td>Batch:<input [(ngModel)]="documentationBeforeSend.batchNumber" type="text" /></td>
+                <td>Cartons Number:<input [(ngModel)]="documentationBeforeSend.cartonsNumber" type="number" /></td>
+                <td>Units Number In Carton:<input [(ngModel)]="documentationBeforeSend.unitCartonNumber" type="number" />
+                </td>
+                <td>Units Number in Part Carton:<input [(ngModel)]="documentationBeforeSend.partCartonNumber"
+                    type="number" /></td>
+                <td>Sum:<input (click)="calculateAllUnits()" [(ngModel)]="documentationBeforeSend.sum" type="text" /></td>
+                <td><button class="btn btn-success" (click)="saveProductDoc()">Save</button></td>
+              </tr>
+             <tr>
+                <td></td>
+                <td>
+                  <h5>Set MKP Production Schedule: </h5>
+                </td>
+                <td><input #mkpProdDate type='date'></td>
+                <td><input #mkpProdRemarks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
+                <td></td>
+                <td>
+                  <input type="radio" name="mkpType" #mkpType value='liquid' [(ngModel)]="chosenMkpType" checked>Liquid<br>
+                  <input type="radio" name="mkpType" #mkpType value='powder' [(ngModel)]="chosenMkpType">Powder<br>
+                </td>
+                <td><button (click)='setMkpSchedule(item ,mkpType.value, mkpProdDate.value, mkpProdRemarks.value)' class='btn btn-success'>Set</button></td>
+              </tr>
+            </table> -->
+  
+          </td>
+        </tr>
+  
+      </ng-container>
+  
+    </tbody>
+  
+  </table> 
+</mat-tab>
+  <mat-tab label="Production Requirements">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4 text-center">
+         <button style="background:green;width:130px" class="btn">יש במלאי</button>
+         <button style="background:lightcoral;width:130px" class="btn">אין במלאי</button>
+         <button style="background:lightblue;width:130px" class="btn">הוזמן</button>
+        </div>
+        <div class="col-4 text-center">
+          <button class="btn btn-success" (click)="createProdRequirements()">Create Report</button>
+        </div>
+        <div class="col-4 text-center">
+         
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+         <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Item Number</th>
+          <th>Item Name</th>
+          <th>Quantity</th>
+          <th>Components</th>
+          <th>Packages</th>
+          <th>Carton Master</th>
+          <th>Stickers</th>
 
-        <td class='printTd'>
-          <i class="ti-trash text-danger m-r-10" *ngIf="item._id!=EditRowId" (click)="deleteItem(item)"
-            style="cursor: pointer;"></i>
-          <i class="ti-check text-success m-r-10" *ngIf="item._id!=EditRowId"
-            (click)="setOrderItemDone(item)" style="cursor: pointer;"></i>
-          <i class="ti-save text-success m-r-10" *ngIf="item._id===EditRowId"
-            (click)="saveEdit()" style="cursor: pointer;"></i>
-        </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid black !important;" *ngFor="let item of productionRequirements">
+          <td>{{item.itemNumber}}</td>
+          <td>{{item.discription}}</td>
+          <td>{{item.quantity}}</td>
+          <td [ngClass]="{'inStock': item.componentStatus =='inStock', 'noStock':item.componentStatus=='noStock' , 'ordered':item.componentStatus=='ordered' }">
+            <table>
+              <tbody>
+                <tr>
+                  <td *ngIf="item.bottleNumber && item.bottleNumber != '---'">Bottle: {{item.bottleNumber}}</td>
+                  <td *ngIf="item.sealNumber && item.sealNumber != '---'">Seal: {{item.sealNumber}}</td>
+                  <td *ngIf="item.capNumber && item.capNumber != '---'">Cap: {{item.capNumber}}</td>
+                  <td *ngIf="item.pumpNumber && item.pumpNumber != '---'">Pump: {{item.pumpNumber}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <select *ngIf="item.bottleNumber && item.bottleNumber != '---' || item.sealNumber && item.sealNumber != '---' || item.capNumber && item.capNumber != '---' || item.pumpNumber && item.pumpNumber != '---' " (change)="changeReqStatus($event,item._id,'component')" class="form-control" style="margin-top:20px;width:95px;">
+              <option value=""></option>
+              <option value="noCheck">לא נבדק</option>
+              <option value="inStock">יש במלאי</option>
+              <option value="noStock">אין במלאי</option>
+              <option value="ordered">הוזמן</option>
+            </select>
+          </td>
+          <td [ngClass]="{'inStock': item.packageStatus =='inStock', 'noStock':item.packageStatus=='noStock' , 'ordered':item.packageStatus=='ordered' }">
+            <table>
+              <tbody>
+                <tr>
+                  <td *ngIf="item.boxNumber">{{item.boxNumber}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <select *ngIf="item.boxNumber" (change)="changeReqStatus($event,item._id,'package')" class="form-control" style="margin-top:20px;width:95px;display:flex">
+              <option value=""></option>
+              <option value="noCheck">לא נבדק</option>
+              <option value="inStock">יש במלאי</option>
+              <option value="noStock">אין במלאי</option>
+              <option value="ordered">הוזמן</option>
+            </select>
+          </td>
+          <td [ngClass]="{'inStock': item.cartonStatus =='inStock', 'noStock':item.cartonStatus=='noStock' , 'ordered':item.cartonStatus=='ordered' }">
+            
+            <table>
+              <tbody>
+                <tr>
+                  <td *ngIf="item.cartonNumber">Carton: {{item.cartonNumber}}</td>
+                  <td *ngIf="item.cartonNumber">Pcs: {{item.PcsCarton}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <select *ngIf="item.cartonNumber" (change)="changeReqStatus($event,item._id,'carton')" class="form-control" style="margin-top:20px;width:95px;">
+              <option value=""></option>
+              <option value="noCheck">לא נבדק</option>
+              <option value="inStock">יש במלאי</option>
+              <option value="noStock">אין במלאי</option>
+              <option value="ordered">הוזמן</option>
+            </select>
+          </td>
+          <td [ngClass]="{'inStock': item.stickerStatus =='inStock', 'noStock':item.stickerStatus=='noStock' , 'ordered':item.stickerStatus=='ordered' }">
+            <table>
+              <tbody>
+                <tr>
+                  <td *ngIf="item.stickerNumber">{{item.stickerNumber}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <select *ngIf="item.stickerNumber" (change)="changeReqStatus($event,item._id,'sticker')" class="form-control" style="margin-top:20px;width:95px;">
+              <option value=""></option>
+              <option value="noCheck">לא נבדק</option>
+              <option value="inStock">יש במלאי</option>
+              <option value="noStock">אין במלאי</option>
+              <option value="ordered">הוזמן</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table> 
+        </div>
+      </div>
+    </div> 
+    
+  </mat-tab>
+</mat-tab-group>
 
-      </tr>
-      <tr *ngIf="item._id== EditRowId2nd && expand==true;">
-        <td colspan="5">
-
-          <table class='detilasTable' width='105%'>
-            <tr>
-              <td></td>
-              <td>
-                <h5>Batch</h5>
-              </td>
-              <!-- <td>{{item.batch}}</td> -->
-              <td colspan="2"><label *ngIf="!editBatchN" (click)="editBatch(item.batch)"
-                  style="cursor: pointer; margin-right: 10px;">{{item.batch}}</label>
-                <input *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined"
-                  type='text' style="width:50%" #inputBatch></td>
-              <td><button class='btn btn-success' (click)="setBatch(item, inputBatch.value, item.batch)">set</button>
-              </td>
-              <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)"
-                  style='cursor: pointer;'></i></td>
-              <td></td>
-            </tr>
-            <tr *ngFor="let det of detailsArr">
-              <td></td>
-              <td>
-                <h5>Set Printing Schedule: </h5>
-              </td>
-              <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button class='btn btn-info'
-                  (click)="setToPrintDetails(content, item, det)">print</button></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>
-                <h5>Set Filling Schedule: </h5>
-              </td>
-              <td><input #date type='date'></td>
-              <td><input #shift type='text' placeholder="Shift"></td>
-              <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-              <td>
-                <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
-                <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>
-                <input type="radio" name="type" #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
-                <input type="radio" name="type" #type value='sachet' [(ngModel)]="chosenType">Sachet<br>
-              </td>
-              <td><button (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>
-                <h5>Set Barcode Print: </h5>
-              </td>
-              <td><input #mkpProdDate type='date'></td>
-              <td><input #mkpProdRemarks placeholder="PO" type='marks' [value]="item.itemRemarks"></td>
-              <td><input #mkpProdInvoice placeholder="Invoice" type='text'></td>
-              <td>
-              </td>
-              <td><button (click)='setMkpSchedule(item , mkpProdDate.value, mkpProdRemarks.value , mkpProdInvoice.value)'
-                  class='btn btn-success'>Set</button></td>
-            </tr>
-          </table>
-          <br>
-          <!-- <table class='detilasTable' width='105%'>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>
-                <h5>תיעוד מוצרים מוגמרים לפני משלוח</h5>
-              </td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Costumer Number:<input [(ngModel)]="documentationBeforeSend.costumerNumber" type="number" /></td>
-              <td></td>
-              <td></td>
-              <td>Costumer Name:<input [(ngModel)]="documentationBeforeSend.costumerName" type="text" /></td>
-              <td></td>
-              <td></td>
-              <td>Date:<input [(ngModel)]="documentationBeforeSend.date" type="date" /></td>
-            </tr>
-            <tr>
-              <td>Item Number:<input [(ngModel)]="documentationBeforeSend.itemNumber" type="text" /></td>
-              <td>Batch:<input [(ngModel)]="documentationBeforeSend.batchNumber" type="text" /></td>
-              <td>Cartons Number:<input [(ngModel)]="documentationBeforeSend.cartonsNumber" type="number" /></td>
-              <td>Units Number In Carton:<input [(ngModel)]="documentationBeforeSend.unitCartonNumber" type="number" />
-              </td>
-              <td>Units Number in Part Carton:<input [(ngModel)]="documentationBeforeSend.partCartonNumber"
-                  type="number" /></td>
-              <td>Sum:<input (click)="calculateAllUnits()" [(ngModel)]="documentationBeforeSend.sum" type="text" /></td>
-              <td><button class="btn btn-success" (click)="saveProductDoc()">Save</button></td>
-            </tr>
-           <tr>
-              <td></td>
-              <td>
-                <h5>Set MKP Production Schedule: </h5>
-              </td>
-              <td><input #mkpProdDate type='date'></td>
-              <td><input #mkpProdRemarks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-              <td></td>
-              <td>
-                <input type="radio" name="mkpType" #mkpType value='liquid' [(ngModel)]="chosenMkpType" checked>Liquid<br>
-                <input type="radio" name="mkpType" #mkpType value='powder' [(ngModel)]="chosenMkpType">Powder<br>
-              </td>
-              <td><button (click)='setMkpSchedule(item ,mkpType.value, mkpProdDate.value, mkpProdRemarks.value)' class='btn btn-success'>Set</button></td>
-            </tr>
-          </table> -->
-
-        </td>
-      </tr>
-
-    </ng-container>
-
-  </tbody>
-
-</table>
 
 <br>
 
