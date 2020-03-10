@@ -752,8 +752,11 @@
       </td>
     </tr>
     <tr>   
-      <td>
+      <td *ngIf="newBatchChange == false">
         {{schedFillLine.batch}} <label *ngIf="printExpBarcode == true">Exp:  {{expireDate}}</label>
+      </td>
+      <td *ngIf="newBatchChange == true">
+        {{newBatch}} <label *ngIf="printExpBarcode == true">Exp:  {{expireDate}}</label>
       </td>
     </tr>
     <tr>   

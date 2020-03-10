@@ -27,6 +27,7 @@ export class ScheduleComponent implements OnInit {
   today: any;
   pcsCarton: any;
   barcodeK: any;
+  newBatch: any;
   volumeK: any;
   netoW: any;
   grossW: any;
@@ -38,6 +39,7 @@ export class ScheduleComponent implements OnInit {
   printItemBarcode:boolean = true;
   printCostumerBarcode:boolean = true;
   printExpBarcode:boolean = true;
+  newBatchChange:boolean = false;
 
   closeResult: string;
   public printScheduleFillingForm: FormGroup;
@@ -443,7 +445,7 @@ export class ScheduleComponent implements OnInit {
   openPrintBarkod(content, line) {
     this.schedFillLine = line;
     debugger;
-
+    this.newBatchChange = false;
     this.itemSer.getItemData(this.schedFillLine.item).subscribe(data=>{
       debugger;
       data;
@@ -508,12 +510,14 @@ export class ScheduleComponent implements OnInit {
     this.printCostumerBarcode = true;
     this.printExpBarcode = true;
     this.printItemBarcode = true;
+   
 
     console.log(newPrintBarkod);
    }
 
    saveBatchNumber(){
-    this.schedFillLine.batch = this.printScheduleFillingForm.value.batch
+    this.newBatch = this.printScheduleFillingForm.value.batch
+    this.newBatchChange = true;
    }
    savePcsCarton(){
      debugger;
