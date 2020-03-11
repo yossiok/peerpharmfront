@@ -383,7 +383,7 @@
                   <td *ngIf="item.sealNumber && item.sealNumber != '---'">Seal: {{item.sealNumber}}</td>
                   <td *ngIf="item.capNumber && item.capNumber != '---'">Cap: {{item.capNumber}}</td>
                   <td *ngIf="item.pumpNumber && item.pumpNumber != '---'">Pump: {{item.pumpNumber}}</td>
-                  <td *ngIf="EditRowId !== item._id" (click)="edit(item._id)">{{item.componentRemarks}}</td>
+                  <td *ngIf="EditRowId !== item._id && item.bottleNumber && item.bottleNumber != '---' || item.sealNumber && item.sealNumber != '---' || item.capNumber && item.capNumber != '---' || item.pumpNumber && item.pumpNumber != '---' " (click)="edit(item._id)">{{item.componentRemarks}}</td>
                   <td *ngIf="EditRowId === item._id"><textarea [(ngModel)]="item.componentRemarks" #componentRemarks></textarea></td>
                 </tr>
               </tbody>
@@ -401,7 +401,7 @@
               <tbody>
                 <tr>
                   <td *ngIf="item.boxNumber">{{item.boxNumber}}</td>
-                  <td *ngIf="EditRowId !== item._id" (click)="edit(item._id)">{{item.packageRemarks}}</td>
+                  <td *ngIf="EditRowId !== item._id && item.boxNumber" (click)="edit(item._id)">{{item.packageRemarks}}</td>
                   <td *ngIf="EditRowId === item._id"><textarea [(ngModel)]="item.packageRemarks" #packageRemarks></textarea></td>
                 </tr>
               </tbody>
@@ -421,7 +421,7 @@
                 <tr>
                   <td *ngIf="item.cartonNumber">Carton: {{item.cartonNumber}}</td>
                   <td *ngIf="item.cartonNumber">Pcs: {{item.PcsCarton}}</td>
-                  <td *ngIf="EditRowId !== item._id" (click)="edit(item._id)">{{item.cartonRemarks}}</td>
+                  <td *ngIf="EditRowId !== item._id && item.cartonNumber" (click)="edit(item._id)">{{item.cartonRemarks}}</td>
                   <td *ngIf="EditRowId === item._id"><textarea [(ngModel)]="item.cartonRemarks" #cartonRemarks ></textarea></td>
                 </tr>
               </tbody>
@@ -439,7 +439,7 @@
               <tbody>
                 <tr>
                   <td *ngIf="item.stickerNumber">{{item.stickerNumber}}</td>
-                  <td *ngIf="EditRowId !== item._id" (click)="edit(item._id)">{{item.stickerRemarks}}</td>
+                  <td *ngIf="EditRowId !== item._id && item.stickerNumber" (click)="edit(item._id)">{{item.stickerRemarks}}</td>
                   <td *ngIf="EditRowId === item._id"><textarea [(ngModel)]="item.stickerRemarks" #stickerRemarks></textarea></td>
                 </tr>
               </tbody>
