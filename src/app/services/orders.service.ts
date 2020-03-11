@@ -199,6 +199,10 @@ export class OrdersService {
     let url = this.baseUrl + "orderitem/add";
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
+  saveOrderItemRemarks(remarks): Observable<any> {
+    let url = this.baseUrl + "orderitem/saveOrderItemRemarks";
+    return this.http.post(url, JSON.stringify(remarks), this.options).pipe(map(res => res.json()))
+  }
 
   //get list of sum of all components needed to the order
   getComponentsSum(orderNumber) {

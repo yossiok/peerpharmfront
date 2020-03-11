@@ -188,6 +188,10 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('inputBatch') inputBatch: ElementRef;
   @ViewChild('componentCheck') componentCheck: ElementRef;
   @ViewChild('mkpProdInvoice') mkpProdInvoice: ElementRef;
+  @ViewChild('componentRemarks') componentRemarks: ElementRef;
+  @ViewChild('stickerRemarks') stickerRemarks: ElementRef;
+  @ViewChild('cartonRemarks') cartonRemarks: ElementRef;
+  @ViewChild('packageRemarks') packageRemarks: ElementRef;
 
   @ViewChild('date') date: ElementRef;
   @ViewChild('shift') shift: ElementRef;
@@ -387,6 +391,34 @@ export class OrderdetailsComponent implements OnInit {
 
     this.inventoryService.getCmptByitemNumber(componentNumber)
 
+  }
+
+  saveItemRemarks(id){
+    debugger;
+    this.componentRemarks.nativeElement.value;
+    var obj = {
+      componentRemarks:this.componentRemarks.nativeElement.value,
+      packageRemarks:this.packageRemarks.nativeElement.value,
+      stickerRemarks:this.stickerRemarks.nativeElement.value,
+      cartonRemarks:this.cartonRemarks.nativeElement.value,
+      orderItemId:id
+    }
+    this.orderService.saveOrderItemRemarks(obj).subscribe(data=>{
+debugger;
+if(data){
+  for (let i = 0; i < this.productionRequirements.length; i++) {
+  if(this.productionRequirements[i]._id == data._id){
+    this.productionRequirements[i].componentRemarks = data.componentRemarks
+    this.productionRequirements[i].packageRemarks = data.packageRemarks
+    this.productionRequirements[i].stickerRemarks = data.stickerRemarks
+    this.productionRequirements[i].cartonRemarks = data.cartonRemarks
+    this.edit('');
+    this.toastSrv.success("עודכן בהצלחה !")
+  }
+    
+  }
+}
+    })
   }
 
   openComponentsStatus(components, itemNumber, itemQuantity, orderNumber) {
@@ -906,7 +938,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   edit(id) {
-
+debugger;
     if (id != '') {
       this.EditRowId = id;
     } else {
