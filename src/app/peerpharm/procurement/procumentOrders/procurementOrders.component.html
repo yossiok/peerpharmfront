@@ -6,7 +6,7 @@
       <button class="btn" style="background:lightcoral">הזמנה בוטלה</button>
       <button class="btn" style="background:yellow">הזמנה נשלחה לספק</button>
       <button class="btn" style="background:lightgreen">הזמנה הגיעה לספק</button>
-      <button class="btn" style="background:lightslategrey">הזמנה סגורה</button>
+      <button class="btn" style="background:orange">הזמנה סגורה</button>
       <br>
       <br>
       <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Order Number"
@@ -241,8 +241,44 @@
             </table>
       
           </div>
-      
+          <div class="modal-footer">
+            <tr>
+              <td><input (change)="fillMaterialNumber($event)" list="materials" class="form-control" placeholder="Item Name" [(ngModel)]="newItem.itemName" type="text"></td>
+              <datalist id="materials">
+                <option *ngFor="let material of allMaterials" [value]="material.componentName" >{{material.componentName}}</option>
+
+              </datalist>
+              <td><input class="form-control" placeholder="Item Number" [(ngModel)]="newItem.itemNumber" type="text"></td>
+              <td><input class="form-control" placeholder="Item Remarks" [(ngModel)]="newItem.remarks" type="text"></td>
+              <td><select class="form-control"  [(ngModel)]="newItem.measurement" class="form-control custom-select">
+                <option value="kg">kg</option>''ג'
+                <option value="liter">liter</option>
+                <option value="meter">meter</option>
+                <option value="ml">ml</option>
+                <option value="unit">Unit</option>
+                <option value="ton">טון</option>
+                <option value="unit">יחידה</option>
+                <option value="box">קופסא</option>
+                </select>
+            </td>
+            <td><input class="form-control" placeholder="Quantity" [(ngModel)]="newItem.supplierAmount" type="text"></td>
+            <td>
+              <select class="form-control" [(ngModel)]="newItem.coin" class="form-control custom-select">
+                <option value=""></option>
+                <option value="usd">USD</option>
+                <option value="nis">NIS</option>
+                <option value="gbp">GBP</option>
+                <option value="eur">EUR</option>
+                <option value="yen">YEN</option>
+              </select>
+            </td>
+            <td><input class="form-control" placeholder="Price" [(ngModel)]="newItem.supplierPrice" type="text"></td>
+            <td><button class="btn btn-success" (click)="addNewItem()">Add</button></td>
+            </tr>
+           
+          </div>
         </div>
+      
       </div>
       
 

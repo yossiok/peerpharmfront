@@ -20,6 +20,7 @@ export class ProcurementOrdersComponent implements OnInit {
   allComponents:any[];
   purchaseRecommendations:any[];
   allComponentsCopy:any[];
+  allMaterials:any[];
   printBill:boolean = false;
   orderDetailsModal:boolean = false;
   procurementData: any[];
@@ -38,6 +39,22 @@ export class ProcurementOrdersComponent implements OnInit {
   importantRemarks:any;
   orderDate:any;
   outOfCountry:any;
+
+  newItem = {
+
+    itemNumber:'',
+    itemName:'',
+    coin:'',
+    measurement:'',
+    supplierPrice:'',
+    supplierAmount:'',
+    color:'',
+    orderNumber:'',
+    itemRemarks:'',
+    itemPrice:0,
+    remarks:''
+  
+    }
 
   @ViewChild('arrivedAmount') arrivedAmount: ElementRef;
   @ViewChild('orderAmount') orderAmount: ElementRef;
@@ -65,8 +82,29 @@ export class ProcurementOrdersComponent implements OnInit {
     console.log('Enter');
     this.getAllProcurementOrders();
     this.getComponentsWithPurchaseRec();
+    this.getAllMaterials();
     this.user = this.authService.loggedInUser.firstName;
 
+  }
+
+  getAllMaterials(){
+    debugger;
+    this.inventoryService.getAllMaterialsForFormules().subscribe(data=>{
+      debugger
+      this.allMaterials = data;
+    })
+  }
+
+  fillMaterialNumber(ev){
+    debugger;
+    var material = ev.target.value;
+
+    for (let i = 0; i < this.allMaterials.length; i++) {
+     if(this.allMaterials[i].componentName == material){
+       this.newItem.itemNumber = this.allMaterials[i].componentN
+     }
+      
+    }
   }
 
   getAllProcurementOrders() {
@@ -232,6 +270,23 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
+  addNewItem(){
+    debugger;
+    this.newItem.orderNumber = this.orderData[0].orderNumber;
+    this.newItem.itemPrice = Number(this.newItem.supplierAmount)*Number(this.newItem.supplierPrice);
+
+    this.procurementservice.addItemToProcurement(this.newItem).subscribe(data=>{
+    debugger;
+    if(data){
+      this.orderData[0].item.push(this.newItem);
+      this.toastr.success("פריט נוסף בהצלחה !")
+     
+      
+    }
+    })
+    this.orderData
+  }
+
   searchByItem(ev){
    
     var itemNumber = ev.target.value;
@@ -259,6 +314,20 @@ export class ProcurementOrdersComponent implements OnInit {
       this.purchaseRecommendations = data;
       this.purchaseRecommendations = data;
     })
+  }
+
+  clearNewItem(){
+    this.newItem.itemNumber='',
+    this.newItem.itemName='',
+    this.newItem.coin='',
+    this.newItem.measurement='',
+    this.newItem.supplierPrice='',
+    this.newItem.supplierAmount='',
+    this.newItem.color='',
+    this.newItem.orderNumber='',
+    this.newItem.itemRemarks='',
+    this.newItem.itemPrice=0,
+    this.newItem.remarks=''
   }
 
 

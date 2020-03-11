@@ -119,6 +119,11 @@ export class Procurementservice {
     let url = this.baseUrl + 'newProcurement/add';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
+  addItemToProcurement(obj):Observable<any>{
+    
+    let url = this.baseUrl + 'procurementOrderController/addItemToProcurement';
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
+  }
   removeFromFrameQuantity(obj):Observable<any>{
     let url = this.baseUrl + 'newProcurement/findMaterialAndRemoveFrameAmount';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
