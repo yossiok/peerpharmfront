@@ -779,9 +779,9 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
          <tr>
           <td><span *ngIf="showVolume">{{ volumeK }}</span></td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td *ngIf="showItemNumber">Vendor Style - #2087</td>
-        </tr>
+        </tr> -->
         <tr>
           <td><span style="margin-left:10px;" *ngIf="showPcsCarton">{{ printBarkod.pcsCtn }} Units / Ctn</span></td>
         </tr>
@@ -806,9 +806,9 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
         <tr *ngIf="showOtherFlag">
           <td>{{ other }}</td>
         </tr>
-        <tr *ngIf="showPackingCodeFlag">
+        <!-- <tr *ngIf="showPackingCodeFlag">
           <td>Packing Code:{{ printBarkod.packingCode }}</td>
-        </tr>
+        </tr> -->
       </table>
     </div>
 

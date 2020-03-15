@@ -71,10 +71,10 @@
       
       
       
-      <div id="print-section">
-        <div *ngIf="printBill==true" id="myModal3" class="modal3"
-          style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:80px;top:50px;font-size:20px;'>
       
+        <div *ngIf="printBill==true" id="myModal3" class="modal3"
+          style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:300px;top:160px;font-size:20px;'>
+          <div id="print-section">
           <div class="modal-content" id='modelC'>
             <div style="display: inline-block;" id="material-header" class="modal-header">
       
@@ -83,9 +83,9 @@
                   <img src="../../../../assets/images/logo.png">
                 </div>
                 <div class="col-6">
-                  <p>Amal 17 Street, Afek Industry Park,Rosh Haayin 4809256</p>
-                  <p>Tel:+972-3-9024055 Fax: +972-3-9024015 </p>
-                  <p>Email: Office2@peerpharm.com</p>
+                  <p style="font-size: 12px;">Amal 17 Street, Afek Industry Park,Rosh Haayin 4809256</p>
+                  <p style="font-size: 12px;">Tel:+972-3-9024055 Fax: +972-3-9024015 </p>
+                  <p style="font-size: 12px;">Email: Office2@peerpharm.com</p>
                 </div>
       
                 <div class="col-1">
@@ -96,17 +96,64 @@
             </div>
             <hr>
       
-            <div>
-              <button style="border:none;background: none;margin-left:200px;font-size: 30px;" ngxPrint printSectionId="print-section"
+            <div class="row">
+              <div class="col-4">
+              </div>
+
+              <div class="col-4">
+                <button style="border:none;background: none;margin-left:240px;font-size: 25px;" ngxPrint printSectionId="print-section"
                 [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
-              <p style="margin-left:420px;">Order Date:{{orderDate}}</p>
-              <p>{{currentOrder.supplierName}}</p>
-              <p>{{currentSupplier.address}}</p>
-              <p *ngIf="currentSupplier.phoneNum">Tel:{{currentSupplier.phoneNum}}</p>
-              <p *ngIf="currentSupplier.faxNum">Fax:{{currentSupplier.faxNum}}</p>
+                <p style="margin-left:450px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
+              </div>
+
+              <div class="col-4">
+              
+              </div>
             </div>
+
+            <div class="row">
+              <div class="col-4">
+                <p>{{currentOrder.supplierName}}</p>
+              </div>
+
+              <div class="col-4"></div>
+
+              <div class="col-4"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">
+                <p>{{currentSupplier.address}}</p>
+              </div>
+
+              <div class="col-4"></div>
+
+              <div class="col-4"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">
+                <p *ngIf="currentSupplier.phoneNum">Tel:{{currentSupplier.phoneNum}}</p>
+              </div>
+
+              <div class="col-4"></div>
+
+              <div class="col-4"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-4">
+                <p *ngIf="currentSupplier.faxNum">Fax:{{currentSupplier.faxNum}}</p>
+              </div>
+
+              <div class="col-4"></div>
+
+              <div class="col-4"></div>
+            </div>
+
+        
       
-      
+            <p>Order Details:</p>
             <div class="container" id="material-body" class="modal-body">
               <table class="table table-striped">
                 <thead>
@@ -140,10 +187,10 @@
       
               <div class="row">
                 <div class="col-6">
-                  <p style="margin-left:320px;">Total Amont:{{totalAmount}}</p>
+                  <p style="margin-left:330px;font-size: 15px;">Total Amont:{{totalAmount}}</p>
                 </div>
                 <div class="col-6">
-                  <p style="margin-left:320px;">Total Price:{{totalPrice}}</p>
+                  <p style="margin-left:330px;font-size: 15px;">Total Price: {{totalPrice}}</p>
                 </div>
               </div>
       
@@ -155,6 +202,12 @@
                 <div class="col-6">
                   {{importantRemarks}}
                 </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <p>This order must be confirmed by supplier.</p>
+                </div>
+                
               </div>
       
             </div>

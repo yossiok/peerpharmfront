@@ -45,6 +45,7 @@ export class BatchesComponent implements OnInit {
     produced:'',
     weightQtyLeft: '',
     weightKg: '',
+    color:''
 
   }
 
@@ -66,11 +67,12 @@ export class BatchesComponent implements OnInit {
 
   ngOnInit() {
     this.getUserInfo();
-    this.getAllBatches();
+    this.getAllBatchesYear();
     // this.startInterval();
   }
 
   addBatch() {  
+    this.batch.color = 'yellow'
     this.batchService.addBatch(this.batch).subscribe(data=>{
       this.batches.push(data)
       this.batchesCopy.push(data)
@@ -89,11 +91,31 @@ export class BatchesComponent implements OnInit {
         produced:'',
         weightQtyLeft: '',
         weightKg: '',
+        color:''
     
       }
     })
     
 
+  }
+
+  getAllBatches(){
+    this.batchService.getAllBatches().subscribe((res) => {
+      console.log(res); 
+      this.batches = res;
+      this.batchesCopy = res;
+      this.batches.map(batch => {
+        if (batch.weightKg != null && batch.weightQtyLeft != null) {
+          if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
+          else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
+          else batch.color = "white";
+          if (res.length == res.length) {
+
+            this.hasMoreItemsToload = false;
+          }
+        }
+      });
+    });
   }
  
   edit(id) { 
@@ -121,9 +143,9 @@ export class BatchesComponent implements OnInit {
   // }
 
 
-  getAllBatches() {
+  getAllBatchesYear() {
 
-    this.batchService.getAllBatches().subscribe((res) => {
+    this.batchService.getAllBatchesYear().subscribe((res) => {
       console.log(res); 
       this.batches = res;
       this.batchesCopy = res;
@@ -131,6 +153,9 @@ export class BatchesComponent implements OnInit {
         if (batch.weightKg != null && batch.weightQtyLeft != null) {
           if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
           else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
+          if(batch.color == 'yellow'){
+            batch.color = 'yellow'
+          }
           else batch.color = "white";
           if (res.length == res.length) {
 

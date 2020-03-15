@@ -11,7 +11,13 @@
       <b>showing {{batches.length}} batches</b>
     </span>
 </div>
-  <div class="col-6">
+<div class="col-1">
+ <button (click)="getAllBatches()" class="btn btn-success">All Batches</button>
+</div>
+<div class="col-1">
+  <button (click)="getAllBatchesYear()" class="btn btn-success">Batches 2020</button>
+</div>
+  <div class="col-4">
     <div class="row">
         <label class="col-6" style="background:none; text-align: right; line-height: 3"><strong>Export to Excel:</strong></label>
         <input  class="form-control col-3" type="text" [(ngModel)]="lastBatchToExport" placeholder="Enter batch number">

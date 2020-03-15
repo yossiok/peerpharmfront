@@ -32,6 +32,10 @@ export class BatchesService {
     let url = this.baseUrl + 'batch'
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllBatchesYear():Observable<any>{
+    let url = this.baseUrl + 'batch?Year=yes'
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllBatchesByDate(batchN):Observable<any>{
     let url = this.baseUrl + 'batch/excelExportByDate?batchN='+batchN;
     return this.http.get(url).pipe(map(reponse => reponse.json()));  

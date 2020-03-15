@@ -159,7 +159,7 @@ setType(type) {
 
 
   saveSupplier() {
-    
+    debugger;
     if(this.supplier.suplierName != "" && this.supplier.suplierNumber != "" && this.supplier.lastUpdated != "") {
     this.supplierService.addorUpdateSupplier(this.supplier).subscribe(res => {
       console.log(res);
@@ -305,7 +305,7 @@ setType(type) {
   }
 
   async openData(supplierN) {
-    
+    debugger;
 
     this.supplier = this.suppliers.find(supplier => supplier.suplierNumber == supplierN);
     this.loadSuppliers();
