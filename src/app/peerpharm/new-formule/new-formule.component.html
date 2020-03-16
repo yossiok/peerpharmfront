@@ -12,8 +12,8 @@
     <div class="col-5">
       <select (change)="fillTheNumberByType($event)" [(ngModel)]="newFormule.formuleType">
         <option value=""></option>
-        <option value="father">אב</option>
-        <option value="base">בסיס</option>
+        <option value="father">father</option>
+        <option value="base">base</option>
       </select>
     </div>
     <div *ngIf="chooseChildren != true" class="col-2">
@@ -171,10 +171,10 @@
         <tr>
 
         
-          <th>מק"ט</th>
-          <th>שם פריט</th>
-          <th>אחוזים</th>
-          <th>הערות</th>
+          <th>Item Number</th>
+          <th>Item Name</th>
+          <th>Percentage</th>
+          <th>Remarks</th>
           <th></th>
         </tr>
       </thead>
@@ -201,10 +201,10 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>מק"ט</th>
-          <th>שם פריט</th>
-          <th>אחוזים</th>
-          <th>הערות</th>
+          <th>Item Number</th>
+          <th>Item Name</th>
+          <th>Percentage</th>
+          <th>Remarks</th>
         </tr>
      
       </thead>
@@ -232,7 +232,7 @@
   </div>
   <div style="text-align: center;" class="row">
     <div class="col-12">
-      <button (click)="addNewPhase()" class="btn-success">הקם פאזה</button>
+      <button (click)="addNewPhase()" class="btn-success">Create Phase</button>
     </div>
   </div>
 </div>
@@ -294,7 +294,7 @@
   <br><br>
   <div *ngIf="currentFormule" style="text-align: center;" class="row">
     <div class="col-12">
-      <button (click)="FinishFormule()" class="btn-success">סיום הקמת פורמולה</button>
+      <button (click)="FinishFormule()" class="btn-success">Finish Formule</button>
     </div>
   </div>
 
@@ -313,8 +313,8 @@
       <div class="col-5">
         <select (change)="fillTheNumberByType($event)" [(ngModel)]="newFormule.formuleType">
           <option value=""></option>
-          <option value="father">אב</option>
-          <option value="base">בסיס</option>
+          <option value="father">Father</option>
+          <option value="base">Base</option>
         </select>
       </div>
       <div *ngIf="chooseChildren == true" class="col-2">
@@ -399,7 +399,7 @@
 
   <div style="text-align: center;margin-top:50px;" class="row">
     <div class="col-12">
-      <button class="btn-success" (click)="newFormuleFromBase()">מעבר לפאזות</button>
+      <button class="btn-success" (click)="newFormuleFromBase()">Proceed To Phases</button>
     </div>
   </div>
   </div>
@@ -447,11 +447,10 @@
         <thead>
           <tr>
   
-          
-            <th>מק"ט</th>
-            <th>שם פריט</th>
-            <th>אחוזים</th>
-            <th>הערות</th>
+            <th>Item Number</th>
+            <th>Item Name</th>
+            <th>Percentage</th>
+            <th>Remarks</th>
             <th></th>
           </tr>
         </thead>
@@ -547,7 +546,7 @@
     </div>
     <div class="row">
       <div style="text-align: center;" class="col-12">
-        <button (click)="updatePhasesInNewFormule()" class="btn-success">הקם פורמולה חדשה</button>
+        <button (click)="updatePhasesInNewFormule()" class="btn-success">Create New Formule</button>
       </div> 
   </div>
   <div *ngIf="allPercentage" style="text-align: center;" class="row">

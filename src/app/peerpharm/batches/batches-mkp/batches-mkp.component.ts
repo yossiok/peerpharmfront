@@ -231,4 +231,8 @@ export class BatchesMkpComponent implements OnInit {
 
   return [year, month, day].join('-');
 }
+
+
+
+
 }

@@ -68,7 +68,7 @@ export class BatchesComponent implements OnInit {
   ngOnInit() {
     this.getUserInfo();
     this.getAllBatchesYear();
-    // this.startInterval();
+    this.startInterval();
   }
 
   addBatch() {  
@@ -134,13 +134,13 @@ export class BatchesComponent implements OnInit {
   }
 }
 
-  // stopInterval() {
-  //   clearInterval(this.myRefresh)
-  // }
+  stopInterval() {
+    clearInterval(this.myRefresh)
+  }
 
-  // startInterval() {
-  //   this.myRefresh = setInterval(() => { this.getAllBatches(); }, 1000 * 60 * 3);
-  // }
+  startInterval() {
+    this.myRefresh = setInterval(() => { this.getAllBatchesYear(); }, 1000 * 60 * 3);
+  }
 
 
   getAllBatchesYear() {

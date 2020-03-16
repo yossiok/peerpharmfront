@@ -1,12 +1,12 @@
 
 <ngb-tabset>
-  <ngb-tab title="הזמנות רכש">
+  <ngb-tab title="Purchase Orders">
     <ng-template ngbTabContent>
       
-      <button class="btn" style="background:lightcoral">הזמנה בוטלה</button>
-      <button class="btn" style="background:yellow">הזמנה נשלחה לספק</button>
-      <button class="btn" style="background:lightgreen">הזמנה הגיעה לספק</button>
-      <button class="btn" style="background:orange">הזמנה סגורה</button>
+      <button class="btn" style="background:lightcoral">Canceled Order</button>
+      <button class="btn" style="background:yellow">Order Sent To Supplier</button>
+      <button class="btn" style="background:lightgreen">Supplier Received Order</button>
+      <button class="btn" style="background:orange">Closed Order</button>
       <br>
       <br>
       <input type="text" style="width:200px;margin-left:15px;" placeholder="Search By Order Number"
@@ -38,13 +38,13 @@
             <th><b>Comax Number</b></th>
             <th><b>Supplier Number</b></th>
             <th><b>Supplier Name</b></th>
-            <th><b>תאריך יציאה</b></th>
-            <th><b>תאריך קבלה</b></th>
+            <th><b>Out Date</b></th>
+            <th><b>Receiving Date</b></th>
             <th></th>
             <th></th>
-            <th><b>נשלח לספק</b></th>
-            <th><b>התקבל אצל הספק</b></th>
-            <th><b>סגור הזמנה</b></th>
+            <th><b>Sent To Supplier</b></th>
+            <th><b>Arrived At Supplier</b></th>
+            <th><b>Close Order</b></th>
           </tr>
         </thead>
         <tbody id="table_body">
@@ -237,13 +237,12 @@
                   <th>Item Number</th>
                   <th>Measurement</th>
                   <th>Coin</th>
-                  <th>Amount/Amount Ordered</th>
+                  <th>Amount</th>
+                  <th *ngIf="edit==true">Amount Ordered</th>
                   <th>Arrival Date</th>
                   <th>Expected Date</th>
                   <th>Reference Number</th>
-                  <th></th>
-                  <th></th>
-      
+
                 </tr>
               </thead>
               <tbody id="table_body">
@@ -255,14 +254,16 @@
                     <td>{{ line.itemName }}</td>
                     <td>{{ line.itemNumber }}</td>
                     <td>{{ line.measurement }}</td>
+
                     <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.supplierPrice}}{{ line.coin }}</td>
                     <td *ngIf="line.itemNumber==EditRowId">
-                      <input #supplierPrice [value]="line.supplierPrice" style="width:150px;" type="text">
+                      <input #supplierPrice [value]="line.supplierPrice" style="width:50px;" type="text">
                     </td>
       
                     <td *ngIf="line.itemNumber==EditRowId">
                       <input #arrivedAmount [value]="line.arrivedAmount" style="width:50px;" type="text">/
                     </td>
+
                     <td *ngIf="line.itemNumber==EditRowId">
                       <input #orderAmount [value]="line.supplierAmount" style="width:50px;" type="text">
                     </td>
@@ -337,21 +338,21 @@
 
     </ng-template>
   </ngb-tab>
-  <ngb-tab title="המלצות רכש">
+  <ngb-tab title="Purchase Recommendation">
     <ng-template ngbTabContent>
     <table class="table table-striped">
       <thead class="bg-success text-white">
         <tr>
-          <th style="cursor: pointer;" (click)="sortTable('itemNumber')">מספר פריט</th>
-          <th>סוג המלצה</th>
-          <th>שם פריט</th>
-          <th>הערות המלצה</th>
-          <th>שם הממליץ</th>
-          <th style="cursor: pointer;" (click)="sortTable('supplier')">ספק</th>
-          <th style="cursor: pointer;" (click)="sortTable('date')">תאריך המלצה</th>
-          <th>כמות</th>
-          <th>הערות</th>
-          <th style="cursor: pointer;" (click)="sortTable('ordered')">הוזמן</th>
+          <th style="cursor: pointer;" (click)="sortTable('itemNumber')">Item Number</th>
+          <th>Recommend Type</th>
+          <th>Item Name</th>
+          <th>Recommendation Remarks</th>
+          <th>Name</th>
+          <th style="cursor: pointer;" (click)="sortTable('supplier')">Supplier</th>
+          <th style="cursor: pointer;" (click)="sortTable('date')">Recommendation Date</th>
+          <th>Amount</th>
+          <th>Remarks</th>
+          <th style="cursor: pointer;" (click)="sortTable('ordered')">Ordered</th>
         </tr>
       </thead>
       <tbody>

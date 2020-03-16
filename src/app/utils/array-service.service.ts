@@ -9,6 +9,7 @@ export class ArrayServiceService {
 
 
   sortTable(array,key){
+    debugger;
    // generate an array of predicate-objects contains
   // property getter, and descending indicator
   let predicates = key.map(pred => {
@@ -40,6 +41,7 @@ export class ArrayServiceService {
 
 
    sortByAttribute(array, ...attrs) {
+     debugger;
     // generate an array of predicate-objects contains
     // property getter, and descending indicator
     let predicates = attrs.map(pred => {

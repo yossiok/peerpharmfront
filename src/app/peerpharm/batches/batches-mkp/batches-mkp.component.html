@@ -19,15 +19,15 @@
   <thead style="background:rgb(89, 116, 175)">
     <tr>
       <th class="batchTh">#</th>
-      <th class="batchTh">אצווה</th>
-      <th class="batchTh">תאריך ייצור</th>
-      <th class="batchTh">שם מוצר</th>
+      <th class="batchTh">Batch Number</th>
+      <th class="batchTh">Production Date</th>
+      <th class="batchTh">Product Name</th>
       <th class="batchTh">PH</th>
-      <th class="batchTh">כמות(ק"ג)</th>
-      <th class="batchTh">חביות</th>
-      <th class="batchTh">מספר הזמנה</th>
-      <th class="batchTh">מספר פריט</th>
-      <th class="batchTh">הדפסה חוזרת</th>
+      <th class="batchTh">Quantity(KG)</th>
+      <th class="batchTh">Barrels</th>
+      <th class="batchTh">Order Number</th>
+      <th class="batchTh">Item Number</th>
+      <th class="batchTh">rePrint</th>
     </tr>
   </thead>
 
@@ -42,7 +42,7 @@
       <td>{{batch.barrels}}</td>
       <td>{{batch.order}}</td>
       <td>{{batch.item}}</td>
-      <td><button (click)="rePrint(batch)" class="btn-success">הדפס</button></td>
+      <td><button (click)="rePrint(batch)" class="btn-success">Print</button></td>
     </tr>
   </tbody>
 </table>
