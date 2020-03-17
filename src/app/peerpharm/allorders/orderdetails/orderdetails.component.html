@@ -584,7 +584,7 @@
   style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
   <!-- Modal content -->
-  <div class="modal-content" style='width:650px' id='modelB'>
+  <div dir="ltr" class="modal-content" style='width:650px' id='modelB'>
     <div class="modal-header">
       <button class="btn-success" [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="modelB" ngxPrint>Print</button>
       <span class="close" id="closeId2" (click)="packingModal=false;newItem='';">&times;</span>
@@ -595,7 +595,7 @@
       <!-- <div clas="modalFullWidth" width="100%">
 
         </div> -->
-      <h4>{{openItemPackingModalHeader}}</h4>
+      <!-- <h4>{{openItemPackingModalHeader}}</h4>
       <table class="itemPackings" width="100%">
         <thead>
           <tr>
@@ -614,7 +614,7 @@
           </tr>
         </tbody>
       </table>
-      <br><br>
+      <br><br> -->
 
       <div class="container">
         <h4 width="100%" class="text-center">כל הפריטים הארוזים</h4> <br>
@@ -633,9 +633,10 @@
             <table class="orerPalletsTable" width="100%">
               <thead>
                 <tr>
-                  <th><b>מספר פריט</b></th>
+                  <th><b>סה"כ</b></th>
                   <th><b>יח' בקרטון</b></th>
                   <th><b>קרטונים במשטח</b></th>
+                  <th><b>מספר פריט</b></th>
 
                 </tr>
               </thead>
@@ -643,9 +644,10 @@
                 <ng-container *ngFor="let orderitemPackingPallet of orderPackingList">
                   <tr *ngIf="orderitemPackingPallet.palletId == orderPallet.palletId "
                     [style.background-color]="orderitemPackingPallet.lineColor">
-                    <td>{{orderitemPackingPallet.itemNumber}}</td>
+                    <td>{{orderitemPackingPallet.totalAmount}}</td>
                     <td>{{orderitemPackingPallet.pcsCtn}}</td>
                     <td>{{orderitemPackingPallet.ctnPallet}}</td>
+                    <td>{{orderitemPackingPallet.itemNumber}}</td>
                   </tr>
                 </ng-container>
                 <!-- <tr *ngFor="let orderitemPackingPallet of orderPackingList" [style.background-color]="orderitemPackingPallet.lineColor">

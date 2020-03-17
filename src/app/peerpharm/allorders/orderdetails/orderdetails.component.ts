@@ -1366,7 +1366,13 @@ debugger;
     //  });
 
     await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList => {
+      debugger;
+      for (let i = 0; i < orderPackingList.length; i++) {
+      orderPackingList[i].totalAmount = orderPackingList[i].pcsCtn*orderPackingList[i].ctnPallet
+        
+      }
       this.orderPackingList = orderPackingList;
+    
       await this.orderPackingList.forEach(item => {
         let obj = { palletId: item.palletId, palletNumber: item.palletNumber, palletWeight: item.palletWeight, palletMesures: item.palletMesures }
         let palletId = item.palletId;
@@ -1381,6 +1387,7 @@ debugger;
         let packedItemsOnPallet = 0;
         await this.orderPackingList.filter(packedItem => {
           if (orderItem.itemNumber == packedItem.itemNumber) {
+            debugger;
             packedItemsOnPallet = packedItem.pcsCtn * packedItem.ctnPallet;
             packedQnt = packedQnt + packedItemsOnPallet
             packedItem.totalPackedQnt = packedQnt;
