@@ -586,12 +586,12 @@
   <!-- Modal content -->
   <div class="modal-content" style='width:650px' id='modelB'>
     <div class="modal-header">
-      <button class="btn-success" printSectionId="myModal" ngxPrint>Print</button>
+      <button class="btn-success" [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="modelB" ngxPrint>Print</button>
       <span class="close" id="closeId2" (click)="packingModal=false;newItem='';">&times;</span>
       <h2 id='div_h3'>{{openOrderPackingModalHeader}}</h2><br>
     </div>
 
-    <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
+    <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: auto; padding-left: 0px;text-align: center;">
       <!-- <div clas="modalFullWidth" width="100%">
 
         </div> -->
@@ -668,6 +668,7 @@
     </div>
   </div>
 </div>
+
 
 
 
@@ -942,7 +943,7 @@
     
   </div>
   <div class="modal-body">
-      <button printSectionId="print-section" [printStyle]="{td : {'border': 'solid 1px black'}}" ngxPrint>print</button> 
+      <button   printSectionId="print-section" [printStyle]="{td : {'border': 'solid 1px black'}}" ngxPrint>print</button> 
       <div id="print-section">
     <table style="width:100%" class='table'>
       <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
