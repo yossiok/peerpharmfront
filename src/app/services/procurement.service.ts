@@ -128,6 +128,10 @@ export class Procurementservice {
     let url = this.baseUrl + 'newProcurement/findMaterialAndRemoveFrameAmount';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
+  updatePurchaseOrder(obj):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/updatePurchaseOrder';
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
+  }
   
   changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount,arrivalDate,referenceNumber,supplierPrice,expectedDate):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/changeColor';

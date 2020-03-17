@@ -23,13 +23,18 @@ export class ProcurementOrdersComponent implements OnInit {
   allMaterials:any[];
   printBill:boolean = false;
   orderDetailsModal:boolean = false;
+  editArrivalModal:boolean = false;
   procurementData: any[];
   procurementDataCopy: any[];
+  procurementArrivals: any[]=[]
   currentOrder: any[];
   currentItems: any[];
+  allSuppliers: any[];
   currentSupplier:object;
   orderData:any[];
+  arrivalData:any[];
   EditRowId:any="";
+  EditRowComax:any="";
   requestNum:any="";
   user:any;
 
@@ -54,6 +59,13 @@ export class ProcurementOrdersComponent implements OnInit {
     itemPrice:0,
     remarks:''
   
+    }
+    newReference = {
+      referenceNumber:"",
+      arrivalDate:"",
+      arrivedAmount:"",
+      orderId:"",
+      itemNumber:"",
     }
 
   @ViewChild('arrivedAmount') arrivedAmount: ElementRef;
@@ -83,6 +95,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.getAllProcurementOrders();
     this.getComponentsWithPurchaseRec();
     this.getAllMaterials();
+    this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
 
   }
@@ -90,7 +103,6 @@ export class ProcurementOrdersComponent implements OnInit {
   getAllMaterials(){
     debugger;
     this.inventoryService.getAllMaterialsForFormules().subscribe(data=>{
-      debugger
       this.allMaterials = data;
     })
   }
@@ -106,6 +118,62 @@ export class ProcurementOrdersComponent implements OnInit {
       
     }
   }
+  filterPurchases(event,type){
+    debugger;
+   if(event.target.value == ''){
+     type = "";
+     this.procurementArrivals = []
+   } else {
+    switch (type) {
+      case 'supplier':
+      var tempArr = this.procurementDataCopy.filter(p=>p.supplierName == event.target.value);
+      for (let i = 0; i < tempArr.length; i++) {
+      if(tempArr[i].status == 'open'){
+        for (let j = 0; j < tempArr[i].item.length; j++) {
+
+        var obj = {
+          id:tempArr[i]._id,
+          supplierName:tempArr[i].supplierName,
+          comaxNumber:tempArr[i].comaxNumber,
+          itemNumber:tempArr[i].item[j].itemNumber,
+          arrivals:[],
+
+          
+        }
+        if(tempArr[i].item[j].arrivals){
+          for (let k = 0; k < tempArr[i].item[j].arrivals.length; k++) {
+
+            var arrival = {
+              referenceNumber : tempArr[i].item[j].arrivals[k].referenceNumber,
+              arrivalDate : tempArr[i].item[j].arrivals[k].arrivalDate,
+              arrivedAmount : tempArr[i].item[j].arrivals[k].arrivedAmount 
+            }
+            obj.arrivals.push(arrival)
+                    
+          }
+        }
+
+          this.procurementArrivals.push(obj)
+        
+        }
+      }
+        
+      }
+        break;
+      case 'itemNumber':
+        var tempArr = [...this.procurementArrivals];
+        this.procurementArrivals = tempArr.filter(p=>p.itemNumber == event.target.value)
+        break;
+      case 'orderNumber':
+        var tempArr = [...this.procurementArrivals];
+        this.procurementArrivals = tempArr.filter(p=>p.comaxNumber == event.target.value)
+        break;
+
+
+    } 
+   }
+   
+  }
 
   getAllProcurementOrders() {
     debugger;
@@ -113,6 +181,7 @@ export class ProcurementOrdersComponent implements OnInit {
       this.procurementData = res;
       
       this.procurementDataCopy = res
+     
     
       console.log(this.procurementData);
 
@@ -136,7 +205,12 @@ export class ProcurementOrdersComponent implements OnInit {
       this.EditRowId = '';
       this.requestNum = '';
     }
+
+
   }
+
+
+
 
   saveRecommendRemarks(purchase){
   debugger;
@@ -387,6 +461,12 @@ export class ProcurementOrdersComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.procurementData, 'data');
   }
 
+
+  getAllSuppliers() { 
+    this.supplierService.getSuppliersDiffCollection().subscribe(data=>{
+    this.allSuppliers = data;
+    })
+  }
   
 
   viewOrderDetails(index){
@@ -397,6 +477,35 @@ export class ProcurementOrdersComponent implements OnInit {
     order.push(this.procurementData[index])
 
     this.orderData = order
+  }
+  editArrivalDetails(index){
+
+    debugger;
+    this.editArrivalModal = true;
+    var order = [];
+    order.push(this.procurementArrivals[index])
+    
+
+    this.arrivalData = order
+    this.arrivalData[0].index = index;
+  }
+
+  addReferenceDetails(arrival){
+  debugger;
+  this.newReference.orderId = arrival.id
+  this.newReference.itemNumber = arrival.itemNumber
+  this.procurementservice.updatePurchaseOrder(this.newReference).subscribe(data=>{
+  
+  if(data){
+    debugger;
+    for (let i = 0; i < this.procurementArrivals.length; i++) {
+        this.procurementArrivals[this.arrivalData[0].index].arrivals = data.item[this.arrivalData[0].index].arrivals
+      this.getAllProcurementOrders();
+    }
+    this.editArrivalModal = false;
+    this.toastr.success("עודכן בהצלחה !")
+  }
+  })
   }
 
   cancelOrder(orderNumber){
@@ -427,6 +536,7 @@ export class ProcurementOrdersComponent implements OnInit {
     })
     }
   }
+
   clientGotTheOrder(orderNumber){
     if(confirm("האם לעדכן סטטוס הזמנה הגיעה ללקוח ?")) {
     this.procurementservice.clientGotTheOrder(orderNumber).subscribe(data=>{
@@ -439,6 +549,7 @@ export class ProcurementOrdersComponent implements OnInit {
     })
     }
   }
+
   closeOrder(orderNumber){
     if(confirm("האם לסגור הזמנה זו  ?")) {
     this.procurementservice.closeOrder(orderNumber).subscribe(data=>{

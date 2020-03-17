@@ -216,6 +216,8 @@
           </div>
         </div>
       </div>
+
+
       
       
       <div *ngIf="orderDetailsModal==true" id="myModal3" class="modal3"
@@ -227,6 +229,8 @@
             <span class="close" id="closeId3" (click)="orderDetailsModal=false;">&times;</span>
       
           </div>
+
+          
       
       
           <div class="container" id="material-body" class="modal-body">
@@ -239,10 +243,9 @@
                   <th>Measurement</th>
                   <th>Coin</th>
                   <th>Amount</th>
-                  <th *ngIf="edit==true">Amount Ordered</th>
-                  <th>Arrival Date</th>
+                  <!-- <th>Arrival Date</th>
                   <th>Expected Date</th>
-                  <th>Reference Number</th>
+                  <th>Reference Number</th> -->
                   <th></th>
                   <th></th>
 
@@ -274,7 +277,7 @@
                     <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">
                       {{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
                       <td *ngIf="line.itemNumber!=EditRowId"></td>
-      
+<!--       
                     <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.arrivalDate }}</td>
                     <td *ngIf="line.itemNumber==EditRowId">
                       <input #arrivalDate [value]="line.arrivalDate" style="width:150px;" type="date">
@@ -288,7 +291,7 @@
                     <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.referenceNumber }}</td>
                     <td *ngIf="line.itemNumber==EditRowId">
                       <input #referenceNumber [value]="line.referenceNumber" style="width:150px;" type="text">
-                    </td>
+                    </td> -->
       
                     <td *ngIf="line.itemNumber==EditRowId"><i (click)="checkIfArrived(line.itemNumber,line.orderNumber,i)"
                         class="fa fa-check" aria-hidden="true"></i></td>
@@ -382,6 +385,111 @@
     </table>
     </ng-template>
   </ngb-tab>
+  <ngb-tab title="Purchase Arrivals">
+    <ng-template ngbTabContent>
+      
+      <div class="row">
+        <div class="col-3">
+          <label>Supplier</label>
+          <input (change)="filterPurchases($event,'supplier')" list="suppliers" class="form-control"/>
+          <datalist id="suppliers">
+            <option *ngFor="let supplier of allSuppliers"  value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
+          </datalist>
+            
+         
+        </div>
+        <div class="col-3">
+          <label>Item Number</label>
+          <input (change)="filterPurchases($event,'itemNumber')" class="form-control" type="text">
+        </div>
+        <div class="col-3">
+          <label>Order Number</label>
+          <input (change)="filterPurchases($event,'orderNumber')" class="form-control" type="text">
+        </div>
+        <div class="col-3">
+     
+        </div>
+
+      </div>
 
 
+      <table class="table table-striped">
+        <thead class="text-white">
+        <tr>
+          <th>#</th>
+          <th>Supplier</th>
+          <th>Order Number</th>
+          <th>Item Number</th>
+          <th>Reference Number</th>
+          <!-- <th>Arrival Date</th>
+          <th>Quantity</th> -->
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let purchase of procurementArrivals;let i = index">
+            <td style="color:blue;text-decoration: underline;cursor: pointer;" (click)="editArrivalDetails(i)">{{i+1}}</td>
+            <td>{{purchase.supplierName}}</td>
+            <td>{{purchase.comaxNumber}}</td>
+            <td>{{purchase.itemNumber}}</td>
+            <td>
+              <table>
+                <tr *ngFor="let arrival of purchase.arrivals">
+                  <td>{{arrival.referenceNumber}}</td>
+                  <td>{{arrival.arrivalDate}}</td>
+                  <td>{{arrival.arrivedAmount}}</td>
+                </tr>
+              </table>
+            </td>
+            <!-- <td>{{purchase.arrivalDate}}</td>
+            <td>{{purchase.arrivedAmount}}</td> -->
+
+          </tr>
+        </tbody>
+      </table>
+
+      
+      <div *ngIf="editArrivalModal==true" id="myModal3" class="modal3"
+      style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:50px;font-size:20px;'>
+    
+      <div class="modal-content" id='modelC'>
+        <div style="display: inline-block;" id="material-header" class="modal-header">
+    
+          <span class="close" id="closeId3" (click)="editArrivalModal=false;">&times;</span>
+    
+        </div>
+
+        <div class="container" id="material-body" class="modal-body">
+          <table class="table table-striped">
+          <thead class="text-white">
+            <tr>
+              <th>Item Number</th>
+              <th>Reference Number</th>
+              <th>Arrival Date</th>
+              <th>Quantity</th>
+              <th></th>
+            </tr>
+          </thead>
+            <tbody>
+              <tr *ngFor="let arrival of arrivalData">
+                <td>{{arrival.itemNumber}}</td>
+                <td><input [(ngModel)]="newReference.referenceNumber" class="form-control" type="text"></td>
+                <td><input [(ngModel)]="newReference.arrivalDate" class="form-control" type="date"></td>
+                <td><input [(ngModel)]="newReference.arrivedAmount" class="form-control" type="number"></td>
+                <td><button (click)="addReferenceDetails(arrival)" class="form-control btn-success">Add</button></td>
+
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+        <div class="modal-footer">
+
+        </div>
+
+      </div>
+      
+    </div>
+    </ng-template>
+  </ngb-tab>
 </ngb-tabset>
