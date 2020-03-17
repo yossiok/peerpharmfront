@@ -274,13 +274,13 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
     this.newItem.orderNumber = this.orderData[0].orderNumber;
     this.newItem.itemPrice = Number(this.newItem.supplierAmount)*Number(this.newItem.supplierPrice);
-
-    this.procurementservice.addItemToProcurement(this.newItem).subscribe(data=>{
+    var itemObject = {...this.newItem}
+    this.procurementservice.addItemToProcurement(itemObject).subscribe(data=>{
     debugger;
     if(data){
-      this.orderData[0].item.push(this.newItem);
+      this.orderData[0].item.push(itemObject);
       this.toastr.success("פריט נוסף בהצלחה !")
-     
+      this.clearNewItem();
       
     }
     })

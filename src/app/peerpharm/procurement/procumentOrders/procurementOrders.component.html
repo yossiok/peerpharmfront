@@ -161,7 +161,7 @@
                     <th>#</th>
                     <th>Item</th>
                     <th>Item Name</th>
-                    <th>Unit</th>
+                    <th>Remarks</th>
                     <th>Qty</th>
                     <th>Unit Price</th>
                     <th>% Disc</th>
@@ -174,7 +174,7 @@
                     <td>{{i+1}}</td>
                     <td>{{item.itemNumber}}</td>
                     <td>{{item.itemName}}</td>
-                    <td></td>
+                    <td>{{item.remarks}}</td>
                     <td>{{item.supplierAmount}}</td>
                     <td>{{item.supplierPrice}}</td>
                     <td></td>
@@ -186,11 +186,12 @@
               </table>
       
               <div class="row">
-                <div class="col-6">
-                  <p style="margin-left:330px;font-size: 15px;">Total Amont:{{totalAmount}}</p>
+                <div style="display: inline-block;" class="col-6">
+                  <p style="margin-left:480px;font-size: 15px;display: inline-block;">Total Amont: {{totalAmount}}</p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  <p style="font-size: 15px;display: inline-block;">Total Price: {{totalPrice}}</p>
                 </div>
-                <div class="col-6">
-                  <p style="margin-left:330px;font-size: 15px;">Total Price: {{totalPrice}}</p>
+                <div style="display: inline-block;" class="col-6">
+                
                 </div>
               </div>
       
@@ -242,6 +243,8 @@
                   <th>Arrival Date</th>
                   <th>Expected Date</th>
                   <th>Reference Number</th>
+                  <th></th>
+                  <th></th>
 
                 </tr>
               </thead>
@@ -262,11 +265,12 @@
       
                     <td *ngIf="line.itemNumber==EditRowId">
                       <input #arrivedAmount [value]="line.arrivedAmount" style="width:50px;" type="text">/
-                    </td>
-
-                    <td *ngIf="line.itemNumber==EditRowId">
                       <input #orderAmount [value]="line.supplierAmount" style="width:50px;" type="text">
                     </td>
+
+                    <!-- <td *ngIf="line.itemNumber==EditRowId">
+                     
+                    </td> -->
                     <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">
                       {{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
                       <td *ngIf="line.itemNumber!=EditRowId"></td>
