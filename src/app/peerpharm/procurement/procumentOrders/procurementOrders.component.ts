@@ -128,7 +128,7 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'supplier':
       var tempArr = this.procurementDataCopy.filter(p=>p.supplierName == event.target.value);
       for (let i = 0; i < tempArr.length; i++) {
-      if(tempArr[i].status == 'open'){
+      if(tempArr[i].status != 'closed'){
         for (let j = 0; j < tempArr[i].item.length; j++) {
 
         var obj = {
