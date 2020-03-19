@@ -24,6 +24,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor2: string = "#B8ECF1";
   buttonColor3: string = "#B8ECF1";
   buttonColor4: string = "#B8ECF1";
+  buttonColor5: string = "#B8ECF1";
   today: any;
   pcsCarton: any;
   barcodeK: any;
@@ -90,7 +91,8 @@ export class ScheduleComponent implements OnInit {
     private itemSer: ItemsService,
     private orderSer: OrdersService,
     private modalService: NgbModal,
-    private batchService:BatchesService
+    private batchService:BatchesService,
+    private toastSrv:ToastrService
   ) {}
 
   ngOnInit() {
@@ -283,24 +285,35 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
         break;
       case 'tube':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = 'white';
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
         break;
       case 'mkp':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = 'white';
-        this.buttonColor4 = 'white';
+        this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
         break;
       case 'sachet':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = 'white';
+        this.buttonColor5 = '#B8ECF1';
+        break;
+      case 'laser':
+        this.buttonColor = '#B8ECF1';
+        this.buttonColor2 = '#B8ECF1';
+        this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = 'white';
         break;
     }
     this.typeShown = type;
@@ -429,9 +442,20 @@ export class ScheduleComponent implements OnInit {
   setDone() {}
 
   moveAllOpenScedToToday() {
-    this.scheduleService.setOpenToToday().subscribe(res => {
-      console.log(res);
-    });
+
+    if(this.selectedArr.length > 0) {
+      this.scheduleService.moveToNextDay(this.selectedArr).subscribe(data=>{
+        if(data.msg == "success"){
+          this.toastSrv.success("פריטים נבחרים עברו 24 שעות קדימה")
+        }
+
+      })
+    } else {
+      this.scheduleService.setOpenToToday().subscribe(res => {
+        console.log(res);
+      });
+    }
+   
   }
 
   dismissInfo(id) {

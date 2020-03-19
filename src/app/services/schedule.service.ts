@@ -78,6 +78,11 @@ export class ScheduleService {
     var schedule = {setOpenToToday: true }
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
+  moveToNextDay(scheduleArr) {
+    let url = this.baseUrl + "schedule/moveToNextDay";
+    return this.http.post(url, JSON.stringify(scheduleArr), this.options).pipe(map(res => res.json()))
+  }
+  
 
   getOpenPrintSchedule() {
     let url = this.baseUrl + "printSchedule?open=yes";

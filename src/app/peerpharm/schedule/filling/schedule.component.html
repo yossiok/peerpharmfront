@@ -141,6 +141,12 @@
 >
   Sachet
 </div>
+<div
+  (click)="setType(&quot;laser&quot;, this)"
+  [ngStyle]="{ 'background-color': buttonColor5 }"
+>
+  Laser
+</div>
 
 
 <table  class="table table-responsive scheduleTB">
@@ -304,6 +310,12 @@
         value="sachet"
         [(ngModel)]="scheduleLine.mkp"
       />Sachet<br />
+      <input
+        type="radio"
+        name="type"
+        value="laser"
+        [(ngModel)]="scheduleLine.mkp"
+      />Laser<br />
     </td>
     <td class="printlessTd"></td>
     <td class="printlessTd">
@@ -772,7 +784,7 @@
   </table>
 </div>
   
-<div id="print-sectionReport">
+<div *ngIf="fillingReport==true" id="print-sectionReport">
 
 
 <div  *ngIf="fillingReport==true" id="myModal3" class="modal3"  style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:80px;top:100px;width:max-content'>
