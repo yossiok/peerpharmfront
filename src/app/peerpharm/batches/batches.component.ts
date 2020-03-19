@@ -55,6 +55,7 @@ export class BatchesComponent implements OnInit {
   @ViewChild('batchPh') batchPh: ElementRef;
   @ViewChild('batchWeightKd') batchWeightKg: ElementRef;
   @ViewChild('batchWeightQtyLeft') batchWeightQtyLeft: ElementRef;
+  @ViewChild('batchWeightQty') batchWeightQty: ElementRef;
   @ViewChild('batchBarrels') batchBarrels: ElementRef;
   @ViewChild('batchOrder') batchOrder: ElementRef;
   @ViewChild('batchItem') batchItem: ElementRef;
@@ -72,7 +73,7 @@ export class BatchesComponent implements OnInit {
   }
 
   addBatch() {  
-    this.batch.color = 'yellow'
+ 
     this.batchService.addBatch(this.batch).subscribe(data=>{
       this.batches.push(data)
       this.batchesCopy.push(data)
@@ -144,7 +145,7 @@ export class BatchesComponent implements OnInit {
 
 
   getAllBatchesYear() {
-
+debugger;
     this.batchService.getAllBatchesYear().subscribe((res) => {
       console.log(res); 
       this.batches = res;
@@ -152,11 +153,12 @@ export class BatchesComponent implements OnInit {
       this.batches.map(batch => {
         if (batch.weightKg != null && batch.weightQtyLeft != null) {
           if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
+         else  if(batch.scheduled == 'yes') batch.color = 'yellow'
+         
           else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
-          if(batch.color == 'yellow'){
-            batch.color = 'yellow'
-          }
+         
           else batch.color = "white";
+         
           if (res.length == res.length) {
 
             this.hasMoreItemsToload = false;
@@ -304,6 +306,7 @@ loadDataPrint(batchNumber) {
       this.currentDoc.batchNumber = this.batchNumber.nativeElement.value.trim();
       this.currentDoc.itemName = this.batchItemName.nativeElement.value.trim();
       this.currentDoc.weightQtyLeft = this.batchWeightQtyLeft.nativeElement.value.trim();
+      this.currentDoc.weightKg = Number(this.batchWeightQty.nativeElement.value.trim());
       this.currentDoc.ph = this.batchPh.nativeElement.value.trim();
       this.currentDoc.barrels = this.batchBarrels.nativeElement.value.trim();
       this.currentDoc.order = this.batchOrder.nativeElement.value.trim();
