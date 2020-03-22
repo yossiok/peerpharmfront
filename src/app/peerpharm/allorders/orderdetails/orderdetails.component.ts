@@ -1125,9 +1125,12 @@ debugger;
             pLinePositionN: 999,
             itemImpRemark: impremark,
           }
-          if (scheduleLine.mkp == "sachet") scheduleLine.productionLine = "7";
-          if (scheduleLine.mkp == "mkp") scheduleLine.productionLine = "6";
-          if (scheduleLine.mkp == "tube") scheduleLine.productionLine = "5";
+          if (scheduleLine.mkp == "sachet") scheduleLine.productionLine = "10";
+          if (scheduleLine.mkp == "mkp") scheduleLine.productionLine = "11";
+          if (scheduleLine.mkp == "tube") scheduleLine.productionLine = "12";
+          if (scheduleLine.mkp == "laser") scheduleLine.productionLine = "13";
+          if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
+      
 
           this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
           let dateSced = this.date.nativeElement.value;

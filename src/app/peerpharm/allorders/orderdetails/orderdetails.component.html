@@ -259,12 +259,13 @@
                 <td><input #date type='date'></td>
                 <td><input #shift type='text' placeholder="Shift"></td>
                 <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-                <td>
+                <td style="width:100px">
                   <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
                   <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>
                   <input type="radio" name="type" #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
                   <input type="radio" name="type" #type value='sachet' [(ngModel)]="chosenType">Sachet<br>
                   <input type="radio" name="type" #type value='laser' [(ngModel)]="chosenType">Laser<br>
+                  <input type="radio" name="type" #type value='stickers' [(ngModel)]="chosenType">Stickers<br>
                 </td>
                 <td><button (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
               </tr>

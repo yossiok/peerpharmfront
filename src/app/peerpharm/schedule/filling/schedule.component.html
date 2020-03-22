@@ -147,6 +147,12 @@
 >
   Laser
 </div>
+<div
+  (click)="setType(&quot;Stickers&quot;, this)"
+  [ngStyle]="{ 'background-color': buttonColor5 }"
+>
+  Stickers
+</div>
 
 
 <table  class="table table-responsive scheduleTB">
@@ -316,6 +322,12 @@
         value="laser"
         [(ngModel)]="scheduleLine.mkp"
       />Laser<br />
+      <input
+        type="radio"
+        name="type"
+        value="stickers"
+        [(ngModel)]="scheduleLine.mkp"
+      />Stickers<br />
     </td>
     <td class="printlessTd"></td>
     <td class="printlessTd">
@@ -522,11 +534,11 @@
         </td>
         
         <td>
-          <input
+          <!-- <input
             type="checkbox"
             [(ngModel)]="line.isSelected"
             *ngIf="line._id !== EditRowId"
-          />
+          /> -->
           <button
             class="btn btn-success m-r-10"
             type="button"

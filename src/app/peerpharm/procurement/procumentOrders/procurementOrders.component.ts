@@ -499,13 +499,22 @@ export class ProcurementOrdersComponent implements OnInit {
   if(data){
     debugger;
     for (let i = 0; i < this.procurementArrivals.length; i++) {
-        this.procurementArrivals[this.arrivalData[0].index].arrivals = data.item[this.arrivalData[0].index].arrivals
-      this.getAllProcurementOrders();
-    }
-    this.editArrivalModal = false;
-    this.toastr.success("עודכן בהצלחה !")
-  }
+
+      if(this.procurementArrivals[i].id == data._id) {
+          for (let k = 0; k < data.item.length; k++) {
+            if(this.procurementArrivals[i].itemNumber == data.item[k].itemNumber) {
+              this.procurementArrivals[this.arrivalData[0].index].arrivals = data.item[k].arrivals
+              this.getAllProcurementOrders();
+              this.editArrivalModal = false;
+              this.toastr.success("עודכן בהצלחה !")
+            }  
+          }   
+          
+        }
+      }
+    } 
   })
+
   }
 
   cancelOrder(orderNumber){
@@ -581,10 +590,9 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
     var arrivedAmount = this.arrivedAmount.nativeElement.value;
     var orderAmount = this.orderAmount.nativeElement.value;
-    var arrivalDate = this.arrivalDate.nativeElement.value;
     var referenceNumber = this.referenceNumber.nativeElement.value;
     var supplierPrice = this.supplierPrice.nativeElement.value;
-    var expectedDate = this.supplierPrice.nativeElement.expectedDate;
+   
 
     if(arrivedAmount == 'undefined' || arrivedAmount == undefined){
       arrivedAmount = null;
@@ -592,14 +600,11 @@ export class ProcurementOrdersComponent implements OnInit {
     if(referenceNumber == "undefined" || referenceNumber == undefined){
       referenceNumber = null;
     }
-    if(expectedDate == 'undefined' || expectedDate == undefined) {
-      expectedDate = null
-    }
-  
+ 
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount,arrivalDate,referenceNumber,supplierPrice,expectedDate).subscribe(data=>{
+      this.procurementservice.changeColor(itemNumber,orderNumber,arrivedAmount,orderAmount,supplierPrice).subscribe(data=>{
         debugger
       for (let i = 0; i < this.procurementData.length; i++) {
         if(this.procurementData[i].orderNumber == orderNumber) {
@@ -607,10 +612,8 @@ export class ProcurementOrdersComponent implements OnInit {
             this.procurementData[i].item[index].color = 'yellow'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount
             this.procurementData[i].item[index].supplierAmount = orderAmount
-            this.procurementData[i].item[index].arrivalDate = arrivalDate
-            this.procurementData[i].item[index].referenceNumber = referenceNumber
             this.procurementData[i].item[index].supplierPrice = supplierPrice
-            this.procurementData[i].item[index].expectedDate = expectedDate
+
             this.toastr.success(" עודכן בהצלחה !")
             this.edit('');
           }
@@ -618,10 +621,8 @@ export class ProcurementOrdersComponent implements OnInit {
             this.procurementData[i].item[index].color = 'yellow'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount
             this.procurementData[i].item[index].supplierAmount = orderAmount
-            this.procurementData[i].item[index].arrivalDate = arrivalDate
-            this.procurementData[i].item[index].referenceNumber = referenceNumber
             this.procurementData[i].item[index].supplierPrice = supplierPrice
-            this.procurementData[i].item[index].expectedDate = expectedDate
+        
             this.toastr.success(" עודכן בהצלחה !")
             this.edit('');
           }
@@ -629,10 +630,8 @@ export class ProcurementOrdersComponent implements OnInit {
             this.procurementData[i].item[index].color = 'lightgreen'
             this.procurementData[i].item[index].arrivedAmount = arrivedAmount
             this.procurementData[i].item[index].supplierAmount = orderAmount
-            this.procurementData[i].item[index].arrivalDate = arrivalDate
-            this.procurementData[i].item[index].referenceNumber = referenceNumber
             this.procurementData[i].item[index].supplierPrice = supplierPrice
-            this.procurementData[i].item[index].expectedDate = expectedDate
+        
            
             this.toastr.success("כמות עודכנה בהצלחה !")
             this.edit('');

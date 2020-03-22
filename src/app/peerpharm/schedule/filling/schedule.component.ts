@@ -25,6 +25,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor3: string = "#B8ECF1";
   buttonColor4: string = "#B8ECF1";
   buttonColor5: string = "#B8ECF1";
+  buttonColor6: string = "#B8ECF1";
   today: any;
   pcsCarton: any;
   barcodeK: any;
@@ -124,16 +125,52 @@ export class ScheduleComponent implements OnInit {
 
 
   writeScheduleData() {
+    debugger;
     if(this.scheduleLine.orderN!=''){
 
     console.log(this.scheduleLine);
     if(this.scheduleLine.mkp == 'sachet'){
-      this.scheduleLine.productionLine = '7';
+      this.scheduleLine.productionLine = '10';
     }else if (this.scheduleLine.mkp == 'mkp') {
-      this.scheduleLine.productionLine = '6';
+      this.scheduleLine.productionLine = '11';
     } else if (this.scheduleLine.mkp == 'tube') {
-      this.scheduleLine.productionLine = '5';
+      this.scheduleLine.productionLine = '12';
+    
+    } else if (this.scheduleLine.mkp == 'laser') {
+      this.scheduleLine.productionLine = '13';
+    
+    } else if (this.scheduleLine.mkp == 'stickers') {
+      this.scheduleLine.productionLine = '14';
+    } else if (this.scheduleLine.mkp == 'basic'){
+      if(this.scheduleLine.positionN.startsWith('1')){
+        this.scheduleLine.productionLine = '1'
+      }
+      if(this.scheduleLine.positionN.startsWith('2')){
+        this.scheduleLine.productionLine = '2'
+      }
+      if(this.scheduleLine.positionN.startsWith('3')){
+        this.scheduleLine.productionLine = '3'
+      }
+      if(this.scheduleLine.positionN.startsWith('4')){
+        this.scheduleLine.productionLine = '4'
+      }
+      if(this.scheduleLine.positionN.startsWith('5')){
+        this.scheduleLine.productionLine = '5'
+      }
+      if(this.scheduleLine.positionN.startsWith('6')){
+        this.scheduleLine.productionLine = '6'
+      }
+      if(this.scheduleLine.positionN.startsWith('7')){
+        this.scheduleLine.productionLine = '7'
+      }
+      if(this.scheduleLine.positionN.startsWith('8')){
+        this.scheduleLine.productionLine = '8'
+      }
+      if(this.scheduleLine.positionN.startsWith('9')){
+        this.scheduleLine.productionLine = '9'
+      }
     }
+
     console.log(this.scheduleLine);
     
     this.scheduleService
@@ -286,6 +323,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
         break;
       case 'tube':
         this.buttonColor = '#B8ECF1';
@@ -293,6 +331,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
         break;
       case 'mkp':
         this.buttonColor = '#B8ECF1';
@@ -300,6 +339,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor3 = 'white';
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
         break;
       case 'sachet':
         this.buttonColor = '#B8ECF1';
@@ -307,6 +347,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = 'white';
         this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
         break;
       case 'laser':
         this.buttonColor = '#B8ECF1';
@@ -314,6 +355,15 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = 'white';
+        this.buttonColor6 = '#B8ECF1';
+        break;
+      case 'laser':
+        this.buttonColor = '#B8ECF1';
+        this.buttonColor2 = '#B8ECF1';
+        this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = 'white';
         break;
     }
     this.typeShown = type;
@@ -325,6 +375,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule() {
+    debugger;
     if(this.orderN.nativeElement.value!=''){
       this.EditRowId;
       this.scheduleData;
@@ -433,7 +484,9 @@ export class ScheduleComponent implements OnInit {
   }
 
   filterSchedule() {
-    this.scheduleData = this.scheduleData.filter(e => e.isSelected == true);
+    debugger;
+    this.scheduleData = this.selectedArr
+
   }
 
   handleChange(type) {
@@ -447,6 +500,10 @@ export class ScheduleComponent implements OnInit {
       this.scheduleService.moveToNextDay(this.selectedArr).subscribe(data=>{
         if(data.msg == "success"){
           this.toastSrv.success("פריטים נבחרים עברו 24 שעות קדימה")
+          this.today = new Date();
+          this.today = moment(this.today).format('YYYY-MM-DD');
+          this.getAllSchedule(this.today)
+          this.selectedArr = [];
         }
 
       })

@@ -643,7 +643,7 @@ export class StockComponent implements OnInit {
         }
       })
       var allPurchases = this.allComponentsPurchases.filter(order=>order.status != 'canceled');
-    
+      debugger;
       for (let i = 0; i < allPurchases.length; i++) {
       for (let j = 0; j < allPurchases[i].item.length; j++) {
        for (let k = 0; k < components.length; k++) {
@@ -656,7 +656,7 @@ export class StockComponent implements OnInit {
           }
           obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
           obj.purchaseOrder = allPurchases[i].item[j].orderNumber
-          obj.purchaseArrival = allPurchases[i].validDate
+          obj.purchaseArrival = allPurchases[i].item[j].arrivals
           obj.purchaseStatus = allPurchases[i].status
           components[k].purchaseOrders.push(obj)
         }

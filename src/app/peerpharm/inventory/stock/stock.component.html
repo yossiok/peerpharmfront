@@ -208,7 +208,15 @@
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseOrder}}</td>
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseAmount}}</td>
                       <td style="border:1px solid black;font-size: 10px;padding:0;">
-                        {{comp.purchaseArrival | date :'dd/MM/yyyy'}}</td>
+                        <table>
+                          <tbody>
+                            <tr *ngFor="let arrival of comp.purchaseArrival">
+                              <td style="font-size: 10px;padding:0">{{arrival.arrivalDate | date :'dd/MM/yyyy'}}</td>
+                              <td style="font-size: 10px;padding:0">{{arrival.arrivedAmount}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseStatus}}</td>
                     </tr>
                   </tbody>
