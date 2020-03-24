@@ -13,6 +13,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   @ViewChild('printBtn') printBtn: ElementRef;
   @ViewChild('internalNumber') internalNumber: ElementRef;
   @ViewChild('materName') materName: ElementRef;
+  @ViewChild('materialPosition') materialPosition: ElementRef;
   @ViewChild('quantity') quantity: ElementRef;
   @ViewChild('packageType') packageType: ElementRef;
   @ViewChild('supplierNumber') supplierNumber: ElementRef;
@@ -192,17 +193,21 @@ debugger
   }
 
   saveEdit(currDoc) { 
+    debugger;
     this.currentDoc.remarks = this.remarks.nativeElement.value;
     if(this.packageType.nativeElement.value != "" ){
     this.currentDoc.packageType = this.packageType.nativeElement.value;
     } 
-    this.currentDoc.analysisApproval = this.analysisApproval.nativeElement.checked
-    if (this.supplierNumber.nativeElement.value != "") {
-       
-      this.currentDoc.supplierNumber = this.supplierNumber.nativeElement.value.trim()
-    } else {
-      this.toastSrv.error("Can't save changes with missing fields.")
+    if(this.materialPosition.nativeElement.value !=""){
+      this.currentDoc.position = this.materialPosition.nativeElement.value.trim();
     }
+    this.currentDoc.analysisApproval = this.analysisApproval.nativeElement.checked
+    // if (this.supplierNumber.nativeElement.value != "") {
+       
+    //   this.currentDoc.supplierNumber = this.supplierNumber.nativeElement.value.trim()
+    // } else {
+    //   this.toastSrv.error("Can't save changes with missing fields.")
+    // }
 
     if (this.supplierName.nativeElement.value != "") {
       this.currentDoc.supplierName = this.supplierName.nativeElement.value.trim()

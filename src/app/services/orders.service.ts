@@ -187,6 +187,10 @@ export class OrdersService {
     let url = this.baseUrl + "order/add";
     return this.http.post(url, JSON.stringify(order), this.options).pipe(map(res => res.json()))
   }
+  sendFormuleToProduction(production): Observable<any> {
+    let url = this.baseUrl + "orderitem/sendFormuleToProduction";
+    return this.http.post(url, JSON.stringify(production), this.options).pipe(map(res => res.json()))
+  }
 
   addNewProductDoc(productDoc): Observable<any> {
     

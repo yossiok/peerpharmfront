@@ -506,18 +506,18 @@ export const ROUTES: RouteInfo[] = [
           extralink: false,
           submenu: []
         },
-        {
-          path: '/peerpharm/production/productionRequest',
-          title: 'Production Request',
-          icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/production/productionSchedule',
-          title: 'Production Schedule',
-          icon: 'fas fa-i-cursor',
+        // {
+        //   path: '/peerpharm/production/productionRequest',
+        //   title: 'Production Request',
+        //   icon: 'fas fa-i-cursor',
+        //   class: '',
+        //   extralink: false,
+        //   submenu: []
+        // },
+       {
+         path: '/peerpharm/production/productionSchedule',
+         title: 'Production Schedule',
+           icon: 'fas fa-i-cursor',
           class: '',
           extralink: false,
           submenu: []
@@ -538,9 +538,17 @@ export const ROUTES: RouteInfo[] = [
           extralink: false,
           submenu: []
         }, 
+        // {
+        //   path: '/peerpharm/production/wizard',
+        //   title: 'Wizard',
+        //   icon: 'fas fa-list-ol',
+        //   class: '',
+        //   extralink: false,
+        //   submenu: []
+        // },
         {
-          path: '/peerpharm/production/wizard',
-          title: 'Wizard',
+          path: '/peerpharm/production/formule-production/formule-production',
+          title: 'Formule Production',
           icon: 'fas fa-list-ol',
           class: '',
           extralink: false,

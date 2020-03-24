@@ -352,6 +352,10 @@ getMaterialNotInStock(objToSearch):Observable<any>{
   let url = this.baseUrl + "material/findNotInStock";
   return this.http.post(url,JSON.stringify(objToSearch),this.options).pipe(map(reponse => reponse.json()));
 }
+updateMaterialPosition(id,position):Observable<any>{
+  let url = this.baseUrl + "material/updateMaterialPosition";
+  return this.http.post(url,JSON.stringify({id:id,position:position}),this.options).pipe(map(reponse => reponse.json()));
+}
 
 getMaterialArrivalFormById(id):Observable<any>{
   let url = this.baseUrl + "material/scanBarcodeId?viewOnly=yes&id="+id;
@@ -361,6 +365,11 @@ getAllMaterialsArrivalsByInternalNumber(internalNumber):Observable<any>{
   let url = this.baseUrl + "material/scanBarcodeId?searchSimilar=yes&internalNumber="+internalNumber;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+getMaterialArrivalByNumber(internalNumber):Observable<any>{
+  let url = this.baseUrl + "material?getMaterialArrivalByNumber="+internalNumber;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+
 
 //returns doc with _id or "doc not found"
 updateMaterialArrivalForm(formToUpdate){

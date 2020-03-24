@@ -54,6 +54,7 @@ import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.comp
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 import { NewFormuleComponent } from './new-formule/new-formule.component';
+import { FormuleProductionComponent } from './production/formule-production/formule-production.component';
 
 
 
@@ -251,7 +252,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',
@@ -287,6 +288,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Wizard'
     },
     component: WizardComponent
+  },
+  {
+    path : 'production/formule-production/formule-production',
+    data : {
+      title : 'Wizard'
+    },
+    component: FormuleProductionComponent
   },
   {
     path: 'production/scanMaterial',

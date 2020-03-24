@@ -45,6 +45,7 @@ export class OrderdetailsComponent implements OnInit {
   showMaterialsForFormules: boolean = false;
   currItems: any[];
   currFormule: any[];
+  currItem: any;
   currPhase: any[];
   bottleInStock: boolean;
   pumpInStock: boolean;
@@ -609,32 +610,35 @@ if(data){
     })
   }
 
-  showFormule(itemNumber, formuleByItem) {
-    this.formuleService.getFormuleByNumber(itemNumber).subscribe(data => {
+  showFormule(item,itemNumber, formuleByItem) {
 
-      if (data == null) {
-        this.toastSrv.error("There is no formule yet")
-      } else {
-        this.currFormule = [data];
-        console.log(this.currFormule)
-        this.currPhase = data.phases
-        var items = []
-        for (let i = 0; i < data.phases.length; i++) {
+    this.modalService.open(formuleByItem, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+    // this.currItem = item;
+    // this.formuleService.getFormuleByNumber(itemNumber).subscribe(data => {
 
-          items.push(data.phases[i].items)
+    //   if (data == null) {
+    //     this.toastSrv.error("There is no formule yet")
+    //   } else {
+    //     this.currFormule = [data];
+    //     console.log(this.currFormule)
+    //     this.currPhase = data.phases
+    //     var items = []
+    //     for (let i = 0; i < data.phases.length; i++) {
 
-        }
-        this.currItems = items
-        if (data) {
-          this.modalService.open(formuleByItem, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-          }, (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          });
-        }
-      }
+    //       items.push(data.phases[i].items)
 
-    })
+    //     }
+    //     this.currItems = items
+    //     if (data) {
+     
+    //     }
+    //   }
+
+    // })
   }
 
   checkboxAllOrders(ev) {
@@ -1207,6 +1211,26 @@ debugger;
 
     }
 
+  }
+
+  sendToProduction(){
+    debugger;
+
+    var production = {
+      orderNumber:this.currItem.orderNumber,
+      formuleNumber:this.currItem.itemNumber,
+      formuleName:'',
+      quantity:this.currItem.quantity,
+      formuleId:this.currFormule[0]._id,
+      user:this.user.userName
+    }
+
+    this.orderService.sendFormuleToProduction(production).subscribe(data=>{
+      debugger;
+      if(data.msg == "sentToProduction"){
+        this.toastSrv.success('Formule Sent To Production')
+      }
+    })
   }
 
 

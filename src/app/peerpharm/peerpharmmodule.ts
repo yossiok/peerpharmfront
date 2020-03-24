@@ -116,6 +116,7 @@ import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component'; 
 import { ItemdetaisComponent } from './items/itemdetais/itemdetais.component';
 import { NewFormuleComponent } from './new-formule/new-formule.component';
+import { FormuleProductionComponent } from './production/formule-production/formule-production.component'
 
 
 
@@ -163,6 +164,7 @@ import { NewFormuleComponent } from './new-formule/new-formule.component';
   declarations: [
     CheckingformsComponent,
     AllFormulesComponent,
+    FormuleProductionComponent,
     ChangeShelfComponent,
     FormuleComponent,
     AddFormuleComponent,

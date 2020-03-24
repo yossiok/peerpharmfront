@@ -88,6 +88,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules?byParent="+parent;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllsentToProduction(){
+    let url = this.baseUrl + "formules?getAllsentToProduction=yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllFathers(){
     let url = this.baseUrl + "formules/getAllFathers";
     return this.http.get(url).pipe(map(reponse => reponse.json()));

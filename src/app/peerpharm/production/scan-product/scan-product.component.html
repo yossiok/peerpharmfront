@@ -9,4 +9,38 @@
       <h3 *ngIf="sugestedItem">{{sugestedItem}}</h3> -->
     </div>
 
+    <div>
+      <h2>Material Number</h2>
+      <input type="text" class="form-control" (change)="searchMaterialByNumber($event)">
+    </div>
+
+    <div *ngIf="showTable == true">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <td>Material Number</td>
+            <td>Material Name</td>
+            <td>Arrival Date</td>
+            <td>Expire Date</td>
+            <td>Batch Number</td>
+            <td>Location</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let material of materialArrivals">
+            <td>{{material.internalNumber}}</td>
+            <td>{{material.materialName}}</td>
+            <td>{{material.arrivalDate | date: "dd/MM/yyyy"}}</td>
+            <td>{{material.expiryDate | date: "dd/MM/yyyy"}}</td>
+            <td>{{material.lotNumber}}</td>
+            <td (click)="edit(material._id)" *ngIf="material._id != EditRowId">{{material.position}}</td>
+            <td (click)="edit(material._id)" *ngIf="material._id == EditRowId">
+              <input #materialPosition [value]="material.position" type="text">
+              <i (click)="updatePosition(material._id)" class="fa fa-check"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>

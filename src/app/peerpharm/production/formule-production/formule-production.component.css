@@ -1,0 +1,13 @@
+
+.formuleModal {
+    box-shadow: 2px 3px 6px 0px black;
+    border-radius: 40px;
+    position: absolute;
+    top:180px;
+    height:auto;
+    left:0%;
+    right:0%;
+    padding:50px;
+    overflow: auto;
+
+}

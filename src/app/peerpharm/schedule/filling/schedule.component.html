@@ -149,7 +149,7 @@
 </div>
 <div
   (click)="setType(&quot;Stickers&quot;, this)"
-  [ngStyle]="{ 'background-color': buttonColor5 }"
+  [ngStyle]="{ 'background-color': buttonColor6 }"
 >
   Stickers
 </div>
@@ -515,6 +515,22 @@
             [checked]="line.mkp === 'sachet'"
             (change)="handleChange('sachet')"
           />Sachet<br />
+          <input
+            type="radio"
+            name="typeEdit"
+            #mkpA
+            value="laser"
+            [checked]="line.mkp === 'laser'"
+            (change)="handleChange('laser')"
+          />Laser<br />
+          <input
+            type="radio"
+            name="typeEdit"
+            #mkpA
+            value="stickers"
+            [checked]="line.mkp === 'stickers'"
+            (change)="handleChange('stickers')"
+          />Stickers<br />
         </td>
         <td *ngIf="line._id !== EditRowId">
           <img

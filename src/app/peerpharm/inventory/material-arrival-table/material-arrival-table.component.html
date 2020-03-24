@@ -7,10 +7,11 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
 <table class='table table-responsive'>
     <thead class='tableheader text-center text-white'>
       <tr>
-        <th style="width:5%;"><strong>#</strong></th>
-        <th style="width:10%;"><strong>הערות</strong></th>
-        <th style="width:10%;"><strong>מספר פריט</strong></th>
+        <th style="width:3%;"><strong>#</strong></th>
+        <th style="width:9%;"><strong>הערות</strong></th>
+        <th style="width:9%;"><strong>מספר פריט</strong></th>
         <th style="width:15%;"><strong>שם חו"ג</strong></th>
+        <th style="width:5%;"><strong>מיקום</strong></th>
         <th style="width:8%;"><strong>מספר ספק</strong></th>
         <th style="width:6%;"><strong>כמות</strong></th>
         <th style="width:8%;"><strong>שם ספק</strong></th>
@@ -24,16 +25,16 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
     </thead>
     <tbody class='text-center table-hover'>
         <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"  *ngFor="let arrival of materialsArrivals; let i = index" >
-            <td style="width:5%;"><strong>{{i+1}}</strong></td>
+            <td style="width:3%;"><strong>{{i+1}}</strong></td>
 
-            <td *ngIf="arrival._id != EditRowId"  (click)="edit(arrival._id)" style="width:10%;">{{arrival.remarks}}</td>
-            <td *ngIf="arrival._id==EditRowId"  (click)="edit(arrival._id)" style="width:10%;">
+            <td *ngIf="arrival._id != EditRowId"  (click)="edit(arrival._id)" style="width:9%;">{{arrival.remarks}}</td>
+            <td *ngIf="arrival._id==EditRowId"  (click)="edit(arrival._id)" style="width:9%;">
               <input  #remarks type='text' [value]="arrival.remarks" style='width: 200px'>
             </td>
 
 
-            <td *ngIf="arrival._id != EditRowId"  (click)="edit(arrival._id)" style="width:11%;">{{arrival.internalNumber}}</td>
-            <td *ngIf="arrival._id==EditRowId"  (click)="edit(arrival._id)" style="width:11%;">
+            <td *ngIf="arrival._id != EditRowId"  (click)="edit(arrival._id)" style="width:9%;">{{arrival.internalNumber}}</td>
+            <td *ngIf="arrival._id==EditRowId"  (click)="edit(arrival._id)" style="width:9%;">
               <input  #internalNumber type='text' disabled [value]="arrival.internalNumber" style='width: 60px'>
             </td>
 
@@ -42,9 +43,14 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
               <input #materName type='text' disabled [value]="arrival.materialName" style='width: auto'>
             </td>
 
+            <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:5%; padding:5px">{{arrival.position}}</td>
+            <td *ngIf="arrival._id==EditRowId"  style="width:5%; padding:5px">
+              <input #materialPosition type='text'  [value]="arrival.position">
+            </td>
+
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:8%; padding:5px">{{arrival.supplierNumber}}</td>
-            <td *ngIf="arrival._id==EditRowId"  style="width:8%; padding:5px">
-              <input disabled #supplierNumber  type='text'  [value]="arrival.supplierNumber" style='width: auto'>
+            <td *ngIf="arrival._id==EditRowId"  style="width:5%; padding:5px">
+              <!-- <input disabled #supplierNumber  type='text'  [value]="arrival.supplierNumber" > -->
             </td>
 
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:6%; padding:5px">{{arrival.totalQnt}} {{arrival.packageType}}</td>

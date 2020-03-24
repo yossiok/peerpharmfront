@@ -1,0 +1,81 @@
+<div class="container-fluid">
+  <div class="row text-center">
+    <div class="col-12">
+      <h2>Formule Production</h2>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container">
+  <div class="row">
+    <table class="table table-striped table-bordered table-hover">
+      <thead class="text-center bg-success text-white">
+        <tr>
+          <td>Order Number</td>
+          <td>Formule Number</td>
+          <td>Formule Name</td>
+          <td>Quantity</td>
+          <td>User</td>
+          <td>Date</td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        <ng-container *ngFor="let formule of allFormules">
+        <tr *ngFor="let production of formule.production">
+          <td>{{production.orderNumber}}</td>
+          <td>{{production.formuleNumber}}</td>
+          <td>{{production.formuleName}}</td>
+          <td>{{production.quantity}}</td>
+          <td>{{production.user}}</td>
+          <td>{{production.date | date: 'dd/MM/yyyy'}}</td>
+          <td><button  (click)="beginFormule(production.formuleNumber)" class="btn btn-success">Cook</button></td>
+
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="showFormuleModal == true" class="container bg-warning formuleModal text-center">
+  <div class="row">
+    <div class="col-12 text-black">
+      <h3>Begin Cooking</h3>
+    </div>
+  </div>
+  <div class="row text-white">
+    <div class="col-3 font-weight-bold">Formule Type: {{currFormule.formuleType}}</div>
+    <div class="col-3 font-weight-bold">Formule Category: {{currFormule.formuleCategory}}</div>
+    <div class="col-3 font-weight-bold">Formule Ph: {{currFormule.phFrom}} - {{currFormule.phTo}}</div>
+  </div>
+  <hr>
+  <div  class="row text-center">
+    <div class="col-12">
+      <table class="table table-hover">
+        <thead></thead>
+        <tbody>
+          <ng-container *ngFor="let phase of currFormule.phases; let i = index">
+          <tr *ngFor="let item of phase.items">
+          <td>{{phase.phaseName}}</td>
+          <td>{{item.itemNumber}}</td>
+          <td>{{item.itemName}}</td>
+          <td>{{item.percentage}}</td>
+          <td *ngIf="item.approve == false"><input type="text" (change)="searchMaterial($event,item.itemName)"></td>
+          <td *ngIf="item.approve == true"><i class="fa fa-check"></i></td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-12">
+      <button (click)="finishCooking()" class="btn btn-success" *ngIf="showFinishBtn == true">Finish</button>
+    </div>
+  </div>
+</div>
+
+
+
+

@@ -144,7 +144,7 @@
   
           <td *ngIf="multi==true">{{item.orderNumber}}</td>
           
-          <td *ngIf="openFormule"><button  (click)="showFormule(item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td>
+          <td *ngIf="openFormule"><button  (click)="showFormule(item,item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td>
           <td *ngIf="item.licsensNumber!=''">
             <button class='expendBtn' [style.background-color]="item.colorBtn"
               (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
@@ -944,10 +944,11 @@
 <ng-template #formuleByItem let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Formule</h4>
-    
+    <!-- <button class="btn btn-success"  printSectionId="print-section" [printStyle]="{td : {'border': 'solid 1px black'},button : {'display':'none'}}" ngxPrint>print</button> &nbsp; -->
+    <button class="btn btn-success form-control" (click)="sendToProduction()"  >Send To Production</button> 
   </div>
-  <div class="modal-body">
-      <button   printSectionId="print-section" [printStyle]="{td : {'border': 'solid 1px black'}}" ngxPrint>print</button> 
+  <!-- <div class="modal-body">
+  
       <div id="print-section">
     <table style="width:100%" class='table'>
       <thead style="box-shadow:1px 1px 3px black; background-color: rgb(90, 149, 197)">
@@ -963,7 +964,7 @@
       </div>
       </thead>
       <tbody class="formuleTable" id="table_body">
-       <!------------------ Phase A ------------------->
+     
        <div *ngIf="currPhase[0]">
         <tr style="background-color: rgb(192, 197, 201)" *ngIf="currPhase[0].phaseName">
           <td>Phase: {{currPhase[0].phaseName}}</td>
@@ -1062,7 +1063,7 @@
           <td>{{currPhase[0].items[9].temp}}</td>
         </tr>
       </div>
-        <!------------------ Phase B ------------------->
+      
         <div *ngIf="currPhase[1]">
         <tr style="background-color: rgb(192, 197, 201)" *ngIf="currPhase[1].phaseName">
           <td>Phase: {{currPhase[1].phaseName}}</td>
@@ -1161,7 +1162,7 @@
             <td>{{currPhase[1].items[9].temp}}</td>
           </tr>
         </div>
-           <!------------------ Phase C ------------------->
+        
            <div *ngIf="currPhase[2]">
            <tr style="background-color: rgb(192, 197, 201)" *ngIf="currPhase[2].phaseName">
               <td>Phase: {{currPhase[2].phaseName}}</td>
@@ -1260,7 +1261,7 @@
                 <td>{{currPhase[2].items[9].temp}}</td>
               </tr> 
             </div>
-              <!------------------ Phase D ------------------->
+              
               <div *ngIf="currPhase[3]">
                <tr style="background-color: rgb(192, 197, 201)" *ngIf="currPhase[3]">
                   <td>Phase: {{currPhase[3].phaseName}}</td>
@@ -1359,7 +1360,7 @@
                     <td>{{currPhase[3].items[9].temp}}</td>
                   </tr>  
                 </div>
-                  <!------------------ Phase E ------------------->
+                
                   <div *ngIf="currPhase[4]">
                   <tr style="background-color: rgb(192, 197, 201)" *ngIf="currPhase[4]">
                       <td>Phase: {{currPhase[4].phaseName}}</td>
@@ -1458,7 +1459,7 @@
                         <td>{{currPhase[4].items[9].temp}}</td>
                       </tr>  
                     </div>
-                      <!------------------ Phase F ------------------->
+                    
                       <div *ngIf="currPhase[5]">
                           <tr style="background-color: rgb(192, 197, 201)" *ngIf="currPhase[5]">
                               <td>Phase: {{currPhase[5].phaseName}}</td>
@@ -1560,7 +1561,7 @@
       </tbody>
     </table>
   </div>
-  </div>
+  </div> -->
   <div class="modal-footer">
   </div>
 </ng-template>
