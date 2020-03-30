@@ -55,6 +55,7 @@ import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 import { NewFormuleComponent } from './new-formule/new-formule.component';
 import { FormuleProductionComponent } from './production/formule-production/formule-production.component';
+import { WeightProductionComponent } from './production/weight-production/weight-production.component';
 
 
 
@@ -292,9 +293,16 @@ export const PeerPharmRputs: Routes =[
   {
     path : 'production/formule-production/formule-production',
     data : {
-      title : 'Wizard'
+      title : 'Formule Production'
     },
     component: FormuleProductionComponent
+  },
+  {
+    path : 'production/weight-production/weight-production',
+    data : {
+      title : 'Weight Production'
+    },
+    component: WeightProductionComponent
   },
   {
     path: 'production/scanMaterial',

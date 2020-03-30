@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import {ItemsService} from '../../../services/items.service'
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
@@ -18,9 +18,19 @@ export class ItemslistComponent implements OnInit {
   hasMoreItemsToload:boolean=true;
   subscription: any;
   showCurtain:boolean=false;
- 
+  EditRowId:String = '';
 
   items:any[]=[];
+
+  @ViewChild('itemLicenseNum') itemLicenseNum: ElementRef;
+  @ViewChild('itemLicenseDate') itemLicenseDate: ElementRef;
+
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+   
+    this.edit('')
+  }
   constructor(private itemsService:ItemsService, private toastSrv: ToastrService,  private excelService:ExcelService) { }
 
   ngOnInit() {
@@ -31,6 +41,29 @@ export class ItemslistComponent implements OnInit {
       this.excelService.exportAsExcelFile(data , "items without boxNumber or StickerNumber");
 
     });
+  }
+
+  saveEdit(id){
+  
+
+  var obj = {
+    licenseNumber: this.itemLicenseNum.nativeElement.value,
+    licenseDate :this.itemLicenseDate.nativeElement.value,
+    itemId:id
+  }
+
+    this.itemsService.updateItemDetails(obj).subscribe(data=>{
+      debugger;
+      data
+      if(data){
+        var item = this.items.find(i=>i._id == data._id)
+        item.licsensNumber = data.licsensNumber
+        item.licsensDate = data.licsensDate 
+        this.edit('');
+        this.toastSrv.success('Item Updated Successfuly')
+        this.getAllItems();
+      }
+    })
   }
 
   onDestroy(){
@@ -164,14 +197,29 @@ export class ItemslistComponent implements OnInit {
   var status = ev.target.value;
 
   if(status != "") {
-    this.itemsService.getItemsByStatus(status).subscribe(data=>{
-    this.items = data;
-    })
+    this.items = this.itemsCopy.filter(i=>i.status == status)
   } else { 
     this.items = this.itemsCopy
   }
+  }
 
-  
+  filterByLanguage(ev){
+    var language = ev.target.value;
+    if(language != ""){
+      this.items = this.itemsCopy.filter(i=>i.StickerLanguageK == language)
+    } else {
+      this.items = this.itemsCopy
+    }
+  }
+
+  edit(id){
+    if(id != ''){
+      this.EditRowId = id;
+     
+    } else {
+      this.EditRowId = '';
+      
+    }
   }
 
 // EXCEL EXPORT ---------------------------------------------------------------

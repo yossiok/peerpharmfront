@@ -1,0 +1,99 @@
+<div class="container bg-light p-2 rounded">
+
+  <div class="row text-center">
+    <div class="col-12">
+      <h2 class="text-primary bold">Weight Product - Barcode</h2>
+    </div>
+  </div>
+
+  <div class="row p-2">
+    <div class="col-6">
+    <label class="text-primary">Material Number</label>
+    <input (change)="getMaterialByNumber()" [(ngModel)]="barcode.materialNumber" type="number" class="form-control">
+    </div>
+    <div class="col-6">
+      <label class="text-primary">Material Name</label>
+      <input  [(ngModel)]="barcode.materialName" type="text" class="form-control">
+    </div>
+  </div>
+
+  <div class="row p-2">
+    <div class="col-6">
+      <label class="text-primary">Weight</label>
+      <input  [(ngModel)]="barcode.weight" type="number" class="form-control">
+    </div>
+    <div class="col-6">
+      <label class="text-primary">Formule Number</label>
+      <input  [(ngModel)]="barcode.formuleNumber" type="text" class="form-control">
+    </div>
+  </div>
+  <div class="row p-2">
+    <div class="col-12">
+      <label class="text-primary">Scan Material</label>
+      <input (change)="checkIfIdExist($event)"  [(ngModel)]="barcode.materialId" type="text" class="form-control">
+    </div>
+  </div>
+
+  
+
+  <div *ngIf="printStickerBtn == true" class="row p-2">
+    <div class="col-12">
+      <button (click)="printBarcode()" [useExistingCss]="true" printSectionId="print-section" ngxPrint class="btn btn-primary form-control">Print Sticker</button>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="materialArrivals == true" class="container">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h2 class="text-danger">שים לב ייתכן וקיים חומר גלם עם תוקף קרוב יותר</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+    <table class="table table-hover table-striped">
+      <thead class="bg-primary text-center text-white">
+        <tr>
+          <th>Material Name</th>
+          <th>Position</th>
+          <th>Expire Date</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        <tr *ngFor="let arrival of allMaterialArrivals">
+        <td>{{arrival.materialName}}</td>
+        <td>{{arrival.position}}</td>
+        <td>{{arrival.expiryDate | date: 'dd/MM/yyyy'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div> 
+   </div>
+</div>
+
+
+<div class="container" id="print-section" style="visibility: hidden">
+  <div style="max-height: 500px;max-width:500px;">
+
+  <div style="margin-top:25px" class="row">
+    <div style="font-size: 35px;text-align: center;text-decoration: underline;" class="col-12">Number: {{barcode.materialNumber}}</div>
+  </div>
+  <div style="margin-top:25px" class="row">
+    <div style="font-size: 35px;text-align: center;text-decoration: underline;" class="col-12"> Name: {{barcode.materialName}}</div>
+  </div>
+  <div style="margin-top:25px" class="row">
+    <div style="font-size: 35px;text-align: center;text-decoration: underline;" class="col-12">Weight: {{barcode.weight}}</div>
+  </div>
+  <div style="margin-top:25px" class="row">
+    <div style="font-size: 35px;text-align: center;text-decoration: underline;" class="col-12">Formule: {{barcode.formuleNumber}}</div>
+  </div>
+  <div style="margin-top:25px" class="row">
+    <div class="col-12">
+      <ngx-barcode  [bc-value]="barcode.materialId"></ngx-barcode>
+    </div>
+    
+  </div>
+  
+</div>
+</div>

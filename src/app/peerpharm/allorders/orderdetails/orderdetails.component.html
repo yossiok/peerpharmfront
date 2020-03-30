@@ -942,10 +942,25 @@
 </ng-template>
 
 <ng-template #formuleByItem let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Formule</h4>
+  <div class="modal-header text-center">
+    <h4 class="modal-title" id="modal-basic-title">Formule {{currFormule.formuleNumber}}</h4>
     <!-- <button class="btn btn-success"  printSectionId="print-section" [printStyle]="{td : {'border': 'solid 1px black'},button : {'display':'none'}}" ngxPrint>print</button> &nbsp; -->
-    <button class="btn btn-success form-control" (click)="sendToProduction()"  >Send To Production</button> 
+  </div>
+  <div class="modal-body">
+    <div class="row p-3">
+      <div class="col-6">
+      <input placeholder="Quantity" [(ngModel)]="newProductionQuantity" class="form-control" type="number">
+      </div>
+      <div class="col-6">
+        <input placeholder="Net Weight gr"  [(ngModel)]="newProductionNetWeightGr" class="form-control" type="number">
+      </div>
+    </div>
+    <div class="row p-3">
+      <div class="col-12">
+       <button class="btn btn-success form-control" (click)="sendToProduction()"  >Send To Production</button>   
+      </div>
+    </div>
+   
   </div>
   <!-- <div class="modal-body">
   

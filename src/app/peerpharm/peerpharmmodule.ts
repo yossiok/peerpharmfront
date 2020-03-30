@@ -117,6 +117,7 @@ import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 import { ItemdetaisComponent } from './items/itemdetais/itemdetais.component';
 import { NewFormuleComponent } from './new-formule/new-formule.component';
 import { FormuleProductionComponent } from './production/formule-production/formule-production.component'
+import { WeightProductionComponent } from './production/weight-production/weight-production.component';
 
 
 
@@ -182,6 +183,7 @@ import { FormuleProductionComponent } from './production/formule-production/form
     ProductionScheduleComponent,
     ScheduleOrdersComponent,
     ProductionOrdersComponent,
+    WeightProductionComponent,
     AddFormuleItemComponent,
     CleaningFormsComponent,
     FirstAidComponent,

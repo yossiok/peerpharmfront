@@ -94,7 +94,9 @@ export class ItemsService {
     let url = this.baseUrl + "item/updateItemShellById";
     return this.http.post(url, JSON.stringify(itemShell), this.options).pipe(map(res => res.json))
   }
- 
+
+
+
   newFloor(newFloor) {
     debugger
     let url = this.baseUrl + "item/newFloorItem";
@@ -104,6 +106,10 @@ export class ItemsService {
   updateLicenseLimition(itemDocObj) {
     let url = this.baseUrl + "item/updateDocs?updateLicenseLimition=yes";
     return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json()))
+  }
+  updateItemDetails(itemObj) {
+    let url = this.baseUrl + "item/updateItemDetails";
+    return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json()))
   }
   sendExcel(excel) {
     

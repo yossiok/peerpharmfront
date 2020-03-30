@@ -554,6 +554,14 @@ export const ROUTES: RouteInfo[] = [
           extralink: false,
           submenu: []
         },
+        {
+          path: '/peerpharm/production/weight-production/weight-production',
+          title: 'Weight Production',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
 
       ]
     }

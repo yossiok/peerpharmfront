@@ -50,6 +50,13 @@
     <option value="perfect">מושלם</option>
   </select>
 </div>
+<div>
+  <select (change)="filterByLanguage($event)">
+    <option value=""></option>
+    <option value="Hebrew">Hebrew</option>
+    <option value="English">English</option>
+  </select>
+</div>
 <span
   ><b>showing {{ items.length }} items</b></span
 >
@@ -68,6 +75,7 @@
       <th style="width:4%; padding:5px">Pallet 1</th>
       <th style="width:4%; padding:5px">Pallet 2</th>
       <th style="width:4%; padding:5px">Pallet 3</th>
+      <th></th>
       <!-- <th style="padding:5px">Pallet 2</th>
     <th style="padding:5px">Pallet 3</th> -->
     </tr>
@@ -86,7 +94,7 @@
           {{ item.itemNumber }}
         </a>
       </td>
-      <td style="width:20%;">{{ item.itemFullName }}</td>
+      <td style="width:17%;">{{ item.itemFullName }}</td>
       <td style="width:10%;">
         <div *ngIf="item.volumeKey">{{ item.volumeKey }} ml</div>
         <div *ngIf="item.volumeKey == null && item.netWeightK">
@@ -100,7 +108,7 @@
       </td>
       <td style="word-wrap: break-word;">{{ item.barcodeK }}</td>
       <td>
-        <img
+        <!-- <img
           *ngIf="
             item.licenceItemsQuotaLimit &&
             item.licenceItemsQuotaLimit < item.licenceCurrItemsQnt
@@ -108,9 +116,9 @@
           style="width: 25px; height: 25px;"
           src="../../../../assets/images/alert2.png"
           alt=""
-        />
+        /> -->
         <!-- <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
-        <input
+        <!-- <input
           *ngIf="item.licenceItemsQuotaLimit"
           [(ngModel)]="item.licenceItemsQuotaLimit"
           type="number"
@@ -129,9 +137,9 @@
             )
           "
           min="1"
-        />
+        /> -->
         <!-- <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
-        <input
+        <!-- <input
           *ngIf="!item.licenceItemsQuotaLimit"
           type="number"
           style="width: 65px; float: left;"
@@ -149,13 +157,23 @@
             )
           "
           min="1"
-        />
+        /> -->
+        
       </td>
-      <td>{{ item.licsensNumber }}</td>
-      <td>{{ item.licsensDate }}</td>
+      <td (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensNumber }}</td>
+      <td (click)="edit(item._id)" *ngIf="item._id == EditRowId">
+        <input #itemLicenseNum [value]="item.licsensNumber" style="width:150px" type="text">
+      </td>
+
+      <td (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensDate}}</td>
+      <td (click)="edit(item._id)" *ngIf="item._id == EditRowId">
+        <input #itemLicenseDate [value]="item.licsensDate" style="width:150px" type="date">
+      </td>
+
       <td style="width:4%;">{{ item.pallet }}</td>
       <td style="width:4%;">{{ item.pallet2 }}</td>
       <td style="width:4%;">{{ item.pallet3 }}</td>
+      <td *ngIf="item._id == EditRowId" style="width:3%"><i (click)="saveEdit(item._id)" class="fa fa-check"></i></td>
       <!-- <td>{{item.pallet2}}</td>
     <td>{{item.pallet3}}</td> -->
     </tr>

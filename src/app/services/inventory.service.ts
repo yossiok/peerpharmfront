@@ -123,6 +123,11 @@ addNewMaterial(materialObj):Observable<any>{
   let url = this.baseUrl + "material/add";
   return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
 }
+updateProductionDetails(production):Observable<any>{ 
+  
+  let url = this.baseUrl + "material/updateProductionDetails";
+  return this.http.post(url, JSON.stringify(production), this.options).pipe(map(res => res.json()))
+}
 addNewRecommendation(purchaseRecommend):Observable<any>{ 
   
   let url = this.baseUrl + "component/newPurchaseRecommend";
@@ -311,6 +316,11 @@ checkFrameQuantityByNumber(itemNumber):Observable<any>{
 getMaterialStockItemById(id):Observable<any>{
   
   let url = this.baseUrl + "material?materialId="+id ;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+getMaterialByName(materialName):Observable<any>{
+  
+  let url = this.baseUrl + "material?materialName="+materialName ;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 

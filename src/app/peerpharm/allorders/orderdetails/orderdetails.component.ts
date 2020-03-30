@@ -56,6 +56,8 @@ export class OrderdetailsComponent implements OnInit {
   allMaterials: any[];
   formuleCheck: boolean;
   itemDetails: any;
+  newProductionNetWeightGr: any;
+  newProductionQuantity: any;
   componentStatus: any;
   capDetails: any;
   sealDetails: any;
@@ -611,34 +613,33 @@ if(data){
   }
 
   showFormule(item,itemNumber, formuleByItem) {
+  debugger;
+ 
+    this.currItem = item;
+    this.formuleService.getFormuleByNumber(itemNumber).subscribe(data => {
 
-    this.modalService.open(formuleByItem, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-    // this.currItem = item;
-    // this.formuleService.getFormuleByNumber(itemNumber).subscribe(data => {
+      if (data == null) {
+        this.toastSrv.error("There is no formule yet")
+      } else {
+        this.modalService.open(formuleByItem, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+          this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+        this.currFormule = [data];
+        console.log(this.currFormule)
+        // this.currPhase = data.phases
+        // var items = []
+        // for (let i = 0; i < data.phases.length; i++) {
 
-    //   if (data == null) {
-    //     this.toastSrv.error("There is no formule yet")
-    //   } else {
-    //     this.currFormule = [data];
-    //     console.log(this.currFormule)
-    //     this.currPhase = data.phases
-    //     var items = []
-    //     for (let i = 0; i < data.phases.length; i++) {
+        //   items.push(data.phases[i].items)
 
-    //       items.push(data.phases[i].items)
+        // }
+        // this.currItems = items
 
-    //     }
-    //     this.currItems = items
-    //     if (data) {
-     
-    //     }
-    //   }
+      }
 
-    // })
+    })
   }
 
   checkboxAllOrders(ev) {
@@ -1221,14 +1222,25 @@ debugger;
       formuleNumber:this.currItem.itemNumber,
       formuleName:'',
       quantity:this.currItem.quantity,
+      netWeightGr:this.currItem.netWeightGr,
       formuleId:this.currFormule[0]._id,
       user:this.user.userName
+    }
+
+    if(this.newProductionNetWeightGr != ''){
+      production.netWeightGr = Number(this.newProductionNetWeightGr)
+    }
+    if(this.newProductionQuantity != ''){
+      production.quantity = Number(this.newProductionQuantity)
     }
 
     this.orderService.sendFormuleToProduction(production).subscribe(data=>{
       debugger;
       if(data.msg == "sentToProduction"){
         this.toastSrv.success('Formule Sent To Production')
+        this.newProductionNetWeightGr = ''
+        this.newProductionQuantity = ''
+        
       }
     })
   }
