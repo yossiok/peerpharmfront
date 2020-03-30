@@ -44,7 +44,7 @@ export class ScanProductComponent implements OnInit {
     this.inventorySrv.getMaterialArrivalByNumber(materialNumber).subscribe(data=>{
     debugger;
     if(data){
-      this.materialArrivals = data.reverse();
+      this.materialArrivals = data
       this.showTable = true;
     }
 
