@@ -357,7 +357,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor5 = 'white';
         this.buttonColor6 = '#B8ECF1';
         break;
-      case 'laser':
+      case 'stickers':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = '#B8ECF1';
