@@ -347,6 +347,16 @@
   </ngb-tab>
   <ngb-tab title="Purchase Recommendation">
     <ng-template ngbTabContent>
+      <div class="row">
+        <div class="col-3 inline-block">
+          <label>Filter By Status:</label>
+          <select  class="form-control w-25" (change)="filterByStatus($event)">
+            <option></option>
+            <option value="lightcoral">Ordered</option>
+            <option value="open">Open</option>
+          </select>
+        </div>
+      </div>
     <table class="table table-striped">
       <thead class="bg-success text-white">
         <tr>
@@ -420,6 +430,7 @@
           <th>Supplier</th>
           <th>Order Number</th>
           <th>Item Number</th>
+          <th>Item Name</th>
           <th>Reference Number</th>
           <!-- <th>Arrival Date</th>
           <th>Quantity</th> -->
@@ -431,6 +442,7 @@
             <td>{{purchase.supplierName}}</td>
             <td>{{purchase.comaxNumber}}</td>
             <td>{{purchase.itemNumber}}</td>
+            <td>{{purchase.itemName}}</td>
             <td>
               <table>
                 <tr *ngFor="let arrival of purchase.arrivals">

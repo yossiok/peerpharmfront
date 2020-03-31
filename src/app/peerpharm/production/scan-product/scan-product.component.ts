@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-scan-product',
@@ -11,8 +12,10 @@ export class ScanProductComponent implements OnInit {
 
   displayItem: Boolean;
   showTable: Boolean = false;
+  showUpdateAll: Boolean = false;
   materialArrivals:any[]
   EditRowId:any = "";
+  positionForAll:String;
   
   @ViewChild('materialPosition') materialPosition: ElementRef;
 
@@ -21,7 +24,7 @@ export class ScanProductComponent implements OnInit {
     this.edit('');
   }
 
-  constructor(private router:Router,private inventorySrv:InventoryService ) { }
+  constructor(private router:Router,private inventorySrv:InventoryService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
   }
@@ -46,6 +49,7 @@ export class ScanProductComponent implements OnInit {
     if(data){
       this.materialArrivals = data
       this.showTable = true;
+      this.showUpdateAll = true;
     }
 
     })
@@ -74,6 +78,29 @@ export class ScanProductComponent implements OnInit {
     }
 
   })
+  }
+
+  updatePositionToAll(ev){
+  debugger;
+    var position = this.positionForAll
+    
+
+    var materialNumber = this.materialArrivals[0].internalNumber
+
+    this.inventorySrv.updateAllPositions(materialNumber,position).subscribe(data=>{
+      if(data.msg = 'ok'){
+        this.toastSrv.success('כל הפריטים עודכנו בהצלחה !')
+        
+        this.inventorySrv.getMaterialArrivalByNumber(materialNumber).subscribe(data=>{
+          debugger;
+          if(data){
+            this.materialArrivals = data
+            this.showTable = true;
+          }
+      
+          })
+      }
+    })
   }
 
 }

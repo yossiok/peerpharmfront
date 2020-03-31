@@ -366,6 +366,10 @@ updateMaterialPosition(id,position):Observable<any>{
   let url = this.baseUrl + "material/updateMaterialPosition";
   return this.http.post(url,JSON.stringify({id:id,position:position}),this.options).pipe(map(reponse => reponse.json()));
 }
+updateAllPositions(materialNumber,position):Observable<any>{
+  let url = this.baseUrl + "material/updateAllPositions";
+  return this.http.post(url,JSON.stringify({materialNumber:materialNumber,position:position}),this.options).pipe(map(reponse => reponse.json()));
+}
 
 getMaterialArrivalFormById(id):Observable<any>{
   let url = this.baseUrl + "material/scanBarcodeId?viewOnly=yes&id="+id;

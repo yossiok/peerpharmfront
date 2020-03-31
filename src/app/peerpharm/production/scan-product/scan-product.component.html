@@ -14,16 +14,20 @@
       <input type="text" class="form-control" (change)="searchMaterialByNumber($event)">
     </div>
 
+
+
     <div *ngIf="showTable == true">
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <td>Material Number</td>
-            <td>Material Name</td>
-            <td>Arrival Date</td>
-            <td>Expire Date</td>
-            <td>Batch Number</td>
-            <td>Location</td>
+            <th>Material Number</th>
+            <th>Material Name</th>
+            <th>Arrival Date</th>
+            <th>Expire Date</th>
+            <th>Batch Number</th>
+            <th>Package Qty</th>
+            <th>Total Qty</th>
+            <th>Location</th>
           </tr>
         </thead>
         <tbody>
@@ -33,14 +37,22 @@
             <td>{{material.arrivalDate | date: "dd/MM/yyyy"}}</td>
             <td>{{material.expiryDate | date: "dd/MM/yyyy"}}</td>
             <td>{{material.lotNumber}}</td>
+            <td>{{material.packageQnt}}</td>
+            <td>{{material.totalQnt}}</td>
             <td (click)="edit(material._id)" *ngIf="material._id != EditRowId">{{material.position}}</td>
             <td (click)="edit(material._id)" *ngIf="material._id == EditRowId">
               <input #materialPosition [value]="material.position" type="text">
-              <i (click)="updatePosition(material._id)" class="fa fa-check"></i>
+              <i style="font-size:30px;color:green;" (click)="updatePosition(material._id)" class="fa fa-check"></i>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div *ngIf="showUpdateAll == true">
+      <h3>Update All Position</h3>
+      <input type="text" [(ngModel)]="positionForAll" class="form-control">
+      <button (click)="updatePositionToAll()" class="form-control btn btn-success">עדכן מיקום לכולם</button>
     </div>
 
   </div>

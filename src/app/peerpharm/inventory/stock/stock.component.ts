@@ -264,8 +264,16 @@ export class StockComponent implements OnInit {
     }
   }
 
-  searchComponentFromUrl(){
-   
+  fillSupplierDetails(){
+    if(this.resCmpt.suplierN != ''){
+      this.supplierService.getSuppliersByNumber(this.resCmpt.suplierN).subscribe(data=>{
+        debugger;
+        if(data){
+          this.resCmpt.suplierName = data[0].suplierName;
+        }
+      })
+    
+    }
   }
   
   // getProcurementData(){

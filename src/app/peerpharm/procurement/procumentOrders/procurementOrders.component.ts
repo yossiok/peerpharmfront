@@ -19,6 +19,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   allComponents:any[];
   purchaseRecommendations:any[];
+  purchaseRecommendationsCopy:any[];
   allComponentsCopy:any[];
   allMaterials:any[];
   printBill:boolean = false;
@@ -136,6 +137,7 @@ export class ProcurementOrdersComponent implements OnInit {
           supplierName:tempArr[i].supplierName,
           comaxNumber:tempArr[i].comaxNumber,
           itemNumber:tempArr[i].item[j].itemNumber,
+          itemName:tempArr[i].item[j].itemName,
           arrivals:[],
 
           
@@ -209,7 +211,28 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
+  
 
+  filterByStatus(ev){
+
+    this.purchaseRecommendations = this.purchaseRecommendationsCopy
+    if(ev.target.value != '') {
+      var status = ev.target.value;
+      var type = ev.target.value;
+      switch (type) {
+        case 'lightcoral':
+          this.purchaseRecommendations = this.purchaseRecommendations.filter(p=>p.color == status)
+          break
+        case 'open':
+          this.purchaseRecommendations = this.purchaseRecommendations.filter(p=>p.color != 'lightcoral')
+          break
+  
+      }  
+    } else {
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy
+    }
+ 
+  }
 
 
   saveRecommendRemarks(purchase){
@@ -386,7 +409,7 @@ export class ProcurementOrdersComponent implements OnInit {
   getComponentsWithPurchaseRec(){
     this.procurementservice.componentsWithPurchaseRec().subscribe(data=>{
       this.purchaseRecommendations = data;
-      this.purchaseRecommendations = data;
+      this.purchaseRecommendationsCopy = data;
     })
   }
 
