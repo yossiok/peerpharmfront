@@ -168,8 +168,8 @@
       <th><b>Batch number</b></th>
       <th><b>Package</b></th>
       <th><b>Qty</b></th>
-      <th><b>Date</b></th>
       <th><b>Remarks</b></th>
+      <th><b>Date</b></th>
       <th class="mkpClass printlessTd"><b>shift</b></th>
       <th><input class="mkpClassInput" value="MKP" /></th>
       <th></th>
@@ -441,12 +441,6 @@
           <input #qty type="text" [value]="line.qty" class="form-control" />
         </td>
 
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          {{ line.date | date: "dd/MM/yyyy" }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input #aaaa type="date" [value]="line.date3" class="form-control" />
-        </td>
 
         <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
           {{ line.marks }}
@@ -460,6 +454,13 @@
             [value]="line.marks"
             class="form-control"
           ></textarea>
+        </td>
+
+        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+          {{ line.date | date: "dd/MM/yyyy" }}
+        </td>
+        <td *ngIf="line._id === EditRowId">
+          <input #aaaa type="date" [value]="line.date3" class="form-control" />
         </td>
         <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
           {{ line.shift }}

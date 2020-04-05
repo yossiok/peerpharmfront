@@ -38,14 +38,13 @@
         <div class="row text-center p-2">
 
           <div class="col-3">
-            <input #calWeekPH list="phCalibList" class="form-control" [(ngModel)]="calibrationWeek.phNumber" (change)="fillFormFields($event)">
-            <datalist id="phCalibList">
+            <select #calWeekPH list="phCalibList" class="form-control" [(ngModel)]="calibrationWeek.phNumber" (change)="fillFormFields($event)" id="phCalibList">
               <option value="PH01">PH01</option>
               <option value="PH02">PH02</option>
               <option value="PH03">PH03</option>
               <option value="PH04">PH04</option>
               <option value="PH05">PH05</option>
-            </datalist>
+            </select>
           </div>
           <div class="col-3">
             <input #calWeekYear class="form-control" [(ngModel)]="calibrationWeek.year" type="text"  />
@@ -78,10 +77,10 @@
             <label>Date</label>
           </div>
           <div class="col-2">
-            <label>PH Seven</label>
+            <label>PH 7</label>
           </div>
           <div class="col-2">
-            <label>PH Four</label>
+            <label>PH 4</label>
           </div>
           <div class="col-2">
             <label>PH Ten</label>
@@ -130,8 +129,9 @@
               <thead class="bg-dark text-white">
                 <tr>
                   <th>תאריך</th>
-                  <th>PH Seven</th>
-                  <th>PH Four</th>
+                  <th>PH 4</th>
+                  <th>PH 7</th>
+                  <th>PH 10</th>
                   <th>תקינות</th>
                   <th>חתימה</th>
                 </tr>
@@ -141,6 +141,7 @@
                   <td>{{calibWeek.date | date: 'dd/MM/yyyy'}}</td>
                   <td>{{calibWeek.phSeven}}</td>
                   <td>{{calibWeek.phFour}}</td>
+                  <td>{{calibWeek.phTen}}</td>
                   <td>{{calibWeek.normalcy}}</td>
                   <td>{{calibWeek.signature}}</td>
                 </tr>
@@ -628,6 +629,7 @@
               <option value="PH02">PH02</option>
               <option value="PH03">PH03</option>
               <option value="PH04">PH04</option>
+              <option value="PH05">PH05</option>
             </datalist>
             <input class="form-control" [(ngModel)]="calibrationDayTest.deviceModel" type="text">
           

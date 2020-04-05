@@ -690,17 +690,19 @@
             <tr>
               <th>Order Number</th>
               <th>Item Number</th>
-              <th>Order Amount</th>
               <th>Arrival Date</th>
+              <th>Arrived Amount</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let component of componentPurchases">
-              <td>{{component.orderNumber}}</td>
-              <td>{{component.itemNumber}}</td>
-              <td>{{component.supplierAmount}}</td>
-              <td>{{component.arrivalDate | date: 'dd/MM/yyyy'}}</td>
-            </tr>
+            <ng-container *ngFor="let component of componentPurchases">
+              <tr *ngFor="let arrival of component.arrivals" >
+                <td>{{component.orderNumber}}</td>
+                <td>{{component.supplierAmount}}</td>
+                <td>{{arrival.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{arrival.arrivedAmount}}</td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
@@ -1529,18 +1531,20 @@
           <thead class="bg-success text-white">
             <tr>
               <th>Order Number</th>
-              <th>Item Number</th>
               <th>Order Amount</th>
               <th>Arrival Date</th>
+              <th>Arrived Amount</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let material of materialPurchases">
+            <ng-container *ngFor="let material of materialPurchases">
+            <tr *ngFor="let arrival of material.arrivals" >
               <td>{{material.orderNumber}}</td>
-              <td>{{material.itemNumber}}</td>
               <td>{{material.supplierAmount}}</td>
-              <td>{{material.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{arrival.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{arrival.arrivedAmount}}</td>
             </tr>
+          </ng-container>
           </tbody>
         </table>
       </div>

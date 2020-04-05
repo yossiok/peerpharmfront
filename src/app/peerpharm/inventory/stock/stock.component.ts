@@ -1207,7 +1207,7 @@ export class StockComponent implements OnInit {
 
   async openData(cmptNumber) {
     debugger;
-
+    this.componentPurchases = [];
     for (let i = 0; i < this.allComponentsPurchases.length; i++) {
       for (let j = 0; j < this.allComponentsPurchases[i].item.length; j++) {
        if(this.allComponentsPurchases[i].item[j].itemNumber == cmptNumber){
@@ -1274,7 +1274,7 @@ export class StockComponent implements OnInit {
 
   async openDataMaterial(materNum) {
     debugger;
-
+    this.materialPurchases = []
     for (let i = 0; i < this.allMaterialsPurchases.length; i++) {
      for (let j = 0; j < this.allMaterialsPurchases[i].item.length; j++) {
       if(this.allMaterialsPurchases[i].item[j].itemNumber == materNum){

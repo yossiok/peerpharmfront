@@ -154,12 +154,9 @@ export class CheckingformsComponent implements OnInit {
   constructor(private toastSrv:ToastrService,private formsService: FormsService) { }
 
   ngOnInit() {
-  this.getAllLibraCalibTests();
   this.getAllWaterTests();
   this.getAllTempTests();
-  this.getAllCalibDayTests();
   this.getAllSewerPHTests();
-  this.getAllCalibrationWeekTests();
   this.getAllLibraList();
   }
 
@@ -174,98 +171,30 @@ export class CheckingformsComponent implements OnInit {
     if(phNumber == 'PH01'){
       this.calibrationWeek.toolModel = 'HI 2211 HANNA'
       this.calibrationWeek.toolPlace = 'מעבדה'
-      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
-        data.forEach(obj => {
-          for (let i in obj) {
-            if (obj[i] === true) {
-              obj[i] = 'Yes'
-            }
-            if (obj[i] === false) {
-              obj[i] = 'No'
-            }
-  
-        }
-          
-        })
-      this.calibrationWeekTests = data;
-      })
+ 
     }
     if(phNumber == 'PH02'){
       this.calibrationWeek.toolModel = 'HANNA HI 8424 NEW ידני'
       this.calibrationWeek.toolPlace = 'הושבת 10/2018'
-      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
-        data.forEach(obj => {
-          for (let i in obj) {
-            if (obj[i] === true) {
-              obj[i] = 'Yes'
-            }
-            if (obj[i] === false) {
-              obj[i] = 'No'
-            }
-  
-        }
-          
-        })
-      this.calibrationWeekTests = data;
-      })
+ 
     }
     if(phNumber == 'PH03'){
       this.calibrationWeek.toolModel = 'מכשיר נייד PHB-4'
       this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים לא תקין'
-      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
-        data.forEach(obj => {
-          for (let i in obj) {
-            if (obj[i] === true) {
-              obj[i] = 'Yes'
-            }
-            if (obj[i] === false) {
-              obj[i] = 'No'
-            }
-  
-        }
-          
-        })
-      this.calibrationWeekTests = data;
-      })
+ 
     }
     if(phNumber == 'PH04'){
       this.calibrationWeek.toolModel = 'מכשיר נייד PHB-4'
       this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים לא תקין'
-      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
-        data.forEach(obj => {
-          for (let i in obj) {
-            if (obj[i] === true) {
-              obj[i] = 'Yes'
-            }
-            if (obj[i] === false) {
-              obj[i] = 'No'
-            }
-  
-        }
-          
-        })
-      this.calibrationWeekTests = data;
-      })
+ 
     }
     if(phNumber == 'PH05'){
       this.calibrationWeek.toolModel = 'HI 8424 מכשיר נייד'
       this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים'
-      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
-        data.forEach(obj => {
-          for (let i in obj) {
-            if (obj[i] === true) {
-              obj[i] = 'Yes'
-            }
-            if (obj[i] === false) {
-              obj[i] = 'No'
-            }
-  
-        }
-          
-        })
-      this.calibrationWeekTests = data;
-      })
+ 
     }
+
+    this.getAllCalibrationWeekTests(phNumber)
   }
 
   edit(id) {
@@ -292,7 +221,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   
-  getAllCalibrationWeekTests(){
+  getAllCalibrationWeekTests(phNumber){
     this.formsService.getAllCalibWeekTests().subscribe(data=>{
       data.forEach(obj => {
         for (let i in obj) {
@@ -306,7 +235,7 @@ export class CheckingformsComponent implements OnInit {
       }
         
       })
-      this.calibrationWeekTests = data;
+      this.calibrationWeekTests = data.filter(c=>c.phNumber == phNumber)
     })
   }
 
@@ -435,6 +364,11 @@ export class CheckingformsComponent implements OnInit {
       this.calibrationDayTest.deviceLocation = 'SPEAR'
       this.calibrationDayTest.deviceModel = 'PHB-4 מכשיר נייד'
     }
+    if(phNumber == 'PH05') {
+      this.calibrationDayTest.deviceLocation = 'אולם בישול'
+      this.calibrationDayTest.deviceModel = 'HANNA HI 8424'
+    }
+    this.getAllCalibDayTests(phNumber)
   }
 
   
@@ -471,7 +405,7 @@ export class CheckingformsComponent implements OnInit {
       }
         
       })
-      this.libraCalibrationTests = data;
+      this.libraCalibrationTests = data.reverse();
     })
   }
 
@@ -513,7 +447,7 @@ export class CheckingformsComponent implements OnInit {
 
     })
   }
-  getAllCalibDayTests() {
+  getAllCalibDayTests(phNumber) {
     this.formsService.getAllCalibDayTests().subscribe(data=>{
       data.forEach(obj => {
         for (let i in obj) {
@@ -527,7 +461,7 @@ export class CheckingformsComponent implements OnInit {
       }
         
       })
-    this.allCalibrationDayTests = data;
+    this.allCalibrationDayTests = data.filter(c=>c.phNumber == phNumber).reverse();
 
     })
   }
