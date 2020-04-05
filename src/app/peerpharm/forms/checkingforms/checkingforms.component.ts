@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { FormsService } from 'src/app/services/forms.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -13,10 +13,14 @@ export class CheckingformsComponent implements OnInit {
   saveBtn:boolean = true;
   editBtn:boolean = false;
   libraCalibrationTests:any[]
+  allLibraList:any[]
+  calibrationWeekTests:any[]
   allWaterTests:any[]
   allTempTests:any[]
   allCalibrationDayTests:any[];
   allSewerPHTests:any[];
+  oldSystemWater:any[];
+  newSystemWater:any[];
   EditRowId:any = "";
   calibrationTestRemarks:any;
   waterTestRemarks:any;
@@ -26,7 +30,6 @@ export class CheckingformsComponent implements OnInit {
   
   sewerPhTest = {
     year:'',
-    month:'',
     date:'',
     pH:'',
     signature:'',
@@ -66,15 +69,14 @@ export class CheckingformsComponent implements OnInit {
     tdsCheck:'',
     phCheck:'',
     saltInTank:'',
-    tdsCheckSupply:'',
     clearAndColor:'',
     hardness:'',
     date:'',
     pressureTest:'',
     pressureBetweenFilters:'',
     signature:'',
-    year:'',
-    month:''
+    system:''
+
   }
 
   libraCalibration = {
@@ -115,345 +117,34 @@ export class CheckingformsComponent implements OnInit {
     year:'',
     toolModel:'',
     toolPlace:'',
-
-    JanuaryWeekOneDate:'',
-    JanuaryWeekOneHour:'',
-    JanuaryWeekOnePHSeven:'',
-    JanuaryWeekOnePHFour:'',
-    JanuaryWeekOneNormalcy:'',
-    JanuaryWeekOneSignature:'',
-
-    JanuaryWeekTwoDate:'',
-    JanuaryWeekTwoHour:'',
-    JanuaryWeekTwoPHSeven:'',
-    JanuaryWeekTwoPHFour:'',
-    JanuaryWeekTwoNormalcy:'',
-    JanuaryWeekTwoSignature:'',
-
-    JanuaryWeekThreeDate:'',
-    JanuaryWeekThreeHour:'',
-    JanuaryWeekThreePHSeven:'',
-    JanuaryWeekThreePHFour:'',
-    JanuaryWeekThreeNormalcy:'',
-    JanuaryWeekThreeSignature:'',
-
-    JanuaryWeekFourDate:'',
-    JanuaryWeekFourHour:'',
-    JanuaryWeekFourPHSeven:'',
-    JanuaryWeekFourPHFour:'',
-    JanuaryWeekFourNormalcy:'',
-    JanuaryWeekFourSignature:'',
-
-    FebruaryWeekOneDate:'',
-    FebruaryWeekOneHour:'',
-    FebruaryWeekOnePHSeven:'',
-    FebruaryWeekOnePHFour:'',
-    FebruaryWeekOneNormalcy:'',
-    FebruaryWeekOneSignature:'',
-
-    FebruaryWeekTwoDate:'',
-    FebruaryWeekTwoHour:'',
-    FebruaryWeekTwoPHSeven:'',
-    FebruaryWeekTwoPHFour:'',
-    FebruaryWeekTwoNormalcy:'',
-    FebruaryWeekTwoSignature:'',
-
-    FebruaryWeekThreeDate:'',
-    FebruaryWeekThreeHour:'',
-    FebruaryWeekThreePHSeven:'',
-    FebruaryWeekThreePHFour:'',
-    FebruaryWeekThreeNormalcy:'',
-    FebruaryWeekThreeSignature:'',
-
-    FebruaryWeekFourDate:'',
-    FebruaryWeekFourHour:'',
-    FebruaryWeekFourPHSeven:'',
-    FebruaryWeekFourPHFour:'',
-    FebruaryWeekFourNormalcy:'',
-    FebruaryWeekFourSignature:'',
-
-    MarchWeekOneDate:'',
-    MarchWeekOneHour:'',
-    MarchWeekOnePHSeven:'',
-    MarchWeekOnePHFour:'',
-    MarchWeekOneNormalcy:'',
-    MarchWeekOneSignature:'',
-
-    MarchWeekTwoDate:'',
-    MarchWeekTwoHour:'',
-    MarchWeekTwoPHSeven:'',
-    MarchWeekTwoPHFour:'',
-    MarchWeekTwoNormalcy:'',
-    MarchWeekTwoSignature:'',
-
-    MarchWeekThreeDate:'',
-    MarchWeekThreeHour:'',
-    MarchWeekThreePHSeven:'',
-    MarchWeekThreePHFour:'',
-    MarchWeekThreeNormalcy:'',
-    MarchWeekThreeSignature:'',
-
-    MarchWeekFourDate:'',
-    MarchWeekFourHour:'',
-    MarchWeekFourPHSeven:'',
-    MarchWeekFourPHFour:'',
-    MarchWeekFourNormalcy:'',
-    MarchWeekFourSignature:'',
-
-    AprilWeekOneDate:'',
-    AprilWeekOneHour:'',
-    AprilWeekOnePHSeven:'',
-    AprilWeekOnePHFour:'',
-    AprilWeekOneNormalcy:'',
-    AprilWeekOneSignature:'',
-
-    AprilWeekTwoDate:'',
-    AprilWeekTwoHour:'',
-    AprilWeekTwoPHSeven:'',
-    AprilWeekTwoPHFour:'',
-    AprilWeekTwoNormalcy:'',
-    AprilWeekTwoSignature:'',
-
-    AprilWeekThreeDate:'',
-    AprilWeekThreeHour:'',
-    AprilWeekThreePHSeven:'',
-    AprilWeekThreePHFour:'',
-    AprilWeekThreeNormalcy:'',
-    AprilWeekThreeSignature:'',
-
-    AprilWeekFourDate:'',
-    AprilWeekFourHour:'',
-    AprilWeekFourPHSeven:'',
-    AprilWeekFourPHFour:'',
-    AprilWeekFourNormalcy:'',
-    AprilWeekFourSignature:'',
-
-    MayWeekOneDate:'',
-    MayWeekOneHour:'',
-    MayWeekOnePHSeven:'',
-    MayWeekOnePHFour:'',
-    MayWeekOneNormalcy:'',
-    MayWeekOneSignature:'',
-
-    MayWeekTwoDate:'',
-    MayWeekTwoHour:'',
-    MayWeekTwoPHSeven:'',
-    MayWeekTwoPHFour:'',
-    MayWeekTwoNormalcy:'',
-    MayWeekTwoSignature:'',
-
-    MayWeekThreeDate:'',
-    MayWeekThreeHour:'',
-    MayWeekThreePHSeven:'',
-    MayWeekThreePHFour:'',
-    MayWeekThreeNormalcy:'',
-    MayWeekThreeSignature:'',
-
-    MayWeekFourDate:'',
-    MayWeekFourHour:'',
-    MayWeekFourPHSeven:'',
-    MayWeekFourPHFour:'',
-    MayWeekFourNormalcy:'',
-    MayWeekFourSignature:'',
-
-    JuneWeekOneDate:'',
-    JuneWeekOneHour:'',
-    JuneWeekOnePHSeven:'',
-    JuneWeekOnePHFour:'',
-    JuneWeekOneNormalcy:'',
-    JuneWeekOneSignature:'',
-
-    JuneWeekTwoDate:'',
-    JuneWeekTwoHour:'',
-    JuneWeekTwoPHSeven:'',
-    JuneWeekTwoPHFour:'',
-    JuneWeekTwoNormalcy:'',
-    JuneWeekTwoSignature:'',
-
-    JuneWeekThreeDate:'',
-    JuneWeekThreeHour:'',
-    JuneWeekThreePHSeven:'',
-    JuneWeekThreePHFour:'',
-    JuneWeekThreeNormalcy:'',
-    JuneWeekThreeSignature:'',
-
-    JuneWeekFourDate:'',
-    JuneWeekFourHour:'',
-    JuneWeekFourPHSeven:'',
-    JuneWeekFourPHFour:'',
-    JuneWeekFourNormalcy:'',
-    JuneWeekFourSignature:'',
-
-    JulyWeekOneDate:'',
-    JulyWeekOneHour:'',
-    JulyWeekOnePHSeven:'',
-    JulyWeekOnePHFour:'',
-    JulyWeekOneNormalcy:'',
-    JulyWeekOneSignature:'',
-
-    JulyWeekTwoDate:'',
-    JulyWeekTwoHour:'',
-    JulyWeekTwoPHSeven:'',
-    JulyWeekTwoPHFour:'',
-    JulyWeekTwoNormalcy:'',
-    JulyWeekTwoSignature:'',
-
-    JulyWeekThreeDate:'',
-    JulyWeekThreeHour:'',
-    JulyWeekThreePHSeven:'',
-    JulyWeekThreePHFour:'',
-    JulyWeekThreeNormalcy:'',
-    JulyWeekThreeSignature:'',
-
-    JulyWeekFourDate:'',
-    JulyWeekFourHour:'',
-    JulyWeekFourPHSeven:'',
-    JulyWeekFourPHFour:'',
-    JulyWeekFourNormalcy:'',
-    JulyWeekFourSignature:'',
-
-    AugustWeekOneDate:'',
-    AugustWeekOneHour:'',
-    AugustWeekOnePHSeven:'',
-    AugustWeekOnePHFour:'',
-    AugustWeekOneNormalcy:'',
-    AugustWeekOneSignature:'',
-
-    AugustWeekTwoDate:'',
-    AugustWeekTwoHour:'',
-    AugustWeekTwoPHSeven:'',
-    AugustWeekTwoPHFour:'',
-    AugustWeekTwoNormalcy:'',
-    AugustWeekTwoSignature:'',
-
-    AugustWeekThreeDate:'',
-    AugustWeekThreeHour:'',
-    AugustWeekThreePHSeven:'',
-    AugustWeekThreePHFour:'',
-    AugustWeekThreeNormalcy:'',
-    AugustWeekThreeSignature:'',
-
-    AugustWeekFourDate:'',
-    AugustWeekFourHour:'',
-    AugustWeekFourPHSeven:'',
-    AugustWeekFourPHFour:'',
-    AugustWeekFourNormalcy:'',
-    AugustWeekFourSignature:'',
-
-    SeptemberWeekOneDate:'',
-    SeptemberWeekOneHour:'',
-    SeptemberWeekOnePHSeven:'',
-    SeptemberWeekOnePHFour:'',
-    SeptemberWeekOneNormalcy:'',
-    SeptemberWeekOneSignature:'',
-
-    SeptemberWeekTwoDate:'',
-    SeptemberWeekTwoHour:'',
-    SeptemberWeekTwoPHSeven:'',
-    SeptemberWeekTwoPHFour:'',
-    SeptemberWeekTwoNormalcy:'',
-    SeptemberWeekTwoSignature:'',
-
-    SeptemberWeekThreeDate:'',
-    SeptemberWeekThreeHour:'',
-    SeptemberWeekThreePHSeven:'',
-    SeptemberWeekThreePHFour:'',
-    SeptemberWeekThreeNormalcy:'',
-    SeptemberWeekThreeSignature:'',
-
-    SeptemberWeekFourDate:'',
-    SeptemberWeekFourHour:'',
-    SeptemberWeekFourPHSeven:'',
-    SeptemberWeekFourPHFour:'',
-    SeptemberWeekFourNormalcy:'',
-    SeptemberWeekFourSignature:'',
-
-    OctoberWeekOneDate:'',
-    OctoberWeekOneHour:'',
-    OctoberWeekOnePHSeven:'',
-    OctoberWeekOnePHFour:'',
-    OctoberWeekOneNormalcy:'',
-    OctoberWeekOneSignature:'',
-
-    OctoberWeekTwoDate:'',
-    OctoberWeekTwoHour:'',
-    OctoberWeekTwoPHSeven:'',
-    OctoberWeekTwoPHFour:'',
-    OctoberWeekTwoNormalcy:'',
-    OctoberWeekTwoSignature:'',
-
-    OctoberWeekThreeDate:'',
-    OctoberWeekThreeHour:'',
-    OctoberWeekThreePHSeven:'',
-    OctoberWeekThreePHFour:'',
-    OctoberWeekThreeNormalcy:'',
-    OctoberWeekThreeSignature:'',
-
-    OctoberWeekFourDate:'',
-    OctoberWeekFourHour:'',
-    OctoberWeekFourPHSeven:'',
-    OctoberWeekFourPHFour:'',
-    OctoberWeekFourNormalcy:'',
-    OctoberWeekFourSignature:'',
-
-    NovemberWeekOneDate:'',
-    NovemberWeekOneHour:'',
-    NovemberWeekOnePHSeven:'',
-    NovemberWeekOnePHFour:'',
-    NovemberWeekOneNormalcy:'',
-    NovemberWeekOneSignature:'',
-
-    NovemberWeekTwoDate:'',
-    NovemberWeekTwoHour:'',
-    NovemberWeekTwoPHSeven:'',
-    NovemberWeekTwoPHFour:'',
-    NovemberWeekTwoNormalcy:'',
-    NovemberWeekTwoSignature:'',
-
-    NovemberWeekThreeDate:'',
-    NovemberWeekThreeHour:'',
-    NovemberWeekThreePHSeven:'',
-    NovemberWeekThreePHFour:'',
-    NovemberWeekThreeNormalcy:'',
-    NovemberWeekThreeSignature:'',
-
-    NovemberWeekFourDate:'',
-    NovemberWeekFourHour:'',
-    NovemberWeekFourPHSeven:'',
-    NovemberWeekFourPHFour:'',
-    NovemberWeekFourNormalcy:'',
-    NovemberWeekFourSignature:'',
-
-    DecemberWeekOneDate:'',
-    DecemberWeekOneHour:'',
-    DecemberWeekOnePHSeven:'',
-    DecemberWeekOnePHFour:'',
-    DecemberWeekOneNormalcy:'',
-    DecemberWeekOneSignature:'',
-
-    DecemberWeekTwoDate:'',
-    DecemberWeekTwoHour:'',
-    DecemberWeekTwoPHSeven:'',
-    DecemberWeekTwoPHFour:'',
-    DecemberWeekTwoNormalcy:'',
-    DecemberWeekTwoSignature:'',
-
-    DecemberWeekThreeDate:'',
-    DecemberWeekThreeHour:'',
-    DecemberWeekThreePHSeven:'',
-    DecemberWeekThreePHFour:'',
-    DecemberWeekThreeNormalcy:'',
-    DecemberWeekThreeSignature:'',
-
-    DecemberWeekFourDate:'',
-    DecemberWeekFourHour:'',
-    DecemberWeekFourPHSeven:'',
-    DecemberWeekFourPHFour:'',
-    DecemberWeekFourNormalcy:'',
-    DecemberWeekFourSignature:'',
-
+    phFour:'',
+    phSeven:'',
+    phTen:'',
+    normalcy:'',
+    signature:'',
 
   }
+
+  @ViewChild('libra') libra: ElementRef;
+  @ViewChild('libraYear') libraYear: ElementRef;
+  @ViewChild('libraModel') libraModel: ElementRef;
+  @ViewChild('libraManuName') libraManuName: ElementRef;
+  @ViewChild('libraMinCarryCap') libraMinCarryCap: ElementRef;
+  @ViewChild('libraWeightOne') libraWeightOne: ElementRef;
+  @ViewChild('libraLimitsOne') libraLimitsOne: ElementRef;
+  @ViewChild('libraLastCalibDate') libraLastCalibDate: ElementRef;
+  @ViewChild('libraWeightTwo') libraWeightTwo: ElementRef;
+  @ViewChild('libraLimitsTwo') libraLimitsTwo: ElementRef;
+  @ViewChild('libraExterOrInter') libraExterOrInter: ElementRef;
+  @ViewChild('libraLocation') libraLocation: ElementRef;
+  @ViewChild('libraUseFor') libraUseFor: ElementRef;
+  @ViewChild('libraAccuracy') libraAccuracy: ElementRef;
+
+
+  @ViewChild('calWeekPH') calWeekPH: ElementRef;
+  @ViewChild('calWeekYear') calWeekYear: ElementRef;
+  @ViewChild('calWeekToolModel') calWeekToolModel: ElementRef;
+  @ViewChild('calWeektToolPlace') calWeektToolPlace: ElementRef;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -468,6 +159,8 @@ export class CheckingformsComponent implements OnInit {
   this.getAllTempTests();
   this.getAllCalibDayTests();
   this.getAllSewerPHTests();
+  this.getAllCalibrationWeekTests();
+  this.getAllLibraList();
   }
 
 
@@ -481,22 +174,97 @@ export class CheckingformsComponent implements OnInit {
     if(phNumber == 'PH01'){
       this.calibrationWeek.toolModel = 'HI 2211 HANNA'
       this.calibrationWeek.toolPlace = 'מעבדה'
+      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
+        data.forEach(obj => {
+          for (let i in obj) {
+            if (obj[i] === true) {
+              obj[i] = 'Yes'
+            }
+            if (obj[i] === false) {
+              obj[i] = 'No'
+            }
+  
+        }
+          
+        })
+      this.calibrationWeekTests = data;
+      })
     }
     if(phNumber == 'PH02'){
       this.calibrationWeek.toolModel = 'HANNA HI 8424 NEW ידני'
       this.calibrationWeek.toolPlace = 'הושבת 10/2018'
+      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
+        data.forEach(obj => {
+          for (let i in obj) {
+            if (obj[i] === true) {
+              obj[i] = 'Yes'
+            }
+            if (obj[i] === false) {
+              obj[i] = 'No'
+            }
+  
+        }
+          
+        })
+      this.calibrationWeekTests = data;
+      })
     }
     if(phNumber == 'PH03'){
       this.calibrationWeek.toolModel = 'מכשיר נייד PHB-4'
       this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים לא תקין'
+      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
+        data.forEach(obj => {
+          for (let i in obj) {
+            if (obj[i] === true) {
+              obj[i] = 'Yes'
+            }
+            if (obj[i] === false) {
+              obj[i] = 'No'
+            }
+  
+        }
+          
+        })
+      this.calibrationWeekTests = data;
+      })
     }
     if(phNumber == 'PH04'){
       this.calibrationWeek.toolModel = 'מכשיר נייד PHB-4'
       this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים לא תקין'
+      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
+        data.forEach(obj => {
+          for (let i in obj) {
+            if (obj[i] === true) {
+              obj[i] = 'Yes'
+            }
+            if (obj[i] === false) {
+              obj[i] = 'No'
+            }
+  
+        }
+          
+        })
+      this.calibrationWeekTests = data;
+      })
     }
     if(phNumber == 'PH05'){
       this.calibrationWeek.toolModel = 'HI 8424 מכשיר נייד'
       this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים'
+      this.formsService.getCalibWeekByPH(phNumber).subscribe(data=>{
+        data.forEach(obj => {
+          for (let i in obj) {
+            if (obj[i] === true) {
+              obj[i] = 'Yes'
+            }
+            if (obj[i] === false) {
+              obj[i] = 'No'
+            }
+  
+        }
+          
+        })
+      this.calibrationWeekTests = data;
+      })
     }
   }
 
@@ -509,13 +277,119 @@ export class CheckingformsComponent implements OnInit {
     }
   }
 
+  AddOrSaveCalWeekPH(){
+    var obj = {
+      phNumber:this.calWeekPH.nativeElement.value,
+      year:this.calWeekYear.nativeElement.value,
+      toolModel:this.calWeekToolModel.nativeElement.value,
+      toolPlace:this.calWeektToolPlace.nativeElement.value,
+    }
+
+    this.formsService.addNewPHToCalWeek(obj).subscribe(data=>{
+      debugger;
+      data;
+    })
+  }
+
+  
+  getAllCalibrationWeekTests(){
+    this.formsService.getAllCalibWeekTests().subscribe(data=>{
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === true) {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === false) {
+            obj[i] = 'No'
+          }
+
+      }
+        
+      })
+      this.calibrationWeekTests = data;
+    })
+  }
+
+  getAllLibraList(){
+    this.formsService.getAllLibraList().subscribe(data=>{
+      this.allLibraList = data;
+    })
+  }
+
+  addNewLibra(){
+    debugger;
+
+    
+  var libraCalibration = {
+
+    balanceSerialNum:Number(this.libra.nativeElement.value),
+    libraModel:this.libraModel.nativeElement.value,
+    manufacturerName:this.libraManuName.nativeElement.value,
+    minCarryCapacity:this.libraMinCarryCap.nativeElement.value,
+    maxCarryCapacity:'',
+    weightNumOne:this.libraWeightOne.nativeElement.value,
+    weightNumTwo:this.libraWeightTwo.nativeElement.value,
+    limitsWeightOne:this.libraLimitsOne.nativeElement.value,
+    libraLocation:this.libraLocation.nativeElement.value,
+    useFor:this.libraUseFor.nativeElement.value,
+    futureCalibDate:'',
+    externalOrInternalCalib:this.libraExterOrInter.nativeElement.value,
+    accuracy:this.libraAccuracy.nativeElement.value,
+    lastCalibDate:this.libraLastCalibDate.nativeElement.value,
+    year:this.libraYear.nativeElement.value
+  }
+    this.formsService.addNewLibra(libraCalibration).subscribe(data=>{
+    debugger;
+   if(data.msg == 'exist'){
+     this.toastSrv.error('Libra Number Exist');
+   } else {
+     this.toastSrv.success('New Libra Added')
+     this.allLibraList = data;
+   }
+    })
+  }
+
+
+  clearLibraFields(){
+    
+    this.libraCalibration = {
+
+      balanceSerialNum:'',
+      libraModel:'',
+      manufacturerName:'',
+      minCarryCapacity:'',
+      maxCarryCapacity:'',
+      weightNumOne:'',
+      weightNumTwo:'',
+      limitsWeightOne:'',
+      libraLocation:'',
+      useFor:'',
+      futureCalibDate:'',
+      externalOrInternalCalib:'',
+      accuracy:'',
+      lastCalibDate:'',
+      year:''
+    }
+  }
   saveTest(){
 
     this.calibrationWeek;
 
     this.formsService.saveCalibrationWeek(this.calibrationWeek).subscribe(data=>{
-    debugger;
-    data
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === true) {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === false) {
+            obj[i] = 'No'
+          }
+
+      }
+        
+      })
+    this.calibrationWeekTests = data;
+    
     })
   }
 
@@ -529,7 +403,7 @@ export class CheckingformsComponent implements OnInit {
         this.saveBtn = false;
         this.editBtn = true;
        this.calibrationWeek = data[0] 
-       this.calibrationWeek.JanuaryWeekFourDate = data[0].JanuaryWeekOneDate.Date
+    
       } else {
         this.calibrationWeek = undefined
       }
@@ -572,16 +446,31 @@ export class CheckingformsComponent implements OnInit {
     })
   }
 
-  getAllLibraList(ev){
+  getLibraByNumber(ev){
     debugger
     var balanceSerialNum = ev.target.value
-    this.formsService.getAllLibraList(balanceSerialNum).subscribe(data=>{
+    this.formsService.getLibraByNumber(balanceSerialNum).subscribe(data=>{
       debugger;
-      this.libraCalibration = data[0]
+      if(data){
+        this.libraCalibration = data[0]
+      }
+      
     })
 
     this.formsService.getLibraTestsByNumber(balanceSerialNum).subscribe(data=>{
       debugger;
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === true) {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === false) {
+            obj[i] = 'No'
+          }
+
+      }
+        
+      })
       this.libraCalibrationTests = data;
     })
   }
@@ -589,6 +478,18 @@ export class CheckingformsComponent implements OnInit {
   getAllLibraCalibTests() {
     this.formsService.getAllLibraCalibTests().subscribe(data=>{
 
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === 'true') {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === 'false') {
+            obj[i] = 'No'
+          }
+
+      }
+        
+      })
     this.libraCalibrationTests = data;
 
     })
@@ -598,6 +499,10 @@ export class CheckingformsComponent implements OnInit {
     this.formsService.getAllWaterTests().subscribe(data=>{
 
     this.allWaterTests = data;
+
+    this.oldSystemWater = this.allWaterTests.filter(w=>w.system == 'old')
+
+    this.newSystemWater = this.allWaterTests.filter(w=>w.system == 'new')
 
     })
   }
@@ -610,7 +515,18 @@ export class CheckingformsComponent implements OnInit {
   }
   getAllCalibDayTests() {
     this.formsService.getAllCalibDayTests().subscribe(data=>{
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === true) {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === false) {
+            obj[i] = 'No'
+          }
 
+      }
+        
+      })
     this.allCalibrationDayTests = data;
 
     })
@@ -628,12 +544,25 @@ export class CheckingformsComponent implements OnInit {
     this.libraCalibrationDetails.libraCalibration = this.libraCalibration
     this.formsService.addNewLibraTest(this.libraCalibrationDetails).subscribe(data=>{
       debugger;
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === true) {
+            obj[i] = 'Yes'
+          }
+          if (obj[i] === false) {
+            obj[i] = 'No'
+          }
+
+      }
+        
+      })
       this.libraCalibrationTests = data;
 
     })
   }
 
   addNewWaterTest() {
+    this.waterTest.system = 'new'
     this.formsService.addNewWaterTest(this.waterTest).subscribe(data=>{
       debugger;
       this.allWaterTests = data;
@@ -641,6 +570,16 @@ export class CheckingformsComponent implements OnInit {
     })
 
   }
+  addOldWaterTest() {
+    this.waterTest.system = 'old'
+    this.formsService.addOldWaterTest(this.waterTest).subscribe(data=>{
+      debugger;
+      this.allWaterTests = data;
+
+    })
+
+  }
+  
   addNewTempTest() {
     this.formsService.addNewTempTest(this.temperatureTest).subscribe(data=>{
       debugger;

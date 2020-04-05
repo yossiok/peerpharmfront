@@ -18,6 +18,16 @@ export class FormsService {
   private baseUrl = '/';
 
 
+  addNewLibra(newlibra){
+    debugger;
+    let url = this.baseUrl + "forms/addNewLibra";
+    return this.http.post(url, JSON.stringify(newlibra), this.options).pipe(map(res => res.json()));
+  }
+  addNewPHToCalWeek(newph){
+    debugger;
+    let url = this.baseUrl + "forms/addNewPHToCalWeek";
+    return this.http.post(url, JSON.stringify(newph), this.options).pipe(map(res => res.json()));
+  }
   saveCalibrationWeek(calibrationWeekForm){
     debugger;
     let url = this.baseUrl + "forms/saveCalibrationWeekForm";
@@ -46,6 +56,11 @@ export class FormsService {
   addNewWaterTest(waterTest){
     debugger;
     let url = this.baseUrl + "forms/addNewWaterTest";
+    return this.http.post(url, JSON.stringify(waterTest), this.options).pipe(map(res => res.json()));
+  }
+  addOldWaterTest(waterTest){
+    debugger;
+    let url = this.baseUrl + "forms/addOldWaterTest";
     return this.http.post(url, JSON.stringify(waterTest), this.options).pipe(map(res => res.json()));
   }
   addNewTempTest(temperatureTest){
@@ -161,8 +176,12 @@ export class FormsService {
 
   // Libra List // 
 
-  getAllLibraList(balanceSerialNum) {
-    let url = this.baseUrl + 'forms?getAllLibraList='+balanceSerialNum;
+  getAllLibraList() {
+    let url = this.baseUrl + 'forms/getAllLibraList';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getLibraByNumber(balanceSerialNum) {
+    let url = this.baseUrl + 'forms?getLibraByNumber='+balanceSerialNum;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getLibraTestsByNumber(balanceSerialNum) {
@@ -183,6 +202,14 @@ export class FormsService {
   }
   getAllCalibDayTests() {
     let url = this.baseUrl + 'forms/getAllCalibDayTests';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getAllCalibWeekTests() {
+    let url = this.baseUrl + 'forms/getAllCalibWeekTests';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getCalibWeekByPH(phNumber) {
+    let url = this.baseUrl + 'forms?getCalibWeekByPH='+phNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getAllSewerPHTests() {

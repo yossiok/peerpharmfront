@@ -72,7 +72,18 @@ export class CleaningFormsComponent implements OnInit {
         if(data.length > 0) {
         this.toastr.success('Successfuly Saved - נשמר בהצלחה')
         this.allDailyProdCleanForms = data;
+        }  else if (data._id){
+          var cleanForm = this.allDailyProdCleanForms.find(f=>f._id == data._id);
+          cleanForm.bathroom = data.bathroom
+          cleanForm.womenBathroom = data.womenBathroom
+          cleanForm.productionArea = data.productionArea
+          cleanForm.fillingArea = data.fillingArea
+          cleanForm.worker = data.worker
+          this.toastr.success('Date updated - תאריך עודכן')
+          this.getAllProdDailyClean();
+        
         }
+
   
       })
     
@@ -83,8 +94,18 @@ export class CleaningFormsComponent implements OnInit {
 
       this.formsService.saveNewDailyClean(this.dailyCleanForm).subscribe(data=>{
         if(data.length > 0) {
+          debugger;
         this.toastr.success('Successfuly Saved - נשמר בהצלחה')
         this.allDailyCleanForms = data;
+        } else if (data._id){
+          var cleanForm = this.allDailyCleanForms.find(f=>f._id == data._id);
+          cleanForm.bathroom = data.bathroom
+          cleanForm.entrance = data.entrance
+          cleanForm.employeesKitchen = data.employeesKitchen
+          cleanForm.offices = data.offices
+          cleanForm.worker = data.worker
+          this.toastr.success('Date updated - תאריך עודכן')
+          this.getAllDailyCleanForms();
         }
   
       })
@@ -96,10 +117,19 @@ export class CleaningFormsComponent implements OnInit {
     
     
       this.formsService.saveNewDailyCleanSecond(this.dailyCleanFormSecond).subscribe(data=>{
+        debugger;
         if(data.length > 0) {
         this.toastr.success('Successfuly Saved - נשמר בהצלחה')
         this.allDailyCleanSecondForms = data;
+        } else if (data._id){
+          var cleanForm = this.allDailyCleanSecondForms.find(f=>f._id == data._id);
+          cleanForm.bathroom = data.bathroom
+          cleanForm.offices = data.offices
+          cleanForm.worker = data.worker
+          this.toastr.success('Date updated - תאריך עודכן')
+          this.getAllDailyCleanSecondForms();
         }
+  
   
       })
     
@@ -116,7 +146,7 @@ export class CleaningFormsComponent implements OnInit {
             obj[i] = 'Yes'
           }
           if (obj[i] === false) {
-            obj[i] = 'No'
+            obj[i] = ''
           }
 
       }
@@ -134,7 +164,7 @@ export class CleaningFormsComponent implements OnInit {
             obj[i] = 'Yes'
           }
           if (obj[i] === false) {
-            obj[i] = 'No'
+            obj[i] = ''
           }
 
       }
@@ -143,6 +173,7 @@ export class CleaningFormsComponent implements OnInit {
       this.allDailyCleanSecondForms = data;
     })
   }
+
   getAllProdDailyClean(){
     this.formsService.getAllProdDailyClean().subscribe(data=>{
       data.forEach(obj => {
@@ -151,7 +182,7 @@ export class CleaningFormsComponent implements OnInit {
             obj[i] = 'Yes'
           }
           if (obj[i] === false) {
-            obj[i] = 'No'
+            obj[i] = ''
           }
 
       }

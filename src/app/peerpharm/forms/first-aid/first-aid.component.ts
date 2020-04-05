@@ -11,10 +11,13 @@ import { AuthService } from 'src/app/services/auth.service';
 export class FirstAidComponent implements OnInit {
 
   firstAid = {
-    cremeCookingHall:'',
-    makeUpCookingHall:'',
     offices:'',
-    fillingHall:'',
+    qaRoomMaterial:'',
+    qaRoomFilling:'',
+    managerFillingRoom:'',
+    inventoryStorage:'',
+    oldFillingHall:'',
+    remarks:'',
     date:''
   }
 

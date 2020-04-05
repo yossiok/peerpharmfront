@@ -1,20 +1,25 @@
 <ngb-tabset>
   <ngb-tab title="טופס עזרה ראשונה">
     <ng-template ngbTabContent>
-      <div class="container-fluid">
-        <div style="padding:20px;" class="row">
+      <div class="container bg-light rounded shadow-sm">
+        <div class="row text-center p-2">
          <div class="col-12">
-           <h2 style="text-align: center;text-decoration: underline;">ארון עזרה ראשונה דגם קאליר - 6010</h2>
+           <h2 class="text-primary">ארון עזרה ראשונה דגם קאליר - 6010</h2>
          </div>
         </div>
 
-        <div class="row">
+        <div class="row text-center p-2">
           <div class="col-12">
 
-          <table class="table table-responsive">
-            <thead>
+          <table class="table table-hover table-striped">
+            <thead class="bg-dark text-white">
+              <tr>
+                <th>כמות</th>
+                <th>תיאור</th>
+                <th>מק"ט</th>
+              </tr>
             </thead>
-            <tbody dir="rtl">
+            <tbody>
               <tr>
                 <td>1</td>
                 <td>תחבושת לכווית</td>
@@ -141,7 +146,6 @@
                 <td>999</td>
               </tr>
 
-         
             </tbody>
           </table>
 
@@ -149,32 +153,39 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row text-center p-2">
           <div class="col-12">
-            <table class="table table-responsive">
-              <thead>
+            <table class="table table-hover table-striped">
+              <thead class="bg-dark text-white">
                 <tr>
-                  <th>אולם בישול קרמים</th>
-                  <th>אולם בישול איפור</th>
-                  <th>משרדים</th>
-                  <th>אולם מילוי</th>
+                  <th>מזכירות</th>
+                  <th>חדר בקר איכות חו"ג</th>
+                  <th>חדר בקר איכות מילוי</th>
+                  <th>חדר מנהל מילוי</th>
+                  <th>מחסן מלאי</th>
+                  <th>אולם בישול ישן</th>
                   <th>תאריך</th>
                 </tr>
               </thead>
               <tbody>
-                <td><input [(ngModel)]="firstAid.cremeCookingHall" type="checkbox"/></td>
-                <td><input [(ngModel)]="firstAid.makeUpCookingHall" type="checkbox"/></td>
-                <td><input [(ngModel)]="firstAid.offices" type="checkbox"/></td>
-                <td><input [(ngModel)]="firstAid.fillingHall" type="checkbox"/></td>
-                <td><input [(ngModel)]="firstAid.date" type="date"/></td>
+                <td><input class="form-control" [(ngModel)]="firstAid.offices" type="checkbox"/></td>
+                <td><input class="form-control" [(ngModel)]="firstAid.qaRoomMaterial" type="checkbox"/></td>
+                <td><input class="form-control" [(ngModel)]="firstAid.qaRoomFilling" type="checkbox"/></td>
+                <td><input class="form-control" [(ngModel)]="firstAid.managerFillingRoom" type="checkbox"/></td>
+                <td><input class="form-control" [(ngModel)]="firstAid.inventoryStorage" type="checkbox"/></td>
+                <td><input class="form-control" [(ngModel)]="firstAid.oldFillingHall" type="checkbox"/></td>
+                <td><input class="form-control" [(ngModel)]="firstAid.date" type="date"/></td>
                
               </tbody>
             </table>
+            <div dir="rtl" class="col-12 text-right">
+              <input [(ngModel)]="firstAid.remarks" type="text" class="form-control" placeholder="Remarks">
+            </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row text-center p-2">
           <div class="col-12">
-            <button (click)="saveFirstAid()">שמור</button>
+            <button class="form-control btn btn-primary" (click)="saveFirstAid()">Save</button>
           </div>
         </div>
       </div>

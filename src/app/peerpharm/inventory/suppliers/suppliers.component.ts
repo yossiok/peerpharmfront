@@ -160,7 +160,7 @@ setType(type) {
 
   saveSupplier() {
     debugger;
-    if(this.supplier.suplierName != "" && this.supplier.suplierNumber != "" && this.supplier.lastUpdated != "") {
+    if(this.supplier.suplierName != "" && this.supplier.suplierNumber != "") {
     this.supplierService.addorUpdateSupplier(this.supplier).subscribe(res => {
       console.log(res);
       // if (res == "updated") this.toastSrv.info(this.supplier.suplierName, "Changes Saved");

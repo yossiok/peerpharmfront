@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input,ViewEncapsulation } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
@@ -26,6 +26,7 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
   selector: 'app-stock',
   templateUrl: './stock.component.html',
   styleUrls: ['./stock.component.css']
+
 })
 export class StockComponent implements OnInit {
   // resCmpt: any;
@@ -34,10 +35,13 @@ export class StockComponent implements OnInit {
   showItemDetails: boolean = true;
   openOrderRecommendModal: boolean = false;
   itemMovements: any = [];
+  materialPurchases: any[] = [];
+  componentPurchases: any[] = [];
   itemShell:any[];
   materialLocations: any[];
   items:any[];
   allComponentsPurchases:any[];
+  allMaterialsPurchases:any[];
   expirationBatchDate:any;
   allowUserEditItem = false;
   resCmpt: any = {
@@ -171,6 +175,19 @@ export class StockComponent implements OnInit {
     user:'',
     type:''
   }
+
+  supplier:any = {
+    supplierName:'',
+    price:"",
+    coin:"",
+    coinLoading:"",
+    priceLoading:"",
+    manufacturer:"",
+    alternativeMaterial:"",
+    alterName:"",
+    subGroup: "",
+    packageWeight:"",
+  }
   resMaterial: any = {
 
     componentN: "",
@@ -184,9 +201,7 @@ export class StockComponent implements OnInit {
     actualMlCapacity: "",
     unitOfMeasure: "",
     group: "",
-    subGroup: "",
     subGroup2: "",
-    suplierName: "",
     alternativeSuppliers:[],
     status: "",
     threatment: "",
@@ -194,18 +209,19 @@ export class StockComponent implements OnInit {
     monthAvgPcs: "",
     msds: "",
     coaMaster: "",
-    alternativeMaterial:"",
-    price:"",
-    coin:"",
-    coinLoading:"",
-    priceLoading:"",
     measurement:"",
     notInStock:false,
     inciName:"",
     casNumber:"",
-    manufacturer:"",
+ 
     umNumber:"",
     imerCode:"",
+    imerTreatment:"",
+    allowQtyInStock:"",
+    expiredQty:"",
+    permissionDangerMaterials:"",
+    storageTemp:"",
+    storageDirections:"",
     frameQuantity:"",
     frameSupplier:"",
     location:"",
@@ -276,6 +292,23 @@ export class StockComponent implements OnInit {
     }
   }
   
+  addSupplierToMaterial(){
+  debugger;
+   this.resMaterial.alternativeSuppliers.push(this.supplier)
+   this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+   this.supplier = {
+    supplierName:'',
+    price:"",
+    coin:"",
+    coinLoading:"",
+    priceLoading:"",
+    manufacturer:"",
+    alternativeMaterial:"",
+    alterName:"",
+    subGroup: "",
+    packageWeight:"",
+  }
+  }
   // getProcurementData(){
   //   this.inventoryService.getProcurementData().subscribe(data=>{
 
@@ -289,6 +322,7 @@ export class StockComponent implements OnInit {
 
   async ngOnInit() {
     this.getAllPurchaseOrders();
+    this.getAllPurchaseOrdersMaterial();
     this.getAllItemShell();
     this.getUser();
     this.getAllSuppliers()
@@ -565,6 +599,12 @@ export class StockComponent implements OnInit {
  
     this.procuretServ.getAllComponentsPurchase().subscribe(data=>{
       this.allComponentsPurchases = data;
+    })
+  }
+  getAllPurchaseOrdersMaterial(){
+ 
+    this.procuretServ.getAllMaterialsPurchase().subscribe(data=>{
+      this.allMaterialsPurchases = data;
     })
   }
 
@@ -1165,9 +1205,18 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
-    
-   
+    debugger;
 
+    for (let i = 0; i < this.allComponentsPurchases.length; i++) {
+      for (let j = 0; j < this.allComponentsPurchases[i].item.length; j++) {
+       if(this.allComponentsPurchases[i].item[j].itemNumber == cmptNumber){
+         this.componentPurchases.push(this.allComponentsPurchases[i].item[j])
+       }
+        
+      }
+     }
+   
+    this.switchModalView()
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -1223,10 +1272,16 @@ export class StockComponent implements OnInit {
   }
 
   async openDataMaterial(materNum) {
-    
+    debugger;
 
-    let tempArray = this.resMaterial.alternativeSuppliers.map(x => x)
-    this.alterSuppliers = tempArray;
+    for (let i = 0; i < this.allMaterialsPurchases.length; i++) {
+     for (let j = 0; j < this.allMaterialsPurchases[i].item.length; j++) {
+      if(this.allMaterialsPurchases[i].item[j].itemNumber == materNum){
+        this.materialPurchases.push(this.allMaterialsPurchases[i].item[j])
+      }
+       
+     }
+    }
 
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
@@ -1456,6 +1511,12 @@ export class StockComponent implements OnInit {
       manufacturer:"",
       umNumber:"",
       imerCode:"",
+      imerTreatment:"",
+      allowQtyInStock:"",
+      expiredQty:"",
+      storageTemp:"",
+      storageDirections:"",
+      permissionDangerMaterials:"",
       frameQuantity:"",
       frameSupplier:""
   
@@ -1875,6 +1936,7 @@ export class StockComponent implements OnInit {
   }
 
   switchModalView() {
+    debugger;
     this.loadingMovements = true;
     this.inventoryService.getItemMovements(this.resCmpt.componentN).subscribe(data => {
       this.itemMovements = data;

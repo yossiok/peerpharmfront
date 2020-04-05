@@ -82,25 +82,30 @@ export class ScanProductComponent implements OnInit {
 
   updatePositionToAll(ev){
   debugger;
+
     var position = this.positionForAll
     
+    if(position == '' || position == null || position == undefined){
+      this.toastSrv.error('שדה זה אינו יכול להישאר ריק')
+    } else {
+      var materialNumber = this.materialArrivals[0].internalNumber
 
-    var materialNumber = this.materialArrivals[0].internalNumber
-
-    this.inventorySrv.updateAllPositions(materialNumber,position).subscribe(data=>{
-      if(data.msg = 'ok'){
-        this.toastSrv.success('כל הפריטים עודכנו בהצלחה !')
+      this.inventorySrv.updateAllPositions(materialNumber,position).subscribe(data=>{
+        if(data.msg = 'ok'){
+          this.toastSrv.success('כל הפריטים עודכנו בהצלחה !')
+          
+          this.inventorySrv.getMaterialArrivalByNumber(materialNumber).subscribe(data=>{
+            debugger;
+            if(data){
+              this.materialArrivals = data
+              this.showTable = true;
+            }
         
-        this.inventorySrv.getMaterialArrivalByNumber(materialNumber).subscribe(data=>{
-          debugger;
-          if(data){
-            this.materialArrivals = data
-            this.showTable = true;
-          }
-      
-          })
-      }
-    })
+            })
+        }
+      })
+    }
+ 
   }
 
 }

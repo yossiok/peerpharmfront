@@ -26,6 +26,7 @@
             <th>Expire Date</th>
             <th>Batch Number</th>
             <th>Package Qty</th>
+            <th>Package Type</th>
             <th>Total Qty</th>
             <th>Location</th>
           </tr>
@@ -38,6 +39,7 @@
             <td>{{material.expiryDate | date: "dd/MM/yyyy"}}</td>
             <td>{{material.lotNumber}}</td>
             <td>{{material.packageQnt}}</td>
+            <td>{{material.packageType}}</td>
             <td>{{material.totalQnt}}</td>
             <td (click)="edit(material._id)" *ngIf="material._id != EditRowId">{{material.position}}</td>
             <td (click)="edit(material._id)" *ngIf="material._id == EditRowId">

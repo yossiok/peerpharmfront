@@ -115,6 +115,11 @@ table {
   font-size: 16px;
 }
 
+.fixNoaStupidStuff {
+  float:none !important;
+  margin-right:0px !important
+}
+
 td {
   border-bottom: none;
   font-family: "Berlin Sans FB";
@@ -129,6 +134,19 @@ td {
   padding: 0;
   float: right;
   
+}
+
+
+
+.fixed-top{
+  top:100px !important;
+}
+.hoverImg{
+  transition: 0.3s;
+}
+
+.hoverImg:hover{
+  transform: scale(1.6);
 }
 
 @media print {
@@ -148,7 +166,9 @@ td {
     margin: 5mm 5mm 5mm 5mm;
   }
 }
-
+label { 
+  margin-bottom: 0 !important;
+}
 .stockTable > tbody > tr td {
   font-family: inherit;
 }
@@ -175,7 +195,6 @@ td {
 }
 .close {
   font-size: 2.3125rem;
-  margin-left: 0px;
 }
 /* #amountsInWhTbody th, #amountsInWhTbody td{
     margin: 5px;

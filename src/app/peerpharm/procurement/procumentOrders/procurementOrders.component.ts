@@ -613,17 +613,13 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
     var arrivedAmount = this.arrivedAmount.nativeElement.value;
     var orderAmount = this.orderAmount.nativeElement.value;
-    var referenceNumber = this.referenceNumber.nativeElement.value;
     var supplierPrice = this.supplierPrice.nativeElement.value;
    
 
     if(arrivedAmount == 'undefined' || arrivedAmount == undefined){
       arrivedAmount = null;
     }
-    if(referenceNumber == "undefined" || referenceNumber == undefined){
-      referenceNumber = null;
-    }
- 
+
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
