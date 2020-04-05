@@ -44,6 +44,7 @@ export class StockComponent implements OnInit {
   allMaterialsPurchases:any[];
   expirationBatchDate:any;
   allowUserEditItem = false;
+  check = false;
   resCmpt: any = {
     componentN: '',
     componentName: '',
