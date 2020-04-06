@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute, ChildrenOutletContexts } from '@angular/router'
 import { ItemsService } from '../../../services/items.service'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -52,7 +52,7 @@ export class ItemdetaisComponent implements OnInit {
   laserAndExp: Boolean = true;
   remarksAlert: Boolean = false;
   notActiveAlert:Boolean = false;
-
+  editSpecTable:Boolean = false;
 
   productionType: '';
   productionTwoType: '';
@@ -256,6 +256,11 @@ export class ItemdetaisComponent implements OnInit {
     wordLabelFileLink: '',
     coaFileLink: '',
 
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    
   }
 
 
@@ -483,6 +488,7 @@ export class ItemdetaisComponent implements OnInit {
     
     })
   }
+
 
   openOrderModal(orders){
     var itemNumber = this.itemShown.itemNumber

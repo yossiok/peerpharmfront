@@ -499,7 +499,20 @@ export class CheckingformsComponent implements OnInit {
     this.waterTest.system = 'new'
     this.formsService.addNewWaterTest(this.waterTest).subscribe(data=>{
       debugger;
-      this.allWaterTests = data;
+      this.newSystemWater = data.filter(w=>w.system == 'new');
+      this.toastSrv.success('New test added')
+      this.waterTest.clearAndColor = ''
+      this.waterTest.date = ''
+      this.waterTest.hardness = ''
+      this.waterTest.phCheck = ''
+      this.waterTest.pressureBetweenFilters = ''
+      this.waterTest.pressureTest = ''
+      this.waterTest.saltInTank = ''
+      this.waterTest.signature = ''
+      this.waterTest.system = ''
+      this.waterTest.tdsCheck = ''
+
+      
 
     })
 
@@ -508,7 +521,19 @@ export class CheckingformsComponent implements OnInit {
     this.waterTest.system = 'old'
     this.formsService.addOldWaterTest(this.waterTest).subscribe(data=>{
       debugger;
-      this.allWaterTests = data;
+      this.oldSystemWater = data.filter(w=>w.system == 'old');
+      this.toastSrv.success('New test added')
+      this.waterTest.clearAndColor = ''
+      this.waterTest.date = ''
+      this.waterTest.hardness = ''
+      this.waterTest.phCheck = ''
+      this.waterTest.pressureBetweenFilters = ''
+      this.waterTest.pressureTest = ''
+      this.waterTest.saltInTank = ''
+      this.waterTest.signature = ''
+      this.waterTest.system = ''
+      this.waterTest.tdsCheck = ''
+
 
     })
 

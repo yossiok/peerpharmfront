@@ -43,8 +43,8 @@
             <td>{{material.totalQnt}}</td>
             <td (click)="edit(material._id)" *ngIf="material._id != EditRowId">{{material.position}}</td>
             <td (click)="edit(material._id)" *ngIf="material._id == EditRowId">
-              <input #materialPosition [value]="material.position" type="text">
-              <i style="font-size:30px;color:green;" (click)="updatePosition(material._id)" class="fa fa-check"></i>
+              <input class="w-75" #materialPosition [value]="material.position" type="text">
+              <button  (click)="updatePosition(material._id)" class="btn btn-success form-control w-25">+</button>
             </td>
           </tr>
         </tbody>

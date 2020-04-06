@@ -1501,6 +1501,127 @@
               </div>
             </ng-template>
           </ngb-tab>
+          <ngb-tab id="tab-selectbyid5">
+            <ng-template ngbTabTitle><span style="color:black">Table</span></ng-template>
+            <ng-template ngbTabContent>
+                <div class="container">
+                  <div class="row text-center">
+                    <div class="col-12">
+                      <h3 class="mt-3 p-2 bg-light text-warning rounded shadow-sm">Specification</h3>
+                    </div>
+                  </div>
+                  <div class="row text-center">
+                    <div class="col-12">
+                      <table class="table table-hover table-bordered">
+                        <thead class="bg-warning">
+                          <tr>
+                            <th>הערות</th>
+                            <th>תחומי התוצאות תחתון -  SPEC LIMITS MIN</th>
+                            <th>תחומי התוצאות עליון -  SPEC LIMITS MAX</th>
+                            <th class="bg-warning">סוג בדיקה - TEST</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phRemarks" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMin" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMax" class="form-control" type="text"></td>
+                            <td class="bg-warning">PH</td>
+                          </tr>
+                          <tr>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityRemarks" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMin" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMax" class="form-control" type="text"></td>
+                            <td class="bg-warning">צפיפות
+                              <p>(gr/ml)</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityRemarks" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMin" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMax" class="form-control" type="text"></td>
+                            <td class="bg-warning">
+                              <table>
+                                <tbody>
+                                  <tr style="padding: 0rem !important">
+                                    <td style="padding: 0rem !important">(mPa*5)</td>
+                                    <td style="padding: 0rem !important">צמיגות</td>
+                                  </tr>
+                                  <tr style="padding: 0rem !important">
+                                    <td style="padding: 0rem !important">
+                                      <select class="form-control" [(ngModel)]="itemShown.modelType">
+                                      <option value="BROOKFIELD MODEL D220">BROOKFIELD MODEL D220</option>
+                                      <option value="Myr VR300">Myr VR300</option>
+                                    </select></td>
+                                    <td style="padding: 0rem !important">סוג מכשיר</td>
+                                  </tr>
+                                  <tr style="padding: 0rem !important">
+                                    <td style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinFieldNum" class="form-control" type="number"></td>
+                                    <td style="padding: 0rem !important">מס ספינדלר</td>
+                                  </tr>
+                                  <tr style="padding: 0rem !important"> 
+                                    <td style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinSpeed" class="form-control" type="number"></td>
+                                    <td style="padding: 0rem !important;font-size: 11px;">מהירות סיבוב %</td>
+                                  </tr>
+                                  <tr style="padding: 0rem !important">
+                                    <td style="padding: 0rem !important"><input [(ngModel)]="itemShown.testTemp" class="form-control" type="number"></td>
+                                    <td style="padding: 0rem !important">טמפ' בדיקה</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td><input [(ngModel)]="itemShown.colorRemarks" class="form-control" type="text"></td>
+                            <td><input [(ngModel)]="itemShown.colorLimitsMin" class="form-control" type="text"></td>
+                            <td><input [(ngModel)]="itemShown.colorLimitsMax" class="form-control" type="text"></td>
+                            <td class="bg-warning">צבע</td>
+                          </tr>
+                          <tr>
+                            <td><input [ngModel]="itemShown.textureRemarks" class="form-control" type="text"></td>
+                            <td><input [ngModel]="itemShown.textureLimitsMin" class="form-control" type="text"></td>
+                            <td><input [ngModel]="itemShown.textureLimitsMax" class="form-control" type="text"></td>
+                            <td class="bg-warning">מרקם</td>
+                          </tr>
+                          <tr>
+                            <td><input [ngModel]="itemShown.scentRemarks" class="form-control" type="text"></td>
+                            <td><select [ngModel]="itemShown.scentLimitsMin"  class="form-control">
+                              <option value="normal">Normal</option>
+                              <option value="notNormal">Not Normal</option>
+                            </select></td>
+                            <td><select [ngModel]="itemShown.scentLimitsMax"  class="form-control">
+                              <option value="normal">Normal</option>
+                              <option value="notNormal">Not Normal</option>
+                            </select></td>
+                            <td class="bg-warning">ריח</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row p-2 text-center">
+                    <div *ngIf="editSpecTable == true" class="col-4">
+                      <button  class="form-control btn btn-warning">Save</button>
+                    </div>
+                    <div *ngIf="editSpecTable == false;" class="col-4">
+                      <button  (click)="editSpecTable = true" class="form-control btn btn-warning">Edit</button>
+                    </div>
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+              
+                  </div>
+                </div>
+            </ng-template>
+          </ngb-tab>
 
       </ngb-tabset>
 

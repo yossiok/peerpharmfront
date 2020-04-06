@@ -607,6 +607,8 @@
         <img *ngIf="resCmpt.img!=''" [src]="resCmpt.img" class="hoverImg w-25 h-100 border border-success"
         alt="Item main image please wait ...">
       <p *ngIf="resCmpt.img==''"><b> -No Image- </b></p>
+      <input class="form-control" type='file' id="input_itemImgID" (change)='uploadImg($event)' style='display:block'>
+      <input class="form-control" type='text' [(ngModel)]="tempHiddenImgSrc" id='tempHiddenImgSrc' style='display:none'>
       </div>
     </div>
     <div class="row fixNoaStupidStuff text-center">
@@ -689,7 +691,7 @@
           <thead class="bg-success text-white">
             <tr>
               <th>Order Number</th>
-              <th>Item Number</th>
+              <th>Order Amount</th>
               <th>Arrival Date</th>
               <th>Arrived Amount</th>
             </tr>
@@ -1240,25 +1242,37 @@
     <mat-tab label="Material Details">
       <div class="container">
       <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
-        <div class="col-1 fixNoaStupidStuff text-right">
+        <div style="padding: 0rem;" class="col-1 fixNoaStupidStuff text-right">
           <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
         </div>
-        <div class="col-10 fixNoaStupidStuff">
-          <h2 class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
+        <div style="padding: 0rem;" class="col-10 fixNoaStupidStuff">
+          <h2 style="padding: 0rem;" class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
         </div>
-        <div class="col-1 fixNoaStupidStuff">
+        <div style="padding: 0rem;" class="col-1 fixNoaStupidStuff">
           <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
         </div>
       </div>
 
       <div dir="rtl" style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
-        <div class="col-12 fixNoaStupidStuff">
-          <h5 class="text-success">פרטים כלליים</h5>
+        <div style="padding: 0rem;" class="col-12 fixNoaStupidStuff">
+          <h5 style="padding: 0rem;" class="text-success">פרטים כלליים</h5>
         </div>
         <!-- <div class="col-8 fixNoaStupidStuff">
           <h5 class="text-success">מחסן/מחלקת בישול</h5>
         </div> -->
   
+      </div>
+      <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
+        <div class="col-2 fixNoaStupidStuff"></div>
+        <div class="col-2 fixNoaStupidStuff"><label class="form-control">Item Number</label></div>
+        <div class="col-2 fixNoaStupidStuff">
+          <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentN">
+        </div>
+        <div class="col-2 fixNoaStupidStuff"><label class="form-control">Item Name</label></div>
+        <div class="col-2 fixNoaStupidStuff">
+          <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentName">
+        </div>
+        <div class="col-2 fixNoaStupidStuff"></div>
       </div>
       <div dir="rtl" style="padding: 0rem;" class="row fixNoaStupidStuff text-center">
         <div class="col-1"></div>
