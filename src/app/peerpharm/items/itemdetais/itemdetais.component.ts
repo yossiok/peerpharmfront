@@ -74,6 +74,7 @@ export class ItemdetaisComponent implements OnInit {
 
   // End of New Item Tree //
   alowUserEditItemTree: Boolean = false;
+  allowEditSpecTable: Boolean = false;
   mainDivArr: any = [];
   dataDiv: any = [];
   newItem: FormGroup;
@@ -255,6 +256,29 @@ export class ItemdetaisComponent implements OnInit {
     labelFileLink: '',
     wordLabelFileLink: '',
     coaFileLink: '',
+
+    phRemarks:'',
+    phLimitsMin:'',
+    phLimitsMax:'',
+    densityRemarks:'',
+    densityLimitsMin:'',
+    densityLimitsMax:'',
+    viscosityRemarks:'',
+    viscosityLimitsMin:'',
+    viscosityLimitsMax:'',
+    spinFieldNum:'',
+    modelType:'',
+    spinSpeed:'',
+    testTemp:'',
+    colorRemarks:'',
+    colorLimitsMin:'',
+    colorLimitsMax:'',
+    textureRemarks:'',
+    textureLimitsMin:'',
+    textureLimitsMax:'',
+    scentRemarks:'',
+    scentLimitsMin:'',
+    scentLimitsMax:'',
 
   }
 
@@ -718,6 +742,7 @@ export class ItemdetaisComponent implements OnInit {
     //  this.showGoddetData();
   }
 
+
   jumpingRemark(){
     debugger;
     if(this.itemShown.proRemarks != "" && this.itemShown.proRemarks != undefined && this.itemShown.proRemarks != null) {
@@ -971,6 +996,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   async writeItemData() {
+    this.editSpecTable = false;
     if(this.itemShown.status == "production") {
       if(this.authService.loggedInUser.userName == "Sigi" || this.authService.loggedInUser.userName == 'akiva'){
         
@@ -1014,6 +1040,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   updateItemTree() {
+   
     if(this.itemShown.status == 'production') {
       if(confirm('שים לב , אתה מנסה לעדכן מוצר עם סטטוס פיתוח')){
          if (this.itemShown.itemNumber != "") {
@@ -1023,6 +1050,7 @@ export class ItemdetaisComponent implements OnInit {
       this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => {
         console.log(res)
         this.toastr.success("Saved", "Changes Saved fot item number: " + this.itemShown.itemNumber);
+        this.editSpecTable = false;
       });
     } else {
       this.toastr.error("No item number!");
@@ -1416,6 +1444,7 @@ export class ItemdetaisComponent implements OnInit {
       if (this.user.authorization) {
         if (this.authService.loggedInUser.authorization.includes("updateItemTree")) {
           this.alowUserEditItemTree = true;
+          this.allowEditSpecTable = true
         }
       }
 
@@ -1425,6 +1454,7 @@ export class ItemdetaisComponent implements OnInit {
         if (this.user.authorization) {
           if (this.authService.loggedInUser.authorization.includes("updateItemTree")) {
             this.alowUserEditItemTree = true;
+            this.allowEditSpecTable = true
           }
         }
       });

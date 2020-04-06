@@ -181,11 +181,12 @@
 
           </div>
           <div class="col-3">
-            <div> <input #libra list="libralist" class="form-control" (change)="getLibraByNumber($event)">
-              <datalist id="libralist">
-                <option value=""></option>
-                <option *ngFor="let libra of allLibraList" [value]="libra.balanceSerialNum">{{libra.balanceSerialNum}}</option>
+            <div> <input #libra list="libraList" [(ngModel)]="clearLibra" class="form-control" (change)="getLibraByNumber($event)">
+              <datalist id="libraList">
+                 <option *ngFor="let libra of allLibraList" [value]="libra.balanceSerialNum">{{libra.balanceSerialNum}}</option>
               </datalist>
+               
+             
              </div>
             <div> <input #libraYear class="form-control" [(ngModel)]="libraCalibration.year" type="text"></div>
             <div> <input #libraModel class="form-control" [(ngModel)]="libraCalibration.libraModel" type="text"></div>
@@ -221,13 +222,9 @@
         <hr>
 
         <div class="row text-center p-2">
-          <div class="col-2">
+          <div class="col-3">
             <input class="form-control" [(ngModel)]="libraCalibrationDetails.date" style="margin:2px;" type="date"
               placeholder="תאריך" />
-          </div>
-          <div class="col-2">
-            <input class="form-control" [(ngModel)]="libraCalibrationDetails.hour" style="margin:2px;" type="text"
-              placeholder="שעה" />
           </div>
           <div class="col-2">
             <input class="form-control" [(ngModel)]="libraCalibrationDetails.resultWeightOne" style="margin:2px;"
@@ -237,7 +234,7 @@
             <input class="form-control" [(ngModel)]="libraCalibrationDetails.resultWeightTwo" style="margin:2px;"
               type="text" placeholder="משקולת 2 - תוצאה" />
           </div>
-          <div class="col-1">
+          <div class="col-2">
             <label class="form-control">תקינות:</label>
           </div>
           <div class="col-1">
@@ -361,9 +358,9 @@
                   <th style="border-top:none;border-bottom: none;">תאריך</th>
                   <th>PPM/inch<sup>3</sup></th>
                   <th>(ויזואלי)</th>
-                  <th>PPM/inch<sup>3</sup></th>
                   <th>(ויזואלי)</th>
                   <th>Mol/m<sup>3</sup></th>
+                  <th>MΩ*CM</th>
                   <th></th>
                   <th style="border-top:none;border-bottom: none;">חתימה</th>
                   <th style="border-top:none;border-bottom: none;">הערות</th>
@@ -372,10 +369,10 @@
                   <th style="border-top:none"></th>
                   <th> 50></th>
                   <th>קיים</th>
-                  <th> 50 > </th>
-                  <th>Clear,Colorless</th>
-                  <th> 0.7 : RO מים ></th>
-                  <th>> 50</th>
+                  <th>Clear,Colorless </th>
+                  <th>0.7> </th>
+                  <th>50> </th>
+                  <th>6.0-8.0</th>
                   <th style="border-top:none"></th>
                   <th style="border-top:none"></th>
                 </tr>
@@ -472,9 +469,9 @@
                   <th style="border-top:none;border-bottom: none;">תאריך</th>
                   <th>PPM/inch<sup>3</sup></th>
                   <th>(ויזואלי)</th>
-                  <th>PPM/inch<sup>3</sup></th>
                   <th>(ויזואלי)</th>
                   <th>Mol/m<sup>3</sup></th>
+                  <th>MΩ*CM</th>
                   <th></th>
                   <th style="border-top:none;border-bottom: none;">חתימה</th>
                   <th style="border-top:none;border-bottom: none;">הערות</th>
@@ -483,10 +480,10 @@
                   <th style="border-top:none"></th>
                   <th> 50></th>
                   <th>קיים</th>
-                  <th> 50 > </th>
-                  <th>Clear,Colorless</th>
-                  <th> 0.7 : RO מים ></th>
-                  <th>> 50</th>
+                  <th>Clear,Colorless </th>
+                  <th>0.7> </th>
+                  <th>50> </th>
+                  <th>6.0-8.0</th>
                   <th style="border-top:none"></th>
                   <th style="border-top:none"></th>
                 </tr>
@@ -623,14 +620,13 @@
             <label class="form-control">דגם המכשיר:</label>
           </div>
           <div class="col-3">
-            <input class="form-control" list="phList" (change)="fillCalibDayDetails($event)" [(ngModel)]="calibrationDayTest.phNumber">
-            <datalist id="phList">
+            <select class="form-control"  (change)="fillCalibDayDetails($event)" [(ngModel)]="calibrationDayTest.phNumber">
               <option value="PH01">PH01</option>
               <option value="PH02">PH02</option>
               <option value="PH03">PH03</option>
               <option value="PH04">PH04</option>
               <option value="PH05">PH05</option>
-            </datalist>
+           </select>
             <input class="form-control" [(ngModel)]="calibrationDayTest.deviceModel" type="text">
           
           </div>

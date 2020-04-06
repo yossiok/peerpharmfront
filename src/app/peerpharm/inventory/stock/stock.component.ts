@@ -1117,6 +1117,7 @@ export class StockComponent implements OnInit {
 
 
   filterRows(event, filterType) {
+    debugger;
     this.emptyFilterArr = true;
     this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
     this.filterVal = '';
@@ -1125,22 +1126,27 @@ export class StockComponent implements OnInit {
       this.filterVal = this.route.snapshot.queryParams.componentN
     }
     if (this.stockType != 'product') {
+      if(this.filterByType != undefined){
       if (this.filterByType.nativeElement.value != "") {
         let CmptType = this.filterByType.nativeElement.value;
         this.components = this.components.filter(x => (x.componentType.includes(CmptType) && x.itemType.includes(this.stockType)));
       }
-      if (this.filterByCategory.nativeElement.value != "") {
+      }
+      if(this.filterByCategory != undefined){
+      if (this.filterByCategory.nativeElement.value != "" && this.filterByCategory != undefined) {
         let category = this.filterByCategory.nativeElement.value;
         this.components = this.components.filter(x => (x.componentCategory.includes(category) && x.itemType.includes(this.stockType)));
       }
-      if (this.filterBySupplierN.nativeElement.value != "") {
+    }
+    if(this.filterBySupplierN != undefined){
+      if (this.filterBySupplierN.nativeElement.value != "" && this.filterBySupplierN != undefined) {
         let supplierN = this.filterBySupplierN.nativeElement.value;
 
         this.components = this.components.filter(x => (x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType)));
       }
-
     }
-    if (this.filterbyNum.nativeElement.value != "") {
+    }
+    if (this.filterbyNum.nativeElement.value != "" && this.filterbyNum != undefined) {
       let itemNum = this.filterbyNum.nativeElement.value;
       this.components = this.components.filter(x => (x.componentN.includes(itemNum) && x.itemType.includes(this.stockType)));
     }

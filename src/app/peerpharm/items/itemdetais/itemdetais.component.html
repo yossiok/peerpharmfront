@@ -1523,41 +1523,42 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.phRemarks}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.phLimitsMin}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMin" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.phLimitsMax}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMax" class="form-control" type="text"></td>
                             <td class="bg-warning">PH</td>
                           </tr>
                           <tr>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.densityRemarks}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.densityLimitsMin}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMin" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.densityLimitsMax}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMax" class="form-control" type="text"></td>
                             <td class="bg-warning">צפיפות
                               <p>(gr/ml)</p>
                             </td>
                           </tr>
                           <tr>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.viscosityRemarks}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.viscosityLimitsMin}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMin" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.viscosityLimitsMax}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMax" class="form-control" type="text"></td>
                             <td class="bg-warning">
                               <table>
                                 <tbody>
                                   <tr style="padding: 0rem !important">
-                                    <td style="padding: 0rem !important">(mPa*5)</td>
-                                    <td style="padding: 0rem !important">צמיגות</td>
+                                    <td style="padding: 0rem !important">(mPa*5) צמיגות</td>
+                                
                                   </tr>
                                   <tr style="padding: 0rem !important">
-                                    <td style="padding: 0rem !important">
+                                    <td *ngIf="editSpecTable==false">{{itemShown.modelType}}</td>
+                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important">
                                       <select class="form-control" [(ngModel)]="itemShown.modelType">
                                       <option value="BROOKFIELD MODEL D220">BROOKFIELD MODEL D220</option>
                                       <option value="Myr VR300">Myr VR300</option>
@@ -1565,15 +1566,18 @@
                                     <td style="padding: 0rem !important">סוג מכשיר</td>
                                   </tr>
                                   <tr style="padding: 0rem !important">
-                                    <td style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinFieldNum" class="form-control" type="number"></td>
+                                    <td *ngIf="editSpecTable==false">{{itemShown.spinFieldNum}}</td>
+                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinFieldNum" class="form-control" type="number"></td>
                                     <td style="padding: 0rem !important">מס ספינדלר</td>
                                   </tr>
                                   <tr style="padding: 0rem !important"> 
-                                    <td style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinSpeed" class="form-control" type="number"></td>
+                                    <td *ngIf="editSpecTable==false">{{itemShown.spinSpeed}}</td>
+                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinSpeed" class="form-control" type="number"></td>
                                     <td style="padding: 0rem !important;font-size: 11px;">מהירות סיבוב %</td>
                                   </tr>
                                   <tr style="padding: 0rem !important">
-                                    <td style="padding: 0rem !important"><input [(ngModel)]="itemShown.testTemp" class="form-control" type="number"></td>
+                                    <td *ngIf="editSpecTable==false">{{itemShown.testTemp}}</td>
+                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.testTemp" class="form-control" type="number"></td>
                                     <td style="padding: 0rem !important">טמפ' בדיקה</td>
                                   </tr>
                                 </tbody>
@@ -1581,24 +1585,33 @@
                             </td>
                           </tr>
                           <tr>
-                            <td><input [(ngModel)]="itemShown.colorRemarks" class="form-control" type="text"></td>
-                            <td><input [(ngModel)]="itemShown.colorLimitsMin" class="form-control" type="text"></td>
-                            <td><input [(ngModel)]="itemShown.colorLimitsMax" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.colorRemarks}}</td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorRemarks" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.colorLimitsMin}}</td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorLimitsMin" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.colorLimitsMax}}</td>
+                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorLimitsMax" class="form-control" type="text"></td>
                             <td class="bg-warning">צבע</td>
                           </tr>
                           <tr>
-                            <td><input [ngModel]="itemShown.textureRemarks" class="form-control" type="text"></td>
-                            <td><input [ngModel]="itemShown.textureLimitsMin" class="form-control" type="text"></td>
-                            <td><input [ngModel]="itemShown.textureLimitsMax" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.textureRemarks}}</td>
+                            <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.textureRemarks" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.textureLimitsMin}}</td>
+                            <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.textureLimitsMin" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.textureLimitsMax}}</td>
+                            <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.textureLimitsMax" class="form-control" type="text"></td>
                             <td class="bg-warning">מרקם</td>
                           </tr>
                           <tr>
-                            <td><input [ngModel]="itemShown.scentRemarks" class="form-control" type="text"></td>
-                            <td><select [ngModel]="itemShown.scentLimitsMin"  class="form-control">
+                            <td *ngIf="editSpecTable==false">{{itemShown.scentRemarks}}</td>
+                            <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.scentRemarks" class="form-control" type="text"></td>
+                            <td *ngIf="editSpecTable==false">{{itemShown.scentLimitsMin}}</td>
+                            <td *ngIf="editSpecTable==true"><select [ngModel]="itemShown.scentLimitsMin"  class="form-control">
                               <option value="normal">Normal</option>
                               <option value="notNormal">Not Normal</option>
                             </select></td>
-                            <td><select [ngModel]="itemShown.scentLimitsMax"  class="form-control">
+                            <td *ngIf="editSpecTable==false">{{itemShown.scentLimitsMax}}</td>
+                            <td *ngIf="editSpecTable==true"><select [ngModel]="itemShown.scentLimitsMax"  class="form-control">
                               <option value="normal">Normal</option>
                               <option value="notNormal">Not Normal</option>
                             </select></td>
@@ -1609,10 +1622,7 @@
                     </div>
                   </div>
                   <div class="row p-2 text-center">
-                    <div *ngIf="editSpecTable == true" class="col-4">
-                      <button  class="form-control btn btn-warning">Save</button>
-                    </div>
-                    <div *ngIf="editSpecTable == false;" class="col-4">
+                    <div *ngIf="editSpecTable == false && allowEditSpecTable == true" class="col-4">
                       <button  (click)="editSpecTable = true" class="form-control btn btn-warning">Edit</button>
                     </div>
                     <div class="col-4"></div>

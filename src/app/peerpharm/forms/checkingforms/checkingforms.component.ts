@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 export class CheckingformsComponent implements OnInit {
 
   libraList:any[];
+  clearLibra:any;
   saveBtn:boolean = true;
   editBtn:boolean = false;
   libraCalibrationTests:any[]
@@ -26,6 +27,7 @@ export class CheckingformsComponent implements OnInit {
   waterTestRemarks:any;
   tempTestRemarks:any;
   calibDayRemarks:any;
+  currBalanceSerialNum:any;
   sewerTestRemarks:any;
   
   sewerPhTest = {
@@ -120,7 +122,7 @@ export class CheckingformsComponent implements OnInit {
     phFour:'',
     phSeven:'',
     phTen:'',
-    normalcy:'',
+    normalcy:false,
     signature:'',
 
   }
@@ -280,7 +282,7 @@ export class CheckingformsComponent implements OnInit {
 
 
   clearLibraFields(){
-    
+    this.clearLibra = ''
     this.libraCalibration = {
 
       balanceSerialNum:'',
@@ -299,10 +301,12 @@ export class CheckingformsComponent implements OnInit {
       lastCalibDate:'',
       year:''
     }
+    this.libraCalibrationTests = [];
   }
   saveTest(){
-
+  debugger;
     this.calibrationWeek;
+
 
     this.formsService.saveCalibrationWeek(this.calibrationWeek).subscribe(data=>{
       data.forEach(obj => {
@@ -317,7 +321,7 @@ export class CheckingformsComponent implements OnInit {
       }
         
       })
-    this.calibrationWeekTests = data;
+      this.getAllCalibrationWeekTests(this.calibrationWeek.phNumber)
     
     })
   }
@@ -383,6 +387,7 @@ export class CheckingformsComponent implements OnInit {
   getLibraByNumber(ev){
     debugger
     var balanceSerialNum = ev.target.value
+    this.currBalanceSerialNum = balanceSerialNum
     this.formsService.getLibraByNumber(balanceSerialNum).subscribe(data=>{
       debugger;
       if(data){
@@ -490,7 +495,22 @@ export class CheckingformsComponent implements OnInit {
       }
         
       })
-      this.libraCalibrationTests = data;
+      this.formsService.getLibraTestsByNumber(this.currBalanceSerialNum).subscribe(data=>{
+        debugger;
+        data.forEach(obj => {
+          for (let i in obj) {
+            if (obj[i] === true) {
+              obj[i] = 'Yes'
+            }
+            if (obj[i] === false) {
+              obj[i] = 'No'
+            }
+  
+        }
+          
+        })
+        this.libraCalibrationTests = data.reverse();
+      })
 
     })
   }
@@ -550,7 +570,9 @@ export class CheckingformsComponent implements OnInit {
   addNewCalibDayTest() {
     this.formsService.addNewCalibDayTest(this.calibrationDayTest).subscribe(data=>{
       debugger;
-      this.allCalibrationDayTests = data;
+      if(data){
+        this.getAllCalibDayTests(this.calibrationDayTest.phNumber)
+      }
 
     })
 

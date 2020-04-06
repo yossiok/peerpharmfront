@@ -56,10 +56,6 @@ th, td {
     font-family: "Times New Roman", Times, serif;
   }
 
-  .form-control {
-    border: 1px solid rgb(93, 93, 233);
-    box-shadow: 2px 2px 2px;
-  }
 
   .tableHeader { 
     
@@ -71,11 +67,7 @@ th, td {
     
   }
 
-  input[type="text"] { 
 
-    border: 1px solid rgb(93, 93, 233);
-    box-shadow: 2px 2px 2px;
-  }
   .editInput {
 
     text-align: center;

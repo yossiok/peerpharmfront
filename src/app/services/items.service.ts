@@ -111,6 +111,10 @@ export class ItemsService {
     let url = this.baseUrl + "item/updateItemDetails";
     return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json()))
   }
+  updateItemValues(itemObj) {
+    let url = this.baseUrl + "item/updateItemValues";
+    return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json()))
+  }
   sendExcel(excel) {
     
     let url = this.baseUrl + "item/excelToData";

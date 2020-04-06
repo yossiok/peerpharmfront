@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../taskboard/models/UserInfo';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ItemsService } from 'src/app/services/items.service';
 
 
 
@@ -20,32 +21,48 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 export class BatchesComponent implements OnInit {
   myRefresh: any = null;
 
-  constructor(private modalService:NgbModal,private authService: AuthService, private batchService: BatchesService, private excelService: ExcelService, private toastSrv: ToastrService) { }
+  constructor(private itemService: ItemsService, private modalService: NgbModal, private authService: AuthService, private batchService: BatchesService, private excelService: ExcelService, private toastSrv: ToastrService) { }
   // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
   batches: Array<any>;
   batchesCopy: Array<any>;
   lastBatchToExport: String;
+  userValueUpdate: String;
+  lastValueUpdate: String;
   EditRowId: any = "";
   hasMoreItemsToload: boolean = true;
   currentDoc: any;
   user: UserInfo;
-  alowUserEditBatches:Boolean=false;
-  closeResult:any;
-  batchPrint:any;
+  alowUserEditBatches: Boolean = false;
+  ifConfirmed: Boolean = false;
+  editValues: Boolean = false;
+  closeResult: any;
+  batchPrint: any;
+  item: any;
 
-  batch = { 
-    batchNumber:'',
-    batchStatus:'',
-    barrels:'',
-    expration: '', 
-    item:'',
-    itemName:'', 
-    order:'',
-    ph:'', 
-    produced:'',
+
+  batch = {
+    batchNumber: '',
+    batchStatus: '',
+    barrels: '',
+    expration: '',
+    item: '',
+    itemName: '',
+    order: '',
+    ph: '',
+    produced: '',
     weightQtyLeft: '',
     weightKg: '',
-    color:''
+    color: ''
+
+  }
+
+  itemTree = {
+    phValue: '',
+    viscosityValue: "",
+    colorValue: "",
+    textureValue: "",
+    scentValue: "",
+    densityValue: "",
 
   }
 
@@ -70,39 +87,40 @@ export class BatchesComponent implements OnInit {
     this.getUserInfo();
     this.getAllBatchesYear();
     this.startInterval();
+    this.lastValueUpdate = this.formatDate(new Date());
   }
 
-  addBatch() {  
- 
-    this.batchService.addBatch(this.batch).subscribe(data=>{
+  addBatch() {
+
+    this.batchService.addBatch(this.batch).subscribe(data => {
       this.batches.push(data)
       this.batchesCopy.push(data)
       this.getAllBatches();
       this.toastSrv.success("Batch has been added successfully")
 
-      this.batch = { 
-        batchNumber:'',
-        batchStatus:'',
-        barrels:'',
-        expration: '', 
-        item:'',
-        itemName:'', 
-        order:'',
-        ph:'', 
-        produced:'',
+      this.batch = {
+        batchNumber: '',
+        batchStatus: '',
+        barrels: '',
+        expration: '',
+        item: '',
+        itemName: '',
+        order: '',
+        ph: '',
+        produced: '',
         weightQtyLeft: '',
         weightKg: '',
-        color:''
-    
+        color: ''
+
       }
     })
-    
+
 
   }
 
-  getAllBatches(){
+  getAllBatches() {
     this.batchService.getAllBatches().subscribe((res) => {
-      console.log(res); 
+      console.log(res);
       this.batches = res;
       this.batchesCopy = res;
       this.batches.map(batch => {
@@ -118,22 +136,22 @@ export class BatchesComponent implements OnInit {
       });
     });
   }
- 
-  edit(id) { 
-    if(this.alowUserEditBatches == true) {
-    this.EditRowId = id;
-   
-    if (id != '') {
-      this.currentDoc = this.batches.filter(i => {
-        if (i._id == id) {
-          return i;
-        }
-      })[0];
-    }  else {
-      this.EditRowId = '';
+
+  edit(id) {
+    if (this.alowUserEditBatches == true) {
+      this.EditRowId = id;
+
+      if (id != '') {
+        this.currentDoc = this.batches.filter(i => {
+          if (i._id == id) {
+            return i;
+          }
+        })[0];
+      } else {
+        this.EditRowId = '';
+      }
     }
   }
-}
 
   stopInterval() {
     clearInterval(this.myRefresh)
@@ -145,20 +163,20 @@ export class BatchesComponent implements OnInit {
 
 
   getAllBatchesYear() {
-debugger;
+    debugger;
     this.batchService.getAllBatchesYear().subscribe((res) => {
-      console.log(res); 
+      console.log(res);
       this.batches = res;
       this.batchesCopy = res;
       this.batches.map(batch => {
         if (batch.weightKg != null && batch.weightQtyLeft != null) {
           if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
-         else  if(batch.scheduled == 'yes') batch.color = 'yellow'
-         
+          else if (batch.scheduled == 'yes') batch.color = 'yellow'
+
           else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
-         
+
           else batch.color = "white";
-         
+
           if (res.length == res.length) {
 
             this.hasMoreItemsToload = false;
@@ -169,30 +187,68 @@ debugger;
   }
   private getDismissReason(reason: any): string {
     debugger;
-       if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-       return 'by clicking on a backdrop';
-     } else {
-       return  `with: ${reason}`;
-     }
-   }
+    if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
-  
-openPrint(printBatch,batchNumber) {
-  debugger;
-  this.modalService.open(printBatch, {size: 'sm', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    this.closeResult = `Closed with: ${result}`;
-  }, (reason) => {
-    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  });
-  this.loadDataPrint(batchNumber)
-}
 
-loadDataPrint(batchNumber) { 
-  debugger;
-  var batchToPrint = [];
- batchToPrint = this.batches.find(batch => batch.batchNumber == batchNumber);
- this.batchPrint = batchToPrint
-}
+  openTableValues(specValues, itemNumber) {
+    debugger;
+    this.modalService.open(specValues, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+    this.loadSpecTable(itemNumber)
+  }
+
+
+  loadSpecTable(itemNumber) {
+    debugger;
+    this.itemService.getItemData(itemNumber).subscribe(data => {
+      this.item = data[0]
+
+      if (data[0].valueStatus == 'confirm') {
+        this.ifConfirmed = true;
+      } else {
+        this.ifConfirmed = false;
+      }
+    })
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  openPrint(printBatch, batchNumber) {
+    debugger;
+    this.modalService.open(printBatch, { size: 'sm', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+    this.loadDataPrint(batchNumber)
+  }
+
+  loadDataPrint(batchNumber) {
+    debugger;
+    var batchToPrint = [];
+    batchToPrint = this.batches.find(batch => batch.batchNumber == batchNumber);
+    this.batchPrint = batchToPrint
+  }
 
   filterBatchesBiggerThenBatchN() {
     var excelTable = [];
@@ -201,7 +257,7 @@ loadDataPrint(batchNumber) {
         var lastBatchYear;
         var lastBatchNum;
         var year;
-        var number; 
+        var number;
         if (this.lastBatchToExport.includes("pp")) {
           lastBatchYear = this.lastBatchToExport.split("pp")[0];
           lastBatchNum = this.lastBatchToExport.split("pp")[1];
@@ -268,7 +324,7 @@ loadDataPrint(batchNumber) {
 
           if (!tempArr.includes(b) && check) tempArr.push(b);
         });
-        this.batches = tempArr; 
+        this.batches = tempArr;
       } else {
         this.batches = this.batchesCopy.slice();
       }
@@ -283,7 +339,7 @@ loadDataPrint(batchNumber) {
             tempArr.push(b);
           }
         });
-        this.batches = tempArr; 
+        this.batches = tempArr;
       } else {
         this.batches = this.batchesCopy.slice();
       }
@@ -299,7 +355,7 @@ loadDataPrint(batchNumber) {
     }
   }
 
-  saveEdit(currdoc) { 
+  saveEdit(currdoc) {
     debugger;
     if (this.batchNumber.nativeElement.value && this.batchItemName.nativeElement.value != "") {
 
@@ -311,8 +367,8 @@ loadDataPrint(batchNumber) {
       this.currentDoc.barrels = this.batchBarrels.nativeElement.value.trim();
       this.currentDoc.order = this.batchOrder.nativeElement.value.trim();
       this.currentDoc.item = this.batchItem.nativeElement.value.trim();
-      
-      if(confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
+
+      if (confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
         this.updateDocument()
       }
 
@@ -324,44 +380,76 @@ loadDataPrint(batchNumber) {
 
   }
 
+  saveSpecValues(itemNumber) {
+    debugger;
+    var obj = {
+      date: this.lastValueUpdate,
+      user: this.userValueUpdate
+    }
+    this.item.phValue = this.itemTree.phValue;
+    this.item.viscosityValue = this.itemTree.viscosityValue;
+    this.item.colorValue = this.itemTree.colorValue;
+    this.item.textureValue = this.itemTree.textureValue;
+    this.item.scentValue = this.itemTree.scentValue;
+    this.item.densityValue = this.itemTree.densityValue;
+    this.item.lastUpdatedValues.push(obj)
 
-  updateDocument(){
-   
-    this.batchService.updateBatchesForm(this.currentDoc).subscribe(data =>{
-      this.batches.map(doc=>{
-        if(doc.id == this.currentDoc._id){
-          doc=data;
+    this.itemService.updateItemValues(this.item).subscribe(data => {
+      if (data.msg == 'cantUpdate') {
+        this.toastSrv.error('Cant update after confirmation')
+        this.editValues = false;
+      } else {
+        this.toastSrv.success('עודכן בהצלחה !')
+        this.editValues = false;
+        this.item = data;
+        if (data.valueStatus == 'confirm') {
+        this.ifConfirmed = true
+        } else {
+          this.ifConfirmed = false;
+        }
+
+      }
+    })
+  }
+
+  updateDocument() {
+
+    this.batchService.updateBatchesForm(this.currentDoc).subscribe(data => {
+      this.batches.map(doc => {
+        if (doc.id == this.currentDoc._id) {
+          doc = data;
         }
       });
-      this.batchesCopy.map(doc=>{
-        if(doc.id == this.currentDoc._id){
-          doc=data;
+      this.batchesCopy.map(doc => {
+        if (doc.id == this.currentDoc._id) {
+          doc = data;
         }
       });
-      
-      this.EditRowId=""
+
+      this.EditRowId = ""
       this.toastSrv.success("Details were successfully saved");
     });
   }
 
-  async getUserInfo() { 
+  async getUserInfo() {
     await this.authService.userEventEmitter.subscribe(user => {
-      this.user=user;
+      this.user = user;
+      this.userValueUpdate = user.userName
       // this.user=user.loggedInUser;
       // if (!this.authService.loggedInUser) {
       //   this.authService.userEventEmitter.subscribe(user => {
       //     if (user.userName) {
       //       this.user = user;
-            
+
       //     }
       //   });
       // }
       // else {
       //   this.user = this.authService.loggedInUser;
       // }
-      if (this.user.authorization){ 
-        if (this.authService.loggedInUser.authorization.includes("editBatches")){
-          this.alowUserEditBatches=true;
+      if (this.user.authorization) {
+        if (this.authService.loggedInUser.authorization.includes("editBatches")) {
+          this.alowUserEditBatches = true;
         }
       }
 
