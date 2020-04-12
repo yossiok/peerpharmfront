@@ -280,6 +280,35 @@ export class CheckingformsComponent implements OnInit {
     })
   }
 
+  saveLibra(){
+    var libraCalibration = {
+
+      balanceSerialNum:Number(this.libra.nativeElement.value),
+      libraModel:this.libraModel.nativeElement.value,
+      manufacturerName:this.libraManuName.nativeElement.value,
+      minCarryCapacity:this.libraMinCarryCap.nativeElement.value,
+      maxCarryCapacity:'',
+      weightNumOne:this.libraWeightOne.nativeElement.value,
+      weightNumTwo:this.libraWeightTwo.nativeElement.value,
+      limitsWeightOne:this.libraLimitsOne.nativeElement.value,
+      libraLocation:this.libraLocation.nativeElement.value,
+      useFor:this.libraUseFor.nativeElement.value,
+      futureCalibDate:'',
+      externalOrInternalCalib:this.libraExterOrInter.nativeElement.value,
+      accuracy:this.libraAccuracy.nativeElement.value,
+      lastCalibDate:this.libraLastCalibDate.nativeElement.value,
+      year:this.libraYear.nativeElement.value
+    }
+
+    this.formsService.updateLibra(libraCalibration).subscribe(data=>{
+      if(data){
+        this.allLibraList = data;
+        this.toastSrv.success('Libra updated successfuly')
+      }
+   
+    })
+  }
+
 
   clearLibraFields(){
     this.clearLibra = ''

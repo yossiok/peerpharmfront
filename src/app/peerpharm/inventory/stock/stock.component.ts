@@ -38,6 +38,8 @@ export class StockComponent implements OnInit {
   materialPurchases: any[] = [];
   componentPurchases: any[] = [];
   itemShell:any[];
+  componentsCopy:any[];
+  subscription:any
   materialLocations: any[];
   items:any[];
   allComponentsPurchases:any[];
@@ -338,6 +340,7 @@ export class StockComponent implements OnInit {
  
     await this.getUserAllowedWH();
     this.getAllComponents();
+    // this.getAllComps();
     if(this.route.queryParams){
       this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
@@ -349,7 +352,7 @@ export class StockComponent implements OnInit {
   
 
   }
-
+  
 
   getAllSuppliers() {
     this.supplierService.getAllSuppliers().subscribe(data=>{
@@ -656,10 +659,82 @@ export class StockComponent implements OnInit {
 
 
   }
+
+  // getAllComps(){
+    
+  //   this.subscription = this.inventoryService.startNewItemObservable().subscribe((components) => {
+  //     debugger;
+      
+  //     this.inventoryService.getAllMaterialsArrivals().subscribe(data=>{
+  //       debugger;
+  //       data;
+  //       var count = 0;
+  //       for (let i = 0; i < data.length; i++) {
+  //        for (let j = 0; j < this.componentsUnFiltered.length; j++) {
+  //         if(data[i].internalNumber == this.componentsUnFiltered[j].componentN) {
+  //             this.componentsUnFiltered[j].measureType = data[i].mesureType
+  
+  //             if(this.componentsUnFiltered[j].totalQnt) {
+  //               this.componentsUnFiltered[j].totalQnt = Number(this.componentsUnFiltered[j].totalQnt) + data[i].totalQnt
+  //               if(this.route.snapshot.queryParams.componentN){
+  //                 this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+  //               }
+               
+  //             } else {
+  //               this.componentsUnFiltered[j].totalQnt = data[i].totalQnt
+  //               if(this.route.snapshot.queryParams.componentN){
+  //                 this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+  //               }
+  //             }
+             
+            
+  //         }
+           
+  //        }
+          
+  //       }
+  //     })
+  //     var allPurchases = this.allComponentsPurchases.filter(order=>order.status != 'canceled');
+  //     debugger;
+  //     for (let i = 0; i < allPurchases.length; i++) {
+  //     for (let j = 0; j < allPurchases[i].item.length; j++) {
+  //      for (let k = 0; k < components.length; k++) {
+  //       if(components[k].componentN == allPurchases[i].item[j].itemNumber){
+  //         var obj = {
+  //           purchaseOrder:'',
+  //           purchaseAmount:'',
+  //           purchaseArrival:'',
+  //           purchaseStatus:''
+  //         }
+  //         obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
+  //         obj.purchaseOrder = allPurchases[i].item[j].orderNumber
+  //         obj.purchaseArrival = allPurchases[i].item[j].arrivals
+  //         obj.purchaseStatus = allPurchases[i].status
+  //         components[k].purchaseOrders.push(obj)
+  //       }
+         
+  //      }
+        
+  //     } 
+        
+  //     }
+
+  //     this.components.push(...components); 
+  //     if(components.length<500)
+  //     {
+        
+  //     }
+  //     this.componentsCopy=this.components.slice();
+  //   } );
+  
+  // }
+
+
   getAllComponents() {
     
     debugger;
     this.inventoryService.getAllComponents().subscribe(components => {
+      debugger;
       console.log(components[0]);
 
       this.inventoryService.getAllMaterialsArrivals().subscribe(data=>{
@@ -1525,7 +1600,11 @@ export class StockComponent implements OnInit {
       storageDirections:"",
       permissionDangerMaterials:"",
       frameQuantity:"",
-      frameSupplier:""
+      frameSupplier:"",
+      riskSentence:'',
+      stateOfMatter:'',
+      dangerMaterials:'',
+  
   
     }
   }

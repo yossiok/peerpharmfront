@@ -52,6 +52,11 @@ export class InventoryService {
     let url = this.baseUrl + "material/getAllMaterials";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllExpiredArrivals():Observable<any>{
+    
+    let url = this.baseUrl + "material/getAllExpiredArrivals";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllMaterialLocations():Observable<any>{
     
     let url = this.baseUrl + "material/allMaterialLocations";
@@ -232,6 +237,35 @@ addNewRecommendation(purchaseRecommend):Observable<any>{
   }
 
 
+
+  startNewItemObservable() { 
+    let itemResultObservable: Observable<any[]> = new Observable(observer => {
+      let self=this;
+      let skip = 0;
+      let limit = 500;
+      startNewCall(skip, limit);
+      function startNewCall(skip, limit) {
+        let url="/component?skip=" + skip + "&limit=" + limit; 
+        console.log("new call=> "+url);
+        self.http.get(url).subscribe(response => { 
+          let items = <any[]>response.json();
+          skip = skip + 500;   
+          if (items.length > 0) {
+            console.log("got items bigger than 0");
+            observer.next(items);
+            startNewCall(skip, limit);
+          }
+          else {
+            console.log("complete!!");
+            observer.complete();
+          }
+        })
+
+      }
+    });
+
+    return itemResultObservable;
+  }
 
   
 

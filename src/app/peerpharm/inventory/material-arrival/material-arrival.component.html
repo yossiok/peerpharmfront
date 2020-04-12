@@ -1,6 +1,42 @@
 
 <ngb-tabset #tabset="ngbTabset" justify="end"  (tabChange)="beforeChange($event)" [activeId]="activeTabId" >
 
+
+  <ngb-tab id="tab-selectbyid3" style="flex-direction:row-reverse; " >
+    <ng-template ngbTabTitle ><b>חו"ג פג תוקף</b></ng-template>
+    <ng-template ngbTabContent>
+     <div class="container-fluid text-center">
+       <div class="row">
+          <div class="col-12">
+            <table class="table table-hover table-striped">
+              <thead class="bg-primary text-white">
+                <tr>
+                  <th>#</th>
+                  <th>מספר פריט</th>
+                  <th>שם חו"ג</th>
+                  <th>מיקום</th>
+                  <th>אצווה</th>
+                  <th>תאריך תפוגה</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let arrival of allExpired;let i = index">
+                  <td>{{i+1}}</td>
+                  <td>{{arrival.materialName}}</td>
+                  <td>{{arrival.internalNumber}}</td>
+                  <td>{{arrival.position}}</td>
+                  <td>{{arrival.lotNumber}}</td>
+                  <td>{{arrival.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+       </div> 
+     </div>
+    </ng-template>
+  </ngb-tab>
+
+
   <ngb-tab id="tab-selectbyid2" style="flex-direction:row-reverse; " >
     <ng-template ngbTabTitle ><b>כניסות חו"ג</b></ng-template>
     <ng-template ngbTabContent>
@@ -307,12 +343,15 @@
 
                         <label >שם ספק</label>
         
-                        <input class="form-control is-valid" #supplierNameInput type="text" placeholder="Search.." formControlName="supplierName" name='supplierName' (keyup)="filterSuppliers(supplierNameInput.value)">
-                        <ul *ngIf="supplierNameInput.value !=''" class="list-group" id="myList" style="overflow-y: scroll; max-height: 200px;">
+                        <select (change)="filterSuppliers()" list="suppliers" class="form-control is-valid" #supplierNameInput type="text" placeholder="Search.." formControlName="supplierName" name='supplierName' >
+                          <option  *ngFor="let supplier of suppliers" [value]="supplier.suplierName">{{supplier.suplierName}}</option>
+                        </select>
+      
+                        <!-- <ul *ngIf="supplierNameInput.value !=''" class="list-group" id="myList" style="overflow-y: scroll; max-height: 200px;">
                           <li *ngFor="let sup of suppliersList; "
                           class="list-group-item" (click)="chooseSupplierFromList(sup)" style="cursor:pointer;">{{sup.suplierName}}</li>
                         </ul>  
-                        
+                         -->
                       </div>  
                       <div class="col-sm-2">
                         <label >מספר הזמנת רכש</label>
@@ -416,6 +455,7 @@
 
     </ng-template>
   </ngb-tab>
+
 
 </ngb-tabset>
 

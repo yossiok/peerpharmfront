@@ -23,6 +23,11 @@ export class FormsService {
     let url = this.baseUrl + "forms/addNewLibra";
     return this.http.post(url, JSON.stringify(newlibra), this.options).pipe(map(res => res.json()));
   }
+  updateLibra(libra){
+    debugger;
+    let url = this.baseUrl + "forms/updateLibra";
+    return this.http.post(url, JSON.stringify(libra), this.options).pipe(map(res => res.json()));
+  }
   addNewPHToCalWeek(newph){
     debugger;
     let url = this.baseUrl + "forms/addNewPHToCalWeek";

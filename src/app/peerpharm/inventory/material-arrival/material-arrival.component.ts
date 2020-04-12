@@ -30,6 +30,7 @@ export class MaterialArrivalComponent implements OnInit {
  
 
   materialsLocations:any[];
+  allExpired:any[];
   screenHeight: number;
   activeTabId: String ;
   dateStr: String ;
@@ -162,6 +163,8 @@ approvedPackgeRemarksInput: Boolean=false;
    }
   ngOnInit() {
 
+
+    this.getAllExpiredMaterials();
     this.getAllMaterialsLocations();
     // this.user =   this.authService.loggedInUser;
     this.authService.userEventEmitter.subscribe(data => { 
@@ -242,6 +245,12 @@ approvedPackgeRemarksInput: Boolean=false;
     }
   }
 
+  getAllExpiredMaterials(){
+    this.invtSer.getAllExpiredArrivals().subscribe(data=>{
+      this.allExpired = data;
+    })
+  }
+
   getAllMaterialsLocations(){
     this.invtSer.getAllMaterialLocations().subscribe(data=>{
       this.materialsLocations = data;
@@ -273,19 +282,19 @@ approvedPackgeRemarksInput: Boolean=false;
     this.newMaterialArrival.controls.user.setValue(this.user)
   }
 
-  filterSuppliers(input){
-    
-    if(input !=""){
-      let inputVal= input.toLowerCase();
-      this.suppliersList= this.suppliers.filter(sup=> {
-          if(sup.suplierName.toLowerCase().includes(inputVal)) {
-            return sup;
-          } 
-        });
-      }    
+  filterSuppliers(){
+      debugger;
+      var supplierName = this.supplierNameInput.nativeElement.value;
+      
+      var supplier = this.suppliers.find(s=>s.suplierName == supplierName)
+      this.newMaterialArrival.controls.supplierNumber.setValue(supplier.suplierNumber)
+      
   }
 
   filterSupplierItems(input){
+    debugger;
+
+  
     if(input !=""){
       let inputVal= input.toLowerCase();
       this.supplierItemsList= this.supplierItemsListCopy.filter(item=> { 
@@ -296,28 +305,28 @@ approvedPackgeRemarksInput: Boolean=false;
       }    
   }
 
-  chooseOnlySupplier(){
-    this.newMaterialArrival.controls.supplierNumber.setValue(this.supplierModalInfo.suplierNumber);
-    this.newMaterialArrival.controls.supplierName.setValue(this.supplierModalInfo.suplierName);
-    this.suppliersList=[];
-  }
+  // chooseOnlySupplier(){
+  //   this.newMaterialArrival.controls.supplierNumber.setValue(this.supplierModalInfo.suplierNumber);
+  //   this.newMaterialArrival.controls.supplierName.setValue(this.supplierModalInfo.suplierName);
+  //   this.suppliersList=[];
+  // }
 
-  chooseSupplierFromList(sup){
+  // chooseSupplierFromList(sup){
     
-    this.supplierModalHeader= "פריטים של ספק "+sup.suplierNumber+"\n";
-    this.supplierModalInfo=sup;
-    this.chooseOnlySupplier();
-    this.invtSer.getItemsBySupplierNum(sup.suplierNumber).subscribe(stockItems=>{
-      if(stockItems.length>0){  
-        this.supplierItemsList= stockItems;
-        this.supplierItemsListCopy= stockItems;
-        //open modal to choose item
-        this.openSearch(this.modal1);
-      } else{
-          this.toastSrv.error("supplier don't have items")
-      }
-    });
-  }
+  //   this.supplierModalHeader= "פריטים של ספק "+sup.suplierNumber+"\n";
+  //   this.supplierModalInfo=sup;
+  //   this.chooseOnlySupplier();
+  //   this.invtSer.getItemsBySupplierNum(sup.suplierNumber).subscribe(stockItems=>{
+  //     if(stockItems.length>0){  
+  //       this.supplierItemsList= stockItems;
+  //       this.supplierItemsListCopy= stockItems;
+       
+  //       this.openSearch(this.modal1);
+  //     } else{
+  //         this.toastSrv.error("supplier don't have items")
+  //     }
+  //   });
+  // }
   
 
   createBarcode(){
@@ -331,8 +340,7 @@ approvedPackgeRemarksInput: Boolean=false;
           this.toastSrv.error("Can't find item number")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         }else if(item.length ==1){
           this.newMaterialArrival.controls.materialName.setValue(item[0].componentName);
-          this.newMaterialArrival.controls.supplierNumber.setValue(item[0].suplierN);
-          this.newMaterialArrival.controls.supplierName.setValue(item[0].suplierName);
+
           if(item[0].unit!="" && item[0].unit!=undefined && item[0].unit!=null ){
             // console.log(this.newMaterialArrival.value.mesureType)
             this.newMaterialArrival.controls.mesureType.setValue(item[0].unit);

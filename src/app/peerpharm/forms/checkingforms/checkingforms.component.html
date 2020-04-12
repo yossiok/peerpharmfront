@@ -83,7 +83,7 @@
             <label>PH 4</label>
           </div>
           <div class="col-2">
-            <label>PH Ten</label>
+            <label>PH 10</label>
           </div>
           <div class="col-1">
             <label>Normalcy</label>
@@ -216,6 +216,7 @@
           </div>
           <div class="col-1">
             <button (click)="addNewLibra()" class="form-control btn btn-primary">Add Libra</button>
+            <button (click)="saveLibra()" class="form-control btn btn-primary">Save Libra</button>
           
           </div>
         </div>
@@ -313,19 +314,23 @@
             <input class="form-control" [(ngModel)]="waterTest.date" type="date"/>
             <input class="form-control"  [(ngModel)]="waterTest.tdsCheck" type="text" />
             <input class="form-control"  [(ngModel)]="waterTest.phCheck" type="text" />
-            <input class="form-control"  [(ngModel)]="waterTest.saltInTank" type="text">
+            <select class="form-control"  [(ngModel)]="waterTest.saltInTank" > 
+              <option value="exist">קיים</option>
+              <option value="notExist">לא קיים</option>
+            </select>
           </div>
           <div class="col-2">
             
             <label class="form-control">בדיקת צלילות וצבע</label>
             <label class="form-control">בדיקת קשיות</label>
-            <label class="form-control">בדיקת מוליכות</label>
             <label class="form-control">חתימה</label>
           </div>
           <div class="col-3">
-          <input class="form-control" [(ngModel)]="waterTest.clearAndColor" type="text"/>
+            <select class="form-control"  [(ngModel)]="waterTest.clearAndColor" > 
+              <option value="ok">תקין</option>
+              <option value="notOk">לא תקין</option>
+            </select>
           <input class="form-control" [(ngModel)]="waterTest.hardness" type="text" />
-          <input class="form-control" [(ngModel)]="waterTest.pressureTest" type="text"/>
           <input class="form-control" [(ngModel)]="waterTest.signature" type="text"/>
           </div>
  
@@ -349,7 +354,6 @@
                   <th style="font-weight: bold;">בדיקת המצאות מלח במיכל</th>
                   <th style="font-weight: bold;">בדיקת צלילות וצבע</th>
                   <th style="font-weight: bold;">בדיקת קשיות (אחת לשבוע)</th>
-                  <th style="font-weight: bold;">בדיקת מוליכות</th>
                   <th style="font-weight: bold;">בדיקת PH</th>
                   <th style="font-weight: bold;border-bottom: none;"></th>
                   <th style="font-weight: bold;border-bottom: none;"></th>
@@ -360,7 +364,6 @@
                   <th>(ויזואלי)</th>
                   <th>(ויזואלי)</th>
                   <th>Mol/m<sup>3</sup></th>
-                  <th>MΩ*CM</th>
                   <th></th>
                   <th style="border-top:none;border-bottom: none;">חתימה</th>
                   <th style="border-top:none;border-bottom: none;">הערות</th>
@@ -371,7 +374,6 @@
                   <th>קיים</th>
                   <th>Clear,Colorless </th>
                   <th>0.7> </th>
-                  <th>50> </th>
                   <th>6.0-8.0</th>
                   <th style="border-top:none"></th>
                   <th style="border-top:none"></th>
@@ -424,7 +426,10 @@
             <input class="form-control" [(ngModel)]="waterTest.date" type="date"/>
             <input class="form-control"  [(ngModel)]="waterTest.tdsCheck" type="text" />
             <input class="form-control"  [(ngModel)]="waterTest.phCheck" type="text" />
-            <input class="form-control"  [(ngModel)]="waterTest.saltInTank" type="text">
+            <select class="form-control"  [(ngModel)]="waterTest.saltInTank" > 
+              <option value="exist">קיים</option>
+              <option value="notExist">לא קיים</option>
+            </select>
           </div>
           <div class="col-2">
             
@@ -437,7 +442,12 @@
           <input class="form-control" [(ngModel)]="waterTest.clearAndColor" type="text"/>
           <input class="form-control" [(ngModel)]="waterTest.hardness" type="text" />
           <input class="form-control" [(ngModel)]="waterTest.pressureTest" type="text"/>
-          <input class="form-control" [(ngModel)]="waterTest.signature" type="text"/>
+          <select class="form-control"  [(ngModel)]="waterTest.clearAndColor" > 
+            <option value="ok">תקין</option>
+            <option value="notOk">לא תקין</option>
+          </select>
+
+          
           </div>
  
         </div>
