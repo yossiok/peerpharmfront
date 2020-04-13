@@ -373,6 +373,7 @@
                         <option value="Pallet">Pallet</option>
                       </select> 
                     </div>
+                    
                     <div *ngIf="production==false" class="productionLabel">
                       <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="production==false && alowUserEditItemTree==true"></i>
@@ -400,6 +401,7 @@
                           <option value="Pallet">Pallet</option>
                         </select> 
                     </div>
+                     
                     <div *ngIf="productionTwo==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionTwo==false && alowUserEditItemTree==true"></i>
@@ -709,6 +711,7 @@
                 <div class="col-2">
                   <div>
                     <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcs" style="width:90px" *ngIf="production==true" class="productionInput">
+                    <button *ngIf="production==true" class="btn btn-success" (click)="findInInventory(itemShown.bottleNumber)">Inv</button>
                   </div>
                   <div *ngIf="production==false">
                     <p style="opacity: 0">---</p>
@@ -716,6 +719,7 @@
 
                   <div>
                     <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsTwo" style="width:90px" *ngIf="productionTwo==true" class="productionInput">
+                    <button *ngIf="productionTwo==true" class="btn btn-success" (click)="findInInventory(itemShown.capNumber)">Inv</button>
                   </div>
                   <div *ngIf="productionTwo==false">
                     <p style="opacity: 0">---</p>
@@ -723,6 +727,7 @@
 
                   <div>
                     <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsThree" style="width:90px" *ngIf="productionThree==true" class="productionInput">
+                    <button *ngIf="productionThree==true" class="btn btn-success" (click)="findInInventory(itemShown.pumpNumber)">Inv</button>
                   </div>
                   <div *ngIf="productionThree==false">
                     <p style="opacity: 0">---</p>
@@ -730,6 +735,7 @@
 
                   <div>
                     <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsFour" style="width:90px" *ngIf="productionFour==true" class="productionInput">
+                    <button  *ngIf="productionFour==true" class="btn btn-success" (click)="findInInventory(itemShown.sealNumber)">Inv</button>
                   </div>
                   <div *ngIf="productionFour==false">
                     <p style="opacity: 0">---</p>

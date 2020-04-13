@@ -535,6 +535,12 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
+  findInInventory(componentN) {
+
+
+window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='+componentN)
+  }
+
 
   getAllCostumers(){
     this.costumersService.getAllCostumers().subscribe(data=>{
