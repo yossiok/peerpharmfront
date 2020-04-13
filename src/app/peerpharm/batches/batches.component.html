@@ -269,26 +269,23 @@
                 </tr>
                 <tr>
                   <td>{{item.colorRemarks}}</td>
-                  <td>{{item.colorLimitsMin}}</td>
-                  <td>{{item.colorLimitsMax}}</td>
-                  <td *ngIf="editValues == false">{{item.colorValue}}</td>
-                  <td *ngIf="editValues == true"><input [(ngModel)]="itemTree.colorValue" type="text"></td>
+                  <td colspan="3" *ngIf="editValues == false">{{item.colorValue}}</td>
+                  <td colspan="3" *ngIf="editValues == true"><input [(ngModel)]="itemTree.colorValue" type="text"></td>
                   <td class="bg-light">צבע</td>
                 </tr>
                 <tr>
                   <td>{{item.textureRemarks}}</td>
-                  <td>{{item.textureLimitsMin}}</td>
-                  <td>{{item.textureLimitsMax}}</td>
-                  <td *ngIf="editValues == false">{{item.textureValue}}</td>
-                  <td *ngIf="editValues == true"><input [(ngModel)]="itemTree.textureValue" type="text"></td>
+                  <td colspan="3" *ngIf="editValues == false">{{item.textureValue}}</td>
+                  <td colspan="3" *ngIf="editValues == true"><input [(ngModel)]="itemTree.textureValue" type="text"></td>
                   <td class="bg-light">מרקם</td>
                 </tr>
                 <tr>
                   <td>{{item.scentRemarks}}</td>
-                  <td>{{item.scentLimitsMin}}</td>
-                  <td>{{item.scentLimitsMax}}</td>
-                  <td *ngIf="editValues == false">{{item.scentValue}}</td>
-                  <td *ngIf="editValues == true"><input [(ngModel)]="itemTree.scentValue" type="text"></td>
+                  <td colspan="3" *ngIf="editValues == false">{{item.scentValue}}</td>
+                  <td colspan="3" *ngIf="editValues == true"><select [(ngModel)]="itemTree.scentValue" >
+                    <option value="normal">Normal</option>
+                    <option value="notNormal">Not Normal</option>
+                  </select></td>
                   <td class="bg-light">ריח</td>
                 </tr>
               </tbody>

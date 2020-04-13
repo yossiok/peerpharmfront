@@ -439,13 +439,14 @@
             <label class="form-control">חתימה</label>
           </div>
           <div class="col-3">
-          <input class="form-control" [(ngModel)]="waterTest.clearAndColor" type="text"/>
+            <select class="form-control"  [(ngModel)]="waterTest.clearAndColor" > 
+              <option value="ok">תקין</option>
+              <option value="notOk">לא תקין</option>
+            </select>
           <input class="form-control" [(ngModel)]="waterTest.hardness" type="text" />
           <input class="form-control" [(ngModel)]="waterTest.pressureTest" type="text"/>
-          <select class="form-control"  [(ngModel)]="waterTest.clearAndColor" > 
-            <option value="ok">תקין</option>
-            <option value="notOk">לא תקין</option>
-          </select>
+          <input class="form-control" [(ngModel)]="waterTest.signature" type="text"/>
+       
 
           
           </div>
@@ -655,31 +656,47 @@
           <div class="col-3">
             <label>תאריך</label>
           </div>
-          <div class="col-3">
-            <label>תוצאת אימות כיול</label>
+          <div class="col-2">
+            <label>PH Seven</label>
           </div>
-          <div class="col-3">
+          <div class="col-2">
+            <label>PH Four</label>
+          </div>
+          <div class="col-2">
+            <label>PH Ten</label>
+          </div>
+          <div class="col-1">
             <label>תקינות</label>
           </div>
-          <div class="col-3">
+          <div class="col-2">
             <label>חתימה</label>
           </div>
  
         </div>
         <div class="row text-center p-2">
           <div class="col-3">
-            <input class="form-control" type="date" [(ngModel)]="calibrationDayTest.date">
+            <input type="date" class="form-control" [(ngModel)]="calibrationDayTest.date">
           </div>
-          <div class="col-3">
-            <input class="form-control" type="text" [(ngModel)]="calibrationDayTest.calibrationResult">
+          <div class="col-2">
+            <input type="text" class="form-control" [(ngModel)]="calibrationDayTest.phSeven" placeholder="PH=7
+           גבולות 0.6 +- PH">
           </div>
-          <div class="col-3">
-            <input class="form-control" type="checkbox" [(ngModel)]="calibrationDayTest.normalcy">
+          <div class="col-2">
+            <input type="text" class="form-control" [(ngModel)]="calibrationDayTest.phFour" placeholder="PH=4
+           גבולות 0.6 +- PH">
           </div>
-          <div class="col-3">
-            <input class="form-control" type="text" [(ngModel)]="calibrationDayTest.signature">
+          <div class="col-2">
+            <input type="text" class="form-control" [(ngModel)]="calibrationDayTest.phTen" placeholder="PH=10
+           גבולות 0.6 +- PH">
+          </div>
+          <div class="col-1">
+            <input type="checkbox" class="form-control" [(ngModel)]="calibrationDayTest.normalcy">
+          </div>
+          <div class="col-2">
+            <input type="text" class="form-control" [(ngModel)]="calibrationDayTest.signature">
           </div>
         </div>
+
 
         <div class="row text-center p-2">
           <div class="col-12">
@@ -693,8 +710,9 @@
               <thead class="bg-dark text-white">
                 <tr>
                   <th>תאריך</th>
-                  <th>תוצאות אימות כיול PH=4,7,10 <br>
-                    גבולות +- 0.3 </th>
+                  <th>PH 4</th>
+                  <th>PH 7</th>
+                  <th>PH 10</th>
                   <th>תקינות</th>
                   <th>חתימה</th>
                   <th>הערות</th>
@@ -703,7 +721,9 @@
               <tbody>
                 <tr *ngFor="let test of allCalibrationDayTests">
                   <td>{{test.date | date: 'dd/MM/yyyy'}}</td>
-                  <td>{{test.calibrationResult}}</td>
+                  <td>{{test.phFour}}</td>
+                  <td>{{test.phSeven}}</td>
+                  <td>{{test.phTen}}</td>
                   <td>{{test.normalcy}}</td>
                   <td>{{test.signature}}</td>
                   <td *ngIf="test._id!==EditRowId" style="width: 300px;" (click)="edit(test._id)">{{test.remarks}}</td>

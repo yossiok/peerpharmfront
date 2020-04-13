@@ -27,6 +27,24 @@ export class SuppliersComponent implements OnInit {
   suppliersOrderItems:any[];
   suppliersOrderItemsCopy:any[];
   hasMoreItemsToload: boolean = true;
+  updateSupplier: boolean = false;
+  currentSupplier = {
+    suplierNumber: '',
+    suplierName: '',
+    address: '',
+    city: '',
+    phoneNum: '',
+    cellularNum: '',
+    faxNum: '',
+    lastUpdated: '',
+    country:'',
+    email:'',
+    contactName:'',
+    currency:'',
+    remarks:'',
+    alternativeSupplier:this.alterSupplierArray,
+    items:[],
+  }
 
   supplier = {
     suplierNumber: '',
@@ -45,6 +63,7 @@ export class SuppliersComponent implements OnInit {
     alternativeSupplier:this.alterSupplierArray,
     items:[],
   }
+
 
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -304,34 +323,28 @@ setType(type) {
     
   }
 
-  async openData(supplierN) {
-    debugger;
-
-    this.supplier = this.suppliers.find(supplier => supplier.suplierNumber == supplierN);
-    this.loadSuppliers();
-    this.modalService.open(supplierN).result.then((result) => {
-      console.log(result);
-      if (result == 'Saved') {
-        this.saveSupplier();
-      }
+  openData(supplierNumber){
+  debugger;
+    this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data=>{
+      if(data){
+        this.currentSupplier = data[0]
+        this.updateSupplier = true
+      }     
     })
   }
 
-  loadSuppliers() {
-    
-    // this.resCmpt.componentType=  this.stockType;
-    if (this.supplier.suplierNumber != '') {
-      this.supplierService.getSuppliersByNumber(this.supplier.suplierNumber).subscribe(res => {
-        // if (res.length > 0) {
-        //   this.supplier.items = res;
-        // } else
-        //   this.supplier.items = [];
-
-      });
-    } else {
-      this.toastSrv.error('Item type error \nPlease refresh screen.');
+  updateCurrSupplier(){
+    this.supplierService.updateCurrSupplier(this.currentSupplier).subscribe(data=>{
+  debugger;
+    if(data){
+      this.toastSrv.success('ספק עודכן בהצלחה !');
+      this.updateSupplier = false;
+      this.getSuppliers();
     }
+    })
   }
+
+
 
   exportAsXLSX():void {
     this.excelService.exportAsExcelFile(this.suppliersOrderItems, 'sample');

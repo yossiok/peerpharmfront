@@ -1,13 +1,9 @@
-
+<!-- 
 <div (click)='setType("suppliers")'   class="navtab"
 style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30px;margin-right:10px;padding:5px">Suppliers</div>
 <div (click)='setType("supplierReports")'  class="navtab"
-style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30px;padding:5px">Suppliers Reports</div><br><br>
+style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30px;padding:5px">Suppliers Reports</div><br><br> -->
 
-<div *ngIf="tableType=='suppliers'">
-<img  src='assets/images/add.png' style='width:50px; cursor: pointer;' (click)="open(content)">
-<input type="text" style="width:200px;margin-left:15px;" placeholder="Search Supplier By Name" (change)="changeText($event)"/>
-</div>
 
 <div *ngIf="tableType=='supplierReports'">
   <input type="text" style="width:200px;" placeholder="Search Supplier By Name" (change)="searchName($event)"/>
@@ -23,81 +19,107 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
     </div>
   </div>
 
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Suppliers">
 
-<table *ngIf="tableType=='suppliers'" class='table'>
-  <thead class='tableHeader  text-center text-white'>
+      <div class="container-fluid bg-light p-2">
+        <div class="row p-2 mt-2 text-center">
+          <div class="col-4">
+            <input  class="form-control w-50" type="text" placeholder="Search Supplier By Name" (change)="changeText($event)"/>
+          </div>
+          <div class="col-4">
+            <h3 class="text-primary">Suppliers</h3>
+          </div>
+          <div class="col-4">
+            <button style="float:right" class="form-control btn btn-primary w-50" (click)="open(content)">Add Supplier</button>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <table *ngIf="tableType=='suppliers'" class='table table-hover table-striped'>
+              <thead class="bg-primary text-center text-white">
+            
+                <tr>
+                  <th>#</th>
+                  <th>Supplier Number</th>
+                  <th>Name</th>
+                  <th>Currency</th>
+                  <th>Address</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                <tr *ngFor="let supplier of suppliers; let i=index;">
+                  <td>{{i}}</td>
+                  <td (click)="openData(supplier.suplierNumber)">{{supplier.suplierNumber}}</td>
+                  <td>{{supplier.suplierName}}</td>
+                  <td>{{supplier.currency}}</td>
+                  <td>{{supplier.city}} , {{supplier.address}}</td>
+                  <td>{{supplier.email}}</td>
+                  <td>{{supplier.phoneNum}}</td>
+                  <td>{{supplier.remarks}}</td>
+            
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-    <tr>
-      <th>#</th>
-      <th>Supplier Number</th>
-      <th>Name</th>
-      <th>Alternative Supplier</th>
-      <th>Address</th>
-      <th>Email</th>
-      <th>Phone</th>
-      <th>Remarks</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="table_body">
-    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-      *ngFor="let supplier of suppliers; let i=index;">
-      <td>{{i}}</td>
-      <td (click)="openData(supplier.suplierNumber)">{{supplier.suplierNumber}}</td>
-      <td>{{supplier.suplierName}}</td>
-      <td>
-        <div *ngFor="let altsup of supplier.alternativeSupplier">{{altsup}}</div>
-     </td>
-      <td>{{supplier.city}} , {{supplier.address}}</td>
-      <td>{{supplier.email}}</td>
-      <td>{{supplier.phoneNum}}</td>
-      <td>{{supplier.remarks}}</td>
+    </mat-tab>
+    <mat-tab label="Supplier's Reports">
 
-    </tr>
-  </tbody>
-</table>
+    </mat-tab>
+  </mat-tab-group>
 
-<table *ngIf="tableType=='supplierReports'" class='table'>
-  <thead class='tableHeader  text-center text-white'>
-
-    <tr>
-      <th>#</th>
-      <th>Supplier Name</th>
-      <th>Item Name</th>
-      <th>Item Number</th>
-      <th>Order Date</th>
-      <th>Quantity</th>
-      <th>Price</th>
-      <th>Total Payment</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="table_body">
-    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-      *ngFor="let suppOrder of suppliersOrderItems; let i=index;">
-      <td>{{i}}</td>
-      <td>{{suppOrder.supplierName}}</td>
-      <td>{{suppOrder.itemName}}</td>
-      <td>{{suppOrder.itemNumber}}</td>
-      <td>{{suppOrder.orderDate}}</td>
-      <td>{{suppOrder.orderQnt}}</td>
-      <td>{{suppOrder.price}}</td>
-      <td>{{suppOrder.totalPayment}}</td>
-
-    </tr>
-  </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
+<div style="top:150px;" *ngIf="updateSupplier == true" class="container fixed-top mx-auto my-auto text-center bg-light rounded p-3 shadow border border-primary">
+<div class="row mt-3">
+  <div class="col-12">
+    <h3 class="text-primary">Update Supplier</h3>
+  </div>
+</div>
+<div class='row mt-3'>
+  <div class="col-3">    
+    <label class="form-control">Name</label>
+    <label class="form-control">Number</label>
+    <label class="form-control">Address</label>
+    <label class="form-control">City</label>
+    <label class="form-control">Phone Number</label>
+    <label class="form-control">Cell Number</label>
+  </div>
+  <div class="col-3">
+  <input type="text" class="form-control" [(ngModel)]="currentSupplier.suplierNumber">
+  <input type="text" class="form-control" [(ngModel)]="currentSupplier.suplierName">
+  <input type="text" class="form-control" [(ngModel)]="currentSupplier.address">
+  <input type="text" class="form-control" [(ngModel)]="currentSupplier.city">
+  <input type="text" class="form-control" [(ngModel)]="currentSupplier.phoneNum">
+  <input type="text" class="form-control" [(ngModel)]="currentSupplier.cellularNum">
+  </div>
+  <div class="col-3">
+    <label class="form-control">Fax Number</label>
+    <label class="form-control">Country</label>
+    <label class="form-control">Email</label>
+    <label class="form-control">Contact</label>
+    <label class="form-control">Currency</label>
+    <label class="form-control">Remarks</label>
+  </div>
+  <div class="col-3">
+    <input type="text" class="form-control" [(ngModel)]="currentSupplier.faxNum">
+    <input type="text" class="form-control" [(ngModel)]="currentSupplier.country">
+    <input type="text" class="form-control" [(ngModel)]="currentSupplier.email">
+    <input type="text" class="form-control" [(ngModel)]="currentSupplier.contactName">
+    <input type="text" class="form-control" [(ngModel)]="currentSupplier.currency">
+    <input type="text" class="form-control" [(ngModel)]="currentSupplier.remarks">
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-12">
+    <button (click)="updateCurrSupplier()" class="btn w-50 btn-primary form-control">Update</button>
+  </div>
+</div>
+</div>
 
 
 <ng-template #content let-c="close" let-d="dismiss">

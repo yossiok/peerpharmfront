@@ -305,12 +305,8 @@
           </div>
           <div class="modal-footer">
             <tr>
-              <td><input (change)="fillMaterialNumber($event)" list="materials" class="form-control" placeholder="Item Name" [(ngModel)]="newItem.itemName" type="text"></td>
-              <datalist id="materials">
-                <option *ngFor="let material of allMaterials" [value]="material.componentName" >{{material.componentName}}</option>
-
-              </datalist>
-              <td><input class="form-control" placeholder="Item Number" [(ngModel)]="newItem.itemNumber" type="text"></td>
+              <td><input  class="form-control" placeholder="Item Name" [(ngModel)]="newItem.itemName" type="text"></td>
+              <td><input (change)="fillMaterialName($event)" class="form-control" placeholder="Item Number" [(ngModel)]="newItem.itemNumber" type="text"></td>
               <td><input class="form-control" placeholder="Item Remarks" [(ngModel)]="newItem.remarks" type="text"></td>
               <td><select class="form-control"  [(ngModel)]="newItem.measurement" class="form-control custom-select">
                 <option value="kg">kg</option>''ג'

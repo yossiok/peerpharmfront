@@ -1573,7 +1573,12 @@
                                   <tr style="padding: 0rem !important"> 
                                     <td *ngIf="editSpecTable==false">{{itemShown.spinSpeed}}</td>
                                     <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinSpeed" class="form-control" type="number"></td>
-                                    <td style="padding: 0rem !important;font-size: 11px;">מהירות סיבוב %</td>
+                                    <td style="padding: 0rem !important;font-size: 11px;">מהירות סיבוב</td>
+                                  </tr>
+                                  <tr style="padding: 0rem !important"> 
+                                    <td *ngIf="editSpecTable==false">{{itemShown.percentageResult}}</td>
+                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.percentageResult" class="form-control" type="number"></td>
+                                    <td style="padding: 0rem !important;font-size: 11px;">%</td>
                                   </tr>
                                   <tr style="padding: 0rem !important">
                                     <td *ngIf="editSpecTable==false">{{itemShown.testTemp}}</td>
@@ -1587,31 +1592,22 @@
                           <tr>
                             <td *ngIf="editSpecTable==false">{{itemShown.colorRemarks}}</td>
                             <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.colorLimitsMin}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorLimitsMin" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.colorLimitsMax}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorLimitsMax" class="form-control" type="text"></td>
+                            <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.color}}</td>
+                            <td colspan="2" *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.color" class="form-control" type="text"></td>
                             <td class="bg-warning">צבע</td>
                           </tr>
                           <tr>
                             <td *ngIf="editSpecTable==false">{{itemShown.textureRemarks}}</td>
                             <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.textureRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.textureLimitsMin}}</td>
-                            <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.textureLimitsMin" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.textureLimitsMax}}</td>
-                            <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.textureLimitsMax" class="form-control" type="text"></td>
+                            <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.textureSpec}}</td>
+                            <td colspan="2" *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.textureSpec" class="form-control" type="text"></td>
                             <td class="bg-warning">מרקם</td>
                           </tr>
                           <tr>
                             <td *ngIf="editSpecTable==false">{{itemShown.scentRemarks}}</td>
                             <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.scentRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.scentLimitsMin}}</td>
-                            <td *ngIf="editSpecTable==true"><select [ngModel]="itemShown.scentLimitsMin"  class="form-control">
-                              <option value="normal">Normal</option>
-                              <option value="notNormal">Not Normal</option>
-                            </select></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.scentLimitsMax}}</td>
-                            <td *ngIf="editSpecTable==true"><select [ngModel]="itemShown.scentLimitsMax"  class="form-control">
+                            <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.scentSpec}}</td>
+                            <td colspan="2" *ngIf="editSpecTable==true"><select [(ngModel)]="itemShown.scentSpec"  class="form-control">
                               <option value="normal">Normal</option>
                               <option value="notNormal">Not Normal</option>
                             </select></td>

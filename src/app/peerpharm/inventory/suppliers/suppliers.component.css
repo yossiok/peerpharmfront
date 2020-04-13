@@ -1,15 +1,12 @@
-.tableHeader { 
-    background: rgb(69, 69, 202);
-box-shadow: 2px 2px 2px black;
+
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #7360eebb ;
 }
 
-td { 
-    text-align: center;
+label {
+  margin-bottom: 0;
 }
-.navtab:hover {
-    background-color: lightblue;
-  }
-
   .loader {
     color: #4949db;
     font-size: 90px;

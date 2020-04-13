@@ -269,16 +269,14 @@ export class ItemdetaisComponent implements OnInit {
     spinFieldNum:'',
     modelType:'',
     spinSpeed:'',
+    percentageResult:'',
     testTemp:'',
     colorRemarks:'',
-    colorLimitsMin:'',
-    colorLimitsMax:'',
+    color:'',
     textureRemarks:'',
-    textureLimitsMin:'',
-    textureLimitsMax:'',
+    textureSpec:'',
     scentRemarks:'',
-    scentLimitsMin:'',
-    scentLimitsMax:'',
+    scentSpec:'',
 
   }
 
@@ -996,6 +994,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   async writeItemData() {
+    debugger;
     this.editSpecTable = false;
     if(this.itemShown.status == "production") {
       if(this.authService.loggedInUser.userName == "Sigi" || this.authService.loggedInUser.userName == 'akiva'){
