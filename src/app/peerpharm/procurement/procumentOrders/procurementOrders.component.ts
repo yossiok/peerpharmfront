@@ -626,35 +626,13 @@ export class ProcurementOrdersComponent implements OnInit {
         debugger
       for (let i = 0; i < this.procurementData.length; i++) {
         if(this.procurementData[i].orderNumber == orderNumber) {
-          if(Number(this.procurementData[i].item[index].supplierAmount) > Number(this.procurementData[i].item[index].arrivedAmount)) {
-            this.procurementData[i].item[index].color = 'yellow'
-        
+
             this.procurementData[i].item[index].supplierAmount = orderAmount
             this.procurementData[i].item[index].supplierPrice = supplierPrice
 
             this.toastr.success(" עודכן בהצלחה !")
             this.edit('');
-          }
-          if(Number(this.procurementData[i].item[index].supplierAmount) < Number(this.procurementData[i].item[index].arrivedAmount)) {
-            this.procurementData[i].item[index].color = 'yellow'
-          
-            this.procurementData[i].item[index].supplierAmount = orderAmount
-            this.procurementData[i].item[index].supplierPrice = supplierPrice
-        
-            this.toastr.success(" עודכן בהצלחה !")
-            this.edit('');
-          }
-          if(Number(this.procurementData[i].item[index].supplierAmount) == Number(this.procurementData[i].item[index].arrivedAmount)) {
-            this.procurementData[i].item[index].color = 'lightgreen'
-       
-            this.procurementData[i].item[index].supplierAmount = orderAmount
-            this.procurementData[i].item[index].supplierPrice = supplierPrice
-        
-           
-            this.toastr.success("כמות עודכנה בהצלחה !")
-            this.edit('');
-          }
-        
+      
         }
         
       }
