@@ -66,6 +66,12 @@ export class BatchesComponent implements OnInit {
 
   }
 
+  @ViewChild('colorValue') colorValue: ElementRef;
+  @ViewChild('textureValue') textureValue: ElementRef;
+  @ViewChild('scentValue') scentValue: ElementRef;
+  @ViewChild('viscosityValue') viscosityValue: ElementRef;
+  @ViewChild('densityValue') densityValue: ElementRef;
+  @ViewChild('phValue') phValue: ElementRef;
   @ViewChild('batchNumber') batchNumber: ElementRef;
   @ViewChild('batchProduced') batchProduced: ElementRef;
   @ViewChild('batchItemName') batchItemName: ElementRef;
@@ -76,6 +82,10 @@ export class BatchesComponent implements OnInit {
   @ViewChild('batchBarrels') batchBarrels: ElementRef;
   @ViewChild('batchOrder') batchOrder: ElementRef;
   @ViewChild('batchItem') batchItem: ElementRef;
+
+  
+
+
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -386,12 +396,12 @@ export class BatchesComponent implements OnInit {
       date: this.lastValueUpdate,
       user: this.userValueUpdate
     }
-    this.item.phValue = this.itemTree.phValue;
-    this.item.viscosityValue = this.itemTree.viscosityValue;
-    this.item.colorValue = this.itemTree.colorValue;
-    this.item.textureValue = this.itemTree.textureValue;
-    this.item.scentValue = this.itemTree.scentValue;
-    this.item.densityValue = this.itemTree.densityValue;
+    this.item.phValue = this.phValue.nativeElement.value
+    this.item.viscosityValue = this.viscosityValue.nativeElement.value
+    this.item.colorValue = this.colorValue.nativeElement.value
+    this.item.textureValue =this.textureValue.nativeElement.value
+    this.item.scentValue = this.scentValue.nativeElement.value
+    this.item.densityValue = this.densityValue.nativeElement.value
     this.item.lastUpdatedValues.push(obj)
 
     this.itemService.updateItemValues(this.item).subscribe(data => {

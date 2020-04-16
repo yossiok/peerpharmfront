@@ -1,32 +1,37 @@
-<div class="container">
-  <div class="col-lg-12" style="direction:rtl; text-align:right ">
-    <div class="card">
-      <div class="card-header bg-info">
-        <h4 class="mb-0 text-white">New Purchase</h4>
-      </div>
+<div dir="rtl" class="container rounded bg-light text-center shadow">
+  <div class="row bg-success">
+    <div class="col-12">
+      <h3 class="text-white p-2">New Purchase</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
       <form action="#">
 
-      
+
         <div class="form-body">
-            <h4 class="card-title">Order Details</h4>
-            <div class="row">
-          <div class="col-md-4">
-            <label>ייבוא חוץ</label>
-            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.outOfCountry" type="checkbox" class="form-control"   />
+          <div class="row">
+            <div class="col-md-4">
+              <label>ייבוא חוץ</label>
+              <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.outOfCountry" type="checkbox"
+                class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label>Comax - Order Number</label>
+              <input [ngModelOptions]="{standalone: true}" (change)="checkIfExist()"
+                [(ngModel)]="newProcurement.comaxNumber" type="text" class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label>Order Type</label>
+              <select [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.orderType" type="text"
+                class="form-control">
+                <option value="material">Material</option>''ג'
+                <option value="component">Component</option>
+                <option value="other ">Other</option>
+              </select>
+            </div>
           </div>
-          <div class="col-md-4">
-            <label>Comax - Order Number</label>
-            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.comaxNumber" type="text" class="form-control"   />
-          </div>
-          <div class="col-md-4">
-            <label>Order Type</label>
-            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.orderType" type="text" class="form-control">
-            <option value="material">Material</option>''ג'
-            <option value="component">Component</option>
-            <option value="other ">Other</option>
-            </select>
-          </div>
-        </div>
         </div>
         <hr>
         <div class="card-body">
@@ -34,188 +39,188 @@
         </div>
         <hr />
         <div class="form-body">
-         
+
           <div class="card-body">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group has-success">
                   <label class="control-label">Supplier</label>
-                  <select [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierName"  (change)="findSupplierByNumber($event)" class="form-control custom-select">
-                    <option   *ngFor="let supplier of allSuppliers"  value="{{supplier.suplierName}}">{{supplier.suplierName}}</option>
-                    
-                  </select>
+                  <input list="suppliers" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="newProcurement.supplierName" (change)="findSupplierByNumber($event)"
+                    class="form-control custom-select">
+                  <datalist id="suppliers">
+                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+                      {{supplier.suplierName}}</option>
+                  </datalist>
                 </div>
               </div>
 
               <div class="col-md-6 ">
                 <div class="form-group">
                   <label>Supplier Number</label>
-                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierNumber" type="number" class="form-control"   />
+                  <input [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierNumber" type="number"
+                    class="form-control" />
                 </div>
               </div>
             </div>
-    
+
 
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label">Order Date</label>
-                  <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.outDate" class="form-control" />
+                  <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.outDate"
+                    class="form-control" />
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="control-label">Receiving Date</label>
-                  <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.validDate" class="form-control" />
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="control-label">Remarks</label>
-                  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.remarks" class="form-control" />
+                  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.remarks"
+                    class="form-control" />
                 </div>
               </div>
             </div>
+
 
             <h4 class="card-title mt-5">Item Details</h4>
             <hr>
             <div class="card-body">
-                <div class="row pt-3">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label  class="control-label">Item</label>
-                      <input #itemNumber
-                      [(ngModel)]="newItem.itemNumber"
-                      [ngModelOptions]="{standalone: true}"
-                        type="number"
-                        id="firstName"
-                        class="form-control"
-                        placeholder=""
-                        (change)="findMaterialByNumber()"
-                      />
-                    </div>
+              <div class="row pt-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">Item</label>
+                    <input #itemNumber [(ngModel)]="newItem.itemNumber" [ngModelOptions]="{standalone: true}"
+                      type="number" id="firstName" class="form-control" placeholder=""
+                      (change)="findMaterialByNumber()" />
                   </div>
-                  <div *ngIf="openOrdersModal == true" class="col-md-6">
-                    <h3>שים לב , פריט זה קיים בהזמנות הבאות:</h3>
-                    <div *ngFor="let item of itemExistInOrders">
-                     <b>מספר הזמנה:</b>   {{item.orderNumber}}    <b>מחיר:</b>  {{item.price}}{{item.coin}}     <b>כמות:</b>  {{item.amount}}  <b>סטטוס:</b> {{item.status}}
-                    </div>
+                </div>
+                <div *ngIf="openOrdersModal == true" class="col-md-6">
+                  <h3>שים לב , פריט זה קיים בהזמנות הבאות:</h3>
+                  <div *ngFor="let item of itemExistInOrders">
+                    <b>מספר הזמנה:</b> {{item.orderNumber}} <b>מחיר:</b> {{item.price}}{{item.coin}} <b>כמות:</b>
+                    {{item.amount}} <b>סטטוס:</b> {{item.status}}
                   </div>
-                  <!--/span-->
-                  <div class="col-md-6">
-                    <div class="form-group has-danger">
-                      <label  class="control-label">Name</label>
-                      <input #itemName (change)="fillMaterialNumber($event)"
-                      [(ngModel)]="newItem.itemName" [ngModelOptions]="{standalone: true}" id="lastName"  class="form-control form-control-danger">
+                </div>
+                <!--/span-->
+                <div class="col-md-6">
+                  <div class="form-group has-danger">
+                    <label class="control-label">Name</label>
+                    <input #itemName (change)="fillMaterialNumber($event)" [(ngModel)]="newItem.itemName"
+                      [ngModelOptions]="{standalone: true}" id="lastName" class="form-control form-control-danger">
 
-                      <input type="text"  #itemName  (change)="fillMaterialNumber($event)"  [(ngModel)]="newItem.itemName" [ngModelOptions]="{standalone: true}"   class="form-control form-control-danger"  list="stock">
-<datalist id="stock">
-  <option *ngFor="let material of allMaterials" [value]="material.componentName" >{{material.componentName}}</option>
-</datalist>
-                    </div>
-                  </div>
-                  <!--/span-->
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Item Remarks</label>
-                      <input type="text" [ngModelOptions]="{standalone: true}"  [(ngModel)]="newItem.remarks"  class="form-control">
-                    </div>
+                    <input type="text" #itemName (change)="fillMaterialNumber($event)" [(ngModel)]="newItem.itemName"
+                      [ngModelOptions]="{standalone: true}" class="form-control form-control-danger" list="stock">
+                    <datalist id="stock">
+                      <option *ngFor="let material of allMaterials" [value]="material.componentName">
+                        {{material.componentName}}</option>
+                    </datalist>
                   </div>
                 </div>
-                
-                <!--/row-->
-                <div class="row">
-                  <!--/span-->
-     
-                  <!--/span-->
-    
-                  <div class="col-md-6">
-                    <div class="form-group has-success">
-                      <label class="control-label">Measurement:</label>
-                      <select #measurement [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.measurement" class="form-control custom-select">
-                        <option value="kg">kg</option>''ג'
-                        <option value="liter">liter</option>
-                        <option value="meter">meter</option>
-                        <option value="ml">ml</option>
-                        <option value="unit">Unit</option>
-                        <option value="ton">טון</option>
-                        <option value="unit">יחידה</option>
-                        <option value="box">קופסא</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                          <label class="control-label">Quantity:</label>
-                          <input #supplierAmount [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.supplierAmount" class="form-control" type="number" />
-                        </div>
-                      </div>
-                  </div>
-                  <!--/span-->
-                </div>
-                <div class="row">
-                  <label class="control-label">Coin:</label>
-                  <select #coin [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.coin" class="form-control custom-select">
-                    <option value=""></option>
-                    <option value="usd">USD</option>
-                    <option value="nis">NIS</option>
-                    <option value="gbp">GBP</option>
-                    <option value="eur">EUR</option>
-                    <option value="yen">YEN</option>
-                  </select>
-                </div>
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="control-label">Supplier Price:</label>
-                      <input #supplierPrice [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.supplierPrice" class="form-control" type="number" />
-                    </div>
-                  </div>
-    
-                </div>
-
-                <div class="col-md-3">
-                  <img style="width:40px;" src="../../../../assets/images/add.png" (click)="addItemToProcurement()">
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <table class="table table-bordered">
-                      <thead>
-                        <th>Item Number</th>
-                        <th>Item Name</th>
-                        <th>Qauntity</th>
-                        <th>Measurement</th>
-                        <th>Price</th>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let item of newProcurement.item">
-
-                          <td>{{item.itemNumber}}</td>
-                          <td>{{item.itemName}}</td>
-                          <td>{{item.measurement}}</td>
-                          <td>{{item.supplierAmount}}</td>
-                          <td>{{item.supplierPrice}}</td>
-                          
-                        
-                        </tr>
-                      </tbody>
-                    </table>
+                <!--/span-->
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Item Remarks</label>
+                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.remarks"
+                      class="form-control">
                   </div>
                 </div>
-                <!--/row-->
               </div>
 
+              <!--/row-->
+              <div class="row">
+                <!--/span-->
+
+                <!--/span-->
+
+                <div class="col-md-6">
+                  <div class="form-group has-success">
+                    <label class="control-label">Measurement:</label>
+                    <select #measurement [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.measurement"
+                      class="form-control custom-select">
+                      <option value="kg">kg</option>''ג'
+                      <option value="liter">liter</option>
+                      <option value="meter">meter</option>
+                      <option value="ml">ml</option>
+                      <option value="unit">Unit</option>
+                      <option value="ton">טון</option>
+                      <option value="unit">יחידה</option>
+                      <option value="box">קופסא</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="control-label">Quantity:</label>
+                      <input #supplierAmount [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.supplierAmount"
+                        class="form-control" type="number" />
+                    </div>
+                  </div>
+                </div>
+                <!--/span-->
+              </div>
+              <div class="row">
+                <label class="control-label">Coin:</label>
+                <select #coin [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.coin"
+                  class="form-control custom-select">
+                  <option value=""></option>
+                  <option value="usd">USD</option>
+                  <option value="nis">NIS</option>
+                  <option value="gbp">GBP</option>
+                  <option value="eur">EUR</option>
+                  <option value="yen">YEN</option>
+                </select>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label">Supplier Price:</label>
+                    <input #supplierPrice [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.supplierPrice"
+                      class="form-control" type="number" />
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-3">
+                <img style="width:40px;" src="../../../../assets/images/add.png" (click)="addItemToProcurement()">
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <table class="table table-bordered">
+                    <thead>
+                      <th>Item Number</th>
+                      <th>Item Name</th>
+                      <th>Qauntity</th>
+                      <th>Measurement</th>
+                      <th>Price</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of newProcurement.item">
+
+                        <td>{{item.itemNumber}}</td>
+                        <td>{{item.itemName}}</td>
+                        <td>{{item.measurement}}</td>
+                        <td>{{item.supplierAmount}}</td>
+                        <td>{{item.supplierPrice}}</td>
+
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!--/row-->
+            </div>
+
             <hr />
-    
+
           </div>
-       
- 
+
+
 
           <div class="form-actions">
             <div class="card-body">
@@ -223,13 +228,12 @@
                 <i class="fa fa-check"></i> Confirm
               </button>
               <button type="button" class="btn btn-dark">Cancel</button>
-              
+
             </div>
           </div>
         </div>
       </form>
     </div>
   </div>
+
 </div>
-
-

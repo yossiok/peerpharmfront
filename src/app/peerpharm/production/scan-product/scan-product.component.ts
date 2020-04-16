@@ -99,6 +99,7 @@ export class ScanProductComponent implements OnInit {
             if(data){
               this.materialArrivals = data
               this.showTable = true;
+              this.positionForAll = '';
             }
         
             })

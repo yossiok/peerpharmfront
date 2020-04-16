@@ -222,7 +222,7 @@
                   <td>{{item.phLimitsMin}}</td>
                   <td>{{item.phLimitsMax}}</td>
                   <td *ngIf="editValues == false">{{item.phValue}}</td>
-                  <td *ngIf="editValues == true"><input [(ngModel)]="itemTree.phValue" type="text"></td>
+                  <td *ngIf="editValues == true"><input  [value]="item.phValue" #phValue type="text"></td>
                   <td class="bg-light">PH</td>
                 </tr>
                 <tr>
@@ -230,7 +230,7 @@
                   <td>{{item.densityLimitsMin}}</td>
                   <td>{{item.densityLimitsMax}}</td>
                   <td *ngIf="editValues == false">{{item.densityValue}}</td>
-                  <td *ngIf="editValues == true"><input [(ngModel)]="itemTree.densityValue" type="text"></td>
+                  <td *ngIf="editValues == true"><input [value]="item.densityValue" #densityValue  type="text"></td>
                   <td class="bg-light">צפיפות</td>
                 </tr>
                 <tr>
@@ -238,7 +238,7 @@
                   <td>{{item.viscosityLimitsMin}}</td>
                   <td>{{item.viscosityLimitsMax}}</td>
                   <td *ngIf="editValues == false">{{item.viscosityValue}}</td>
-                  <td *ngIf="editValues == true"><input [(ngModel)]="itemTree.viscosityValue" type="text"></td>
+                  <td *ngIf="editValues == true"><input  [value]="item.viscosityValue" #viscosityValue type="text"></td>
                   <td class="bg-light">
                     <table>
                       <tbody>
@@ -269,20 +269,23 @@
                 </tr>
                 <tr>
                   <td>{{item.colorRemarks}}</td>
-                  <td colspan="3" *ngIf="editValues == false">{{item.colorValue}}</td>
-                  <td colspan="3" *ngIf="editValues == true"><input [(ngModel)]="itemTree.colorValue" type="text"></td>
+                  <td colspan="2">{{item.color}}</td>
+                  <td  *ngIf="editValues == false">{{item.colorValue}}</td>
+                  <td  *ngIf="editValues == true"><input  [value]="item.colorValue" #colorValue type="text"></td>
                   <td class="bg-light">צבע</td>
                 </tr>
                 <tr>
                   <td>{{item.textureRemarks}}</td>
-                  <td colspan="3" *ngIf="editValues == false">{{item.textureValue}}</td>
-                  <td colspan="3" *ngIf="editValues == true"><input [(ngModel)]="itemTree.textureValue" type="text"></td>
+                  <td colspan="2">{{item.textureSpec}}</td>
+                  <td *ngIf="editValues == false">{{item.textureValue}}</td>
+                  <td *ngIf="editValues == true"><input [value]="item.textureValue"  #textureValue type="text"></td>
                   <td class="bg-light">מרקם</td>
                 </tr>
                 <tr>
                   <td>{{item.scentRemarks}}</td>
-                  <td colspan="3" *ngIf="editValues == false">{{item.scentValue}}</td>
-                  <td colspan="3" *ngIf="editValues == true"><select [(ngModel)]="itemTree.scentValue" >
+                  <td colspan="2">{{item.scentSpec}}</td>
+                  <td *ngIf="editValues == false">{{item.scentValue}}</td>
+                  <td *ngIf="editValues == true"><select  selected="item.scentValue" #scentValue [value]="item.scentValue" >
                     <option value="normal">Normal</option>
                     <option value="notNormal">Not Normal</option>
                   </select></td>

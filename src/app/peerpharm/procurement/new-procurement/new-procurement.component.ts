@@ -74,6 +74,18 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
+  checkIfExist(){
+    var comaxNumber = this.newProcurement.comaxNumber;
+
+    this.procurementService.findIfComaxExist(comaxNumber).subscribe(data=>{
+      if(data.length > 0){
+        this.toastr.error('מספר הזמנת קומקס כבר קיים במערכת')
+      } else {
+
+      }
+    })
+  }
+
 
   
 
@@ -108,15 +120,25 @@ debugger
       this.inventoryService.getCmptByitemNumber(this.newItem.itemNumber).subscribe(data=>{
       debugger;
       this.newItem.itemName = data[0].comaxName; 
+      if(this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)){
+        this.newItem.supplierPrice = Number(data[0].price)
+      }
+      // this.newItem.coin = data[0].coin
+      this.newItem.measurement = data[0].unitOfMeasure
+      $("#setCoin").val("data[0].coin");
       })
     }
 
     this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data=>{
       debugger;
      this.itemExistInOrders = data;
+     
      if(data.length > 0){
        this.openOrdersModal = true;
      }
+     if(this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)){
+      this.newItem.supplierPrice = Number(data[0].price)
+    }
 
     })
   
@@ -208,6 +230,7 @@ debugger
           this.newProcurement.supplierName = ""
           this.newProcurement.supplierNumber = ""
           this.newProcurement.item = [];
+          this.newProcurement.comaxNumber = ''
     
           
         }

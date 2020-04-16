@@ -1507,8 +1507,8 @@
             </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let material of components">
-                <tr *ngFor="let supplier of material.alternativeSuppliers">
+             
+                <tr *ngFor="let supplier of resMaterial.alternativeSuppliers">
                   <td>{{supplier.supplierName}}</td>
                   <td>{{supplier.manufacturer}}</td>
                   <td>{{supplier.alterName}}</td>
@@ -1519,7 +1519,7 @@
                   <td>{{supplier.priceLoading}}</td>
                   <td>{{supplier.coinLoading}}</td>
                 </tr>
-              </ng-container>
+           
             </tbody>
           </table>
         </div>

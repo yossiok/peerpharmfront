@@ -213,24 +213,41 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
 
-  filterByStatus(ev) {
-
-    this.purchaseRecommendations = this.purchaseRecommendationsCopy
-    if (ev.target.value != '') {
-      var status = ev.target.value;
-      var type = ev.target.value;
-      switch (type) {
-        case 'lightcoral':
-          this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.color == status)
-          break
-        case 'open':
-          this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.color != 'lightcoral')
-          break
-
-      }
-    } else {
-      this.purchaseRecommendations = this.purchaseRecommendationsCopy
+  filterByStatus(ev,expression) {
+  
+debugger;
+    switch(expression) {
+      case 'recommendations':
+        this.purchaseRecommendations = this.purchaseRecommendationsCopy
+        if (ev.target.value != '') {
+          var status = ev.target.value;
+          var type = ev.target.value;
+          switch (type) {
+            case 'lightcoral':
+              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.color == status)
+              break
+            case 'open':
+              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.color != 'lightcoral')
+              break
+    
+          }
+        } else {
+          this.purchaseRecommendations = this.purchaseRecommendationsCopy
+        }
+        break;
+      case 'purchases':
+        this.procurementData = this.procurementDataCopy
+        if(ev.target.value != ""){
+          var status = ev.target.value;
+          this.procurementData = this.procurementData.filter(p=>p.status == status)
+        } else {
+          this.procurementData = this.procurementDataCopy
+        }
+        break;
+      default:
+       
     }
+ 
 
   }
 

@@ -42,7 +42,7 @@ export class ProductionComponent implements OnInit {
       });
 
       console.log(res);
-      this.scheduleData=res;
+      this.scheduleData=res.reverse();
 
     });
   }

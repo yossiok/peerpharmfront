@@ -1372,7 +1372,7 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
     
-    this.linkDownload="http://localhost/material/getpdf?_id="+this.resMaterial._id;
+    this.linkDownload="http://peerpharmsystem.com/material/getpdf?_id="+this.resMaterial._id;
     this.loadComponentItems();
   }
 
