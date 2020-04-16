@@ -875,6 +875,24 @@ export class StockComponent implements OnInit {
     return ""; 
   }
 
+  dangerColor(threatment)
+  {
+  debugger;
+      if(threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable')
+      {
+        return "flame";
+      }
+      else if(threatment == 'acid')
+      {
+        return "acid";
+      }
+      else if (threatment == 'toxic') {
+        return "toxic"
+      }
+    
+    
+  }
+
   getAllCmptTypesAndCategories() {
     this.cmptTypeList = [];
     this.cmptCategoryList = [];

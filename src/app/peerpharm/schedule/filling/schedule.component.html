@@ -1,596 +1,316 @@
-<!--
-{{today}}<br>
-<input  type ='date' #date [(ngModel)]='today'  (change)="dateChanged(date.value)">
-<button class='btn btn-info' (click)="filterSchedule()">Filter</button>
-<br><br>
-    <div (click)='setType("basic", this)' [ngStyle]="{'background-color': buttonColor}">General</div>
-    <div (click)='setType("tube", this)' [ngStyle]="{'background-color': buttonColor2}">Tubes</div>
-    <div (click)='setType("mkp", this)' [ngStyle]="{'background-color': buttonColor3}">Make Up</div>
+<div class="container-fluid text-center">
+  <div class="row fixNoaStupidStuff">
+    <div class="col-4 fixNoaStupidStuff"></div>
+    <div class="col-4 fixNoaStupidStuff">
+      <h2 class="text-info">Filling Schedule</h2>
+    </div>
+    <div class="col-4 fixNoaStupidStuff"></div>
+  </div>
 
-<table class='table'>
-  <thead class= "tableHead" class='bg-success text-white'>
-  <tr>
-      <th id=pHeadId><b>P</b></th>
-      <th id=orderHeadId><b>Order</b></th>
-      <th id=itemHeadId><b>Item</b></th>
-      <th id=customerHeadId><b>Costumer</b></th>
-      <th id=nameProdHeadId><b>Name of product</b></th>
-      <th id=batchNumHeadId><b>Batch number</b></th>
-      <th><b>Package</b></th>
-      <th colspan=2><b>Qty</b></th>
-      <th><b>Date</b></th>
-      <th><b>Remarks</b></th>
-      <th class='printlessTd'><b>shift</b></th>
-      <th class='printlessTd'><input  style='width:107px' value=""></th>
-<th class='printlessTd'><img src="assets/images/24p.png" style='width:55px; cursor: pointer;' alt="Random second slide" (click)='moveAllOpenScedToToday()'></th>
-  </tr>
+  <div class="row mt-4 fixNoaStupidStuff">
+    <div class="col-2 fixNoaStupidStuff">
+      <input class="form-control" type="date" #date [(ngModel)]="today" (change)="dateChanged(date.value)" />
+    </div>
+    <div class="col-1 fixNoaStupidStuff">
+      <button class="btn btn-info form-control" 
+        (click)="filterSchedule()">Filter</button>
+    </div>
+    <div class="col-9 fixNoaStupidStuff"></div>
+  </div>
 
-  </thead>
+  <div class="row mt-4 fixNoaStupidStuff">
+    <div class="col-1 fixNoaStupidStuff">
 
-  <tr id='inputTr' (click)="EditRowId=0">
-    <td><input type='text' id="input_position" [(ngModel)]="scheduleLine.positionN"	 class='form-control'></td>
-    <td><input type='text' id="input_order"  [(ngModel)]="scheduleLine.orderN" #orderN  (focusout)="setOrderDetails(orderN.value)"   class='form-control'></td>
-     <td><input type='text' id="input_item" [(ngModel)]="scheduleLine.item" #itemN (focusout)="setItemDetails(itemN.value)" class='form-control'></td>
-     <td><input type='text' id="input_costumer" [(ngModel)]="scheduleLine.costumer" class='form-control' ></td>
-     <td><input type='text' id="input_productName" class='form-control' [(ngModel)]="scheduleLine.productName"></td>
-     <td><input type='text' id="input_batchN" [(ngModel)]="scheduleLine.batch"  class='form-control'></td>
-     <td><textarea rows='1' cols='20' id='input_package'   [(ngModel)]="scheduleLine.packageP"  class='form-control'></textarea></td>
-     <td  colspan=2><input type='text' id="input_Qty"  [(ngModel)]="scheduleLine.qty" class='form-control'></td>
-     <td><input type='date' id="input_Date" [(ngModel)]="scheduleLine.date" class='form-control'></td>
-     <td><textarea rows='1' cols='30' id='input_marks'  [(ngModel)]="scheduleLine.marks" class='form-control'></textarea></td>
-     <td class='printlessTd'><select id="select_shift"  [(ngModel)]="scheduleLine.shift"><option value="Day">Day</option><option value="Night">Night</option></select></td>
-      <td class='printlessTd'>
-      <input type="radio"  name="type"   value='basic' checked='checked'  [(ngModel)]="scheduleLine.mkp" >Basic<br>
-      <input type="radio"  name="type"   value='tube' [(ngModel)]="scheduleLine.mkp">Tube<br>
-      <input type="radio"  name="type"   value='mkp' [(ngModel)]="scheduleLine.mkp">Mkp<br>
-    </td>
-      <td class='printlessTd'><button class="btn btn-info " (click)="writeScheduleData()" >Add</button><br>
-      </td>
-</tr>
+    </div>
+    <div class="col-1 fixNoaStupidStuff">
 
-<tbody id="table_body">
-    <tr *ngFor = "let line of scheduleData"  [style.background-color]="line.color" >
-      <ng-container  *ngIf='line !== undefined  && line.mkp===typeShown'>
-        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">{{line.positionN}}</td>
-        <td *ngIf="line._id===EditRowId"><input #position type='text' [value]="line.positionN"  style='width:40px' class='form-control'><input #id type='hidden' [value]="line._id" ></td>
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">
-                <a target="_blank"  routerLink='/peerpharm/allorders/orderitems/{{line.orderN}}'>
-            {{line.orderN}}
+      <div class="rounded" style="color:black" (click)="setType(&quot;basic&quot;, this)" [ngStyle]="{ 'background-color': buttonColor }">
+        General
+      </div>
+    </div>
+    <div class="col-1 fixNoaStupidStuff">
+      <div style="color:black" (click)="setType(&quot;tube&quot;, this)" [ngStyle]="{ 'background-color': buttonColor2 }">
+        Tubes
+      </div>
+    </div>
+    <div class="col-1 fixNoaStupidStuff">
+      <div style="color:black" (click)="setType(&quot;mkp&quot;, this)" [ngStyle]="{ 'background-color': buttonColor3 }">
+        Make Up
+      </div>
+    </div>
+    <div class="col-1 fixNoaStupidStuff">
+      <div style="color:black" (click)="setType(&quot;sachet&quot;, this)" [ngStyle]="{ 'background-color': buttonColor4 }">
+        Sachet
+      </div>
+    </div>
+    <div class="col-1 fixNoaStupidStuff">
+
+      <div style="color:black" (click)="setType(&quot;laser&quot;, this)" [ngStyle]="{ 'background-color': buttonColor5 }">
+        Laser
+      </div>
+    </div>
+    <div class="col-1 fixNoaStupidStuff">
+      <div style="color:black" (click)="setType(&quot;stickers&quot;, this)" [ngStyle]="{ 'background-color': buttonColor6 }">
+        Stickers
+      </div>
+
+    </div>
+    <div class="col-6 fixNoaStupidStuff"></div>
+  </div>
+
+  <div class="row fixNoaStupidStuff">
+    <div class="col-12 fixNoaStupidStuff">
+      <table class="table table-striped table-hover">
+        <thead class="bg-info text-white">
+          <tr>
+            <th><img (click)="makeFillingReport()" style="width:50px;" src="../../../../assets/images/stockUpdate.png"></th>
+            <th class="positionClass"><b>P</b></th>
+            <th><b>Order</b></th>
+            <th><b>Item</b></th>
+            <th><b>Item Important Remark</b></th>
+            <th><b>Costumer</b></th>
+            <th><b>Name of product</b></th>
+            <th><b>Batch number</b></th>
+            <th><b>Package</b></th>
+            <th><b>Qty</b></th>
+            <th><b>Remarks</b></th>
+            <th><b>Date</b></th>
+            <th class="mkpClass printlessTd"><b>shift</b></th>
+            <th><input  class="mkpClassInput form-control" value="MKP" /></th>
+            <th></th>
+            <th></th>
+            <th>
+              <img src="assets/images/24p.png" style="width:55px; cursor: pointer;" alt="Random second slide"
+                (click)="moveAllOpenScedToToday()" />
+            </th>
+          </tr>
+        </thead>
+      
+        <tr class="bg-white" id="inputTr" (click)="EditRowId = 0">
+          <td></td>
+          <td class="positionClass">
+            <input type="text" id="input_position" [(ngModel)]="scheduleLine.positionN" class="form-control" />
+          </td>
+          <td>
+            <input type="text" id="input_order" [(ngModel)]="scheduleLine.orderN" #orderN
+              (focusout)="setOrderDetails(orderN.value)" class="form-control" />
+          </td>
+          <td>
+            <input type="text" id="input_item" [(ngModel)]="scheduleLine.item" #itemN (focusout)="setItemDetails(itemN.value)"
+              class="form-control" />
+          </td>
+          <td>
+            <input type="text" id="input_itemImpRemark" class="form-control" [(ngModel)]="scheduleLine.itemImpRemark"
+              disabled />
+          </td>
+          <td>
+            <input type="text" id="input_costumer" [(ngModel)]="scheduleLine.costumer" class="form-control" />
+          </td>
+          <td>
+            <input type="text" id="input_productName" class="form-control" [(ngModel)]="scheduleLine.productName" />
+          </td>
+          <td>
+            <input type="text" id="input_batchN" [(ngModel)]="scheduleLine.batch" class="form-control" />
+          </td>
+          <td>
+            <textarea rows="1" cols="20" id="input_package" [(ngModel)]="scheduleLine.packageP"
+              class="form-control"></textarea>
+          </td>
+          <td>
+            <input type="text" id="input_Qty" [(ngModel)]="scheduleLine.qty" class="form-control" />
+          </td>
+          <td>
+            <input type="date" id="input_Date" [(ngModel)]="scheduleLine.date" class="form-control" />
+          </td>
+          <td>
+            <textarea rows="1" cols="30" id="input_marks" [(ngModel)]="scheduleLine.marks" class="form-control"></textarea>
+          </td>
+          <td class="printlessTd">
+            <select class="form-control" class="selectShiftClass" id="select_shift" [(ngModel)]="scheduleLine.shift">
+              <option value="Day">Day</option>
+              <option value="Night">Night</option>
+            </select>
+          </td>
+          <td class="printlessTd mkpClass">
+            <input type="radio" name="type" value="basic" checked="checked" [(ngModel)]="scheduleLine.mkp" />Basic<br />
+            <input type="radio" name="type" value="tube" [(ngModel)]="scheduleLine.mkp" />Tube<br />
+            <input type="radio" name="type" value="mkp" [(ngModel)]="scheduleLine.mkp" />Mkp<br />
+
+          </td>
+          <td>
+            <input type="radio" name="type" value="sachet" [(ngModel)]="scheduleLine.mkp" />Sachet<br />
+            <input type="radio" name="type" value="laser" [(ngModel)]="scheduleLine.mkp" />Laser<br />
+            <input type="radio" name="type" value="stickers" [(ngModel)]="scheduleLine.mkp" />Stickers<br />
+          </td>
+          <td class="printlessTd"></td>
+          <td class="printlessTd">
+            <button class="btn btn-info form-control "
+              (click)="writeScheduleData()">Add</button><br />
+          </td>
+        </tr>
+      
+        <tbody id="table_body">
+          <tr *ngFor="let line of scheduleData"
+            [style.background-color]="line.color">
+            <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
+              <td><input type="checkbox" (change)="isSelected($event,line)"></td>
+              <td class="positionClass" *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.positionN }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #position type="text" [value]="line.positionN" class="form-control" /><input #id type="hidden"
+                  [value]="line._id" />
+              </td>
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                <a target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ line.orderN }}">
+                  {{ line.orderN }}
                 </a>
-        </td>
-        <td *ngIf="line._id===EditRowId"><input #orderNum type='text' [value]="line.orderN"  style='width:60px' class='form-control'></td>
-        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">
-                <a target="_blank"  routerLink="/peerpharm/items/itemDetails/{{line.item}}">
-            {{line.item}}
-                        </a>
-        </td>
-        <td *ngIf="line._id===EditRowId"><input #item type='text'   [value]="line.item"    style='width:80px' class='form-control'></td>
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.costumer| slice:0:30}}</td>
-        <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer"  style='width:99px' class='form-control'></td>
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.productName}}</td>
-        <td *ngIf="line._id===EditRowId"><input #productName type='text' [value]="line.productName"  style='width:300px' class='form-control'></td>
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.batch}}</td>
-        <td *ngIf="line._id===EditRowId"><input #batch type='text' [value]="line.batch"  style='width:110px' class='form-control'></td>
-        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">{{line.packageP | slice:0:20}}</td>
-        <td *ngIf="line._id===EditRowId"><input #packageP type='text' [value]="line.packageP"  style='width:150px'></td>-->
-<!-- <td *ngIf="line._id===EditRowId"><textarea rows='1' cols='30' id='input_marks' #packageP style='width:160px' [value]="line.packageP" class='form-control'></textarea></td>
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.qtyProduced }} / {{line.qty}}</td>
-        <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty"  style='width:60px' class='form-control'></td>
-        <td></td>
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #orderNum type="text" [value]="line.orderN" class="form-control" />
+              </td>
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{ line.item }}">
+                  {{ line.item }}
+                </a>
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #item type="text" [value]="line.item" class="form-control" />
+              </td>
+      
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)"
+                style="color:red ;  max-width: 12%; overflow-wrap: break-word;">
+                {{ line.itemImpRemark }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #item type="text" [value]="line.itemImpRemark" class="form-control" style="color:red ; " disabled />
+              </td>
+      
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.costumer | slice: 0:30 }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #costumer type="text" [value]="line.costumer" class="form-control" />
+              </td>
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.productName }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #productName type="text" [value]="line.productName" class="form-control" />
+              </td>
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                <textarea disabled style="box-shadow: none !important;" rows="2" cols="10"> {{ line.batch }} </textarea>
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #batch type="text" [value]="line.batch" class="form-control" />
+              </td>
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.packageP | slice: 0:20 }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input style="width: 100px;" #packageP type="text" [value]="line.packageP" />
+              </td>
+              <!-- <td *ngIf="line._id === EditRowId">
+                <textarea
+                  rows="1"
+                  cols="30"
+                  id="input_marks"
+                  #packageP
+                  [value]="line.packageP"
+                  class="form-control"
+                ></textarea>
+              </td> -->
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.qtyProduced }} / {{ line.qty }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #qty type="text" [value]="line.qty" class="form-control" />
+              </td>
+      
+      
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.marks }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <textarea rows="1" cols="30" #marks type="text" [value]="line.marks" class="form-control"></textarea>
+              </td>
+      
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.date | date: "dd/MM/yyyy" }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #aaaa type="date" [value]="line.date3" class="form-control" />
+              </td>
+              <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.shift }}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <input #shiftA type="text" [value]="line.shift" class="form-control" />
+              </td>
+              <td class="mkpClass" *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+                {{ line.mkp }}
+              </td>
+              <!-- <td *ngIf="line._id === EditRowId">
+                <input #mkp type="text" [value]="line.mkp" class="form-control" />
+              </td> -->
+              <td *ngIf="line._id === EditRowId">
+                <input type="radio" name="typeEdit" #mkpA value="basic" [checked]="line.mkp === 'basic'"
+                  (change)="handleChange('basic')" />Basic<br />
+                <input type="radio" name="typeEdit" #mkpA value="tube" [checked]="line.mkp === 'tube'"
+                  (change)="handleChange('tube')" />Tube<br />
+                <input type="radio" name="typeEdit" #mkpA value="mkp" [checked]="line.mkp === 'mkp'"
+                  (change)="handleChange('mkp')" />Mkp<br />
+                <input type="radio" name="typeEdit" #mkpA value="sachet" [checked]="line.mkp === 'sachet'"
+                  (change)="handleChange('sachet')" />Sachet<br />
+                <input type="radio" name="typeEdit" #mkpA value="laser" [checked]="line.mkp === 'laser'"
+                  (change)="handleChange('laser')" />Laser<br />
+                <input type="radio" name="typeEdit" #mkpA value="stickers" [checked]="line.mkp === 'stickers'"
+                  (change)="handleChange('stickers')" />Stickers<br />
+              </td>
+              <td *ngIf="line._id !== EditRowId">
+                <img src="assets/images/an.png" *ngIf="
+                    line.cmptsStatus != null && line.cmptsStatus.includes('false')
+                  " (click)="dismissInfo(line._id)" style="width: 20px;" />
+                <i class="ti-trash text-danger m-r-10" (click)="deleteLine(line._id)"></i>&nbsp;
+                <!-- <i class="ti-check text-success m-r-10" (click)="setDone()"></i> -->
+              </td>
+              
+              <td></td>
+              <td>
+                <!-- <input
+                  type="checkbox"
+                  [(ngModel)]="line.isSelected"
+                  *ngIf="line._id !== EditRowId"
+                /> -->
+                <button class="btn btn-info m-r-10" type="button" (click)="openPrintBarkod(content, line)">
+                  Print Barcode
+                </button>
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <i class="ti-save text-info m-r-10" (click)="updateSchedule()"></i>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-
-        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">{{line.date | date: 'dd/MM/yyyy'}}</td>
-        <td *ngIf="line._id===EditRowId"><input #aaaa type='date' [value]="line.date3"  style='width:160px' class='form-control'></td>
-
-
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.marks}}</td>
-        <td *ngIf="line._id===EditRowId"><textarea rows='1' cols='30'  #marks type='text' [value]="line.marks"  style='width:150px' class='form-control'></textarea></td>
-        <td *ngIf="line._id!==EditRowId"  (click)="edit(line._id, line.mkp)">{{line.shift}}</td>
-        <td *ngIf="line._id===EditRowId"><input #shiftA type='text' [value]="line.shift"  style='width:50px' class='form-control'></td>
-        <td  *ngIf="line._id!==EditRowId" (click)="edit(line._id, line.mkp)">{{line.mkp}}</td>
-        <td *ngIf="line._id===EditRowId"><input #mkp type='text' [value]="line.mkp"  style='width:50px' class='form-control'></td>
-        <td *ngIf="line._id===EditRowId" style='width:107px'>
-            <input type="radio"  name="typeEdit"  #mkpA  value='basic' [checked]="line.mkp === 'basic'"   (change)="handleChange('basic')" >Basic<br>
-            <input type="radio"  name="typeEdit"  #mkpA  value='tube'  [checked]="line.mkp === 'tube'" (change)="handleChange('tube')">Tube<br>
-            <input type="radio"  name="typeEdit"  #mkpA  value='mkp'   [checked]="line.mkp === 'mkp'" (change)="handleChange('mkp')">Mkp<br>
-        </td>
-        <td *ngIf="line._id!==EditRowId">
-            <img src="assets/images/an.png" style='width:20px' *ngIf='line.cmptsStatus!=null && line.cmptsStatus.includes("false")' (click)="dismissInfo(line._id)">
-            <i class="ti-trash text-danger m-r-10"   (click)="deleteLine(line._id)"></i>&nbsp;
-            <i class="ti-check text-success m-r-10"  (click)='setDone()' ></i>
-            <input type="checkbox" [(ngModel)]="line.isSelected" *ngIf="line._id!==EditRowId">
-        </td>
-        <td *ngIf="line._id===EditRowId"> <i class="ti-save text-success m-r-10"   (click)="updateSchedule()"></i></td>
-    </ng-container>
-    </tr>
-</tbody>
-</table>
--->
-
-<!-- <button (click)="addImpRemarkFromItemTree()">addImpRemarkFromItemTree</button> -->
-{{ today | date: "dd/MM/yyyy" }}<br />
-<input style="box-shadow: 2px 2px 2px black; height: 30px;"
-  type="date"
-  #date
-  [(ngModel)]="today"
-  (change)="dateChanged(date.value)"
-/>
-<button class="btn btn-info" style="box-shadow: 2px 2px 2px black; margin-left: 5px; height: 30px;" (click)="filterSchedule()">Filter</button>
-<br /><br />
-<div
-  (click)="setType(&quot;basic&quot;, this)"
-  [ngStyle]="{ 'background-color': buttonColor }"
->
-  General
 </div>
-<div
-  (click)="setType(&quot;tube&quot;, this)"
-  [ngStyle]="{ 'background-color': buttonColor2 }"
->
-  Tubes
-</div>
-<div
-  (click)="setType(&quot;mkp&quot;, this)"
-  [ngStyle]="{ 'background-color': buttonColor3 }"
->
-  Make Up
-</div>
-<div
-  (click)="setType(&quot;sachet&quot;, this)"
-  [ngStyle]="{ 'background-color': buttonColor4 }"
->
-  Sachet
-</div>
-<div
-  (click)="setType(&quot;laser&quot;, this)"
-  [ngStyle]="{ 'background-color': buttonColor5 }"
->
-  Laser
-</div>
-<div
-  (click)="setType(&quot;stickers&quot;, this)"
-  [ngStyle]="{ 'background-color': buttonColor6 }"
->
-  Stickers
-</div>
 
 
-<table  class="table table-responsive scheduleTB">
-  <thead class="tableHeader text-white">
-    <tr>
-      <th><img (click)="makeFillingReport()" style="width:50px;" src="../../../../assets/images/stockUpdate.png"></th>
-      <th class="positionClass"><b>P</b></th>
-      <th><b>Order</b></th>
-      <th><b>Item</b></th>
-      <th><b>Item Important Remark</b></th>
-      <th><b>Costumer</b></th>
-      <th><b>Name of product</b></th>
-      <th><b>Batch number</b></th>
-      <th><b>Package</b></th>
-      <th><b>Qty</b></th>
-      <th><b>Remarks</b></th>
-      <th><b>Date</b></th>
-      <th class="mkpClass printlessTd"><b>shift</b></th>
-      <th><input class="mkpClassInput" value="MKP" /></th>
-      <th></th>
-      <th>
-        <img
-          src="assets/images/24p.png"
-          style="width:55px; cursor: pointer;"
-          alt="Random second slide"
-          (click)="moveAllOpenScedToToday()"
-        />
-      </th>
-    </tr>
-  </thead>
 
-  <tr id="inputTr" (click)="EditRowId = 0">
-    <td></td>
-    <td class="positionClass">
-      <input
-        type="text"
-        id="input_position"
-        [(ngModel)]="scheduleLine.positionN"
-        class="form-control"
-      />
-    </td>
-    <td>
-      <input
-        type="text"
-        id="input_order"
-        [(ngModel)]="scheduleLine.orderN"
-        #orderN
-        (focusout)="setOrderDetails(orderN.value)"
-        class="form-control"
-      />
-    </td>
-    <td>
-      <input
-        type="text"
-        id="input_item"
-        [(ngModel)]="scheduleLine.item"
-        #itemN
-        (focusout)="setItemDetails(itemN.value)"
-        class="form-control"
-      />
-    </td>
-    <td>
-      <input
-        type="text"
-        id="input_itemImpRemark"
-        class="form-control"
-        [(ngModel)]="scheduleLine.itemImpRemark"
-        disabled
-      />
-    </td>
-    <td>
-      <input
-        type="text"
-        id="input_costumer"
-        [(ngModel)]="scheduleLine.costumer"
-        class="form-control"
-      />
-    </td>
-    <td>
-      <input
-        type="text"
-        id="input_productName"
-        class="form-control"
-        [(ngModel)]="scheduleLine.productName"
-      />
-    </td>
-    <td>
-      <input
-        type="text"
-        id="input_batchN"
-        [(ngModel)]="scheduleLine.batch"
-        class="form-control"
-      />
-    </td>
-    <td>
-      <textarea
-        rows="1"
-        cols="20"
-        id="input_package"
-        [(ngModel)]="scheduleLine.packageP"
-        class="form-control"
-      ></textarea>
-    </td>
-    <td>
-      <input
-        type="text"
-        id="input_Qty"
-        [(ngModel)]="scheduleLine.qty"
-        class="form-control"
-      />
-    </td>
-    <td>
-      <input
-        type="date"
-        id="input_Date"
-        [(ngModel)]="scheduleLine.date"
-        class="form-control"
-      />
-    </td>
-    <td>
-      <textarea
-        rows="1"
-        cols="30"
-        id="input_marks"
-        [(ngModel)]="scheduleLine.marks"
-        class="form-control"
-      ></textarea>
-    </td>
-    <td class="printlessTd">
-      <select
-        class="selectShiftClass"
-        id="select_shift"
-        [(ngModel)]="scheduleLine.shift"
-        ><option value="Day">Day</option
-        ><option value="Night">Night</option></select
-      >
-    </td>
-    <td class="printlessTd mkpClass">
-      <input
-        type="radio"
-        name="type"
-        value="basic"
-        checked="checked"
-        [(ngModel)]="scheduleLine.mkp"
-      />Basic<br />
-      <input
-        type="radio"
-        name="type"
-        value="tube"
-        [(ngModel)]="scheduleLine.mkp"
-      />Tube<br />
-      <input
-        type="radio"
-        name="type"
-        value="mkp"
-        [(ngModel)]="scheduleLine.mkp"
-      />Mkp<br />
-      <input
-        type="radio"
-        name="type"
-        value="sachet"
-        [(ngModel)]="scheduleLine.mkp"
-      />Sachet<br />
-      <input
-        type="radio"
-        name="type"
-        value="laser"
-        [(ngModel)]="scheduleLine.mkp"
-      />Laser<br />
-      <input
-        type="radio"
-        name="type"
-        value="stickers"
-        [(ngModel)]="scheduleLine.mkp"
-      />Stickers<br />
-    </td>
-    <td class="printlessTd"></td>
-    <td class="printlessTd">
-      <button style="box-shadow: 2px 2px 2px black;" class="btn btn-info " (click)="writeScheduleData()">Add</button
-      ><br />
-    </td>
-  </tr>
-  
-  <tbody id="table_body">
-    <tr  style="box-shadow: inset 1px -2px 4px 0px black; margin-top: 1px;" *ngFor="let line of scheduleData" [style.background-color]="line.color">
-      <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
-        <td><input type="checkbox" (change)="isSelected($event,line)"></td>
-        <td 
-          class="positionClass"
-          *ngIf="line._id !== EditRowId"
-          (click)="edit(line._id, line.mkp)"
-        >
-          {{ line.positionN }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input
-            #position
-            type="text"
-            [value]="line.positionN"
-            class="form-control"
-          /><input #id type="hidden" [value]="line._id" />
-        </td>
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          <a
-            target="_blank"
-            routerLink="/peerpharm/allorders/orderitems/{{ line.orderN }}"
-          >
-            {{ line.orderN }}
-          </a>
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input
-            #orderNum
-            type="text"
-            [value]="line.orderN"
-            class="form-control"
-          />
-        </td>
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          <a
-            target="_blank"
-            routerLink="/peerpharm/items/itemDetails/{{ line.item }}"
-          >
-            {{ line.item }}
-          </a>
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input #item type="text" [value]="line.item" class="form-control" />
-        </td>
-
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)" style="color:red ;  max-width: 12%; overflow-wrap: break-word;">
-            {{ line.itemImpRemark }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input #item type="text" [value]="line.itemImpRemark" class="form-control" style="color:red ; "  disabled/>
-        </td>
-
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          {{ line.costumer | slice: 0:30 }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input
-            #costumer
-            type="text"
-            [value]="line.costumer"
-            class="form-control"
-          />
-        </td>
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          {{ line.productName }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input
-            #productName
-            type="text"
-            [value]="line.productName"
-            class="form-control"
-          />
-        </td>
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-         <textarea disabled style="box-shadow: none !important;" rows="2" cols="10"> {{ line.batch }} </textarea>
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input #batch type="text" [value]="line.batch" class="form-control" />
-        </td>
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          {{ line.packageP | slice: 0:20 }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input style="width: 100px;" #packageP type="text" [value]="line.packageP" />
-        </td>
-        <!-- <td *ngIf="line._id === EditRowId">
-          <textarea
-            rows="1"
-            cols="30"
-            id="input_marks"
-            #packageP
-            [value]="line.packageP"
-            class="form-control"
-          ></textarea>
-        </td> -->
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          {{ line.qtyProduced }} / {{ line.qty }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input #qty type="text" [value]="line.qty" class="form-control" />
-        </td>
-
-
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          {{ line.marks }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <textarea
-            rows="1"
-            cols="30"
-            #marks
-            type="text"
-            [value]="line.marks"
-            class="form-control"
-          ></textarea>
-        </td>
-
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          {{ line.date | date: "dd/MM/yyyy" }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input #aaaa type="date" [value]="line.date3" class="form-control" />
-        </td>
-        <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-          {{ line.shift }}
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <input
-            #shiftA
-            type="text"
-            [value]="line.shift"
-            class="form-control"
-          />
-        </td>
-        <td
-          class="mkpClass"
-          *ngIf="line._id !== EditRowId"
-          (click)="edit(line._id, line.mkp)"
-        >
-          {{ line.mkp }}
-        </td>
-        <!-- <td *ngIf="line._id === EditRowId">
-          <input #mkp type="text" [value]="line.mkp" class="form-control" />
-        </td> -->
-        <td *ngIf="line._id === EditRowId">
-          <input
-            type="radio"
-            name="typeEdit"
-            #mkpA
-            value="basic"
-            [checked]="line.mkp === 'basic'"
-            (change)="handleChange('basic')"
-          />Basic<br />
-          <input
-            type="radio"
-            name="typeEdit"
-            #mkpA
-            value="tube"
-            [checked]="line.mkp === 'tube'"
-            (change)="handleChange('tube')"
-          />Tube<br />
-          <input
-            type="radio"
-            name="typeEdit"
-            #mkpA
-            value="mkp"
-            [checked]="line.mkp === 'mkp'"
-            (change)="handleChange('mkp')"
-          />Mkp<br />
-          <input
-            type="radio"
-            name="typeEdit"
-            #mkpA
-            value="sachet"
-            [checked]="line.mkp === 'sachet'"
-            (change)="handleChange('sachet')"
-          />Sachet<br />
-          <input
-            type="radio"
-            name="typeEdit"
-            #mkpA
-            value="laser"
-            [checked]="line.mkp === 'laser'"
-            (change)="handleChange('laser')"
-          />Laser<br />
-          <input
-            type="radio"
-            name="typeEdit"
-            #mkpA
-            value="stickers"
-            [checked]="line.mkp === 'stickers'"
-            (change)="handleChange('stickers')"
-          />Stickers<br />
-        </td>
-        <td *ngIf="line._id !== EditRowId">
-          <img
-            src="assets/images/an.png"
-            *ngIf="
-              line.cmptsStatus != null && line.cmptsStatus.includes('false')
-            "
-            (click)="dismissInfo(line._id)"
-            style="width: 20px;"
-          />
-          <i
-            class="ti-trash text-danger m-r-10"
-            (click)="deleteLine(line._id)"
-          ></i
-          >&nbsp;
-          <!-- <i class="ti-check text-success m-r-10" (click)="setDone()"></i> -->
-        </td>
-        
-        <td>
-          <!-- <input
-            type="checkbox"
-            [(ngModel)]="line.isSelected"
-            *ngIf="line._id !== EditRowId"
-          /> -->
-          <button
-            class="btn btn-success m-r-10"
-            type="button"
-            (click)="openPrintBarkod(content, line)"
-          >
-            Print Barcode
-          </button>
-        </td>
-        <td *ngIf="line._id === EditRowId">
-          <i class="ti-save text-success m-r-10" (click)="updateSchedule()"></i>
-        </td>
-      </ng-container>
-    </tr>
-  </tbody>
-</table>
 
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Print Barkod</h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="c('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-<div class="modal-body">
-    <form
-      class="form"
-      [formGroup]="printScheduleFillingForm"
-      (submit)="onSubmit()"
-    >
-     <!--    <div class="form-group row">
+  <div class="modal-body">
+    <form class="form" [formGroup]="printScheduleFillingForm" (submit)="onSubmit()">
+      <!--    <div class="form-group row">
         <label for="positionNumber">Position Number:</label>
         <input
           class="form-control"
@@ -612,59 +332,34 @@
 
       <div *ngIf="printItemBarcode == true" class="form-group row">
         <label for="itemNumber">Item Number:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="item"
-          disabled
-          [value]="schedFillLine.item"
-        />
+        <input class="form-control" type="text" formControlName="item" disabled [value]="schedFillLine.item" />
         <button (click)="printItemBarcode = false" class="btn-success">Remove</button>
       </div>
 
       <div *ngIf="printCostumerBarcode == true" class="form-group row">
         <label>Costumer</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="packageP"
-          [value]="schedFillLine.costumer"
-        />
+        <input class="form-control" type="text" formControlName="packageP" [value]="schedFillLine.costumer" />
         <button (click)="printCostumerBarcode = false" class="btn-success">Remove</button>
       </div>
       <div *ngIf="printExpBarcode == true" class="form-group row">
         <label>Exp</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="packageP"
-          [value]="expireDate"
-        />
+        <input class="form-control" type="text" formControlName="packageP" [value]="expireDate" />
         <button (click)="printExpBarcode = false" class="btn-success">Remove</button>
       </div>
-      
+
       <div class="form-group row">
         <label for="batchNumber">Batch Number</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="batch"
-          [value]="schedFillLine.batch"
-        />
+        <input class="form-control" type="text" formControlName="batch" [value]="schedFillLine.batch" />
         <button class="btn-success" (click)="saveBatchNumber()">Save</button>
       </div>
       <div class="form-group row">
         <label>Pcs Carton</label>
-        <input #pcsCartonQuantity
-          class="form-control"
-          type="text"
-          formControlName="pcsCartonQuantity"
-          [value]="pcsCarton"
-        />
+        <input #pcsCartonQuantity class="form-control" type="text" formControlName="pcsCartonQuantity"
+          [value]="pcsCarton" />
         <button class="btn-success" (click)="savePcsCarton()">Save</button>
       </div>
-      
-    <!-- <div class="form-group row">
+
+      <!-- <div class="form-group row">
         <label for="customerNumber">Customer Number:</label>
         <input
           class="form-control"
@@ -755,13 +450,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-outline-dark"
-      printSectionId="print-section"
-      ngxPrint
-      (click)="c('Saved')"
-    >
+    <button type="button" class="btn btn-outline-dark" printSectionId="print-section" ngxPrint (click)="c('Saved')">
       Print
     </button>
   </div>
@@ -769,126 +458,123 @@
 
 
 <div style="visibility: hidden;" id="print-section">
-  <table style="text-align: center;" class="barcodeTbl"
-  dir="ltr"
-  [style.margin.px]="3"
-  [style.width.px]="400"
-  [style.max-height.px]="400"
-  [style.font-size.px]="24"
-  [style.border.px]="0">
+  <table style="text-align: center;" class="barcodeTbl" dir="ltr" [style.margin.px]="3" [style.width.px]="400"
+    [style.max-height.px]="400" [style.font-size.px]="24" [style.border.px]="0">
 
-    <tr>   
+    <tr>
       <td>
         {{schedFillLine.productName}}
       </td>
     </tr>
-    <tr *ngIf="printItemBarcode == true">   
+    <tr *ngIf="printItemBarcode == true">
       <td>
         Item Number: {{schedFillLine.item}}
       </td>
     </tr>
-    <tr>   
+    <tr>
       <td>
-       {{volumeK}} {{pcsCarton}}
+        {{volumeK}} {{pcsCarton}}
       </td>
     </tr>
-    <tr>   
+    <tr>
       <td *ngIf="newBatchChange == false">
-        {{schedFillLine.batch}} <label *ngIf="printExpBarcode == true">Exp:  {{expireDate}}</label>
+        {{schedFillLine.batch}} <label *ngIf="printExpBarcode == true">Exp: {{expireDate}}</label>
       </td>
       <td *ngIf="newBatchChange == true">
-        {{newBatch}} <label *ngIf="printExpBarcode == true">Exp:  {{expireDate}}</label>
+        {{newBatch}} <label *ngIf="printExpBarcode == true">Exp: {{expireDate}}</label>
       </td>
     </tr>
-    <tr>   
+    <tr>
       <td>
         <ngx-barcode [bc-value]="barcodeK" [bc-display-value]="true"></ngx-barcode>
       </td>
     </tr>
-    <tr *ngIf="printCostumerBarcode == true">   
+    <tr *ngIf="printCostumerBarcode == true">
       <td>
         {{schedFillLine.costumer}}
       </td>
     </tr>
   </table>
 </div>
-  
+
 <div *ngIf="fillingReport==true" id="print-sectionReport">
 
 
-<div  *ngIf="fillingReport==true" id="myModal3" class="modal3"  style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:80px;top:100px;width:max-content'>
+  <div *ngIf="fillingReport==true" id="myModal3" class="modal3"
+    style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:80px;top:100px;width:max-content'>
 
-  <div class="modal-content" id='modelC'>
-    <div style="display: inline-block;" id="material-header" class="modal-header">
-  
-      <div class="row">
-        <div class="col-5">
-          <button  style="border:none;background: none;font-size: 30px;" [useExistingCss]="true" ngxPrint printSectionId="print-sectionReport">דו"ח לו"ז</button>
+    <div class="modal-content" id='modelC'>
+      <div style="display: inline-block;" id="material-header" class="modal-header">
+
+        <div class="row">
+          <div class="col-5">
+            <button style="border:none;background: none;font-size: 30px;" [useExistingCss]="true" ngxPrint
+              printSectionId="print-sectionReport">דו"ח לו"ז</button>
+          </div>
+          <div class="col-6">
+
+          </div>
+          <div class="col-1">
+            <span class="close" id="closeId3" (click)="fillingReport=false;">&times;</span>
+          </div>
         </div>
-        <div class="col-6">
-        
-        </div>
-        <div class="col-1">
-          <span class="close" id="closeId3" (click)="fillingReport=false;">&times;</span>
-        </div>
+
       </div>
-     
+
+      <div class="container" id="material-body" class="modal-body">
+
+        <div class="row">
+          <div class="col-12">
+
+            <ul style="list-style-type: none;font-size: 25px;border:1px solid black" *ngFor="let item of selectedArr">
+              <li><input type="checkbox"> Line: {{item.positionN}}</li>
+              <li><input type="checkbox"> Item: {{item.item}}</li>
+              <li><input type="checkbox"> Item Name: {{item.productName}}</li>
+              <li *ngIf="item.imgMain1">Item Image: <img [src]="item.imgMain1" style='width:100px'></li>
+              <li *ngIf="item.imgMain2">Item Image2: <img [src]="item.imgMain2" style='width:100px'></li>
+              <br><br>
+              <li><input type="checkbox"> Barcode: {{item.barcodeK}}</li>
+              <li><input type="checkbox"> batch: {{item.batch}}</li>
+              <li><input type="checkbox"> Qty: {{item.qty}}</li>
+              <li><input type="checkbox"> remarks: {{item.marks}}</li>
+              <li><input type="checkbox"> Item Tree Remarks: {{item.proRemarks}}</li>
+              <li><input type="checkbox"> Item Jumping Remarks: {{item.impRemarks}}</li>
+              <li><input type="checkbox"> Sticker Number: {{item.stickerNumber}} Type: {{item.stickerTypeK}}</li>
+              <li><input type="checkbox"> Carton Number: {{item.cartonNumber}}</li>
+              <li><input type="checkbox"> Units In Carton: {{item.PcsCarton}}</li>
+              <br><br>
+              <li><input type="checkbox"> Box Number: {{item.boxNumber}} Type: {{item.boxTypeK}}</li>
+              <li>
+                Box Image: <img [src]="item.boxImage" style='width:100px'>
+              </li>
+              <li><input type="checkbox"> Bottle Number: {{item.bottleNumber}} , Position: {{item.bottlePosition}}</li>
+              <li>
+                Bottle Image: <img [src]="item.bottleImage" style='width:100px'>
+              </li>
+              <li><input type="checkbox"> Cap Number: {{item.capNumber}} , Position: {{item.capPosition}}</li>
+              <li>
+                Cap Image: <img [src]="item.capImage" style='width:100px'>
+              </li>
+              <li><input type="checkbox"> Seal Number: {{item.sealNumber}} , Position: {{item.sealPosition}}</li>
+              <li><input type="checkbox">
+                Seal Image: <img [src]="item.sealImage" style='width:100px'>
+              </li>
+              <li><input type="checkbox"> Pump Number: {{item.pumpNumber}} , Position: {{item.pumpPosition}}</li>
+              <li>
+                Pump Image: <img [src]="item.pumpImage" style='width:100px'>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class='row'>
+          <div *ngFor="let item of selectedArr" class="col-12">
+            {{item.scheduleRemark}}
+          </div>
+        </div>
+
+
+      </div>
+
     </div>
-  
-    <div class="container" id="material-body" class="modal-body">
-
-      <div class="row">
-        <div class="col-12">
-
-          <ul style="list-style-type: none;font-size: 25px;border:1px solid black" *ngFor="let item of selectedArr">
-          <li><input type="checkbox"> Line: {{item.positionN}}</li>
-            <li><input type="checkbox"> Item: {{item.item}}</li>
-            <li><input type="checkbox"> Item Name: {{item.productName}}</li>
-            <li *ngIf="item.imgMain1">Item Image: <img [src]="item.imgMain1" style='width:100px'></li>
-            <li *ngIf="item.imgMain2">Item Image2: <img [src]="item.imgMain2" style='width:100px'></li>
-            <br><br>
-            <li><input type="checkbox"> Barcode: {{item.barcodeK}}</li>
-            <li><input type="checkbox"> batch: {{item.batch}}</li>
-            <li><input type="checkbox"> Qty: {{item.qty}}</li>
-            <li><input type="checkbox"> remarks: {{item.marks}}</li>
-            <li><input type="checkbox"> Item Tree Remarks: {{item.proRemarks}}</li>
-            <li><input type="checkbox"> Item Jumping Remarks: {{item.impRemarks}}</li>
-            <li><input type="checkbox"> Sticker Number: {{item.stickerNumber}} Type: {{item.stickerTypeK}}</li>
-            <li><input type="checkbox"> Carton Number: {{item.cartonNumber}}</li>
-            <li><input type="checkbox"> Units In Carton: {{item.PcsCarton}}</li>
-            <br><br>
-            <li><input type="checkbox"> Box Number: {{item.boxNumber}} Type: {{item.boxTypeK}}</li>
-            <li>
-              Box Image: <img [src]="item.boxImage" style='width:100px'>
-            </li>
-            <li><input type="checkbox"> Bottle Number: {{item.bottleNumber}} , Position: {{item.bottlePosition}}</li>
-            <li>
-              Bottle Image: <img [src]="item.bottleImage" style='width:100px'>
-            </li>
-            <li><input type="checkbox"> Cap Number: {{item.capNumber}} , Position: {{item.capPosition}}</li>
-            <li>
-              Cap Image: <img [src]="item.capImage" style='width:100px'>
-            </li>
-            <li><input type="checkbox"> Seal Number: {{item.sealNumber}} , Position: {{item.sealPosition}}</li>
-            <li><input type="checkbox"> 
-             Seal Image: <img [src]="item.sealImage" style='width:100px'>
-            </li>
-            <li><input type="checkbox"> Pump Number: {{item.pumpNumber}} , Position: {{item.pumpPosition}}</li>
-            <li>
-              Pump Image: <img [src]="item.pumpImage" style='width:100px'>
-            </li>
-        </ul>
-        </div>
-      </div>
-      <div class='row'>
-        <div *ngFor="let item of selectedArr" class="col-12">
-          {{item.scheduleRemark}}
-        </div>
-      </div>
- 
-     
-    </div>
-  
-  </div>
   </div>
 </div>

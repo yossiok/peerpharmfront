@@ -84,7 +84,7 @@ td {
 
   }
 
-.stageTags{
+/* .stageTags{
     display:inline-block;  
     float: right; 
 }
@@ -94,7 +94,7 @@ td {
     margin: 5px ; 
     border: black 1px solid;
     font-size: 18px
-}
+} */
 .searchInput{ 
   line-height: 40px;
   margin-bottom: 5px;
@@ -104,11 +104,7 @@ td {
 
 }
 
-.stageStyle { 
-  box-shadow: 2px 2px 2px black !important;
-  
-  
-}
+
 .tableHeader {
   box-shadow: 2px 2px 12px 2px black !important;
   background: rgb(69, 69, 202);

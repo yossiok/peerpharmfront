@@ -63,49 +63,49 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'allorders/orders',
     data: {
-      title: 'Open Orders'
+      title: ''
     },
     component: OrdersComponent
   },
   {
     path: 'allorders/orders/allorders',
     data: {
-      title: 'All Orders'
+      title: ''
     },
     component: AllordersComponent
   },
   {
     path: 'allorders/orderitems/:id',
     data: {
-      title: 'Order'
+      title: ''
     },
     component: OrderdetailsComponent
   },
   {
     path: 'allorders/makeupdetails/:id',
     data: {
-      title: 'Order'
+      title: ''
     },
     component: MakeupdetailsComponent
   },
   {
     path: 'allorders/neworder',
     data: {
-      title: 'New Order'
+      title: ''
     },
     component: NeworderComponent
   },
   {
     path: 'schedule/fillschedule',
     data: {
-      title: 'Fill Schedule'
+      title: ''
     },
     component: ScheduleComponent
   },
   {
     path: 'schedule/printschedule',
     data: {
-      title: 'Print Schedule'
+      title: ''
     },
     component: PrintingComponent
   },
@@ -134,28 +134,28 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'items/itemslist',
     data: {
-      title: 'Items List'
+      title: ''
     },
     component: ItemslistComponent
   },
   {
     path: 'items/itemDetails',
     data: {
-      title: 'Item Tree'
+      title: ''
     },
     component: ItemDetailsTabComponent
   },
   {
     path: 'items/itemreports',
     data: {
-      title: 'Item Reports'
+      title: ''
     },
     component: ItemreportsComponent
   },
   {
     path: 'items/itemDetails/:itemNumber',
     data: {
-      title: 'Item Tree'
+      title: ''
     },
    // component: ItemdetaisComponent
     component: ItemDetailsTabComponent
@@ -253,7 +253,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',
@@ -335,7 +335,7 @@ export const PeerPharmRputs: Routes =[
   {
     path :'costumers/costumers_list',
     data :{
-      title : 'Costumers'
+      title : ''
     },
     component:CostumersListComponent
   }

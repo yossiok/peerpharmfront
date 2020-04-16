@@ -136,6 +136,15 @@ td {
   
 }
 
+.flame{
+  background-color: rgb(255, 57, 57);
+}
+.toxic{
+  background-color: rgb(29, 212, 59);
+}
+.acid{
+  background-color: rgb(255, 225, 56);
+}
 
 
 .fixed-top{

@@ -1,32 +1,54 @@
 
+<div class="container-fluid text-center bg-light">
+  <div class="row">
+    <div class="col-12">
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info p-2">All Costumers</h1>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-4"></div>
+    <div class="col-1"></div>
+    <div class="col-2">
+      <button class="form-control btn btn-info border border-dark" style='cursor: pointer;' (click)="open(content)">New Costumer</button>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-4"></div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+
+      <table style="color:black" class='table table-hover table-striped'>
+        <thead class='bg-info text-white'>
+      
+          <tr>
+            <th></th>
+            <th>Costumer Id</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Address</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          <tr  *ngFor="let costumer of costumers; let i=index">
+            <td>{{i}}</td>
+            <td (click)='openDetails(content, i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
+            <td>{{costumer.costumerName}}</td>
+            <td>{{costumer.brand}}</td>
+            <td>{{costumer.invoice}}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 
-<img src='assets/images/add.png' style='width:50px; cursor: pointer;' (click)="open(content)"><br><br>
 
 
-<table class='table'>
-  <thead class='tableHeader'>
-
-    <tr>
-      <th></th>
-      <th style="padding:5px">Costumer Id</th>
-      <th style="padding:5px">Name</th>
-      <th style="padding:5px">Brand</th>
-      <th style="padding:5px">Address</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="table_body">
-    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let costumer of costumers; let i=index">
-      <td>{{i}}</td>
-      <td (click)='openDetails(content, i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
-      <td>{{costumer.costumerName}}</td>
-      <td>{{costumer.brand}}</td>
-      <td>{{costumer.invoice}}</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
 
 
 

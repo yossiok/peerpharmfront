@@ -20,7 +20,7 @@ export class ScheduleComponent implements OnInit {
   fillingReport:boolean = false;
   scheduleData: any[];
   EditRowId: any = "";
-  buttonColor: string = "white";
+  buttonColor: string = "#2962FF";
   buttonColor2: string = "#B8ECF1";
   buttonColor3: string = "#B8ECF1";
   buttonColor4: string = "#B8ECF1";
@@ -318,7 +318,7 @@ export class ScheduleComponent implements OnInit {
     console.log('hi ' + elem.style);
     switch (type) {
       case 'basic':
-        this.buttonColor = 'white';
+        this.buttonColor = '#2962FF';
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
@@ -327,7 +327,7 @@ export class ScheduleComponent implements OnInit {
         break;
       case 'tube':
         this.buttonColor = '#B8ECF1';
-        this.buttonColor2 = 'white';
+        this.buttonColor2 = '#2962FF';
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
@@ -336,7 +336,7 @@ export class ScheduleComponent implements OnInit {
       case 'mkp':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = '#B8ECF1';
-        this.buttonColor3 = 'white';
+        this.buttonColor3 = '#2962FF';
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
         this.buttonColor6 = '#B8ECF1';
@@ -345,7 +345,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = '#B8ECF1';
-        this.buttonColor4 = 'white';
+        this.buttonColor4 = '#2962FF';
         this.buttonColor5 = '#B8ECF1';
         this.buttonColor6 = '#B8ECF1';
         break;
@@ -354,7 +354,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor2 = '#B8ECF1';
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
-        this.buttonColor5 = 'white';
+        this.buttonColor5 = '#2962FF';
         this.buttonColor6 = '#B8ECF1';
         break;
       case 'stickers':
@@ -363,7 +363,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor3 = '#B8ECF1';
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
-        this.buttonColor6 = 'white';
+        this.buttonColor6 = '#2962FF';
         break;
     }
     this.typeShown = type;

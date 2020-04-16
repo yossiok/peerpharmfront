@@ -1,114 +1,110 @@
-<!-- <button (click)="exportToExcel()">excelWithoutBoxOrStickerFields</button> -->
-<div *ngIf="!hasMoreItemsToload">
-  <input
-    matInput
-    placeholder="Search item name"
-    (change)="changeText($event)"
-  />
-  &nbsp;
-  <button
-    style="float: right; background: none;"
-    (click)="getCurrListToExcel()"
-    data-toggle="tooltip"
-    title="get cuurent item list"
-  >
-    <label style="float: right; line-height: 30px; margin-left: 5px"
-      ><b>Export List</b></label
-    >
-    <img
-      src="../../../assets/images/excel.png"
-      alt="excel export"
-      style="width: 35px; float: right;"
-    />
-  </button>
-  <input style="float:right;" (change)="sendExcelToData($event)" type="file" />
-  &nbsp;<label style="float:right;font-weight: bold;">Upload Excel</label>
-  &nbsp;
-</div>
-<div class="curtain"  *ngIf="showCurtain">
-  <h1 style="color:#FFF; margin:0px">
-    PLEASE WAIT...
-    <br />
-    A database backup is being made before the update.
-    <br />this can take some time
-  </h1>
-</div>
-<!-- &nbsp;&nbsp; <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> -->
-<div *ngIf="hasMoreItemsToload">
-  <img
-    style="width:50px"
-    src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif"
-  /><span><b>loading more items...</b></span>
-  <br />
-</div>
+<div class="container-fluid bg-light text-center">
+  <div class="row">
+    <div class="col-12">
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info p-2">ITEMS LIST</h1>
+    </div>
+  </div>
 
-<div>
-  <select (change)="filterByStatus($event)">
-    <option value=""></option>
-    <option value="active">פעיל</option>
-    <option value="notActive">לא פעיל</option>
-    <option value="perfect">מושלם</option>
-  </select>
-</div>
-<div>
-  <select (change)="filterByLanguage($event)">
-    <option value=""></option>
-    <option value="Hebrew">Hebrew</option>
-    <option value="English">English</option>
-  </select>
-</div>
-<span
-  ><b>showing {{ items.length }} items</b></span
->
-<table class="table table-fixed">
-  <thead class="tableHeader text-white">
-    <tr>
-      <th style="width:8%; padding:5px">Item number</th>
-      <th style="width:20%; padding:5px">Name</th>
-      <th style="width:10%; padding:5px">Volume/Net Weight</th>
-      <!-- <th style="width:7%; padding:5px">Net Weight</th> -->
-      <th style="padding:5px">Sticker</th>
-      <th style="padding:5px">Barcode</th>
-      <th style="padding:5px">Limited License</th>
-      <th style="padding:5px">licsense Number</th>
-      <th style="padding:5px">licsense Date</th>
-      <th style="width:4%; padding:5px">Pallet 1</th>
-      <th style="width:4%; padding:5px">Pallet 2</th>
-      <th style="width:4%; padding:5px">Pallet 3</th>
-      <th></th>
-      <!-- <th style="padding:5px">Pallet 2</th>
+
+  <div *ngIf="!hasMoreItemsToload" class="row mt-4">
+    <div class="col-3"></div>
+    <div class="col-2">
+      <label class="form-control text-info">Search By Name</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">Filter By Status</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">Filter By Language</label>
+    </div>
+    <div class="col-3"></div>
+  </div>
+
+  <div *ngIf="!hasMoreItemsToload" class="row">
+    <div class="col-1">
+      <button style="float: right; background: none;" (click)="getCurrListToExcel()" data-toggle="tooltip"
+        title="get cuurent item list">
+        <label style="float: right; line-height: 30px; margin-left: 5px"><b>Export List</b></label>
+        <img src="../../../assets/images/excel.png" alt="excel export" style="width: 35px; float: right;" />
+      </button>
+    </div>
+    <div class="col-2"></div>
+    <div class="col-2">
+      <input matInput class="form-control" (change)="changeText($event)" />
+    </div>
+    <div class="col-2">
+      <select class="form-control" (change)="filterByStatus($event)">
+        <option value=""></option>
+        <option value="active">פעיל</option>
+        <option value="notActive">לא פעיל</option>
+        <option value="perfect">מושלם</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <select class="form-control" (change)="filterByLanguage($event)">
+        <option value=""></option>
+        <option value="Hebrew">Hebrew</option>
+        <option value="English">English</option>
+      </select>
+    </div>
+    <div class="col-3"></div>
+  </div>
+
+  <div *ngIf="hasMoreItemsToload" class="row">
+    <div class="col-12">
+      <span class="text-danger h5"><b>Loading Items , Please Wait..</b></span> <img style="width:50px"
+        src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+
+      <span class="text-danger h5"><b>Showing {{ items.length }} Items</b></span>
+      <table class="table table-hover table-striped table-fixed mt-2">
+        <thead class="bg-info text-white">
+          <tr>
+            <th style="width:8%; padding:5px">Item number</th>
+            <th style="width:20%; padding:5px">Name</th>
+            <th style="width:10%; padding:5px">Volume/Net Weight</th>
+            <!-- <th style="width:7%; padding:5px">Net Weight</th> -->
+            <th style="padding:5px">Sticker</th>
+            <th style="padding:5px">Barcode</th>
+            <th style="padding:5px">Limited License</th>
+            <th style="padding:5px">licsense Number</th>
+            <th style="padding:5px">licsense Date</th>
+            <th style="width:4%; padding:5px">Pallet 1</th>
+            <th style="width:4%; padding:5px">Pallet 2</th>
+            <th style="width:4%; padding:5px">Pallet 3</th>
+            <th></th>
+            <!-- <th style="padding:5px">Pallet 2</th>
     <th style="padding:5px">Pallet 3</th> -->
-    </tr>
-  </thead>
-  <tbody id="table_body">
-    <tr
-      style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-      *ngFor="let item of items; let i = index"
-    >
-      <td style="width:5%;">{{ i + 1 }}</td>
-      <td style="width:8%;">
-        <a
-          target="_blank"
-          routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}"
-        >
-          {{ item.itemNumber }}
-        </a>
-      </td>
-      <td style="width:17%;">{{ item.itemFullName }}</td>
-      <td style="width:10%;">
-        <div *ngIf="item.volumeKey">{{ item.volumeKey }} ml</div>
-        <div *ngIf="item.volumeKey == null && item.netWeightK">
-          {{ item.netWeightK }} gr
-        </div>
-      </td>
-      <td style="word-wrap:normal">
-        {{ item.stickerNumber }}<br /><span style="word-break: break-word;">{{
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+            *ngFor="let item of items; let i = index">
+            <td style="width:5%;">{{ i + 1 }}</td>
+            <td style="width:8%;">
+              <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}">
+                {{ item.itemNumber }}
+              </a>
+            </td>
+            <td style="width:17%;">{{ item.itemFullName }}</td>
+            <td style="width:10%;">
+              <div *ngIf="item.volumeKey">{{ item.volumeKey }} ml</div>
+              <div *ngIf="item.volumeKey == null && item.netWeightK">
+                {{ item.netWeightK }} gr
+              </div>
+            </td>
+            <td style="word-wrap:normal">
+              {{ item.stickerNumber }}<br /><span style="word-break: break-word;">{{
           item.StickerLanguageK
         }}</span>
-      </td>
-      <td style="word-wrap: break-word;">{{ item.barcodeK }}</td>
-      <td>
-        <!-- <img
+            </td>
+            <td style="word-wrap: break-word;">{{ item.barcodeK }}</td>
+            <td>
+              <!-- <img
           *ngIf="
             item.licenceItemsQuotaLimit &&
             item.licenceItemsQuotaLimit < item.licenceCurrItemsQnt
@@ -117,8 +113,8 @@
           src="../../../../assets/images/alert2.png"
           alt=""
         /> -->
-        <!-- <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
-        <!-- <input
+              <!-- <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
+              <!-- <input
           *ngIf="item.licenceItemsQuotaLimit"
           [(ngModel)]="item.licenceItemsQuotaLimit"
           type="number"
@@ -138,8 +134,8 @@
           "
           min="1"
         /> -->
-        <!-- <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
-        <!-- <input
+              <!-- <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
+              <!-- <input
           *ngIf="!item.licenceItemsQuotaLimit"
           type="number"
           style="width: 65px; float: left;"
@@ -158,24 +154,53 @@
           "
           min="1"
         /> -->
-        
-      </td>
-      <td (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensNumber }}</td>
-      <td (click)="edit(item._id)" *ngIf="item._id == EditRowId">
-        <input #itemLicenseNum [value]="item.licsensNumber" style="width:150px" type="text">
-      </td>
 
-      <td (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensDate}}</td>
-      <td (click)="edit(item._id)" *ngIf="item._id == EditRowId">
-        <input #itemLicenseDate [value]="item.licsensDate" style="width:150px" type="date">
-      </td>
+            </td>
+            <td (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensNumber }}</td>
+            <td (click)="edit(item._id)" *ngIf="item._id == EditRowId">
+              <input #itemLicenseNum [value]="item.licsensNumber" style="width:150px" type="text">
+            </td>
 
-      <td style="width:4%;">{{ item.pallet }}</td>
-      <td style="width:4%;">{{ item.pallet2 }}</td>
-      <td style="width:4%;">{{ item.pallet3 }}</td>
-      <td *ngIf="item._id == EditRowId" style="width:3%"><i (click)="saveEdit(item._id)" class="fa fa-check"></i></td>
-      <!-- <td>{{item.pallet2}}</td>
+            <td (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensDate}}</td>
+            <td (click)="edit(item._id)" *ngIf="item._id == EditRowId">
+              <input #itemLicenseDate [value]="item.licsensDate" style="width:150px" type="date">
+            </td>
+
+            <td style="width:4%;">{{ item.pallet }}</td>
+            <td style="width:4%;">{{ item.pallet2 }}</td>
+            <td style="width:4%;">{{ item.pallet3 }}</td>
+            <td *ngIf="item._id == EditRowId" style="width:3%"><i (click)="saveEdit(item._id)" class="fa fa-check"></i>
+            </td>
+            <!-- <td>{{item.pallet2}}</td>
     <td>{{item.pallet3}}</td> -->
-    </tr>
-  </tbody>
-</table>
+          </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+  </div>
+
+</div>
+<div>
+
+
+
+</div>
+<div class="curtain" *ngIf="showCurtain">
+  <h1 style="color:#FFF; margin:0px">
+    PLEASE WAIT...
+    <br />
+    A database backup is being made before the update.
+    <br />this can take some time
+  </h1>
+</div>
+<!-- &nbsp;&nbsp; <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> -->
+
+
+
+
+
+
+<input class="form-control" (change)="sendExcelToData($event)" type="file" />
+<label class="form-control">Upload Excel</label>

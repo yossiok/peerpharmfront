@@ -375,7 +375,7 @@
           <div style="float:none;">{{material.price}}{{material.coin}}<br>{{material.measurement}}</div>
         </td>
 
-        <td style="width:9%">
+        <td [ngClass]="dangerColor(material.threatment)" style="width:9%">
           <div style="width:9%;;float:none;text-align: center;">{{material.threatment}}</div>
         </td>
         <td style="width:9%">
@@ -1342,18 +1342,18 @@
           <label class="form-control">היתר רעלים</label>
         </div>
         <div class="col-3 fixNoaStupidStuff">
-          <input list="threatment" class="form-control" [(ngModel)]="resMaterial.threatment">
-          <datalist id="threatment">
+          <select class="form-control" [(ngModel)]="resMaterial.threatment">
+     
             <option value="flammableLiquid">3 - נוזל דליק</option>
             <option value="flammableSolid">4 - מוצק דליק</option>
             <option value="toxic">6 - רעיל</option>
             <option value="acid">8 - חומצה</option>
-            <option value="regular">8 - בסיס</option>
-            <option value="regular">9 - חומרים מסוכנים שונים</option>
+            <option value="base">8 - בסיס</option>
+            <option value="otherDangerMaterials">9 - חומרים מסוכנים שונים</option>
             <option value="regular">אין מספר או"מ</option>
             <option value="cooling">איחסון בקירור</option>
             <option value="blockedByType">חסום לפי סוג חומר</option>
-          </datalist>
+          </select>
 
           <input [(ngModel)]="resMaterial.umNumber" type="text" class="form-control" />
           <input [(ngModel)]="resMaterial.imerCode" type="text" class="form-control" />
