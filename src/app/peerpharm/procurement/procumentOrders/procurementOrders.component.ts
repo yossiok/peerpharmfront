@@ -28,6 +28,7 @@ export class ProcurementOrdersComponent implements OnInit {
   procurementData: any[];
   procurementDataCopy: any[];
   procurementArrivals: any[] = []
+  procurementArrivalsCopy: any[] = []
   currentOrder: any[];
   currentItems: any[];
   allSuppliers: any[];
@@ -121,59 +122,77 @@ export class ProcurementOrdersComponent implements OnInit {
   }
   filterPurchases(event, type) {
     debugger;
-    if (event.target.value == '') {
-      type = "";
-      this.procurementArrivals = []
-    } else {
+
       switch (type) {
         case 'supplier':
-          var tempArr = this.procurementDataCopy.filter(p => p.supplierName == event.target.value);
-          for (let i = 0; i < tempArr.length; i++) {
-            if (tempArr[i].status != 'closed') {
-              for (let j = 0; j < tempArr[i].item.length; j++) {
 
-                var obj = {
-                  id: tempArr[i]._id,
-                  supplierName: tempArr[i].supplierName,
-                  comaxNumber: tempArr[i].comaxNumber,
-                  itemNumber: tempArr[i].item[j].itemNumber,
-                  itemName: tempArr[i].item[j].itemName,
-                  arrivals: [],
-
-
-                }
-                if (tempArr[i].item[j].arrivals) {
-                  for (let k = 0; k < tempArr[i].item[j].arrivals.length; k++) {
-
-                    var arrival = {
-                      referenceNumber: tempArr[i].item[j].arrivals[k].referenceNumber,
-                      arrivalDate: tempArr[i].item[j].arrivals[k].arrivalDate,
-                      arrivedAmount: tempArr[i].item[j].arrivals[k].arrivedAmount
+            if(event.target.value != '') {
+              this.procurementArrivals = []
+              this.procurementArrivalsCopy = []
+              var tempArr = this.procurementDataCopy.filter(p => p.supplierName == event.target.value);
+              for (let i = 0; i < tempArr.length; i++) {
+                if (tempArr[i].status != 'closed') {
+                  for (let j = 0; j < tempArr[i].item.length; j++) {
+    
+                    var obj = {
+                      id: tempArr[i]._id,
+                      supplierName: tempArr[i].supplierName,
+                      comaxNumber: tempArr[i].comaxNumber,
+                      itemNumber: tempArr[i].item[j].itemNumber,
+                      itemName: tempArr[i].item[j].itemName,
+                      arrivals: [],
+    
+    
                     }
-                    obj.arrivals.push(arrival)
-
+                    if (tempArr[i].item[j].arrivals) {
+                      for (let k = 0; k < tempArr[i].item[j].arrivals.length; k++) {
+    
+                        var arrival = {
+                          referenceNumber: tempArr[i].item[j].arrivals[k].referenceNumber,
+                          arrivalDate: tempArr[i].item[j].arrivals[k].arrivalDate,
+                          arrivedAmount: tempArr[i].item[j].arrivals[k].arrivedAmount
+                        }
+                        obj.arrivals.push(arrival)
+    
+                      }
+                    }
+    
+                    this.procurementArrivals.push(obj)
+                    this.procurementArrivalsCopy.push(obj)
+    
                   }
                 }
-
-                this.procurementArrivals.push(obj)
-
+    
               }
-            }
 
-          }
+            } else {
+              this.procurementArrivals = []
+              this.procurementArrivalsCopy = []
+            }
+         
           break;
         case 'itemNumber':
           var tempArr = [...this.procurementArrivals];
-          this.procurementArrivals = tempArr.filter(p => p.itemNumber == event.target.value)
+          if(event.target.value != ''){
+            this.procurementArrivals = tempArr.filter(p => p.itemNumber == event.target.value)
+          } else {
+            this.procurementArrivals = this.procurementArrivalsCopy
+          }
+          
           break;
         case 'orderNumber':
           var tempArr = [...this.procurementArrivals];
-          this.procurementArrivals = tempArr.filter(p => p.comaxNumber == event.target.value)
+          if(event.target.value != ''){
+            this.procurementArrivals = tempArr.filter(p => p.comaxNumber == event.target.value)
+          } else {
+            this.procurementArrivals = this.procurementArrivalsCopy
+          }
+          
           break;
 
 
       }
-    }
+    
 
   }
 

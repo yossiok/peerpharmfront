@@ -359,7 +359,7 @@
       <div class="row">
         <div class="col-12">
          <table class="table table-bordered">
-      <thead>
+      <thead style="box-shadow: inset 0px 0px 4px 1px black;">
         <tr>
           <th style="width:5%">Item Number</th>
           <th style="width:10%">Item Name</th>
@@ -373,7 +373,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr style="border-bottom: 1px solid black !important;" *ngFor="let item of productionRequirements">
+        <tr style="border-bottom: 1px solid black !important;box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let item of productionRequirements">
           <td style="width:5%">{{item.itemNumber}}</td>
           <td style="width:10%">{{item.discription}}</td>
           <td style="width:5%">{{item.quantity}}</td>
@@ -862,6 +862,7 @@
               <th>Seal</th>
               <th>Cap</th>
               <th>Carton</th>
+              
             </tr>
           </thead>
           <tbody id="table_body">
@@ -876,6 +877,7 @@
             <td *ngIf="itemDetails.capNumber == '---'" ></td>
             <td [ngClass]="itemDetails.hasEnoughCartons?'lightgreen':'lightred'" *ngIf="itemDetails.cartonNumber != '---'">Quantity: {{itemDetails.cartons}} <br> Carton: {{itemDetails.cartonNumber}}</td>
             <td *ngIf="itemDetails.cartonNumber == '---'" ></td>
+          
             </tr>
           </tbody>
         </table>
@@ -929,6 +931,7 @@
             <td>{{item.quantity}}</td>
             <td>{{item.quantityProduced}}</td>
             <td>{{item.totalUnits}}</td>
+            <td><i class="ti-check text-success m-r-10" (click)="setOrderItemDone(item)" style="cursor: pointer;"></i></td>
 
 
           </tr>

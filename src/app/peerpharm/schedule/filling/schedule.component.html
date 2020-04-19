@@ -1,8 +1,8 @@
-<div class="container-fluid text-center">
+<div class="container-fluid text-center bg-white">
   <div class="row fixNoaStupidStuff">
     <div class="col-4 fixNoaStupidStuff"></div>
     <div class="col-4 fixNoaStupidStuff">
-      <h2 class="text-info">Filling Schedule</h2>
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Filling Schedule</h1>
     </div>
     <div class="col-4 fixNoaStupidStuff"></div>
   </div>
@@ -12,7 +12,7 @@
       <input class="form-control" type="date" #date [(ngModel)]="today" (change)="dateChanged(date.value)" />
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-info form-control" 
+      <button class="btn btn-info form-control border border-dark" 
         (click)="filterSchedule()">Filter</button>
     </div>
     <div class="col-9 fixNoaStupidStuff"></div>
@@ -24,33 +24,33 @@
     </div>
     <div class="col-1 fixNoaStupidStuff">
 
-      <div class="rounded" style="color:black" (click)="setType(&quot;basic&quot;, this)" [ngStyle]="{ 'background-color': buttonColor }">
+      <div class="rounded" style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;basic&quot;, this)" [ngStyle]="{ 'background-color': buttonColor }">
         General
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black" (click)="setType(&quot;tube&quot;, this)" [ngStyle]="{ 'background-color': buttonColor2 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;tube&quot;, this)" [ngStyle]="{ 'background-color': buttonColor2 }">
         Tubes
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black" (click)="setType(&quot;mkp&quot;, this)" [ngStyle]="{ 'background-color': buttonColor3 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;mkp&quot;, this)" [ngStyle]="{ 'background-color': buttonColor3 }">
         Make Up
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black" (click)="setType(&quot;sachet&quot;, this)" [ngStyle]="{ 'background-color': buttonColor4 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;sachet&quot;, this)" [ngStyle]="{ 'background-color': buttonColor4 }">
         Sachet
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
 
-      <div style="color:black" (click)="setType(&quot;laser&quot;, this)" [ngStyle]="{ 'background-color': buttonColor5 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;laser&quot;, this)" [ngStyle]="{ 'background-color': buttonColor5 }">
         Laser
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black" (click)="setType(&quot;stickers&quot;, this)" [ngStyle]="{ 'background-color': buttonColor6 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;stickers&quot;, this)" [ngStyle]="{ 'background-color': buttonColor6 }">
         Stickers
       </div>
 
@@ -61,7 +61,7 @@
   <div class="row fixNoaStupidStuff">
     <div class="col-12 fixNoaStupidStuff">
       <table class="table table-striped table-hover">
-        <thead class="bg-info text-white">
+        <thead style="box-shadow: inset 0px 0px 4px 1px black;" class="bg-info text-white">
           <tr>
             <th><img (click)="makeFillingReport()" style="width:50px;" src="../../../../assets/images/stockUpdate.png"></th>
             <th class="positionClass"><b>P</b></th>
@@ -144,13 +144,13 @@
           </td>
           <td class="printlessTd"></td>
           <td class="printlessTd">
-            <button class="btn btn-info form-control "
+            <button class="btn btn-info form-control border border-dark "
               (click)="writeScheduleData()">Add</button><br />
           </td>
         </tr>
       
         <tbody id="table_body">
-          <tr *ngFor="let line of scheduleData"
+          <tr style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let line of scheduleData"
             [style.background-color]="line.color">
             <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
               <td><input type="checkbox" (change)="isSelected($event,line)"></td>
@@ -282,7 +282,7 @@
                   [(ngModel)]="line.isSelected"
                   *ngIf="line._id !== EditRowId"
                 /> -->
-                <button class="btn btn-info m-r-10" type="button" (click)="openPrintBarkod(content, line)">
+                <button class="btn btn-info m-r-10 border border-dark" type="button" (click)="openPrintBarkod(content, line)">
                   Print Barcode
                 </button>
               </td>

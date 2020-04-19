@@ -58,13 +58,8 @@ th, td {
 
 
   .tableHeader { 
-    
-    box-shadow: 1px 1px 3px 1px black !important;
-    background: rgb(69, 69, 202);
       position: fixed;
-      top: 170px;
-      
-    
+ top:360px
   }
 
 

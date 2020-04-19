@@ -63,49 +63,49 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'allorders/orders',
     data: {
-      title: ''
+      title: 'Open Orders'
     },
     component: OrdersComponent
   },
   {
     path: 'allorders/orders/allorders',
     data: {
-      title: ''
+      title: 'All Orders'
     },
     component: AllordersComponent
   },
   {
     path: 'allorders/orderitems/:id',
     data: {
-      title: ''
+      title: 'Order Items'
     },
     component: OrderdetailsComponent
   },
   {
     path: 'allorders/makeupdetails/:id',
     data: {
-      title: ''
+      title: 'MakeUp Details'
     },
     component: MakeupdetailsComponent
   },
   {
     path: 'allorders/neworder',
     data: {
-      title: ''
+      title: 'New Order'
     },
     component: NeworderComponent
   },
   {
     path: 'schedule/fillschedule',
     data: {
-      title: ''
+      title: 'Filling Schedule'
     },
     component: ScheduleComponent
   },
   {
     path: 'schedule/printschedule',
     data: {
-      title: ''
+      title: 'Print Schedule'
     },
     component: PrintingComponent
   },
@@ -134,14 +134,14 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'items/itemslist',
     data: {
-      title: ''
+      title: 'Items List'
     },
     component: ItemslistComponent
   },
   {
     path: 'items/itemDetails',
     data: {
-      title: ''
+      title: 'Item Tree'
     },
     component: ItemDetailsTabComponent
   },
@@ -155,7 +155,7 @@ export const PeerPharmRputs: Routes =[
   {
     path: 'items/itemDetails/:itemNumber',
     data: {
-      title: ''
+      title: 'Item Tree'
     },
    // component: ItemdetaisComponent
     component: ItemDetailsTabComponent

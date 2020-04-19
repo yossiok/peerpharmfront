@@ -1,10 +1,10 @@
-<div class="container-fluid text-center">
+<div class="container-fluid text-center bg-white">
   <div class="row mt-3">
     <div class="col-4">
    
     </div>
     <div class="col-4 bg-white">
-      <h1 class="text-info p-1">Open Orders</h1>
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info p-1">Open Orders</h1>
     </div>
     <div class="col-4"></div>
   </div>
@@ -63,7 +63,7 @@
   <div class="row mt-4">
     <table class='table table-hover table-fixed'>
       <thead class='bg-info text-white'>
-        <tr>
+        <tr style="box-shadow: inset 0px 0px 4px 1px black;">
           <th style="width:3%;"></th>
           <th style="width:3%;">
             <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">
@@ -99,7 +99,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')">
+        <tr  style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')">
           <!-- <tr *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')" > -->
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:3%;" (click)="edit('')">

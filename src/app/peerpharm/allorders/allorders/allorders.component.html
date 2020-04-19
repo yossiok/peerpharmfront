@@ -1,8 +1,8 @@
-<div class="container-fluid text-center">
+<div class="container-fluid text-center bg-white">
   <div class="row">
     <div class="col-4"></div>
-    <div class="col-4 bg-light">
-      <h2 class="text-info">All Orders</h2>
+    <div class="col-4">
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">All Orders</h1>
     </div>
     <div class="col-4"></div>
   </div>
@@ -18,13 +18,13 @@
       <button (click)="loadOrdersItems()"  class='btn btn-info form-control' > Show Items </button>
     </div>
     <div class="col-8"></div>
-
+    
   </div>
 
   <div class="row mt-4">
     <table class='table table-fixed'>
-      <thead class='bg-info text-white'  (click)="edit(' ')">
-        <tr style="box-shadow: inset 0px 0px 1px 0px black;">
+      <thead  class='bg-info text-white'  (click)="edit(' ')">
+        <tr style="box-shadow: inset 0px 0px 4px 1px black">
           <th style="width:5%;"></th>
           <th style="width:5%;">
             <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">

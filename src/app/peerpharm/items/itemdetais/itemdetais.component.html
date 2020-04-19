@@ -1093,6 +1093,12 @@
                     <label class="labelGeneral">Carton Number</label>
                   </div>
                   <div>
+                    <label class="labelGeneral">EU Pallet</label>
+                  </div>
+                  <div>
+                    <label class="labelGeneral">US Pallet</label>
+                  </div>
+                  <div>
                     <label class="labelGeneral">PCS/Carton</label>
                   </div>
                   <div>
@@ -1133,6 +1139,12 @@
                   <div>
                     <input class="productionInput" type=t ext id="id_cartonNo" (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')"
                     [(ngModel)]=itemShown.cartonNumber>
+                  </div>
+                  <div>
+                    <input class="productionInput" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.euPallet>
+                  </div>
+                  <div>
+                    <input class="productionInput" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.usPallet>
                   </div>
                   <div>
                     <input class="productionInput" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
@@ -1578,12 +1590,12 @@
                                   </tr>
                                   <tr style="padding: 0rem !important"> 
                                     <td *ngIf="editSpecTable==false">{{itemShown.spinSpeed}}</td>
-                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinSpeed" class="form-control" type="number"></td>
+                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinSpeed" class="form-control" type="text"></td>
                                     <td style="padding: 0rem !important;font-size: 11px;">מהירות סיבוב</td>
                                   </tr>
                                   <tr style="padding: 0rem !important"> 
                                     <td *ngIf="editSpecTable==false">{{itemShown.percentageResult}}</td>
-                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.percentageResult" class="form-control" type="number"></td>
+                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.percentageResult" class="form-control" type="text"></td>
                                     <td style="padding: 0rem !important;font-size: 11px;">%</td>
                                   </tr>
                                   <tr style="padding: 0rem !important">
@@ -1627,7 +1639,11 @@
                     <div *ngIf="editSpecTable == false && allowEditSpecTable == true" class="col-4">
                       <button  (click)="editSpecTable = true" class="form-control btn btn-warning">Edit</button>
                     </div>
-                    <div class="col-4"></div>
+                    <div *ngIf="editSpecTable == true && allowEditSpecTable == true" class="col-4" class="col-4">
+                     
+                        <button  (click)="saveSpecTable()" class="form-control btn btn-warning">Save</button>
+                      
+                    </div>
                     <div class="col-4"></div>
               
                   </div>

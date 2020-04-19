@@ -2,7 +2,7 @@
   <ngb-tab title="Purchase Orders">
     <ng-template ngbTabContent>
     <div class="container-fluid bg-white text-center">
-      <div class="row bg-success">
+      <div class="row bg-info">
         <div class="col-12">
           <h3 class="p-2 text-white">Purchase Orders</h3>
         </div>
@@ -57,7 +57,7 @@
       </div>
 
       <table>
-        <thead class="bg-success text-white">
+        <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
           <tr>
             <th><b>#</b></th>
             <th><b>Procurement Number</b></th>
@@ -66,15 +66,14 @@
             <th><b>Supplier Name</b></th>
             <th><b>Out Date</b></th>
             <th><b>Receiving Date</b></th>
-            <th></th>
-            <th></th>
             <th><b>Sent To Supplier</b></th>
             <th><b>Arrived At Supplier</b></th>
             <th><b>Close Order</b></th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="table_body">
-          <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+          <tr style="box-shadow: inset 0x 0x 4px 1px black; margin-top: 1px;"
             *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
             <td>{{i+1}}</td>
             <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span
@@ -85,11 +84,20 @@
             <td>{{ line.supplierName }}</td>
             <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
             <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
-            <td><button class="btn-danger" (click)="cancelOrder(line.orderNumber)">Cancel Order</button></td>
-            <td><button class="btn-success" (click)="printOrder(line)">Print Order</button></td>
             <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
             <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td>
-            <td><i (click)="closeOrder(line.orderNumber)" class="fa fa-thumbs-up" aria-hidden="true"></i></td>
+            <td><select class="form-control" (change)="closeOrder(line.orderNumber)">
+              <option value=""></option>
+              <option value="orderFrozen">בהקפאה</option>
+              <option value="havivApproval">מבוטל באישור חביב</option>
+              <option value="tomerApproval">מבוטל באישור תומר</option>
+              <option value="sigiOrAkivaApproval">מבוטל באישור סיגלית/עקיבא</option>
+              <option value="movedToOtherPurchase">הוכנס להזמנה אחרת</option>
+              <option value="balanceNotImp">יתרה לא רלוונטית</option>
+              <option value="NoApprovePrice">מחיר לא אושר</option>
+              <option value="withoutReciept">נסגר ללא תעודה</option>
+            </select></td>
+            <td><button class="btn btn-info" (click)="printOrder(line)">Print Order</button></td>
 
           </tr>
         </tbody>
@@ -111,7 +119,7 @@
         </div>
       </div>
       <table class="table table-striped">
-        <thead class="bg-success text-white">
+        <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
           <tr>
             <th style="cursor: pointer;" (click)="sortTable('itemNumber')">Item Number</th>
             <th>Recommend Type</th>
@@ -127,7 +135,7 @@
         </thead>
         <tbody>
 
-          <tr *ngFor="let purchase of purchaseRecommendations" [style.background-color]="purchase.color">
+          <tr style="box-shadow: inset 0x 0x 4px 1px black !important" *ngFor="let purchase of purchaseRecommendations" [style.background-color]="purchase.color">
             <td><a style="color:blue;border-bottom: 1px solid blue;cursor: pointer;" target="_blank"
                 (click)="findInInventory(purchase.componentNumber)">{{purchase.componentNumber}}</a></td>
             <td>{{purchase.type}}</td>
@@ -183,7 +191,7 @@
 
 
       <table class="table table-striped">
-        <thead class="text-white">
+        <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
           <tr>
             <th>#</th>
             <th>Supplier</th>
@@ -196,7 +204,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let purchase of procurementArrivals;let i = index">
+          <tr style="box-shadow: inset 0x 0x 4px 1px black !important" *ngFor="let purchase of procurementArrivals;let i = index">
             <td style="color:blue;text-decoration: underline;cursor: pointer;" (click)="editArrivalDetails(i)">{{i+1}}
             </td>
             <td>{{purchase.supplierName}}</td>
@@ -247,7 +255,7 @@
                   <td><input [(ngModel)]="newReference.referenceNumber" class="form-control" type="text"></td>
                   <td><input [(ngModel)]="newReference.arrivalDate" class="form-control" type="date"></td>
                   <td><input [(ngModel)]="newReference.arrivedAmount" class="form-control" type="number"></td>
-                  <td><button (click)="addReferenceDetails(arrival)" class="form-control btn-success">Add</button></td>
+                  <td><button (click)="addReferenceDetails(arrival)" class="form-control btn-info">Add</button></td>
 
                 </tr>
               </tbody>
@@ -430,7 +438,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:5
 
   <div class="container" id="material-body" class="modal-body">
     <table id="procurementItems" class="table table-striped">
-      <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+      <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-info text-white">
         <tr>
           <th></th>
           <th>Item Name</th>
@@ -526,7 +534,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:5
       </select>
     </td>
     <td><input class="form-control" placeholder="Price" [(ngModel)]="newItem.supplierPrice" type="text"></td>
-    <td><button class="btn btn-success" (click)="addNewItem()">Add</button></td>
+    <td><button class="btn btn-info" (click)="addNewItem()">Add</button></td>
     </tr>
    
   </div>

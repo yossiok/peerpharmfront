@@ -205,6 +205,9 @@ export class ItemdetaisComponent implements OnInit {
     itemCtnW: '',
     itemCtnS: '',
 
+    euPallet: '',
+    usPallet: '',
+
     bottleNumber: '',
     capNumber: '',
     pumpNumber: '',
@@ -677,6 +680,18 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
     var compNumber = ev.target.value;
     this.searchCompNumberByComp(compNumber, src);
 
+  }
+
+  saveSpecTable(){
+    debugger;
+
+    this.editSpecTable = false;
+
+    this.itemsService.saveSpecSettings(this.itemShown).subscribe(data=>{
+      if(data){
+        this.toastr.success('עודכן בהצלחה !')
+      }
+    })
   }
 
   getGoddetData() {
@@ -1449,8 +1464,14 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       if (this.user.authorization) {
         if (this.authService.loggedInUser.authorization.includes("updateItemTree")) {
           this.alowUserEditItemTree = true;
+         
+        }
+        if (this.authService.loggedInUser.authorization.includes("updateItemSpecs")) {
+        
           this.allowEditSpecTable = true
         }
+
+
       }
 
      } else { 
@@ -1459,6 +1480,9 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         if (this.user.authorization) {
           if (this.authService.loggedInUser.authorization.includes("updateItemTree")) {
             this.alowUserEditItemTree = true;
+          }
+          if (this.authService.loggedInUser.authorization.includes("updateItemSpecs")) {
+        
             this.allowEditSpecTable = true
           }
         }

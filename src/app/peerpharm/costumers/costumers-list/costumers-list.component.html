@@ -20,7 +20,7 @@
     <div class="col-12">
 
       <table style="color:black" class='table table-hover table-striped'>
-        <thead class='bg-info text-white'>
+        <thead style="box-shadow: inset 0px 0px 4px 1px black;" class='bg-info text-white'>
       
           <tr>
             <th></th>
@@ -32,7 +32,7 @@
           </tr>
         </thead>
         <tbody id="table_body">
-          <tr  *ngFor="let costumer of costumers; let i=index">
+          <tr style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let costumer of costumers; let i=index">
             <td>{{i}}</td>
             <td (click)='openDetails(content, i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
             <td>{{costumer.costumerName}}</td>
