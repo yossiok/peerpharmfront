@@ -131,6 +131,13 @@ debugger
 
     this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data=>{
       debugger;
+
+      for (let i = 0; i < data.length; i++) {
+        if(data[i].status == 'supplierGotOrder' || data[i].status == 'sentToSupplier'){
+          data[i].status = 'open'
+        }
+        
+      }
      this.itemExistInOrders = data;
      
      if(data.length > 0){

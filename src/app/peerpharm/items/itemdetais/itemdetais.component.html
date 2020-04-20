@@ -1,4 +1,3 @@
-
 <div class="container-fluid">
   <div style="height:20px" class="row"></div>
   <div class="row">
@@ -6,14 +5,14 @@
     <div class="col">
       <h1 [ngClass]="checkItemStatus()" class="itemHeadline">ITEM TREE</h1>
       <div *ngIf="remarksAlert==true" class="alert">
-        <span dir="rtl" class="closebtn" (click)="jumpingRemark()">&times;</span> 
+        <span dir="rtl" class="closebtn" (click)="jumpingRemark()">&times;</span>
         <strong>הערה חשובה:</strong> {{this.itemShown.proRemarks}}
       </div>
       <div *ngIf="notActiveAlert==true" class="alert">
-        <span dir="rtl" class="closebtn" (click)="notActive()">&times;</span> 
-        <strong>שים לב פריט זה אינו פעיל !!</strong> 
+        <span dir="rtl" class="closebtn" (click)="notActive()">&times;</span>
+        <strong>שים לב פריט זה אינו פעיל !!</strong>
       </div>
-      
+
     </div>
     <div class="col"></div>
   </div>
@@ -29,10 +28,10 @@
       </div>
 
       <div style="margin:4px">
-      <label [ngClass]="checkItemStatus()" style="font-weight:bold">Sticker</label>
+        <label [ngClass]="checkItemStatus()" style="font-weight:bold">Sticker</label>
       </div>
       <div style="margin:4px">
-      <label [ngClass]="checkItemStatus()" style="font-weight:bold">Box</label>
+        <label [ngClass]="checkItemStatus()" style="font-weight:bold">Box</label>
       </div>
 
       <div style="margin:4px;">
@@ -64,32 +63,39 @@
         <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
       </div>
       <div>
-        <input [ngClass]="itemBackgroundByStatus()" type="text"  id="id_stickerNumber" [(ngModel)]=itemShown.stickerNumber onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+        <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_stickerNumber"
+          [(ngModel)]=itemShown.stickerNumber
+          onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
         <input type="text" style='width: 150px' id="id_stickerType" [(ngModel)]=itemShown.stickerTypeK>
       </div>
       <div>
-      <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.boxNumber id="id_boxNumber" onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
-      <input type="text" style='width: 150px' [(ngModel)]=itemShown.boxTypeK id="id_boxType">
-    </div>
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.boxNumber id="id_boxNumber"
+          onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
+        <input type="text" style='width: 150px' [(ngModel)]=itemShown.boxTypeK id="id_boxType">
+      </div>
       <div>
-        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.name id="id_productTitle" style="width:480px">
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.name id="id_productTitle"
+          style="width:480px">
       </div>
 
       <div>
-        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.subName id="id_subTitle" style="width:480px">
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.subName id="id_subTitle"
+          style="width:480px">
       </div>
 
       <div>
-        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip" style="width:480px">
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip"
+          style="width:480px">
       </div>
 
       <div>
-        <textarea [ngClass]="itemBackgroundByStatus()" rows="4" cols="40" id="id_mainRemarks" [(ngModel)]=itemShown.proRemarks> </textarea>
+        <textarea [ngClass]="itemBackgroundByStatus()" rows="4" cols="40" id="id_mainRemarks"
+          [(ngModel)]=itemShown.proRemarks> </textarea>
       </div>
 
       <div style='display: inline-table;text-align: center;margin-top:10px;'>
         <h4 [ngClass]="checkItemStatus()">Main Picture</h4>
-        <input style="text-align: center;"  type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+        <input style="text-align: center;" type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
         <button style="text-align: center;" class="btn" [disabled]="!selectedFiles" (click)="upload('main1')"
           *ngIf='main1File'>>></button>
         <br>
@@ -110,8 +116,8 @@
                   </div>
                 </div>
                 <div class="col-10">
-                  <input id="id_impRemarks" [(ngModel)]=itemShown.impRemarks class="productionInput"
-                    style="width:90%;" type="text" />
+                  <input id="id_impRemarks" [(ngModel)]=itemShown.impRemarks class="productionInput" style="width:90%;"
+                    type="text" />
                 </div>
               </div>
               <div class="row">
@@ -183,21 +189,21 @@
                   <div>
                     <select id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
                       [(ngModel)]=itemShown.StickerLanguageK>
-                    <option value="Arabic">Arabic</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="Dutch">Dutch</option>
-                    <option value="English">English</option>
-                    <option value="French">French</option>
-                    <option value="German">German</option>
-                    <option value="Greek">Greek</option>
-                    <option value="Hebrew">Hebrew</option>
-                    <option value="Italiano">Italiano</option>
-                    <option value="Japanese">Japanese</option>
-                    <option value="Polish">Polish</option>
-                    <option value="Russian">Russian</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="Swedish">Swedish</option>
-                  </select>
+                      <option value="Arabic">Arabic</option>
+                      <option value="Chinese">Chinese</option>
+                      <option value="Dutch">Dutch</option>
+                      <option value="English">English</option>
+                      <option value="French">French</option>
+                      <option value="German">German</option>
+                      <option value="Greek">Greek</option>
+                      <option value="Hebrew">Hebrew</option>
+                      <option value="Italiano">Italiano</option>
+                      <option value="Japanese">Japanese</option>
+                      <option value="Polish">Polish</option>
+                      <option value="Russian">Russian</option>
+                      <option value="Spanish">Spanish</option>
+                      <option value="Swedish">Swedish</option>
+                    </select>
                   </div>
                   <!-- <div>
                     <input id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
@@ -324,7 +330,7 @@
                     </div>
                   </div>
 
-              
+
 
                 </div>
                 <div class="col-3">
@@ -348,13 +354,13 @@
                     <p>---</p>
                   </div>
 
-             
+
                 </div>
               </div>
               <div class="row">
                 <div class="col-2">
                   <div>
-                    
+
                     <div *ngIf="production==true" class="productionLabel">
                       <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="production==true && alowUserEditItemTree==true"></i>
@@ -371,9 +377,9 @@
                         <option value="Cellophane">Cellophane</option>
                         <option value="Carton">Carton</option>
                         <option value="Pallet">Pallet</option>
-                      </select> 
+                      </select>
                     </div>
-                    
+
                     <div *ngIf="production==false" class="productionLabel">
                       <i (click)="addRemoveInputs('production')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="production==false && alowUserEditItemTree==true"></i>
@@ -382,26 +388,26 @@
                   </div>
 
                   <div>
-                     
+
                     <div *ngIf="productionTwo==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionTwo==true && alowUserEditItemTree==true"></i>
-                        <select [(ngModel)]="itemShown.typeOfComponentTwo">
-                          <option value=""></option>
-                          <option value="Bottle">Bottle</option>
-                          <option value="Jar">Jar</option>
-                          <option value="Pump">Pump</option>
-                          <option value="Seal">Seal</option>
-                          <option value="Cap">Cap</option>
-                          <option value="OverCap">OverCap</option>
-                          <option value="Stage">Stage</option>
-                          <option value="Package">Package</option>
-                          <option value="Cellophane">Cellophane</option>
-                          <option value="Carton">Carton</option>
-                          <option value="Pallet">Pallet</option>
-                        </select> 
+                      <select [(ngModel)]="itemShown.typeOfComponentTwo">
+                        <option value=""></option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Jar">Jar</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Seal">Seal</option>
+                        <option value="Cap">Cap</option>
+                        <option value="OverCap">OverCap</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Package">Package</option>
+                        <option value="Cellophane">Cellophane</option>
+                        <option value="Carton">Carton</option>
+                        <option value="Pallet">Pallet</option>
+                      </select>
                     </div>
-                     
+
                     <div *ngIf="productionTwo==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionTwo')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-plus" *ngIf="productionTwo==false && alowUserEditItemTree==true"></i>
@@ -410,24 +416,24 @@
                   </div>
 
                   <div>
-                    
+
                     <div *ngIf="productionThree==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionThree')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionThree==true && alowUserEditItemTree==true"></i>
-                        <select [(ngModel)]="itemShown.typeOfComponentThree">
-                          <option value=""></option>
-                          <option value="Bottle">Bottle</option>
-                          <option value="Jar">Jar</option>
-                          <option value="Pump">Pump</option>
-                          <option value="Seal">Seal</option>
-                          <option value="Cap">Cap</option>
-                          <option value="OverCap">OverCap</option>
-                          <option value="Stage">Stage</option>
-                          <option value="Package">Package</option>
-                          <option value="Cellophane">Cellophane</option>
-                          <option value="Carton">Carton</option>
-                          <option value="Pallet">Pallet</option>
-                        </select> 
+                      <select [(ngModel)]="itemShown.typeOfComponentThree">
+                        <option value=""></option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Jar">Jar</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Seal">Seal</option>
+                        <option value="Cap">Cap</option>
+                        <option value="OverCap">OverCap</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Package">Package</option>
+                        <option value="Cellophane">Cellophane</option>
+                        <option value="Carton">Carton</option>
+                        <option value="Pallet">Pallet</option>
+                      </select>
                     </div>
                     <div *ngIf="productionThree==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionThree')" style="margin-right:2px;cursor: pointer;"
@@ -437,24 +443,24 @@
                   </div>
 
                   <div>
-                    
+
                     <div *ngIf="productionFour==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFour')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionFour==true && alowUserEditItemTree==true"></i>
-                        <select [(ngModel)]="itemShown.typeOfComponentFour">
-                          <option value=""></option>
-                          <option value="Bottle">Bottle</option>
-                          <option value="Jar">Jar</option>
-                          <option value="Pump">Pump</option>
-                          <option value="Seal">Seal</option>
-                          <option value="Cap">Cap</option>
-                          <option value="OverCap">OverCap</option>
-                          <option value="Stage">Stage</option>
-                          <option value="Package">Package</option>
-                          <option value="Cellophane">Cellophane</option>
-                          <option value="Carton">Carton</option>
-                          <option value="Pallet">Pallet</option>
-                        </select> 
+                      <select [(ngModel)]="itemShown.typeOfComponentFour">
+                        <option value=""></option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Jar">Jar</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Seal">Seal</option>
+                        <option value="Cap">Cap</option>
+                        <option value="OverCap">OverCap</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Package">Package</option>
+                        <option value="Cellophane">Cellophane</option>
+                        <option value="Carton">Carton</option>
+                        <option value="Pallet">Pallet</option>
+                      </select>
                     </div>
                     <div *ngIf="productionFour==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFour')" style="margin-right:2px;cursor: pointer;"
@@ -464,24 +470,24 @@
                   </div>
 
                   <div>
-                   
+
                     <div *ngIf="productionFive==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFive')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionFive==true && alowUserEditItemTree==true"></i>
-                        <select [(ngModel)]="itemShown.typeOfComponentFive">
-                          <option value=""></option>
-                          <option value="Bottle">Bottle</option>
-                          <option value="Jar">Jar</option>
-                          <option value="Pump">Pump</option>
-                          <option value="Seal">Seal</option>
-                          <option value="Cap">Cap</option>
-                          <option value="OverCap">OverCap</option>
-                          <option value="Stage">Stage</option>
-                          <option value="Package">Package</option>
-                          <option value="Cellophane">Cellophane</option>
-                          <option value="Carton">Carton</option>
-                          <option value="Pallet">Pallet</option>
-                        </select> 
+                      <select [(ngModel)]="itemShown.typeOfComponentFive">
+                        <option value=""></option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Jar">Jar</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Seal">Seal</option>
+                        <option value="Cap">Cap</option>
+                        <option value="OverCap">OverCap</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Package">Package</option>
+                        <option value="Cellophane">Cellophane</option>
+                        <option value="Carton">Carton</option>
+                        <option value="Pallet">Pallet</option>
+                      </select>
                     </div>
                     <div *ngIf="productionFive==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionFive')" style="margin-right:2px;cursor: pointer;"
@@ -491,24 +497,24 @@
                   </div>
 
                   <div>
-                   
+
                     <div *ngIf="productionSix==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSix')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionSix==true && alowUserEditItemTree==true"></i>
-                        <select [(ngModel)]="itemShown.typeOfComponentSix">
-                          <option value=""></option>
-                          <option value="Bottle">Bottle</option>
-                          <option value="Jar">Jar</option>
-                          <option value="Pump">Pump</option>
-                          <option value="Seal">Seal</option>
-                          <option value="Cap">Cap</option>
-                          <option value="OverCap">OverCap</option>
-                          <option value="Stage">Stage</option>
-                          <option value="Package">Package</option>
-                          <option value="Cellophane">Cellophane</option>
-                          <option value="Carton">Carton</option>
-                          <option value="Pallet">Pallet</option>
-                        </select> 
+                      <select [(ngModel)]="itemShown.typeOfComponentSix">
+                        <option value=""></option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Jar">Jar</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Seal">Seal</option>
+                        <option value="Cap">Cap</option>
+                        <option value="OverCap">OverCap</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Package">Package</option>
+                        <option value="Cellophane">Cellophane</option>
+                        <option value="Carton">Carton</option>
+                        <option value="Pallet">Pallet</option>
+                      </select>
                     </div>
                     <div *ngIf="productionSix==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSix')" style="margin-right:2px;cursor: pointer;"
@@ -517,24 +523,24 @@
                     </div>
                   </div>
                   <div>
-                  
+
                     <div *ngIf="productionSeven==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSeven')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionSeven==true && alowUserEditItemTree==true"></i>
-                        <select [(ngModel)]="itemShown.typeOfComponentSeven">
-                          <option value=""></option>
-                          <option value="Bottle">Bottle</option>
-                          <option value="Jar">Jar</option>
-                          <option value="Pump">Pump</option>
-                          <option value="Seal">Seal</option>
-                          <option value="Cap">Cap</option>
-                          <option value="OverCap">OverCap</option>
-                          <option value="Stage">Stage</option>
-                          <option value="Package">Package</option>
-                          <option value="Cellophane">Cellophane</option>
-                          <option value="Carton">Carton</option>
-                          <option value="Pallet">Pallet</option>
-                        </select> 
+                      <select [(ngModel)]="itemShown.typeOfComponentSeven">
+                        <option value=""></option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Jar">Jar</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Seal">Seal</option>
+                        <option value="Cap">Cap</option>
+                        <option value="OverCap">OverCap</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Package">Package</option>
+                        <option value="Cellophane">Cellophane</option>
+                        <option value="Carton">Carton</option>
+                        <option value="Pallet">Pallet</option>
+                      </select>
                     </div>
                     <div *ngIf="productionSeven==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionSeven')" style="margin-right:2px;cursor: pointer;"
@@ -543,24 +549,24 @@
                     </div>
                   </div>
                   <div>
-                    
+
                     <div *ngIf="productionEight==true" class="productionLabel">
                       <i (click)="addRemoveInputs('productionEight')" style="margin-right:2px;cursor: pointer;"
                         class="fa fa-minus" *ngIf="productionEight==true && alowUserEditItemTree==true"></i>
-                        <select [(ngModel)]="itemShown.typeOfComponentEight">
-                          <option value=""></option>
-                          <option value="Bottle">Bottle</option>
-                          <option value="Jar">Jar</option>
-                          <option value="Pump">Pump</option>
-                          <option value="Seal">Seal</option>
-                          <option value="Cap">Cap</option>
-                          <option value="OverCap">OverCap</option>
-                          <option value="Stage">Stage</option>
-                          <option value="Package">Package</option>
-                          <option value="Cellophane">Cellophane</option>
-                          <option value="Carton">Carton</option>
-                          <option value="Pallet">Pallet</option>
-                        </select> 
+                      <select [(ngModel)]="itemShown.typeOfComponentEight">
+                        <option value=""></option>
+                        <option value="Bottle">Bottle</option>
+                        <option value="Jar">Jar</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Seal">Seal</option>
+                        <option value="Cap">Cap</option>
+                        <option value="OverCap">OverCap</option>
+                        <option value="Stage">Stage</option>
+                        <option value="Package">Package</option>
+                        <option value="Cellophane">Cellophane</option>
+                        <option value="Carton">Carton</option>
+                        <option value="Pallet">Pallet</option>
+                      </select>
                     </div>
                     <div *ngIf="productionEight==false" class="productionLabel">
                       <i (click)="addRemoveInputs('productionEight')" style="margin-right:2px;cursor: pointer;"
@@ -642,9 +648,9 @@
                 <div class="col-3">
 
                   <div *ngIf="production==true">
-                  
-                    <input placeholder="Component Number"  id="id_boxNumber" [(ngModel)]="itemShown.bottleNumber" (change)="searchCompNumber($event,'productionInput')"
-                      type="text" class="productionInput">
+
+                    <input placeholder="Component Number" id="id_boxNumber" [(ngModel)]="itemShown.bottleNumber"
+                      (change)="searchCompNumber($event,'productionInput')" type="text" class="productionInput">
                   </div>
                   <div *ngIf="production==false">
                     <p style="opacity: 0">---</p>
@@ -710,60 +716,72 @@
 
                 <div class="col-2">
                   <div>
-                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcs" style="width:90px" *ngIf="production==true" class="productionInput">
-                    <button *ngIf="production==true" class="btn btn-success" (click)="findInInventory(itemShown.bottleNumber)">Inv</button>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcs" style="width:90px"
+                      *ngIf="production==true" class="productionInput">
+                    <button *ngIf="production==true" class="btn btn-success"
+                      (click)="findInInventory(itemShown.bottleNumber)">Inv</button>
                   </div>
                   <div *ngIf="production==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsTwo" style="width:90px" *ngIf="productionTwo==true" class="productionInput">
-                    <button *ngIf="productionTwo==true" class="btn btn-success" (click)="findInInventory(itemShown.capNumber)">Inv</button>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsTwo" style="width:90px"
+                      *ngIf="productionTwo==true" class="productionInput">
+                    <button *ngIf="productionTwo==true" class="btn btn-success"
+                      (click)="findInInventory(itemShown.capNumber)">Inv</button>
                   </div>
                   <div *ngIf="productionTwo==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsThree" style="width:90px" *ngIf="productionThree==true" class="productionInput">
-                    <button *ngIf="productionThree==true" class="btn btn-success" (click)="findInInventory(itemShown.pumpNumber)">Inv</button>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsThree" style="width:90px"
+                      *ngIf="productionThree==true" class="productionInput">
+                    <button *ngIf="productionThree==true" class="btn btn-success"
+                      (click)="findInInventory(itemShown.pumpNumber)">Inv</button>
                   </div>
                   <div *ngIf="productionThree==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsFour" style="width:90px" *ngIf="productionFour==true" class="productionInput">
-                    <button  *ngIf="productionFour==true" class="btn btn-success" (click)="findInInventory(itemShown.sealNumber)">Inv</button>
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsFour" style="width:90px"
+                      *ngIf="productionFour==true" class="productionInput">
+                    <button *ngIf="productionFour==true" class="btn btn-success"
+                      (click)="findInInventory(itemShown.sealNumber)">Inv</button>
                   </div>
                   <div *ngIf="productionFour==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsFive" style="width:90px" *ngIf="productionFive==true" class="productionInput">
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsFive" style="width:90px"
+                      *ngIf="productionFive==true" class="productionInput">
                   </div>
                   <div *ngIf="productionFive==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsSix" style="width:90px" *ngIf="productionSix==true" class="productionInput">
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsSix" style="width:90px"
+                      *ngIf="productionSix==true" class="productionInput">
                   </div>
                   <div *ngIf="productionSix==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsSeven" style="width:90px" *ngIf="productionSeven==true" class="productionInput">
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsSeven" style="width:90px"
+                      *ngIf="productionSeven==true" class="productionInput">
                   </div>
                   <div *ngIf="productionSeven==false">
                     <p style="opacity: 0">---</p>
                   </div>
 
                   <div>
-                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsEight" style="width:90px" *ngIf="productionEight==true" class="productionInput">
+                    <input placeholder="Pcs" [(ngModel)]="itemShown.numberOfPcsEight" style="width:90px"
+                      *ngIf="productionEight==true" class="productionInput">
                   </div>
                   <div *ngIf="productionEight==false">
                     <p style="opacity: 0">---</p>
@@ -874,55 +892,57 @@
                 </div>
                 <div class="col-6">
                   <small style="font-size:9px">Year</small>
-                  <input  [(ngModel)]="itemShown.laserYear"  style="margin:8px;" type="checkbox">
-                  
+                  <input [(ngModel)]="itemShown.laserYear" style="margin:8px;" type="checkbox">
+
                   <small style="font-size:9px">PP</small>
                   <input [(ngModel)]="itemShown.laserPP" style="margin:8px;" type="checkbox">
-                  
-                  <small style="font-size:9px">#</small>
-                  <input  style="margin:8px;" type="checkbox">
 
-                   <small style="font-size:9px">Prod. Month</small>
+                  <small style="font-size:9px">#</small>
+                  <input style="margin:8px;" type="checkbox">
+
+                  <small style="font-size:9px">Prod. Month</small>
                   <input [(ngModel)]="itemShown.laserMonth" style="margin:8px;" type="checkbox">
 
-                   <small style="font-size:9px">Exp. Month</small>
+                  <small style="font-size:9px">Exp. Month</small>
                   <input [(ngModel)]="itemShown.expMonth" style="margin:8px;" type="checkbox">
 
-                   <small style="font-size:9px">Exp. Year</small>
+                  <small style="font-size:9px">Exp. Year</small>
                   <input [(ngModel)]="itemShown.expYear" style="margin:8px;" type="checkbox">
 
-                  <select [(ngModel)]="itemShown.laserLocation"  style="width:100px">
-                      <option>Where?</option>
-                      <option value="Back">Back</option>
-                      <option value="Front">Front</option>
-                      <option value="Up">Up</option>
-                      <option value="Under">Under</option>
+                  <select [(ngModel)]="itemShown.laserLocation" style="width:100px">
+                    <option>Where?</option>
+                    <option value="Back">Back</option>
+                    <option value="Front">Front</option>
+                    <option value="Up">Up</option>
+                    <option value="Under">Under</option>
                   </select>
 
                 </div>
 
                 <div class="col-4">
-                 
+
                 </div>
-                
+
               </div>
               <div class="row">
                 <div class="col-6">
-                  <input type="file"  name="fileee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
-                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')" *ngIf='laser1File'>>></button>        
+                  <input type="file" name="fileee" id="id_itemImg2" (change)="selectFile($event, 'laser1')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')"
+                    *ngIf='laser1File'>>></button>
                   <!-- <img for="fileee" class="laserImg2" id="id_img4" src="../../../../assets/images/uploadImage.jpg" *ngIf="!itemShown.laserImage1"> -->
                 </div>
                 <div class="col-6">
-                  <input type="file"  name="filee" id="id_itemImg2" (change)="selectFile($event, 'laser2')"><br>
-                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser2')" *ngIf='laser2File'>>></button>          
+                  <input type="file" name="filee" id="id_itemImg2" (change)="selectFile($event, 'laser2')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser2')"
+                    *ngIf='laser2File'>>></button>
                 </div>
               </div>
               <div class="row">
                 <div class="col-6">
-                  <img *ngIf="itemShown.laserImage1"  class="laserImg" id="id_img4" [src]=itemShown.laserImage1>
+                  <img *ngIf="itemShown.laserImage1" class="laserImg" id="id_img4" [src]=itemShown.laserImage1>
                 </div>
                 <div class="col-6">
-                  <img class="laserImg" id="id_img5" [src]=itemShown.laserImage2 *ngIf="itemShown.laserImage2"> 
+                  <img class="laserImg" id="id_img5" [src]=itemShown.laserImage2 *ngIf="itemShown.laserImage2">
                 </div>
               </div>
             </div>
@@ -932,376 +952,278 @@
         <ngb-tab id="tab-selectbyid2">
           <ng-template ngbTabTitle><span style="color:black;">General</span></ng-template>
           <ng-template ngbTabContent>
-            <div class="container-fluid">
-              <div style="padding: 10px;" class="row">
+            <div class="container-fluid text-center">
 
-                <div class="col-2">
-
-                  <div>
-                    <label class="labelGeneral">Status</label>
-                  </div>
+              <div class="row mt-4">
+                <div class="col-4">
 
                 </div>
-                <div class="col-3">
 
-                  <div>
-                    <select [(ngModel)]="itemShown.status" class="productionInput">
-                      <option></option>
-                      <option value="active">פעיל</option>
-                      <option value="notActive">לא פעיל</option>
-                      <option value="perfect">מושלם</option>
-                      <option value="production">פיתוח</option>
-                    </select>
-                  </div>
-                  
-
+                <div class="col-1">
+                  <label class="form-control">Status</label>
                 </div>
                 <div class="col-2">
-                  <div>
-                    <div  class="productionLabel">
-                      <label style="font-size:11px">Peer Pharm Tone#</label>
-                    </div>
-               
-                  </div>
-
-                </div>
-
-                <div class="col-3">
-               
-                  <div>
-                    <input [(ngModel)]="itemShown.peerPharmTone" type="text" class="productionInput">
-                  </div>
-                </div>
-
-              </div>
-              <div class="row" style="padding:10px;">
-                <div class="col-2">
-
-                  <div>
-                    <label class="labelGeneral">Group</label>
-                  </div>
-
-                  <div>
-                    <label class="labelGeneral">Sub Group</label>
-                  </div>
-
-                  <div>
-                    <label class="labelGeneral">Sub Group 2</label>
-                  </div>
-
-                </div>
-                <div class="col-3">
-
-                  <div>
-                    <input disabled class="productionInput">
-                  </div>
-
-                  <div>
-                    <input disabled class="productionInput">
-                  </div>
-
-                  <div>
-                    <select class="productionInput">
-                      <option></option>
-                      <option></option>
-                      <option></option>
-                    </select>
-                  </div>
-
-                </div>
-                <div class="col-2">
-                  <div>
-                    <label class="labelGeneral">Pump direction</label>
-                  </div>
-
-                  <div>
-                    <label class="labelGeneral">Palette</label>
-                  </div>
-
-                  <div>
-                    <label style="font-size:13px;" class="labelGeneral">1st layer carton/palette </label>
-                  </div>
-
-                </div>
-                <div class="col-3">
-                  <div>
-                    <select id="id_pumpDirection" class="productionInput" [(ngModel)]=itemShown.pumpDirection>
-                      <option value="-">-</option>
-                      <option value="Right">Right</option>
-                      <option value="Left">Left</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <input type=t ext id="id_Palette" class="productionInput" [(ngModel)]=itemShown.paletteType>
-                  </div>
-
-                  <div>
-                    <input class="productionInput" type="number" ext id="id_layerCartonPalette"
-                      [(ngModel)]=itemShown.st1layerCarton>
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="row" style="padding:10px;">
-
-                <div class="col-2">
-
-
-
-                  <div>
-                    <label class="labelGeneral">Brand</label>
-                  </div>
-
-                  <div>
-                    <label class="labelGeneral">Customer #</label>
-                  </div>
-
-                  <div>
-                    <label class="labelGeneral">Customer Name</label>
-                  </div>
-
-                  <br><br>
-
-                  <div>
-                    <label class="labelGeneral">Schedule Remark</label>
-                  </div>
-
-                </div>
-
-                <div class="col-3">
-
-                  <div>
-                    <input [(ngModel)]="itemShown.name" class="productionInput" disabled/>
-                  </div>
-
-                  <input [(ngModel)]="itemShown.costumerId" type="text" class="productionInput" disabled>
-
-                  <select (change)="fillCostumerDetails($event)" [(ngModel)]="itemShown.costumerName"class="productionInput">
-                    <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}</option>
+                  <select [(ngModel)]="itemShown.status" class="form-control">
+                    <option></option>
+                    <option value="active">פעיל</option>
+                    <option value="notActive">לא פעיל</option>
+                    <option value="perfect">מושלם</option>
+                    <option value="production">פיתוח</option>
                   </select>
-
-                  <br><br>
-
-                  <textarea [(ngModel)]="itemShown.scheduleRemark" class="productionInput"></textarea>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-4">
 
                 </div>
+              </div>
 
-                <div class="col-2">
-                  <div>
-                    <label class="labelGeneral">Carton Number</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">EU Pallet</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">US Pallet</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">PCS/Carton</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">Total Cartons/palette</label>
-                  </div>
+              <div class="row mt-4">
 
-                  <div>
-                    <label class="labelGeneral">Cbm</label>
-                  </div>
-
-                  <div>
-                    <label class="labelGeneral">Mother Product</label>
-                  </div>
-                  <div style="margin-top:7px;">
-                    <label class="labelGeneral">Plate 1</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">Plate 2</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">Plate 3</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">Sticker Wgt/Type</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">Box Wgt/Type</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">Carton Wgt/Type</label>
-                  </div>
-           
-
+                <div class="col-4">
+                  <label class="form-control">Carton/Pallet</label>
                 </div>
-
-                <div class="col-3">
-                    
-                  <div>
-                    <input class="productionInput" type=t ext id="id_cartonNo" (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')"
-                    [(ngModel)]=itemShown.cartonNumber>
-                  </div>
-                  <div>
-                    <input class="productionInput" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.euPallet>
-                  </div>
-                  <div>
-                    <input class="productionInput" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.usPallet>
-                  </div>
-                  <div>
-                    <input class="productionInput" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
-                  </div>
-                  <div>
-                    <input class="productionInput" type="number" ext id="id_totalCarton"
-                      [(ngModel)]=itemShown.totalCartonPalette>
-                  </div>
-
-                  <div>
-                    <input class="productionInput" type="number" ext id="id_cbm" [(ngModel)]=itemShown.cbm>
-                  </div>
-
-                  <div>
-                    <input class="productionInput" type=t ext id="id_motherP">
-                  </div>
-
-                  <div>
-                    <input type=text class="productionInput" [(ngModel)]="itemShown.pallet" style='width:80px' ondblclick='openPalletImg(this.value, this.id)'>
-                    <input class="productionInput" [(ngModel)]="itemShown.pallet1x" disabled style='width:40px'><input class="productionInput" [(ngModel)]="itemShown.pallet1y"
-                      disabled style='width:40px'>
-                  </div>
-
-                  <div>
-                    <input class="productionInput" type=text [(ngModel)]="itemShown.pallet2" style='width:80px' ondblclick='openPalletImg(this.value  ,  this.id)'>
-                    <input class="productionInput" [(ngModel)]="itemShown.pallet2x" disabled style='width:40px'><input class="productionInput" [(ngModel)]="itemShown.pallet2y"
-                      disabled style='width:40px'>
-                  </div>
-
-                  <div>
-                    <input class="productionInput" type=text [(ngModel)]="itemShown.pallet3" style='width:80px' ondblclick='openPalletImg(this.value ,  this.id)'>
-                    <input class="productionInput" [(ngModel)]="itemShown.pallet3x" disabled style='width:40px'><input class="productionInput" [(ngModel)]="itemShown.pallet3y"
-                      disabled style='width:40px'>
-                  </div>
-
-                  <div>
-                    <input class="productionInput" type="text" id="id_boxWeight" style='width:40px; margin-left:0px' placeholder=8 [(ngModel)]=itemShown.itemBoxW>
-                    <select id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS style='margin-left:10px'>
-                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
-        
-                      <option value='paperCarton'>נייר/קרטון</option>
-                      <option value='drinkCarton'>קרטוניות משקה</option>
-                      <option value='totalCarton'>סה"כ קרטון</option>
-                      <option value='transperentGlass'>זכוכית שקופה</option>
-                      <option value='colorGlass'>זכוכית צבעונית</option>
-                      <option value='totalGlass'>סה"כ זכוכית</option>
-        
-                      <option value='pet'>PET</option>
-                      <option value='hdpe'>HDPE</option>
-                      <option value='ldpe'>LDPE</option>
-                      <option value='pp'>PP</option>
-                      <option value='ps'>PS</option>
-                      <option value='otherPlastic'>פלסטיק אחר</option>
-                      <option value='totalPlastic'>סה"כ פלסטיק</option>
-                      <option value='metal'>מתכת</option>
-                      <option value='wood'>עץ</option>
-                      <option value='otherMaterial'>חומר אחר</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <input class='productionInput' type="text" id="id_boxWeight" style='width:40px; margin-left:0px' placeholder=8 [(ngModel)]=itemShown.itemBoxW>
-                    <select id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS style='margin-left:10px'>
-                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
-        
-                      <option value='paperCarton'>נייר/קרטון</option>
-                      <option value='drinkCarton'>קרטוניות משקה</option>
-                      <option value='totalCarton'>סה"כ קרטון</option>
-                      <option value='transperentGlass'>זכוכית שקופה</option>
-                      <option value='colorGlass'>זכוכית צבעונית</option>
-                      <option value='totalGlass'>סה"כ זכוכית</option>
-        
-                      <option value='pet'>PET</option>
-                      <option value='hdpe'>HDPE</option>
-                      <option value='ldpe'>LDPE</option>
-                      <option value='pp'>PP</option>
-                      <option value='ps'>PS</option>
-                      <option value='otherPlastic'>פלסטיק אחר</option>
-                      <option value='totalPlastic'>סה"כ פלסטיק</option>
-                      <option value='metal'>מתכת</option>
-                      <option value='wood'>עץ</option>
-                      <option value='otherMaterial'>חומר אחר</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <input class="productionInput" type="text" id="id_cartonWeight" [(ngModel)]=itemShown.itemCtnW style='width:40px; margin-left:0px'>
-                    <select id='id_cartonSelect' [(ngModel)]=itemShown.itemCtnS style='margin-left:10px'>
-                      PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
-        
-                      <option value='paperCarton'>נייר/קרטון</option>
-                      <option value='drinkCarton'>קרטוניות משקה</option>
-                      <option value='totalCarton'>סה"כ קרטון</option>
-                      <option value='transperentGlass'>זכוכית שקופה</option>
-                      <option value='colorGlass'>זכוכית צבעונית</option>
-                      <option value='totalGlass'>סה"כ זכוכית</option>
-        
-                      <option value='pet'>PET</option>
-                      <option value='hdpe'>HDPE</option>
-                      <option value='ldpe'>LDPE</option>
-                      <option value='pp'>PP</option>
-                      <option value='ps'>PS</option>
-                      <option value='otherPlastic'>פלסטיק אחר</option>
-                      <option value='totalPlastic'>סה"כ פלסטיק</option>
-                      <option value='metal'>מתכת</option>
-                      <option value='wood'>עץ</option>
-                      <option value='otherMaterial'>חומר אחר</option>
-                    </select>
-                  </div>
+                <div class="col-4"></div>
+                <div class="col-4">
+                  <label class="form-control">License</label>
                 </div>
 
               </div>
+              <div class="row">
+                <div class="col-2">
+                  <label class="labelGeneral">Pump Direction</label>
+                  <label class="labelGeneral">Carton Number</label>
+                  <label class="labelGeneral">Pcs/Carton</label>
+                  <label class="labelGeneral">Pallet Type</label>
+                </div>
+                <div class="col-2">
+                  <select id="id_pumpDirection" class="form-control" [(ngModel)]=itemShown.pumpDirection>
+                    <option value="-">-</option>
+                    <option value="Right">Right</option>
+                    <option value="Left">Left</option>
+                  </select>
+                  <input class="form-control" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
+                  <input class="form-control" type=t ext id="id_cartonNo"
+                    (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')" [(ngModel)]=itemShown.cartonNumber>
+                    <input type=t ext id="id_Palette" class="form-control" [(ngModel)]=itemShown.paletteType>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-2"></div>
+                <div class="col-2">
+                  <label class="labelGeneral">License Number</label>
 
-              <div class="row" style="padding:10px;">
+                  <label class="labelGeneral">License Exp Date</label>
 
+                  <label class="labelGeneral">License Shades</label>
+
+                  <label class="labelGeneral">License Used</label>
+
+                  <label class="labelGeneral">Years Untill Exp</label>
+                </div>
                 <div class="col-2">
 
-                  <div>
-                    <label class="labelGeneral">License Number</label>
-                  </div>
+                  <input type="text" class="form-control" id="id_licsensNumber" [(ngModel)]=itemShown.licsensNumber>
 
-                  <div>
-                    <label class="labelGeneral">License Exp Date</label>
-                  </div>
 
-                  <div>
-                    <label class="labelGeneral">License Shades</label>
-                  </div>
+                  <input type="date" class="form-control" id="id_licsensDate" [(ngModel)]=itemShown.licsensDate>
 
-                  <div>
-                    <label class="labelGeneral">License Used</label>
-                  </div>
-                  <div>
-                    <label class="labelGeneral">Years Untill Exp</label>
-                  </div>
+                  <input type="text" class="form-control">
 
-                </div>
+                  <input type="text" class="form-control">
 
-                <div class="col-3">
-
-                  <div>
-                    <input type="text" class="productionInput" id="id_licsensNumber"
-                      [(ngModel)]=itemShown.licsensNumber>
-                  </div>
-
-                  <input type="date" class="productionInput" id="id_licsensDate" [(ngModel)]=itemShown.licsensDate>
-
-                  <input type="text" class="productionInput">
-
-                  <input type="text" class="productionInput">
-
-                  <input type="number" class="productionInput" id="id_yearsUntillExp"
+                  <input type="number" class="form-control" id="id_yearsUntillExp"
                     [(ngModel)]=itemShown.yearsUntillExpired>
+                </div>
+              </div>
 
+              <div class="row mt-5">
+                <div class="col-1">
+
+                </div>
+                <div class="col-2">
+                  <label class="form-control">EU Pallet</label>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-4"></div>
+                <div class="col-4">
+                  <label class="form-control">Plates</label>
                 </div>
 
               </div>
+
+              <div class="row">
+                <div class="col-2">
+                  <label style="font-size:13px;" class="labelGeneral">1st layer carton/palette </label>
+                  <label class="labelGeneral">Total Cartons/palette</label>
+                  <label class="labelGeneral">Cbm</label>
+                </div>
+                <div class="col-2">
+                  <input class="form-control" type="number" ext id="id_layerCartonPalette"
+                    [(ngModel)]=itemShown.st1layerCarton>
+                  <input class="form-control" type="number" ext id="id_totalCarton"
+                    [(ngModel)]=itemShown.totalCartonPalette>
+
+                  <input class="form-control" type="number" ext id="id_cbm" [(ngModel)]=itemShown.cbm>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-2"></div>
+                <div class="col-1">
+                  <label class="labelGeneral">Plate 1</label>
+                  <label class="labelGeneral">Plate 2</label>
+                  <label class="labelGeneral">Plate 3</label>
+
+                </div>
+                <div class="col-3">
+                  <input type=text class="productionInput" [(ngModel)]="itemShown.pallet" style='width:80px'
+                    ondblclick='openPalletImg(this.value, this.id)'>
+                  <input class="productionInput" [(ngModel)]="itemShown.pallet1x" disabled style='width:40px'><input
+                    class="productionInput" [(ngModel)]="itemShown.pallet1y" disabled style='width:40px'>
+
+
+
+                  <input class="productionInput" type=text [(ngModel)]="itemShown.pallet2" style='width:80px'
+                    ondblclick='openPalletImg(this.value  ,  this.id)'>
+                  <input class="productionInput" [(ngModel)]="itemShown.pallet2x" disabled style='width:40px'><input
+                    class="productionInput" [(ngModel)]="itemShown.pallet2y" disabled style='width:40px'>
+
+
+
+                  <input class="productionInput" type=text [(ngModel)]="itemShown.pallet3" style='width:80px'
+                    ondblclick='openPalletImg(this.value ,  this.id)'>
+                  <input class="productionInput" [(ngModel)]="itemShown.pallet3x" disabled style='width:40px'><input
+                    class="productionInput" [(ngModel)]="itemShown.pallet3y" disabled style='width:40px'>
+                </div>
+              </div>
+
+              <div class="row mt-5">
+                <div class="col-1">
+
+                </div>
+                <div class="col-2">
+                  <label class="form-control">US Pallet</label>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-4"></div>
+                <div class="col-4">
+                  <label class="form-control">Other</label>
+                </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-2">
+                  <label style="font-size:13px;" class="labelGeneral">1st layer carton/palette </label>
+                  <label class="labelGeneral">Total Cartons/palette</label>
+                  <label class="labelGeneral">Cbm</label>
+                </div>
+                <div class="col-2">
+                  <input class="form-control" type="number" ext id="id_layerCartonPalette"
+                    [(ngModel)]=itemShown.st1layerCarton>
+                  <input class="form-control" type="number" ext id="id_totalCarton"
+                    [(ngModel)]=itemShown.totalCartonPalette>
+                  <input class="form-control" type="number" ext id="id_cbm" [(ngModel)]=itemShown.cbm>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-2"></div>
+                <div class="col-2">
+                  <label  class="labelGeneral">Peerpharm Tone#</label>
+                  <label  class="labelGeneral">Mother Product</label>
+                  <label  class="labelGeneral">Sticker Wgt/Type</label>
+                  <label  class="labelGeneral">Box Wgt/Type</label>
+                  <label  class="labelGeneral">Carton Wgt/Type</label>
+                </div>
+                <div class="col-2">
+                  <input [(ngModel)]="itemShown.peerPharmTone" type="text" class="form-control">
+                  <input class="form-control" type=t ext id="id_motherP">
+                  <input class="form-control" type="text" id="id_boxWeight" style='width:40px; margin-left:0px'
+                  placeholder=8 [(ngModel)]=itemShown.itemBoxW>
+                <select style="width:74%"  class="form-control" id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS>
+                  PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+
+                  <option value='paperCarton'>נייר/קרטון</option>
+                  <option value='drinkCarton'>קרטוניות משקה</option>
+                  <option value='totalCarton'>סה"כ קרטון</option>
+                  <option value='transperentGlass'>זכוכית שקופה</option>
+                  <option value='colorGlass'>זכוכית צבעונית</option>
+                  <option value='totalGlass'>סה"כ זכוכית</option>
+
+                  <option value='pet'>PET</option>
+                  <option value='hdpe'>HDPE</option>
+                  <option value='ldpe'>LDPE</option>
+                  <option value='pp'>PP</option>
+                  <option value='ps'>PS</option>
+                  <option value='otherPlastic'>פלסטיק אחר</option>
+                  <option value='totalPlastic'>סה"כ פלסטיק</option>
+                  <option value='metal'>מתכת</option>
+                  <option value='wood'>עץ</option>
+                  <option value='otherMaterial'>חומר אחר</option>
+                </select>
+                <input class='form-control' type="text" id="id_boxWeight" style='width:40px; margin-left:0px'
+                  placeholder=8 [(ngModel)]=itemShown.itemBoxW>
+                <select style="width:74%" class="form-control" id='id_boxSelect' [(ngModel)]=itemShown.itemBoxS>
+                  PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+
+                  <option value='paperCarton'>נייר/קרטון</option>
+                  <option value='drinkCarton'>קרטוניות משקה</option>
+                  <option value='totalCarton'>סה"כ קרטון</option>
+                  <option value='transperentGlass'>זכוכית שקופה</option>
+                  <option value='colorGlass'>זכוכית צבעונית</option>
+                  <option value='totalGlass'>סה"כ זכוכית</option>
+
+                  <option value='pet'>PET</option>
+                  <option value='hdpe'>HDPE</option>
+                  <option value='ldpe'>LDPE</option>
+                  <option value='pp'>PP</option>
+                  <option value='ps'>PS</option>
+                  <option value='otherPlastic'>פלסטיק אחר</option>
+                  <option value='totalPlastic'>סה"כ פלסטיק</option>
+                  <option value='metal'>מתכת</option>
+                  <option value='wood'>עץ</option>
+                  <option value='otherMaterial'>חומר אחר</option>
+                </select>
+   
+                <input class="form-control" type="text" id="id_cartonWeight" [(ngModel)]=itemShown.itemCtnW
+                  style='width:40px; margin-left:0px'>
+                <select style="width:74%"  class="form-control" id='id_cartonSelect' [(ngModel)]=itemShown.itemCtnS >
+                  PET HDPE LDPE PP PS פלסטיק אחר סה"כ פלסטיק מתכת עץ חומר אחר
+
+                  <option value='paperCarton'>נייר/קרטון</option>
+                  <option value='drinkCarton'>קרטוניות משקה</option>
+                  <option value='totalCarton'>סה"כ קרטון</option>
+                  <option value='transperentGlass'>זכוכית שקופה</option>
+                  <option value='colorGlass'>זכוכית צבעונית</option>
+                  <option value='totalGlass'>סה"כ זכוכית</option>
+
+                  <option value='pet'>PET</option>
+                  <option value='hdpe'>HDPE</option>
+                  <option value='ldpe'>LDPE</option>
+                  <option value='pp'>PP</option>
+                  <option value='ps'>PS</option>
+                  <option value='otherPlastic'>פלסטיק אחר</option>
+                  <option value='totalPlastic'>סה"כ פלסטיק</option>
+                  <option value='metal'>מתכת</option>
+                  <option value='wood'>עץ</option>
+                  <option value='otherMaterial'>חומר אחר</option>
+                </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4">
+                  <label class="form-control">Schedule Remarks</label>
+                </div>
+                <div class="col-4"></div>
+          
+              </div>
+              <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4">
+                  <textarea cols="5" rows="3" [(ngModel)]="itemShown.scheduleRemark" class="form-control"></textarea>
+                </div>
+                <div class="col-4"></div>
+          
+              </div>
+
             </div>
           </ng-template>
         </ngb-tab>
@@ -1311,7 +1233,7 @@
           <ng-template ngbTabContent>
             <div class="container-fluid">
 
-              <div class="row pictureDivider" >
+              <div class="row pictureDivider">
 
                 <div class="col-2">
                   <div>
@@ -1447,7 +1369,7 @@
               </div>
               <div style='padding-left:30px' class="row">
 
-                <div  class="col-6">
+                <div class="col-6">
                   <div>
                     <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
                       File</button>
@@ -1459,7 +1381,7 @@
                   <img id="id_img6" [src]=itemShown.extraImage1>
                 </div>
 
-                <div  class="col-6">
+                <div class="col-6">
                   <div>
                     <button class="btn btn-success" style="margin-top:10px;position: absolute;" for="fileee">Upload
                       File</button>
@@ -1480,176 +1402,199 @@
         </ngb-tab>
 
         <ngb-tab id="tab-selectbyid4">
-            <ng-template ngbTabTitle><span style="color:black">Pictures</span></ng-template>
-            <ng-template ngbTabContent>
-              <div class="container-fluid">
+          <ng-template ngbTabTitle><span style="color:black">Pictures</span></ng-template>
+          <ng-template ngbTabContent>
+            <div class="container-fluid">
 
-                  <div class="imgContainer">
-                      <div style='display: inline-table'>
-                          <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
-                          <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
-                          <br>
-                          <img id="id_img1" [src]=itemShown.imgMain1>
-                      </div>
-                      <div style='display: inline-table'>
-                          <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
-                          <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')" *ngIf='main2File'>>></button>
-                          <br>
-                          <img id="id_img2" [src]=itemShown.imgMain2>
-                      </div>
-                      <div style='display: inline-table'>
-                        <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
-                        <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
-                        <br>
-                        <img alt="אריזה אישית" id="id_img3" [src]=itemShown.imgMain3>
-                  
-                        
-                      </div>
-                      <div style='display: inline-table'>
-                        <input type="file" id="id_itemImg4" (change)="selectFile($event, 'main4')"><br>
-                        <button class="btn" [disabled]="!selectedFiles" (click)="upload('main4')" *ngIf='main4File'>>></button>
-                        <br>
-                        <img alt="קרטון לפני סגירה" id="id_img4" [src]=itemShown.imgMain4>
-                  
-                        
-                      </div>
-                    </div>
-                   
+              <div class="imgContainer">
+                <div style='display: inline-table'>
+                  <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')"
+                    *ngIf='main1File'>>></button>
+                  <br>
+                  <img id="id_img1" [src]=itemShown.imgMain1>
+                </div>
+                <div style='display: inline-table'>
+                  <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')"
+                    *ngIf='main2File'>>></button>
+                  <br>
+                  <img id="id_img2" [src]=itemShown.imgMain2>
+                </div>
+                <div style='display: inline-table'>
+                  <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')"
+                    *ngIf='main3File'>>></button>
+                  <br>
+                  <img alt="אריזה אישית" id="id_img3" [src]=itemShown.imgMain3>
+
+
+                </div>
+                <div style='display: inline-table'>
+                  <input type="file" id="id_itemImg4" (change)="selectFile($event, 'main4')"><br>
+                  <button class="btn" [disabled]="!selectedFiles" (click)="upload('main4')"
+                    *ngIf='main4File'>>></button>
+                  <br>
+                  <img alt="קרטון לפני סגירה" id="id_img4" [src]=itemShown.imgMain4>
+
+
+                </div>
+              </div>
+
+
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab id="tab-selectbyid5">
+          <ng-template ngbTabTitle><span style="color:black">Specification</span></ng-template>
+          <ng-template ngbTabContent>
+            <div class="container">
+              <div class="row text-center">
+                <div class="col-12">
+                  <h3 class="mt-3 p-2 bg-light text-warning rounded shadow-sm">Specification</h3>
+                </div>
+              </div>
+              <div class="row text-center">
+                <div class="col-12">
+                  <table class="table table-hover table-bordered">
+                    <thead class="bg-warning">
+                      <tr>
+                        <th>הערות</th>
+                        <th>תחומי התוצאות תחתון - SPEC LIMITS MIN</th>
+                        <th>תחומי התוצאות עליון - SPEC LIMITS MAX</th>
+                        <th class="bg-warning">סוג בדיקה - TEST</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td *ngIf="editSpecTable==false">{{itemShown.phRemarks}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phRemarks" class="form-control"
+                            type="text"></td>
+                        <td *ngIf="editSpecTable==false">{{itemShown.phLimitsMin}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMin" class="form-control"
+                            type="text"></td>
+                        <td *ngIf="editSpecTable==false">{{itemShown.phLimitsMax}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMax" class="form-control"
+                            type="text"></td>
+                        <td class="bg-warning">PH</td>
+                      </tr>
+                      <tr>
+                        <td *ngIf="editSpecTable==false">{{itemShown.densityRemarks}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityRemarks"
+                            class="form-control" type="text"></td>
+                        <td *ngIf="editSpecTable==false">{{itemShown.densityLimitsMin}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMin"
+                            class="form-control" type="text"></td>
+                        <td *ngIf="editSpecTable==false">{{itemShown.densityLimitsMax}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMax"
+                            class="form-control" type="text"></td>
+                        <td class="bg-warning">צפיפות
+                          <p>(gr/ml)</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td *ngIf="editSpecTable==false">{{itemShown.viscosityRemarks}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityRemarks"
+                            class="form-control" type="text"></td>
+                        <td *ngIf="editSpecTable==false">{{itemShown.viscosityLimitsMin}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMin"
+                            class="form-control" type="text"></td>
+                        <td *ngIf="editSpecTable==false">{{itemShown.viscosityLimitsMax}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMax"
+                            class="form-control" type="text"></td>
+                        <td class="bg-warning">
+                          <table>
+                            <tbody>
+                              <tr style="padding: 0rem !important">
+                                <td style="padding: 0rem !important">(mPa*5) צמיגות</td>
+
+                              </tr>
+                              <tr style="padding: 0rem !important">
+                                <td *ngIf="editSpecTable==false">{{itemShown.modelType}}</td>
+                                <td *ngIf="editSpecTable==true" style="padding: 0rem !important">
+                                  <select class="form-control" [(ngModel)]="itemShown.modelType">
+                                    <option value="BROOKFIELD MODEL D220">BROOKFIELD MODEL D220</option>
+                                    <option value="Myr VR300">Myr VR300</option>
+                                  </select></td>
+                                <td style="padding: 0rem !important">סוג מכשיר</td>
+                              </tr>
+                              <tr style="padding: 0rem !important">
+                                <td *ngIf="editSpecTable==false">{{itemShown.spinFieldNum}}</td>
+                                <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input
+                                    [(ngModel)]="itemShown.spinFieldNum" class="form-control" type="number"></td>
+                                <td style="padding: 0rem !important">מס ספינדלר</td>
+                              </tr>
+                              <tr style="padding: 0rem !important">
+                                <td *ngIf="editSpecTable==false">{{itemShown.spinSpeed}}</td>
+                                <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input
+                                    [(ngModel)]="itemShown.spinSpeed" class="form-control" type="text"></td>
+                                <td style="padding: 0rem !important;font-size: 11px;">מהירות סיבוב</td>
+                              </tr>
+                              <tr style="padding: 0rem !important">
+                                <td *ngIf="editSpecTable==false">{{itemShown.percentageResult}}</td>
+                                <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input
+                                    [(ngModel)]="itemShown.percentageResult" class="form-control" type="text"></td>
+                                <td style="padding: 0rem !important;font-size: 11px;">%</td>
+                              </tr>
+                              <tr style="padding: 0rem !important">
+                                <td *ngIf="editSpecTable==false">{{itemShown.testTemp}}</td>
+                                <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input
+                                    [(ngModel)]="itemShown.testTemp" class="form-control" type="number"></td>
+                                <td style="padding: 0rem !important">טמפ' בדיקה</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td *ngIf="editSpecTable==false">{{itemShown.colorRemarks}}</td>
+                        <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorRemarks" class="form-control"
+                            type="text"></td>
+                        <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.color}}</td>
+                        <td colspan="2" *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.color"
+                            class="form-control" type="text"></td>
+                        <td class="bg-warning">צבע</td>
+                      </tr>
+                      <tr>
+                        <td *ngIf="editSpecTable==false">{{itemShown.textureRemarks}}</td>
+                        <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.textureRemarks" class="form-control"
+                            type="text"></td>
+                        <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.textureSpec}}</td>
+                        <td colspan="2" *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.textureSpec"
+                            class="form-control" type="text"></td>
+                        <td class="bg-warning">מרקם</td>
+                      </tr>
+                      <tr>
+                        <td *ngIf="editSpecTable==false">{{itemShown.scentRemarks}}</td>
+                        <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.scentRemarks" class="form-control"
+                            type="text"></td>
+                        <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.scentSpec}}</td>
+                        <td colspan="2" *ngIf="editSpecTable==true"><select [(ngModel)]="itemShown.scentSpec"
+                            class="form-control">
+                            <option value="normal">Normal</option>
+                            <option value="notNormal">Not Normal</option>
+                          </select></td>
+                        <td class="bg-warning">ריח</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row p-2 text-center">
+                <div *ngIf="editSpecTable == false && allowEditSpecTable == true" class="col-4">
+                  <button (click)="editSpecTable = true" class="form-control btn btn-warning">Edit</button>
+                </div>
+                <div *ngIf="editSpecTable == true && allowEditSpecTable == true" class="col-4" class="col-4">
+
+                  <button (click)="saveSpecTable()" class="form-control btn btn-warning">Save</button>
+
+                </div>
+                <div class="col-4"></div>
 
               </div>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab id="tab-selectbyid5">
-            <ng-template ngbTabTitle><span style="color:black">Specification</span></ng-template>
-            <ng-template ngbTabContent>
-                <div class="container">
-                  <div class="row text-center">
-                    <div class="col-12">
-                      <h3 class="mt-3 p-2 bg-light text-warning rounded shadow-sm">Specification</h3>
-                    </div>
-                  </div>
-                  <div class="row text-center">
-                    <div class="col-12">
-                      <table class="table table-hover table-bordered">
-                        <thead class="bg-warning">
-                          <tr>
-                            <th>הערות</th>
-                            <th>תחומי התוצאות תחתון -  SPEC LIMITS MIN</th>
-                            <th>תחומי התוצאות עליון -  SPEC LIMITS MAX</th>
-                            <th class="bg-warning">סוג בדיקה - TEST</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td *ngIf="editSpecTable==false">{{itemShown.phRemarks}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.phLimitsMin}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMin" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.phLimitsMax}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMax" class="form-control" type="text"></td>
-                            <td class="bg-warning">PH</td>
-                          </tr>
-                          <tr>
-                            <td *ngIf="editSpecTable==false">{{itemShown.densityRemarks}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.densityLimitsMin}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMin" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.densityLimitsMax}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMax" class="form-control" type="text"></td>
-                            <td class="bg-warning">צפיפות
-                              <p>(gr/ml)</p>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td *ngIf="editSpecTable==false">{{itemShown.viscosityRemarks}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityRemarks" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.viscosityLimitsMin}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMin" class="form-control" type="text"></td>
-                            <td *ngIf="editSpecTable==false">{{itemShown.viscosityLimitsMax}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMax" class="form-control" type="text"></td>
-                            <td class="bg-warning">
-                              <table>
-                                <tbody>
-                                  <tr style="padding: 0rem !important">
-                                    <td style="padding: 0rem !important">(mPa*5) צמיגות</td>
-                                
-                                  </tr>
-                                  <tr style="padding: 0rem !important">
-                                    <td *ngIf="editSpecTable==false">{{itemShown.modelType}}</td>
-                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important">
-                                      <select class="form-control" [(ngModel)]="itemShown.modelType">
-                                      <option value="BROOKFIELD MODEL D220">BROOKFIELD MODEL D220</option>
-                                      <option value="Myr VR300">Myr VR300</option>
-                                    </select></td>
-                                    <td style="padding: 0rem !important">סוג מכשיר</td>
-                                  </tr>
-                                  <tr style="padding: 0rem !important">
-                                    <td *ngIf="editSpecTable==false">{{itemShown.spinFieldNum}}</td>
-                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinFieldNum" class="form-control" type="number"></td>
-                                    <td style="padding: 0rem !important">מס ספינדלר</td>
-                                  </tr>
-                                  <tr style="padding: 0rem !important"> 
-                                    <td *ngIf="editSpecTable==false">{{itemShown.spinSpeed}}</td>
-                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.spinSpeed" class="form-control" type="text"></td>
-                                    <td style="padding: 0rem !important;font-size: 11px;">מהירות סיבוב</td>
-                                  </tr>
-                                  <tr style="padding: 0rem !important"> 
-                                    <td *ngIf="editSpecTable==false">{{itemShown.percentageResult}}</td>
-                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.percentageResult" class="form-control" type="text"></td>
-                                    <td style="padding: 0rem !important;font-size: 11px;">%</td>
-                                  </tr>
-                                  <tr style="padding: 0rem !important">
-                                    <td *ngIf="editSpecTable==false">{{itemShown.testTemp}}</td>
-                                    <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input [(ngModel)]="itemShown.testTemp" class="form-control" type="number"></td>
-                                    <td style="padding: 0rem !important">טמפ' בדיקה</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td *ngIf="editSpecTable==false">{{itemShown.colorRemarks}}</td>
-                            <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorRemarks" class="form-control" type="text"></td>
-                            <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.color}}</td>
-                            <td colspan="2" *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.color" class="form-control" type="text"></td>
-                            <td class="bg-warning">צבע</td>
-                          </tr>
-                          <tr>
-                            <td *ngIf="editSpecTable==false">{{itemShown.textureRemarks}}</td>
-                            <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.textureRemarks" class="form-control" type="text"></td>
-                            <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.textureSpec}}</td>
-                            <td colspan="2" *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.textureSpec" class="form-control" type="text"></td>
-                            <td class="bg-warning">מרקם</td>
-                          </tr>
-                          <tr>
-                            <td *ngIf="editSpecTable==false">{{itemShown.scentRemarks}}</td>
-                            <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.scentRemarks" class="form-control" type="text"></td>
-                            <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.scentSpec}}</td>
-                            <td colspan="2" *ngIf="editSpecTable==true"><select [(ngModel)]="itemShown.scentSpec"  class="form-control">
-                              <option value="normal">Normal</option>
-                              <option value="notNormal">Not Normal</option>
-                            </select></td>
-                            <td class="bg-warning">ריח</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="row p-2 text-center">
-                    <div *ngIf="editSpecTable == false && allowEditSpecTable == true" class="col-4">
-                      <button  (click)="editSpecTable = true" class="form-control btn btn-warning">Edit</button>
-                    </div>
-                    <div *ngIf="editSpecTable == true && allowEditSpecTable == true" class="col-4" class="col-4">
-                     
-                        <button  (click)="saveSpecTable()" class="form-control btn btn-warning">Save</button>
-                      
-                    </div>
-                    <div class="col-4"></div>
-              
-                  </div>
-                </div>
-            </ng-template>
-          </ngb-tab>
+            </div>
+          </ng-template>
+        </ngb-tab>
 
       </ngb-tabset>
 
@@ -1693,12 +1638,14 @@
   </div>
   <div style="padding:20px;" class="row">
     <div style="margin-left: 30px;" class="col-4">
-        <img title="Batches" (click)="openBatchModal(batches)" style="width:50px;margin:5px;" src="/assets/images/allOrder.png">
-        <img title="Orders" (click)="openOrderModal(orders)" style="width:50px;margin:5px;" src="/assets/images/ordered.png">
-        <img src="../../../assets/images/excel.png" alt="excel export"
-        (click)="exportAsXLSX()" style="width: 50px;margin:5px;cursor: pointer;">
-        <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
-        <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
+      <img title="Batches" (click)="openBatchModal(batches)" style="width:50px;margin:5px;"
+        src="/assets/images/allOrder.png">
+      <img title="Orders" (click)="openOrderModal(orders)" style="width:50px;margin:5px;"
+        src="/assets/images/ordered.png">
+      <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX()"
+        style="width: 50px;margin:5px;cursor: pointer;">
+      <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
+      <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
     </div>
     <div class="col-4">
 
@@ -1707,89 +1654,89 @@
     </div>
     <div class="col-4"></div>
   </div>
-</div> 
+</div>
 
 <!------------- Batches Modal  --------------->
 <ng-template #batches let-c="close" let-d="dismiss">
 
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Batch List</h4>
-    
-      <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
-       
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Batch Number</th>
-                <th scope="col">Order Number</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let batch of itemBatches;let i = index">
-                <th>{{i+1}}</th>
-                <td>{{batch.batchNumber}}</td>
-                <td>{{batch.order}}</td>
-                <td>{{batch.batchStatus}}</td>
-                
-              </tr>
-              
-            </tbody>
-          </table>
-      </div>
-      <div class="modal-footer">
-      </div>
-    
-    </ng-template>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Batch List</h4>
+
+    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Batch Number</th>
+          <th scope="col">Order Number</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let batch of itemBatches;let i = index">
+          <th>{{i+1}}</th>
+          <td>{{batch.batchNumber}}</td>
+          <td>{{batch.order}}</td>
+          <td>{{batch.batchStatus}}</td>
+
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+  </div>
+
+</ng-template>
 
 
-   
 
-    <ng-template #orders let-c="close" let-d="dismiss">
 
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Batch List</h4>
-         
-          <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
-           
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Order Number</th>
-                    <th scope="col">Batch Number</th>
-                    <th scope="col">Filling Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let order of ordersItem;let i = index">
-                    <th>{{i+1}}</th>
-                    <td>{{order.orderNumber}}</td>
-                    <td>{{order.batch}}</td>
-                    <td>{{order.fillingStatus}}</td>
-                    
-                  </tr>
-                  
-                </tbody>
-              </table>
-          </div>
-          <div class="modal-footer">
-          </div>
-        
-        </ng-template>  
+<ng-template #orders let-c="close" let-d="dismiss">
+
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Batch List</h4>
+
+    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Order Number</th>
+          <th scope="col">Batch Number</th>
+          <th scope="col">Filling Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of ordersItem;let i = index">
+          <th>{{i+1}}</th>
+          <td>{{order.orderNumber}}</td>
+          <td>{{order.batch}}</td>
+          <td>{{order.fillingStatus}}</td>
+
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+  </div>
+
+</ng-template>
 <!-------------------------------------------------------------------------------------------------------------------------------------------------->
 
 
- <!-- <ngb-tabset #t="ngbTabset">
+<!-- <ngb-tabset #t="ngbTabset">
   <ngb-tab id="tab-selectbyid1" title="General">
      <ng-template ngbTabContent>
         ngfmjuy hgdeg
@@ -2582,4 +2529,4 @@
   
       <button *ngIf="alowUserEditItemTree" class="button" (click)="writeItemData()" style=' position: absolute; left:37%' class="btn">submit</button>
       <button type='reset' style=' position: absolute; left:57%' class="btn">Reset</button>    
-      -->  
+      -->
