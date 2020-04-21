@@ -6,5 +6,5 @@ td {
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-    background-color: #7460ee;
+    background-color: #2962FF 
 }

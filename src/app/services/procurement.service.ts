@@ -162,9 +162,9 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/clientGotTheOrder';
     return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
   }
-  closeOrder(orderNumber):Observable<any>{
+  closeOrder(orderNumber,reason):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/closeOrder';
-    return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
+    return this.http.post(url, JSON.stringify({orderNumber,reason}), this.options).pipe(map(res=>res.json()));
   }
   deleteItemFromOrder(itemNumber,orderNumber):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/deleteItemFromOrder';

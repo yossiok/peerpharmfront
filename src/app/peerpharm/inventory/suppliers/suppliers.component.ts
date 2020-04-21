@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -74,7 +75,7 @@ export class SuppliersComponent implements OnInit {
 
 
 
-  constructor(private excelService: ExcelService,private procurementService: Procurementservice, private modalService: NgbModal, private supplierService: SuppliersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
+  constructor(private route: ActivatedRoute,private excelService: ExcelService,private procurementService: Procurementservice, private modalService: NgbModal, private supplierService: SuppliersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
   open(content) {
     
@@ -239,11 +240,27 @@ setType(type) {
     }
   }
 
+
+  searchSupplier(supplierName){
+debugger;
+    var word = supplierName
+    if(word != ""){
+      this.suppliers = this.suppliersCopy.filter(s=>s.suplierName == supplierName);
+      this.openData(this.suppliers[0].suplierNumber)
+    }
+    else {
+      this.suppliers = this.suppliers
+    }
+    
+
+  }
+
   searchName(ev)
   {
-    
-    let word= ev.target.value;
-    let wordsArr= word.split(" ");
+  
+      var word = ev.target.value;
+
+    var wordsArr= word.split(" ");
     wordsArr= wordsArr.filter(x=>x!="");
     if(wordsArr.length>0){
       
@@ -275,6 +292,7 @@ setType(type) {
   {
     
     let word= ev.target.value;
+    
     let wordsArr= word.split(" ");
     wordsArr= wordsArr.filter(x=>x!="");
     if(wordsArr.length>0){
@@ -355,7 +373,13 @@ setType(type) {
     this.getSuppliers();
     this.getAlternativeSuppliers();
     this.getSuppliersOrderedItems();
-   
+    debugger;
+    if(this.route.queryParams){
+      setTimeout(() => {
+        this.searchSupplier(this.route.snapshot.queryParams.supplierName)
+      }, 1000);
+      
+    }
     
   }
 }

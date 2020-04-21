@@ -11,19 +11,18 @@ import { AuthService } from 'src/app/services/auth.service';
 export class FirstAidComponent implements OnInit {
 
   firstAid = {
-    offices:'',
-    qaRoomMaterial:'',
-    qaRoomFilling:'',
-    managerFillingRoom:'',
-    inventoryStorage:'',
-    oldFillingHall:'',
+    roomType:"",
     remarks:'',
-    date:''
+    date:'',
+    isChecked:''
   }
+
+  allFirstAids:any[]
 
   constructor(private formsService: FormsService,private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.getAllFirstAids();
   }
 
 
@@ -37,5 +36,33 @@ export class FirstAidComponent implements OnInit {
       
     })
 
+  }
+
+  getAllFirstAids(){
+    this.formsService.getAllFirstAids().subscribe(data=>{
+      debugger;
+      for (let i = 0; i < data.length; i++) {
+        if(data[i].roomType == 'offices'){
+          data[i].roomType = "מזכירות"
+        }
+        if(data[i].roomType == 'qaRoomMaterial'){
+          data[i].roomType = "חדר בקר איכות חוג"
+        }
+        if(data[i].roomType == 'qaRoomFilling'){
+          data[i].roomType = "חדר בקר איכות מילוי"
+        }
+        if(data[i].roomType == 'managerFillingRoom'){
+          data[i].roomType = "חדר מנהל מילוי"
+        }
+        if(data[i].roomType == 'inventoryStorage'){
+          data[i].roomType = "מחסן מלאי"
+        }
+        if(data[i].roomType == 'oldFillingHall'){
+          data[i].roomType = "אולם בישול ישן"
+        }
+        
+      }
+      this.allFirstAids = data;
+    })
   }
 }

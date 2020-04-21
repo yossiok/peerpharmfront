@@ -35,16 +35,18 @@ export class StockComponent implements OnInit {
   showItemDetails: boolean = true;
   openOrderRecommendModal: boolean = false;
   itemMovements: any = [];
-  materialPurchases: any[] = [];
+  materialPurchases: any[]
   componentPurchases: any[] = [];
   itemShell:any[];
   componentsCopy:any[];
+  materialArrivals:any[];
   subscription:any
   materialLocations: any[];
   items:any[];
   allComponentsPurchases:any[];
   allMaterialsPurchases:any[];
   expirationBatchDate:any;
+  totalQuantity:String;
   allowUserEditItem = false;
   check = false;
   resCmpt: any = {
@@ -877,7 +879,6 @@ export class StockComponent implements OnInit {
 
   dangerColor(threatment)
   {
-  debugger;
       if(threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable')
       {
         return "flame";
@@ -991,6 +992,10 @@ export class StockComponent implements OnInit {
     }
   }
 
+
+  checkTwo(){
+    debugger;
+  }
 
   async updateItemStock(direction) {
 
@@ -1371,6 +1376,15 @@ export class StockComponent implements OnInit {
   
   }
 
+  moveToSuppliers(supplierName){
+   
+
+
+      window.open('http://peerpharmsystem.com/#/peerpharm/inventory/suppliers?supplierName='+supplierName)
+        
+      
+  }
+
   async openDataMaterial(materNum) {
     debugger;
     this.materialPurchases = []
@@ -1382,6 +1396,24 @@ export class StockComponent implements OnInit {
        
      }
     }
+
+    this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data=>{
+    if(data){
+
+      var dateFrom = new Date('01/01/2019')
+      var dateTo = new Date('01/01/2020')
+      var totalQnt = 0;
+     for (let i = 0; i < data.length; i++) {
+       if(data[i].arrivalDate >= dateFrom.toISOString() && data[i].arrivalDate <= dateTo.toISOString()) {
+        totalQnt += data[i].totalQnt
+       }
+       
+     }
+      this.totalQuantity = totalQnt+data[0].mesureType
+      this.materialArrivals = data;
+    }
+    
+    })
 
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";

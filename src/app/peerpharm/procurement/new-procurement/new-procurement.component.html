@@ -101,6 +101,7 @@
                   <table class="table table-bordered table-hover table-striped">
                    <thead class="bg-info text-white">
                      <th>שם ספק</th>
+                     <th>תאריך</th>
                      <th>מחיר</th>
                      <th>כמות</th>
                      <th>סטטוס</th>
@@ -108,6 +109,7 @@
                    <tbody>
                      <tr *ngFor="let item of itemExistInOrders">
                         <td>{{item.supplierName}}</td>
+                        <td>{{item.orderDate | date: 'dd/MM/yyyy'}}</td>
                         <td>{{item.price}}{{item.coin}} </td>
                         <td>{{item.amount}}</td>
                         <td>{{item.status}}</td>

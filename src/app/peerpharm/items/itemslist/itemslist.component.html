@@ -64,18 +64,19 @@
       <table class="table table-hover table-striped table-fixed mt-2">
         <thead style="box-shadow: inset 0px 0px 4px 1px black;" class="bg-info text-white">
           <tr>
-            <th style="width:8%; padding:5px">Item number</th>
-            <th style="width:20%; padding:5px">Name</th>
-            <th style="width:10%; padding:5px">Volume/Net Weight</th>
+            <th>#</th>
+            <th>Item number</th>
+            <th>Name</th>
+            <th>Volume/Net Weight</th>
             <!-- <th style="width:7%; padding:5px">Net Weight</th> -->
-            <th style="padding:5px">Sticker</th>
-            <th style="padding:5px">Barcode</th>
-            <th style="padding:5px">Limited License</th>
-            <th style="padding:5px">licsense Number</th>
-            <th style="padding:5px">licsense Date</th>
-            <th style="width:4%; padding:5px">Pallet 1</th>
-            <th style="width:4%; padding:5px">Pallet 2</th>
-            <th style="width:4%; padding:5px">Pallet 3</th>
+            <th>Sticker</th>
+            <th>Barcode</th>
+            <th>Limited License</th>
+            <th>licsense Number</th>
+            <th>licsense Date</th>
+            <th>Pallet 1</th>
+            <th>Pallet 2</th>
+            <th>Pallet 3</th>
             <th></th>
             <!-- <th style="padding:5px">Pallet 2</th>
     <th style="padding:5px">Pallet 3</th> -->
@@ -84,14 +85,14 @@
         <tbody id="table_body">
           <tr style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
             *ngFor="let item of items; let i = index">
-            <td style="width:5%;">{{ i + 1 }}</td>
-            <td style="width:8%;">
+            <td>{{ i + 1 }}</td>
+            <td>
               <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}">
                 {{ item.itemNumber }}
               </a>
             </td>
-            <td style="width:17%;">{{ item.itemFullName }}</td>
-            <td style="width:10%;">
+            <td>{{ item.itemFullName }}</td>
+            <td>
               <div *ngIf="item.volumeKey">{{ item.volumeKey }} ml</div>
               <div *ngIf="item.volumeKey == null && item.netWeightK">
                 {{ item.netWeightK }} gr
@@ -166,9 +167,9 @@
               <input #itemLicenseDate [value]="item.licsensDate" style="width:150px" type="date">
             </td>
 
-            <td style="width:4%;">{{ item.pallet }}</td>
-            <td style="width:4%;">{{ item.pallet2 }}</td>
-            <td style="width:4%;">{{ item.pallet3 }}</td>
+            <td>{{ item.pallet }}</td>
+            <td>{{ item.pallet2 }}</td>
+            <td>{{ item.pallet3 }}</td>
             <td *ngIf="item._id == EditRowId" style="width:3%"><i (click)="saveEdit(item._id)" class="fa fa-check"></i>
             </td>
             <!-- <td>{{item.pallet2}}</td>

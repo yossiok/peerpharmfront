@@ -181,6 +181,10 @@ export class FormsService {
 
   // Libra List // 
 
+  getAllFirstAids() {
+    let url = this.baseUrl + 'forms/getAllFirstAids';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllLibraList() {
     let url = this.baseUrl + 'forms/getAllLibraList';
     return this.http.get(url).pipe(map(reponse => reponse.json()));

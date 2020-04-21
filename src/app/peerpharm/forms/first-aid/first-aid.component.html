@@ -4,7 +4,7 @@
       <div class="container bg-light rounded shadow-sm">
         <div class="row text-center p-2">
          <div class="col-12">
-           <h2 class="text-primary">ארון עזרה ראשונה דגם קאליר - 6010</h2>
+           <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">ארון עזרה ראשונה דגם קאליר - 6010</h1>
          </div>
         </div>
 
@@ -12,8 +12,8 @@
           <div class="col-12">
 
           <table class="table table-hover table-striped">
-            <thead class="bg-dark text-white">
-              <tr>
+            <thead class="bg-info text-white">
+              <tr style="box-shadow: inset 0px 0px 4px 1px black;">
                 <th>כמות</th>
                 <th>תיאור</th>
                 <th>מק"ט</th>
@@ -156,24 +156,25 @@
         <div class="row text-center p-2">
           <div class="col-12">
             <table class="table table-hover table-striped">
-              <thead class="bg-dark text-white">
-                <tr>
-                  <th>מזכירות</th>
-                  <th>חדר בקר איכות חו"ג</th>
-                  <th>חדר בקר איכות מילוי</th>
-                  <th>חדר מנהל מילוי</th>
-                  <th>מחסן מלאי</th>
-                  <th>אולם בישול ישן</th>
+              <thead class="bg-info text-white">
+                <tr style="box-shadow: inset 0px 0px 4px 1px black;">
+                 
+                  <th>האם נבדק</th>
+                  <th>סוג חדר</th>
                   <th>תאריך</th>
                 </tr>
               </thead>
               <tbody>
-                <td><input class="form-control" [(ngModel)]="firstAid.offices" type="checkbox"/></td>
-                <td><input class="form-control" [(ngModel)]="firstAid.qaRoomMaterial" type="checkbox"/></td>
-                <td><input class="form-control" [(ngModel)]="firstAid.qaRoomFilling" type="checkbox"/></td>
-                <td><input class="form-control" [(ngModel)]="firstAid.managerFillingRoom" type="checkbox"/></td>
-                <td><input class="form-control" [(ngModel)]="firstAid.inventoryStorage" type="checkbox"/></td>
-                <td><input class="form-control" [(ngModel)]="firstAid.oldFillingHall" type="checkbox"/></td>
+                <td><input class="form-control" [(ngModel)]="firstAid.isChecked" type="checkbox"/></td>
+                <td><select class="form-control" [(ngModel)]="firstAid.roomType" >
+                  <option value="offices">מזכירות</option>
+                  <option value="qaRoomMaterial">חדר בקר איכות חו"ג</option>
+                  <option value="qaRoomFilling">חדר בקר איכות מילוי</option>
+                  <option value="managerFillingRoom">חדר מנהל מילוי</option>
+                  <option value="inventoryStorage">מחסן מלאי</option>
+                  <option value="oldFillingHall">אולם בישול ישן</option>
+                </select></td>
+                
                 <td><input class="form-control" [(ngModel)]="firstAid.date" type="date"/></td>
                
               </tbody>
@@ -185,15 +186,42 @@
         </div>
         <div class="row text-center p-2">
           <div class="col-12">
-            <button class="form-control btn btn-primary" (click)="saveFirstAid()">Save</button>
+            <button class="form-control btn btn-info" (click)="saveFirstAid()">Save</button>
           </div>
         </div>
       </div>
     </ng-template>
   </ngb-tab>
-  <!-- <ngb-tab title="Simple">
+  <ngb-tab title="בדיקות עזרה ראשונה">
     <ng-template ngbTabContent>
-
+      <div class="container bg-light rounded shadow-sm text-center">
+        <div class="row text-center p-2">
+         <div class="col-12">
+           <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">תוצאות בדיקת ארונות</h1>
+         </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-hover table-striped">
+            <thead class="bg-info text-white">
+            <tr style="box-shadow: inset 0px 0px 4px 1px black;">
+              <th>תאריך בדיקה</th>
+              <th>סוג ארון</th>
+              <th>האם נבדק</th>
+              <th>הערות</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let test of allFirstAids">
+              <td>{{test.date | date: 'dd/MM/yyyy'}}</td>
+            <td>{{test.roomType}}</td>
+            <td>{{test.isChecked}}</td>
+            <td>{{test.remarks}}</td>
+            </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
     </ng-template>
-  </ngb-tab> -->
+  </ngb-tab>
 </ngb-tabset>

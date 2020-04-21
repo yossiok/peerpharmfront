@@ -618,9 +618,10 @@ debugger;
     }
   }
 
-  closeOrder(orderNumber) {
+  closeOrder(ev,orderNumber) {
+    var reason = ev.target.value;
     if (confirm("האם לסגור הזמנה זו  ?")) {
-      this.procurementservice.closeOrder(orderNumber).subscribe(data => {
+      this.procurementservice.closeOrder(orderNumber,reason).subscribe(data => {
         if (data) {
           this.procurementData = data;
           this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")

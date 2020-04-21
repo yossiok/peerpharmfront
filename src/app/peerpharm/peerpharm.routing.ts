@@ -335,7 +335,7 @@ export const PeerPharmRputs: Routes =[
   {
     path :'costumers/costumers_list',
     data :{
-      title : ''
+      title : 'All Costumers'
     },
     component:CostumersListComponent
   }

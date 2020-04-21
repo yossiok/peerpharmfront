@@ -88,7 +88,9 @@
                 <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
                 <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
                 <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td>
-                <td><select class="form-control" (change)="closeOrder(line.orderNumber)">
+                <td *ngIf="line.status == 'closed'"><label class="form-control">{{line.closeReason}}</label></td>
+                <td *ngIf="line.status != 'closed'">
+                  <select class="form-control" (change)="closeOrder($event,line.orderNumber)">
                   <option value=""></option>
                   <option value="orderFrozen">בהקפאה</option>
                   <option value="havivApproval">מבוטל באישור חביב</option>
@@ -98,7 +100,8 @@
                   <option value="balanceNotImp">יתרה לא רלוונטית</option>
                   <option value="NoApprovePrice">מחיר לא אושר</option>
                   <option value="withoutReciept">נסגר ללא תעודה</option>
-                </select></td>
+                </select>
+              </td>
                 <td><button class="btn btn-info" (click)="printOrder(line)">Print Order</button></td>
     
               </tr>

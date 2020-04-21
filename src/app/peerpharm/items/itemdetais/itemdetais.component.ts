@@ -208,6 +208,13 @@ export class ItemdetaisComponent implements OnInit {
     euPallet: '',
     usPallet: '',
 
+    euSt1layerCarton:'',
+    usSt1layerCarton:'',
+    euTotalCartonPalette:'',
+    usTotalCartonPalette:'',
+    usCbm:'',
+    euCbm:'',
+    
     bottleNumber: '',
     capNumber: '',
     pumpNumber: '',
