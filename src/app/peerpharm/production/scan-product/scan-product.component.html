@@ -10,17 +10,16 @@
     </div>
 
     <div>
-      <h2>Material Number</h2>
-      <input type="text" class="form-control" (change)="searchMaterialByNumber($event)">
+      <h2>Search Material</h2>
+      <input type="text" class="form-control" (change)="findMaterial($event)">
     </div>
 
 
 
     <div *ngIf="showTable == true">
-      <table class="table table-bordered table-striped">
+      <table class="table table-responsive table-striped">
         <thead>
           <tr>
-            <th>Material Number</th>
             <th>Material Name</th>
             <th>Arrival Date</th>
             <th>Expire Date</th>
@@ -33,7 +32,6 @@
         </thead>
         <tbody>
           <tr *ngFor="let material of materialArrivals">
-            <td>{{material.internalNumber}}</td>
             <td>{{material.materialName}}</td>
             <td>{{material.arrivalDate | date: "dd/MM/yyyy"}}</td>
             <td>{{material.expiryDate | date: "dd/MM/yyyy"}}</td>

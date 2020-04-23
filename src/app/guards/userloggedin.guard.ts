@@ -15,12 +15,12 @@ export class UserloggedinGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean { 
       debugger;
-      if(location.href.includes('/items/itemDetails'))
+     /* if(location.href.includes('/items/itemDetails'))
       {
-        return true;
+        return false;
       }
       else{
-
+*/
       
     return this.auth.isUserLoggedIn().pipe(
         map((response) => { 
@@ -33,5 +33,5 @@ export class UserloggedinGuard implements CanActivate {
          return response;
         })) ; 
   }
-}
+// }
 }

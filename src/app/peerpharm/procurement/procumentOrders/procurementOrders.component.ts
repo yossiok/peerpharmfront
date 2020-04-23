@@ -543,9 +543,22 @@ debugger;
     }
   }
 
-  exportAsXLSX(): void {
-
-    this.excelService.exportAsExcelFile(this.procurementData, 'data');
+  exportAsXLSX(expression): void {
+      
+    switch(expression) {
+      case 'purchaseData':
+        this.excelService.exportAsExcelFile(this.procurementData, 'data');
+        break;
+      case 'purchaseRecommendations':
+        this.excelService.exportAsExcelFile(this.purchaseRecommendations, 'data');
+        break;
+      case 'purchaseArrivals':
+        this.excelService.exportAsExcelFile(this.procurementArrivals, 'data');
+        break;
+      default:
+       
+    }
+    
   }
 
 

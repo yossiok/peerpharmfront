@@ -23,6 +23,7 @@ export class StoragesComponent implements OnInit {
 
   ngOnInit() {
     this.getAllFillingRequests()
+    this.getUser();
   }
 
 
@@ -86,22 +87,48 @@ export class StoragesComponent implements OnInit {
     })
   }
 
-  clickIfArrived(reqId,itemNumber){
-    if(this.user == 'tomer' || this.user == 'SHARK'  || this.user == 'sima'){
-      var obj = {
-        itemN:itemNumber,
-        requestId:reqId
-      }
-      this.inventoryReqService.checkArrived(obj).subscribe(data=>{
-        if(data){
-          this.allFillingRequests = data;
-          this.toastSrv.success('עודכן בהצלחה !')
-        }
   
-      })
-    } else {
-      this.toastSrv.error('רק משתמש מורשה רשאי לעדכן')
+  getUserInfo() {
+  
+    this.authService.userEventEmitter.subscribe(user => {
+      this.user = user.loggedInUser;
+    })
+
+    if (!this.authService.loggedInUser) {
+      this.authService.userEventEmitter.subscribe(user => {
+        if (user.userName) {
+          this.user = user;
+        }
+      });
     }
+    else {
+      this.user = this.authService.loggedInUser;
+    }
+  }
+
+  clickIfArrived(reqId,itemNumber){
+    debugger;
+    // if(this.user.userName == undefined) {
+    //   this.getUser();
+    //   this.clickIfArrived(reqId,itemNumber);
+    // }  else {
+      if(this.user.userName == 'tomer' || this.user.userName == 'SHARK'  || this.user.userName == 'sima'){
+        var obj = {
+          itemN:itemNumber,
+          requestId:reqId
+        }
+        this.inventoryReqService.checkArrived(obj).subscribe(data=>{
+          if(data){
+            this.allFillingRequests = data;
+            this.toastSrv.success('עודכן בהצלחה !')
+          }
+    
+        })
+      } else {
+        this.toastSrv.error('רק משתמש מורשה רשאי לעדכן')
+      }
+  // }
+   
    
   }
 

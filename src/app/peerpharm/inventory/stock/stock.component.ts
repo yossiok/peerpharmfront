@@ -787,6 +787,7 @@ export class StockComponent implements OnInit {
           obj.purchaseOrder = allPurchases[i].item[j].orderNumber
           obj.purchaseArrival = allPurchases[i].item[j].arrivals
           obj.purchaseStatus = allPurchases[i].status
+ 
           components[k].purchaseOrders.push(obj)
         }
          

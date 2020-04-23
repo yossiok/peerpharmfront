@@ -417,6 +417,10 @@ getMaterialArrivalByNumber(internalNumber):Observable<any>{
   let url = this.baseUrl + "material?getMaterialArrivalByNumber="+internalNumber;
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
+getMaterialArrivalByName(materialName):Observable<any>{
+  let url = this.baseUrl + "material?getMaterialArrivalByName="+materialName;
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
 
 
 //returns doc with _id or "doc not found"
