@@ -43,6 +43,7 @@ export class ProcurementOrdersComponent implements OnInit {
   totalAmount: any;
   itemAmounts: any;
   totalPrice: any;
+  currCoin: any;
   importantRemarks: any;
   orderDate: any;
   outOfCountry: any;
@@ -233,7 +234,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   filterByStatus(ev,expression) {
-  
+   
 debugger;
     switch(expression) {
       case 'recommendations':
@@ -242,11 +243,14 @@ debugger;
           var status = ev.target.value;
           var type = ev.target.value;
           switch (type) {
-            case 'lightcoral':
-              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.color == status)
+            case 'closed':
+              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
+              break
+            case 'hold':
+              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
               break
             case 'open':
-              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.color != 'lightcoral')
+              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status != 'closed' && p.status != 'hold')
               break
     
           }
@@ -362,13 +366,39 @@ debugger;
     }
 
     this.importantRemarks = line.remarks
-    this.totalAmount = total
-    this.totalPrice = ((totalP) + " " + coin)
+
+    
+    var num = this.formatNumber(total)
+    var numTwo = this.formatNumber(totalP)
+    this.totalAmount = num
+    this.totalPrice = numTwo
+    
+    this.currCoin = coin
     this.orderDate = line.outDate.slice(0, 10)
     if (line.outOfCountry == false) {
       this.outOfCountry = "Payment Terms:Current+95 Days"
     }
   }
+
+  sendOrder(line){
+    debugger;
+    this.procurementservice.sendOrderToSupplier(line).subscribe(data=>{
+
+    })
+  }
+
+  formatNumber(number)
+{
+    number = number.toFixed(2) + '';
+    var x = number.split('.');
+    var x1 = x[0];
+    var x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
+}
 
   searchBySupplier(ev) {
 

@@ -123,6 +123,11 @@ export class Procurementservice {
     let url = this.baseUrl + 'newProcurement/add';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
+  sendOrderToSupplier(obj):Observable<any>{
+    
+    let url = this.baseUrl + 'procurementOrderController/sendOrderToSupplier';
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
+  }
   addItemToProcurement(obj):Observable<any>{
     
     let url = this.baseUrl + 'procurementOrderController/addItemToProcurement';

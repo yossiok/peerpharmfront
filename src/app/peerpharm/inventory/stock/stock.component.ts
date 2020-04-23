@@ -43,6 +43,8 @@ export class StockComponent implements OnInit {
   subscription:any
   materialLocations: any[];
   items:any[];
+  compositionName:any;
+  compositionPercentage:any;
   allComponentsPurchases:any[];
   allMaterialsPurchases:any[];
   expirationBatchDate:any;
@@ -214,11 +216,12 @@ export class StockComponent implements OnInit {
     monthAvgPcs: "",
     msds: "",
     coaMaster: "",
+    function:'',
     measurement:"",
     notInStock:false,
     inciName:"",
     casNumber:"",
- 
+    composition:[],
     umNumber:"",
     imerCode:"",
     imerTreatment:"",
@@ -1376,6 +1379,18 @@ export class StockComponent implements OnInit {
   
   }
 
+  addComposition(){
+  debugger;
+
+  var obj = {
+    compName:this.compositionName,
+    compPercentage:this.compositionPercentage,
+  }
+
+  this.resMaterial.composition.push(obj)
+
+  }
+
   moveToSuppliers(supplierName){
    
 
@@ -1760,10 +1775,6 @@ export class StockComponent implements OnInit {
       }
 
     });
-
-
-
-
 
   }
 

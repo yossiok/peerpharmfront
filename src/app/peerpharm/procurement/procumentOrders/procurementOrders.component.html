@@ -103,6 +103,7 @@
                 </select>
               </td>
                 <td><button class="btn btn-info" (click)="printOrder(line)">Print Order</button></td>
+                <!-- <td><button class="btn btn-info" (click)="sendOrder(line)">Send Order</button></td> -->
     
               </tr>
             </tbody>
@@ -136,7 +137,8 @@
           <div class="col-2">
             <select class="form-control" (change)="filterByStatus($event,'recommendations')">
               <option></option>
-              <option value="lightcoral">Ordered</option>
+              <option value="closed">Ordered</option>
+              <option value="hold">Hold</option>
               <option value="open">Open</option>
             </select>
          
@@ -297,7 +299,7 @@
 
           <div class="container" id="material-body" class="modal-body">
             <table class="table table-striped">
-              <thead class="text-white">
+              <thead class="text-white bg-info">
                 <tr>
                   <th>Item Number</th>
                   <th>Reference Number</th>
@@ -362,10 +364,10 @@
         </div>
 
         <div class="col-4">
-          <button style="border:none;background: none;margin-left:240px;font-size: 25px;" ngxPrint
+          <button style="border:none;background: none;margin-left:100px;font-size: 25px;" ngxPrint
             printSectionId="print-section"
             [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
-          <p style="margin-left:450px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
+          <p style="margin-left:300px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
         </div>
 
         <div class="col-4">
@@ -426,7 +428,6 @@
               <th>Remarks</th>
               <th>Qty</th>
               <th>Unit Price</th>
-              <th>% Disc</th>
               <th>Amount</th>
 
             </tr>
@@ -439,9 +440,17 @@
               <td>{{item.remarks}}</td>
               <td>{{item.supplierAmount}}</td>
               <td>{{item.supplierPrice}}</td>
-              <td></td>
               <td>{{item.itemPrice}}</td>
 
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{totalAmount}}</td>
+              <td></td>
+              <td>{{totalPrice}}{{currCoin}}</td>
             </tr>
           </tbody>
 
@@ -449,9 +458,9 @@
 
         <div class="row">
           <div style="display: inline-block;" class="col-6">
-            <p style="margin-left:480px;font-size: 15px;display: inline-block;">Total Amont: {{totalAmount}}</p> &nbsp;
+            <!-- <p style="margin-left:480px;font-size: 15px;display: inline-block;">Total Amont: {{totalAmount}}</p> &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <p style="font-size: 15px;display: inline-block;">Total Price: {{totalPrice}}</p>
+            <p style="font-size: 15px;display: inline-block;">Total Price: {{totalPrice}}</p> -->
           </div>
           <div style="display: inline-block;" class="col-6">
 

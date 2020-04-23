@@ -179,8 +179,14 @@ export class FormsService {
   }
 
 
+
+
   // Libra List // 
 
+  filterByDate(phNumber,fromDate,toDate) {
+    let url = this.baseUrl + 'forms/filterByDate?fromDate='+fromDate+"&toDate="+toDate+"&phNumber="+phNumber
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllFirstAids() {
     let url = this.baseUrl + 'forms/getAllFirstAids';
     return this.http.get(url).pipe(map(reponse => reponse.json()));

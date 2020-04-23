@@ -29,6 +29,8 @@ export class CheckingformsComponent implements OnInit {
   calibDayRemarks:any;
   currBalanceSerialNum:any;
   sewerTestRemarks:any;
+
+  
   
   sewerPhTest = {
     year:'',
@@ -148,6 +150,10 @@ export class CheckingformsComponent implements OnInit {
   @ViewChild('calWeekToolModel') calWeekToolModel: ElementRef;
   @ViewChild('calWeektToolPlace') calWeektToolPlace: ElementRef;
 
+
+  @ViewChild('toDate') toDate: ElementRef;
+  @ViewChild('fromDate') fromDate: ElementRef;
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('');
@@ -219,6 +225,16 @@ export class CheckingformsComponent implements OnInit {
     this.formsService.addNewPHToCalWeek(obj).subscribe(data=>{
       debugger;
       data;
+    })
+  }
+
+  filterByDate(){
+    debugger;
+    this.formsService.filterByDate(this.calibrationWeek.phNumber,this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+    if(data){
+      this.calibrationWeekTests = data;
+    }
+    
     })
   }
 

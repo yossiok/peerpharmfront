@@ -22,10 +22,25 @@ export class InventoryRequestService {
     let url = this.baseUrl + "inventoryRequest/close";
     return this.http.post(url, JSON.stringify(reqObj), this.options).pipe(map(res => res.json()));
   }
+  checkArrived(obj){
+    let url = this.baseUrl + "inventoryRequest/checkArrived";
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res => res.json()));
+  }
 
   getInventoryRequestsListWeek():Observable<any> {
     
     let url = this.baseUrl + "inventoryRequest/byDate";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getFillingRequestsList():Observable<any> {
+    
+    let url = this.baseUrl + "inventoryRequest/getFillingRequestsList";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  filterByDate(fromDate,toDate) {
+    let url = this.baseUrl + 'inventoryRequest/filterByDate?fromDate='+fromDate+"&toDate="+toDate
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

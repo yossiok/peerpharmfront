@@ -376,13 +376,21 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
-        path: '/peerpharm/inventory/allocatedOrders',
-        title: 'Allocated Orders',
+        path: '/peerpharm/inventory/storages',
+        title: 'Storages',
         icon: 'fas fa-tree',
         class: '',
         extralink: false,
         submenu: []
       },
+      // {
+      //   path: '/peerpharm/inventory/allocatedOrders',
+      //   title: 'Allocated Orders',
+      //   icon: 'fas fa-tree',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       {
         path: '/peerpharm/inventory/change-shelf',
         title: 'Change Shelf',
@@ -514,14 +522,14 @@ export const ROUTES: RouteInfo[] = [
         //   extralink: false,
         //   submenu: []
         // },
-       {
-         path: '/peerpharm/production/productionSchedule',
-         title: 'Production Schedule',
-           icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
+      //  {
+      //    path: '/peerpharm/production/productionSchedule',
+      //    title: 'Production Schedule',
+      //      icon: 'fas fa-i-cursor',
+      //     class: '',
+      //     extralink: false,
+      //     submenu: []
+      //   },
         {
           path: '/peerpharm/production/scanMaterial',
           title: 'Scan Barcode',

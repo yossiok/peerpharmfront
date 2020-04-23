@@ -1,0 +1,97 @@
+
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Filling">
+    <div class="container-fluid bg-white text-center">
+      <div class="row">
+        <div class="col-12 mt-4">
+          <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Filling Storage</h1>
+        </div>
+      </div>
+
+
+      <div class="row mt-4">
+        <div class="col-3">
+        <label  class="form-control">Search By Number</label>
+        </div>
+        <div class="col-3">
+          <label  class="form-control">Search By Order</label>
+        </div>
+        <div class="col-3">
+          <label  class="form-control">From Date</label>
+        </div>
+        <div class="col-3">
+          <label  class="form-control">To Date</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+        <input (change)="filterByNumber($event)" type="text" class="form-control" placeholder="Number">
+        </div>
+        <div class="col-3">
+          <input (change)="filterByOrder($event)" type="text" class="form-control" placeholder="Order">
+        </div>
+        <div class="col-3">
+          <input #fromDate type="date" class="form-control">
+        </div>
+        <div class="col-3">
+          <input (change)="filterByDate()" #toDate type="date" class="form-control">
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-12">
+          <table class="table table-striped">
+            <thead class="bg-info text-white">
+              <tr style="box-shadow: inset 0px 0px 4px 1px black;">
+                <th>Request Num</th>
+                <th>Name</th>
+                <th>Transfer Date</th>
+                <th>Item Details</th>
+              </tr>
+            </thead>
+          
+                <tbody>
+                  <ng-container *ngFor="let request of allFillingRequests">
+                  <tr>
+                    <td>{{request.reqNum}}</td>
+                    <td>{{request.userName}}</td>
+                    <td>{{request.deliveryDate | date: 'dd/MM/yyyy'}}</td>
+                    <td>
+                      <table class="table table-striped table-hover">
+                        <thead class="bg-dark text-white">
+                          <tr>
+                            <th>Name</th>
+                            <th>Number</th>
+                            <th>Order</th>
+                            <th>Quantity</th>
+                            <th>Arrived</th>
+                          </tr>
+                        </thead>
+                          <tbody>
+                            <tr *ngFor="let item of request.reqList" [style.background-color]="item.arrived">
+                            <td>{{item.itemName}}</td>
+                            <td>{{item.itemNumber}}</td>
+                            <td>{{item.relatedOrder}}</td>
+                            <td>{{item.amount}}</td>
+                            <td><i style="cursor: pointer;" (click)="clickIfArrived(request._id,item.itemNumber)" class="fa fa-check text-success"></i></td>
+                          </tr>
+                          </tbody>
+                       
+                      </table>
+                    </td>
+              
+                    
+                
+                  </tr>
+                </ng-container>
+            </tbody>
+            
+          
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+
+</mat-tab-group>

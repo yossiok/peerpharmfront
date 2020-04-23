@@ -1,11 +1,11 @@
-<div dir="rtl" class="container rounded bg-light text-center shadow">
-  <div class="row bg-info">
+<div dir="rtl" class="container rounded bg-white text-center shadow">
+  <div style="box-shadow: inset 0px 0px 4px 1px black;" class="row bg-info">
     <div class="col-12">
       <h3 class="text-white p-2">New Purchase</h3>
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mt-3">
     <div class="col-12">
       <form action="#">
 
@@ -35,7 +35,7 @@
         </div>
         <hr>
         <div class="card-body">
-          <h4 class="card-title">Supplier Details</h4>
+          <h4 class="card-title text-info">Supplier Details</h4>
         </div>
         <hr />
         <div class="form-body">
@@ -84,7 +84,7 @@
             </div>
 
 
-            <h4 class="card-title mt-5">Item Details</h4>
+            <h4 class="card-title mt-5 text-info">Item Details</h4>
             <hr>
             <div class="card-body">
               <div class="row pt-3">
@@ -238,7 +238,7 @@
 
           <div class="form-actions">
             <div class="card-body">
-              <button (click)="sendNewProc()" class="btn btn-info">
+              <button type="button" (click)="sendNewProc()" class="btn btn-info">
                 <i class="fa fa-check"></i> Confirm
               </button>
               <button type="button" class="btn btn-dark">Cancel</button>
