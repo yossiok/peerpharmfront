@@ -80,12 +80,20 @@
             <!-- <option *ngFor="let cmptType of cmptTypeList">{{cmptType}}</option> -->
           </select>
         </div>
-        <div *ngIf="stockType=='component'" class="col-sm-2">
+        <div *ngIf="stockType=='component'" class="col-sm-1">
           <label class="fr">קטגוריה</label>
           <select #filterByCategory class="form-control" (change)="filterRows($event , 'category')">
             <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
             <option selected></option>
             <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
+          </select>
+        </div>
+        <div *ngIf="stockType=='component'" class="col-sm-1">
+          <label class="fr">ספק</label>
+          <select #filterBySupplier class="form-control" (change)="filterRows($event , 'supplier')">
+            <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
+            <option selected></option>
+            <option *ngFor="let supplier of allSuppliers">{{supplier.suplierName}}</option>
           </select>
         </div>
         <div *ngIf="stockType=='component'" class="col-sm-1">
@@ -1356,11 +1364,11 @@
           </div>
         </div>
         <div class="row fixNoaStupidStuff">
-          <div class="col-2 fixNoaStupidStuff">
+          <div class="col-10 fixNoaStupidStuff">
             <input class="form-control" [(ngModel)]="resMaterial.riskSentence" type='text'>
            
           </div>
-          <div class="col-10 fixNoaStupidStuff">
+          <div class="col-2 fixNoaStupidStuff">
             <label class="form-control">משפטי סיכון</label>
           </div>
         </div>
@@ -1385,8 +1393,14 @@
       <div class="container-fluid">
         <div dir="rtl" style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
 
-          <div class="col-12 fixNoaStupidStuff">
+          <div class="col-4 fixNoaStupidStuff">
+            <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+          </div>
+          <div class="col-4 fixNoaStupidStuff">
             <h5 class="text-success">מחסן/מחלקת בישול</h5>
+          </div>
+          <div class="col-4 fixNoaStupidStuff">
+            
           </div>
 
         </div>
@@ -1476,9 +1490,9 @@
           <div class="col-2 fixNoaStupidStuff">
             <label class="form-control">ספק</label>
             <label class="form-control">יצרן</label>
-            <label class="form-control">מספר פריט</label>
-            <label class="form-control">שם פריט</label>
-            <label class="form-control">קבוצה</label>
+            <label class="form-control">מספר פריט ספק</label>
+            <label class="form-control">שם פריט ספק</label>
+            <label class="form-control">סוג אריזה</label>
           </div>
           <div class="col-3 fixNoaStupidStuff">
             <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierName">

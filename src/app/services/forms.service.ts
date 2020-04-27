@@ -119,6 +119,11 @@ export class FormsService {
     let url = this.baseUrl + "forms/updateCalibTestRemark";
     return this.http.post(url, JSON.stringify(calibrationWeekFormEdit), this.options).pipe(map(res => res.json()));
   }
+  updateCalibWeekRemarks(calibrationWeekFormEdit){
+    debugger;
+    let url = this.baseUrl + "forms/updateCalibWeekRemarks";
+    return this.http.post(url, JSON.stringify(calibrationWeekFormEdit), this.options).pipe(map(res => res.json()));
+  }
   updateWaterTestRemarks(waterTestEdit){
     debugger;
     let url = this.baseUrl + "forms/updateWaterTestRemarks";
@@ -185,6 +190,31 @@ export class FormsService {
 
   filterByDate(phNumber,fromDate,toDate) {
     let url = this.baseUrl + 'forms/filterByDate?fromDate='+fromDate+"&toDate="+toDate+"&phNumber="+phNumber
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  filterCalibDayTestByDate(phNumber,fromDate,toDate) {
+    let url = this.baseUrl + 'forms/filterCalibDayTestByDate?fromDate='+fromDate+"&toDate="+toDate+"&phNumber="+phNumber
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  filterLibraByDate(balanceSerialNum,fromDate,toDate) {
+    let url = this.baseUrl + 'forms/filterLibraByDate?fromDate='+fromDate+"&toDate="+toDate+"&balanceSerialNum="+balanceSerialNum
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  filterOldWaterByDate(system,fromDate,toDate) {
+    let url = this.baseUrl + 'forms/filterOldWaterByDate?fromDate='+fromDate+"&toDate="+toDate+"&system="+system
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  filterNewWaterByDate(system,fromDate,toDate) {
+    let url = this.baseUrl + 'forms/filterOldWaterByDate?fromDate='+fromDate+"&toDate="+toDate+"&system="+system
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  filterTempTestbyDate(fromDate,toDate) {
+    let url = this.baseUrl + 'forms/filterTempTestbyDate?fromDate='+fromDate+"&toDate="+toDate
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  filterSewerTestByDate(fromDate,toDate) {
+    let url = this.baseUrl + 'forms/filterSewerTestByDate?fromDate='+fromDate+"&toDate="+toDate
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getAllFirstAids() {

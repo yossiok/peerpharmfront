@@ -1001,9 +1001,10 @@
                     <option value="Right">Right</option>
                     <option value="Left">Left</option>
                   </select>
-                  <input class="form-control" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
                   <input class="form-control" type=t ext id="id_cartonNo"
-                    (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')" [(ngModel)]=itemShown.cartonNumber>
+                  (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')" [(ngModel)]=itemShown.cartonNumber>
+                  <input class="form-control" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
+                
                     <input type=t ext id="id_Palette" class="form-control" [(ngModel)]=itemShown.paletteType>
                 </div>
                 <div class="col-2"></div>

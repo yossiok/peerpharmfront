@@ -117,17 +117,22 @@
         </div>
 
         <div class="row text-center">
-          <div class="col-3"></div>
+          <div class="col-3">
+            
+          </div>
           <div class="col-3">
             <labal class="form-control"><b>To</b></labal>
-            <input (change)="filterByDate()" type="date" class="form-control" #toDate>
+            <input (change)="filterByDate('calibrationWeek')" type="date" class="form-control" #toDate>
           </div>
           <div class="col-3">
          
             <label class="form-control">From</label>
             <input  type="date" class="form-control" #fromDate>
           </div>
-          <div class="col-3"></div>
+          <div class="col-3">
+            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('calibrationWeek')">
+          </div>
         </div>
 
 
@@ -142,6 +147,7 @@
                   <th>PH 10</th>
                   <th>תקינות</th>
                   <th>חתימה</th>
+                  <th>הערות</th>
                 </tr>
               </thead>
               <tbody>
@@ -152,6 +158,11 @@
                   <td>{{calibWeek.phTen}}</td>
                   <td>{{calibWeek.normalcy}}</td>
                   <td>{{calibWeek.signature}}</td>
+                  <td *ngIf="calibWeek._id!==EditRowId" style="width: 300px;" (click)="edit(calibWeek._id)">{{calibWeek.remarks}}</td>
+                  <td *ngIf="calibWeek._id===EditRowId" style="width: 300px;" (click)="edit(calibWeek._id)">
+                    <input [(ngModel)]="calibWeekRemarks" type="text">
+                  </td>
+                  <td *ngIf="calibWeek._id===EditRowId"><button class="btn btn-info" (click)="updateCalibWeekTest(calibWeek._id)">Save</button></td>
                 </tr>
               </tbody>
             </table>
@@ -179,10 +190,10 @@
           </div>
           <div class="col-2">
             <label class="form-control">מאזניים מספר:</label>
-            <label class="form-control">שנה:</label>
+    
             <label class="form-control">דגם המאזניים:</label>
             <label class="form-control">שם היצרן:</label>
-            <label class="form-control"> כושר שקילה)גרם()</label>
+            <label class="form-control"> כושר שקילה</label>
             <label class="form-control"> משקולת 1 (גרם)</label>
             <label class="form-control"> גבולות מ.1:(גרם)</label>
 
@@ -196,7 +207,7 @@
                
              
              </div>
-            <div> <input #libraYear class="form-control" [(ngModel)]="libraCalibration.year" type="text"></div>
+           
             <div> <input #libraModel class="form-control" [(ngModel)]="libraCalibration.libraModel" type="text"></div>
             <div> <input #libraManuName class="form-control" [(ngModel)]="libraCalibration.manufacturerName" type="text"></div>
             <div><input #libraMinCarryCap class="form-control" [(ngModel)]="libraCalibration.minCarryCapacity" type="text"></div>
@@ -206,26 +217,31 @@
           </div>
           <div class="col-2">
             <label class="form-control">מועד כיול אחרון:</label>
+            <label class="form-control">מועד כיול הבא:</label>
             <label class="form-control">משקולת 2:(גרם)</label>
             <label class="form-control"> גבולות מ.2:(גרם)</label>
-            <label class="form-control">סוג כיול אחרון:</label>
+            <label class="form-control">שם חברה מכיילת:</label>
             <label class="form-control">מיקום המאנזיים:</label>
-            <label class="form-control">שימוש:</label>
-            <label class="form-control">דיוק:</label>
+          
           </div>
           <div class="col-3">
             <input  #libraLastCalibDate class="form-control" [(ngModel)]="libraCalibration.lastCalibDate" type="text">
+            <input  #libraNextCalibDate class="form-control" [(ngModel)]="libraCalibration.nextCalibDate" type="text">
             <input #libraWeightTwo class="form-control" [(ngModel)]="libraCalibration.weightNumTwo" type="text">
             <input #libraLimitsTwo class="form-control" [(ngModel)]="libraCalibration.limitsWeightTwo" type="text">
-            <input #libraExterOrInter class="form-control" [(ngModel)]="libraCalibration.externalOrIntenralCalib" type="text">
+            <input #libraExterOrInter class="form-control" [(ngModel)]="libraCalibration.calibCompany" type="text">
             <input #libraLocation class="form-control" [(ngModel)]="libraCalibration.libraLocation" type="text">
-            <input #libraUseFor class="form-control" [(ngModel)]="libraCalibration.useFor" type="text">
-            <input #libraAccuracy class="form-control" [(ngModel)]="libraCalibration.accuracy" type="text">
+         
           </div>
           <div class="col-1">
             <button (click)="addNewLibra()" class="form-control btn btn-info">Add Libra</button>
             <button (click)="saveLibra()" class="form-control btn btn-info">Save Libra</button>
           
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <input #libraRemarks type="text" placeholder="הערות" class="form-control" [(ngModel)]="libraCalibration.remarks">
           </div>
         </div>
         <hr>
@@ -263,13 +279,36 @@
           </div>
         </div>
 
-        <div class="row">
+        <hr>
+
+        <div class="row text-center">
+          <div class="col-2"> </div>
+          <div class="col-1">
+            <button (click)="getAllLibraCalibTests()" style="height: 70px;" class="btn btn-info form-control">All Tests</button>
+            
+           
+          </div>
+          <div class="col-3">
+            <labal class="form-control"><b>To</b></labal>
+            <input (change)="filterByDate('libraCalibration')" type="date" class="form-control" #toDate>
+          </div>
+          <div class="col-3">
+         
+            <label class="form-control">From</label>
+            <input  type="date" class="form-control" #fromDate>
+          </div>
+          <div class="col-3">
+            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('libraCalibration')">
+          </div>
+        </div>
+
+        <div class="row mt-4">
           <div class="col-12">
             <table class="table table-hover table-striped">
               <thead class="bg-info text-white">
                 <tr style="box-shadow: inset 0px 0px 4px 1px black;">
                   <th>תאריך</th>
-                  <th>שעה</th>
                   <th>משקולת 1 - תוצאה</th>
                   <th>משקולת 2 - תוצאה</th>
                   <th>תקינות</th>
@@ -281,7 +320,6 @@
               <tbody>
                 <tr style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let test of libraCalibrationTests">
                   <td>{{test.date | date: 'dd/MM/yyyy'}}</td>
-                  <td>{{test.hour}}</td>
                   <td>{{test.resultWeightOne}}</td>
                   <td>{{test.resultWeightTwo}}</td>
                   <td>{{test.normalcy}}</td>
@@ -290,7 +328,7 @@
                   <td *ngIf="test._id===EditRowId" style="width: 300px;" (click)="edit(test._id)">
                     <input [(ngModel)]="calibrationTestRemarks" type="text">
                   </td>
-                  <td *ngIf="test._id===EditRowId"><button (click)="updateCalibTest(test._id)">Save</button></td>
+                  <td *ngIf="test._id===EditRowId"><button class="btn btn-info" (click)="updateCalibTest(test._id)">Save</button></td>
                 </tr>
               </tbody>
             </table>
@@ -349,7 +387,27 @@
             <button (click)="addOldWaterTest();" class="btn btn-info form-control">הוסף בדיקה</button>
           </div>
         </div>
+
         <hr>
+
+        <div class="row text-center">
+          <div class="col-3"> </div>
+
+          <div class="col-3">
+            <labal class="form-control"><b>To</b></labal>
+            <input (change)="filterByDate('oldSystemWater')" type="date" class="form-control" #toDate>
+          </div>
+          <div class="col-3">
+         
+            <label class="form-control">From</label>
+            <input  type="date" class="form-control" #fromDate>
+          </div>
+          <div class="col-3">
+            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('oldWaterSystem')">
+          </div>
+        </div>
+
         <div class="row text-center p-2">
           <div class="col-12">
 
@@ -405,7 +463,7 @@
                   <td *ngIf="test._id===EditRowId" style="width: 300px;" (click)="edit(test._id)">
                     <input [(ngModel)]="waterTestRemarks" type="text">
                   </td>
-                  <td *ngIf="test._id===EditRowId"><button (click)="updateWaterTest(test._id)">Save</button></td>
+                  <td *ngIf="test._id===EditRowId"><button class="btn btn-info" (click)="updateWaterTest(test._id)">Save</button></td>
                 </tr>
               </tbody>
             </table>
@@ -470,6 +528,26 @@
           </div>
         </div>
         <hr>
+
+          
+        <div class="row text-center">
+          <div class="col-3"> </div>
+
+          <div class="col-3">
+            <labal class="form-control"><b>To</b></labal>
+            <input (change)="filterByDate('newSystemWater')" type="date" class="form-control" #toDate>
+          </div>
+          <div class="col-3">
+         
+            <label class="form-control">From</label>
+            <input  type="date" class="form-control" #fromDate>
+          </div>
+          <div class="col-3">
+            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('newWaterSystem')">
+          </div>
+        </div>
+
         <div class="row text-center p-2">
           <div class="col-12">
 
@@ -525,7 +603,7 @@
                   <td *ngIf="test._id===EditRowId" style="width: 300px;" (click)="edit(test._id)">
                     <input [(ngModel)]="waterTestRemarks" type="text">
                   </td>
-                  <td *ngIf="test._id===EditRowId"><button (click)="updateWaterTest(test._id)">Save</button></td>
+                  <td *ngIf="test._id===EditRowId"><button class="btn btn-info" (click)="updateWaterTest(test._id)">Save</button></td>
                 </tr>
               </tbody>
             </table>
@@ -584,6 +662,25 @@
           </div>
         </div>
         <hr>
+
+        <div class="row text-center">
+          <div class="col-3"> </div>
+
+          <div class="col-3">
+            <labal class="form-control"><b>To</b></labal>
+            <input (change)="filterByDate('temperatureTest')" type="date" class="form-control" #toDate>
+          </div>
+          <div class="col-3">
+         
+            <label class="form-control">From</label>
+            <input  type="date" class="form-control" #fromDate>
+          </div>
+          <div class="col-3">
+            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('temperatureTest')">
+          </div>
+        </div>
+
         <div class="row text-center p-2">
           <div class="col-12">
             <table class="table table-striped table-hover">
@@ -612,7 +709,7 @@
                   <td *ngIf="test._id===EditRowId" style="width: 300px;" (click)="edit(test._id)">
                     <input [(ngModel)]="tempTestRemarks" type="text">
                   </td>
-                  <td *ngIf="test._id===EditRowId"><button (click)="updateTempTest(test._id)">Save</button></td>
+                  <td *ngIf="test._id===EditRowId"><button class="btn btn-info" (click)="updateTempTest(test._id)">Save</button></td>
 
                 </tr>
               </tbody>
@@ -715,6 +812,25 @@
           </div>
         </div>
         <hr>
+
+        <div class="row text-center">
+          <div class="col-3"> </div>
+
+          <div class="col-3">
+            <labal class="form-control"><b>To</b></labal>
+            <input (change)="filterByDate('calibrationDayTest')" type="date" class="form-control" #toDate>
+          </div>
+          <div class="col-3">
+         
+            <label class="form-control">From</label>
+            <input  type="date" class="form-control" #fromDate>
+          </div>
+          <div class="col-3">
+            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('calibrationDayTest')">
+          </div>
+        </div>
+
         <div class="row text-center p-2">
           <div class="col-12">
             <table class="table table-hover table-striped">
@@ -767,12 +883,6 @@
           </div>
         </div>
 
-       
-        
-       
-       
-
-
         <div class="row text-center p-2">
           <div class="col-4">
             <label class="form-control">תאריך</label>
@@ -804,6 +914,26 @@
         </div>
 
         <hr>
+
+        <div class="row text-center">
+          <div class="col-3"> </div>
+
+          <div class="col-3">
+            <labal class="form-control"><b>To</b></labal>
+            <input (change)="filterByDate('sewerPhTest')" type="date" class="form-control" #toDate>
+          </div>
+          <div class="col-3">
+         
+            <label class="form-control">From</label>
+            <input  type="date" class="form-control" #fromDate>
+          </div>
+          <div class="col-3">
+            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('sewerPhTest')">
+          </div>
+        </div>
+
+
         <div class="row text-center p-2">
           <div class="col-12">
             <table class="table table-striped table-hover">
@@ -824,7 +954,7 @@
                   <td *ngIf="test._id===EditRowId" style="width: 300px;" (click)="edit(test._id)">
                     <input [(ngModel)]="sewerTestRemarks" type="text">
                   </td>
-                  <td *ngIf="test._id===EditRowId"><button class="form-control btn-info" (click)="updateSewerTest(test._id)">Save</button></td>
+                  <td *ngIf="test._id===EditRowId"><button class="form-control btn btn-info" (click)="updateSewerTest(test._id)">Save</button></td>
                 </tr>
               </tbody>
             </table>

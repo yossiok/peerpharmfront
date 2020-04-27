@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { FormsService } from 'src/app/services/forms.service';
 import { ToastrService } from 'ngx-toastr';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-checkingforms',
@@ -27,6 +28,7 @@ export class CheckingformsComponent implements OnInit {
   waterTestRemarks:any;
   tempTestRemarks:any;
   calibDayRemarks:any;
+  calibWeekRemarks:any;
   currBalanceSerialNum:any;
   sewerTestRemarks:any;
 
@@ -93,13 +95,17 @@ export class CheckingformsComponent implements OnInit {
     weightNumOne:'',
     weightNumTwo:'',
     limitsWeightOne:'',
+    limitsWeightTwo:'',
     libraLocation:'',
     useFor:'',
     futureCalibDate:'',
-    externalOrInternalCalib:'',
+    calibCompany:'',
     accuracy:'',
     lastCalibDate:'',
-    year:''
+    nextCalibDate:'',
+    year:'',
+    remarks:''
+
   }
 
   libraCalibrationDetails = {
@@ -137,12 +143,15 @@ export class CheckingformsComponent implements OnInit {
   @ViewChild('libraWeightOne') libraWeightOne: ElementRef;
   @ViewChild('libraLimitsOne') libraLimitsOne: ElementRef;
   @ViewChild('libraLastCalibDate') libraLastCalibDate: ElementRef;
+  @ViewChild('libraFutureCalibDate') libraFutureCalibDate: ElementRef;
+  @ViewChild('libraNextCalibDate') libraNextCalibDate: ElementRef;
   @ViewChild('libraWeightTwo') libraWeightTwo: ElementRef;
   @ViewChild('libraLimitsTwo') libraLimitsTwo: ElementRef;
-  @ViewChild('libraExterOrInter') libraExterOrInter: ElementRef;
+  @ViewChild('libraCalibCompany') libraCalibCompany: ElementRef;
   @ViewChild('libraLocation') libraLocation: ElementRef;
   @ViewChild('libraUseFor') libraUseFor: ElementRef;
   @ViewChild('libraAccuracy') libraAccuracy: ElementRef;
+  @ViewChild('libraRemarks') libraRemarks: ElementRef;
 
 
   @ViewChild('calWeekPH') calWeekPH: ElementRef;
@@ -159,7 +168,7 @@ export class CheckingformsComponent implements OnInit {
     this.edit('');
   }
 
-  constructor(private toastSrv:ToastrService,private formsService: FormsService) { }
+  constructor(private excelService:ExcelService,private toastSrv:ToastrService,private formsService: FormsService) { }
 
   ngOnInit() {
   this.getAllWaterTests();
@@ -228,14 +237,91 @@ export class CheckingformsComponent implements OnInit {
     })
   }
 
-  filterByDate(){
+  filterByDate(type){
     debugger;
-    this.formsService.filterByDate(this.calibrationWeek.phNumber,this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
-    if(data){
-      this.calibrationWeekTests = data;
-    }
+
+    switch(type) {
+      case 'calibrationWeek':
+        this.formsService.filterByDate(this.calibrationWeek.phNumber,this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+          if(data){
+            data.forEach(obj => {
+              for (let i in obj) {
+                if (obj[i] === true || obj[i] === 'true') {
+                  obj[i] = 'תקין'
+                }
+                if (obj[i] === false || obj[i] === 'false') {
+                  obj[i] = 'לא תקין'
+                }
+      
+            }
+              
+            })
+            this.calibrationWeekTests = data;
+          }
+          
+          })
+        break;
+      case 'libraCalibration':
+      this.formsService.filterLibraByDate(this.libraCalibration.balanceSerialNum,this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+        if(data){
+          this.libraCalibrationTests = data;
+        }
+      })
+        break;
+      case 'oldSystemWater':
+        this.waterTest.system = 'old'
+        this.formsService.filterOldWaterByDate(this.waterTest.system,this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+          if(data){
+            this.oldSystemWater = data;
+          }
+        })
+        break;
+      case 'newSystemWater':
+        this.waterTest.system = 'new'
+        this.formsService.filterNewWaterByDate(this.waterTest.system,this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+          if(data){
+            this.newSystemWater = data;
+          }
+        })
+        break;
+      case 'temperatureTest':
     
-    })
+        this.formsService.filterTempTestbyDate(this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+          if(data){
+            this.allTempTests = data;
+          }
+        })
+        break;
+      case 'calibrationDayTest':
+        this.formsService.filterCalibDayTestByDate(this.calibrationDayTest.phNumber,this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+          if(data){
+            data.forEach(obj => {
+              for (let i in obj) {
+                if (obj[i] === true || obj[i] === 'true') {
+                  obj[i] = 'תקין'
+                }
+                if (obj[i] === false || obj[i] === 'false') {
+                  obj[i] = 'לא תקין'
+                }
+      
+            }
+              
+            })
+            this.allCalibrationDayTests = data;
+          }
+        })
+        break;
+      case 'sewerPhTest':
+        this.formsService.filterSewerTestByDate(this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+          if(data){
+            this.allSewerPHTests = data;
+          }
+        })
+        break;
+      default:
+        // code block
+    }
+
   }
 
   
@@ -243,11 +329,11 @@ export class CheckingformsComponent implements OnInit {
     this.formsService.getAllCalibWeekTests().subscribe(data=>{
       data.forEach(obj => {
         for (let i in obj) {
-          if (obj[i] === true) {
-            obj[i] = 'Yes'
+          if (obj[i] === true || obj[i] === 'true') {
+            obj[i] = 'תקין'
           }
-          if (obj[i] === false) {
-            obj[i] = 'No'
+          if (obj[i] === false || obj[i] === 'false') {
+            obj[i] = 'לא תקין'
           }
 
       }
@@ -259,7 +345,7 @@ export class CheckingformsComponent implements OnInit {
 
   getAllLibraList(){
     this.formsService.getAllLibraList().subscribe(data=>{
-      this.allLibraList = data;
+      this.allLibraList = data
     })
   }
 
@@ -277,13 +363,15 @@ export class CheckingformsComponent implements OnInit {
     weightNumOne:this.libraWeightOne.nativeElement.value,
     weightNumTwo:this.libraWeightTwo.nativeElement.value,
     limitsWeightOne:this.libraLimitsOne.nativeElement.value,
+    limitsWeightTwo:this.libraLimitsTwo.nativeElement.value,
     libraLocation:this.libraLocation.nativeElement.value,
     useFor:this.libraUseFor.nativeElement.value,
-    futureCalibDate:'',
-    externalOrInternalCalib:this.libraExterOrInter.nativeElement.value,
+    futureCalibDate:this.libraFutureCalibDate.nativeElement.value,
+    calibCompany:this.libraCalibCompany.nativeElement.value,
     accuracy:this.libraAccuracy.nativeElement.value,
     lastCalibDate:this.libraLastCalibDate.nativeElement.value,
-    year:this.libraYear.nativeElement.value
+    year:this.libraYear.nativeElement.value,
+    remarks:this.libraRemarks.nativeElement.value
   }
     this.formsService.addNewLibra(libraCalibration).subscribe(data=>{
     debugger;
@@ -296,6 +384,38 @@ export class CheckingformsComponent implements OnInit {
     })
   }
 
+
+  exportAsXLSX(type): void {
+      
+    switch(type) {
+      case 'calibrationWeek':
+        this.excelService.exportAsExcelFile(this.calibrationWeekTests, 'data');
+        break;
+      case 'libraCalibration':
+        this.excelService.exportAsExcelFile(this.libraCalibrationTests, 'data');
+        break;
+      case 'oldWaterSystem':
+        this.excelService.exportAsExcelFile(this.oldSystemWater, 'data');
+        break;
+      case 'newWaterSystem':
+        this.excelService.exportAsExcelFile(this.newSystemWater, 'data');
+        break;
+      case 'temperatureTest':
+        this.excelService.exportAsExcelFile(this.allTempTests, 'data');
+        break;
+      case 'calibrationDayTest':
+        this.excelService.exportAsExcelFile(this.allCalibrationDayTests, 'data');
+        break;
+      case 'sewerPhTest':
+        this.excelService.exportAsExcelFile(this.allSewerPHTests, 'data');
+        break;
+      default:
+       
+    }
+    
+  }
+
+
   saveLibra(){
     var libraCalibration = {
 
@@ -307,13 +427,16 @@ export class CheckingformsComponent implements OnInit {
       weightNumOne:this.libraWeightOne.nativeElement.value,
       weightNumTwo:this.libraWeightTwo.nativeElement.value,
       limitsWeightOne:this.libraLimitsOne.nativeElement.value,
+      limitsWeightTwo:this.libraLimitsTwo.nativeElement.value,
       libraLocation:this.libraLocation.nativeElement.value,
       useFor:this.libraUseFor.nativeElement.value,
-      futureCalibDate:'',
-      externalOrInternalCalib:this.libraExterOrInter.nativeElement.value,
+      futureCalibDate:this.libraFutureCalibDate.nativeElement.value,
+      calibCompany:this.libraCalibCompany.nativeElement.value,
       accuracy:this.libraAccuracy.nativeElement.value,
       lastCalibDate:this.libraLastCalibDate.nativeElement.value,
-      year:this.libraYear.nativeElement.value
+      year:this.libraYear.nativeElement.value,
+      remarks:this.libraRemarks.nativeElement.value,
+
     }
 
     this.formsService.updateLibra(libraCalibration).subscribe(data=>{
@@ -328,24 +451,23 @@ export class CheckingformsComponent implements OnInit {
 
   clearLibraFields(){
     this.clearLibra = ''
-    this.libraCalibration = {
-
-      balanceSerialNum:'',
-      libraModel:'',
-      manufacturerName:'',
-      minCarryCapacity:'',
-      maxCarryCapacity:'',
-      weightNumOne:'',
-      weightNumTwo:'',
-      limitsWeightOne:'',
-      libraLocation:'',
-      useFor:'',
-      futureCalibDate:'',
-      externalOrInternalCalib:'',
-      accuracy:'',
-      lastCalibDate:'',
-      year:''
-    }
+    this.libraCalibration.balanceSerialNum = ''
+    this.libraCalibration.libraModel = ''
+    this.libraCalibration.manufacturerName = ''
+    this.libraCalibration.minCarryCapacity = ''
+    this.libraCalibration.maxCarryCapacity = ''
+    this.libraCalibration.weightNumOne = ''
+    this.libraCalibration.weightNumTwo = ''
+    this.libraCalibration.limitsWeightOne = ''
+    this.libraCalibration.libraLocation = ''
+    this.libraCalibration.useFor = ''
+    this.libraCalibration.futureCalibDate = ''
+    this.libraCalibration.calibCompany = ''
+    this.libraCalibration.accuracy = ''
+    this.libraCalibration.nextCalibDate = ''
+    this.libraCalibration.lastCalibDate = ''
+    this.libraCalibration.year = ''
+    this.libraCalibration.remarks = ''
     this.libraCalibrationTests = [];
   }
   saveTest(){
@@ -356,11 +478,11 @@ export class CheckingformsComponent implements OnInit {
     this.formsService.saveCalibrationWeek(this.calibrationWeek).subscribe(data=>{
       data.forEach(obj => {
         for (let i in obj) {
-          if (obj[i] === true) {
-            obj[i] = 'Yes'
+          if (obj[i] === true || obj[i] === 'true') {
+            obj[i] = 'תקין'
           }
-          if (obj[i] === false) {
-            obj[i] = 'No'
+          if (obj[i] === false || obj[i] === 'false') {
+            obj[i] = 'לא תקין'
           }
 
       }
@@ -445,11 +567,11 @@ export class CheckingformsComponent implements OnInit {
       debugger;
       data.forEach(obj => {
         for (let i in obj) {
-          if (obj[i] === true) {
-            obj[i] = 'Yes'
+          if (obj[i] === true || obj[i] === 'true') {
+            obj[i] = 'תקין'
           }
-          if (obj[i] === false) {
-            obj[i] = 'No'
+          if (obj[i] === false || obj[i] === 'false') {
+            obj[i] = 'לא תקין'
           }
 
       }
@@ -464,11 +586,11 @@ export class CheckingformsComponent implements OnInit {
 
       data.forEach(obj => {
         for (let i in obj) {
-          if (obj[i] === 'true') {
-            obj[i] = 'Yes'
+          if (obj[i] === true || obj[i] === 'true') {
+            obj[i] = 'תקין'
           }
-          if (obj[i] === 'false') {
-            obj[i] = 'No'
+          if (obj[i] === false || obj[i] === 'false') {
+            obj[i] = 'לא תקין'
           }
 
       }
@@ -481,6 +603,26 @@ export class CheckingformsComponent implements OnInit {
 
   getAllWaterTests() {
     this.formsService.getAllWaterTests().subscribe(data=>{
+
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === 'exist') {
+            obj[i] = 'קיים'
+          }
+          if (obj[i] === 'notExist') {
+            obj[i] = 'לא קיים'
+          }
+          if (obj[i] === 'ok') {
+            obj[i] = 'תקין'
+          }
+          if (obj[i] === 'notOk') {
+            obj[i] = 'לא תקין'
+          }
+
+      }
+        
+      })
+
 
     this.allWaterTests = data;
 
@@ -501,11 +643,11 @@ export class CheckingformsComponent implements OnInit {
     this.formsService.getAllCalibDayTests().subscribe(data=>{
       data.forEach(obj => {
         for (let i in obj) {
-          if (obj[i] === true) {
-            obj[i] = 'Yes'
+          if (obj[i] === true || obj[i] === 'true') {
+            obj[i] = 'תקין'
           }
-          if (obj[i] === false) {
-            obj[i] = 'No'
+          if (obj[i] === false || obj[i] === 'false') {
+            obj[i] = 'לא תקין'
           }
 
       }
@@ -530,11 +672,11 @@ export class CheckingformsComponent implements OnInit {
       debugger;
       data.forEach(obj => {
         for (let i in obj) {
-          if (obj[i] === true) {
-            obj[i] = 'Yes'
+          if (obj[i] === true || obj[i] === 'true') {
+            obj[i] = 'תקין'
           }
-          if (obj[i] === false) {
-            obj[i] = 'No'
+          if (obj[i] === false || obj[i] === 'false') {
+            obj[i] = 'לא תקין'
           }
 
       }
@@ -544,11 +686,11 @@ export class CheckingformsComponent implements OnInit {
         debugger;
         data.forEach(obj => {
           for (let i in obj) {
-            if (obj[i] === true) {
-              obj[i] = 'Yes'
+            if (obj[i] === true || obj[i] === 'true') {
+              obj[i] = 'תקין'
             }
-            if (obj[i] === false) {
-              obj[i] = 'No'
+            if (obj[i] === false || obj[i] === 'false') {
+              obj[i] = 'לא תקין'
             }
   
         }
@@ -564,6 +706,24 @@ export class CheckingformsComponent implements OnInit {
     this.waterTest.system = 'new'
     this.formsService.addNewWaterTest(this.waterTest).subscribe(data=>{
       debugger;
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === 'exist') {
+            obj[i] = 'קיים'
+          }
+          if (obj[i] === 'notExist') {
+            obj[i] = 'לא קיים'
+          }
+          if (obj[i] === 'ok') {
+            obj[i] = 'תקין'
+          }
+          if (obj[i] === 'notOk') {
+            obj[i] = 'לא תקין'
+          }
+
+      }
+        
+      })
       this.newSystemWater = data.filter(w=>w.system == 'new');
       this.toastSrv.success('New test added')
       this.waterTest.clearAndColor = ''
@@ -586,6 +746,24 @@ export class CheckingformsComponent implements OnInit {
     this.waterTest.system = 'old'
     this.formsService.addOldWaterTest(this.waterTest).subscribe(data=>{
       debugger;
+      data.forEach(obj => {
+        for (let i in obj) {
+          if (obj[i] === 'exist') {
+            obj[i] = 'קיים'
+          }
+          if (obj[i] === 'notExist') {
+            obj[i] = 'לא קיים'
+          }
+          if (obj[i] === 'ok') {
+            obj[i] = 'תקין'
+          }
+          if (obj[i] === 'notOk') {
+            obj[i] = 'לא תקין'
+          }
+
+      }
+        
+      })
       this.oldSystemWater = data.filter(w=>w.system == 'old');
       this.toastSrv.success('New test added')
       this.waterTest.clearAndColor = ''
@@ -607,7 +785,13 @@ export class CheckingformsComponent implements OnInit {
   addNewTempTest() {
     this.formsService.addNewTempTest(this.temperatureTest).subscribe(data=>{
       debugger;
-      this.allTempTests = data;
+      if(data){
+        this.allTempTests = data;
+
+        
+        this.toastSrv.success('בדיקה נוספה בהצלחה !')
+      }
+     
 
     })
 
@@ -644,6 +828,25 @@ export class CheckingformsComponent implements OnInit {
       debugger;
       if(data.length > 0) {
         this.libraCalibrationTests = data;
+        this.EditRowId = '';
+        this.toastSrv.success("עודכן בהצלחה!")
+      }
+    })
+  }
+
+  updateCalibWeekTest(id){
+    debugger;
+  
+
+    var obj = {
+      _id:id,
+      remarks:this.calibWeekRemarks
+    }
+
+    this.formsService.updateCalibWeekRemarks(obj).subscribe(data=>{
+      debugger;
+      if(data.length > 0) {
+        this.calibrationWeekTests = data;
         this.EditRowId = '';
         this.toastSrv.success("עודכן בהצלחה!")
       }

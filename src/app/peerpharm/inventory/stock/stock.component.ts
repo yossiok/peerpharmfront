@@ -164,6 +164,7 @@ export class StockComponent implements OnInit {
   @ViewChild('filterBySupplierN') filterBySupplierN: ElementRef; //this.filterBySupplierN.nativeElement.value
   @ViewChild('filterByCmptName') filterByCmptName: ElementRef; //this.filterByCmptName.nativeElement.value
   @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
+  @ViewChild('filterBySupplier') filterBySupplier: ElementRef; //this.filterbyNum.nativeElement.value
 
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
   @ViewChild('newProcurmentQnt') newProcurmentQnt: ElementRef;
@@ -1247,6 +1248,13 @@ export class StockComponent implements OnInit {
         this.components = this.components.filter(x => (x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType)));
       }
     }
+    if(this.filterBySupplier != undefined){
+      if (this.filterBySupplier.nativeElement.value != "" && this.filterBySupplier != undefined) {
+        let supplierName = this.filterBySupplier.nativeElement.value;
+
+        this.components = this.components.filter(x => (x.suplierName.includes(supplierName) && x.itemType.includes(this.stockType)));
+      }
+    }
     }
     if (this.filterbyNum.nativeElement.value != "" && this.filterbyNum != undefined) {
       let itemNum = this.filterbyNum.nativeElement.value;
@@ -1315,6 +1323,8 @@ export class StockComponent implements OnInit {
 
   async openData(cmptNumber) {
     debugger;
+
+    this.switchModalView(cmptNumber)
     this.componentPurchases = [];
     for (let i = 0; i < this.allComponentsPurchases.length; i++) {
       for (let j = 0; j < this.allComponentsPurchases[i].item.length; j++) {
@@ -1325,7 +1335,7 @@ export class StockComponent implements OnInit {
       }
      }
    
-    this.switchModalView()
+    
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -2083,10 +2093,10 @@ export class StockComponent implements OnInit {
   showDialog() {
   }
 
-  switchModalView() {
+  switchModalView(componentN) {
     debugger;
     this.loadingMovements = true;
-    this.inventoryService.getItemMovements(this.resCmpt.componentN).subscribe(data => {
+    this.inventoryService.getItemMovements(componentN).subscribe(data => {
       this.itemMovements = data;
       this.loadingMovements = false;
     });

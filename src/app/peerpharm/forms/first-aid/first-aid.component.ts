@@ -32,6 +32,7 @@ export class FirstAidComponent implements OnInit {
     this.formsService.saveFirstAidCheck(this.firstAid).subscribe(data=>{
       if(data) {
         this.toastr.success('נשמר בהצלחה!')
+        this.getAllFirstAids();
       }
       
     })
