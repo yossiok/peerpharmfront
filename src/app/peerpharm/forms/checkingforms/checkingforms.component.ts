@@ -149,7 +149,6 @@ export class CheckingformsComponent implements OnInit {
   @ViewChild('libraLimitsTwo') libraLimitsTwo: ElementRef;
   @ViewChild('libraCalibCompany') libraCalibCompany: ElementRef;
   @ViewChild('libraLocation') libraLocation: ElementRef;
-  @ViewChild('libraUseFor') libraUseFor: ElementRef;
   @ViewChild('libraAccuracy') libraAccuracy: ElementRef;
   @ViewChild('libraRemarks') libraRemarks: ElementRef;
 
@@ -365,12 +364,9 @@ export class CheckingformsComponent implements OnInit {
     limitsWeightOne:this.libraLimitsOne.nativeElement.value,
     limitsWeightTwo:this.libraLimitsTwo.nativeElement.value,
     libraLocation:this.libraLocation.nativeElement.value,
-    useFor:this.libraUseFor.nativeElement.value,
-    futureCalibDate:this.libraFutureCalibDate.nativeElement.value,
+    nextCalibDate:this.libraFutureCalibDate.nativeElement.value,
     calibCompany:this.libraCalibCompany.nativeElement.value,
-    accuracy:this.libraAccuracy.nativeElement.value,
     lastCalibDate:this.libraLastCalibDate.nativeElement.value,
-    year:this.libraYear.nativeElement.value,
     remarks:this.libraRemarks.nativeElement.value
   }
     this.formsService.addNewLibra(libraCalibration).subscribe(data=>{
@@ -417,24 +413,21 @@ export class CheckingformsComponent implements OnInit {
 
 
   saveLibra(){
+    debugger;
     var libraCalibration = {
 
       balanceSerialNum:Number(this.libra.nativeElement.value),
       libraModel:this.libraModel.nativeElement.value,
       manufacturerName:this.libraManuName.nativeElement.value,
       minCarryCapacity:this.libraMinCarryCap.nativeElement.value,
-      maxCarryCapacity:'',
       weightNumOne:this.libraWeightOne.nativeElement.value,
       weightNumTwo:this.libraWeightTwo.nativeElement.value,
       limitsWeightOne:this.libraLimitsOne.nativeElement.value,
       limitsWeightTwo:this.libraLimitsTwo.nativeElement.value,
       libraLocation:this.libraLocation.nativeElement.value,
-      useFor:this.libraUseFor.nativeElement.value,
-      futureCalibDate:this.libraFutureCalibDate.nativeElement.value,
+      nextCalibDate:this.libraFutureCalibDate.nativeElement.value,
       calibCompany:this.libraCalibCompany.nativeElement.value,
-      accuracy:this.libraAccuracy.nativeElement.value,
       lastCalibDate:this.libraLastCalibDate.nativeElement.value,
-      year:this.libraYear.nativeElement.value,
       remarks:this.libraRemarks.nativeElement.value,
 
     }
@@ -459,6 +452,7 @@ export class CheckingformsComponent implements OnInit {
     this.libraCalibration.weightNumOne = ''
     this.libraCalibration.weightNumTwo = ''
     this.libraCalibration.limitsWeightOne = ''
+    this.libraCalibration.limitsWeightTwo = ''
     this.libraCalibration.libraLocation = ''
     this.libraCalibration.useFor = ''
     this.libraCalibration.futureCalibDate = ''

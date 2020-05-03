@@ -60,7 +60,7 @@ export class InventoryNewRequestComponent implements OnInit {
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
       reqNum: [{value:Number}, Validators.required],
       fromWH: ["Kasem", Validators.required],
-      toWH: ["Rosh haayin", Validators.required],
+      toWH: ["Filling", Validators.required],
       currDate: [this.currentDate(), String ],
       deliveryDate: [this.currentDate(), Validators.required],
       reqList:  [this.reqList, Validators.required]

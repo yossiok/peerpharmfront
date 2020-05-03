@@ -219,6 +219,27 @@ export class BatchesComponent implements OnInit {
   loadSpecTable(itemNumber) {
     debugger;
     this.itemService.getItemData(itemNumber).subscribe(data => {
+      if(data[0].valueStatus == undefined){
+        data[0].valueStatus = ''
+      }
+      if(data[0].scentValue == undefined){
+        data[0].scentValue = ''
+      }
+      if(data[0].textureValue == undefined){
+        data[0].textureValue = ''
+      }
+      if(data[0].colorValue == undefined){
+        data[0].colorValue = ''
+      }
+      if(data[0].viscosityValue == undefined){
+        data[0].viscosityValue = ''
+      }
+      if(data[0].densityValue == undefined){
+        data[0].densityValue = ''
+      }
+      if(data[0].phValue == undefined){
+        data[0].phValue = ''
+      }
       this.item = data[0]
 
       if (data[0].valueStatus == 'confirm') {

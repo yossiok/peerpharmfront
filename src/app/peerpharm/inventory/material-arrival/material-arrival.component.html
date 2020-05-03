@@ -355,7 +355,7 @@
                       </div>  
                       <div class="col-sm-2">
                         <label >מספר הזמנת רכש</label>
-                        <input type="text"  class="form-control is-valid" placeholder="comax order number" formControlName="cmxOrderN" name='cmxOrderN' >
+                        <input type="text" (change)="checkIfIOrderExist($event)" class="form-control is-valid" placeholder="comax order number" formControlName="cmxOrderN" name='cmxOrderN' >
                       </div>  
                   </div>
                   <div class="form-row w-100 flex-row-reverse">
@@ -369,6 +369,32 @@
                           <option value="kg">קילוגרם</option>  
                           <option value="liter">ליטר</option>  
                         </select>
+                      </div>  
+                      <div *ngIf="comaxOrderExist == true" class="col-sm-8">
+                      <table class="table table-hover table-striped">
+                        <thead>
+                          <tr>
+                            <th>מספר הזמנה</th>
+                            <th>מספר הזמנה קומקס</th>
+                            <th>מספר פריט</th>
+                            <th>כמות</th>
+                            <th>מחיר</th>
+                            <th>יחידת מידה</th>
+                          </tr>
+                        </thead>
+                          <tbody>
+                            <ng-container *ngFor="let order of currentComaxOrder">
+                              <tr *ngFor="let item of order.item">
+                              <td>{{order.orderNumber}}</td>
+                              <td>{{order.comaxNumber}}</td>
+                              <td>{{item.itemNumber}}</td>
+                              <td>{{item.supplierAmount}}</td>
+                              <td>{{item.supplierPrice}}</td>
+                              <td>{{item.measurement}}</td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                      </table>
                       </div>  
                   </div>
                   <div class="form-row w-100 flex-row-reverse">

@@ -25,6 +25,7 @@ export class ProcurementOrdersComponent implements OnInit {
   printBill: boolean = false;
   orderDetailsModal: boolean = false;
   editArrivalModal: boolean = false;
+  bill: boolean = false;
   procurementData: any[];
   procurementDataCopy: any[];
   procurementArrivals: any[] = []
@@ -32,6 +33,7 @@ export class ProcurementOrdersComponent implements OnInit {
   currentOrder: any[];
   currentItems: any[];
   allSuppliers: any[];
+  billToPrint: any[];
   currentSupplier: object;
   orderData: any[];
   arrivalData: any[];
@@ -39,6 +41,7 @@ export class ProcurementOrdersComponent implements OnInit {
   EditRowComax: any = "";
   requestNum: any = "";
   user: any;
+  referNumberForReciept: any;
 
   totalAmount: any;
   itemAmounts: any;
@@ -385,6 +388,54 @@ debugger;
     this.procurementservice.sendOrderToSupplier(line).subscribe(data=>{
 
     })
+  }
+
+  printReciept(){
+    debugger;
+    this.referNumberForReciept;
+
+    var tempArr = []
+    var obj = {
+      itemNumber:'',
+      comaxNumber:'',
+      referenceNumber:'',
+      arrivedAmount:'',
+      arrivalDate:''
+
+    }
+    for (let i = 0; i < this.procurementArrivals.length; i++) {
+      for (let j = 0; j < this.procurementArrivals[i].arrivals.length; j++) {
+      if(Number(this.procurementArrivals[i].arrivals[j].referenceNumber) == this.referNumberForReciept){
+
+        obj.itemNumber = this.procurementArrivals[i].itemNumber
+        obj.comaxNumber = this.procurementArrivals[i].comaxNumber
+        obj.referenceNumber = this.procurementArrivals[i].arrivals[j].referenceNumber
+        obj.arrivedAmount = this.procurementArrivals[i].arrivals[j].arrivedAmount
+        obj.arrivalDate = this.procurementArrivals[i].arrivals[j].arrivalDate
+        var objectToPush = {...obj}
+        tempArr.push(objectToPush)
+
+      }   
+      } 
+    }
+
+    tempArr
+    this.procurementData;
+    for (let i = 0; i < tempArr.length; i++) {
+      for (let j = 0; j < this.procurementData.length; j++) {
+       for (let k = 0; k < this.procurementData[j].item.length; k++) {
+         if(tempArr[i].comaxNumber == this.procurementData[j].comaxNumber){
+          if(tempArr[i].itemNumber == this.procurementData[j].item[k].itemNumber){
+            var price = this.procurementData[j].item[k].supplierPrice + this.procurementData[j].item[k].coin
+            tempArr[i].price = price
+          }
+        
+         }
+       }     
+      }
+    }
+    this.billToPrint = tempArr
+    this.bill = true;
   }
 
   formatNumber(number)

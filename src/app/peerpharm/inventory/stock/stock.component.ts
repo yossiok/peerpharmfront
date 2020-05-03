@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input,ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input,ViewEncapsulation, HostListener } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
@@ -41,6 +41,7 @@ export class StockComponent implements OnInit {
   componentsCopy:any[];
   materialArrivals:any[];
   subscription:any
+  filterMaterialOption:String;
   materialLocations: any[];
   items:any[];
   compositionName:any;
@@ -50,6 +51,7 @@ export class StockComponent implements OnInit {
   expirationBatchDate:any;
   totalQuantity:String;
   allowUserEditItem = false;
+  updateSupplier = false;
   check = false;
   resCmpt: any = {
     componentN: '',
@@ -171,6 +173,19 @@ export class StockComponent implements OnInit {
   @ViewChild('newProcurmentOrderNum') newProcurmentOrderNum: ElementRef;
   @ViewChild('newProcurmentExceptedDate') newProcurmentExceptedDate: ElementRef;
 
+  @ViewChild('supplierName') supplierName: ElementRef;
+  @ViewChild('manufacturer') manufacturer: ElementRef;
+  @ViewChild('alterName') alterName: ElementRef;
+  @ViewChild('alternativeMaterial') alternativeMaterial: ElementRef;
+  @ViewChild('price') price: ElementRef;
+  @ViewChild('coin') coin: ElementRef;
+  @ViewChild('packageWeight') packageWeight: ElementRef;
+  @ViewChild('priceLoading') priceLoading: ElementRef;
+  @ViewChild('coinLoading') coinLoading: ElementRef;
+
+  @ViewChild('materialToSearch') materialToSearch: ElementRef;
+ 
+
   // material array // 
   materials: any[];
 
@@ -241,6 +256,11 @@ export class StockComponent implements OnInit {
   itemExpectedArrivals: any;
   closeResult: string;
   // currentFileUpload: File; //for img upload creating new component
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.editSuppliers('');
+  }
 
   constructor(private supplierService:SuppliersService,private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
@@ -460,7 +480,52 @@ export class StockComponent implements OnInit {
     });
   }
 
+  updateSupplierDetails(){
+  debugger;
 
+ 
+    var obj = {
+      id:this.resMaterial._id,
+      supplierName:this.supplierName.nativeElement.value,
+      price:this.price.nativeElement.value,
+      coin:this.coin.nativeElement.value,
+      coinLoading:this.coinLoading.nativeElement.value,
+      priceLoading:this.priceLoading.nativeElement.value,
+      manufacturer:this.manufacturer.nativeElement.value,
+      alternativeMaterial:this.alternativeMaterial.nativeElement.value,
+      alterName:this.alterName.nativeElement.value,
+      packageWeight:this.packageWeight.nativeElement.value,
+    }
+    this.inventoryService.updateSupplier(obj).subscribe(data=>{
+      debugger;
+      if(data){
+        var updatedSupplier = data.alternativeSuppliers.find(s=>s.supplierName == obj.supplierName);
+        var supplier = this.resMaterial.alternativeSuppliers.find(s=>s.supplierName == obj.supplierName);
+        supplier.supplierName = updatedSupplier.supplierName
+        supplier.price = updatedSupplier.price
+        supplier.coin = updatedSupplier.coin
+        supplier.coinLoading = updatedSupplier.coinLoading
+        supplier.priceLoading = updatedSupplier.priceLoading
+        supplier.manufacturer = updatedSupplier.manufacturer
+        supplier.alternativeMaterial = updatedSupplier.alternativeMaterial
+        supplier.alterName = updatedSupplier.alterName
+        supplier.packageWeight = updatedSupplier.packageWeight
+        this.updateSupplier = false;
+        this.editSuppliers('')
+        this.toastSrv.success('ספק עודכן בהצלחה !')
+
+      }
+
+    })
+  }
+
+  filterMaterials(ev){
+    debugger;
+    var nameToSearch = ev.target.value;
+    
+    this.materialToSearch.nativeElement.value;
+
+  }
 
   // devExcelExport(){
 
@@ -534,13 +599,13 @@ export class StockComponent implements OnInit {
     });
   }
 
-  addSupplierToArray() { 
+  // addSupplierToArray() { 
     
-    var detailsToPush = {...this.alternativeSupplier}
-    this.resMaterial.alternativeSuppliers.push(detailsToPush);
-    this.toastSrv.success("הוספת ספק בהצלחה , אנא לא לשכוח לשמור !")
+  //   var detailsToPush = {...this.alternativeSupplier}
+  //   this.resMaterial.alternativeSuppliers.push(detailsToPush);
+  //   this.toastSrv.success("הוספת ספק בהצלחה , אנא לא לשכוח לשמור !")
 
-  }
+  // }
 
 
   open(supplierList) {
@@ -891,6 +956,9 @@ export class StockComponent implements OnInit {
       else if(threatment == 'acid')
       {
         return "acid";
+      }
+      else if (threatment == ' oxidizer'){
+        return 'oxidizer'
       }
       else if (threatment == 'toxic') {
         return "toxic"
@@ -1725,7 +1793,18 @@ export class StockComponent implements OnInit {
       }
     }
   }
+    
 
+  editSuppliers(supplierName){
+    debugger;
+    if(supplierName != '') {
+      this.EditRowId = supplierName
+      this.updateSupplier = true;
+    } else {
+      this.EditRowId = ''
+      this.updateSupplier = false;
+    }
+  }
 
 
   editStockItemDetails() {
@@ -2096,6 +2175,10 @@ export class StockComponent implements OnInit {
   switchModalView(componentN) {
     debugger;
     this.loadingMovements = true;
+
+    if(componentN == '' || componentN == undefined){
+      componentN = this.resCmpt.componentN
+    }
     this.inventoryService.getItemMovements(componentN).subscribe(data => {
       this.itemMovements = data;
       this.loadingMovements = false;

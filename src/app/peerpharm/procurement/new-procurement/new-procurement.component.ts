@@ -193,17 +193,37 @@ debugger
     
     if(this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.measurement.nativeElement.value == "" || this.supplierAmount.nativeElement.value == "" ){
       this.toastr.error('שים לב , לא כל הפרטים מלאים.')
-    } else { 
-      this.newProcurement.item.push(newItem);
+    } else {
+      
+      var material = this.allMaterials.find(m=>m.componentN == newItem.itemNumber);
+      debugger;
+      if(material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true'){
+      if(confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה'+' '+material.allowQtyInStock)){
+        this.newProcurement.item.push(newItem);
 
-      this.newItem.coin = "";
-      this.newItem.itemName ="";
-      this.newItem.itemNumber="";
-      this.newItem.measurement="";
-      this.newItem.supplierAmount="";
-      this.newItem.supplierPrice=0;
-    
-      this.toastr.success("פריט התווסף בהצלחה!")
+        this.newItem.coin = "";
+        this.newItem.itemName ="";
+        this.newItem.itemNumber="";
+        this.newItem.measurement="";
+        this.newItem.supplierAmount="";
+        this.newItem.supplierPrice=0;
+      
+        this.toastr.success("פריט התווסף בהצלחה!")
+      }
+      } else {
+        this.newProcurement.item.push(newItem);
+
+        this.newItem.coin = "";
+        this.newItem.itemName ="";
+        this.newItem.itemNumber="";
+        this.newItem.measurement="";
+        this.newItem.supplierAmount="";
+        this.newItem.supplierPrice=0;
+      
+        this.toastr.success("פריט התווסף בהצלחה!")
+      }
+
+     
       
     }
   }

@@ -85,25 +85,25 @@
         <tbody id="table_body">
           <tr style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
             *ngFor="let item of items; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>
-              <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}">
+            <td style="color:black">{{ i + 1 }}</td>
+            <td style="color:black">
+              <a style="color:black;text-decoration: underline;" target="_blank" routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}">
                 {{ item.itemNumber }}
               </a>
             </td>
-            <td>{{ item.itemFullName }}</td>
-            <td>
+            <td style="color:black">{{ item.itemFullName }}</td>
+            <td style="color:black">
               <div *ngIf="item.volumeKey">{{ item.volumeKey }} ml</div>
               <div *ngIf="item.volumeKey == null && item.netWeightK">
                 {{ item.netWeightK }} gr
               </div>
             </td>
-            <td style="word-wrap:normal">
+            <td  style="word-wrap:normal;color:black">
               {{ item.stickerNumber }}<br /><span style="word-break: break-word;">{{
           item.StickerLanguageK
         }}</span>
             </td>
-            <td style="word-wrap: break-word;">{{ item.barcodeK }}</td>
+            <td style="word-wrap: break-word;color:black">{{ item.barcodeK }}</td>
             <td>
               <!-- <img
           *ngIf="
@@ -157,19 +157,19 @@
         /> -->
 
             </td>
-            <td (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensNumber }}</td>
-            <td (click)="edit(item._id)" *ngIf="item._id == EditRowId">
+            <td style="color:black" (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensNumber }}</td>
+            <td style="color:black" (click)="edit(item._id)" *ngIf="item._id == EditRowId">
               <input #itemLicenseNum [value]="item.licsensNumber" style="width:150px" type="text">
             </td>
 
-            <td (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensDate}}</td>
-            <td (click)="edit(item._id)" *ngIf="item._id == EditRowId">
+            <td style="color:black" (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensDate}}</td>
+            <td style="color:black" (click)="edit(item._id)" *ngIf="item._id == EditRowId">
               <input #itemLicenseDate [value]="item.licsensDate" style="width:150px" type="date">
             </td>
 
-            <td>{{ item.pallet }}</td>
-            <td>{{ item.pallet2 }}</td>
-            <td>{{ item.pallet3 }}</td>
+            <td style="color:black">{{ item.pallet }}</td>
+            <td style="color:black">{{ item.pallet2 }}</td>
+            <td style="color:black">{{ item.pallet3 }}</td>
             <td *ngIf="item._id == EditRowId" style="width:3%"><i (click)="saveEdit(item._id)" class="fa fa-check"></i>
             </td>
             <!-- <td>{{item.pallet2}}</td>
