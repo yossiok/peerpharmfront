@@ -8,12 +8,11 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col-2"></div>
+        <div class="col-3"></div>
         <div class="col-2"><button class="btn form-control" style="background:lightcoral">Canceled Order</button></div>
-        <div class="col-2"><button class="btn form-control" style="background:yellow">Order Sent To Supplier</button></div>
-        <div class="col-2"><button class="btn form-control" style="background:lightgreen">Supplier Received Order</button></div>
+        <div class="col-2"><button class="btn form-control" style="background:lightgreen">On Going</button></div>
         <div class="col-2"><button class="btn form-control" style="background:orange">Closed Order</button></div>
-        <div class="col-2"></div>
+        <div class="col-3"></div>
       </div>
    
       
@@ -65,13 +64,18 @@
                 <th><b>#</b></th>
                 <th><b>Procurement Number</b></th>
                 <th><b>Comax Number</b></th>
-                <th><b>Supplier Number</b></th>
+                <!-- <th><b>Supplier Number</b></th> -->
                 <th><b>Supplier Name</b></th>
                 <th><b>Out Date</b></th>
-                <th><b>Receiving Date</b></th>
-                <th><b>Sent To Supplier</b></th>
-                <th><b>Arrived At Supplier</b></th>
+                <th><b>Arrival Date</b></th>
+                <th><b>Remarks</b></th>
+                <th><b>Current Status</b></th>
+                <th><b>Change</b></th>
                 <th><b>Close Order</b></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
                 <th></th>
               </tr>
             </thead>
@@ -83,12 +87,37 @@
                     style="color:blue;">{{line.orderNumber}}</span>
                 </td>
                 <td>{{ line.comaxNumber }}</td>
-                <td>{{ line.supplierNumber }}</td>
+                <!-- <td>{{ line.supplierNumber }}</td> -->
                 <td>{{ line.supplierName }}</td>
                 <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
-                <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
-                <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td>
+                <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
+                <td *ngIf="EditRowId == line.orderNumber">
+                  <input (change)="updateArrivalDate($event,line.orderNumber)" type="date" class="form-control">
+                </td>
+                <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">{{line.remarks}}</td>
+                <td *ngIf="EditRowId == line.orderNumber">
+                  <textarea [value]="line.remarks" #purchaseRemarks></textarea>
+                  <button (click)="saveOrderRemarks(line)" class="btn btn-info"><i class="fa fa-save"></i></button>
+                </td>
+                <!-- <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
+                <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td> -->
+           
+                <td><label class="form-control">{{line.status}}</label></td>
+                <td>
+                  <select class="form-control" (change)="changeStatus($event,line.orderNumber)">
+                  <option value=""></option>
+                  <option value="sentToSupplier">נשלחה לספק</option>
+                  <option value="supplierGotOrder">הגיעה לספק</option>
+                  <option value="orderOffer">הצעת מחיר הועברה לחביב</option>
+                  <option value="havivApprovedOffer">אושרה הצעת המחיר</option>
+                  <option value="orderPayedToSupplier">שולם לספק</option>
+                  <option value="timeToProduction">צפי ייצור</option>
+                  <option value="expectedArrival">צפי הגעה</option>
+                  <!-- <option value="balanceNotImp">יתרה לא רלוונטית</option>
+                  <option value="NoApprovePrice">מחיר לא אושר</option>
+                  <option value="withoutReciept">נסגר ללא תעודה</option> -->
+                </select>
+              </td>
                 <td *ngIf="line.status == 'closed'"><label class="form-control">{{line.closeReason}}</label></td>
                 <td *ngIf="line.status != 'closed'">
                   <select class="form-control" (change)="closeOrder($event,line.orderNumber)">
@@ -103,8 +132,22 @@
                   <option value="withoutReciept">נסגר ללא תעודה</option>
                 </select>
               </td>
+                  
                 <td><button class="btn btn-info" (click)="printOrder(line)">Print Order</button></td>
+                <td><button class="btn btn-info form-control" (click)="orderInput.click()">O</button></td>
                 <!-- <td><button class="btn btn-info" (click)="sendOrder(line)">Send Order</button></td> -->
+              <td>   <a style="display:block" target="_blank" (click)="setLinkDownlowd(line._id)" [href]="linkDownload"><img style="height: 30px; width:30px;"
+                src="../../../../assets/images/pdf.png" alt="PDF" /></a>
+
+            <input class="form-control" #orderInput style="display:none" type="file"
+              (change)="onSelectOrderBill($event,line.orderNumber)"></td>
+
+              <td><button class="btn btn-info form-control" (click)="swiftInput.click()">S</button></td>
+              <td>
+                <a style="display:block" target="_blank" (click)="setLinkDownlowdTwo(line._id)" [href]="linkDownload"> <img style="height: 30px; width:30px;"
+                  src="../../../../assets/images/pdf.png" alt="PDF" /></a>
+              <input class="form-control" #swiftInput style="display:none" type="file" (change)="onSelectSwift($event,line.orderNumber)">
+              </td>
     
               </tr>
             </tbody>

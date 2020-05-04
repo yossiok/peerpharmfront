@@ -8,6 +8,7 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArrayServiceService } from 'src/app/utils/array-service.service';
+import { p } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -17,6 +18,8 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
 
 export class ProcurementOrdersComponent implements OnInit {
 
+  linkDownload:String = '';
+  orderRemarks:String;
   allComponents: any[];
   purchaseRecommendations: any[];
   purchaseRecommendationsCopy: any[];
@@ -84,6 +87,9 @@ export class ProcurementOrdersComponent implements OnInit {
 
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
+
+  @ViewChild('purchaseRemarks') purchaseRemarks: ElementRef;
+  @ViewChild('purchaseArrivalDate') purchaseArrivalDate: ElementRef;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -203,6 +209,62 @@ export class ProcurementOrdersComponent implements OnInit {
   getAllProcurementOrders() {
     debugger;
     this.procurementservice.getProcurementOrder().subscribe(res => {
+
+      for (let i = 0; i < res.length; i++) {
+        if(res[i].closeReason == 'orderFrozen'){
+          res[i].closeReason = 'בהקפאה'
+        }
+        if(res[i].closeReason == 'havivApproval'){
+          res[i].closeReason = 'מבוטל באישור חביב'
+        }
+        if(res[i].closeReason == 'tomerApproval'){
+          res[i].closeReason = 'מבוטל באישור תומר'
+        }
+        if(res[i].closeReason == 'sigiOrAkivaApproval'){
+          res[i].closeReason = 'באיזור סיגלית/עקיבא'
+        }
+        if(res[i].closeReason == 'movedToOtherPurchase'){
+          res[i].closeReason = 'הוכנס להזמנה אחרת'
+        }
+        if(res[i].closeReason == 'balanceNotImp'){
+          res[i].closeReason = 'יתרה לא רלוונטית'
+        }
+        if(res[i].closeReason == 'NoApprovePrice'){
+          res[i].closeReason = 'מחיר לא אושר'
+        }
+        if(res[i].closeReason == 'withoutReciept'){
+          res[i].closeReason = 'נסגר ללא תעודה'
+        }
+        
+        
+        if(res[i].status == 'sentToSupplier'){
+          res[i].status = 'נשלחה לספק'
+        }
+        
+        if(res[i].status == 'supplierGotOrder'){
+          res[i].status = 'הגיעה לספק'
+        }
+        
+        if(res[i].status == 'orderOffer'){
+          res[i].status = 'הצעת מחיר הועברה לחביב'
+        }
+        
+        if(res[i].status == 'havivApprovedOffer'){
+          res[i].status = 'אושרה הצעת המחיר'
+        }
+        
+        if(res[i].status == 'orderPayedToSupplier'){
+          res[i].status = 'שולם לספק'
+        }
+        
+        if(res[i].status == 'timeToProduction'){
+          res[i].status = 'צפי ייצור'
+        }
+        if(res[i].status == 'expectedArrival'){
+          res[i].status = 'צפי הגעה'
+        }
+        
+      }
       this.procurementData = res;
 
       this.procurementDataCopy = res
@@ -229,6 +291,17 @@ export class ProcurementOrdersComponent implements OnInit {
     } else {
       this.EditRowId = '';
       this.requestNum = '';
+    }
+  }
+
+  editRemarks(orderNumber) {
+    debugger;
+    if (orderNumber != '') {
+
+      this.EditRowId = orderNumber;
+    } else {
+      this.EditRowId = '';
+     
     }
 
 
@@ -277,6 +350,29 @@ debugger;
 
   }
 
+  setLinkDownlowd(id){
+    this.linkDownload="http://localhost:4200/procurementOrderController/getpdf?_id="+id;
+  }
+  setLinkDownlowdTwo(id){
+    this.linkDownload="http://localhost:4200/procurementOrderController/getpdfTwo?_id="+id;
+  }
+
+
+  updateArrivalDate(ev,orderNumber){
+  debugger;
+  var arrivalDate = ev.target.value;
+
+  var order = this.procurementData.find(o=>o.orderNumber == orderNumber);
+  order.validDate = arrivalDate
+
+  this.procurementservice.updatePurchaseRemarks(order).subscribe(data=>{
+    if(data){
+      this.toastr.success('תאריך עודכן בהצלחה !')
+      this.editRemarks('')
+    }
+  })
+
+  }
 
   saveRecommendRemarks(purchase) {
     debugger;
@@ -299,6 +395,80 @@ debugger;
     })
   }
 
+  saveOrderRemarks(order){
+  
+    order.remarks = this.purchaseRemarks.nativeElement.value;
+    this.procurementservice.updatePurchaseRemarks(order).subscribe(data=>{
+    if(data){
+     var purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
+     purchase.remarks = data.remarks
+     this.toastr.success('הערה עודכנה בהצלחה !')
+     this.editRemarks('')
+    }
+    })
+  }
+
+  onSelectOrderBill(event,orderNumber) { 
+    debugger
+    var currOrder = this.procurementData.find(o=>o.orderNumber == orderNumber)
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event) => { // called once readAsDataURL is completed
+       
+        currOrder.orderBill = event.target['result'];
+        currOrder.orderBill = currOrder.orderBill.replace("data:application/pdf;base64,","")
+        // this.resMaterial.coaMaster = event.target["result"]
+        // this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
+      }
+    }
+
+    this.procurementservice.updatePdfFile(currOrder).subscribe(data=>{
+      if(data){
+        this.toastr.success("קובץ הועלה בהצלחה !")
+      }
+    })
+  }
+
+  onSelectSwift(event,orderNumber) { 
+    debugger
+    var currOrder = this.procurementData.find(o=>o.orderNumber == orderNumber)
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event) => { // called once readAsDataURL is completed
+       
+        currOrder.orderBill = event.target['result'];
+        currOrder.orderBill = currOrder.orderBill.replace("data:application/pdf;base64,","")
+        // this.resMaterial.coaMaster = event.target["result"]
+        // this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
+      }
+    }
+
+    this.procurementservice.updatePdfFile(currOrder).subscribe(data=>{
+      if(data){
+      this.toastr.success("קובץ הועלה בהצלחה !")
+      }
+    })
+  }
+
+  changeStatus(ev,orderNumber){
+    var status = ev.target.value;
+    if (confirm("האם לעדכן סטטוס  ?")) {
+      this.procurementservice.changeStatus(status,orderNumber).subscribe(data => {
+        if (data) {
+          this.procurementData = data;
+          this.toastr.success("סטטוס עודכן בהצלחה !")
+        } else {
+          this.toastr.error('error')
+        }
+      })
+    }
+  }
 
   changeStatusToDone(purchase) {
     debugger;

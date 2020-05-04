@@ -151,6 +151,10 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/cancelOrderByNumber';
     return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
   }
+  updatePdfFile(order):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/updatePdfFile';
+    return this.http.post(url, JSON.stringify({order}), this.options).pipe(map(res=>res.json()));
+  }
   updateComponentPurchase(purchase):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/updateComponentPurchase';
     return this.http.post(url, JSON.stringify({purchase}), this.options).pipe(map(res=>res.json()));
@@ -159,9 +163,17 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/updateRecommendRemarks';
     return this.http.post(url, JSON.stringify({purchase}), this.options).pipe(map(res=>res.json()));
   }
+  updatePurchaseRemarks(purchase):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/updatePurchaseRemarks';
+    return this.http.post(url, JSON.stringify({purchase}), this.options).pipe(map(res=>res.json()));
+  }
   orderSentToClient(orderNumber):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/orderSentToClient';
     return this.http.post(url, JSON.stringify({orderNumber}), this.options).pipe(map(res=>res.json()));
+  }
+  changeStatus(status,orderNumber):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/changeStatus';
+    return this.http.post(url, JSON.stringify({status,orderNumber}), this.options).pipe(map(res=>res.json()));
   }
   clientGotTheOrder(orderNumber):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/clientGotTheOrder';

@@ -241,7 +241,8 @@
                         <table>
                           <tbody>
                             <tr *ngFor="let arrival of comp.purchaseArrival">
-                              <td style="font-size: 10px;padding:0">{{arrival.arrivalDate | date :'dd/MM/yyyy'}}</td> | &nbsp;
+                              <td style="font-size: 10px;padding:0">{{arrival.arrivalDate | date :'dd/MM/yyyy'}}</td> |
+                              &nbsp;
                               <td style="font-size: 10px;padding:0">{{arrival.arrivedAmount}}</td>
                             </tr>
                           </tbody>
@@ -1320,7 +1321,7 @@
           </div>
           <div class="col-2 fixNoaStupidStuff"></div>
         </div>
-        
+
         <div dir="rtl" style="padding: 0rem;" class="row fixNoaStupidStuff text-center">
           <div class="col-1"></div>
           <div class="col-2 fixNoaStupidStuff">
@@ -1349,19 +1350,19 @@
             <!-- <label class="form-control">COA</label>
           <label class="form-control">MSDS</label>
           <label class="form-control">הערות</label> -->
-          <button class="btn btn-success form-control"><i (click)="addComposition()" class="fa fa-plus"></i></button>
-          <label class="form-control">הרכב</label> 
+            <button class="btn btn-success form-control"><i (click)="addComposition()" class="fa fa-plus"></i></button>
+            <label class="form-control">הרכב</label>
           </div>
           <div class="col-2">
-          <input [(ngModel)]="compositionName" class='form-control'>
-          <table class="table table-hover table-striped">
-            <tbody>
-              <tr *ngFor="let comp of resMaterial.composition">
-                <td>{{comp.compName}}</td>
-                <td>{{comp.compPercentage}}</td>
-              </tr>
-            </tbody>
-          </table>
+            <input [(ngModel)]="compositionName" class='form-control'>
+            <table class="table table-hover table-striped">
+              <tbody>
+                <tr *ngFor="let comp of resMaterial.composition">
+                  <td>{{comp.compName}}</td>
+                  <td>{{comp.compPercentage}}</td>
+                </tr>
+              </tbody>
+            </table>
             <!-- <button class="btn btn-success form-control" (click)="coaMasterInput.click()"><i class="fa fa-upload"
                 aria-hidden="true"></i></button>
             <button class="btn btn-success form-control" (click)="msdsInput.click()"><i class="fa fa-upload"
@@ -1389,28 +1390,55 @@
         <div class="row fixNoaStupidStuff">
           <div class="col-10 fixNoaStupidStuff">
             <input class="form-control" [(ngModel)]="resMaterial.riskSentence" type='text'>
-           
+
           </div>
           <div class="col-2 fixNoaStupidStuff">
             <label class="form-control">משפטי סיכון</label>
           </div>
         </div>
 
-        <div class="row text-center fixNoaStupidStuff">
-          <div class="col-4 fixNoaStupidStuff">
-            <button class="btn btn-success form-control" id="newCbtn" (click)="writeNewMaterial()">הקם
-              מוצר</button>
+        <div class="row fixNoaStupidStuff mt-3">
+          <div class="col-2"></div>
+          <div class="col-2">
+            <label class="form-control">COA Master</label>
+            <label class="form-control">MSDS</label>
           </div>
-          <div class="col-4 fixNoaStupidStuff">
-            <button class="btn btn-success form-control" id="updateDataBtn" (click)="editMaterialItemDetails()"
-              *ngIf="newItem!='new'">עדכן
-              מידע</button>
+          <div class="col-2">
+            <button class="btn btn-success form-control" (click)="coaMasterInput.click()"><i class="fa fa-upload"
+                aria-hidden="true"></i></button>
+            <button class="btn btn-success form-control" (click)="msdsInput.click()"><i class="fa fa-upload"
+                aria-hidden="true"></i></button>
+              </div>
+            <div class="col-3">
+
+               <a style="display:block" target="_blank" [href]="linkDownload"><img style="height: 30px; width:30px;"
+                src="../../../../assets/images/pdf.png" alt="PDF" /></a>
+            <input class="form-control" #coaMasterInput style="display:none" type="file"
+              (change)="onSelectCoaMaster($event)">
+
+
+            <a style="display:block" target="_blank" [href]="linkDownload"> <img style="height: 30px; width:30px;"
+                src="../../../../assets/images/pdf.png" alt="PDF" /></a>
+            <input class="form-control" #msdsInput style="display:none" type="file" (change)="onSelectMsds($event)">
+            </div>
+            <div class="col-3"></div>
           </div>
-          <div class="col-4 fixNoaStupidStuff">
-            <button class="btn btn-success form-control" id="newCbtn" (click)="clearFields()">Clear</button>
+
+          <div class="row text-center fixNoaStupidStuff">
+            <div class="col-4 fixNoaStupidStuff">
+              <button class="btn btn-success form-control" id="newCbtn" (click)="writeNewMaterial()">הקם
+                מוצר</button>
+            </div>
+            <div class="col-4 fixNoaStupidStuff">
+              <button class="btn btn-success form-control" id="updateDataBtn" (click)="editMaterialItemDetails()"
+                *ngIf="newItem!='new'">עדכן
+                מידע</button>
+            </div>
+            <div class="col-4 fixNoaStupidStuff">
+              <button class="btn btn-success form-control" id="newCbtn" (click)="clearFields()">Clear</button>
+            </div>
           </div>
         </div>
-      </div>
     </mat-tab>
     <mat-tab label="Storage/Cooking">
       <div class="container-fluid">
@@ -1423,7 +1451,7 @@
             <h5 class="text-success">מחסן/מחלקת בישול</h5>
           </div>
           <div class="col-4 fixNoaStupidStuff">
-            
+
           </div>
 
         </div>
@@ -1595,51 +1623,60 @@
               <tbody>
 
                 <tr *ngFor="let supplier of resMaterial.alternativeSuppliers">
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.supplierName}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.supplierName}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
                   </td>
 
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.manufacturer}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.manufacturer}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.manufacturer" class="form-control" #manufacturer>
                   </td>
 
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.alterName}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.alterName}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.alterName" class="form-control" #alterName>
                   </td>
 
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.alternativeMaterial}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.alternativeMaterial}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.alternativeMaterial" class="form-control" #alternativeMaterial>
                   </td>
 
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.price}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.price}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.price" class="form-control" #price>
                   </td>
 
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.coin}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.coin}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.coin" class="form-control" #coin>
                   </td>
 
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.packageWeight}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.packageWeight}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.packageWeight" class="form-control" #packageWeight>
                   </td>
 
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.priceLoading}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.priceLoading}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.priceLoading" class="form-control" #priceLoading>
                   </td>
 
-                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">{{supplier.coinLoading}}</td>
+                  <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    {{supplier.coinLoading}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
                   </td>
-                  
+
                 </tr>
 
               </tbody>
@@ -1954,7 +1991,7 @@
                       <option value="regular">רגיל</option>
                       <option value="cooling">איחסון בקירור</option>
                       <option value="blockedByType">חסום לפי סוג חומר</option>
-        
+
                     </select>
                   </td>
                 </tr>
