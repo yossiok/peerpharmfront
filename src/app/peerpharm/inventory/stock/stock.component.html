@@ -1520,6 +1520,22 @@
           </div>
           <div class="col-1"></div>
         </div>
+
+        <div class="row text-center fixNoaStupidStuff">
+          <div class="col-4 fixNoaStupidStuff">
+            <button class="btn btn-success form-control" id="newCbtn" (click)="writeNewMaterial()">הקם
+              מוצר</button>
+          </div>
+          <div class="col-4 fixNoaStupidStuff">
+            <button class="btn btn-success form-control" id="updateDataBtn" (click)="editMaterialItemDetails()"
+              *ngIf="newItem!='new'">עדכן
+              מידע</button>
+          </div>
+          <div class="col-4 fixNoaStupidStuff">
+            <button class="btn btn-success form-control" id="newCbtn" (click)="clearFields()">Clear</button>
+          </div>
+        </div>
+
       </div>
     </mat-tab>
     <mat-tab label="Suppliers Details">
@@ -1695,6 +1711,21 @@
 
           </div>
 
+        </div>
+
+        <div class="row text-center fixNoaStupidStuff">
+          <div class="col-4 fixNoaStupidStuff">
+            <button class="btn btn-success form-control" id="newCbtn" (click)="writeNewMaterial()">הקם
+              מוצר</button>
+          </div>
+          <div class="col-4 fixNoaStupidStuff">
+            <button class="btn btn-success form-control" id="updateDataBtn" (click)="editMaterialItemDetails()"
+              *ngIf="newItem!='new'">עדכן
+              מידע</button>
+          </div>
+          <div class="col-4 fixNoaStupidStuff">
+            <button class="btn btn-success form-control" id="newCbtn" (click)="clearFields()">Clear</button>
+          </div>
         </div>
 
       </div>

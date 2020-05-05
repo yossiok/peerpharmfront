@@ -35,8 +35,7 @@
         <div class="col-2">
          חפש לפי סטטוס <select (change)="filterByStatus($event,'purchases')" class="form-control">
             <option value="">כל ההזמנות</option>
-            <option value="sentToSupplier">נשלחה לספק</option>
-            <option value="supplierGotOrder">הזמנה הגיעה לספק</option>
+            <option value="ongoing">בטיפול</option>
             <option value="closed">הזמנה סגורה</option>
           </select>
         </div>
@@ -58,7 +57,7 @@
 
       <div id="print-section" class="row">
         <div class="col-12">
-          <table class="table table-hover">
+          <table class="table table-hover text-center">
             <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
               <tr>
                 <th><b>#</b></th>
@@ -70,8 +69,8 @@
                 <th><b>Arrival Date</b></th>
                 <th><b>Remarks</b></th>
                 <th><b>Current Status</b></th>
-                <th><b>Change</b></th>
-                <th><b>Close Order</b></th>
+                <th ><b>Change</b></th>
+                <th ><b>Close Order</b></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -133,7 +132,7 @@
                 </select>
               </td>
                   
-                <td><button class="btn btn-info" (click)="printOrder(line)">Print Order</button></td>
+                <td><button class="btn btn-info" (click)="printOrder(line)">Print</button></td>
                 <td><button class="btn btn-info form-control" (click)="orderInput.click()">O</button></td>
                 <!-- <td><button class="btn btn-info" (click)="sendOrder(line)">Send Order</button></td> -->
               <td>   <a style="display:block" target="_blank" (click)="setLinkDownlowd(line._id)" [href]="linkDownload"><img style="height: 30px; width:30px;"
@@ -411,6 +410,28 @@
   </ngb-tab>
 </ngb-tabset>
 
+
+<div *ngIf="showInfoModal == true" style="top:150px" class="container border border-info bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
+  <div class="row">
+    <div class="col-12">
+      <h3>הוסף צפי תאריך / כמות ששולמה</h3>
+    </div>
+  </div>
+    <div class="row">
+
+      <div class="col-2"></div>
+      <div class="col-4">
+      <input type="text" class="form-control" [(ngModel)]="infoToStatus">
+      </div>
+      <div class="col-4">
+        <button (click)="addMoreInfo()" class="form-control btn btn-info">Add</button>
+      </div>
+      <div class="col-2"></div>
+
+    </div>
+  
+</div>
+
 <div id="bill-section" *ngIf="bill == true" style="top:150px" class="container bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
   <div class="row mt-2">
   <div class="col-4">
@@ -456,7 +477,7 @@
 
 <div *ngIf="printBill==true" id="myModal3" class="modal3"
   style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:300px;top:160px;font-size:20px;'>
-  <div id="print-section">
+  <div id="billing-section">
     <div class="modal-content" id='modelC'>
       <div style="display: inline-block;" id="material-header" class="modal-header">
 
@@ -484,7 +505,7 @@
 
         <div class="col-4">
           <button style="border:none;background: none;margin-left:100px;font-size: 25px;" ngxPrint
-            printSectionId="print-section"
+            printSectionId="billing-section"
             [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
           <p style="margin-left:300px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
         </div>

@@ -434,7 +434,7 @@ export class StockComponent implements OnInit {
 
   }
   makeFileForExcelDownload() {
-    
+    debugger;
     var that = this;
     var arr: any[] = []
     return new Promise(function (resolve, reject) {
@@ -467,14 +467,18 @@ export class StockComponent implements OnInit {
         resolve(arr);
       } else if (that.stockType == 'material') {
         for (let i = 0; i < that.components.length; i++) {
+        for (let j = 0; j < that.components[i].alternativeSuppliers.length; j++) {
           line = {
             'מספר פריט': that.components[i].componentN,
             'שם החו"ג': that.components[i].componentName,
             'כמות ': that.components[i].amount,
+            'מחיר ': that.components[i].alternativeSuppliers[j].price,
+            'מחיר 2': that.components[i].price,
            
           }
           arr.push(line)
         }
+      }
         resolve(arr);
       }
     });
@@ -1721,35 +1725,48 @@ export class StockComponent implements OnInit {
       actualMlCapacity: "",
       unitOfMeasure: "",
       group: "",
-      subGroup: "",
       subGroup2: "",
-      suplierName: "",
+      alternativeSuppliers:[],
       status: "",
       threatment: "",
       monthTillExp: "",
       monthAvgPcs: "",
       msds: "",
       coaMaster: "",
-      alternativeMaterial:"",
+      function:'',
+      measurement:"",
       notInStock:false,
       inciName:"",
       casNumber:"",
-      manufacturer:"",
+      composition:[],
       umNumber:"",
       imerCode:"",
       imerTreatment:"",
       allowQtyInStock:"",
       expiredQty:"",
+      permissionDangerMaterials:"",
       storageTemp:"",
       storageDirections:"",
-      permissionDangerMaterials:"",
       frameQuantity:"",
       frameSupplier:"",
-      riskSentence:'',
-      stateOfMatter:'',
-      dangerMaterials:'',
+      location:"",
+      quantityInStock:"",
+      mixedMaterial:[]
   
   
+    }
+
+    this.supplier = {
+      supplierName:'',
+      price:"",
+      coin:"",
+      coinLoading:"",
+      priceLoading:"",
+      manufacturer:"",
+      alternativeMaterial:"",
+      alterName:"",
+      subGroup: "",
+      packageWeight:"",
     }
   }
   onSelectMsds(event) { 

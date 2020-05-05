@@ -106,7 +106,7 @@ export class StoragesComponent implements OnInit {
     }
   }
 
-  clickIfArrived(reqId,itemNumber){
+  clickIfArrived(reqId,itemNumber,orders){
     debugger;
     // if(this.user.userName == undefined) {
     //   this.getUser();
@@ -115,7 +115,8 @@ export class StoragesComponent implements OnInit {
       if(this.user.userName == 'tomer' || this.user.userName == 'SHARK'  || this.user.userName == 'sima'){
         var obj = {
           itemN:itemNumber,
-          requestId:reqId
+          requestId:reqId,
+          orders:orders
         }
         this.inventoryReqService.checkArrived(obj).subscribe(data=>{
           if(data){

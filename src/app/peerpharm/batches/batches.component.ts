@@ -94,11 +94,14 @@ export class BatchesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUserInfo();
+   
+  
     this.getAllBatchesYear();
     this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
+    this.getUserInfo();
   }
+
 
   addBatch() {
 
@@ -206,13 +209,16 @@ export class BatchesComponent implements OnInit {
 
 
   openTableValues(specValues, itemNumber) {
-    debugger;
-    this.modalService.open(specValues, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-    this.loadSpecTable(itemNumber)
+
+      debugger;
+      this.modalService.open(specValues, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+      this.loadSpecTable(itemNumber)
+    
+ 
   }
 
 
@@ -417,12 +423,12 @@ export class BatchesComponent implements OnInit {
       date: this.lastValueUpdate,
       user: this.userValueUpdate
     }
-    this.item.phValue = this.phValue.nativeElement.value
-    this.item.viscosityValue = this.viscosityValue.nativeElement.value
-    this.item.colorValue = this.colorValue.nativeElement.value
-    this.item.textureValue =this.textureValue.nativeElement.value
-    this.item.scentValue = this.scentValue.nativeElement.value
-    this.item.densityValue = this.densityValue.nativeElement.value
+    this.item.phValue = this.phValue.nativeElement.value;
+    this.item.viscosityValue = this.viscosityValue.nativeElement.value;
+    this.item.colorValue = this.colorValue.nativeElement.value;
+    this.item.textureValue =this.textureValue.nativeElement.value;
+    this.item.scentValue = this.scentValue.nativeElement.value;
+    this.item.densityValue = this.densityValue.nativeElement.value;
     this.item.lastUpdatedValues.push(obj)
 
     this.itemService.updateItemValues(this.item).subscribe(data => {
@@ -463,6 +469,7 @@ export class BatchesComponent implements OnInit {
   }
 
   async getUserInfo() {
+    debugger
     await this.authService.userEventEmitter.subscribe(user => {
       this.user = user;
       this.userValueUpdate = user.userName
