@@ -46,6 +46,11 @@ export class SuppliersService {
     let url = this.baseUrl + "supplier/add";
     return this.http.post(url, JSON.stringify(supplierObj), this.options).pipe(map(res => res.json()))
   }
+  addToSupplierPriceList(supplierObj){
+    
+    let url = this.baseUrl + "supplier/addToSupplierPriceList";
+    return this.http.post(url, JSON.stringify(supplierObj), this.options).pipe(map(res => res.json()))
+  }
   
   updateCurrSupplier(supplierObj){
     

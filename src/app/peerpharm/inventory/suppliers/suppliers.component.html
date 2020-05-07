@@ -50,7 +50,7 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
                   <th>Remarks</th>
                 </tr>
               </thead>
-              <tbody class="text-center">
+              <tbody class="text-center text-dark">
                 <tr *ngFor="let supplier of suppliers; let i=index;">
                   <td>{{i}}</td>
                   <td style="text-decoration: underline;cursor: pointer;" (click)="openData(supplier.suplierNumber)">{{supplier.suplierNumber}}</td>
@@ -124,6 +124,51 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
   <div class="col-12">
     <button (click)="updateCurrSupplier()" class="btn w-50 btn-info form-control">Update</button>
   </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-12">
+    <table class="table table-hover table-striped">
+      <thead class="bg-info text-white">
+        <tr>
+          <th>מספר פריט</th>
+          <th>שם פריט</th>
+          <th>מחיר</th>
+        </tr>
+      </thead>
+      <tbody>
+      
+        <tr *ngFor="let item of currentSupplier.priceList" >
+          <td>{{item.itemNumber}}</td>
+          <td>{{item.itemName}}</td>
+          <td>{{item.supplierPrice}}</td>
+        </tr>
+    
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-3"></div>
+  <div class="col-2">
+    <input [(ngModel)]="priceListItem.itemNumber" placeholder="Item Number" class="form-control">
+  </div>
+  <div class="col-2">
+    <input [(ngModel)]="priceListItem.itemName" placeholder="Item Name" class="form-control">
+  </div>
+  <div class="col-2">
+    <input [(ngModel)]="priceListItem.itemPrice" type="number" placeholder="Item Price" class="form-control">
+  </div>
+  <div class="col-3"></div>
+</div>
+
+<div class="row mt-2">
+  <div class='col-5'></div>
+  <div class='col-2'>
+  <button (click)="addItemToPriceList()" class="btn btn-info form-control">Add Item</button>
+  </div>
+  <div class='col-5'></div>
 </div>
 </div>
 

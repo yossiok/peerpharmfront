@@ -128,6 +128,11 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/sendOrderToSupplier';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
+  saveNewInvoice(supInvoiceNum,supplierNumber,status,invoice):Observable<any>{
+    
+    let url = this.baseUrl + 'procurementOrderController/saveNewInvoice';
+    return this.http.post(url, JSON.stringify({supInvoiceNumber:supInvoiceNum,supplierNumber:supplierNumber,status:status,invoices:invoice}), this.options).pipe(map(res=>res.json()));
+  }
   addItemToProcurement(obj):Observable<any>{
     
     let url = this.baseUrl + 'procurementOrderController/addItemToProcurement';

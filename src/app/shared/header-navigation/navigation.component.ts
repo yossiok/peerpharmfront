@@ -36,11 +36,14 @@ export class NavigationComponent implements AfterViewInit {
     ) {
       translate.addLangs(['en', 'he']);
       translate.setDefaultLang('he');
+     // debugger;
       const browserLang = translate.getBrowserLang();
-      translate.use(browserLang.match(/en|he/) ? browserLang : 'he');
+      // translate.use(browserLang.match(/en|he/) ? browserLang : 'he');
+      translate.use('he');
     
      }
   ngOnInit() {
+    debugger;
     this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
     this.authService.userEventEmitter.subscribe(data => {
       

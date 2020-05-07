@@ -45,6 +45,13 @@ export class SuppliersComponent implements OnInit {
     remarks:'',
     alternativeSupplier:this.alterSupplierArray,
     items:[],
+    priceList:[]
+  }
+
+  priceListItem = {
+    itemNumber:'',
+    itemName:'',
+    itemPrice:''
   }
 
   supplier = {
@@ -244,7 +251,7 @@ setType(type) {
   searchSupplier(supplierName){
 debugger;
     var word = supplierName
-    if(word != ""){
+    if(word != "" && word != undefined){
       this.suppliers = this.suppliersCopy.filter(s=>s.suplierName == supplierName);
       this.openData(this.suppliers[0].suplierNumber)
     }
@@ -320,6 +327,21 @@ debugger;
     }
   }
 
+  addItemToPriceList(){
+    debugger;
+    if(this.priceListItem.itemName != '' && this.priceListItem.itemNumber != '' && this.priceListItem.itemPrice != '' ){
+      this.currentSupplier.priceList.push(this.priceListItem)
+      this.priceListItem = {
+        itemName:'',
+        itemNumber:'',
+        itemPrice:'',
+      }
+      this.toastSrv.success('פריט נוסף בהצלחה - לא לשכוח לעדכן !')
+    } else {
+      this.toastSrv.error('אנא תמלא את כל הפרטים')
+    }
+
+  }
 
   dateChange(){
     

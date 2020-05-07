@@ -32,6 +32,7 @@ export class NewProcurementComponent implements OnInit {
   @ViewChild('measurement') measurement: ElementRef;
   @ViewChild('supplierPrice') supplierPrice: ElementRef;
   @ViewChild('supplierAmount') supplierAmount: ElementRef;
+  @ViewChild('itemRemarks') itemRemarks: ElementRef;
 
   newItem = {
 
@@ -45,7 +46,6 @@ export class NewProcurementComponent implements OnInit {
   orderNumber:'',
   itemRemarks:'',
   itemPrice:'',
-  remarks:''
 
   }
   newProcurement = {
@@ -187,7 +187,8 @@ debugger
       measurement:this.measurement.nativeElement.value,
       supplierAmount:this.supplierAmount.nativeElement.value,
       supplierPrice:this.supplierPrice.nativeElement.value,
-      itemPrice:Number(this.supplierPrice.nativeElement.value)*Number(this.supplierAmount.nativeElement.value)
+      itemPrice:Number(this.supplierPrice.nativeElement.value)*Number(this.supplierAmount.nativeElement.value),
+      itemRemarks:this.itemRemarks.nativeElement.value
     }
 
     
@@ -253,30 +254,53 @@ debugger
   }
 
   sendNewProc() { 
-    
-    debugger;
-    if(confirm("האם להקים הזמנה זו ?")) {
-      this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
-        if(data) {
-          this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
-          this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data=>{
-            if(data) {
-              this.toastr.success("כמות זו ירדה מכמות המסגרת")
-            }
-    
-          })
-          this.newProcurement.validDate = ""
-         
-          this.newProcurement.supplierName = ""
-          this.newProcurement.supplierNumber = ""
-          this.newProcurement.item = [];
-          this.newProcurement.comaxNumber = ''
-    
-          
-        }
-       })
+    if(this.newProcurement.comaxNumber = ''){
+      this.toastr.error('חובה למלא מספר קומקס')
+    } else {
+      debugger;
+      if(confirm("האם להקים הזמנה זו ?")) {
+        this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
+          if(data) {
+            this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
+            this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data=>{
+              if(data) {
+                this.toastr.success("כמות זו ירדה מכמות המסגרת")
+              }
+      
+            })
+            this.newProcurement.validDate = ""
+           
+            this.newProcurement.supplierName = ""
+            this.newProcurement.supplierNumber = ""
+            this.newProcurement.item = [];
+            this.newProcurement.comaxNumber = ''
+      
+            
+          }
+         })
+      }
     }
+ 
 
+  }
+
+  addToSupplierPriceList(){
+    debugger;
+      if(confirm('האם להוסיף למחירון ספק ?')){
+        var obj = {
+          itemName:this.newItem.itemName,
+          itemNumber:this.newItem.itemNumber,
+          supplierPrice:this.newItem.supplierPrice,
+          supplierNumber:this.newProcurement.supplierNumber
+        }
+    
+        this.supplierService.addToSupplierPriceList(obj).subscribe(data=>{
+          if(data){
+            this.toastr.success('הוסף למחירון ספק בהצלחה !')
+          }
+        })
+      }
+ 
   }
 
  formatDate(date) {

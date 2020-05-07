@@ -138,7 +138,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Item Remarks</label>
-                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.remarks"
+                    <input type="text" #itemRemarks [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.remarks"
                       class="form-control">
                   </div>
                 </div>
@@ -193,6 +193,12 @@
                     <label class="control-label">Supplier Price:</label>
                     <input #supplierPrice [ngModelOptions]="{standalone: true}" [(ngModel)]="newItem.supplierPrice"
                       class="form-control" type="number" />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label">האם להוסיף למחירון ספק ?</label>
+                    <i (click)="addToSupplierPriceList()" class="fa fa-check border border-info text-info form-control"></i>
                   </div>
                 </div>
 

@@ -152,9 +152,11 @@
             <ng-container *ngFor="let sidebarnavSubItem of sidebarnavItem.submenu">
                 <a class="dropdown-item"  [routerLink]="sidebarnavSubItem.submenu.length > 0 ? null : [sidebarnavSubItem.path]"
                     [routerLinkActive]="sidebarnavSubItem.submenu.length > 0 ? '' : 'router-link-active'" [ngClass]="[sidebarnavSubItem.class]"
-                    *ngIf="!sidebarnavSubItem.extralink;" (click)="addActiveClass(sidebarnavSubItem.title)">{{sidebarnavSubItem.title}}</a>
+                    *ngIf="!sidebarnavSubItem.extralink;" (click)="addActiveClass(sidebarnavSubItem.title)">{{sidebarnavSubItem.title | translate }}</a>
             </ng-container>
         </div>
+    <!--    <h1>{{ 'test' | translate }}</h1>
+        <h1>{{ 'menu.Orders' | translate }}</h1>-->
     </li>
    
 <!-- ============================================================== -->

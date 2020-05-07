@@ -36,6 +36,7 @@ export class ProcurementOrdersComponent implements OnInit {
   procurementArrivalsCopy: any[] = []
   currentOrder: any[];
   currentItems: any[];
+  certificate: any[];
   allSuppliers: any[];
   billToPrint: any[];
   currentSupplier: object;
@@ -45,11 +46,12 @@ export class ProcurementOrdersComponent implements OnInit {
   EditRowComax: any = "";
   requestNum: any = "";
   user: any;
+  priceAlert: Boolean = false;
   currStatus: any;
   currOrderNumber: any;
   infoToStatus: any;
   referNumberForReciept: any;
-
+  certifTotalPrice: number = 0;
   totalAmount: any;
   itemAmounts: any;
   totalPrice: any;
@@ -79,6 +81,13 @@ export class ProcurementOrdersComponent implements OnInit {
     arrivedAmount: "",
     orderId: "",
     itemNumber: "",
+  }
+
+  newBill = {
+    billNumber: '',
+    supplierNumber: '',
+    certificateNumbers: '',
+    totalPrice: '',
   }
 
   @ViewChild('arrivedAmount') arrivedAmount: ElementRef;
@@ -210,8 +219,67 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-  getAllProcurementOrders() {
+  createCertifForBill() {
     debugger;
+    this.certificate = [];
+    this.newBill
+    var purchases = this.procurementData.filter(p => p.supplierNumber == this.newBill.supplierNumber)
+    purchases
+
+    var obj = {
+      itemNumber: '',
+      itemName: '',
+      quantity: '',
+      price: 0,
+      arrivalDate: '',
+    }
+
+    var tempArr = []
+
+    for (let i = 0; i < purchases.length; i++) {
+      for (let j = 0; j < purchases[i].item.length; j++) {
+        if (purchases[i].item[j].arrivals == undefined) purchases[i].item[j].arrivals = []
+        for (let k = 0; k < purchases[i].item[j].arrivals.length; k++) {
+
+          if (purchases[i].item[j].arrivals[k].referenceNumber == this.newBill.certificateNumbers) {
+            obj.itemNumber = purchases[i].item[j].itemNumber
+            obj.itemName = purchases[i].item[j].itemName
+            obj.arrivalDate = purchases[i].item[j].arrivals[k].arrivalDate
+            obj.quantity = purchases[i].item[j].arrivals[k].arrivedAmount
+            var price = Number(purchases[i].item[j].supplierPrice) * Number(purchases[i].item[j].arrivals[k].arrivedAmount)
+            obj.price = Number(price.toFixed(2))
+            this.certifTotalPrice += obj.price
+            var objToPush = { ...obj }
+            tempArr.push(objToPush)
+          }
+
+        }
+
+      }
+
+    }
+    if (this.certifTotalPrice != Number(this.newBill.totalPrice)) {
+      this.priceAlert = true;
+    }
+    this.certificate = tempArr
+  }
+
+  saveNewInvoice(status) {
+    debugger;
+    var supInvoiceNum = this.newBill.billNumber
+    var supplierNumber = this.newBill.supplierNumber
+    this.procurementservice.saveNewInvoice(supInvoiceNum,supplierNumber,status, this.certificate).subscribe(data => {
+      debugger;
+      if (data) {
+      
+      }
+    })
+
+
+  }
+
+  getAllProcurementOrders() {
+debugger;
     this.procurementservice.getProcurementOrder().subscribe(res => {
 
       for (let i = 0; i < res.length; i++) {
@@ -259,17 +327,17 @@ export class ProcurementOrdersComponent implements OnInit {
 
         if (res[i].status == 'orderPayedToSupplier' || res[i].status.startsWith('orderPayedToSupplier')) {
           // res[i].status = 'שולם לספק'
-          res[i].status = 'שולם לספק' +' '+res[i].status.substr(res[i].status.indexOf(" ") + 1);
+          res[i].status = 'שולם לספק' + ' ' + res[i].status.substr(res[i].status.indexOf(" ") + 1);
         }
 
         if (res[i].status == 'timeToProduction' || res[i].status.startsWith('timeToProduction')) {
           // res[i].status = 'צפי ייצור'
-        
-          res[i].status = 'צפי ייצור' +' '+res[i].status.substr(res[i].status.indexOf(" ") + 1);
+
+          res[i].status = 'צפי ייצור' + ' ' + res[i].status.substr(res[i].status.indexOf(" ") + 1);
         }
         if (res[i].status == 'expectedArrival' || res[i].status.startsWith('expectedArrival')) {
           // res[i].status = 'צפי הגעה'
-          res[i].status = 'צפי הגעה' +' '+res[i].status.substr(res[i].status.indexOf(" ") + 1);
+          res[i].status = 'צפי הגעה' + ' ' + res[i].status.substr(res[i].status.indexOf(" ") + 1);
         }
         if (res[i].status == 'open') {
           res[i].status = 'הזמנה פתוחה'
@@ -337,7 +405,7 @@ export class ProcurementOrdersComponent implements OnInit {
               this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
               break
             case 'open':
-              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status != 'closed' && p.status != 'hold')
+              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
               break
 
           }
@@ -425,12 +493,12 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   onSelectOrderBill(event, orderNumber) {
-    debugger
+    debugger;
     var currOrder = this.procurementData.find(o => o.orderNumber == orderNumber)
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
 
       reader.onload = (event) => { // called once readAsDataURL is completed
 
@@ -438,14 +506,18 @@ export class ProcurementOrdersComponent implements OnInit {
         currOrder.orderBill = currOrder.orderBill.replace("data:application/pdf;base64,", "")
         // this.resMaterial.coaMaster = event.target["result"]
         // this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
+
+
+        this.procurementservice.updatePdfFile(currOrder).subscribe(data => {
+          if (data) {
+            this.toastr.success("קובץ הועלה בהצלחה !")
+          }
+        })
       }
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
     }
 
-    this.procurementservice.updatePdfFile(currOrder).subscribe(data => {
-      if (data) {
-        this.toastr.success("קובץ הועלה בהצלחה !")
-      }
-    })
   }
 
   onSelectSwift(event, orderNumber) {
@@ -454,22 +526,25 @@ export class ProcurementOrdersComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
-
       reader.onload = (event) => { // called once readAsDataURL is completed
 
         currOrder.orderBill = event.target['result'];
-        currOrder.orderBill = currOrder.orderBill.replace("data:application/pdf;base64,", "")
+        currOrder.orderBill = currOrder.orderBill.replace("data:application/pdf;base64,", "");
         // this.resMaterial.coaMaster = event.target["result"]
         // this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
+        this.procurementservice.updatePdfFile(currOrder).subscribe(data => {
+          if (data) {
+            this.toastr.success("קובץ הועלה בהצלחה !")
+          }
+        });
       }
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+
     }
 
-    this.procurementservice.updatePdfFile(currOrder).subscribe(data => {
-      if (data) {
-        this.toastr.success("קובץ הועלה בהצלחה !")
-      }
-    })
+
   }
 
   changeStatus(ev, orderNumber) {
@@ -496,7 +571,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   addMoreInfo() {
 
-    var status = this.currStatus+' '+this.infoToStatus
+    var status = this.currStatus + ' ' + this.infoToStatus
     var orderNumber = this.currOrderNumber
     this.procurementservice.changeStatus(status, orderNumber).subscribe(data => {
       if (data) {
@@ -812,6 +887,9 @@ export class ProcurementOrdersComponent implements OnInit {
         break;
       case 'purchaseArrivals':
         this.excelService.exportAsExcelFile(this.procurementArrivals, 'data');
+        break;
+      case 'billsToCheck':
+        this.excelService.exportAsExcelFile(this.certificate, 'data');
         break;
       default:
 
