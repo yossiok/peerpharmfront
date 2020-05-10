@@ -55,6 +55,24 @@
         </div>
       </div>
 
+      <div *ngIf="showLoader" class="row text-center mt-4 mb-4">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <h2 class="peerLoader mx-auto my-auto">
+            <span>P</span>
+            <span>E</span>
+            <span>E</span>
+            <span>R</span>
+            <span>P</span>
+            <span>H</span>
+            <span>A</span>
+            <span>R</span>
+            <span>M</span>
+          </h2>
+        </div>
+        <div class="col-4"></div>
+      </div>
+
       <div id="print-section" class="row">
         <div class="col-12">
           <table class="table table-hover text-center">
@@ -78,6 +96,7 @@
                 <th></th>
               </tr>
             </thead>
+
             <tbody id="table_body">
               <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"
                 *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
@@ -409,13 +428,13 @@
     </ng-template>
   </ngb-tab>
 
-  <ngb-tab title="Bills">
+  <ngb-tab title="Certificate Maker">
     <ng-template ngbTabContent>
       <div class="container-fluid text-center">
 
         <div class="row">
           <div class="col-12">
-            <h1 class="text-info">חשבוניות</h1>
+            <h1 class="text-info">תעודות</h1>
           </div> 
         </div>
 
@@ -436,10 +455,15 @@
 
         <div class="row mt-3">
           <div class="col-3">
-            <input [(ngModel)]="newBill.billNumber" class="form-control">
+            <input [(ngModel)]="newBill.billNumber"  class="form-control">
+
           </div>
           <div class="col-3">
-            <input type="number" [(ngModel)]="newBill.supplierNumber" class="form-control">
+            <input list="suppliers" [(ngModel)]="newBill.supplierNumber" class="form-control">
+            <datalist id="suppliers">
+              <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
+              </option>
+            </datalist>
           </div>
           <div class="col-3">
             <input [(ngModel)]="newBill.certificateNumbers" class="form-control">
@@ -486,10 +510,12 @@
                   <td>{{item.itemNumber}}</td>
                   <td>{{item.itemName}}</td>
                   <td>{{item.quantity}}</td>
+                  <td>{{item.supplierPrice}}</td>
                   <td>{{item.price}}</td>
                   <td>{{item.arrivalDate}}</td>
                 </tr>
                 <tr>
+                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -522,8 +548,14 @@
 
 <div *ngIf="showInfoModal == true" style="top:150px" class="container border border-info bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
   <div class="row">
-    <div class="col-12">
+    <div class="col-4">
+     
+    </div>
+    <div class="col-4">
       <h3>הוסף צפי תאריך / כמות ששולמה</h3>
+    </div>
+    <div class="col-4">
+     <i (click)="showInfoModal = false" class="fa fa-times"></i>
     </div>
   </div>
     <div class="row">
@@ -600,8 +632,8 @@
 
 
 
-<div *ngIf="printBill==true" id="myModal3" class="modal3"
-  style='border:1px; border-radius:5px;z-index: 1;position: absolute; left:300px;top:160px;font-size:20px;'>
+<div *ngIf="printBill==true" id="myModal3" class="modal3 position-fixed"
+  style='border:1px; border-radius:5px;z-index: 1; left:300px;top:160px;font-size:20px;'>
   <div id="billing-section">
     <div class="modal-content" id='modelC'>
       <div style="display: inline-block;" id="material-header" class="modal-header">
@@ -713,10 +745,31 @@
               <td></td>
               <td></td>
               <td></td>
-              <td>{{totalAmount}}</td>
+              <td><b>{{totalAmount}}</b></td>
               <td></td>
-              <td>{{totalPrice}}{{currCoin}}</td>
+              <td dir="rtl"><b>סה"כ לפני מע"מ: {{totalPrice}}{{currCoin}}</b></td>
             </tr>
+      
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><b>{{totalAmount}}</b></td>
+              <td></td>
+              <td dir="rtl"><b>17% מע"מ: {{priceTaxes}}</b></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td dir="rtl"><b>סה"כ כולל מע"מ: {{totalPriceWithTaxes}}</b></td>
+            </tr>
+      
+            
           </tbody>
 
         </table>
@@ -754,18 +807,17 @@
   </div>
 </div>
 
-<div *ngIf="orderDetailsModal==true" id="myModal3" class="modal3"
-style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:50px;font-size:20px;'>
+<div *ngIf="orderDetailsModal==true" id="myModal3" class="modal3 rounded shadow-lg"
+style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:65px;font-size:20px;'>
 
 <div class="modal-content" id='modelC'>
   <div style="display: inline-block;" id="material-header" class="modal-header">
 
     <span class="close" id="closeId3" (click)="orderDetailsModal=false;">&times;</span>
 
+    <h3 style="color:black">Order Number: <span class="text-info">{{orderData[0].orderNumber}}</span></h3>
+
   </div>
-
-  
-
 
   <div class="container" id="material-body" class="modal-body">
     <table id="procurementItems" class="table table-striped">
@@ -782,7 +834,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:5
           <th>Reference Number</th> -->
           <th></th>
           <th></th>
-
+         
         </tr>
       </thead>
       <tbody id="table_body">
@@ -842,7 +894,8 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:5
       <td><input  class="form-control" placeholder="Item Name" [(ngModel)]="newItem.itemName" type="text"></td>
       <td><input (change)="fillMaterialName($event)" class="form-control" placeholder="Item Number" [(ngModel)]="newItem.itemNumber" type="text"></td>
       <td><input class="form-control" placeholder="Item Remarks" [(ngModel)]="newItem.remarks" type="text"></td>
-      <td><select class="form-control"  [(ngModel)]="newItem.measurement" class="form-control custom-select">
+      <td><input list="measurements" class="form-control"  [(ngModel)]="newItem.measurement" class="form-control custom-select">
+        <datalist id="measurements">
         <option value="kg">kg</option>''ג'
         <option value="liter">liter</option>
         <option value="meter">meter</option>
@@ -851,18 +904,19 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:5
         <option value="ton">טון</option>
         <option value="unit">יחידה</option>
         <option value="box">קופסא</option>
-        </select>
+      </datalist>
     </td>
     <td><input class="form-control" placeholder="Quantity" [(ngModel)]="newItem.supplierAmount" type="text"></td>
     <td>
-      <select class="form-control" [(ngModel)]="newItem.coin" class="form-control custom-select">
+      <input list="coins" class="form-control" [(ngModel)]="newItem.coin" class="form-control custom-select">
+      <datalist id="coins">
         <option value=""></option>
         <option value="usd">USD</option>
         <option value="nis">NIS</option>
         <option value="gbp">GBP</option>
         <option value="eur">EUR</option>
         <option value="yen">YEN</option>
-      </select>
+      </datalist>
     </td>
     <td><input class="form-control" placeholder="Price" [(ngModel)]="newItem.supplierPrice" type="text"></td>
     <td><button class="btn btn-info" (click)="addNewItem()">Add</button></td>

@@ -35,6 +35,7 @@ export class BatchesComponent implements OnInit {
   alowUserEditBatches: Boolean = false;
   ifConfirmed: Boolean = false;
   editValues: Boolean = false;
+  showLoader: Boolean = true;
   closeResult: any;
   batchPrint: any;
   item: any;
@@ -144,6 +145,7 @@ export class BatchesComponent implements OnInit {
           if (res.length == res.length) {
 
             this.hasMoreItemsToload = false;
+            this.showLoader = false;
           }
         }
       });
@@ -193,6 +195,7 @@ export class BatchesComponent implements OnInit {
           if (res.length == res.length) {
 
             this.hasMoreItemsToload = false;
+            this.showLoader = false;
           }
         }
       });

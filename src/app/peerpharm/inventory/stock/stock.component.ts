@@ -33,6 +33,7 @@ export class StockComponent implements OnInit {
   itemmoveBtnTitle: string = "Item Movements";
   loadingMovements: boolean = false;
   showItemDetails: boolean = true;
+  showLoader: boolean = true;
   openOrderRecommendModal: boolean = false;
   itemMovements: any = [];
   materialPurchases: any[]
@@ -88,6 +89,7 @@ export class StockComponent implements OnInit {
   buttonColor2: string = '#B8ECF1';
   buttonColor3: string = '#B8ECF1';
   buttonColor4: string = '#B8ECF1';
+  buttonColor5: string = '#B8ECF1';
   openModal: boolean = false;
   openImgModal: boolean = false;
   openAmountsModal: boolean = false;
@@ -811,7 +813,9 @@ export class StockComponent implements OnInit {
     this.inventoryService.getAllComponents().subscribe(components => {
       debugger;
       console.log(components[0]);
-
+      if(components.length > 0){
+        this.showLoader = false;
+      }
       this.inventoryService.getAllMaterialsArrivals().subscribe(data=>{
         debugger;
         data;
@@ -851,12 +855,24 @@ export class StockComponent implements OnInit {
             purchaseOrder:'',
             purchaseAmount:'',
             purchaseArrival:'',
-            purchaseStatus:''
+            purchaseStatus:'',
+            expectedArrival:''
           }
           obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
           obj.purchaseOrder = allPurchases[i].item[j].orderNumber
           obj.purchaseArrival = allPurchases[i].item[j].arrivals
           obj.purchaseStatus = allPurchases[i].status
+          obj.expectedArrival = allPurchases[i].validDate
+
+          if(obj.purchaseStatus == 'supplierGotOrder'){
+            obj.purchaseStatus = 'ספק קיבל הזמנה'
+          }
+          if(obj.purchaseStatus == 'closed'){
+            obj.purchaseStatus = 'סגור'
+          }
+          if(obj.purchaseStatus == 'open'){
+            obj.purchaseStatus = 'הזמנה פתוחה'
+          }
  
           components[k].purchaseOrders.push(obj)
         }
@@ -869,6 +885,9 @@ export class StockComponent implements OnInit {
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
+      if(this.components.length > 0){
+        this.showLoader = false;
+      }
   
   
     //   this.components.forEach(c => {
@@ -1249,31 +1268,42 @@ export class StockComponent implements OnInit {
   }
 
   setType(type) {
-
+  debugger;
     switch (type) {
       case 'component':
         this.buttonColor = "white";
         this.buttonColor2 = "#B8ECF1";
         this.buttonColor3 = "#B8ECF1";
         this.buttonColor4 = "#B8ECF1";
+        this.buttonColor5 = "#B8ECF1";
         break;
       case 'material':
         this.buttonColor = "#B8ECF1";
         this.buttonColor2 = "white";
         this.buttonColor3 = "#B8ECF1";
         this.buttonColor4 = "#B8ECF1";
+        this.buttonColor5 = "#B8ECF1";
         break;
       case 'product':
         this.buttonColor = "#B8ECF1";
         this.buttonColor2 = "#B8ECF1";
         this.buttonColor3 = "white";
         this.buttonColor4 = "#B8ECF1";
+        this.buttonColor5 = "#B8ECF1";
         break;
         case 'cartons':
           this.buttonColor = "#B8ECF1";
           this.buttonColor2 = "#B8ECF1";
           this.buttonColor3 = "#B8ECF1";
           this.buttonColor4 = "white";
+          this.buttonColor5 = "#B8ECF1";
+          break;
+        case 'sticker':
+          this.buttonColor = "#B8ECF1";
+          this.buttonColor2 = "#B8ECF1";
+          this.buttonColor3 = "#B8ECF1";
+          this.buttonColor4 = "#B8ECF1";
+          this.buttonColor5 = "white";
           break;
     }
     if (this.stockType != type) {
@@ -1282,6 +1312,8 @@ export class StockComponent implements OnInit {
     this.stockType = type;
     if(this.stockType == 'cartons'){
       this.components = this.componentsUnFiltered.filter(x => x.componentType == 'master_carton');
+    } else if (this.stockType == 'sticker'){
+      this.components = this.componentsUnFiltered.filter(x => x.componentType == 'sticker');
     } else {
       this.components = this.componentsUnFiltered.filter(x => x.itemType == type);
     }
@@ -1651,7 +1683,7 @@ export class StockComponent implements OnInit {
       this.inventoryService.addNewCmpt(this.resCmpt).subscribe(res => {
         console.log("res from front: " + res)
         if (res == "itemExist") {
-          alert("לא ניתן ליצור פריט חדש- מספר " + this.resCmpt.componentN + " פריט כבר קיים במלאי");
+          this.toastSrv.error('פריט קיים במלאי')
         } else if (res.componentN) {
           this.toastSrv.success("New stock item created");
           this.componentsUnFiltered.push(res);

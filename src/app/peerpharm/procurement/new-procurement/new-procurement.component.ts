@@ -254,9 +254,7 @@ debugger
   }
 
   sendNewProc() { 
-    if(this.newProcurement.comaxNumber = ''){
-      this.toastr.error('חובה למלא מספר קומקס')
-    } else {
+  
       debugger;
       if(confirm("האם להקים הזמנה זו ?")) {
         this.procurementService.addNewProcurement(this.newProcurement).subscribe(data=>{
@@ -279,9 +277,7 @@ debugger
           }
          })
       }
-    }
- 
-
+    
   }
 
   addToSupplierPriceList(){

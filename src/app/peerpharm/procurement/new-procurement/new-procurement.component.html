@@ -92,7 +92,7 @@
                   <div class="form-group">
                     <label class="control-label">Item</label>
                     <input #itemNumber [(ngModel)]="newItem.itemNumber" [ngModelOptions]="{standalone: true}"
-                      type="number" id="firstName" class="form-control" placeholder=""
+                      type="text" id="firstName" class="form-control" placeholder=""
                       (change)="findMaterialByNumber()" />
                   </div>
                 </div>
@@ -121,8 +121,8 @@
                 <div class="col-md-6">
                   <div class="form-group has-danger">
                     <label class="control-label">Name</label>
-                    <input #itemName (change)="fillMaterialNumber($event)" [(ngModel)]="newItem.itemName"
-                      [ngModelOptions]="{standalone: true}" id="lastName" class="form-control form-control-danger">
+                    <!-- <input #itemName (change)="fillMaterialNumber($event)" [(ngModel)]="newItem.itemName"
+                      [ngModelOptions]="{standalone: true}"  class="form-control form-control-danger"> -->
 
                     <input type="text" #itemName (change)="fillMaterialNumber($event)" [(ngModel)]="newItem.itemName"
                       [ngModelOptions]="{standalone: true}" class="form-control form-control-danger" list="stock">

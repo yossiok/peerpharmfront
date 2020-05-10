@@ -27,6 +27,7 @@ export class ProcurementOrdersComponent implements OnInit {
   allMaterials: any[];
   printBill: boolean = false;
   orderDetailsModal: boolean = false;
+  showLoader: boolean = true;
   showInfoModal: boolean = false;
   editArrivalModal: boolean = false;
   bill: boolean = false;
@@ -53,8 +54,10 @@ export class ProcurementOrdersComponent implements OnInit {
   referNumberForReciept: any;
   certifTotalPrice: number = 0;
   totalAmount: any;
+  priceTaxes: any;
   itemAmounts: any;
   totalPrice: any;
+  totalPriceWithTaxes:any;
   currCoin: any;
   importantRemarks: any;
   orderDate: any;
@@ -232,6 +235,7 @@ export class ProcurementOrdersComponent implements OnInit {
       quantity: '',
       price: 0,
       arrivalDate: '',
+      supplierPrice:''
     }
 
     var tempArr = []
@@ -246,6 +250,7 @@ export class ProcurementOrdersComponent implements OnInit {
             obj.itemName = purchases[i].item[j].itemName
             obj.arrivalDate = purchases[i].item[j].arrivals[k].arrivalDate
             obj.quantity = purchases[i].item[j].arrivals[k].arrivedAmount
+            obj.supplierPrice = purchases[i].item[j].supplierPrice
             var price = Number(purchases[i].item[j].supplierPrice) * Number(purchases[i].item[j].arrivals[k].arrivedAmount)
             obj.price = Number(price.toFixed(2))
             this.certifTotalPrice += obj.price
@@ -345,6 +350,9 @@ debugger;
 
       }
       this.procurementData = res;
+      if(this.procurementData.length > 0){
+      this.showLoader = false;
+      }
 
       this.procurementDataCopy = res
 
@@ -577,6 +585,7 @@ debugger;
       if (data) {
         this.getAllProcurementOrders();
         this.toastr.success("סטטוס עודכן בהצלחה !")
+        this.showInfoModal = false;
       } else {
         this.toastr.error('error')
       }
@@ -645,19 +654,28 @@ debugger;
     var coin = "";
 
     for (let i = 0; i < this.currentItems.length; i++) {
+
+      if(this.currentItems[i].itemPrice == 0) this.currentItems[i].itemPrice = Number(this.currentItems[i].supplierAmount)*Number(this.currentItems[i].supplierPrice)
       total = total + Number(this.currentItems[i].supplierAmount)
       totalP = totalP + Number(this.currentItems[i].itemPrice)
       coin = this.currentItems[i].coin
 
     }
+    
 
     this.importantRemarks = line.remarks
-
-
+    
+    
     var num = this.formatNumber(total)
     var numTwo = this.formatNumber(totalP)
+    var numThree = this.formatNumber(totalP*17/100);
+  
     this.totalAmount = num
     this.totalPrice = numTwo
+    this.priceTaxes = numThree
+    var combined = ((totalP*17/100) + totalP)
+    var numFour = this.formatNumber(combined)
+    this.totalPriceWithTaxes = numFour
 
     this.currCoin = coin
     this.orderDate = line.outDate.slice(0, 10)

@@ -17,11 +17,30 @@
 
 <br>
 
-<div *ngIf="components.length==0">
+<!-- <div *ngIf="components.length==0">
   <img style="width:50px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" /><span><b>loading
       items...</b></span>
   <br />
+</div> -->
+
+<div *ngIf="showLoader" class="row text-center mt-4 mb-4">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <h2 class="peerLoader">
+      <span>P</span>
+      <span>E</span>
+      <span>E</span>
+      <span>R</span>
+      <span>P</span>
+      <span>H</span>
+      <span>A</span>
+      <span>R</span>
+      <span>M</span>
+    </h2>
+  </div>
+  <div class="col-4"></div>
 </div>
+
 
 
 <div style="width:100%;">
@@ -96,6 +115,7 @@
             <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
             <option value='irosol_bottle'>איירוסול- בקבוק</option>
             <option value='cellophane'>צלופן</option>
+            <option value='sticker'>מדבקה</option>
             <!-- <option value='component'>לא מוגדר</option> -->
 
 
@@ -144,6 +164,8 @@
       style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Materials</div>
     <div (click)='setType("cartons")' [ngStyle]="{'background-color': buttonColor4}" class="navtab"
       style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Cartons</div>
+    <div (click)='setType("sticker")' [ngStyle]="{'background-color': buttonColor5}" class="navtab"
+      style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Stickers</div>
     <div style="padding-left: 10px;"><b> showing {{components.length}} stock items </b></div>
     <div class="export" style="cursor:pointer;">
       <img *ngIf="loadingExcel" style="width:50px"
@@ -227,7 +249,7 @@
                         כמות</th>
                       <th
                         style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
-                        תאריך קבלה</th>
+                        צפי הגעה</th>
                       <th
                         style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
                         סטטוס</th>
@@ -237,17 +259,17 @@
                     <tr *ngFor="let comp of component.purchaseOrders">
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseOrder}}</td>
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseAmount}}</td>
-                      <td style="border:1px solid black;font-size: 10px;padding:0;">
+                      <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.expectedArrival | date: 'dd/MM/yyyy'}}</td>
+                      <!-- <td style="border:1px solid black;font-size: 10px;padding:0;">
                         <table>
                           <tbody>
                             <tr *ngFor="let arrival of comp.purchaseArrival">
-                              <td style="font-size: 10px;padding:0">{{arrival.arrivalDate | date :'dd/MM/yyyy'}}</td> |
-                              &nbsp;
+
                               <td style="font-size: 10px;padding:0">{{arrival.arrivedAmount}}</td>
                             </tr>
                           </tbody>
                         </table>
-                      </td>
+                      </td> -->
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseStatus}}</td>
                     </tr>
                   </tbody>
@@ -602,6 +624,7 @@
                 <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
                 <option value='irosol_bottle'>איירוסול- בקבוק</option>
                 <option value='cellophane'>צלופן</option>
+                <option value='sticker'>מדבקה</option>
               </select>
 
               <select class="form-control" [(ngModel)]="resCmpt.componentCategory">
@@ -2365,6 +2388,47 @@
         <td></td>
         <td><img [src]=carton.img></td>
         <td><button (click)="purchaseRecommend(carton)" class="btn-success">המלצה לרכש</button></td>
+        <td></td>
+
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+<div *ngIf="stockType=='sticker'" class="tableFixHead">
+  <table class='table stockTable table-fixed' *ngIf="stockType=='sticker'">
+    <thead style="background: rgb(69, 69, 202);z-index: 9999;" class='tableHeader text-white'>
+      <tr style="text-align: center;">
+
+        <th></th>
+        <th>מספר פריט</th>
+        <th>מק"ט פריט ספק</th>
+        <th>שם</th>
+        <th>כמות</th>
+        <th>תמונה</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>צפי הגעה הזמנת רכש</th>
+      </tr>
+
+    </thead>
+
+
+    <tbody id="table_body" class="componentTable">
+      <tr *ngFor="let sticker of components;let i = index"
+        style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
+        <td>{{i+1}}</td>
+        <td>{{sticker.componentN}}</td>
+        <td>{{sticker.componentNs}}</td>
+        <td>{{sticker.componentName}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><img [src]=sticker.img></td>
+        <td><button (click)="purchaseRecommend(sticker)" class="btn-success">המלצה לרכש</button></td>
         <td></td>
 
       </tr>
