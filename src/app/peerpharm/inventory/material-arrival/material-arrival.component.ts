@@ -337,9 +337,9 @@ approvedPackgeRemarksInput: Boolean=false;
 
   checkIfIOrderExist(ev){
     debugger;
-  var comaxNumber = ev.target.value
-  if(comaxNumber != ''){
-    this.procuretServ.findIfComaxExist(comaxNumber).subscribe(data=>{
+  var orderNumber = ev.target.value
+  if(orderNumber != ''){
+    this.procuretServ.findIfOrderExist(orderNumber).subscribe(data=>{
     if(data.length > 0){
       this.currentComaxOrder = data;
       this.comaxOrderExist = true;
