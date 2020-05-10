@@ -151,7 +151,6 @@ export class ProcurementOrdersComponent implements OnInit {
 
     switch (type) {
       case 'supplier':
-
         if (event.target.value != '') {
           this.procurementArrivals = []
           this.procurementArrivalsCopy = []
@@ -164,8 +163,10 @@ export class ProcurementOrdersComponent implements OnInit {
                   id: tempArr[i]._id,
                   supplierName: tempArr[i].supplierName,
                   comaxNumber: tempArr[i].comaxNumber,
+                  orderNumber: tempArr[i].orderNumber,
                   itemNumber: tempArr[i].item[j].itemNumber,
                   itemName: tempArr[i].item[j].itemName,
+                  supplierAmount: tempArr[i].item[j].supplierAmount,
                   arrivals: [],
 
 

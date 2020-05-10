@@ -343,7 +343,9 @@
                     <th>#</th>
                     <th>Supplier</th>
                     <th>Order Number</th>
+                    <th>Comax </th>
                     <th>Item Number</th>
+                    <th>Amount</th>
                     <th>Item Name</th>
                     <th>Reference Number</th>
                     <!-- <th>Arrival Date</th>
@@ -355,8 +357,10 @@
                     <td style="color:blue;text-decoration: underline;cursor: pointer;" (click)="editArrivalDetails(i)">{{i+1}}
                     </td>
                     <td>{{purchase.supplierName}}</td>
+                    <td>{{purchase.orderNumber}}</td>
                     <td>{{purchase.comaxNumber}}</td>
                     <td>{{purchase.itemNumber}}</td>
+                    <td>{{purchase.supplierAmount}}</td>
                     <td>{{purchase.itemName}}</td>
                     <td>
                       <table>
@@ -735,7 +739,7 @@
               <td>{{i+1}}</td>
               <td>{{item.itemNumber}}</td>
               <td>{{item.itemName}}</td>
-              <td>{{item.remarks}}</td>
+              <td>{{item.itemRemarks}}</td>
               <td>{{item.supplierAmount}}</td>
               <td>{{item.supplierPrice}}</td>
               <td>{{item.itemPrice}}</td>
@@ -827,6 +831,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
           <th></th>
           <th>Item Name</th>
           <th>Item Number</th>
+          <th>Item Remarks</th>
           <th>Measurement</th>
           <th>Coin</th>
           <th>Amount</th>
@@ -846,6 +851,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
             <td>{{i+1}}</td>
             <td>{{ line.itemName }}</td>
             <td>{{ line.itemNumber }}</td>
+            <td>{{ line.itemRemarks }}</td>
             <td>{{ line.measurement }}</td>
 
             <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.supplierPrice}}{{ line.coin }}</td>
