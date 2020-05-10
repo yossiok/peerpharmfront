@@ -74,17 +74,17 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
-  checkIfExist(){
-    var comaxNumber = this.newProcurement.comaxNumber;
+  // checkIfExist(){
+  //   var comaxNumber = this.newProcurement.comaxNumber;
 
-    this.procurementService.findIfComaxExist(comaxNumber).subscribe(data=>{
-      if(data.length > 0){
-        this.toastr.error('מספר הזמנת קומקס כבר קיים במערכת')
-      } else {
+  //   this.procurementService.findIfComaxExist(comaxNumber).subscribe(data=>{
+  //     if(data.length > 0){
+  //       this.toastr.error('מספר הזמנת קומקס כבר קיים במערכת')
+  //     } else {
 
-      }
-    })
-  }
+  //     }
+  //   })
+  // }
 
 
   
