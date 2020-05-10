@@ -47,7 +47,7 @@ import { OVERLAY_PROVIDERS } from '../../node_modules/@angular/cdk/overlay';
 import { ScheduleCardComponent } from './peerpharm/production/production/schedule-card/schedule-card.component';
 import { MyiframeComponent } from './myiframe/myiframe.component';
 import { ToastrModule } from 'ngx-toastr';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
@@ -140,4 +140,18 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+ 
+
+export class AppModule {
+  constructor(private translate: TranslateService) {
+    translate.setTranslation('he', {
+      test: 'בדיקה'
+    });
+
+    translate.addLangs(['en', 'he']);
+    translate.setDefaultLang('he');
+    translate.use('he');
+  }
+
+}
+
