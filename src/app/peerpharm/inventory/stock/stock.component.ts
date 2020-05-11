@@ -75,7 +75,7 @@ export class StockComponent implements OnInit {
     input_actualMlCapacity: 0,
     alternativeComponent:'',
     comaxName:'',
-    alternativeSupplier:[],
+    alternativeSuppliers:[],
     price:''
 
   }
@@ -198,7 +198,8 @@ export class StockComponent implements OnInit {
     requestNumber:'',
     date:this.formatDate(new Date()),
     user:'',
-    type:''
+    type:'',
+    supplier:''
   }
 
   supplier:any = {
@@ -326,6 +327,23 @@ export class StockComponent implements OnInit {
   addSupplierToMaterial(){
   debugger;
    this.resMaterial.alternativeSuppliers.push(this.supplier)
+   this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+   this.supplier = {
+    supplierName:'',
+    price:"",
+    coin:"",
+    coinLoading:"",
+    priceLoading:"",
+    manufacturer:"",
+    alternativeMaterial:"",
+    alterName:"",
+    subGroup: "",
+    packageWeight:"",
+  }
+  }
+  addSupplierToComponent(){
+  debugger;
+   this.resCmpt.alternativeSuppliers.push(this.supplier)
    this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
    this.supplier = {
     supplierName:'',

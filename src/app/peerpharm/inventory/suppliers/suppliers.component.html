@@ -23,6 +23,7 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
     <mat-tab label="Suppliers">
 
       <div class="container-fluid bg-light p-2">
+
         <div class="row p-2 mt-2 text-center">
           <div class="col-4">
             <input  class="form-control w-50" type="text" placeholder="Search Supplier By Name" (change)="changeText($event)"/>
@@ -34,6 +35,25 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
             <button style="float:right" class="form-control btn btn-info w-50" (click)="open(content)">Add Supplier</button>
           </div>
         </div>
+
+        <div *ngIf="suppliers.length == 0" class="row text-center mt-4 mb-4">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <h2 class="peerLoader mx-auto my-auto">
+              <span>P</span>
+              <span>e</span>
+              <span>e</span>
+              <span>r</span>
+              <span>P</span>
+              <span>h</span>
+              <span>a</span>
+              <span>r</span>
+              <span>m</span>
+            </h2>
+          </div>
+          <div class="col-4"></div>
+        </div>
+
         <div class="row mt-2">
           <div class="col-12">
             <table *ngIf="tableType=='suppliers'" class='table table-hover table-striped'>

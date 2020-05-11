@@ -15,7 +15,7 @@ import { FormuleFormTableComponent } from './formules/formule-form-table/formule
 import { PeerPharmRputs } from './peerpharm.routing';
 import { OrdersComponent } from './allorders/orders/orders.component';
 import { AllordersComponent } from './allorders/allorders/allorders.component';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateModule, TranslateLoader, TranslateCompiler, TranslateParser, MissingTranslationHandler} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
@@ -132,6 +132,7 @@ import { StoragesComponent } from './inventory/storages/storages.component';
     CommonModule,
     RouterModule.forChild(PeerPharmRputs),
    
+    TranslateModule.forChild({}),
     JsonpModule,
     HttpClientModule,
     MatCheckboxModule,

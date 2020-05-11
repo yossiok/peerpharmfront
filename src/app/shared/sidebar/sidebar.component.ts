@@ -46,9 +46,7 @@ export class SidebarComponent implements OnInit {
     public translate: TranslateService,
     private notificationService: NotificationService,
   ) {
-    translate.addLangs(['en', 'he']);
-    translate.setDefaultLang('he'); 
-    translate.use('he');
+
    }
 
   // End open close

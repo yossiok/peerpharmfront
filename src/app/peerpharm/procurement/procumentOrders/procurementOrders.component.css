@@ -165,7 +165,3 @@ h2.peerLoader {
   animation-delay:0.96s;
 }
 
-tbody {
-  max-height: 500px;
-  overflow: auto;
-}

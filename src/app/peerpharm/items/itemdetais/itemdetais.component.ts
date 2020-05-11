@@ -14,6 +14,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { BatchesService } from 'src/app/services/batches.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-itemdetais',
@@ -36,6 +37,8 @@ export class ItemdetaisComponent implements OnInit {
   mainLanguageTwo: Boolean = true;
   mainLanguageThree: Boolean = true;
   mainLanguageFour: Boolean = true;
+  englishLang: Boolean = false;
+  hebrewLang: Boolean = true;
   department: Boolean = true;
   production: Boolean = false
   productionTwo: Boolean = false
@@ -296,8 +299,11 @@ export class ItemdetaisComponent implements OnInit {
   }
 
 
-  constructor(private excelService:ExcelService,private orderService:OrdersService,private batchService:BatchesService ,private modalService:NgbModal,private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
+  constructor(private translate:TranslateService,private excelService:ExcelService,private orderService:OrdersService,private batchService:BatchesService ,private modalService:NgbModal,private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
+    debugger;
+
+   
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
       itemNumber: [null, Validators.required],
@@ -442,6 +448,22 @@ export class ItemdetaisComponent implements OnInit {
  }
 
 
+ changeLanguage(type){
+  switch(type) {
+    case 'english':
+      this.translate.use('en')
+      this.hebrewLang = true;
+      this.englishLang = false;
+      break;
+    case 'hebrew':
+      this.translate.use('he')
+      this.englishLang = true;
+      this.hebrewLang = false;
+      break;
+
+  }
+  
+ }
 
 
   fillBottle(ev) {

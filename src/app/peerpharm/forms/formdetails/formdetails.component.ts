@@ -30,9 +30,7 @@ export class FormdetailsComponent implements OnInit {
     private authService: AuthService,
     public translate: TranslateService
   ) {
-    translate.addLangs(['en', 'he']);
-    translate.setDefaultLang('he');
-    translate.use('he');
+
    }
 
   ngOnInit() {

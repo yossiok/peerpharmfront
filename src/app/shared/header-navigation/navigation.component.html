@@ -147,18 +147,18 @@
  <li class="nav-item dropdown" ngbDropdown *ngFor="let sidebarnavItem of sidebarnavItems" >
    
         <a style="padding: 0px 7px;" ngbDropdownToggle class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">  <i [ngClass]="[sidebarnavItem.icon]"></i>&nbsp;<span stlye=' color:black; font-weight: bold;font-size: 22px'>{{sidebarnavItem.title | translate}}</span></a>
+        aria-haspopup="true" aria-expanded="false">  <i [ngClass]="[sidebarnavItem.icon]"></i>&nbsp;<span stlye=' color:black; font-weight: bold;font-size: 22px'>{{sidebarnavItem.title}}</span></a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
        
             <ng-container *ngFor="let sidebarnavSubItem of sidebarnavItem.submenu">
                
                 <a class="dropdown-item"  [routerLink]="sidebarnavSubItem.submenu.length > 0 ? null : [sidebarnavSubItem.path]"
                     [routerLinkActive]="sidebarnavSubItem.submenu.length > 0 ? '' : 'router-link-active'" [ngClass]="[sidebarnavSubItem.class]"
-                    *ngIf="!sidebarnavSubItem.extralink;" (click)="addActiveClass(sidebarnavSubItem.title)">{{sidebarnavSubItem.title | translate }}</a>
+                    *ngIf="!sidebarnavSubItem.extralink;" (click)="addActiveClass(sidebarnavSubItem.title)">{{sidebarnavSubItem.title}}</a>
             </ng-container>
         
         </div>
-        <h1>{{ 'test' | translate}}</h1>
+       
     </li>
    
 <!-- ============================================================== -->
