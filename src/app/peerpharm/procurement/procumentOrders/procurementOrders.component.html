@@ -514,8 +514,8 @@
                 <tr *ngFor="let item of certificate">
                   <td>{{item.itemNumber}}</td>
                   <td>{{item.itemName}}</td>
-                  <td>{{item.quantity}}</td>
-                  <td>{{item.supplierPrice}}</td>
+                  <td (click)="changeCertifQuantity()">{{item.quantity}}</td>
+                  <td (click)="changePriceQuantity()">{{item.supplierPrice}}</td>
                   <td>{{item.price}}</td>
                   <td>{{item.arrivalDate}}</td>
                 </tr>
@@ -824,7 +824,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
 
   </div>
 
-  <div class="container" id="material-body" class="modal-body">
+  <div style="overflow: scroll;height: 650px;" class="container" id="material-body" class="modal-body">
     <table id="procurementItems" class="table table-striped">
       <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-info text-white">
         <tr>

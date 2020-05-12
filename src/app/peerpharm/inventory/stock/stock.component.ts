@@ -37,6 +37,7 @@ export class StockComponent implements OnInit {
   openOrderRecommendModal: boolean = false;
   itemMovements: any = [];
   materialPurchases: any[]
+  componentSuppliers: any[]
   componentPurchases: any[] = [];
   itemShell:any[];
   componentsCopy:any[];
@@ -253,7 +254,8 @@ export class StockComponent implements OnInit {
     frameSupplier:"",
     location:"",
     quantityInStock:"",
-    mixedMaterial:[]
+    mixedMaterial:[],
+    formuleRemarks:''
 
   }
   itemExpectedArrivals: any;
@@ -709,6 +711,7 @@ export class StockComponent implements OnInit {
 
   purchaseRecommend(component){
     debugger;
+    this.componentSuppliers = component.alternativeSuppliers
     if(component.itemType == 'material'){
       this.recommandPurchase.type = 'material'
     } 
@@ -1801,7 +1804,8 @@ export class StockComponent implements OnInit {
       frameSupplier:"",
       location:"",
       quantityInStock:"",
-      mixedMaterial:[]
+      mixedMaterial:[],
+      formuleRemarks:''
   
   
     }

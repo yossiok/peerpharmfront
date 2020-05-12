@@ -1615,7 +1615,7 @@
         </div>
 
         <div class="row fixNoaStupidStuff mt-3">
-          <div class="col-2"></div>
+         
           <div class="col-2">
             <label class="form-control">COA Master</label>
             <label class="form-control">MSDS</label>
@@ -1638,7 +1638,12 @@
                 src="../../../../assets/images/pdf.png" alt="PDF" /></a>
             <input class="form-control" #msdsInput style="display:none" type="file" (change)="onSelectMsds($event)">
             </div>
-            <div class="col-3"></div>
+            <div class="col-2">
+              <label class="form-control">Formule Remark</label>
+            </div>
+            <div class="col-3">
+              <input type="text" [(ngModel)]="resMaterial.formuleRemarks" class="form-control">
+            </div>
           </div>
 
           <div class="row text-center fixNoaStupidStuff">
@@ -2543,9 +2548,12 @@
             <td><input [(ngModel)]="recommandPurchase.remarks" type="text"></td>
             <td><input [(ngModel)]="recommandPurchase.date" type="date"></td>
             <td><input [(ngModel)]="recommandPurchase.amount" type="number"></td>
-            <select [(ngModel)]="recommandPurchase.supplier">
-              <option></option>
-            </select>
+            <input list="compSuppliers" [(ngModel)]="recommandPurchase.supplier">
+            <datalist id="compSuppliers">
+              <option *ngFor="let supplier of componentSuppliers" [value]="supplier.supplierName">{{supplier.supplierName}}</option>
+            </datalist>
+            
+           
 
           </tr>
         </tbody>

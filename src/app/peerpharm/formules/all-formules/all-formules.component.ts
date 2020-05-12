@@ -20,6 +20,7 @@ currentFormuleNumber:any;
   currentDoc:any;
   updateFormule:any;
   isCollapsed:boolean = false;
+  showItemRemarks:boolean = false;
   closeResult: string;
   updateItems:any;
   chooseFromBuffer: boolean = false;
@@ -448,6 +449,16 @@ loadDataPrint(formuleNum) {
   var formuleToUpdate = [];
  formuleToUpdate = this.allFormules.find(formule => formule.formuleNumber == formuleNum);
  this.updateFormule = formuleToUpdate
+
+ for (let i = 0; i < this.updateFormule.phases.length; i++) {
+  for (let j = 0; j < this.updateFormule.phases[i].items.length; j++) {
+    if(this.updateFormule.phases[i].items[j].itemNumber == "12550"){
+      this.showItemRemarks = true;
+    }
+    
+  }
+   
+ }
 }
 
 open(formuleData,formuleNum) {
