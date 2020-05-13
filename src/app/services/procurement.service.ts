@@ -41,6 +41,10 @@ export class Procurementservice {
     console.log(url);
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllInvoices() {
+    const url = this.baseUrl + 'procurementOrderController/getAllInvoices';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getProcurementOrderItem() {
     const url = this.baseUrl + 'procurementOrderItemController';

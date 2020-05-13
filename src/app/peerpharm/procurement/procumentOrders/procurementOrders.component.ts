@@ -21,6 +21,7 @@ export class ProcurementOrdersComponent implements OnInit {
   linkDownload: String = '';
   orderRemarks: String;
   allComponents: any[];
+  allInvoices: any[];
   purchaseRecommendations: any[];
   purchaseRecommendationsCopy: any[];
   allComponentsCopy: any[];
@@ -30,6 +31,8 @@ export class ProcurementOrdersComponent implements OnInit {
   showLoader: boolean = true;
   showInfoModal: boolean = false;
   editArrivalModal: boolean = false;
+  changeItemQuantity: boolean = false;
+  changeItemPrice: boolean = false;
   bill: boolean = false;
   procurementData: any[];
   procurementDataCopy: any[];
@@ -47,6 +50,9 @@ export class ProcurementOrdersComponent implements OnInit {
   EditRowComax: any = "";
   requestNum: any = "";
   user: any;
+  currCertifItem: any;
+  newItemQuantity: string = '';
+  certifNumberToPush: any;
   priceAlert: Boolean = false;
   currStatus: any;
   currOrderNumber: any;
@@ -89,7 +95,7 @@ export class ProcurementOrdersComponent implements OnInit {
   newBill = {
     billNumber: '',
     supplierNumber: '',
-    certificateNumbers: '',
+    certificateNumbers: [],
     totalPrice: '',
   }
 
@@ -122,7 +128,7 @@ export class ProcurementOrdersComponent implements OnInit {
     console.log('Enter');
     this.getAllProcurementOrders();
     this.getComponentsWithPurchaseRec();
-
+    this.getAllInvoices();
     this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
 
@@ -222,6 +228,73 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   }
+  openPriceModal(item){
+    this.changeItemPrice = true;
+    this.currCertifItem = item;
+  }
+
+  openQuantityModal(item){
+    this.changeItemQuantity = true;
+    this.currCertifItem = item;
+  }
+
+  changeCertifPrice(ev){
+    debugger;
+      var newItemPrice = ev.target.value;
+      if(newItemPrice != ''){
+        var item = this.certificate.find(i=>i.itemNumber == this.currCertifItem.itemNumber && i.quantity == this.currCertifItem.quantity);
+        item.changedItemPrice = Number(newItemPrice)
+        this.changeItemPrice = false;
+        this.toastr.success('מחיר חדש נוסף בהצלחה')
+        
+      }
+  }
+
+
+  // filterInvoices(type){
+  //   switch(type) {
+  //     case 'suppliers':
+  //       // code block
+  //       break;
+  //     case 'supInvoice':
+  //       // code block
+  //       break;
+
+  //   }
+  // }
+
+  getAllInvoices(){
+
+  this.procurementservice.getAllInvoices().subscribe(data=>{
+    debugger;
+    this.allInvoices = data;
+  })
+
+  }
+
+  changeCertifQuantity(ev){
+    debugger;
+      var newItemQuantity = ev.target.value;
+      if(newItemQuantity != ''){
+        var item = this.certificate.find(i=>i.itemNumber == this.currCertifItem.itemNumber && i.quantity == this.currCertifItem.quantity);
+        item.changedQuantity = Number(newItemQuantity)
+        this.changeItemQuantity = false;
+        this.toastr.success('כמות חדשה נוספה בהצלחה')
+        
+      }
+  }
+
+  addCertifToBill(){
+    debugger;
+    if(this.certifNumberToPush != ''){
+      this.newBill.certificateNumbers.push(this.certifNumberToPush)
+      this.toastr.success('תעודה נוספה בהצלחה !')
+      this.certifNumberToPush = ''
+    } else {
+      this.toastr.error('חובה למלא מספר תעודה')
+    }
+    
+  }
 
   createCertifForBill() {
     debugger;
@@ -236,7 +309,8 @@ export class ProcurementOrdersComponent implements OnInit {
       quantity: '',
       price: 0,
       arrivalDate: '',
-      supplierPrice:''
+      supplierPrice:'',
+      referenceNumber:''
     }
 
     var tempArr = []
@@ -245,12 +319,16 @@ export class ProcurementOrdersComponent implements OnInit {
       for (let j = 0; j < purchases[i].item.length; j++) {
         if (purchases[i].item[j].arrivals == undefined) purchases[i].item[j].arrivals = []
         for (let k = 0; k < purchases[i].item[j].arrivals.length; k++) {
-
-          if (purchases[i].item[j].arrivals[k].referenceNumber == this.newBill.certificateNumbers) {
+          for (let l = 0; l < this.newBill.certificateNumbers.length; l++) {
+            
+            
+          
+          if (purchases[i].item[j].arrivals[k].referenceNumber == this.newBill.certificateNumbers[l]) {
             obj.itemNumber = purchases[i].item[j].itemNumber
             obj.itemName = purchases[i].item[j].itemName
             obj.arrivalDate = purchases[i].item[j].arrivals[k].arrivalDate
             obj.quantity = purchases[i].item[j].arrivals[k].arrivedAmount
+            obj.referenceNumber = purchases[i].item[j].arrivals[k].referenceNumber
             obj.supplierPrice = purchases[i].item[j].supplierPrice
             var price = Number(purchases[i].item[j].supplierPrice) * Number(purchases[i].item[j].arrivals[k].arrivedAmount)
             obj.price = Number(price.toFixed(2))
@@ -258,7 +336,7 @@ export class ProcurementOrdersComponent implements OnInit {
             var objToPush = { ...obj }
             tempArr.push(objToPush)
           }
-
+        }
         }
 
       }
