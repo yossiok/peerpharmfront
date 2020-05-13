@@ -964,6 +964,9 @@ debugger;
                 this.getAllProcurementOrders();
                 this.editArrivalModal = false;
                 this.toastr.success("עודכן בהצלחה !")
+                this.newReference.arrivalDate = ''
+                this.newReference.arrivedAmount = ''
+                this.newReference.itemNumber = ''
               }
             }
 
