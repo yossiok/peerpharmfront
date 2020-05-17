@@ -16,6 +16,12 @@ td {
 /* Just common table stuff. Really. */
 table  { border-collapse: collapse; width: 100%; }
 
+.inCheck {
+  color:red;
+}
+.approved{
+  color:green;
+}
 
 
 .loader {

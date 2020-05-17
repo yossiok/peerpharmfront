@@ -1,4 +1,23 @@
 
+    
+     <div *ngIf="showLoader" class="row text-center mt-4 mb-4">
+      <div class="col-4"></div>
+      <div class="col-4">
+        <h2 class="peerLoader mx-auto my-auto">
+          <span>P</span>
+          <span>E</span>
+          <span>E</span>
+          <span>R</span>
+          <span>P</span>
+          <span>H</span>
+          <span>A</span>
+          <span>R</span>
+          <span>M</span>
+        </h2>
+      </div>
+      <div class="col-4"></div>
+    </div>
+
 
     <table class='table table-fixed'>
 
@@ -20,7 +39,7 @@
         <tr [ngClass]="{approvedClass:formule.approval=='confirmed'}" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let formule of allFormules; let i = index">
           <td>{{i+1}}</td>
 
-          <td *ngIf="formule._id!=EditRowId" class="openUpdateModal" (click)="open(formuleData,formule.formuleNumber)">{{formule.formuleNumber}}</td>
+          <td *ngIf="formule._id!=EditRowId" class="openUpdateModal" (click)="open(formule.formuleNumber)">{{formule.formuleNumber}}</td>
           <td *ngIf="formule._id==EditRowId" (click)="edit(formule._id)">
               <input #formuleNumber type='text' [value]="formule.formuleNumber">
             </td>
@@ -58,14 +77,16 @@
 
 
 
+   
 
-    <ng-template  #formuleData let-modal>
-      <div style="overflow: auto;" class="modal-content formBackGround ">
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Formule Information</h4>
+    <div style="top:20px;height:900px !important" class="container-fluid rounded fixed-top shadow-lg formBackGround" *ngIf="openFormuleModal == true">
+      <div style="overflow: auto;height:880px !important">
+        <div>
+          <h4 id="modal-basic-title">Formule Information</h4>
           <h4>Formule Number: {{currentFormuleNumber}}</h4>
+          <i (click)="openFormuleModal = false" class="fa fa-times"></i>
         </div>
-        <div class="modal-body">
+        <div>
          <table class="table table-striped">
           <thead>
             <tr>
@@ -78,8 +99,8 @@
               <th>No.</th>
               <th>Material Name</th>
               <th>Percentage</th>
-              <th>Material Remarks</th>
-              <th></th>
+              <th>Item Remarks</th>
+              <th>Save</th>
   
             </tr>
           </thead>
@@ -98,15 +119,15 @@
           <td><input [(ngModel)]="newItem.remarks" placeholder="Remarks" type="text"></td>
           <td><button (click)="addItemToFormule()" class="btn-success">Add</button></td>
           </tr>
-          <tbody>
+          <tbody style="height:500px">
             <ng-container *ngFor="let phase of updateFormule.phases;">
               <tr *ngFor="let item of phase.items;let i = index">
                 <td>{{phase.phaseName}}</td>
                 <td *ngIf="item.itemNumber!==EditRowId">{{phase.remarks}}</td>
                 <td  *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
-                  <textarea placeholder="Phase Remarks" [(ngModel)]="updatePhaseRemarks"></textarea>
+                  <textarea #phaseRemarksUpdate [value]="phase.remarks"></textarea>
                 </td> 
-                <td *ngIf="item.itemNumber!==EditRowId" (click)="edit(item.itemNumber)">{{i+1}}</td>
+                <td (click)="edit(item.itemNumber)">{{i+1}}</td>
                 <!-- <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
                   <input [(ngModel)]="updateItemIndex" type="number">
                 </td> -->
@@ -115,12 +136,12 @@
                 <td>{{item.itemNumber}}</td>
                 <td>{{item.itemName}}</td>
                 <td *ngIf="item.itemNumber!==EditRowId" (click)="edit(item.itemNumber)">{{item.percentage}}</td>
-                 <td  *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
-                  <input placeholder="Percentage" style="width:50px" [(ngModel)]="updatePercentage" type="text">
+                 <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
+                  <input #percentageUpdate style="width:50px" [value]="item.percentage">
                 </td> 
                 <td *ngIf="item.itemNumber!==EditRowId"  (click)="edit(item.itemNumber)" >{{item.remarks}}</td>
                 <td  *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
-                  <input placeholder="Item Remarks" [(ngModel)]="updateItemRemarks" type="text">
+                  <input #itemRemarksUpdate [value]="item.remarks" type="text">
                 </td>
                 <td *ngIf="item.itemNumber===EditRowId"><i class="ti-save" (click)="saveFormuleUpdate(updateFormule._id,item.itemNumber,phase.phaseName,i)"></i></td>
               </tr>
@@ -129,10 +150,8 @@
           </tbody>
          </table>
         </div>
-        <div class="modal-footer">
-        </div>
       </div>
-      </ng-template>
+      </div>
 
 
       <ng-template #itemData let-modal>
@@ -331,7 +350,7 @@
 
         </div>
 
-        <div style="border:2px solid black;background-color: rgb(214, 219, 214);position: fixed;top:10%;z-index: 9999;left:20%;" *ngIf="chooseFathersToUpdate == true" class="container">
+        <div style="border:2px solid black;background-color: rgb(214, 219, 214);z-index: 9999;" *ngIf="chooseFathersToUpdate == true" class="container mx-auto my-auto fixed-top rounded shadow">
           <div class="row">
             <div style="text-align: center;" class="col-12">
              <h2>בחר פורמולת אב לעדכן</h2>

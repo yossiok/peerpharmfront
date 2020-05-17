@@ -83,6 +83,7 @@
                 <th><b>Comax Number</b></th>
                 <!-- <th><b>Supplier Number</b></th> -->
                 <th><b>Supplier Name</b></th>
+                <th><b>Supplier Number</b></th>
                 <th><b>Out Date</b></th>
                 <th><b>Arrival Date</b></th>
                 <th><b>Remarks</b></th>
@@ -107,6 +108,7 @@
                 <td>{{ line.comaxNumber }}</td>
                 <!-- <td>{{ line.supplierNumber }}</td> -->
                 <td>{{ line.supplierName }}</td>
+                <td>{{ line.supplierNumber }}</td>
                 <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
                 <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">{{ line.validDate | date: 'dd/MM/yyyy' }}</td>
                 <td *ngIf="EditRowId == line.orderNumber">
@@ -233,6 +235,8 @@
                   <th style="cursor: pointer;" (click)="sortTable('supplier')">Supplier</th>
                   <th style="cursor: pointer;" (click)="sortTable('date')">Recommendation Date</th>
                   <th>Amount</th>
+                  <th>In Stock</th>
+                  <th>Out Movements</th>
                   <th>Remarks</th>
                   <th style="cursor: pointer;" (click)="sortTable('ordered')">Ordered</th>
                 </tr>
@@ -257,6 +261,8 @@
                   <td>{{purchase.supplierName}}</td>
                   <td>{{purchase.date}}</td>
                   <td>{{purchase.amount}}</td>
+                  <td>{{purchase.amounts}}</td>
+                  <td>{{purchase.sumOut}}</td>
                   <td>{{purchase.remarks}}</td>
                   <td><i (click)="changeStatusToDone(purchase)" class="fa fa-check-square" aria-hidden="true"></i></td>
                 </tr>
@@ -434,26 +440,26 @@
 
   <ngb-tab title="Certificate Maker">
     <ng-template ngbTabContent>
-      <div class="container-fluid text-center">
+      <div class="container-fluid text-center bg-white">
 
         <div class="row">
           <div class="col-12">
-            <h1 class="text-info">תעודות</h1>
+            <h1 class="text-info mt-4">תעודות</h1>
           </div> 
         </div>
 
         <div class="row mt-3">
           <div class="col-3">
-            <label class="form-control">מספר חשבונית</label>
+            <label class="form-control text-info">מספר חשבונית</label>
           </div>
           <div class="col-3">
-            <label class="form-control">מספר ספק</label>
+            <label class="form-control text-info">מספר ספק</label>
           </div>
           <div class="col-3">
-            <label class="form-control">תעודות כניסה</label>
+            <label class="form-control text-info">תעודות כניסה</label>
           </div>
           <div class="col-3">
-            <label class="form-control">סה"כ מחיר</label>
+            <label class="form-control text-info">סה"כ מחיר</label>
           </div>
         </div>
 
@@ -562,41 +568,47 @@
 
   <ngb-tab title="Invoices">
     <ng-template ngbTabContent>
-      <div class="container-fluid text-center">
+      <div class="container-fluid text-center bg-white">
 
-        <div class="row mt-4">
+        <div class="row">
           <div class="col-12">
-            <h1 class="text-info">חשבוניות</h1>
+            <h1 class="text-info mt-4">חשבוניות</h1>
           </div>
         </div>
 
         <div class="row mt-4">
-          <div class="col-5"></div>
-          <div class="col-1">
-            <select class="form-control">
-              <option value="allInvoices">כל החשבוניות</option>
+          <div class="col-3">
+            <label class="form-control text-info">Status</label>
+          </div>
+          <div class="col-3">
+            <label class="form-control text-info">Supplier</label>
+          </div>
+          <div class="col-3">
+            <label class="form-control text-info">Invoice Number</label>   
+          </div>
+          <div class="col-3">
+
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-3">
+            <select (change)="filterInvoices($event,'status')" class="form-control">
+              <option value="">כל החשבוניות</option>
               <option value="approved">מאושרות</option>
               <option value="inCheck">בבדיקה</option>
             </select>
            
           </div>
-          <div class="col-1">
-              <label class="form-control">סנן לפי</label>          
-          </div>
-          <div class="col-5"></div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-3"></div>
           <div class="col-3">
-            <input (change)="filterInvoices('suppliers')" list="suppliersInvoice" class="form-control"/>
+            <input (change)="filterInvoices($event,'suppliers')" list="suppliersInvoice" class="form-control"/>
             <datalist id="suppliersInvoice">
-              <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierName}}
+              <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
               </option>
             </datalist>
           </div>
           <div class="col-3">
-
+            <input class="form-control" type="text" (change)="filterInvoices($event,'invoiceNumber')">
           </div>
           <div class="col-3"></div>
         </div>
@@ -610,6 +622,7 @@
                   <th>חשבונית ספק</th>
                   <th>מספר ספק</th>
                   <th>סטטוס</th>
+                  <th></th>
 
                 </tr>
               </thead>
@@ -618,7 +631,8 @@
                 <td>{{invoice.invoiceNumber}}</td>
                 <td>{{invoice.supInvoiceNumber}}</td>
                 <td>{{invoice.supplierNumber}}</td>
-                <td>{{invoice.status}}</td>
+                <td [ngClass]="{'approved': invoice.status =='approved','inCheck': invoice.status == 'inCheck'}">{{invoice.status}}</td>
+                <td><button (click)="generateInvoice(invoice)" class="btn btn-info form-control">Print Invoice</button></td>
                 </tr>
               </tbody>
             </table>
@@ -1039,4 +1053,72 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
   </div>
 </div>
 
+</div>
+
+<div *ngIf="invoiceModal == true" style="top:200px;" class="container bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
+  <div class="row">
+    <div class="col-4">
+      
+    </div>
+    <div class="col-4">
+      <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}" style="border:none;background:transparent;font-size: 30px;" printSectionId="invoice-section" ngxPrint>כותרת</button>
+    </div>
+    <div class="col-4">
+      <i (click)="invoiceModal = false;" class="fa fa-times text-info"></i>
+    </div>
+  </div>
+
+  <div id="invoice-section" class="row">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>מספר פריט</th>
+            <th>שם פריט</th>
+            <th>כמות</th>
+            <th>מחיר</th>
+            <th>סכום</th>
+            <th>פער כמות</th>
+            <th>פער מחיר</th>
+            <th>חיוב לקוח</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of currentInvoice.invoices">
+          <tr *ngIf="item.changedQuantity || item.changedItemPrice">
+            <td>{{item.itemNumber}}</td>
+            <td>{{item.itemName}}</td>
+            <td>{{item.quantity}} <small class="text-success font-weight-bold"><u>{{item.changedQuantity}}</u></small></td>
+            <td>{{item.supplierPrice}} <small class="text-success font-weight-bold"><u>{{item.changedItemPrice}}</u></small></td>
+            <td>{{item.price}}</td>
+            <td class="text-success">{{item.fixedQuantity}}</td>
+            <td>{{item.fixedPrice}}</td>
+            <td>{{item.chargeSupplier}}</td>
+          </tr>
+
+        </ng-container>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="font-weight-bold" dir="rtl">סה"כ לפני מע"מ: {{sumCharge}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="font-weight-bold" dir="rtl">סה"כ אחרי מע"מ: {{sumChargeTaxes}} </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

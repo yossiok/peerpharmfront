@@ -18,13 +18,16 @@ currentFormuleNumber:any;
   materials:any[];
   EditRowId: any = "";
   currentDoc:any;
+  condition:boolean = false;
   updateFormule:any;
   isCollapsed:boolean = false;
   showItemRemarks:boolean = false;
   closeResult: string;
   updateItems:any;
   chooseFromBuffer: boolean = false;
+  showLoader: boolean = true;
   chooseFathersToUpdate: boolean = false;
+  openFormuleModal: boolean = false;
   updatePercentage:any;
   updatePhaseRemarks:any;
   updateItemRemarks:any;
@@ -93,7 +96,14 @@ currentFormuleNumber:any;
   @ViewChild('formulePhaseName') formulePhaseName: ElementRef;
   @ViewChild('formulePhaseIns') formulePhaseIns: ElementRef;
   @ViewChild('formuleCategory') formuleCategory: ElementRef;
-  
+
+
+  @ViewChild('phaseRemarksUpdate') phaseRemarksUpdate: ElementRef;
+  @ViewChild('percentageUpdate') percentageUpdate: ElementRef;
+  @ViewChild('itemRemarksUpdate') itemRemarksUpdate: ElementRef;
+
+
+
 
   constructor(private invtSer:InventoryService,private formuleService:FormulesService,private toastSrv: ToastrService,private modalService:NgbModal,private authService: AuthService) { }
 
@@ -163,9 +173,12 @@ currentFormuleNumber:any;
 
   getAllFormules() {
     this.formuleService.getAllFormules().subscribe(data=>{
-     
-      this.allFormules = data;
-      this.allFormulesCopy = data;
+      if(data){
+        this.allFormules = data;
+        this.allFormulesCopy = data;
+        this.showLoader = false;
+      }
+    
     })
   }
 
@@ -461,40 +474,51 @@ loadDataPrint(formuleNum) {
  }
 }
 
-open(formuleData,formuleNum) {
- 
+open(formuleNum) {
+  debugger;
   this.updateFormule = [];
- 
-  this.modalService.open(formuleData, {size: 'lg', ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    this.closeResult = `Closed with: ${result}`;
-  }, (reason) => {
-    this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  });
+  this.openFormuleModal = true;
   this.loadData(formuleNum)
 }
 
 saveFormuleUpdate(formuleId,itemNumber,phaseName,index){
   debugger;
-  
-  this.updatePercentage
-
+ 
+ 
 var formuleData = {
   formuleId:formuleId,
   itemNumber:itemNumber,
   phaseName:phaseName,
   index:index,
-  percentage:Number(this.updatePercentage),
-  itemRemarks:this.updateItemRemarks,
-  phaseRemarks:this.updatePhaseRemarks,
+  percentage:Number(this.percentageUpdate.nativeElement.value),
+  itemRemarks:this.itemRemarksUpdate.nativeElement.value,
+  phaseRemarks:this.phaseRemarksUpdate.nativeElement.value,
   updateFather:'',
   updateChildren:'',
 }
 
 this.updateBaseToAll = formuleData;
+if(this.currentFormuleNumber)
 this.formuleService.getAllMadeFromBase(this.currentFormuleNumber).subscribe(data=>{
-if(data){
+if(data.msg != 'notExist'){
   this.chooseFathersToUpdate = true;
   this.allFathersFromBase = data;
+} else if(data.msg == 'notExist') {
+  this.formuleService.updateFormule(formuleData).subscribe(data=>{
+    if(data){
+    debugger;
+    var formule = this.allFormules.find(f=>f.formuleNumber == data.formuleNumber);
+    var phase = formule.phases.find(p=>p.phaseName == phaseName);
+    var item = phase.items.find(i=>i.itemNumber == itemNumber)
+    item.itemRemarks = this.itemRemarksUpdate.nativeElement.value
+    item.phaseRemarks = this.phaseRemarksUpdate.nativeElement.value
+    item.percentage = Number(this.percentageUpdate.nativeElement.value)
+    this.toastSrv.success('עודכן בהצלחה !')
+    this.edit('')
+    } else {
+    
+    }
+  })
 }
 })
 

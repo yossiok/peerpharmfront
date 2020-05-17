@@ -834,7 +834,7 @@ export class StockComponent implements OnInit {
     this.inventoryService.getAllComponents().subscribe(components => {
       debugger;
       console.log(components[0]);
-      if(components.length > 0){
+      if(components){
         this.showLoader = false;
       }
       this.inventoryService.getAllMaterialsArrivals().subscribe(data=>{
@@ -906,7 +906,7 @@ export class StockComponent implements OnInit {
 
       this.componentsUnFiltered = components.splice(0)
       this.components = components.splice(0)
-      if(this.components.length > 0){
+      if(this.components){
         this.showLoader = false;
       }
   

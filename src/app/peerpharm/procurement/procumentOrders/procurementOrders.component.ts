@@ -22,6 +22,7 @@ export class ProcurementOrdersComponent implements OnInit {
   orderRemarks: String;
   allComponents: any[];
   allInvoices: any[];
+  allInvoicesCopy: any[];
   purchaseRecommendations: any[];
   purchaseRecommendationsCopy: any[];
   allComponentsCopy: any[];
@@ -32,6 +33,7 @@ export class ProcurementOrdersComponent implements OnInit {
   showInfoModal: boolean = false;
   editArrivalModal: boolean = false;
   changeItemQuantity: boolean = false;
+  invoiceModal: boolean = false;
   changeItemPrice: boolean = false;
   bill: boolean = false;
   procurementData: any[];
@@ -51,6 +53,9 @@ export class ProcurementOrdersComponent implements OnInit {
   requestNum: any = "";
   user: any;
   currCertifItem: any;
+  currentInvoice: any;
+  sumCharge: any;
+  sumChargeTaxes: any;
   newItemQuantity: string = '';
   certifNumberToPush: any;
   priceAlert: Boolean = false;
@@ -128,8 +133,8 @@ export class ProcurementOrdersComponent implements OnInit {
     console.log('Enter');
     this.getAllProcurementOrders();
     this.getComponentsWithPurchaseRec();
+       this.getAllSuppliers();
     this.getAllInvoices();
-    this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
 
   }
@@ -251,23 +256,44 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
 
-  // filterInvoices(type){
-  //   switch(type) {
-  //     case 'suppliers':
-  //       // code block
-  //       break;
-  //     case 'supInvoice':
-  //       // code block
-  //       break;
-
-  //   }
-  // }
+  filterInvoices(ev,type){
+    debugger
+    this.allInvoices = this.allInvoicesCopy
+    var wordToFilter = ev.target.value;
+    if(wordToFilter != ''){
+      switch(type) {
+        case 'suppliers':
+        this.allInvoices = this.allInvoices.filter(i=>i.supplierNumber == wordToFilter)
+          break;
+        case 'invoiceNumber':
+          this.allInvoices = this.allInvoices.filter(i=>i.invoiceNumber == wordToFilter)
+          break;
+        case 'status':
+          this.allInvoices = this.allInvoices.filter(i=>i.status == wordToFilter)
+          break;
+  
+      }
+    } else {
+      this.allInvoices = this.allInvoicesCopy
+    }
+ 
+  }
 
   getAllInvoices(){
 
   this.procurementservice.getAllInvoices().subscribe(data=>{
     debugger;
+    for (let i = 0; i < data.length; i++) {
+     if(data[i].status == 'approved'){
+       data[i].status == 'מאושר'
+     }
+     if(data[i].status == 'inCheck'){
+       data[i].status == 'בבדיקה'
+     }
+      
+    }
     this.allInvoices = data;
+    this.allInvoicesCopy = data;
   })
 
   }
@@ -294,6 +320,42 @@ export class ProcurementOrdersComponent implements OnInit {
       this.toastr.error('חובה למלא מספר תעודה')
     }
     
+  }
+
+  generateInvoice(invoice){
+    debugger;
+  this.invoiceModal = true;
+  var sum = 0;
+  for (let i = 0; i < invoice.invoices.length; i++) {
+    if(invoice.invoices[i].changedQuantity){
+      invoice.invoices[i].fixedQuantity = Math.abs(invoice.invoices[i].quantity - invoice.invoices[i].changedQuantity)
+    } else {
+      invoice.invoices[i].fixedQuantity = this.formatNumber(invoice.invoices[i].quantity)
+    }
+    if(invoice.invoices[i].changedItemPrice){
+      invoice.invoices[i].fixedPrice = this.formatNumber(Math.abs(Number(invoice.invoices[i].supplierPrice) - invoice.invoices[i].changedItemPrice))
+    } else {
+      invoice.invoices[i].fixedPrice = this.formatNumber(Number(invoice.invoices[i].supplierPrice))
+    }
+   
+    invoice.invoices[i].chargeSupplier = invoice.invoices[i].fixedPrice*invoice.invoices[i].fixedQuantity
+  
+    
+    if(invoice.invoices[i].changedQuantity || invoice.invoices[i].changedItemPrice) {
+      sum += invoice.invoices[i].chargeSupplier
+    }
+    
+  }
+  this.sumCharge = sum
+  this.sumChargeTaxes = sum + (sum*17/100)
+
+  this.sumCharge = this.formatNumber(this.sumCharge)
+  this.sumChargeTaxes = this.formatNumber(this.sumChargeTaxes)
+  this.currentInvoice = invoice;
+
+
+
+
   }
 
   createCertifForBill() {
