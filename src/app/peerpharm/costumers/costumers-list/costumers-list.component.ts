@@ -10,6 +10,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./costumers-list.component.css']
 })
 export class CostumersListComponent implements OnInit {
+
+  addContactModal:boolean = false;
+  showCustomerModal:boolean = false;
   closeResult: string;
   costumers: any[];
   contacts: any[];
@@ -70,16 +73,12 @@ export class CostumersListComponent implements OnInit {
     });
   }
 
-  openDetails(content, i) { 
+  openDetails(i) { 
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
+    this.showCustomerModal = true;
     // this.contact = this.costumers[i].contact[0];
-    this.modalService.open(content).result.then((result) => {
-      console.log(result);
-      if (result == 'Saved') {
-        this.saveCostumer();
-      }
-    })
+ 
   }
 
  
@@ -113,6 +112,18 @@ export class CostumersListComponent implements OnInit {
     })
   }
 
+  deleteContact(contact){
+    debugger;
+    if(confirm('האם למחוק איש קשר זה ? ')){
+      for (let i = 0; i < this.costumer.contact.length; i++) {
+        if(this.costumer.contact[i].phone == contact.phone){
+          this.costumer.contact.splice(i,1);
+        }  
+        
+      }
+    }
+  }
+
   addContact() {
       if(this.contact.phone != "") {
         let contactToPush = {...this.contact}
@@ -121,6 +132,7 @@ export class CostumersListComponent implements OnInit {
         this.contact.phone = "";
         this.contact.name = "";
         this.contact.mail = "";
+        this.addContactModal = false;
       } else { 
         this.toastSrv.error("Please fill all the fields")
       }

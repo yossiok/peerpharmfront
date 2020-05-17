@@ -52,7 +52,7 @@
         <tbody id="table_body">
           <tr style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let costumer of costumers; let i=index">
             <td>{{i}}</td>
-            <td (click)='openDetails(content, i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
+            <td (click)='openDetails(i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
             <td>{{costumer.costumerName}}</td>
             <td>{{costumer.brand}}</td>
             <td>{{costumer.invoice}}</td>
@@ -66,6 +66,157 @@
 
 
 
+<div *ngIf="showCustomerModal == true" style="top:100px" class="text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-white border border-info">
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Customer Card">
+    <div  class="container">
+      <div class="row bg-info">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <h2 class="text-white">כרטיס לקוח</h2>
+        </div>
+        <div class="col-1">
+          <i (click)="showCustomerModal = false" style="font-size: 23px;padding: 8px;" class="fa fa-times text-white"></i>
+        </div>
+      </div>
+      
+      <div class="row mt-3">
+      <div class="col-3"></div>
+      <div class="col-2">
+        <label class="form-control text-info">Customer ID</label>
+      </div>
+      <div class="col-2">
+        <label class="form-control text-info">Company Number</label>
+      </div>
+      <div class="col-2">
+        <label class="form-control text-info">Customer Name</label>
+      </div>
+      <div class="col-3"></div>
+      </div>
+      
+      <div class="row mt-3">
+      <div class="col-3"></div>
+      <div class="col-2">
+        <input class="form-control mb-4" placeholder="Id" [(ngModel)]="costumer.costumerId">
+      </div>
+      <div class="col-2">
+        <input class="form-control mb-4" placeholder="Company Number" [(ngModel)]="costumer.companyNumber">
+      </div>
+      <div class="col-2">
+        <input class="form-control mb-4" placeholder="Customer Name" [(ngModel)]="costumer.costumerName">
+      </div>
+      <div class="col-3"></div>
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col-2"></div>
+        <div class="col-3">
+          <label class="form-control text-info">Payments</label>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-3">
+          <label class="form-control text-info">Remarks</label>
+        </div>
+        <div class="col-2"></div>
+      </div>
+      
+      <div class="row mt-1 mb-4">
+        <div class="col-1"></div>
+        <div class="col-2">
+          <label style="margin-bottom: 0;" class="form-control">Terms of Payment</label>
+          <label style="margin-bottom: 0;" class="form-control">Stickers Charge</label>
+          <label style="margin-bottom: 0;" class="form-control">Peerpharm Agent</label>
+        </div>
+        <div class="col-3">
+          <input class="form-control"  [(ngModel)]="costumer.paymentTerms"> 
+          <input class="form-control"  [(ngModel)]="costumer.stickersCharge"> 
+          <input class="form-control"  [(ngModel)]="costumer.peerpharmAgent"> 
+        </div>
+      
+        <div class="col-2">
+          <label style="margin-bottom: 0;" class="form-control">Remarks</label>
+          <label style="margin-bottom: 0;margin-top:20px" class="form-control">Imporant Remarks</label>
+        </div>
+        <div class="col-3">
+          <textarea [(ngModel)]="costumer.marks" class="form-control"></textarea>
+          <textarea [(ngModel)]="costumer.ImpRemark" class="form-control"></textarea>
+        </div>
+        <div class="col-1"></div>
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col-2"></div>
+        <div class="col-3">
+          <label class="form-control text-info">Address Details</label>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-3">
+          <label class="form-control text-info">Contact Details</label>
+        </div>
+        <div class="col-2"></div>
+      </div>
+      
+      <div class="row mt-1">
+        <div class="col-1"></div>
+        <div class="col-2">
+          <label style="margin-bottom: 0;" class="form-control">Invoice Address</label>
+          <label style="margin-bottom: 0;" class="form-control">Delivery Address</label>
+          <label style="margin-bottom: 0;" class="form-control">Area</label>
+        </div>
+        <div class="col-3">
+          <input class="form-control"  [(ngModel)]="costumer.invoice"> 
+          <input class="form-control"  [(ngModel)]="costumer.delivery">
+          <select class="form-control" [(ngModel)]="costumer.area">
+            <option value="דרום">דרום</option>
+            <option value="מרכז">מרכז</option>
+            <option value="השרון">השרון</option>
+            <option value="צפון מערבי">צפון מערבי</option>
+            <option value="צפון מזרחי">צפון מזרחי</option>
+            <option value="ירושלים">ירושלים</option>
+          </select>
+        </div>
+      
+        <div class="col-2">
+          <label style="margin-bottom: 0;" class="form-control">Vendor Fax</label>
+          <label style="margin-bottom: 0;" class="form-control">Contacts <img src='assets/images/add.png' (click)="addContactModal = true" style='width:20px; height:20px; cursor: pointer;'></label>
+        </div>
+        <div class="col-4">
+          <input class="form-control" [(ngModel)]="costumer.fax"><br>
+          <table style="font-size:11px" class="table table-striped table-bordered">
+            <thead class="bg-info text-white">
+              <tr>
+                <th>Name</th>
+                <th>Mail</th>
+                <th>Phone</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let contact of costumer.contact">
+                <td>{{contact.name}}</td>
+                <td>{{contact.mail}}</td>
+                <td>{{contact.phone}}</td>
+                <td (click)="deleteContact(contact)">X</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      
+      <div class="row mt-4">
+        <div class="col-5"></div>
+        <div class="col-2 p-2">
+          <button type="button" class="btn btn-info" (click)="saveCostumer()">Save</button>
+        </div>
+        <div class="col-5"></div>
+      </div>
+      
+      </div>
+  </mat-tab>
+  <mat-tab label="Price List">Price List..</mat-tab>
+</mat-tab-group>
+</div>
 
 
 
@@ -73,12 +224,37 @@
 
 
 
+<div *ngIf="addContactModal == true" style="top:450px;" class="container w-50 mx-auto my-auto rounded shadow text-center border border-dark fixed-top bg-white p-3">
+  <div class="row mt-1">
+    <div class="col-12">
+      <h2 class="text-info">Add Contact</h2>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-2"></div>
+    <div class="col-2">
+      <input class="form-control" placeholder="Name" [(ngModel)]="contact.name">
+    </div>
+    <div class="col-3">
+      <input class="form-control" placeholder="E-Mail" type="email" [(ngModel)]="contact.mail">
+    </div>
+    <div class="col-3">
+      <input class="form-control"  placeholder="Phone" [(ngModel)]="contact.phone">
+    </div>
+    <div class="col-2"></div>
+  </div>
 
-
-
-
-
-
+<div class="row mt-3">
+  <div class="col-3"></div>
+  <div class="col-3">
+    <button (click)="addContact()" class="form-control btn btn-info">Submit</button>
+  </div>
+  <div class="col-3">
+    <button (click)="addContactModal = false" class="form-control btn btn-danger">Cancel</button>
+  </div>
+  <div class="col-3"></div>
+</div>
+</div>
 
 
 <ng-template #content let-c="close" let-d="dismiss">

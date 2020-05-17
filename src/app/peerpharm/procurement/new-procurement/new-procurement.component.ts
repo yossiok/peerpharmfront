@@ -109,7 +109,8 @@ export class NewProcurementComponent implements OnInit {
             this.newItem.itemName = data[0].componentName;
             this.newItem.coin = data[0].coin
             this.newItem.measurement = data[0].unitOfMeasure
-            this.newItem.supplierPrice = parseInt(data[0].price)
+            var supplier = data[0].alternativeSuppliers.find(s=>s.supplierName == this.newProcurement.supplierName);
+            this.newItem.supplierPrice = parseInt(supplier.price)
             if (data[0].frameQuantity || data[0].frameSupplier) {
               alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' + "  " + data[0].frameSupplier + " " + 'כמות:' + " " + data[0].frameQuantity)
             }
@@ -220,8 +221,10 @@ export class NewProcurementComponent implements OnInit {
             this.newItem.measurement = "";
             this.newItem.supplierAmount = "";
             this.newItem.supplierPrice = 0;
-
+            this.itemExistInOrders = [];
+            this.openOrdersModal = false;
             this.toastr.success("פריט התווסף בהצלחה!")
+         
           }
         } else {
           this.newProcurement.item.push(newItem);
@@ -232,8 +235,10 @@ export class NewProcurementComponent implements OnInit {
           this.newItem.measurement = "";
           this.newItem.supplierAmount = "";
           this.newItem.supplierPrice = 0;
-
+          this.itemExistInOrders = [];
+          this.openOrdersModal = false;
           this.toastr.success("פריט התווסף בהצלחה!")
+       
         }
       } else {
         this.newProcurement.item.push(newItem);
@@ -244,8 +249,10 @@ export class NewProcurementComponent implements OnInit {
         this.newItem.measurement = "";
         this.newItem.supplierAmount = "";
         this.newItem.supplierPrice = 0;
-
+        this.itemExistInOrders = [];
+        this.openOrdersModal = false;
         this.toastr.success("פריט התווסף בהצלחה!")
+        
       }
 
 
