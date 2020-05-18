@@ -974,7 +974,10 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
             <td>{{i+1}}</td>
             <td>{{ line.itemName }}</td>
             <td>{{ line.itemNumber }}</td>
-            <td>{{ line.itemRemarks }}</td>
+            <td  *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.itemRemarks }}</td>
+            <td *ngIf="line.itemNumber==EditRowId">
+              <textarea #itemRemarks [value]="line.itemRemarks" ></textarea>
+            </td>
             <td>{{ line.measurement }}</td>
 
             <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.supplierPrice}}{{ line.coin }}</td>
