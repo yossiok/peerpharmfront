@@ -37,6 +37,8 @@
             <option value="">כל ההזמנות</option>
             <option value="ongoing">בטיפול</option>
             <option value="closed">הזמנה סגורה</option>
+            <option value="material">חומרי גלם</option>
+            <option value="component">קומפוננטות</option>
           </select>
         </div>
         <div class="col-3"></div>
@@ -372,7 +374,7 @@
                       <table>
                         <tr *ngFor="let arrival of purchase.arrivals">
                           <td>{{arrival.referenceNumber}}</td>
-                          <td>{{arrival.arrivalDate}}</td>
+                          <td>{{arrival.arrivalDate | date: 'dd/MM/yyyy'}}</td>
                           <td>{{arrival.arrivedAmount}}</td>
                         </tr>
                       </table>

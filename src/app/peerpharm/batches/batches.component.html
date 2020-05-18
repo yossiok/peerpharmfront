@@ -154,7 +154,7 @@
             </td>
             <td style="width:9%;" *ngIf="batch._id!==EditRowId"><button
                 (click)="openPrint(printBatch,batch.batchNumber)" class="btn btn-info">Print</button>
-              <button (click)="openTableValues(specValues,batch.item)" class="btn btn-info">Spec Values</button>
+              <button (click)="openTableValues(batch.item)" class="btn btn-info">Spec Values</button>
             </td>
             <td style="width:3%;" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)"><i
                 class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td>
@@ -228,8 +228,18 @@
   </div>
 </ng-template>
 
-<ng-template #specValues let-modal>
-  <div class="container">
+
+  <div *ngIf="specValuesModal == true" style="top:150px" class="container mx-auto my-auto rouneded shadow-lg bg-white fixed-top">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col-4">
+        <h2 class="text-info">Specification Values</h2>
+      </div>
+      <div class="col-3"></div>
+      <div class="col-1">
+        <i (click)="specValuesModal = false" class="fa fa-times text-info"></i>
+      </div>
+    </div>
     <div class="row text-center">
       <div class="col-12">
         <div class="modal-content">
@@ -357,4 +367,3 @@
     </div>
   </div>
 
-</ng-template>

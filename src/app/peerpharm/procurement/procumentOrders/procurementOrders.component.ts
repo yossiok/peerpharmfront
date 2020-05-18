@@ -165,7 +165,7 @@ export class ProcurementOrdersComponent implements OnInit {
         if (event.target.value != '') {
           this.procurementArrivals = []
           this.procurementArrivalsCopy = []
-          var tempArr = this.procurementDataCopy.filter(p => p.supplierName == event.target.value);
+          var tempArr = this.procurementDataCopy.filter(p => p.supplierName == event.target.value && p.status != 'canceled');
           for (let i = 0; i < tempArr.length; i++) {
             if (tempArr[i].status != 'closed') {
               for (let j = 0; j < tempArr[i].item.length; j++) {
@@ -556,6 +556,7 @@ debugger;
             case 'open':
               this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
               break
+        
 
           }
         } else {
@@ -568,6 +569,10 @@ debugger;
           var status = ev.target.value;
           if (status == 'ongoing') {
             this.procurementData = this.procurementData.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
+          } else if(status == 'material'){
+            this.procurementData = this.procurementData.filter(p=>p.orderType == 'material')
+          } else if(status == 'component'){
+            this.procurementData = this.procurementData.filter(p=>p.orderType == 'component')
           } else {
             this.procurementData = this.procurementData.filter(p => p.status == status)
           }
@@ -1107,6 +1112,7 @@ debugger;
                 this.newReference.arrivalDate = ''
                 this.newReference.arrivedAmount = ''
                 this.newReference.itemNumber = ''
+                this.newReference.referenceNumber = ''
               }
             }
 

@@ -36,6 +36,7 @@ export class BatchesComponent implements OnInit {
   ifConfirmed: Boolean = false;
   editValues: Boolean = false;
   showLoader: Boolean = true;
+  specValuesModal: Boolean = false;
   closeResult: any;
   batchPrint: any;
   item: any;
@@ -211,14 +212,9 @@ export class BatchesComponent implements OnInit {
   }
 
 
-  openTableValues(specValues, itemNumber) {
+  openTableValues(itemNumber) {
 
-      debugger;
-      this.modalService.open(specValues, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
+    this.specValuesModal = true;
       this.loadSpecTable(itemNumber)
     
  
@@ -441,6 +437,7 @@ export class BatchesComponent implements OnInit {
       } else {
         this.toastSrv.success('עודכן בהצלחה !')
         this.editValues = false;
+        this.specValuesModal = false;
         this.item = data;
         if (data.valueStatus == 'confirm') {
         this.ifConfirmed = true
