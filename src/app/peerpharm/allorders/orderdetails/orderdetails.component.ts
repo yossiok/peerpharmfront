@@ -1117,7 +1117,7 @@ debugger;
             item: item.itemNumber,
             costumer: this.costumer,
             productName: item.discription,
-            batch: item.batch,
+            batch: item.batch.trim(),
             packageP: packageP,
             qty: item.quantity,
             qtyRdy: '',
@@ -1160,10 +1160,13 @@ debugger;
 
 
   setBatch(item, batch, existBatch) {
+    debugger;
     if (this.inputBatch.nativeElement.value != undefined) { }
     this.inputBatch.nativeElement.value;
     let updatedBatch = this.inputBatch.nativeElement.value.toLowerCase();
     updatedBatch = updatedBatch.trim();
+    
+    updatedBatch = updatedBatch.replace(/\s/g, '')
     // batch=batch.toLowerCase();
     // batch=batch.trim();
     let cont = true;

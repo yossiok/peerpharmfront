@@ -47,6 +47,7 @@ export class NewProcurementComponent implements OnInit {
     orderNumber: '',
     itemRemarks: '',
     itemPrice: '',
+    componentNs:''
 
   }
   newProcurement = {
@@ -109,6 +110,7 @@ export class NewProcurementComponent implements OnInit {
             this.newItem.itemName = data[0].componentName;
             this.newItem.coin = data[0].coin
             this.newItem.measurement = data[0].unitOfMeasure
+            this.newItem.componentNs = data[0].componentNs
             var supplier = data[0].alternativeSuppliers.find(s=>s.supplierName == this.newProcurement.supplierName);
             this.newItem.supplierPrice = parseInt(supplier.price)
             if (data[0].frameQuantity || data[0].frameSupplier) {
@@ -201,7 +203,8 @@ export class NewProcurementComponent implements OnInit {
       supplierAmount: this.supplierAmount.nativeElement.value,
       supplierPrice: this.supplierPrice.nativeElement.value,
       itemPrice: Number(this.supplierPrice.nativeElement.value) * Number(this.supplierAmount.nativeElement.value),
-      itemRemarks: this.itemRemarks.nativeElement.value
+      itemRemarks: this.itemRemarks.nativeElement.value,
+      componentNs:this.newItem.componentNs,
     }
 
 

@@ -154,7 +154,7 @@
             </td>
             <td style="width:9%;" *ngIf="batch._id!==EditRowId"><button
                 (click)="openPrint(printBatch,batch.batchNumber)" class="btn btn-info">Print</button>
-              <button (click)="openTableValues(batch.item)" class="btn btn-info">Spec Values</button>
+              <button (click)="openTableValues(batch.item,batch.batchNumber)" class="btn btn-info">Spec Values</button>
             </td>
             <td style="width:3%;" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)"><i
                 class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td>
@@ -229,7 +229,7 @@
 </ng-template>
 
 
-  <div *ngIf="specValuesModal == true" style="top:150px" class="container mx-auto my-auto rouneded shadow-lg bg-white fixed-top">
+  <div *ngIf="specValuesModal == true" style="top:150px" class="container mx-auto my-auto rouneded shadow-lg fixed-top">
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
@@ -260,24 +260,24 @@
                   <td>{{item.phRemarks}}</td>
                   <td>{{item.phLimitsMin}}</td>
                   <td>{{item.phLimitsMax}}</td>
-                  <td *ngIf="editValues == false">{{item.phValue}}</td>
-                  <td *ngIf="editValues == true"><input [value]="item.phValue" #phValue type="text"></td>
+                  <td *ngIf="editValues == false">{{currBatch.phValue}}</td>
+                  <td *ngIf="editValues == true"><input [value]="currBatch.phValue" #phValue type="text"></td>
                   <td class="bg-light">PH</td>
                 </tr>
                 <tr>
                   <td>{{item.densityRemarks}}</td>
                   <td>{{item.densityLimitsMin}}</td>
                   <td>{{item.densityLimitsMax}}</td>
-                  <td *ngIf="editValues == false">{{item.densityValue}}</td>
-                  <td *ngIf="editValues == true"><input [value]="item.densityValue" #densityValue type="text"></td>
+                  <td *ngIf="editValues == false">{{currBatch.densityValue}}</td>
+                  <td *ngIf="editValues == true"><input [value]="currBatch.densityValue" #densityValue type="text"></td>
                   <td class="bg-light">צפיפות</td>
                 </tr>
                 <tr>
                   <td>{{item.viscosityRemarks}}</td>
                   <td>{{item.viscosityLimitsMin}}</td>
                   <td>{{item.viscosityLimitsMax}}</td>
-                  <td *ngIf="editValues == false">{{item.viscosityValue}}</td>
-                  <td *ngIf="editValues == true"><input [value]="item.viscosityValue" #viscosityValue type="text"></td>
+                  <td *ngIf="editValues == false">{{currBatch.viscosityValue}}</td>
+                  <td *ngIf="editValues == true"><input [value]="currBatch.viscosityValue" #viscosityValue type="text"></td>
                   <td class="bg-light">
                     <table>
                       <tbody>
@@ -309,22 +309,22 @@
                 <tr>
                   <td>{{item.colorRemarks}}</td>
                   <td colspan="2">{{item.color}}</td>
-                  <td *ngIf="editValues == false">{{item.colorValue}}</td>
-                  <td *ngIf="editValues == true"><input [value]="item.colorValue" #colorValue type="text"></td>
+                  <td *ngIf="editValues == false">{{currBatch.colorValue}}</td>
+                  <td *ngIf="editValues == true"><input [value]="currBatch.colorValue" #colorValue type="text"></td>
                   <td class="bg-light">צבע</td>
                 </tr>
                 <tr>
                   <td>{{item.textureRemarks}}</td>
                   <td colspan="2">{{item.textureSpec}}</td>
-                  <td *ngIf="editValues == false">{{item.textureValue}}</td>
-                  <td *ngIf="editValues == true"><input [value]="item.textureValue" #textureValue type="text"></td>
+                  <td *ngIf="editValues == false">{{currBatch.textureValue}}</td>
+                  <td *ngIf="editValues == true"><input [value]="currBatch.textureValue" #textureValue type="text"></td>
                   <td class="bg-light">מרקם</td>
                 </tr>
                 <tr>
                   <td>{{item.scentRemarks}}</td>
                   <td colspan="2">{{item.scentSpec}}</td>
-                  <td *ngIf="editValues == false">{{item.scentValue}}</td>
-                  <td *ngIf="editValues == true"><select selected="item.scentValue" #scentValue
+                  <td *ngIf="editValues == false">{{currBatch.scentValue}}</td>
+                  <td *ngIf="editValues == true"><select selected="currBatch.scentValue" #scentValue
                       [value]="item.scentValue">
                       <option value="normal">Normal</option>
                       <option value="notNormal">Not Normal</option>

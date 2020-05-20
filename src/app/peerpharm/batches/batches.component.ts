@@ -31,6 +31,7 @@ export class BatchesComponent implements OnInit {
   EditRowId: any = "";
   hasMoreItemsToload: boolean = true;
   currentDoc: any;
+  currBatch: any;
   user: UserInfo;
   alowUserEditBatches: Boolean = false;
   ifConfirmed: Boolean = false;
@@ -134,6 +135,7 @@ export class BatchesComponent implements OnInit {
   }
 
   getAllBatches() {
+    debugger;
     this.batchService.getAllBatches().subscribe((res) => {
       console.log(res);
       this.batches = res;
@@ -141,6 +143,7 @@ export class BatchesComponent implements OnInit {
       this.batches.map(batch => {
         if (batch.weightKg != null && batch.weightQtyLeft != null) {
           if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
+          else if (batch.scheduled == 'yes') batch.color = 'yellow'
           else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
           else batch.color = "white";
           if (res.length == res.length) {
@@ -212,8 +215,13 @@ export class BatchesComponent implements OnInit {
   }
 
 
-  openTableValues(itemNumber) {
+  openTableValues(itemNumber,batchNumber) {
 
+    this.batchService.getBatchData(batchNumber).subscribe(data=>{
+      debugger;
+      this.currBatch = data[0]
+    })
+    
     this.specValuesModal = true;
       this.loadSpecTable(itemNumber)
     
@@ -422,15 +430,22 @@ export class BatchesComponent implements OnInit {
       date: this.lastValueUpdate,
       user: this.userValueUpdate
     }
-    this.item.phValue = this.phValue.nativeElement.value;
-    this.item.viscosityValue = this.viscosityValue.nativeElement.value;
-    this.item.colorValue = this.colorValue.nativeElement.value;
-    this.item.textureValue =this.textureValue.nativeElement.value;
-    this.item.scentValue = this.scentValue.nativeElement.value;
-    this.item.densityValue = this.densityValue.nativeElement.value;
-    this.item.lastUpdatedValues.push(obj)
 
-    this.itemService.updateItemValues(this.item).subscribe(data => {
+    var batchObj = {
+      batchNumber:this.currBatch.batchNumber,
+      phValue:this.phValue.nativeElement.value,
+    viscosityValue:this.viscosityValue.nativeElement.value,
+    colorValue:this.colorValue.nativeElement.value,
+    textureValue:this.textureValue.nativeElement.value,
+    scentValue:this.scentValue.nativeElement.value,
+    densityValue:this.densityValue.nativeElement.value,
+    lastUpdatedValues:[]
+
+    }
+    
+    batchObj.lastUpdatedValues.push(obj)
+
+    this.itemService.updateItemValues(batchObj).subscribe(data => {
       if (data.msg == 'cantUpdate') {
         this.toastSrv.error('Cant update after confirmation')
         this.editValues = false;

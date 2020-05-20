@@ -126,7 +126,7 @@ export class InventoryNewRequestComponent implements OnInit {
             this.inventoryReqForm.controls['deliveryDate'].reset(this.currentDate());
             this.inventoryReqForm.controls['currDate'].reset(this.currentDate());
             this.inventoryReqForm.controls['fromWH'].setValue('Kasem');
-            this.inventoryReqForm.controls['toWH'].setValue('Rosh haayin');
+            this.inventoryReqForm.controls['toWH'].setValue('Filling');
             this.inventoryReqForm.controls['reqList'].setValue(this.reqList);
             console.log('this.inventoryReqForm.value.reqList\n',this.inventoryReqForm.value.reqList);
 

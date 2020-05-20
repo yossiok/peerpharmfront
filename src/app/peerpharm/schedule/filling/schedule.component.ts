@@ -222,6 +222,7 @@ export class ScheduleComponent implements OnInit {
         //  sced.date3 = pipe.transform(sced.date, 'short');
       });
       this.scheduleData = res;
+      this.selectedArr = []
     });
   }
 
@@ -495,7 +496,7 @@ export class ScheduleComponent implements OnInit {
   setDone() {}
 
   moveAllOpenScedToToday() {
-
+  debugger;
     if(this.selectedArr.length > 0) {
       this.scheduleService.moveToNextDay(this.selectedArr).subscribe(data=>{
         if(data.msg == "success"){
