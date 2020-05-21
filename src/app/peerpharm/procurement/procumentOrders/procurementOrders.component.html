@@ -1100,6 +1100,16 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
             <td>{{item.fixedPrice}}</td>
             <td>{{item.chargeSupplier}}</td>
           </tr>
+          <tr *ngIf="!item.changedQuantity && !item.changedItemPrice">
+            <td>{{item.itemNumber}}</td>
+            <td>{{item.itemName}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.supplierPrice}}</td>
+            <td>{{item.price}}</td>
+            <td class="text-success">{{item.fixedQuantity}}</td>
+            <td>{{item.fixedPrice}}</td>
+            <td>{{item.chargeSupplier}}</td>
+          </tr>
 
         </ng-container>
         <tr>

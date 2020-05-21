@@ -331,7 +331,7 @@ export class ProcurementOrdersComponent implements OnInit {
     if(invoice.invoices[i].changedQuantity){
       invoice.invoices[i].fixedQuantity = Math.abs(invoice.invoices[i].quantity - invoice.invoices[i].changedQuantity)
     } else {
-      invoice.invoices[i].fixedQuantity = this.formatNumber(invoice.invoices[i].quantity)
+      invoice.invoices[i].fixedQuantity = invoice.invoices[i].quantity
     }
     if(invoice.invoices[i].changedItemPrice){
       invoice.invoices[i].fixedPrice = this.formatNumber(Math.abs(Number(invoice.invoices[i].supplierPrice) - invoice.invoices[i].changedItemPrice))
@@ -339,12 +339,12 @@ export class ProcurementOrdersComponent implements OnInit {
       invoice.invoices[i].fixedPrice = this.formatNumber(Number(invoice.invoices[i].supplierPrice))
     }
    
-    invoice.invoices[i].chargeSupplier = invoice.invoices[i].fixedPrice*invoice.invoices[i].fixedQuantity
-  
+    invoice.invoices[i].chargeSupplier = Number(invoice.invoices[i].fixedPrice)*Number(invoice.invoices[i].fixedQuantity)
+    invoice.invoices[i].chargeSupplier = JSON.stringify(invoice.invoices[i].chargeSupplier).slice(0,7)
     
-    if(invoice.invoices[i].changedQuantity || invoice.invoices[i].changedItemPrice) {
-      sum += invoice.invoices[i].chargeSupplier
-    }
+
+      sum += Number(invoice.invoices[i].chargeSupplier)
+    
     
   }
   this.sumCharge = sum
