@@ -41,7 +41,11 @@
             <option value="component">קומפוננטות</option>
           </select>
         </div>
-        <div class="col-3"></div>
+        <div class="col-1">
+          טען את כל הפריטים
+          <button (click)="loadPurchasesItems()" class="btn btn-info form-control">Load Items</button>
+        </div>
+        <div class="col-2"></div>
         <div class="col-2">
           <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
           (click)="exportAsXLSX('purchaseData')">

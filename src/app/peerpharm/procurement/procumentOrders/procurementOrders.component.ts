@@ -142,6 +142,20 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
 
+  loadPurchasesItems(){
+    debugger;
+    var tempArr = []
+    for (let i = 0; i < this.procurementData.length; i++) {
+    for (let j = 0; j < this.procurementData[i].item.length; j++) {
+      tempArr.push(this.procurementData[i].item[j])
+      
+    }
+      
+    }
+    tempArr
+    this.excelService.exportAsExcelFile(tempArr, 'data');
+  }
+
   fillMaterialName(ev) {
     debugger;
     var itemNumber = ev.target.value;
@@ -168,7 +182,7 @@ export class ProcurementOrdersComponent implements OnInit {
           this.procurementArrivalsCopy = []
           var tempArr = this.procurementDataCopy.filter(p => p.supplierName == event.target.value && p.status != 'canceled');
           for (let i = 0; i < tempArr.length; i++) {
-            if (tempArr[i].status != 'closed') {
+            
               for (let j = 0; j < tempArr[i].item.length; j++) {
 
                 var obj = {
@@ -200,7 +214,7 @@ export class ProcurementOrdersComponent implements OnInit {
                 this.procurementArrivalsCopy.push(obj)
 
               }
-            }
+            
 
           }
 
@@ -385,8 +399,8 @@ export class ProcurementOrdersComponent implements OnInit {
           for (let l = 0; l < this.newBill.certificateNumbers.length; l++) {
             
             
-          
-          if (purchases[i].item[j].arrivals[k].referenceNumber == this.newBill.certificateNumbers[l]) {
+           var refNumber = this.newBill.certificateNumbers[l].substr(this.newBill.certificateNumbers[l].length - 4); // => "1"
+          if (purchases[i].item[j].arrivals[k].referenceNumber == refNumber) {
             obj.itemNumber = purchases[i].item[j].itemNumber
             obj.itemName = purchases[i].item[j].itemName
             obj.arrivalDate = purchases[i].item[j].arrivals[k].arrivalDate
@@ -418,7 +432,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.procurementservice.saveNewInvoice(supInvoiceNum,supplierNumber,status, this.certificate).subscribe(data => {
       debugger;
       if (data) {
-      
+        this.toastr.success('חשבונית נשמרה בהצלחה')
       }
     })
 
