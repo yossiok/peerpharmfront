@@ -107,6 +107,7 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild('arrivedAmount') arrivedAmount: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
   @ViewChild('orderAmount') orderAmount: ElementRef;
+  @ViewChild('orderCoin') orderCoin: ElementRef;
   @ViewChild('referenceNumber') referenceNumber: ElementRef;
   @ViewChild('arrivalDate') arrivalDate: ElementRef;
   @ViewChild('recommendRemarks') recommendRemarks: ElementRef;
@@ -1214,12 +1215,13 @@ debugger;
     var orderAmount = this.orderAmount.nativeElement.value;
     var supplierPrice = this.supplierPrice.nativeElement.value;
     var itemRemarks = this.itemRemarks.nativeElement.value;
+    var orderCoin = this.orderCoin.nativeElement.value;
 
 
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice,itemRemarks).subscribe(data => {
+      this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice,itemRemarks,orderCoin).subscribe(data => {
         debugger
         for (let i = 0; i < this.procurementData.length; i++) {
           if (this.procurementData[i].orderNumber == orderNumber) {
@@ -1227,6 +1229,7 @@ debugger;
             this.procurementData[i].item[index].supplierAmount = orderAmount
             this.procurementData[i].item[index].supplierPrice = supplierPrice
             this.procurementData[i].item[index].itemRemarks = itemRemarks
+            this.procurementData[i].item[index].coin = orderCoin
 
             this.toastr.success(" עודכן בהצלחה !")
             this.edit('');

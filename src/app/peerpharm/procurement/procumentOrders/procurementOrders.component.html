@@ -960,6 +960,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
           <th>Item Number</th>
           <th>Item Remarks</th>
           <th>Measurement</th>
+          <th>Price</th>
           <th>Coin</th>
           <th>Amount</th>
           <!-- <th>Arrival Date</th>
@@ -984,9 +985,13 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
             </td>
             <td>{{ line.measurement }}</td>
 
-            <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.supplierPrice}}{{ line.coin }}</td>
+            <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.supplierPrice}}</td>
             <td *ngIf="line.itemNumber==EditRowId">
               <input #supplierPrice [value]="line.supplierPrice" style="width:50px;" type="text">
+            </td>
+            <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.coin)">{{ line.coin }}</td>
+            <td *ngIf="line.itemNumber==EditRowId">
+              <input #orderCoin [value]="line.coin" style="width:50px;" type="text">
             </td>
 
             <td *ngIf="line.itemNumber==EditRowId">

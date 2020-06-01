@@ -141,7 +141,7 @@
         </div>
         <div *ngIf="stockType=='component'" class="col-sm-1">
           <br>
-          <button style="margin-top:7px;" class="btn topBtn btn-warning" type="reset"><b>נקה שדות חיפוש</b></button>
+          <button (click)="clearSearchFields()" style="margin-top:7px;" class="btn topBtn btn-warning" type="reset"><b>נקה שדות חיפוש</b></button>
         </div>
       </div>
     </form>

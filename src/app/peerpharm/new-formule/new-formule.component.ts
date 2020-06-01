@@ -94,7 +94,7 @@ export class NewFormuleComponent implements OnInit {
     itemName: '',
     itemNumber: '',
     percentage: '',
-    remarks: '',
+    itemRemarks: '',
 
   }
   baseItem = {
@@ -552,7 +552,7 @@ export class NewFormuleComponent implements OnInit {
   resetItemForm(){
     this.newItem.itemName = ""
     this.newItem.itemNumber = ""
-    this.newItem.remarks = ""
+    this.newItem.itemRemarks = ""
     this.newItem.percentage = ""
   }
 

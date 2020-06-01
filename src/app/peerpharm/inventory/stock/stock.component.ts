@@ -1763,6 +1763,16 @@ export class StockComponent implements OnInit {
    }
     }
 
+    clearSearchFields(){
+      this.filterbyNum.nativeElement.value = ''
+      this.filterByCategory.nativeElement.value = ''
+      this.filterByCmptName.nativeElement.value = ''
+      this.filterBySupplier.nativeElement.value = ''
+      this.filterByType.nativeElement.value = ''
+      this.filterBySupplierN.nativeElement.value = ''
+     
+    }
+
   clearFields() { 
 
     this.resMaterial  = {

@@ -103,6 +103,7 @@
                      <th>תאריך</th>
                      <th>מחיר</th>
                      <th>כמות</th>
+                     <th>כמות שהגיעה</th>
                      <th>סטטוס</th>
                    </thead>
                    <tbody>
@@ -111,6 +112,7 @@
                         <td>{{item.orderDate | date: 'dd/MM/yyyy'}}</td>
                         <td>{{item.price}}{{item.coin}} </td>
                         <td>{{item.amount}}</td>
+                        <td>{{item.arrivedAmount}}</td>
                         <td>{{item.status}}</td>
                      </tr>
                    </tbody>

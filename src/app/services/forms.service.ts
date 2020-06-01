@@ -98,6 +98,21 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/addPalletToExistPackList";
     return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
   }
+  addLineToExistPallet(line){
+    debugger;
+    let url = this.baseUrl + "formDetails/addLineToExistPallet";
+    return this.http.post(url, JSON.stringify(line), this.options).pipe(map(res => res.json()));
+  }
+  addPalletToExistPL(pallet){
+    debugger;
+    let url = this.baseUrl + "formDetails/addPalletToExistPL";
+    return this.http.post(url, JSON.stringify(pallet), this.options).pipe(map(res => res.json()));
+  }
+  createNewPallet(pallet){
+    debugger;
+    let url = this.baseUrl + "formDetails/createNewPallet";
+    return this.http.post(url, JSON.stringify(pallet), this.options).pipe(map(res => res.json()));
+  }
   deletePalletById(pallet){
     debugger;
     let url = this.baseUrl + "formDetails/deletePalletById";
@@ -165,6 +180,10 @@ export class FormsService {
   }
   getAllReadyForBillPLs() {
     let url = this.baseUrl + 'formDetails/getAllReadyForBillPLs';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getAllClosedPallets() {
+    let url = this.baseUrl + 'formDetails/getAllClosedPallets';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getTotalUnits() {
