@@ -308,6 +308,19 @@ saveEdit(currdoc) {
 addItemToFormule(){
   debugger;
 
+  var newPhase = {
+    phaseName:'',
+    remarks:'',
+    formuleId:'',
+    items:[]
+}
+
+var newItem = {
+  itemName:'',
+  itemNumber:'',
+  percentage:'',
+  remarks:''
+}
   this.newItem.formuleNumber = this.currentFormuleNumber
   this.formuleService.addItemToFormule(this.newItem).subscribe(data=>{
     debugger;
@@ -315,7 +328,22 @@ addItemToFormule(){
     if(data) {
       var formule = this.allFormules.find(f=>f._id == data._id)
       var phase = formule.phases.find(p=>p.phaseName == this.newItem.phaseName);
-     phase.items.push(this.newItem)
+      if(phase){
+        var objToPush = {...this.newItem}
+        phase.items.push(objToPush)
+        this.toastSrv.success("פריט נוסף בהצלחה!")
+      } else {
+        newPhase.formuleId = formule._id;
+        newPhase.phaseName = this.newItem.phaseName;
+        newPhase.remarks = this.newItem.phaseRemarks
+        newItem.itemName = this.newItem.itemName
+        newItem.itemNumber = this.newItem.itemNumber
+        newItem.percentage = this.newItem.percentage
+        newItem.remarks = this.newItem.remarks
+        newPhase.items.push(newItem)
+        formule.phases.push(newPhase)
+      }
+    
     this.newItem.formuleNumber = "";
     this.newItem.phaseName = "";
     this.newItem.phaseRemarks = "";
@@ -323,7 +351,7 @@ addItemToFormule(){
     this.newItem.itemNumber = "";
     this.newItem.percentage = "";
     this.newItem.remarks = "";
-    this.toastSrv.success("פריט נוסף בהצלחה!")
+   
     }
 
   })
