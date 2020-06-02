@@ -521,7 +521,7 @@
 
 
 
-  <div class="container bg-light rounded shadow fixed-top mx-auto my-auto border border-success"
+  <div style="top:20px;" class="container bg-light rounded fixed-top shadow mx-auto my-auto border border-success"
     *ngIf="openModal == true && stockType=='component'">
     <mat-tab-group mat-align-tabs="center">
       <mat-tab label="Component Details">
@@ -538,6 +538,17 @@
             </div>
           </div>
 
+          <div class="row text-center fixNoaStupidStuff">
+            <div class="col-3"></div>
+            <div class="col-3">
+              <label class="form-control">שם פריט</label>
+            </div>
+            <div class="col-3">
+              <input class="form-control" type="text" [(ngModel)]="resCmpt.componentName">
+            </div>
+            <div class="col-3"></div>
+          </div>
+
           <div dir="rtl" class="row text-center fixNoaStupidStuff">
             <div class="col-4 fixNoaStupidStuff">
               <h5 class="text-success">פרטי פריט</h5>
@@ -552,13 +563,13 @@
           <div dir="rtl" class="row text-center fixNoaStupidStuff">
             <div class="col-2 fixNoaStupidStuff">
               <label class="form-control">מספר פריט</label>
-              <label class="form-control">שם פריט</label>
+            
               <label class="form-control">שם קומקס</label>
               <label class="form-control">פריט חלופי</label>
             </div>
             <div class="col-2 fixNoaStupidStuff">
-              <input class="form-control" type='text' [(ngModel)]="resCmpt.componentN">
-              <input class="form-control" type="text" [(ngModel)]="resCmpt.componentName">
+              <input (change)="checkIfItemExist($event)" class="form-control" type='text' [(ngModel)]="resCmpt.componentN">
+            
               <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
               <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
 

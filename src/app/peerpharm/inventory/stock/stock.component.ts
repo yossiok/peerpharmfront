@@ -1658,6 +1658,19 @@ export class StockComponent implements OnInit {
     }
   }
 
+
+  checkIfItemExist(ev){
+  var itemNumber = ev.target.value;
+  if(itemNumber != ''){
+    this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data=>{
+      if(data){
+        this.toastSrv.error('שים לב ! מספר זה קיים במערכת')
+      } else {
+        console.log('ok')
+      }
+    })
+  }
+  }
  
 
   closeAmountsData() {
