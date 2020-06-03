@@ -237,7 +237,7 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'orderNumber':
         var tempArr = [...this.procurementArrivals];
         if (event.target.value != '') {
-          this.procurementArrivals = tempArr.filter(p => p.comaxNumber == event.target.value)
+          this.procurementArrivals = tempArr.filter(p => p.orderNumber == event.target.value)
         } else {
           this.procurementArrivals = this.procurementArrivalsCopy
         }

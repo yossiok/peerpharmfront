@@ -88,6 +88,11 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/addNewPackedList";
     return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
   }
+  movePalletToPL(packedList){
+    debugger;
+    let url = this.baseUrl + "formDetails/movePalletToPL";
+    return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
+  }
   updatePLStatus(packedList){
     debugger;
     let url = this.baseUrl + "formDetails/updatePLStatus";

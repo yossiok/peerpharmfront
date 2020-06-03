@@ -13,6 +13,7 @@ export class QaPalletsComponent implements OnInit {
 
   EditRow: any;
   EditRowTwo: any;
+  editBill: any;
   customerForPL: any;
   unitsToPallet: any;
   currentPallet: any;
@@ -23,6 +24,7 @@ export class QaPalletsComponent implements OnInit {
   allClosedPalletsCopy: any[]
   selectedArr: any[] = [];
   showProductsBeforeDelivery: boolean = false;
+  deleteOrMoveModal: boolean = false;
   itemsInPalletModal: boolean = false;
   currCustomer: string;
   currCustomerNumber: string;
@@ -31,7 +33,6 @@ export class QaPalletsComponent implements OnInit {
   showAllReadyCostumers: boolean = false;
   showAllClosedPallets: boolean = false;
   showAllPackedLists: boolean = false;
-  showBillNumber: boolean = false;
   combineModal: boolean = false;
   palletToAdd: any;
   lineToAdd: any;
@@ -66,7 +67,7 @@ export class QaPalletsComponent implements OnInit {
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.insertBill();
+    this.editBillNumber('')
     this.edit('', '')
   }
 
@@ -78,13 +79,12 @@ export class QaPalletsComponent implements OnInit {
     this.getCostumers();
   }
 
-  insertBill() {
-    if (this.showBillNumber == false) {
-      this.showBillNumber = true;
+  editBillNumber(id){
+    if(id != ''){
+      this.editBill = id
     } else {
-      this.showBillNumber = false;
+      this.editBill = ''
     }
-
   }
 
   edit(itemNumber, customerName) {
@@ -142,6 +142,27 @@ export class QaPalletsComponent implements OnInit {
 
   }
 
+  movePalletToPL(){
+    debugger;
+    this.currentPallet
+    this.currentPallet.packListID = this.customerForPL
+    var objToSend = {...this.currentPallet}
+    this.formService.movePalletToPL(objToSend).subscribe(data=>{
+    if(data){
+      debugger;
+      this.toastr.success('משטח הועבר בהצלחה !')
+      this.getAllPackedLists();
+      for (let i = 0; i < this.selectedArr.length; i++) {
+       if(this.selectedArr[i]._id == this.currentPallet._id){
+        this.selectedArr.splice(i, 1);
+       }
+        
+      }
+
+    }
+    })
+  }
+
   isSelected(ev, pallet) {
     debugger
     if (ev.target.checked == true) {
@@ -197,7 +218,7 @@ export class QaPalletsComponent implements OnInit {
           }
 
         }
-        this.showBillNumber = false;
+        
         this.toastr.success("מספר חשבונית עודכן בהצלחה!")
       }
 
@@ -348,20 +369,25 @@ export class QaPalletsComponent implements OnInit {
     this.itemsInPalletModal = true;
   }
 
-  deletePallet(pallet) {
-    if (confirm("האם למחוק משטח זה ?")) {
-      debugger;
-      var palletToDelete = {
-        id: pallet._id,
-        costumerName: pallet.customerName,
-        costumerId: this.currCustomerId
-      }
-      this.formService.deletePalletById(palletToDelete).subscribe(data => {
-        this.allPackedLists = data;
+  delOrMovePallet(pallet) {
+    debugger;
 
-      })
-    }
+    this.deleteOrMoveModal = true;
+    this.currentPallet = pallet
+    
+    
+    // if (confirm("האם למחוק משטח זה ?")) {
+    //   debugger;
+    //   var palletToDelete = {
+    //     id: pallet._id,
+    //     costumerName: pallet.customerName,
+    //     costumerId: this.currCustomerId
+    //   }
+    //   this.formService.deletePalletById(palletToDelete).subscribe(data => {
+    //     this.allPackedLists = data;
 
+    //   })
+    // }
 
   }
 
@@ -387,20 +413,21 @@ export class QaPalletsComponent implements OnInit {
 
   createNewPL() {
     debugger;
-
-    this.packedList.costumerName = this.customerForPL
-
-    this.formService.addNewPackedList(this.packedList).subscribe(data => {
-      if (data) {
-        this.toastr.success("טופס נשמר בהצלחה")
-        this.allPackedLists = data;
-        this.getAllClosedPallets();
-
-      }
-
-
-    })
-
+    if(this.customerForPL != '' && this.customerForPL != undefined){
+      this.packedList.costumerName = this.customerForPL
+      this.formService.addNewPackedList(this.packedList).subscribe(data => {
+        if (data) {
+          this.toastr.success("טופס נשמר בהצלחה")
+          this.allPackedLists = data;
+          this.getAllClosedPallets();
+  
+        }
+  
+  
+      })
+    }  else {
+      this.toastr.error('אנא בחר לקוח')
+    }
   }
 
   sendForBill(packlist) {

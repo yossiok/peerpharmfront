@@ -1660,10 +1660,11 @@ export class StockComponent implements OnInit {
 
 
   checkIfItemExist(ev){
+    debugger;
   var itemNumber = ev.target.value;
   if(itemNumber != ''){
     this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data=>{
-      if(data){
+      if(data.length > 0){
         this.toastSrv.error('שים לב ! מספר זה קיים במערכת')
       } else {
         console.log('ok')

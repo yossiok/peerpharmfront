@@ -73,7 +73,7 @@
         <div class="modal-content" id='modelC'>
           <div dir="rtl" id="material-header" class="modal-header">
             <div>
-              <span class="close" id="closeId3" (click)="showAllReadyCostumers=false;">&times;</span>
+              <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllReadyCostumers=false;">&times;</span>
             </div>
 
           </div>
@@ -90,7 +90,7 @@
                 <tr *ngFor="let packlist of allPackedLists;let i = index">
                   <td>{{i+1}}</td>
                   <td><label (click)="chooseCostumerToAdd(packlist)"
-                      style="color:blue;text-decoration: underline;">{{packlist.costumerName}}</label></td>
+                      style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
                 </tr>
               </tbody>
 
@@ -102,14 +102,14 @@
       </div>
 
 
-      <div  style="height:0px !important" *ngIf="showAllClosedPallets==true" id="myModal3" class="modal3 mx-auto my-auto rounded shadow-lg"
+      <div  style="height:700px !important;overflow: auto;" *ngIf="showAllClosedPallets==true" id="myModal3" class="modal3 mx-auto my-auto rounded shadow-lg"
         style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
 
         <!-- Modal content -->
         <div class="modal-content" id='modelC'>
           <div dir="rtl" id="material-header" class="modal-header">
             <div>
-              <span class="close" id="closeId3" (click)="showAllClosedPallets=false;">&times;</span>
+              <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllClosedPallets=false;">&times;</span>
             </div>
 
           </div>
@@ -128,7 +128,7 @@
                   <td>{{i+1}}</td>
                   <td >{{pallet.palletNumber}}</td>
                   <td><label (click)="choosePalletToAdd(pallet)"
-                      style="color:blue;text-decoration: underline;">{{pallet.customer}}</label></td>
+                      style="color:blue;text-decoration: underline;cursor: pointer;">{{pallet.customer}}</label></td>
                 </tr>
               </tbody>
 
@@ -188,7 +188,7 @@
                 <tr *ngFor="let pallet of allClosedPallets;let i = index">
                   <td>{{i+1}}</td>
                   <td><input class="form-control" (change)="selectedForPL($event,pallet)" type="checkbox"></td>
-                  <td (click)="viewItemsInPallet(pallet)" style="color:blue;text-decoration: underline;">{{pallet.palletNumber}}</td>
+                  <td (click)="viewItemsInPallet(pallet)" style="color:blue;text-decoration: underline;cursor: pointer;">{{pallet.palletNumber}}</td>
                   <td [ngClass]="checkPLstatus(pallet)">{{pallet.plStatus}}</td>
                   <td>{{pallet.customer}}</td>
                   <!-- <td><button class="btn btn-info form-control w-50" (click)="addPalletToPackList(pallet)">הוסף לרשימת אריזה</button></td> -->
@@ -201,20 +201,7 @@
           </div>
         </div>
 
-        <div class="row text-center mt-3">
-          <div class="col-3"></div>
-          <div class="col-3">
-            <input [(ngModel)]="customerForPL" list="customers" class="form-control">
-            <datalist id="customers">
-              <option *ngFor="let customer of allCustomers">{{customer.costumerName}}</option>
-            </datalist>
-          </div>
-          <div class="col-3">
-            <button (click)="createNewPL()" class="form-control btn btn-info">רשימת אריזה חדשה</button>
-          </div>
-       
-          <div class="col-3"></div>
-        </div>
+      
 
       </div>
 
@@ -226,7 +213,7 @@
           <h3 class="text-info">Pallet Details</h3>
         </div>
         <div class="col-4">
-        <i (click)="itemsInPalletModal = false" class="fa fa-times text-info"></i>
+        <i (click)="itemsInPalletModal = false" style="cursor: pointer;" class="fa fa-times text-info"></i>
         </div>
       </div>
 
@@ -262,7 +249,7 @@
         <div class="modal-content" id='modelC'>
           <div dir="rtl" id="material-header" class="modal-header">
             <div>
-              <span class="close" id="closeId3" (click)="showAllPackedLists=false;">&times;</span>
+              <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllPackedLists=false;">&times;</span>
             </div>
 
           </div>
@@ -279,7 +266,7 @@
                 <tr *ngFor="let pl of allReadyPackedLists;let i = index">
                   <td>{{i+1}}</td>
                   <td><label (click)="choosePLToAdd(pl)"
-                      style="color:blue;text-decoration: underline;">{{pl.costumerName}}</label></td>
+                      style="color:blue;text-decoration: underline;cursor: pointer;">{{pl.costumerName}}</label></td>
                 </tr>
               </tbody>
 
@@ -315,6 +302,7 @@
               <thead class="bg-info text-white">
                 <tr>
                   <th>#</th>
+                  <th>מספר רשימה</th>
                   <th>שם לקוח</th>
                   <th>מספר לקוח</th>
                   <th>נשלח לחשבונית</th>
@@ -324,8 +312,9 @@
               <tbody>
                 <tr *ngFor="let packlist of allPackedLists;let i = index">
                   <td>{{i+1}}</td>
+                  <td>{{packlist.packListNumber}}</td>
                   <td><label (click)="openProductForm(packlist)"
-                      style="color:blue;text-decoration: underline;">{{packlist.costumerName}}</label></td>
+                      style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
                   <td>{{packlist.costumerNumber}}</td>
                   <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
                   <td><button class="btn btn-info" (click)="sendForBill(packlist)">שלח לחשבונית</button></td>
@@ -336,6 +325,22 @@
 
           </div>
         </div>
+
+        <div class="row text-center mt-3">
+          <div class="col-3"></div>
+          <div class="col-3">
+            <input [(ngModel)]="customerForPL" list="customers" class="form-control">
+            <datalist id="customers">
+              <option *ngFor="let customer of allCustomers">{{customer.costumerName}}</option>
+            </datalist>
+          </div>
+          <div class="col-3">
+            <button (click)="createNewPL()" class="form-control btn btn-info">רשימת אריזה חדשה</button>
+          </div>
+       
+          <div class="col-3"></div>
+        </div>
+
       </div>
 
 
@@ -366,22 +371,19 @@
                   <th>מספר לקוח</th>
                   <th>מוכן לחשבונית</th>
                   <th>מספר לחשבונית</th>
-                  <th *ngIf="showBillNumber==true"></th>
+              
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
                   <td>{{i+1}}</td>
-                  <td><label (click)="openProductForm(packlist)"
-                      style="color:blue;text-decoration: underline;">{{packlist.costumerName}}</label></td>
+                  <td><label (click)="openProductForm(packlist)" style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
                   <td>{{packlist.costumerNumber}}</td>
                   <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
-                  <td (click)="insertBill()" *ngIf="showBillNumber==false">{{packlist.billNumber}}</td>
-                  <td *ngIf="showBillNumber==true">
-                    <input type="text" [value]="packlist.billNumber" #billNumberToUpdate>
-                  </td>
-                  <td *ngIf="showBillNumber==true"><i (click)="saveBillNumber(packlist._id)" class="fa fa-save text-info"></i>
+                  <td *ngIf="packlist._id != editBill" style="cursor: pointer;" (click)="editBillNumber(packlist._id)" >{{packlist.billNumber}}</td>
+                  <td *ngIf="editBill == packlist._id"><input type="text" [value]="packlist.billNumber" #billNumberToUpdate></td>
+                  <td *ngIf="editBill == packlist._id"><i (click)="saveBillNumber(packlist._id)" style="cursor: pointer;" class="fa fa-save text-info"></i>
                   </td>
                   <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
                 </tr>
@@ -406,7 +408,7 @@
     <div class="modal-content" id='modelC'>
       <div dir="rtl" id="material-header" class="modal-header">
         <div>
-          <span class="close" id="closeId3" (click)="showProductsBeforeDelivery=false;selectedArr = []">&times;</span>
+          <span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDelivery=false;selectedArr = []">&times;</span>
         </div>
         <div>
           <h4 style="margin-top:32px;">מספר טופס:</h4>
@@ -452,7 +454,7 @@
             <ng-container *ngFor="let pallet of selectedArr;let i = index">
             <tr *ngFor="let line of pallet.lines" >
               <td>{{pallet.palletNumber}}</td>
-              <td (click)="deletePallet(pallet)">{{line.itemNumber}}</td>
+              <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">{{line.itemNumber}}</td>
               <!-- <td></td> -->
               <td>{{line.kartonQuantity}}</td>
               <td>{{line.unitsInKarton}}</td>
@@ -474,6 +476,45 @@
   </div>
 </div>
 
+
+<div *ngIf="deleteOrMoveModal == true" style="top:150px" class="container bg-white rounded shadow-lg mx-auto my-auto text-center fixed-top p-2 border border-info">
+  <div class="row mt-3">
+    <div class="col-4">
+     
+    </div>
+    <div class="col-4">
+      <h3 class="text-info">העברת משטח לרשימת אריזה</h3>
+    </div>
+    <div class="col-4">
+    <i style="cursor: pointer;" (click)="deleteOrMoveModal = false" class="fa fa-times"></i>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row mt-5">
+    <div class="col-3"></div>
+    <div class="col-3">
+    <button (click)="movePalletToPL()" class="btn btn-info form-control">העבר משטח</button>
+    </div>
+    <div class="col-3">
+      <input [(ngModel)]="customerForPL" class="form-control" list="packinglists">
+      <datalist id="packinglists">
+        <option *ngFor="let pl of allPackedLists" [value]="pl._id">{{pl.packListNumber}}</option>
+      </datalist>
+    </div>
+    <div class="col-3"></div>
+  </div>
+
+  <!-- <div class="row mt-3">
+    <div class="col-4"></div>
+    <div class="col-4">
+    <button class="btn btn-info form-control">Delete Pallet</button> </div>
+    <div class="col-4"></div>
+  </div> -->
+
+</div>
+
 <button *ngIf="showProductsBeforeDelivery==true" class="btn btn-success" printSectionId="print-section" ngxPrint
   [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},th : {'border': 'solid 1px black'}}">Print</button>
 
@@ -485,7 +526,7 @@
         <h2>הקמת משטח</h2>
       </div>
       <div class="col-4"> 
-        <i (click)="combineModal = false" class="fa fa-times text-info"></i>
+        <i style="cursor: pointer;" (click)="combineModal = false" class="fa fa-times text-info"></i>
       </div>
     </div>
 
@@ -508,11 +549,11 @@
             <td>{{item.itemNumber}}</td>
             <td>{{item.orderNumber}}</td>
             <td [ngClass]="{zeroUnits:item.allUnits == '0'}">{{item.allUnits}}</td>
-            <td (click)="edit(item.itemNumber,item.customerName)" *ngIf="EditRow != item.itemNumber && EditRowTwo != item.customerName">{{item.unitsToCombine}}</td>
+            <td style="cursor: pointer;" (click)="edit(item.itemNumber,item.customerName)" *ngIf="EditRow != item.itemNumber && EditRowTwo != item.customerName">{{item.unitsToCombine}}</td>
             <td *ngIf="EditRow === item.itemNumber && EditRowTwo === item.customerName">
               <input [(ngModel)]="unitsToPallet" class="form-control" type="number">
             </td>
-            <td *ngIf="EditRow === item.itemNumber && EditRowTwo === item.customerName"><i (click)="saveNewUnits(item)" class="fa fa-save"></i></td>
+            <td *ngIf="EditRow === item.itemNumber && EditRowTwo === item.customerName"><i style="cursor: pointer;" (click)="saveNewUnits(item)" class="fa fa-save"></i></td>
             <td *ngIf="EditRow != item.itemNumber && EditRowTwo != item.customerName"></td>
             </tr>
           </tbody>

@@ -117,7 +117,8 @@ table {
 
 .fixNoaStupidStuff {
   float:none !important;
-  margin-right:0px !important
+  margin-right:0px !important;
+  padding:5px !important
 }
 
 td {
