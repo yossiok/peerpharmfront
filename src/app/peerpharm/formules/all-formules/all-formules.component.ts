@@ -357,6 +357,17 @@ var newItem = {
   })
 }
 
+
+getFormulePrice(formule){
+  debugger;
+  this.formuleService.getFormulePrice(formule._id).subscribe(data=>{
+    debugger;
+    if(data){
+      
+    }
+  })
+}
+
 savePhaseEdit(currDoc) {
   debugger;
 

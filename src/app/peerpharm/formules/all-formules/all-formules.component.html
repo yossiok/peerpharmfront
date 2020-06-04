@@ -31,8 +31,8 @@
           <td>Date Created</td>
           <td>Formule Type</td>
           <td>Approval</td>
-          <!-- <td></td> -->
-          <td></td>
+          <td><img style="width:30px" src="../../../../assets/images/print.png"></td>
+          <td>&#8362;</td>
         </tr>
       </thead>
       <ng-container>
@@ -62,7 +62,8 @@
           <td *ngIf="formule._id!=EditRowId" (click)="edit(formule._id)">{{formule.formuleType}}</td>
           <td><i style="cursor: pointer;" (click)="approveFormule(formule._id,formule.formuleNumber)" class="fa fa-check" aria-hidden="true"></i></td>
             <!-- <td><button class="deleteBtn" (click)="deleteFormule(formule._id)">Delete</button></td> -->
-            <td><button class="btn btn-success" (click)="openPrint(printFormule,formule.formuleNumber)">Print Formule</button></td>
+            <td><button class="btn btn-info" (click)="openPrint(printFormule,formule.formuleNumber)">Print Formule</button></td>
+            <td><img style="width:50px;cursor: pointer;" (click)="getFormulePrice(formule)" src="../../../../assets/images/price.png"></td>
             <!-- <td><button style="float:right;background: green;box-shadow: inset 0px 1px 4px 0px;border:1px solid rgb(217, 228, 217);" (click)="copyFormule(currDoc,i)">Copy Formule</button></td> -->
 
           <!-- <td  (click)="edit(batch._id)" ><i class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td> -->

@@ -131,6 +131,11 @@ export class FormulesService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getFormulePrice(formuleId){
+    let url = this.baseUrl + "formules?getFormulePrice="+formuleId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
  
   getPhasesByFormuleId(formuleId){
     let url = this.baseUrl + "formules/phases/?byFormuleId="+formuleId;
@@ -256,7 +261,7 @@ export class FormulesService {
     let url = this.baseUrl + "formules/forms?formuleId="+formuleId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-
+ 
   getFormBySchedleId(scheduleId){
     let url = this.baseUrl + "formules/forms?scheduleId="+scheduleId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

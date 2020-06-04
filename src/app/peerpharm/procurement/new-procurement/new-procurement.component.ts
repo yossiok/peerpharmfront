@@ -197,15 +197,26 @@ export class NewProcurementComponent implements OnInit {
     debugger;
     var newItem = {
       coin: this.coin.nativeElement.value,
-      itemName: this.itemName.nativeElement.value.trim(),
-      itemNumber: this.itemNumber.nativeElement.value.trim(),
-      measurement: this.measurement.nativeElement.value.trim(),
+      itemName: this.itemName.nativeElement.value,
+      itemNumber: this.itemNumber.nativeElement.value,
+      measurement: this.measurement.nativeElement.value,
       supplierAmount: this.supplierAmount.nativeElement.value,
       supplierPrice: this.supplierPrice.nativeElement.value,
       itemPrice: Number(this.supplierPrice.nativeElement.value) * Number(this.supplierAmount.nativeElement.value),
       itemRemarks: this.itemRemarks.nativeElement.value,
-      componentNs:this.newItem.componentNs.trim(),
+      componentNs:this.newItem.componentNs,
     }
+
+    if(newItem.itemName){
+      newItem.itemName.trim()
+    }
+    if(newItem.itemNumber){
+      newItem.itemNumber.trim()
+    }
+    if(newItem.componentNs){
+      newItem.componentNs.trim()
+    }
+
 
 
     if (this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.measurement.nativeElement.value == "" || this.supplierAmount.nativeElement.value == "") {
