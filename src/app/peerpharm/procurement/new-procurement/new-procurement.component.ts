@@ -47,7 +47,8 @@ export class NewProcurementComponent implements OnInit {
     orderNumber: '',
     itemRemarks: '',
     itemPrice: '',
-    componentNs:''
+    componentNs:'',
+    componentType:''
 
   }
   newProcurement = {
@@ -130,6 +131,7 @@ export class NewProcurementComponent implements OnInit {
             this.newItem.supplierPrice = Number(data[0].price)
           }
           // this.newItem.coin = data[0].coin
+          this.newItem.componentType = data[0].componentType
           this.newItem.measurement = data[0].unitOfMeasure
           $("#setCoin").val("data[0].coin");
         })
@@ -206,6 +208,7 @@ export class NewProcurementComponent implements OnInit {
       itemPrice: Number(this.supplierPrice.nativeElement.value) * Number(this.supplierAmount.nativeElement.value),
       itemRemarks: this.itemRemarks.nativeElement.value,
       componentNs:this.newItem.componentNs,
+      componentType:this.newItem.componentType
     }
 
     if(newItem.itemName){

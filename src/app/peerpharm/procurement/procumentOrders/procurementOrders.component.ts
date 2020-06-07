@@ -550,7 +550,27 @@ debugger;
 
 
   }
+  
+  filterByCategory(ev){
+  debugger;
+  var category = ev.target.value;
 
+  var tempArr = [];
+if(category != ''){
+  this.procurementData.forEach(purchase => {
+    purchase.item.forEach(item => {
+      if(item.componentType == category){
+        tempArr.push(purchase);
+      }
+    });
+  });
+  var removeDuplicatesArr = [...new Set(tempArr)];
+  this.procurementData = removeDuplicatesArr
+} else {
+  this.procurementData = this.procurementDataCopy
+}
+  
+  }
 
 
   filterByStatus(ev, expression) {
@@ -1008,7 +1028,7 @@ debugger;
 
 
   dateChange() {
-    ;
+    debugger;
     if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "") {
 
       this.procurementservice.getProcurementOrderItemByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data => {

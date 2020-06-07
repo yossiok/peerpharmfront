@@ -18,7 +18,7 @@ export class Procurementservice {
 
   getProcurementOrderItemByDate(fromDate, toDate):Observable<any>{
     
-    let url = this.baseUrl + "procurementOrderItemController/byDate?fromDate="+fromDate+"&toDate="+toDate;
+    let url = this.baseUrl + "procurementOrderController/byDate?fromDate="+fromDate+"&toDate="+toDate;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

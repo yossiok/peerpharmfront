@@ -2282,7 +2282,11 @@ export class StockComponent implements OnInit {
       //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
       //    }
       //  }
-     
+       data.forEach(component => {
+         if(component.movementType){
+           component.originShelfQntBefore = component.originShelfQntBefore - Math.abs(component.amount)
+         }
+       });
         this.itemMovements = data;
         this.loadingMovements = false;
       }
