@@ -41,6 +41,12 @@
       color:black;
   }
 
+  .updatePrice{
+    color:blue;
+    text-decoration:underline;
+    cursor: pointer;
+  }
+
   .approvedClass{
     background:lightgreen;
   }

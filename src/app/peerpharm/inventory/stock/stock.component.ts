@@ -2275,8 +2275,18 @@ export class StockComponent implements OnInit {
       componentN = this.resCmpt.componentN
     }
     this.inventoryService.getItemMovements(componentN).subscribe(data => {
-      this.itemMovements = data;
-      this.loadingMovements = false;
+      if(data){
+      
+      //  for (let i = 0; i < data.length; i++) {
+      //    if(data[i].movementType != 'in'){
+      //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
+      //    }
+      //  }
+     
+        this.itemMovements = data;
+        this.loadingMovements = false;
+      }
+   
     });
 
     if (!this.showItemDetails) {

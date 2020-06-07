@@ -112,7 +112,7 @@ export class NewProcurementComponent implements OnInit {
             this.newItem.measurement = data[0].unitOfMeasure
             this.newItem.componentNs = data[0].componentNs
             var supplier = data[0].alternativeSuppliers.find(s=>s.supplierName == this.newProcurement.supplierName);
-            this.newItem.supplierPrice = parseInt(supplier.price)
+            this.newItem.supplierPrice = parseFloat(supplier.price)
             if (data[0].frameQuantity || data[0].frameSupplier) {
               alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' + "  " + data[0].frameSupplier + " " + 'כמות:' + " " + data[0].frameQuantity)
             }
@@ -151,10 +151,11 @@ export class NewProcurementComponent implements OnInit {
 
         if (data.length > 0) {
           this.openOrdersModal = true;
+          if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
+            this.newItem.supplierPrice = Number(data[0].price)
+          }
         }
-        if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
-          this.newItem.supplierPrice = Number(data[0].price)
-        }
+       
 
       })
 

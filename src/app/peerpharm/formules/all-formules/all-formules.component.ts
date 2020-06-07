@@ -18,7 +18,10 @@ currentFormuleNumber:any;
   materials:any[];
   EditRowId: any = "";
   currentDoc:any;
+  sumFormulePrice:Number;
+  formuleMaterialPrices:any[];
   condition:boolean = false;
+  formulePriceModal:boolean = false;
   updateFormule:any;
   isCollapsed:boolean = false;
   showItemRemarks:boolean = false;
@@ -360,12 +363,25 @@ var newItem = {
 
 getFormulePrice(formule){
   debugger;
+
+  var count = 0;
   this.formuleService.getFormulePrice(formule._id).subscribe(data=>{
     debugger;
     if(data){
-      
+      data.forEach(material=>{
+      if(material.price != 'צריך לעדכן מחיר ספק'){
+        count += Number(material.price)
+      }
+      })
+    this.sumFormulePrice =  count
+    this.formuleMaterialPrices = data;
+    this.formulePriceModal = true;
     }
   })
+}
+
+navigateToInventory(componentN){
+  window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='+componentN)
 }
 
 savePhaseEdit(currDoc) {

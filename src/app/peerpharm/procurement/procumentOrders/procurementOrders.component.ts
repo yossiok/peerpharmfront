@@ -964,7 +964,7 @@ debugger;
   }
 
   searchByItem(ev) {
-
+  debugger;
     var itemNumber = ev.target.value;
     var tempArr = []
     if (itemNumber != "") {
