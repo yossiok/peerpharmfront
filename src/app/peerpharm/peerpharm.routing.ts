@@ -57,6 +57,7 @@ import { NewFormuleComponent } from './new-formule/new-formule.component';
 import { FormuleProductionComponent } from './production/formule-production/formule-production.component';
 import { WeightProductionComponent } from './production/weight-production/weight-production.component';
 import { StoragesComponent } from './inventory/storages/storages.component';
+import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component';
 
 
 
@@ -202,6 +203,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Storages'
     },
     component: StoragesComponent
+  },
+  {
+    path: 'inventory/shelf-list',
+    data: {
+      title: 'Shelf List'
+    },
+    component: ShelfListComponent
   },
   {
     path: 'inventory/suppliers',

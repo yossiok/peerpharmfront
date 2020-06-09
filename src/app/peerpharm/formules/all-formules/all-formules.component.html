@@ -140,9 +140,9 @@
                  <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
                   <input #percentageUpdate style="width:50px" [value]="item.percentage">
                 </td> 
-                <td *ngIf="item.itemNumber!==EditRowId"  (click)="edit(item.itemNumber)" >{{item.itemRemarks}}</td>
+                <td *ngIf="item.itemNumber!==EditRowId"  (click)="edit(item.itemNumber)" >{{item.remarks}}</td>
                 <td  *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
-                  <input #itemRemarksUpdate [value]="item.itemRemarks" type="text">
+                  <input #itemRemarksUpdate [value]="item.remarks" type="text">
                 </td>
                 <td *ngIf="item.itemNumber===EditRowId"><i class="ti-save" (click)="saveFormuleUpdate(updateFormule._id,item.itemNumber,phase.phaseName,i)"></i></td>
               </tr>
@@ -421,7 +421,7 @@
                 <tr *ngFor="let material of formuleMaterialPrices">
                   <td>{{material.itemNumber}}</td>
                   <td>{{material.itemName}}</td>
-                  <td (click)="navigateToInventory(material.itemNumber)" [ngClass]="{updatePrice: material.price == 'צריך לעדכן מחיר ספק'}">{{material.price}}</td>
+                  <td (click)="navigateToInventory(material.itemNumber)" [ngClass]="{updatePrice: material.price == 'צריך לעדכן מחיר ספק'}">{{material.price}}{{material.coin}}</td>
                 
                 </tr>
               </tbody>

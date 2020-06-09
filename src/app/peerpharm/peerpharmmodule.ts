@@ -119,6 +119,7 @@ import { NewFormuleComponent } from './new-formule/new-formule.component';
 import { FormuleProductionComponent } from './production/formule-production/formule-production.component'
 import { WeightProductionComponent } from './production/weight-production/weight-production.component';
 import { StoragesComponent } from './inventory/storages/storages.component';
+import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component';
 
 
 
@@ -172,6 +173,7 @@ import { StoragesComponent } from './inventory/storages/storages.component';
     FormuleComponent,
     AddFormuleComponent,
     StoragesComponent,
+    ShelfListComponent,
     OrdersComponent,
     AllordersComponent,
     OrderdetailsComponent,

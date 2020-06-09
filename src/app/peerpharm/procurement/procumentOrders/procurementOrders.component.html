@@ -383,6 +383,7 @@
                     <th>#</th>
                     <th>Supplier</th>
                     <th>Order Number</th>
+                    <th>Order Date</th>
                     <th>Comax </th>
                     <th>Item Number</th>
                     <th>Amount</th>
@@ -398,6 +399,7 @@
                     </td>
                     <td>{{purchase.supplierName}}</td>
                     <td>{{purchase.orderNumber}}</td>
+                    <td>{{purchase.orderDate | date: 'dd/MM/yyyy'}}</td>
                     <td>{{purchase.comaxNumber}}</td>
                     <td>{{purchase.itemNumber}}</td>
                     <td>{{purchase.supplierAmount}}</td>
@@ -880,6 +882,7 @@
           <thead>
             <tr>
               <th>#</th>
+              <th *ngIf="showImage == true">Image</th>
               <th>Item</th>
               <th>Item Name</th>
               <th>Remarks</th>
@@ -892,6 +895,7 @@
           <tbody>
             <tr *ngFor="let item of currentItems;let i = index;">
               <td>{{i+1}}</td>
+              <td *ngIf="showImage == true"><img style="width:50px;" alt="Item Image" [src]="item.img"></td>
               <td>{{item.itemNumber}}</td>
               <td>{{item.itemName}}</td>
               <td>{{item.itemRemarks}}</td>

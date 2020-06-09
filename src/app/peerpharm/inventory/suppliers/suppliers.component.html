@@ -22,7 +22,7 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
   <mat-tab-group mat-align-tabs="center">
     <mat-tab label="Suppliers">
 
-      <div class="container-fluid bg-light p-2">
+      <div class="container-fluid bg-white p-2">
 
         <div class="row p-2 mt-2 text-center">
           <div class="col-4">
@@ -100,7 +100,7 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
    
   </div>
   <div class="col-4">
-    <h3 class="text-info">Update Supplier</h3>
+    <h3 class="text-info">Supplier Details</h3>
   </div>
   <div class="col-4">
       <i (click)="updateSupplier = false" class="fa fa-times text-info" aria-hidden="true"></i>
@@ -129,7 +129,7 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
     <label class="form-control">Email</label>
     <label class="form-control">Contact</label>
     <label class="form-control">Currency</label>
-    <label class="form-control">Remarks</label>
+    <label class="form-control">Import</label>
   </div>
   <div class="col-3">
     <input type="text" class="form-control" [(ngModel)]="currentSupplier.faxNum">
@@ -137,8 +137,23 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
     <input type="text" class="form-control" [(ngModel)]="currentSupplier.email">
     <input type="text" class="form-control" [(ngModel)]="currentSupplier.contactName">
     <input type="text" class="form-control" [(ngModel)]="currentSupplier.currency">
+    <select class="form-control" [(ngModel)]="currentSupplier.import">
+      <option value=""></option>
+      <option value="outOfIsrael">Out Of Israel</option>
+      <option value="israel">Israel</option>
+    </select>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col-1"></div>
+  <div class="col-2">
+    <label class="form-control">Remarks</label>
+  </div>
+  <div class="col-8">
     <input type="text" class="form-control" [(ngModel)]="currentSupplier.remarks">
   </div>
+  <div class="col-1"></div>
 </div>
 <div class="row mt-3">
   <div class="col-12">

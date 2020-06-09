@@ -29,6 +29,7 @@ export class ProcurementOrdersComponent implements OnInit {
   allMaterials: any[];
   printBill: boolean = false;
   orderDetailsModal: boolean = false;
+  showImage: boolean = false;
   showLoader: boolean = true;
   showInfoModal: boolean = false;
   editArrivalModal: boolean = false;
@@ -191,6 +192,7 @@ export class ProcurementOrdersComponent implements OnInit {
                   supplierName: tempArr[i].supplierName,
                   comaxNumber: tempArr[i].comaxNumber,
                   orderNumber: tempArr[i].orderNumber,
+                  orderDate:tempArr[i].outDate,
                   itemNumber: tempArr[i].item[j].itemNumber,
                   itemName: tempArr[i].item[j].itemName,
                   supplierAmount: tempArr[i].item[j].supplierAmount,
@@ -822,7 +824,7 @@ if(category != ''){
   }
   printOrder(line) {
     debugger;
-
+    this.showImage = false;
     var supplierNumber = line.supplierNumber
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
       debugger;
@@ -841,6 +843,13 @@ if(category != ''){
       total = total + Number(this.currentItems[i].supplierAmount)
       totalP = totalP + Number(this.currentItems[i].itemPrice)
       coin = this.currentItems[i].coin
+      if(line.orderType == 'component'){
+        this.showImage = true;
+        this.inventoryService.getCmptByNumber(this.currentItems[i].itemNumber,'component').subscribe(data=>{
+          debugger;
+         this.currentItems[i].img = data[0].img
+        })
+      }
 
     }
     

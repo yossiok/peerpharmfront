@@ -954,15 +954,30 @@
             <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
           </div>
         </div>
-        <div class="row fixNoaStupidStuff text-center">
+
+        <div class="row fixNoaStupidStuff text-center mt-3">
+          <div class="col-2">
+            <label class="form-control">Last 3 Monthes:</label>
+          </div>
+          <div class="col-2">
+            <h3 class="form-control">{{threeMonthes}}</h3>
+          </div>
+          <div class="col-2"></div>
+          <div class="col-2"></div>
+          <div class="col-2"></div>
+          <div class="col-2"></div>
+        </div>
+  
+        <div class="row mt-3 fixNoaStupidStuff text-center">
           <div class="col-12">
             <table class="table table-hover table-striped">
               <thead class="bg-success text-white">
                 <tr>
                   <th>Order Number</th>
                   <th>Order Amount</th>
-                  <th>Arrival Date</th>
-                  <th>Arrived Amount</th>
+                  <th>Order Date</th>
+                  <th>Supplier</th>
+                  <th>Arrival Details</th>
                 </tr>
               </thead>
               <tbody>
@@ -970,7 +985,9 @@
                   <tr *ngFor="let component of componentPurchases">
                     <td>{{component.orderNumber}}</td>
                     <td>{{component.supplierAmount}}</td>
-
+                    <td>{{component.outDate | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{component.supplierName}}</td>
+      
                     <td>
                       <table *ngIf="component.arrivals">
                         <tr *ngFor="let arrival of component.arrivals">
@@ -986,6 +1003,8 @@
             </table>
           </div>
         </div>
+
+      
       </mat-tab>
     </mat-tab-group>
   </div>

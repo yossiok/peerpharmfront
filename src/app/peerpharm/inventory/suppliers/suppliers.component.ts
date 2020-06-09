@@ -45,7 +45,8 @@ export class SuppliersComponent implements OnInit {
     remarks:'',
     alternativeSupplier:this.alterSupplierArray,
     items:[],
-    priceList:[]
+    priceList:[],
+    import:''
   }
 
   priceListItem = {

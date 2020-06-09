@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -26,6 +26,7 @@ export class NewProcurementComponent implements OnInit {
   allMaterials: any[];
   itemExistInOrders: any[];
   allComponents: any[];
+  editRow:String = ''
 
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
@@ -34,6 +35,9 @@ export class NewProcurementComponent implements OnInit {
   @ViewChild('supplierPrice') supplierPrice: ElementRef;
   @ViewChild('supplierAmount') supplierAmount: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
+
+  @ViewChild('updateItemAmount') updateItemAmount: ElementRef;
+  @ViewChild('updateItemPrice') updateItemPrice: ElementRef;
 
   newItem = {
 
@@ -63,6 +67,12 @@ export class NewProcurementComponent implements OnInit {
     comaxNumber: '',
     recommendRemarks: '',
 
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.editPurchaseItems('');
+ 
   }
 
   constructor(private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder, ) {
@@ -169,6 +179,17 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
+  editPurchaseItems(itemNumber){
+    if (itemNumber != '') {
+
+      this.editRow = itemNumber;
+    } else {
+      this.editRow = '';
+
+    }
+
+  }
+
   getAllMaterials() {
     this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
       this.allMaterials = data;
@@ -193,6 +214,28 @@ export class NewProcurementComponent implements OnInit {
 
     this.newProcurement.supplierNumber = result[0].suplierNumber
 
+  }
+
+  removeItemFromPurchase(itemNumber){
+  
+  for (let i = 0; i < this.newProcurement.item.length; i++) {
+   if(this.newProcurement.item[i].itemNumber == itemNumber){
+    this.newProcurement.item.splice(i, 1);
+    this.toastr.success('פריט הוסר בהצלחה')
+   }
+    
+  }
+
+  }
+
+  editItemInPurchase(itemNumber){
+  if(itemNumber != '' ){
+    var item = this.newProcurement.item.find(i=>i.itemNumber == itemNumber)
+    item.supplierAmount = this.updateItemAmount.nativeElement.value;
+    item.supplierPrice = this.updateItemPrice.nativeElement.value;
+    this.editPurchaseItems('')
+    this.toastr.success('פריט עודכן בהצלחה !')
+  }
   }
 
 

@@ -52,6 +52,7 @@ export class StockComponent implements OnInit {
   allMaterialsPurchases:any[];
   expirationBatchDate:any;
   totalQuantity:String;
+  threeMonthes:number = 0;
   allowUserEditItem = false;
   updateSupplier = false;
   check = false;
@@ -1448,18 +1449,27 @@ export class StockComponent implements OnInit {
 
   async openData(cmptNumber) {
     debugger;
-
+    this.threeMonthes = 0;
     this.switchModalView(cmptNumber)
     this.componentPurchases = [];
     for (let i = 0; i < this.allComponentsPurchases.length; i++) {
       for (let j = 0; j < this.allComponentsPurchases[i].item.length; j++) {
        if(this.allComponentsPurchases[i].item[j].itemNumber == cmptNumber){
+        this.allComponentsPurchases[i].item[j].supplierName = this.allComponentsPurchases[i].supplierName
+        this.allComponentsPurchases[i].item[j].outDate = this.allComponentsPurchases[i].outDate
          this.componentPurchases.push(this.allComponentsPurchases[i].item[j])
        }
         
       }
      }
-   
+  var today = new Date()
+  var date = new Date();
+  date.setDate(date.getDate()-90)
+  date;
+   var threeMonthesPur = this.componentPurchases.filter(c=>c.outDate < today.toISOString && c.outDate > date.toISOString())
+   threeMonthesPur.forEach(purchase => {
+     this.threeMonthes = this.threeMonthes + Number(purchase.supplierAmount)
+   });
     
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
