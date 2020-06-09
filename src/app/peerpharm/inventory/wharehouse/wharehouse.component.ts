@@ -28,6 +28,7 @@ amount:Number;
 relatedOrder:String='';
 today:Date=new Date;
 
+
 currItemShelfs:Array<any>;
 multiInputLines:Boolean=false;
 multiLinesArr:Array<any>;
@@ -36,6 +37,7 @@ StkMngNavBtnColor:String ="#1affa3";
 WhMngNavBtnColor:String ="";
 ItemsOnShelf:Array<any>;
 listToPrint:Array<any>=[];
+printAgain:Array<any>=[];
 closeResult: string;
 
 
@@ -130,6 +132,13 @@ packingMaterialCheck = {
         }
 
         });
+  }
+
+  printCertifAgain(){
+  debugger;
+  this.listToPrint = this.printAgain
+  this.printBtn.nativeElement.click();
+  
   }
 
   dirSet(action, direction) {
@@ -518,11 +527,15 @@ deleteLine(itemFromInvReq,index,ev){
     //print
     // setTimeout( ()=> {
       if(this.dir == 'production' || this.dir == 'out'){
+        debugger
         this.printBtn.nativeElement.click();
+      
         this.listToPrint=[];
       }
       if(this.dir == 'in'){
+        debugger;
         this.printBtn2.nativeElement.click();
+   
         this.listToPrint=[];
       }
     // },200);
@@ -706,6 +719,7 @@ if( !(this.inventoryUpdateList.length==1 && this.dir=="shelfChange")){
       let tempObj= Object.assign({},obj);
       tempObj.amount= Math.abs(tempObj.amount);
       this.listToPrint.push(tempObj);
+      this.printAgain.push(tempObj)
     // this.listToPrint[this.listToPrint.length-1].qnt=  Math.abs(this.listToPrint[this.listToPrint.length-1].amount);     
    }
    this.loadingToTable=false;

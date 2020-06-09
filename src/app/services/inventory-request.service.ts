@@ -43,6 +43,12 @@ export class InventoryRequestService {
     let url = this.baseUrl + 'inventoryRequest/filterByDate?fromDate='+fromDate+"&toDate="+toDate
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  
+  getRequestByNumber(reqNumber) {
+    let url = this.baseUrl + 'inventoryRequest?reqNumber='+reqNumber
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 
   getLastRequsetId():Observable<any>  {
     let url = this.baseUrl + "inventoryRequest?lastReqId=yes" ;

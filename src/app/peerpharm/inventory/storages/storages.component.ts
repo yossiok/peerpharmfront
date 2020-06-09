@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,11 +13,24 @@ export class StoragesComponent implements OnInit {
   allFillingRequests:any[]
   allFillingRequestsCopy:any[]
   user:any;
+  currItem:any;
+  currRequest:any;
+  editRow:String = ''
   allowCheckArrived:Boolean = false;
+  printDocument:Boolean = false;
 
 
   @ViewChild('toDate') toDate: ElementRef;
   @ViewChild('fromDate') fromDate: ElementRef;
+  @ViewChild('arrivedQuantity') arrivedQuantity: ElementRef;
+  @ViewChild('arrivalDate') arrivalDate: ElementRef;
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    console.log(event);
+    this.edit('');
+
+  }
+
 
   constructor(private authService:AuthService,private toastSrv:ToastrService,private inventoryReqService:InventoryRequestService) { }
 
@@ -25,16 +38,39 @@ export class StoragesComponent implements OnInit {
     this.getAllFillingRequests()
     this.getUser();
   }
+  edit(itemNumber) {
+    if (itemNumber != '') {
+      this.editRow = itemNumber;
+    } else {
+      this.editRow = '';
+    }
+  }
 
+  openPrintDocument(request){
+    this.currRequest = request;
+    this.printDocument = true;
+  }
 
   getAllFillingRequests(){
     this.inventoryReqService.getFillingRequestsList().subscribe(data=>{
     if(data){
       debugger;
+      data.forEach(req => {
+        req.reqList.forEach(item => {
+          if(item.arrivedQty == undefined){
+            item.arrivedQty = ''
+          }
+        });
+      });
       this.allFillingRequests = data
       this.allFillingRequestsCopy = data
     }
     })
+  }
+
+  printAndSaveCertif(){
+    debugger;
+
   }
 
   filterByNumber(ev){
@@ -108,20 +144,19 @@ export class StoragesComponent implements OnInit {
 
   clickIfArrived(reqId,itemNumber,orders){
     debugger;
-    // if(this.user.userName == undefined) {
-    //   this.getUser();
-    //   this.clickIfArrived(reqId,itemNumber);
-    // }  else {
       if(this.user.userName == 'tomer' || this.user.userName == 'SHARK'  || this.user.userName == 'sima'){
         var obj = {
           itemN:itemNumber,
           requestId:reqId,
-          orders:orders
+          orders:orders,
+          arrivedQty:this.arrivedQuantity.nativeElement.value,
+          arrivalDate:this.arrivalDate.nativeElement.value,
         }
         this.inventoryReqService.checkArrived(obj).subscribe(data=>{
           if(data){
             this.allFillingRequests = data;
             this.toastSrv.success('עודכן בהצלחה !')
+            this.edit('')
           }
     
         })
