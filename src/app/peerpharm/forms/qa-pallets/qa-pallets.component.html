@@ -402,7 +402,7 @@
 </ngb-tabset>
 <div id="print-section">
   <div style="height:0px !important" *ngIf="showProductsBeforeDelivery==true" id="myModal3" class="modal3"
-    style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
+    style='border:1px; border-radius:5px;z-index: 1;position: fixed;top:130px;'>
 
     <!-- Modal content -->
     <div class="modal-content" id='modelC'>
@@ -515,7 +515,7 @@
 
 </div>
 
-<button *ngIf="showProductsBeforeDelivery==true" class="btn btn-success" printSectionId="print-section" ngxPrint
+<button style="float:right;margin-top:200px" *ngIf="showProductsBeforeDelivery==true" class="btn btn-success" printSectionId="print-section" ngxPrint
   [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},th : {'border': 'solid 1px black'}}">Print</button>
 
 
