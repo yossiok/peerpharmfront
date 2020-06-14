@@ -1229,8 +1229,18 @@ if(category != ''){
       this.procurementservice.deleteItemFromOrder(itemNumber, orderNumber).subscribe(data => {
         debugger;
         if (data) {
+        for (let i = 0; i < this.procurementData.length; i++) {
+          for (let j = 0; j < this.procurementData[i].item.length; j++) {
+            if(this.procurementData[i].orderNumber == orderNumber){
+              if(this.procurementData[i].item[j].itemNumber == itemNumber){
+                this.procurementData[i].item.splice(j,1)
+              }
+            }
+          } 
+        }
           this.toastr.success("פריט נמחק בהצלחה")
-          this.procurementData = data;
+          
+          
 
         }
       })

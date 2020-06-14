@@ -269,7 +269,7 @@ export class NewProcurementComponent implements OnInit {
     if (this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.measurement.nativeElement.value == "" || this.supplierAmount.nativeElement.value == "") {
       this.toastr.error('שים לב , לא כל הפרטים מלאים.')
     } else {
-      if (this.newProcurement.orderType == 'material') {
+      if (this.newProcurement.orderType == 'material' || this.newProcurement.orderType == 'fictive') {
         var material = this.allMaterials.find(m => m.componentN == newItem.itemNumber);
         debugger;
         if (material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true') {
