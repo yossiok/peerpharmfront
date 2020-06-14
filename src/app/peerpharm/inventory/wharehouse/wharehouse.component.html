@@ -90,6 +90,10 @@
                 <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumber"
                   (blur)="searchItemShelfs($event)">
               </div>
+              <div *ngIf="dir == 'out'" class="col-sm-2">
+                <label>מספר הזמנה</label>
+                <input type="number" class="form-control" placeholder="Order Number" formControlName="relatedOrder">
+              </div>
               <div class="col-sm-2">
                 <label>מדף</label>
                 <input type="text" class="form-control" placeholder="Position" formControlName="position">
@@ -98,6 +102,8 @@
                 <label>כמות</label>
                 <input type="number" class="form-control" placeholder="Amount" formControlName="amount" min="0">
               </div>
+             
+
               <!-- if taking out stock from wh -->
               <!-- <div class="col-sm-3"  *ngIf="dir!='in' && dir!='shelfChange'"> 
                       <label>מס' הזמנה</label>
@@ -420,6 +426,7 @@
         <tbody>
           <tr>
             <th>#</th>
+            <th>מספר הזמנה</th>
             <th>מספר פריט</th>
             <th>מיקום</th>
             <th class='itemNamePrint'>שם פריט</th>
@@ -429,6 +436,7 @@
           <ng-container *ngFor="let reqItem of listToPrint; let i =index">
             <tr>
               <td class="cellPadding">{{i+1}}</td>
+              <td>{{reqItem.relatedOrderNum}}</td>
               <td>{{reqItem.item}}</td>
               <td>{{reqItem.position}}</td>
               <td class='itemNamePrint'>{{reqItem.itemName}}</td>

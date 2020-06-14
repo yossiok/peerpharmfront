@@ -46,7 +46,7 @@ export class WeightProductionComponent implements OnInit {
     }
     
 
-
+     
   })
   }
 
