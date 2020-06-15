@@ -70,7 +70,7 @@ export class InventoryRequestsComponent implements OnInit {
   }
 
   getDetails(reqId, orderNumber): void {
-    
+      debugger;
     this.EditRowId2nd = reqId;
     if (this.expand === true) {
        this.expand = false;
@@ -83,6 +83,7 @@ export class InventoryRequestsComponent implements OnInit {
 
   
   loadItems() {
+    debugger;
     console.log(this.ordersDemands);
    // let demandObj =this.ordersDemands.filter(orderObj=>orderObj.order==this.openOrder)
     let demandObj =this.ordersDemands.filter(orderObj=>orderObj.reqNum==this.openOrder);

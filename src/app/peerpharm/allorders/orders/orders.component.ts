@@ -159,7 +159,7 @@ export class OrdersComponent implements OnInit {
 
 
   saveEdit(closedOrder, orderId) {
- 
+  debugger;
     // a - is if the request is to set order - ready
     if (!closedOrder) {
       let orderToUpdate = {
