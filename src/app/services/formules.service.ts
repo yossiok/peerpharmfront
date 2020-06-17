@@ -135,6 +135,16 @@ export class FormulesService {
     let url = this.baseUrl + "formules?getFormulePrice="+formuleId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getCurrencyUSDRates(){
+    let url = 'https://v6.exchangerate-api.com/v6/b2e6eed7c40f8ad1bacd456b/latest/USD'
+
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+  getCurrencyEURORates(){
+    let url = 'https://v6.exchangerate-api.com/v6/b2e6eed7c40f8ad1bacd456b/latest/EUR'
+
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
  
   getPhasesByFormuleId(formuleId){

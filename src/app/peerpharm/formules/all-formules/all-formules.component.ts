@@ -18,6 +18,7 @@ currentFormuleNumber:any;
   materials:any[];
   EditRowId: any = "";
   currentDoc:any;
+  currentFormule:any;
   sumFormulePrice:Number;
   formuleMaterialPrices:any[];
   condition:boolean = false;
@@ -30,8 +31,12 @@ currentFormuleNumber:any;
   chooseFromBuffer: boolean = false;
   showLoader: boolean = true;
   chooseFathersToUpdate: boolean = false;
+  spinnerLoader: boolean = false;
   openFormuleModal: boolean = false;
   updatePercentage:any;
+  euroRate:any;
+  usdRate:any;
+  today:any;
   updatePhaseRemarks:any;
   updateItemRemarks:any;
   updateItemIndex:any;
@@ -122,6 +127,8 @@ currentFormuleNumber:any;
     this.getAllFormules();
     this.getAllMaterials();
     this.getAllParentsFormules();
+    this.getCurrencyRate();
+    this.today = new Date()
     debugger;
     this.user = this.authService.loggedInUser.userName;
   }
@@ -360,20 +367,54 @@ var newItem = {
   })
 }
 
+getCurrencyRate(){
+  debugger;
+  this.formuleService.getCurrencyEURORates().subscribe(data=>{
+    debugger;
+  this.euroRate = data.conversion_rates.ILS
+  })
+  this.formuleService.getCurrencyUSDRates().subscribe(data=>{
+  this.usdRate = data.conversion_rates.ILS
+  })
+}
+
+formatNumber(number) {
+  number = number.toFixed(2) + '';
+  var x = number.split('.');
+  var x1 = x[0];
+  var x2 = x.length > 1 ? '.' + x[1] : '';
+  var rgx = /(\d+)(\d{3})/;
+  while (rgx.test(x1)) {
+    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+  }
+  return x1 + x2;
+}
+
 
 getFormulePrice(formule){
   debugger;
-
+  this.spinnerLoader = true;
+  this.currentFormule = formule
   var count = 0;
   this.formuleService.getFormulePrice(formule._id).subscribe(data=>{
     debugger;
     if(data){
+      this.spinnerLoader = false;
       data.forEach(material=>{
+        material.price = this.formatNumber(material.price)
+
+      if(material.coin == 'eur'){
+        material.price = this.formatNumber(material.price * this.euroRate)
+      }
+      if(material.coin == 'usd'){
+        material.price = this.formatNumber(material.price * this.usdRate)
+      }
       if(material.price != 'צריך לעדכן מחיר ספק'){
         count += Number(material.price)
       }
       })
-    this.sumFormulePrice =  count
+
+    this.sumFormulePrice = Number(this.formatNumber(count));
     this.formuleMaterialPrices = data;
     this.formulePriceModal = true;
     }

@@ -77,7 +77,7 @@
     </table>
 
 
-
+    <div *ngIf="spinnerLoader == true" style="top:150px" class="spinnerLoader fixed-top mx-auto my-auto"></div>
    
 
     <div style="top:20px;height:900px !important" class="container-fluid rounded fixed-top shadow-lg formBackGround" *ngIf="openFormuleModal == true">
@@ -398,11 +398,14 @@
 
         <div *ngIf="formulePriceModal == true" id="formulePrice" style="top:100px;overflow: auto;height:800px" class="container rounded shadow-lg mx-auto my-auto fixed-top text-center border border-info bg-white p-2">
         <div class="row mt-3">
-          <div class="col-4"></div>
           <div class="col-4">
-            <h3 class="text-info">Formule Price</h3>
+           <h3>Formule Name: {{currentFormule.formuleName}}</h3>
           </div>
           <div class="col-4">
+            <button style="border:none;background:transparent;color:black;font-size: 20px;" class="btn btn-success" printSectionId="formulePrice" [printStyle]="{th : {'border': 'solid 1px'}, td : {'border': 'solid 1px', 'font-size': '20px'}}"  ngxPrint>Formule Number: {{currentFormule.formuleNumber}}</button>
+          </div>
+          <div class="col-4">
+            Date: {{today | date: 'dd/MM/yyyy'}}
             <i (click)="formulePriceModal = false" class="fa fa-times text-info"></i>
           </div>
         </div>
@@ -414,6 +417,7 @@
                 <tr>
                   <th>Material Number</th>
                   <th>Material Name</th>
+                  <th>Percentage</th>
                   <th>Material Price</th>
                 </tr>
               </thead>
@@ -421,19 +425,21 @@
                 <tr *ngFor="let material of formuleMaterialPrices">
                   <td>{{material.itemNumber}}</td>
                   <td>{{material.itemName}}</td>
-                  <td (click)="navigateToInventory(material.itemNumber)" [ngClass]="{updatePrice: material.price == 'צריך לעדכן מחיר ספק'}">{{material.price}}{{material.coin}}</td>
+                  <td>{{material.percentage}}</td>
+                  <td (click)="navigateToInventory(material.itemNumber)" [ngClass]="{updatePrice: material.price == 'צריך לעדכן מחיר ספק'}">{{material.price}}</td>
                 
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>Sum: {{sumFormulePrice}}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
           
-        <div class="row mt-1">
-          <div class="col-6"></div>
-          <div class="col-6">
-            Sum: {{sumFormulePrice}}
-          </div>
-        </div>
+     
         
         </div>
