@@ -1570,7 +1570,9 @@ export class StockComponent implements OnInit {
        }
        
      }
+     if(totalQnt+data[0].mesureType != null || totalQnt+data[0].mesureType != undefined){
       this.totalQuantity = totalQnt+data[0].mesureType
+     }
       this.materialArrivals = data;
     }
     

@@ -20,6 +20,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   linkDownload: String = '';
   orderRemarks: String;
+  myRefresh: any = null;
   allComponents: any[];
   allInvoices: any[];
   allInvoicesCopy: any[];
@@ -156,6 +157,14 @@ export class ProcurementOrdersComponent implements OnInit {
     }
     tempArr
     this.excelService.exportAsExcelFile(tempArr, 'data');
+  }
+
+  stopInterval() {
+    clearInterval(this.myRefresh)
+  }
+
+  startInterval() {
+    this.myRefresh = setInterval(() => { this.getAllProcurementOrders(); }, 1000 * 60 * 3);
   }
 
   fillMaterialName(ev) {
@@ -750,7 +759,9 @@ if(category != ''){
       if (confirm("האם לעדכן סטטוס  ?")) {
         this.procurementservice.changeStatus(status, orderNumber).subscribe(data => {
           if (data) {
-            this.getAllProcurementOrders();
+            let purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber);
+            purchase.color = data.color;
+            purchase.status = data.status
             this.toastr.success("סטטוס עודכן בהצלחה !")
           } else {
             this.toastr.error('error')
