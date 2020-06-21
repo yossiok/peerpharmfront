@@ -245,6 +245,10 @@ export class FormulesService {
     let url = this.baseUrl + "formules/update";
     return this.http.put(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
   }
+  updateFormuleFormation(updatedFormule){
+    let url = this.baseUrl + "formules/updateFormuleFormation";
+    return this.http.post(url, JSON.stringify(updatedFormule), this.options).pipe(map(res => res.json()));
+  }
   updateFormulePhase(phase){
     let url = this.baseUrl + "formules/updatePhase";
     return this.http.put(url, JSON.stringify(phase), this.options).pipe(map(res => res.json()));
