@@ -120,6 +120,7 @@ import { FormuleProductionComponent } from './production/formule-production/form
 import { WeightProductionComponent } from './production/weight-production/weight-production.component';
 import { StoragesComponent } from './inventory/storages/storages.component';
 import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component';
+import { RandomcolorModule } from 'angular-randomcolor';
 
 
 
@@ -131,6 +132,7 @@ import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component'
   ],
   imports: [ 
     CommonModule,
+    RandomcolorModule,
     RouterModule.forChild(PeerPharmRputs),
    
     TranslateModule.forChild({}),
