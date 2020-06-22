@@ -19,6 +19,8 @@ export class ScheduleComponent implements OnInit {
 
   fillingReport:boolean = false;
   scheduleData: any[];
+  scheduleDataCopy: any[];
+  unPackedSchedules: any[];
   EditRowId: any = "";
   buttonColor: string = "#2962FF";
   buttonColor2: string = "#B8ECF1";
@@ -26,6 +28,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor4: string = "#B8ECF1";
   buttonColor5: string = "#B8ECF1";
   buttonColor6: string = "#B8ECF1";
+  buttonColor7: string = "#B8ECF1";
   today: any;
   pcsCarton: any;
   barcodeK: any;
@@ -97,6 +100,7 @@ export class ScheduleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getAllUnpackedSchedules();
     this.today = new Date();
     this.today = moment(this.today).format('YYYY-MM-DD');
     this.getAllSchedule(this.today);
@@ -257,6 +261,7 @@ export class ScheduleComponent implements OnInit {
         Object.assign({ isSelected: false }, sced);
       });
       this.scheduleData = res;
+      this.scheduleDataCopy = res;
       console.log(res);
     });
   }
@@ -315,6 +320,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   setType(type, elem) {
+    debugger
     console.log('hi ' + type);
     console.log('hi ' + elem.style);
     switch (type) {
@@ -325,6 +331,8 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
         this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = '#B8ECF1';
+        this.scheduleData = this.scheduleDataCopy
         break;
       case 'tube':
         this.buttonColor = '#B8ECF1';
@@ -333,6 +341,8 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
         this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = '#B8ECF1';
+        this.scheduleData = this.scheduleDataCopy
         break;
       case 'mkp':
         this.buttonColor = '#B8ECF1';
@@ -341,6 +351,8 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
         this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = '#B8ECF1';
+        this.scheduleData = this.scheduleDataCopy
         break;
       case 'sachet':
         this.buttonColor = '#B8ECF1';
@@ -349,6 +361,8 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor4 = '#2962FF';
         this.buttonColor5 = '#B8ECF1';
         this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = '#B8ECF1';
+        this.scheduleData = this.scheduleDataCopy
         break;
       case 'laser':
         this.buttonColor = '#B8ECF1';
@@ -357,6 +371,8 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#2962FF';
         this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = '#B8ECF1';
+        this.scheduleData = this.scheduleDataCopy
         break;
       case 'stickers':
         this.buttonColor = '#B8ECF1';
@@ -365,6 +381,21 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor4 = '#B8ECF1';
         this.buttonColor5 = '#B8ECF1';
         this.buttonColor6 = '#2962FF';
+        this.buttonColor7 = '#B8ECF1';
+        this.scheduleData = this.scheduleDataCopy
+        break;
+      case 'unpacked':
+        this.buttonColor = '#B8ECF1';
+        this.buttonColor2 = '#B8ECF1';
+        this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = '#2962FF';
+        
+     
+        this.scheduleData = this.unPackedSchedules
+       
         break;
     }
     this.typeShown = type;
@@ -373,6 +404,16 @@ export class ScheduleComponent implements OnInit {
   edit(id, type) {
     this.EditRowId = id;
     this.currentType = type;
+  }
+
+  getAllUnpackedSchedules(){
+    this.scheduleService.getUnpackedSchedules().subscribe(data=>{
+      debugger
+      data.forEach(element => {
+        element.mkp = 'unpacked'
+      });
+    this.unPackedSchedules = data;
+    })
   }
 
   async updateSchedule() {
