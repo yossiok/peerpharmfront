@@ -94,7 +94,7 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
     </mat-tab>
   </mat-tab-group>
 
-<div style="top:150px;" *ngIf="updateSupplier == true" class="container fixed-top mx-auto my-auto text-center bg-light rounded p-3 shadow border border-info">
+<div style="top:100px;" *ngIf="updateSupplier == true" class="container fixed-top mx-auto my-auto text-center bg-light rounded p-3 shadow border border-info">
 <div class="row mt-3">
   <div class="col-4">
    
@@ -162,21 +162,23 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
 </div>
 
 <div class="row mt-4">
-  <div class="col-12">
-    <table class="table table-hover table-striped">
+  <div style="height:320px;overflow: scroll;" class="col-12">
+    <table style="height:320px;overflow: scroll;" class="table table-hover table-striped">
       <thead class="bg-info text-white">
         <tr>
           <th>מספר פריט</th>
           <th>שם פריט</th>
           <th>מחיר</th>
+          <th>מטבע</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody style="height:320px;overflow: scroll;">
       
         <tr *ngFor="let item of currentSupplier.priceList" >
           <td>{{item.itemNumber}}</td>
           <td>{{item.itemName}}</td>
           <td>{{item.supplierPrice}}</td>
+          <td>{{item.itemCoin}}</td>
         </tr>
     
       </tbody>
@@ -185,17 +187,20 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
 </div>
 
 <div class="row mt-4">
-  <div class="col-3"></div>
+  <div class="col-2"></div>
   <div class="col-2">
-    <input [(ngModel)]="priceListItem.itemNumber" placeholder="Item Number" class="form-control">
+    <input (change)="fillItemName($event)" [(ngModel)]="priceListItem.itemNumber" placeholder="Item Number" class="form-control">
   </div>
   <div class="col-2">
     <input [(ngModel)]="priceListItem.itemName" placeholder="Item Name" class="form-control">
   </div>
   <div class="col-2">
-    <input [(ngModel)]="priceListItem.itemPrice" type="number" placeholder="Item Price" class="form-control">
+    <input [(ngModel)]="priceListItem.supplierPrice" type="number" placeholder="Item Price" class="form-control">
   </div>
-  <div class="col-3"></div>
+  <div class="col-2">
+    <input [(ngModel)]="priceListItem.itemCoin" type="text" placeholder="Item Coin" class="form-control">
+  </div>
+  <div class="col-2"></div>
 </div>
 
 <div class="row mt-2">

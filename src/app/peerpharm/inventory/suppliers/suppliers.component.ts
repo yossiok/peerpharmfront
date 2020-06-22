@@ -6,6 +6,7 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ActivatedRoute } from '@angular/router';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 
 @Component({
@@ -52,7 +53,8 @@ export class SuppliersComponent implements OnInit {
   priceListItem = {
     itemNumber:'',
     itemName:'',
-    itemPrice:''
+    supplierPrice:'',
+    itemCoin:''
   }
 
   supplier = {
@@ -83,7 +85,7 @@ export class SuppliersComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute,private excelService: ExcelService,private procurementService: Procurementservice, private modalService: NgbModal, private supplierService: SuppliersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
+  constructor(private inventoryService:InventoryService,private route: ActivatedRoute,private excelService: ExcelService,private procurementService: Procurementservice, private modalService: NgbModal, private supplierService: SuppliersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
   open(content) {
     
@@ -130,6 +132,19 @@ export class SuppliersComponent implements OnInit {
         this.saveSupplier();
       }
     })
+  }
+
+  fillItemName(ev){
+    debugger;
+  var itemNumber = ev.target.value;
+  
+  if(itemNumber != ''){
+    this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data=>{
+      if(data){
+        this.priceListItem.itemName = data[0].componentName
+      }
+    })
+  }
   }
 
   getAlternativeSuppliers() {
@@ -330,12 +345,13 @@ debugger;
 
   addItemToPriceList(){
     debugger;
-    if(this.priceListItem.itemName != '' && this.priceListItem.itemNumber != '' && this.priceListItem.itemPrice != '' ){
+    if(this.priceListItem.itemName != '' && this.priceListItem.itemNumber != '' && this.priceListItem.supplierPrice != '' ){
       this.currentSupplier.priceList.push(this.priceListItem)
       this.priceListItem = {
         itemName:'',
         itemNumber:'',
-        itemPrice:'',
+        supplierPrice:'',
+        itemCoin:'',
       }
       this.toastSrv.success('פריט נוסף בהצלחה - לא לשכוח לעדכן !')
     } else {
