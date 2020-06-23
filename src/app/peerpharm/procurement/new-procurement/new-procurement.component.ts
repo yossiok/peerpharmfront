@@ -18,11 +18,14 @@ export class NewProcurementComponent implements OnInit {
 
   openOrdersModal: boolean = false;
   newProcurementForm: any;
+  supplierToUpdate: any;
+  currItemForPL: any;
   procurementSupplier: boolean = true;
   procurementItems: boolean = false;
   allSuppliers: any[];
   hasAuthorization: boolean = false;
   existOpenOrderAlert: boolean = false;
+  showUpdatePLModal: boolean = false;
   allMaterials: any[];
   itemExistInOrders: any[];
   allComponents: any[];
@@ -100,6 +103,13 @@ export class NewProcurementComponent implements OnInit {
   // }
 
 
+  updateItemInPL(){
+    this.supplierService.updateSupplierPrice(this.supplierToUpdate).subscribe(data=>{
+    if(data){
+      this.toastr.success('מחיר עודכן בהצלחה !')
+    }
+    })
+  }
 
 
   moveToProcItems() {
@@ -373,9 +383,14 @@ export class NewProcurementComponent implements OnInit {
         supplierNumber: this.newProcurement.supplierNumber
       }
 
+      this.supplierToUpdate = obj;
+
       this.supplierService.addToSupplierPriceList(obj).subscribe(data => {
-        if (data) {
-          this.toastr.success('הוסף למחירון ספק בהצלחה !')
+        if (data.itemNumber) {
+         this.currItemForPL = data;
+         this.showUpdatePLModal = true
+        } else {
+          this.toastr.success('פריט הוסף למחירון ספק בהצלחה !')
         }
       })
     }

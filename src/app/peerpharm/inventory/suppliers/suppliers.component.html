@@ -175,7 +175,7 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
       <tbody style="height:320px;overflow: scroll;">
       
         <tr *ngFor="let item of currentSupplier.priceList" >
-          <td>{{item.itemNumber}}</td>
+          <td (click)="showAllPurchases(item.itemNumber)" style="text-decoration: underline;cursor: pointer;">{{item.itemNumber}}</td>
           <td>{{item.itemName}}</td>
           <td>{{item.supplierPrice}}</td>
           <td>{{item.itemCoin}}</td>
@@ -212,6 +212,39 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
 </div>
 </div>
 
+
+<div *ngIf="showItemPurchases == true" style="top:200px;" class="container rounded fixed-top shadow-lg bg-white mx-auto my-auto text-center p-3">
+  <div class="row">
+    <div class="col-1"></div>
+    
+    <div class="col-10">
+      <h2 class="text-info">Item Purchases</h2>
+    </div>
+    <div class="col-1">
+      <i style="cursor: pointer;" (click)="showItemPurchases = false" class="fa fa-times text-info"></i>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <table class="table table-striped table-hover">
+      <thead class="text-white bg-info">
+      <tr>
+        <th>Amount</th>
+        <th>Price</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of itemPurchases">
+          <td>{{item.supplierAmount}}</td>
+          <td>{{item.supplierPrice}}</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
 
 <ng-template #content let-c="close" let-d="dismiss">
 

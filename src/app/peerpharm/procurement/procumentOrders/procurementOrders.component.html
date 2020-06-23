@@ -18,7 +18,13 @@
       
     <div class="row mt-4">
     <div class="col-3"><input type="text" class="form-control" placeholder="Search By Order Number" (change)="searchNumber($event)" /></div>
-    <div class="col-3"><input type="text" class="form-control" placeholder="Search By Supplier Name" (change)="searchBySupplier($event)"/></div>
+    <div class="col-3">
+      <input type="text" list="suppliers" class="form-control" placeholder="Search By Supplier Name" (change)="searchBySupplier($event)"/>
+      <datalist id="suppliers">
+        <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
+        </option>
+      </datalist>
+    </div>
     <div class="col-3"><input type="text" class="form-control" placeholder="Search By Item Number" (change)="searchByItem($event)" /></div>
     <div class="col-3"><input type="text" class="form-control" placeholder="Search By Reference Number" (change)="searchByReference($event)" /></div>
     </div>
@@ -340,7 +346,7 @@
           
               <input (change)="filterPurchases($event,'supplier')" list="suppliers" class="form-control"/>
               <datalist id="suppliers">
-                <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierName}}
+                <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
                 </option>
               </datalist>
             </div>
@@ -841,7 +847,7 @@
 
       <div class="row">
         <div class="col-4">
-          <p>{{currentOrder.supplierName}}</p>
+          <p>{{currentOrder.supplierName}} - {{currentOrder.supplierNumber}}</p>
         </div>
 
         <div class="col-4"></div>

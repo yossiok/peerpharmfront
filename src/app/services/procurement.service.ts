@@ -86,6 +86,10 @@ export class Procurementservice {
     let url = this.baseUrl + 'newProcurement?orderNumberExist=' +orderNumber;
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
+  getAllItemPurchases(itemNumber): Observable<any> {
+    let url = this.baseUrl + 'newProcurement?allItemPurchases=' +itemNumber;
+    return this.http.get(url).pipe( map(reponse => reponse.json()));
+  }
   // copyOldData(): Observable<any> {
   //   let url = this.baseUrl + 'expectedArrivalController/copyOldData';
   //   return this.http.get(url).pipe( map(reponse => reponse.json()));

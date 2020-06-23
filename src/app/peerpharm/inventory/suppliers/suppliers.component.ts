@@ -21,6 +21,7 @@ export class SuppliersComponent implements OnInit {
   closeResult: string;
   suppliersAlterArray:any[];
   suppliers: any[];
+  itemPurchases: any[];
   suppliersCopy: any[];
   alternSupplier: any[];
   alterSupplierToPush:string;
@@ -30,6 +31,7 @@ export class SuppliersComponent implements OnInit {
   suppliersOrderItemsCopy:any[];
   hasMoreItemsToload: boolean = true;
   updateSupplier: boolean = false;
+  showItemPurchases: boolean = false;
   currentSupplier = {
     suplierNumber: '',
     suplierName: '',
@@ -387,6 +389,17 @@ debugger;
         this.currentSupplier = data[0]
         this.updateSupplier = true
       }     
+    })
+  }
+
+  showAllPurchases(itemNumber){
+  
+    this.procurementService.getAllItemPurchases(itemNumber).subscribe(data=>{
+    if(data){
+     this.itemPurchases = data; 
+     this.showItemPurchases = true;
+
+    }
     })
   }
 
