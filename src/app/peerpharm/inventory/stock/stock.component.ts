@@ -892,6 +892,9 @@ export class StockComponent implements OnInit {
           if(obj.purchaseStatus == 'closed'){
             obj.purchaseStatus = 'סגור'
           }
+          if(obj.purchaseStatus == 'orderSentToSupplier'){
+            obj.purchaseStatus = 'הזמנה נשלחה לספק'
+          }
           if(obj.purchaseStatus == 'open'){
             obj.purchaseStatus = 'הזמנה פתוחה'
           }

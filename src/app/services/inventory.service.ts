@@ -245,6 +245,7 @@ addNewRecommendation(purchaseRecommend):Observable<any>{
 
 
   startNewItemObservable() { 
+    debugger;
     let itemResultObservable: Observable<any[]> = new Observable(observer => {
       let self=this;
       let skip = 0;

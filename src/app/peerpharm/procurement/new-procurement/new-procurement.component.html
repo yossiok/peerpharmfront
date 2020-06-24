@@ -49,7 +49,7 @@
                     [(ngModel)]="newProcurement.supplierName" (change)="findSupplierByNumber($event)"
                     class="form-control custom-select">
                     <datalist id="suppliers">
-                      <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
+                      <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
                       </option>
                     </datalist>
                 </div>

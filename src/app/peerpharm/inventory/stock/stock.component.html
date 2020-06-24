@@ -258,7 +258,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let comp of component.purchaseOrders">
+                    <ng-container *ngFor="let comp of component.purchaseOrders" >
+                    <tr *ngIf="comp.purchaseStatus != 'closed'" >
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseOrder}}</td>
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseAmount}}</td>
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.expectedArrival | date: 'dd/MM/yyyy'}}</td>
@@ -274,6 +275,7 @@
                       </td> -->
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseStatus}}</td>
                     </tr>
+                  </ng-container>
                   </tbody>
                 </table>
               </div>
