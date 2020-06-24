@@ -259,10 +259,10 @@
                   </thead>
                   <tbody>
                     <ng-container *ngFor="let comp of component.purchaseOrders" >
-                    <tr *ngIf="comp.purchaseStatus != 'closed'" >
+                    <tr  *ngIf="comp.purchaseStatus != 'סגור'" >
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseOrder}}</td>
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseAmount}}</td>
-                      <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.expectedArrival | date: 'dd/MM/yyyy'}}</td>
+                      <td [ngClass]="{'arrivalWeekNotice': comp.expectedArrival < today.toISOString()}" style="border:1px solid black;font-size: 10px;padding:0;">{{comp.expectedArrival | date: 'dd/MM/yyyy'}}</td>
                       <!-- <td style="border:1px solid black;font-size: 10px;padding:0;">
                         <table>
                           <tbody>
@@ -648,11 +648,13 @@
                 <option value='plate'>גלופה</option>
               </select>
 
-              <select class="form-control" [(ngModel)]="resCmpt.componentCategory">
+              <input list="categories" class="form-control" [(ngModel)]="resCmpt.componentCategory">
                 <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
+                  <datalist id="categories">
                 <option value=""></option>
                 <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
-              </select>
+              </datalist>
+           
               <select class="form-control" [(ngModel)]="resCmpt.packageType">
                 <option value='paperCarton'>נייר/קרטון</option>
                 <option value='drinkCarton'>קרטוניות משקה</option>
@@ -1118,11 +1120,14 @@
                 <th>מותג</th>
                 <td>
                   <!-- <input type='text' id="input_componentCategory" [(ngModel)]="resCmpt.componentCategory"> -->
-                  <select [(ngModel)]="resCmpt.componentCategory">
+                  <input list="categories" [(ngModel)]="resCmpt.componentCategory">
                     <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
-                    <option value=""></option>
-                    <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
-                  </select>
+                      <datalist id="categories">
+                        <option value=""></option>
+                        <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
+                      </datalist>
+              
+                  
 
 
 
@@ -1665,20 +1670,20 @@
           <div class="col-2">
             <button class="btn btn-success form-control" (click)="coaMasterInput.click()"><i class="fa fa-upload"
                 aria-hidden="true"></i></button>
-            <button class="btn btn-success form-control" (click)="msdsInput.click()"><i class="fa fa-upload"
+            <button class="btn btn-success form-control" (click)="upload"><i class="fa fa-upload"
                 aria-hidden="true"></i></button>
               </div>
             <div class="col-3">
 
-               <a style="display:block" target="_blank" [href]="linkDownload"><img style="height: 30px; width:30px;"
-                src="../../../../assets/images/pdf.png" alt="PDF" /></a>
+               <img style="height: 30px; width:30px;"
+                src="../../../../assets/images/pdf.png" alt="PDF" />
             <input class="form-control" #coaMasterInput style="display:none" type="file"
-              (change)="onSelectCoaMaster($event)">
+              (change)="uploadCoaMaster($event)">
 
 
-            <a style="display:block" target="_blank" [href]="linkDownload"> <img style="height: 30px; width:30px;"
-                src="../../../../assets/images/pdf.png" alt="PDF" /></a>
-            <input class="form-control" #msdsInput style="display:none" type="file" (change)="onSelectMsds($event)">
+          <img style="height: 30px; width:30px;"
+                src="../../../../assets/images/pdf.png" alt="PDF" />
+            <input class="form-control" #msdsInput style="display:none" type="file" (change)="uploadMsds($event)">
             </div>
             <div class="col-2 fixNoaStupidStuff">
               <label class="form-control">Formule Remark</label>

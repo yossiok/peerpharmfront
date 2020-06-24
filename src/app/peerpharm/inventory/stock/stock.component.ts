@@ -892,7 +892,7 @@ export class StockComponent implements OnInit {
           if(obj.purchaseStatus == 'closed'){
             obj.purchaseStatus = 'סגור'
           }
-          if(obj.purchaseStatus == 'orderSentToSupplier'){
+          if(obj.purchaseStatus == 'sentToSupplier'){
             obj.purchaseStatus = 'הזמנה נשלחה לספק'
           }
           if(obj.purchaseStatus == 'open'){
@@ -2001,6 +2001,36 @@ export class StockComponent implements OnInit {
       input_actualMlCapacity: 0,
     }
 
+  }
+
+  uploadMsds(fileInputEvent){
+    debugger
+    let file = fileInputEvent.target.files[0];
+    console.log(file);
+
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        // this.tempHiddenImgSrc=data.partialText;
+        this.resCmpt.msds = data.partialText;
+        console.log(" this.resCmpt.img " + this.resCmpt.img);
+      }
+
+    })
+  }
+
+  uploadCoaMaster(fileInputEvent){
+    debugger
+    let file = fileInputEvent.target.files[0];
+    console.log(file);
+
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        // this.tempHiddenImgSrc=data.partialText;
+        this.resCmpt.coaMaster = data.partialText;
+        console.log(" this.resCmpt.img " + this.resCmpt.img);
+      }
+
+    })
   }
 
 

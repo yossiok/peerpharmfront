@@ -19,6 +19,7 @@ import { p } from '@angular/core/src/render3';
 export class ProcurementOrdersComponent implements OnInit {
 
   linkDownload: String = '';
+  paymentRemark: String
   orderRemarks: String;
   myRefresh: any = null;
   allComponents: any[];
@@ -35,6 +36,7 @@ export class ProcurementOrdersComponent implements OnInit {
   showInfoModal: boolean = false;
   editArrivalModal: boolean = false;
   changeItemQuantity: boolean = false;
+  paymentRemarkModal: boolean = false;
   invoiceModal: boolean = false;
   changeItemPrice: boolean = false;
   bill: boolean = false;
@@ -268,6 +270,35 @@ export class ProcurementOrdersComponent implements OnInit {
   openQuantityModal(item){
     this.changeItemQuantity = true;
     this.currCertifItem = item;
+  }
+
+  addPaymentRemark(){
+    if(this.paymentRemark != ''){
+      this.procurementservice.updatePaymentRemark(this.paymentRemark,this.currOrderNumber).subscribe(data=>{
+      if(data){
+        debugger;
+        this.toastr.success('הערה עודכנה בהצלחה !')
+        this.paymentRemarkModal = false;
+        var purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
+        purchase.paymentRemark = data.paymentRemark
+      }
+      })
+    }
+  }
+
+  changePaymentStatus(ev,orderNumber){
+    var paymentStatus = ev.target.value;
+
+    if(paymentStatus != ''){
+      this.procurementservice.updatePaymentStatus(paymentStatus,orderNumber).subscribe(data=>{
+        if(data){
+          this.toastr.success('סטטוס תשלום עודכן בהצלחה !')
+          this.paymentRemarkModal = true;
+        
+          this.currOrderNumber = data.orderNumber
+        }
+      })
+    }
   }
 
   changeCertifPrice(ev){

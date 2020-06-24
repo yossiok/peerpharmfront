@@ -115,6 +115,10 @@ table {
   font-size: 16px;
 }
 
+.arrivalWeekNotice{
+  background:lightcoral;
+}
+
 .fixNoaStupidStuff {
   float:none !important;
   margin-right:0px !important;

@@ -120,7 +120,6 @@
               <tr>
                 <th><b>#</b></th>
                 <th><b>Procurement Number</b></th>
-                <th><b>Comax Number</b></th>
                 <!-- <th><b>Supplier Number</b></th> -->
                 <th><b>Supplier Name</b></th>
                 <th><b>Supplier Number</b></th>
@@ -131,10 +130,10 @@
                 <th ><b>Change</b></th>
                 <th ><b>Close Order</b></th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th><b>Payments Status</b></th>
+                <th><b>Payment Remark</b></th>
+
+
               </tr>
             </thead>
 
@@ -145,7 +144,6 @@
                 <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span
                     style="color:blue;">{{line.orderNumber}}</span>
                 </td>
-                <td>{{ line.comaxNumber }}</td>
                 <!-- <td>{{ line.supplierNumber }}</td> -->
                 <td>{{ line.supplierName }}</td>
                 <td>{{ line.supplierNumber }}</td>
@@ -194,9 +192,23 @@
               </td>
                   
                 <td><button class="btn btn-info" (click)="printOrder(line)">Print</button></td>
-                <td><button class="btn btn-info form-control" (click)="orderInput.click()">O</button></td>
+                <td>
+                  <input [(ngModel)]="line.paymentStatus" (change)="changePaymentStatus($event,line.orderNumber)" list="payments" class="form-control">
+                  <datalist id="payments">
+                    <option value=""></option>
+                    <option value="fullyPaid">שולם במלואו</option>
+                    <option value="partlyPaid">שולם חלקית</option>
+                    <option value="advancePaid">שולם מקדמה</option>
+                    
+                  </datalist>
+                </td>
+                <td><label class="form-control">{{line.paymentRemark}}</label></td>
+
+
+                <!-- <td><button class="btn btn-info form-control" (click)="orderInput.click()">O</button></td> -->
+              
                 <!-- <td><button class="btn btn-info" (click)="sendOrder(line)">Send Order</button></td> -->
-              <td>   <a style="display:block" target="_blank" (click)="setLinkDownlowd(line._id)" [href]="linkDownload"><img style="height: 30px; width:30px;"
+              <!-- <td>   <a style="display:block" target="_blank" (click)="setLinkDownlowd(line._id)" [href]="linkDownload"><img style="height: 30px; width:30px;"
                 src="../../../../assets/images/pdf.png" alt="PDF" /></a>
 
             <input class="form-control" #orderInput style="display:none" type="file"
@@ -207,7 +219,7 @@
                 <a style="display:block" target="_blank" (click)="setLinkDownlowdTwo(line._id)" [href]="linkDownload"> <img style="height: 30px; width:30px;"
                   src="../../../../assets/images/pdf.png" alt="PDF" /></a>
               <input class="form-control" #swiftInput style="display:none" type="file" (change)="onSelectSwift($event,line.orderNumber)">
-              </td>
+              </td> -->
     
               </tr>
             </tbody>
@@ -739,6 +751,32 @@
       </div>
       <div class="col-4">
         <button (click)="addMoreInfo()" class="form-control btn btn-info">Add</button>
+      </div>
+      <div class="col-2"></div>
+
+    </div>
+  
+</div>
+<div *ngIf="paymentRemarkModal == true" style="top:150px" class="container border border-info bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
+  <div class="row">
+    <div class="col-4">
+     
+    </div>
+    <div class="col-4">
+      <h3>הוסף הערה לסטטוס תשלום</h3>
+    </div>
+    <div class="col-4">
+     <i (click)="paymentRemarkModal = false" class="fa fa-times"></i>
+    </div>
+  </div>
+    <div class="row">
+
+      <div class="col-2"></div>
+      <div class="col-4">
+      <input type="text" class="form-control" [(ngModel)]="paymentRemark">
+      </div>
+      <div class="col-4">
+        <button (click)="addPaymentRemark()" class="form-control btn btn-info">Add</button>
       </div>
       <div class="col-2"></div>
 
