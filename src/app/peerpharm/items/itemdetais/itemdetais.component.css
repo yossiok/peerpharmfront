@@ -97,6 +97,16 @@ input:focus {
 
 .prodImage:hover { 
 transform: scale(20);
+z-index: 9999;
+}
+
+.imageClass:hover{
+    transform: scale(5);
+    z-index: 9999;
+}
+.imageClass { 
+    transition: 0.3s;
+
 }
 
 .pictureDivider { 

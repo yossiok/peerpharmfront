@@ -168,6 +168,7 @@ export class StockComponent implements OnInit {
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
   @ViewChild('filterBySupplierN') filterBySupplierN: ElementRef; //this.filterBySupplierN.nativeElement.value
+  @ViewChild('filterByItem') filterByItem: ElementRef; //this.filterBySupplierN.nativeElement.value
   @ViewChild('filterByCmptName') filterByCmptName: ElementRef; //this.filterByCmptName.nativeElement.value
   @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
   @ViewChild('filterBySupplier') filterBySupplier: ElementRef; //this.filterbyNum.nativeElement.value
@@ -1388,6 +1389,15 @@ export class StockComponent implements OnInit {
     if (this.filterbyNum.nativeElement.value != "" && this.filterbyNum != undefined) {
       let itemNum = this.filterbyNum.nativeElement.value;
       this.components = this.components.filter(x => (x.componentN.includes(itemNum) && x.itemType.includes(this.stockType)));
+    }
+
+    if(this.filterByItem.nativeElement.value != '' && this.filterByItem != undefined){
+      debugger;
+    let itemNumber = this.filterByItem.nativeElement.value;
+    this.itemService.getItemData(itemNumber).subscribe(data=>{
+      this.components = this.components.filter(x=>x.componentN == data[0].bottleNumber || x.componentN == data[0].sealNumber || x.componentN == data[0].tubeNumber || x.componentN == data[0].capNumber
+       || x.componentN == data[0].boxNumber || x.componentN == data[0].stickerNumber )
+    })
     }
 
     if (this.filterByCmptName.nativeElement.value != "") {

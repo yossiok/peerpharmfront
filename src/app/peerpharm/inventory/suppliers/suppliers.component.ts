@@ -75,6 +75,8 @@ export class SuppliersComponent implements OnInit {
     remarks:'',
     alternativeSupplier:this.alterSupplierArray,
     items:[],
+    import:''
+
   }
 
 
@@ -107,6 +109,8 @@ export class SuppliersComponent implements OnInit {
       remarks:'',
       alternativeSupplier:this.alterSupplierArray,
       items:[],
+      import:''
+
     }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {

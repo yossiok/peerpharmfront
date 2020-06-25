@@ -120,6 +120,7 @@
               <tr>
                 <th><b>#</b></th>
                 <th><b>Procurement Number</b></th>
+                <th><b>Comax Number</b></th>
                 <!-- <th><b>Supplier Number</b></th> -->
                 <th><b>Supplier Name</b></th>
                 <th><b>Supplier Number</b></th>
@@ -144,6 +145,7 @@
                 <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span
                     style="color:blue;">{{line.orderNumber}}</span>
                 </td>
+                <td>{{line.comaxNumber}}</td>
                 <!-- <td>{{ line.supplierNumber }}</td> -->
                 <td>{{ line.supplierName }}</td>
                 <td>{{ line.supplierNumber }}</td>
@@ -195,7 +197,7 @@
                 <td>
                   <input [(ngModel)]="line.paymentStatus" (change)="changePaymentStatus($event,line.orderNumber)" list="payments" class="form-control">
                   <datalist id="payments">
-                    <option value=""></option>
+                    <option value=" "> </option>
                     <option value="fullyPaid">שולם במלואו</option>
                     <option value="partlyPaid">שולם חלקית</option>
                     <option value="advancePaid">שולם מקדמה</option>
@@ -358,7 +360,7 @@
           
               <input (change)="filterPurchases($event,'supplier')" list="suppliers" class="form-control"/>
               <datalist id="suppliers">
-                <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
+                <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
                 </option>
               </datalist>
             </div>
@@ -405,6 +407,7 @@
                     <th>Comax </th>
                     <th>Item Number</th>
                     <th>Amount</th>
+                    <th>Arrived Amount</th>
                     <th>Item Name</th>
                     <th>Reference Number</th>
                     <!-- <th>Arrival Date</th>
@@ -412,6 +415,7 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <ng-container>
                   <tr style="box-shadow: inset 0x 0x 4px 1px black !important" *ngFor="let purchase of procurementArrivals;let i = index">
                     <td style="color:blue;text-decoration: underline;cursor: pointer;" (click)="editArrivalDetails(i)">{{i+1}}
                     </td>
@@ -421,6 +425,7 @@
                     <td>{{purchase.comaxNumber}}</td>
                     <td>{{purchase.itemNumber}}</td>
                     <td>{{purchase.supplierAmount}}</td>
+                    <td [ngClass]="{'allArrived': purchase.arrivedAmount >= purchase.supplierAmount}">{{purchase.arrivedAmount}}</td>
                     <td>{{purchase.itemName}}</td>
                     <td>
                       <table>
@@ -435,6 +440,7 @@
                     <td>{{purchase.arrivedAmount}}</td> -->
         
                   </tr>
+                </ng-container>
                 </tbody>
               </table>
             </div>

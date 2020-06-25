@@ -171,17 +171,28 @@ export class ProcurementOrdersComponent implements OnInit {
 
   fillMaterialName(ev) {
     debugger;
+  
     var itemNumber = ev.target.value;
-
-    this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
-      debugger;
-      if (data) {
-        if (data[0].componentN == itemNumber) {
-          this.newItem.itemName = data[0].componentName
+    var supplierNumber = this.orderData[0].supplierNumber
+    var tempArr = this.procurementData.filter(x=>x.supplierNumber == supplierNumber);
+    tempArr.forEach(purchase => {
+      purchase.item.forEach(item => {
+        if(item.itemNumber == itemNumber){
+          this.toastr.error('פריט זה קיים בהזמנה מספר'+' '+purchase.orderNumber)
+        } else {
+          this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
+            debugger;
+            if (data) {
+              if (data[0].componentN == itemNumber) {
+                this.newItem.itemName = data[0].componentName
+              }
+      
+            }
+          })
         }
+      });
+    });
 
-      }
-    })
 
 
   }
@@ -193,7 +204,7 @@ export class ProcurementOrdersComponent implements OnInit {
         if (event.target.value != '') {
           this.procurementArrivals = []
           this.procurementArrivalsCopy = []
-          var tempArr = this.procurementDataCopy.filter(p => p.supplierName == event.target.value && p.status != 'canceled');
+          var tempArr = this.procurementDataCopy.filter(p => p.supplierNumber == event.target.value && p.status != 'canceled');
           for (let i = 0; i < tempArr.length; i++) {
             
               for (let j = 0; j < tempArr[i].item.length; j++) {
@@ -204,6 +215,7 @@ export class ProcurementOrdersComponent implements OnInit {
                   comaxNumber: tempArr[i].comaxNumber,
                   orderNumber: tempArr[i].orderNumber,
                   orderDate:tempArr[i].outDate,
+                  arrivedAmount:tempArr[i].item[j].arrivedAmount,
                   itemNumber: tempArr[i].item[j].itemNumber,
                   itemName: tempArr[i].item[j].itemName,
                   supplierAmount: tempArr[i].item[j].supplierAmount,

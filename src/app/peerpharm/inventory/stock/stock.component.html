@@ -88,6 +88,12 @@
             (change)="filterRows($event , 'supplierN')">
           <!-- <input  #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number..." (change)="filterRowsByItemSupplierNumber($event)"> -->
         </div>
+        <div *ngIf="stockType=='component'" class="col-sm-2">
+          <label class="fr">מספר פריט</label>
+          <input #filterByItem type="text" class="form-control" placeholder="Item Number"
+            (change)="filterRows($event , 'itemNumber')">
+          <!-- <input  #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number..." (change)="filterRowsByItemSupplierNumber($event)"> -->
+        </div>
 
         <div *ngIf="stockType=='component'" class="col-sm-2">
           <label class="fr">סוג רכיב</label>

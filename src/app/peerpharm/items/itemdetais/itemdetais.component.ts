@@ -15,6 +15,7 @@ import { BatchesService } from 'src/app/services/batches.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { TranslateService } from '@ngx-translate/core';
+import { PlateService } from 'src/app/services/plate.service';
 
 @Component({
   selector: 'app-itemdetais',
@@ -93,7 +94,12 @@ export class ItemdetaisComponent implements OnInit {
     discriptionK: '',
     proRemarks: '',
     impRemarks: '',
-
+    boxImage:'',
+    stickerImage:'',
+    palletImage:'',
+    palletImage2:'',
+    palletImage3:'',
+  
     typeOfComponent:'',
     typeOfComponentTwo:'',
     typeOfComponentThree:'',
@@ -299,9 +305,9 @@ export class ItemdetaisComponent implements OnInit {
   }
 
 
-  constructor(private translate:TranslateService,private excelService:ExcelService,private orderService:OrdersService,private batchService:BatchesService ,private modalService:NgbModal,private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
+  constructor(private plateService:PlateService,private translate:TranslateService,private excelService:ExcelService,private orderService:OrdersService,private batchService:BatchesService ,private modalService:NgbModal,private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
-    debugger;
+   
 
    
     this.itemCopy = Object.assign({}, this.itemShown);
@@ -443,7 +449,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   exportAsXLSX() {
-       debugger
+     
     this.excelService.exportAsExcelFile([this.itemShown], 'data');
  }
 
@@ -467,7 +473,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   fillBottle(ev) {
-    debugger
+
     var bottleNumber = ev.target.value;
 
     if (bottleNumber != "---" || "") {
@@ -483,7 +489,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillCap(ev) {
-    debugger;
+ 
     var capNumber = ev.target.value;
 
     if (capNumber != "---" || "") {
@@ -499,7 +505,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillPump(ev) {
-    debugger;
+
     var pumpNumber = ev.target.value;
 
     if (pumpNumber != "---" || "") {
@@ -531,7 +537,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   openBatchModal(batches) {
-    debugger;
+
     var itemNumber = this.itemShown.itemNumber
     this.batchService.getBatchesByItemNumber(itemNumber).subscribe(data=>{
       this.itemBatches = data;
@@ -548,7 +554,7 @@ export class ItemdetaisComponent implements OnInit {
     var itemNumber = this.itemShown.itemNumber
   
     this.orderService.getOrderItemsByitemNumber(itemNumber).subscribe(data=>{
-      debugger;
+    
       this.ordersItem = data;
     })
     this.modalService.open(orders).result.then((result) => {
@@ -582,7 +588,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
   }
 
   fillCostumerDetails(ev){
-    debugger;
+
 
     ev.target.value;
     var costumerName = ev.target.value;
@@ -594,11 +600,74 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
    
   }
 
+  searchPlateByNumber(plateNumber,type){
+  
+  debugger;
+    switch(type) {
+      case 'pallet':
+        if(plateNumber != ''){
+          this.plateService.getPlatesByNumber(plateNumber).subscribe(data=>{
+            if(data){
+              this.itemShown.palletImage = data[0].palletImg
+            }
+          })
+        }
+     
+        break;
+      case 'pallet2':
+        if(plateNumber != ''){
+        this.plateService.getPlatesByNumber(plateNumber).subscribe(data=>{
+          if(data){
+            this.itemShown.palletImage2 = data[0].palletImg
+          }
+        })
+      }
+        break;
+      case 'pallet3':
+        if(plateNumber != ''){
+        this.plateService.getPlatesByNumber(plateNumber).subscribe(data=>{
+          if(data){
+            this.itemShown.palletImage3 = data[0].palletImg
+          }
+        })
+      }
+        break;
+
+    }
+   
+  }
+
   searchCompNumberByComp(compNumber, src)
   {
     var itemType = "component";
-  
+    debugger;
     switch (src) {
+      case 'sticker':
+        if (compNumber != "") {
+          this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
+        debugger;
+      
+            this.itemShown.stickerImage = data[0].img
+
+          })
+
+        } else {
+          this.productionType = "";
+        }
+        break;
+      case 'box':
+        if (compNumber != "") {
+          this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
+            data
+  
+            this.itemShown.boxImage = data[0].img
+
+          })
+
+        } else {
+          this.productionType = "";
+        }
+        break;
       case 'productionInput':
         if (compNumber != "") {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
@@ -712,8 +781,6 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
   }
 
   saveSpecTable(){
-    debugger;
-
     this.editSpecTable = false;
 
     this.itemsService.saveSpecSettings(this.itemShown).subscribe(data=>{
@@ -792,7 +859,6 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
 
   jumpingRemark(){
-    debugger;
     if(this.itemShown.proRemarks != "" && this.itemShown.proRemarks != undefined && this.itemShown.proRemarks != null) {
       if(this.remarksAlert == true){
         this.remarksAlert = false;
@@ -805,7 +871,6 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
     }
   }
   notActive(){
-    debugger;
     if(this.itemShown.status == "notActive") {
       if(this.notActiveAlert == true){
         this.notActiveAlert = false;
@@ -841,7 +906,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
   }
 
   getItemData() {
-    debugger;
+
    this.route.params.subscribe(data=>
       {
         let number=data.itemNumber;
@@ -858,7 +923,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
             
             
             this.searchForItem(data.itemNumber)
-            debugger
+
             this.dataDiv = res[0].goddet;
             this.showGoddetData();
           
@@ -901,8 +966,13 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         this.itemShown.productionThreeInput = this.itemShown.pumpNumber
         this.itemShown.productionFourInput = this.itemShown.sealNumber
       
-        var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
-        this.allCostumers = costumer
+        this.searchCompNumberByComp(this.itemShown.boxNumber,'box')
+        this.searchCompNumberByComp(this.itemShown.stickerNumber,'sticker')
+        this.searchPlateByNumber(this.itemShown.pallet,'pallet')
+        this.searchPlateByNumber(this.itemShown.pallet2,'pallet2')
+        this.searchPlateByNumber(this.itemShown.pallet3,'pallet3')
+        // var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
+        // this.allCostumers = costumer
         
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
         //null as moment format returns="invalid date"
@@ -1044,7 +1114,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
   }
 
   async writeItemData() {
-    debugger;
+
     this.editSpecTable = false;
     if(this.itemShown.status == "production") {
       if(this.authService.loggedInUser.userName == "Sigi" || this.authService.loggedInUser.userName == 'akiva'){
@@ -1200,7 +1270,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
   }
 
   addRemoveInputs(type) {
-    debugger;
+
     switch (type) {
       case 'mainLang':
         if (this.mainLanguage == true) {
@@ -1486,7 +1556,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
   }
 
    getUserInfo() {
-    debugger
+
 
     if(this.authService.loggedInUser) {
         this.user = this.authService.loggedInUser
