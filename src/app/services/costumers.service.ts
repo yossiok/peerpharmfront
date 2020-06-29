@@ -30,6 +30,10 @@ export class CostumersService {
     let url = this.baseUrl + "costumers?costumerName="+costumerName;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getByCostumerId(costumerId){
+    let url = this.baseUrl + "costumers?costumerId="+costumerId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   addorUpdateCostumer(CostumerObj){
     

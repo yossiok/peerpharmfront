@@ -122,6 +122,10 @@ export class InventoryService {
     let url = this.baseUrl + "component/add";
     return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))
 }
+addToFillingStorage(cmptObj):Observable<any>{ 
+    let url = this.baseUrl + "component/addToFillingStorage";
+    return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))
+}
 
 addNewMaterial(materialObj):Observable<any>{ 
   
@@ -281,6 +285,10 @@ addNewRecommendation(purchaseRecommend):Observable<any>{
 // DATA FIXES
 getDoubleItemShelfs(){
   let url = this.baseUrl + "component/componentFixes?doubleItemShelfs=yes";
+  return this.http.get(url).pipe(map(reponse => reponse.json()));
+}
+getAllFillingStorage(){
+  let url = this.baseUrl + "component/getAllFillingStorage";
   return this.http.get(url).pipe(map(reponse => reponse.json()));
 }
 getDoubleStockItems(){

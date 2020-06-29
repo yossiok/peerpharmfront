@@ -1266,16 +1266,30 @@ if(category != ''){
 
   closeOrder(ev, orderNumber) {
     var reason = ev.target.value;
-    if (confirm("האם לסגור הזמנה זו  ?")) {
-      this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
-        if (data) {
-          this.procurementData = data;
-          this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
-        } else {
-          this.toastr.error('error')
-        }
-      })
+    if(reason != 'open'){
+      if (confirm("האם לסגור הזמנה זו  ?")) {
+        this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
+          if (data) {
+            this.procurementData = data;
+            this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
+          } else {
+            this.toastr.error('error')
+          }
+        })
+      }
+    } else {
+      if (confirm("האם לפתוח הזמנה זו  ?")) {
+        this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
+          if (data) {
+            this.procurementData = data;
+            this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
+          } else {
+            this.toastr.error('error')
+          }
+        })
+      }
     }
+  
   }
 
   deleteFromOrder(itemNumber, orderNumber) {

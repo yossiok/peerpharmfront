@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { InventoryService } from 'src/app/services/inventory.service';
+import { ArrayServiceService } from 'src/app/utils/array-service.service';
 
 @Component({
   selector: 'app-storages',
@@ -10,14 +12,17 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class StoragesComponent implements OnInit {
 
-  allFillingRequests:any[]
-  allFillingRequestsCopy:any[]
   user:any;
   currItem:any;
   currRequest:any;
+  componentNumber:any;
+  componentName:any;
+  amount:any;
   editRow:String = ''
   allowCheckArrived:Boolean = false;
   printDocument:Boolean = false;
+  allFillingStorage:any[];
+  allFillingStorageCopy:any[];
 
 
   @ViewChild('toDate') toDate: ElementRef;
@@ -27,23 +32,26 @@ export class StoragesComponent implements OnInit {
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.edit('');
+
 
   }
 
+  ReceiveComponents = {
+    items:[],
+    amount:'',
+    date:'',
+    certificate:'',
+    storageType:'filling',
+    orderNumber:'',
+    status:'open'
+  }
 
-  constructor(private authService:AuthService,private toastSrv:ToastrService,private inventoryReqService:InventoryRequestService) { }
+
+  constructor(private arrayService:ArrayServiceService,private inventorySrv:InventoryService,private authService:AuthService,private toastSrv:ToastrService,private inventoryReqService:InventoryRequestService) { }
 
   ngOnInit() {
-    this.getAllFillingRequests()
     this.getUser();
-  }
-  edit(itemNumber) {
-    if (itemNumber != '') {
-      this.editRow = itemNumber;
-    } else {
-      this.editRow = '';
-    }
+    this.getAllFillingStorage();
   }
 
   openPrintDocument(request){
@@ -51,138 +59,86 @@ export class StoragesComponent implements OnInit {
     this.printDocument = true;
   }
 
-  getAllFillingRequests(){
-    this.inventoryReqService.getFillingRequestsList().subscribe(data=>{
+
+  fillItemName(ev){
+    debugger;
+    let itemNumber = ev.target.value;
+    this.inventorySrv.getCmptByitemNumber(itemNumber).subscribe(data=>{
     if(data){
-      debugger;
-      data.forEach(req => {
-        req.reqList.forEach(item => {
-          if(item.arrivedQty == undefined){
-            item.arrivedQty = ''
-          }
-        });
-      });
-      this.allFillingRequests = data
-      this.allFillingRequestsCopy = data
+        this.componentName = data[0].componentName
+
+    } else {
+      this.toastSrv.error('פריט לא קיים במערכת')
     }
     })
   }
 
-  printAndSaveCertif(){
+  addToReceiveComponents(){
+    this.ReceiveComponents.items.push({componentNumber:this.componentNumber,componentName:this.componentName,amount:this.amount})
+    this.componentName = ''
+    this.componentNumber = ''
+    this.amount = ''
+    this.toastSrv.success('פריט הוסף בהצלחה !')
+  }
+
+  sendToFilling(){
     debugger;
-
-  }
-
-  filterByNumber(ev){
-    var itemNumber = ev.target.value;
-    var tempArr = [];
-
-    if(itemNumber != ''){
-    for (let i = 0; i < this.allFillingRequests.length; i++) {
-     for (let j = 0; j < this.allFillingRequests[i].reqList.length; j++) {
-      if(this.allFillingRequests[i].reqList[j].itemNumber == itemNumber) {
-        tempArr.push(this.allFillingRequests[i])
-      }
-       
-     }
+    this.ReceiveComponents;
       
-    }
-    this.allFillingRequests = tempArr
-    } else {
-      this.allFillingRequests = this.allFillingRequestsCopy
-    }
-  }
-  filterByOrder(ev){
-    var orderNumber = ev.target.value;
-    var tempArr = [];
-
-    if(orderNumber != ''){
-    for (let i = 0; i < this.allFillingRequests.length; i++) {
-     for (let j = 0; j < this.allFillingRequests[i].reqList.length; j++) {
-      if(this.allFillingRequests[i].reqList[j].orderNumber == orderNumber) {
-        tempArr.push(this.allFillingRequests[i])
-      }
-       
-     }
-      
-    }
-    this.allFillingRequests = tempArr
-    } else {
-      this.allFillingRequests = this.allFillingRequestsCopy
-    }
-  }
-
-  
-  filterByDate(){
-    debugger;
-    this.inventoryReqService.filterByDate(this.fromDate.nativeElement.value,this.toDate.nativeElement.value).subscribe(data=>{
+    this.inventorySrv.addToFillingStorage(this.ReceiveComponents).subscribe(data=>{
     if(data){
-      this.allFillingRequests = data;
+    this.toastSrv.success('תעודה התקבלה בהצלחה')
+    this.allFillingStorage = data;
+    this.ReceiveComponents.items = []
+    this.ReceiveComponents.amount = ''
+    this.ReceiveComponents.date = ''
+    this.ReceiveComponents.certificate = ''
+    this.ReceiveComponents.orderNumber = ''
     }
+    })
     
+
+  }
+
+  getAllFillingStorage(){
+    this.inventorySrv.getAllFillingStorage().subscribe(data=>{
+      this.allFillingStorage = data;
+      this.allFillingStorageCopy = data;
     })
   }
 
-  
-  getUserInfo() {
-  
-    this.authService.userEventEmitter.subscribe(user => {
-      this.user = user.loggedInUser;
-    })
-
-    if (!this.authService.loggedInUser) {
-      this.authService.userEventEmitter.subscribe(user => {
-        if (user.userName) {
-          this.user = user;
-        }
-      });
-    }
-    else {
-      this.user = this.authService.loggedInUser;
-    }
-  }
-
-  clickIfArrived(reqId,itemNumber,orders){
+  filterTable(ev,type){
     debugger;
-      if(this.user.userName == 'tomer' || this.user.userName == 'SHARK'  || this.user.userName == 'sima'){
-        var obj = {
-          itemN:itemNumber,
-          requestId:reqId,
-          orders:orders,
-          arrivedQty:this.arrivedQuantity.nativeElement.value,
-          arrivalDate:this.arrivalDate.nativeElement.value,
-        }
-        this.inventoryReqService.checkArrived(obj).subscribe(data=>{
-          if(data){
-            this.allFillingRequests = data;
-            this.toastSrv.success('עודכן בהצלחה !')
-            this.edit('')
-          }
-    
-        })
-      } else {
-        this.toastSrv.error('רק משתמש מורשה רשאי לעדכן')
+    var tempArr = []
+    if(ev.target.value != ''){
+      switch(type) {
+        case 'itemNumber':
+          let itemNumber = ev.target.value;
+            this.allFillingStorage.forEach(certif => {
+            certif.items.forEach(item => {
+              if(item.componentNumber == itemNumber){
+                tempArr.push(certif)
+              }
+            });
+          });
+          this.allFillingStorage = tempArr
+          break;
+        case 'orderNumber':
+          let orderNumber = ev.target.value;
+          this.allFillingStorage = this.allFillingStorage.filter(c=>c.orderNumber == orderNumber)
+          break;
       }
-  // }
-   
-   
+    } else {
+    this.allFillingStorage = this.allFillingStorageCopy
+    }
+  
   }
+
+
 
   async getUser() {
     await this.authService.userEventEmitter.subscribe(user => {
       this.user=user;
-      // this.user=user.loggedInUser;
-      // if (!this.authService.loggedInUser) {
-      //   this.authService.userEventEmitter.subscribe(user => {
-      //     if (user.userName) {
-      //       this.user = user;
-            
-      //     }
-      //   });
-      // }
-      // else {
-      //   this.user = this.authService.loggedInUser;
-      // }
       if (this.user.authorization){
         if (this.authService.loggedInUser.authorization.includes("updateStock")){
           this.allowCheckArrived = true;
