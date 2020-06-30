@@ -46,6 +46,7 @@ export class NewFormuleComponent implements OnInit {
 
   @ViewChild('updatePhaseName') updatePhaseName: ElementRef;
   @ViewChild('updateItemsIndex') updateItemsIndex: ElementRef;
+  @ViewChild('updatePercentage') updatePercentage: ElementRef;
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -487,10 +488,10 @@ export class NewFormuleComponent implements OnInit {
     })
   }
 
-  edit(id) {
+  edit(itemNumber) {
     debugger;
-    if (id != '') {
-      this.EditRowId = id;
+    if (itemNumber != '') {
+      this.EditRowId = itemNumber;
     } else {
       this.EditRowId = '';
     }
@@ -520,19 +521,43 @@ export class NewFormuleComponent implements OnInit {
 
   saveEdit(itemNumber,phaseName,index) {
     debugger;
-    var changeIndex = (Number(this.updateItemsIndex.nativeElement.value)-1)
-    itemNumber
-    var phases = this.currentBaseFormule.phases
-    var phase = phases.find(p=>p.phaseName == phaseName)
-    var items = phase.items
+
+    var phase = this.currentFormule.phases.find(p=>p.phaseName == phaseName);
+    var item = phase.items.find(i=>i.itemNumber == itemNumber)
+    item.percentage = this.updatePercentage.nativeElement.value;
+ 
+   
+
+
+    this.formuleService.updatePercentage(this.currentFormule).subscribe(data=>{
+    if(data){
+      this.Toastr.success('מספר אחוזים עודכן בהצלחה !')
+      this.edit('')
+    }
+    })
+    var phases = this.currentFormule.phases
+    var num = 0
+    for (let i = 0; i < phases.length; i++) {
+     for (let j = 0; j < phases[i].items.length; j++) {
+      num += Number(phases[i].items[j].percentage)
+       
+     }
+      
+    }
+    this.allPercentage = num
+    // var changeIndex = (Number(this.updateItemsIndex.nativeElement.value)-1)
+    // itemNumber
+    // var phases = this.currentBaseFormule.phases
+    // var phase = phases.find(p=>p.phaseName == phaseName)
+    // var items = phase.items
     
-    var oldItem = items[index]
-    var newItem = items[changeIndex]
+    // var oldItem = items[index]
+    // var newItem = items[changeIndex]
 
-    items[index] = newItem
-    items[changeIndex] = oldItem
+    // items[index] = newItem
+    // items[changeIndex] = oldItem
 
-    this.currentBaseFormule;
+    // this.currentBaseFormule;
   
     
  

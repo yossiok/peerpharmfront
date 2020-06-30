@@ -453,8 +453,12 @@ export class ProcurementOrdersComponent implements OnInit {
         for (let k = 0; k < purchases[i].item[j].arrivals.length; k++) {
           for (let l = 0; l < this.newBill.certificateNumbers.length; l++) {
             
-            
-           var refNumber = this.newBill.certificateNumbers[l].substr(this.newBill.certificateNumbers[l].length - 4); // => "1"
+            if(this.newBill.certificateNumbers[l].length > 3) {
+              var refNumber = this.newBill.certificateNumbers[l].substr(this.newBill.certificateNumbers[l].length - 4); // => "1"
+            } else {
+              var refNumber = this.newBill.certificateNumbers[l]
+            }
+         
           if (purchases[i].item[j].arrivals[k].referenceNumber == refNumber) {
             obj.itemNumber = purchases[i].item[j].itemNumber
             obj.itemName = purchases[i].item[j].itemName

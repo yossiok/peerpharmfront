@@ -310,22 +310,19 @@
         <tbody>
           <ng-container *ngFor="let phase of currentFormule.phases;">
             <tr *ngFor="let item of phase.items;let i = index">
-              <td *ngIf="phase.formuleId!==EditRowId" (click)="edit(phase.formuleId)">{{phase.phaseName}}</td>
-              <td *ngIf="phase.formuleId===EditRowId" (click)="edit(phase.formuleId)">
-                <input #updatePhaseName [value]="phase.phaseName"  type="text">
-              </td>
+              <td >{{phase.phaseName}}</td>     
               <td>{{phase.remarks}}</td>
-              <td *ngIf="phase.formuleId!==EditRowId" (click)="edit(phase.formuleId)">{{i+1}}</td>
-              <td *ngIf="phase.formuleId===EditRowId" (click)="edit(phase.formuleId)">
-                <input #updateItemsIndex [value]="i+1" type="number">
-              </td>
+              <td >{{i+1}}</td>
               <td></td>
               <td></td>
               <td>{{item.itemNumber}}</td>
               <td>{{item.itemName}}</td>
-              <td>{{item.percentage}}</td>
+              <td *ngIf="item.itemNumber!==EditRowId" (click)="edit(item.itemNumber)">{{item.percentage}}</td>
+              <td *ngIf="item.itemNumber===EditRowId">
+                <input #updatePercentage [value]="item.percentage">
+              </td>
               <td>{{item.remarks}}</td>
-              <td *ngIf="phase.formuleId===EditRowId"><i class="ti-save" (click)="saveEdit()"></i></td>
+              <td *ngIf="item.itemNumber===EditRowId"><i class="ti-save" (click)="saveEdit(item.itemNumber,phase.phaseName)"></i></td>
             </tr>
           </ng-container>
 

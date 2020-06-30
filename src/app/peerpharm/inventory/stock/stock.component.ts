@@ -1462,6 +1462,7 @@ export class StockComponent implements OnInit {
 
   async openData(cmptNumber) {
     debugger;
+   
     this.threeMonthes = 0;
     this.switchModalView(cmptNumber)
     this.componentPurchases = [];
