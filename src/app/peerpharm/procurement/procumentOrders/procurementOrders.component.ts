@@ -49,7 +49,7 @@ export class ProcurementOrdersComponent implements OnInit {
   certificate: any[];
   allSuppliers: any[];
   billToPrint: any[];
-  currentSupplier: object;
+  currentSupplier: any;
   orderData: any[];
   arrivalData: any[];
   EditRowId: any = "";
@@ -77,6 +77,7 @@ export class ProcurementOrdersComponent implements OnInit {
   importantRemarks: any;
   orderDate: any;
   outOfCountry: any;
+  country:boolean = false;
 
   newItem = {
 
@@ -887,6 +888,13 @@ if(category != ''){
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
       debugger;
       this.currentSupplier = data[0]
+      if(this.currentSupplier.import == 'outOfIsrael'){
+      this.country = true;
+      this.outOfCountry = "Payment Terms:Current+95 Days"
+
+      } else {
+        this.country = false;
+      }
     })
     this.printBill = true;
     this.currentOrder = line;
@@ -928,9 +936,7 @@ if(category != ''){
 
     this.currCoin = coin
     this.orderDate = line.outDate.slice(0, 10)
-    if (line.outOfCountry == false) {
-      this.outOfCountry = "Payment Terms:Current+95 Days"
-    }
+   
   }
 
   sendOrder(line) {

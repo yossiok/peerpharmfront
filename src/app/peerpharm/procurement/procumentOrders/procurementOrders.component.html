@@ -960,8 +960,19 @@
               <td>{{item.itemPrice}}</td>
 
             </tr>
-            <tr>
+            <tr *ngIf="country == true">
               <td></td>
+              <td *ngIf="showImage == true"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><b>{{totalAmount}}</b></td>
+              <td></td>
+              <td><b>{{totalPrice}}</b></td>
+            </tr>
+            <tr *ngIf="country == false">
+              <td></td>
+              <td *ngIf="showImage == true"></td>
               <td></td>
               <td></td>
               <td></td>
@@ -970,8 +981,9 @@
               <td dir="rtl"><b>סה"כ לפני מע"מ: {{totalPrice}}{{currCoin}}</b></td>
             </tr>
       
-            <tr>
+            <tr *ngIf="country == false">
               <td></td>
+              <td *ngIf="showImage == true"></td>
               <td></td>
               <td></td>
               <td></td>
@@ -979,8 +991,9 @@
               <td></td>
               <td dir="rtl"><b>17% מע"מ: {{priceTaxes}}</b></td>
             </tr>
-            <tr>
+            <tr *ngIf="country == false">
               <td></td>
+              <td *ngIf="showImage == true"></td>
               <td></td>
               <td></td>
               <td></td>
