@@ -44,7 +44,7 @@ import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.co
 import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
-import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
+import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component'; 
 
 import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
@@ -121,6 +121,7 @@ import { WeightProductionComponent } from './production/weight-production/weight
 import { StoragesComponent } from './inventory/storages/storages.component';
 import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component';
 import { RandomcolorModule } from 'angular-randomcolor';
+import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 
 
 
@@ -169,6 +170,7 @@ import { RandomcolorModule } from 'angular-randomcolor';
   ],
   declarations: [
     CheckingformsComponent,
+    AdminpanelComponent,
     AllFormulesComponent,
     FormuleProductionComponent,
     ChangeShelfComponent,
