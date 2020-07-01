@@ -113,6 +113,28 @@ export class ItemslistComponent implements OnInit {
   
   }
 
+  filterByNumber(ev){
+  var itemNumber = ev.target.value;
+  if(itemNumber != ''){
+
+    this.items = this.items.filter(i=>i.itemNumber == itemNumber);
+
+  } else {
+    this.items = this.itemsCopy
+  }
+  }
+
+  filterByComponent(ev){
+    debugger;
+    var compNumber = ev.target.value;
+    if(compNumber != ''){
+      this.items = this.items.filter(i=>i.sealNumber == compNumber || i.bottleNumber == compNumber || i.capNumber == compNumber
+         || i.tubeNumber == compNumber || i.cartonNumber == compNumber || i.stickerNumber == compNumber || i.boxNumber == compNumber)
+    } else {
+      this.items = this.itemsCopy
+    }
+  }
+
   changeText(ev)
   {
     let word= ev.target.value;

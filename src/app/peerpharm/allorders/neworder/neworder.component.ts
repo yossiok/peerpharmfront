@@ -146,8 +146,10 @@ export class NeworderComponent implements OnInit {
     console.log(newOrderItemObj);
     this.orderItemForm.reset();
     this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
-  
-      if(res!='error'){
+      if(res.msg == 'notActive'){
+        this.toastSrv.error('שים לב פריט זה אינו פעיל')
+      }
+      else if(res!='error'){
         this.items.push(res);
         console.log(this.items)
         this.itemName = "";

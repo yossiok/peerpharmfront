@@ -19,6 +19,7 @@ import { p } from '@angular/core/src/render3';
 export class ProcurementOrdersComponent implements OnInit {
 
   linkDownload: String = '';
+  paymentRemark: String
   orderRemarks: String;
   myRefresh: any = null;
   allComponents: any[];
@@ -35,6 +36,7 @@ export class ProcurementOrdersComponent implements OnInit {
   showInfoModal: boolean = false;
   editArrivalModal: boolean = false;
   changeItemQuantity: boolean = false;
+  paymentRemarkModal: boolean = false;
   invoiceModal: boolean = false;
   changeItemPrice: boolean = false;
   bill: boolean = false;
@@ -47,7 +49,7 @@ export class ProcurementOrdersComponent implements OnInit {
   certificate: any[];
   allSuppliers: any[];
   billToPrint: any[];
-  currentSupplier: object;
+  currentSupplier: any;
   orderData: any[];
   arrivalData: any[];
   EditRowId: any = "";
@@ -75,6 +77,7 @@ export class ProcurementOrdersComponent implements OnInit {
   importantRemarks: any;
   orderDate: any;
   outOfCountry: any;
+  country:boolean = false;
 
   newItem = {
 
@@ -169,17 +172,28 @@ export class ProcurementOrdersComponent implements OnInit {
 
   fillMaterialName(ev) {
     debugger;
+  
     var itemNumber = ev.target.value;
-
-    this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
-      debugger;
-      if (data) {
-        if (data[0].componentN == itemNumber) {
-          this.newItem.itemName = data[0].componentName
+    var supplierNumber = this.orderData[0].supplierNumber
+    var tempArr = this.procurementData.filter(x=>x.supplierNumber == supplierNumber);
+    tempArr.forEach(purchase => {
+      purchase.item.forEach(item => {
+        if(item.itemNumber == itemNumber){
+          this.toastr.error('פריט זה קיים בהזמנה מספר'+' '+purchase.orderNumber)
+        } else {
+          this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
+            debugger;
+            if (data) {
+              if (data[0].componentN == itemNumber) {
+                this.newItem.itemName = data[0].componentName
+              }
+      
+            }
+          })
         }
+      });
+    });
 
-      }
-    })
 
 
   }
@@ -191,7 +205,7 @@ export class ProcurementOrdersComponent implements OnInit {
         if (event.target.value != '') {
           this.procurementArrivals = []
           this.procurementArrivalsCopy = []
-          var tempArr = this.procurementDataCopy.filter(p => p.supplierName == event.target.value && p.status != 'canceled');
+          var tempArr = this.procurementDataCopy.filter(p => p.supplierNumber == event.target.value && p.status != 'canceled');
           for (let i = 0; i < tempArr.length; i++) {
             
               for (let j = 0; j < tempArr[i].item.length; j++) {
@@ -202,6 +216,7 @@ export class ProcurementOrdersComponent implements OnInit {
                   comaxNumber: tempArr[i].comaxNumber,
                   orderNumber: tempArr[i].orderNumber,
                   orderDate:tempArr[i].outDate,
+                  arrivedAmount:tempArr[i].item[j].arrivedAmount,
                   itemNumber: tempArr[i].item[j].itemNumber,
                   itemName: tempArr[i].item[j].itemName,
                   supplierAmount: tempArr[i].item[j].supplierAmount,
@@ -268,6 +283,35 @@ export class ProcurementOrdersComponent implements OnInit {
   openQuantityModal(item){
     this.changeItemQuantity = true;
     this.currCertifItem = item;
+  }
+
+  addPaymentRemark(){
+    if(this.paymentRemark != ''){
+      this.procurementservice.updatePaymentRemark(this.paymentRemark,this.currOrderNumber).subscribe(data=>{
+      if(data){
+        debugger;
+        this.toastr.success('הערה עודכנה בהצלחה !')
+        this.paymentRemarkModal = false;
+        var purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
+        purchase.paymentRemark = data.paymentRemark
+      }
+      })
+    }
+  }
+
+  changePaymentStatus(ev,orderNumber){
+    var paymentStatus = ev.target.value;
+
+    if(paymentStatus != ''){
+      this.procurementservice.updatePaymentStatus(paymentStatus,orderNumber).subscribe(data=>{
+        if(data){
+          this.toastr.success('סטטוס תשלום עודכן בהצלחה !')
+          this.paymentRemarkModal = true;
+        
+          this.currOrderNumber = data.orderNumber
+        }
+      })
+    }
   }
 
   changeCertifPrice(ev){
@@ -410,8 +454,12 @@ export class ProcurementOrdersComponent implements OnInit {
         for (let k = 0; k < purchases[i].item[j].arrivals.length; k++) {
           for (let l = 0; l < this.newBill.certificateNumbers.length; l++) {
             
-            
-           var refNumber = this.newBill.certificateNumbers[l].substr(this.newBill.certificateNumbers[l].length - 4); // => "1"
+            if(this.newBill.certificateNumbers[l].length > 3) {
+              var refNumber = this.newBill.certificateNumbers[l].substr(this.newBill.certificateNumbers[l].length - 4); // => "1"
+            } else {
+              var refNumber = this.newBill.certificateNumbers[l]
+            }
+         
           if (purchases[i].item[j].arrivals[k].referenceNumber == refNumber) {
             obj.itemNumber = purchases[i].item[j].itemNumber
             obj.itemName = purchases[i].item[j].itemName
@@ -840,6 +888,13 @@ if(category != ''){
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
       debugger;
       this.currentSupplier = data[0]
+      if(this.currentSupplier.import == 'outOfIsrael'){
+      this.country = true;
+      this.outOfCountry = "Payment Terms:Current+95 Days"
+
+      } else {
+        this.country = false;
+      }
     })
     this.printBill = true;
     this.currentOrder = line;
@@ -881,9 +936,7 @@ if(category != ''){
 
     this.currCoin = coin
     this.orderDate = line.outDate.slice(0, 10)
-    if (line.outOfCountry == false) {
-      this.outOfCountry = "Payment Terms:Current+95 Days"
-    }
+   
   }
 
   sendOrder(line) {
@@ -1223,16 +1276,30 @@ if(category != ''){
 
   closeOrder(ev, orderNumber) {
     var reason = ev.target.value;
-    if (confirm("האם לסגור הזמנה זו  ?")) {
-      this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
-        if (data) {
-          this.procurementData = data;
-          this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
-        } else {
-          this.toastr.error('error')
-        }
-      })
+    if(reason != 'open'){
+      if (confirm("האם לסגור הזמנה זו  ?")) {
+        this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
+          if (data) {
+            this.procurementData = data;
+            this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
+          } else {
+            this.toastr.error('error')
+          }
+        })
+      }
+    } else {
+      if (confirm("האם לפתוח הזמנה זו  ?")) {
+        this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
+          if (data) {
+            this.procurementData = data;
+            this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
+          } else {
+            this.toastr.error('error')
+          }
+        })
+      }
     }
+  
   }
 
   deleteFromOrder(itemNumber, orderNumber) {

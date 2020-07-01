@@ -97,7 +97,7 @@
       <div class="row mt-3">
       <div class="col-3"></div>
       <div class="col-2">
-        <input class="form-control mb-4" placeholder="Id" [(ngModel)]="costumer.costumerId">
+        <input (change)="checkIfExist($event)" class="form-control mb-4" placeholder="Id" [(ngModel)]="costumer.costumerId">
       </div>
       <div class="col-2">
         <input class="form-control mb-4" placeholder="Company Number" [(ngModel)]="costumer.companyNumber">

@@ -44,6 +44,10 @@ export class ScheduleService {
     let url = this.baseUrl + "schedule";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getUnpackedSchedules() {
+    let url = this.baseUrl + "schedule?unpackedSchedule==Yes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   editSchedule(schedule): Observable<any> {
     let url = this.baseUrl + "schedule/update";

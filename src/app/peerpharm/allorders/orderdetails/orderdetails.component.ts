@@ -509,6 +509,10 @@ if(data){
     let newItemImpRemark = this.itemData.itemImpRemark;
 
     this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
+
+      if(item.msg == 'notActive'){
+        this.toastSrv.error('שים לב פריט זה אינו פעיל')
+      }
       if (item.itemNumber == this.itemData.itemNumber) {
 
         item.itemImpRemark = newItemImpRemark;
@@ -729,17 +733,56 @@ if(data){
       debugger
       this.selectedArr
 
-      this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(data => {
+      this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
         debugger
-        if (data.msg == "לא קיימת פורמולה") {
+        if (materials.msg == "לא קיימת פורמולה") {
           this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
         } else {
-          this.materialsForFormules = data;
-          this.showMaterialsForFormules = true;
+
+          this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals=>{
+            debugger;
+            var count = 0;
+            for (let i = 0; i < materials.length; i++) {
+             for (let j = 0; j < arrivals.length; j++) {
+              if(arrivals[j].internalNumber == materials[i].itemNumber) {
+                materials[i].kgProduction = this.formatNumber(Number(materials[i].kgProduction));
+                  materials[i].measureType = arrivals[i].mesureType
+      
+                  if(materials[i].totalQnt) {
+                    materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
+                
+                   
+                  } else {
+                    if(arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt) )
+                    materials[i].totalQnt = parseInt(arrivals[j].totalQnt)
+                  }
+                 
+                
+              }
+               
+             }
+             this.materialsForFormules = materials;
+             this.showMaterialsForFormules = true;
+            }
+          })
+        
         }
 
       })
     }
+
+    formatNumber(number) {
+      number = number.toFixed(3) + '';
+      var x = number.split('.');
+      var x1 = x[0];
+      var x2 = x.length > 1 ? '.' + x[1] : '';
+      var rgx = /(\d+)(\d{3})/;
+      while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+      }
+      return x1 + x2;
+    }
+  
 
     changeItemQuantity(itemNumber){
       debugger;

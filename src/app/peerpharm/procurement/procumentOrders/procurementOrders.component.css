@@ -106,7 +106,9 @@ table  { border-collapse: collapse; width: 100%; }
   }
 }
 
-
+.allArrived {
+  background: lightgreen;
+}
 
 h2.peerLoader {
   text-align: center;

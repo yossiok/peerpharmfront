@@ -52,9 +52,9 @@
   </div>
 </div>
 <img src="assets/images/load_data2.gif" *ngIf="loadData==true"><br>
-<div *ngIf="loadData==false">
+<!-- <div *ngIf="loadData==false">
   <p>Showing {{ordersItems.length}} items</p>
-</div>
+</div> -->
 
 <!-- <div *ngIf="!multi && ordersItems.length!=0">
   <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg"
@@ -1605,6 +1605,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
           <th>Material Number</th>
           <th>Material Name</th> 
           <th>KG Production</th>
+          <th>Quantity In Stock</th>
 
         </tr>
       </thead>
@@ -1614,6 +1615,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
          <td>{{material.itemNumber}}</td>
          <td>{{material.itemName}}</td>
          <td>{{material.kgProduction}}</td>
+         <td>{{material.totalQnt}}</td>
 
        </tr>
       </tbody>

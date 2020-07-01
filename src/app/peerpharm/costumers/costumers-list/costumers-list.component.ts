@@ -112,6 +112,16 @@ export class CostumersListComponent implements OnInit {
     })
   }
 
+  checkIfExist(ev){
+  var costumerId = ev.target.value;
+
+  this.costumersService.getByCostumerId(costumerId).subscribe(data=>{
+  if(data.length > 0){
+    this.toastSrv.error('שים לב, לקוח כבר קיים במערכת!')
+  }
+  })
+  }
+
   deleteContact(contact){
     debugger;
     if(confirm('האם למחוק איש קשר זה ? ')){

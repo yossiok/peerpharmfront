@@ -168,6 +168,7 @@ export class StockComponent implements OnInit {
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
   @ViewChild('filterBySupplierN') filterBySupplierN: ElementRef; //this.filterBySupplierN.nativeElement.value
+  @ViewChild('filterByItem') filterByItem: ElementRef; //this.filterBySupplierN.nativeElement.value
   @ViewChild('filterByCmptName') filterByCmptName: ElementRef; //this.filterByCmptName.nativeElement.value
   @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
   @ViewChild('filterBySupplier') filterBySupplier: ElementRef; //this.filterbyNum.nativeElement.value
@@ -892,6 +893,9 @@ export class StockComponent implements OnInit {
           if(obj.purchaseStatus == 'closed'){
             obj.purchaseStatus = 'סגור'
           }
+          if(obj.purchaseStatus == 'sentToSupplier'){
+            obj.purchaseStatus = 'הזמנה נשלחה לספק'
+          }
           if(obj.purchaseStatus == 'open'){
             obj.purchaseStatus = 'הזמנה פתוחה'
           }
@@ -1387,6 +1391,15 @@ export class StockComponent implements OnInit {
       this.components = this.components.filter(x => (x.componentN.includes(itemNum) && x.itemType.includes(this.stockType)));
     }
 
+    if(this.filterByItem.nativeElement.value != '' && this.filterByItem != undefined){
+      debugger;
+    let itemNumber = this.filterByItem.nativeElement.value;
+    this.itemService.getItemData(itemNumber).subscribe(data=>{
+      this.components = this.components.filter(x=>x.componentN == data[0].bottleNumber || x.componentN == data[0].sealNumber || x.componentN == data[0].tubeNumber || x.componentN == data[0].capNumber
+       || x.componentN == data[0].boxNumber || x.componentN == data[0].stickerNumber )
+    })
+    }
+
     if (this.filterByCmptName.nativeElement.value != "") {
       let word = event.target.value;
       let wordsArr = word.split(" ");
@@ -1449,6 +1462,7 @@ export class StockComponent implements OnInit {
 
   async openData(cmptNumber) {
     debugger;
+   
     this.threeMonthes = 0;
     this.switchModalView(cmptNumber)
     this.componentPurchases = [];
@@ -1998,6 +2012,36 @@ export class StockComponent implements OnInit {
       input_actualMlCapacity: 0,
     }
 
+  }
+
+  uploadMsds(fileInputEvent){
+    debugger
+    let file = fileInputEvent.target.files[0];
+    console.log(file);
+
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        // this.tempHiddenImgSrc=data.partialText;
+        this.resCmpt.msds = data.partialText;
+        console.log(" this.resCmpt.img " + this.resCmpt.img);
+      }
+
+    })
+  }
+
+  uploadCoaMaster(fileInputEvent){
+    debugger
+    let file = fileInputEvent.target.files[0];
+    console.log(file);
+
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        // this.tempHiddenImgSrc=data.partialText;
+        this.resCmpt.coaMaster = data.partialText;
+        console.log(" this.resCmpt.img " + this.resCmpt.img);
+      }
+
+    })
   }
 
 

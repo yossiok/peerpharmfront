@@ -62,6 +62,14 @@ export class ScanProductComponent implements OnInit {
     })
   }
 
+  searchSpecificNumber(materialNum){
+    this.inventorySrv.getMaterialArrivalByNumber(materialNum).subscribe(data=>{
+      this.materialArrivals = data
+      this.showTable = true;
+      this.showUpdateAll = true;
+    })
+  }
+
   edit(id) {
  
     if(id!=''){

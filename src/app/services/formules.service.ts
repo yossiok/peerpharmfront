@@ -179,6 +179,11 @@ export class FormulesService {
     let url = this.baseUrl + "formules/updateFormuleFromBase";
     return this.http.post(url, JSON.stringify(baseFormule), this.options).pipe(map(res => res.json()));
   }
+  updatePercentage(formule){
+    debugger;
+    let url = this.baseUrl + "formules/updatePercentage";
+    return this.http.post(url, JSON.stringify({formule}), this.options).pipe(map(res => res.json()));
+  }
   updateFormuleData(formuleData){
     let url = this.baseUrl + "formules/updateFormuleData";
     return this.http.post(url, JSON.stringify(formuleData), this.options).pipe(map(res => res.json()));
@@ -244,6 +249,10 @@ export class FormulesService {
   updateFormule(newFormuleDetails){
     let url = this.baseUrl + "formules/update";
     return this.http.put(url, JSON.stringify(newFormuleDetails), this.options).pipe(map(res => res.json()));
+  }
+  updateFormuleFormation(updatedFormule){
+    let url = this.baseUrl + "formules/updateFormuleFormation";
+    return this.http.post(url, JSON.stringify(updatedFormule), this.options).pipe(map(res => res.json()));
   }
   updateFormulePhase(phase){
     let url = this.baseUrl + "formules/updatePhase";

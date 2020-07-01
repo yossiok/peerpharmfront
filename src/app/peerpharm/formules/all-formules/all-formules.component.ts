@@ -580,6 +580,17 @@ export class AllFormulesComponent implements OnInit {
     this.loadData(formuleNum)
   }
 
+  saveFormuleFormation(){
+    this.updateFormule;
+    debugger;
+    this.formuleService.updateFormuleFormation(this.updateFormule).subscribe(data=>{
+      if(data){
+        this.toastSrv.success('פורמולה עודכנה בהצלחה !')
+      }
+
+    })
+  }
+
   saveFormuleUpdate(formuleId, itemNumber, phaseName, index) {
     debugger;
 

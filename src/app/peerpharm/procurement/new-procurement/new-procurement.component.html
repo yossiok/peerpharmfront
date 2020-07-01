@@ -48,10 +48,10 @@
                   <input list="suppliers" [ngModelOptions]="{standalone: true}"
                     [(ngModel)]="newProcurement.supplierName" (change)="findSupplierByNumber($event)"
                     class="form-control custom-select">
-                  <datalist id="suppliers">
-                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-                      {{supplier.suplierName}}</option>
-                  </datalist>
+                    <datalist id="suppliers">
+                      <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
+                      </option>
+                    </datalist>
                 </div>
               </div>
 
@@ -276,6 +276,36 @@
   </div>
 
 </div>
+
+<div *ngIf="showUpdatePLModal == true" style="top:200px;" class="container rounded fixed-top shadow-lg bg-white mx-auto my-auto text-center p-3">
+  <div class="row">
+    <div class="col-1"></div>
+    
+    <div class="col-10">
+      <h2 class="text-info">עדכון מחירון ספק</h2>
+    </div>
+    <div class="col-1">
+      <i style="cursor: pointer;" (click)="showUpdatePLModal = false" class="fa fa-times text-info"></i>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <h4 dir="rtl">פריט זה קיים אצל הספק עם מחיר: {{currItemForPL.supplierPrice}}{{currItemForPL.itemCoin}}</h4>
+    </div>
+    <div class="col-2"></div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <button class="btn btn-info form-control" (click)="updateItemInPL()">Update Price</button>
+    </div>
+    <div class="col-4"></div>
+  </div>
+
+</div>
+
 
 <div *ngIf="existOpenOrderAlert == true" style="top:200px;" class="container rounded fixed-top shadow-lg bg-danger mx-auto my-auto text-center p-3">
 <div class="row">

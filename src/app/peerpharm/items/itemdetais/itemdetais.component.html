@@ -26,33 +26,36 @@
   <div style="height:20px" class="row"></div>
   <div class="row">
     <div class="col-1">
-      <div style="margin:4px;">
+      <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Item' | translate }}</label>
       </div>
-      <div style="margin:4px;">
+      <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Barcode' | translate }}</label>
       </div>
 
-      <div style="margin:4px">
+      <div style="margin:3px">
         <label [ngClass]="checkItemStatus()" style="font-weight:bold">{{ 'Sticker' | translate }}</label>
       </div>
-      <div style="margin:4px">
+      <div style="margin:3px">
         <label [ngClass]="checkItemStatus()" style="font-weight:bold">{{ 'Box' | translate }}</label>
       </div>
 
-      <div style="margin:4px;">
+      <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Product' | translate }} {{ 'Title' | translate }}</label>
       </div>
 
-      <div style="margin:4px;">
+      <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Sub' | translate }} {{ 'Title' | translate }} </label>
       </div>
 
-      <div style="margin:4px;">
+      <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Description' | translate }}</label>
       </div>
+      <div style="margin:3px;">
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Customer' | translate }}</label>
+      </div>
 
-      <div style="margin:4px;">
+      <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Jumping' | translate }} {{ 'Remarks' | translate }}</label>
       </div>
 
@@ -92,6 +95,12 @@
       <div>
         <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.discriptionK id="id_discrip"
           style="width:480px">
+      </div>
+      <div>
+        <input list="customers" [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.costumerName id="id_discrip"style="width:480px">
+        <datalist id="customers">
+          <option *ngFor="let customer of allCostumers" [value]="customer.costumerName">{{customer.costumerName}}</option>
+        </datalist>
       </div>
 
       <div>
@@ -195,6 +204,7 @@
                   <div>
                     <select id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
                       [(ngModel)]=itemShown.StickerLanguageK>
+                      <option value=""></option>
                       <option value="Arabic">Arabic</option>
                       <option value="Chinese">Chinese</option>
                       <option value="Dutch">Dutch</option>
@@ -222,6 +232,7 @@
                   <div>
                     <select [(ngModel)]=itemShown.StickerLanguageKTwo type="text" *ngIf="mainLanguageTwo==true"
                       class="productionInput">
+                      <option value=""></option>
                       <option value="Arabic">Arabic</option>
                       <option value="Chinese">Chinese</option>
                       <option value="Dutch">Dutch</option>
@@ -244,6 +255,7 @@
                   <div>
                     <select [(ngModel)]=itemShown.StickerLanguageKThree *ngIf="mainLanguageThree==true"
                       class="productionInput">
+                      <option value=""></option>
                       <option value="Arabic">Arabic</option>
                       <option value="Chinese">Chinese</option>
                       <option value="Dutch">Dutch</option>
@@ -266,6 +278,7 @@
                   <div>
                     <select [(ngModel)]=itemShown.StickerLanguageKFour *ngIf="mainLanguageFour==true"
                       class="productionInput">
+                      <option value=""></option>
                       <option value="Arabic">Arabic</option>
                       <option value="Chinese">Chinese</option>
                       <option value="Dutch">Dutch</option>
@@ -1452,7 +1465,82 @@
             </div>
           </ng-template>
         </ngb-tab>
+
         <ngb-tab id="tab-selectbyid5">
+          <ng-template ngbTabTitle><span style="color:black">{{ 'דפוס' | translate }}</span></ng-template>
+          <ng-template ngbTabContent>
+            <div class="container-fluid">
+              <div class="row mt-4">
+                <div class="col-2">
+                  <label class="form-control">Sticker</label>
+                </div>
+                <div class="col-2">
+                  <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
+                </div>
+                <div class="col-2">
+                  <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
+                </div> 
+                <div class="col-6"></div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label class="form-control">Box</label>
+                </div>
+                <div class="col-2">
+                  <input [(ngModel)]="itemShown.boxNumber" type="text" class="form-control">
+                </div>
+                <div class="col-2">
+                  <img class="w-50 imageClass" [src]="itemShown.boxImage" alt="Box">
+                </div>
+                <div class="col-6"></div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label class="form-control">Plate 1</label>
+                </div>
+                <div class="col-2">
+                  <input type="text" [(ngModel)]="itemShown.pallet" class="form-control">
+                </div>
+                <div class="col-2">
+                  <img class="w-50 imageClass" [src]="itemShown.palletImage" alt="Plate">
+                </div>
+                <div class="col-6"></div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label class="form-control">Plate 2</label>
+                </div>
+                <div class="col-2">
+                  <input [(ngModel)]="itemShown.pallet2" type="text" class="form-control">
+                </div>
+                <div class="col-2">
+                  <img src="" alt="Plate 2">
+                </div>
+                <div class="col-6"></div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label class="form-control">Plate 3</label>
+                </div>
+                <div class="col-2">
+                  <input [(ngModel)]="itemShown.pallet3" type="text" class="form-control">
+                </div>
+                <div class="col-2">
+                  <img src="" alt="Plate 3">
+                </div>
+                <div class="col-6"></div>
+              </div>
+            
+              </div>
+
+
+         
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab id="tab-selectbyid6">
           <ng-template ngbTabTitle><span style="color:black">Specification</span></ng-template>
           <ng-template ngbTabContent>
             <div class="container">

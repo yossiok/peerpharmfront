@@ -20,30 +20,34 @@
       <table class="table table-responsive table-striped">
         <thead>
           <tr>
+            <th>Number</th>
             <th>Material Name</th>
+            <th>Location</th>
             <th>Arrival Date</th>
             <th>Expire Date</th>
             <th>Batch Number</th>
             <th>Package Qty</th>
             <th>Package Type</th>
             <th>Total Qty</th>
-            <th>Location</th>
+         
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let material of materialArrivals">
+            <td style="text-decoration: underline;color:blue" (click)="searchSpecificNumber(material.internalNumber)">{{material.internalNumber}}</td>
             <td>{{material.materialName}}</td>
+            <td (click)="edit(material._id)" *ngIf="material._id != EditRowId">{{material.position}}</td>
+            <td (click)="edit(material._id)" *ngIf="material._id == EditRowId">
+              <input class="w-75" #materialPosition [value]="material.position" type="text">
+              <button  (click)="updatePosition(material._id)" class="btn btn-success form-control w-25">+</button>
+            </td>
             <td>{{material.arrivalDate | date: "dd/MM/yyyy"}}</td>
             <td>{{material.expiryDate | date: "dd/MM/yyyy"}}</td>
             <td>{{material.lotNumber}}</td>
             <td>{{material.packageQnt}}</td>
             <td>{{material.packageType}}</td>
             <td>{{material.totalQnt}}</td>
-            <td (click)="edit(material._id)" *ngIf="material._id != EditRowId">{{material.position}}</td>
-            <td (click)="edit(material._id)" *ngIf="material._id == EditRowId">
-              <input class="w-75" #materialPosition [value]="material.position" type="text">
-              <button  (click)="updatePosition(material._id)" class="btn btn-success form-control w-25">+</button>
-            </td>
+            
           </tr>
         </tbody>
       </table>
