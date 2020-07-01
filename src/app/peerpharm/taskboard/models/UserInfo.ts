@@ -18,5 +18,6 @@ export class UserInfo
     picture:string;
     formsdisable: boolean;
     authorization:string[];
+    screenPermission:string;
 
 }

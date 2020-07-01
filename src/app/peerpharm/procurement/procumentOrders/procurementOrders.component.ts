@@ -124,6 +124,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   @ViewChild('purchaseRemarks') purchaseRemarks: ElementRef;
   @ViewChild('purchaseArrivalDate') purchaseArrivalDate: ElementRef;
+  @ViewChild('printBillBtn') printBillBtn: ElementRef;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -896,7 +897,7 @@ if(category != ''){
         this.country = false;
       }
     })
-    this.printBill = true;
+   
     this.currentOrder = line;
     this.currentItems = line.item
     var total = 0;
@@ -936,6 +937,7 @@ if(category != ''){
 
     this.currCoin = coin
     this.orderDate = line.outDate.slice(0, 10)
+    this.printBill = true;
    
   }
 

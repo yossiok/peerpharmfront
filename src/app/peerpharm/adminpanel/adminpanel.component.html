@@ -1,3 +1,83 @@
+<div class="container text-center bg-white shadow-lg">
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <h1 class="text-info">Admin Panel</h1>
+        </div>
+    </div>
+
+<mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Screens">
+        <div class="row mt-4">
+            <div class="col-12">
+                <h4>Screens Permissions</h4>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <table class="table table-hover table-striped">
+                    <thead class="text-white bg-info">
+                        <tr>
+                            <th>שם המסך</th>
+                            <th>רמת הרשאה</th>
+                            <th>שמירה</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let screen of routes">
+                            <td>{{screen.name}}</td>
+                            <td>
+                                <input #screenValue  class="form-control" [value]="screen.permission" /></td>
+                            <td><button class="btn btn-info form-control"  (click)="savePermission(screen.name)" ><i class="fa fa-save text-white"></i></button></td>
+                        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+     
+    </mat-tab>
+    <mat-tab label="Users">
+        <div class="row mt-4">
+            <div class="col-12">
+                <h4>Users Permissions</h4>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <table class="table table-hover table-striped">
+                    <thead class="text-white bg-info">
+                        <tr>
+                            <th>שם משתמש</th>
+                            <th>רמת הרשאה</th>
+                            <th>קביעת הרשאה</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users">
+                            <td>{{user.userName}}</td>
+                            <td>{{user.screenPermission}}</td>
+                            <td><select (change)="setUserPermissionLvl($event,user._id)" class="form-control">
+                                    <option value="" disabled='disabled' selected='true'>Choose Permission</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+    </mat-tab>
+  </mat-tab-group>
 
 
+ 
 
+    
+</div>

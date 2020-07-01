@@ -53,7 +53,7 @@
           <tr style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let costumer of costumers; let i=index">
             <td>{{i}}</td>
             <td (click)='openDetails(i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
-            <td>{{costumer.costumerName}}</td>
+            <td dir="rtl">{{costumer.costumerName}}</td>
             <td>{{costumer.brand}}</td>
             <td>{{costumer.invoice}}</td>
             <td></td>
@@ -81,7 +81,7 @@
       </div>
       
       <div class="row mt-3">
-      <div class="col-3"></div>
+      <div class="col-2"></div>
       <div class="col-2">
         <label class="form-control text-info">Customer ID</label>
       </div>
@@ -91,11 +91,14 @@
       <div class="col-2">
         <label class="form-control text-info">Customer Name</label>
       </div>
-      <div class="col-3"></div>
+      <div class="col-2">
+        <label class="form-control text-info">Brand</label>
+      </div>
+      <div class="col-2"></div>
       </div>
       
       <div class="row mt-3">
-      <div class="col-3"></div>
+      <div class="col-2"></div>
       <div class="col-2">
         <input (change)="checkIfExist($event)" class="form-control mb-4" placeholder="Id" [(ngModel)]="costumer.costumerId">
       </div>
@@ -103,9 +106,12 @@
         <input class="form-control mb-4" placeholder="Company Number" [(ngModel)]="costumer.companyNumber">
       </div>
       <div class="col-2">
-        <input class="form-control mb-4" placeholder="Customer Name" [(ngModel)]="costumer.costumerName">
+        <input dir="rtl" class="form-control mb-4" placeholder="Customer Name" [(ngModel)]="costumer.costumerName">
       </div>
-      <div class="col-3"></div>
+      <div class="col-2">
+        <input class="form-control mb-4" placeholder="Brand" [(ngModel)]="costumer.brand">
+      </div>
+      <div class="col-2"></div>
       </div>
       
       <div class="row mt-4">

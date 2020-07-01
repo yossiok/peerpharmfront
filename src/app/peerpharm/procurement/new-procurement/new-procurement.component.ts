@@ -372,6 +372,7 @@ export class NewProcurementComponent implements OnInit {
     }
 
   }
+  
 
   addToSupplierPriceList() {
     debugger;

@@ -59,12 +59,14 @@ import { WeightProductionComponent } from './production/weight-production/weight
 import { StoragesComponent } from './inventory/storages/storages.component';
 import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component';
 import { AdminpanelComponent } from './adminpanel/adminpanel.component';
+import { ScreenGuard } from '../guards/screen.guard';
 
 
 
 export const PeerPharmRputs: Routes =[
   {
-    path: 'allorders/orders',
+    path: 'allorders/orders', 
+    canActivate:[  ScreenGuard],
     data: {
       title: 'Open Orders'
     },
@@ -270,7 +272,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    // canActivate:[TwoFactor]
+    canActivate:[TwoFactor]
   },
   {
     path :'production/lines',
@@ -478,6 +480,7 @@ export const PeerPharmRputs: Routes =[
   ,
   {
     path : 'admin',
+  canActivate:[  ScreenGuard],
     data : {
       title : 'Admin panel'
     },
