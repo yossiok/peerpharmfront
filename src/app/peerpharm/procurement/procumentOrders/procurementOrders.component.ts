@@ -41,6 +41,7 @@ export class ProcurementOrdersComponent implements OnInit {
   changeItemPrice: boolean = false;
   bill: boolean = false;
   procurementData: any[];
+  procurementDataNoFilter: any[];
   procurementDataCopy: any[];
   procurementArrivals: any[] = []
   procurementArrivalsCopy: any[] = []
@@ -176,7 +177,7 @@ export class ProcurementOrdersComponent implements OnInit {
   
     var itemNumber = ev.target.value;
     var supplierNumber = this.orderData[0].supplierNumber
-    var tempArr = this.procurementData.filter(x=>x.supplierNumber == supplierNumber);
+    var tempArr = this.procurementData.filter(x=>x.supplierNumber == supplierNumber && x.status != 'closed');
     tempArr.forEach(purchase => {
       purchase.item.forEach(item => {
         if(item.itemNumber == itemNumber){
@@ -434,7 +435,7 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
     this.certificate = [];
     this.newBill
-    var purchases = this.procurementData.filter(p => p.supplierNumber == this.newBill.supplierNumber)
+    var purchases = this.procurementDataNoFilter.filter(p => p.supplierNumber == this.newBill.supplierNumber)
     purchases
 
     var obj = {
@@ -572,6 +573,7 @@ debugger;
       }
 
       this.procurementDataCopy = res
+      this.procurementDataNoFilter = res
 
 
       console.log(this.procurementData);
@@ -660,21 +662,27 @@ if(category != ''){
         }
         break;
       case 'purchases':
-        this.procurementData = this.procurementDataCopy
+     
         if (ev.target.value != "") {
           var status = ev.target.value;
           if (status == 'ongoing') {
+            this.procurementData = this.procurementDataCopy
             this.procurementData = this.procurementData.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
           } else if(status == 'material'){
+            this.procurementData = this.procurementDataCopy
             this.procurementData = this.procurementData.filter(p=>p.orderType == 'material')
           } else if(status == 'component'){
+            this.procurementData = this.procurementDataCopy
             this.procurementData = this.procurementData.filter(p=>p.orderType == 'component')
+          } else if(status == 'allOrders'){
+            this.procurementData = this.procurementDataNoFilter
           } else {
+            this.procurementData = this.procurementDataNoFilter
             this.procurementData = this.procurementData.filter(p => p.status == status)
           }
 
         } else {
-          this.procurementData = this.procurementDataCopy
+          
         }
         break;
       default:
@@ -1009,9 +1017,11 @@ if(category != ''){
   }
 
   searchBySupplier(ev) {
-
+  debugger
+  
     var supplierName = ev.target.value;
     if (supplierName != "") {
+      this.procurementDataCopy = this.procurementData
       var tempArr = this.procurementData.filter(purchase => purchase.supplierName.includes(supplierName))
       this.procurementData = tempArr
     } else {
@@ -1019,6 +1029,22 @@ if(category != ''){
     }
 
   }
+
+  itemStatusDone(itemNumber,orderNumber){
+   this.procurementservice.setItemToDone({itemNumber:itemNumber,orderNumber:orderNumber}).subscribe(data=>{
+    debugger;
+    if(data){
+      var purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
+      var item = purchase.item.find(i=>i.itemNumber == itemNumber)
+      item.color = 'lightgreen'
+      purchase.color = 'orange'
+      this.toastr.success('פריט עודכן בהצלחה !')
+    }
+   })
+
+  }
+  
+
 
   searchByReference(ev) {
 
@@ -1119,7 +1145,7 @@ if(category != ''){
   searchNumber(ev) {
 
     if (ev.target.value == "") {
-      this.getAllProcurementOrders();
+      this.procurementData = this.procurementDataCopy
     }
 
     let word = ev.target.value;
@@ -1147,7 +1173,7 @@ if(category != ''){
 
     } else {
 
-      this.procurementData = this.procurementDataCopy.slice();
+      this.procurementData = this.procurementDataNoFilter
     }
   }
 

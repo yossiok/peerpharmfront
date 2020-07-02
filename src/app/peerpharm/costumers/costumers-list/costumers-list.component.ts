@@ -2,6 +2,7 @@ import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/co
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CostumersService } from '../../../services/costumers.service';
 import { ToastrService } from 'ngx-toastr';
+import { ExcelService } from 'src/app/services/excel.service';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class CostumersListComponent implements OnInit {
 
   @ViewChild("container")  container: ElementRef=null;
 
-  constructor(private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
+  constructor(private excelService:ExcelService,private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
   
 
@@ -79,6 +80,12 @@ export class CostumersListComponent implements OnInit {
     this.showCustomerModal = true;
     // this.contact = this.costumers[i].contact[0];
  
+  }
+
+  exportAsXLSX(): void {
+
+        this.excelService.exportAsExcelFile(this.costumers, 'data');
+
   }
 
  

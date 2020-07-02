@@ -99,7 +99,7 @@
       <div>
         <input list="customers" [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.costumerName id="id_discrip"style="width:480px">
         <datalist id="customers">
-          <option *ngFor="let customer of allCostumers" [value]="customer.costumerName">{{customer.costumerName}}</option>
+          <option *ngFor="let customer of allCostumers" [value]="customer.costumerId">{{customer.costumerName}}</option>
         </datalist>
       </div>
 
@@ -1467,7 +1467,7 @@
         </ngb-tab>
 
         <ngb-tab id="tab-selectbyid5">
-          <ng-template ngbTabTitle><span style="color:black">{{ 'דפוס' | translate }}</span></ng-template>
+          <ng-template ngbTabTitle><span style="color:black">{{ 'Print' | translate }}</span></ng-template>
           <ng-template ngbTabContent>
             <div class="container-fluid">
               <div class="row mt-4">

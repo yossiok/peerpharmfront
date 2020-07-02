@@ -232,12 +232,16 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
       <tr>
         <th>Amount</th>
         <th>Price</th>
+        <th>Coin</th>
+        <th>Date</th>
       </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of itemPurchases">
           <td>{{item.supplierAmount}}</td>
           <td>{{item.supplierPrice}}</td>
+          <td>{{item.coin}}</td>
+          <td>{{item.purchaseDate | date: 'dd/MM/yyyy'}}</td>
         </tr>
       </tbody>
       </table>

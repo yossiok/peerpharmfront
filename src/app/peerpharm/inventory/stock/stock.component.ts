@@ -52,7 +52,9 @@ export class StockComponent implements OnInit {
   allMaterialsPurchases:any[];
   expirationBatchDate:any;
   totalQuantity:String;
-  threeMonthes:number = 0;
+  sixMonth:number = 0;
+  oneYear:number = 0
+  threeYears:number = 0
   allowUserEditItem = false;
   updateSupplier = false;
   check = false;
@@ -879,12 +881,14 @@ export class StockComponent implements OnInit {
             purchaseAmount:'',
             purchaseArrival:'',
             purchaseStatus:'',
-            expectedArrival:''
+            expectedArrival:'',
+            purchaseDate:''
           }
           obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
           obj.purchaseOrder = allPurchases[i].item[j].orderNumber
           obj.purchaseArrival = allPurchases[i].item[j].arrivals
           obj.purchaseStatus = allPurchases[i].status
+          obj.purchaseDate = allPurchases[i].outDate
           obj.expectedArrival = allPurchases[i].validDate
 
           if(obj.purchaseStatus == 'supplierGotOrder'){
@@ -1463,7 +1467,7 @@ export class StockComponent implements OnInit {
   async openData(cmptNumber) {
     debugger;
    
-    this.threeMonthes = 0;
+    this.sixMonth = 0;
     this.switchModalView(cmptNumber)
     this.componentPurchases = [];
     for (let i = 0; i < this.allComponentsPurchases.length; i++) {
@@ -1477,12 +1481,29 @@ export class StockComponent implements OnInit {
       }
      }
   var today = new Date()
-  var date = new Date();
-  date.setDate(date.getDate()-90)
-  date;
-   var threeMonthesPur = this.componentPurchases.filter(c=>c.outDate < today.toISOString && c.outDate > date.toISOString())
-   threeMonthesPur.forEach(purchase => {
-     this.threeMonthes = this.threeMonthes + Number(purchase.supplierAmount)
+  var dateSixMonth = new Date();
+  dateSixMonth.setDate(dateSixMonth.getDate()-180)
+
+  var dateOneYear = new Date();
+  dateOneYear.setDate(dateOneYear.getDate()-365)
+
+  var dateThreeYears = new Date();
+  dateThreeYears.setDate(dateThreeYears.getDate()-1095)
+  
+  
+   var sixMonthPur = this.componentPurchases.filter(c=>c.outDate < today.toISOString && c.outDate > dateSixMonth.toISOString())
+   sixMonthPur.forEach(purchase => {
+     this.sixMonth = this.sixMonth + Number(purchase.supplierAmount)
+   });
+
+   var oneYearPur = this.componentPurchases.filter(c=>c.outDate < today.toISOString && c.outDate > dateOneYear.toISOString())
+   oneYearPur.forEach(purchase => {
+     this.oneYear = this.oneYear + Number(purchase.supplierAmount)
+   });
+
+   var threeYearsPur = this.componentPurchases.filter(c=>c.outDate < today.toISOString && c.outDate > dateThreeYears.toISOString())
+   threeYearsPur.forEach(purchase => {
+     this.threeYears = this.threeYears + Number(purchase.supplierAmount)
    });
     
     this.showItemDetails = true;

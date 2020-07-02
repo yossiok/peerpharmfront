@@ -397,7 +397,7 @@ debugger;
   }
 
   showAllPurchases(itemNumber){
-  
+    debugger;
     this.procurementService.getAllItemPurchases(itemNumber).subscribe(data=>{
     if(data){
      this.itemPurchases = data; 

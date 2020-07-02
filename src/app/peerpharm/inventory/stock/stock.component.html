@@ -254,19 +254,20 @@
                         הזמנת רכש</th>
                       <th
                         style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
+                        תאריך הזמנה</th>
+                      <th
+                        style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
                         כמות</th>
                       <th
                         style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
                         צפי הגעה</th>
-                      <th
-                        style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
-                        סטטוס</th>
                     </tr>
                   </thead>
                   <tbody>
                     <ng-container *ngFor="let comp of component.purchaseOrders" >
                     <tr  *ngIf="comp.purchaseStatus != 'סגור'" >
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseOrder}}</td>
+                      <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseDate | date : 'dd/MM/yyyy'}}</td>
                       <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseAmount}}</td>
                       <td [ngClass]="{'arrivalWeekNotice': comp.expectedArrival < today.toISOString()}" style="border:1px solid black;font-size: 10px;padding:0;">{{comp.expectedArrival | date: 'dd/MM/yyyy'}}</td>
                       <!-- <td style="border:1px solid black;font-size: 10px;padding:0;">
@@ -279,7 +280,7 @@
                           </tbody>
                         </table>
                       </td> -->
-                      <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseStatus}}</td>
+             
                     </tr>
                   </ng-container>
                   </tbody>
@@ -585,7 +586,6 @@
             </div>
             <div class="col-2 fixNoaStupidStuff">
               <label class="form-control">מספר ספק</label>
-              <label class="form-control">שם ספק</label>
               <label class="form-control">מק"ט ספק</label>
               <label class="form-control">מחיר ספק</label>
             </div>
@@ -595,7 +595,6 @@
                 <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
                 </option>
               </datalist>
-              <input class="form-control" type='text' [(ngModel)]="resCmpt.suplierName">
               <input class="form-control" type='text' [(ngModel)]="resCmpt.componentNs">
               <input class="form-control" type='text' [(ngModel)]="resCmpt.price">
             </div>
@@ -652,6 +651,7 @@
                 <option value='sticker'>מדבקה</option>
                 <option value='sachet'>סאשט</option>
                 <option value='plate'>גלופה</option>
+                <option value='other'>אחר</option>
               </select>
 
               <input list="categories" class="form-control" [(ngModel)]="resCmpt.componentCategory">
@@ -972,16 +972,24 @@
         </div>
 
         <div class="row fixNoaStupidStuff text-center mt-3">
-          <div class="col-2">
-            <label class="form-control">Last 3 Monthes:</label>
+          <div class="col-2 fixNoaStupidStuff">
+            <label class="form-control">Last 6 Monthes:</label>
           </div>
-          <div class="col-2">
-            <h3 class="form-control">{{threeMonthes}}</h3>
+          <div class="col-2 fixNoaStupidStuff">
+            <h3 class="form-control">{{sixMonth}}</h3>
           </div>
-          <div class="col-2"></div>
-          <div class="col-2"></div>
-          <div class="col-2"></div>
-          <div class="col-2"></div>
+          <div class="col-2 fixNoaStupidStuff">
+            <label class="form-control">Last Year:</label>
+          </div>
+          <div class="col-2 fixNoaStupidStuff">
+            <h3 class="form-control">{{oneYear}}</h3>
+          </div>
+          <div class="col-2 fixNoaStupidStuff">
+            <label class="form-control">Last 3 Years:</label>
+          </div>
+          <div class="col-2 fixNoaStupidStuff">
+            <h3 class="form-control">{{threeYears}}</h3>
+          </div>
         </div>
   
         <div class="row mt-3 fixNoaStupidStuff text-center">
