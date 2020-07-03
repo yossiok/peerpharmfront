@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth.service';
 export class ScreenGuard implements CanActivate {
 
   constructor(private authService: AuthService, private userService: UsersService) {
-
+debugger;
   }
 
   canActivate(
@@ -18,6 +18,7 @@ export class ScreenGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
  return new Promise((resolve, reject)=>
  {
+   debugger;
   if (this.authService.loggedInUser) {
     let screenPermission = this.authService.loggedInUser.screenPermission;
     if (this.userService.allScreens.length>0) { 
@@ -33,6 +34,26 @@ export class ScreenGuard implements CanActivate {
           
         });
     } 
+  }
+  else
+  {
+    this.authService.getLoggedInUser().subscribe(data=>
+      {
+        let screenPermission = this.authService.loggedInUser.screenPermission;
+        if (this.userService.allScreens.length>0) { 
+          debugger;
+            resolve(this.checkForScreenPermission(screenPermission,next.data.title, this.userService.allScreens))
+        }
+        else
+        {
+          this.userService.getAllScreens().subscribe(data=>
+            {
+              debugger;
+                resolve(this.checkForScreenPermission(screenPermission,next.data.title, data))
+              
+            });
+        } 
+      })
   } 
  });
   
