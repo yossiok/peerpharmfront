@@ -395,17 +395,26 @@ export class AllFormulesComponent implements OnInit {
       if (data) {
         this.spinnerLoader = false;
         data.forEach(material => {
-          if(material.price == null) {
+          if(material.price == null || material.price == undefined) {
             material.price = 'צריך לעדכן מחיר ספק'
           } else {
-            material.price = this.formatNumber(material.price)
+            if(material.price != 'צריך לעדכן מחיר ספק'){
+              material.price = this.formatNumber(material.price)
+            }
+           
           }
 
           if (material.coin == 'eur') {
-            material.price = this.formatNumber(material.price * this.euroRate)
+            if(material.price != 'צריך לעדכן מחיר ספק'){
+              material.price = this.formatNumber(material.price * this.euroRate)
+            }
+           
           }
           if (material.coin == 'usd') {
-            material.price = this.formatNumber(material.price * this.usdRate)
+            if(material.price != 'צריך לעדכן מחיר ספק'){
+              material.price = this.formatNumber(material.price * this.usdRate)
+            }
+            
           }
           if (material.price != 'צריך לעדכן מחיר ספק') {
             count += Number(material.price)
