@@ -20,6 +20,7 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { OrdersService } from 'src/app/services/orders.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
+import { CostumersService } from 'src/app/services/costumers.service';
 
 
 @Component({
@@ -35,8 +36,10 @@ export class StockComponent implements OnInit {
   showItemDetails: boolean = true;
   showLoader: boolean = true;
   openOrderRecommendModal: boolean = false;
+  customersModal: boolean = false;
   itemMovements: any = [];
   materialPurchases: any[]
+  allCustomers: any[]
   componentSuppliers: any[]
   componentPurchases: any[] = [];
   itemShell:any[];
@@ -59,6 +62,8 @@ export class StockComponent implements OnInit {
   updateSupplier = false;
   check = false;
   resCmpt: any = {
+    whoPays:'',
+    payingCustomersList:[],
     componentN: '',
     componentName: '',
     componentNs: '',
@@ -271,7 +276,7 @@ export class StockComponent implements OnInit {
     this.editSuppliers('');
   }
 
-  constructor(private supplierService:SuppliersService,private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+  constructor(private customerSrv:CostumersService,private supplierService:SuppliersService,private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder, ) {
   }
@@ -380,6 +385,7 @@ export class StockComponent implements OnInit {
     this.getAllPurchaseOrdersMaterial();
     this.getAllItemShell();
     this.getUser();
+    this.getAllCustomers();
     this.getAllSuppliers()
     this.getAllMaterialLocations();
     this.filterbyNum.nativeElement.value = '';
@@ -421,6 +427,8 @@ export class StockComponent implements OnInit {
   exportAsXLSX(data) {
     this.excelService.exportAsExcelFile(this.itemShell, 'itemShell');
   }
+
+
 
   //************************************************* */
   //   exportMovementsAsXLSX() {
@@ -549,6 +557,26 @@ export class StockComponent implements OnInit {
     })
   }
 
+
+  getAllCustomers(){
+    this.customerSrv.getAllCostumers().subscribe(data=>{
+      this.allCustomers = data;
+    })
+  }
+
+  addCustomerToPayingList(ev){
+  debugger;
+  if(confirm('האם להוסיף לקוח זה לרשית לקוחות משלמים ?')){
+    if(this.resCmpt.payingCustomersList == undefined) this.resCmpt.payingCustomersList = [];
+    this.resCmpt.payingCustomersList.push(ev.target.value)
+    this.toastSrv.success('לקוח נוסף בהצלחה , לא לשכוח לעדכן פריט !')
+  } else {
+    console.log('no');
+    
+  }
+ 
+  
+  }
   filterMaterials(ev){
     debugger;
     var nameToSearch = ev.target.value;
@@ -2014,6 +2042,8 @@ export class StockComponent implements OnInit {
   resetResCmptData() {
     
     this.resCmpt = {
+      whoPays:'',
+      payingCustomersList:[],
       componentN: '',
       componentName: '',
       componentNs: '',

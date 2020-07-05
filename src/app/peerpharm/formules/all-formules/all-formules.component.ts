@@ -36,8 +36,8 @@ export class AllFormulesComponent implements OnInit {
   spinnerLoader: boolean = false;
   openFormuleModal: boolean = false;
   updatePercentage: any;
-  euroRate: any;
-  usdRate: any;
+  euroRate: number = 3.86
+  usdRate: number = 3.43
   today: any;
   updatePhaseRemarks: any;
   updateItemRemarks: any;
@@ -129,7 +129,7 @@ export class AllFormulesComponent implements OnInit {
     this.getAllFormules();
     this.getAllMaterials();
     this.getAllParentsFormules();
-    this.getCurrencyRate();
+
     this.today = new Date()
     debugger;
     this.user = this.authService.loggedInUser.userName;
@@ -370,16 +370,7 @@ export class AllFormulesComponent implements OnInit {
     })
   }
 
-  getCurrencyRate() {
-    debugger;
-    this.formuleService.getCurrencyEURORates().subscribe(data => {
-      debugger;
-      this.euroRate = data.conversion_rates.ILS
-    })
-    this.formuleService.getCurrencyUSDRates().subscribe(data => {
-      this.usdRate = data.conversion_rates.ILS
-    })
-  }
+
 
   formatNumber(number) {
     number = number.toFixed(2) + '';
@@ -404,7 +395,11 @@ export class AllFormulesComponent implements OnInit {
       if (data) {
         this.spinnerLoader = false;
         data.forEach(material => {
-          material.price = this.formatNumber(material.price)
+          if(material.price == null) {
+            material.price = 'צריך לעדכן מחיר ספק'
+          } else {
+            material.price = this.formatNumber(material.price)
+          }
 
           if (material.coin == 'eur') {
             material.price = this.formatNumber(material.price * this.euroRate)

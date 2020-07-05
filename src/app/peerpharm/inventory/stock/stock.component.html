@@ -624,6 +624,8 @@
               <label class="form-control">מותג</label>
               <label class="form-control">משקל/סוג</label>
               <label class="form-control">כמות מל'</label>
+              <label class="form-control">על חשבון</label>
+              <label class="form-control">רשימת לקוחות</label>
             </div>
             <div class="col-2 fixNoaStupidStuff">
               <select class="form-control" [(ngModel)]="resCmpt.componentType">
@@ -677,6 +679,13 @@
                 <option value='otherMaterial'>חומר אחר</option>
               </select>
               <input class="form-control" type="text" [(ngModel)]="resCmpt.actualMlCapacity">
+                <select class="form-control" (change)="checkWhoPays($event)" [(ngModel)]="resCmpt.whoPays">
+                  <option value="peerpharm">פארפארם</option>
+                  <option value="customers">לקוח/לקוחות</option>
+                </select><i (click)="customersModal = true" class="form-control fa fa-plus text-success "></i>
+                <select class="form-control">
+                      <option *ngFor="let customer of resCmpt.payingCustomersList" value="customer">{{customer}}</option>
+                </select>
             </div>
             <div class="col-2 fixNoaStupidStuff">
               <label class="form-control">הערה</label>
@@ -2664,6 +2673,32 @@
   </table>
 
 </div>
+
+<div *ngIf="customersModal == true" style="z-index: 9999;" class="container border border-info fixNoaStupidStuff bg-white shadow-lg rounded mx-auto my-auto text-center fixed-top p-4">
+<div class="row fixNoaStupidStuff">
+  <div class="col-4 fixNoaStupidStuff"></div>
+  <div class="col-4 fixNoaStupidStuff">
+    <h3 class="text-info">רשימת לקוחות</h3>
+  </div>
+  <div class="col-4 fixNoaStupidStuff">
+    <i (click)="customersModal = false;" class="text-info fa fa-times"></i>
+  </div>
+</div>
+
+<div class="row mt-4 fixNoaStupidStuff">
+  <div class="col-4 fixNoaStupidStuff"></div>
+  <div class="col-4 fixNoaStupidStuff">
+    <input list="customers" (change)="addCustomerToPayingList($event)">
+    <datalist id="customers">
+      <option  *ngFor="let customer of allCustomers" [value]="customer.costumerName">{{customer.costumerId}}</option>
+    </datalist>
+ 
+  
+  </div>
+  <div class="col-4 fixNoaStupidStuff"></div>
+</div>
+</div>
+
 <div *ngIf="stockType=='sticker'" class="tableFixHead">
   <table class='table stockTable table-fixed' *ngIf="stockType=='sticker'">
     <thead style="background: rgb(69, 69, 202);z-index: 9999;" class='tableHeader text-white'>
