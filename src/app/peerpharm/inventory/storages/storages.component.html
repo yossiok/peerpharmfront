@@ -94,8 +94,11 @@
 
         <div class="row mt-4">
           <div class="col-4"></div>
-          <div class="col-4 mb-4">
+          <div class="col-2 mb-4">
             <button (click)="sendToFilling()" class="btn btn-info form-control">קבל סחורה</button>
+          </div>
+          <div class="col-2 mb-4">
+            <button (click)="clearFields()" class="btn btn-info form-control">נקה שדות</button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -143,6 +146,7 @@
                <th>Arrival Date</th>
                <th>Certificate</th>
                <th>Item Details</th>
+               <th>Out</th>
              </tr>
            </thead>
            <tbody>
@@ -166,6 +170,7 @@
                     </tbody>
                   </table>
                 </td>
+                <td><img (click)="printMoveToKasem(certif)" style="width:35px;cursor: pointer;" src="../../../../assets/images/update2.png"></td>
              </tr>
            </tbody>
          </table>
@@ -224,21 +229,93 @@
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
+            <th>מספר הזמנה</th>
             <th>מספר פריט</th>
             <th>שם פריט</th>
-            <th>מספר הזמנה</th>
             <th>כמות</th>
             <th>תאריך הגעה</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of currRequest.reqList">
-            <td>{{item.itemNumber}}</td>
-            <td>{{item.itemName}}</td>
-            <td>{{item.arrivedQty}}</td>
-            <td>{{item.arrivalDate | date: 'dd//MM/yyyy'}}</td>
+          
+          <tr *ngFor="let item of ReceiveComponents.items">
+            <td>{{ReceiveComponents.orderNumber}}</td>
+            <td>{{item.componentNumber}}</td>
+            <td>{{item.componentName}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{ReceiveComponents.date | date: 'dd//MM/yyyy'}}</td>
           </tr>
         </tbody>
+      
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div style="top:100px" *ngIf="printCertif == true" id="certif-section" class="container fixed-top bg-white mx-auto my-auto rouned shadow-lg text-right">
+  <div class="row text-right">
+    <div class="col-1">
+   
+    </div>
+    <div class="col-10">
+      <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}, div : {'text-align': 'right'}, table : {'float': 'right'}}" 
+      style="background: none;border:none;font-size: 30px;" printSectionId="certif-section" ngxPrint>פאר פארם בע"מ</button>
+    </div>
+    <div class="col-1">
+      <i (click)="printCertif = false" class="fa fa-times text-info"></i>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h5>עמל 17 אזור תעשיה, אפק ראש העין 4809256</h5>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h5>טלפון 03-9024055 פקס 03-9024015 דואר אלקטרוני peerpharm@barak.net.il ח.פ 511899023</h5>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row text-center">
+    <div class="col-12">
+      <h2>תעודת החזרה</h2>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-12">
+      <h5>ממחסן:  רכיבים-ראש העין : רכיבים -קאסם למחסן</h5>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>מספר הזמנה</th>
+            <th>מספר פריט</th>
+            <th>שם פריט</th>
+            <th>כמות</th>
+            <th>תאריך הגעה</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr *ngFor="let item of currentCertif.items">
+            <td>{{currentCertif.orderNumber}}</td>
+            <td>{{item.componentNumber}}</td>
+            <td>{{item.componentName}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{currentCertif.date | date: 'dd//MM/yyyy'}}</td>
+          </tr>
+        </tbody>
+      
       </table>
     </div>
   </div>

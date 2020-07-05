@@ -17,6 +17,8 @@ export class StoragesComponent implements OnInit {
   currRequest:any;
   componentNumber:any;
   componentName:any;
+  currentCertif:any;
+  printCertif:Boolean = false;
   amount:any;
   editRow:String = ''
   allowCheckArrived:Boolean = false;
@@ -82,22 +84,21 @@ export class StoragesComponent implements OnInit {
   }
 
   sendToFilling(){
-    debugger;
-    this.ReceiveComponents;
-      
     this.inventorySrv.addToFillingStorage(this.ReceiveComponents).subscribe(data=>{
     if(data){
+    this.printDocument = true
     this.toastSrv.success('תעודה התקבלה בהצלחה')
     this.allFillingStorage = data;
+    }
+    })
+  }
+
+  clearFields(){
     this.ReceiveComponents.items = []
     this.ReceiveComponents.amount = ''
     this.ReceiveComponents.date = ''
     this.ReceiveComponents.certificate = ''
     this.ReceiveComponents.orderNumber = ''
-    }
-    })
-    
-
   }
 
   getAllFillingStorage(){
@@ -105,6 +106,12 @@ export class StoragesComponent implements OnInit {
       this.allFillingStorage = data;
       this.allFillingStorageCopy = data;
     })
+  }
+
+  printMoveToKasem(certif){
+    debugger;
+    this.currentCertif = certif
+    this.printCertif = true; 
   }
 
   filterTable(ev,type){
