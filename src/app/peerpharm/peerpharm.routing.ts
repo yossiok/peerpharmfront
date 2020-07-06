@@ -60,6 +60,7 @@ import { StoragesComponent } from './inventory/storages/storages.component';
 import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component';
 import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 import { ScreenGuard } from '../guards/screen.guard';
+import { MaterialsComponent } from './production/materials/materials.component';
 
 
 
@@ -336,6 +337,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Item Barcode'
     },
     component: ItemScanViewComponent,
+  },
+  {
+    path: 'production/materials',
+    data: {
+      title: 'Ready Materials'
+    },
+    component: MaterialsComponent,
   },
   {
     path :'batches/batchesList',

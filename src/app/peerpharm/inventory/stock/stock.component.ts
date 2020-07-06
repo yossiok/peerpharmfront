@@ -483,7 +483,7 @@ export class StockComponent implements OnInit {
             'שם הפריט': that.components[i].componentName,
             'סוג פריט': that.components[i].componentType,
             'כמות': that.components[i].amount,
-           
+            
           }
           arr.push(line)
         }

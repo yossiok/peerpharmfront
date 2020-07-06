@@ -1,0 +1,93 @@
+<mat-tab-group>
+  <mat-tab label="קליטת חומר גלם">
+    <div dir="rtl" class="container text-center p-4 bg-white shadow-lg">
+      <div class="row mt-3">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <h1 class="text-info">קליטת חומר גלם</h1>
+        </div>
+        <div class="col-4"></div>
+      </div>
+      <hr>
+      <div class="row text-center mt-4">
+        <div class="col-3"></div>
+        <div class="col-3">
+          <label class="form-control matLabel">אצווה</label>
+          <label class="form-control matLabel">מיקום</label>
+          <label class="form-control matLabel">תאריך הוצאה</label>
+          <label class="form-control matLabel">מספר הזמנה</label>
+          <label class="form-control matLabel">תאריך יעד</label>
+          <label class="form-control matLabel">זמינות</label>
+          <label class="form-control matLabel">תיאור</label>
+        </div>
+        <div class="col-3">
+          <input [(ngModel)]="material.batchNumber" type="text" class="form-control">
+          <input [(ngModel)]="material.location" type="text" class="form-control">
+          <input [(ngModel)]="material.outDate" type="date" class="form-control">
+          <input [(ngModel)]="material.orderNumber" type="text" class="form-control">
+          <input [(ngModel)]="material.destinDate"  type="date" class="form-control">
+          <input [(ngModel)]="material.availability" type="text" class="form-control">
+          <select  [(ngModel)]="material.description" class="form-control">
+            <option value="barrel">חבית</option>
+            <option value="bucket">דלי</option>
+            <option value="cube">קוביה</option>
+          </select>
+    
+        </div>
+      
+        <div class="col-3"></div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <button (click)="addNewBox()" class="btn btn-info form-control">קליטת חומר</button>
+        </div>
+        <div class="col-4"></div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="טבלת חומרי גלם">
+    <div dir="rtl" class="container text-center p-4 bg-white shadow-lg">
+    <div class="row mt-3">
+      <div class="col-4"></div>
+      <div class="col-4">
+        <h1 class="text-info">טבלת חומרי גלם</h1>
+      </div>
+      <div class="col-4"></div>
+    </div>
+    <hr>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <table class="table table-hover table-striped">
+          <thead class="text-white bg-info">
+            <tr>
+              <th>מספר</th>
+              <th>תיאור</th>
+              <th>אצווה</th>
+              <th>מיקום</th>
+              <th>מספר הזמנה</th>
+              <th>תאריך יעד</th>
+              <th>תאריך הוצאה</th>
+              <th>זמינות</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let box of allMaterialBoxes">
+              <td>{{box.boxNumber}}</td>
+              <td>{{box.description}}</td>
+              <td>{{box.batchNumber}}</td>
+              <td>{{box.location}}</td>
+              <td>{{box.orderNumber}}</td>
+              <td>{{box.destinDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{box.outDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{box.availability}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </mat-tab>
+</mat-tab-group>

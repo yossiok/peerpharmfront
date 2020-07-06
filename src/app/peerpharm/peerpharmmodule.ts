@@ -122,6 +122,7 @@ import { StoragesComponent } from './inventory/storages/storages.component';
 import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component';
 import { RandomcolorModule } from 'angular-randomcolor';
 import { AdminpanelComponent } from './adminpanel/adminpanel.component';
+import { MaterialsComponent } from './production/materials/materials.component';
 
 
 
@@ -176,6 +177,7 @@ import { AdminpanelComponent } from './adminpanel/adminpanel.component';
     ChangeShelfComponent,
     FormuleComponent,
     AddFormuleComponent,
+    MaterialsComponent,
     StoragesComponent,
     ShelfListComponent,
     OrdersComponent,

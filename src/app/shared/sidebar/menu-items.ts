@@ -578,6 +578,14 @@ export const ROUTES: RouteInfo[] = [
           extralink: false,
           submenu: []
         },
+        {
+          path: '/peerpharm/production/materials',
+          title: 'Ready Materials',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
 
       ]
     }

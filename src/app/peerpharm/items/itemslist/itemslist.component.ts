@@ -114,6 +114,7 @@ export class ItemslistComponent implements OnInit {
   }
 
   filterByNumber(ev){
+    this.items = this.itemsCopy
   var itemNumber = ev.target.value;
   if(itemNumber != ''){
 
@@ -126,6 +127,7 @@ export class ItemslistComponent implements OnInit {
 
   filterByComponent(ev){
     debugger;
+    this.items = this.itemsCopy
     var compNumber = ev.target.value;
     if(compNumber != ''){
       this.items = this.items.filter(i=>i.sealNumber == compNumber || i.bottleNumber == compNumber || i.capNumber == compNumber

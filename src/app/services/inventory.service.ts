@@ -62,6 +62,11 @@ export class InventoryService {
     let url = this.baseUrl + "material/allMaterialLocations";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllMatBoxes():Observable<any>{
+    
+    let url = this.baseUrl + "material/getAllMatBoxes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllMaterialsForFormules():Observable<any>{
     let url = this.baseUrl + "material/allMaterialForFormules";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -130,6 +135,11 @@ addToFillingStorage(cmptObj):Observable<any>{
 addNewMaterial(materialObj):Observable<any>{ 
   
   let url = this.baseUrl + "material/add";
+  return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
+}
+addNewBox(materialObj):Observable<any>{ 
+  
+  let url = this.baseUrl + "material/addNewBox";
   return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
 }
 updateSupplier(obj):Observable<any>{ 
