@@ -10,7 +10,7 @@ import { BatchesService } from 'src/app/services/batches.service';
 })
 export class NewBatchComponent implements OnInit {
 
-
+  allStickers:any[]=[];
   newBatch = {
     order:'',
     item:'',
@@ -61,6 +61,45 @@ export class NewBatchComponent implements OnInit {
   }
 
   addNewBatch(){
+
+    if(parseInt(this.newBatch.barrels)>1)
+    {
+      for(let x=1; x<parseInt(this.newBatch.barrels)+1 ;x++)
+      {
+        let obj={
+          item:{currentItem:this.newBatch.item,
+            currentItemName: this.newBatch.itemName ,
+            currentBarrels: this.newBatch.barrels ,
+            currentBatchNumber: this.newBatch.batchNumber ,
+            currentExpDate:  this.newBatch.expration ,
+            currentProduced: this.newBatch.produced  ,
+            currentOrderN: this.newBatch.order ,
+            currentPH: this.newBatch.ph ,
+            currentWeightKG: this.newBatch.weightKg   
+          },
+          printNum:""+x+"/"+(parseInt(this.newBatch.barrels))
+        } 
+        this.allStickers.push(obj);
+  
+      }
+   
+    }
+    else{
+      let obj={
+        item:{currentItem:this.newBatch.item,
+          currentItemName: this.newBatch.itemName ,
+          currentBarrels: this.newBatch.barrels ,
+          currentBatchNumber: this.newBatch.batchNumber ,
+          currentExpDate:  this.newBatch.expration ,
+          currentProduced: this.newBatch.produced  ,
+          currentOrderN: this.newBatch.order ,
+          currentPH: this.newBatch.ph ,
+          currentWeightKG: this.newBatch.weightKg   
+        },
+        printNum:"1/1"
+      } 
+      this.allStickers.push(obj);
+    }
     this.newBatch.weightQtyLeft = this.newBatch.weightKg
     this.batchService.addBatch(this.newBatch).subscribe(data=>{
     if(data){

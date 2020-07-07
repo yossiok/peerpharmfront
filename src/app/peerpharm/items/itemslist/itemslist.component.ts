@@ -131,7 +131,7 @@ export class ItemslistComponent implements OnInit {
     var compNumber = ev.target.value;
     if(compNumber != ''){
       this.items = this.items.filter(i=>i.sealNumber == compNumber || i.bottleNumber == compNumber || i.capNumber == compNumber
-         || i.tubeNumber == compNumber || i.cartonNumber == compNumber || i.stickerNumber == compNumber || i.boxNumber == compNumber)
+         || i.tubeNumber == compNumber || i.cartonNumber == compNumber || i.stickerNumber == compNumber || i.boxNumber == compNumber || i.pumpNumber == compNumber)
     } else {
       this.items = this.itemsCopy
     }

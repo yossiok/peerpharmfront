@@ -63,7 +63,7 @@
 </div>
 
 <div  class="clearfix" id="print-section" style="visibility: hidden">
-  <div style="max-height: 600px;">
+  <div style="max-height: 600px;" *ngFor="let sticker of allStickers;let i=index">
 <div dir="rtl" class="container-fluid" style="width:370px;font-family: Arial;font-size: 24px;margin-bottom: 20px;">
   <div class="row">
     <div style="text-align: center;border-bottom: 1px solid black;height:120px;" class="col-12">
@@ -105,7 +105,7 @@
       <span>משקל: </span>{{newBatch.weightKg}}
     </div>
     <div style="border-bottom: 1px solid black;" class="col-6">
-      <span>חביות: </span>{{newBatch.barrels}}
+      <span>חביות: </span>{{sticker.printNum}}
     </div>
     </div>
   
