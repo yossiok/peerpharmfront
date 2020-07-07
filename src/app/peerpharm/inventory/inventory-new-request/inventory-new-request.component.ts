@@ -146,6 +146,7 @@ export class InventoryNewRequestComponent implements OnInit {
 
 
   async addItemToRequsetList(reqItemLine){
+    debugger;
     reqItemLine.itemNumInput= reqItemLine.itemNumInput.trim();
     console.log('reqItemLine.itemNumInput: '+reqItemLine.itemNumInput);
     reqItemLine.relatedOrder= reqItemLine.relatedOrder.trim();
@@ -153,51 +154,55 @@ export class InventoryNewRequestComponent implements OnInit {
 
     //validating order number
     let validOrderN=false;
-
-    if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" ){
+    if(reqItemLine.relatedOrder == ''){
+        this.toastSrv.error('חובה להזין מספר הזמנה')
+    } else {
+      if(reqItemLine.itemNumInput!=""  &&  reqItemLine.itemAmount!="" ){
             
-      await this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(async res => {
-        if(res.length>0){
-          let reqListItem={
-            itemNumber:reqItemLine.itemNumInput,
-            itemName:res[0].componentName,
-            amount:reqItemLine.itemAmount,
-            relatedOrder:reqItemLine.relatedOrder,
-            qntSupplied:0,
-            remarks: reqItemLine.remarks,
-          }
-          this.reqItemToAdd= reqListItem; // class inventoryReqItem
-          if(reqItemLine.relatedOrder!=""){
-            await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
-              if(res.length>0){
-                validOrderN=true;
-                 //validating item number
-                  //add to req list
-                  this.reqList.push( this.reqItemToAdd);
-                  this.itemLine.controls.itemNumInput.setValue('');
-                  this.itemLine.controls.itemAmount.setValue('');
-                  this.itemLine.controls.relatedOrder.setValue('');
-                  this.itemLine.controls.remarks.setValue('');
-      
-              }else{
-                validOrderN=false;
-                this.toastSrv.error("Failed wrong order number");
-              }
-            });
-          }else{
-            //add to req list
-            this.reqList.push( this.reqItemToAdd);
-            this.itemLine.controls.itemNumInput.setValue('');
-            this.itemLine.controls.itemAmount.setValue('');
-            this.itemLine.controls.relatedOrder.setValue('');
-            this.itemLine.controls.remarks.setValue('');
-          }
-       }else{
-         validOrderN=false;
-         this.toastSrv.error("Failed wrong item number");
-       }
-     });
-   }
+        await this.inventoryReqService.checkIfComptNumExist(reqItemLine.itemNumInput).subscribe(async res => {
+          if(res.length>0){
+            let reqListItem={
+              itemNumber:reqItemLine.itemNumInput,
+              itemName:res[0].componentName,
+              amount:reqItemLine.itemAmount,
+              relatedOrder:reqItemLine.relatedOrder,
+              qntSupplied:0,
+              remarks: reqItemLine.remarks,
+            }
+            this.reqItemToAdd= reqListItem; // class inventoryReqItem
+            if(reqItemLine.relatedOrder!=""){
+              await this.inventoryReqService.checkIfOrderNumExist(reqItemLine.relatedOrder).subscribe( async res => { 
+                if(res.length>0){
+                  validOrderN=true;
+                   //validating item number
+                    //add to req list
+                    this.reqList.push( this.reqItemToAdd);
+                    this.itemLine.controls.itemNumInput.setValue('');
+                    this.itemLine.controls.itemAmount.setValue('');
+                    this.itemLine.controls.relatedOrder.setValue('');
+                    this.itemLine.controls.remarks.setValue('');
+        
+                }else{
+                  validOrderN=false;
+                  this.toastSrv.error("Failed wrong order number");
+                }
+              });
+            }else{
+              //add to req list
+              this.reqList.push( this.reqItemToAdd);
+              this.itemLine.controls.itemNumInput.setValue('');
+              this.itemLine.controls.itemAmount.setValue('');
+              this.itemLine.controls.relatedOrder.setValue('');
+              this.itemLine.controls.remarks.setValue('');
+            }
+         }else{
+           validOrderN=false;
+           this.toastSrv.error("Failed wrong item number");
+         }
+       });
+     }
+    }
+  
 
   }
 

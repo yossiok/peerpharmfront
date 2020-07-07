@@ -264,6 +264,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
+      {
+        path: '/peerpharm/batches/newBatch',
+        title: 'New Batch',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
     ]
   },
 

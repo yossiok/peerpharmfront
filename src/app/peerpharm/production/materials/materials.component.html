@@ -14,24 +14,26 @@
         <div class="col-3">
           <label class="form-control matLabel">אצווה</label>
           <label class="form-control matLabel">מיקום</label>
-          <label class="form-control matLabel">תאריך הוצאה</label>
+          <label class="form-control matLabel">תאריך ייצור</label>
           <label class="form-control matLabel">מספר הזמנה</label>
-          <label class="form-control matLabel">תאריך יעד</label>
+          <label class="form-control matLabel">תאריך תפוגה</label>
           <label class="form-control matLabel">זמינות</label>
           <label class="form-control matLabel">תיאור</label>
+          <label class="form-control matLabel">כמות</label>
         </div>
         <div class="col-3">
-          <input [(ngModel)]="material.batchNumber" type="text" class="form-control">
+          <input (change)="getBatchDetails($event)" [(ngModel)]="material.batchNumber" type="text" class="form-control">
           <input [(ngModel)]="material.location" type="text" class="form-control">
-          <input [(ngModel)]="material.outDate" type="date" class="form-control">
+          <input [(ngModel)]="material.outDate" type="text" class="form-control">
           <input [(ngModel)]="material.orderNumber" type="text" class="form-control">
-          <input [(ngModel)]="material.destinDate"  type="date" class="form-control">
+          <input [(ngModel)]="material.destinDate"  type="text" class="form-control">
           <input [(ngModel)]="material.availability" type="text" class="form-control">
           <select  [(ngModel)]="material.description" class="form-control">
             <option value="barrel">חבית</option>
             <option value="bucket">דלי</option>
             <option value="cube">קוביה</option>
           </select>
+          <input  [(ngModel)]="material.amount" type="number" class="form-control">
     
         </div>
       
@@ -71,6 +73,7 @@
               <th>תאריך יעד</th>
               <th>תאריך הוצאה</th>
               <th>זמינות</th>
+              <th *ngIf="editRow == true"></th>
             </tr>
           </thead>
           <tbody>
@@ -78,11 +81,15 @@
               <td>{{box.boxNumber}}</td>
               <td>{{box.description}}</td>
               <td>{{box.batchNumber}}</td>
-              <td>{{box.location}}</td>
+              <td (click)="edit(box._id)" *ngIf="box._id != EditRowId">{{box.location}}</td>
+              <td *ngIf="box._id == EditRowId">
+                <input #updateBoxLocation type="text" class="form-control" [value]="box.location">
+              </td>
               <td>{{box.orderNumber}}</td>
               <td>{{box.destinDate | date: 'dd/MM/yyyy'}}</td>
               <td>{{box.outDate | date: 'dd/MM/yyyy'}}</td>
               <td>{{box.availability}}</td>
+              <td *ngIf="box._id == EditRowId"><button (click)="updateLocation(box._id)" class="btn btn-info"><i class="fa fa-save text-white"></i></button></td>
             </tr>
           </tbody>
         </table>

@@ -55,6 +55,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
 
+
   allFormuleCategory: Array<any> = ['Oil Based Lotion', 'Water Baised Lotion', 'Hyperallergic', 'Powder']
   allFormuleBuffers: Array<any> = ['Citric Acid', 'Lactic Acid', 'Soda Caustic 15%', 'Triethanolamine TEA']
 

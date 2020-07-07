@@ -61,6 +61,7 @@ import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component'
 import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 import { ScreenGuard } from '../guards/screen.guard';
 import { MaterialsComponent } from './production/materials/materials.component';
+import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 
 
 
@@ -358,6 +359,13 @@ export const PeerPharmRputs: Routes =[
       title : 'Make-Up Batches List'
     },
     component:BatchesMkpComponent
+  },
+  {
+    path :'batches/newBatch',
+    data :{
+      title : 'New Batch'
+    },
+    component:NewBatchComponent
   },
   {
     path :'costumers/costumers_list',

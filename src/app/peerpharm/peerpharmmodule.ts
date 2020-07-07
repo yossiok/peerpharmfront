@@ -123,6 +123,7 @@ import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component'
 import { RandomcolorModule } from 'angular-randomcolor';
 import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 import { MaterialsComponent } from './production/materials/materials.component';
+import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 
 
 
@@ -187,6 +188,7 @@ import { MaterialsComponent } from './production/materials/materials.component';
     MakeupdetailsComponent,
     NeworderComponent, 
     NeworderComponent,
+    NewBatchComponent,
     BatchesMkpComponent,
     LinesComponent,
     ProductionComponent,
