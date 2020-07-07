@@ -16,26 +16,26 @@
       <div class="row mt-4">
         <div class="col-3"></div>
         <div class="col-3">
-        <label style="margin-bottom: 0" class="form-control">Order Number</label>
-        <label style="margin-bottom: 0"  class="form-control">Item Number</label>
-        <label style="margin-bottom: 0"  class="form-control">Name</label>
-        <label style="margin-bottom: 0"  class="form-control">Production Date</label>
-        <label style="margin-bottom: 0"  class="form-control">Expiration Date</label>
-        <label style="margin-bottom: 0"  class="form-control">Barrels</label>
-        <label style="margin-bottom: 0"  class="form-control">KG</label>
-        <label style="margin-bottom: 0"  class="form-control">PH</label>
-        <label style="margin-bottom: 0"  class="form-control">Batch</label>
+        <label style="margin-bottom: 0" class="form-control"><b>Order Number</b></label>
+        <label style="margin-bottom: 0"  class="form-control"><b>Item Number</b></label>
+        <label style="margin-bottom: 0"  class="form-control"><b>Name</b></label>
+        <label style="margin-bottom: 0"  class="form-control"><b>Production Date</b></label>
+        <label style="margin-bottom: 0"  class="form-control"><b>Expiration Date</b></label>
+        <label style="margin-bottom: 0"  class="form-control"><b>Barrels</b></label>
+        <label style="margin-bottom: 0"  class="form-control"><b>KG</b></label>
+        <label style="margin-bottom: 0"  class="form-control"><b>PH</b></label>
+        <label style="margin-bottom: 0"  class="form-control"><b>Batch</b></label>
         </div>
         <div class="col-3">
-        <input type="text" [(ngModel)]="newBatch.orderNumber" class="form-control">
-        <input type="text" (change)="fillItemName($event)" [(ngModel)]="newBatch.itemNumber" class="form-control">
-        <input type="text" [(ngModel)]="newBatch.name" class="form-control">
-        <input type="date" [(ngModel)]="newBatch.productionDate" class="form-control">
-        <input type="date" [(ngModel)]="newBatch.expirationDate" class="form-control">
+        <input type="text" [(ngModel)]="newBatch.order" class="form-control">
+        <input type="text" (change)="fillItemName($event)" [(ngModel)]="newBatch.item" class="form-control">
+        <input type="text" [(ngModel)]="newBatch.itemName" class="form-control">
+        <input type="date" [(ngModel)]="newBatch.produced" class="form-control">
+        <input type="text" [(ngModel)]="newBatch.expration" class="form-control">
         <input type="number" [(ngModel)]="newBatch.barrels" class="form-control">
-        <input type="text" [(ngModel)]="newBatch.kg" class="form-control">
+        <input type="text" [(ngModel)]="newBatch.weightKg" class="form-control">
         <input type="text" [(ngModel)]="newBatch.ph" class="form-control">
-        <input type="text" [(ngModel)]="newBatch.batchNumber" value="20pp" class="form-control">
+        <input type="text" [(ngModel)]="newBatch.batchNumber"  class="form-control">
         </div>
         <div class="col-3"></div>
       </div>
@@ -47,6 +47,68 @@
         </div>
         <div class="col-4"></div>
       </div>
+
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <button style="visibility: hidden;" #printBtn [useExistingCss]="true"
+       class="btn btn-success" printSectionId="print-section" ngxPrint>Print</button>
+        </div>
+        <div class="col-4"></div>
+      </div>
+
+
     </div>
   </div>
+</div>
+
+<div  class="clearfix" id="print-section" style="visibility: hidden">
+  <div style="max-height: 600px;">
+<div dir="rtl" class="container-fluid" style="width:370px;font-family: Arial;font-size: 24px;margin-bottom: 20px;">
+  <div class="row">
+    <div style="text-align: center;border-bottom: 1px solid black;height:120px;" class="col-12">
+      <span>שם החומר:</span>{{newBatch.itemName}}
+    </div>
+  </div>
+  <div class="row">
+    <div style="border-bottom: 1px solid black;" class="col-12">
+      <span>אצווה:</span> {{newBatch.batchNumber}}
+    </div>
+  </div>
+  
+  <div class="row">
+  <div style="border-bottom: 1px solid black;" class="col-6">
+    <span>ת.ייצור: </span>{{newBatch.produced}}
+  </div>
+  <div style="border-bottom: 1px solid black;" class="col-6">
+    <span>מק"ט: </span>{{newBatch.item}}
+  </div>
+  </div>
+  
+  <div class="row">
+  <div style="border-bottom: 1px solid black;" class="col-6">
+    <span>ת.תפוגה: </span>{{newBatch.expration}} YEARS
+  </div>
+  <div style="border-bottom: 1px solid black;" class="col-6">
+    <span>PH: </span>{{newBatch.ph}}
+  </div>
+  </div>
+  
+  <div class="row">
+    <div style="border-bottom: 1px solid black;" class="col-12">
+      <span>מ' הזמנה: </span> {{newBatch.order}}
+    </div>
+  </div>
+  
+  <div class="row">
+    <div style="border-bottom: 1px solid black;" class="col-6">
+      <span>משקל: </span>{{newBatch.weightKg}}
+    </div>
+    <div style="border-bottom: 1px solid black;" class="col-6">
+      <span>חביות: </span>{{newBatch.barrels}}
+    </div>
+    </div>
+  
+  </div>
+</div>
 </div>

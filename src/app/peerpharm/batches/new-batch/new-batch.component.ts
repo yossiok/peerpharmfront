@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
 import { BatchesService } from 'src/app/services/batches.service';
@@ -10,21 +10,39 @@ import { BatchesService } from 'src/app/services/batches.service';
 })
 export class NewBatchComponent implements OnInit {
 
+
   newBatch = {
-    orderNumber:'',
-    itemNumber:'',
-    name:'',
-    productionDate:'',
-    expirationDate:'',
+    order:'',
+    item:'',
+    itemName:'',
+    produced:this.formatDate(new Date()),
+    expration:'',
     barrels:'',
     ph:'',
-    kg:'',
-    batchNumber:'',
+    weightKg:'',
+    weightQtyLeft:'',
+    batchNumber:'20pp',
   }
+
+  @ViewChild('printBtn') printBtn: ElementRef;
 
   constructor(private toastSrv:ToastrService,private itemSrv:ItemsService,private batchService:BatchesService) { }
 
   ngOnInit() {
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
 
@@ -34,7 +52,7 @@ export class NewBatchComponent implements OnInit {
 
   this.itemSrv.getItemData(itemNumber).subscribe(data=>{
     if(data){
-      this.newBatch.name = data[0].name+' '+data[0].subName+' '+data[0].discriptionK
+      this.newBatch.itemName = data[0].name+' '+data[0].subName+' '+data[0].discriptionK
 
     } else {
       this.toastSrv.error('פריט לא קיים במערכת')
@@ -43,21 +61,25 @@ export class NewBatchComponent implements OnInit {
   }
 
   addNewBatch(){
-
+    this.newBatch.weightQtyLeft = this.newBatch.weightKg
     this.batchService.addBatch(this.newBatch).subscribe(data=>{
     if(data){
+      this.printBtn.nativeElement.click();  
       this.toastSrv.success('באטצ נוסף בהצלחה !')
       this.newBatch.barrels = ''
       this.newBatch.ph = ''
-      this.newBatch.kg = ''
-      this.newBatch.productionDate = ''
-      this.newBatch.expirationDate = ''
-      this.newBatch.orderNumber = ''
-      this.newBatch.name = ''
-      this.newBatch.itemNumber = ''
+      this.newBatch.weightKg = ''
+      this.newBatch.produced = ''
+      this.newBatch.expration = ''
+      this.newBatch.order = ''
+      this.newBatch.itemName = ''
+      this.newBatch.weightQtyLeft =''
+      this.newBatch.item = ''
       this.newBatch.batchNumber = '20pp'
     }
     })
 
   }
+
+
 }
