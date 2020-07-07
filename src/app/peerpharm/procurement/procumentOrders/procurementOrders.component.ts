@@ -155,6 +155,7 @@ export class ProcurementOrdersComponent implements OnInit {
     var tempArr = []
     for (let i = 0; i < this.procurementData.length; i++) {
     for (let j = 0; j < this.procurementData[i].item.length; j++) {
+      this.procurementData[i].item[j].supplier = this.procurementData[i].supplierName
       tempArr.push(this.procurementData[i].item[j])
       
     }
