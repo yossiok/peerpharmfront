@@ -399,6 +399,7 @@ export class StockComponent implements OnInit {
     await this.getUserAllowedWH();
     this.getAllComponents();
     // this.getAllComps();
+    
     if(this.route.queryParams){
       this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
@@ -1298,10 +1299,19 @@ export class StockComponent implements OnInit {
   }
 
 
+  deleteSupplier(index,componentN){
+    debugger;;
+    if(confirm('האם למחוק ספק ?')){
+      var material = this.components.find(c=>c.componentN == componentN);
+      material.alternativeSuppliers.splice(index, 1);
+      this.toastSrv.success('ספק הוסר בהצלחה , לא לשכוח לעדכן מידע !')
+    }
+  }
 
 
 
   filterByComponentN(componentN){
+    this.stockType = 'material'
     this.components = this.componentsUnFiltered.filter(c => c.componentN == componentN);
   }
 

@@ -1926,11 +1926,12 @@
                   <th>משקל</th>
                   <th>מטבע לפני טעינה</th>
                   <th>מחיר לפני טעינה</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
 
-                <tr *ngFor="let supplier of resMaterial.alternativeSuppliers">
+                <tr *ngFor="let supplier of resMaterial.alternativeSuppliers;let i = index">
                   <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                     {{supplier.supplierName}}</td>
                   <td *ngIf="EditRowId == supplier.supplierName">
@@ -1984,6 +1985,7 @@
                   <td *ngIf="EditRowId == supplier.supplierName">
                     <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
                   </td>
+                  <td><i (click)="deleteSupplier(i,resMaterial.componentN)" class="fa fa-times text-danger"></i></td>
 
                 </tr>
 

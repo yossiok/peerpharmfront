@@ -114,7 +114,7 @@
               <input class="editInput" #batchNumber type='text' [value]="batch.batchNumber" style='width:100px'>
             </td>
 
-            <td *ngIf="batch._id!==EditRowId" style="width:9%" (click)="edit(batch._id)">{{batch.produced}}</td>
+            <td *ngIf="batch._id!==EditRowId" style="width:9%" (click)="edit(batch._id)">{{batch.produced | date: 'dd/MM/yyyy'}}</td>
             <td *ngIf="batch._id===EditRowId" style="width:9%" (click)="edit(batch._id)">
               <input class="editInput" #batchProduced type='text' [value]="batch.produced" style='width:100px'>
             </td>

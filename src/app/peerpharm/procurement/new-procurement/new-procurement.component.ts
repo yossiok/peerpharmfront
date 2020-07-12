@@ -294,6 +294,7 @@ export class NewProcurementComponent implements OnInit {
             this.newItem.itemNumber = "";
             this.newItem.measurement = "";
             this.newItem.supplierAmount = "";
+            this.newItem.itemRemarks = '';
             this.newItem.supplierPrice = 0;
             this.itemExistInOrders = [];
             this.openOrdersModal = false;
@@ -349,27 +350,32 @@ export class NewProcurementComponent implements OnInit {
   sendNewProc() {
 
     debugger;
-    if (confirm("האם להקים הזמנה זו ?")) {
-      this.procurementService.addNewProcurement(this.newProcurement).subscribe(data => {
-        if (data) {
-          this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
-          this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data => {
-            if (data) {
-              this.toastr.success("כמות זו ירדה מכמות המסגרת")
-            }
-
-          })
-          this.newProcurement.validDate = ""
-
-          this.newProcurement.supplierName = ""
-          this.newProcurement.supplierNumber = ""
-          this.newProcurement.item = [];
-          this.newProcurement.comaxNumber = ''
-
-
-        }
-      })
+    if(this.newProcurement.item.length > 0 ){
+      if (confirm("האם להקים הזמנה זו ?")) {
+        this.procurementService.addNewProcurement(this.newProcurement).subscribe(data => {
+          if (data) {
+            this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
+            this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data => {
+              if (data) {
+                this.toastr.success("כמות זו ירדה מכמות המסגרת")
+              }
+  
+            })
+            this.newProcurement.validDate = ""
+            this.newProcurement.remarks = ''
+            this.newProcurement.supplierName = ""
+            this.newProcurement.supplierNumber = ""
+            this.newProcurement.item = [];
+            this.newProcurement.comaxNumber = ''
+  
+  
+          }
+        })
+      }
+    } else {
+      this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
     }
+ 
 
   }
   

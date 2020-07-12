@@ -39,13 +39,17 @@ export class OrderdetailsComponent implements OnInit {
   materialsForFormules: any[];
   allForms: any[];
   productionRequirements: any[];
+  prodRequirement: any[];
   selectedArr: any[] = [];
   user: UserInfo
   openFormule: boolean = false;
+  itemRequirementModal: boolean = false;
+  expandTr: boolean = false;
   showMaterialsForFormules: boolean = false;
   currItems: any[];
   currFormule: any[];
   currItem: any;
+  itemRequirements: any;
   currPhase: any[];
   bottleInStock: boolean;
   pumpInStock: boolean;
@@ -396,6 +400,14 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
+  expandTableRow(){
+    if(this.expandTr == false){
+      this.expandTr = true;
+    } else {
+      this.expandTr = false;
+    }
+  }
+
   saveItemRemarks(id){
     debugger;
     this.componentRemarks.nativeElement.value;
@@ -421,6 +433,14 @@ if(data){
     
   }
 }
+    })
+  }
+
+  getItemDetails(itemNumber){
+    this.itemSer.getItemData(itemNumber).subscribe(data=>{
+      debugger;
+    this.prodRequirement = data;
+    
     })
   }
 
@@ -652,6 +672,9 @@ if(data){
   }
 
   createProdRequirements() {
+    debugger;
+
+    
     for (let i = 0; i < this.productionRequirements.length; i++) {
       this.itemSer.getItemData(this.productionRequirements[i].itemNumber).subscribe(data => {
         debugger;
@@ -669,6 +692,17 @@ if(data){
       })
 
     }
+  }
+
+  prodRequirements(itemNumber){
+    debugger
+  this.itemSer.createProdRequirement(itemNumber).subscribe(data=>{
+  if(data){
+    debugger;
+    this.itemRequirements = data;
+    this.itemRequirementModal = true;
+  }
+  })
   }
 
   changeReqStatus(ev, id, type) {

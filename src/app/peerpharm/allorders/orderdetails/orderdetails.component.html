@@ -343,7 +343,29 @@
   </table> 
 </mat-tab>
   <mat-tab label="Production Requirements">
-    <div class="container-fluid">
+    <div class="container-fluid bg-white ">
+      <table class="table table-hover table-striped">
+        <thead class="text-white bg-info" style="box-shadow: inset 0px 0px 4px 1px black;">
+          <tr>
+            <th>Item Number</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+
+            <th></th>
+  
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of productionRequirements">
+            <td>{{item.itemNumber}} <button (click)="prodRequirements(item.itemNumber)" class="btn btn-info"><i class="fa fa-plus"></i></button></td>
+            <td>{{item.discription}}</td>
+            <td>{{item.quantity}}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </div>
+    <!-- <div class="container-fluid bg-white ">
       <div class="row">
         <div class="col-4 text-center">
          <button style="background:green;width:130px" class="btn">In Stock</button>
@@ -359,8 +381,8 @@
       </div>
       <div class="row">
         <div class="col-12">
-         <table class="table table-bordered">
-      <thead style="box-shadow: inset 0px 0px 4px 1px black;">
+         <table class="table table-hover table-striped">
+      <thead class="text-white bg-info" style="box-shadow: inset 0px 0px 4px 1px black;">
         <tr>
           <th style="width:5%">Item Number</th>
           <th style="width:10%">Item Name</th>
@@ -457,12 +479,68 @@
           </td>
           <td><i (click)="saveItemRemarks(item._id)" *ngIf="EditRowId === item._id" class="fa fa-save"></i></td>
         </tr>
+
       </tbody>
     </table> 
         </div>
       </div>
-    </div> 
+    </div>  -->
     
+    <div *ngIf="itemRequirementModal == true" style="top:100px;overflow: scroll;" class="container mx-auto my-auto fixed-top shadowl-lg rounded bg-white text-center p-4">
+      <div class="row mt-4">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <h2 class="text-info">Item Requirements</h2>
+        </div>
+        <div class="col-4">
+          <i (click)="itemRequirementModal = false" class="fa fa-times text-info"></i>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div style="height:800px" class="col-12">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Component Number</th>
+                <th>Component Type</th>
+                <th>Amount In Stock</th>
+                <th>Allocated Amount</th>
+                <th>Allocated Orders</th>
+                <th>Expected Arrivals</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let comp of itemRequirements">
+                <td>{{comp.compNumber}}</td>
+                <td>{{comp.componentType}}</td>
+                <td>{{comp.amount}}</td>
+                <td>{{comp.alloAmount}}</td>
+                <td>
+                  <table class="table table-bordered">
+                  <thead class="bg-secondary">
+                    <tr>
+                      <th>Order</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let order of comp.allocatedOrders">
+                      <td>{{order.orderNumber}}</td>
+                      <td>{{order.allocatedAmount}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
   </mat-tab>
 </mat-tab-group>
 

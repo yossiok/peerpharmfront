@@ -36,8 +36,8 @@ export class AllFormulesComponent implements OnInit {
   spinnerLoader: boolean = false;
   openFormuleModal: boolean = false;
   updatePercentage: any;
-  euroRate: number = 3.86
-  usdRate: number = 3.43
+  euroRate: number = 3.90
+  usdRate: number = 3.45
   today: any;
   updatePhaseRemarks: any;
   updateItemRemarks: any;
