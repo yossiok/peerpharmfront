@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './../../services/auth.service';
-import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { ROUTES } from '../sidebar/menu-items';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserInfo } from '../../peerpharm/taskboard/models/UserInfo';
@@ -32,7 +32,7 @@ export class NavigationComponent implements AfterViewInit {
   user: UserInfo;
   public sidebarnavItems: any[];
  
-  constructor(private modalService: NgbModal, private authService: AuthService ,   public translate: TranslateService
+  constructor(private modalService: NgbModal, private authService: AuthService ,   public translate: TranslateService, private cdref: ChangeDetectorRef
     ) {
 
     
@@ -151,6 +151,11 @@ export class NavigationComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit() {
+    this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
+  }
+
+  ngAfterContentChecked() {
+  //  this.ngOnInit();
     if(!this.authService.loggedInUser)
     {
     this.authService.userEventEmitter.subscribe(user=>  
@@ -170,5 +175,9 @@ export class NavigationComponent implements AfterViewInit {
       this.email = this.authService.loggedInUser.userEmail;
       this.picture = this.authService.loggedInUser.picture;
     }
-  }
+    this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
+    this.cdref.detectChanges();
+    
+     }
+
 }
