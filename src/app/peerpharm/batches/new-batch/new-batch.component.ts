@@ -61,7 +61,8 @@ export class NewBatchComponent implements OnInit {
   }
 
   addNewBatch(){
-
+   
+    
     if(parseInt(this.newBatch.barrels)>1)
     {
       for(let x=1; x<parseInt(this.newBatch.barrels)+1 ;x++)
@@ -101,6 +102,10 @@ export class NewBatchComponent implements OnInit {
       this.allStickers.push(obj);
     }
     this.newBatch.weightQtyLeft = this.newBatch.weightKg
+    var today = new Date();
+    today.setFullYear(today.getFullYear() + Number(this.newBatch.expration));
+    this.newBatch.expration = JSON.stringify(today)
+    debugger;
     this.batchService.addBatch(this.newBatch).subscribe(data=>{
     if(data){
       this.printBtn.nativeElement.click();  
