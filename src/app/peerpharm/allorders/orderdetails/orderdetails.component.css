@@ -26,6 +26,14 @@
   font-size: 18px;
 }
 
+.green {
+  background-color: lightgreen;
+}
+
+.red{
+  background-color: lightcoral;
+}
+
 
 .table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
   width: 10%;

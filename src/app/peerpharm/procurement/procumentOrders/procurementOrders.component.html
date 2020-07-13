@@ -244,15 +244,19 @@
           </div>
         </div>
         <div class="row mt-4">
-          <div class="col-5"></div>
+          <div class="col-4"></div>
           <div class="col-2">
             <label class="form-control text-info">Filter By Status:</label>
          
           </div>
-          <div class="col-5"></div>
+          <div class="col-2">
+            <label class="form-control text-info">Filter By Component:</label>
+         
+          </div>
+          <div class="col-4"></div>
         </div>
         <div class="row mt-1">
-          <div class="col-5"></div>
+          <div class="col-4"></div>
           <div class="col-2">
             <select class="form-control" (change)="filterByStatus($event,'recommendations')">
               <option></option>
@@ -262,7 +266,10 @@
             </select>
          
           </div>
-          <div class="col-5"></div>
+          <div class="col-2">
+            <input class="form-control" type="number" (change)="filterByComponent($event)">
+          </div>
+          <div class="col-4"></div>
         </div>
 
         <div class="row mt-4">
@@ -290,8 +297,6 @@
                   <th style="cursor: pointer;" (click)="sortTable('supplier')">Supplier</th>
                   <th style="cursor: pointer;" (click)="sortTable('date')">Recommendation Date</th>
                   <th>Amount</th>
-                  <th>In Stock</th>
-                  <th>Out Movements</th>
                   <th>Remarks</th>
                   <th style="cursor: pointer;" (click)="sortTable('ordered')">Ordered</th>
                 </tr>
@@ -316,8 +321,6 @@
                   <td>{{purchase.supplierName}}</td>
                   <td>{{purchase.date}}</td>
                   <td>{{purchase.amount}}</td>
-                  <td>{{purchase.amounts}}</td>
-                  <td>{{purchase.sumOut}}</td>
                   <td>{{purchase.remarks}}</td>
                   <td><i (click)="changeStatusToDone(purchase)" class="fa fa-check-square" aria-hidden="true"></i></td>
                 </tr>

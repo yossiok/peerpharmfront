@@ -568,7 +568,7 @@ debugger;
         }
 
       }
-      this.procurementData = res;
+      this.procurementData = res.filter(p=>p.status != 'closed');
       if(this.procurementData.length > 0){
       this.showLoader = false;
       }
@@ -679,7 +679,7 @@ if(category != ''){
             this.procurementData = this.procurementDataNoFilter
           } else {
             this.procurementData = this.procurementDataNoFilter
-            this.procurementData = this.procurementData.filter(p => p.status == status)
+            this.procurementData = this.procurementData.filter(p => p.status != 'closed')
           }
 
         } else {
@@ -1108,7 +1108,9 @@ if(category != ''){
 
 
   getComponentsWithPurchaseRec() {
+    debugger
     this.procurementservice.componentsWithPurchaseRec().subscribe(data => {
+      debugger
       this.purchaseRecommendations = data;
       this.purchaseRecommendationsCopy = data;
     })
@@ -1126,6 +1128,18 @@ if(category != ''){
       this.newItem.itemRemarks = '',
       this.newItem.itemPrice = 0,
       this.newItem.remarks = ''
+  }
+
+  filterByComponent(ev){
+    var componentN = ev.target.value;
+  if(componentN != ""){
+  this.inventoryService.getCmptByitemNumber(componentN).subscribe(data=>{
+  
+    this.purchaseRecommendations =  data[0].purchaseRecommendations
+  })
+  }  else {
+    this.purchaseRecommendations = this.purchaseRecommendationsCopy
+  }
   }
 
 

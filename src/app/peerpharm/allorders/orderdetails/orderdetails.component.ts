@@ -705,6 +705,7 @@ if(data){
   })
   }
 
+ 
   changeReqStatus(ev, id, type) {
     debugger;
     var status = ev.target.value
