@@ -946,7 +946,7 @@ if(category != ''){
     if(coin == 'nis'){
       this.currCoin = '\u20AA'
     }
-    if(coin == 'euro'){
+    if(coin == 'eur'){
       this.currCoin = '\u20ac'
     }
     if(coin == 'usd'){
