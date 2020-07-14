@@ -359,7 +359,7 @@
           <tr  *ngFor="let item of productionRequirements" >
             <td>{{item.itemNumber}} <button (click)="prodRequirements(item.itemNumber)" class="btn btn-info"><i class="fa fa-plus"></i></button></td>
             <td>{{item.discription}}</td>
-            <td [ngClass]="checkIfEnoughAmount(item)">{{item.quantity}}</td>
+            <td >{{item.quantity}}</td>
           </tr>
         </tbody>
       </table>

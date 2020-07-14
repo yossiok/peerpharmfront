@@ -77,7 +77,6 @@
         <thead id="myHeader" style="box-shadow: inset 0px 0px 4px 1px black" class='tableHeader bg-info text-white'>
           <tr>
             <td style="width:3%;">#</td>
-            <td></td>
             <td style="width:9%">Batch Number</td>
             <td style="width:9%;">Production Date</td>
             <td style="width:15%">Item Name</td>
@@ -109,7 +108,7 @@
           <tr style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
             *ngFor="let batch of batches; let i = index" [style.background-color]="batch.color">
             <td style="width:3%;">{{i+1}}</td>
-            <td><input type="checkbox">
+        
 
             <td *ngIf="batch._id!==EditRowId" style="width:9%" (click)="edit(batch._id)">{{batch.batchNumber}}</td>
             <td *ngIf="batch._id===EditRowId" style="width:9%" (click)="edit(batch._id)">
