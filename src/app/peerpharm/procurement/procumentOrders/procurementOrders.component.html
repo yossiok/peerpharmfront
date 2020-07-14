@@ -959,7 +959,7 @@
               <td>{{item.itemName}}</td>
               <td>{{item.itemRemarks}}</td>
               <td>{{item.supplierAmount}}</td>
-              <td>{{item.supplierPrice}}</td>
+              <td>{{item.supplierPrice}}{{currCoin}}</td>
               <td>{{item.itemPrice}}</td>
 
             </tr>
@@ -971,7 +971,7 @@
               <td></td>
               <td><b>{{totalAmount}}</b></td>
               <td></td>
-              <td><b>{{totalPrice}}</b></td>
+              <td><b>{{totalPrice}}{{currCoin}}</b></td>
             </tr>
             <tr *ngIf="country == false">
               <td></td>
@@ -992,7 +992,7 @@
               <td></td>
               <td><b>{{totalAmount}}</b></td>
               <td></td>
-              <td dir="rtl"><b>17% מע"מ: {{priceTaxes}}</b></td>
+              <td dir="rtl"><b>17% מע"מ: {{priceTaxes}}{{currCoin}}</b></td>
             </tr>
             <tr *ngIf="country == false">
               <td></td>
@@ -1002,7 +1002,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td dir="rtl"><b>סה"כ כולל מע"מ: {{totalPriceWithTaxes}}</b></td>
+              <td dir="rtl"><b>סה"כ כולל מע"מ: {{totalPriceWithTaxes}}{{currCoin}}</b></td>
             </tr>
       
             

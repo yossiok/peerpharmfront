@@ -943,8 +943,16 @@ if(category != ''){
     var combined = ((totalP*17/100) + totalP)
     var numFour = this.formatNumber(combined)
     this.totalPriceWithTaxes = numFour
-
-    this.currCoin = coin
+    if(coin == 'nis'){
+      this.currCoin = '\u20AA'
+    }
+    if(coin == 'euro'){
+      this.currCoin = '\u20ac'
+    }
+    if(coin == 'usd'){
+      this.currCoin = '$'
+    }
+ 
     this.orderDate = line.outDate.slice(0, 10)
     this.printBill = true;
    

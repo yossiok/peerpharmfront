@@ -583,7 +583,8 @@ export class ScheduleComponent implements OnInit {
 
     this.batchService.getBatchData(this.schedFillLine.batch).subscribe(data=>{
       debugger;
-      this.expireDate = data[0].expration
+      this.expireDate = data[0].expration.slice(1,11);
+  
     })
     console.log(this.schedFillLine);
 
