@@ -656,12 +656,11 @@
                 <option value='other'>אחר</option>
               </select>
 
-              <input list="categories" class="form-control" [(ngModel)]="resCmpt.componentCategory">
+              <select  class="form-control" [(ngModel)]="resCmpt.componentCategory">
                 <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
-                  <datalist id="categories">
                 <option value=""></option>
                 <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
-              </datalist>
+                  </select>
            
               <select class="form-control" [(ngModel)]="resCmpt.packageType">
                 <option value='paperCarton'>נייר/קרטון</option>

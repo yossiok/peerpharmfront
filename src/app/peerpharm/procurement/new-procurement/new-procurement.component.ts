@@ -29,6 +29,7 @@ export class NewProcurementComponent implements OnInit {
   allMaterials: any[];
   itemExistInOrders: any[];
   allComponents: any[];
+  userEmail:any;
   editRow:String = ''
 
   @ViewChild('itemNumber') itemNumber: ElementRef;
@@ -68,7 +69,8 @@ export class NewProcurementComponent implements OnInit {
     orderType: '',
     remarks: '',
     comaxNumber: '',
-    recommendRemarks: '',
+    recommendRemarks:'',
+    userEmail:''
 
   }
 
@@ -86,7 +88,19 @@ export class NewProcurementComponent implements OnInit {
     this.getAllSuppliers();
     this.getAllMaterials();
     this.getAllComponents();
-
+    if(this.authService.loggedInUser)
+    {
+      this.userEmail = this.authService.loggedInUser.userEmail;
+      
+    }
+    else
+    {
+      this.authService.userEventEmitter.subscribe(data=>
+        {
+          this.userEmail = this.authService.loggedInUser.userEmail;
+         
+        })
+    } 
 
   }
 
@@ -348,10 +362,12 @@ export class NewProcurementComponent implements OnInit {
   }
 
   sendNewProc() {
-
+  
     debugger;
     if(this.newProcurement.item.length > 0 ){
       if (confirm("האם להקים הזמנה זו ?")) {
+        this.newProcurement.userEmail = this.userEmail
+        this.newProcurement.outDate.toString();
         this.procurementService.addNewProcurement(this.newProcurement).subscribe(data => {
           if (data) {
             this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")

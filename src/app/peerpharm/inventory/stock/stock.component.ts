@@ -1565,7 +1565,7 @@ export class StockComponent implements OnInit {
     this.currModalImgSrc = componentImg;
   }
   async openAmountsData(cmptNumber, cmptId) {
-    
+    debugger;
     this.openModalHeader = "כמויות פריט במלאי  " + cmptNumber;
     this.openAmountsModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
@@ -2120,7 +2120,7 @@ export class StockComponent implements OnInit {
     })
   }
   async getCmptAmounts(cmptN, cmptId) {
-    
+    debugger;
     // this.currItemShelfs=[];
     this.newItemShelfPosition = '';
     this.newItemShelfQnt = 0;

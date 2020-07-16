@@ -226,6 +226,7 @@ export class ScheduleComponent implements OnInit {
         //  sced.date3 = pipe.transform(sced.date, 'short');
       });
       this.scheduleData = res;
+      this.scheduleDataCopy = res;
       this.selectedArr = []
     });
   }

@@ -911,6 +911,7 @@ if(category != ''){
     this.currentItems = line.item
     var total = 0;
     var totalP = 0;
+    
     var coin = "";
 
     for (let i = 0; i < this.currentItems.length; i++) {
