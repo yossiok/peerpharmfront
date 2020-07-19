@@ -1,85 +1,128 @@
-<input
-  matInput
-  placeholder="Item Number"
-  (keyup)="FilterForms($event, 'item')"
-  style="margin-right: 20px;"
-/>
+<div class="container-fluid bg-white p-2">
 
-<input
-  matInput
-  placeholder="Order Number"
-  (keyup)="FilterForms($event, 'order')"
-  style="margin-right: 20px;"
-/>
-
-<input
-  matInput
-  placeholder="Filling Date"
-  (keyup)="FilterForms($event, 'fill')"
-  style="margin-right: 20px;"
-/>
-
-<input
-  matInput
-  placeholder="Batch Number"
-  (keyup)="FilterForms($event, 'batch')"
-  style="margin-right: 20px;"
-/>
-<input
-  matInput
-  placeholder="Production Line Number"
-  (keyup)="FilterForms($event, 'productionLine')"
-  style="margin-right: 20px;"
-/>
-
-
-<img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
-                  (click)="exportAsXLSX()">
-
-
-<table class="table">
-  <thead>
-    <tr style="background-color:white; ">
-      <th>Form Number
-          <i class="ti-exchange-vertical" (click)="sortFormsByFormNumber()" style="cursor:pointer" ></i>
-      </th>
-      <th>Item Number</th>
-      <th>Item Name</th>
-      <th>
-          Filling Date
-          <!-- <i class="ti-exchange-vertical" (click)="sortFormsByFillingDate()" style="cursor:pointer" ></i> -->
-        <!-- <button style="background-color: transparent;" (click)="SortBy()">
-          Filling Date
-        </button> -->
-      </th>
-      <th>Order Number</th>
-      <th>Production Line</th>
-      <th>Costumer</th>
-      <th>Batch</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-   
-    <div *ngIf="forms.length==0">
-      <img style="width:500px;height:500px;margin-left:700px;" src="https://acegif.com/wp-content/uploads/loading-14.gif" /><span></span>
-      <br />
+  <div class="row mt-4">
+    <div class="col-12">
+      <h1 class="text-info text-center">QA Forms</h1>
     </div>
+  </div>
 
-    <tr *ngFor="let form of forms; let i = index">
-      <td>
-        <a routerLink="/peerpharm/forms/formDetails/{{ form._id }}">
-          {{ i }}
-        </a>
-      </td>
-      <td>{{ form.itemN }}</td>
-      <td>{{ form.productName }}</td>
-      <td>{{ form.fillingDate }}</td>
-      <td>{{ form.orderNumber }}</td>
-      <td>{{ form.productionLine }}</td>
-      <td>{{ form.costumerName }}</td>
-      <td style="width:500px">{{ form.batchN }}</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+  <div class="row mt-4">
+
+    <div class="col-2">
+      <label class="form-control">Item Number</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control">Order Number</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control">Filling Date</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control">Batch Number</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control">Line Number</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control">Export Excel</label>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+
+    <div class="col-2">
+      <input matInput placeholder="Item Number" (keyup)="FilterForms($event, 'item')" class="form-control" />
+    </div>
+    <div class="col-2">
+      <input matInput placeholder="Order Number" (keyup)="FilterForms($event, 'order')" class="form-control" />
+    </div>
+    <div class="col-2">
+      <input matInput placeholder="Filling Date" (keyup)="FilterForms($event, 'fill')" class="form-control" />
+    </div>
+    <div class="col-2">
+      <input matInput placeholder="Batch Number" (keyup)="FilterForms($event, 'batch')" class="form-control" />
+    </div>
+    <div class="col-2">
+
+      <input matInput placeholder="Production Line Number" (keyup)="FilterForms($event, 'productionLine')"
+        class="form-control" />
+
+    </div>
+    <div class="col-2">
+
+      <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
+        (click)="exportAsXLSX()">
+
+    </div>
+  </div>
+
+  <div *ngIf="showLoader" class="row text-center mt-4 mb-4">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <h2 class="peerLoader">
+        <span>P</span>
+        <span>E</span>
+        <span>E</span>
+        <span>R</span>
+        <span>P</span>
+        <span>H</span>
+        <span>A</span>
+        <span>R</span>
+        <span>M</span>
+      </h2>
+    </div>
+    <div class="col-4"></div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <table class="table table-hover table-striped">
+        <thead class="text-white bg-info">
+          <tr>
+            <th>Form Number
+              <i class="ti-exchange-vertical" (click)="sortFormsByFormNumber()" style="cursor:pointer"></i>
+            </th>
+            <th>Item Number</th>
+            <th>Item Name</th>
+            <th>
+              Filling Date
+              <!-- <i class="ti-exchange-vertical" (click)="sortFormsByFillingDate()" style="cursor:pointer" ></i> -->
+              <!-- <button style="background-color: transparent;" (click)="SortBy()">
+                Filling Date
+              </button> -->
+            </th>
+            <th>Order Number</th>
+            <th>Production Line</th>
+            <th>Costumer</th>
+            <th>Batch</th>
+            <th>Status</th>
+      
+          </tr>
+        </thead>
+
+        <tbody>
+
+
+          <tr *ngFor="let form of forms; let i = index">
+            <td>
+              <a routerLink="/peerpharm/forms/formDetails/{{ form._id }}">
+                {{ i }}
+              </a>
+            </td>
+            <td>{{ form.itemN }}</td>
+            <td>{{ form.productName }}</td>
+            <td>{{ form.fillingDate }}</td>
+            <td>{{ form.orderNumber }}</td>
+            <td>{{ form.productionLine }}</td>
+            <td>{{ form.costumerName }}</td>
+            <td>{{ form.batchN }}</td>
+            <td [ngClass]="{statusDone: form.status == 'done'}">{{ form.status }}</td>
+     
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>

@@ -873,6 +873,8 @@ if(category != ''){
 
   }
 
+  
+
   sortTable(typeOfSort) {
     debugger;
     switch (typeOfSort) {

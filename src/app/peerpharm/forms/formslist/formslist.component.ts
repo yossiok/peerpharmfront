@@ -11,6 +11,7 @@ export class FormslistComponent implements OnInit {
   forms: any[]=[];
   formsCopy: any[];
   sortByFillingDate: Boolean = false;
+  showLoader: Boolean = true;
   constructor(private formsService: FormsService,  private excelService:ExcelService) {}
 
   ngOnInit() {
@@ -19,8 +20,12 @@ export class FormslistComponent implements OnInit {
 
   getForms() {
     this.formsService.getAllForms().subscribe(res => {
-      this.forms = res;
-      this.formsCopy = res;
+      if(res){
+        this.showLoader = false;
+        this.forms = res;
+        this.formsCopy = res;
+      }
+     
     });
   }
   sortFormsByFormNumber(){
