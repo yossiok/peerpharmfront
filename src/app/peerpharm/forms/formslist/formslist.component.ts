@@ -8,6 +8,7 @@ import { ExcelService } from 'src/app/services/excel.service';
   styleUrls: ['./formslist.component.css']
 })
 export class FormslistComponent implements OnInit {
+  myRefresh: any = null;
   forms: any[]=[];
   formsCopy: any[];
   sortByFillingDate: Boolean = false;
@@ -16,6 +17,7 @@ export class FormslistComponent implements OnInit {
 
   ngOnInit() {
     this.getForms();
+    this.startInterval();
   }
 
   getForms() {
@@ -49,6 +51,14 @@ export class FormslistComponent implements OnInit {
       }
     });
 
+  }
+
+  stopInterval() {
+    clearInterval(this.myRefresh)
+  }
+
+  startInterval() {
+    this.myRefresh = setInterval(() => { this.getForms(); }, 1000 * 60 * 3);
   }
 
 

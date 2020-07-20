@@ -302,48 +302,18 @@ export class NewProcurementComponent implements OnInit {
         if(material){
           if (material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true') {
             if (confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + material.allowQtyInStock)) {
-              this.newProcurement.item.push(newItem);
-  
-              this.newItem.coin = "";
-              this.newItem.itemName = "";
-              this.newItem.itemNumber = "";
-              this.newItem.measurement = "";
-              this.newItem.supplierAmount = "";
-              this.newItem.itemRemarks = '';
-              this.newItem.supplierPrice = 0;
-              this.itemExistInOrders = [];
-              this.openOrdersModal = false;
-              this.toastr.success("פריט התווסף בהצלחה!")
-           
+              this.pushAndResetItem(newItem)
             }
+          } else {
+            this.pushAndResetItem(newItem)
           }
         }
        else {
-          this.newProcurement.item.push(newItem);
-
-          this.newItem.coin = "";
-          this.newItem.itemName = "";
-          this.newItem.itemNumber = "";
-          this.newItem.measurement = "";
-          this.newItem.supplierAmount = "";
-          this.newItem.supplierPrice = 0;
-          this.itemExistInOrders = [];
-          this.openOrdersModal = false;
-          this.toastr.success("פריט התווסף בהצלחה!")
+        this.pushAndResetItem(newItem)
        
         }
       } else {
-        this.newProcurement.item.push(newItem);
-
-        this.newItem.coin = "";
-        this.newItem.itemName = "";
-        this.newItem.itemNumber = "";
-        this.newItem.measurement = "";
-        this.newItem.supplierAmount = "";
-        this.newItem.supplierPrice = 0;
-        this.itemExistInOrders = [];
-        this.openOrdersModal = false;
-        this.toastr.success("פריט התווסף בהצלחה!")
+        this.pushAndResetItem(newItem)
         
       }
 
@@ -351,6 +321,21 @@ export class NewProcurementComponent implements OnInit {
 
 
     }
+  }
+
+  pushAndResetItem(newItem){
+    this.newProcurement.item.push(newItem);
+  
+    this.newItem.coin = "";
+    this.newItem.itemName = "";
+    this.newItem.itemNumber = "";
+    this.newItem.measurement = "";
+    this.newItem.supplierAmount = "";
+    this.newItem.itemRemarks = '';
+    this.newItem.supplierPrice = 0;
+    this.itemExistInOrders = [];
+    this.openOrdersModal = false;
+    this.toastr.success("פריט התווסף בהצלחה!")
   }
 
   fillMaterialNumber(ev) {

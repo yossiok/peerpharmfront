@@ -43,7 +43,7 @@ export class OrderdetailsComponent implements OnInit {
   selectedArr: any[] = [];
   user: UserInfo
   openFormule: boolean = false;
-  itemRequirementModal: boolean = false;
+  compRequirementModal: boolean = false;
   expandTr: boolean = false;
   showMaterialsForFormules: boolean = false;
   currItems: any[];
@@ -57,6 +57,7 @@ export class OrderdetailsComponent implements OnInit {
   capInStock: boolean;
   cartonInStock: boolean;
   totalOrderAmounts: any[];
+  compRequirement: any;
   allMaterials: any[];
   formuleCheck: boolean;
   itemDetails: any;
@@ -238,11 +239,16 @@ export class OrderdetailsComponent implements OnInit {
     this.getUserInfo();
     this.getAllComponents();
     this.getAllMaterialsFormules();
+    
+   setTimeout(() => {
+    this.getProdReq();
+   }, 10000);
+   
 
 
 
 
-
+    debugger;
     this.orderService.openOrdersValidate.subscribe(res => {
       this.number = this.route.snapshot.paramMap.get('id');
 
@@ -264,7 +270,8 @@ export class OrderdetailsComponent implements OnInit {
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
 
-
+          debugger;
+     
           this.ordersItemsCopy = orders.orderItems;
           this.ordersItems.map(item => {
             item.itemFullName = item.itemNumber + " " + item.discription;
@@ -273,6 +280,8 @@ export class OrderdetailsComponent implements OnInit {
           //this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
           console.log(orders.orderItems)
+      
+
         });
 
       }
@@ -300,10 +309,12 @@ export class OrderdetailsComponent implements OnInit {
                   await this.colorOrderItemsLines(orderItems).then(data => { });
                   this.ordersItems = orderItems;
                   this.productionRequirements = orderItems;
+              
                   this.ordersItemsCopy = orderItems;
 
                   this.multi = true;
                   console.log(orderItems);
+               
                 });
               } else {  //one order: but came through load button
                 await this.getOrderDetails();
@@ -336,6 +347,7 @@ export class OrderdetailsComponent implements OnInit {
 
     });
   }
+
 
   open(contentTwo) {
     debugger;
@@ -398,6 +410,41 @@ export class OrderdetailsComponent implements OnInit {
 
     this.inventoryService.getCmptByitemNumber(componentNumber)
 
+  }
+
+  getCompDetails(compNumber){
+  
+  this.inventoryService.getCompStatus(compNumber).subscribe(data=>{
+  debugger;
+  this.compRequirement = data;
+  this.compRequirementModal = true;
+  })
+    
+
+  }
+
+  
+  getProdReq() {
+    debugger;
+    var tempArr = []
+    this.productionRequirements.forEach(p=>{
+     tempArr.push(p.itemNumber)
+    })
+    this.itemSer.createProdRequirement(tempArr).subscribe(data=>{
+    if(data){
+      debugger;
+      this.itemRequirements = data;
+      this.productionRequirements.forEach(p=>{
+        this.itemRequirements.forEach(i=>{
+          if(p.itemNumber == i.itemNumber){
+            i.quantity = Number(p.quantity)
+          }
+        })
+      })
+    
+  
+    }
+    })
   }
 
   expandTableRow(){
@@ -694,16 +741,6 @@ if(data){
     }
   }
 
-  prodRequirements(itemNumber){
-    debugger
-  this.itemSer.createProdRequirement(itemNumber).subscribe(data=>{
-  if(data){
-    debugger;
-    this.itemRequirements = data;
-    this.itemRequirementModal = true;
-  }
-  })
-  }
 
  
   changeReqStatus(ev, id, type) {

@@ -350,16 +350,28 @@
             <th>Item Number</th>
             <th>Item Name</th>
             <th>Quantity</th>
-
-
-  
+            <th>Bottle</th>
+            <th>Seal</th>
+            <th>Pump</th>
+            <th>Cap</th>
+            <th>Carton</th>
+            <th>Sticker</th>
+            <th>Box</th>
           </tr>
         </thead>
         <tbody>
-          <tr  *ngFor="let item of productionRequirements" >
-            <td>{{item.itemNumber}} <button (click)="prodRequirements(item.itemNumber)" class="btn btn-info"><i class="fa fa-plus"></i></button></td>
-            <td>{{item.discription}}</td>
-            <td >{{item.quantity}}</td>
+          <tr  *ngFor="let item of itemRequirements" >
+            <!-- <button (click)="prodRequirements(item.itemNumber)" class="btn btn-info"><i class="fa fa-plus"></i></button>  -->
+            <td>{{item.itemNumber}}</td>
+            <td>{{item.itemName}}</td>
+            <td>{{item.quantity}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.bottleNumber)" [ngClass]="{'lightgreen': item.bottleAmount > item.quantity}">{{item.bottleNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.sealNumber)" [ngClass]="{'lightgreen': item.sealAmount > item.quantity}">{{item.sealNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.pumpNumber)" [ngClass]="{'lightgreen': item.pumpAmount > item.quantity}">{{item.pumpNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.capNumber)" [ngClass]="{'lightgreen': item.capAmount > item.quantity}">{{item.capNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.cartonNumber)">{{item.cartonNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.stickerNumber)">{{item.stickerNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.boxNumber)">{{item.boxNumber}}</td>
           </tr>
         </tbody>
       </table>
@@ -486,24 +498,23 @@
       </div>
     </div>  -->
     
-    <div *ngIf="itemRequirementModal == true" style="top:100px;overflow: scroll;" class="container mx-auto my-auto fixed-top shadowl-lg rounded bg-white text-center p-4">
+    <div *ngIf="compRequirementModal == true" style="top:100px;overflow: scroll;" class="container mx-auto my-auto fixed-top shadowl-lg rounded bg-white text-center p-4">
       <div class="row mt-4">
         <div class="col-4"></div>
         <div class="col-4">
           <h2 class="text-info">Item Requirements</h2>
         </div>
         <div class="col-4">
-          <i (click)="itemRequirementModal = false" class="fa fa-times text-info"></i>
+          <i (click)="compRequirementModal = false" class="fa fa-times text-info"></i>
         </div>
       </div>
 
       <div class="row mt-4">
-        <div style="height:800px" class="col-12">
+        <div style="height:500px" class="col-12">
           <table class="table table-hover">
             <thead>
               <tr>
                 <th>Component Number</th>
-                <th>Component Type</th>
                 <th>Amount In Stock</th>
                 <th>Allocated Amount</th>
                 <th>Allocated Orders</th>
@@ -511,11 +522,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let comp of itemRequirements">
-                <td>{{comp.compNumber}}</td>
-                <td>{{comp.componentType}}</td>
-                <td>{{comp.amount}}</td>
-                <td>{{comp.alloAmount}}</td>
+              <tr>
+                <td>{{compRequirement.compNumber}}</td>
+                <td>{{compRequirement.amount}}</td>
+                <td>{{compRequirement.alloAmount}}</td>
                 <td>
                   <table class="table table-bordered">
                   <thead class="bg-secondary">
@@ -525,13 +535,33 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let order of comp.allocatedOrders">
+                    <tr *ngFor="let order of compRequirement.allocatedOrders">
                       <td>{{order.orderNumber}}</td>
                       <td>{{order.allocatedAmount}}</td>
                     </tr>
                   </tbody>
                 </table>
               </td>
+                <td>
+                  <table class="table table-bordered">
+                  <thead class="bg-secondary">
+                    <tr>
+                      <th>Amount</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let order of compRequirement.expectedArrivals">
+                      <tr *ngIf="order.status != 'closed'">
+                        <td>{{order.amount}}</td>
+                        <td>{{order.date}}</td>
+                      </tr>
+                    </ng-container>
+                  
+                  </tbody>
+                </table>
+              </td>
+            
 
               </tr>
             </tbody>
