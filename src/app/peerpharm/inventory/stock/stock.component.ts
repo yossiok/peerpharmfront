@@ -904,7 +904,7 @@ export class StockComponent implements OnInit {
       for (let i = 0; i < allPurchases.length; i++) {
       for (let j = 0; j < allPurchases[i].item.length; j++) {
        for (let k = 0; k < components.length; k++) {
-        if(components[k].componentN == allPurchases[i].item[j].itemNumber){
+        if(components[k].componentN == allPurchases[i].item[j].itemNumber && allPurchases[i].item[j].color != 'lightgreen'){
           var obj = {
             purchaseOrder:'',
             purchaseAmount:'',

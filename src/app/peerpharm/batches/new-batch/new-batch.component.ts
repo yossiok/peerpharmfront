@@ -106,6 +106,7 @@ export class NewBatchComponent implements OnInit {
     today.setFullYear(today.getFullYear() + Number(this.newBatch.expration));
     this.newBatch.expration = JSON.stringify(today)
     debugger;
+    this.newBatch.batchNumber = this.newBatch.batchNumber.toLowerCase();
     this.batchService.addBatch(this.newBatch).subscribe(data=>{
     if(data){
       this.printBtn.nativeElement.click();  

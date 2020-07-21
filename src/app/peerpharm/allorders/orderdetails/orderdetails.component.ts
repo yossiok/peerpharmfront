@@ -341,6 +341,8 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
+
+
   getAllFormsDetails() {
     this.formService.getAllForms().subscribe(data => {
       this.allForms = data;
@@ -1638,6 +1640,91 @@ debugger;
 
 
 
+    /****************DRAG DROP FUNCS************/
+    startItemDrag(ev) {
+
+      ev.dataTransfer.setData('Text/html', ev.target.dataset.ordernumber+";"+ev.target.dataset.alloamount+";"+ev.target.dataset.index);
+      console.log('dragging');
+    }
+  
+    startShakeDragOver(ev)
+    {
+      ev.preventDefault();
+   
+      ev.target.classList.add("shakeme");
+    }
+    stopItemDrag(ev)
+    {
+   
+      ev.target.classList.remove("shakeme");
+      ev.target.parentElement.classList.remove("shakeme");
+      this.stopAllShakes();
+    
+    }
+    stopAllShakes()
+    {
+      let allShakes= document.getElementsByClassName("shakeme");
+      let allShakeslength= allShakes.length
+      for (let i = 0; i <allShakeslength; i++) {
+        if( allShakes[i])
+        allShakes[i].classList.remove("shakeme"); 
+      }
+  
+    }
+  
+    getDroppedElemnt(ev)
+    {
+      debugger;
+      this.stopAllShakes();
+      this.stopAllShakes();
+    
+      //ev.target.parentElement.data.id
+      var data = ev.dataTransfer.getData("text/html");
+      let dataArr=data.split(";");
+      let droppedOrderNum=dataArr[0];
+      let droppedAlloAmount= dataArr[1];
+      let droppedIndex = dataArr[2]
+  
+      let droppedIntoOrderNum=ev.target.parentElement.dataset.ordernumber;
+      let droppedIntoAlloAmount=ev.target.parentElement.dataset.alloamount;
+      let droppedIntoIndex = ev.target.parentElement.dataset.index
+      var compNumber = this.compRequirement.compNumber;
+
+      let allocatedOrders = this.compRequirement.allocatedOrders;
+
+      let itemToMove = allocatedOrders[droppedIndex];
+      let movedOnItem = allocatedOrders[droppedIntoIndex]
+
+      allocatedOrders[droppedIndex]  = movedOnItem
+      allocatedOrders[droppedIntoIndex] = itemToMove
+
+
+      this.inventoryService.updateAllocatedOrdersPos(allocatedOrders,compNumber).subscribe(data=>{
+      debugger;
+      if(data){
+        this.toastSrv.success('מיקום עודכן בהצלחה !')
+      }
+      })
+
+
+
+      //remove from old phase
+      // let itemToaddToNewPhase=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.find(a=>a.itemNumber==droppedItemNum);
+      // this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.filter(a=>a.itemNumber!=droppedItemNum);
+   
+  
+      // //find update to phase:
+      // let droppedIndex= this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.findIndex(a=>a.itemNumber==droppedIntoItemNum);
+      // this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.splice( droppedIndex, 0, itemToaddToNewPhase );
+   
+      debugger;
+  
+      setTimeout(()=>
+      {
+    this.stopAllShakes();
+      },500);
+    
+    }
 
 
 

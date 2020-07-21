@@ -131,6 +131,10 @@ export class InventoryService {
     let url = this.baseUrl + "component/add";
     return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))
 }
+updateAllocatedOrdersPos(allocatdOrders,compNumber):Observable<any>{ 
+    let url = this.baseUrl + "component/updateAllocatedOrdersPos";
+    return this.http.post(url, JSON.stringify({allocatedOrders:allocatdOrders,componentN:compNumber}), this.options).pipe(map(res => res.json()))
+}
 addToFillingStorage(cmptObj):Observable<any>{ 
     let url = this.baseUrl + "component/addToFillingStorage";
     return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))

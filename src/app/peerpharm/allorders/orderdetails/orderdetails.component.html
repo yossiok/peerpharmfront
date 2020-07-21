@@ -365,13 +365,13 @@
             <td>{{item.itemNumber}}</td>
             <td>{{item.itemName}}</td>
             <td>{{item.quantity}}</td>
-            <td style="cursor: pointer;" (click)="getCompDetails(item.bottleNumber)" [ngClass]="{'lightgreen': item.bottleAmount > item.quantity}">{{item.bottleNumber}}</td>
-            <td style="cursor: pointer;" (click)="getCompDetails(item.sealNumber)" [ngClass]="{'lightgreen': item.sealAmount > item.quantity}">{{item.sealNumber}}</td>
-            <td style="cursor: pointer;" (click)="getCompDetails(item.pumpNumber)" [ngClass]="{'lightgreen': item.pumpAmount > item.quantity}">{{item.pumpNumber}}</td>
-            <td style="cursor: pointer;" (click)="getCompDetails(item.capNumber)" [ngClass]="{'lightgreen': item.capAmount > item.quantity}">{{item.capNumber}}</td>
-            <td style="cursor: pointer;" (click)="getCompDetails(item.cartonNumber)">{{item.cartonNumber}}</td>
-            <td style="cursor: pointer;" (click)="getCompDetails(item.stickerNumber)">{{item.stickerNumber}}</td>
-            <td style="cursor: pointer;" (click)="getCompDetails(item.boxNumber)">{{item.boxNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.bottleNumber)" [ngClass]="{'lightgreen': item.bottleAmount > item.quantity,'lightred':item.quantity > item.bottleAmount}">{{item.bottleNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.sealNumber)" [ngClass]="{'lightgreen': item.sealAmount > item.quantity,'lightred':item.quantity > item.sealAmount}">{{item.sealNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.pumpNumber)" [ngClass]="{'lightgreen': item.pumpAmount > item.quantity,'lightred':item.quantity > item.pumpAmount}">{{item.pumpNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.capNumber)" [ngClass]="{'lightgreen': item.capAmount > item.quantity,'lightred':item.quantity > item.capAmount}">{{item.capNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.cartonNumber)" [ngClass]="{'lightgreen': item.cartonAmount > item.quantity,'lightred':item.quantity > item.cartonAmount}">{{item.cartonNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.stickerNumber)" [ngClass]="{'lightgreen': item.stickerAmount > item.quantity,'lightred':item.quantity > item.stickerAmount}">{{item.stickerNumber}}</td>
+            <td style="cursor: pointer;" (click)="getCompDetails(item.boxNumber)" [ngClass]="{'lightgreen': item.boxAmount > item.quantity,'lightred':item.quantity > item.boxAmount}">{{item.boxNumber}}</td>
           </tr>
         </tbody>
       </table>
@@ -534,8 +534,9 @@
                       <th>Amount</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr *ngFor="let order of compRequirement.allocatedOrders">
+                  <tbody (dragover)="startShakeDragOver($event)"   (drop)="getDroppedElemnt($event)">
+                    
+                    <tr style="cursor: pointer;" [attr.data-index]="i" [attr.data-orderNumber]="order.orderNumber"  [attr.data-alloAmount]="order.allocatedAmount" draggable="true" style="cursor: move; border:10px solid #f0f0f0" (dragstart)="startItemDrag($event)"  (dragleave)="stopItemDrag($event)"  *ngFor="let order of compRequirement.allocatedOrders;let i = index">
                       <td>{{order.orderNumber}}</td>
                       <td>{{order.allocatedAmount}}</td>
                     </tr>
