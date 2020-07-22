@@ -72,7 +72,8 @@
   <tbody  id="table_body">
     <tr style="font-size: 12px;" style="text-align: center;" *ngFor="let line of scheduleData; let i = index" [style.background-color]="line.trColor">
 
-      <td>{{i+1}}</td>
+      <td *ngIf="line._id!==editPosId" (click)="editPosition(line._id)">{{line.position}}</td>
+      <td *ngIf="line._id===editPosId"><input (change)="updateLinePosition(line._id)" #scheduleP type="number" [value]="line.position" style='width:70px'></td>
       <!-- <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.positionN}}</td> -->
       <!-- <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id"><input #position type='text' [value]="line.positionN"
           style='width:50px'></td> -->

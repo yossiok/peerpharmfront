@@ -77,10 +77,17 @@ export class ScheduleService {
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
 
+
+
   setOpenToToday() {
     let url = this.baseUrl + "schedule/update";
     var schedule = {setOpenToToday: true }
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
+  }
+  updatePrintPosition(id,position) {
+    let url = this.baseUrl + "printSchedule/updatePrintPosition";
+    var schedule = {setOpenToToday: true }
+    return this.http.post(url, JSON.stringify({id:id,position:position}), this.options).pipe(map(res => res.json()))
   }
   moveToNextDay(scheduleArr) {
     let url = this.baseUrl + "schedule/moveToNextDay";

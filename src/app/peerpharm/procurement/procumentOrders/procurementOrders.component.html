@@ -1128,7 +1128,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
             </td> -->
 
             <td *ngIf="line.itemNumber==EditRowId"><i (click)="checkIfArrived(line.itemNumber,line.orderNumber,i)"
-                class="fa fa-check" aria-hidden="true"></i></td>
+                class="fa fa-floppy-o" aria-hidden="true"></i></td>
             <td><i (click)="deleteFromOrder(line.itemNumber,line.orderNumber)" class="fa fa-trash"></i></td>
             <td><i (click)="itemStatusDone(line.itemNumber,line.orderNumber)" class="fa fa-check"></i></td>
           </tr>

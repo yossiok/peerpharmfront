@@ -5,6 +5,7 @@
 import { DatepickerComponent } from 'angular2-material-datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
+import { ArrayServiceService } from 'src/app/utils/array-service.service';
   
   @Component({
     selector: 'app-schedule',
@@ -15,6 +16,7 @@ import { ItemsService } from 'src/app/services/items.service';
     today:any;
     scheduleData:any[];
     EditRowId:any="";
+    editPosId:any="";
     buttonColor:string='silver';
     dateToEditStr:any;
     lineColorDone: string = 'Aquamarine';
@@ -24,6 +26,7 @@ import { ItemsService } from 'src/app/services/items.service';
     @ViewChild('item') item:ElementRef; 
     @ViewChild('costumer') costumer:ElementRef; 
     @ViewChild('scheduleDate') scheduleDate:ElementRef; 
+    @ViewChild('scheduleP') scheduleP:ElementRef; 
     @ViewChild('cmptN') cmptN:ElementRef; 
     @ViewChild('cmptName') cmptName:ElementRef; 
     @ViewChild('color') color:ElementRef; 
@@ -42,6 +45,7 @@ import { ItemsService } from 'src/app/services/items.service';
     @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
       console.log(event);
       this.edit('');
+      this.editPosition('');
     }
   
     scheduleLine = {
@@ -71,7 +75,7 @@ import { ItemsService } from 'src/app/services/items.service';
     typeShown:String="basic";
     currModalImgArr:Array<any>;
     openImgModal:Boolean= false;
-    constructor(private scheduleService:ScheduleService , private toastSrv: ToastrService , private itemsService: ItemsService) { }
+    constructor(private arrayService:ArrayServiceService,private scheduleService:ScheduleService , private toastSrv: ToastrService , private itemsService: ItemsService) { }
   
  
 
@@ -121,9 +125,12 @@ import { ItemsService } from 'src/app/services/items.service';
           if(elem.status=="printed") elem.trColor="Aquamarine";
           if(elem.status!="printed" && pastDue) elem.trColor="rgb(250, 148, 148)";            
         });
+       
         this.scheduleData=res;
       });
     }
+
+  
 
     getOpenAllSchedule(){
       debugger
@@ -134,6 +141,7 @@ import { ItemsService } from 'src/app/services/items.service';
           let pastDue=(moment(elem.date).format() < moment(this.today).format());
           if(pastDue) elem.trColor="rgb(250, 148, 148)";            
         });
+        res.sort(function(a, b){return a - b});
         this.scheduleData=res;
       });
     }
@@ -160,6 +168,39 @@ import { ItemsService } from 'src/app/services/items.service';
   }
   
   
+  editPosition(id){
+
+    if(id != ''){
+      this.editPosId = id
+    } else {
+      this.editPosId = ''
+    }
+      
+  }
+
+  updateLinePosition(id){
+  
+    var position = Number(this.scheduleP.nativeElement.value);
+    this.scheduleService.updatePrintPosition(id,position).subscribe(data=>{
+    debugger;
+    let schedule = this.scheduleData.find(s=>s._id == data._id);
+    schedule.position = data.position;
+    this.editPosition('');
+    this.toastSrv.success('מיקום עודכן בהצלחה')
+    })
+
+  }
+
+  sort_by_key(array, key)
+{
+ return array.sort(function(a, b)
+ {
+  var x = a[key]; var y = b[key];
+  return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+ });
+}
+  
+  
   updateSchedule(line){
     if (!line.qtyProduced) line.qtyProduced=0; 
     if (!line.amountPckgs) line.amountPckgs=0; 
@@ -174,6 +215,7 @@ import { ItemsService } from 'src/app/services/items.service';
         itemName:line.value,
         costumer:this.costumer.nativeElement.value,
         scheduleDate:this.scheduleDate.nativeElement.value,
+
         cmptName:this.cmptName.nativeElement.value,
         cmptN:this.cmptN.nativeElement.value,
         color:this.color.nativeElement.value,
@@ -199,6 +241,7 @@ import { ItemsService } from 'src/app/services/items.service';
                   sch.color= scheduleToUpdate.color;
                   sch.costumer= scheduleToUpdate.costumer;
                   sch.scheduleDate= scheduleToUpdate.scheduleDate;
+                
                   sch.date= scheduleToUpdate.date;
                   sch.itemN= scheduleToUpdate.itemN;
                   sch.itemName= scheduleToUpdate.itemName;
