@@ -297,7 +297,10 @@ export class NewProcurementComponent implements OnInit {
       this.toastr.error('שים לב , לא כל הפרטים מלאים.')
     } else {
       if (this.newProcurement.orderType == 'material') {
-        var material = this.allMaterials.find(m => m.componentN == newItem.itemNumber);
+        if(this.allMaterials != undefined){
+          var material = this.allMaterials.find(m => m.componentN == newItem.itemNumber);
+        }
+       
         debugger;
         if(material){
           if (material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true') {
