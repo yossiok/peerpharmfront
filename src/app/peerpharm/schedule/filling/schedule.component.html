@@ -456,7 +456,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" printSectionId="print-section" ngxPrint (click)="c('Saved')">
+    <button *ngIf="showPrintBtn == true" type="button" class="btn btn-outline-dark" printSectionId="print-section" ngxPrint (click)="c('Saved')">
       Print
     </button>
   </div>

@@ -18,6 +18,7 @@ import { BatchesService } from "src/app/services/batches.service";
 export class ScheduleComponent implements OnInit {
 
   fillingReport:boolean = false;
+  showPrintBtn:boolean = false;
   scheduleData: any[];
   scheduleDataCopy: any[];
   unPackedSchedules: any[];
@@ -567,9 +568,13 @@ export class ScheduleComponent implements OnInit {
 
   // Modal Functions
   openPrintBarkod(content, line) {
+    this.showPrintBtn = false;
     this.schedFillLine = line;
     debugger;
     this.newBatchChange = false;
+    setTimeout(() => {
+      this.showPrintBtn = true;
+    }, 3000);
     this.itemSer.getItemData(this.schedFillLine.item).subscribe(data=>{
       debugger;
       data;
