@@ -36,8 +36,8 @@ export class AllFormulesComponent implements OnInit {
   spinnerLoader: boolean = false;
   openFormuleModal: boolean = false;
   updatePercentage: any;
-  euroRate: number = 3.90
-  usdRate: number = 3.45
+  euroRate: number = 3.97
+  usdRate: number = 3.41
   today: any;
   updatePhaseRemarks: any;
   updateItemRemarks: any;
@@ -373,7 +373,7 @@ export class AllFormulesComponent implements OnInit {
 
 
   formatNumber(number) {
-    number = number.toFixed(2) + '';
+    number = number.toFixed(4) + '';
     var x = number.split('.');
     var x1 = x[0];
     var x2 = x.length > 1 ? '.' + x[1] : '';
