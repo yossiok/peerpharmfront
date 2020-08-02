@@ -22,6 +22,7 @@ export class NewBatchComponent implements OnInit {
     weightKg:'',
     weightQtyLeft:'',
     batchNumber:'20pp',
+    batchCreated:0
   }
 
   @ViewChild('printBtn') printBtn: ElementRef;
@@ -108,6 +109,7 @@ export class NewBatchComponent implements OnInit {
     this.newBatch.expration = this.newBatch.expration.slice(1,11)
     debugger;
     this.newBatch.batchNumber = this.newBatch.batchNumber.toLowerCase();
+    this.newBatch.batchCreated = new Date().getTime();
     this.batchService.addBatch(this.newBatch).subscribe(data=>{
     if(data){
       this.printBtn.nativeElement.click();  

@@ -161,6 +161,7 @@ export class NewProcurementComponent implements OnInit {
         this.inventoryService.getCmptByitemNumber(this.newItem.itemNumber).subscribe(data => {
           debugger;
           this.newItem.itemName = data[0].componentName;
+          this.newItem.componentNs = data[0].componentNs
           if(this.newItem.itemName == undefined && this.newProcurement.orderType == 'fictive'){
             this.newItem.itemName = data[0].componentName
           }

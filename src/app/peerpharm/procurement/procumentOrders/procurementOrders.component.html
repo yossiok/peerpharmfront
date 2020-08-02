@@ -1062,6 +1062,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
           <th></th>
           <th>Item Name</th>
           <th>Item Number</th>
+          <th>Supplier Number</th>
           <th>Item Remarks</th>
           <th>Measurement</th>
           <th>Price</th>
@@ -1070,6 +1071,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
           <!-- <th>Arrival Date</th>
           <th>Expected Date</th>
           <th>Reference Number</th> -->
+        
           <th></th>
           <th></th>
           <th></th>
@@ -1084,6 +1086,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
             <td>{{i+1}}</td>
             <td>{{ line.itemName }}</td>
             <td>{{ line.itemNumber }}</td>
+            <td>{{ line.componentNs }}</td>
             <td  *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.itemRemarks }}</td>
             <td *ngIf="line.itemNumber==EditRowId">
               <textarea #itemRemarks [value]="line.itemRemarks" ></textarea>
