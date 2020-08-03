@@ -861,9 +861,8 @@ if(data){
     changeItemQuantity(itemNumber){
       debugger;
       var updatedQuantity = prompt('הזן כמות');
-      updatedQuantity
-      itemNumber;
       var tempArr = [...this.selectedArr];
+      var tempMaterials = [...this.materialsForFormules]
       var item = tempArr.find(i => i.itemNumber == itemNumber);
       item.calculatedAmount = updatedQuantity
       this.inventoryService.getMaterialsForFormules(tempArr).subscribe(data => {
@@ -871,7 +870,17 @@ if(data){
         if (data.msg == "לא קיימת פורמולה") {
           this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
         } else {
+          var item = this.selectedArr.find(i=>i.itemNumber == itemNumber);
+          item.netWeightGr = updatedQuantity
+        
           this.materialsForFormules = data;
+          this.materialsForFormules.forEach(item=>{
+            tempMaterials.forEach(element => {
+              if(item.itemNumber == element.itemNumber){
+                item.totalQnt = element.totalQnt
+              }
+            });
+          })
           this.showMaterialsForFormules = true;
         }
 

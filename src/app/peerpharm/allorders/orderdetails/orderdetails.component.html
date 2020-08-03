@@ -1737,6 +1737,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
           <th>מספר הזמנה</th>
           <th>שם פריט</th>
           <th>מספר פריט</th>
+          <th>משקל</th>
           <!-- <th>כמות לפני אחוזים</th> -->
         </tr>
       </thead>
@@ -1745,6 +1746,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
           <td>{{obj.orderNumber}}</td>
           <td>{{obj.discription}}</td>
           <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
+          <td>{{obj.netWeightGr}}</td>
           <!-- <td>{{obj.calculatedAmount}}</td> -->
         </tr>
       </tbody>
