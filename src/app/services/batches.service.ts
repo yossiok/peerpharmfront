@@ -44,6 +44,10 @@ export class BatchesService {
     let url = this.baseUrl + 'batch?batchNumber='+batchN;
     return this.http.get(url).pipe(map(reponse => reponse.json()));  
   }
+  getLastBatch():Observable<any>{
+    let url = this.baseUrl + 'batch?lastBatch=yes';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));  
+  }
 
   getBatchesByItemNumber(itemNumber):Observable<any>{
     let url = this.baseUrl + 'batch?itemNumber='+itemNumber;

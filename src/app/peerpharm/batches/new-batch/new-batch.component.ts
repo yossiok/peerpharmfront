@@ -24,12 +24,13 @@ export class NewBatchComponent implements OnInit {
     batchNumber:'20pp',
     batchCreated:0
   }
-
+  lastBatch:any;
   @ViewChild('printBtn') printBtn: ElementRef;
 
   constructor(private toastSrv:ToastrService,private itemSrv:ItemsService,private batchService:BatchesService) { }
 
   ngOnInit() {
+    this.getLastBatch();
   }
 
   formatDate(date) {
@@ -44,6 +45,12 @@ export class NewBatchComponent implements OnInit {
       day = '0' + day;
 
     return [year, month, day].join('-');
+  }
+
+  getLastBatch(){
+    this.batchService.getLastBatch().subscribe(data=>{
+    this.lastBatch = data;
+    })
   }
 
 
