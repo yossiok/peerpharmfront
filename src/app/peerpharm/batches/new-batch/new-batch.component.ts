@@ -132,6 +132,7 @@ export class NewBatchComponent implements OnInit {
       this.newBatch.item = ''
       this.newBatch.batchNumber = '20pp'
       this.allStickers = [];
+      this.getLastBatch();
     }
     })
 
