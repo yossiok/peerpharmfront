@@ -384,6 +384,31 @@ export class AllFormulesComponent implements OnInit {
     return x1 + x2;
   }
 
+  filterByMaterial(ev){
+    debugger;
+    var materialNumber = ev.target.value;
+    var tempArr = []
+    if(materialNumber != ""){
+      
+      for (let i = 0; i < this.allFormules.length; i++) {
+        for (let j = 0; j < this.allFormules[i].phases.length; j++) {
+          for (let k = 0; k < this.allFormules[i].phases[j].items.length; k++) {
+            if(this.allFormules[i].phases[j].items[k].itemNumber == materialNumber){
+            tempArr.push(this.allFormules[i])
+            }
+            
+          }
+          
+        }
+          
+        }
+        this.allFormules = tempArr
+    } else {
+      this.allFormules = this.allFormulesCopy
+    }
+   
+  }
+
 
   getFormulePrice(formule) {
     debugger;

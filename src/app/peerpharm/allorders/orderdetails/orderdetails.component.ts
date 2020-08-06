@@ -20,6 +20,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import { FormulesService } from 'src/app/services/formules.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { FormsService } from 'src/app/services/forms.service';
+var _ = require('lodash');
 
 
 
@@ -61,6 +62,13 @@ export class OrderdetailsComponent implements OnInit {
   allMaterials: any[];
   formuleCheck: boolean;
   itemDetails: any;
+  bottleQuantity:number = 0;
+  capsQuantity:number = 0;
+  sealsQuantity:number = 0;
+  boxesQuantity:number = 0;
+  stickersQuantity:number = 0;
+  pumpsQuantity:number = 0;
+  cartonsQuantity:number = 0;
   newProductionNetWeightGr: any;
   newProductionQuantity: any;
   componentStatus: any;
@@ -443,8 +451,57 @@ export class OrderdetailsComponent implements OnInit {
           }
         })
       })
+ 
+      const bottles = _.countBy(this.itemRequirements, 'bottleNumber');
+      const caps = _.countBy(this.itemRequirements, 'capNumber');
+      const seals = _.countBy(this.itemRequirements, 'sealNumber');
+      const stickers = _.countBy(this.itemRequirements, 'stickerNumber');
+      const boxes = _.countBy(this.itemRequirements, 'boxNumber');
+      const pumps = _.countBy(this.itemRequirements, 'pumpNumber');
+      const cartons = _.countBy(this.itemRequirements, 'cartonNumber');
+      
+      delete bottles.undefined
+      delete caps.undefined
+      delete seals.undefined
+      delete stickers.undefined
+      delete boxes.undefined
+      delete pumps.undefined
+      delete cartons.undefined
+
+      var bottleArray = _.filter(this.itemRequirements, x => bottles[x.bottleNumber] > 1);
+      var capsArray = _.filter(this.itemRequirements, x => caps[x.bottleNumber] > 1);
+      var sealsArray = _.filter(this.itemRequirements, x => seals[x.bottleNumber] > 1);
+      var stickersArray = _.filter(this.itemRequirements, x => stickers[x.bottleNumber] > 1);
+      var boxesArray = _.filter(this.itemRequirements, x => boxes[x.bottleNumber] > 1);
+      var pumpsArray = _.filter(this.itemRequirements, x => pumps[x.bottleNumber] > 1);
+      var cartonsArray = _.filter(this.itemRequirements, x => cartons[x.bottleNumber] > 1);
+
     
-  
+
+      bottleArray.forEach(element => {
+        this.bottleQuantity+=element.quantity;
+      });
+      capsArray.forEach(element => {
+        this.capsQuantity+=element.quantity;
+      });
+      sealsArray.forEach(element => {
+        this.sealsQuantity+=element.quantity;
+      });
+      stickersArray.forEach(element => {
+        this.stickersQuantity+=element.quantity;
+      });
+      boxesArray.forEach(element => {
+        this.boxesQuantity+=element.quantity;
+      });
+      pumpsArray.forEach(element => {
+        this.pumpsQuantity+=element.quantity;
+      });
+      cartonsArray.forEach(element => {
+        this.cartonsQuantity+=element.quantity;
+      });
+      
+    
+
     }
     })
   }
