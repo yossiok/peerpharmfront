@@ -240,6 +240,7 @@
             </select>
           </td>
           <td><input placeholder="Percentage" class="form-control" #percentage [(ngModel)]="newItem.percentage" type="number"></td>
+          <td><input placeholder="Percentage" class="form-control" #volumeMl [(ngModel)]="newItem.volumeMl" type="number"></td>
           <td><input placeholder="Remarks" class="form-control" #remarks [(ngModel)]="newItem.itemRemarks" type="text"></td>
           <td><button (click)="addItemsToPhase()" class="btn btn-info form-control">Add</button></td>
           <td><button (click)="addNewPhase()" class="btn btn-info form-control">Create Phase</button></td>
@@ -253,6 +254,7 @@
           <th>Item Number</th>
           <th>Item Name</th>
           <th>Percentage</th>
+          <th>Volume(ml)</th>
           <th>Remarks</th>
         </tr>
      
@@ -272,6 +274,7 @@
               </tbody>
             </table>
           </td>
+          <td>{{item.volumeMl}}</td>
           <td>{{item.percentage}}</td>
           <td>{{item.remarks}}</td>
         </tr>

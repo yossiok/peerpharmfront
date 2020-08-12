@@ -38,6 +38,7 @@ export class NewFormuleComponent implements OnInit {
   @ViewChild('itemName') itemName: ElementRef;
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('percentage') percentage: ElementRef;
+  @ViewChild('volumeMl') volumeMl: ElementRef;
   @ViewChild('remarks') remarks: ElementRef;
   @ViewChild('addChildren') addChildren: ElementRef;
   @ViewChild('fatherFormule') fatherFormule: ElementRef;
@@ -97,6 +98,7 @@ export class NewFormuleComponent implements OnInit {
     itemNumber: '',
     percentage: '',
     itemRemarks: '',
+    volumeMl: '',
 
   }
   baseItem = {
@@ -105,6 +107,7 @@ export class NewFormuleComponent implements OnInit {
     itemNumber: '',
     percentage: '',
     remarks: '',
+    volumeMl:''
 
   }
 
@@ -345,6 +348,7 @@ export class NewFormuleComponent implements OnInit {
       itemNumber: this.itemNumber.nativeElement.value,
       percentage: this.percentage.nativeElement.value,
       remarks: this.remarks.nativeElement.value,
+      volumeMl:this.volumeMl.nativeElement.value,
 
     }
 
@@ -370,6 +374,7 @@ export class NewFormuleComponent implements OnInit {
       itemNumber: this.itemNumber.nativeElement.value,
       percentage: this.percentage.nativeElement.value,
       remarks: this.remarks.nativeElement.value,
+      volumeMl: this.volumeMl.nativeElement.value,
     }
       
    var phases = this.currentBaseFormule.phases
@@ -413,6 +418,7 @@ export class NewFormuleComponent implements OnInit {
       itemNumber: this.itemNumber.nativeElement.value,
       percentage: this.percentage.nativeElement.value,
       remarks: this.remarks.nativeElement.value,
+      volumeMl: this.volumeMl.nativeElement.value,
     }
 
     var phases = this.currentBaseFormule.phases
@@ -580,6 +586,7 @@ export class NewFormuleComponent implements OnInit {
     this.newItem.itemNumber = ""
     this.newItem.itemRemarks = ""
     this.newItem.percentage = ""
+    this.newItem.volumeMl = ""
   }
 
   resetPhaseForm(){

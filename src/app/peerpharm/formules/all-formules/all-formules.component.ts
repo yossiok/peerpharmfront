@@ -38,6 +38,7 @@ export class AllFormulesComponent implements OnInit {
   updatePercentage: any;
   euroRate: number = 3.97
   usdRate: number = 3.41
+  gbpRate: number = 4.4
   today: any;
   updatePhaseRemarks: any;
   updateItemRemarks: any;
@@ -438,6 +439,12 @@ export class AllFormulesComponent implements OnInit {
           if (material.coin == 'usd') {
             if(material.price != 'צריך לעדכן מחיר ספק'){
               material.price = this.formatNumber(material.price * this.usdRate)
+            }
+            
+          }
+          if (material.coin == 'gbp') {
+            if(material.price != 'צריך לעדכן מחיר ספק'){
+              material.price = this.formatNumber(material.price * this.gbpRate)
             }
             
           }
