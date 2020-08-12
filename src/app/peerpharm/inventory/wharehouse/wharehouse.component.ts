@@ -105,7 +105,7 @@ packingMaterialCheck = {
 
   ngOnInit() {
     
- 
+      
     // let todayStr=moment(this.today).format("YYYY-MM-DD");
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
     this.getUserWhs()
@@ -142,8 +142,9 @@ packingMaterialCheck = {
   }
 
   dirSet(action, direction) {
-    let dirChange= confirm("מעבר למסך אחר יאפס את הרשימה")
-    if(dirChange){
+    
+    debugger;
+   
       if(direction!="production") this.multiInputLines=false;
       this.inventoryUpdateList=[] //reseting list before direction change
       this.multiLinesArr=[]
@@ -192,10 +193,10 @@ packingMaterialCheck = {
         if(this.dir=="production")   this.multiInputLines=true;
       }
   
-    }
+    
 
   }
-
+  
   // getFormData() {
   //   let div = this.container.nativeElement;
   //   this.mainDivArr = [];
@@ -309,6 +310,7 @@ packingMaterialCheck = {
   }
 
   setWhareHouse(whname) {
+    debugger;
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
     this.curentWhareHouseId = this.whareHouses[i]._id;
     this.curentWhareHouseName = this.whareHouses[i].name;

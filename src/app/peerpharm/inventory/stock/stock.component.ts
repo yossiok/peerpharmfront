@@ -37,6 +37,8 @@ export class StockComponent implements OnInit {
   showLoader: boolean = true;
   openOrderRecommendModal: boolean = false;
   customersModal: boolean = false;
+  inventoryNewReqModal: boolean = false;
+  invRequestsModal: boolean = false;
   itemMovements: any = [];
   materialPurchases: any[]
   allCustomers: any[]
@@ -275,6 +277,42 @@ export class StockComponent implements OnInit {
     console.log(event);
     this.editSuppliers('');
   }
+ 
+  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
+
+    if (event.key === 'F2') {
+      if(this.openModal == true){
+        this.openModal = false;
+      } else {
+        this.newCmpt('new')
+      }
+    } 
+    if (event.key === 'F4') {
+      if(this.inventoryNewReqModal == true){
+        this.inventoryNewReqModal = false;
+      } else {
+        this.inventoryNewReqModal = true;
+      }
+    } 
+  
+    if (event.key === 'F7') {
+      if(this.invRequestsModal == true){
+        this.invRequestsModal = false;
+      } else {
+        this.invRequestsModal = true;
+      }
+    } 
+    if (event.key === 'F8') {
+      if(this.inventoryNewReqModal == true){
+        this.inventoryNewReqModal = false;
+      } else {
+        this.inventoryNewReqModal = true;
+      }
+    } 
+  
+   }
+ 
+
 
   constructor(private customerSrv:CostumersService,private supplierService:SuppliersService,private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
@@ -1404,7 +1442,7 @@ export class StockComponent implements OnInit {
       if(this.filterByType != undefined){
       if (this.filterByType.nativeElement.value != "") {
         let CmptType = this.filterByType.nativeElement.value;
-        this.components = this.components.filter(x => (x.componentType.includes(CmptType) && x.itemType.includes(this.stockType)));
+        this.components = this.components.filter(x => (x.componentType.includes(CmptType) && x.componentType.includes(this.stockType)));
       }
       }
       if(this.filterByCategory != undefined){
@@ -2427,6 +2465,8 @@ export class StockComponent implements OnInit {
 
   // ************************************************************
 
+
+  
 
 }// END OF CMPT CLASS
 

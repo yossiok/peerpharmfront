@@ -14,7 +14,9 @@
     0 10px 10px rgba(0,0,0,.2),
     0 20px 20px rgba(0,0,0,.15);
 }
-
+.card-body{
+    padding:0.25rem !important;
+}
 input[type=date] , select { 
     box-shadow: 1px 1px 2px black;
 }
@@ -29,4 +31,11 @@ input[type=text] {
 
 .card {
     box-shadow: 3px 3px 3px black;
+}
+
+.table thead th {
+vertical-align: text-bottom !important;
+}
+.table th { 
+    padding:0px !important
 }
