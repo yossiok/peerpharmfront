@@ -38,6 +38,7 @@ export class StockComponent implements OnInit {
   openOrderRecommendModal: boolean = false;
   customersModal: boolean = false;
   inventoryNewReqModal: boolean = false;
+  itemsMovementModal: boolean = false;
   invRequestsModal: boolean = false;
   itemMovements: any = [];
   materialPurchases: any[]
@@ -303,10 +304,10 @@ export class StockComponent implements OnInit {
       }
     } 
     if (event.key === 'F8') {
-      if(this.inventoryNewReqModal == true){
-        this.inventoryNewReqModal = false;
+      if(this.itemsMovementModal == true){
+        this.itemsMovementModal = false;
       } else {
-        this.inventoryNewReqModal = true;
+        this.itemsMovementModal = true;
       }
     } 
   
