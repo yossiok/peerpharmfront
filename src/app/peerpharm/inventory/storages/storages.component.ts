@@ -114,6 +114,14 @@ export class StoragesComponent implements OnInit {
     this.printCertif = true; 
   }
 
+  removeItemFromReceivedComps(compNumber){
+  var items = this.ReceiveComponents.items;
+  for (var i =0; i < items.length; i++)
+   if (items[i].componentNumber === compNumber) {
+    items.splice(i,1);
+   }
+  }
+
   filterTable(ev,type){
     debugger;
     var tempArr = []

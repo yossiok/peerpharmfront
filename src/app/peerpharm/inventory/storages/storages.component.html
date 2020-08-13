@@ -79,6 +79,7 @@
                   <th>Item Number</th>
                   <th>Item Name</th>
                   <th>Amount</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -86,6 +87,7 @@
                   <td>{{item.componentNumber}}</td>
                   <td>{{item.componentName}}</td>
                   <td>{{item.amount}}</td>
+                  <td><i (click)="removeItemFromReceivedComps(item.componentNumber)" class="fa fa-times text-danger"></i></td>
                 </tr>
               </tbody>
             </table>
