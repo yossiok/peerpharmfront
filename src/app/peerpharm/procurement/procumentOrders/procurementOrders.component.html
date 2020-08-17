@@ -8,7 +8,9 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col-3"></div>
+        <div class="col-3">
+          <button (click)="newPurchaseModal = true" class="btn btn-info">New Purchase - F2</button>
+        </div>
         <div class="col-2"><button class="btn form-control" style="background:lightcoral">Canceled Order</button></div>
         <div class="col-2"><button class="btn form-control" style="background:lightgreen">On Going</button></div>
         <div class="col-2"><button class="btn form-control" style="background:orange">Closed Order</button></div>
@@ -1176,6 +1178,10 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:6
   </div>
 </div>
 
+</div>
+
+<div *ngIf="newPurchaseModal == true" style="z-index: 9999;top:0px !important;height: auto;border:2px 2px 2px blue;width: 50%;right:0px !important" class="fixNoaStupidStuff border border-info bg-white container fixed-top mx-auto my-auto text-center p-1">
+  <app-new-procurement></app-new-procurement>
 </div>
 
 <div *ngIf="invoiceModal == true" style="top:200px;" class="container bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">

@@ -31,6 +31,7 @@ export class ProcurementOrdersComponent implements OnInit {
   allMaterials: any[];
   printBill: boolean = false;
   orderDetailsModal: boolean = false;
+  newPurchaseModal: boolean = false;
   showImage: boolean = false;
   showLoader: boolean = true;
   showInfoModal: boolean = false;
@@ -131,6 +132,17 @@ export class ProcurementOrdersComponent implements OnInit {
     console.log(event);
     this.edit('');
     this.editRecommend('', '')
+  }
+
+  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
+
+    if (event.key === 'F2') {
+      if(this.newPurchaseModal == true){
+        this.newPurchaseModal = false;
+      } else {
+        this.newPurchaseModal = true;
+      }
+    } 
   }
 
   constructor(
