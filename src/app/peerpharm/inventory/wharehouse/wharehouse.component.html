@@ -1,4 +1,4 @@
-<div class="container bg-white text-center">
+<!-- <div class="container bg-white text-center">
   <mat-tab-group mat-align-tabs="end">
 
     <mat-tab label="ניהול סחורה">
@@ -74,12 +74,7 @@
                     </div>
                    
       
-                    <!-- if taking out stock from wh -->
-                    <!-- <div class="col-sm-3"  *ngIf="dir!='in' && dir!='shelfChange'"> 
-                            <label>מס' הזמנה</label>
-                            <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
-                          </div> -->
-                    <!-- if recieving stock to wh  -->
+                 
                     <div class="col-sm-2" *ngIf="dir=='in'">
                       <label>הגעת משלוח</label>
                       <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
@@ -113,7 +108,7 @@
       
               </ng-container>
       
-              <!-- multiLines for inventory requests load -->
+           
               <ng-container *ngIf="multiInputLines">
                 <div *ngFor="let itemFromInvReq of multiLinesArr ; let i = index">
                   <form class="form-horizontal itemsList">
@@ -134,7 +129,7 @@
                         <input #lineqnt{{i}} [attr.data-lineid]="i" style="width:80px !important;" name="multiLineQntInput"
                           type="number" class="form-control" placeholder="Amount" min="0" [(ngModel)]="itemFromInvReq.qnt">
                       </div>
-                      <!-- if taking out stock from wh -->
+                  
                       <div class="col-sm-4 row">
                         <div class="col-sm-4">
                           <label>מס' בקשת מלאי</label>
@@ -181,9 +176,9 @@
               </ng-container>
       
       
-              <!--  --> <br>
+           <br>
               <div class="ShouldBeNav mt-5">
-                <!-- <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp; -->
+             
                 <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
                 <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i class="ti-check m-l-10"></i></button>
                 <button (click)="printCertifAgain()" class="btn btn-success ml-3">Print</button>
@@ -234,7 +229,7 @@
                 </div>
                
               </div>
-              <!-- </form> -->
+           
             </div>
           </div>
         </div>
@@ -359,10 +354,18 @@
    
     </mat-tab>
   </mat-tab-group>
-</div>
+</div> -->
 
-<!-- <div style='width:100vw;' class="row">
+<div style='width:100vw;' class="row">
   <div style='display: inline-block; vertical-align: top; ' class="col-sm-7 managingDiv">
+    <!-- <h5>ניהול סחורה - בחר מחסן</h5> -->
+    <!-- <span (click)="changeCurentWh()">{{curentWhareHouseName}}</span><br> -->
+    <!-- <select #wh *ngIf='changeWh' (change)="setWhareHouse(wh.value)"> -->
+    <!-- <select #wh (change)="setWhareHouse(wh.value)"> -->
+    <!-- <option></option> -->
+    <!-- <option *ngFor="let wh of whareHouses;">{{wh.name}}</option> -->
+    <!-- </select>&nbsp;&nbsp;
+    <span (click)="changeCurentWh()">{{curentWhareHouseName}} Wharehouse</span><br> -->
 
     <br>
 
@@ -379,7 +382,7 @@
 
     <div class="container" style="float: right;">
       <table style="float: right;">
-  
+        <!-- STOCK MANGEMENT -->
 
         <tr *ngIf="screen=='stkManagment' ">
 
@@ -395,7 +398,9 @@
           <td>
             <button (click)="dirSet('stkManagment','shelfChange')" class='btn btn-info'>שינוי מדף</button>
           </td>
-   
+          <!-- <td>
+                <button (click)="dirSet('stkManagment','savedForOrder')" class='btn btn-info'>הקצאת סחורה</button>
+              </td> -->
           <td>
             <button (click)="dirSet('stkManagment','production')" class='btn btn-info'>העברה לייצור</button>
           </td>
@@ -411,7 +416,7 @@
 
     <br>
 
-
+    <!-- <div *ngIf="screen=='stkManagment' && editWharehouses" > -->
     <div *ngIf="screen=='stkManagment' ">
       <h5>ניהול סחורה - בחר מחסן</h5>
       <select #wh (change)="setWhareHouse(wh.value)">
@@ -429,7 +434,7 @@
 
 
 
-
+    <!-- STOCK MANGEMENT -->
     <div *ngIf="dir!='' && dir!='managment'  && dir!='watchShelfs'">
 
 
@@ -457,7 +462,12 @@
               </div>
              
 
-  
+              <!-- if taking out stock from wh -->
+              <!-- <div class="col-sm-3"  *ngIf="dir!='in' && dir!='shelfChange'"> 
+                      <label>מס' הזמנה</label>
+                      <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
+                    </div> -->
+              <!-- if recieving stock to wh  -->
               <div class="col-sm-2" *ngIf="dir=='in'">
                 <label>הגעת משלוח</label>
                 <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
@@ -481,17 +491,17 @@
               <h3 (click)="open(packMaterialForm)"><u>טופס קבלת חומר אריזה</u></h3>
             </div>
             <div>
-              <label class="form-control">Item Position In {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
+              <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
               <ng-container *ngFor="let shelf of currItemShelfs">
                 <span (click)="loadShelfToInput(shelf.position, $event)"
-                  style="cursor: pointer;padding:5px;border:1px solid rgb(163, 163, 163);border-radius: 5px;"><b>{{shelf.position}}</b>: {{shelf.amount}} Units</span>&nbsp;&nbsp;
+                  style="cursor: pointer;"><b>{{shelf.position}}</b>: {{shelf.amount}} units</span>&nbsp;&nbsp;
               </ng-container>
             </div>
           </form>
 
         </ng-container>
 
-
+        <!-- multiLines for inventory requests load -->
         <ng-container *ngIf="multiInputLines">
           <div *ngFor="let itemFromInvReq of multiLinesArr ; let i = index">
             <form class="form-horizontal itemsList">
@@ -512,7 +522,7 @@
                   <input #lineqnt{{i}} [attr.data-lineid]="i" style="width:80px !important;" name="multiLineQntInput"
                     type="number" class="form-control" placeholder="Amount" min="0" [(ngModel)]="itemFromInvReq.qnt">
                 </div>
-     
+                <!-- if taking out stock from wh -->
                 <div class="col-sm-4 row">
                   <div class="col-sm-4">
                     <label>מס' בקשת מלאי</label>
@@ -559,9 +569,9 @@
         </ng-container>
 
 
-  <br>
+        <!--  --> <br>
         <div class="ShouldBeNav">
- 
+          <!-- <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp; -->
           <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
           <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i class="ti-check m-l-10"></i></button>
           <button (click)="printCertifAgain()" class="btn btn-success ml-3">Print</button>
@@ -607,7 +617,7 @@
           <div *ngIf="!loadingToTable" class="col-sm-3">
           </div>
         </div>
-  
+        <!-- </form> -->
       </div>
 
     </div>
@@ -616,7 +626,37 @@
 
 
 
+    <!-- <div *ngIf="dir=='' &&  dir!='whManagment'" style="text-align: right; " class="container">
+  <h3 > צפיה בפריטים על מדף</h3>
+  <form class="form-horizontal itemsList" [formGroup]="itemLine" >
+    <div class="form-group row">
+        <div class="col-sm-2">
+          <label>חפש מדף</label>
+          <input #shelfSearch type="text" class="form-control" placeholder="Item number" (blur)="searchItemsOnShelf($event)">
+        </div>
+      </div>
+    </form>
+    <div>
 
+      <table>
+        <thead>
+          <th>Item Number</th>
+          <th>Item Name</th>
+          <th>Quantity on Shelf</th>
+          <th>Item Image</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ItemsOnShelf">
+            <td>{{item.item}}</td>
+            <td>{{item.componentName}}</td>
+            <td>{{item.amount}}</td>
+            <td> <img [src]="item.img" alt="תמונת פריט"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+        
+</div> -->
     <div *ngIf="dir=='watchShelfs'">
       <form>
         <h4>צפיה בפריטים על מדף</h4>
@@ -663,7 +703,7 @@
 
 
 
-
+    <!-- WH MANGEMENT -->
     <div style='display: inline-table' *ngIf="dir=='managment'">
       <h4>הוספת מחסן חדש</h4>
       <input type=text id='wh' #whName placeholder="WhareHouse Name">
@@ -703,9 +743,14 @@
 
     </div>
   </div>
+  <!-- INVENTORY REQUEST TABLE -->
 
+  <div style='display: inline-block; vertical-align: top; ' class="col-sm-4">
+    <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)">
+    </app-inventory-requests>
+  </div>
 
-</div> -->
+</div>
 
 
 <div>
