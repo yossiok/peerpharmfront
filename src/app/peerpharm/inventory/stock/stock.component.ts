@@ -1450,7 +1450,7 @@ export class StockComponent implements OnInit {
       if(this.filterByCategory != undefined){
       if (this.filterByCategory.nativeElement.value != "" && this.filterByCategory != undefined) {
         let category = this.filterByCategory.nativeElement.value;
-        this.components = this.components.filter(x => (x.componentCategory.includes(category) && x.itemType.includes(this.stockType)));
+        this.components = this.components.filter(x => (x.componentCategory == category && x.itemType.includes(this.stockType)));
        
       }
     }

@@ -32,6 +32,9 @@
        <label class="form-control">Component/Material</label>
      </div>
      <div class="col-2 fixNoaStupidStuff">
+       <label class="form-control">Supplier Item Number</label>
+     </div>
+     <div class="col-2 fixNoaStupidStuff">
        <label class="form-control">Type</label>
      </div>
      <div class="col-2 fixNoaStupidStuff">
@@ -39,9 +42,6 @@
      </div>
      <div class="col-2 fixNoaStupidStuff">
        <label class="form-control">Item Number</label>
-     </div>
-     <div class="col-2 fixNoaStupidStuff">
-       <label class="form-control"></label>
      </div>
    </div>
    
@@ -53,6 +53,11 @@
      <div class="col-2 fixNoaStupidStuff">
        <input #filterByCmptName type="text" class="form-control" placeholder="Component Name"
                (change)="filterRows($event, 'itemName')">
+     </div>
+     <div class="col-2 fixNoaStupidStuff">
+    
+      <input #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number"
+        (change)="filterRows($event , 'supplierN')">
      </div>
      <div class="col-2 fixNoaStupidStuff">
        <select #filterByType class="form-control" (change)="filterRows($event , 'type')">
@@ -99,12 +104,15 @@
        <input #filterByItem type="text" class="form-control" placeholder="Item Number"
        (change)="filterRows($event , 'itemNumber')">
      </div>
-     <div class="col-2 fixNoaStupidStuff">
-       <button (click)="clearSearchFields()" class="btn topBtn btn-warning form-control" type="reset"><b>נקה שדות חיפוש</b></button>
-     </div>
+
    </div>
    
-   <div class="row mt-5 fixNoaStupidStuff">
+   <div class="row mt-2 fixNoaStupidStuff">
+     <div class="col-5"></div>
+     <div class="col-2">
+      <button (click)="clearSearchFields()" class="btn topBtn btn-warning form-control" type="reset"><b>נקה שדות חיפוש</b></button>
+     </div>
+     <div class="col-5"></div>
    
    </div>
 

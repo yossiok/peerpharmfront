@@ -9,6 +9,13 @@
       height:auto !important;
     }
 
+    .greenPercentage{
+      color:rgb(15, 168, 15);
+    }
+    .redPercentage{
+      color:red;
+    }
+
     .modal-body { 
       height: 700px !important;
     }

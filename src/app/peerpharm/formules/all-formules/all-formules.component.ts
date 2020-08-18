@@ -30,6 +30,7 @@ export class AllFormulesComponent implements OnInit {
   showItemRemarks: boolean = false;
   closeResult: string;
   updateItems: any;
+  currFormulePercentage: number = 0;
   chooseFromBuffer: boolean = false;
   showLoader: boolean = true;
   chooseFathersToUpdate: boolean = false;
@@ -371,7 +372,7 @@ export class AllFormulesComponent implements OnInit {
     })
   }
 
-
+ 
 
   formatNumber(number) {
     number = number.toFixed(4) + '';
@@ -609,10 +610,19 @@ export class AllFormulesComponent implements OnInit {
     }
   }
 
+  percentageCheck(percentage){
+    if(percentage != 100){
+      return 'redPercentage'
+    } else {
+      return 'greenPercentage'
+    }
+  }
+
   open(formuleNum) {
     debugger;
     this.updateFormule = [];
     this.openFormuleModal = true;
+    this.currFormulePercentage = 0;
     this.loadData(formuleNum)
   }
 
@@ -708,18 +718,42 @@ export class AllFormulesComponent implements OnInit {
   loadData(formuleNum) {
     debugger;
     this.currentFormuleNumber = formuleNum
-    var formuleToUpdate = [];
+    var formuleToUpdate;
     formuleToUpdate = this.allFormules.find(formule => formule.formuleNumber == formuleNum);
+    formuleToUpdate.phases.forEach(phase => {
+      phase.items.forEach(item => {
+        this.currFormulePercentage += Number(item.percentage)
+      });
+    });
     this.updateFormule = formuleToUpdate
   }
 
+  deleteItemFromFormule(itemNumber){
+    debugger;
+    let formuleNumber = this.currentFormuleNumber;
+    
+    let formule = this.allFormules.find(f=>f.formuleNumber == formuleNumber);
+    let phases = formule.phases;
+    for (let i = 0; i < phases.length; i++) {
+   for (let j = 0; j < phases[i].items.length; j++) {
+      if(phases[i].items[j].itemNumber == itemNumber){
+        phases[i].items.splice(j,1)
+      }
+   }
+      
+    }
+  }
+
   deleteFormule(id) {
+    debugger;
+    if(confirm('האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?')){
+      this.formuleService.deleteFormuleById({ id }).subscribe(data => {
 
-    this.formuleService.deleteFormuleById({ id }).subscribe(data => {
-
-      data;
-      this.getAllFormules();
-    })
+        data;
+        this.getAllFormules();
+      })
+    }
+   
   }
   deletePhase(phaseId) {
 

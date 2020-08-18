@@ -44,6 +44,7 @@
         <img style="width: 30px;" src="../../../../assets/images/print.png" />
       </td>
       <td>&#8362;</td>
+      <td></td>
     </tr>
   </thead>
   <ng-container>
@@ -112,6 +113,7 @@
           src="../../../../assets/images/price.png"
         />
       </td>
+      <td><img style="width:30px;" (click)="deleteFormule(formule._id)" src="../../../../assets/images/deleteBtn.png"></td>
       <!-- <td><button style="float:right;background: green;box-shadow: inset 0px 1px 4px 0px;border:1px solid rgb(217, 228, 217);" (click)="copyFormule(currDoc,i)">Copy Formule</button></td> -->
 
       <!-- <td  (click)="edit(batch._id)" ><i class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td> -->
@@ -142,7 +144,9 @@
     <div>
       <h4 id="modal-basic-title">Formule Information</h4>
       <h4>Formule Number: {{ currentFormuleNumber }}</h4>
-      <i (click)="openFormuleModal = false" class="fa fa-times"></i>
+      <i style="float:right;padding:5px" (click)="openFormuleModal = false" class="fa fa-times"></i>
+      <h4 [ngClass]="percentageCheck(currFormulePercentage)">Percentage: {{currFormulePercentage}}</h4>
+      
     </div>
     <div>
       <table class="table table-striped">
@@ -157,7 +161,7 @@
             <th style="width: 10%;">Material Name</th>
             <th style="width: 10%;">Percentage</th>
             <th style="width: 10%;">Item Remarks</th>
-            <th style="width: 10%;">Save</th>
+            <th style="width: 10%;">Save/Delete</th>
           </tr>
         </thead>
         <tr>
@@ -259,7 +263,8 @@
                     <!-- <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
                       <input [(ngModel)]="updateItemIndex" type="number">
                     </td> -->
-                    <td style="width: 10%;" *ngIf="item.itemNumber != EditRowId"></td> 
+                   
+                    <td style="width: 10%;"></td> 
                     <td style="width: 10%;"></td> 
                     <td style="width: 10%;">{{ item.itemNumber }}</td>
                     <td style="width: 10%;">{{ item.itemName }}</td>
@@ -285,7 +290,7 @@
                     >
                       {{ item.remarks }}
                     </td>
-                    <td style="width: 10%;"></td>
+                  
                     <td style="width: 10%;"
                       *ngIf="item.itemNumber === EditRowId"
                       (click)="edit(item.itemNumber)"
@@ -309,6 +314,7 @@
                         "
                       ></i>
                     </td>
+                    <td *ngIf="item.itemNumber != EditRowId"><img style="width:30px;" (click)="deleteItemFromFormule(item.itemNumber)" src="../../../../assets/images/deleteBtn.png"></td>
                   </tr>
 
                 </table>
