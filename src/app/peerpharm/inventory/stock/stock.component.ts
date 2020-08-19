@@ -1904,12 +1904,13 @@ export class StockComponent implements OnInit {
     }
 
     clearSearchFields(){
+      debugger;
       this.filterbyNum.nativeElement.value = ''
       this.filterByCategory.nativeElement.value = ''
       this.filterByCmptName.nativeElement.value = ''
-      this.filterBySupplier.nativeElement.value = ''
       this.filterByType.nativeElement.value = ''
       this.filterBySupplierN.nativeElement.value = ''
+      this.filterByItem.nativeElement.value = ''
      
     }
 
