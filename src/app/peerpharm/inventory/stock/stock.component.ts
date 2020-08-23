@@ -523,6 +523,7 @@ export class StockComponent implements OnInit {
             'שם הפריט': that.components[i].componentName,
             'סוג פריט': that.components[i].componentType,
             'כמות': that.components[i].amount,
+            'כמות מוקצת': that.components[i].alloAmount,
             
           }
           arr.push(line)
@@ -2393,7 +2394,7 @@ export class StockComponent implements OnInit {
       }
     } else if (filterType == "haveRecommendation") {
       if (this.stockType != "product") {
-        let recommendList = this.components.filter(cmpt => cmpt.procurementArr.length > 0);
+        let recommendList = this.components.filter(cmpt => cmpt.purchaseRecommendations.length > 0);
         this.components = recommendList;
       }
     }
