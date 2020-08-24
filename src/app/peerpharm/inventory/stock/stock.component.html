@@ -491,7 +491,7 @@
           <th style="width:10%; padding:5px"><b>מספר פריט</b></th>
           <th style="width:15%; padding:5px"><b>שם פריט</b></th>
           <th style="width:9%; padding:5px"><b>ספק</b></th>
-          <th style="width:8%; padding:5px"><b>מחיר</b></th>
+          <!-- <th style="width:8%; padding:5px"><b>מחיר</b></th> -->
           <th style="width:9%; padding:5px"><b>רמת סיכון</b></th>
           <th style="width:9%; padding:5px"><b>כמות</b></th>
           <th></th>
@@ -523,9 +523,9 @@
             <div style="float:none;cursor: pointer;text-decoration: underline;"
               (click)="moveToSuppliers(material.suplierName)">{{material.suplierName}}</div>
           </td>
-          <td style="width:8%;">
+          <!-- <td style="width:8%;">
             <div style="float:none;">{{material.price}}{{material.coin}}<br>{{material.measurement}}</div>
-          </td>
+          </td> -->
   
           <td [ngClass]="dangerColor(material.threatment)" style="width:9%">
             <div style="width:9%;;float:none;text-align: center;">{{material.threatment}}</div>
@@ -1871,7 +1871,7 @@
               <label class="form-control">מיקום במחסן</label>
               <label class="form-control">כמות במלאי</label>
               <label class="form-control">כמות פג תוקף</label>
-              <label class="form-control">יחידת מידה</label>
+           
               <label class="form-control">טמפ' אחסון</label>
               <label class="form-control">הוראות אחסון</label>
   
@@ -1887,12 +1887,7 @@
               <input [(ngModel)]="resMaterial.quantityInStock" type="text" class="form-control" />
               <input [(ngModel)]="resMaterial.expiredQty" type="text" class="form-control" />
   
-              <input list="measurement" [(ngModel)]="resMaterial.unitOfMeasure" class="form-control">
-              <datalist id="measurement">
-                <option value="kilogram">קילוגרם</option>
-                <option value="pcs">יחידות</option>
-                <option value="liter">ליטר</option>
-              </datalist>
+         
               <input [(ngModel)]="resMaterial.storageTemp" type="text" class="form-control" />
               <input [(ngModel)]="resMaterial.storageDirections" type="text" class="form-control" />
   
@@ -1940,6 +1935,7 @@
               <label class="form-control">מספר פריט ספק</label>
               <label class="form-control">שם פריט ספק</label>
               <label class="form-control">סוג אריזה</label>
+       
             </div>
             <div class="col-3 fixNoaStupidStuff">
               <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierName">
@@ -1969,6 +1965,7 @@
               <label class="form-control">מחיר לאחר טעינה</label>
               <label class="form-control">מטבע לאחר טעינה</label>
               <label class="form-control">משקל יחידה</label>
+              <label class="form-control">יחידת מידה</label>
             </div>
             <div class="col-3 fixNoaStupidStuff">
               <input [(ngModel)]="supplier.price" type="text" class="form-control">
@@ -1990,6 +1987,12 @@
                 <option value="yen">YEN</option>
               </datalist>
               <input [(ngModel)]="supplier.packageWeight" type="text" class="form-control" />
+              <input list="measurement" [(ngModel)]="resMaterial.unitOfMeasure" class="form-control">
+              <datalist id="measurement">
+                <option value="kilogram">קילוגרם</option>
+                <option value="pcs">יחידות</option>
+                <option value="liter">ליטר</option>
+              </datalist>
             </div>
             <div class="col-1 fixNoaStupidStuff"></div>
           </div>
@@ -2006,8 +2009,8 @@
                   <tr>
                     <th>ספק</th>
                     <th>יצרן</th>
-                    <th>שם פריט</th>
-                    <th>מספר פריט</th>
+                    <th>שם פריט ספק</th>
+                    <th>מספר פריט ספק</th>
                     <th>מחיר</th>
                     <th>מטבע</th>
                     <th>משקל</th>
@@ -2022,7 +2025,12 @@
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                       {{supplier.supplierName}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
+
+                      <input list="suppliers" class="form-control" #supplierName>
+                      <datalist id="suppliers">
+                        <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+                          {{supplier.suplierName}}</option>
+                      </datalist>
                     </td>
   
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">

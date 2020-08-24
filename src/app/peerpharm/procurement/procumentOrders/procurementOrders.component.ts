@@ -916,7 +916,7 @@ if(category != ''){
       this.country = true;
       this.outOfCountry = "Payment Terms:Current+95 Days"
 
-      } else if(this.currentSupplier.import != 'outOfIsrael' && line.item[0].coin != 'nis') {
+      } else if(this.currentSupplier.import != 'outOfIsrael' && (line.item[0].coin).toLowerCase() != 'nis') {
         this.country = true;
       
       } else {

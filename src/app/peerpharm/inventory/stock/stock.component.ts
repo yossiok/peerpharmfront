@@ -575,11 +575,18 @@ export class StockComponent implements OnInit {
       alterName:this.alterName.nativeElement.value,
       packageWeight:this.packageWeight.nativeElement.value,
     }
+
+    if(obj.id == undefined || obj.id == null || obj.id == ''){
+      obj.id = this.resCmpt._id
+    }
     this.inventoryService.updateSupplier(obj).subscribe(data=>{
       debugger;
       if(data){
         var updatedSupplier = data.alternativeSuppliers.find(s=>s.supplierName == obj.supplierName);
         var supplier = this.resMaterial.alternativeSuppliers.find(s=>s.supplierName == obj.supplierName);
+        if(supplier == undefined || supplier == null){
+          var supplier = this.resCmpt.alternativeSuppliers.find(s=>s.supplierName == obj.supplierName);
+        }
         supplier.supplierName = updatedSupplier.supplierName
         supplier.price = updatedSupplier.price
         supplier.coin = updatedSupplier.coin

@@ -157,7 +157,7 @@
                 (click)="openPrint(printBatch,batch.batchNumber)" class="btn btn-info">Print</button>
               <button (click)="openTableValues(batch.item,batch.batchNumber)" class="btn btn-info">Spec Values</button>
             </td>
-            <td style="width:3%;" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)"><i
+            <td style="width:3%;" *ngIf="batch._id!==EditRowId && alowUserEditBatches == true" (click)="edit(batch._id)"><i
                 class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td>
 
             <td *ngIf="batch._id==EditRowId" style="width:3%; padding:5px;margin-left: 70px;margin-top: 11px;">

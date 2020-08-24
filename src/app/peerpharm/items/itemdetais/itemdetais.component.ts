@@ -472,9 +472,9 @@ export class ItemdetaisComponent implements OnInit {
  }
 
 
-  fillBottle(ev) {
+  fillBottle(bottleNumber) {
 
-    var bottleNumber = ev.target.value;
+    
 
     if (bottleNumber != "---" || "") {
       this.invtSer.getCmptByNumber(bottleNumber, "component").subscribe(data => {
@@ -488,9 +488,9 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
-  fillCap(ev) {
- 
-    var capNumber = ev.target.value;
+  fillCap(capNumber) {
+  debugger;
+   
 
     if (capNumber != "---" || "") {
       this.invtSer.getCmptByNumber(capNumber, "component").subscribe(data => {
@@ -504,9 +504,9 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
-  fillPump(ev) {
+  fillPump(pumpNumber) {
 
-    var pumpNumber = ev.target.value;
+  
 
     if (pumpNumber != "---" || "") {
       this.invtSer.getCmptByNumber(pumpNumber, "component").subscribe(data => {
@@ -520,8 +520,8 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
-  fillSeal(ev) {
-    var sealNumber = ev.target.value;
+  fillSeal(sealNumber) {
+ 
 
     if (sealNumber != "---" || "") {
       this.invtSer.getCmptByNumber(sealNumber, "component").subscribe(data => {
@@ -965,12 +965,17 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         this.itemShown.productionTwoInput = this.itemShown.capNumber
         this.itemShown.productionThreeInput = this.itemShown.pumpNumber
         this.itemShown.productionFourInput = this.itemShown.sealNumber
+        this.fillBottle(this.itemShown.bottleNumber)
+        this.fillCap(this.itemShown.capNumber)
+        this.fillPump(this.itemShown.pumpNumber)
+        this.fillSeal(this.itemShown.sealNumber)
       
         this.searchCompNumberByComp(this.itemShown.boxNumber,'box')
         this.searchCompNumberByComp(this.itemShown.stickerNumber,'sticker')
         this.searchPlateByNumber(this.itemShown.pallet,'pallet')
         this.searchPlateByNumber(this.itemShown.pallet2,'pallet2')
         this.searchPlateByNumber(this.itemShown.pallet3,'pallet3')
+      
         // var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
         // this.allCostumers = costumer
         
