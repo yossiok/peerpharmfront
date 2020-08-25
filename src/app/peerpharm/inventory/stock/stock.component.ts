@@ -2410,6 +2410,7 @@ export class StockComponent implements OnInit {
   }
 
   filterMaterialsTable(){
+    debugger;
     this.components = this.componentsUnFiltered;
     let type = this.materialFilterType;
     let value = this.materialFilterValue;
@@ -2417,8 +2418,8 @@ export class StockComponent implements OnInit {
       let filteredArray = this.components.filter(m=>m.location == value);
       this.components = filteredArray;
     }
-    if(type == 'dangerMaterials'){
-      let filteredArray = this.components.filter(m=>m.dangerMaterials == value);
+    if(type == 'permissionDangerMaterials'){
+      let filteredArray = this.components.filter(m=>m.permissionDangerMaterials == 'true');
       this.components = filteredArray;
     }
     if(type == 'threatment'){
@@ -2426,12 +2427,22 @@ export class StockComponent implements OnInit {
       this.components = filteredArray;
     }
     if(type == 'function'){
-      let filteredArray = this.components.filter(m=>m.function == value);
+      let filteredArray = []
+      this.components.forEach(element => {
+        if(element.function != undefined || element.function != null || element.function != ''){
+          if((element.function).includes(value)){
+            filteredArray.push(element)
+          } 
+        }
+      });
       this.components = filteredArray;
     }
     if(type == 'stateOfMatter'){
       let filteredArray = this.components.filter(m=>m.stateOfMatter == value);
       this.components = filteredArray;
+    }
+    if(type == ""){
+      this.components = this.componentsUnFiltered.filter(x => x.itemType == 'material');
     }
     
     
@@ -2458,6 +2469,34 @@ export class StockComponent implements OnInit {
   }
 
 
+  deleteFromComposition(materialId,compositionName){
+    debugger;
+  let material = this.components.find(m=>m._id == materialId);
+  for (let i = 0; i < material.composition.length; i++) {
+  if(material.composition[i].compName == compositionName){
+    material.composition.splice(i,1)
+    this.toastSrv.success('Composition Deleted')
+  }
+    
+  }
+  }
+
+  checkIfInciNameExist(ev){
+    debugger;
+    
+  let inciName = ev.target.value;
+  if(inciName != ''){
+    let material = this.components.filter(m=>m.inciName == inciName);
+    if(material.length > 0){
+     
+      material.forEach(m => {
+        this.toastSrv.error(m.componentN)
+      });
+      this.toastSrv.error('שים לב שם זה קיים בחומרי גלם :')
+    }
+  }
+  
+  }
 
 
 

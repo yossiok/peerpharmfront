@@ -691,7 +691,7 @@ if(category != ''){
             this.procurementData = this.procurementDataNoFilter
           } else {
             this.procurementData = this.procurementDataNoFilter
-            this.procurementData = this.procurementData.filter(p => p.status != 'closed')
+            this.procurementData = this.procurementData.filter(p => p.status == 'closed')
           }
 
         } else {

@@ -129,7 +129,7 @@
      <div class="col-4"></div>
      <div class="col-2">
       <select [(ngModel)]="materialFilterType" class="form-control">
-        <option value=""></option>
+        <option value="">כל החומרי גלם</option>
         <option value="location">מיקום במחסן</option>
         <option value="threatment">קבוצת סיכון</option>
         <option value="permissionDangerMaterials">היתר רעלים</option>
@@ -137,8 +137,26 @@
         <option value="stateOfMatter">מצב צבירה</option>
       </select>
      </div>
-     <div class="col-2">
-      <input [(ngModel)]="materialFilterValue" class="form-control">
+     <div  class="col-2">
+      <input *ngIf="materialFilterType != 'threatment' && materialFilterType != 'stateOfMatter'" [(ngModel)]="materialFilterValue" class="form-control">
+      <select *ngIf="materialFilterType == 'threatment'" [(ngModel)]="materialFilterValue" class="form-control">
+        <option value="flammableLiquid">3 - נוזל דליק</option>
+        <option value="flammableSolid">4 - מוצק דליק</option>
+        <option value="oxidizer">5.1 - מחמצן אי אורגני</option>
+        <option value="toxic">6 - רעיל</option>
+        <option value="acid">8 - חומצה</option>
+        <option value="base">8 - בסיס</option>
+        <option value="otherDangerMaterials">9 - חומרים מסוכנים שונים</option>
+        <option value="regular">אין מספר או"מ</option>
+        <option value="cooling">איחסון בקירור</option>
+        <option value="blockedByType">חסום לפי סוג חומר</option>
+      </select>
+      <select *ngIf="materialFilterType == 'stateOfMatter'" [(ngModel)]="materialFilterValue" class="form-control">
+        <option value="liquid">Liquid</option>
+        <option value="solid">Solid</option>
+        <option value="gell">Gell</option>
+      </select>
+      
      </div>
      <div class="col-1">
        <button (click)="filterMaterialsTable()" class="btn btn-info form-control">חפש</button>
@@ -1731,7 +1749,7 @@
               <label style="font-size:13px" class="form-control">חומרים מסוכנים בפירוק</label>
             </div>
             <div class="col-3 fixNoaStupidStuff">
-              <input class="form-control" [(ngModel)]="resMaterial.inciName" type='text'>
+              <input class="form-control" (change)="checkIfInciNameExist($event)" [(ngModel)]="resMaterial.inciName" type='text'>
               <input class="form-control" [(ngModel)]="resMaterial.monthTillExp" type="number" />
               <input class="form-control" [(ngModel)]="resMaterial.casNumber" type='text'>
               <input class="form-control" [(ngModel)]="resMaterial.function" type='text'>
@@ -1751,13 +1769,14 @@
               <button class="btn btn-success form-control"><i (click)="addComposition()" class="fa fa-plus"></i></button>
               <label class="form-control">הרכב</label>
             </div>
-            <div class="col-2">
+            <div style="height:210px;overflow-y: scroll;" class="col-3">
               <input [(ngModel)]="compositionName" class='form-control'>
               <table style="font-size: 9px;" class="table table-hover table-striped">
                 <tbody>
                   <tr *ngFor="let comp of resMaterial.composition">
                     <td>{{comp.compName}}</td>
                     <td>{{comp.compPercentage}}</td>
+                    <td><i (click)="deleteFromComposition(resMaterial._id,comp.compName)" class="fa fa-times text-danger"></i></td>
                     
                   </tr>
                 </tbody>
@@ -1770,20 +1789,9 @@
               <textarea [(ngModel)]="resMaterial.remarks" class="form-control mt-2" rows="6" cols="20"></textarea> -->
   
             </div>
+         
             <div class="col-1">
-              <label>%</label>
-              <!-- <a style="display:block" target="_blank" [href]="linkDownload"><img style="height: 30px; width:30px;"
-                  src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" /></a>
-              <input class="form-control" #coaMasterInput style="display:none" type="file"
-                (change)="onSelectCoaMaster($event)">
-  
-  
-              <a style="display:block" target="_blank" [href]="linkDownload"> <img style="height: 30px; width:30px;"
-                  src="https://baltic-sea-philharmonic.eu/wp-content/uploads/PDF-Icon.png" alt="PDF" /></a>
-              <input class="form-control" #msdsInput style="display:none" type="file" (change)="onSelectMsds($event)"> -->
-            </div>
-            <div class="col-1">
-              <input [(ngModel)]="compositionPercentage" class="form-control">
+              <input placeholder="%" [(ngModel)]="compositionPercentage" class="form-control">
             </div>
           </div>
           <div class="row fixNoaStupidStuff">
