@@ -18,10 +18,11 @@
      <div class="col-3 fixNoaStupidStuff"></div>
      <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-info form-control" (click)="procurementRecommendations('haveRecommendation')">המלצות רכש
-        קיימות</button> &nbsp;&nbsp;
+        קיימות</button> 
      </div>
      <div class="col-1 fixNoaStupidStuff">
-
+      <button class="btn btn-info form-control" (click)="procurementRecommendations('minimumStock')">בדוק המלצה
+        לרכש</button>
      </div>
      <div class="col-3 fixNoaStupidStuff"></div>
      <div class="col-1 fixNoaStupidStuff">
@@ -121,6 +122,28 @@
       <button (click)="clearSearchFields()" class="btn topBtn btn-warning form-control" type="reset"><b>נקה שדות חיפוש</b></button>
      </div>
      <div class="col-5"></div>
+   
+   </div>
+
+   <div *ngIf="stockType == 'material'" class="row mt-2 fixNoaStupidStuff">
+     <div class="col-4"></div>
+     <div class="col-2">
+      <select [(ngModel)]="materialFilterType" class="form-control">
+        <option value=""></option>
+        <option value="location">מיקום במחסן</option>
+        <option value="threatment">קבוצת סיכון</option>
+        <option value="permissionDangerMaterials">היתר רעלים</option>
+        <option value="function">function</option>
+        <option value="stateOfMatter">מצב צבירה</option>
+      </select>
+     </div>
+     <div class="col-2">
+      <input [(ngModel)]="materialFilterValue" class="form-control">
+     </div>
+     <div class="col-1">
+       <button (click)="filterMaterialsTable()" class="btn btn-info form-control">חפש</button>
+     </div>
+     <div class="col-4"></div>
    
    </div>
 
@@ -908,6 +931,7 @@
                       <th>משקל</th>
                       <th>מטבע לפני טעינה</th>
                       <th>מחיר לפני טעינה</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -966,7 +990,7 @@
                       <td *ngIf="EditRowId == supplier.supplierName">
                         <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
                       </td>
-    
+                      <td><i (click)="deleteSupplier(i,resCmpt.componentN)" class="fa fa-times text-danger"></i></td>
                     </tr>
     
                   </tbody>
@@ -1729,11 +1753,12 @@
             </div>
             <div class="col-2">
               <input [(ngModel)]="compositionName" class='form-control'>
-              <table class="table table-hover table-striped">
+              <table style="font-size: 9px;" class="table table-hover table-striped">
                 <tbody>
                   <tr *ngFor="let comp of resMaterial.composition">
                     <td>{{comp.compName}}</td>
                     <td>{{comp.compPercentage}}</td>
+                    
                   </tr>
                 </tbody>
               </table>

@@ -49,6 +49,8 @@ export class StockComponent implements OnInit {
   componentsCopy:any[];
   materialArrivals:any[];
   subscription:any
+  materialFilterType:any
+  materialFilterValue:any
   filterMaterialOption:String;
   materialLocations: any[];
   items:any[];
@@ -2405,6 +2407,34 @@ export class StockComponent implements OnInit {
         this.components = recommendList;
       }
     }
+  }
+
+  filterMaterialsTable(){
+    this.components = this.componentsUnFiltered;
+    let type = this.materialFilterType;
+    let value = this.materialFilterValue;
+    if(type == 'location'){
+      let filteredArray = this.components.filter(m=>m.location == value);
+      this.components = filteredArray;
+    }
+    if(type == 'dangerMaterials'){
+      let filteredArray = this.components.filter(m=>m.dangerMaterials == value);
+      this.components = filteredArray;
+    }
+    if(type == 'threatment'){
+      let filteredArray = this.components.filter(m=>m.threatment == value);
+      this.components = filteredArray;
+    }
+    if(type == 'function'){
+      let filteredArray = this.components.filter(m=>m.function == value);
+      this.components = filteredArray;
+    }
+    if(type == 'stateOfMatter'){
+      let filteredArray = this.components.filter(m=>m.stateOfMatter == value);
+      this.components = filteredArray;
+    }
+    
+    
   }
 
 
