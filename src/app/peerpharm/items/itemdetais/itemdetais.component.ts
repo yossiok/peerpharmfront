@@ -476,7 +476,7 @@ export class ItemdetaisComponent implements OnInit {
 
     
 
-    if (bottleNumber != "---" || "") {
+    if (bottleNumber != "---" && bottleNumber != "") {
       this.invtSer.getCmptByNumber(bottleNumber, "component").subscribe(data => {
         this.itemShown.bottleTube = data[0].componentName
         this.itemShown.bottleImage = data[0].img
@@ -492,7 +492,7 @@ export class ItemdetaisComponent implements OnInit {
   debugger;
    
 
-    if (capNumber != "---" || "") {
+    if (capNumber != "---" && capNumber != "") {
       this.invtSer.getCmptByNumber(capNumber, "component").subscribe(data => {
         this.itemShown.capTube = data[0].componentName
         this.itemShown.capImage = data[0].img
@@ -506,9 +506,10 @@ export class ItemdetaisComponent implements OnInit {
 
   fillPump(pumpNumber) {
 
-  
+    debugger;
 
-    if (pumpNumber != "---" || "") {
+    if (pumpNumber != "---" && pumpNumber != "") {
+      debugger;
       this.invtSer.getCmptByNumber(pumpNumber, "component").subscribe(data => {
         this.itemShown.pumpTube = data[0].componentName
         this.itemShown.pumpImage = data[0].img
@@ -523,7 +524,7 @@ export class ItemdetaisComponent implements OnInit {
   fillSeal(sealNumber) {
  
 
-    if (sealNumber != "---" || "") {
+    if (sealNumber != "---" && sealNumber != "") {
       this.invtSer.getCmptByNumber(sealNumber, "component").subscribe(data => {
         this.itemShown.sealTube = data[0].componentName
         this.item.sealImage = data[0].img
@@ -669,7 +670,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionInput':
-        if (compNumber != "") {
+        if (compNumber != ""  && compNumber != '---') {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
             data
             this.itemShown.productionType = data[0].componentType
@@ -682,7 +683,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionTwoInput':
-        if (compNumber != "") {
+        if (compNumber != ""  && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionTwoType = data[0].componentType
@@ -695,7 +696,8 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionThreeInput':
-        if (compNumber != "") {
+        debugger;
+        if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionThreeType = data[0].componentType
@@ -708,7 +710,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionFourInput':
-        if (compNumber != "") {
+        if (compNumber != ""  && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionFourType = data[0].componentType
@@ -721,7 +723,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionFiveInput':
-        if (compNumber != "") {
+        if (compNumber != ""  && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionFiveType = data[0].componentType
@@ -733,7 +735,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionSixInput':
-        if (compNumber != "") {
+        if (compNumber != ""  && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionSixType = data[0].componentType
@@ -745,7 +747,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionSevenInput':
-        if (compNumber != "") {
+        if (compNumber != ""  && compNumber != '---')  {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionSevenType = data[0].componentType
@@ -758,7 +760,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionEightInput':
-        if (compNumber != "") {
+        if (compNumber != ""  && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionEightType = data[0].componentType
@@ -956,20 +958,55 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         this.item = res[0];
         this.itemShown = res[0];
        
- 
-        this.searchCompNumberByComp(this.itemShown.bottleNumber,'productionInput')
-        this.searchCompNumberByComp(this.itemShown.capNumber,'productionTwoInput')
-        this.searchCompNumberByComp(this.itemShown.pumpNumber,'productionThreeInput')
-        this.searchCompNumberByComp(this.itemShown.sealNumber,'productionFourInput')
+        
+       
+     
+     
+     
         this.itemShown.productionInput = this.itemShown.bottleNumber
         this.itemShown.productionTwoInput = this.itemShown.capNumber
         this.itemShown.productionThreeInput = this.itemShown.pumpNumber
         this.itemShown.productionFourInput = this.itemShown.sealNumber
-        this.fillBottle(this.itemShown.bottleNumber)
-        this.fillCap(this.itemShown.capNumber)
-        this.fillPump(this.itemShown.pumpNumber)
-        this.fillSeal(this.itemShown.sealNumber)
-      
+        if(this.itemShown.bottleNumber != ''){
+          this.fillBottle(this.itemShown.bottleNumber)
+          this.searchCompNumberByComp(this.itemShown.bottleNumber,'productionInput')
+        } else {
+          this.itemShown.bottleImage = ''
+          this.itemShown.bottleNumber = ''
+          this.itemShown.bottleTube = ''
+          this.itemShown.componentType = ''
+        }
+        
+        if(this.itemShown.capNumber != ''){
+          this.fillCap(this.itemShown.capNumber)
+          this.searchCompNumberByComp(this.itemShown.capNumber,'productionTwoInput')
+        } else {
+          this.itemShown.capImage = ''
+          this.itemShown.capNumber = ''
+          this.itemShown.capTube = ''
+          this.itemShown.componentTwoType = ''
+        }
+        
+        if(this.itemShown.pumpNumber != ''){
+          this.fillPump(this.itemShown.pumpNumber)
+          this.searchCompNumberByComp(this.itemShown.pumpNumber,'productionThreeInput')
+        } else {
+          this.itemShown.pumpImage = ''
+          this.itemShown.pumpNumber = ''
+          this.itemShown.pumpTube = ''
+          this.itemShown.componentThreeType = ''
+        }
+        
+        if(this.itemShown.sealNumber != ''){
+          this.fillSeal(this.itemShown.sealNumber)
+          this.searchCompNumberByComp(this.itemShown.sealNumber,'productionFourInput')
+        } else {
+          this.itemShown.sealImage = ''
+          this.itemShown.sealNumber = ''
+          this.itemShown.sealTube = ''
+          this.itemShown.componentFourType = ''
+        }
+
         this.searchCompNumberByComp(this.itemShown.boxNumber,'box')
         this.searchCompNumberByComp(this.itemShown.stickerNumber,'sticker')
         this.searchPlateByNumber(this.itemShown.pallet,'pallet')
@@ -1535,29 +1572,33 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
 
   loadPackagDetails(number, src) {
-    this.invtSer.getCmptByNumber(number, 'product').subscribe(res => {
-      switch (src) {
-        case 'bottle':
-          this.itemShown.item1w = res[0].packageWeight;
-          this.itemShown.item1s = res[0].packageType;
-          break;
-        case 'cap':
-          this.itemShown.item2w = res[0].packageWeight;
-          this.itemShown.item2s = res[0].packageType;
-          break;
-        case 'pump':
-          this.itemShown.item3w = res[0].packageWeight;
-          this.itemShown.item3s = res[0].packageType;
-          break;
-        case 'seal':
-          this.itemShown.item4w = res[0].packageWeight;
-          this.itemShown.item4s = res[0].packageType;
-          break;
-        case 'carton':
-          this.itemShown.itemCtnW = res[0].packageWeight;
-          break;
-      }
-    })
+    if(number != ''){
+      this.invtSer.getCmptByNumber(number, 'product').subscribe(res => {
+        switch (src) {
+          case 'bottle':
+            this.itemShown.item1w = res[0].packageWeight;
+            this.itemShown.item1s = res[0].packageType;
+            break;
+          case 'cap':
+            this.itemShown.item2w = res[0].packageWeight;
+            this.itemShown.item2s = res[0].packageType;
+            break;
+          case 'pump':
+            debugger;
+            this.itemShown.item3w = res[0].packageWeight;
+            this.itemShown.item3s = res[0].packageType;
+            break;
+          case 'seal':
+            this.itemShown.item4w = res[0].packageWeight;
+            this.itemShown.item4s = res[0].packageType;
+            break;
+          case 'carton':
+            this.itemShown.itemCtnW = res[0].packageWeight;
+            break;
+        }
+      })
+    }
+  
   }
 
    getUserInfo() {

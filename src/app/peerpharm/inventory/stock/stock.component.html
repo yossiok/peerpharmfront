@@ -135,6 +135,7 @@
         <option value="permissionDangerMaterials">היתר רעלים</option>
         <option value="function">function</option>
         <option value="stateOfMatter">מצב צבירה</option>
+        <option value="inciName">INCI Name</option>
       </select>
      </div>
      <div  class="col-2">
@@ -2059,7 +2060,7 @@
                       {{supplier.supplierName}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
 
-                      <input list="suppliers" class="form-control" #supplierName>
+                      <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
                       <datalist id="suppliers">
                         <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
                           {{supplier.suplierName}}</option>

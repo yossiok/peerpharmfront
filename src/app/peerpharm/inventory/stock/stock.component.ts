@@ -1506,6 +1506,9 @@ export class StockComponent implements OnInit {
             if (stk.componentName.toLowerCase().includes(w.toLowerCase()) && stk.itemType == this.stockType) {
               matchAllArr++
             }
+            if (stk.inciName && stk.inciName.toLowerCase().includes(w.toLowerCase()) && stk.itemType == this.stockType) {
+              matchAllArr++
+            }
             (matchAllArr == wordsArr.length) ? check = true : check = false;
           });
 
@@ -1673,6 +1676,7 @@ export class StockComponent implements OnInit {
   async openDataMaterial(materNum) {
     debugger;
     this.materialPurchases = []
+    this.materialArrivals = []
     for (let i = 0; i < this.allMaterialsPurchases.length; i++) {
      for (let j = 0; j < this.allMaterialsPurchases[i].item.length; j++) {
       if(this.allMaterialsPurchases[i].item[j].itemNumber == materNum){
@@ -1681,10 +1685,10 @@ export class StockComponent implements OnInit {
        
      }
     }
-
+    this.materialArrivals = []
     this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data=>{
     if(data){
-
+      this.materialArrivals = []
       var dateFrom = new Date('01/01/2019')
       var dateTo = new Date('01/01/2020')
       var totalQnt = 0;
@@ -2427,14 +2431,8 @@ export class StockComponent implements OnInit {
       this.components = filteredArray;
     }
     if(type == 'function'){
-      let filteredArray = []
-      this.components.forEach(element => {
-        if(element.function != undefined || element.function != null || element.function != ''){
-          if((element.function).includes(value)){
-            filteredArray.push(element)
-          } 
-        }
-      });
+     
+      let filteredArray = this.components.filter(m=>m.function && m.function.includes(value))
       this.components = filteredArray;
     }
     if(type == 'stateOfMatter'){

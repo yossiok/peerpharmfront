@@ -302,9 +302,9 @@ export class FormsService {
     let url = this.baseUrl + 'packingPallltItems/getAllPL';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  getAllReadyPallets() {
+  getAllqaPallets() {
     debugger
-    let url = this.baseUrl + 'formDetails/getAllReadyPallets';
+    let url = this.baseUrl + 'formDetails/getAllqaPallets';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 }

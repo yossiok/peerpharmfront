@@ -10,7 +10,9 @@
           </div>
         </div>
 
-        <div class="row mt-3">
+        <hr>
+
+        <div class="row mt-5">
           <div class="col-2">
             <label class="form-control">Filter By Customer</label>
           </div>
@@ -27,6 +29,36 @@
         </div>
 
         <div class="row mt-3">
+          <div class="col-1">
+            <button (click)="filterTable('all')" class="btn btn-info form-control">All</button>
+          </div>
+          <div class="col-1">
+            <button (click)="filterTable('ready')" class="btn btn-info form-control">Ready</button>
+          </div>
+          <div class="col-1">
+            <button (click)="filterTable('stickers')" class="btn btn-info form-control">Stickers</button>
+          </div>
+          <div class="col-1">
+            <button (click)="filterTable('laser')" class="btn btn-info form-control">Laser</button>
+          </div>
+          <div class="col-1">
+            <button (click)="filterTable('cartons')" class="btn btn-info form-control">Cartons</button>
+          </div>
+          <div class="col-2">
+            <button (click)="filterTable('personalPackge')" class="btn btn-info form-control">Personal Package</button>
+          </div>
+          <div class="col-2">
+            <button (click)="filterTable('cartonsMaster')" class="btn btn-info form-control">Carton Master</button>
+          </div>
+          <div class="col-2">
+            <button (click)="filterTable('components')" class="btn btn-info form-control">Components</button>
+          </div>
+          <div class="col-1">
+            <button (click)="filterTable('leaflet')" class="btn btn-info form-control">Leaflet</button>
+          </div>
+        </div>
+
+        <div class="row mt-1">
           <div class="col-12">
             <table style="text-align: center;" class="table table-striped table-hover ">
               <thead class="text-white bg-info">
@@ -36,18 +68,18 @@
                   <th>שם לקוח</th>
                   <th>מספר פריט</th>
                   <th>מספר הזמנה</th>
-                  <th>סטטוס משלוח</th>
+                  <th>סטטוס</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pallet of allReadyPallets;let i = index">
+                <tr *ngFor="let pallet of allQaPallets;let i = index">
                   <td>{{i+1}}</td>
-                  <td><input (change)="isSelected($event,pallet)" type="checkbox"></td>
+                  <td><input class="form-control" (change)="isSelected($event,pallet)" type="checkbox"></td>
                   <td>{{pallet.customerName}}</td>
                   <td>{{pallet.itemNumber}}</td>
                   <td>{{pallet.orderNumber}}</td>
-                  <td></td>
+                  <td>{{pallet.qaStatus}}</td>
                   <td><button (click)="addLineToPallet(pallet)" class="form-control btn btn-info">הוסף למשטח קיים</button></td>
                   <!-- <td><button (click)="addPalletToCostumer(pallet)" class="btn btn-info">הוסף למשטח קיים</button></td> -->
 

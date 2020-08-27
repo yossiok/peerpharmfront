@@ -3,6 +3,7 @@ import { FormsService } from 'src/app/services/forms.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { ToastrService } from 'ngx-toastr';
 import { PlatformLocation } from '@angular/common';
+import { log } from 'util';
 
 @Component({
   selector: 'app-qa-pallets',
@@ -17,8 +18,8 @@ export class QaPalletsComponent implements OnInit {
   customerForPL: any;
   unitsToPallet: any;
   currentPallet: any;
-  allReadyPallets: any[]
-  allReadyPalletsCopy: any[]
+  allQaPallets: any[]
+  allQaPalletsCopy: any[]
   allCustomers: any[]
   allClosedPallets: any[]
   allClosedPalletsCopy: any[]
@@ -72,7 +73,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllReadyPallets();
+    this.getAllqaPallets();
     this.getAllPackedLists();
     this.getAllReadyForBill();
     this.getAllClosedPallets();
@@ -123,6 +124,8 @@ export class QaPalletsComponent implements OnInit {
   }
 
 
+
+
   addPalletToCostumer(pallet) {
     this.showAllReadyCostumers = true;
     this.palletToAdd = pallet
@@ -132,15 +135,55 @@ export class QaPalletsComponent implements OnInit {
 
   }
 
-  getAllReadyPallets() {
+  getAllqaPallets() {
     debugger;
-    this.formService.getAllReadyPallets().subscribe(data => {
-      this.allReadyPallets = data;
-      this.allReadyPalletsCopy = data;
+    this.formService.getAllqaPallets().subscribe(data => {
+      this.allQaPallets = data;
+      this.allQaPalletsCopy = data;
 
     })
 
   }
+
+  filterTable(type){
+    debugger;
+    this.allQaPallets = this.allQaPalletsCopy
+    switch(type) {
+  
+      case 'all':
+       this.allQaPallets = this.allQaPalletsCopy
+        break;
+      case 'ready':
+        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'מוכן לשליחה')
+        break;
+      case 'stickers':
+        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר מדבקות')
+        break;
+      case 'laser':
+        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר לייזר')
+        break;
+      case 'cartons':
+        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר קרטונים')
+        break;
+      case 'cartonsMaster':
+        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר קרטוני מאסטר')
+        break;
+      case 'personalPackge':
+        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'עובר לאריזה אישית')
+        break;
+     
+      case 'components':
+        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר קומפוננטים')
+        break;
+      case 'leaflet':
+        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר עלונים לצרכן')
+        break;
+     
+        
+    }
+  }
+
+
 
   movePalletToPL(){
     debugger;
@@ -234,12 +277,13 @@ export class QaPalletsComponent implements OnInit {
     let customerName = ev.target.value;
     switch (type) {
       case 'readyPallets':
-        if (customerName != "") {
-          let tempArray = this.allReadyPalletsCopy.filter(pallet => pallet.customerName.includes(customerName));
-          this.allReadyPallets = tempArray
+        if (customerName && customerName != '') {
+          
+          let tempArray = this.allQaPalletsCopy.filter(pallet => pallet.customerName && pallet.customerName.includes(customerName));
+          this.allQaPallets = tempArray
 
         } else {
-          this.allReadyPallets = this.allReadyPalletsCopy;
+          this.allQaPallets = this.allQaPalletsCopy;
         }
         break;
       case 'closedPallets':
@@ -405,7 +449,7 @@ export class QaPalletsComponent implements OnInit {
       if (data) {
         this.toastr.success('משטח הוקם בהצלחה !')
         this.getAllClosedPallets()
-        this.getAllReadyPallets();
+        this.getAllqaPallets();
         this.getAllPackedLists();
         this.selectedArr = [];
       }
