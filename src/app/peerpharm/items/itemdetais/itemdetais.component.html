@@ -1272,7 +1272,7 @@
                 </div>
 
                 <div class="col-3" style="margin-left:-117px;">
-                  <input placeholder="Number" (change)="fillBottle($event)" type="text" id="id_bottleNo"
+                  <input placeholder="Number" (change)="fillBottle(itemShown.bottleNumber)" type="text" id="id_bottleNo"
                     (focusout)="loadPackagDetails(itemShown.bottleNumber, 'bottle')" [(ngModel)]=itemShown.bottleNumber>
                 </div>
 
@@ -1307,7 +1307,7 @@
 
                 </div>
                 <div class="col-3" style="margin-left:-33px;">
-                  <input placeholder="Number" (change)="fillCap($event)" type="text" id="id_capNo"
+                  <input placeholder="Number" (change)="fillCap(itemShown.capNumber)" type="text" id="id_capNo"
                     [(ngModel)]=itemShown.capNumber (focusout)="loadPackagDetails(itemShown.capNumber, 'cap')">
                 </div>
 
@@ -1325,7 +1325,7 @@
                     class="productionInput">
                 </div>
                 <div class="col-2" style="margin-left:-33px;">
-                  <input placeholder="Number" (change)="fillPump($event)" type="text" id="id_pumpNo"
+                  <input placeholder="Number" (change)="fillPump(itemShown.pumpNumber)" type="text" id="id_pumpNo"
                     [(ngModel)]=itemShown.pumpNumber (focusout)="loadPackagDetails(itemShown.pumpNumber, 'pump')">
                 </div>
 
@@ -1373,7 +1373,7 @@
                     class="productionInput">
                 </div>
                 <div class="col-3" style="margin-left:-33px;">
-                  <input placeholder="Number" (change)="fillSeal($event)" type="text" id="id_sealNo"
+                  <input placeholder="Number" (change)="fillSeal(itemShown.sealNumber)" type="text" id="id_sealNo"
                     [(ngModel)]=itemShown.sealNumber (focusout)="loadPackagDetails(itemShown.sealNumber, 'seal')">
                 </div>
 

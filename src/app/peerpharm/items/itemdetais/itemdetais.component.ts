@@ -475,7 +475,7 @@ export class ItemdetaisComponent implements OnInit {
   fillBottle(bottleNumber) {
 
     
-
+    bottleNumber = this.itemShown.bottleNumber
     if (bottleNumber != "---" && bottleNumber != "") {
       this.invtSer.getCmptByNumber(bottleNumber, "component").subscribe(data => {
         this.itemShown.bottleTube = data[0].componentName
@@ -489,9 +489,8 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillCap(capNumber) {
-  debugger;
-   
 
+  capNumber = this.itemShown.capNumber
     if (capNumber != "---" && capNumber != "") {
       this.invtSer.getCmptByNumber(capNumber, "component").subscribe(data => {
         this.itemShown.capTube = data[0].componentName
@@ -508,6 +507,7 @@ export class ItemdetaisComponent implements OnInit {
 
     debugger;
 
+    pumpNumber = this.itemShown.pumpNumber
     if (pumpNumber != "---" && pumpNumber != "") {
       debugger;
       this.invtSer.getCmptByNumber(pumpNumber, "component").subscribe(data => {
@@ -523,7 +523,7 @@ export class ItemdetaisComponent implements OnInit {
 
   fillSeal(sealNumber) {
  
-
+    sealNumber = this.itemShown.sealNumber
     if (sealNumber != "---" && sealNumber != "") {
       this.invtSer.getCmptByNumber(sealNumber, "component").subscribe(data => {
         this.itemShown.sealTube = data[0].componentName
