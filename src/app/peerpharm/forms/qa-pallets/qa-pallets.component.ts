@@ -342,13 +342,14 @@ export class QaPalletsComponent implements OnInit {
   
 
   saveNewUnits(item) {
+    debugger;
     var pallet = this.selectedArr.find(p => p._id == item._id)
     if (pallet) {
       if(this.unitsToPallet == ''){
         this.toastr.error('חובה למלא כמות חדשה')
       } else {
         pallet.unitsToCombine = this.unitsToPallet
-        pallet.allUnits = this.unitsToPallet
+       
         this.edit('', '');
         this.toastr.success('כמות חדשה עודכנה בהצלחה')
         this.unitsToPallet = ''

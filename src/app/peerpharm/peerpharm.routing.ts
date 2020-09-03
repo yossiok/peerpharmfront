@@ -62,6 +62,7 @@ import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 import { ScreenGuard } from '../guards/screen.guard';
 import { MaterialsComponent } from './production/materials/materials.component';
 import { NewBatchComponent } from './batches/new-batch/new-batch.component';
+import { InventoryComponent } from './inventory/inventory/inventory.component';
 
 
 
@@ -201,6 +202,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Material Arrival'
     },
     component: MaterialArrivalComponent
+  },
+  {
+    path: 'inventory/inventory',
+    data: {
+      title: ''
+    },
+    component: InventoryComponent
   },
   {
     path: 'inventory/storages',

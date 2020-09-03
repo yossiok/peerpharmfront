@@ -75,7 +75,7 @@
               <tbody>
                 <tr *ngFor="let pallet of allQaPallets;let i = index">
                   <td>{{i+1}}</td>
-                  <td><input class="form-control" (change)="isSelected($event,pallet)" type="checkbox"></td>
+                  <td><input style="width:30px !important" class="form-control" (change)="isSelected($event,pallet)" type="checkbox"></td>
                   <td>{{pallet.customerName}}</td>
                   <td>{{pallet.itemNumber}}</td>
                   <td>{{pallet.orderNumber}}</td>
@@ -493,7 +493,7 @@
               <td *ngIf="line.unitsQuantityPartKarton > 0">1</td>
               <td *ngIf="line.unitsQuantityPartKarton == 0">0</td>
               <td>{{line.unitsQuantityPartKarton}}</td>
-              <td>{{line.allUnits}}</td>
+              <td>{{line.unitsToCombine}}</td>
               <!-- <td>{{line.allKartons}}</td> -->
               <!-- <td></td> -->
 

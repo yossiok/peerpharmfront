@@ -344,6 +344,14 @@ export const ROUTES: RouteInfo[] = [
       extralink: false,
       submenu: [
         {
+          path: '/peerpharm/inventory/inventory',
+          title: 'Inventory',
+          icon: 'fas fa-address-book',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
           path: '/peerpharm/inventory/stock',
           title: 'Inventory List',
           icon: 'fas fa-address-book',
