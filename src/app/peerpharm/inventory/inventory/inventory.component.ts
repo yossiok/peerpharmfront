@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./inventory.component.css']
 })
 export class InventoryComponent implements OnInit {
-
+  
+  itemType:string;
+  
   constructor() { }
 
   ngOnInit() {
   }
 
+
+  setItemType(ev){
+  let itemType = ev.target.value;
+  this.itemType = itemType
+  }
 }
