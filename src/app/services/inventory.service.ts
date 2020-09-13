@@ -165,6 +165,11 @@ updateProductionDetails(production):Observable<any>{
   let url = this.baseUrl + "material/updateProductionDetails";
   return this.http.post(url, JSON.stringify(production), this.options).pipe(map(res => res.json()))
 }
+recieveNewComponents(allArrivals):Observable<any>{ 
+  
+  let url = this.baseUrl + "itemShell/recieveNewComponents";
+  return this.http.post(url, JSON.stringify(allArrivals), this.options).pipe(map(res => res.json()))
+}
 addNewRecommendation(purchaseRecommend):Observable<any>{ 
   
   let url = this.baseUrl + "component/newPurchaseRecommend";

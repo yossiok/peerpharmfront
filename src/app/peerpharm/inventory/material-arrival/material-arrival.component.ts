@@ -504,6 +504,8 @@ approvedPackgeRemarksInput: Boolean=false;
     formToSend.lastUpdateUser= this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe( res=>{
       debugger
+      this.toastSrv.success("New material arrival saved!");
+          this.resetForm();
       if(res){
         this.bcValue= [ res._id ] ;
         this.materialNum= res.internalNumber;

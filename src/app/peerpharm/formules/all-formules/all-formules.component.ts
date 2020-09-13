@@ -296,17 +296,31 @@ export class AllFormulesComponent implements OnInit {
 
   saveEdit(currdoc) {
 
-
+  debugger;
 
     if (this.formuleName.nativeElement.value != "") {
-
-      this.currentDoc.lastUpdateUser = this.authService.loggedInUser.userName
-      this.currentDoc.name = this.formuleName.nativeElement.value.trim();
-      this.currentDoc.number = this.formuleNumber.nativeElement.value.trim();
-      this.currentDoc.client = this.formuleClient.nativeElement.value.trim();
-      this.currentDoc.lastUpdate = this.formuleLastUpdate.nativeElement.value.trim();
-      this.currentDoc.parent = this.formuleParent.nativeElement.value.trim();
-      this.currentDoc.parentName = this.formuleCategory.nativeElement.value.trim();
+      
+      if(this.authService.loggedInUser.userName){
+        this.currentDoc.lastUpdateUser = this.authService.loggedInUser.userName
+      }
+      if(this.formuleName.nativeElement.value){
+        this.currentDoc.formuleName = this.formuleName.nativeElement.value.trim();
+      }
+      if(this.formuleNumber.nativeElement.value){
+        this.currentDoc.formuleNumber = this.formuleNumber.nativeElement.value.trim();
+      }
+      // if(this.formuleClient.nativeElement.value != undefined){
+      //   this.currentDoc.client = this.formuleClient.nativeElement.value.trim();
+      // }
+      if(this.formuleLastUpdate.nativeElement.value){
+        this.currentDoc.lastUpdate = this.formatDate(new Date())
+      }
+      // if(this.formuleParent.nativeElement.value){
+      //   this.currentDoc.parent = this.formuleParent.nativeElement.value.trim();
+      // }
+      if(this.formuleCategory.nativeElement.value){
+        this.currentDoc.parentName = this.formuleCategory.nativeElement.value.trim();
+      }
 
       if (confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
         this.updateDocument()
@@ -370,6 +384,21 @@ export class AllFormulesComponent implements OnInit {
       }
 
     })
+  }
+
+  
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
  
