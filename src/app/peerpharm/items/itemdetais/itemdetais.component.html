@@ -1009,25 +1009,32 @@
               </div>
               <div class="row">
                 <div class="col-2">
-                  <label class="labelGeneral">{{ 'Pump' | translate }} {{ 'Direction' | translate }}</label>
                   <label class="labelGeneral">{{ 'Carton' | translate }} {{ 'Number' | translate }}</label>
+                 
                   <label class="labelGeneral">{{ 'Pcs' | translate }}/{{ 'Carton' | translate }}</label>
                   <label class="labelGeneral">{{ 'Pallet' | translate }} {{ 'Type' | translate }}</label>
+                  <label class="labelGeneral">{{ 'Pump' | translate }} {{ 'Direction' | translate }}</label>
                 </div>
                 <div class="col-2">
-                  <select id="id_pumpDirection" class="form-control" [(ngModel)]=itemShown.pumpDirection>
-                    <option value="-">-</option>
-                    <option value="Right">{{ 'Right' | translate }}</option>
-                    <option value="Left">{{ 'Left' | translate }}</option>
-                  </select>
+                
+                  <!-- <input class="form-control" type=t ext id="id_cartonNo" ------------------ BEFORE ----------------
+                  (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')" [(ngModel)]=itemShown.cartonNumber> -->
                   <input class="form-control" type=t ext id="id_cartonNo"
-                  (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')" [(ngModel)]=itemShown.cartonNumber>
+                  (focusout)="loadCartonName(itemShown.cartonNumber)" [(ngModel)]=itemShown.cartonNumber>
+                
                   <input class="form-control" type="text" ext id="id_pcsCarton" [(ngModel)]=itemShown.PcsCarton>
                 
                     <input type=t ext id="id_Palette" class="form-control" [(ngModel)]=itemShown.paletteType>
+                    <select id="id_pumpDirection" class="form-control" [(ngModel)]=itemShown.pumpDirection>
+                      <option value="-">-</option>
+                      <option value="Right">{{ 'Right' | translate }}</option>
+                      <option value="Left">{{ 'Left' | translate }}</option>
+                    </select>
                 </div>
-                <div class="col-2"></div>
-                <div class="col-2"></div>
+                <div class="col-3">
+                  <input [(ngModel)]="itemShown.cartonName" class="form-control" placeholder="Carton Name">
+                </div>
+                <div class="col-1"></div>
                 <div class="col-2">
                   <label class="labelGeneral">{{ 'License' | translate }} {{ 'Number' | translate }}</label>
 

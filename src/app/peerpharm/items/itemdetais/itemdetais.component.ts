@@ -185,6 +185,7 @@ export class ItemdetaisComponent implements OnInit {
     grossCtnWeightK: '',
 
     cartonNumber: '',
+    cartonName: '',
     PcsCarton: '',
     pumpDirection: '',
     paletteType: '',
@@ -1568,6 +1569,15 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
   showSuccess() {
     this.toastr.info('Successful upload!');
+  }
+
+  loadCartonName(cartonNumber){
+  this.invtSer.getCmptByitemNumber(cartonNumber).subscribe(data=>{
+    debugger;
+    if(data){
+    this.itemShown.cartonName = data[0].componentName
+    }
+  })
   }
 
 

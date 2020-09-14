@@ -76,6 +76,7 @@ export class ProcurementOrdersComponent implements OnInit {
   totalPrice: any;
   totalPriceWithTaxes:any;
   currCoin: any;
+  filterStatus: any;
   importantRemarks: any;
   orderDate: any;
   outOfCountry: any;
@@ -678,6 +679,7 @@ if(category != ''){
      
         if (ev.target.value != "") {
           var status = ev.target.value;
+          this.filterStatus = ev.target.value;
           if (status == 'ongoing') {
             this.procurementData = this.procurementDataCopy
             this.procurementData = this.procurementData.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
@@ -689,13 +691,17 @@ if(category != ''){
             this.procurementData = this.procurementData.filter(p=>p.orderType == 'component')
           } else if(status == 'allOrders'){
             this.procurementData = this.procurementDataNoFilter
-          } else {
+          } else if (status == 'open'){
+            this.procurementData = this.procurementDataCopy
+            this.procurementData = this.procurementData.filter(p=> p.status == 'open' && p.status == 'הזמנה פתוחה')
+          }
+           else {
             this.procurementData = this.procurementDataNoFilter
             this.procurementData = this.procurementData.filter(p => p.status == 'closed')
           }
 
         } else {
-          
+         
         }
         break;
       default:
@@ -1127,7 +1133,12 @@ if(category != ''){
       }
       this.procurementData = tempArr
     } else {
-      this.procurementData = this.procurementDataCopy
+      if(this.filterStatus == 'ongoing'){
+        this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
+      } else {
+        this.procurementData = this.procurementDataCopy.filter(p=>p.status == this.filterStatus)
+      }
+     
     }
 
   }

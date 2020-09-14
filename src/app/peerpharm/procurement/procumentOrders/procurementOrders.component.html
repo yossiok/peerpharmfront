@@ -42,9 +42,10 @@
       <div class="row mt-4">
         <div class="col-2">
          חפש לפי סטטוס <select (change)="filterByStatus($event,'purchases')" class="form-control">
+          <option selected="true" disabled="disabled">בחר סטטוס</option>    
             <option value="allOrders">כל ההזמנות</option>
             <option value="ongoing">בטיפול</option>
-            <option value="closed">הזמנה סגורה</option>
+            <option value="closed">הזמנות סגורות</option>
             <option value="material">חומרי גלם</option>
             <option value="component">קומפוננטים</option>
           </select>
