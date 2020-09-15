@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inventory',
@@ -17,6 +18,7 @@ export class InventoryComponent implements OnInit {
   currItemShelfs = [];
   currentWhareHouseId:string;
   currentWhareHouseName:string;
+  userName:string;
   allArrivals = []
 
 
@@ -34,11 +36,12 @@ export class InventoryComponent implements OnInit {
     deliveryNote:'',
     itemType:this.itemType,
     shell_id_in_whareHouse:'',
-    whareHouse:this.currentWhareHouseName
+    whareHouse:this.currentWhareHouseName,
+    userName:''
 
   }
   
-  constructor(private inventoryService:InventoryService,private authService:AuthService) { }
+  constructor(private toastSrv:ToastrService,private inventoryService:InventoryService,private authService:AuthService) { }
 
   ngOnInit() {
     this.getUserWhs();
@@ -93,6 +96,10 @@ export class InventoryComponent implements OnInit {
   }
 
   addComponentToTable(componentArrival){
+    debugger;
+    componentArrival.itemType = this.itemType
+    componentArrival.whareHouse = this.currentWhareHouseName
+    componentArrival.userName = this.userName
     let ObjToPush = {...componentArrival}
     this.allArrivals.push(ObjToPush)
     this.cleanArrivalFields();
@@ -118,11 +125,12 @@ export class InventoryComponent implements OnInit {
 
 
   recieveComponents(){
-  debugger;
-  this.allArrivals
 
   this.inventoryService.recieveNewComponents(this.allArrivals).subscribe(data=>{
-
+  if(data){
+    this.toastSrv.success('פריטים נקלטו בהצלחה')
+    this.cleanArrivalFields();
+  }
   })
 
   
@@ -148,6 +156,7 @@ export class InventoryComponent implements OnInit {
         // for (const wh of res) {
         await res.forEach((wh)=> {
           if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
+            this.userName = this.authService.loggedInUser.userName
             displayAllowedWH.push(wh);
           }
         });

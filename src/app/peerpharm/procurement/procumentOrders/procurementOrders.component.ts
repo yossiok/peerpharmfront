@@ -1360,7 +1360,12 @@ if(category != ''){
       if (confirm("האם לסגור הזמנה זו  ?")) {
         this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
           if (data) {
-            this.procurementData = data;
+           debugger;
+         let purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
+         if(purchase){
+           purchase.status = data.status;
+           purchase.color = data.color
+         }
             this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
           } else {
             this.toastr.error('error')
@@ -1371,7 +1376,11 @@ if(category != ''){
       if (confirm("האם לפתוח הזמנה זו  ?")) {
         this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
           if (data) {
-            this.procurementData = data;
+            let purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
+         if(purchase){
+           purchase.status = data.status;
+           purchase.color = data.color
+         }
             this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
           } else {
             this.toastr.error('error')

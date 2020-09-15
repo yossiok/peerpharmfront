@@ -163,15 +163,16 @@
 
         <div class="row mt-1">
             <div style="display: inline-block;" class="col-12">
-                <div (click)="fillShelfPosition(shelf)" style="width:15%;display: inline-block;" *ngFor="let shelf of currItemShelfs"
+                <div (click)="fillShelfPosition(shelf)" style="width:15%;display: inline-block;border-radius: 10%;" *ngFor="let shelf of currItemShelfs"
                     class="shelf text-center rounded-top bg-light border border-success shadow p-2 m-2">
                     <div> <label class="form-control">Position: <span class="text-success">{{shelf.position}}</span></label></div>
                     <div> <label class="form-control">Amount: <span class="text-success">{{shelf.amount}}</span></label> </div>
+                    <div> <label class="form-control">Date: <span class="text-success">{{shelf.arrivalDate | date: 'dd/MM/yyyy'}}</span></label> </div>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-1">
+        <div class="row mt-2">
             <div style="overflow-y: auto;height:350px;" class="col-12">
                 <table class="table table-hover">
                     <thead class="bg-info text-white">
