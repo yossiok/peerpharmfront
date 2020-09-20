@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input,ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Input, ViewEncapsulation, HostListener } from '@angular/core';
 import { InventoryService } from '../../../services/inventory.service'
 import { ActivatedRoute } from '@angular/router'
 import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
@@ -21,6 +21,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { OrdersService } from 'src/app/services/orders.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { CostumersService } from 'src/app/services/costumers.service';
+import { upperFirst } from 'lodash';
 
 
 @Component({
@@ -45,30 +46,31 @@ export class StockComponent implements OnInit {
   allCustomers: any[]
   componentSuppliers: any[]
   componentPurchases: any[] = [];
-  itemShell:any[];
-  componentsCopy:any[];
-  materialArrivals:any[];
-  subscription:any
-  materialFilterType:any
-  materialFilterValue:any
-  filterMaterialOption:String;
+  itemShell: any[];
+  components: any[];
+  componentsCopy: any[];
+  materialArrivals: any[];
+  subscription: any
+  materialFilterType: any
+  materialFilterValue: any
+  filterMaterialOption: String;
   materialLocations: any[];
-  items:any[];
-  compositionName:any;
-  compositionPercentage:any;
-  allComponentsPurchases:any[];
-  allMaterialsPurchases:any[];
-  expirationBatchDate:any;
-  totalQuantity:String;
-  sixMonth:number = 0;
-  oneYear:number = 0
-  threeYears:number = 0
+  items: any[];
+  compositionName: any;
+  compositionPercentage: any;
+  allComponentsPurchases: any[];
+  allMaterialsPurchases: any[];
+  expirationBatchDate: any;
+  totalQuantity: String;
+  sixMonth: number = 0;
+  oneYear: number = 0
+  threeYears: number = 0
   allowUserEditItem = false;
   updateSupplier = false;
   check = false;
   resCmpt: any = {
-    whoPays:'',
-    payingCustomersList:[],
+    whoPays: '',
+    payingCustomersList: [],
     componentN: '',
     componentName: '',
     componentNs: '',
@@ -84,19 +86,19 @@ export class StockComponent implements OnInit {
     packageType: '',
     packageWeight: '',
     remarks: '',
-    jumpRemark:'',
+    jumpRemark: '',
     componentItems: [],
     input_actualMlCapacity: 0,
-    alternativeComponent:'',
-    comaxName:'',
-    alternativeSuppliers:[],
-    price:''
+    alternativeComponent: '',
+    comaxName: '',
+    alternativeSuppliers: [],
+    price: ''
 
   }
   alternativeSupplier: any = {
-    name:'',
-    material:'',
-    price:''
+    name: '',
+    material: '',
+    price: ''
   }
   alterSuppliers: any[];
   buttonColor: string = 'white';
@@ -111,15 +113,14 @@ export class StockComponent implements OnInit {
   openOrderAmountsModal: boolean = false;
   openProductAmountModal: boolean = false;
   procurementModalHeader: string;
-  openModalHeader: string;
-  components: any[];
+  openModalHeader: string; 
   filteredComponents: any[];
   componentsUnFiltered: any[];
   componentsAmount: any[];
   tempHiddenImgSrc: any;
   procurmentQnt: Number;
-  allocatedOrders:any[];
-  allocatedProducts:any[];
+  allocatedOrders: any[];
+  allocatedProducts: any[];
   amountsModalData: any;
   itemAmountsData: any[];
   itemAmountsWh: any[];
@@ -129,7 +130,7 @@ export class StockComponent implements OnInit {
   EditRowId: any = "";
   orderItems: any;
   procurementInputEvent: any;
-  
+
   stockType: String = "component";
   newItem: String = '';
   newItemBtn: String = 'new';
@@ -141,7 +142,7 @@ export class StockComponent implements OnInit {
   curentWhareHouseName: String;
   relatedOrderNum: String = '';
   //adding Stock amounts
-  ordersAllocatedAmount:any[];
+  ordersAllocatedAmount: any[];
   newItemShelfQnt: number;
   newItemShelfBatchNumber: string = '';
   newItemShelfArrivalDate: number;
@@ -166,16 +167,16 @@ export class StockComponent implements OnInit {
   productToFind: String = '';
   materialToFind: String = "";
   productResponse: any = {};
-  linkDownload:String = "";
-  mixMaterial:String;
-  mixMaterialPercentage:String;
+  linkDownload: String = "";
+  mixMaterial: String;
+  mixMaterialPercentage: String;
   arrivalDateExpired = true;
   newItemProcurmentDetails: FormGroup;
   newOrderProcurmentDetails: FormGroup;
   newTransportDetails: FormGroup;
   transportationItem: FormGroup;
   loadingExcel: Boolean = false;
-  allSuppliers:any[];
+  allSuppliers: any[];
 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
@@ -201,33 +202,33 @@ export class StockComponent implements OnInit {
   @ViewChild('coinLoading') coinLoading: ElementRef;
 
   @ViewChild('materialToSearch') materialToSearch: ElementRef;
- 
+
 
   // material array // 
   materials: any[];
-
+  allMaterialArrivals: any[];
   recommandPurchase: any = {
-    remarks:'',
-    amount:'',
-    componentNumber:'',
-    requestNumber:'',
-    date:this.formatDate(new Date()),
-    user:'',
-    type:'',
-    supplier:''
+    remarks: '',
+    amount: '',
+    componentNumber: '',
+    requestNumber: '',
+    date: this.formatDate(new Date()),
+    user: '',
+    type: '',
+    supplier: ''
   }
 
-  supplier:any = {
-    supplierName:'',
-    price:"",
-    coin:"",
-    coinLoading:"",
-    priceLoading:"",
-    manufacturer:"",
-    alternativeMaterial:"",
-    alterName:"",
+  supplier: any = {
+    supplierName: '',
+    price: "",
+    coin: "",
+    coinLoading: "",
+    priceLoading: "",
+    manufacturer: "",
+    alternativeMaterial: "",
+    alterName: "",
     subGroup: "",
-    packageWeight:"",
+    packageWeight: "",
   }
   resMaterial: any = {
 
@@ -243,102 +244,103 @@ export class StockComponent implements OnInit {
     unitOfMeasure: "",
     group: "",
     subGroup2: "",
-    alternativeSuppliers:[],
+    alternativeSuppliers: [],
     status: "",
     threatment: "",
     monthTillExp: "",
     monthAvgPcs: "",
     msds: "",
     coaMaster: "",
-    function:'',
-    measurement:"",
-    notInStock:false,
-    inciName:"",
-    casNumber:"",
-    composition:[],
-    umNumber:"",
-    imerCode:"",
-    imerTreatment:"",
-    allowQtyInStock:"",
-    expiredQty:"",
-    permissionDangerMaterials:"",
-    storageTemp:"",
-    storageDirections:"",
-    frameQuantity:"",
-    frameSupplier:"",
-    location:"",
-    quantityInStock:"",
-    mixedMaterial:[],
-    formuleRemarks:''
+    function: '',
+    measurement: "",
+    notInStock: false,
+    inciName: "",
+    casNumber: "",
+    composition: [],
+    umNumber: "",
+    imerCode: "",
+    imerTreatment: "",
+    allowQtyInStock: "",
+    expiredQty: "",
+    permissionDangerMaterials: "",
+    storageTemp: "",
+    storageDirections: "",
+    frameQuantity: "",
+    frameSupplier: "",
+    location: "",
+    quantityInStock: "",
+    mixedMaterial: [],
+    formuleRemarks: ''
 
   }
   itemExpectedArrivals: any;
   closeResult: string;
+
   // currentFileUpload: File; //for img upload creating new component
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.editSuppliers('');
   }
- 
+
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
 
     if (event.key === 'F2') {
-      if(this.openModal == true){
+      if (this.openModal == true) {
         this.openModal = false;
       } else {
         this.newCmpt('new')
       }
-    } 
+    }
     if (event.key === 'F4') {
-      if(this.inventoryNewReqModal == true){
+      if (this.inventoryNewReqModal == true) {
         this.inventoryNewReqModal = false;
       } else {
         this.inventoryNewReqModal = true;
       }
-    } 
-  
+    }
+
     if (event.key === 'F7') {
-      if(this.invRequestsModal == true){
+      if (this.invRequestsModal == true) {
         this.invRequestsModal = false;
       } else {
         this.invRequestsModal = true;
       }
-    } 
+    }
     if (event.key === 'F8') {
-      if(this.itemsMovementModal == true){
+      if (this.itemsMovementModal == true) {
         this.itemsMovementModal = false;
       } else {
         this.itemsMovementModal = true;
       }
-    } 
-  
-   }
- 
+    }
+
+  }
 
 
-  constructor(private customerSrv:CostumersService,private supplierService:SuppliersService,private orderService:OrdersService,private modalService: NgbModal,private procuretServ: Procurementservice,private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+
+  constructor(private customerSrv: CostumersService, private supplierService: SuppliersService, private orderService: OrdersService, private modalService: NgbModal, private procuretServ: Procurementservice, private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
-    private fb: FormBuilder, ) {
+    private fb: FormBuilder,) {
   }
   @Output() sendDataToExpectedArrivalsModal = new EventEmitter();
   @Input() expectedArrivalItemData: any;
 
   //expected Arrivals modal
-   getNewExpectedArrivalsData(outputeEvent) {
-    
+  getNewExpectedArrivalsData(outputeEvent) {
+
 
     console.log('getting new updated expected arrivals data')
     console.log(outputeEvent)
     if (outputeEvent == 'closeModal') {
       this.openProcurementModal = false;
       this.resCmpt = {}
-      
+
       //update expected arrivals info for item 
     } else if (outputeEvent == 'stockLineChanged') {
       console.log('this.resCmpt', this.resCmpt)
-       this.inventoryService.getSingleComponentData(this.resCmpt._id).subscribe(res => {
-        
+      this.inventoryService.getSingleComponentData(this.resCmpt._id).subscribe(res => {
+
         console.log('res[0]', res[0])
         // this.componentsUnFiltered.filter(c=>{
         //   if(c._id==res[0]._id){
@@ -350,12 +352,12 @@ export class StockComponent implements OnInit {
 
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
-            
+
 
           }
         });
         this.componentsUnFiltered.forEach(c => {
-  
+
           if (c._id == res[0]._id) {
             c.procurementArr = res[0].procurementArr;
           }
@@ -364,51 +366,51 @@ export class StockComponent implements OnInit {
     }
   }
 
-  fillSupplierDetails(){
-    if(this.resCmpt.suplierN != ''){
-      this.supplierService.getSuppliersByNumber(this.resCmpt.suplierN).subscribe(data=>{
-        debugger;
-        if(data){
+  fillSupplierDetails() {
+    if (this.resCmpt.suplierN != '') {
+      this.supplierService.getSuppliersByNumber(this.resCmpt.suplierN).subscribe(data => {
+
+        if (data) {
           this.resCmpt.suplierName = data[0].suplierName;
         }
       })
-    
+
     }
   }
-  
-  addSupplierToMaterial(){
-  debugger;
-   this.resMaterial.alternativeSuppliers.push(this.supplier)
-   this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
-   this.supplier = {
-    supplierName:'',
-    price:"",
-    coin:"",
-    coinLoading:"",
-    priceLoading:"",
-    manufacturer:"",
-    alternativeMaterial:"",
-    alterName:"",
-    subGroup: "",
-    packageWeight:"",
+
+  addSupplierToMaterial() {
+
+    this.resMaterial.alternativeSuppliers.push(this.supplier)
+    this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+    this.supplier = {
+      supplierName: '',
+      price: "",
+      coin: "",
+      coinLoading: "",
+      priceLoading: "",
+      manufacturer: "",
+      alternativeMaterial: "",
+      alterName: "",
+      subGroup: "",
+      packageWeight: "",
+    }
   }
-  }
-  addSupplierToComponent(){
-  debugger;
-   this.resCmpt.alternativeSuppliers.push(this.supplier)
-   this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
-   this.supplier = {
-    supplierName:'',
-    price:"",
-    coin:"",
-    coinLoading:"",
-    priceLoading:"",
-    manufacturer:"",
-    alternativeMaterial:"",
-    alterName:"",
-    subGroup: "",
-    packageWeight:"",
-  }
+  addSupplierToComponent() {
+
+    this.resCmpt.alternativeSuppliers.push(this.supplier)
+    this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+    this.supplier = {
+      supplierName: '',
+      price: "",
+      coin: "",
+      coinLoading: "",
+      priceLoading: "",
+      manufacturer: "",
+      alternativeMaterial: "",
+      alterName: "",
+      subGroup: "",
+      packageWeight: "",
+    }
   }
   // getProcurementData(){
   //   this.inventoryService.getProcurementData().subscribe(data=>{
@@ -422,7 +424,7 @@ export class StockComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.getAllPurchaseOrders();
+    await this.getAllPurchaseOrders();
     this.getAllPurchaseOrdersMaterial();
     this.getAllItemShell();
     this.getUser();
@@ -436,32 +438,32 @@ export class StockComponent implements OnInit {
     this.components = [];
     // this.getAllMaterial();
     console.log(this.materials)
- 
+
     await this.getUserAllowedWH();
     this.getAllComponents();
     // this.getAllComps();
-    
-    if(this.route.queryParams){
+
+    if (this.route.queryParams) {
       this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
     // this.exportMovementsAsXLSX();
     // this.getAllExpectedArrivalsData();
     this.getColor(new Date);
-    debugger;
-    
-  
+
+
+
 
   }
-  
+
 
   getAllSuppliers() {
-    this.supplierService.getAllSuppliers().subscribe(data=>{
+    this.supplierService.getAllSuppliers().subscribe(data => {
       this.allSuppliers = data;
     })
   }
 
-  getAllItemShell(){
-    this.itemService.getAllItemShells().subscribe(data=>{
+  getAllItemShell() {
+    this.itemService.getAllItemShells().subscribe(data => {
       this.itemShell = data;
     })
   }
@@ -480,12 +482,12 @@ export class StockComponent implements OnInit {
   //         });
   //  }
   exportCurrTable() {
-    
+
     this.loadingExcel = true;
 
     this.makeFileForExcelDownload().then((data: any[]) => {
       console.log(data)
-      
+
 
       // var anyArr: any[]=data;
       switch (this.stockType) {
@@ -510,15 +512,15 @@ export class StockComponent implements OnInit {
 
   }
   makeFileForExcelDownload() {
-    debugger;
+
     var that = this;
     var arr: any[] = []
     return new Promise(function (resolve, reject) {
       var line = {}
       if (that.stockType == 'component') {
-    
+
         for (let i = 0; i < that.components.length; i++) {
-      
+
           line = {
             'מספר פריט': that.components[i].componentN,
             'מק"ט פריט אצל הספק': that.components[i].componentNs,
@@ -526,7 +528,7 @@ export class StockComponent implements OnInit {
             'סוג פריט': that.components[i].componentType,
             'כמות': that.components[i].amount,
             'כמות מוקצת': that.components[i].alloAmount,
-            
+
           }
           arr.push(line)
         }
@@ -544,50 +546,50 @@ export class StockComponent implements OnInit {
         resolve(arr);
       } else if (that.stockType == 'material') {
         for (let i = 0; i < that.components.length; i++) {
-        for (let j = 0; j < that.components[i].alternativeSuppliers.length; j++) {
-          line = {
-            'מספר פריט': that.components[i].componentN,
-            'שם החו"ג': that.components[i].componentName,
-            'כמות ': that.components[i].amount,
-            'מחיר ': that.components[i].alternativeSuppliers[j].price,
-            'מחיר 2': that.components[i].price,
-           
+          for (let j = 0; j < that.components[i].alternativeSuppliers.length; j++) {
+            line = {
+              'מספר פריט': that.components[i].componentN,
+              'שם החו"ג': that.components[i].componentName,
+              'כמות ': that.components[i].amount,
+              'מחיר ': that.components[i].alternativeSuppliers[j].price,
+              'מחיר 2': that.components[i].price,
+
+            }
+            arr.push(line)
           }
-          arr.push(line)
         }
-      }
         resolve(arr);
       }
     });
   }
 
-  updateSupplierDetails(){
-  debugger;
+  updateSupplierDetails() {
 
- 
+
+
     var obj = {
-      id:this.resMaterial._id,
-      supplierName:this.supplierName.nativeElement.value,
-      price:this.price.nativeElement.value,
-      coin:this.coin.nativeElement.value,
-      coinLoading:this.coinLoading.nativeElement.value,
-      priceLoading:this.priceLoading.nativeElement.value,
-      manufacturer:this.manufacturer.nativeElement.value,
-      alternativeMaterial:this.alternativeMaterial.nativeElement.value,
-      alterName:this.alterName.nativeElement.value,
-      packageWeight:this.packageWeight.nativeElement.value,
+      id: this.resMaterial._id,
+      supplierName: this.supplierName.nativeElement.value,
+      price: this.price.nativeElement.value,
+      coin: this.coin.nativeElement.value,
+      coinLoading: this.coinLoading.nativeElement.value,
+      priceLoading: this.priceLoading.nativeElement.value,
+      manufacturer: this.manufacturer.nativeElement.value,
+      alternativeMaterial: this.alternativeMaterial.nativeElement.value,
+      alterName: this.alterName.nativeElement.value,
+      packageWeight: this.packageWeight.nativeElement.value,
     }
 
-    if(obj.id == undefined || obj.id == null || obj.id == ''){
+    if (obj.id == undefined || obj.id == null || obj.id == '') {
       obj.id = this.resCmpt._id
     }
-    this.inventoryService.updateSupplier(obj).subscribe(data=>{
-      debugger;
-      if(data){
-        var updatedSupplier = data.alternativeSuppliers.find(s=>s.supplierName == obj.supplierName);
-        var supplier = this.resMaterial.alternativeSuppliers.find(s=>s.supplierName == obj.supplierName);
-        if(supplier == undefined || supplier == null){
-          var supplier = this.resCmpt.alternativeSuppliers.find(s=>s.supplierName == obj.supplierName);
+    this.inventoryService.updateSupplier(obj).subscribe(data => {
+
+      if (data) {
+        var updatedSupplier = data.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
+        var supplier = this.resMaterial.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
+        if (supplier == undefined || supplier == null) {
+          var supplier = this.resCmpt.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
         }
         supplier.supplierName = updatedSupplier.supplierName
         supplier.price = updatedSupplier.price
@@ -608,29 +610,29 @@ export class StockComponent implements OnInit {
   }
 
 
-  getAllCustomers(){
-    this.customerSrv.getAllCostumers().subscribe(data=>{
+  getAllCustomers() {
+    this.customerSrv.getAllCostumers().subscribe(data => {
       this.allCustomers = data;
     })
   }
 
-  addCustomerToPayingList(ev){
-  debugger;
-  if(confirm('האם להוסיף לקוח זה לרשית לקוחות משלמים ?')){
-    if(this.resCmpt.payingCustomersList == undefined) this.resCmpt.payingCustomersList = [];
-    this.resCmpt.payingCustomersList.push(ev.target.value)
-    this.toastSrv.success('לקוח נוסף בהצלחה , לא לשכוח לעדכן פריט !')
-  } else {
-    console.log('no');
-    
+  addCustomerToPayingList(ev) {
+
+    if (confirm('האם להוסיף לקוח זה לרשית לקוחות משלמים ?')) {
+      if (this.resCmpt.payingCustomersList == undefined) this.resCmpt.payingCustomersList = [];
+      this.resCmpt.payingCustomersList.push(ev.target.value)
+      this.toastSrv.success('לקוח נוסף בהצלחה , לא לשכוח לעדכן פריט !')
+    } else {
+      console.log('no');
+
+    }
+
+
   }
- 
-  
-  }
-  filterMaterials(ev){
-    debugger;
+  filterMaterials(ev) {
+
     var nameToSearch = ev.target.value;
-    
+
     this.materialToSearch.nativeElement.value;
 
   }
@@ -707,127 +709,82 @@ export class StockComponent implements OnInit {
     });
   }
 
-  // addSupplierToArray() { 
-    
-  //   var detailsToPush = {...this.alternativeSupplier}
-  //   this.resMaterial.alternativeSuppliers.push(detailsToPush);
-  //   this.toastSrv.success("הוספת ספק בהצלחה , אנא לא לשכוח לשמור !")
-
-  // }
-
 
   open(supplierList) {
-    
-    this.modalService.open(supplierList, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+
+    this.modalService.open(supplierList, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  // openOrderAmounts(orderAmounts) {
-  //   
-  //   this.modalService.open(orderAmounts, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-  //     this.closeResult = `Closed with: ${result}`;
-  //   }, (reason) => {
-  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //   });
-  // }
 
-  
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 
 
-  // getAllComponentsByType(){
-  //   this.stockType;
-  //   this.inventoryService.getAllComponentsByType(this.stockType).subscribe(components => {
-  //     this.componentsUnFiltered=   components.items.splice(0);
-  //     this.components = components.items.splice(0);
+  getAllPurchaseOrders() {
+    return new Promise((resolve, reject) => {
+      this.procuretServ.getAllComponentsPurchase().subscribe(data => {
+        this.allComponentsPurchases = data;
+        resolve();
+      })
+    });
 
-  //     this.componentsAmount = components.componentsAmount.splice(0);;
-  //     // console.log(res);
-  //     this.componentsUnFiltered.forEach(cmpt => {
-  //    //  adding amounts to all components
-  //       let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
-  //       if(result!=undefined){
-  //         cmpt.amount = result.total;
-  //       }
-  //       if(cmpt.actualMlCapacity=='undefined') cmpt.actualMlCapacity=0;
 
-  //     });
-  //     this.setType(this.stockType);
-  //     this.getAllCmptTypesAndCategories();
-  //     
-  //   });
-  // }
-
-  // getAllItems() {
-  //   
-  //   this.itemService.getAllItemsTwo().subscribe(res => {
-  //     
-  //     this.items = res
-      
-  //   });
-    
-  // }
-
-  getAllPurchaseOrders(){
- 
-    this.procuretServ.getAllComponentsPurchase().subscribe(data=>{
-      this.allComponentsPurchases = data;
-    })
   }
-  getAllPurchaseOrdersMaterial(){
- 
-    this.procuretServ.getAllMaterialsPurchase().subscribe(data=>{
+  getAllPurchaseOrdersMaterial() {
+
+    this.procuretServ.getAllMaterialsPurchase().subscribe(data => {
       this.allMaterialsPurchases = data;
     })
   }
 
-  purchaseRecommend(component){
-    debugger;
+  purchaseRecommend(component) {
+
     this.componentSuppliers = component.alternativeSuppliers
-    if(component.itemType == 'material'){
+    if (component.itemType == 'material') {
       this.recommandPurchase.type = 'material'
-    } 
-    if(component.itemType == 'component'){
+    }
+    if (component.itemType == 'component') {
       this.recommandPurchase.type = 'component'
-    } 
+    }
     this.recommandPurchase.componentNumber = component.componentN
     this.openOrderRecommendModal = true;
   }
 
-  sendRecommandation(){
-    debugger
-    this.recommandPurchase.user = this.authService.loggedInUser.userName;
-    this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data=>{
-    debugger;
-    if(data){
-      this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
-      this.openOrderRecommendModal = false;
-      this.recommandPurchase.remarks = ""
-      this.recommandPurchase.amount = ""
-      this.recommandPurchase.componentNumber = ""
+  sendRecommandation() {
 
-    }
+    this.recommandPurchase.user = this.authService.loggedInUser.userName;
+    this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data => {
+
+      if (data) {
+        this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
+        this.openOrderRecommendModal = false;
+        this.recommandPurchase.remarks = ""
+        this.recommandPurchase.amount = ""
+        this.recommandPurchase.componentNumber = ""
+
+      }
     })
   }
 
 
-  createMixedMaterial(){
+  createMixedMaterial() {
     this.mixMaterial;
     let obj = {
-      materialName:this.mixMaterial,
-      materialPercentage:this.mixMaterialPercentage
+      materialName: this.mixMaterial,
+      materialPercentage: this.mixMaterialPercentage
     }
-    if(this.mixMaterial == "" || this.mixMaterialPercentage == ""){
+    if (this.mixMaterial == "" || this.mixMaterialPercentage == "") {
       this.toastSrv.error("אנא תמלא את השם והאחוזים בכדי להוסיף")
     } else {
       this.resMaterial.mixedMaterial.push(obj);
@@ -835,267 +792,187 @@ export class StockComponent implements OnInit {
       this.mixMaterialPercentage = "";
       this.toastSrv.success("חומר גלם נוסף בהצלחה!")
     }
-  
+
 
 
   }
 
-  // getAllComps(){
-    
-  //   this.subscription = this.inventoryService.startNewItemObservable().subscribe((components) => {
-  //     debugger;
-      
-  //     this.inventoryService.getAllMaterialsArrivals().subscribe(data=>{
-  //       debugger;
-  //       data;
-  //       var count = 0;
-  //       for (let i = 0; i < data.length; i++) {
-  //        for (let j = 0; j < this.componentsUnFiltered.length; j++) {
-  //         if(data[i].internalNumber == this.componentsUnFiltered[j].componentN) {
-  //             this.componentsUnFiltered[j].measureType = data[i].mesureType
-  
-  //             if(this.componentsUnFiltered[j].totalQnt) {
-  //               this.componentsUnFiltered[j].totalQnt = Number(this.componentsUnFiltered[j].totalQnt) + data[i].totalQnt
-  //               if(this.route.snapshot.queryParams.componentN){
-  //                 this.filterByComponentN(this.route.snapshot.queryParams.componentN)
-  //               }
-               
-  //             } else {
-  //               this.componentsUnFiltered[j].totalQnt = data[i].totalQnt
-  //               if(this.route.snapshot.queryParams.componentN){
-  //                 this.filterByComponentN(this.route.snapshot.queryParams.componentN)
-  //               }
-  //             }
-             
-            
-  //         }
-           
-  //        }
-          
-  //       }
-  //     })
-  //     var allPurchases = this.allComponentsPurchases.filter(order=>order.status != 'canceled');
-  //     debugger;
-  //     for (let i = 0; i < allPurchases.length; i++) {
-  //     for (let j = 0; j < allPurchases[i].item.length; j++) {
-  //      for (let k = 0; k < components.length; k++) {
-  //       if(components[k].componentN == allPurchases[i].item[j].itemNumber){
-  //         var obj = {
-  //           purchaseOrder:'',
-  //           purchaseAmount:'',
-  //           purchaseArrival:'',
-  //           purchaseStatus:''
-  //         }
-  //         obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
-  //         obj.purchaseOrder = allPurchases[i].item[j].orderNumber
-  //         obj.purchaseArrival = allPurchases[i].item[j].arrivals
-  //         obj.purchaseStatus = allPurchases[i].status
-  //         components[k].purchaseOrders.push(obj)
-  //       }
-         
-  //      }
-        
-  //     } 
-        
-  //     }
 
-  //     this.components.push(...components); 
-  //     if(components.length<500)
-  //     {
-        
-  //     }
-  //     this.componentsCopy=this.components.slice();
-  //   } );
-  
-  // }
+  calculateMaterialArrival() {
+    for (let i = 0; i < this.allMaterialArrivals.length; i++) {
+      for (let j = 0; j < this.componentsUnFiltered.length; j++) {
+        if (this.allMaterialArrivals[i].internalNumber == this.componentsUnFiltered[j].componentN) {
+          this.componentsUnFiltered[j].measureType = this.allMaterialArrivals[i].mesureType;
+
+          if (this.componentsUnFiltered[j].totalQnt) {
+            this.componentsUnFiltered[j].totalQnt = Number(this.componentsUnFiltered[j].totalQnt) + this.allMaterialArrivals[i].totalQnt
+            if (this.route.snapshot.queryParams.componentN) {
+              this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+            }
+
+          } else {
+            this.componentsUnFiltered[j].totalQnt = this.allMaterialArrivals[i].totalQnt;
+            if (this.route.snapshot.queryParams.componentN) {
+              this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+            }
+          }
+        }
+      }
+    }
+  }
 
 
   getAllComponents() {
-    
-    debugger;
-    this.inventoryService.getAllComponents().subscribe(components => {
-      debugger;
-      console.log(components[0]);
-      if(components){
+    this.inventoryService.getAllMaterialsArrivals().subscribe(data => {
+      this.allMaterialArrivals = data;
+      this.startDownloadingInventory();
+    });
+  }
+
+  startDownloadingInventory() {
+    this.inventoryService.startNewItemObservable().subscribe((components) => {
+      if (components.length > 0) {
         this.showLoader = false;
-      }
-      this.inventoryService.getAllMaterialsArrivals().subscribe(data=>{
-        debugger;
-        data;
-        var count = 0;
-        for (let i = 0; i < data.length; i++) {
-         for (let j = 0; j < this.componentsUnFiltered.length; j++) {
-          if(data[i].internalNumber == this.componentsUnFiltered[j].componentN) {
-              this.componentsUnFiltered[j].measureType = data[i].mesureType
-  
-              if(this.componentsUnFiltered[j].totalQnt) {
-                this.componentsUnFiltered[j].totalQnt = Number(this.componentsUnFiltered[j].totalQnt) + data[i].totalQnt
-                if(this.route.snapshot.queryParams.componentN){
-                  this.filterByComponentN(this.route.snapshot.queryParams.componentN)
-                }
-               
-              } else {
-                this.componentsUnFiltered[j].totalQnt = data[i].totalQnt
-                if(this.route.snapshot.queryParams.componentN){
-                  this.filterByComponentN(this.route.snapshot.queryParams.componentN)
-                }
-              }
-             
-            
+        components.forEach(c => {
+          if (!c.purchaseOrders) {
+            console.log(c);
+            c.purchaseOrders = [];
           }
-           
-         }
-          
+        });
+  debugger;
+        this.components= this.components.concat([...components]);
+        if (!this.componentsUnFiltered) {
+          this.componentsUnFiltered = [];
         }
-      })
-      var allPurchases = this.allComponentsPurchases.filter(order=>order.status != 'canceled');
-      debugger;
-      for (let i = 0; i < allPurchases.length; i++) {
+        this.componentsUnFiltered= this.componentsUnFiltered.concat([...components]);
+        this.calculateMaterialArrival();
+        this.getAllMaterials();
+      }
+    });
+  }
+  getAllMaterials() {
+    //continue the rest of the calls after all components downloaded 
+    var allPurchases = this.allComponentsPurchases.filter(order => order.status != 'canceled');
+    for (let i = 0; i < allPurchases.length; i++) {
       for (let j = 0; j < allPurchases[i].item.length; j++) {
-       for (let k = 0; k < components.length; k++) {
-        if(components[k].componentN == allPurchases[i].item[j].itemNumber && allPurchases[i].item[j].color != 'lightgreen'){
-          var obj = {
-            purchaseOrder:'',
-            purchaseAmount:'',
-            purchaseArrival:'',
-            purchaseStatus:'',
-            expectedArrival:'',
-            purchaseDate:''
-          }
-          obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
-          obj.purchaseOrder = allPurchases[i].item[j].orderNumber
-          obj.purchaseArrival = allPurchases[i].item[j].arrivals
-          obj.purchaseStatus = allPurchases[i].status
-          obj.purchaseDate = allPurchases[i].outDate
-          obj.expectedArrival = allPurchases[i].validDate
-
-          if(obj.purchaseStatus == 'supplierGotOrder'){
-            obj.purchaseStatus = 'ספק קיבל הזמנה'
-          }
-          if(obj.purchaseStatus == 'closed'){
-            obj.purchaseStatus = 'סגור'
-          }
-          if(obj.purchaseStatus == 'sentToSupplier'){
-            obj.purchaseStatus = 'הזמנה נשלחה לספק'
-          }
-          if(obj.purchaseStatus == 'open'){
-            obj.purchaseStatus = 'הזמנה פתוחה'
-          }
- 
-          components[k].purchaseOrders.push(obj)
-        }
-         
-       }
-        
-      } 
-        
-      }
-
-      this.componentsUnFiltered = components.splice(0)
-      this.components = components.splice(0)
-      if(this.components){
-        this.showLoader = false;
-      }
-  
-  
-    //   this.components.forEach(c => {
-    //     
-    //      let element= this.itemExpectedArrivals.find(x=>x._id==c._id )
-         
- 
-    //      c.remarks= element.remarks;
- 
-    //  });
-      //why are we using set time out and not async await??
-      setTimeout(() => {
-    
-        this.inventoryService.getComponentsAmounts().subscribe(res => {
-          this.componentsAmount = res;
-          // console.log(res);
-          this.componentsUnFiltered.forEach(cmpt => {
-            //  adding amounts to all components
-            let result = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
-            if (result != undefined) {
-              // console.log(result._id + " , " + cmpt.componentN);
-              cmpt.amount = result.total;
+        for (let k = 0; k < this.components.length; k++) {
+          if (this.components[k].componentN == allPurchases[i].item[j].itemNumber && allPurchases[i].item[j].color != 'lightgreen') {
+            var obj = {
+              purchaseOrder: '',
+              purchaseAmount: '',
+              purchaseArrival: '',
+              purchaseStatus: '',
+              expectedArrival: '',
+              purchaseDate: ''
             }
-            if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
+            obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
+            obj.purchaseOrder = allPurchases[i].item[j].orderNumber
+            obj.purchaseArrival = allPurchases[i].item[j].arrivals
+            obj.purchaseStatus = allPurchases[i].status
+            obj.purchaseDate = allPurchases[i].outDate
+            obj.expectedArrival = allPurchases[i].validDate
 
-          });
-          this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
-        //   this.components.forEach(c => {
-        //     debugger;
-        //      let element= this.itemExpectedArrivals.find(x=>x.componentN==c.componentN )
-             
-     
-        //      c.procurementArr.push(element.remarks)
-     
-        //  });
-        
-          this.setType(this.stockType);
-          this.getAllCmptTypesAndCategories();
+            if (obj.purchaseStatus == 'supplierGotOrder') {
+              obj.purchaseStatus = 'ספק קיבל הזמנה'
+            }
+            if (obj.purchaseStatus == 'closed') {
+              obj.purchaseStatus = 'סגור'
+            }
+            if (obj.purchaseStatus == 'sentToSupplier') {
+              obj.purchaseStatus = 'הזמנה נשלחה לספק'
+            }
+            if (obj.purchaseStatus == 'open') {
+              obj.purchaseStatus = 'הזמנה פתוחה'
+            }
+
+            this.components[k].purchaseOrders.push(obj)
+          }
+
+        }
+
+      }
+
+    }
+
+    var self = this;
+
+    //why are we using set time out and not async await??
+    setTimeout(() => {
+
+      self.inventoryService.getComponentsAmounts().subscribe(res => {
+        self.componentsAmount = res;
+        // console.log(res);
+        self.componentsUnFiltered.forEach(cmpt => {
+          //  adding amounts to all components
+          let result = self.componentsAmount.find(elem => elem._id == cmpt.componentN)
+          if (result != undefined) {
+            // console.log(result._id + " , " + cmpt.componentN);
+            cmpt.amount = result.total;
+          }
+          if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
 
         });
 
-      }, 100);
+        self.components = self.componentsUnFiltered.filter(x => x.itemType == this.stockType);
+        //   this.components.forEach(c => {
+        //     
+        //      let element= this.itemExpectedArrivals.find(x=>x.componentN==c.componentN )
 
-    });
-    // console.log(this.components);
-    ;
+
+        //      c.procurementArr.push(element.remarks)
+
+        //  });
+
+        self.setType(this.stockType);
+        self.getAllCmptTypesAndCategories();
+
+      });
+
+    }, 100);
+
+
+
   }
 
-  // getAllMaterial() { 
-  //   
-  //   this.inventoryService.getAllMaterials().subscribe(data => {
-  //     this.materials = data;
-  //   })
-  // }
 
 
-  getAllExpectedArrivalsData(){
-    this.procuretServ.getAllExpectedArrivals().subscribe(res=>{
-     
-        this.itemExpectedArrivals=res;
+  getAllExpectedArrivalsData() {
+    this.procuretServ.getAllExpectedArrivals().subscribe(res => {
 
-   
-      
+      this.itemExpectedArrivals = res;
+
+
+
     });
   }
 
-  calcIfLowThenMin(component)
-  {
-    if(component.minimumStock && component.alloAmount)
-    {
-      if((component.amount-component.alloAmount)> component.minimumStock)
-      {
+  calcIfLowThenMin(component) {
+    if (component.minimumStock && component.alloAmount) {
+      if ((component.amount - component.alloAmount) > component.minimumStock) {
         return "manyleft";
       }
-      else
-      {
+      else {
         return "notmanyleft";
       }
     }
-    return ""; 
+    return "";
   }
 
-  dangerColor(threatment)
-  {
-      if(threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable')
-      {
-        return "flame";
-      }
-      else if(threatment == 'acid')
-      {
-        return "acid";
-      }
-      else if (threatment == ' oxidizer'){
-        return 'oxidizer'
-      }
-      else if (threatment == 'toxic') {
-        return "toxic"
-      }
-    
-    
+  dangerColor(threatment) {
+    if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
+      return "flame";
+    }
+    else if (threatment == 'acid') {
+      return "acid";
+    }
+    else if (threatment == ' oxidizer') {
+      return 'oxidizer'
+    }
+    else if (threatment == 'toxic') {
+      return "toxic"
+    }
+
+
   }
 
   getAllCmptTypesAndCategories() {
@@ -1119,12 +996,12 @@ export class StockComponent implements OnInit {
 
 
   loadComponentItems() {
-    
+
     // this.resCmpt.componentType=  this.stockType;
     if (this.resCmpt.itemType != '') {
       this.inventoryService.getItemsByCmpt(this.resCmpt.componentN, this.resCmpt.itemType).subscribe(res => {
         if (res.length > 0) {
-          
+
           this.resCmpt.componentItems = res;
         } else
           this.resCmpt.componentItems = []
@@ -1136,13 +1013,13 @@ export class StockComponent implements OnInit {
   }
 
   loadMaterialItems() {
-    
-    this.inventoryService.updateMaterial(this.resMaterial).subscribe(data =>{
-      this.components.map(doc=>{
-       
-        if(doc.id == this.resMaterial._id){
-          doc=data;
-        } 
+
+    this.inventoryService.updateMaterial(this.resMaterial).subscribe(data => {
+      this.components.map(doc => {
+
+        if (doc.id == this.resMaterial._id) {
+          doc = data;
+        }
         else {
           this.toastSrv.error('Item type error \nPlease refresh screen.');
         }
@@ -1197,8 +1074,8 @@ export class StockComponent implements OnInit {
   }
 
 
-  checkTwo(){
-    debugger;
+  checkTwo() {
+
   }
 
   async updateItemStock(direction) {
@@ -1301,7 +1178,7 @@ export class StockComponent implements OnInit {
                   this.toastSrv.success("Changes Saved");
 
                   this.inventoryService.getAmountOnShelfs(this.resCmpt.componentN).subscribe(async res => {
-                  
+
                     this.itemAmountsData = res.data;
                     this.itemAmountsWh = res.whList;
 
@@ -1348,10 +1225,10 @@ export class StockComponent implements OnInit {
   }
 
 
-  deleteSupplier(index,componentN){
-    debugger;;
-    if(confirm('האם למחוק ספק ?')){
-      var material = this.components.find(c=>c.componentN == componentN);
+  deleteSupplier(index, componentN) {
+    ;
+    if (confirm('האם למחוק ספק ?')) {
+      var material = this.components.find(c => c.componentN == componentN);
       material.alternativeSuppliers.splice(index, 1);
       this.toastSrv.success('ספק הוסר בהצלחה , לא לשכוח לעדכן מידע !')
     }
@@ -1359,9 +1236,10 @@ export class StockComponent implements OnInit {
 
 
 
-  filterByComponentN(componentN){
-    this.stockType = 'material'
-    this.components = this.componentsUnFiltered.filter(c => c.componentN == componentN);
+  filterByComponentN(componentN) {
+    this.stockType = 'material';
+    if (this.componentsUnFiltered)
+      this.components = this.componentsUnFiltered.filter(c => c.componentN == componentN);
   }
 
 
@@ -1385,7 +1263,7 @@ export class StockComponent implements OnInit {
   }
 
   setType(type) {
-  debugger;
+
     switch (type) {
       case 'component':
         this.buttonColor = "white";
@@ -1408,89 +1286,89 @@ export class StockComponent implements OnInit {
         this.buttonColor4 = "#B8ECF1";
         this.buttonColor5 = "#B8ECF1";
         break;
-        case 'cartons':
-          this.buttonColor = "#B8ECF1";
-          this.buttonColor2 = "#B8ECF1";
-          this.buttonColor3 = "#B8ECF1";
-          this.buttonColor4 = "white";
-          this.buttonColor5 = "#B8ECF1";
-          break;
-        case 'sticker':
-          this.buttonColor = "#B8ECF1";
-          this.buttonColor2 = "#B8ECF1";
-          this.buttonColor3 = "#B8ECF1";
-          this.buttonColor4 = "#B8ECF1";
-          this.buttonColor5 = "white";
-          break;
+      case 'cartons':
+        this.buttonColor = "#B8ECF1";
+        this.buttonColor2 = "#B8ECF1";
+        this.buttonColor3 = "#B8ECF1";
+        this.buttonColor4 = "white";
+        this.buttonColor5 = "#B8ECF1";
+        break;
+      case 'sticker':
+        this.buttonColor = "#B8ECF1";
+        this.buttonColor2 = "#B8ECF1";
+        this.buttonColor3 = "#B8ECF1";
+        this.buttonColor4 = "#B8ECF1";
+        this.buttonColor5 = "white";
+        break;
     }
     if (this.stockType != type) {
       this.filterbyNum.nativeElement.value = "";
     }
     this.stockType = type;
-    if(this.stockType == 'cartons'){
+    if (this.stockType == 'cartons') {
       this.components = this.componentsUnFiltered.filter(x => x.componentType == 'master_carton');
-    } else if (this.stockType == 'sticker'){
+    } else if (this.stockType == 'sticker') {
       this.components = this.componentsUnFiltered.filter(x => x.componentType == 'sticker');
     } else {
       this.components = this.componentsUnFiltered.filter(x => x.itemType == type);
     }
-    
+
 
 
   }
 
 
   filterRows(event, filterType) {
-    debugger;
+
     this.emptyFilterArr = true;
     this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
     this.filterVal = '';
     this.filterVal = event.target.value;
-    if(this.route.snapshot.queryParams.componentN){
+    if (this.route.snapshot.queryParams.componentN) {
       this.filterVal = this.route.snapshot.queryParams.componentN
     }
     if (this.stockType != 'product') {
-      if(this.filterByType != undefined){
-      if (this.filterByType.nativeElement.value != "") {
-        let CmptType = this.filterByType.nativeElement.value;
-        this.components = this.components.filter(x => (x.componentType == CmptType));
-        this.components
+      if (this.filterByType != undefined) {
+        if (this.filterByType.nativeElement.value != "") {
+          let CmptType = this.filterByType.nativeElement.value;
+          this.components = this.components.filter(x => (x.componentType == CmptType));
+          this.components
+        }
       }
-      }
-      if(this.filterByCategory != undefined){
-      if (this.filterByCategory.nativeElement.value != "" && this.filterByCategory != undefined) {
-        let category = this.filterByCategory.nativeElement.value;
-        this.components = this.components.filter(x => (x.componentCategory == category && x.itemType.includes(this.stockType)));
-       
-      }
-    }
-    if(this.filterBySupplierN != undefined){
-      if (this.filterBySupplierN.nativeElement.value != "" && this.filterBySupplierN != undefined) {
-        let supplierN = this.filterBySupplierN.nativeElement.value;
+      if (this.filterByCategory != undefined) {
+        if (this.filterByCategory.nativeElement.value != "" && this.filterByCategory != undefined) {
+          let category = this.filterByCategory.nativeElement.value;
+          this.components = this.components.filter(x => (x.componentCategory == category && x.itemType.includes(this.stockType)));
 
-        this.components = this.components.filter(x => (x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType)));
+        }
       }
-    }
-    if(this.filterBySupplier != undefined){
-      if (this.filterBySupplier.nativeElement.value != "" && this.filterBySupplier != undefined) {
-        let supplierName = this.filterBySupplier.nativeElement.value;
+      if (this.filterBySupplierN != undefined) {
+        if (this.filterBySupplierN.nativeElement.value != "" && this.filterBySupplierN != undefined) {
+          let supplierN = this.filterBySupplierN.nativeElement.value;
 
-        this.components = this.components.filter(x => (x.suplierName.includes(supplierName) && x.itemType.includes(this.stockType)));
+          this.components = this.components.filter(x => (x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType)));
+        }
       }
-    }
+      if (this.filterBySupplier != undefined) {
+        if (this.filterBySupplier.nativeElement.value != "" && this.filterBySupplier != undefined) {
+          let supplierName = this.filterBySupplier.nativeElement.value;
+
+          this.components = this.components.filter(x => (x.suplierName.includes(supplierName) && x.itemType.includes(this.stockType)));
+        }
+      }
     }
     if (this.filterbyNum.nativeElement.value != "" && this.filterbyNum != undefined) {
       let itemNum = this.filterbyNum.nativeElement.value;
       this.components = this.components.filter(x => (x.componentN.includes(itemNum) && x.itemType.includes(this.stockType)));
     }
 
-    if(this.filterByItem.nativeElement.value != '' && this.filterByItem != undefined){
-      debugger;
-    let itemNumber = this.filterByItem.nativeElement.value;
-    this.itemService.getItemData(itemNumber).subscribe(data=>{
-      this.components = this.components.filter(x=>x.componentN == data[0].bottleNumber || x.componentN == data[0].sealNumber || x.componentN == data[0].tubeNumber || x.componentN == data[0].capNumber
-       || x.componentN == data[0].boxNumber || x.componentN == data[0].stickerNumber )
-    })
+    if (this.filterByItem.nativeElement.value != '' && this.filterByItem != undefined) {
+
+      let itemNumber = this.filterByItem.nativeElement.value;
+      this.itemService.getItemData(itemNumber).subscribe(data => {
+        this.components = this.components.filter(x => x.componentN == data[0].bottleNumber || x.componentN == data[0].sealNumber || x.componentN == data[0].tubeNumber || x.componentN == data[0].capNumber
+          || x.componentN == data[0].boxNumber || x.componentN == data[0].stickerNumber)
+      })
     }
 
     if (this.filterByCmptName.nativeElement.value != "") {
@@ -1557,47 +1435,47 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
-    debugger;
-   
+
+
     this.sixMonth = 0;
     this.switchModalView(cmptNumber)
     this.componentPurchases = [];
     for (let i = 0; i < this.allComponentsPurchases.length; i++) {
       for (let j = 0; j < this.allComponentsPurchases[i].item.length; j++) {
-       if(this.allComponentsPurchases[i].item[j].itemNumber == cmptNumber){
-        this.allComponentsPurchases[i].item[j].supplierName = this.allComponentsPurchases[i].supplierName
-        this.allComponentsPurchases[i].item[j].outDate = this.allComponentsPurchases[i].outDate
-         this.componentPurchases.push(this.allComponentsPurchases[i].item[j])
-       }
-        
+        if (this.allComponentsPurchases[i].item[j].itemNumber == cmptNumber) {
+          this.allComponentsPurchases[i].item[j].supplierName = this.allComponentsPurchases[i].supplierName
+          this.allComponentsPurchases[i].item[j].outDate = this.allComponentsPurchases[i].outDate
+          this.componentPurchases.push(this.allComponentsPurchases[i].item[j])
+        }
+
       }
-     }
-  var today = new Date()
-  var dateSixMonth = new Date();
-  dateSixMonth.setDate(dateSixMonth.getDate()-180)
+    }
+    var today = new Date()
+    var dateSixMonth = new Date();
+    dateSixMonth.setDate(dateSixMonth.getDate() - 180)
 
-  var dateOneYear = new Date();
-  dateOneYear.setDate(dateOneYear.getDate()-365)
+    var dateOneYear = new Date();
+    dateOneYear.setDate(dateOneYear.getDate() - 365)
 
-  var dateThreeYears = new Date();
-  dateThreeYears.setDate(dateThreeYears.getDate()-1095)
-  
-  
-   var sixMonthPur = this.componentPurchases.filter(c=>c.outDate < today.toISOString && c.outDate > dateSixMonth.toISOString())
-   sixMonthPur.forEach(purchase => {
-     this.sixMonth = this.sixMonth + Number(purchase.supplierAmount)
-   });
+    var dateThreeYears = new Date();
+    dateThreeYears.setDate(dateThreeYears.getDate() - 1095)
 
-   var oneYearPur = this.componentPurchases.filter(c=>c.outDate < today.toISOString && c.outDate > dateOneYear.toISOString())
-   oneYearPur.forEach(purchase => {
-     this.oneYear = this.oneYear + Number(purchase.supplierAmount)
-   });
 
-   var threeYearsPur = this.componentPurchases.filter(c=>c.outDate < today.toISOString && c.outDate > dateThreeYears.toISOString())
-   threeYearsPur.forEach(purchase => {
-     this.threeYears = this.threeYears + Number(purchase.supplierAmount)
-   });
-    
+    var sixMonthPur = this.componentPurchases.filter(c => c.outDate < today.toISOString && c.outDate > dateSixMonth.toISOString())
+    sixMonthPur.forEach(purchase => {
+      this.sixMonth = this.sixMonth + Number(purchase.supplierAmount)
+    });
+
+    var oneYearPur = this.componentPurchases.filter(c => c.outDate < today.toISOString && c.outDate > dateOneYear.toISOString())
+    oneYearPur.forEach(purchase => {
+      this.oneYear = this.oneYear + Number(purchase.supplierAmount)
+    });
+
+    var threeYearsPur = this.componentPurchases.filter(c => c.outDate < today.toISOString && c.outDate > dateThreeYears.toISOString())
+    threeYearsPur.forEach(purchase => {
+      this.threeYears = this.threeYears + Number(purchase.supplierAmount)
+    });
+
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -1607,10 +1485,10 @@ export class StockComponent implements OnInit {
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
 
-    if(this.resCmpt.jumpRemark == "" || this.resCmpt.jumpRemark == undefined) {
+    if (this.resCmpt.jumpRemark == "" || this.resCmpt.jumpRemark == undefined) {
       console.log("ok")
-    }else { 
-      alert("Jumping Remark: "+this.resCmpt.jumpRemark)
+    } else {
+      alert("Jumping Remark: " + this.resCmpt.jumpRemark)
     }
   }
 
@@ -1619,7 +1497,7 @@ export class StockComponent implements OnInit {
     this.currModalImgSrc = componentImg;
   }
   async openAmountsData(cmptNumber, cmptId) {
-    debugger;
+
     this.openModalHeader = "כמויות פריט במלאי  " + cmptNumber;
     this.openAmountsModal = true;
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
@@ -1629,81 +1507,81 @@ export class StockComponent implements OnInit {
     //??? this.resCmpt has mkp category
     if (this.stockType != "components") {
       await this.batchService.getBatchesByItemNumber(cmptNumber + "").subscribe(data => {
-     
+
         this.ItemBatchArr = data;
 
       });
     }
   }
 
-  showBatchExpDate(ev){
-  
+  showBatchExpDate(ev) {
+
     var batch = ev.target.value;
-    if(batch != "") {
+    if (batch != "") {
       for (let i = 0; i < this.ItemBatchArr.length; i++) {
-        if(this.ItemBatchArr[i].batchNumber == batch) {
-         this.expirationBatchDate =  this.ItemBatchArr[i].expration
+        if (this.ItemBatchArr[i].batchNumber == batch) {
+          this.expirationBatchDate = this.ItemBatchArr[i].expration
         }
-        }
-    } 
+      }
+    }
     else {
       this.expirationBatchDate = ""
     }
-  
-  }
-
-  addComposition(){
-  debugger;
-
-  var obj = {
-    compName:this.compositionName,
-    compPercentage:this.compositionPercentage,
-  }
-
-  this.resMaterial.composition.push(obj)
 
   }
 
-  moveToSuppliers(supplierName){
-   
+  addComposition() {
 
 
-      window.open('http://peerpharmsystem.com/#/peerpharm/inventory/suppliers?supplierName='+supplierName)
-        
-      
+    var obj = {
+      compName: this.compositionName,
+      compPercentage: this.compositionPercentage,
+    }
+
+    this.resMaterial.composition.push(obj)
+
+  }
+
+  moveToSuppliers(supplierName) {
+
+
+
+    window.open('http://peerpharmsystem.com/#/peerpharm/inventory/suppliers?supplierName=' + supplierName)
+
+
   }
 
   async openDataMaterial(materNum) {
-    debugger;
+
     this.materialPurchases = []
     this.materialArrivals = []
     for (let i = 0; i < this.allMaterialsPurchases.length; i++) {
-     for (let j = 0; j < this.allMaterialsPurchases[i].item.length; j++) {
-      if(this.allMaterialsPurchases[i].item[j].itemNumber == materNum){
-        this.materialPurchases.push(this.allMaterialsPurchases[i].item[j])
+      for (let j = 0; j < this.allMaterialsPurchases[i].item.length; j++) {
+        if (this.allMaterialsPurchases[i].item[j].itemNumber == materNum) {
+          this.materialPurchases.push(this.allMaterialsPurchases[i].item[j])
+        }
+
       }
-       
-     }
     }
     this.materialArrivals = []
-    this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data=>{
-    if(data){
-      this.materialArrivals = []
-      var dateFrom = new Date('01/01/2019')
-      var dateTo = new Date('01/01/2020')
-      var totalQnt = 0;
-     for (let i = 0; i < data.length; i++) {
-       if(data[i].arrivalDate >= dateFrom.toISOString() && data[i].arrivalDate <= dateTo.toISOString()) {
-        totalQnt += data[i].totalQnt
-       }
-       
-     }
-     if(totalQnt+data[0].mesureType != null || totalQnt+data[0].mesureType != undefined){
-      this.totalQuantity = totalQnt+data[0].mesureType
-     }
-      this.materialArrivals = data;
-    }
-    
+    this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data => {
+      if (data) {
+        this.materialArrivals = []
+        var dateFrom = new Date('01/01/2019')
+        var dateTo = new Date('01/01/2020')
+        var totalQnt = 0;
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].arrivalDate >= dateFrom.toISOString() && data[i].arrivalDate <= dateTo.toISOString()) {
+            totalQnt += data[i].totalQnt
+          }
+
+        }
+        if (totalQnt + data[0].mesureType != null || totalQnt + data[0].mesureType != undefined) {
+          this.totalQuantity = totalQnt + data[0].mesureType
+        }
+        this.materialArrivals = data;
+      }
+
     })
 
     this.showItemDetails = true;
@@ -1712,38 +1590,38 @@ export class StockComponent implements OnInit {
     this.openModalHeader = "פריט במלאי  " + materNum;
     this.openModal = true;
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
-    
-    this.linkDownload="http://peerpharmsystem.com/material/getpdf?_id="+this.resMaterial._id;
+
+    this.linkDownload = "http://peerpharmsystem.com/material/getpdf?_id=" + this.resMaterial._id;
     this.loadComponentItems();
   }
 
   async openAllocatedOrders(componentN) {
-    
+
 
     this.openModalHeader = "הקצאות מלאי"
-     this.openOrderAmountsModal = true; 
-    this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data=>{
-     
+    this.openOrderAmountsModal = true;
+    this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data => {
+
       this.allocatedOrders = data[0].allAllocatedOrders
-  });
-    
- 
+    });
+
+
 
   }
   async openAllocatedProducts(componentN) {
 
 
     this.openModalHeader = "הקצאות מלאי"
-     this.openProductAmountModal = true; 
-    this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data=>{
-     
+    this.openProductAmountModal = true;
+    this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data => {
+
       this.allocatedProducts = data[0].productAllocation
-  });
-    
- 
+    });
+
+
 
   }
- 
+
   searchProduct() {
     if (this.productToFind != "") {
       // check the stock item is really new
@@ -1789,7 +1667,7 @@ export class StockComponent implements OnInit {
   }
 
   getColor(date) {
-    
+
     switch (date) {
       case "date < new Date()":
         return "red";
@@ -1799,20 +1677,20 @@ export class StockComponent implements OnInit {
   }
 
 
-  checkIfItemExist(ev){
-    debugger;
-  var itemNumber = ev.target.value;
-  if(itemNumber != ''){
-    this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data=>{
-      if(data.length > 0){
-        this.toastSrv.error('שים לב ! מספר זה קיים במערכת')
-      } else {
-        console.log('ok')
-      }
-    })
+  checkIfItemExist(ev) {
+
+    var itemNumber = ev.target.value;
+    if (itemNumber != '') {
+      this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
+        if (data.length > 0) {
+          this.toastSrv.error('שים לב ! מספר זה קיים במערכת')
+        } else {
+          console.log('ok')
+        }
+      })
+    }
   }
-  }
- 
+
 
   closeAmountsData() {
     this.openAmountsModal = false;
@@ -1824,7 +1702,7 @@ export class StockComponent implements OnInit {
 
   newCmpt(newItem) {
 
-  
+
     this.newItem = newItem;
     this.resCmpt = {
       componentN: '',
@@ -1880,24 +1758,24 @@ export class StockComponent implements OnInit {
   }
 
   writeNewMaterial() {
-    debugger;
+
     //this.stockType = "material"/"component"/"product"
     this.resMaterial.itemType = "material"
     if (this.resMaterial.componentN != "") {
 
-      
-      this.inventoryService.addNewMaterial(this.resMaterial).subscribe(res => {
-        
 
-        if(res == "פריט קיים במערכת !") { 
+      this.inventoryService.addNewMaterial(this.resMaterial).subscribe(res => {
+
+
+        if (res == "פריט קיים במערכת !") {
           this.toastSrv.error("פריט קיים במערכת !")
-        } else { 
+        } else {
 
           this.toastSrv.success("New material item created");
           this.components.push(res);
-  
+
         }
-     
+
       });
 
     }
@@ -1905,32 +1783,32 @@ export class StockComponent implements OnInit {
   }
 
   checkIfExist(ev) {
-    
-   if(ev.target.value !="") { 
-     this.inventoryService.getMaterialtByNumber(ev.target.value).subscribe(data=>{
-       if(data.length > 0) { 
-         this.toastSrv.error("שים לב , הפריט כבר קיים במערכת !")
-       } else { 
 
-       }
-     })
-   }
+    if (ev.target.value != "") {
+      this.inventoryService.getMaterialtByNumber(ev.target.value).subscribe(data => {
+        if (data.length > 0) {
+          this.toastSrv.error("שים לב , הפריט כבר קיים במערכת !")
+        } else {
+
+        }
+      })
     }
+  }
 
-    clearSearchFields(){
-      debugger;
-      this.filterbyNum.nativeElement.value = ''
-      this.filterByCategory.nativeElement.value = ''
-      this.filterByCmptName.nativeElement.value = ''
-      this.filterByType.nativeElement.value = ''
-      this.filterBySupplierN.nativeElement.value = ''
-      this.filterByItem.nativeElement.value = ''
-     
-    }
+  clearSearchFields() {
 
-  clearFields() { 
+    this.filterbyNum.nativeElement.value = ''
+    this.filterByCategory.nativeElement.value = ''
+    this.filterByCmptName.nativeElement.value = ''
+    this.filterByType.nativeElement.value = ''
+    this.filterBySupplierN.nativeElement.value = ''
+    this.filterByItem.nativeElement.value = ''
 
-    this.resMaterial  = {
+  }
+
+  clearFields() {
+
+    this.resMaterial = {
 
       componentN: "",
       componentName: "",
@@ -1944,75 +1822,75 @@ export class StockComponent implements OnInit {
       unitOfMeasure: "",
       group: "",
       subGroup2: "",
-      alternativeSuppliers:[],
+      alternativeSuppliers: [],
       status: "",
       threatment: "",
       monthTillExp: "",
       monthAvgPcs: "",
       msds: "",
       coaMaster: "",
-      function:'',
-      measurement:"",
-      notInStock:false,
-      inciName:"",
-      casNumber:"",
-      composition:[],
-      umNumber:"",
-      imerCode:"",
-      imerTreatment:"",
-      allowQtyInStock:"",
-      expiredQty:"",
-      permissionDangerMaterials:"",
-      storageTemp:"",
-      storageDirections:"",
-      frameQuantity:"",
-      frameSupplier:"",
-      location:"",
-      quantityInStock:"",
-      mixedMaterial:[],
-      formuleRemarks:''
-  
-  
+      function: '',
+      measurement: "",
+      notInStock: false,
+      inciName: "",
+      casNumber: "",
+      composition: [],
+      umNumber: "",
+      imerCode: "",
+      imerTreatment: "",
+      allowQtyInStock: "",
+      expiredQty: "",
+      permissionDangerMaterials: "",
+      storageTemp: "",
+      storageDirections: "",
+      frameQuantity: "",
+      frameSupplier: "",
+      location: "",
+      quantityInStock: "",
+      mixedMaterial: [],
+      formuleRemarks: ''
+
+
     }
 
     this.supplier = {
-      supplierName:'',
-      price:"",
-      coin:"",
-      coinLoading:"",
-      priceLoading:"",
-      manufacturer:"",
-      alternativeMaterial:"",
-      alterName:"",
+      supplierName: '',
+      price: "",
+      coin: "",
+      coinLoading: "",
+      priceLoading: "",
+      manufacturer: "",
+      alternativeMaterial: "",
+      alterName: "",
       subGroup: "",
-      packageWeight:"",
+      packageWeight: "",
     }
   }
-  onSelectMsds(event) { 
+  onSelectMsds(event) {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]); // read file as data url
 
       reader.onload = (event) => { // called once readAsDataURL is completed
-        
+
         this.resMaterial.msds = event.target["result"]
-        this.resMaterial.msds=this.resMaterial.msds.replace("data:application/pdf;base64,","");
+        this.resMaterial.msds = this.resMaterial.msds.replace("data:application/pdf;base64,", "");
       }
     }
   }
 
-    onSelectCoaMaster(event) { 
-      
+  onSelectCoaMaster(event) {
+
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]); // read file as data url
 
       reader.onload = (event) => { // called once readAsDataURL is completed
-       
+
         this.resMaterial.coaMaster = event.target["result"]
-        this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
+        this.resMaterial.coaMaster = this.resMaterial.coaMaster.replace("data:application/pdf;base64,", "");
       }
     }
   }
@@ -2029,11 +1907,11 @@ export class StockComponent implements OnInit {
       }
     }
   }
-    
 
-  editSuppliers(supplierName){
-    debugger;
-    if(supplierName != '') {
+
+  editSuppliers(supplierName) {
+
+    if (supplierName != '') {
       this.EditRowId = supplierName
       this.updateSupplier = true;
     } else {
@@ -2044,7 +1922,7 @@ export class StockComponent implements OnInit {
 
 
   editStockItemDetails() {
-    
+
     this.resCmpt;
     if (confirm("לעדכן פריט?")) {
 
@@ -2060,12 +1938,12 @@ export class StockComponent implements OnInit {
 
   }
 
-  
+
   editMaterialItemDetails() {
-    
+
     this.resMaterial;
-    
-  
+
+
     if (confirm("לעדכן פריט?")) {
 
       this.inventoryService.updateMaterial(this.resMaterial).subscribe(res => {
@@ -2081,22 +1959,22 @@ export class StockComponent implements OnInit {
 
   async getUser() {
     await this.authService.userEventEmitter.subscribe(user => {
-      this.user=user;
+      this.user = user;
       // this.user=user.loggedInUser;
       // if (!this.authService.loggedInUser) {
       //   this.authService.userEventEmitter.subscribe(user => {
       //     if (user.userName) {
       //       this.user = user;
-            
+
       //     }
       //   });
       // }
       // else {
       //   this.user = this.authService.loggedInUser;
       // }
-      if (this.user.authorization){
-        if (this.authService.loggedInUser.authorization.includes("updateStock")){
-          this.allowUserEditItem=true;
+      if (this.user.authorization) {
+        if (this.authService.loggedInUser.authorization.includes("updateStock")) {
+          this.allowUserEditItem = true;
         }
       }
 
@@ -2106,10 +1984,10 @@ export class StockComponent implements OnInit {
 
 
   resetResCmptData() {
-    
+
     this.resCmpt = {
-      whoPays:'',
-      payingCustomersList:[],
+      whoPays: '',
+      payingCustomersList: [],
       componentN: '',
       componentName: '',
       componentNs: '',
@@ -2131,8 +2009,8 @@ export class StockComponent implements OnInit {
 
   }
 
-  uploadMsds(fileInputEvent){
-    debugger
+  uploadMsds(fileInputEvent) {
+
     let file = fileInputEvent.target.files[0];
     console.log(file);
 
@@ -2146,8 +2024,8 @@ export class StockComponent implements OnInit {
     })
   }
 
-  uploadCoaMaster(fileInputEvent){
-    debugger
+  uploadCoaMaster(fileInputEvent) {
+
     let file = fileInputEvent.target.files[0];
     console.log(file);
 
@@ -2176,7 +2054,7 @@ export class StockComponent implements OnInit {
     })
   }
   async getCmptAmounts(cmptN, cmptId) {
-    debugger;
+
     // this.currItemShelfs=[];
     this.newItemShelfPosition = '';
     this.newItemShelfQnt = 0;
@@ -2198,13 +2076,13 @@ export class StockComponent implements OnInit {
     ;
   }
   getAllOrderItems(componentN) {
-    
-    this.orderService.getOrderItemsByNumber(componentN).subscribe(data=>{
-      
+
+    this.orderService.getOrderItemsByNumber(componentN).subscribe(data => {
+
       this.orderItems = data;
     })
   }
- 
+
   // getAllItems() { 
   //   
   //   this.itemService.getAllItemsTwo().subscribe(data=>{
@@ -2214,22 +2092,22 @@ export class StockComponent implements OnInit {
   // }
 
 
-  
+
 
 
   formatDate(date) {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
 
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
 
     return [year, month, day].join('-');
-}
+  }
 
   inputProcurment(event: any) { // without type info
     this.procurementInputEvent = event;
@@ -2238,8 +2116,8 @@ export class StockComponent implements OnInit {
   }
 
 
-  getAllMaterialLocations(){
-    this.inventoryService.getAllMaterialLocations().subscribe(data=>{
+  getAllMaterialLocations() {
+    this.inventoryService.getAllMaterialLocations().subscribe(data => {
       this.materialLocations = data;
     })
   }
@@ -2398,7 +2276,7 @@ export class StockComponent implements OnInit {
   }
 
   procurementRecommendations(filterType) {
-    
+
     this.components = this.componentsUnFiltered;
     if (filterType == "minimumStock") {
       if (this.stockType != "product") {
@@ -2413,37 +2291,37 @@ export class StockComponent implements OnInit {
     }
   }
 
-  filterMaterialsTable(){
-    debugger;
+  filterMaterialsTable() {
+
     this.components = this.componentsUnFiltered;
     let type = this.materialFilterType;
     let value = this.materialFilterValue;
-    if(type == 'location'){
-      let filteredArray = this.components.filter(m=>m.location == value);
+    if (type == 'location') {
+      let filteredArray = this.components.filter(m => m.location == value);
       this.components = filteredArray;
     }
-    if(type == 'permissionDangerMaterials'){
-      let filteredArray = this.components.filter(m=>m.permissionDangerMaterials == 'true');
+    if (type == 'permissionDangerMaterials') {
+      let filteredArray = this.components.filter(m => m.permissionDangerMaterials == 'true');
       this.components = filteredArray;
     }
-    if(type == 'threatment'){
-      let filteredArray = this.components.filter(m=>m.threatment == value);
+    if (type == 'threatment') {
+      let filteredArray = this.components.filter(m => m.threatment == value);
       this.components = filteredArray;
     }
-    if(type == 'function'){
-     
-      let filteredArray = this.components.filter(m=>m.function && m.function.includes(value))
+    if (type == 'function') {
+
+      let filteredArray = this.components.filter(m => m.function && m.function.includes(value))
       this.components = filteredArray;
     }
-    if(type == 'stateOfMatter'){
-      let filteredArray = this.components.filter(m=>m.stateOfMatter == value);
+    if (type == 'stateOfMatter') {
+      let filteredArray = this.components.filter(m => m.stateOfMatter == value);
       this.components = filteredArray;
     }
-    if(type == ""){
+    if (type == "") {
       this.components = this.componentsUnFiltered.filter(x => x.itemType == 'material');
     }
-    
-    
+
+
   }
 
 
@@ -2467,33 +2345,33 @@ export class StockComponent implements OnInit {
   }
 
 
-  deleteFromComposition(materialId,compositionName){
-    debugger;
-  let material = this.components.find(m=>m._id == materialId);
-  for (let i = 0; i < material.composition.length; i++) {
-  if(material.composition[i].compName == compositionName){
-    material.composition.splice(i,1)
-    this.toastSrv.success('Composition Deleted')
-  }
-    
-  }
-  }
+  deleteFromComposition(materialId, compositionName) {
 
-  checkIfInciNameExist(ev){
-    debugger;
-    
-  let inciName = ev.target.value;
-  if(inciName != ''){
-    let material = this.components.filter(m=>m.inciName == inciName);
-    if(material.length > 0){
-     
-      material.forEach(m => {
-        this.toastSrv.error(m.componentN)
-      });
-      this.toastSrv.error('שים לב שם זה קיים בחומרי גלם :')
+    let material = this.components.find(m => m._id == materialId);
+    for (let i = 0; i < material.composition.length; i++) {
+      if (material.composition[i].compName == compositionName) {
+        material.composition.splice(i, 1)
+        this.toastSrv.success('Composition Deleted')
+      }
+
     }
   }
-  
+
+  checkIfInciNameExist(ev) {
+
+
+    let inciName = ev.target.value;
+    if (inciName != '') {
+      let material = this.components.filter(m => m.inciName == inciName);
+      if (material.length > 0) {
+
+        material.forEach(m => {
+          this.toastSrv.error(m.componentN)
+        });
+        this.toastSrv.error('שים לב שם זה קיים בחומרי גלם :')
+      }
+    }
+
   }
 
 
@@ -2502,29 +2380,29 @@ export class StockComponent implements OnInit {
   }
 
   switchModalView(componentN) {
-    debugger;
+
     this.loadingMovements = true;
 
-    if(componentN == '' || componentN == undefined){
+    if (componentN == '' || componentN == undefined) {
       componentN = this.resCmpt.componentN
     }
     this.inventoryService.getItemMovements(componentN).subscribe(data => {
-      if(data){
-      
-      //  for (let i = 0; i < data.length; i++) {
-      //    if(data[i].movementType != 'in'){
-      //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
-      //    }
-      //  }
-       data.forEach(component => {
-         if(component.movementType){
-           component.originShelfQntBefore = component.originShelfQntBefore - Math.abs(component.amount)
-         }
-       });
+      if (data) {
+
+        //  for (let i = 0; i < data.length; i++) {
+        //    if(data[i].movementType != 'in'){
+        //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
+        //    }
+        //  }
+        data.forEach(component => {
+          if (component.movementType) {
+            component.originShelfQntBefore = component.originShelfQntBefore - Math.abs(component.amount)
+          }
+        });
         this.itemMovements = data;
         this.loadingMovements = false;
       }
-   
+
     });
 
     if (!this.showItemDetails) {
@@ -2545,7 +2423,7 @@ export class StockComponent implements OnInit {
   // ************************************************************
 
 
-  
+
 
 }// END OF CMPT CLASS
 
