@@ -428,9 +428,9 @@ export class StockComponent implements OnInit {
     this.getAllPurchaseOrdersMaterial();
     this.getAllItemShell();
     this.getUser();
-    this.getAllCustomers();
+    // this.getAllCustomers();
     this.getAllSuppliers()
-    this.getAllMaterialLocations();
+    // this.getAllMaterialLocations();
     this.filterbyNum.nativeElement.value = '';
     // this.filterByType.nativeElement='';
     // this.filterByCategory.nativeElement='';

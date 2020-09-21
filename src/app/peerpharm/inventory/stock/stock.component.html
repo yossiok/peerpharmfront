@@ -755,7 +755,7 @@
                 <label class="form-control">משקל/סוג</label>
                 <label class="form-control">כמות מל'</label>
                 <label class="form-control">על חשבון</label>
-                <label class="form-control">רשימת לקוחות</label>
+                <!-- <label class="form-control">רשימת לקוחות</label> -->
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <select class="form-control" [(ngModel)]="resCmpt.componentType">
@@ -812,9 +812,9 @@
                     <option value="peerpharm">פארפארם</option>
                     <option value="customers">לקוח/לקוחות</option>
                   </select><i (click)="customersModal = true" class="form-control fa fa-plus text-success "></i>
-                  <select class="form-control">
+                  <!-- <select class="form-control">
                         <option *ngFor="let customer of resCmpt.payingCustomersList" value="customer">{{customer}}</option>
-                  </select>
+                  </select> -->
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">הערה</label>
@@ -2819,7 +2819,7 @@
   <div *ngIf="invRequestsModal == true" style="z-index: 9999;top:0px !important;height: auto;border:2px 2px 2px blue;width: 50%;right:0px !important" class="fixNoaStupidStuff border border-info bg-white container fixed-top mx-auto my-auto text-center p-1">
     <app-inventory-requests></app-inventory-requests>
   </div>
-  <div *ngIf="itemsMovementModal == true" style="z-index: 9999;top:0px !important;height: auto;border:2px 2px 2px blue;width: 50%;left:0px !important;right:unset !important" class="fixNoaStupidStuff border border-info bg-white container fixed-top text-center p-1">
+  <div *ngIf="itemsMovementModal == true" style="z-index: 9999;top:0px !important;height: auto;border:2px 2px 2px blue;" class="fixNoaStupidStuff border border-info bg-white container fixed-top text-center p-1">
     <app-wharehouse></app-wharehouse>
   </div>
 
