@@ -2,30 +2,30 @@ import { RouteInfo } from './sidebar.metadata';
 
 export const ROUTES: RouteInfo[] = [
 
- /* {
-    path: '',
-    title: 'Personal',
-    icon: 'mdi mdi-dots-horizontal',
-    class: 'nav-small-cap',
-    extralink: true,
-    submenu: []
-  },
-  {
-    path: '/starter',
-    title: 'Starter Page',
-    icon: 'mdi mdi-gauge',
-    class: '',
-    extralink: false,
-    submenu: []
-  },
-  {
-    path: '',
-    title: 'UI Components',
-    icon: 'mdi mdi-dots-horizontal',
-    class: 'nav-small-cap',
-    extralink: true,
-    submenu: []
-  },*/
+  /* {
+     path: '',
+     title: 'Personal',
+     icon: 'mdi mdi-dots-horizontal',
+     class: 'nav-small-cap',
+     extralink: true,
+     submenu: []
+   },
+   {
+     path: '/starter',
+     title: 'Starter Page',
+     icon: 'mdi mdi-gauge',
+     class: '',
+     extralink: false,
+     submenu: []
+   },
+   {
+     path: '',
+     title: 'UI Components',
+     icon: 'mdi mdi-dots-horizontal',
+     class: 'nav-small-cap',
+     extralink: true,
+     submenu: []
+   },*/
 
   {
     path: '',
@@ -129,40 +129,40 @@ export const ROUTES: RouteInfo[] = [
       // },
     ]
   },
- /*{
-    path: '',
-    title: 'Task-Board',
-    icon: '  fas fa-thumbtack',
-    class: 'has-arrow',
-    extralink: false,
-    submenu: [
-      {
-        path: '/peerpharm/taskboard/main',
-        title: 'Personal',
-        icon: ' fab fa-page4',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      // {
-      //   path: '/peerpharm/schedule/fillschedule',
-      //   title: 'Department',
-      //   icon: ' fab fa-page4',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
-      {
-        path: '/peerpharm/notification',
-        title: 'Notification',
-        icon: ' fab fa-page4',
-        class: '',
-        extralink: false,
-        submenu: []
-      }
-
-    ]
-  },*/
+  /*{
+     path: '',
+     title: 'Task-Board',
+     icon: '  fas fa-thumbtack',
+     class: 'has-arrow',
+     extralink: false,
+     submenu: [
+       {
+         path: '/peerpharm/taskboard/main',
+         title: 'Personal',
+         icon: ' fab fa-page4',
+         class: '',
+         extralink: false,
+         submenu: []
+       },
+       // {
+       //   path: '/peerpharm/schedule/fillschedule',
+       //   title: 'Department',
+       //   icon: ' fab fa-page4',
+       //   class: '',
+       //   extralink: false,
+       //   submenu: []
+       // },
+       {
+         path: '/peerpharm/notification',
+         title: 'Notification',
+         icon: ' fab fa-page4',
+         class: '',
+         extralink: false,
+         submenu: []
+       }
+ 
+     ]
+   },*/
   {
     path: '',
     title: ' Items',
@@ -178,7 +178,7 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-       {
+      {
         path: '/peerpharm/items/itemDetails',
         title: 'Item Tree',
         icon: 'fas fa-tree',
@@ -222,24 +222,24 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       }
     ]
-    },
-    {
-      path: '/peerpharm/costumers/costumers_list',
-      title: 'Costumers',
-      icon: ' fas fa-address-card',
-      class: 'has-arrow',
-      extralink: false,
-      submenu: [
-        {
-          path: '/peerpharm/costumers/costumers_list',
-          title: 'Costumers List',
-          icon: 'fas fa-address-book',
-          class: '',
-          extralink: false,
-          submenu: []
-        }
-      ]
-    },
+  },
+  {
+    path: '/peerpharm/costumers/costumers_list',
+    title: 'Costumers',
+    icon: ' fas fa-address-card',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      {
+        path: '/peerpharm/costumers/costumers_list',
+        title: 'Costumers List',
+        icon: 'fas fa-address-book',
+        class: '',
+        extralink: false,
+        submenu: []
+      }
+    ]
+  },
 
   {
     path: '',
@@ -290,7 +290,7 @@ export const ROUTES: RouteInfo[] = [
       //   extralink: false,
       //   submenu: []
       // },
-       {
+      {
         path: '/peerpharm/procurement/procurementOrders',
         title: 'Purchase Orders',
         icon: 'fas fa-list-ol',
@@ -336,46 +336,46 @@ export const ROUTES: RouteInfo[] = [
       }
     ]
   },
-    {
-      path: '',
-      title: ' Inventory',
-      icon: ' fas fa-dolly',
-      class: 'has-arrow',
-      extralink: false,
-      submenu: [
-        {
-          path: '/peerpharm/inventory/inventory',
-          title: 'Inventory',
-          icon: 'fas fa-address-book',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/inventory/stock',
-          title: 'Inventory List',
-          icon: 'fas fa-address-book',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/inventory/shelf-list',
-          title: 'Shelf List',
-          icon: 'fas fa-address-book',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-         path: '/peerpharm/inventory/wharehouse',
-         title: 'Warehouse',
-         icon: 'fas fa-tree',
-         class: '',
-         extralink: false,
-         submenu: []
-       },
-       {
+  {
+    path: '',
+    title: ' Inventory',
+    icon: ' fas fa-dolly',
+    class: 'has-arrow',
+    extralink: false,
+    submenu: [
+      // {
+      //   path: '/peerpharm/inventory/inventory',
+      //   title: 'Inventory',
+      //   icon: 'fas fa-address-book',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      {
+        path: '/peerpharm/inventory/stock',
+        title: 'Inventory',
+        icon: 'fas fa-address-book',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+      // {
+      //   path: '/peerpharm/inventory/shelf-list',
+      //   title: 'Shelf List',
+      //   icon: 'fas fa-address-book',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      {
+        path: '/peerpharm/inventory/wharehouse',
+        title: 'Warehouse',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
+      {
         path: '/peerpharm/inventory/inventoryRequest',
         title: 'New Request',
         icon: 'fas fa-tree',
@@ -383,7 +383,7 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-       {
+      {
         path: '/peerpharm/inventory/materialArrival',
         title: 'Material Arrival',
         icon: 'fas fa-tree',
@@ -399,14 +399,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      {
-        path: '/peerpharm/inventory/storages',
-        title: 'Storages',
-        icon: 'fas fa-tree',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/inventory/storages',
+      //   title: 'Storages',
+      //   icon: 'fas fa-tree',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       // {
       //   path: '/peerpharm/inventory/allocatedOrders',
       //   title: 'Allocated Orders',
@@ -415,309 +415,310 @@ export const ROUTES: RouteInfo[] = [
       //   extralink: false,
       //   submenu: []
       // },
-      {
-        path: '/peerpharm/inventory/change-shelf',
-        title: 'Change Shelf',
-        icon: 'fas fa-tree',
-        class: '',
-        extralink: false,
-        submenu: []
+      // {
+      //   path: '/peerpharm/inventory/change-shelf',
+      //   title: 'Change Shelf',
+      //   icon: 'fas fa-tree',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+       
+       ]
       },
-      ]
-    },
 
 
-    {
-      path: '',
-      title: 'QA',
-      icon: ' fab fa-wpforms',
-      class: 'has-arrow',
-      extralink: false,
-      submenu: [
-        {
-          path: '/peerpharm/forms/forms_list',
-          title: 'Forms',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/forms/checkingforms',
-          title: 'טפסי בדיקת איכות',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/forms/cleaning-forms',
-          title: 'טפסי ניקיון',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/forms/first-aid',
-          title: 'טופס עזרה ראשונה',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/qa/packing-list',
-          title: 'Packing Lists',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/forms/qa-pallets',
-          title: 'תיעוד מוצרים לפני משלוח',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
+      {
+        path: '',
+        title: 'QA',
+        icon: ' fab fa-wpforms',
+        class: 'has-arrow',
+        extralink: false,
+        submenu: [
+          {
+            path: '/peerpharm/forms/forms_list',
+            title: 'Forms',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/forms/checkingforms',
+            title: 'טפסי בדיקת איכות',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/forms/cleaning-forms',
+            title: 'טפסי ניקיון',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/forms/first-aid',
+            title: 'טופס עזרה ראשונה',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/qa/packing-list',
+            title: 'Packing Lists',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/forms/qa-pallets',
+            title: 'תיעוד מוצרים לפני משלוח',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
 
-      ]
-    },
-   
+        ]
+      },
 
-    {
-      path: '',
-      title: 'Reports',
-      icon: 'fab fa-gitter',
-      class: 'has-arrow',
-      extralink: false,
-      submenu: [
-        {
-          path: '/peerpharm/historylogs',
-          title: 'History Action Logs',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/activeusers',
-          title: 'Active Users',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        }
 
-      ]
-    },
-   
+      {
+        path: '',
+        title: 'Reports',
+        icon: 'fab fa-gitter',
+        class: 'has-arrow',
+        extralink: false,
+        submenu: [
+          {
+            path: '/peerpharm/historylogs',
+            title: 'History Action Logs',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/activeusers',
+            title: 'Active Users',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          }
 
-    {
-      path: '',
-      title: 'Production',
-      icon: ' fas fa-diagnoses',
-      class: 'has-arrow',
-      extralink: false,
-      submenu: [
-        {
-          path: '/peerpharm/production/lines',
-          title: 'Lines',
-          icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-         {
-          path: '/peerpharm/production/productionHall',
-          title: 'Production Hall',
-          icon: 'fas fa-tree',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        // {
-        //   path: '/peerpharm/production/productionRequest',
-        //   title: 'Production Request',
-        //   icon: 'fas fa-i-cursor',
-        //   class: '',
-        //   extralink: false,
-        //   submenu: []
-        // },
-      //  {
-      //    path: '/peerpharm/production/productionSchedule',
-      //    title: 'Production Schedule',
-      //      icon: 'fas fa-i-cursor',
-      //     class: '',
-      //     extralink: false,
-      //     submenu: []
-      //   },
-        {
-          path: '/peerpharm/production/scanMaterial',
-          title: 'Scan Barcode',
-          icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/production/scanItem',
-          title: 'Scan Item',
-          icon: 'fas fa-i-cursor',
-          class: '',
-          extralink: false,
-          submenu: []
-        }, 
-        // {
-        //   path: '/peerpharm/production/wizard',
-        //   title: 'Wizard',
-        //   icon: 'fas fa-list-ol',
-        //   class: '',
-        //   extralink: false,
-        //   submenu: []
-        // },
-        {
-          path: '/peerpharm/production/formule-production/formule-production',
-          title: 'Formule Production',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/production/weight-production/weight-production',
-          title: 'Weight Production',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/production/materials',
-          title: 'Ready Materials',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
+        ]
+      },
 
-      ]
-    }
-/*
-  {
-    path: '',
-    title: 'Component',
-    icon: 'mdi mdi-bullseye',
-    class: 'has-arrow',
-    extralink: false,
-    submenu: [
+
       {
-        path: '/component/accordion',
-        title: 'Accordion',
-        icon: 'mdi mdi-adjust',
-        class: '',
+        path: '',
+        title: 'Production',
+        icon: ' fas fa-diagnoses',
+        class: 'has-arrow',
         extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/alert',
-        title: 'Alert',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/carousel',
-        title: 'Carousel',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/dropdown',
-        title: 'Dropdown',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/modal',
-        title: 'Modal',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/pagination',
-        title: 'Pagination',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/poptool',
-        title: 'Popover & Tooltip',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/progressbar',
-        title: 'Progressbar',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/rating',
-        title: 'Ratings',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/tabs',
-        title: 'Tabs',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/timepicker',
-        title: 'Timepicker',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/buttons',
-        title: 'Button',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/component/cards',
-        title: 'Card',
-        icon: 'mdi mdi-adjust',
-        class: '',
-        extralink: false,
-        submenu: []
+        submenu: [
+          {
+            path: '/peerpharm/production/lines',
+            title: 'Lines',
+            icon: 'fas fa-i-cursor',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/production/productionHall',
+            title: 'Production Hall',
+            icon: 'fas fa-tree',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          // {
+          //   path: '/peerpharm/production/productionRequest',
+          //   title: 'Production Request',
+          //   icon: 'fas fa-i-cursor',
+          //   class: '',
+          //   extralink: false,
+          //   submenu: []
+          // },
+          //  {
+          //    path: '/peerpharm/production/productionSchedule',
+          //    title: 'Production Schedule',
+          //      icon: 'fas fa-i-cursor',
+          //     class: '',
+          //     extralink: false,
+          //     submenu: []
+          //   },
+          {
+            path: '/peerpharm/production/scanMaterial',
+            title: 'Scan Barcode',
+            icon: 'fas fa-i-cursor',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/production/scanItem',
+            title: 'Scan Item',
+            icon: 'fas fa-i-cursor',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          // {
+          //   path: '/peerpharm/production/wizard',
+          //   title: 'Wizard',
+          //   icon: 'fas fa-list-ol',
+          //   class: '',
+          //   extralink: false,
+          //   submenu: []
+          // },
+          {
+            path: '/peerpharm/production/formule-production/formule-production',
+            title: 'Formule Production',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/production/weight-production/weight-production',
+            title: 'Weight Production',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/production/materials',
+            title: 'Ready Materials',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+
+        ]
       }
-    ]
-  }*/
 
-];
+      /*
+        {
+          path: '',
+          title: 'Component',
+          icon: 'mdi mdi-bullseye',
+          class: 'has-arrow',
+          extralink: false,
+          submenu: [
+            {
+              path: '/component/accordion',
+              title: 'Accordion',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/alert',
+              title: 'Alert',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/carousel',
+              title: 'Carousel',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/dropdown',
+              title: 'Dropdown',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/modal',
+              title: 'Modal',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/pagination',
+              title: 'Pagination',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/poptool',
+              title: 'Popover & Tooltip',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/progressbar',
+              title: 'Progressbar',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/rating',
+              title: 'Ratings',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/tabs',
+              title: 'Tabs',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/timepicker',
+              title: 'Timepicker',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/buttons',
+              title: 'Button',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            },
+            {
+              path: '/component/cards',
+              title: 'Card',
+              icon: 'mdi mdi-adjust',
+              class: '',
+              extralink: false,
+              submenu: []
+            }
+          ]
+        }*/
+
+    ];

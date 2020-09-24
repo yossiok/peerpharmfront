@@ -356,20 +356,10 @@
   </mat-tab-group>
 </div> -->
 <div class="container-fluid bg-white text-center p-2">
-  <div class="row mt-4">
-    <div class="col-4">
-      <div style='display: inline-block; vertical-align: top; '>
-        <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)">
-        </app-inventory-requests>
-      </div>
-    </div>
-    <div class="col-4">
-      <h2 class="text-info">קבלה / העברת סחורה</h2>
-    </div>
-    <div class="col-4"></div>
-  </div>
+  <div class="row">
+  <div class="col-8">
 
-  <div class="row mt-5">
+  <div class="row mt-2">
     <div class="col-4">
     </div>
     <div class="col-4">
@@ -386,6 +376,118 @@
     </div>
     <div class="col-4"></div>
   </div>
+
+  <div *ngIf="dir=='managment'" class="row m-1">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="text-info">ניהול מחסן - מורשים בלבד</h2>
+        </div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <label class="form-control text-warning">הוספת מחסן חדש</label>
+        </div>
+        <div class="col-4"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col-2">
+          <input class="form-control" type=text id='wh' #whName placeholder="WhareHouse Name">
+        </div>
+        <div class="col-2">
+          <button class="form-control" id='updateWh' class='btn btn-warning' (click)="addNewWhareHouse(whName.value)">Add New
+            WhareHouse</button>
+        </div>
+        <div class="col-4"></div>
+      </div>
+    
+    
+  
+      <div id='resultDiv' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+  
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <label class="form-control text-success">הוספת מדף חדש</label>
+        </div>
+        <div class="col-4"></div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-4"></div>
+        <div class="col-2">
+          <label class="form-control">בחר מחסן</label>
+        </div>
+        <div class="col-2">
+          <select #wh class="form-control" (change)="getShelfsList(wh.value)">
+            <option></option>
+            <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
+          </select>
+      
+        </div>
+        <div class="col-4"></div>
+      </div>
+  
+   
+
+     <div class="row mt-5">
+       <div class="col-2"></div>
+       <div class="col-2"></div>
+       <div class="col-2">
+        <input class="form-control" #shelf placeholder="הוסף מדף">
+       </div>
+       <div class="col-2">
+
+        <button class='btn btn-success form-control' (click)="addNewShelf(shelf.value)">Add
+          Shelf</button>
+       </div>
+       <div class="col-2"></div>
+       <div class="col-2"></div>
+     </div>
+
+     <div class="row">
+       <div class="col-2"></div>
+       <div class="col-2"></div>
+       <div class="col-2">
+        <input class="form-control" #searchS placeholder="חפש מדף">
+       </div>
+       <div class="col-2">
+        <button class='btn btn-info form-control' (click)="searchShelf(searchS.value)">Find Shelf</button>
+       </div>
+       <div class="col-2"></div>
+       <div class="col-2"></div>
+     </div>
+  
+        <div style="height: 300px;overflow-y: auto;" class="row">
+        <div [style.background-color]="response.color">{{response.body}}</div>
+        <table class="table">
+          <thead class="bg-info text-white">
+            <tr>
+              <th>Id</th>
+              <th>Position</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let shelf of shelfs;">
+            <td>{{shelf._id}}</td>
+            <td>{{shelf.position}}</td>
+          </tr>
+        </tbody>
+        </table>
+      </div>
+      <div id='shell_wh_div' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+      </div>
+  
+    
+  </div>
+  </div>
+ 
 
   <div *ngIf="screen == 'stkManagment'" class="row mt-5">
     <div class="col-2">
@@ -475,20 +577,22 @@
                 <input type="text" class="form-control" placeholder="New Position" formControlName="destShelf">
               </div>
               <div class="col-sm-1" style="position: relative;">
-                <button type="submit" (click)="checkLineValidation(itemLine.value, $event.value)"
+                <img (click)="checkLineValidation(itemLine.value, $event.value)" src="assets/images/add.png" width="50px" style="cursor: pointer;" />
+                <!-- <button type="submit" (click)="checkLineValidation(itemLine.value, $event.value)"
                   style="cursor: pointer; position: absolute; bottom: 0px;">
-                  <img src="assets/images/add.png" width="30px" style="cursor: pointer;" />
-                </button>
+                  <img (click)="checkLineValidation(itemLine.value, $event.value)" src="assets/images/add.png" width="30px" style="cursor: pointer;" />
+                </button> -->
               </div>
             </div>
-            <div *ngIf="dir=='in'">
+            <!-- <div *ngIf="dir=='in'">
               <h3 (click)="open(packMaterialForm)"><u>טופס קבלת חומר אריזה</u></h3>
-            </div>
+            </div> -->
             <div>
-              <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
+              <label class="text-danger">{{curentWhareHouseName}} Wharehouse Shelf List:</label>&nbsp;
               <ng-container *ngFor="let shelf of currItemShelfs">
-                <span (click)="loadShelfToInput(shelf.position, $event)"
-                  style="cursor: pointer;"><b>{{shelf.position}}</b>: {{shelf.amount}} units</span>&nbsp;&nbsp;
+                <span (click)="loadShelfToInput(shelf.position, $event)" class="rounded border border-info shadow p-2 m-2 text-center" style="cursor: pointer;">
+                  <b>{{shelf.position}}</b>: {{shelf.amount}} units
+                </span>
               </ng-container>
             </div>
           </form>
@@ -549,7 +653,7 @@
               </div>
 
               <div>
-                <label>Item position in {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
+                <label>Item Position {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
                 <ng-container *ngFor="let shelf of itemFromInvReq.currItemShelfs">
                   <span [attr.data-lineid]="i"
                     style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; cursor: pointer;"
@@ -580,8 +684,8 @@
               <thead class='bg-info text-white'>
                 <tr>
                   <th>#</th>
-                  <th>Item number</th>
-                  <th>Item name</th>
+                  <th>Item Number</th>
+                  <th>Item Name</th>
                   <th>Position</th>
                   <th>Amount</th>
                   <th *ngIf="dir!='in'">Related Order</th>
@@ -621,15 +725,24 @@
     </div>
  
   </div>
+</div>
 
+<div class="col-4">
+     <div style='display: inline-block; vertical-align: top;'>
+    <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)">
+    </app-inventory-requests>
+  </div>
+</div>
+
+</div>
 </div>
 
 <div class="row">
   <div style='display: inline-block; vertical-align: top; ' class="col-sm-7 managingDiv">
 
-    <br>
 
-    <ul class="nav nav-tabs justify-content-end">
+
+    <!-- <ul class="nav nav-tabs justify-content-end">
       <li class="nav-item">
         <a class="nav-link" style="cursor:pointer;" (click)="dirSet('whManagment','')"
           [ngStyle]="{'background-color': WhMngNavBtnColor}">ניהול מחסן</a>
@@ -638,11 +751,11 @@
         <a class="nav-link" style="cursor:pointer;" (click)="dirSet('stkManagment','')"
           [ngStyle]="{'background-color': StkMngNavBtnColor}">ניהול סחורה</a>
       </li>
-    </ul>
+    </ul> -->
 
-    <div class="container" style="float: right;">
+    <!-- <div class="container" style="float: right;">
       <table style="float: right;">
-        <!-- STOCK MANGEMENT -->
+     
 
         <tr *ngIf="screen=='stkManagment' ">
 
@@ -671,12 +784,11 @@
       <div style="float: right;">
         <h2>{{ dir | headingsWH  }}</h2>
       </div>
-    </div>
+    </div> -->
 
 
-    <br>
 
-
+<!-- 
     <div *ngIf="screen=='stkManagment' ">
       <h5>ניהול סחורה - בחר מחסן</h5>
       <select #wh (change)="setWhareHouse(wh.value)">
@@ -686,16 +798,16 @@
       <span *ngIf='whareHouses.length == 0'><img src="../../../../assets/images/refreshData.png"
           style="cursor: pointer; width: 40px; " (click)="getUserWhs()"> </span>
 
-      <br>
-    </div>
-    <br>
+  
+    </div> -->
 
 
 
 
 
-    <!-- STOCK MANGEMENT -->
-    <div *ngIf="dir!='' && dir!='managment'  && dir!='watchShelfs'">
+
+
+    <!-- <div *ngIf="dir!='' && dir!='managment'  && dir!='watchShelfs'">
 
 
       <div class="container">
@@ -705,7 +817,7 @@
 
               <div class="col-sm-2">
                 <label>מספר פריט</label>
-                <input type="text" class="form-control" placeholder="Item number" formControlName="itemNumber"
+                <input type="text" class="form-control" placeholder="Item Number" formControlName="itemNumber"
                   (blur)="searchItemShelfs($event)">
               </div>
               <div *ngIf="dir == 'out'" class="col-sm-2">
@@ -722,12 +834,6 @@
               </div>
              
 
-              <!-- if taking out stock from wh -->
-              <!-- <div class="col-sm-3"  *ngIf="dir!='in' && dir!='shelfChange'"> 
-                      <label>מס' הזמנה</label>
-                      <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
-                    </div> -->
-              <!-- if recieving stock to wh  -->
               <div class="col-sm-2" *ngIf="dir=='in'">
                 <label>הגעת משלוח</label>
                 <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
@@ -761,7 +867,7 @@
 
         </ng-container>
 
-        <!-- multiLines for inventory requests load -->
+      
         <ng-container *ngIf="multiInputLines">
           <div *ngFor="let itemFromInvReq of multiLinesArr ; let i = index">
             <form class="form-horizontal itemsList">
@@ -782,7 +888,7 @@
                   <input #lineqnt{{i}} [attr.data-lineid]="i" style="width:80px !important;" name="multiLineQntInput"
                     type="number" class="form-control" placeholder="Amount" min="0" [(ngModel)]="itemFromInvReq.qnt">
                 </div>
-                <!-- if taking out stock from wh -->
+    
                 <div class="col-sm-4 row">
                   <div class="col-sm-4">
                     <label>מס' בקשת מלאי</label>
@@ -829,17 +935,17 @@
         </ng-container>
 
 
-        <!--  --> <br>
-        <div class="ShouldBeNav">
-          <!-- <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp; -->
+
+      <div class="ShouldBeNav">
+         
           <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
           <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i class="ti-check m-l-10"></i></button>
           <button (click)="printCertifAgain()" class="btn btn-success ml-3">Print</button>
-        </div>
+        </div> 
 
-        <br>
+     
 
-        <div class="form-group row">
+      <div class="form-group row">
           <div class="col-sm-8">
             <table class='table'>
               <thead class='bg-info text-white'>
@@ -876,13 +982,13 @@
           </div>
           <div *ngIf="!loadingToTable" class="col-sm-3">
           </div>
-        </div>
-        <!-- </form> -->
+        </div> 
+
       </div>
 
-    </div>
+    </div> -->
 
-    <br><br>
+
 
 
 
@@ -917,7 +1023,7 @@
     </div>
         
 </div> -->
-    <div *ngIf="dir=='watchShelfs'">
+    <!-- <div *ngIf="dir=='watchShelfs'">
       <form>
         <h4>צפיה בפריטים על מדף</h4>
         <input #shelfSearch type="text" placeholder="מדף">
@@ -947,7 +1053,7 @@
         </table>
 
       </form>
-    </div>
+    </div> -->
 
 
 
@@ -960,55 +1066,14 @@
 
     </div>
 
-
-
-
-    <!-- WH MANGEMENT -->
-    <div style='display: inline-table' *ngIf="dir=='managment'">
-      <h4>הוספת מחסן חדש</h4>
-      <input type=text id='wh' #whName placeholder="WhareHouse Name">
-      <button id='updateWh' class='btn btn-info' (click)="addNewWhareHouse(whName.value)">Add New
-        WhareHouse</button><br><br>
-
-      <div id='resultDiv' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
-
-      </div>
-
-      <h4>הוספת מדף חדש</h4>
-      <u>בחר מחסן</u> <br>
-      <select #wh class="form-control" (change)="getShelfsList(wh.value)">
-        <option></option>
-        <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
-      </select>
-
-
-      <h5>הוספת/חיפוש מדף</h5>
-      <div id='whareHousesDiv' style='background-color: rgb(223, 255, 194)  ;width:300px; font-weight: bold;'>
-        <input #shelf placeholder="הוסף מדף"><button class='btn btn-success' (click)="addNewShelf(shelf.value)">Add
-          Shelf</button>
-
-        <input #searchS placeholder="חפש מדף">
-        <button class='btn btn-info' (click)="searchShelf(searchS.value)">Find Shelf</button>
-
-        <div [style.background-color]="response.color">{{response.body}}</div>
-        <table>
-          <tr *ngFor="let shelf of shelfs;">
-            <td>{{shelf._id}}</td>
-            <td>{{shelf.position}}</td>
-          </tr>
-        </table>
-      </div>
-      <div id='shell_wh_div' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
-      </div>
-
-    </div>
+    
   </div>
-  <!-- INVENTORY REQUEST TABLE -->
 
-  <div style='display: inline-block; vertical-align: top; ' class="col-sm-4">
+
+  <!-- <div style='display: inline-block; vertical-align: top; ' class="col-sm-4">
     <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)">
     </app-inventory-requests>
-  </div>
+  </div> -->
 
 </div>
 

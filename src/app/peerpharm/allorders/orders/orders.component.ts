@@ -23,6 +23,7 @@ export class OrdersComponent implements OnInit {
   EditRowId: any = "";
   today: any;
   selectAllOrders: boolean = false;
+  newOrderModal: boolean = false;
   onHoldStrDate: String;
   stageSortDir: string = "done";
   numberSortDir: string = "oldFirst";
@@ -52,7 +53,18 @@ export class OrdersComponent implements OnInit {
     this.edit('');
   }
 
+  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
 
+    if (event.key === 'F2') {
+      if (this.newOrderModal == true) {
+        this.newOrderModal = false;
+      } else {
+        this.newOrderModal = true;
+      }
+    }
+
+  }
+  
   ngOnInit() {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");

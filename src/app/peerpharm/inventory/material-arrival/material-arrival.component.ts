@@ -46,8 +46,12 @@ export class MaterialArrivalComponent implements OnInit {
   barcodeData: any;
   choosenOrderItem: any;
   chosenItem: any;
+  whareHouses: any;
+  curentWhareHouseId:any;
+  curentWhareHouseName:any;
   currentComaxOrder: any[];
   comaxOrderExist:Boolean = false;
+  editWharehouses: Boolean=false;
   openOrders: Array<any>;
 
   supplierModal:Boolean= false;
@@ -189,6 +193,28 @@ approvedPackgeRemarksInput: Boolean=false;
     this.activeTabId="tab-selectbyid1"
   }
   
+
+  getUserWhs(){
+    this.invtSer.getWhareHousesList().subscribe(async res => {
+      let displayAllowedWH = [];
+        // for (const wh of res) {
+        await res.forEach((wh)=> {
+          if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
+            displayAllowedWH.push(wh);
+          }
+        });
+        this.whareHouses = displayAllowedWH;
+        this.curentWhareHouseId = displayAllowedWH[0]._id;
+        this.curentWhareHouseName = displayAllowedWH[0].name;
+        
+        if (this.authService.loggedInUser.authorization) {
+          if (this.authService.loggedInUser.authorization.includes("system")) {
+            this.editWharehouses=true;
+          }
+        }
+
+        });
+  }
   // analysisFlagChange(ev){
   //   if(ev.target.checked){
   //     this.newMaterialArrival.value.analysisApproval= true;
@@ -496,9 +522,26 @@ approvedPackgeRemarksInput: Boolean=false;
 
   }
 
+  checkIfShelfExist(ev){
+    
+    let shelf = ev.target.value;
+    let whareHouseId = '5c1124ef2db99c4434914a0e'
+    if(shelf != ''){
+      debugger;
+      this.invtSer.checkIfShelfExist(shelf,whareHouseId).subscribe(data=>{
+        if(data == 'shelfMissing'){
+          this.toastSrv.error('מדף אינו קיים , אנא הקם מדף בניהול מחסן')
+        } else {
+         
+          this.toastSrv.success('נבחר מדף')
+        }
+      })
+    }
+
+  }
 
   addMaterialToStock(){
-    
+    debugger;
     let formToSend= this.newMaterialArrival.value;
     formToSend.lastUpdate= new Date();
     formToSend.lastUpdateUser= this.user;

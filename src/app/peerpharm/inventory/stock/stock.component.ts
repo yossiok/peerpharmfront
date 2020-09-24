@@ -36,6 +36,7 @@ export class StockComponent implements OnInit {
   loadingMovements: boolean = false;
   showItemDetails: boolean = true;
   showLoader: boolean = true;
+  smallLoader: boolean = true;
   openOrderRecommendModal: boolean = false;
   customersModal: boolean = false;
   inventoryNewReqModal: boolean = false;
@@ -45,7 +46,6 @@ export class StockComponent implements OnInit {
   materialPurchases: any[]
   allCustomers: any[]
   componentSuppliers: any[]
-  componentPurchases: any[] = [];
   itemShell: any[];
   components: any[];
   componentsCopy: any[];
@@ -57,7 +57,9 @@ export class StockComponent implements OnInit {
   materialLocations: any[];
   items: any[];
   compositionName: any;
+  currItem: any;
   compositionPercentage: any;
+  recieveItemType: any;
   allComponentsPurchases: any[];
   allMaterialsPurchases: any[];
   expirationBatchDate: any;
@@ -101,11 +103,12 @@ export class StockComponent implements OnInit {
     price: ''
   }
   alterSuppliers: any[];
-  buttonColor: string = 'white';
-  buttonColor2: string = '#B8ECF1';
-  buttonColor3: string = '#B8ECF1';
-  buttonColor4: string = '#B8ECF1';
-  buttonColor5: string = '#B8ECF1';
+  buttonColor: string = '#1111DF';
+  buttonColor2: string = 'white';
+  buttonColor3: string = 'white';
+  fontColor:string = 'white';
+  fontColor2:string = 'black';
+  fontColor3:string = 'black';
   openModal: boolean = false;
   openImgModal: boolean = false;
   openAmountsModal: boolean = false;
@@ -211,7 +214,6 @@ export class StockComponent implements OnInit {
     remarks: '',
     amount: '',
     componentNumber: '',
-    requestNumber: '',
     date: this.formatDate(new Date()),
     user: '',
     type: '',
@@ -301,13 +303,16 @@ export class StockComponent implements OnInit {
     }
 
     if (event.key === 'F7') {
-      if (this.invRequestsModal == true) {
-        this.invRequestsModal = false;
-      } else {
-        this.invRequestsModal = true;
-      }
+      this.procurementRecommendations('minimumStock');
     }
     if (event.key === 'F8') {
+      if (this.itemsMovementModal == true) {
+        this.itemsMovementModal = false;
+      } else {
+        this.itemsMovementModal = true;
+      }
+    }
+    if (event.key === 'F9') {
       if (this.itemsMovementModal == true) {
         this.itemsMovementModal = false;
       } else {
@@ -424,34 +429,19 @@ export class StockComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.getAllPurchaseOrders();
-    this.getAllPurchaseOrdersMaterial();
-    this.getAllItemShell();
+
     this.getUser();
-    // this.getAllCustomers();
     this.getAllSuppliers()
-    // this.getAllMaterialLocations();
     this.filterbyNum.nativeElement.value = '';
-    // this.filterByType.nativeElement='';
-    // this.filterByCategory.nativeElement='';
     let url = this.route.snapshot;
     this.components = [];
-    // this.getAllMaterial();
-    console.log(this.materials)
-
     await this.getUserAllowedWH();
     this.getAllComponents();
-    // this.getAllComps();
 
     if (this.route.queryParams) {
       this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
-    // this.exportMovementsAsXLSX();
-    // this.getAllExpectedArrivalsData();
     this.getColor(new Date);
-
-
-
 
   }
 
@@ -472,15 +462,6 @@ export class StockComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.itemShell, 'itemShell');
   }
 
-
-
-  //************************************************* */
-  //   exportMovementsAsXLSX() {
-  //     this.inventoryService.getAllMovements().subscribe(data=>{
-  //          
-  //       this.excelService.exportAsExcelFile(data, "movements");
-  //         });
-  //  }
   exportCurrTable() {
 
     this.loadingExcel = true;
@@ -749,7 +730,7 @@ export class StockComponent implements OnInit {
   }
 
   purchaseRecommend(component) {
-
+    this.currItem = component;
     this.componentSuppliers = component.alternativeSuppliers
     if (component.itemType == 'material') {
       this.recommandPurchase.type = 'material'
@@ -762,19 +743,25 @@ export class StockComponent implements OnInit {
   }
 
   sendRecommandation() {
-
-    this.recommandPurchase.user = this.authService.loggedInUser.userName;
-    this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data => {
-
-      if (data) {
-        this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
-        this.openOrderRecommendModal = false;
-        this.recommandPurchase.remarks = ""
-        this.recommandPurchase.amount = ""
-        this.recommandPurchase.componentNumber = ""
-
-      }
-    })
+      
+    if(this.recommandPurchase.amount == '' || this.recommandPurchase.supplier == '') {
+      this.toastSrv.error('חובה למלא כמות ותאריך')
+    } else {
+      this.recommandPurchase.user = this.authService.loggedInUser.userName;
+      this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data => {
+  
+        if (data) {
+          this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
+          this.openOrderRecommendModal = false;
+          this.recommandPurchase.remarks = ""
+          this.recommandPurchase.amount = ""
+          this.recommandPurchase.componentNumber = ""
+          this.recommandPurchase.supplier = ""
+  
+        }
+      })
+    }
+  
   }
 
 
@@ -823,81 +810,32 @@ export class StockComponent implements OnInit {
 
 
   getAllComponents() {
-    this.inventoryService.getAllMaterialsArrivals().subscribe(data => {
-      this.allMaterialArrivals = data;
+
       this.startDownloadingInventory();
-    });
+  
   }
 
   startDownloadingInventory() {
     this.inventoryService.startNewItemObservable().subscribe((components) => {
+      if(components.length > 3500) {
+        this.smallLoader = false;
+      }
       if (components.length > 0) {
         this.showLoader = false;
-        components.forEach(c => {
-          if (!c.purchaseOrders) {
-            console.log(c);
-            c.purchaseOrders = [];
-          }
-        });
-  debugger;
         this.components= this.components.concat([...components]);
         if (!this.componentsUnFiltered) {
           this.componentsUnFiltered = [];
         }
         this.componentsUnFiltered= this.componentsUnFiltered.concat([...components]);
-        this.calculateMaterialArrival();
-        this.getAllMaterials();
+        // this.calculateMaterialArrival();
+        this.getAmountsFromShelfs();
       }
     });
   }
-  getAllMaterials() {
-    //continue the rest of the calls after all components downloaded 
-    var allPurchases = this.allComponentsPurchases.filter(order => order.status != 'canceled');
-    for (let i = 0; i < allPurchases.length; i++) {
-      for (let j = 0; j < allPurchases[i].item.length; j++) {
-        for (let k = 0; k < this.components.length; k++) {
-          if (this.components[k].componentN == allPurchases[i].item[j].itemNumber && allPurchases[i].item[j].color != 'lightgreen') {
-            var obj = {
-              purchaseOrder: '',
-              purchaseAmount: '',
-              purchaseArrival: '',
-              purchaseStatus: '',
-              expectedArrival: '',
-              purchaseDate: ''
-            }
-            obj.purchaseAmount = allPurchases[i].item[j].supplierAmount
-            obj.purchaseOrder = allPurchases[i].item[j].orderNumber
-            obj.purchaseArrival = allPurchases[i].item[j].arrivals
-            obj.purchaseStatus = allPurchases[i].status
-            obj.purchaseDate = allPurchases[i].outDate
-            obj.expectedArrival = allPurchases[i].validDate
+  getAmountsFromShelfs() {
 
-            if (obj.purchaseStatus == 'supplierGotOrder') {
-              obj.purchaseStatus = 'ספק קיבל הזמנה'
-            }
-            if (obj.purchaseStatus == 'closed') {
-              obj.purchaseStatus = 'סגור'
-            }
-            if (obj.purchaseStatus == 'sentToSupplier') {
-              obj.purchaseStatus = 'הזמנה נשלחה לספק'
-            }
-            if (obj.purchaseStatus == 'open') {
-              obj.purchaseStatus = 'הזמנה פתוחה'
-            }
-
-            this.components[k].purchaseOrders.push(obj)
-          }
-
-        }
-
-      }
-
-    }
 
     var self = this;
-
-    //why are we using set time out and not async await??
-    setTimeout(() => {
 
       self.inventoryService.getComponentsAmounts().subscribe(res => {
         self.componentsAmount = res;
@@ -906,7 +844,6 @@ export class StockComponent implements OnInit {
           //  adding amounts to all components
           let result = self.componentsAmount.find(elem => elem._id == cmpt.componentN)
           if (result != undefined) {
-            // console.log(result._id + " , " + cmpt.componentN);
             cmpt.amount = result.total;
           }
           if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
@@ -914,23 +851,11 @@ export class StockComponent implements OnInit {
         });
 
         self.components = self.componentsUnFiltered.filter(x => x.itemType == this.stockType);
-        //   this.components.forEach(c => {
-        //     
-        //      let element= this.itemExpectedArrivals.find(x=>x.componentN==c.componentN )
-
-
-        //      c.procurementArr.push(element.remarks)
-
-        //  });
 
         self.setType(this.stockType);
         self.getAllCmptTypesAndCategories();
 
       });
-
-    }, 100);
-
-
 
   }
 
@@ -940,8 +865,6 @@ export class StockComponent implements OnInit {
     this.procuretServ.getAllExpectedArrivals().subscribe(res => {
 
       this.itemExpectedArrivals = res;
-
-
 
     });
   }
@@ -959,6 +882,7 @@ export class StockComponent implements OnInit {
   }
 
   dangerColor(threatment) {
+    console.log("threatment:"+threatment);
     if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
       return "flame";
     }
@@ -1079,7 +1003,7 @@ export class StockComponent implements OnInit {
   }
 
   async updateItemStock(direction) {
-
+  debugger;
     //check enough amount for "out"
     this.newItemShelfPosition = this.newItemShelfPosition.toUpperCase().trim();
     var shelfExsit = false;
@@ -1237,8 +1161,10 @@ export class StockComponent implements OnInit {
 
 
   filterByComponentN(componentN) {
-    this.stockType = 'material';
+    let comp = this.components.find(c=>c.componentN == componentN);
     if (this.componentsUnFiltered)
+
+      this.stockType = comp.itemType
       this.components = this.componentsUnFiltered.filter(c => c.componentN == componentN);
   }
 
@@ -1266,40 +1192,33 @@ export class StockComponent implements OnInit {
 
     switch (type) {
       case 'component':
-        this.buttonColor = "white";
-        this.buttonColor2 = "#B8ECF1";
-        this.buttonColor3 = "#B8ECF1";
-        this.buttonColor4 = "#B8ECF1";
-        this.buttonColor5 = "#B8ECF1";
+        this.buttonColor = "#1111DF";
+        this.buttonColor2 = "white";
+        this.buttonColor3 = "white";
+        this.fontColor = 'white'
+        this.fontColor2 = 'black'
+        this.fontColor3 = 'black'
+
         break;
       case 'material':
-        this.buttonColor = "#B8ECF1";
-        this.buttonColor2 = "white";
-        this.buttonColor3 = "#B8ECF1";
-        this.buttonColor4 = "#B8ECF1";
-        this.buttonColor5 = "#B8ECF1";
+        this.buttonColor = "white";
+        this.buttonColor2 = "#ffaf0e";
+        this.buttonColor3 = "white";
+        this.fontColor = 'black'
+        this.fontColor2 = 'white'
+        this.fontColor3 = 'black'
+
         break;
       case 'product':
-        this.buttonColor = "#B8ECF1";
-        this.buttonColor2 = "#B8ECF1";
-        this.buttonColor3 = "white";
-        this.buttonColor4 = "#B8ECF1";
-        this.buttonColor5 = "#B8ECF1";
+        this.buttonColor = "white";
+        this.buttonColor2 = "white";
+        this.buttonColor3 = "#36bea6";
+        this.fontColor = 'black'
+        this.fontColor2 = 'black'
+        this.fontColor3 = 'white'
+
         break;
-      case 'cartons':
-        this.buttonColor = "#B8ECF1";
-        this.buttonColor2 = "#B8ECF1";
-        this.buttonColor3 = "#B8ECF1";
-        this.buttonColor4 = "white";
-        this.buttonColor5 = "#B8ECF1";
-        break;
-      case 'sticker':
-        this.buttonColor = "#B8ECF1";
-        this.buttonColor2 = "#B8ECF1";
-        this.buttonColor3 = "#B8ECF1";
-        this.buttonColor4 = "#B8ECF1";
-        this.buttonColor5 = "white";
-        break;
+   
     }
     if (this.stockType != type) {
       this.filterbyNum.nativeElement.value = "";
@@ -1319,7 +1238,7 @@ export class StockComponent implements OnInit {
 
 
   filterRows(event, filterType) {
-
+  debugger;
     this.emptyFilterArr = true;
     this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
     this.filterVal = '';
@@ -1411,6 +1330,7 @@ export class StockComponent implements OnInit {
 
 
   searchItemShelfs() {
+    debugger;
     if (this.newItemShelfWH != '') {
       this.inventoryService.getShelfListForItemInWhareHouse(this.resCmpt.componentN, this.newItemShelfWH).subscribe(async res => {
         if (res.length > 0) {
@@ -1439,43 +1359,6 @@ export class StockComponent implements OnInit {
 
     this.sixMonth = 0;
     this.switchModalView(cmptNumber)
-    this.componentPurchases = [];
-    for (let i = 0; i < this.allComponentsPurchases.length; i++) {
-      for (let j = 0; j < this.allComponentsPurchases[i].item.length; j++) {
-        if (this.allComponentsPurchases[i].item[j].itemNumber == cmptNumber) {
-          this.allComponentsPurchases[i].item[j].supplierName = this.allComponentsPurchases[i].supplierName
-          this.allComponentsPurchases[i].item[j].outDate = this.allComponentsPurchases[i].outDate
-          this.componentPurchases.push(this.allComponentsPurchases[i].item[j])
-        }
-
-      }
-    }
-    var today = new Date()
-    var dateSixMonth = new Date();
-    dateSixMonth.setDate(dateSixMonth.getDate() - 180)
-
-    var dateOneYear = new Date();
-    dateOneYear.setDate(dateOneYear.getDate() - 365)
-
-    var dateThreeYears = new Date();
-    dateThreeYears.setDate(dateThreeYears.getDate() - 1095)
-
-
-    var sixMonthPur = this.componentPurchases.filter(c => c.outDate < today.toISOString && c.outDate > dateSixMonth.toISOString())
-    sixMonthPur.forEach(purchase => {
-      this.sixMonth = this.sixMonth + Number(purchase.supplierAmount)
-    });
-
-    var oneYearPur = this.componentPurchases.filter(c => c.outDate < today.toISOString && c.outDate > dateOneYear.toISOString())
-    oneYearPur.forEach(purchase => {
-      this.oneYear = this.oneYear + Number(purchase.supplierAmount)
-    });
-
-    var threeYearsPur = this.componentPurchases.filter(c => c.outDate < today.toISOString && c.outDate > dateThreeYears.toISOString())
-    threeYearsPur.forEach(purchase => {
-      this.threeYears = this.threeYears + Number(purchase.supplierAmount)
-    });
-
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
@@ -1497,10 +1380,9 @@ export class StockComponent implements OnInit {
     this.currModalImgSrc = componentImg;
   }
   async openAmountsData(cmptNumber, cmptId) {
-
+    
     this.openModalHeader = "כמויות פריט במלאי  " + cmptNumber;
     this.openAmountsModal = true;
-    console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.itemIdForAllocation = cmptId;
     //get product (and TBD materials) batchs for select
@@ -1553,16 +1435,9 @@ export class StockComponent implements OnInit {
 
   async openDataMaterial(materNum) {
 
-    this.materialPurchases = []
-    this.materialArrivals = []
-    for (let i = 0; i < this.allMaterialsPurchases.length; i++) {
-      for (let j = 0; j < this.allMaterialsPurchases[i].item.length; j++) {
-        if (this.allMaterialsPurchases[i].item[j].itemNumber == materNum) {
-          this.materialPurchases.push(this.allMaterialsPurchases[i].item[j])
-        }
 
-      }
-    }
+    this.materialArrivals = []
+
     this.materialArrivals = []
     this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data => {
       if (data) {
