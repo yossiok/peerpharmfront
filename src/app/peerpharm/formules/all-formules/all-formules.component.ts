@@ -37,8 +37,8 @@ export class AllFormulesComponent implements OnInit {
   spinnerLoader: boolean = false;
   openFormuleModal: boolean = false;
   updatePercentage: any;
-  euroRate: number = 3.97
-  usdRate: number = 3.41
+  euroRate: number = 4.04
+  usdRate: number = 3.48
   gbpRate: number = 4.4
   today: any;
   updatePhaseRemarks: any;
@@ -189,6 +189,15 @@ export class AllFormulesComponent implements OnInit {
     this.formuleService.getAllFormules().subscribe(data => {
       debugger;
       if (data) {
+        data.forEach(formule => {
+          if(formule.approval == 1){
+            formule.approval = 'אושרה על ידי מרתה'
+          } else if (formule.approval == 2){
+            formule.approval = 'אושרה'
+          } else {
+            formule.approval = 'טרם אושרה'
+          }
+        });
         this.allFormules = data;
         this.allFormulesCopy = data;
         this.showLoader = false;
@@ -215,13 +224,17 @@ export class AllFormulesComponent implements OnInit {
   approveFormule(id, formuleNumber) {
     debugger;
     this.user = this.authService.loggedInUser.userName;
-    if (this.user == "Sigi" || this.user == "akiva" || this.user == "sima") {
+    if (this.user == "martha" || this.user == "akiva" || this.user == "sima") {
       if (confirm("האם לאשר פורמולה מספר: " + formuleNumber)) {
         this.formuleService.approveFormule(id).subscribe(data => {
           debugger;
           if (data) {
             var formule = this.allFormules.find(f => f._id == id);
-            formule.approval = "confirmed"
+            if(formule.approval == 'טרם אושרה'){
+              formule.approval = 'אושרה על ידי מרתה'
+            } else if(formule.approval == 'אושרה על ידי מרתה') {
+              formule.approval = 'אושרה'
+            }
             this.toastSrv.success("פורמולה אושרה בהצלחה !")
           }
         })
@@ -778,7 +791,6 @@ export class AllFormulesComponent implements OnInit {
     if(confirm('האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?')){
       this.formuleService.deleteFormuleById({ id }).subscribe(data => {
 
-        data;
         this.getAllFormules();
       })
     }

@@ -16,6 +16,13 @@
       color:red;
     }
 
+    .firstApproval{
+      background:rgb(255, 181, 45);
+    }
+    .sencondApproval { 
+      background: rgb(13, 161, 13);
+    }
+
     .modal-body { 
       height: 700px !important;
     }
@@ -74,9 +81,7 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  .approvedClass{
-    background:lightgreen;
-  }
+
     .loader {
       color: #4949db;
       font-size: 90px;

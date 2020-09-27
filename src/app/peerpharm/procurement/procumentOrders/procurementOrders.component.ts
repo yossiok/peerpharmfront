@@ -32,6 +32,7 @@ export class ProcurementOrdersComponent implements OnInit {
   printBill: boolean = false;
   orderDetailsModal: boolean = false;
   newPurchaseModal: boolean = false;
+  purchaseRecommendationsModal: boolean = false;
   showImage: boolean = false;
   showLoader: boolean = true;
   showInfoModal: boolean = false;
@@ -144,6 +145,13 @@ export class ProcurementOrdersComponent implements OnInit {
         this.newPurchaseModal = true;
       }
     } 
+    if (event.key === 'F4') {
+      if(this.purchaseRecommendationsModal == true){
+        this.purchaseRecommendationsModal = false;
+      } else {
+        this.purchaseRecommendationsModal = true;
+      }
+    } 
   }
 
   constructor(
@@ -154,13 +162,18 @@ export class ProcurementOrdersComponent implements OnInit {
   ngOnInit() {
     console.log('Enter');
     this.getAllProcurementOrders();
-    this.getComponentsWithPurchaseRec();
+    this.getAllPurchaseRecommends();
        this.getAllSuppliers();
     this.getAllInvoices();
     this.user = this.authService.loggedInUser.firstName;
 
   }
 
+
+  moveToNewPurchase(id){
+    // window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id='+id)
+    window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
+  }
 
 
   loadPurchasesItems(){
@@ -1144,10 +1157,8 @@ if(category != ''){
   }
 
 
-  getComponentsWithPurchaseRec() {
-    debugger
-    this.procurementservice.componentsWithPurchaseRec().subscribe(data => {
-      debugger
+  getAllPurchaseRecommends() {
+    this.procurementservice.getAllPurchaseRecommends().subscribe(data => {
       this.purchaseRecommendations = data;
       this.purchaseRecommendationsCopy = data;
     })

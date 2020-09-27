@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -28,7 +29,6 @@ export class NewProcurementComponent implements OnInit {
   showUpdatePLModal: boolean = false;
   allMaterials: any[];
   itemExistInOrders: any[];
-  allComponents: any[];
   userEmail:any;
   editRow:String = ''
 
@@ -80,14 +80,23 @@ export class NewProcurementComponent implements OnInit {
  
   }
 
-  constructor(private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder, ) {
+  constructor(private route:ActivatedRoute,private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder, ) {
 
   }
 
   ngOnInit() {
     this.getAllSuppliers();
     this.getAllMaterials();
-    this.getAllComponents();
+
+    if (this.route.queryParams) {
+      debugger
+     let recommendId =  this.route.snapshot.queryParams.id
+     this.procurementService.getRecommendById(recommendId).subscribe(data=>{
+      if(data){
+        
+      }
+     })
+    }
     if(this.authService.loggedInUser)
     {
       this.userEmail = this.authService.loggedInUser.userEmail;
@@ -224,11 +233,7 @@ export class NewProcurementComponent implements OnInit {
     })
   }
 
-  getAllComponents() {
-    this.inventoryService.getAllComponents().subscribe(data => {
-      this.allComponents = data;
-    })
-  }
+
   getAllSuppliers() {
     this.supplierService.getSuppliersDiffCollection().subscribe(data => {
       this.allSuppliers = data;

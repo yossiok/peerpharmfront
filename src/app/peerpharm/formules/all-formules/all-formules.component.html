@@ -49,7 +49,7 @@
   </thead>
   <ng-container>
     <tr
-      [ngClass]="{ approvedClass: formule.approval == 'confirmed' }"
+      [ngClass]="{ firstApproval: formule.approval == 'אושרה על ידי מרתה' , secondApproval: formule.approval == 'אושרה' }"
       style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
       *ngFor="let formule of allFormules; let i = index"
     >
@@ -583,6 +583,7 @@
         </h4>
         <p>Date_____________</p>
         <p>Batch____________</p>
+        <p>{{updateFormule.approval}}</p>
       </div>
       <div class="modal-body">
         <table class="table">
