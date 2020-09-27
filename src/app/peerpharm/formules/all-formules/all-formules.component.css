@@ -19,8 +19,8 @@
     .firstApproval{
       background:rgb(255, 181, 45);
     }
-    .sencondApproval { 
-      background: rgb(13, 161, 13);
+    .secondApproval { 
+      background: lightgreen;
     }
 
     .modal-body { 
