@@ -304,6 +304,7 @@ packingMaterialCheck = {
     this.inventoryService.addNewWhareHouse(whareHouseName).subscribe(res => {
       console.log(res)
       if (res.name) {
+        this.toastSrv.success('מחסן נוצר בהצלחה !')
         this.whareHouses.push(res)
       }
     })
@@ -565,7 +566,7 @@ deleteLine(itemFromInvReq,index,ev){
   async checkLineValidation(itemLine,index,ev:any, lineqnt){
     
     let stockType;
-    if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem")  stockType="component";
+    if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem" || this.curentWhareHouseName == "Filling")  stockType="component";
     if(this.curentWhareHouseName == "Rosh HaAyin products")  stockType="product";
     
     var itemLineToAdd= JSON.parse(JSON.stringify(itemLine)) 
