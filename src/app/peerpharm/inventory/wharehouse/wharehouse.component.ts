@@ -566,7 +566,7 @@ deleteLine(itemFromInvReq,index,ev){
   async checkLineValidation(itemLine,index,ev:any, lineqnt){
     
     let stockType;
-    if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem" || this.curentWhareHouseName == "Filling")  stockType="component";
+    if(this.curentWhareHouseName == "Rosh HaAyin" || this.curentWhareHouseName == "Kasem" || this.curentWhareHouseName == "Filling" || this.curentWhareHouseName == "Stickers")  stockType="component";
     if(this.curentWhareHouseName == "Rosh HaAyin products")  stockType="product";
     
     var itemLineToAdd= JSON.parse(JSON.stringify(itemLine)) 
