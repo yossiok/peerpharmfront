@@ -469,14 +469,23 @@
         <table class="table">
           <thead class="bg-info text-white">
             <tr>
+              <th>Details</th>
               <th>Id</th>
               <th>Position</th>
+            
             </tr>
           </thead>
           <tbody>
           <tr *ngFor="let shelf of shelfs;">
+            <td>
+              <tr *ngFor="let item of shelf.shelfsArr">
+                <td><b>Item:</b>{{item.item}}</td>
+                <td><b>Amount:</b>{{item.amount}}</td>
+              </tr>
+            </td>
             <td>{{shelf._id}}</td>
             <td>{{shelf.position}}</td>
+           
           </tr>
         </tbody>
         </table>

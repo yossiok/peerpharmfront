@@ -24,6 +24,7 @@ export class AllFormulesComponent implements OnInit {
   sumFormulePrice: Number;
   formuleMaterialPrices: any[];
   condition: boolean = false;
+  updatePriceModal: boolean = false;
   formulePriceModal: boolean = false;
   updateFormule: any;
   isCollapsed: boolean = false;
@@ -37,10 +38,12 @@ export class AllFormulesComponent implements OnInit {
   spinnerLoader: boolean = false;
   openFormuleModal: boolean = false;
   updatePercentage: any;
-  euroRate: number = 4.04
-  usdRate: number = 3.48
-  gbpRate: number = 4.4
+  euroRate: number = 4.03;
+  usdRate: number = 3.44;
+  gbpRate: number = 4.45;
+  newTempPrice: number;
   today: any;
+  currMaterial: any;
   updatePhaseRemarks: any;
   updateItemRemarks: any;
   updateItemIndex: any;
@@ -101,13 +104,14 @@ export class AllFormulesComponent implements OnInit {
   }
 
   @ViewChild('formuleNumber') formuleNumber: ElementRef;
+  @ViewChild('formuleImpRemarks') formuleImpRemarks: ElementRef;
   @ViewChild('formuleName') formuleName: ElementRef;
   @ViewChild('formuleClient') formuleClient: ElementRef;
   @ViewChild('formuleLastUpdate') formuleLastUpdate: ElementRef;
   @ViewChild('formuleParent') formuleParent: ElementRef;
   @ViewChild('formulePhaseName') formulePhaseName: ElementRef;
   @ViewChild('formulePhaseIns') formulePhaseIns: ElementRef;
-  @ViewChild('formuleCategory') formuleCategory: ElementRef;
+  // @ViewChild('formuleCategory') formuleCategory: ElementRef;
 
 
   @ViewChild('phaseRemarksUpdate') phaseRemarksUpdate: ElementRef;
@@ -189,15 +193,6 @@ export class AllFormulesComponent implements OnInit {
     this.formuleService.getAllFormules().subscribe(data => {
       debugger;
       if (data) {
-        data.forEach(formule => {
-          if(formule.approval == 1){
-            formule.approval = 'אושרה על ידי מרתה'
-          } else if (formule.approval == 2){
-            formule.approval = 'אושרה'
-          } else {
-            formule.approval = 'טרם אושרה'
-          }
-        });
         this.allFormules = data;
         this.allFormulesCopy = data;
         this.showLoader = false;
@@ -229,12 +224,6 @@ export class AllFormulesComponent implements OnInit {
         this.formuleService.approveFormule(id).subscribe(data => {
           debugger;
           if (data) {
-            var formule = this.allFormules.find(f => f._id == id);
-            if(formule.approval == 'טרם אושרה'){
-              formule.approval = 'אושרה על ידי מרתה'
-            } else if(formule.approval == 'אושרה על ידי מרתה') {
-              formule.approval = 'אושרה'
-            }
             this.toastSrv.success("פורמולה אושרה בהצלחה !")
           }
         })
@@ -331,8 +320,11 @@ export class AllFormulesComponent implements OnInit {
       // if(this.formuleParent.nativeElement.value){
       //   this.currentDoc.parent = this.formuleParent.nativeElement.value.trim();
       // }
-      if(this.formuleCategory.nativeElement.value){
-        this.currentDoc.parentName = this.formuleCategory.nativeElement.value.trim();
+      // if(this.formuleCategory.nativeElement.value){
+      //   this.currentDoc.parentName = this.formuleCategory.nativeElement.value.trim();
+      // }
+      if(this.formuleImpRemarks.nativeElement.value){
+        this.currentDoc.impRemarks = this.formuleImpRemarks.nativeElement.value.trim();
       }
 
       if (confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
@@ -529,6 +521,22 @@ export class AllFormulesComponent implements OnInit {
 
   }
 
+  openUpdateTempPriceModal(material){
+  
+    this.updatePriceModal = true
+    this.currMaterial = material
+  }
+
+  updateTempPrice(){
+    debugger;
+    this.currMaterial
+
+    let material = this.formuleMaterialPrices.find(m=>m.itemNumber == this.currMaterial.itemNumber);
+    material.price = Number(this.newTempPrice) * Number(material.percentage)/100
+    this.sumFormulePrice = this.sumFormulePrice+material.price
+    this.updatePriceModal = false;
+  }
+
   saveItemEdit(currDoc, index) {
     debugger;
     this.currentDoc;
@@ -578,6 +586,8 @@ export class AllFormulesComponent implements OnInit {
 
 
   updateDocument() {
+    debugger;
+
 
     this.formuleService.updateFormulesForm(this.currentDoc).subscribe(data => {
 

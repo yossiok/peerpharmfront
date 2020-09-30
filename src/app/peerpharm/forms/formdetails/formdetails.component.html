@@ -485,13 +485,13 @@
             <tr>
                 <td>ייצור מלא</td>
                 <td>
-                  <input *ngIf="form.leftBatchWeight ==''" style="width:100px" type="checkbox"  [disabled]="disabledValue" [checked]='true'/>
-                  <input *ngIf="form.leftBatchWeight !=''" style="width:100px" type="checkbox"  [disabled]="disabledValue" [checked]='false'/>
+                  <input *ngIf="form.batchStatus =='full'" style="width:100px" type="checkbox"  [disabled]="disabledValue" [checked]='true'/>
+                  <input *ngIf="form.batchStatus !='full'" style="width:100px" type="checkbox"  [disabled]="disabledValue" [checked]='false'/>
                 </td>
                 <td>ייצור חלקי</td>
                 <td>
-                    <input *ngIf="form.leftBatchWeight !=''"  style="width:100px" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='true'/>
-                    <input *ngIf="form.leftBatchWeight ==''"  style="width:100px" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='false'/>
+                    <input *ngIf="form.batchStatus =='part'"  style="width:100px" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='true'/>
+                    <input *ngIf="form.batchStatus !='part'"  style="width:100px" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='false'/>
                 </td>
             </tr>
             <tr *ngIf="form.leftBatchWeight !=''">

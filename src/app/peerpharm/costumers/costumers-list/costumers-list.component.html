@@ -1,4 +1,5 @@
 
+
 <div class="container-fluid text-center bg-light">
   <div class="row">
     <div class="col-12">
@@ -55,7 +56,7 @@
         <tbody id="table_body">
           <tr style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let costumer of costumers; let i=index">
             <td>{{i}}</td>
-            <td (click)='openDetails(i)' style="cursor:pointer;">{{costumer.costumerId}}</td>
+            <td (click)='openDetails(i)' style="cursor:pointer;"><span class="text-info">{{costumer.costumerId}}</span></td>
             <td dir="rtl">{{costumer.costumerName}}</td>
             <td>{{costumer.brand}}</td>
             <td>{{costumer.invoice}}</td>
@@ -223,6 +224,50 @@
       
       </div>
   </mat-tab>
+
+  <mat-tab label="Personal Details">
+    <div class="container">
+      <div class="row bg-info">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <h2 class="text-white">פרטים אישיים</h2>
+        </div>
+        <div class="col-1">
+          <i (click)="showCustomerModal = false" style="font-size: 23px;padding: 8px;" class="fa fa-times text-white"></i>
+        </div>
+      </div>
+      
+
+      <div class="row mt-4">
+        <div style="height:600px" class="col-12">
+          <table class="table table-hover">
+            <thead class="bg-info text-white">
+              <tr>
+                <th>מספר הזמנה</th>
+                <th>מספר פריט</th>
+                <th>שם פריט</th>
+                <th>כמות</th>
+                <th>שלב</th>
+                <th>סטטוס</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of customerOrders">
+                <td>{{order.orderNumber}}</td>
+                <td>{{order.itemNumber}}</td>
+                <td>{{order.itemName}}</td>
+                <td>{{order.amount}}</td>
+                <td>{{order.stage}}</td>
+                <td>{{order.status}}</td>
+               
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+
   <mat-tab label="Price List">Price List..</mat-tab>
 </mat-tab-group>
 </div>

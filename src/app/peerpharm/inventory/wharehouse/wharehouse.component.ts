@@ -323,6 +323,7 @@ packingMaterialCheck = {
   // }
 
   searchShelf(shelf) {
+    debugger;
     shelf = shelf.toUpperCase();
     console.log(shelf)
     if (shelf == "") {
@@ -330,6 +331,21 @@ packingMaterialCheck = {
     }
     else {
       this.shelfs = this.shelfs.filter(x => x.position.toLowerCase().includes(shelf.toLowerCase()));
+      this.inventoryService.getShelfByShelfId(this.shelfs[0]._id).subscribe(data=>{
+       let tempArr = []
+          data.forEach(shelf => {
+           let obj = {
+             item:shelf.item,
+             amount:shelf.amount
+           }
+           tempArr.push(obj)
+          });
+          this.shelfs[0].shelfsArr = tempArr
+          this.shelfs
+
+
+          console.log(this.shelfs)
+      })
     }
   }
 

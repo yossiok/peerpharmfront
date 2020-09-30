@@ -126,6 +126,11 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
 
   }
+  getShelfByShelfId(itemShellId){
+    let url = this.baseUrl + "itemShell?itemShellId="+itemShellId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+
+  }
 
   addNewCmpt(cmptObj):Observable<any>{ 
     let url = this.baseUrl + "component/add";

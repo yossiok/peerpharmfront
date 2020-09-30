@@ -4,10 +4,6 @@
       text-align: center !important;
   }
 
-  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-    background-color: #2962FF;
-   box-shadow: inset 0px 0px 4px 1px black;
-}
 
 
 h2.peerLoader {

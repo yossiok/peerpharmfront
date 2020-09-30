@@ -3,6 +3,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CostumersService } from '../../../services/costumers.service';
 import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from 'src/app/services/excel.service';
+import { OrdersService } from 'src/app/services/orders.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ export class CostumersListComponent implements OnInit {
   showCustomerModal:boolean = false;
   closeResult: string;
   costumers: any[];
+  customerOrders: any[];
   contacts: any[];
   contact = {
     name: '',
@@ -41,7 +43,7 @@ export class CostumersListComponent implements OnInit {
 
   @ViewChild("container")  container: ElementRef=null;
 
-  constructor(private excelService:ExcelService,private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
+  constructor(private orderService:OrdersService,private excelService:ExcelService,private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
   
 
@@ -75,8 +77,10 @@ export class CostumersListComponent implements OnInit {
   }
 
   openDetails(i) { 
+    debugger;
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
+    this.getOrderDetailsForCustomer(this.costumer.costumerName)
     this.showCustomerModal = true;
     // this.contact = this.costumers[i].contact[0];
  
@@ -116,6 +120,14 @@ export class CostumersListComponent implements OnInit {
         this.costumers.push(this.costumer);
       }
       else this.toastSrv.error("Failed" , res);
+    })
+  }
+
+  getOrderDetailsForCustomer(customer){
+    this.orderService.getOrderByCustomer(customer).subscribe(data=>{
+    if(data){
+      this.customerOrders = data;
+    }
     })
   }
 

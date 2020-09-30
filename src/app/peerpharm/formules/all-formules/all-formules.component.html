@@ -35,8 +35,10 @@
     <tr>
       <td>#</td>
       <td>Number</td>
+      <td>Remarks</td>
       <td>Name</td>
-      <td>Formule Category</td>
+      
+      <!-- <td>Formule Category</td> -->
       <td>Date Created</td>
       <td>Formule Type</td>
       <td>Approval</td>
@@ -49,7 +51,7 @@
   </thead>
   <ng-container>
     <tr
-      [ngClass]="{ firstApproval: formule.approval == 'אושרה על ידי מרתה' , secondApproval: formule.approval == 'אושרה' }"
+      [ngClass]="{ firstApproval: formule.approval == 1 , secondApproval: formule.approval == 2 }"
       style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
       *ngFor="let formule of allFormules; let i = index"
     >
@@ -67,18 +69,25 @@
       </td>
 
       <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+        {{ formule.impRemarks }}
+      </td>
+      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+        <textarea #formuleImpRemarks type="text" [value]="formule.impRemarks"></textarea>
+      </td>
+
+      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
         {{ formule.formuleName }}
       </td>
       <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
         <input #formuleName type="text" [value]="formule.formuleName" />
       </td>
 
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+      <!-- <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
         {{ formule.formuleCategory }}
       </td>
       <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
         <input #formuleCategory type="text" [value]="formule.formuleCategory" />
-      </td>
+      </td> -->
 
       <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
         {{ formule.date | date: "dd/MM/yyyy" }}
@@ -807,6 +816,7 @@
             <th>Material Number</th>
             <th>Material Name</th>
             <th>Percentage</th>
+            <th></th>
             <th>Material Price</th>
           </tr>
         </thead>
@@ -815,6 +825,10 @@
             <td>{{ material.itemNumber }}</td>
             <td>{{ material.itemName }}</td>
             <td>{{ material.percentage }}</td>
+            <td (click)="openUpdateTempPriceModal(material)" *ngIf="material.price == 'צריך לעדכן מחיר ספק'"> 
+              עדכון זמני
+            </td>
+            <td *ngIf="material.price != 'צריך לעדכן מחיר ספק'"></td>
             <td
               (click)="navigateToInventory(material.itemNumber)"
               [ngClass]="{
@@ -823,6 +837,7 @@
             >
               {{ material.price }}
             </td>
+           
           </tr>
           <tr>
             <td></td>
@@ -834,4 +849,20 @@
       </table>
     </div>
   </div>
+</div>
+
+<div *ngIf="updatePriceModal == true" style="top:50px" class="w-25 h-25 rounded shadow-lg mx-auto my-auto fixed-top p-4 text-center border border-info bg-white">
+  <div class="row">
+    <div class="col-2">
+      <i (click)="updatePriceModal = false" class="fa fa-times"></i>
+    </div>
+    <div class="col-5">
+      <input [(ngModel)]="newTempPrice" class="form-control" type="number" placeholder="Enter price (NIS)">
+    </div>
+    <div class="col-3">
+      <button (click)="updateTempPrice()" class="btn btn-info form-control">Submit</button>
+    </div>
+    <div class="col-2"></div>
+  </div>
+
 </div>
