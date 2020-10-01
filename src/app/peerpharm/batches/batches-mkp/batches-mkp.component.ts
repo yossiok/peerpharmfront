@@ -37,6 +37,7 @@ export class BatchesMkpComponent implements OnInit {
     weightKg:"",
     ph:"",
     batchNumber:"",
+    type:''
   }
 
   constructor(private toastSr:ToastrService,private itemService:ItemsService,private batchService:BatchesService) { }
@@ -128,6 +129,7 @@ export class BatchesMkpComponent implements OnInit {
   this.currentOrderN = this.newMkpBatch.order
   this.currentPH = this.newMkpBatch.ph
   this.currentWeightKG =this.newMkpBatch.weightKg
+  
 
 
 
@@ -172,6 +174,7 @@ export class BatchesMkpComponent implements OnInit {
  
  debugger;
   if(this.newMkpBatch.batchNumber != "") {
+    this.newMkpBatch.type = 'makeup'
     this.batchService.addNewMkpBatch(this.newMkpBatch).subscribe(data=>{
       this.mkpBatches = data;
       setTimeout(() => {

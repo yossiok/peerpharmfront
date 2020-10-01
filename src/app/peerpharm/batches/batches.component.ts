@@ -24,6 +24,7 @@ export class BatchesComponent implements OnInit {
   constructor(private itemService: ItemsService, private modalService: NgbModal, private authService: AuthService, private batchService: BatchesService, private excelService: ExcelService, private toastSrv: ToastrService) { }
   // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
   batches: Array<any>;
+  mkpBatches: Array<any>;
   batchesCopy: Array<any>;
   lastBatchToExport: String;
   userValueUpdate: String;
@@ -34,6 +35,7 @@ export class BatchesComponent implements OnInit {
   currBatch: any;
   user: UserInfo;
   alowUserEditBatches: Boolean = false;
+  tableType:String = 'batch'
   ifConfirmed: Boolean = false;
   editValues: Boolean = false;
   showLoader: Boolean = true;
@@ -185,9 +187,26 @@ export class BatchesComponent implements OnInit {
     debugger;
     this.batchService.getAllBatchesYear().subscribe((res) => {
       console.log(res);
-      this.batches = res;
+      this.batches = res.filter(b=>b.type !='makeup');
+      this.mkpBatches = res.filter(b=>b.type =='makeup');
       this.batchesCopy = res;
       this.batches.map(batch => {
+        if (batch.weightKg != null && batch.weightQtyLeft != null) {
+          if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
+          else if (batch.scheduled == 'yes') batch.color = 'yellow'
+
+          else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
+
+          else batch.color = "white";
+
+          if (res.length == res.length) {
+
+            this.hasMoreItemsToload = false;
+            this.showLoader = false;
+          }
+        }
+      });
+      this.mkpBatches.map(batch => {
         if (batch.weightKg != null && batch.weightQtyLeft != null) {
           if (batch.weightQtyLeft == 0) batch.color = 'Aquamarine';
           else if (batch.scheduled == 'yes') batch.color = 'yellow'
