@@ -142,8 +142,8 @@
                   <th><b>Change</b></th>
                   <th><b>Close Order</b></th>
                   <th></th>
-                  <th><b>Payments Status</b></th>
-                  <th><b>Payment Remark</b></th>
+                  <!-- <th><b>Payments Status</b></th>
+                  <th><b>Payment Remark</b></th> -->
 
 
                 </tr>
@@ -208,7 +208,7 @@
                   </td>
 
                   <td><button class="btn btn-info" (click)="printOrder(line)">Print</button></td>
-                  <td>
+                  <!-- <td>
                     <input [(ngModel)]="line.paymentStatus" (change)="changePaymentStatus($event,line.orderNumber)"
                       list="payments" class="form-control">
                     <datalist id="payments">
@@ -219,7 +219,7 @@
 
                     </datalist>
                   </td>
-                  <td><label class="form-control">{{line.paymentRemark}}</label></td>
+                  <td><label class="form-control">{{line.paymentRemark}}</label></td> -->
 
 
                   <!-- <td><button class="btn btn-info form-control" (click)="orderInput.click()">O</button></td> -->
@@ -248,7 +248,7 @@
 
     </ng-template>
   </ngb-tab>
-  <ngb-tab title="Purchase Recommendation">
+  <!-- <ngb-tab title="Purchase Recommendation">
     <ng-template ngbTabContent>
 
       <div class="container-fluid bg-white text-center">
@@ -351,7 +351,7 @@
 
 
     </ng-template>
-  </ngb-tab>
+  </ngb-tab> -->
   <ngb-tab title="Purchase Arrivals">
     <ng-template ngbTabContent>
       <div class="container-fluid text-center">

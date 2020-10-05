@@ -171,8 +171,8 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   moveToNewPurchase(id){
-    // window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id='+id)
-    window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
+    window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id='+id)
+    // window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
   }
 
 

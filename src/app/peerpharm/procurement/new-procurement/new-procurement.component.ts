@@ -70,7 +70,8 @@ export class NewProcurementComponent implements OnInit {
     remarks: '',
     comaxNumber: '',
     recommendRemarks:'',
-    userEmail:''
+    userEmail:'',
+    recommendId:'',
 
   }
 
@@ -148,6 +149,7 @@ export class NewProcurementComponent implements OnInit {
   this.newItem.itemNumber = recommendation.componentNumber;
   this.newProcurement.orderType = recommendation.type
   this.newItem.supplierAmount = recommendation.amount
+  this.newProcurement.recommendId = recommendation._id
   this.findMaterialByNumber();
 
   }
