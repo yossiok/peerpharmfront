@@ -223,8 +223,6 @@ export class ProcurementOrdersComponent implements OnInit {
       });
     });
 
-
-
   }
   filterPurchases(event, type) {
     debugger;
@@ -325,6 +323,34 @@ export class ProcurementOrdersComponent implements OnInit {
         purchase.paymentRemark = data.paymentRemark
       }
       })
+    }
+  }
+
+  filterRecByType(ev){
+    let type = ev.target.value;
+   switch (type) {
+     case 'all':
+       this.purchaseRecommendations = this.purchaseRecommendationsCopy
+       break;
+    
+    case 'components':
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p=>p.type == 'component')
+      break;
+
+    case 'materials':
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p=>p.type == 'material')
+      break;
+    
+   }
+  }
+
+  filterRecByNumber(ev){
+
+    let number = ev.target.value
+    if(number != ''){
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p=>p.componentNumber == number)
+    } else {
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy;
     }
   }
 
@@ -1148,8 +1174,10 @@ if(category != ''){
     } else {
       if(this.filterStatus == 'ongoing'){
         this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
+      } else if (this.filterStatus == undefined) {
+        this.procurementData = this.procurementDataCopy
       } else {
-        this.procurementData = this.procurementDataCopy.filter(p=>p.status == this.filterStatus)
+        this.procurementData = this.procurementDataCopy.filter(p=>p.status != 'closed')
       }
      
     }

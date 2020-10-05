@@ -125,6 +125,7 @@ import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 import { MaterialsComponent } from './production/materials/materials.component';
 import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 import { InventoryComponent } from './inventory/inventory/inventory.component';
+import { ProjectsComponent } from './schedule/projects/projects.component';
 
 
 
@@ -235,7 +236,8 @@ import { InventoryComponent } from './inventory/inventory/inventory.component';
     ProcurementOrdersComponent,
     ProcurementOrderItemComponent,
     NewProcurementComponent,
-    WharehouseComponent, 
+    WharehouseComponent,
+    ProjectsComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
     MaterialArrivalComponent,

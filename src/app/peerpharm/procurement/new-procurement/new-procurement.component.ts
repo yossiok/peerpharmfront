@@ -88,12 +88,12 @@ export class NewProcurementComponent implements OnInit {
     this.getAllSuppliers();
     this.getAllMaterials();
 
-    if (this.route.queryParams) {
+    if (this.route.snapshot.queryParams.id != undefined) {
       debugger
      let recommendId =  this.route.snapshot.queryParams.id
      this.procurementService.getRecommendById(recommendId).subscribe(data=>{
       if(data){
-        
+        this.fillPurchaseDetails(data)
       }
      })
     }
@@ -141,6 +141,15 @@ export class NewProcurementComponent implements OnInit {
       this.procurementSupplier = false;
       this.procurementItems = true;
     }
+  }
+
+  fillPurchaseDetails(recommendation){
+  debugger;
+  this.newItem.itemNumber = recommendation.componentNumber;
+  this.newProcurement.orderType = recommendation.type
+  this.newItem.supplierAmount = recommendation.amount
+  this.findMaterialByNumber();
+
   }
 
   findMaterialByNumber() {

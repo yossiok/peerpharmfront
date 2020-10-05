@@ -103,7 +103,7 @@ export class StockComponent implements OnInit {
     price: ''
   }
   alterSuppliers: any[];
-  buttonColor: string = '#1111DF';
+  buttonColor: string = '#2962FF';
   buttonColor2: string = 'white';
   buttonColor3: string = 'white';
   fontColor:string = 'white';
@@ -180,6 +180,7 @@ export class StockComponent implements OnInit {
   transportationItem: FormGroup;
   loadingExcel: Boolean = false;
   allSuppliers: any[];
+  allPurchases: any[];
 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
@@ -383,6 +384,8 @@ export class StockComponent implements OnInit {
     }
   }
 
+
+
   addSupplierToMaterial() {
 
     this.resMaterial.alternativeSuppliers.push(this.supplier)
@@ -432,6 +435,7 @@ export class StockComponent implements OnInit {
 
     this.getUser();
     this.getAllSuppliers()
+    this.getAllPurchases()
     this.filterbyNum.nativeElement.value = '';
     let url = this.route.snapshot;
     this.components = [];
@@ -442,7 +446,17 @@ export class StockComponent implements OnInit {
       this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
     this.getColor(new Date);
+  
+  }
 
+  getAllPurchases(){
+    debugger;
+    this.procuretServ.getAllPurchases().subscribe(data=>{
+      if(data){
+        debugger;
+        this.allPurchases = data;
+      }
+    })
   }
 
 
@@ -1192,7 +1206,7 @@ export class StockComponent implements OnInit {
 
     switch (type) {
       case 'component':
-        this.buttonColor = "#1111DF";
+        this.buttonColor = "#2962FF";
         this.buttonColor2 = "white";
         this.buttonColor3 = "white";
         this.fontColor = 'white'

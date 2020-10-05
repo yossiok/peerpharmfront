@@ -1235,8 +1235,28 @@
   </div>
 </div>
 
-  <div class="row">
-    <div class="col-12">
+<div class="row mt-1">
+  <div class="col-3">
+  <select (change)="filterRecByType($event)" class="form-control">
+    <option selected="true" disabled="disabled">Choose Type</option>   
+    <option value="all">All</option> 
+    <option value="components">Components</option> 
+    <option value="materials">Materials</option> 
+  </select>
+  </div>
+  <div class="col-3">
+  <input (change)="filterRecByNumber($event)" type="text" class="form-control" placeholder="Search By Number">
+  </div>
+  <div class="col-3">
+
+  </div>
+  <div class="col-3">
+
+  </div>
+</div>
+
+  <div class="row mt-1">
+    <div style="height:700px;overflow-y: scroll;" class="col-12">
       <table class="table table-hover">
         <thead class="bg-warning text-white">
           <tr>
@@ -1257,7 +1277,7 @@
               <td>{{recommend.date | date: 'dd/MM/yyyy'}}</td>
               <td>{{recommend.remarks}}</td>
               <td>{{recommend.user}}</td>
-              <td><button (click)="moveToNewPurchase(recommend._id)" class="btn btn-primary form-control">Order</button></td>
+              <td><button (click)="moveToNewPurchase(recommend._id)" class="btn btn-success form-control">Order</button></td>
             </tr>
         </tbody>
       </table>

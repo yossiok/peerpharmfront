@@ -63,6 +63,8 @@ import { ScreenGuard } from '../guards/screen.guard';
 import { MaterialsComponent } from './production/materials/materials.component';
 import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 import { InventoryComponent } from './inventory/inventory/inventory.component';
+import { ProjectsComponent } from './schedule/projects/projects.component';
+
 
 
 
@@ -109,6 +111,13 @@ export const PeerPharmRputs: Routes =[
       title: 'Filling Schedule'
     },
     component: ScheduleComponent
+  },
+  {
+    path: 'schedule/projects',
+    data: {
+      title: 'Projects'
+    },
+    component: ProjectsComponent
   },
   {
     path: 'schedule/printschedule',
@@ -282,7 +291,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',

@@ -82,6 +82,11 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/getAllPurchaseRecommends';
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
+  getAllPurchases(): Observable<any> {
+    
+    let url = this.baseUrl + 'procurementOrderController/getAllPurchases';
+    return this.http.get(url).pipe( map(reponse => reponse.json()));
+  }
   getRecommendById(recommendId): Observable<any> {
     
     let url = this.baseUrl + 'procurementOrderController?getRecommendById='+recommendId;

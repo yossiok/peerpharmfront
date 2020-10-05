@@ -103,6 +103,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
+      {
+        path: '/peerpharm/schedule/projects',
+        title: 'Projects',
+        icon: ' fab fa-page4',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
       // {
       //   path: '/peerpharm/schedule/packingschedule',
       //   title: 'Packing',

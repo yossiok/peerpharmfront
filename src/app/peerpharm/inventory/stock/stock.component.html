@@ -348,39 +348,27 @@
                 <button (click)="purchaseRecommend(component)" class="btn btn-warning form-control">המלצה לרכש</button>
               </td>
               <td>
-
-                <!-- <div id="table-wrapper">
-                  <table style="font-size:10px;max-height:100px;" class="table stockTable table-fixed"
-                    *ngIf="component.purchaseOrders && component.purchaseOrders.length > 0">
-                    <thead>
-                      <tr>
-                        <th
-                          style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
-                          הזמנת רכש</th>
-                        <th
-                          style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
-                          תאריך הזמנה</th>
-                        <th
-                          style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
-                          כמות</th>
-                        <th
-                          style="background:rgb(196, 191, 191) !important;border:1px solid black;font-size: 10px;padding:0;">
-                          צפי הגעה</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <ng-container *ngFor="let comp of component.purchaseOrders" >
-                      <tr  *ngIf="comp.purchaseStatus != 'סגור' && comp.purchaseStatus != 'closed'" >
-                        <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseOrder}}</td>
-                        <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseDate | date : 'dd/MM/yyyy'}}</td>
-                        <td style="border:1px solid black;font-size: 10px;padding:0;">{{comp.purchaseAmount}}</td>
-                        <td [ngClass]="{'arrivalWeekNotice': comp.expectedArrival < today.toISOString()}" style="border:1px solid black;font-size: 10px;padding:0;">{{comp.expectedArrival | date: 'dd/MM/yyyy'}}</td>
-                    
-                      </tr>
-                    </ng-container>
-                    </tbody>
-                  </table>
-                </div> -->
+                <!-- <table style="zoom:0.7" class="table table-sm">
+                  <thead style="background: rgb(235, 190, 108);" class="text-white">
+                    <tr>
+                      <th>Ordered</th>
+                      <th>Amount</th>
+                      <th>Arrival Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let purchase of allPurchases">
+                    <ng-container *ngFor="let item of purchase.item">
+                    <tr *ngIf="item.itemNumber == component.componentN" >
+                      <td>{{purchase.outDate | date: 'dd/MM/yyyy'}}</td>
+                      <td>{{item.supplierAmount}}</td>
+                      <td></td>
+                    </tr>
+                  </ng-container>
+                  </ng-container>
+                  </tbody>
+                </table> -->
+                
 
               </td>
               <!-- <td style="width:12%;">

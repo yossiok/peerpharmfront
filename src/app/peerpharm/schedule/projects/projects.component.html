@@ -1,0 +1,221 @@
+<div class="container-fluid text-center bg-white p-3">
+  <div class="row mt-1">
+    <div class="col-12">
+      <h1 class="text-info">Projects Management</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <button (click)="newProjectModal = true" class="btn btn-success form-control">Start New Project</button>
+    </div>
+    <div class="col-10"></div>
+  </div>
+
+  <div class="row">
+    <div style="overflow:scroll" class="col-12">
+
+    <table style="width:250%" class="table table-hover mt-5">
+    <thead class="bg-info text-white">
+      <tr>
+        <th></th>
+        <th>תיאום אספקה</th>
+        <th>ייצור</th>
+        <th>מסירה צפי אספקה ללקוח</th>
+        <th>וידוא קבלת חומר</th>
+        <th>וידוא קבלת קומפ'</th>
+        <th>הזמנת קומפוננטים</th>
+        <th>הזמנת חומרים</th>
+        <th>גרפיקה</th>
+        <th>התקבל רישיון</th>
+        <th>נשלח לרישיון</th>
+        <th>מוצר אב</th>
+        <th>מספר הזמנת פארפארם</th>
+        <th>מספר הזמנת לקוח</th>
+        <th>תמחור</th>
+        <th>אישור אצווה</th>
+        <th>אישור קומפוננט</th>
+        <th>מק"ט</th>
+        <th>הערות/שינויים</th>
+        <th>שם מוצר</th>
+        <th>סדרה</th>
+        <th>מותג</th>
+        <th>לקוח</th>
+        <th>מנהל/ת פרויקט</th>
+        <th>#</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of allProjects;let i = index">
+
+        <td  *ngIf="EditRowId != project._id"></td>
+        <td *ngIf="EditRowId == project._id">
+          <i style="font-size: 20px;" (click)="saveEdit(project._id)" class="fa fa-save text-success"></i>
+        </td>
+
+      <td [ngClass]="doneOrNot(project.deliveryCoordination)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.deliveryCoordination}}</td>
+      <td [ngClass]="doneOrNot(project.deliveryCoordination)" *ngIf="EditRowId == project._id">
+        <input #projectDelCoor [value]="project.deliveryCoordination" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.production)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.production}}</td>
+      <td [ngClass]="doneOrNot(project.production)" *ngIf="EditRowId == project._id">
+        <input #projectProduction [value]="project.production" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.expectedCustomerDelivery)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.expectedCustomerDelivery}}</td>
+      <td [ngClass]="doneOrNot(project.expectedCustomerDelivery)" *ngIf="EditRowId == project._id">
+        <input #projectExpDel [value]="project.expectedCustomerDelivery" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.materialArrivals)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.materialArrivals}}</td>
+      <td [ngClass]="doneOrNot(project.materialArrivals)" *ngIf="EditRowId == project._id">
+        <input #projectMatArrivals [value]="project.materialArrivals" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.compArrivals)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.compArrivals}}</td>
+      <td [ngClass]="doneOrNot(project.compArrivals)" *ngIf="EditRowId == project._id">
+        <input #projectCompArrivals [value]="project.compArrivals" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.componentOrder)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.componentOrder}}</td>
+      <td [ngClass]="doneOrNot(project.componentOrder)" *ngIf="EditRowId == project._id">
+        <input #projectCompOrder [value]="project.componentOrder" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.materialOrder)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.materialOrder}}</td>
+      <td [ngClass]="doneOrNot(project.materialOrder)" *ngIf="EditRowId == project._id">
+        <input #projectMatOrder [value]="project.materialOrder" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.graphic)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.graphic}}</td>
+      <td [ngClass]="doneOrNot(project.graphic)" *ngIf="EditRowId == project._id">
+        <input #projectGraphic [value]="project.graphic" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.licenseReceived)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.licenseReceived}}</td>
+      <td [ngClass]="doneOrNot(project.licenseReceived)" *ngIf="EditRowId == project._id">
+        <input #projectLicRecieved [value]="project.licenseReceived" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.sentToLicense)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.sentToLicense}}</td>
+      <td [ngClass]="doneOrNot(project.sentToLicense)" *ngIf="EditRowId == project._id">
+        <input #projectSentToLic [value]="project.sentToLicense" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.fatherProduct)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.fatherProduct}}</td>
+      <td [ngClass]="doneOrNot(project.fatherProduct)" *ngIf="EditRowId == project._id">
+        <input #projectfatherProd [value]="project.fatherProduct" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.peerpharmOrderNumber)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.peerpharmOrderNumber}}</td>
+      <td [ngClass]="doneOrNot(project.peerpharmOrderNumber)" *ngIf="EditRowId == project._id">
+        <input #projectPeerOrder [value]="project.peerpharmOrderNumber" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.customerOrderNumber)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.customerOrderNumber}}</td>
+      <td [ngClass]="doneOrNot(project.customerOrderNumber)"  *ngIf="EditRowId == project._id">
+        <input #projectCustumerOrder [value]="project.customerOrderNumber" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.pricing)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.pricing}}</td>
+      <td [ngClass]="doneOrNot(project.pricing)" *ngIf="EditRowId == project._id">
+        <input #projectPricing [value]="project.pricing" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.batchConfirm)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.batchConfirm}}</td>
+      <td [ngClass]="doneOrNot(project.batchConfirm)" *ngIf="EditRowId == project._id">
+        <input #projectBatchConfirm [value]="project.batchConfirm" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.compConfirm)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.compConfirm}}</td>
+      <td [ngClass]="doneOrNot(project.compConfirm)" *ngIf="EditRowId == project._id">
+        <input #projectCompConfirm [value]="project.compConfirm" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.itemNumber)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.itemNumber}}</td>
+      <td [ngClass]="doneOrNot(project.itemNumber)" *ngIf="EditRowId == project._id">
+        <input #projectItemNumber [value]="project.itemNumber" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.remarks)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.remarks}}</td>
+      <td [ngClass]="doneOrNot(project.remarks)" *ngIf="EditRowId == project._id">
+        <input #projectRemarks [value]="project.remarks" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.productName)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.productName}}</td>
+      <td [ngClass]="doneOrNot(project.productName)" *ngIf="EditRowId == project._id">
+        <input #projectProduct [value]="project.productName" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.serie)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.serie}}</td>
+      <td [ngClass]="doneOrNot(project.serie)" *ngIf="EditRowId == project._id">
+        <input #projectSerie [value]="project.serie" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.brand)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.brand}}</td>
+      <td [ngClass]="doneOrNot(project.brand)" *ngIf="EditRowId == project._id">
+        <input #projectBrand [value]="project.brand" class="form-control">
+      </td>
+
+      <td [ngClass]="doneOrNot(project.customer)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.customer}}</td>
+      <td [ngClass]="doneOrNot(project.customer)" *ngIf="EditRowId == project._id">
+        <input #projectCustomer [value]="project.customer" class="form-control">
+      </td>
+      
+      <td style="background:lightblue">{{project.manager}}</td>
+      <td style="background:lightblue"><b>{{i+1}}</b></td>
+     
+      
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+
+
+<div *ngIf="newProjectModal == true" style="top:80px" class="w-50 h-50 container p-5 bg-light text-center rounded fixed-top shadow-lg mx-auto my-auto border border-success">
+  <div class="row mt-3">
+    <div class="col-1">
+    
+    </div>
+    <div class="col-10">
+      <h3 class="text-success">New Project</h3>
+    </div>
+    <div class="col-1">
+      <i (click)="newProjectModal = false" class="fa fa-times text-success"></i>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-2"></div>
+    <div class="col-4">
+      <label class="form-control border border-success mb-0">מנהל/ת פרויקט</label>
+      <label class="form-control border border-success mb-0">לקוח</label>
+      <label class="form-control border border-success mb-0">מותג</label>
+      <label class="form-control border border-success mb-0">סדרה</label>
+      <label class="form-control border border-success mb-0">שם מוצר</label>
+    </div>
+    <div class="col-4">
+      <input [(ngModel)]="newProject.manager" type="text" class="form-control">
+      <input [(ngModel)]="newProject.customer" type="text" class="form-control">
+      <input [(ngModel)]="newProject.brand" type="text" class="form-control">
+      <input [(ngModel)]="newProject.serie" type="text" class="form-control">
+      <input [(ngModel)]="newProject.productName" type="text" class="form-control">
+    </div>
+    <div class="col-2"></div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-3"></div>
+    <div class="col-3">
+      <button (click)="addNewProject()" class="btn btn-success form-control">Add Project</button>
+    </div>
+    <div class="col-3">
+      <button (click)="newProjectModal = false" class="btn btn-danger form-control">Cancel</button>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>

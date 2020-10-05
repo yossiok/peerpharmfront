@@ -21,6 +21,16 @@ export class ScheduleService {
     
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
+  addNewProject(newProject): Observable<any> {
+    let url = this.baseUrl + "schedule/newProject";
+    
+    return this.http.post(url, JSON.stringify(newProject), this.options).pipe(map(res => res.json()))
+  }
+  updateProject(updatedProj): Observable<any> {
+    let url = this.baseUrl + "schedule/updateProject";
+    
+    return this.http.post(url, JSON.stringify(updatedProj), this.options).pipe(map(res => res.json()))
+  }
   // setNewMkpProductionSchedule(schedule): Observable<any> {
   //   let url = this.baseUrl + "mkpSchedule/add";
     
@@ -94,6 +104,11 @@ export class ScheduleService {
     return this.http.post(url, JSON.stringify(scheduleArr), this.options).pipe(map(res => res.json()))
   }
   
+
+  getAllProjects() {
+    let url = this.baseUrl + "schedule/getAllProjects";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getOpenPrintSchedule() {
     let url = this.baseUrl + "printSchedule?open=yes";

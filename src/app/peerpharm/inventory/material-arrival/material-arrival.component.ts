@@ -531,6 +531,7 @@ approvedPackgeRemarksInput: Boolean=false;
       this.invtSer.checkIfShelfExist(shelf,whareHouseId).subscribe(data=>{
         if(data == 'shelfMissing'){
           this.toastSrv.error('מדף אינו קיים , אנא הקם מדף בניהול מחסן')
+          this.newMaterialArrival.controls.position.setValue('')
         } else {
          
           this.toastSrv.success('נבחר מדף')
