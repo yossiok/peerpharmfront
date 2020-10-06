@@ -93,6 +93,7 @@ export class ItemdetaisComponent implements OnInit {
     subName: '',
     discriptionK: '',
     proRemarks: '',
+    batchN:'',
     impRemarks: '',
     boxImage:'',
     stickerImage:'',

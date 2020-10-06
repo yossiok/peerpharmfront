@@ -72,7 +72,7 @@
           <th style="padding:5px">Order Number
             <i class="ti-exchange-vertical" (click)="sortOrdersByOrderNumber()" style="cursor:pointer"></i>
           </th>
-          <th style="width:20%; padding:5px">Costumer <select style="display: inline-block;" class="form-control w-50" (change)="filterOrdersByArea($event)">
+          <th style="width:18%; padding:5px">Costumer <select style="display: inline-block;" class="form-control w-50" (change)="filterOrdersByArea($event)">
               <option></option>
               <option value="דרום">דרום</option>
               <option value="מרכז">מרכז</option>
@@ -83,7 +83,8 @@
             </select></th>
           <th style="padding:5px">Order date</th>
           <th style="padding:5px">Delivery Date</th>
-          <th style="width:15%; padding:5px">Remarks</th>
+          <th style="padding:5px">Customer Order</th>
+          <th style="width:12%; padding:5px">Remarks</th>
           <th style="padding:5px ; width: 7%">
             <select style="display: inline-block;" class="form-control w-75"  (change)="searchByType($event)">
               <option value="">Type-All</option>
@@ -114,12 +115,12 @@
 
             </a>
           </td>
-          <td style="width:20%;" *ngIf="order._id===EditRowId">
+          <td style="width:18%;" *ngIf="order._id===EditRowId">
             <input #costumer type='text' [value]="order.costumer" style='width:170px'>
             <input [value]='order._id' #id type='hidden'>
             <input [value]='order.orderNumber' #orderNumber type='hidden'>
           </td>
-          <td style="width:20%;" *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.costumer}}</td>
+          <td style="width:18%;" *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.costumer}}</td>
 
           <td *ngIf="order._id===EditRowId">
             <input #orderDate type='text' [value]="order.orderDate" style='width:170px'>
@@ -130,11 +131,12 @@
             <input #deliveryDate type='text' [value]="order.deliveryDate" style='width:170px'>
           </td>
           <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.deliveryDate}}</td>
+          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.customerOrderNum}}</td>
 
-          <td style="width:15%;" *ngIf="order._id===EditRowId">
+          <td style="width:10%;" *ngIf="order._id===EditRowId">
             <input #orderRemarks type='text' [value]="order.orderRemarks" style='width:170px'>
           </td>
-          <td style="width: 15%; height: 100%; overflow-wrap: normal; overflow-y: auto;" *ngIf="order._id!==EditRowId"
+          <td style="width: 10%; height: 100%; overflow-wrap: normal; overflow-y: auto;" *ngIf="order._id!==EditRowId"
             (click)="edit(order._id)">{{order.orderRemarks}}</td>
 
           <!-- <td *ngIf="order._id===EditRowId">

@@ -1,6 +1,9 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { ScheduleService } from 'src/app/services/schedule.service';
 import { ToastrService } from 'ngx-toastr';
+import { ItemsService } from 'src/app/services/items.service';
+import { OrdersService } from 'src/app/services/orders.service';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
   selector: 'app-projects',
@@ -12,33 +15,12 @@ export class ProjectsComponent implements OnInit {
 
   newProjectModal:Boolean = false;
   EditRowId:String = '';
-  allProjects:any[]= []
+  allProjects:any[]=[]
+  bottleAlloAmount:Number;
+  bottleAmount:Number
+  itemComponents:any[]=[];
 
-  newProject = {
-    manager:'',
-    customer:'',
-    brand:'',
-    serie:'',
-    productName:'',
-    remarks:'',
-    itemNumber:'',
-    compConfirm:'',
-    batchConfirm:'',
-    pricing:'',
-    customerOrderNumber:'',
-    peerpharmOrderNumber:'',
-    fatherProduct:'',
-    sentToLisence:'',
-    lisenceRecieved:'',
-    graphic:'',
-    materialOrder:'',
-    componentOrder:'',
-    compArrivals:'',
-    materialArrivals:'',
-    expectedCustomerDelivery:'',
-    production:'',
-    deliveryCoordination:'',
-  }
+
 
   @ViewChild('projectCustomer') projectCustomer: ElementRef;
   @ViewChild('projectBrand') projectBrand: ElementRef;
@@ -62,14 +44,46 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('projectExpDel') projectExpDel: ElementRef;
   @ViewChild('projectProduction') projectProduction: ElementRef;
   @ViewChild('projectDelCoor') projectDelCoor: ElementRef;
+  @ViewChild('projecItemApproval') projecItemApproval: ElementRef;
 
 
-
-  constructor(private toastSrv:ToastrService,private scheduleService:ScheduleService) { }
+  newProject = {
+    manager:'',
+    customer:'',
+    brand:'',
+    serie:'',
+    productName:'',
+    remarks:'',
+    itemNumber:'',
+    compConfirm:false,
+    batchConfirm:'',
+    pricing:'',
+    customerOrderNumber:'',
+    peerpharmOrderNumber:'',
+    fatherProduct:'',
+    sentToLicense:'',
+    licenseReceived:'',
+    graphic:false,
+    materialOrder:'',
+    componentOrder:'',
+    compArrivals:'',
+    materialArrivals:'',
+    expectedCustomerDelivery:'',
+    production:'',
+    deliveryCoordination:'',
+  }
+  constructor(private invService:InventoryService,private orderService:OrdersService,private itemService:ItemsService,private toastSrv:ToastrService,private scheduleService:ScheduleService) { }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('');
+  }
+
+  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
+
+    if (event.key === 'Enter') {
+      this.saveEdit(this.EditRowId)
+    }
   }
 
   ngOnInit() {
@@ -78,6 +92,7 @@ export class ProjectsComponent implements OnInit {
 
 
   edit(id){
+
     if(id != ''){
       this.EditRowId = id
     } else {
@@ -88,6 +103,8 @@ export class ProjectsComponent implements OnInit {
   addNewProject(){
     
     if(this.newProject.manager != ''){
+      this.newProject.compConfirm = false;
+      this.newProject.graphic = false;
       this.scheduleService.addNewProject(this.newProject).subscribe(data=>{
         this.toastSrv.success('פרויקט נוסף בהצלחה !')
         this.newProjectModal = false;
@@ -104,11 +121,77 @@ export class ProjectsComponent implements OnInit {
   }
 
   doneOrNot(element){
-    
-    if(element != ''){
-      return 'green'
-    } else {
+      if(element == '' || element == false || element == undefined){
       return 'red'
+    } else {
+      return 'green'
+    }
+  }
+
+
+
+  getItemDetails(ev,id){
+    debugger;
+    if(ev.target.value != ''){
+      this.itemService.getItemData(ev.target.value).subscribe(data=>{
+        debugger;
+        if(data[0].bottleNumber != '' && data[0].bottleNumber != '---'){
+        this.itemComponents.push(data[0].bottleNumber)
+        }
+        if(data[0].capNumber != '' && data[0].capNumber != '---'){
+        this.itemComponents.push(data[0].capNumber)
+        }
+        if(data[0].boxNumber != '' && data[0].boxNumber != '---'){
+        this.itemComponents.push(data[0].boxNumber)
+        }
+        if(data[0].sealNumber != '' && data[0].sealNumber != '---'){
+        this.itemComponents.push(data[0].sealNumber)
+        }
+        if(data[0].pumpNumber != '' && data[0].pumpNumber != '---'){
+        this.itemComponents.push(data[0].pumpNumber)
+        }
+        if(this.itemComponents.length > 0){
+          this.projectCompConfirm.nativeElement.checked = true
+       
+        }
+        if(data[0].batchN != '' || data[0].batchN != '---'){
+          this.projectBatchConfirm.nativeElement.value = data[0].batchN
+        }
+        if(data[0].motherP != '' || data[0].motherP != '---'){
+        this.projectfatherProd.nativeElement.value = data[0].motherP
+        }
+     
+      })
+
+      this.saveEdit(id);
+    }
+   
+  }
+
+  getOrderDetails(ev,project){
+    debugger;
+    if(ev.target.value != ''){
+      this.orderService.getOrderByNumber(ev.target.value).subscribe(data=>{
+        if(data){
+          this.projectCustumerOrder.nativeElement.value = data[0].customerOrderNum
+          this.orderService.getAmountsForProject(ev.target.value,project._id,project.itemNumber).subscribe(data=>{
+            debugger;
+            
+            var allEqual = data.every( v => v.hasEnoughAmount === true )
+            if(allEqual == true){
+              this.projectCompOrder.nativeElement.value = 'true'
+              this.projectCompArrivals.nativeElement.value = 'true'
+              this.saveEdit(project._id)
+            } else {
+              this.projectCompOrder.nativeElement.value = ''
+              this.projectCompArrivals.nativeElement.value = ''
+              
+            }
+          })
+        }
+    
+      })
+     
     }
   }
 
@@ -121,7 +204,7 @@ export class ProjectsComponent implements OnInit {
     productName:this.projectProduct.nativeElement.value,
     remarks:this.projectRemarks.nativeElement.value,
     itemNumber:this.projectItemNumber.nativeElement.value,
-    compConfirm:this.projectCompConfirm.nativeElement.value,
+    compConfirm:this.projectCompConfirm.nativeElement.checked,
     batchConfirm:this.projectBatchConfirm.nativeElement.value,
     pricing:this.projectPricing.nativeElement.value,
     customerOrderNumber:this.projectCustumerOrder.nativeElement.value,
@@ -129,7 +212,7 @@ export class ProjectsComponent implements OnInit {
     fatherProduct:this.projectfatherProd.nativeElement.value,
     sentToLisence:this.projectSentToLic.nativeElement.value,
     lisenceRecieved:this.projectLicRecieved.nativeElement.value,
-    graphic:this.projectGraphic.nativeElement.value,
+    graphic:this.projectGraphic.nativeElement.checked,
     materialOrder:this.projectMatOrder.nativeElement.value,
     componentOrder:this.projectCompOrder.nativeElement.value,
     compArrivals:this.projectCompArrivals.nativeElement.value,
@@ -137,9 +220,10 @@ export class ProjectsComponent implements OnInit {
     expectedCustomerDelivery:this.projectExpDel.nativeElement.value,
     production:this.projectProduction.nativeElement.value,
     deliveryCoordination:this.projectDelCoor.nativeElement.value,
+    components:this.itemComponents,
     id:id,
     }
-
+    debugger;
     this.scheduleService.updateProject(objectToUpdate).subscribe(data=>{
     if(data){
       this.toastSrv.success('פרויקט עודכן בהצלחה !');

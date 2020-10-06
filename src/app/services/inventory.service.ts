@@ -185,6 +185,10 @@ addNewRecommendation(purchaseRecommend):Observable<any>{
     let url = this.baseUrl + "itemShell?amounts=yes";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getComponentAmount(componentN):Observable<any>{
+    let url = this.baseUrl + "itemShell?getComponentAmount="+componentN;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   //get item amounts in Shelfs 
   getAmountOnShelfs(itemNubmer):Observable<any>{  
     

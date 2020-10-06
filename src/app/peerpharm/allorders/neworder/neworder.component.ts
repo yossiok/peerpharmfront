@@ -55,6 +55,7 @@ export class NeworderComponent implements OnInit {
       costumerInternalId: [""],
       orderdate: [null, Validators.required],
       remarks: [null],
+      customerOrderNum: [null],
       type: [null],
       user:[null,Validators.required],
       area:[null]
@@ -86,12 +87,14 @@ export class NeworderComponent implements OnInit {
       costumerInternalId:post.costumerInternalId,
       deliveryDate: post.delivery,
       orderRemarks: post.remarks,
+      customerOrderNum:post.customerOrderNum,
       type: post.type,
       status: 'open',
       stage: 'new',
       onHoldDate: null,
       user:post.user
     }
+    debugger;
     this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
  
       this.orderId = res._id;
@@ -106,7 +109,7 @@ export class NeworderComponent implements OnInit {
 }
 
   addNewItemOrder(post) {
- 
+    debugger;
    if(this.shippingDetails.shippingWay == "") {
      this.toastSrv.error("Please Add Shipping Details")
    } else {

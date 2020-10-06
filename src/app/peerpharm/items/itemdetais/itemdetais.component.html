@@ -54,6 +54,9 @@
       <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Customer' | translate }}</label>
       </div>
+      <div style="margin:3px;">
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Batch' | translate }}</label>
+      </div>
 
       <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Jumping' | translate }} {{ 'Remarks' | translate }}</label>
@@ -101,6 +104,11 @@
         <datalist id="customers">
           <option *ngFor="let customer of allCostumers" [value]="customer.costumerId">{{customer.costumerName}}</option>
         </datalist>
+      </div>
+
+      <div>
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.batchN id="batchN"
+          style="width:480px">
       </div>
 
       <div>
