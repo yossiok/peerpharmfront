@@ -124,7 +124,6 @@ import { RandomcolorModule } from 'angular-randomcolor';
 import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 import { MaterialsComponent } from './production/materials/materials.component';
 import { NewBatchComponent } from './batches/new-batch/new-batch.component';
-import { InventoryComponent } from './inventory/inventory/inventory.component';
 import { ProjectsComponent } from './schedule/projects/projects.component';
 
 
@@ -176,7 +175,6 @@ import { ProjectsComponent } from './schedule/projects/projects.component';
     CheckingformsComponent,
     AdminpanelComponent,
     AllFormulesComponent,
-    InventoryComponent,
     FormuleProductionComponent,
     ChangeShelfComponent,
     FormuleComponent,
