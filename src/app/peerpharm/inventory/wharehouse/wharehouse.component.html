@@ -547,11 +547,18 @@
         <ng-container *ngIf="!multiInputLines">
           <form class="form-horizontal itemsList" [formGroup]="itemLine">
             <div class="form-group row">
-              <div class="col-sm-3"></div>
+              <div class="col-sm-2"></div>
               <div class="col-sm-1">
                 <label>מספר פריט</label>
                 <input type="text" class="form-control" placeholder="Item Number" formControlName="itemNumber"
                   (blur)="searchItemShelfs($event)">
+              </div>
+              <div *ngIf="dir == 'in'" class="col-sm-1">
+                <label>הזמנת רכש</label>
+                <select type="text" class="form-control" formControlName="purchaseNumber">
+                  <option *ngFor="let order of itemPurchaseOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
+                </select>
+               
               </div>
               <div *ngIf="dir == 'out'" class="col-sm-1">
                 <label>מספר הזמנה</label>

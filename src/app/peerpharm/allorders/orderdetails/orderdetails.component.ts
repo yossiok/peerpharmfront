@@ -1704,6 +1704,22 @@ debugger;
 
   }
 
+  filterOrderItems(ev){
+    this.ordersItems = this.ordersItemsCopy
+    let status = ev.target.value;
+    if(status == 'done'){
+      this.ordersItems = this.ordersItems.filter(i=>i.status == status )
+    }
+    if(status == 'open'){
+      this.ordersItems = this.ordersItems.filter(i=>i.status != 'done' )
+    } 
+    if(status == 'all'){
+      this.ordersItems = this.ordersItemsCopy
+    }
+   
+  }
+
+
 
 
     /****************DRAG DROP FUNCS************/
@@ -1791,7 +1807,6 @@ debugger;
       },500);
     
     }
-
 
 
 

@@ -63,6 +63,11 @@
 
 
 <input matInput placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
+<select (change)="filterOrderItems($event)" class="form-control">
+  <option value="all">All</option>
+  <option value="open">Open</option>
+  <option value="done">Closed</option>
+</select>
 
 <mat-tab-group>
   <mat-tab label="Order Items"> <table style="border: 1px solid black;" class='table' *ngIf="loadData==false">

@@ -24,6 +24,7 @@ import { CostumersService } from 'src/app/services/costumers.service';
 import { upperFirst } from 'lodash';
 
 
+
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.component.html',
@@ -435,7 +436,6 @@ export class StockComponent implements OnInit {
 
     this.getUser();
     this.getAllSuppliers()
-    this.getAllPurchases()
     this.filterbyNum.nativeElement.value = '';
     let url = this.route.snapshot;
     this.components = [];
@@ -450,13 +450,20 @@ export class StockComponent implements OnInit {
   }
 
   getAllPurchases(){
-    debugger;
-    this.procuretServ.getAllPurchases().subscribe(data=>{
-      if(data){
+
+      this.procuretServ.getAllPurchases().subscribe(data=>{
         debugger;
-        this.allPurchases = data;
-      }
-    })
+        this.components.forEach(comp => {
+      
+        let allPurchases = data.filter(x=>x.item.filter(x=>x.itemNumber== comp.componentN).length>0)
+        comp.purchaseOrders = allPurchases
+        if(comp.purchaseOrders.length > 0){
+          debugger;
+        }
+       });
+      })
+    
+    
   }
 
 
@@ -831,8 +838,9 @@ export class StockComponent implements OnInit {
 
   startDownloadingInventory() {
     this.inventoryService.startNewItemObservable().subscribe((components) => {
-      if(components.length > 3500) {
+      if(components.length < 500) {
         this.smallLoader = false;
+        this.getAllPurchases();
       }
       if (components.length > 0) {
         this.showLoader = false;

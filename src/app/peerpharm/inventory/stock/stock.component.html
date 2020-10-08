@@ -348,7 +348,7 @@
                 <button (click)="purchaseRecommend(component)" class="btn btn-warning form-control">המלצה לרכש</button>
               </td>
               <td>
-                <!-- <table style="zoom:0.7" class="table table-sm">
+                 <table style="zoom:0.7" class="table table-sm">
                   <thead style="background: rgb(235, 190, 108);" class="text-white">
                     <tr>
                       <th>Ordered</th>
@@ -357,17 +357,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <ng-container *ngFor="let purchase of allPurchases">
+          
+                    <ng-container *ngFor="let purchase of component.purchaseOrders">
                     <ng-container *ngFor="let item of purchase.item">
-                    <tr *ngIf="item.itemNumber == component.componentN" >
+                    <tr *ngIf="item.itemNumber == component.componentN">
                       <td>{{purchase.outDate | date: 'dd/MM/yyyy'}}</td>
                       <td>{{item.supplierAmount}}</td>
-                      <td></td>
+                      <td>{{item.validDate | date: 'dd/MM/yyyy'}}</td>
                     </tr>
                   </ng-container>
                   </ng-container>
                   </tbody>
-                </table> -->
+                </table> 
                 
 
               </td>

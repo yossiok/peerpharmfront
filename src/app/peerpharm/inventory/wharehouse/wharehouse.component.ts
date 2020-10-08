@@ -9,6 +9,7 @@ import { InventoryRequestService } from 'src/app/services/inventory-request.serv
 import { map } from 'rxjs-compat/operator/map';
 import { last } from '../../../../../node_modules/@angular/router/src/utils/collection';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Procurementservice } from 'src/app/services/procurement.service';
 
 
 @Component({
@@ -74,6 +75,7 @@ packingMaterialCheck = {
   curentWhareHouseName: string = ""  //wharehouse id to show
   changeWh: boolean = false;
   shelfs: any = [];
+  itemPurchaseOrders: any = [];
   shelfsCopy: any = [];
   dir: string = "in";
   screen: String = "stkManagment";
@@ -83,7 +85,7 @@ packingMaterialCheck = {
   loadingToTable:boolean=false;
   editWharehouses: Boolean=false;
   
-  constructor(private modalService:NgbModal,private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService , private inventoryReqService: InventoryRequestService ,private toastSrv: ToastrService, ) { 
+  constructor(private procurementSrv:Procurementservice,private modalService:NgbModal,private fb: FormBuilder,private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService , private inventoryReqService: InventoryRequestService ,private toastSrv: ToastrService, ) { 
 
 // new ----------------------
     this.itemLine = fb.group({
@@ -380,6 +382,7 @@ packingMaterialCheck = {
 // NEW - insted of all the rendering
 // ********************************************************************************************************************
   async searchItemShelfs(ev){
+    debugger;
     if(!this.multiInputLines && ev!=""){
       await this.inventoryService.getShelfListForItemInWhareHouse(ev.target.value, this.curentWhareHouseId).subscribe(async res => {
         if(res.length>0){
@@ -390,6 +393,11 @@ packingMaterialCheck = {
           this.currItemShelfs.push("NO SHELFS WITH ITEM # "+ev.target.value);
         }
       });  
+      
+      this.procurementSrv.getAllItemPurchases(ev.target.value).subscribe(data=>{
+      this.itemPurchaseOrders = data;
+      })
+      
     }
     else if(this.multiInputLines){
       this.multiLinesArr.forEach(async element => {

@@ -609,9 +609,9 @@
               <th scope="col">No.</th>
               <th scope="col">Execute</th>
               <th scope="col">Batch Number</th>
-              <th scope="col">Item Instructions</th>
+              <!-- <th scope="col">Item Instructions</th> -->
+              <th scope="col">Percentage</th>
               <th scope="col">Weight</th>
-              <th scope="col">Weight%</th>
               <th scope="col">Temp</th>
               <th scope="col">Phase Instructions</th>
             </tr>
@@ -638,11 +638,13 @@
                   <td></td>
                   <td></td>
 
-                  <td>{{ item.remarks }}</td>
+                  <!-- <td>{{ item.remarks }}</td> -->
                   <!-- <td>{{item.quantity}}&nbsp; {{item.quantityUnits}}</td> -->
                   <td></td>
-                  <td>{{ item.percentage }}</td>
+                  <td>{{ item.percentage }}%</td>
                   <!-- <td>{{item.temp}}</td> -->
+                  <td></td>
+                  <td></td>
                   <td
                     *ngIf="i == 0"
                     [attr.rowspan]="phase.items.length"
@@ -651,8 +653,7 @@
                     {{ phase.remarks }}
                   </td>
 
-                  <td></td>
-                  <td></td>
+                
                 </tr>
               </ng-container>
             </ng-container>
