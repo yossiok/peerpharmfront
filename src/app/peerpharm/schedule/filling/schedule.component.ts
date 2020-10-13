@@ -430,6 +430,7 @@ export class ScheduleComponent implements OnInit {
     this.currentType = type;
   }
 
+ 
   getAllUnpackedSchedules(){
     this.scheduleService.getUnpackedSchedules().subscribe(data=>{
       debugger
@@ -586,6 +587,18 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.findIndex(sced => sced._id == id)
     ].cmptsStatus = 'true';
   }
+
+  markMkpDone(id){
+    debugger;
+    this.scheduleService.setMpkDone(id).subscribe(data=>{
+      if(data){
+        let schedule = this.scheduleData.find(s=>s._id == id);
+        schedule.status = data.status;
+        schedule.color = 'Aquamarine'
+      }
+    })
+  }
+
 
 
   // Modal Functions

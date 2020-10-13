@@ -298,6 +298,7 @@
                 <button class="btn btn-info m-r-10 border border-dark" type="button" (click)="openPrintBarkod(content, line)">
                   Print Barcode
                 </button>
+                <i *ngIf="typeShown === 'mkp2'" (click)="markMkpDone(line._id)" class="fa fa-check"></i>
               </td>
               <td *ngIf="line._id === EditRowId">
                 <i class="ti-save text-info m-r-10" (click)="updateSchedule()"></i>
