@@ -13,9 +13,24 @@
   </div>
 
   <div class="row">
+    <div class="col-2"></div>
+    <div class="col-2"></div>
+    <div class="col-2">
+      <select (change)="filterByManager($event)" class="form-control">
+        <option selected="true" disabled="disabled">Filter By Manager</option>    
+        <option value="all">All</option>
+        <option [value]="manager" *ngFor="let manager of managers">{{manager}}</option>
+        </select>
+    </div>
+    <div class="col-2"></div>
+    <div class="col-2"></div>
+    <div class="col-2"></div>
+  </div>
+
+  <div class="row">
     <div style="overflow:scroll" class="col-12">
 
-    <table style="width:250%" class="table table-hover mt-5">
+    <table dir="rtl" style="width:250%" class="table table-hover mt-5">
     <thead class="bg-info text-white">
       <tr>
         <th></th>
@@ -46,7 +61,7 @@
         <th>#</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody >
       <tr *ngFor="let project of allProjects;let i = index">
 
         <td  *ngIf="EditRowId != project._id"></td>
@@ -206,7 +221,10 @@
     </div>
     <div class="col-4">
       <input [(ngModel)]="newProject.manager" type="text" class="form-control">
-      <input [(ngModel)]="newProject.customer" type="text" class="form-control">
+      <input list="costumers" [(ngModel)]="newProject.customer" type="text" class="form-control">
+      <datalist id="costumers">
+      <option *ngFor="let costumers of allCostumers" [value]="costumers.costumerName">{{costumers.costumerName}}</option>
+      </datalist>
       <input [(ngModel)]="newProject.brand" type="text" class="form-control">
       <input [(ngModel)]="newProject.serie" type="text" class="form-control">
       <input [(ngModel)]="newProject.productName" type="text" class="form-control">

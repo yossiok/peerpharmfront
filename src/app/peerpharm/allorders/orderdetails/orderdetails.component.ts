@@ -1318,6 +1318,7 @@ debugger;
           if (scheduleLine.mkp == "tube") scheduleLine.productionLine = "12";
           if (scheduleLine.mkp == "laser") scheduleLine.productionLine = "13";
           if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
+          if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
       
 
           this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));

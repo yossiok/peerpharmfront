@@ -25,6 +25,7 @@ inventoryReqForm: FormGroup;
 itemLine: FormGroup;
 inventoryUpdateList:Array<any>=[];// to show added items to request
 itemNumber:String='';
+currImageComp:String='';
 amount:Number;
 relatedOrder:String='';
 today:Date=new Date;
@@ -412,6 +413,14 @@ packingMaterialCheck = {
         });
       });
     }
+      if(ev.target.value != ''){
+        this.inventoryService.getCmptByNumber(ev.target.value,'component').subscribe(data=>{
+          this.currImageComp = data[0].img
+          }) 
+      } else {
+        this.currImageComp = ''
+      }
+ 
     
  }
 

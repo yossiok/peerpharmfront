@@ -27,3 +27,10 @@ a{
     text-align: center;
     
 }
+.compImgInWh {
+    width:45px;
+    transition: 0.3s;
+}
+.compImgInWh:hover{
+    transform: scale(2);
+}

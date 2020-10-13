@@ -207,7 +207,7 @@ export class NewProcurementComponent implements OnInit {
           }
 
         }
-        this.itemExistInOrders = data;
+        this.itemExistInOrders = data.filter(p=>p.status != 'closed');
 
         if (data.length > 0) {
           this.openOrdersModal = true;

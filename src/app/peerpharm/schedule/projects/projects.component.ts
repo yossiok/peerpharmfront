@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { CostumersService } from 'src/app/services/costumers.service';
 
 @Component({
   selector: 'app-projects',
@@ -16,6 +17,9 @@ export class ProjectsComponent implements OnInit {
   newProjectModal:Boolean = false;
   EditRowId:String = '';
   allProjects:any[]=[]
+  allProjectsCopy:any[]=[]
+  allCostumers:any[]
+  managers:any[]
   bottleAlloAmount:Number;
   bottleAmount:Number
   itemComponents:any[]=[];
@@ -71,8 +75,9 @@ export class ProjectsComponent implements OnInit {
     expectedCustomerDelivery:'',
     production:'',
     deliveryCoordination:'',
+    dateCreated:this.formatDate(new Date())
   }
-  constructor(private invService:InventoryService,private orderService:OrdersService,private itemService:ItemsService,private toastSrv:ToastrService,private scheduleService:ScheduleService) { }
+  constructor(private costumerSrv:CostumersService,private invService:InventoryService,private orderService:OrdersService,private itemService:ItemsService,private toastSrv:ToastrService,private scheduleService:ScheduleService) { }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -88,6 +93,21 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllProjects();
+    this.getAllCostumers();
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
 
@@ -100,6 +120,16 @@ export class ProjectsComponent implements OnInit {
     }
   }
 
+  filterByManager(ev){
+    if(ev.target.value == 'all'){
+    this.allProjects = this.allProjectsCopy
+    } else {
+      this.allProjects = this.allProjectsCopy.filter(p=>p.manager == ev.target.value);
+    }
+   
+
+  }
+
   addNewProject(){
     
     if(this.newProject.manager != ''){
@@ -109,6 +139,7 @@ export class ProjectsComponent implements OnInit {
         this.toastSrv.success('פרויקט נוסף בהצלחה !')
         this.newProjectModal = false;
         this.getAllProjects();
+        this. resetFields();
       debugger;
       })
     } else{
@@ -116,8 +147,33 @@ export class ProjectsComponent implements OnInit {
     }
   }
 
+  getAllCostumers(){
+    this.costumerSrv.getAllCostumers().subscribe(data=>{
+      this.allCostumers = data;
+    })
+  }
+
+
+
+  resetFields(){
+    this.newProject.manager = ''
+    this.newProject.customer = ''
+    this.newProject.brand = ''
+    this.newProject.serie = ''
+    this.newProject.productName = ''
+  }
+
   getAllProjects(){
-    this.scheduleService.getAllProjects().subscribe(data=> this.allProjects = data)
+    this.scheduleService.getAllProjects().subscribe(data=>{
+      let tempArr = []
+      data.forEach(project => {
+      tempArr.push(project.manager);
+      
+      });
+      this.managers = [...new Set(tempArr)];
+      this.allProjects = data
+      this.allProjectsCopy = data
+    })
   }
 
   doneOrNot(element){
@@ -210,8 +266,8 @@ export class ProjectsComponent implements OnInit {
     customerOrderNumber:this.projectCustumerOrder.nativeElement.value,
     peerpharmOrderNumber:this.projectPeerOrder.nativeElement.value,
     fatherProduct:this.projectfatherProd.nativeElement.value,
-    sentToLisence:this.projectSentToLic.nativeElement.value,
-    lisenceRecieved:this.projectLicRecieved.nativeElement.value,
+    sentToLicense:this.projectSentToLic.nativeElement.value,
+    licenseReceived:this.projectLicRecieved.nativeElement.value,
     graphic:this.projectGraphic.nativeElement.checked,
     materialOrder:this.projectMatOrder.nativeElement.value,
     componentOrder:this.projectCompOrder.nativeElement.value,
@@ -241,8 +297,8 @@ export class ProjectsComponent implements OnInit {
       project.customerOrderNumber = data.customerOrderNumber
       project.peerpharmOrderNumber = data.peerpharmOrderNumber
       project.fatherProduct = data.fatherProduct
-      project.sentToLisence = data.sentToLisence
-      project.lisenceRecieved = data.lisenceRecieved
+      project.sentToLicense = data.sentToLicense
+      project.licenseReceived = data.licenseReceived
       project.graphic = data.graphic
       project.materialOrder = data.materialOrder
       project.componentOrder = data.componentOrder
