@@ -19,7 +19,6 @@ import {TranslateModule, TranslateLoader, TranslateCompiler, TranslateParser, Mi
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
-import {MakeupdetailsComponent} from './allorders/makeupdetails/makeupdetails.component'
 import {ScheduleComponent} from './schedule/filling/schedule.component';
 import {BarcodePrintComponent} from './schedule/barcode-print/barcode-print.component';
 import {ItemslistComponent} from './items/itemslist/itemslist.component'
@@ -190,7 +189,6 @@ import { AgGridModule } from 'ag-grid-angular';
     AllordersComponent,
     OrderdetailsComponent,
     NewFormuleComponent,
-    MakeupdetailsComponent,
     NeworderComponent, 
     NeworderComponent,
     NewBatchComponent,

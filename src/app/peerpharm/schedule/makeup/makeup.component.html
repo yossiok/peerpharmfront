@@ -1,204 +1,75 @@
- <div (click)='setType("powder")' class="navtab">Make Up</div>
-<div (click)='setType("wet")' class="navtab">Reports</div> 
-<!-- <div (click)='setType("lipstick")' class="navtab">אודם</div>  -->
+<div class="container-fluid text-center bg-white p-2">
+  <div class="row mt-3">
+    <div class="col-12">
+      <h1 class="text-info">Make Up Production</h1>
+    </div>
+  </div>
 
+  <div class="row">
+    <div class="col-2">
+      <button (click)="addScheduleModal = true" class="btn btn-info form-control">Add Schedule</button>
+    </div>
+    <div class="col-2"></div>
+    <div class="col-2"></div>
+    <div class="col-2"></div>
+    <div class="col-2"></div>
+    <div class="col-2"></div>
+  </div>
 
+  <div class="row mt-4">
+    <div class="col-12">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>לקוח</th>
+            <th>מוצר</th>
+            <th>תאריך</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let scd of allMkpSchedules">
+            <td>{{scd.costumer}}</td>
+            <td>{{scd.productName}}</td>
+            <td>{{scd.date | date: 'dd/MM/yyyy'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
+<div *ngIf="addScheduleModal == true" style="top:80px" class="w-25 h-25 container p-5 bg-light text-center rounded fixed-top shadow-lg mx-auto my-auto border border-success">
+  <div class="row">
+    <div class="col-1">
+      <i (click)="addScheduleModal = false" class="fa fa-times"></i>
+    </div>
+    <div class="col-10"></div>
+    <div class="col-1"></div>
+  </div>
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-5">
+    <label class="form-control border border-success mb-0">שם לקוח</label>
+    <label class="form-control border border-success mb-0">שם מוצר</label>
+    <label class="form-control border border-success mb-0">תאריך</label>
+  </div>
+  <div class="col-5">
+    <input [(ngModel)]="mkpSchedule.costumer" list="customers" class="form-control">
+    <datalist id="customers">
+      <option selected="true" disabled="disabled">בחר לקוח</option>   
+      <option *ngFor="let customer of allCustomers" [value]="customer.costumerName" >{{customer.costumerName}}</option>
+    </datalist>
+    <input [(ngModel)]="mkpSchedule.productName" type="text" class="form-control">
+    <input [(ngModel)]="mkpSchedule.date" type="date" class="form-control">
+  </div>
+  <div class="col-1"></div>
+</div>
 
-
-<table *ngIf="tableType=='powder'" class='table'>
-  <thead class='tableHeader  text-center text-white'>
-
-    <tr>
-      <th>#</th>
-      <th>Order Number</th>
-      <th>Order Type</th>
-      <th>Custumer</th>
-      <th>Order Date</th>
-      <th>Delivery Date</th>
-    </tr>
-  </thead>
-
-
-  <tbody id="table_body">
-    <tr  class="tableTr" *ngFor="let order of orders; let i = index">
-
-      <td>{{i+1}}</td>
-      <td> <a target="_blank"  routerLink='/peerpharm/allorders/makeupdetails/{{order.orderNumber}}' >{{order.orderNumber}}</a></td>
-      <td>{{order.type}}</td>
-      <td>{{order.costumer}}</td>
-      <td [ngClass]="{expiredDate:order.orderDate < now.toISOString()}">{{order.orderDate | date: "dd/MM/yyyy"}}</td>
-      <td>{{order.deliveryDate | date: "dd/MM/yyyy"}}</td>
-    </tr>
-  </tbody>
-</table>
-
-
-<!-- <table *ngIf="tableType=='powder'" class='table'>
-  <thead class='tableHeader  text-center text-white'>
-
-    <tr>
-      <th>#</th>
-      <th>Item Type</th>
-      <th>Powder Name</th>
-      <th>Powder Production(KG)</th>
-      <th>Push To Godets </th>
-      <th>Packing - Client Demand</th>
-      <th>Production Date</th>
-      <th>Printing</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tr>
-    <td></td>
-  <td></td>
-    <td>
-      <select class="pdrInput" [(ngModel)]="makeup.itemName">
-        <option value="Pudra">פודרה</option>
-        <option value="Somek">סומק</option>
-        <option value="Tslalit">צללית</option>
-        <option value="Shimmer">שימר</option>
-      </select>
-    </td>
-    <td>
-      <input class="pdrInput" [(ngModel)]="makeup.production" placeholder="Powder Production (kg)" type="number" />
-    </td>
-    <td>
-      <input class="pdrInput" [(ngModel)]="makeup.pushToGodets" placeholder="Push to godets (units)" type="number" />
-    </td>
-    <td>
-      <input class="pdrInput" [(ngModel)]="makeup.packingClient" placeholder="Packing by client demand" type="text" />
-    </td>
-    <td>
-      <input class="pdrInput" [(ngModel)]="makeup.productionDate" type="date" />
-    </td>
-    <td>
-      <input class="pdrInput" [(ngModel)]="makeup.printing" type="text" />
-    </td>
-
-
-
-    <td class="printlessTd">
-      <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="addNewPowder()">Add</button><br />
-    </td>
-  </tr>
-
-  <tbody id="table_body">
-    <tr class="tableTr" *ngFor="let powder of powdersData; let i = index">
-
-      <td>{{i+1}}</td>
-      <td>{{powder.itemType}}</td>
-      <td>{{powder.itemName}}</td>
-      <td>{{powder.production}} KG</td>
-      <td>{{powder.pushToGodets}} Units</td>
-      <td>{{powder.packingClient}}</td>
-      <td>{{powder.productionDate | date: "dd/MM/yyyy"}}</td>
-      <td>{{powder.printing}}</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table> -->
-
-<!-- Wet Table Start Here  -->
-
-<table *ngIf="tableType=='wet'" class='table'>
-  <thead class='tableHeader  text-center text-white'>
-
-    <tr>
-      <th>#</th>
-      <th>Item Number</th>
-      <th>Item Type</th>
-      <th>Item Name</th>
-      <th>Production (KG)</th>
-      <th>Push to godets</th>
-      <th>Production Date</th>
-      <th>Status</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody id="table_body">
-    <tr class="tableTr" *ngFor="let item of allMakeUps; let i = index">
-      
-      <td>{{i+1}}</td>
-      <td>{{item.itemNumber}}</td>
-      <td>{{item.itemType}}</td>
-      <td>{{item.itemName}}</td>
-      <td>{{item.production}}(KG)</td>
-      <td>{{item.pushToGodets}}</td>
-      <td>{{item.productionDate | date: "dd/MM/yyyy"}}</td>
-      <td>{{item.packingClient}}</td>
-      <td></td>
-
-
-    </tr>
-  </tbody>
-</table>
-
-<!-- lipstick table starts here  -->
-
-<table *ngIf="tableType=='lipstick'" class='table'>
-    <thead class='tableHeader  text-center text-white'>
-  
-      <tr>
-        
-        <th>#</th>
-        <th>Item Type</th>
-        <th>Item Name</th>
-        <th>Production (KG)</th>
-        <th>Tray</th>
-        <th>Packing</th>
-        <th>Production Date</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-  
-    <tr>
-       <td></td>
-      <td></td>
-      <td>
-        <select class="pdrInput" [(ngModel)]="makeup.itemName">
-          <option value="lipstick">אודם</option>
-        </select>
-      </td>
-      <td>
-        <input class="pdrInput" [(ngModel)]="makeup.production" placeholder="Production (kg)" type="number" />
-      </td>
-      <td>
-        <input class="pdrInput" [(ngModel)]="makeup.tray" placeholder="הכנה בתבנית" type="text" />
-      </td>
-      <td>
-        <input class="pdrInput" [(ngModel)]="makeup.packing" type="number" />
-      </td>
-      <td>
-        <input class="pdrInput" [(ngModel)]="makeup.productionDate"  type="date" />
-      </td>
-      
-  
-      <td class="printlessTd">
-        <button style="cursor: pointer;" class="addBtn btn btn-info" (click)="addLipstick()">Add</button><br />
-      </td>
-  
-    </tr>
-  
-  
-    <tbody id="table_body">
-      <tr class="tableTr" *ngFor="let lipstick of lipstickData; let i = index">
-        
-        <td>{{i+1}}</td>
-        <td>{{lipstick.itemType}}</td>
-        <td>{{lipstick.itemName}}</td>
-        <td>{{lipstick.production}}</td>
-        <td>{{lipstick.tray}}</td>
-        <td>{{lipstick.packing}}</td>
-        <td>{{lipstick.productionDate | date: "dd/MM/yyyy"}}</td>
-        
-  
-        <td></td>
-  
-  
-      </tr>
-    </tbody>
-  </table>
+<div class="row mt-3">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <button (click)="addNewMkpSchedule()" class="btn btn-success form-control">Add Schedule</button>
+  </div>
+  <div class="col-4"></div>
+</div>
+</div>

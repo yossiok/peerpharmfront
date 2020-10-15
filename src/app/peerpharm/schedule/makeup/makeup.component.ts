@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { MakeupService } from 'src/app/services/makeup.service';
 import { log } from 'util';
+import { CostumersService } from 'src/app/services/costumers.service';
 
 
 @Component({
@@ -15,112 +16,57 @@ import { log } from 'util';
 })
 export class MakeupComponent implements OnInit {
 
-  powdersData:any[];
-  allMakeUps:any[];
-  lipstickData:any[];
-  orders:any[];
-  ordersCopy:any[];
-  now: Date = new Date()
-  today: any;
-  tableType: String = "powder"
+allCustomers:any[];
+allMkpSchedules:any[];
+addScheduleModal:Boolean = false;
 
-  makeup = {
-    itemType: '',
-    itemName: '',
-    production:'',
-    pushToGodets: '',
-    packingClient: '',
-    printing: '',
-    productionDate:'',
-    tray:'',
-    packing:'',
-  }
+mkpSchedule = {
+  date:'',
+  costumer:'',
+  productName:'',
+}
  
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     
 }
 
-  constructor(private ordersService:OrdersService,private makeupService:MakeupService, private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
+  constructor(private customerService:CostumersService,private ordersService:OrdersService,private makeupService:MakeupService, private scheduleService:ScheduleService, private itemSer: ItemsService,private orderSer: OrdersService,private toastSrv:ToastrService ) { }
 
   ngOnInit() {
-
-    this.now.setDate(this.now.getDate() - 30);
-   this.now.toISOString().split('T')[0];
-   
-    this.today = new Date();
-    this.today = moment(this.today).format("DD/MM/YYYY");
-
-    this.makeup.productionDate = moment(new Date()).format('YYYY-MM-DD');
-    
-    this.getAllmakeUps();
-    this.getAllOrdersByType();
+    this.getAllCustomers();
+    this.getAllMkpSchedules();
 
   }
 
-  getAllOrdersByType() {
-    
-    this.ordersService.getOrderByType()
-      .subscribe(orders => {
-        orders.map(order => {
-          order.color='white'
-          if(this.today>order.deliveryDate){
-            order.color = '#ff9999';
-          }
-        })
-        this.orders = orders;
-        this.ordersCopy = orders;
-      })
-  }
-
-  checkIfPastDue(){
-    
-  }
-
-  setType(type) {
-
-    switch (type) {
-      case 'powder':
-        this.tableType = "powder";
-      
-        break;
-      case 'wet':
-        this.tableType = "wet";
-    
-        break;
-    }
-  }
-  // Powder Section adding and getting all powders // 
-
-  addNewPowder() { 
-    
-    this.makeup.itemType = "powder"
-    
-    this.makeupService.addNewPowderReport(this.makeup).subscribe(res =>{
-      
-      this.powdersData.push(res)
-    })
-
-    this.makeup.itemType=''
-    this.makeup.itemName=''
-    this.makeup.production=''
-    this.makeup.pushToGodets=''
-    this.makeup.packingClient=''
-    this.makeup.printing=''
-    this.makeup.tray=''
-    this.makeup.packing=''
-    
-    
-  }
 
 
-
-getAllmakeUps() { 
-  
-  this.makeupService.getAllmakeUp().subscribe(data =>{
-    
-    this.allMakeUps = data;
+  getAllCustomers(){
+  this.customerService.getAllCostumers().subscribe(data=>{
+    debugger;
+  this.allCustomers = data;
   })
-}
+  }
+
+  getAllMkpSchedules(){
+    this.scheduleService.getOpenMkpSchedule().subscribe(data=>{
+      if(data){
+        this.allMkpSchedules = data;
+      }
+    })
+  }
+
+
+  addNewMkpSchedule(){
+
+    this.scheduleService.setNewMkpProductionSchedule(this.mkpSchedule).subscribe(data=>{
+      if(data){
+        this.allMkpSchedules.push(data);
+        this.addScheduleModal = false;
+        this.toastSrv.success('לוז מייקאפ נוסף בהצלחה!')
+      }
+    })
+  }
+
 
 }
