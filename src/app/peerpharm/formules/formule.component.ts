@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-formule',
   templateUrl: './formule.component.html',
-  styleUrls: ['./formule.component.css']
+  styleUrls: ['./formule.component.scss']
 })
 export class FormuleComponent implements AfterViewInit {
 

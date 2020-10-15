@@ -7,7 +7,7 @@ import { FormulesService } from 'src/app/services/formules.service';
 @Component({
   selector: 'app-add-formule-phase',
   templateUrl: './add-formule-phase.component.html',
-  styleUrls: ['./add-formule-phase.component.css']
+  styleUrls: ['./add-formule-phase.component.scss']
 })
 export class AddFormulePhaseComponent implements OnInit {
   phaseForm: FormGroup;

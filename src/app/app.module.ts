@@ -53,6 +53,8 @@ import { NgxBarcodeModule } from 'ngx-barcode';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
 import { ConfirmModalComponent } from './services/confirm.modal.service'; 
 import { OrdersService } from './services/orders.service';
+import { ReportBuilderComponent } from './peerpharm/reports/report-builder/report-builder.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 
 
@@ -119,8 +121,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HttpClientModule,
     FormsModule,
    // AmplifyAngularModule   ,
-    HttpModule,
-
+    HttpModule, 
     NgbModule.forRoot(),
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule,

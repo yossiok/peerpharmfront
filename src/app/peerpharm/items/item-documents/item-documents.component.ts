@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-item-documents',
   templateUrl: './item-documents.component.html',
-  styleUrls: ['./item-documents.component.css']
+  styleUrls: ['./item-documents.component.scss']
 })
 export class ItemDocumentsComponent implements OnInit {
   msdsFile: boolean = false;

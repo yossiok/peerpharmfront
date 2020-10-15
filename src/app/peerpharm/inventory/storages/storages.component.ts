@@ -8,7 +8,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
 @Component({
   selector: 'app-storages',
   templateUrl: './storages.component.html',
-  styleUrls: ['./storages.component.css']
+  styleUrls: ['./storages.component.scss']
 })
 export class StoragesComponent implements OnInit {
 

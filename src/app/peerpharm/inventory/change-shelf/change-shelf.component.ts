@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-change-shelf',
   templateUrl: './change-shelf.component.html',
-  styleUrls: ['./change-shelf.component.css']
+  styleUrls: ['./change-shelf.component.scss']
 })
 export class ChangeShelfComponent implements OnInit {
   

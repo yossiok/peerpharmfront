@@ -3,7 +3,7 @@ import { Component, OnInit, Input, EventEmitter, Output, OnChanges, AfterViewChe
 @Component({
   selector: 'app-formule-form-table',
   templateUrl: './formule-form-table.component.html',
-  styleUrls: ['./formule-form-table.component.css']
+  styleUrls: ['./formule-form-table.component.scss']
 })
 export class FormuleFormTableComponent implements OnInit, OnChanges {
  

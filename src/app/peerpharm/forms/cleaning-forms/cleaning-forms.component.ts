@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-cleaning-forms',
   templateUrl: './cleaning-forms.component.html',
-  styleUrls: ['./cleaning-forms.component.css']
+  styleUrls: ['./cleaning-forms.component.scss']
 })
 export class CleaningFormsComponent implements OnInit {
 

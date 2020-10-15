@@ -10,7 +10,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
   @Component({
     selector: 'app-schedule',
     templateUrl: './printing.component.html',
-    styleUrls: ['./printing.component.css']
+    styleUrls: ['./printing.component.scss']
   })
   export class PrintingComponent implements OnInit {
     today:any;

@@ -6,7 +6,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 @Component({
   selector: 'app-inventory-requests',
   templateUrl: './inventory-requests.component.html',
-  styleUrls: ['./inventory-requests.component.css']
+  styleUrls: ['./inventory-requests.component.scss']
 })
 export class InventoryRequestsComponent implements OnInit {
 

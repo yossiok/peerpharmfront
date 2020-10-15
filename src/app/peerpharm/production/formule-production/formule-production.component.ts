@@ -7,7 +7,7 @@ import { runInThisContext } from 'vm';
 @Component({
   selector: 'app-formule-production',
   templateUrl: './formule-production.component.html',
-  styleUrls: ['./formule-production.component.css']
+  styleUrls: ['./formule-production.component.scss']
 })
 export class FormuleProductionComponent implements OnInit {
 

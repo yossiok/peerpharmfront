@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-weight-production',
   templateUrl: './weight-production.component.html',
-  styleUrls: ['./weight-production.component.css']
+  styleUrls: ['./weight-production.component.scss']
 })
 export class WeightProductionComponent implements OnInit {
 

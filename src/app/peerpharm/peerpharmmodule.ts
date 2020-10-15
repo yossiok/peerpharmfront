@@ -106,6 +106,7 @@ import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
 import { ItemreportsComponent } from './items/itemreports/itemreports.component';
 import { DateExpiredDirective } from '../directives/date-expired.directive';
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
+
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
@@ -125,6 +126,9 @@ import { AdminpanelComponent } from './adminpanel/adminpanel.component';
 import { MaterialsComponent } from './production/materials/materials.component';
 import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 import { ProjectsComponent } from './schedule/projects/projects.component';
+import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
+import { AgGridModule } from 'ag-grid-angular';
+ 
 
 
 
@@ -138,7 +142,7 @@ import { ProjectsComponent } from './schedule/projects/projects.component';
     CommonModule,
     RandomcolorModule,
     RouterModule.forChild(PeerPharmRputs),
-   
+    AgGridModule.withComponents([]),
     TranslateModule.forChild({}),
     JsonpModule,
     HttpClientModule,
@@ -257,6 +261,7 @@ import { ProjectsComponent } from './schedule/projects/projects.component';
     HistorylogsComponent,
     ActiveusersComponent,
     AllocatedOrdersComponent,
+    ReportBuilderComponent,
 
 
   ],

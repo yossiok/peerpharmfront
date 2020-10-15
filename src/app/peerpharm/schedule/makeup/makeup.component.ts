@@ -11,7 +11,7 @@ import { log } from 'util';
 @Component({
   selector: 'app-makeup',
   templateUrl: './makeup.component.html',
-  styleUrls: ['./makeup.component.css']
+  styleUrls: ['./makeup.component.scss']
 })
 export class MakeupComponent implements OnInit {
 

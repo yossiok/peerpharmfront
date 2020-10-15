@@ -8,7 +8,7 @@ import { log } from 'util';
 @Component({
   selector: 'app-qa-pallets',
   templateUrl: './qa-pallets.component.html',
-  styleUrls: ['./qa-pallets.component.css']
+  styleUrls: ['./qa-pallets.component.scss']
 })
 export class QaPalletsComponent implements OnInit {
 

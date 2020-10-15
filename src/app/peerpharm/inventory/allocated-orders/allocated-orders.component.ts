@@ -5,7 +5,7 @@ import { ItemsService } from 'src/app/services/items.service';
 @Component({
   selector: 'app-allocated-orders',
   templateUrl: './allocated-orders.component.html',
-  styleUrls: ['./allocated-orders.component.css']
+  styleUrls: ['./allocated-orders.component.scss']
 })
 export class AllocatedOrdersComponent implements OnInit {
 

@@ -10,7 +10,7 @@ import { ItemsService } from 'src/app/services/items.service';
 @Component({
   selector: 'app-new-formule',
   templateUrl: './new-formule.component.html',
-  styleUrls: ['./new-formule.component.css']
+  styleUrls: ['./new-formule.component.scss']
 })
 export class NewFormuleComponent implements OnInit {
   

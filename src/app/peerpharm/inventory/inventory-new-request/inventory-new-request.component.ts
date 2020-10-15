@@ -17,7 +17,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-inventory-new-request',
   templateUrl: './inventory-new-request.component.html',
-  styleUrls: ['./inventory-new-request.component.css'],
+  styleUrls: ['./inventory-new-request.component.scss'],
 
 })
 export class InventoryNewRequestComponent implements OnInit {

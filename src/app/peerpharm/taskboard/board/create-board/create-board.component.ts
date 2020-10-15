@@ -7,7 +7,7 @@ import { AuthService } from '../../../../services/auth.service';
   selector: 'app-create-board',
   providers: [TasksService],
   templateUrl: './create-board.component.html',
-  styleUrls: ['./create-board.component.css']
+  styleUrls: ['./create-board.component.scss']
 })
 export class CreateBoardComponent implements OnInit {
   boards: BoardModel[];

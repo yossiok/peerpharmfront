@@ -9,7 +9,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 @Component({
   selector: 'app-formdetails',
   templateUrl: './formdetails.component.html',
-  styleUrls: ['./formdetails.component.css']
+  styleUrls: ['./formdetails.component.scss']
 })
 export class FormdetailsComponent implements OnInit {
   form: any = {};

@@ -13,7 +13,7 @@ import { p } from '@angular/core/src/render3';
 @Component({
   selector: 'app-procurement-orders',
   templateUrl: './procurementOrders.component.html',
-  styleUrls: ['./procurementOrders.component.css']
+  styleUrls: ['./procurementOrders.component.scss']
 })
 
 export class ProcurementOrdersComponent implements OnInit {

@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-new-procurement',
   templateUrl: './new-procurement.component.html',
-  styleUrls: ['./new-procurement.component.css']
+  styleUrls: ['./new-procurement.component.scss']
 })
 export class NewProcurementComponent implements OnInit {
 

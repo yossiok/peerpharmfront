@@ -11,7 +11,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 @Component({
   selector: 'add-procurement-item-dialog',
   templateUrl: './add-procurement-item-dialog.html',
-  styleUrls: ['./add-procurement-item-dialog.css']
+  styleUrls: ['./add-procurement-item-dialog.scss']
 })
 export class AddProcurementItemDialog implements OnInit {
   form: FormGroup;

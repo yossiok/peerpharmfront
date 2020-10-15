@@ -16,7 +16,7 @@ import { ItemsService } from 'src/app/services/items.service';
 @Component({
   selector: 'app-batches',
   templateUrl: './batches.component.html',
-  styleUrls: ['./batches.component.css']
+  styleUrls: ['./batches.component.scss']
 })
 export class BatchesComponent implements OnInit {
   myRefresh: any = null;

@@ -13,7 +13,7 @@ import { AuthService } from "src/app/services/auth.service";
 @Component({
   selector: "app-neworder",
   templateUrl: "./neworder.component.html",
-  styleUrls: ["./neworder.component.css"]
+  styleUrls: ["./neworder.component.scss"]
 })
 export class NeworderComponent implements OnInit {
   orderItemForm: FormGroup;

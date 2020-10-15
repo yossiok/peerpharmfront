@@ -42,8 +42,7 @@ import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
 import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
 import { ItemreportsComponent } from './items/itemreports/itemreports.component';
-import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
-import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
+import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component'; 
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
@@ -63,7 +62,8 @@ import { ScreenGuard } from '../guards/screen.guard';
 import { MaterialsComponent } from './production/materials/materials.component';
 import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 import { ProjectsComponent } from './schedule/projects/projects.component';
-
+import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
+import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
 
 
 
@@ -456,6 +456,18 @@ export const PeerPharmRputs: Routes =[
 
 
   ,
+
+  {
+    path :'builder',
+    data :{
+      title : 'Report Builder'
+    },
+    component: ReportBuilderComponent
+  }
+
+
+  ,
+
   {
     path :'historylogs',
     data :{

@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-batches-mkp',
   templateUrl: './batches-mkp.component.html',
-  styleUrls: ['./batches-mkp.component.css']
+  styleUrls: ['./batches-mkp.component.scss']
 })
 export class BatchesMkpComponent implements OnInit {
 

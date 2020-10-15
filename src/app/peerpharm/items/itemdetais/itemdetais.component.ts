@@ -20,7 +20,7 @@ import { PlateService } from 'src/app/services/plate.service';
 @Component({
   selector: 'app-itemdetais',
   templateUrl: './itemdetais.component.html',
-  styleUrls: ['./itemdetais.component.css']
+  styleUrls: ['./itemdetais.component.scss']
 })
 export class ItemdetaisComponent implements OnInit {
 

@@ -8,7 +8,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 @Component({
   selector: 'app-itemreports',
   templateUrl: './itemreports.component.html',
-  styleUrls: ['./itemreports.component.css']
+  styleUrls: ['./itemreports.component.scss']
 })
 export class ItemreportsComponent implements OnInit {
   itemShellMovements:any[];

@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-formule',
   templateUrl: './add-formule.component.html',
-  styleUrls: ['./add-formule.component.css']
+  styleUrls: ['./add-formule.component.scss']
 })
 export class AddFormuleComponent implements OnInit {
 

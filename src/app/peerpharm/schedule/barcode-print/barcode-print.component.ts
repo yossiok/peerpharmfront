@@ -13,7 +13,7 @@ import { BarcodePrintService } from "./../../../services/barcodePrint.service";
 @Component({
   selector: "app-barcode-print",
   templateUrl: "./barcode-print.component.html",
-  styleUrls: ["./barcode-print.component.css"]
+  styleUrls: ["./barcode-print.component.scss"]
 })
 export class BarcodePrintComponent implements OnInit {
   @ViewChild("print-section") printSection: ElementRef;

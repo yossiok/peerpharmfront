@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-material-scan-view',
   templateUrl: './item-scan-view.component.html',
-  styleUrls: ['./item-scan-view.component.css']
+  styleUrls: ['./item-scan-view.component.scss']
 })
 export class ItemScanViewComponent implements OnInit {
   components: any[];

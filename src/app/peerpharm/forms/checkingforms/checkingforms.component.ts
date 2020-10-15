@@ -6,7 +6,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 @Component({
   selector: 'app-checkingforms',
   templateUrl: './checkingforms.component.html',
-  styleUrls: ['./checkingforms.component.css']
+  styleUrls: ['./checkingforms.component.scss']
 })
 export class CheckingformsComponent implements OnInit {
 

@@ -24,7 +24,7 @@ import { MakeupService } from 'src/app/services/makeup.service';
 @Component({
   selector: 'app-makeupdetails',
   templateUrl: './makeupdetails.component.html',
-  styleUrls: ['./makeupdetails.component.css'],
+  styleUrls: ['./makeupdetails.component.scss'],
 
 })
 export class MakeupdetailsComponent implements OnInit {

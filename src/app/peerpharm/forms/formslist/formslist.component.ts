@@ -5,7 +5,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 @Component({
   selector: 'app-formslist',
   templateUrl: './formslist.component.html',
-  styleUrls: ['./formslist.component.css']
+  styleUrls: ['./formslist.component.scss']
 })
 export class FormslistComponent implements OnInit {
   myRefresh: any = null;

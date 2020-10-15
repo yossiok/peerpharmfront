@@ -10,7 +10,7 @@ import { NgbModal, NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstr
 @Component({
   selector: 'app-material-arrival',
   templateUrl: './material-arrival.component.html',
-  styleUrls: ['./material-arrival.component.css']
+  styleUrls: ['./material-arrival.component.scss']
 })
 export class MaterialArrivalComponent implements OnInit {
   public beforeChange($event: NgbTabChangeEvent) {

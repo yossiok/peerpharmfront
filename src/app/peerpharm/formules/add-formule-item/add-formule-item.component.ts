@@ -7,7 +7,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 @Component({
   selector: 'app-add-formule-item',
   templateUrl: './add-formule-item.component.html',
-  styleUrls: ['./add-formule-item.component.css']
+  styleUrls: ['./add-formule-item.component.scss']
 })
 export class AddFormuleItemComponent implements OnInit {
   itemsForm: FormGroup;

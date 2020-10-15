@@ -10,7 +10,7 @@ import {ExcelService} from '../../../services/excel.service';
 @Component({
   selector: 'app-itemslist',
   templateUrl: './itemslist.component.html',
-  styleUrls: ['./itemslist.component.css']
+  styleUrls: ['./itemslist.component.scss']
 })
 export class ItemslistComponent implements OnInit {
   excelToUpload:any;

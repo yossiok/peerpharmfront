@@ -4,7 +4,7 @@ import { ItemsService } from 'src/app/services/items.service';
 @Component({
   selector: 'app-shelf-list',
   templateUrl: './shelf-list.component.html',
-  styleUrls: ['./shelf-list.component.css']
+  styleUrls: ['./shelf-list.component.scss']
 })
 export class ShelfListComponent implements OnInit {
 

@@ -4,7 +4,7 @@ import { ItemsService } from 'src/app/services/items.service';
 @Component({
   selector: 'app-packing',
   templateUrl: './packing.component.html',
-  styleUrls: ['./packing.component.css']
+  styleUrls: ['./packing.component.scss']
 })
 export class PackingComponent implements OnInit {
 data:Array<any>;

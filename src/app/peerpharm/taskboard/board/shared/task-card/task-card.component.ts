@@ -9,7 +9,7 @@ import { UsersService } from 'src/app/services/users.service';
 @Component({
   selector: 'app-board-task-card',
   templateUrl: './task-card.component.html',
-  styleUrls: ['./task-card.component.css'],
+  styleUrls: ['./task-card.component.scss'],
   animations: [
     trigger('flyInOut', [
       state('in', style({ transform: 'translateY(0)' })),

@@ -15,7 +15,7 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 @Component({
   selector: 'app-wharehouse',
   templateUrl: './wharehouse.component.html',
-  styleUrls: ['./wharehouse.component.css']
+  styleUrls: ['./wharehouse.component.scss']
 })
 export class WharehouseComponent implements OnInit {
 

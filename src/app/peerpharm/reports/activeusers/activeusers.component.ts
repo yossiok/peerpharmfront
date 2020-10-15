@@ -6,7 +6,7 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
 @Component({
   selector: 'app-activeusers',
   templateUrl: './activeusers.component.html',
-  styleUrls: ['./activeusers.component.css']
+  styleUrls: ['./activeusers.component.scss']
 })
 export class ActiveusersComponent implements OnInit {
 

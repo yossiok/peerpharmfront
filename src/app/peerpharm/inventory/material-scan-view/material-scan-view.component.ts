@@ -5,7 +5,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 @Component({
   selector: 'app-material-scan-view',
   templateUrl: './material-scan-view.component.html',
-  styleUrls: ['./material-scan-view.component.css']
+  styleUrls: ['./material-scan-view.component.scss']
 })
 export class MaterialScanViewComponent implements OnInit {
   params:String;

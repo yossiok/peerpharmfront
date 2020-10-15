@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-expected-arrivals',
   templateUrl: './expected-arrivals.component.html',
-  styleUrls: ['./expected-arrivals.component.css']
+  styleUrls: ['./expected-arrivals.component.scss']
 })
 export class ExpectedArrivalsComponent implements OnInit {
 

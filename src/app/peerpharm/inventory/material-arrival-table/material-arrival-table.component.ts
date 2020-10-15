@@ -7,7 +7,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 @Component({
   selector: 'app-material-arrival-table',
   templateUrl: './material-arrival-table.component.html',
-  styleUrls: ['./material-arrival-table.component.css']
+  styleUrls: ['./material-arrival-table.component.scss']
 })
 export class MaterialArrivalTableComponent implements OnInit {
   @ViewChild('printBtn') printBtn: ElementRef;

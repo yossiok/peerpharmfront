@@ -9,7 +9,7 @@ import { AuthService } from '../../../../services/auth.service';
   selector: 'app-content',
   providers: [TasksService],
   templateUrl: './content.component.html',
-  styleUrls: ['./content.component.css']
+  styleUrls: ['./content.component.scss']
 })
 export class ContentComponent implements OnInit {
   @ViewChild(MatTabGroup) tabGroup: MatTabGroup;

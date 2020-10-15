@@ -28,7 +28,7 @@ var _ = require('lodash');
 @Component({
   selector: 'app-orderdetails',
   templateUrl: './orderdetails.component.html',
-  styleUrls: ['./orderdetails.component.css'],
+  styleUrls: ['./orderdetails.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),

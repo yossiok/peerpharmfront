@@ -6,7 +6,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 @Component({
   selector: 'app-procurement-order-item',
   templateUrl: './procurementOrderItem.component.html',
-  styleUrls: ['./procurementOrderItem.component.css']
+  styleUrls: ['./procurementOrderItem.component.scss']
 })
 
 export class ProcurementOrderItemComponent implements OnInit {

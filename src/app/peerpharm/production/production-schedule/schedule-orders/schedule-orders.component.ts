@@ -5,7 +5,7 @@ import { ProductionOrders } from './../../models/production-orders';
 @Component({
   selector: 'app-schedule-orders',
   templateUrl: './schedule-orders.component.html',
-  styleUrls: ['./schedule-orders.component.css']
+  styleUrls: ['./schedule-orders.component.scss']
 })
 export class ScheduleOrdersComponent implements OnInit {
   public scheduleOrdersForm: FormGroup;

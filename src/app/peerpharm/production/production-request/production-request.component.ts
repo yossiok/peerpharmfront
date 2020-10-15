@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-production-request',
   templateUrl: './production-request.component.html',
-  styleUrls: ['./production-request.component.css']
+  styleUrls: ['./production-request.component.scss']
 })
 export class ProductionRequestComponent implements OnInit {
   requestForm: FormGroup;

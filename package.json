@@ -27,6 +27,9 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "@rimiti/invoice-it": "^3.4.0",
     "@types/socket.io-client": "^1.4.32",
+    "ag-grid-angular": "^24.1.0",
+    "ag-grid-community": "^24.1.0",
+    "ag-grid-enterprise": "^24.1.0",
     "angular-archwizard": "^4.0.0",
     "angular-draggable-droppable": "^3.0.1",
     "angular-randomcolor": "^1.0.3",
@@ -49,12 +52,14 @@
     "ngx-perfect-scrollbar": "6.1.0",
     "ngx-print": "^1.1.4",
     "ngx-toastr": "^9.1.0",
+    "normalize.css": "^8.0.1",
     "pace-js": "^1.0.2",
     "pdf-invoice": "^1.0.2",
     "perfect-scrollbar": "^1.4.0",
     "print-js": "^1.0.61",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
+    "schematics-scss-migrate": "^1.1.7",
     "socket.io-client": "^2.2.0",
     "table-dragger": "^1.0.3",
     "ts-xlsx-export": "^1.0.1",
@@ -85,6 +90,6 @@
     "transform-loader": "^0.2.4",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2"
+    "typescript": "~2.9"
   }
 }

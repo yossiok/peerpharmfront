@@ -3,7 +3,7 @@ import {ProductionService} from '../../../services/production.service'
 @Component({
   selector: 'app-lines',
   templateUrl: './lines.component.html',
-  styleUrls: ['./lines.component.css']
+  styleUrls: ['./lines.component.scss']
 })
 export class LinesComponent implements OnInit {
 

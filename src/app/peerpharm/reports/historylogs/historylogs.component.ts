@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-historylogs',
   templateUrl: './historylogs.component.html',
-  styleUrls: ['./historylogs.component.css']
+  styleUrls: ['./historylogs.component.scss']
 })
 export class HistorylogsComponent implements OnInit {
 

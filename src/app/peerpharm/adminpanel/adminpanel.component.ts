@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-adminpanel',
   templateUrl: './adminpanel.component.html',
-  styleUrls: ['./adminpanel.component.css']
+  styleUrls: ['./adminpanel.component.scss']
 })
 export class AdminpanelComponent implements OnInit {
   routes: any[];

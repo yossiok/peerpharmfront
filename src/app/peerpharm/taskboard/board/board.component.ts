@@ -17,7 +17,7 @@ import { UsersService } from 'src/app/services/users.service';
   selector: 'app-board',
   providers: [TasksService],
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.css'],
+  styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent implements OnInit {
   // Local Properties

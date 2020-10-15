@@ -9,7 +9,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 @Component({
   selector: 'app-costumers-list',
   templateUrl: './costumers-list.component.html',
-  styleUrls: ['./costumers-list.component.css']
+  styleUrls: ['./costumers-list.component.scss']
 })
 export class CostumersListComponent implements OnInit {
 

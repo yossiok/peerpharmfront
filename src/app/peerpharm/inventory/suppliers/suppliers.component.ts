@@ -12,7 +12,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.component.html',
-  styleUrls: ['./suppliers.component.css']
+  styleUrls: ['./suppliers.component.scss']
 })
 
 

@@ -9,7 +9,7 @@ import { RandomColor } from 'angular-randomcolor';
 @Component({
   selector: 'app-all-formules',
   templateUrl: './all-formules.component.html',
-  styleUrls: ['./all-formules.component.css']
+  styleUrls: ['./all-formules.component.scss']
 })
 export class AllFormulesComponent implements OnInit {
 

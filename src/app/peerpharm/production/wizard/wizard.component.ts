@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-wizard',
   templateUrl: './wizard.component.html',
-  styleUrls: ['./wizard.component.css']
+  styleUrls: ['./wizard.component.scss']
 })
 export class WizardComponent implements OnInit {
 

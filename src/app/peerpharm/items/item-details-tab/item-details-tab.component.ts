@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-item-details-tab',
   templateUrl: './item-details-tab.component.html',
-  styleUrls: ['./item-details-tab.component.css']
+  styleUrls: ['./item-details-tab.component.scss']
 })
 export class ItemDetailsTabComponent implements OnInit {
 

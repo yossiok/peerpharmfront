@@ -8,7 +8,7 @@ import { UserInfo } from '../../peerpharm/taskboard/models/UserInfo';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
   @Input() public taskid: string;

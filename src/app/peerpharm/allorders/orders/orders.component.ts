@@ -13,7 +13,7 @@ import { ChatService } from 'src/app/shared/chat.service';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css']
+  styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
 

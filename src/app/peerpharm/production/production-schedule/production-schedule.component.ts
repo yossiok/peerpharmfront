@@ -10,7 +10,7 @@ import { FormulesService } from '../../../services/formules.service';
 @Component({
   selector: 'app-production-schedule',
   templateUrl: './production-schedule.component.html',
-  styleUrls: ['./production-schedule.component.css']
+  styleUrls: ['./production-schedule.component.scss']
 })
 export class ProductionScheduleComponent implements OnInit {
   requests: Array<any>;

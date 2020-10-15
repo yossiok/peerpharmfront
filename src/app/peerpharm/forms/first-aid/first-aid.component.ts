@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-first-aid',
   templateUrl: './first-aid.component.html',
-  styleUrls: ['./first-aid.component.css']
+  styleUrls: ['./first-aid.component.scss']
 })
 export class FirstAidComponent implements OnInit {
 
