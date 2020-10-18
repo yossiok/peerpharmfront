@@ -316,6 +316,15 @@ updateDocument(){
 }
 
 
+filterByNumber(ev){
+  if(ev.target.value != ''){
+    this.materialsArrivals = this.materialsArrivalsCopy.filter(m=>m.internalNumber == ev.target.value);
+  } else {
+    this.materialsArrivals = this.materialsArrivalsCopy
+  }
+}
+
+
 
 
   checkLotNumber() { 

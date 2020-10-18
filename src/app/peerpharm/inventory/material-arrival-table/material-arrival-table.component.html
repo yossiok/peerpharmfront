@@ -1,4 +1,5 @@
 <input type="text"  placeholder="Search item name" (change)="changeText($event)" />
+<input type="text"  placeholder="Search item number" (change)="filterByNumber($event)" />
 From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
 
 <img style="width:50px;" (click)="exportAsXLSX()" src="../../../../assets/images/excel.png">

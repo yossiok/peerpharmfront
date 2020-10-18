@@ -401,7 +401,7 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
       >
 
       <tr>
-        <td *ngIf="showOrderNumFlag">Order Number: {{ schedLine.orderN }}</td>
+        <td style="border:1px solid black" *ngIf="showOrderNumFlag">Order Number: {{ schedLine.orderN }}</td>
       </tr>
         <tr>
           <td *ngIf="showProductName">{{ schedLine.productName }}</td>
