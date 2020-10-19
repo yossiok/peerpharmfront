@@ -107,7 +107,7 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getMaterialsForFormules(materials):Observable<any>{
-  
+  debugger;
     let url = this.baseUrl + "material/materialsForFormule";
     return this.http.post(url, JSON.stringify(materials), this.options).pipe(map(res => res.json()))
   }

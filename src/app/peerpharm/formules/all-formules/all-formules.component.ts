@@ -18,6 +18,7 @@ export class AllFormulesComponent implements OnInit {
   allFormules: any[];
   allFormulesCopy: any[];
   materials: any[];
+  materialsForFormules: any[];
   EditRowId: any = "";
   currentDoc: any;
   currentFormule: any;
@@ -27,6 +28,7 @@ export class AllFormulesComponent implements OnInit {
   updatePriceModal: boolean = false;
   formulePriceModal: boolean = false;
   updateFormule: any;
+  quantityCheck: any;
   isCollapsed: boolean = false;
   showItemRemarks: boolean = false;
   closeResult: string;
@@ -37,6 +39,7 @@ export class AllFormulesComponent implements OnInit {
   chooseFathersToUpdate: boolean = false;
   spinnerLoader: boolean = false;
   openFormuleModal: boolean = false;
+  showMaterialsForFormules: boolean = false;
   updatePercentage: any;
   euroRate: number = 4.03;
   usdRate: number = 3.44;
@@ -52,6 +55,7 @@ export class AllFormulesComponent implements OnInit {
   allFathersFromBase: any[];
   allChosenFathersToUpdate: any[] = [];
   allChosenChildsToUpdate: any[] = [];
+  selectedArr: any[] = [];
   user: any;
 
   addItem = {
@@ -298,6 +302,23 @@ export class AllFormulesComponent implements OnInit {
 
   }
 
+  isSelected(ev, item) {
+    debugger
+    if (ev.target.checked == true) {
+      var isSelected = this.selectedArr
+      isSelected.push({ ...item });
+      this.selectedArr = isSelected
+    }
+
+    if (ev.target.checked == false) {
+      var isSelected = this.selectedArr
+      var tempArr = isSelected.filter(x => x.itemNumber != item.itemNumber)
+      this.selectedArr = tempArr
+    }
+
+
+  }
+
   saveEdit(currdoc) {
 
   debugger;
@@ -396,6 +417,17 @@ export class AllFormulesComponent implements OnInit {
 
       }
 
+    })
+  }
+
+  getMaterialsForFormules(){
+    debugger;
+    this.selectedArr.forEach(item => {
+    item.quantity = this.quantityCheck
+    });
+    this.invtSer.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
+      this.materialsForFormules = materials;
+      this.showMaterialsForFormules = true;
     })
   }
 

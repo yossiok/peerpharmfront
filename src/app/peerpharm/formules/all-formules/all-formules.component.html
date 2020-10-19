@@ -27,13 +27,16 @@
   <div class="col-2"></div>
   <div class="col-2"></div>
   <div class="col-2"></div>
-  <div class="col-4"></div>
+  <div class="col-2"></div>
+  <div class="col-1"><input [(ngModel)]="quantityCheck" type="number" class="form-control" placeholder="Amount"></div>
+  <div class="col-1"><button (click)="getMaterialsForFormules()" class="btn btn-info form-control">כתב כמויות</button></div>
 </div>
 
 <table class="table table-fixed">
   <thead class="tableHeader">
     <tr>
       <td>#</td>
+      <td></td>
       <td>Number</td>
       <td>Remarks</td>
       <td>Name</td>
@@ -56,7 +59,7 @@
       *ngFor="let formule of allFormules; let i = index"
     >
       <td>{{ i + 1 }}</td>
-
+      <td><input type="checkbox" (change)="isSelected($event,formule)"></td>
       <td
         *ngIf="formule._id != EditRowId"
         class="openUpdateModal"
@@ -858,6 +861,65 @@
       </table>
     </div>
   </div>
+</div>
+
+<div id="formuleMaterials" *ngIf="showMaterialsForFormules == true" style="top:50px;height: 800px;overflow: scroll;" class="w-50 rounded shadow-lg mx-auto my-auto fixed-top p-4 text-center border border-info bg-white">
+  <div class="row">
+    <div class="col-1">
+      <button class="btn-success" [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="formuleMaterials" ngxPrint>Print</button>
+    </div>
+    <div class="col-10">
+      <h3>כתב כמויות</h3>
+    </div>
+    <div class="col-1">
+      <i (click)="showMaterialsForFormules = false" class="fa fa-times"></i>
+    </div>
+  </div>
+  <table id="procurementItems" class="table table-striped">
+    <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+      <tr>
+       
+        <th>Material Number</th>
+        <th>Material Name</th> 
+        <th>KG Production</th>
+        <th>Quantity In Stock</th>
+
+      </tr>
+    </thead>
+    <tbody  id="table_body">
+     <tr *ngFor="let material of materialsForFormules">
+    
+       <td>{{material.itemNumber}}</td>
+       <td>{{material.itemName}}</td>
+       <td>{{material.kgProduction}}</td>
+       <td>{{material.totalQnt}}</td>
+
+     </tr>
+    </tbody>
+  </table>
+<br>
+<br>
+  <table>
+    <thead style="box-shadow: 1px 1px 2px 0px black;">
+      <tr>
+        <th>מספר הזמנה</th>
+        <th>שם פריט</th>
+        <th>מספר פריט</th>
+        <th>משקל</th>
+        <!-- <th>כמות לפני אחוזים</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let obj of selectedArr">
+        <td>{{obj.orderNumber}}</td>
+        <td>{{obj.discription}}</td>
+        <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
+        <td>{{obj.netWeightGr}}</td>
+        <!-- <td>{{obj.calculatedAmount}}</td> -->
+      </tr>
+    </tbody>
+  </table>
+
 </div>
 
 <div *ngIf="updatePriceModal == true" style="top:50px" class="w-25 h-25 rounded shadow-lg mx-auto my-auto fixed-top p-4 text-center border border-info bg-white">
