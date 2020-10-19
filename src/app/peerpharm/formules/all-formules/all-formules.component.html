@@ -37,7 +37,7 @@
       <td>Number</td>
       <td>Remarks</td>
       <td>Name</td>
-      
+      <td>PH</td>
       <!-- <td>Formule Category</td> -->
       <td>Date Created</td>
       <td>Formule Type</td>
@@ -80,6 +80,13 @@
       </td>
       <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
         <input #formuleName type="text" [value]="formule.formuleName" />
+      </td>
+      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+        {{ formule.phFrom }} {{ formule.phTo }}
+      </td>
+      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+        <input #formulePhFrom type="text" [value]="formule.phFrom" />
+        <input #formulePhTo type="text" [value]="formule.phTo" />
       </td>
 
       <!-- <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
