@@ -15,6 +15,8 @@ export class ProjectsComponent implements OnInit {
 
 
   newProjectModal:Boolean = false;
+  addNewItemModal:Boolean = false;
+  currProjectId:any;
   EditRowId:String = '';
   allProjects:any[]=[]
   allProjectsCopy:any[]=[]
@@ -56,6 +58,12 @@ export class ProjectsComponent implements OnInit {
     customer:'',
     brand:'',
     serie:'',
+    items:[],
+
+    dateCreated:this.formatDate(new Date())
+  }
+
+  newItem = {
     productName:'',
     remarks:'',
     itemNumber:'',
@@ -75,7 +83,7 @@ export class ProjectsComponent implements OnInit {
     expectedCustomerDelivery:'',
     production:'',
     deliveryCoordination:'',
-    dateCreated:this.formatDate(new Date())
+    projectId:'',
   }
   constructor(private costumerSrv:CostumersService,private invService:InventoryService,private orderService:OrdersService,private itemService:ItemsService,private toastSrv:ToastrService,private scheduleService:ScheduleService) { }
 
@@ -112,7 +120,8 @@ export class ProjectsComponent implements OnInit {
 
 
   edit(id){
-
+    debugger;
+ 
     if(id != ''){
       this.EditRowId = id
     } else {
@@ -130,11 +139,29 @@ export class ProjectsComponent implements OnInit {
 
   }
 
+  openNewItemModal(id){
+    this.addNewItemModal = true;
+    this.currProjectId = id
+    
+  }
+
+  addNewItem(){
+    debugger;
+    this.newItem.projectId = this.currProjectId
+    this.scheduleService.addNewItemToProject(this.newItem).subscribe(data=>{
+    if(data){
+     let project = this.allProjects.find(p=>p._id == this.currProjectId);
+     if(project){
+       project.items = data.items
+     }
+    }
+    })
+    
+  }
+
   addNewProject(){
     
     if(this.newProject.manager != ''){
-      this.newProject.compConfirm = false;
-      this.newProject.graphic = false;
       this.scheduleService.addNewProject(this.newProject).subscribe(data=>{
         this.toastSrv.success('פרויקט נוסף בהצלחה !')
         this.newProjectModal = false;
@@ -160,7 +187,6 @@ export class ProjectsComponent implements OnInit {
     this.newProject.customer = ''
     this.newProject.brand = ''
     this.newProject.serie = ''
-    this.newProject.productName = ''
   }
 
   getAllProjects(){
@@ -186,7 +212,7 @@ export class ProjectsComponent implements OnInit {
 
 
 
-  getItemDetails(ev,id){
+  getItemDetails(ev){
     debugger;
     if(ev.target.value != ''){
       this.itemService.getItemData(ev.target.value).subscribe(data=>{
@@ -219,7 +245,7 @@ export class ProjectsComponent implements OnInit {
      
       })
 
-      this.saveEdit(id);
+     
     }
    
   }
@@ -253,10 +279,8 @@ export class ProjectsComponent implements OnInit {
 
 
   saveEdit(id){
+    debugger;
     let objectToUpdate = {
-    customer:this.projectCustomer.nativeElement.value,
-    brand:this.projectBrand.nativeElement.value,
-    serie:this.projectSerie.nativeElement.value,
     productName:this.projectProduct.nativeElement.value,
     remarks:this.projectRemarks.nativeElement.value,
     itemNumber:this.projectItemNumber.nativeElement.value,
@@ -276,37 +300,17 @@ export class ProjectsComponent implements OnInit {
     expectedCustomerDelivery:this.projectExpDel.nativeElement.value,
     production:this.projectProduction.nativeElement.value,
     deliveryCoordination:this.projectDelCoor.nativeElement.value,
-    components:this.itemComponents,
     id:id,
     }
     debugger;
     this.scheduleService.updateProject(objectToUpdate).subscribe(data=>{
     if(data){
       this.toastSrv.success('פרויקט עודכן בהצלחה !');
+      this.getAllProjects();
       this.edit('');
-      let project = this.allProjects.find(p=>p._id == id);
-      project.customer = data.customer
-      project.brand = data.brand
-      project.serie = data.serie
-      project.productName = data.productName
-      project.remarks = data.remarks
-      project.itemNumber = data.itemNumber
-      project.compConfirm = data.compConfirm
-      project.batchConfirm = data.batchConfirm
-      project.pricing = data.pricing
-      project.customerOrderNumber = data.customerOrderNumber
-      project.peerpharmOrderNumber = data.peerpharmOrderNumber
-      project.fatherProduct = data.fatherProduct
-      project.sentToLicense = data.sentToLicense
-      project.licenseReceived = data.licenseReceived
-      project.graphic = data.graphic
-      project.materialOrder = data.materialOrder
-      project.componentOrder = data.componentOrder
-      project.compArrivals = data.compArrivals
-      project.materialArrivals = data.materialArrivals
-      project.expectedCustomerDelivery = data.expectedCustomerDelivery
-      project.production = data.production
-      project.deliveryCoordination = data.deliveryCoordination
+      
+
+
     }
     })
   }

@@ -26,6 +26,11 @@ export class ScheduleService {
     
     return this.http.post(url, JSON.stringify(newProject), this.options).pipe(map(res => res.json()))
   }
+  addNewItemToProject(newProject): Observable<any> {
+    let url = this.baseUrl + "schedule/newItemProject";
+    
+    return this.http.post(url, JSON.stringify(newProject), this.options).pipe(map(res => res.json()))
+  }
 
   updateProject(updatedProj): Observable<any> {
     let url = this.baseUrl + "schedule/updateProject";
