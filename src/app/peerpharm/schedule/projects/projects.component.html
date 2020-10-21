@@ -43,139 +43,139 @@
     </thead>
     <tbody >
       <ng-container *ngFor="let project of allProjects;let i = index">
+        <tr>
+
+          <td>
+            <table class="table table-hover">
+              <thead>
+      
+                <th>תיאום אספקה</th>
+                <th>ייצור</th>
+                <th>אישור עץ מוצר</th>
+                <th>מסירה צפי אספקה ללקוח</th>
+                <th>וידוא קבלת חומר</th>
+                <th>וידוא קבלת קומפ'</th>
+                <th>הזמנת קומפוננטים</th>
+                <th>הזמנת חומרים</th>
+                <th>גרפיקה</th>
+                <th>התקבל רישיון</th>
+                <th>נשלח לרישיון</th>
+                <th>מוצר אב</th>
+                <th>מספר הזמנת לקוח</th>
+                <th>מספר הזמנת פארפארם</th>
+                <th>תמחור</th>
+                <th>אישור אצווה</th>
+                <th>אישור קומפוננט</th>
+                <th>הערות/שינויים</th>
+                <th>מק"ט</th>
+                <th>שם מוצר</th>
+              </thead>
+              <tbody>
+                
+              <tr *ngFor="let item of project.items">
+                <td [ngClass]="doneOrNot(item.deliveryCoordination)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.deliveryCoordination}}</td>
+                <td [ngClass]="doneOrNot(item.deliveryCoordination)" *ngIf="EditRowId == item._id">
+                  <input #projectDelCoor [value]="item.deliveryCoordination" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.production)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.production}}</td>
+                <td [ngClass]="doneOrNot(item.production)" *ngIf="EditRowId == item._id">
+                  <input #projectProduction [value]="item.production" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.itemApproval)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.itemApproval}}</td>
+                <td [ngClass]="doneOrNot(item.itemApproval)" *ngIf="EditRowId == item._id">
+                  <input #projecItemApproval [value]="item.itemApproval" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.expectedCustomerDelivery)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.expectedCustomerDelivery}}</td>
+                <td [ngClass]="doneOrNot(item.expectedCustomerDelivery)" *ngIf="EditRowId == item._id">
+                  <input #projectExpDel [value]="item.expectedCustomerDelivery" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.materialArrivals)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.materialArrivals}}</td>
+                <td [ngClass]="doneOrNot(item.materialArrivals)" *ngIf="EditRowId == item._id">
+                  <input #projectMatArrivals [value]="item.materialArrivals" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.compArrivals)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.compArrivals}}</td>
+                <td [ngClass]="doneOrNot(item.compArrivals)" *ngIf="EditRowId == item._id">
+                  <input #projectCompArrivals [value]="item.compArrivals" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.componentOrder)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.componentOrder}}</td>
+                <td [ngClass]="doneOrNot(item.componentOrder)" *ngIf="EditRowId == item._id">
+                  <input #projectCompOrder [value]="item.componentOrder" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.materialOrder)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.materialOrder}}</td>
+                <td [ngClass]="doneOrNot(item.materialOrder)" *ngIf="EditRowId == item._id">
+                  <input #projectMatOrder [value]="item.materialOrder" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.graphic)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.graphic}}</td>
+                <td [ngClass]="doneOrNot(item.graphic)" *ngIf="EditRowId == item._id">
+                  <input type="checkbox" #projectGraphic [checked]="item.graphic" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.licenseReceived)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.licenseReceived}}</td>
+                <td [ngClass]="doneOrNot(item.licenseReceived)" *ngIf="EditRowId == item._id">
+                  <input #projectLicRecieved [value]="item.licenseReceived" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.sentToLicense)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.sentToLicense}}</td>
+                <td [ngClass]="doneOrNot(item.sentToLicense)" *ngIf="EditRowId == item._id">
+                  <input #projectSentToLic [value]="item.sentToLicense" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.fatherProduct)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.fatherProduct}}</td>
+                <td [ngClass]="doneOrNot(item.fatherProduct)" *ngIf="EditRowId == item._id">
+                  <input #projectfatherProd [value]="item.fatherProduct" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.customerOrderNumber)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.customerOrderNumber}}</td>
+                <td [ngClass]="doneOrNot(item.customerOrderNumber)"  *ngIf="EditRowId == item._id">
+                  <input #projectCustumerOrder [value]="item.customerOrderNumber" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.peerpharmOrderNumber)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.peerpharmOrderNumber}}</td>
+                <td [ngClass]="doneOrNot(item.peerpharmOrderNumber)" *ngIf="EditRowId == item._id">
+                  <input #projectPeerOrder (change)="getOrderDetails($event,project)" [value]="item.peerpharmOrderNumber" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.pricing)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.pricing}}</td>
+                <td [ngClass]="doneOrNot(item.pricing)" *ngIf="EditRowId == item._id">
+                  <input #projectPricing [value]="item.pricing" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.batchConfirm)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.batchConfirm}}</td>
+                <td [ngClass]="doneOrNot(item.batchConfirm)" *ngIf="EditRowId == item._id">
+                  <input #projectBatchConfirm  [value]="item.batchConfirm" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.compConfirm)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.compConfirm}}</td>
+                <td [ngClass]="doneOrNot(item.compConfirm)" *ngIf="EditRowId == item._id">
+                  <input #projectCompConfirm type="checkbox" [checked]="item.compConfirm" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.remarks)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.remarks}}</td>
+                <td [ngClass]="doneOrNot(item.remarks)" *ngIf="EditRowId == item._id">
+                  <input #projectRemarks [value]="item.remarks" class="form-control">
+                </td>
+          
+                <td [ngClass]="doneOrNot(item.itemNumber)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.itemNumber}}</td>
+                <td [ngClass]="doneOrNot(item.itemNumber)" *ngIf="EditRowId == item._id">
+                  <input #projectItemNumber [value]="item.itemNumber" class="form-control">
+                </td>
     
-
-      <td>
-        <table class="table table-hover">
-          <thead>
-  
-            <th>תיאום אספקה</th>
-            <th>ייצור</th>
-            <th>אישור עץ מוצר</th>
-            <th>מסירה צפי אספקה ללקוח</th>
-            <th>וידוא קבלת חומר</th>
-            <th>וידוא קבלת קומפ'</th>
-            <th>הזמנת קומפוננטים</th>
-            <th>הזמנת חומרים</th>
-            <th>גרפיקה</th>
-            <th>התקבל רישיון</th>
-            <th>נשלח לרישיון</th>
-            <th>מוצר אב</th>
-            <th>מספר הזמנת לקוח</th>
-            <th>מספר הזמנת פארפארם</th>
-            <th>תמחור</th>
-            <th>אישור אצווה</th>
-            <th>אישור קומפוננט</th>
-            <th>הערות/שינויים</th>
-            <th>מק"ט</th>
-            <th>שם מוצר</th>
-          </thead>
-          <tbody>
-            
-            <tr *ngFor="let item of project.items" >
-            <td [ngClass]="doneOrNot(item.deliveryCoordination)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.deliveryCoordination}}</td>
-            <td [ngClass]="doneOrNot(item.deliveryCoordination)" *ngIf="EditRowId == item._id">
-              <input #projectDelCoor [value]="item.deliveryCoordination" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.production)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.production}}</td>
-            <td [ngClass]="doneOrNot(item.production)" *ngIf="EditRowId == item._id">
-              <input #projectProduction [value]="item.production" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.itemApproval)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.itemApproval}}</td>
-            <td [ngClass]="doneOrNot(item.itemApproval)" *ngIf="EditRowId == item._id">
-              <input #projecItemApproval [value]="item.itemApproval" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.expectedCustomerDelivery)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.expectedCustomerDelivery}}</td>
-            <td [ngClass]="doneOrNot(item.expectedCustomerDelivery)" *ngIf="EditRowId == item._id">
-              <input #projectExpDel [value]="item.expectedCustomerDelivery" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.materialArrivals)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.materialArrivals}}</td>
-            <td [ngClass]="doneOrNot(item.materialArrivals)" *ngIf="EditRowId == item._id">
-              <input #projectMatArrivals [value]="item.materialArrivals" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.compArrivals)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.compArrivals}}</td>
-            <td [ngClass]="doneOrNot(item.compArrivals)" *ngIf="EditRowId == item._id">
-              <input #projectCompArrivals [value]="item.compArrivals" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.componentOrder)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.componentOrder}}</td>
-            <td [ngClass]="doneOrNot(item.componentOrder)" *ngIf="EditRowId == item._id">
-              <input #projectCompOrder [value]="item.componentOrder" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.materialOrder)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.materialOrder}}</td>
-            <td [ngClass]="doneOrNot(item.materialOrder)" *ngIf="EditRowId == item._id">
-              <input #projectMatOrder [value]="item.materialOrder" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.graphic)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.graphic}}</td>
-            <td [ngClass]="doneOrNot(item.graphic)" *ngIf="EditRowId == item._id">
-              <input type="checkbox" #projectGraphic [checked]="item.graphic" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.licenseReceived)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.licenseReceived}}</td>
-            <td [ngClass]="doneOrNot(item.licenseReceived)" *ngIf="EditRowId == item._id">
-              <input #projectLicRecieved [value]="item.licenseReceived" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.sentToLicense)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.sentToLicense}}</td>
-            <td [ngClass]="doneOrNot(item.sentToLicense)" *ngIf="EditRowId == item._id">
-              <input #projectSentToLic [value]="item.sentToLicense" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.fatherProduct)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.fatherProduct}}</td>
-            <td [ngClass]="doneOrNot(item.fatherProduct)" *ngIf="EditRowId == item._id">
-              <input #projectfatherProd [value]="item.fatherProduct" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.customerOrderNumber)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.customerOrderNumber}}</td>
-            <td [ngClass]="doneOrNot(item.customerOrderNumber)"  *ngIf="EditRowId == item._id">
-              <input #projectCustumerOrder [value]="item.customerOrderNumber" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.peerpharmOrderNumber)" *ngIf="EditRowId != item._id" (click)="edit(item._id,project._id)">{{item.peerpharmOrderNumber}}</td>
-            <td [ngClass]="doneOrNot(item.peerpharmOrderNumber)" *ngIf="EditRowId == item._id">
-              <input #projectPeerOrder (change)="getOrderDetails($event,project)" [value]="item.peerpharmOrderNumber" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.pricing)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.pricing}}</td>
-            <td [ngClass]="doneOrNot(item.pricing)" *ngIf="EditRowId == item._id">
-              <input #projectPricing [value]="item.pricing" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.batchConfirm)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.batchConfirm}}</td>
-            <td [ngClass]="doneOrNot(item.batchConfirm)" *ngIf="EditRowId == item._id">
-              <input #projectBatchConfirm  [value]="item.batchConfirm" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.compConfirm)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.compConfirm}}</td>
-            <td [ngClass]="doneOrNot(item.compConfirm)" *ngIf="EditRowId == item._id">
-              <input #projectCompConfirm type="checkbox" [checked]="item.compConfirm" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.remarks)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.remarks}}</td>
-            <td [ngClass]="doneOrNot(item.remarks)" *ngIf="EditRowId == item._id">
-              <input #projectRemarks [value]="item.remarks" class="form-control">
-            </td>
-      
-            <td [ngClass]="doneOrNot(item.itemNumber)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.itemNumber}}</td>
-            <td [ngClass]="doneOrNot(item.itemNumber)" *ngIf="EditRowId == item._id">
-              <input #projectItemNumber [value]="item.itemNumber" class="form-control">
-            </td>
-
-            <td [ngClass]="doneOrNot(item.productName)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.productName}}</td>
-            <td [ngClass]="doneOrNot(item.productName)" *ngIf="EditRowId == item._id">
-              <input #projectProduct [value]="item.productName" class="form-control">
-            </td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
+                <td [ngClass]="doneOrNot(item.productName)" *ngIf="EditRowId != item._id" (click)="edit(item._id)">{{item.productName}}</td>
+                <td [ngClass]="doneOrNot(item.productName)" *ngIf="EditRowId == item._id">
+                  <input #projectProduct [value]="item.productName" class="form-control">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </td>
 
       <td [ngClass]="doneOrNot(project.serie)" *ngIf="EditRowId != project._id" (click)="edit(project._id)">{{project.serie}}</td>
   
@@ -190,7 +190,7 @@
   
      
       
-    
+    </tr>
   </ng-container>
     </tbody>
     </table>

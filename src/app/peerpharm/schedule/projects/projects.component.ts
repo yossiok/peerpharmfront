@@ -153,6 +153,7 @@ export class ProjectsComponent implements OnInit {
      let project = this.allProjects.find(p=>p._id == this.currProjectId);
      if(project){
        project.items = data.items
+       this.addNewItemModal = false;
      }
     }
     })
@@ -197,6 +198,7 @@ export class ProjectsComponent implements OnInit {
       
       });
       this.managers = [...new Set(tempArr)];
+      debugger;
       this.allProjects = data
       this.allProjectsCopy = data
     })
@@ -256,7 +258,7 @@ export class ProjectsComponent implements OnInit {
       this.orderService.getOrderByNumber(ev.target.value).subscribe(data=>{
         if(data){
           this.projectCustumerOrder.nativeElement.value = data[0].customerOrderNum
-          this.orderService.getAmountsForProject(ev.target.value,project._id,project.itemNumber).subscribe(data=>{
+          this.orderService.getAmountsForProject(ev.target.value,project._id).subscribe(data=>{
             debugger;
             
             var allEqual = data.every( v => v.hasEnoughAmount === true )

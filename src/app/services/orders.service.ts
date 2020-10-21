@@ -140,8 +140,8 @@ export class OrdersService {
       map(reponse => reponse.json())
     )
   }
-  getAmountsForProject(orderNumber,projectId,itemNumber): Observable<any> {
-    let url = this.baseUrl + 'order?amountsForProject=' + orderNumber +"&projectId="+projectId+"&itemNumber="+itemNumber;
+  getAmountsForProject(orderNumber,projectId): Observable<any> {
+    let url = this.baseUrl + 'order?amountsForProject=' + orderNumber +"&projectId="+projectId;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
     )
