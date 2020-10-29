@@ -288,14 +288,25 @@
                 <!-- <i class="ti-check text-success m-r-10" (click)="setDone()"></i> -->
               </td>
               
-              <td></td>
+              <td *ngIf="line._id !== EditRowId">
+                {{line.whatIsMissing}}
+              </td>
+              <td *ngIf="line._id === EditRowId">
+                <select class="form-control" #whatIsMissing type="text" [value]="line.whatIsMissing" >
+                  <option selected="true" disabled="disabled">בחר חוסרים</option>
+                  <option value="noStickers">חסר מדבקות</option>
+                  <option value="noMaterial">חסר חומר</option>
+                  <option value="noComponent">חסר קומפונטט</option>
+                  <option value="noLacks">אין חוסרים</option>
+              </select>
+            </td>
               <td>
                 <!-- <input
                   type="checkbox"
                   [(ngModel)]="line.isSelected"
                   *ngIf="line._id !== EditRowId"
                 /> -->
-                <button class="btn btn-info m-r-10 border border-dark" type="button" (click)="openPrintBarkod(content, line)">
+                <button *ngIf="line._id !== EditRowId" class="btn btn-info m-r-10 border border-dark" type="button" (click)="openPrintBarkod(content, line)">
                   Print Barcode
                 </button>
                 <i *ngIf="typeShown === 'mkp2'" (click)="markMkpDone(line._id)" class="fa fa-check"></i>

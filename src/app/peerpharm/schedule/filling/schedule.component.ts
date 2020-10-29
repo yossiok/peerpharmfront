@@ -63,6 +63,7 @@ export class ScheduleComponent implements OnInit {
   @ViewChild("aaaa") date: ElementRef;
   @ViewChild("marks") marks: ElementRef;
   @ViewChild('shiftA') shift: ElementRef;
+  @ViewChild('whatIsMissing') whatIsMissing: ElementRef;
   @ViewChild('mkpA') mkp: ElementRef;
   @ViewChild('id') id: ElementRef;
  
@@ -226,6 +227,9 @@ export class ScheduleComponent implements OnInit {
         if (sced.status == 'problem') sced.color = 'red';
         if (sced.status == 'open') sced.color = 'white';
         if (sced.cmptsStatus == null) sced.cmptsStatus = 'true';
+        if(sced.whatIsMissing == 'noStickers' || sced.whatIsMissing == 'noMaterial' || sced.whatIsMissing == 'noComponent'){
+          sced.color = 'grey'
+        }
         sced.date3 = moment(sced.date).format('YYYY-MM-DD');
 
         //let pipe = new DatePipe('en-US'); // Use your own locale
@@ -260,6 +264,9 @@ export class ScheduleComponent implements OnInit {
         }
         if (sced.status === 'problem') {
           sced.color = 'red';
+        }
+        if(sced.whatIsMissing == 'noStickers' || sced.whatIsMissing == 'noMaterial' || sced.whatIsMissing == 'noComponent'){
+          sced.color = 'grey'
         }
         sced.date2 = moment(sced.date).format('DD/MM/YY');
         sced.date3 = moment(sced.date).format('YYYY-MM-DD');
@@ -458,7 +465,7 @@ export class ScheduleComponent implements OnInit {
       scdLneInfo[0].itemImpRemark
       
       this.date.nativeElement.value
-  
+      this.whatIsMissing.nativeElement.value;
       console.log(this.date.nativeElement.value);
       console.log(this.orderN.nativeElement.value);
       console.log(this.item.nativeElement.value);
@@ -487,6 +494,7 @@ export class ScheduleComponent implements OnInit {
         shift: this.shift.nativeElement.value,
         mkp: this.currentType,
         itemImpRemark: scdLneInfo[0].itemImpRemark,
+        whatIsMissing:this.whatIsMissing.nativeElement.value,
       };
       console.log(scheduleToUpdate);
       this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
