@@ -27,8 +27,10 @@
                     <tbody>
                         <tr *ngFor="let screen of routes">
                             <td>{{screen.name}}</td>
-                            <td>
-                                <input #screenValue  class="form-control" [value]="screen.permission" /></td>
+                            <td *ngIf="EditRowId != screen._id" (click)="edit(screen._id)">{{screen.permission}}</td>
+                            <td *ngIf="EditRowId == screen._id">
+                                <input class="form-control" #screenValue [value]="screen.permission">
+                            </td>
                             <td><button class="btn btn-info form-control"  (click)="savePermission(screen.name)" ><i class="fa fa-save text-white"></i></button></td>
                         </tr>
         

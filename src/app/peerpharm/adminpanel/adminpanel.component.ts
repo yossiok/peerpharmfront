@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { PeerPharmRputs } from '../peerpharm.routing';
 import { UsersService } from 'src/app/services/users.service';
 import { ToastrService } from 'ngx-toastr';
@@ -12,9 +12,14 @@ import { ToastrService } from 'ngx-toastr';
 export class AdminpanelComponent implements OnInit {
   routes: any[];
   users: any[];
+  EditRowId:any;
 
 
   @ViewChild('screenValue') screenValue: ElementRef;
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    this.edit('');
+  }
 
   constructor(private toastService: ToastrService, private userService: UsersService) { }
 
@@ -34,6 +39,14 @@ export class AdminpanelComponent implements OnInit {
     })
   }
 
+  edit(id){
+  if(id != ''){
+    this.EditRowId = id
+  } else{
+    this.EditRowId = ''
+  }
+  }
+
   setUserPermissionLvl(ev, id) {
     var permLevel = ev.target.value;
     this.userService.setUserPermission(permLevel, id).subscribe(user => {
@@ -41,12 +54,14 @@ export class AdminpanelComponent implements OnInit {
         var oldUser = this.users.find(u => u._id == user._id)
         oldUser.screenPermission = user.screenPermission
         this.toastService.success('הרשאת משתמש עודכנה בהצלחה !')
+        this.edit('');
       }
     })
   }
 
   savePermission(name) {
     debugger;
+
     if(this.screenValue.nativeElement.value != ''){
       this.userService.savePermissionToScreen({ name: name, permission:this.screenValue.nativeElement.value}).subscribe(data => {
         if(data){

@@ -448,6 +448,33 @@ export class ScheduleComponent implements OnInit {
     })
   }
 
+  filterByOrder(ev){
+    this.scheduleData = this.scheduleDataCopy
+  if(ev.target.value != ''){
+    this.scheduleData = this.scheduleData.filter(s=>s.orderN == ev.target.value)
+  } else {
+    this.scheduleData = this.scheduleDataCopy
+  }
+  }
+
+  filterByItem(ev){
+    this.scheduleData = this.scheduleDataCopy
+  if(ev.target.value != ''){
+    this.scheduleData = this.scheduleData.filter(s=>s.item == ev.target.value)
+  } else {
+    this.scheduleData = this.scheduleDataCopy
+  }
+  }
+
+  filterByLine(ev){
+    this.scheduleData = this.scheduleDataCopy
+  if(ev.target.value != ''){
+    this.scheduleData = this.scheduleData.filter(s=>s.productionLine == ev.target.value)
+  } else {
+    this.scheduleData = this.scheduleDataCopy
+  }
+  }
+
   async updateSchedule() {
     debugger;
     if(this.orderN.nativeElement.value!=''){
