@@ -210,9 +210,9 @@ export class QaPalletsComponent implements OnInit {
     debugger
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr;
-      pallet.fullKartons = Number(pallet.floorNumber) * Number(pallet.kartonQuantity);
+      pallet.fullKartons = Number(pallet.floorNumber) * Number(pallet.kartonQuantity) + pallet.lastFloorQuantity;
       if (pallet.allUnits == undefined || pallet.allUnits == null) {
-        pallet.allUnits = Number(pallet.floorNumber) * Number(pallet.kartonQuantity) * Number(pallet.unitsInKarton)
+        pallet.allUnits = (Number(pallet.floorNumber) * Number(pallet.kartonQuantity) + pallet.lastFloorQuantity) * Number(pallet.unitsInKarton)
         if(Number(pallet.lastFloorQuantity) > 0 && pallet.kartonQuantity > 0){
          pallet.allUnits = pallet.allUnits + pallet.unitsQuantityPartKarton
         }

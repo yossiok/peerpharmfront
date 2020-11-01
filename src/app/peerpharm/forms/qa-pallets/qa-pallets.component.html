@@ -77,8 +77,8 @@
                   <td>{{i+1}}</td>
                   <td><input style="width:30px !important" class="form-control" (change)="isSelected($event,pallet)" type="checkbox"></td>
                   <td>{{pallet.customerName}}</td>
-                  <td>{{pallet.itemNumber}}</td>
-                  <td>{{pallet.orderNumber}}</td>
+                  <td target="_blank" routerLink="/peerpharm/items/itemDetails/{{ pallet.itemNumber }}"><span style="cursor: pointer;color:blue">{{pallet.itemNumber}}</span></td>
+                  <td target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ pallet.orderNumber }}"><span style="cursor: pointer;color:blue">{{pallet.orderNumber}}</span></td>
                   <td>{{pallet.qaStatus}}</td>
                   <td><button (click)="addLineToPallet(pallet)" class="form-control btn btn-info">הוסף למשטח קיים</button></td>
                   <!-- <td><button (click)="addPalletToCostumer(pallet)" class="btn btn-info">הוסף למשטח קיים</button></td> -->
