@@ -1215,9 +1215,15 @@
 
 </div>
 
-<div *ngIf="newPurchaseModal == true"
-  style="z-index: 9999;top:0px !important;height: auto;border:2px 2px 2px blue;width: 50%;right:0px !important"
+<div *ngIf="newPurchaseModal == true" style="z-index: 9999;top:0px !important;height: auto;border:2px 2px 2px blue;width: 50%;right:0px !important"
   class="fixNoaStupidStuff border border-info bg-white shadow-lg container fixed-top mx-auto my-auto text-center p-1">
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-10"></div>
+    <div class="col-1">
+      <i (click)="newPurchaseModal = false" class="fa fa-times"></i>
+    </div>
+  </div>
   <app-new-procurement></app-new-procurement>
 </div>
 

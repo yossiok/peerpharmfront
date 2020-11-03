@@ -591,7 +591,7 @@
           printSectionId="print-section"
           [printStyle]="{
             th: { border: 'solid 1px' },
-            td: { border: 'solid 1px', 'font-size': '16px' }
+            td: { border: 'solid 1px', 'font-size': '17px'}
           }"
           ngxPrint
         >
@@ -613,16 +613,15 @@
             "
           >
             <tr>
-              <th scope="col">No.</th>
               <th scope="col">Phase</th>
+              <th scope="col">No.</th>
               <th scope="col">Raw Material Name</th>
               <th scope="col">Name</th>
               <th scope="col">Execute</th>
               <th scope="col">Batch Number</th>
               <!-- <th scope="col">Item Instructions</th> -->
               <th scope="col">Percentage</th>
-              <th scope="col">Weight</th>
-              <th scope="col">Temp</th>
+              <th scope="col">Weight/Temp</th>
               <th scope="col">Phase Instructions</th>
             </tr>
           </thead>
@@ -634,8 +633,8 @@
             >
               <ng-container>
                 <tr *ngFor="let item of phase.items; let i = index">
-                  <td></td>
-                  <td
+                  
+                  <td style="padding:5px"
                     *ngIf="i == 0"
                     [attr.rowspan]="phase.items.length"
                     class="phase"
@@ -643,20 +642,20 @@
                   >
                     {{ phase.phaseName }}
                   </td>
+                  <td style="padding:5px">{{i+1}}</td>
                   <!-- <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td> -->
-                  <td>{{ item.itemName }}</td>
-                  <td>{{ item.itemNumber }}</td>
-                  <td></td>
+                  <td style="padding:5px">{{ item.itemName }}</td>
+                  <td style="padding:5px">{{ item.itemNumber }}</td>
+                  <td style="padding:5px"></td>
                  
 
                   <!-- <td>{{ item.remarks }}</td> -->
                   <!-- <td>{{item.quantity}}&nbsp; {{item.quantityUnits}}</td> -->
-                  <td></td>
-                  <td>{{ item.percentage }}%</td>
+                  <td style="padding:5px"></td>
+                  <td style="padding:5px">{{ item.percentage }}%</td>
                   <!-- <td>{{item.temp}}</td> -->
-                  <td></td>
-                  <td></td>
-                  <td
+                  <td style="padding:5px">{{item.itemRemarks}}</td>
+                  <td style="padding:5px"
                     *ngIf="i == 0"
                     [attr.rowspan]="phase.items.length"
                     class="phase"
