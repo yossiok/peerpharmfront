@@ -760,6 +760,7 @@ export class AllFormulesComponent implements OnInit {
               var item = phase.items.find(i => i.itemNumber == itemNumber)
               item.itemRemarks = this.itemRemarksUpdate.nativeElement.value
               item.phaseRemarks = this.phaseRemarksUpdate.nativeElement.value
+              item.remarks = this.itemRemarksUpdate.nativeElement.value
               item.percentage = Number(this.percentageUpdate.nativeElement.value)
               this.toastSrv.success('עודכן בהצלחה !')
               this.edit('')
