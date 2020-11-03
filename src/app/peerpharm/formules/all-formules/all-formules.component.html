@@ -654,7 +654,7 @@
                   <td style="padding:5px"></td>
                   <td style="padding:5px">{{ item.percentage }}%</td>
                   <!-- <td>{{item.temp}}</td> -->
-                  <td style="padding:5px">{{item.itemRemarks}}</td>
+                  <td style="padding:5px">{{item.itemRemarks}}{{item.remarks}}</td>
                   <td style="padding:5px"
                     *ngIf="i == 0"
                     [attr.rowspan]="phase.items.length"
