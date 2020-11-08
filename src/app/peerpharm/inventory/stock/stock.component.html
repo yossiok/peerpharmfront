@@ -280,7 +280,8 @@
         style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Stickers</div> -->
       <div style="padding-left: 10px;"><b> <span class="text-danger">Showing {{components.length}} Inventory
             Items</span> </b>
-          
+            <div  *ngIf="smallLoader" class="smallLoader"></div>
+
           </div> 
           
       <div class="export" style="cursor:pointer;">
@@ -1014,7 +1015,8 @@
                       </div>
                     </div>
                     <tbody>
-                      <tr *ngFor="let itemMovement of itemMovements">
+                      <ng-container *ngFor="let itemMovement of itemMovements">
+                      <tr *ngIf="itemMovement.WH_originName != 'Filling'" >
                         <td>{{itemMovement.amount}}</td>
                         <td>{{itemMovement.originShelfQntBefore}}</td>
                         <td>{{itemMovement.movementType}}</td>
@@ -1022,6 +1024,7 @@
                         <td>{{itemMovement.shell_position_in_whareHouse_Origin}}</td>
                         <td>{{itemMovement.WH_originName}}</td>
                       </tr>
+                    </ng-container>
                     </tbody>
                   </table>
                 </div>

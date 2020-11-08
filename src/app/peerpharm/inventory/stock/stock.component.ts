@@ -856,7 +856,7 @@ export class StockComponent implements OnInit {
   }
   getAmountsFromShelfs() {
 
-
+    debugger;
     var self = this;
 
       self.inventoryService.getComponentsAmounts().subscribe(res => {
@@ -1270,7 +1270,7 @@ export class StockComponent implements OnInit {
     }
     if (this.stockType != 'product') {
       if (this.filterByType != undefined) {
-        if (this.filterByType.nativeElement.value != "") {
+        if (this.filterByType.nativeElement.value != "" && this.filterByType.nativeElement.value != 'בחר סוג' ) {
           let CmptType = this.filterByType.nativeElement.value;
           this.components = this.components.filter(x => (x.componentType == CmptType));
           this.components
@@ -1300,7 +1300,7 @@ export class StockComponent implements OnInit {
     }
     if (this.filterbyNum.nativeElement.value != "" && this.filterbyNum != undefined) {
       let itemNum = this.filterbyNum.nativeElement.value;
-      this.components = this.components.filter(x => (x.componentN.includes(itemNum) && x.itemType.includes(this.stockType)));
+      this.components = this.components.filter(x => (x.componentN == itemNum && x.itemType == this.stockType));
     }
 
     if (this.filterByItem.nativeElement.value != '' && this.filterByItem != undefined) {

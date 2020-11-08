@@ -264,7 +264,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   initPrintScheduleForm(line) {
-    
+    debugger;
     this.pcsCarton = this.itemData[0].PcsCarton.replace(/\D/g, "") + " Pcs";
     this.barcodeK = this.itemData[0].barcodeK;
     this.volumeK = this.itemData[0].volumeKey + ' ml';
