@@ -570,6 +570,7 @@
             <th>לקוח</th>
             <th>מספר פריט</th>
             <th>מספר הזמנה</th>
+            <th>כמות בהזמנה</th>
             <th>כמות</th>
             <th>כמות חדשה</th>
             <th></th>
@@ -580,6 +581,7 @@
             <td>{{item.customerName}}</td>
             <td>{{item.itemNumber}}</td>
             <td>{{item.orderNumber}}</td>
+            <td>{{item.orderAmount}}</td>
             <td [ngClass]="{zeroUnits:item.allUnits == '0'}">{{item.allUnits}}</td>
             <td style="cursor: pointer;" (click)="edit(item.itemNumber,item.customerName)" *ngIf="EditRow != item.itemNumber && EditRowTwo != item.customerName">{{item.unitsToCombine}}</td>
             <td *ngIf="EditRow === item.itemNumber && EditRowTwo === item.customerName">

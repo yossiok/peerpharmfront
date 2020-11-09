@@ -39,6 +39,7 @@ debugger;
   {
     this.authService.getLoggedInUser().subscribe(data=>
       {
+        debugger;
         let screenPermission = this.authService.loggedInUser.screenPermission;
         if (this.userService.allScreens.length>0) { 
           debugger;

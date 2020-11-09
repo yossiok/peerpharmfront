@@ -78,6 +78,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'allorders/orders/allorders',
+    canActivate:[ScreenGuard],
     data: {
       title: 'All Orders'
     },
@@ -85,6 +86,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'allorders/orderitems/:id',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Order Items'
     },
@@ -93,6 +95,7 @@ export const PeerPharmRputs: Routes =[
 
   {
     path: 'allorders/neworder',
+    canActivate:[ScreenGuard],
     data: {
       title: 'New Order'
     },
@@ -100,6 +103,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/fillschedule',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Filling Schedule'
     },
@@ -107,6 +111,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/projects',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Projects'
     },
@@ -114,6 +119,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/printschedule',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Print Schedule'
     },
@@ -121,6 +127,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/makeupschedule',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Make Up Schedule'
     },
@@ -128,6 +135,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/packingschedule',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Packing Schedule'
     },
@@ -135,6 +143,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/barcode-print',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Print Barcode'
     },
@@ -143,6 +152,7 @@ export const PeerPharmRputs: Routes =[
 
   {
     path: 'items/itemslist',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Items List'
     },
@@ -150,6 +160,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'items/itemDetails',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Item Tree'
     },
@@ -157,6 +168,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'items/itemreports',
+    canActivate:[ScreenGuard],
     data: {
       title: ''
     },
@@ -164,6 +176,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'items/itemDetails/:itemNumber',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Item Tree'
     },
@@ -172,6 +185,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'plates/plates',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Plates'
     },
@@ -179,6 +193,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/stock',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Inventory'
     },
@@ -186,6 +201,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/wharehouse',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Warehouse'
     },
@@ -193,6 +209,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/inventoryRequest',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Inventory Request'
     },
@@ -200,6 +217,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/materialArrival',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Material Arrival'
     },
@@ -207,6 +225,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/storages',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Storages'
     },
@@ -214,6 +233,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/shelf-list',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Shelf List'
     },
@@ -221,6 +241,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/suppliers',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Suppliers'
     },
@@ -229,6 +250,7 @@ export const PeerPharmRputs: Routes =[
 
   {
     path: 'inventory/scanMaterialView',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Material Scan'
     },
@@ -236,6 +258,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/allocatedOrders',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Allocated Orders'
     },
@@ -257,6 +280,7 @@ export const PeerPharmRputs: Routes =[
   },*/
   {
     path: 'new-formule/new-formule',
+    canActivate:[ScreenGuard],
     data: {
       title: 'add-formule'
     },
@@ -269,18 +293,20 @@ export const PeerPharmRputs: Routes =[
       title: 'edit-formule'
     },
     component: FormuleComponent,
-    // canActivate:[TwoFactor]
+    canActivate:[TwoFactor]
   },
   {
     path: 'formule/all-formules',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path :'production/lines',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Production Lines'
     },
@@ -288,6 +314,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path :'production/productionHall',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Production Hall'
     },
@@ -295,6 +322,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path : 'production/productionRequest',
+    canActivate:[ScreenGuard],
     data : {
       title : 'Production Request'
     },
@@ -302,6 +330,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path : 'production/productionSchedule',
+    canActivate:[ScreenGuard],
     data : {
       title : 'Production Schedule'
     },
@@ -309,6 +338,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path : 'production/wizard',
+    canActivate:[ScreenGuard],
     data : {
       title : 'Wizard'
     },
@@ -316,6 +346,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path : 'production/formule-production/formule-production',
+    canActivate:[ScreenGuard],
     data : {
       title : 'Formule Production'
     },
@@ -323,6 +354,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path : 'production/weight-production/weight-production',
+    canActivate:[ScreenGuard],
     data : {
       title : 'Weight Production'
     },
@@ -330,6 +362,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'production/scanMaterial',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Material Barcode'
     },
@@ -337,6 +370,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'production/scanItem',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Item Barcode'
     },
@@ -344,6 +378,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'production/materials',
+    canActivate:[ScreenGuard],
     data: {
       title: 'Ready Materials'
     },
@@ -351,6 +386,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path :'batches/batchesList',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Batches List'
     },
@@ -358,6 +394,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path :'batches/mkpBatchesList',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Make-Up Batches List'
     },
@@ -365,6 +402,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path :'batches/newBatch',
+    canActivate:[ScreenGuard],
     data :{
       title : 'New Batch'
     },
@@ -372,6 +410,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path :'costumers/costumers_list',
+    canActivate:[ScreenGuard],
     data :{
       title : 'All Costumers'
     },
@@ -381,6 +420,7 @@ export const PeerPharmRputs: Routes =[
   ,
   {
     path :'forms/forms_list',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Forms'
     },
@@ -390,6 +430,7 @@ export const PeerPharmRputs: Routes =[
   ,
   {
     path :'forms/formDetails/:id',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Forms'
     },
@@ -398,6 +439,7 @@ export const PeerPharmRputs: Routes =[
   ,
   {
     path :'forms/checkingforms',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Check Forms'
     },
@@ -405,6 +447,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path :'forms/cleaning-forms',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Cleaning Forms'
     },
@@ -412,6 +455,7 @@ export const PeerPharmRputs: Routes =[
   } ,
   {
     path :'qa/packing-list',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Packing Lists'
     },
@@ -419,6 +463,7 @@ export const PeerPharmRputs: Routes =[
   } ,
   {
     path :'forms/first-aid',
+    canActivate:[ScreenGuard],
     data :{
       title : 'First Aid'
     },
@@ -426,6 +471,7 @@ export const PeerPharmRputs: Routes =[
   } ,
   {
     path :'forms/qa-pallets',
+    canActivate:[ScreenGuard],
     data :{
       title : 'QA Pallets'
     },
@@ -433,6 +479,7 @@ export const PeerPharmRputs: Routes =[
   } ,
   {
     path :'notification',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Notification'
     },
@@ -442,6 +489,7 @@ export const PeerPharmRputs: Routes =[
   ,
   {
     path :'activeusers',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Active Users'
     },
@@ -475,6 +523,7 @@ export const PeerPharmRputs: Routes =[
   ,
   {
     path :'procurement/procurementOrderItemBalance',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Procurement Order Item Balance'
     },
@@ -482,6 +531,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path :'procurement/procurementOrders',
+    canActivate:[ScreenGuard],
     data :{
       title : 'Procurement Orders'
     },
@@ -489,6 +539,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path : 'procurement/procurementOrderItems/:orderNumber',
+    canActivate:[ScreenGuard],
     data : {
       title : 'Procurement Order Items'
     },
@@ -496,6 +547,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path : 'procurement/procurementOrderItems',
+    canActivate:[ScreenGuard],
     data : {
       title : 'Procurement Order Items'
     },
@@ -503,6 +555,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path : 'procurement/newProcurement',
+    canActivate:[ScreenGuard],
     data : {
       title : 'New Procurement'
     },

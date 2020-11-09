@@ -4,6 +4,7 @@ import { CostumersService } from 'src/app/services/costumers.service';
 import { ToastrService } from 'ngx-toastr';
 import { PlatformLocation } from '@angular/common';
 import { log } from 'util';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-qa-pallets',
@@ -64,7 +65,7 @@ export class QaPalletsComponent implements OnInit {
 
 
 
-  constructor(private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
+  constructor(private orderService:OrdersService,private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -208,6 +209,17 @@ export class QaPalletsComponent implements OnInit {
 
   isSelected(ev, pallet) {
     debugger
+
+    this.orderService.getOrderItemsByNumber(pallet.orderNumber).subscribe(data=>{
+      if(data){
+        debugger;
+        data.forEach(item => {
+          if(pallet.itemNumber == item.itemNumber){
+            pallet.orderAmount = item.quantity
+          }
+        });
+      }
+    })
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr;
       pallet.fullKartons = Number(pallet.floorNumber) * Number(pallet.kartonQuantity) + pallet.lastFloorQuantity;
