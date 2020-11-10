@@ -213,6 +213,8 @@
                   <th>מספר משטח</th>
                   <th>סטטוס</th>
                   <th>שם לקוח</th>
+                  <th>משקל משטח</th>
+                  <th>גודל משטח</th>
                   <!-- <th></th> -->
                 </tr>
               </thead>
@@ -223,6 +225,9 @@
                   <td (click)="viewItemsInPallet(pallet)" style="color:blue;text-decoration: underline;cursor: pointer;">{{pallet.palletNumber}}</td>
                   <td [ngClass]="checkPLstatus(pallet)">{{pallet.plStatus}}</td>
                   <td>{{pallet.customer}}</td>
+                  <td>{{pallet.palletWeight}}</td>
+                  <td>{{pallet.palletSize}}</td>
+
                   <!-- <td><button class="btn btn-info form-control w-50" (click)="addPalletToPackList(pallet)">הוסף לרשימת אריזה</button></td> -->
            
 
