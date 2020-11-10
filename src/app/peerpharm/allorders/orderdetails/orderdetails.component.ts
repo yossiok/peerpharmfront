@@ -1,4 +1,4 @@
-gimport { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service';
 import { ScheduleService } from '../../../services/schedule.service'
 import { ActivatedRoute, Router } from '@angular/router'

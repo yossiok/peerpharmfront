@@ -46,7 +46,9 @@ export class QaPalletsComponent implements OnInit {
     lines: [],
     status: '',
     palletNumber: '',
-    plStatus: ''
+    plStatus: '',
+    palletWeight:'',
+    palletSize:''
 
   }
 

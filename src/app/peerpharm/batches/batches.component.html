@@ -99,7 +99,7 @@
             <td style="width:9%">Batch Number</td>
             <td style="width:9%;">Production Date</td>
             <td style="width:15%">Item Name</td>
-            <td style="width:8%">P.h</td>
+            <td style="width:8%">p.H</td>
             <td style="width:8%">Left/Produced</td>
             <td style="width:8%">Barrels</td>
             <td style="width:9%">Order</td>
@@ -383,8 +383,8 @@
               <tbody dir="rtl" style="text-align: center;">
                 <tr>
                   <td>{{item.phRemarks}}</td>
-                  <td>{{item.phLimitsMin}}</td>
                   <td>{{item.phLimitsMax}}</td>
+                  <td>{{item.phLimitsMin}}</td>
                   <td *ngIf="editValues == false">{{currBatch.phValue}}</td>
                   <td *ngIf="editValues == true"><input [value]="currBatch.phValue" #phValue type="text"></td>
                   <td class="bg-light">PH</td>
