@@ -40,10 +40,21 @@ export class FormdetailsComponent implements OnInit {
   }
 
   async getFormData() {
+    debugger;
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       await this.formsService.getFormData(id).subscribe(res => {
         this.form = res[0];
+        if(this.form.productionEndDate){
+          let days = this.form.productionEndDate.slice(8,10)
+          let monthes = this.form.productionEndDate.slice(5,7)
+          this.form.productionEndDate = this.form.productionEndDate.slice(0,5);
+          this.form.productionEndDate = this.form.productionEndDate+days+'-'+monthes
+
+        }
+       
+        this.form.produc
+        debugger;
         this.form.checkNetoWeight.forEach(element => {
           if (element) {
             const netNumber = parseInt(element, 10);

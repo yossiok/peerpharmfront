@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+gimport { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service';
 import { ScheduleService } from '../../../services/schedule.service'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -1170,6 +1170,7 @@ debugger;
   }
 
   saveEdit() {
+  debugger;
 
     let itemToUpdate = {
 
@@ -1180,7 +1181,7 @@ debugger;
       "quantity": this.quantity.nativeElement.value,
       // "qtyKg": this.weight.nativeElement.value,
       "itemRemarks": this.itemRemarks.nativeElement.value,
-      lastUpdated: [{ user: this.user.firstName, time: new Date() }]
+      lastUpdated: [{ user: this.authService.loggedInUser.firstName, time: new Date() }]
 
     }
     console.log(itemToUpdate);
@@ -1679,9 +1680,14 @@ debugger;
     });
   }
 
-  async getUserInfo() {
-    await this.authService.userEventEmitter.subscribe(user => {
+   getUserInfo() {
+
+    this.authService.loggedInUser.firstName
+    debugger;
+   this.authService.userEventEmitter.subscribe(user => {
+     debugger;
       this.user = user;
+     
       // this.user=user.loggedInUser;
       // if (!this.authService.loggedInUser) {
       //   this.authService.userEventEmitter.subscribe(user => {

@@ -102,11 +102,18 @@
               </td>
             </tr>
             <tr>
-              <td>תאריך ייצור</td>
+              <td>תאריך ייצור/תאריך סיום</td>
               <td>
                 <input
                   id="div_productionDate"
                   [(ngModel)]="form.productaionDate"
+                  class="inputDiv"
+                  style="width:100px"
+                  [disabled]="disabledValue"
+                />
+                <input
+                  id="div_productionDate"
+                  [(ngModel)]="form.productionEndDate"
                   class="inputDiv"
                   style="width:100px"
                   [disabled]="disabledValue"

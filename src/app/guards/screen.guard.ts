@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth.service';
 export class ScreenGuard implements CanActivate {
 
   constructor(private authService: AuthService, private userService: UsersService) {
-debugger;
+
   }
 
   canActivate(
@@ -18,18 +18,18 @@ debugger;
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
  return new Promise((resolve, reject)=>
  {
-   debugger;
+   
   if (this.authService.loggedInUser) {
     let screenPermission = this.authService.loggedInUser.screenPermission;
     if (this.userService.allScreens.length>0) { 
-      debugger;
+      
         resolve(this.checkForScreenPermission(screenPermission,next.data.title, this.userService.allScreens))
     }
     else
     {
       this.userService.getAllScreens().subscribe(data=>
         {
-          debugger;
+          
             resolve(this.checkForScreenPermission(screenPermission,next.data.title, data))
           
         });
@@ -39,17 +39,17 @@ debugger;
   {
     this.authService.getLoggedInUser().subscribe(data=>
       {
-        debugger;
+        
         let screenPermission = this.authService.loggedInUser.screenPermission;
         if (this.userService.allScreens.length>0) { 
-          debugger;
+          
             resolve(this.checkForScreenPermission(screenPermission,next.data.title, this.userService.allScreens))
         }
         else
         {
           this.userService.getAllScreens().subscribe(data=>
             {
-              debugger;
+              
                 resolve(this.checkForScreenPermission(screenPermission,next.data.title, data))
               
             });
@@ -64,7 +64,7 @@ debugger;
 checkForScreenPermission(screenPermission, title, arrOfScreens):boolean
 {
   //find the screen
-  debugger;
+  
   let allpermissionString =arrOfScreens.find(x => x.name == title).permission;
   let allPermissionsArr = allpermissionString.split(',');
   if (allPermissionsArr.includes(screenPermission)) {
