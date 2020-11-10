@@ -504,26 +504,15 @@ export class BatchesComponent implements OnInit {
 
   async getUserInfo() {
     debugger
+    if (this.authService.loggedInUser) {
+      if (this.authService.loggedInUser.authorization.includes("editBatches")) {
+        this.alowUserEditBatches = true;
+      }
+    }
+    
     await this.authService.userEventEmitter.subscribe(user => {
       this.user = user;
       this.userValueUpdate = user.userName
-      // this.user=user.loggedInUser;
-      // if (!this.authService.loggedInUser) {
-      //   this.authService.userEventEmitter.subscribe(user => {
-      //     if (user.userName) {
-      //       this.user = user;
-
-      //     }
-      //   });
-      // }
-      // else {
-      //   this.user = this.authService.loggedInUser;
-      // }
-      if (this.user.authorization) {
-        if (this.authService.loggedInUser.authorization.includes("editBatches")) {
-          this.alowUserEditBatches = true;
-        }
-      }
 
     });
 
