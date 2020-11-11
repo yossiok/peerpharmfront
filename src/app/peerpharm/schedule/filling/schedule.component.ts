@@ -9,6 +9,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { BatchesService } from "src/app/services/batches.service";
+import { ExcelService } from "src/app/services/excel.service";
 
 @Component({
   selector: "app-schedule",
@@ -99,7 +100,8 @@ export class ScheduleComponent implements OnInit {
     private orderSer: OrdersService,
     private modalService: NgbModal,
     private batchService:BatchesService,
-    private toastSrv:ToastrService
+    private toastSrv:ToastrService,
+    private excelService:ExcelService
   ) {}
 
   ngOnInit() {
@@ -128,6 +130,13 @@ export class ScheduleComponent implements OnInit {
   get printBarcodeValues(): string[] {
     debugger;
     return this.printBarkod.barcode.split("\n");
+  }
+
+  exportAsXLSX(): void {
+    let tempArr = this.scheduleData.filter(s=>s.mkp == this.typeShown);
+
+    this.excelService.exportAsExcelFile(tempArr, 'data');
+
   }
 
 

@@ -374,8 +374,9 @@
               <thead class="bg-light">
                 <tr>
                   <th>הערות</th>
-                  <th>תחומי התוצאות עליון - Spec Limits Max</th>
                   <th>תחומי התוצאות תחתון - Spec Limits Min</th>
+                  <th>תחומי התוצאות עליון - Spec Limits Max</th>
+             
                   <th>תוצאה - Values</th>
                   <th class="bg-light">סוג בדיקה - Test</th>
                 </tr>
@@ -383,8 +384,9 @@
               <tbody dir="rtl" style="text-align: center;">
                 <tr>
                   <td>{{item.phRemarks}}</td>
-                  <td>{{item.phLimitsMax}}</td>
                   <td>{{item.phLimitsMin}}</td>
+                  <td>{{item.phLimitsMax}}</td>
+               
                   <td *ngIf="editValues == false">{{currBatch.phValue}}</td>
                   <td *ngIf="editValues == true"><input [value]="currBatch.phValue" #phValue type="text"></td>
                   <td class="bg-light">PH</td>

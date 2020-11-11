@@ -30,7 +30,10 @@
     <div class="col-2 fixNoaStupidStuff">
       <input class="form-control" type="text" placeholder="Search By Line" (change)="filterByLine($event)">
     </div>
-    <div class="col-2 fixNoaStupidStuff"></div>
+    <div class="col-2 fixNoaStupidStuff">
+      <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+      (click)="exportAsXLSX()">
+    </div>
 
   </div>
 
