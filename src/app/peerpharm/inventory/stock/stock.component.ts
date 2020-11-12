@@ -205,6 +205,8 @@ export class StockComponent implements OnInit {
   @ViewChild('packageWeight') packageWeight: ElementRef;
   @ViewChild('priceLoading') priceLoading: ElementRef;
   @ViewChild('coinLoading') coinLoading: ElementRef;
+  @ViewChild('expectedArrival') expectedArrival: ElementRef;
+  @ViewChild('country') country: ElementRef;
 
   @ViewChild('materialToSearch') materialToSearch: ElementRef;
 
@@ -402,6 +404,8 @@ export class StockComponent implements OnInit {
       alterName: "",
       subGroup: "",
       packageWeight: "",
+      expectedArrival:"",
+      country:"",
     }
   }
   addSupplierToComponent() {
@@ -567,19 +571,25 @@ export class StockComponent implements OnInit {
 
   updateSupplierDetails() {
 
-
+  debugger;
 
     var obj = {
       id: this.resMaterial._id,
       supplierName: this.supplierName.nativeElement.value,
       price: this.price.nativeElement.value,
       coin: this.coin.nativeElement.value,
-      coinLoading: this.coinLoading.nativeElement.value,
-      priceLoading: this.priceLoading.nativeElement.value,
+      // coinLoading: this.coinLoading.nativeElement.value,
+      // priceLoading: this.priceLoading.nativeElement.value,
       manufacturer: this.manufacturer.nativeElement.value,
       alternativeMaterial: this.alternativeMaterial.nativeElement.value,
       alterName: this.alterName.nativeElement.value,
       packageWeight: this.packageWeight.nativeElement.value,
+      country:'',
+      expectedArrival:''
+    }
+    if(this.resMaterial._id != undefined){
+      obj.country = this.country.nativeElement.value;
+      obj.expectedArrival = this.expectedArrival.nativeElement.value;
     }
 
     if (obj.id == undefined || obj.id == null || obj.id == '') {
@@ -596,8 +606,10 @@ export class StockComponent implements OnInit {
         supplier.supplierName = updatedSupplier.supplierName
         supplier.price = updatedSupplier.price
         supplier.coin = updatedSupplier.coin
-        supplier.coinLoading = updatedSupplier.coinLoading
-        supplier.priceLoading = updatedSupplier.priceLoading
+        // supplier.coinLoading = updatedSupplier.coinLoading
+        // supplier.priceLoading = updatedSupplier.priceLoading
+        supplier.country = updatedSupplier.country
+        supplier.expectedArrival = updatedSupplier.expectedArrival
         supplier.manufacturer = updatedSupplier.manufacturer
         supplier.alternativeMaterial = updatedSupplier.alternativeMaterial
         supplier.alterName = updatedSupplier.alterName
@@ -838,6 +850,20 @@ export class StockComponent implements OnInit {
 
   startDownloadingInventory() {
     this.inventoryService.startNewItemObservable().subscribe((components) => {
+      debugger;
+      components.forEach(comp => {
+        if(comp.alternativeSuppliers) {
+          comp.alternativeSuppliers.forEach(supplier => {
+            if(supplier.country == undefined){
+              supplier.country = ''
+            }
+            if(supplier.expectedArrival == undefined){
+              supplier.expectedArrival = ''
+            }
+          });
+        }
+      });
+
       if(components.length < 500) {
         this.smallLoader = false;
         this.getAllPurchases();

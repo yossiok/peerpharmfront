@@ -111,7 +111,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/projects',
-    canActivate:[ScreenGuard],
+    // canActivate:[ScreenGuard],
     data: {
       title: 'Projects'
     },

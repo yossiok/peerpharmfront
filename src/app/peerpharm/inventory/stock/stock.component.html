@@ -2029,8 +2029,10 @@
                     <th>מחיר</th>
                     <th>מטבע</th>
                     <th>משקל</th>
-                    <th>מטבע לפני טעינה</th>
-                    <th>מחיר לפני טעינה</th>
+                    <th>מדינה</th>
+                    <th>זמן הגעה משוער</th>
+                    <!-- <th>מטבע לפני טעינה</th>
+                    <th>מחיר לפני טעינה</th> -->
                     <th></th>
                   </tr>
                 </thead>
@@ -2086,16 +2088,28 @@
                     </td>
 
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.priceLoading}}</td>
+                      {{supplier.country}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.priceLoading" class="form-control" #priceLoading>
+                      <input type="text" [value]="supplier.country" class="form-control" #country>
                     </td>
 
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                      {{supplier.expectedArrival}}</td>
+                    <td *ngIf="EditRowId == supplier.supplierName">
+                      <input type="text" [value]="supplier.expectedArrival" class="form-control" #expectedArrival>
+                    </td>
+
+                    <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                      {{supplier.priceLoading}}</td>
+                    <td *ngIf="EditRowId == supplier.supplierName">
+                      <input type="text" [value]="supplier.priceLoading" class="form-control" #priceLoading>
+                    </td> -->
+
+                    <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                       {{supplier.coinLoading}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
                       <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
-                    </td>
+                    </td> -->
                     <td><i (click)="deleteSupplier(i,resMaterial.componentN)" class="fa fa-times text-danger"></i></td>
 
                   </tr>
