@@ -463,6 +463,8 @@ export class QaPalletsComponent implements OnInit {
     this.formService.createNewPallet(this.pallet).subscribe(data => {
       if (data) {
         this.toastr.success('משטח הוקם בהצלחה !')
+        this.pallet.palletSize = ''
+        this.pallet.palletWeight = ''
         this.getAllClosedPallets()
         this.getAllqaPallets();
         this.getAllPackedLists();
