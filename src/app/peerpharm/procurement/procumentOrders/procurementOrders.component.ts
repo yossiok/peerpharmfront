@@ -104,6 +104,7 @@ export class ProcurementOrdersComponent implements OnInit {
     arrivedAmount: "",
     orderId: "",
     itemNumber: "",
+    user:''
   }
 
   newBill = {
@@ -156,7 +157,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService, private procurementservice: Procurementservice, private excelService: ExcelService, private supplierService: SuppliersService,
-    private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService
+    private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService,
   ) { }
 
   ngOnInit() {
@@ -1318,10 +1319,62 @@ if(category != ''){
     this.arrivalData[0].index = index;
   }
 
+  checkArrivalsAmount(arrivals){
+    debugger;
+    let amount = 0;
+    arrivals.forEach(arrival => {
+      amount+=arrival.arrivedAmount
+    });
+
+    return amount;
+  }
+
+  filterArrivalsByStatus(ev){
+    debugger;
+    let tempArr = []
+    let tempAmount = 0;
+    let status = ev.target.value;
+    if(status == 'notDone'){
+      this.procurementArrivals = this.procurementArrivalsCopy
+      this.procurementArrivals = this.procurementArrivals.filter(p=>p.arrivals.length == 0)
+    }
+    if(status == 'done'){
+      this.procurementArrivals = this.procurementArrivalsCopy
+      this.procurementArrivals.forEach(purchase => {
+        purchase.arrivals.forEach(arrival => {
+        if(purchase.arrivals.length > 0){
+          tempAmount = this.checkArrivalsAmount(purchase.arrivals);
+          if(Number(purchase.supplierAmount) <= tempAmount) {
+            tempArr.push(purchase)
+          }
+        }
+       
+        });
+      });
+      this.procurementArrivals = tempArr
+    }
+    if(status == 'part'){
+      this.procurementArrivals = this.procurementArrivalsCopy
+      this.procurementArrivals.forEach(purchase => {
+        purchase.arrivals.forEach(arrival => {
+          tempAmount = this.checkArrivalsAmount(purchase.arrivals);
+          if(Number(purchase.supplierAmount) > tempAmount){
+          tempArr.push(purchase)
+          }
+        });
+      });
+      this.procurementArrivals = tempArr
+    }
+    
+  }
+
   addReferenceDetails(arrival) {
     debugger;
     this.newReference.orderId = arrival.id
     this.newReference.itemNumber = arrival.itemNumber
+    if(this.user){
+      this.newReference.user = this.user;
+    }
     this.procurementservice.updatePurchaseOrder(this.newReference).subscribe(data => {
 
       if (data.msg == 'referenceExist') {

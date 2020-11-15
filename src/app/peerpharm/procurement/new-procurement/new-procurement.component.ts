@@ -72,6 +72,7 @@ export class NewProcurementComponent implements OnInit {
     recommendRemarks:'',
     userEmail:'',
     recommendId:'',
+    user:'',
 
   }
 
@@ -101,6 +102,7 @@ export class NewProcurementComponent implements OnInit {
     if(this.authService.loggedInUser)
     {
       this.userEmail = this.authService.loggedInUser.userEmail;
+      this.newProcurement.user = this.authService.loggedInUser.userName
       
     }
     else
