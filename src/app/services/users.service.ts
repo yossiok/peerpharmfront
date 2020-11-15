@@ -83,6 +83,12 @@ export class UsersService  {
     return this.httpClient.post(url, JSON.stringify(screen),httpOptions);
       
   }
+  changePassword(userName,newPass,oldPass):Observable<any> {
+    let url = this.baseUrl2 + 'users/changepassword';
+    debugger;
+    return this.httpClient.post(url, JSON.stringify({userName:userName,newPassword:newPass,oldPassword:oldPass}),httpOptions);
+      
+  }
 
   
   getAllScreens():Observable<any[]>
@@ -93,6 +99,9 @@ export class UsersService  {
     .catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
 
   }
+
+  
+  
  
 
 }

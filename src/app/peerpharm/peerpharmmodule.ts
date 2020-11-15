@@ -126,6 +126,7 @@ import { MaterialsComponent } from './production/materials/materials.component';
 import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 import { ProjectsComponent } from './schedule/projects/projects.component';
 import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
+import { UserSettingsComponent } from './user/user-settings/user-settings.component';
 import { AgGridModule } from 'ag-grid-angular';
  
 
@@ -194,6 +195,7 @@ import { AgGridModule } from 'ag-grid-angular';
     NewBatchComponent,
     BatchesMkpComponent,
     LinesComponent,
+    UserSettingsComponent,
     ProductionComponent,
     ProductionRequestComponent,
     ProductionScheduleComponent,

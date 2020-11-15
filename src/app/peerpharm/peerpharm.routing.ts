@@ -64,10 +64,19 @@ import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 import { ProjectsComponent } from './schedule/projects/projects.component';
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
 import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
+import { UserSettingsComponent } from './user/user-settings/user-settings.component';
 
 
 
 export const PeerPharmRputs: Routes =[
+
+  {
+    path: 'user/user-settings', 
+    data: {
+      title: 'User Settings'
+    },
+    component: UserSettingsComponent
+  },
   {
     path: 'allorders/orders', 
     canActivate:[  ScreenGuard],
@@ -293,16 +302,15 @@ export const PeerPharmRputs: Routes =[
       title: 'edit-formule'
     },
     component: FormuleComponent,
-    canActivate:[TwoFactor]
+    // canActivate:[TwoFactor]
   },
   {
     path: 'formule/all-formules',
-    canActivate:[ScreenGuard],
     data: {
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    // canActivate:[TwoFactor]
+    canActivate:[TwoFactor]
   },
   {
     path :'production/lines',
