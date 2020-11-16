@@ -4,7 +4,7 @@
 
       <div class="container bg-white text-center">
           
-        <button style="position: fixed;bottom:1px;right:1px;width:60px" (click)="combineModal = true" class="btn btn-info">+משטח</button>
+        <button style="position: fixed;bottom:1px;right:1px;width:70px" (click)="combineModal = true" class="btn btn-info">+משטח</button>
         <div class="row">
           <div class="col-12 mt-3">
             <h1 class="text-info">רשימת פריטים</h1>
@@ -481,8 +481,8 @@
               <!-- <th scope="col">Batch</th> -->
               <th scope="col">מספר קרטונים</th>
               <th scope="col">מספר יחידות בקרטון</th>
-              <th scope="col">מספר קרטונים חלקיים</th>
-              <th scope="col">מספר יחידות בקרטון חלקי</th>
+              <th scope="col">משקל משטח</th>
+              <th scope="col">מידות משטח</th>
               <th scope="col">סה"כ יחידות</th>
               <!-- <th scope="col">סה"כ קרטונים</th> -->
               <!-- <th scope="col">מספר קרטון</th> -->
@@ -494,11 +494,10 @@
               <td>{{pallet.palletNumber}}</td>
               <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">{{line.itemNumber}}</td>
               <!-- <td></td> -->
-              <td>{{line.kartonQuantity}}</td>
+              <td>{{line.fullKartons}}</td>
               <td>{{line.unitsInKarton}}</td>
-              <td *ngIf="line.unitsQuantityPartKarton > 0">1</td>
-              <td *ngIf="line.unitsQuantityPartKarton == 0">0</td>
-              <td>{{line.unitsQuantityPartKarton}}</td>
+              <td>{{pallet.palletWeight}}</td>
+              <td>{{pallet.palletSize}}</td>
               <td>{{line.unitsToCombine}}</td>
               <!-- <td>{{line.allKartons}}</td> -->
               <!-- <td></td> -->
