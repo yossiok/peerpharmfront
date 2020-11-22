@@ -128,6 +128,10 @@ import { ProjectsComponent } from './schedule/projects/projects.component';
 import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
 import { UserSettingsComponent } from './user/user-settings/user-settings.component';
 import { AgGridModule } from 'ag-grid-angular';
+
+
+
+
  
 
 
@@ -172,7 +176,7 @@ import { AgGridModule } from 'ag-grid-angular';
     NgxPrintModule,
     HttpClientModule,
     MatOptionModule,
- 
+
   
   ],
   declarations: [

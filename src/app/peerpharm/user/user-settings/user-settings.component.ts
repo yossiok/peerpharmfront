@@ -1,7 +1,9 @@
+
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsersService } from 'src/app/services/users.service';
 import { ToastrService } from 'ngx-toastr';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -12,7 +14,9 @@ export class UserSettingsComponent implements OnInit {
   oldPassword:any;
   newPassword:any;
   user:any;
-  constructor(private ToastService:ToastrService,private authService:AuthService,private userService: UsersService) { }
+
+  userOrders:any;
+  constructor(private orderService:OrdersService,private ToastService:ToastrService,private authService:AuthService,private userService: UsersService) { }
 
   ngOnInit() {
     debugger;
@@ -21,8 +25,11 @@ export class UserSettingsComponent implements OnInit {
     if(!this.user){
       this.authService.userEventEmitter.subscribe(user=>{
         this.user = user
+        this.getOpenOrdersByUser()
       })
     }
+
+    
   }
 
   
@@ -37,6 +44,14 @@ export class UserSettingsComponent implements OnInit {
       this.oldPassword = ''
       this.newPassword = ''
     }
+    })
+  }
+
+  getOpenOrdersByUser(){
+    debugger
+    this.orderService.getOpenOrdersByUser(this.user.userName).subscribe(data=>{
+      debugger;
+      this.userOrders = data;
     })
   }
 

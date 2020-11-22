@@ -2,6 +2,14 @@ body {
     background: rgb(99, 39, 120)
 }
 
+h3 {
+    margin: 0 0 10px;
+  }
+  
+  pre {
+    background-color: #f5f5f5;
+    padding: 15px;
+  }
 .form-control:focus {
     box-shadow: none;
     border-color: #BA68C8

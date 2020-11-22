@@ -1,42 +1,82 @@
-<div class="container rounded bg-white mt-5 mb-5 shadow-lg">
-  <div class="row">
-      <div class="col-md-3 border-right">
-          <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" [src]="user.picture"></div>
-      </div>
-      <div class="col-md-5 border-right">
-          <div class="p-3 py-5">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4 class="text-right text-info">Profile Settings</h4>
-              </div>
-              <div class="row mt-2">
-                  <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" disabled placeholder="{{user.firstName}}" value=""></div>
-                  <div class="col-md-6"><label class="labels">Last Name</label><input type="text" class="form-control" value="" disabled placeholder="{{user.lastName}}"></div>
-              </div>
-              <div class="row mt-3">
-                  <div class="col-md-12"><label class="labels">Department</label><input type="text" class="form-control" disabled placeholder="{{user.userDepartment}}" value=""></div>
-                  <div class="col-md-12"><label class="labels">User Email</label><input type="text" class="form-control" disabled placeholder="{{user.userEmail}}" value=""></div>
-              </div>
-              <div class="row mt-3">
-                  <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" disabled placeholder="Israel" value=""></div>
-                  <div class="col-md-6"><label class="labels">Work Place</label><input type="text" class="form-control" disabled value="" placeholder="Peerpharm"></div>
-              </div>   
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="p-3 py-5">
-              <div class="d-flex justify-content-between align-items-center experience"><span>Edit Password</span></div><br>
-              <div class="col-md-12"><label class="labels">Old Password</label><input [(ngModel)]="oldPassword" type="text" class="form-control" placeholder="" value=""></div> <br>
-              <div class="col-md-12"><label class="labels">New Password</label><input [(ngModel)]="newPassword" type="text" class="form-control" placeholder="" value=""></div> <br>
-              <button (click)="changePassword()" class="btn btn-info">Save</button>
-          </div>
-      </div>
-  </div>
+<mat-tab-group>
+    <mat-tab label="Profile Settings">
+        <div class="container rounded bg-white mt-5 mb-5 shadow-lg">
+            <div class="row">
+                <div class="col-md-3 border-right">
+                    <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
+                            class="rounded-circle mt-5" [src]="user.picture"></div>
+                </div>
+                <div class="col-md-5 border-right">
+                    <div class="p-3 py-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="text-right text-info">Profile Settings</h4>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6"><label class="labels">Name</label><input type="text"
+                                    class="form-control" disabled placeholder="{{user.firstName}}" value=""></div>
+                            <div class="col-md-6"><label class="labels">Last Name</label><input type="text"
+                                    class="form-control" value="" disabled placeholder="{{user.lastName}}"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12"><label class="labels">Department</label><input type="text"
+                                    class="form-control" disabled placeholder="{{user.userDepartment}}" value=""></div>
+                            <div class="col-md-12"><label class="labels">User Email</label><input type="text"
+                                    class="form-control" disabled placeholder="{{user.userEmail}}" value=""></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6"><label class="labels">Country</label><input type="text"
+                                    class="form-control" disabled placeholder="Israel" value=""></div>
+                            <div class="col-md-6"><label class="labels">Work Place</label><input type="text"
+                                    class="form-control" disabled value="" placeholder="Peerpharm"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 py-5">
+                        <div class="d-flex justify-content-between align-items-center experience"><span>Edit
+                                Password</span></div><br>
+                        <div class="col-md-12"><label class="labels">Old Password</label><input
+                                [(ngModel)]="oldPassword" type="text" class="form-control" placeholder="" value="">
+                        </div> <br>
+                        <div class="col-md-12"><label class="labels">New Password</label><input
+                                [(ngModel)]="newPassword" type="text" class="form-control" placeholder="" value="">
+                        </div> <br>
+                        <button (click)="changePassword()" class="btn btn-info">Save</button>
+                    </div>
+                </div>
+            </div>
 
-  <div class="row p-3">
-    <div class="col-4"></div>
-    <div class="col-4">
-      <button routerLink='/starter' class="btn btn-success form-control">Home Page</button>
-    </div>
-    <div class="col-4"></div>
-  </div>
-</div>
+            <div class="row p-3">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <button routerLink='/starter' class="btn btn-success form-control">Home Page</button>
+                </div>
+                <div class="col-4"></div>
+            </div>
+        </div>
+
+    </mat-tab>
+    <mat-tab label="Orders">
+        <div class="container bg-white">
+            <table class="table table-hover">
+                <thead class="bg-info text-white">
+                    <tr>
+                        <th>Order Number</th>
+                        <th>Customer</th>
+                        <th>Date Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of userOrders"> 
+                        <td>{{order.orderNumber}}</td>
+                        <td>{{order.costumer}}</td>
+                        <td>{{order.orderDate | date: 'dd/MM/yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-tab>
+    <mat-tab label="Calender">
+    <app-calendar></app-calendar>
+    </mat-tab>
+</mat-tab-group>

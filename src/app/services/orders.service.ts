@@ -91,7 +91,7 @@ export class OrdersService {
     let url = this.baseUrl + 'orderitem?orderId=' + id;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-
+ 
 
  
 
@@ -120,6 +120,13 @@ export class OrdersService {
       map(reponse => reponse.json())
     );
   }
+
+  getOpenOrdersByUser(user): Observable<any> {
+    let url = this.baseUrl + 'order?user=' + user;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+
   getOrderAmounts(): Observable<any> {
     
     let url = this.baseUrl + 'orderitem/getamounts' ;

@@ -991,6 +991,7 @@
               <th>#</th>
               <th *ngIf="showImage == true">Image</th>
               <th>Item</th>
+              <th>SupplierN</th>
               <th>Item Name</th>
               <th>Remarks</th>
               <th>Qty</th>
@@ -1004,6 +1005,7 @@
               <td>{{i+1}}</td>
               <td *ngIf="showImage == true"><img style="width:50px;" alt="Item Image" [src]="item.img"></td>
               <td>{{item.itemNumber}}</td>
+              <td>{{item.componentNs}}</td>
               <td>{{item.itemName}}</td>
               <td>{{item.itemRemarks}}</td>
               <td>{{item.supplierAmount}}</td>

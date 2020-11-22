@@ -135,8 +135,8 @@
       </div>
 
 
-      <div  style="height:700px !important;overflow: auto;" *ngIf="showAllClosedPallets==true" id="myModal3" class="modal3 mx-auto my-auto rounded shadow-lg"
-        style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
+      <div   *ngIf="showAllClosedPallets==true" id="myModal3" class="modal3 mx-auto my-auto rounded shadow-lg"
+        style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;height:700px !important;overflow: scroll;'>
 
         <!-- Modal content -->
         <div class="modal-content" id='modelC'>
@@ -560,7 +560,7 @@
     <div class="row mt-4">
       <div class="col-4"> </div>
       <div class="col-4">
-        <h2>הקמת משטח</h2><i style="cursor: pointer;" (click)="combineModal = false" class="fa fa-times text-info"></i>
+        <h2 (click)="combineModal = false">הקמת משטח</h2><i style="cursor: pointer;" (click)="combineModal = false" class="fa fa-times text-info"></i>
       </div>
       <div class="col-4"> 
         <i style="cursor: pointer;" (click)="combineModal = false" class="fa fa-times text-info"></i>
