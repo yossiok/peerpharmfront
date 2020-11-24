@@ -248,7 +248,7 @@
       <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
-          <h3 class="text-info">Pallet Details</h3>
+          <h3 (click)="itemsInPalletModal = false" class="text-info">Pallet Details</h3>
         </div>
         <div class="col-4">
         <i (click)="itemsInPalletModal = false" style="cursor: pointer;" class="fa fa-times text-info"></i>
@@ -481,6 +481,7 @@
               <!-- <th scope="col">Batch</th> -->
               <th scope="col">מספר קרטונים</th>
               <th scope="col">מספר יחידות בקרטון</th>
+              <th scope="col">קרטון חלקי</th>
               <th scope="col">משקל משטח</th>
               <th scope="col">מידות משטח</th>
               <th scope="col">סה"כ יחידות</th>
@@ -496,6 +497,7 @@
               <!-- <td></td> -->
               <td>{{line.fullKartons}}</td>
               <td>{{line.unitsInKarton}}</td>
+              <td>{{line.unitsQuantityPartKarton}}</td>
               <td>{{pallet.palletWeight}}</td>
               <td>{{pallet.palletSize}}</td>
               <td>{{line.unitsToCombine}}</td>

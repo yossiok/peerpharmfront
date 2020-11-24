@@ -5,8 +5,8 @@ import {ExcelService} from './services/excel.service';
 import { SignupComponent } from './shared/auth/signup.component';
 import { LoginComponent } from './shared/auth/login.component';
 import * as $ from 'jquery';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 import {
   CommonModule,
   LocationStrategy,
@@ -55,6 +55,9 @@ import { ConfirmModalComponent } from './services/confirm.modal.service';
 import { OrdersService } from './services/orders.service';
 import { ReportBuilderComponent } from './peerpharm/reports/report-builder/report-builder.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+
 
 
 
@@ -118,13 +121,13 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     }),
     CommonModule,
-    BrowserModule,
-    BrowserAnimationsModule,
     ToastrModule.forRoot(),
     HttpClientModule,
     FormsModule,
    // AmplifyAngularModule   ,
     HttpModule, 
+    BrowserModule,
+    BrowserAnimationsModule,
     NgbModule.forRoot(),
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule,

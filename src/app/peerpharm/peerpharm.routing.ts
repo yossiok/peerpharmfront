@@ -65,6 +65,8 @@ import { ProjectsComponent } from './schedule/projects/projects.component';
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
 import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
 import { UserSettingsComponent } from './user/user-settings/user-settings.component';
+import { CalendarComponent } from './calendar/calendar.component';
+
 
 
 
@@ -77,6 +79,13 @@ export const PeerPharmRputs: Routes =[
       title: 'User Settings'
     },
     component: UserSettingsComponent
+  },
+  {
+    path: 'calendar/calendar', 
+    data: {
+      title: 'Calendar'
+    },
+    component: CalendarComponent
   },
 
   {
