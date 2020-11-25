@@ -208,7 +208,7 @@ This is for the horizontal layout
     /****************************
     This is for the fixed sidebar layout
     ***************************/
-    &[data-sidebar-position="fixed"]{
+    [data-sidebar-position="fixed"]{
         .left-sidebar{
             overflow: auto;
         }
