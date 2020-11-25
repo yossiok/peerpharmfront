@@ -8,7 +8,7 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArrayServiceService } from 'src/app/utils/array-service.service';
-import { p } from '@angular/core/src/render3';
+//import { p } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-procurement-orders',

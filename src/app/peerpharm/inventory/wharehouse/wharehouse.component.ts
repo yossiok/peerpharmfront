@@ -7,7 +7,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import * as moment from 'moment';
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
 import { map } from 'rxjs-compat/operator/map';
-import { last } from '../../../../../node_modules/@angular/router/src/utils/collection';
+//import { last } from '../../../../../node_modules/@angular/router/src/utils/collection';
 import { NgbModal,ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Procurementservice } from 'src/app/services/procurement.service';
 

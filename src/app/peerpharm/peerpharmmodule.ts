@@ -53,12 +53,13 @@ import { ProcurementOrderItemBalanceComponent } from './procurement/procurementO
 import { ProcurementOrdersComponent } from './procurement/procumentOrders/procurementOrders.component';
 import { ProcurementOrderItemComponent } from './procurement/procumentOrderItem/procurementOrderItem.component';
 import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
-import { MatAutocomplete, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
+import {  MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 import {MatSelectModule} from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ChatComponent } from './../shared/chat/chat.component';
-import {
+
+/*import {
   MatDialogModule,
   MatTableModule,
   MatGridListModule,
@@ -76,6 +77,7 @@ import {
   MatOptionModule,
   MatNativeDateModule,
 } from '@angular/material';
+*/
 import { NavComponent } from './taskboard/core/nav/nav.component';
 import { BoardComponent } from './taskboard/board/board.component';
 import { TaskCardComponent } from './taskboard/board/shared/task-card/task-card.component';
@@ -145,7 +147,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 
 @NgModule({
   exports: [
-    MatInputModule,
+   // MatInputModule,
     AddProcurementItemDialog,
   ],
   imports: [ 
@@ -166,7 +168,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
     NgxBarcodeModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDialogModule,
+  /*  MatDialogModule,
     MatGridListModule,
     MatMenuModule,
     MatButtonModule,
@@ -179,14 +181,14 @@ import { FlatpickrModule } from 'angularx-flatpickr';
     MatTabsModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    MatNativeDateModule,*/
     MatSelectModule,
     DndModule.forRoot(),
     DatepickerModule,
     Ng2FilterPipeModule ,
     NgxPrintModule,
     HttpClientModule,
-    MatOptionModule,
+ //   MatOptionModule,
 
   
   ],
@@ -282,7 +284,9 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 
   ],
   entryComponents:[AddProcurementItemDialog],
-  providers: [ HttpClientModule,   MatAutocompleteModule,  {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
+  providers: [ HttpClientModule,   
+    //MatAutocompleteModule, 
+     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA

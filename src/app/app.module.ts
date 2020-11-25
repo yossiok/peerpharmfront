@@ -16,6 +16,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //
 import {NeworderComponent} from './peerpharm/allorders/neworder/neworder.component'
 import {OrderdetailsComponent} from './peerpharm/allorders/orderdetails/orderdetails.component'
@@ -23,7 +24,7 @@ import {OrdersComponent} from './peerpharm/allorders/orders/orders.component'
 import { AllordersComponent } from './peerpharm/allorders/allorders/allorders.component';
 
 //
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+ 
 
 import { FullComponent } from './layouts/full/full.component';
 import { BlankComponent } from './layouts/blank/blank.component';
@@ -41,9 +42,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { ContentComponent } from './peerpharm/taskboard/core/content/content.component';
-import { MatSnackBar } from '@angular/material';
-
-import { OVERLAY_PROVIDERS } from '../../node_modules/@angular/cdk/overlay';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {OverlayModule} from '@angular/cdk/overlay';
 import { ScheduleCardComponent } from './peerpharm/production/production/schedule-card/schedule-card.component';
 import { MyiframeComponent } from './myiframe/myiframe.component';
 import { ToastrModule } from 'ngx-toastr';
@@ -124,21 +124,21 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ToastrModule.forRoot(),
     HttpClientModule,
     FormsModule,
+    NgbModule,
+    OverlayModule,
    // AmplifyAngularModule   ,
     HttpModule, 
     BrowserModule,
-    BrowserAnimationsModule,
-    NgbModule.forRoot(),
+    BrowserAnimationsModule, 
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule,
     NgxBarcodeModule.forRoot()
   ],
   providers: [
     OrdersService,
-    MatSnackBar, 
-    OVERLAY_PROVIDERS,
+    MatSnackBar,  
    // AmplifyService,
-   OVERLAY_PROVIDERS,
+  // OVERLAY_PROVIDERS,
 
     AuthService,HttpClientModule,ExcelService,
     {

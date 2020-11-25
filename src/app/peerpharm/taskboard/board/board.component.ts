@@ -8,7 +8,7 @@ import * as Moment from 'moment';
 import { TasksService } from '../services/tasks.service';
 import { BoardModel } from '../models/board-model';
 import { TaskModel } from '../models/task-model';
-import { MatDialog, MatDialogRef, MatDatepicker } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SubTaskModel } from '../models/subtask-model';
 import { NgbModal, ModalDismissReasons } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
 import { UsersService } from 'src/app/services/users.service';

@@ -2,13 +2,13 @@ import { AuthService } from './../../services/auth.service';
 import { debounceTime } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  providers: [MatSnackBar, OverlayModule]
+  providers: [MatSnackBarModule, OverlayModule]
 })
 export class LoginComponent implements OnInit {
   username: string;

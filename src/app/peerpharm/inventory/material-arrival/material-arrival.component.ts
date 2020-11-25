@@ -5,7 +5,7 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
-import { NgbModal, NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal,  NgbNav, NgbNavChangeEvent  } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-material-arrival',
@@ -13,7 +13,7 @@ import { NgbModal, NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstr
   styleUrls: ['./material-arrival.component.scss']
 })
 export class MaterialArrivalComponent implements OnInit {
-  public beforeChange($event: NgbTabChangeEvent) {
+  public beforeChange($event: NgbNavChangeEvent) {
     
     this.activeTabId = $event.activeId;
     // if ($event.activeId === 'tab-preventchange2') {
@@ -24,7 +24,7 @@ export class MaterialArrivalComponent implements OnInit {
   @ViewChild('supplierNameInput') supplierNameInput: ElementRef;
   @ViewChild('supplierItemNameInput') supplierItemNameInput: ElementRef;
   @ViewChild('printBtn') printBtn: ElementRef;
-  @ViewChild('tabset') tabset: NgbTabset ;
+  @ViewChild('tabset') tabset: NgbNav ;
   @ViewChild('analysisFlag') analysisFlag: ElementRef ;
   @ViewChild('requirementsFormDate') requirementsFormDate: ElementRef ;
  

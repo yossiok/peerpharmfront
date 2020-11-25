@@ -6,16 +6,16 @@ import { UploadFileService } from 'src/app/services/helpers/upload-file.service'
 import { HttpRequest } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
-import { DEC } from '@angular/material';
+//import { DEC } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
-import { toDate } from '@angular/common/src/i18n/format_date';
+//import { toDate } from '@angular/common/src/i18n/format_date';
 import { fstat } from 'fs';
 
 import { BatchesService } from 'src/app/services/batches.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Console } from '@angular/core/src/console';
+//import { Console } from '@angular/core/src/console';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { OrdersService } from 'src/app/services/orders.service';
@@ -440,7 +440,8 @@ export class StockComponent implements OnInit {
 
     this.getUser();
     this.getAllSuppliers()
-    this.filterbyNum.nativeElement.value = '';
+    if(this.filterbyNum) this.filterbyNum.nativeElement.value = '';
+   
     let url = this.route.snapshot;
     this.components = [];
     await this.getUserAllowedWH();
@@ -849,6 +850,7 @@ export class StockComponent implements OnInit {
   }
 
   startDownloadingInventory() {
+    debugger;
     this.inventoryService.startNewItemObservable().subscribe((components) => {
       debugger;
       components.forEach(comp => {

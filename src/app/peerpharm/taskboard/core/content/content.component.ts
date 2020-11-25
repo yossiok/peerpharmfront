@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import { TasksService } from '../../services/tasks.service';
 
 import { BoardModel } from '../../models/board-model';
-import { MatTabGroup } from '../../../../../../node_modules/@angular/material';
+import { MatTabGroup } from '../../../../../../node_modules/@angular/material/tabs';
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
