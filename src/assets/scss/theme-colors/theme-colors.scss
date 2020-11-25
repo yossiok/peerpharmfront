@@ -65,8 +65,8 @@
             &[data-sidebarbg="skin2"], &[data-sidebarbg="skin2"] ul{
                 background: $skin2;
                 
-                &::after{
-                    background: url(../../assets/images/background/sidebarbg.png) no-repeat;
+                &::after{ 
+                    background: url(../../images/background/sidebarbg.png) no-repeat;
                     position: absolute;
                     top:0px;
                     content: "";

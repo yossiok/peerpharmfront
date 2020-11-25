@@ -104,7 +104,7 @@ export class ItemslistComponent implements OnInit {
         
       })
       this.items.push(...items); 
-      if(items.length<500)
+      if(items.length<1500)
       {
         this.hasMoreItemsToload=false;
       }

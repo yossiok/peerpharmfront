@@ -290,14 +290,14 @@ addNewRecommendation(purchaseRecommend):Observable<any>{
     let itemResultObservable: Observable<any[]> = new Observable(observer => {
       let self=this;
       let skip = 0;
-      let limit = 500;
+      let limit = 1500;
       startNewCall(skip, limit);
       function startNewCall(skip, limit) {
         let url="/component?skip=" + skip + "&limit=" + limit; 
         console.log("new call=> "+url);
         self.http.get(url).subscribe(response => { 
           let items = <any[]>response.json();
-          skip = skip + 500;   
+          skip = skip + 1500;   
           if (items.length > 0) {
             console.log("got items bigger than 0");
             observer.next(items);
