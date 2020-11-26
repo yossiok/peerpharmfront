@@ -56,6 +56,10 @@ import { NewProcurementComponent } from './procurement/new-procurement/new-procu
 import {  MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 import {MatSelectModule} from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+ 
+//import {MatSelectModule} from '@angular/material/select';
+
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ChatComponent } from './../shared/chat/chat.component';
 
@@ -94,6 +98,7 @@ import { InventoryNewRequestComponent } from './inventory/inventory-new-request/
 import { SpinnerComponent } from '../shared/spinner.component';
 import { HeadingsWHPipe } from '../pipes/headings-wh.pipe';
 import { OrderStagePipe } from '../pipes/order-stage.pipe';
+import {MatMenuModule} from '@angular/material/menu';
 import {NgxPrintModule} from 'ngx-print';
 import { PackingComponent } from './schedule/packing/packing.component';
 import { AddFormulePhaseComponent } from './formules/add-formule-phase/add-formule-phase.component';
@@ -151,6 +156,8 @@ import { FlatpickrModule } from 'angularx-flatpickr';
     AddProcurementItemDialog,
   ],
   imports: [ 
+    MatAutocompleteModule,
+    MatMenuModule,
     CommonModule,
     RandomcolorModule,
     RouterModule.forChild(PeerPharmRputs),

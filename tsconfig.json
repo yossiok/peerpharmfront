@@ -17,6 +17,11 @@
       "dom"
     ]
   },
+  "angularCompilerOptions": {
+    "enableIvy": false,
+    "allowEmptyCodegenFiles": true
+ }
+ ,
   "include": [
     "src/**/*",
     "node_modules/angular2-material-datepicker/*.ts",
