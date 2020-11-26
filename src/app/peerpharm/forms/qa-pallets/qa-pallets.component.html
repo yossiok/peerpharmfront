@@ -1,443 +1,437 @@
-<ngb-tabset [destroyOnHide]="false">
-  <ngb-tab title="רשימת פריטים">
-    <ng-template ngbTabContent>
 
-      <div class="container bg-white text-center">
+<nav ngbNav #nav="ngbNav" class="nav-tabs">
+    <ng-container ngbNavItem>
+      <a ngbNavLink>רשימת פריטים</a>
+      <ng-template ngbNavContent>
+  
+        <div class="container bg-white text-center">
           
-        <button style="position: fixed;bottom:1px;right:1px;width:70px" (click)="combineModal = true" class="btn btn-info">+משטח</button>
-        <div class="row">
-          <div class="col-12 mt-3">
-            <h1 class="text-info">רשימת פריטים</h1>
+            <button style="position: fixed;bottom:1px;right:1px;width:70px" (click)="combineModal = true" class="btn btn-info">+משטח</button>
+            <div class="row">
+              <div class="col-12 mt-3">
+                <h1 class="text-info">רשימת פריטים</h1>
+              </div>
+            </div>
+    
+            <hr>
+    
+            <div class="row mt-5">
+              <div class="col-2">
+                <label class="form-control">Filter By Customer</label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="form-control" (change)="filterByCustomer($event,'readyPallets')">
+              </div>
+              <div class="col-2">
+               
+              </div>
+              <div class="col-3"></div>
+              <div class="col-2">
+                <!-- <button class="btn btn-info form-control">הקם משטח</button> -->
+              </div>
+            </div>
+    
+            <div class="row mt-3">
+              <div class="col-1">
+                <button (click)="filterTable('all')" class="btn btn-info form-control">All</button>
+              </div>
+              <div class="col-1">
+                <button (click)="filterTable('ready')" class="btn btn-info form-control">Ready</button>
+              </div>
+              <div class="col-1">
+                <button (click)="filterTable('stickers')" class="btn btn-info form-control">Stickers</button>
+              </div>
+              <div class="col-1">
+                <button (click)="filterTable('laser')" class="btn btn-info form-control">Laser</button>
+              </div>
+              <div class="col-1">
+                <button (click)="filterTable('cartons')" class="btn btn-info form-control">Cartons</button>
+              </div>
+              <div class="col-2">
+                <button (click)="filterTable('personalPackge')" class="btn btn-info form-control">Personal Package</button>
+              </div>
+              <div class="col-2">
+                <button (click)="filterTable('cartonsMaster')" class="btn btn-info form-control">Carton Master</button>
+              </div>
+              <div class="col-2">
+                <button (click)="filterTable('components')" class="btn btn-info form-control">Components</button>
+              </div>
+              <div class="col-1">
+                <button (click)="filterTable('leaflet')" class="btn btn-info form-control">Leaflet</button>
+              </div>
+            </div>
+    
+            <div class="row mt-1">
+              <div class="col-12">
+                <table style="text-align: center;" class="table table-striped table-hover ">
+                  <thead class="text-white bg-info">
+                    <tr>
+                      <th>#</th>
+                      <th></th>
+                      <th>שם לקוח</th>
+                      <th>מספר פריט</th>
+                      <th>מספר הזמנה</th>
+                      <th>סטטוס</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let pallet of allQaPallets;let i = index">
+                      <td>{{i+1}}</td>
+                      <td><input style="width:30px !important" class="form-control" (change)="isSelected($event,pallet)" type="checkbox"></td>
+                      <td>{{pallet.customerName}}</td>
+                      <td target="_blank" routerLink="/peerpharm/items/itemDetails/{{ pallet.itemNumber }}"><span style="cursor: pointer;color:blue">{{pallet.itemNumber}}</span></td>
+                      <td target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ pallet.orderNumber }}"><span style="cursor: pointer;color:blue">{{pallet.orderNumber}}</span></td>
+                      <td>{{pallet.qaStatus}}</td>
+                      <td><button (click)="addLineToPallet(pallet)" class="form-control btn btn-info">הוסף למשטח קיים</button></td>
+                      <!-- <td><button (click)="addPalletToCostumer(pallet)" class="btn btn-info">הוסף למשטח קיים</button></td> -->
+    
+                    </tr>
+                  </tbody>
+                </table>
+    
+              </div>
+            </div>
+    
           </div>
-        </div>
 
-        <hr>
-
-        <div class="row mt-5">
-          <div class="col-2">
-            <label class="form-control">Filter By Customer</label>
-          </div>
-          <div class="col-3">
-            <input type="text" class="form-control" (change)="filterByCustomer($event,'readyPallets')">
-          </div>
-          <div class="col-2">
-           
-          </div>
-          <div class="col-3"></div>
-          <div class="col-2">
-            <!-- <button class="btn btn-info form-control">הקם משטח</button> -->
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-1">
-            <button (click)="filterTable('all')" class="btn btn-info form-control">All</button>
-          </div>
-          <div class="col-1">
-            <button (click)="filterTable('ready')" class="btn btn-info form-control">Ready</button>
-          </div>
-          <div class="col-1">
-            <button (click)="filterTable('stickers')" class="btn btn-info form-control">Stickers</button>
-          </div>
-          <div class="col-1">
-            <button (click)="filterTable('laser')" class="btn btn-info form-control">Laser</button>
-          </div>
-          <div class="col-1">
-            <button (click)="filterTable('cartons')" class="btn btn-info form-control">Cartons</button>
-          </div>
-          <div class="col-2">
-            <button (click)="filterTable('personalPackge')" class="btn btn-info form-control">Personal Package</button>
-          </div>
-          <div class="col-2">
-            <button (click)="filterTable('cartonsMaster')" class="btn btn-info form-control">Carton Master</button>
-          </div>
-          <div class="col-2">
-            <button (click)="filterTable('components')" class="btn btn-info form-control">Components</button>
-          </div>
-          <div class="col-1">
-            <button (click)="filterTable('leaflet')" class="btn btn-info form-control">Leaflet</button>
-          </div>
-        </div>
-
-        <div class="row mt-1">
-          <div class="col-12">
-            <table style="text-align: center;" class="table table-striped table-hover ">
-              <thead class="text-white bg-info">
-                <tr>
-                  <th>#</th>
-                  <th></th>
-                  <th>שם לקוח</th>
-                  <th>מספר פריט</th>
-                  <th>מספר הזמנה</th>
-                  <th>סטטוס</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let pallet of allQaPallets;let i = index">
-                  <td>{{i+1}}</td>
-                  <td><input style="width:30px !important" class="form-control" (change)="isSelected($event,pallet)" type="checkbox"></td>
-                  <td>{{pallet.customerName}}</td>
-                  <td target="_blank" routerLink="/peerpharm/items/itemDetails/{{ pallet.itemNumber }}"><span style="cursor: pointer;color:blue">{{pallet.itemNumber}}</span></td>
-                  <td target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ pallet.orderNumber }}"><span style="cursor: pointer;color:blue">{{pallet.orderNumber}}</span></td>
-                  <td>{{pallet.qaStatus}}</td>
-                  <td><button (click)="addLineToPallet(pallet)" class="form-control btn btn-info">הוסף למשטח קיים</button></td>
-                  <!-- <td><button (click)="addPalletToCostumer(pallet)" class="btn btn-info">הוסף למשטח קיים</button></td> -->
-
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-
-      </div>
-
-
-
+          
 
 
 
 
       <div style="height:0px !important" *ngIf="showAllReadyCostumers==true" id="myModal3" class="modal3"
-        style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
+      style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
 
-        <!-- Modal content -->
-        <div class="modal-content" id='modelC'>
-          <div dir="rtl" id="material-header" class="modal-header">
-            <div>
-              <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllReadyCostumers=false;">&times;</span>
-            </div>
-
-          </div>
-
-          <div class="container" id="material-body" class="modal-body">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>שם לקוח</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let packlist of allPackedLists;let i = index">
-                  <td>{{i+1}}</td>
-                  <td><label (click)="chooseCostumerToAdd(packlist)"
-                      style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
-                </tr>
-              </tbody>
-
-            </table>
-
+      <!-- Modal content -->
+      <div class="modal-content" id='modelC'>
+        <div dir="rtl" id="material-header" class="modal-header">
+          <div>
+            <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllReadyCostumers=false;">&times;</span>
           </div>
 
         </div>
-      </div>
 
-
-      <div   *ngIf="showAllClosedPallets==true" id="myModal3" class="modal3 mx-auto my-auto rounded shadow-lg"
-        style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;height:700px !important;overflow: scroll;'>
-
-        <!-- Modal content -->
-        <div class="modal-content" id='modelC'>
-          <div dir="rtl" id="material-header" class="modal-header">
-            <div>
-              <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllClosedPallets=false;">&times;</span>
-            </div>
-
-          </div>
-
-          <div class="container" id="material-body" class="modal-body">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>מספר משטח</th>
-                  <th>שם לקוח</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let pallet of allClosedPallets;let i = index">
-                  <td>{{i+1}}</td>
-                  <td >{{pallet.palletNumber}}</td>
-                  <td><label (click)="choosePalletToAdd(pallet)"
-                      style="color:blue;text-decoration: underline;cursor: pointer;">{{pallet.customer}}</label></td>
-                </tr>
-              </tbody>
-
-            </table>
-
-          </div>
-
-        </div>
-      </div>
-
-
-
-    </ng-template>
-  </ngb-tab>
-
-  <ngb-tab title="רשימת משטחים">
-    <ng-template ngbTabContent>
-
-      <div class="container p-2 bg-white text-center">
-
-        <div class="row">
-          <div class="col-12 mt-3">
-            <h1 class="text-info">רשימת משטחים</h1>
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-2">
-            <label class="form-control">Filter By Customer</label>
-          </div>
-          <div class="col-3">
-            <input type="text" class="form-control" (change)="filterByCustomer($event,'closedPallets')">
-          </div>
-          <div class="col-2">
-            <!-- <button (click)="createNewPL()" class="btn btn-info form-control">הקם רשימת אריזה</button> -->
-          </div>
-          <div class="col-3"></div>
-          <div class="col-2">
-            <!-- <button class="btn btn-info form-control">הקם משטח</button> -->
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-12">
-            <table style="text-align: center;" class="table table-striped table-hover ">
-              <thead class="text-white bg-info">
-                <tr>
-                  <th>#</th>
-                  <th></th>
-                  <th>מספר משטח</th>
-                  <th>סטטוס</th>
-                  <th>שם לקוח</th>
-                  <th>משקל משטח</th>
-                  <th>גודל משטח</th>
-                  <!-- <th></th> -->
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let pallet of allClosedPallets;let i = index">
-                  <td>{{i+1}}</td>
-                  <td><input class="form-control" (change)="selectedForPL($event,pallet)" type="checkbox"></td>
-                  <td (click)="viewItemsInPallet(pallet)" style="color:blue;text-decoration: underline;cursor: pointer;">{{pallet.palletNumber}}</td>
-                  <td [ngClass]="checkPLstatus(pallet)">{{pallet.plStatus}}</td>
-                  <td>{{pallet.customer}}</td>
-                  <td>{{pallet.palletWeight}}</td>
-                  <td>{{pallet.palletSize}}</td>
-
-                  <!-- <td><button class="btn btn-info form-control w-50" (click)="addPalletToPackList(pallet)">הוסף לרשימת אריזה</button></td> -->
-           
-
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-
-      
-
-      </div>
-
-
-      <div *ngIf="itemsInPalletModal == true" style="top:150px;" class="container mx-auto bg-white my-auto rounded shadow-lg fixed-top text-center">
-      <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">
-          <h3 (click)="itemsInPalletModal = false" class="text-info">Pallet Details</h3>
-        </div>
-        <div class="col-4">
-        <i (click)="itemsInPalletModal = false" style="cursor: pointer;" class="fa fa-times text-info"></i>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-12">
-          <table class="table table-striped table-hover">
-            <thead class="bg-info text-white">
+        <div class="container" id="material-body" class="modal-body">
+          <table class="table table-striped">
+            <thead>
               <tr>
-                <th>מספר פריט</th>
-                <th>מספר הזמנה</th>
-                <th>כמות </th>
+                <th>#</th>
+                <th>שם לקוח</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let line of currentPallet.lines">
-                <td>{{line.itemNumber}}</td>
-                <td>{{line.orderNumber}}</td>
-                <td *ngIf="!line.unitsToCombine">{{line.allUnits}}</td>
-                <td *ngIf="line.unitsToCombine">{{line.unitsToCombine}}</td>
+              <tr *ngFor="let packlist of allPackedLists;let i = index">
+                <td>{{i+1}}</td>
+                <td><label (click)="chooseCostumerToAdd(packlist)"
+                    style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
               </tr>
             </tbody>
+
           </table>
+
         </div>
-      </div>
 
       </div>
+    </div>
 
-      
-      <div  style="height:0px !important" *ngIf="showAllPackedLists==true" id="myModal3" class="modal3 mx-auto my-auto rounded shadow-lg"
-        style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
 
-        <!-- Modal content -->
-        <div class="modal-content" id='modelC'>
-          <div dir="rtl" id="material-header" class="modal-header">
-            <div>
-              <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllPackedLists=false;">&times;</span>
+    <div   *ngIf="showAllClosedPallets==true" id="myModal3" class="modal3 mx-auto my-auto rounded shadow-lg"
+      style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;height:700px !important;overflow: scroll;'>
+
+      <!-- Modal content -->
+      <div class="modal-content" id='modelC'>
+        <div dir="rtl" id="material-header" class="modal-header">
+          <div>
+            <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllClosedPallets=false;">&times;</span>
+          </div>
+
+        </div>
+
+        <div class="container" id="material-body" class="modal-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>מספר משטח</th>
+                <th>שם לקוח</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pallet of allClosedPallets;let i = index">
+                <td>{{i+1}}</td>
+                <td >{{pallet.palletNumber}}</td>
+                <td><label (click)="choosePalletToAdd(pallet)"
+                    style="color:blue;text-decoration: underline;cursor: pointer;">{{pallet.customer}}</label></td>
+              </tr>
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+
+    
+
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>רשימת משטחים</a>
+      <ng-template ngbNavContent>
+  
+        <div class="container p-2 bg-white text-center">
+
+            <div class="row">
+              <div class="col-12 mt-3">
+                <h1 class="text-info">רשימת משטחים</h1>
+              </div>
             </div>
-
+    
+            <div class="row mt-3">
+              <div class="col-2">
+                <label class="form-control">Filter By Customer</label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="form-control" (change)="filterByCustomer($event,'closedPallets')">
+              </div>
+              <div class="col-2">
+                <!-- <button (click)="createNewPL()" class="btn btn-info form-control">הקם רשימת אריזה</button> -->
+              </div>
+              <div class="col-3"></div>
+              <div class="col-2">
+                <!-- <button class="btn btn-info form-control">הקם משטח</button> -->
+              </div>
+            </div>
+    
+            <div class="row mt-3">
+              <div class="col-12">
+                <table style="text-align: center;" class="table table-striped table-hover ">
+                  <thead class="text-white bg-info">
+                    <tr>
+                      <th>#</th>
+                      <th></th>
+                      <th>מספר משטח</th>
+                      <th>סטטוס</th>
+                      <th>שם לקוח</th>
+                      <th>משקל משטח</th>
+                      <th>גודל משטח</th>
+                      <!-- <th></th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let pallet of allClosedPallets;let i = index">
+                      <td>{{i+1}}</td>
+                      <td><input class="form-control" (change)="selectedForPL($event,pallet)" type="checkbox"></td>
+                      <td (click)="viewItemsInPallet(pallet)" style="color:blue;text-decoration: underline;cursor: pointer;">{{pallet.palletNumber}}</td>
+                      <td [ngClass]="checkPLstatus(pallet)">{{pallet.plStatus}}</td>
+                      <td>{{pallet.customer}}</td>
+                      <td>{{pallet.palletWeight}}</td>
+                      <td>{{pallet.palletSize}}</td>
+    
+                      <!-- <td><button class="btn btn-info form-control w-50" (click)="addPalletToPackList(pallet)">הוסף לרשימת אריזה</button></td> -->
+               
+    
+                    </tr>
+                  </tbody>
+                </table>
+    
+              </div>
+            </div>
+    
+          
+    
+          </div>
+    
+    
+          <div *ngIf="itemsInPalletModal == true" style="top:150px;" class="container mx-auto bg-white my-auto rounded shadow-lg fixed-top text-center">
+          <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+              <h3 (click)="itemsInPalletModal = false" class="text-info">Pallet Details</h3>
+            </div>
+            <div class="col-4">
+            <i (click)="itemsInPalletModal = false" style="cursor: pointer;" class="fa fa-times text-info"></i>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-striped table-hover">
+                <thead class="bg-info text-white">
+                  <tr>
+                    <th>מספר פריט</th>
+                    <th>מספר הזמנה</th>
+                    <th>כמות </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let line of currentPallet.lines">
+                    <td>{{line.itemNumber}}</td>
+                    <td>{{line.orderNumber}}</td>
+                    <td *ngIf="!line.unitsToCombine">{{line.allUnits}}</td>
+                    <td *ngIf="line.unitsToCombine">{{line.unitsToCombine}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+    
+          </div>
+    
+          
+          <div  style="height:0px !important" *ngIf="showAllPackedLists==true" id="myModal3" class="modal3 mx-auto my-auto rounded shadow-lg"
+            style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>
+    
+            <!-- Modal content -->
+            <div class="modal-content" id='modelC'>
+              <div dir="rtl" id="material-header" class="modal-header">
+                <div>
+                  <span class="close" id="closeId3" style="cursor: pointer;" (click)="showAllPackedLists=false;">&times;</span>
+                </div>
+    
+              </div>
+    
+              <div class="container" id="material-body" class="modal-body">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>שם לקוח</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let pl of allReadyPackedLists;let i = index">
+                      <td>{{i+1}}</td>
+                      <td><label (click)="choosePLToAdd(pl)"
+                          style="color:blue;text-decoration: underline;cursor: pointer;">{{pl.costumerName}}</label></td>
+                    </tr>
+                  </tbody>
+    
+                </table>
+    
+              </div>
+    
+            </div>
           </div>
 
-          <div class="container" id="material-body" class="modal-body">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>שם לקוח</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let pl of allReadyPackedLists;let i = index">
-                  <td>{{i+1}}</td>
-                  <td><label (click)="choosePLToAdd(pl)"
-                      style="color:blue;text-decoration: underline;cursor: pointer;">{{pl.costumerName}}</label></td>
-                </tr>
-              </tbody>
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>רשימות אריזה</a>
+      <ng-template ngbNavContent>
+        <div class="container text-center bg-white">
 
-            </table>
-
+            <div class="row">
+              <div class="col-4"></div>
+              <div class="col-4 mt-3">
+                <h1 class="text-info">רשימות אריזה</h1>
+              </div>
+              <div class="col-4"></div>
+            </div>
+    
+            <div class="row mt-3">
+              <div class="col-12">
+    
+                <table class="table table-striped">
+                  <thead class="bg-info text-white">
+                    <tr>
+                      <th>#</th>
+                      <th>מספר רשימה</th>
+                      <th>שם לקוח</th>
+                      <th>מספר לקוח</th>
+                      <th>נשלח לחשבונית</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let packlist of allPackedLists;let i = index">
+                      <td>{{i+1}}</td>
+                      <td>{{packlist.packListNumber}}</td>
+                      <td><label (click)="openProductForm(packlist)"
+                          style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
+                      <td>{{packlist.costumerNumber}}</td>
+                      <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
+                      <td><button class="btn btn-info" (click)="sendForBill(packlist)">שלח לחשבונית</button></td>
+                    </tr>
+                  </tbody>
+    
+                </table>
+    
+              </div>
+            </div>
+    
+            <div class="row text-center mt-3">
+              <div class="col-3"></div>
+              <div class="col-3">
+                <input [(ngModel)]="customerForPL" list="customers" class="form-control">
+                <datalist id="customers">
+                  <option *ngFor="let customer of allCustomers">{{customer.costumerName}}</option>
+                </datalist>
+              </div>
+              <div class="col-3">
+                <button (click)="createNewPL()" class="form-control btn btn-info">רשימת אריזה חדשה</button>
+              </div>
+           
+              <div class="col-3"></div>
+            </div>
+    
           </div>
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>מוכנים לחשבונית</a>
+      <ng-template ngbNavContent>
+        <div class="container bg-white text-center">
 
-        </div>
-      </div>
-
-
-
-    </ng-template>
-  </ngb-tab>
-
-  <ngb-tab title="רשימות אריזה">
-    <ng-template ngbTabContent>
-
-      <div class="container text-center bg-white">
-
-        <div class="row">
-          <div class="col-4"></div>
-          <div class="col-4 mt-3">
-            <h1 class="text-info">רשימות אריזה</h1>
+            <div class="row">
+              <div class="col-4"></div>
+              <div class="col-4 mt-3">
+                <h1 class="text-info">מוכנים לחשבונית</h1>
+              </div>
+              <div class="col-4"></div>
+            </div>
+            <div class="row mt-3">
+              <div class="col">
+    
+                <table class="table table-striped">
+                  <thead class="text-white bg-info">
+                    <tr>
+                      <th>#</th>
+                      <th>שם לקוח</th>
+                      <th>מספר לקוח</th>
+                      <th>מוכן לחשבונית</th>
+                      <th>מספר לחשבונית</th>
+                  
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
+                      <td>{{i+1}}</td>
+                      <td><label (click)="openProductForm(packlist)" style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
+                      <td>{{packlist.costumerNumber}}</td>
+                      <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
+                      <td *ngIf="packlist._id != editBill" style="cursor: pointer;" (click)="editBillNumber(packlist._id)" >{{packlist.billNumber}}</td>
+                      <td *ngIf="editBill == packlist._id"><input type="text" [value]="packlist.billNumber" #billNumberToUpdate></td>
+                      <td *ngIf="editBill == packlist._id"><i (click)="saveBillNumber(packlist._id)" style="cursor: pointer;" class="fa fa-save text-info"></i>
+                      </td>
+                      <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
+                    </tr>
+                  </tbody>
+    
+                </table>
+    
+              </div>
+            </div>
           </div>
-          <div class="col-4"></div>
-        </div>
+    
+      </ng-template>
+    </ng-container>
+  </nav>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
-        <div class="row mt-3">
-          <div class="col-12">
-
-            <table class="table table-striped">
-              <thead class="bg-info text-white">
-                <tr>
-                  <th>#</th>
-                  <th>מספר רשימה</th>
-                  <th>שם לקוח</th>
-                  <th>מספר לקוח</th>
-                  <th>נשלח לחשבונית</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let packlist of allPackedLists;let i = index">
-                  <td>{{i+1}}</td>
-                  <td>{{packlist.packListNumber}}</td>
-                  <td><label (click)="openProductForm(packlist)"
-                      style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
-                  <td>{{packlist.costumerNumber}}</td>
-                  <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
-                  <td><button class="btn btn-info" (click)="sendForBill(packlist)">שלח לחשבונית</button></td>
-                </tr>
-              </tbody>
-
-            </table>
-
-          </div>
-        </div>
-
-        <div class="row text-center mt-3">
-          <div class="col-3"></div>
-          <div class="col-3">
-            <input [(ngModel)]="customerForPL" list="customers" class="form-control">
-            <datalist id="customers">
-              <option *ngFor="let customer of allCustomers">{{customer.costumerName}}</option>
-            </datalist>
-          </div>
-          <div class="col-3">
-            <button (click)="createNewPL()" class="form-control btn btn-info">רשימת אריזה חדשה</button>
-          </div>
-       
-          <div class="col-3"></div>
-        </div>
-
-      </div>
-
-
-
-    </ng-template>
-  </ngb-tab>
-
-  <ngb-tab title="מוכנים לחשבונית">
-    <ng-template ngbTabContent>
-
-      <div class="container bg-white text-center">
-
-        <div class="row">
-          <div class="col-4"></div>
-          <div class="col-4 mt-3">
-            <h1 class="text-info">מוכנים לחשבונית</h1>
-          </div>
-          <div class="col-4"></div>
-        </div>
-        <div class="row mt-3">
-          <div class="col">
-
-            <table class="table table-striped">
-              <thead class="text-white bg-info">
-                <tr>
-                  <th>#</th>
-                  <th>שם לקוח</th>
-                  <th>מספר לקוח</th>
-                  <th>מוכן לחשבונית</th>
-                  <th>מספר לחשבונית</th>
-              
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
-                  <td>{{i+1}}</td>
-                  <td><label (click)="openProductForm(packlist)" style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
-                  <td>{{packlist.costumerNumber}}</td>
-                  <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
-                  <td *ngIf="packlist._id != editBill" style="cursor: pointer;" (click)="editBillNumber(packlist._id)" >{{packlist.billNumber}}</td>
-                  <td *ngIf="editBill == packlist._id"><input type="text" [value]="packlist.billNumber" #billNumberToUpdate></td>
-                  <td *ngIf="editBill == packlist._id"><i (click)="saveBillNumber(packlist._id)" style="cursor: pointer;" class="fa fa-save text-info"></i>
-                  </td>
-                  <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
-                </tr>
-              </tbody>
-
-            </table>
-
-          </div>
-        </div>
-      </div>
-
-
-    </ng-template>
-  </ngb-tab>
-
-</ngb-tabset>
 <div id="print-section">
   <div style="height:0px !important" *ngIf="showProductsBeforeDelivery==true" id="myModal3" class="modal3"
     style='border:1px; border-radius:5px;z-index: 1;position: fixed;top:130px;'>

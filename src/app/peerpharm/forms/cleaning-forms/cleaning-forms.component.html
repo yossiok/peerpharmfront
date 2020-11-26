@@ -1,7 +1,8 @@
-<ngb-tabset>
-  <ngb-tab title="Entrance Floor - Этаж">
-    <ng-template ngbTabContent>
 
+<nav ngbNav #nav="ngbNav" class="nav-tabs">
+  <ng-container ngbNavItem>
+    <a ngbNavLink>Entrance Floor - Этаж</a>
+    <ng-template ngbNavContent>
       <div class="container shadow-sm rounded bg-light bg-light p-2">
 
         <div class="row text-center p-2">
@@ -99,12 +100,11 @@
         </div>
 
       </div>
-
     </ng-template>
-  </ngb-tab>
-
-  <ngb-tab title="Offices Floor 2 - Второй этаж">
-    <ng-template ngbTabContent>
+  </ng-container>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>Offices Floor 2 - Второй этаж</a>
+    <ng-template ngbNavContent>
 
       <div class="container shadow-sm rounded bg-light bg-light p-2">
 
@@ -193,14 +193,11 @@
         </div>
 
       </div>
-
-
     </ng-template>
-  </ngb-tab>
-
-  <ngb-tab title="Production - Производственный цех">
-    <ng-template ngbTabContent>
-
+  </ng-container>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>Production - Производственный цех</a>
+    <ng-template ngbNavContent>
       <div class="container shadow-sm rounded bg-light p-2">
 
         <div  class="row text-center p-2">
@@ -304,9 +301,8 @@
 
       </div>
 
-
     </ng-template>
-  </ngb-tab>
+  </ng-container>
+</nav>
 
-
-</ngb-tabset>
+<div [ngbNavOutlet]="nav" class="mt-2"></div>

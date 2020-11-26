@@ -1,7 +1,10 @@
-<ngb-tabset dir="rtl">
-  <ngb-tab title="טופס כיול PH שבועי מטר">
-    <ng-template ngbTabContent>
 
+
+
+<nav ngbNav #nav="ngbNav" class="nav-tabs">
+  <ng-container ngbNavItem>
+    <a ngbNavLink>טופס כיול PH שבועי מטר</a>
+    <ng-template ngbNavContent>
       <div class="container bg-light rounded shadow-sm text-center p-2">
         <div class="row">
 
@@ -171,12 +174,12 @@
 
       </div>
 
-
     </ng-template>
-  </ngb-tab>
-  <ngb-tab>
-    <ng-template ngbTabTitle>טופס אימות כיול מאזניים</ng-template>
-    <ng-template ngbTabContent>
+  </ng-container>
+
+  <ng-container ngbNavItem>
+    <a ngbNavLink>טופס אימות כיול מאזניים</a>
+    <ng-template ngbNavContent>
       <div dir="rtl" class="container bg-light rounded shadow-sm">
         <div class="row text-center">
           <div class="col-12">
@@ -335,12 +338,12 @@
           </div>
         </div>
       </div>
-
     </ng-template>
-  </ngb-tab>
+  </ng-container>
 
-  <ngb-tab title="טופס בדיקת מים מטופלים RO - מערכת ישנה">
-    <ng-template ngbTabContent>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>טופס בדיקת מים מטופלים RO - מערכת ישנה</a>
+    <ng-template ngbNavContent>
       <div class="container p-2 rounded shadow-sm bg-light">
         <div class="row p-2 text-center">
           <div class="col-12">
@@ -472,10 +475,11 @@
         </div>
       </div>
     </ng-template>
-  </ngb-tab>
+  </ng-container>
 
-  <ngb-tab title="טופס בדיקת מים מטופלים RO - מערכת חדשה">
-    <ng-template ngbTabContent>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>טופס בדיקת מים מטופלים RO - מערכת חדשה</a>
+    <ng-template ngbNavContent>
       <div class="container p-2 rounded shadow-sm bg-light">
         <div class="row p-2 text-center">
           <div class="col-12">
@@ -612,10 +616,11 @@
         </div>
       </div>
     </ng-template>
-  </ngb-tab>
+  </ng-container>
 
-  <ngb-tab title="טופס בקרת טמפרטורה">
-    <ng-template ngbTabContent>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>טופס בקרת טמפרטורה</a>
+    <ng-template ngbNavContent>
       <div class="container bg-light rounded shadow-sm">
         <div class="row text-center p-2">
           <div class="col-12">
@@ -718,11 +723,11 @@
         </div>
       </div>
     </ng-template>
-  </ngb-tab>
-
-
-  <ngb-tab title="טופס אימות כיול  PH מטר">
-    <ng-template ngbTabContent>
+  </ng-container>
+  
+  <ng-container ngbNavItem>
+    <a ngbNavLink>טופס אימות כיול  PH מטר</a>
+    <ng-template ngbNavContent>
       <div class="container bg-light rounded shadow-sm">
         <div class="row text-center p-2">
           <div  class=col-12>
@@ -865,11 +870,11 @@
         </div>
       </div>
     </ng-template>
-  </ngb-tab>
-
-
-  <ngb-tab title="מעקב בדיקת PH למי ביוב">
-    <ng-template ngbTabContent>
+  </ng-container>
+  
+  <ng-container ngbNavItem>
+    <a ngbNavLink>מעקב בדיקת PH למי ביוב</a>
+    <ng-template ngbNavContent>
       <div class="container bg-light rounded shadow-sm">
         <div class="row text-center p-2">
           <div class="col-12">
@@ -962,8 +967,10 @@
         </div>
       </div>
     </ng-template>
-  </ngb-tab>
+  </ng-container>
 
 
+</nav>
 
-</ngb-tabset>
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
+

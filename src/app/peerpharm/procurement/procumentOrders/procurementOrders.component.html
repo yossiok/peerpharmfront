@@ -1,756 +1,654 @@
-<ngb-tabset>
-  <ngb-tab title="Purchase Orders">
-    <ng-template ngbTabContent>
-      <div class="container-fluid bg-white text-center">
-        <div class="row bg-info">
-          <div class="col-12">
-            <h3 class="p-2 text-white">Purchase Orders</h3>
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-3">
-            <button (click)="newPurchaseModal = true" class="btn btn-warning">New Purchase - F2</button>
-          </div>
-          <div class="col-2"><button class="btn form-control" style="background:lightcoral">Canceled Order</button>
-          </div>
-          <div class="col-2"><button class="btn form-control" style="background:lightgreen">On Going</button></div>
-          <div class="col-2"><button class="btn form-control" style="background:orange">Closed Order</button></div>
-          <div class="col-3">
-            <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning">Recommendations - F4</button>
-          </div>
-        </div>
 
 
-        <div class="row mt-4">
-          <div class="col-3"><input type="text" class="form-control" placeholder="Search By Order Number"
-              (change)="searchNumber($event)" /></div>
-          <div class="col-3">
-            <input type="text" class="form-control" list="suppliers" placeholder="Search By Supplier Name"
-              (change)="searchBySupplier($event)" />
-            <datalist id="suppliers">
-              <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
-              </option>
-            </datalist>
-          </div>
-          <div class="col-3"><input type="text" class="form-control" placeholder="Search By Item Number"
-              (change)="searchByItem($event)" /></div>
-          <div class="col-3"><input type="text" class="form-control" placeholder="Search By Reference Number"
-              (change)="searchByReference($event)" /></div>
-        </div>
 
-        <div class="row mt-4">
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-        </div>
-
-
-        <div class="row mt-4">
-          <div class="col-2">
-            חפש לפי סטטוס <select (change)="filterByStatus($event,'purchases')" class="form-control">
-              <option selected="true" disabled="disabled">בחר סטטוס</option>
-              <option value="allOrders">כל ההזמנות</option>
-              <option value="ongoing">בטיפול</option>
-              <option value="closed">הזמנות סגורות</option>
-              <option value="material">חומרי גלם</option>
-              <option value="component">קומפוננטים</option>
-            </select>
-          </div>
-          <div class="col-2">
-            חפש לפי קטגוריה <select (change)="filterByCategory($event,'category')" class="form-control">
-              <option selected></option>
-              <option value='bottle_Glass'>בקבוק זכוכית</option>
-              <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-              <option value='jar_Glass'>צנצנת זכוכית</option>
-              <option value='jar_Plastic'>צנצנת פלסטיק</option>
-              <option value='cap'>פקק</option>
-              <option value='cover'>מכסה</option>
-              <option value='pump'>משאבה</option>
-              <option value='cosmetic_pump'>משאבה קוסמטית</option>
-              <option value='over_cap'>מכסה עילי</option>
-              <option value='tube'>שפורפרת</option>
-              <option value='colons'>קולונים</option>
-              <option value='hair_life'>היירלייפ</option>
-              <option value='compacts'>קומפקטים</option>
-              <option value='personal_package'>אריזות אישיות</option>
-              <option value='master_carton'>קרטוני מאסטר</option>
-              <option value='newsletter'>עלון לצרכן</option>
-              <option value='irosol_valve'>אירוסול- שסתום</option>
-              <option value='irosol_bottle'>איירוסול- בקבוק</option>
-              <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-              <option value='irosol_bottle'>איירוסול- בקבוק</option>
-              <option value='cellophane'>צלופן</option>
-              <option value='sticker'>מדבקה</option>
-              <option value='sachet'>סאשט</option>
-            </select>
-          </div>
-          <div class="col-1">
-            טען את כל הפריטים
-            <button (click)="loadPurchasesItems()" class="btn btn-info form-control">Load Items</button>
-          </div>
-
-          <div class="col-2">
-            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-              (click)="exportAsXLSX('purchaseData')">
-            <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
-              style="background: none;border:none" printSectionId="print-section" ngxPrint><img
-                src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
-          </div>
-          <div class="col-3"></div>
-          <div class="col-1">
-            From: <input class="form-control" (change)="dateChange()" #fromDateStr type="date">
-          </div>
-          <div class="col-1">
-            To: <input class="form-control" (change)="dateChange()" #toDateStr type="date">
-          </div>
-        </div>
-
-        <div *ngIf="showLoader" class="row text-center mt-4 mb-4">
-          <div class="col-4"></div>
-          <div class="col-4">
-            <h2 class="peerLoader mx-auto my-auto">
-              <span>P</span>
-              <span>E</span>
-              <span>E</span>
-              <span>R</span>
-              <span>P</span>
-              <span>H</span>
-              <span>A</span>
-              <span>R</span>
-              <span>M</span>
-            </h2>
-          </div>
-          <div class="col-4"></div>
-        </div>
-
-        <div id="print-section" class="row">
-          <div class="col-12">
-            <table class="table table-hover text-center">
-              <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
-                <tr>
-                  <th><b>#</b></th>
-                  <th><b>Procurement Number</b></th>
-                  <th><b>Comax Number</b></th>
-                  <!-- <th><b>Supplier Number</b></th> -->
-                  <th><b>Supplier Name</b></th>
-                  <th><b>Supplier Number</b></th>
-                  <th><b>Out Date</b></th>
-                  <th><b>Arrival Date</b></th>
-                  <th><b>Remarks</b></th>
-                  <th><b>Current Status</b></th>
-                  <th><b>Change</b></th>
-                  <th><b>Close Order</b></th>
-                  <th></th>
-                  <!-- <th><b>Payments Status</b></th>
-                  <th><b>Payment Remark</b></th> -->
-
-
-                </tr>
-              </thead>
-
-              <tbody id="table_body">
-                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"
-                  *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
-                  <td>{{i+1}}</td>
-                  <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span
-                      style="color:blue;">{{line.orderNumber}}</span>
-                  </td>
-                  <td>{{line.comaxNumber}}</td>
-                  <!-- <td>{{ line.supplierNumber }}</td> -->
-                  <td>{{ line.supplierName }}</td>
-                  <td>{{ line.supplierNumber }}</td>
-                  <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
-                  <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">
-                    {{ line.validDate | date: 'dd/MM/yyyy' }}</td>
-                  <td *ngIf="EditRowId == line.orderNumber">
-                    <input (change)="updateArrivalDate($event,line.orderNumber)" type="date" class="form-control">
-                  </td>
-                  <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">{{line.remarks}}
-                  </td>
-                  <td *ngIf="EditRowId == line.orderNumber">
-                    <textarea [value]="line.remarks" #purchaseRemarks></textarea>
-                    <button (click)="saveOrderRemarks(line)" class="btn btn-info"><i class="fa fa-save"></i></button>
-                  </td>
-                  <!-- <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
-                <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td> -->
-
-                  <td><label class="form-control">{{line.status}}</label></td>
-                  <td>
-                    <select class="form-control" (change)="changeStatus($event,line.orderNumber)">
-                      <option value=""></option>
-                      <option value="sentToSupplier">נשלחה לספק</option>
-                      <option value="supplierGotOrder">הגיעה לספק</option>
-                      <option value="orderOffer">הצעת מחיר הועברה לחביב</option>
-                      <option value="havivApprovedOffer">אושרה הצעת המחיר</option>
-                      <option value="orderPayedToSupplier">שולם לספק</option>
-                      <option value="timeToProduction">צפי ייצור</option>
-                      <option value="expectedArrival">צפי הגעה</option>
-                      <!-- <option value="balanceNotImp">יתרה לא רלוונטית</option>
-                  <option value="NoApprovePrice">מחיר לא אושר</option>
-                  <option value="withoutReciept">נסגר ללא תעודה</option> -->
-                    </select>
-                  </td>
-                  <td *ngIf="line.status == 'closed'"><label class="form-control">{{line.closeReason}}</label></td>
-                  <td *ngIf="line.status != 'closed'">
-                    <select class="form-control" (change)="closeOrder($event,line.orderNumber)">
-                      <option value=""></option>
-                      <option value="orderFrozen">בהקפאה</option>
-                      <option value="havivApproval">מבוטל באישור חביב</option>
-                      <option value="tomerApproval">מבוטל באישור תומר</option>
-                      <option value="sigiOrAkivaApproval">מבוטל באישור סיגלית/עקיבא</option>
-                      <option value="movedToOtherPurchase">הוכנס להזמנה אחרת</option>
-                      <option value="balanceNotImp">יתרה לא רלוונטית</option>
+<nav ngbNav #nav="ngbNav" class="nav-tabs">
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Purchase Orders</a>
+      <ng-template ngbNavContent>
+        <div class="container-fluid bg-white text-center">
+            <div class="row bg-info">
+              <div class="col-12">
+                <h3 class="p-2 text-white">Purchase Orders</h3>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-3">
+                <button (click)="newPurchaseModal = true" class="btn btn-warning">New Purchase - F2</button>
+              </div>
+              <div class="col-2"><button class="btn form-control" style="background:lightcoral">Canceled Order</button>
+              </div>
+              <div class="col-2"><button class="btn form-control" style="background:lightgreen">On Going</button></div>
+              <div class="col-2"><button class="btn form-control" style="background:orange">Closed Order</button></div>
+              <div class="col-3">
+                <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning">Recommendations - F4</button>
+              </div>
+            </div>
+    
+    
+            <div class="row mt-4">
+              <div class="col-3"><input type="text" class="form-control" placeholder="Search By Order Number"
+                  (change)="searchNumber($event)" /></div>
+              <div class="col-3">
+                <input type="text" class="form-control" list="suppliers" placeholder="Search By Supplier Name"
+                  (change)="searchBySupplier($event)" />
+                <datalist id="suppliers">
+                  <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
+                  </option>
+                </datalist>
+              </div>
+              <div class="col-3"><input type="text" class="form-control" placeholder="Search By Item Number"
+                  (change)="searchByItem($event)" /></div>
+              <div class="col-3"><input type="text" class="form-control" placeholder="Search By Reference Number"
+                  (change)="searchByReference($event)" /></div>
+            </div>
+    
+            <div class="row mt-4">
+              <div class="col-3"></div>
+              <div class="col-3"></div>
+              <div class="col-3"></div>
+              <div class="col-3"></div>
+            </div>
+    
+    
+            <div class="row mt-4">
+              <div class="col-2">
+                חפש לפי סטטוס <select (change)="filterByStatus($event,'purchases')" class="form-control">
+                  <option selected="true" disabled="disabled">בחר סטטוס</option>
+                  <option value="allOrders">כל ההזמנות</option>
+                  <option value="ongoing">בטיפול</option>
+                  <option value="closed">הזמנות סגורות</option>
+                  <option value="material">חומרי גלם</option>
+                  <option value="component">קומפוננטים</option>
+                </select>
+              </div>
+              <div class="col-2">
+                חפש לפי קטגוריה <select (change)="filterByCategory($event,'category')" class="form-control">
+                  <option selected></option>
+                  <option value='bottle_Glass'>בקבוק זכוכית</option>
+                  <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+                  <option value='jar_Glass'>צנצנת זכוכית</option>
+                  <option value='jar_Plastic'>צנצנת פלסטיק</option>
+                  <option value='cap'>פקק</option>
+                  <option value='cover'>מכסה</option>
+                  <option value='pump'>משאבה</option>
+                  <option value='cosmetic_pump'>משאבה קוסמטית</option>
+                  <option value='over_cap'>מכסה עילי</option>
+                  <option value='tube'>שפורפרת</option>
+                  <option value='colons'>קולונים</option>
+                  <option value='hair_life'>היירלייפ</option>
+                  <option value='compacts'>קומפקטים</option>
+                  <option value='personal_package'>אריזות אישיות</option>
+                  <option value='master_carton'>קרטוני מאסטר</option>
+                  <option value='newsletter'>עלון לצרכן</option>
+                  <option value='irosol_valve'>אירוסול- שסתום</option>
+                  <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                  <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+                  <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                  <option value='cellophane'>צלופן</option>
+                  <option value='sticker'>מדבקה</option>
+                  <option value='sachet'>סאשט</option>
+                </select>
+              </div>
+              <div class="col-1">
+                טען את כל הפריטים
+                <button (click)="loadPurchasesItems()" class="btn btn-info form-control">Load Items</button>
+              </div>
+    
+              <div class="col-2">
+                <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+                  (click)="exportAsXLSX('purchaseData')">
+                <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
+                  style="background: none;border:none" printSectionId="print-section" ngxPrint><img
+                    src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+              </div>
+              <div class="col-3"></div>
+              <div class="col-1">
+                From: <input class="form-control" (change)="dateChange()" #fromDateStr type="date">
+              </div>
+              <div class="col-1">
+                To: <input class="form-control" (change)="dateChange()" #toDateStr type="date">
+              </div>
+            </div>
+    
+            <div *ngIf="showLoader" class="row text-center mt-4 mb-4">
+              <div class="col-4"></div>
+              <div class="col-4">
+                <h2 class="peerLoader mx-auto my-auto">
+                  <span>P</span>
+                  <span>E</span>
+                  <span>E</span>
+                  <span>R</span>
+                  <span>P</span>
+                  <span>H</span>
+                  <span>A</span>
+                  <span>R</span>
+                  <span>M</span>
+                </h2>
+              </div>
+              <div class="col-4"></div>
+            </div>
+    
+            <div id="print-section" class="row">
+              <div class="col-12">
+                <table class="table table-hover text-center">
+                  <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
+                    <tr>
+                      <th><b>#</b></th>
+                      <th><b>Procurement Number</b></th>
+                      <th><b>Comax Number</b></th>
+                      <!-- <th><b>Supplier Number</b></th> -->
+                      <th><b>Supplier Name</b></th>
+                      <th><b>Supplier Number</b></th>
+                      <th><b>Out Date</b></th>
+                      <th><b>Arrival Date</b></th>
+                      <th><b>Remarks</b></th>
+                      <th><b>Current Status</b></th>
+                      <th><b>Change</b></th>
+                      <th><b>Close Order</b></th>
+                      <th></th>
+                      <!-- <th><b>Payments Status</b></th>
+                      <th><b>Payment Remark</b></th> -->
+    
+    
+                    </tr>
+                  </thead>
+    
+                  <tbody id="table_body">
+                    <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"
+                      *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
+                      <td>{{i+1}}</td>
+                      <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span
+                          style="color:blue;">{{line.orderNumber}}</span>
+                      </td>
+                      <td>{{line.comaxNumber}}</td>
+                      <!-- <td>{{ line.supplierNumber }}</td> -->
+                      <td>{{ line.supplierName }}</td>
+                      <td>{{ line.supplierNumber }}</td>
+                      <td>{{ line.outDate | date: 'dd/MM/yyyy' }}</td>
+                      <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">
+                        {{ line.validDate | date: 'dd/MM/yyyy' }}</td>
+                      <td *ngIf="EditRowId == line.orderNumber">
+                        <input (change)="updateArrivalDate($event,line.orderNumber)" type="date" class="form-control">
+                      </td>
+                      <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">{{line.remarks}}
+                      </td>
+                      <td *ngIf="EditRowId == line.orderNumber">
+                        <textarea [value]="line.remarks" #purchaseRemarks></textarea>
+                        <button (click)="saveOrderRemarks(line)" class="btn btn-info"><i class="fa fa-save"></i></button>
+                      </td>
+                      <!-- <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
+                    <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td> -->
+    
+                      <td><label class="form-control">{{line.status}}</label></td>
+                      <td>
+                        <select class="form-control" (change)="changeStatus($event,line.orderNumber)">
+                          <option value=""></option>
+                          <option value="sentToSupplier">נשלחה לספק</option>
+                          <option value="supplierGotOrder">הגיעה לספק</option>
+                          <option value="orderOffer">הצעת מחיר הועברה לחביב</option>
+                          <option value="havivApprovedOffer">אושרה הצעת המחיר</option>
+                          <option value="orderPayedToSupplier">שולם לספק</option>
+                          <option value="timeToProduction">צפי ייצור</option>
+                          <option value="expectedArrival">צפי הגעה</option>
+                          <!-- <option value="balanceNotImp">יתרה לא רלוונטית</option>
                       <option value="NoApprovePrice">מחיר לא אושר</option>
-                      <option value="withoutReciept">נסגר ללא תעודה</option>
-                      <option *ngIf='user == "shania" || user == "sima"' value="open">פתח הזמנה</option>
-                    </select>
-                  </td>
-
-                  <td><button class="btn btn-info" (click)="printOrder(line)">Print</button></td>
-                  <!-- <td>
-                    <input [(ngModel)]="line.paymentStatus" (change)="changePaymentStatus($event,line.orderNumber)"
-                      list="payments" class="form-control">
-                    <datalist id="payments">
-                      <option value=" "> </option>
-                      <option value="fullyPaid">שולם במלואו</option>
-                      <option value="partlyPaid">שולם חלקית</option>
-                      <option value="advancePaid">שולם מקדמה</option>
-
-                    </datalist>
-                  </td>
-                  <td><label class="form-control">{{line.paymentRemark}}</label></td> -->
-
-
-                  <!-- <td><button class="btn btn-info form-control" (click)="orderInput.click()">O</button></td> -->
-
-                  <!-- <td><button class="btn btn-info" (click)="sendOrder(line)">Send Order</button></td> -->
-                  <!-- <td>   <a style="display:block" target="_blank" (click)="setLinkDownlowd(line._id)" [href]="linkDownload"><img style="height: 30px; width:30px;"
-                src="../../../../assets/images/pdf.png" alt="PDF" /></a>
-
-            <input class="form-control" #orderInput style="display:none" type="file"
-              (change)="onSelectOrderBill($event,line.orderNumber)"></td>
-
-              <td><button class="btn btn-info form-control" (click)="swiftInput.click()">S</button></td>
-              <td>
-                <a style="display:block" target="_blank" (click)="setLinkDownlowdTwo(line._id)" [href]="linkDownload"> <img style="height: 30px; width:30px;"
-                  src="../../../../assets/images/pdf.png" alt="PDF" /></a>
-              <input class="form-control" #swiftInput style="display:none" type="file" (change)="onSelectSwift($event,line.orderNumber)">
-              </td> -->
-
-                </tr>
-              </tbody>
-            </table>
+                      <option value="withoutReciept">נסגר ללא תעודה</option> -->
+                        </select>
+                      </td>
+                      <td *ngIf="line.status == 'closed'"><label class="form-control">{{line.closeReason}}</label></td>
+                      <td *ngIf="line.status != 'closed'">
+                        <select class="form-control" (change)="closeOrder($event,line.orderNumber)">
+                          <option value=""></option>
+                          <option value="orderFrozen">בהקפאה</option>
+                          <option value="havivApproval">מבוטל באישור חביב</option>
+                          <option value="tomerApproval">מבוטל באישור תומר</option>
+                          <option value="sigiOrAkivaApproval">מבוטל באישור סיגלית/עקיבא</option>
+                          <option value="movedToOtherPurchase">הוכנס להזמנה אחרת</option>
+                          <option value="balanceNotImp">יתרה לא רלוונטית</option>
+                          <option value="NoApprovePrice">מחיר לא אושר</option>
+                          <option value="withoutReciept">נסגר ללא תעודה</option>
+                          <option *ngIf='user == "shania" || user == "sima"' value="open">פתח הזמנה</option>
+                        </select>
+                      </td>
+    
+                      <td><button class="btn btn-info" (click)="printOrder(line)">Print</button></td>
+                      <!-- <td>
+                        <input [(ngModel)]="line.paymentStatus" (change)="changePaymentStatus($event,line.orderNumber)"
+                          list="payments" class="form-control">
+                        <datalist id="payments">
+                          <option value=" "> </option>
+                          <option value="fullyPaid">שולם במלואו</option>
+                          <option value="partlyPaid">שולם חלקית</option>
+                          <option value="advancePaid">שולם מקדמה</option>
+    
+                        </datalist>
+                      </td>
+                      <td><label class="form-control">{{line.paymentRemark}}</label></td> -->
+    
+    
+                      <!-- <td><button class="btn btn-info form-control" (click)="orderInput.click()">O</button></td> -->
+    
+                      <!-- <td><button class="btn btn-info" (click)="sendOrder(line)">Send Order</button></td> -->
+                      <!-- <td>   <a style="display:block" target="_blank" (click)="setLinkDownlowd(line._id)" [href]="linkDownload"><img style="height: 30px; width:30px;"
+                    src="../../../../assets/images/pdf.png" alt="PDF" /></a>
+    
+                <input class="form-control" #orderInput style="display:none" type="file"
+                  (change)="onSelectOrderBill($event,line.orderNumber)"></td>
+    
+                  <td><button class="btn btn-info form-control" (click)="swiftInput.click()">S</button></td>
+                  <td>
+                    <a style="display:block" target="_blank" (click)="setLinkDownlowdTwo(line._id)" [href]="linkDownload"> <img style="height: 30px; width:30px;"
+                      src="../../../../assets/images/pdf.png" alt="PDF" /></a>
+                  <input class="form-control" #swiftInput style="display:none" type="file" (change)="onSelectSwift($event,line.orderNumber)">
+                  </td> -->
+    
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+    
           </div>
-        </div>
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Purchase Arrivals</a>
+      <ng-template ngbNavContent>
+        <div class="container-fluid text-center">
 
-      </div>
-
-    </ng-template>
-  </ngb-tab>
-  <!-- <ngb-tab title="Purchase Recommendation">
-    <ng-template ngbTabContent>
-
-      <div class="container-fluid bg-white text-center">
-        <div class="row bg-info">
-          <div class="col-12">
-            <h3 class="p-2 text-white">Purchase recommendations</h3>
+            <div class="row bg-info">
+              <div class="col-12">
+                <h3 class="p-2 text-white">Purchase Arrivals</h3>
+              </div>
+            </div>
+    
+            <div class="row mt-5">
+              <div class="col-4">
+                <label class="form-control text-info">Supplier</label>
+              </div>
+              <div class="col-4">
+                <label class="form-control text-info">Item Number</label>
+    
+              </div>
+              <div class="col-4">
+                <label class="form-control text-info">Order Number</label>
+              </div>
+    
+            </div>
+    
+    
+            <div class="row mt-1">
+              <div class="col-4">
+    
+                <input (change)="filterPurchases($event,'supplier')" list="suppliers" class="form-control" />
+                <datalist id="suppliers">
+                  <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
+                  </option>
+                </datalist>
+              </div>
+              <div class="col-4">
+    
+                <input (change)="filterPurchases($event,'itemNumber')" class="form-control" type="text">
+              </div>
+              <div class="col-4">
+    
+                <input (change)="filterPurchases($event,'orderNumber')" class="form-control" type="text">
+              </div>
+    
+            </div>
+    
+            <div class="row mt-4">
+              <div class="col-1">
+                <label class="form-control">
+                  Status
+                </label>
+              </div>
+              <div class="col-1">
+                <select (change)=filterArrivalsByStatus($event) class="form-control">
+                  <option value="">Choose Status</option>
+                  <option value="done">Done</option>
+                  <option value="part">Part</option>
+                  <option value="notDone">Not Done</option>
+                </select>
+              </div>
+              <div class="col-3"></div>
+              <div class="col-2">
+    
+                <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+                  (click)="exportAsXLSX('purchaseArrivals')">
+                <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
+                  style="background: none;border:none" printSectionId="arrivals-section" ngxPrint><img
+                    src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+    
+              </div>
+              <div class="col-3">
+    
+              </div>
+              <div class="col-1">
+                <input [(ngModel)]="referNumberForReciept" type="number" class="form-control">
+              </div>
+              <div class="col-1">
+                <button (click)="printReciept()" class="btn btn-info form-control">Print Reciept</button>
+              </div>
+            </div>
+    
+            <div id="arrivals-section" class="row mt-1">
+              <div class="col-12">
+                <table class="table table-striped">
+                  <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
+                    <tr>
+                      <th>#</th>
+                      <th>Supplier</th>
+                      <th>Order Number</th>
+                      <th>Order Date</th>
+                      <th>Comax </th>
+                      <th>Item Number</th>
+                      <th>Amount</th>
+                      <th>Arrived Amount</th>
+                      <th>Item Name</th>
+                      <th>Reference Number</th>
+                      <!-- <th>Arrival Date</th>
+                      <th>Quantity</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container>
+                      <tr style="box-shadow: inset 0x 0x 4px 1px black !important"
+                        *ngFor="let purchase of procurementArrivals;let i = index">
+                        <td style="color:blue;text-decoration: underline;cursor: pointer;" (click)="editArrivalDetails(i)">
+                          {{i+1}}
+                        </td>
+                        <td>{{purchase.supplierName}}</td>
+                        <td>{{purchase.orderNumber}}</td>
+                        <td>{{purchase.orderDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{purchase.comaxNumber}}</td>
+                        <td>{{purchase.itemNumber}}</td>
+                        <td>{{purchase.supplierAmount}}</td>
+                        <td [ngClass]="{'allArrived': purchase.arrivedAmount >= purchase.supplierAmount}">
+                          {{purchase.arrivedAmount}}</td>
+                        <td>{{purchase.itemName}}</td>
+                        <td>
+                          <table>
+                            <tr *ngFor="let arrival of purchase.arrivals">
+                              <td>{{arrival.referenceNumber}}</td>
+                              <td>{{arrival.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+                              <td>{{arrival.arrivedAmount}}</td>
+                            </tr>
+                          </table>
+                        </td>
+                        <!-- <td>{{purchase.arrivalDate}}</td>
+                        <td>{{purchase.arrivedAmount}}</td> -->
+    
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+    
           </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-4"></div>
-          <div class="col-2">
-            <label class="form-control text-info">Filter By Status:</label>
-
+    
+    
+    
+    
+    
+    
+          <div *ngIf="editArrivalModal==true" id="myModal3" class="modal3"
+            style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:50px;font-size:20px;'>
+    
+            <div class="modal-content" id='modelC'>
+              <div style="display: inline-block;" id="material-header" class="modal-header">
+    
+                <span class="close" id="closeId3" (click)="editArrivalModal=false;">&times;</span>
+    
+              </div>
+    
+              <div class="container" id="material-body" class="modal-body">
+                <table class="table table-striped">
+                  <thead class="text-white bg-info">
+                    <tr>
+                      <th>Item Number</th>
+                      <th>Reference Number</th>
+                      <th>Arrival Date</th>
+                      <th>Quantity</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let arrival of arrivalData">
+                      <td>{{arrival.itemNumber}}</td>
+                      <td><input [(ngModel)]="newReference.referenceNumber" class="form-control" type="text"></td>
+                      <td><input [(ngModel)]="newReference.arrivalDate" class="form-control" type="date"></td>
+                      <td><input [(ngModel)]="newReference.arrivedAmount" class="form-control" type="number"></td>
+                      <td><button (click)="addReferenceDetails(arrival)" class="form-control btn-info">Add</button></td>
+    
+                    </tr>
+                  </tbody>
+                </table>
+    
+              </div>
+    
+              <div class="modal-footer">
+    
+              </div>
+    
+            </div>
+    
           </div>
-          <div class="col-2">
-            <label class="form-control text-info">Filter By Component:</label>
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Certificate Maker</a>
+      <ng-template ngbNavContent>
+        <div class="container-fluid text-center bg-white">
 
+            <div class="row">
+              <div class="col-12">
+                <h1 class="text-info mt-4">תעודות</h1>
+              </div>
+            </div>
+    
+            <div class="row mt-3">
+              <div class="col-3">
+                <label class="form-control text-info">מספר חשבונית</label>
+              </div>
+              <div class="col-3">
+                <label class="form-control text-info">מספר ספק</label>
+              </div>
+              <div class="col-3">
+                <label class="form-control text-info">תעודות כניסה</label>
+              </div>
+              <div class="col-3">
+                <label class="form-control text-info">סה"כ מחיר</label>
+              </div>
+            </div>
+    
+            <div class="row mt-3">
+              <div class="col-3">
+                <input [(ngModel)]="newBill.billNumber" class="form-control">
+    
+              </div>
+              <div class="col-3">
+                <input list="suppliers" [(ngModel)]="newBill.supplierNumber" class="form-control">
+                <datalist id="suppliers">
+                  <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
+                  </option>
+                </datalist>
+              </div>
+              <div class="col-2">
+                <input list="certificates" [(ngModel)]="certifNumberToPush" class="form-control">
+                <datalist id="certificates">
+                  <option *ngFor="let certif of newBill.certificateNumbers" [value]="certif">{{certif}}</option>
+                </datalist>
+              </div>
+              <div class="col-1">
+                <button (click)="addCertifToBill()" class="btn btn-info form-control"><i class="fa fa-plus"></i></button>
+              </div>
+              <div class="col-3">
+                <input type="number" [(ngModel)]="newBill.totalPrice" class="form-control">
+              </div>
+            </div>
+    
+            <div class="row mt-3">
+              <div class="col-5"></div>
+              <div class="col-2">
+                <button (click)="createCertifForBill()" class="form-control btn btn-info">בדוק</button>
+              </div>
+              <div class="col-5"></div>
+            </div>
+    
+            <div class="row mt-3">
+              <div class="col-5"></div>
+              <div class="col-2">
+    
+                <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+                  (click)="exportAsXLSX('billsToCheck')">
+                <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
+                  style="background: none;border:none" printSectionId="checkbill-section" ngxPrint><img
+                    src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+    
+              </div>
+              <div class="col-5"></div>
+            </div>
+    
+            <div id="checkbill-section" class="row mt-3">
+              <div class="col-12">
+                <table class="table table-striped table-hover">
+                  <thead class="text-white bg-info">
+                    <tr>
+                      <th>מספר פריט</th>
+                      <th>תיאור</th>
+                      <th>תעודה</th>
+                      <th>כמות</th>
+                      <th>מחיר יחידה</th>
+                      <th>מחיר</th>
+                      <th>תאריך</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of certificate">
+                      <td>{{item.itemNumber}}</td>
+                      <td>{{item.itemName}}</td>
+                      <td>{{item.referenceNumber}}</td>
+                      <td (click)="openQuantityModal(item)">{{item.quantity}}
+                        <small class="text-danger">{{item.changedQuantity}}</small>
+                      </td>
+                      <td (click)="openPriceModal(item)">{{item.supplierPrice}}
+                        <small class="text-danger">{{item.changedItemPrice}}</small>
+                      </td>
+                      <td>{{item.price}}</td>
+                      <td>{{item.arrivalDate}}</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>{{certifTotalPrice}}</td>
+                      <td></td>
+                    </tr>
+    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+    
+            <div class="row">
+              <div class="col-4"></div>
+              <div class="col-2">
+                <button (click)="saveNewInvoice('approved')" class="btn btn-info form-control">אישור</button>
+              </div>
+              <div class="col-2">
+                <button (click)="saveNewInvoice('inCheck')" class="btn btn-info form-control">בבדיקה</button>
+              </div>
+              <div class="col-4"></div>
+            </div>
+    
           </div>
-          <div class="col-4"></div>
-        </div>
-        <div class="row mt-1">
-          <div class="col-4"></div>
-          <div class="col-2">
-            <select class="form-control" (change)="filterByStatus($event,'recommendations')">
-              <option></option>
-              <option value="closed">Ordered</option>
-              <option value="hold">Hold</option>
-              <option value="open">Open</option>
-            </select>
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Invoices</a>
+      <ng-template ngbNavContent>
+        <div class="container-fluid text-center bg-white">
 
+            <div class="row">
+              <div class="col-12">
+                <h1 class="text-info mt-4">חשבוניות</h1>
+              </div>
+            </div>
+    
+            <div class="row mt-4">
+              <div class="col-3">
+                <label class="form-control text-info">Status</label>
+              </div>
+              <div class="col-3">
+                <label class="form-control text-info">Supplier</label>
+              </div>
+              <div class="col-3">
+                <label class="form-control text-info">Invoice Number</label>
+              </div>
+              <div class="col-3">
+    
+              </div>
+            </div>
+    
+            <div class="row mt-2">
+              <div class="col-3">
+                <select (change)="filterInvoices($event,'status')" class="form-control">
+                  <option value="">כל החשבוניות</option>
+                  <option value="approved">מאושרות</option>
+                  <option value="inCheck">בבדיקה</option>
+                </select>
+    
+              </div>
+              <div class="col-3">
+                <input (change)="filterInvoices($event,'suppliers')" list="suppliersInvoice" class="form-control" />
+                <datalist id="suppliersInvoice">
+                  <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
+                  </option>
+                </datalist>
+              </div>
+              <div class="col-3">
+                <input class="form-control" type="text" (change)="filterInvoices($event,'invoiceNumber')">
+              </div>
+              <div class="col-3"></div>
+            </div>
+    
+            <div class="row mt-4">
+              <div class="col-12">
+                <table class="table table-hover table-striped">
+                  <thead class="text-white bg-info">
+                    <tr>
+                      <th>מספר חשבונית</th>
+                      <th>חשבונית ספק</th>
+                      <th>מספר ספק</th>
+                      <th>סטטוס</th>
+                      <th></th>
+    
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let invoice of allInvoices">
+                      <td>{{invoice.invoiceNumber}}</td>
+                      <td>{{invoice.supInvoiceNumber}}</td>
+                      <td>{{invoice.supplierNumber}}</td>
+                      <td [ngClass]="{'approved': invoice.status =='approved','inCheck': invoice.status == 'inCheck'}">
+                        {{invoice.status}}</td>
+                      <td><button (click)="generateInvoice(invoice)" class="btn btn-info form-control">Print
+                          Invoice</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+    
           </div>
-          <div class="col-2">
-            <input class="form-control" type="number" (change)="filterByComponent($event)">
-          </div>
-          <div class="col-4"></div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-5"></div>
-          <div class="col-2">
-
-            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-              (click)="exportAsXLSX('purchaseRecommendations')">
-            <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
-              style="background: none;border:none" printSectionId="recommend-section" ngxPrint><img
-                src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
-
-          </div>
-          <div class="col-5"></div>
-        </div>
-
-        <div id="recommend-section" class="row mt-1">
-          <div class="col-12">
-            <table class="table table-striped table-hover">
-              <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
-                <tr>
-                  <th style="cursor: pointer;" (click)="sortTable('itemNumber')">Item Number</th>
-                  <th>Recommend Type</th>
-                  <th>Item Name</th>
-                  <th>Recommendation Remarks</th>
-                  <th>Name</th>
-                  <th style="cursor: pointer;" (click)="sortTable('supplier')">Supplier</th>
-                  <th style="cursor: pointer;" (click)="sortTable('date')">Recommendation Date</th>
-                  <th>Amount</th>
-                  <th>Remarks</th>
-                  <th style="cursor: pointer;" (click)="sortTable('ordered')">Ordered</th>
-                </tr>
-              </thead>
-              <tbody>
-
-                <tr style="box-shadow: inset 0x 0x 4px 1px black !important"
-                  *ngFor="let purchase of purchaseRecommendations" [style.background-color]="purchase.color">
-                  <td><a style="color:blue;border-bottom: 1px solid blue;cursor: pointer;" target="_blank"
-                      (click)="findInInventory(purchase.componentNumber)">{{purchase.componentNumber}}</a></td>
-                  <td>{{purchase.type}}</td>
-                  <td>{{purchase.componentName}}</td>
-                  <td style="background:rgba(83, 168, 165, 0.651);color:black;font-weight: bold;"
-                    *ngIf="purchase.componentNumber != EditRowId && purchase.requestNumber != requestNum"
-                    (click)="editRecommend(purchase.componentNumber,purchase.requestNumber)">
-                    {{purchase.recommendRemarks}}
-                  </td>
-                  <td *ngIf="purchase.componentNumber == EditRowId && purchase.requestNumber == requestNum"
-                    (click)="editRecommend(purchase.componentNumber,purchase.requestNumber)">
-                    <textarea type="text" [value]="purchase.recommendRemarks" #recommendRemarks></textarea>
-                    <i (click)="saveRecommendRemarks(purchase)" class="fa fa-save"></i>
-                  </td>
-                  <td>{{purchase.user}}</td>
-                  <td>{{purchase.supplierName}}</td>
-                  <td>{{purchase.date}}</td>
-                  <td>{{purchase.amount}}</td>
-                  <td>{{purchase.remarks}}</td>
-                  <td><i (click)="changeStatusToDone(purchase)" class="fa fa-check-square" aria-hidden="true"></i></td>
-                </tr>
-
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-
-    </ng-template>
-  </ngb-tab> -->
-  <ngb-tab title="Purchase Arrivals">
-    <ng-template ngbTabContent>
-      <div class="container-fluid text-center">
-
-        <div class="row bg-info">
-          <div class="col-12">
-            <h3 class="p-2 text-white">Purchase Arrivals</h3>
-          </div>
-        </div>
-
-        <div class="row mt-5">
-          <div class="col-4">
-            <label class="form-control text-info">Supplier</label>
-          </div>
-          <div class="col-4">
-            <label class="form-control text-info">Item Number</label>
-
-          </div>
-          <div class="col-4">
-            <label class="form-control text-info">Order Number</label>
-          </div>
-
-        </div>
-
-
-        <div class="row mt-1">
-          <div class="col-4">
-
-            <input (change)="filterPurchases($event,'supplier')" list="suppliers" class="form-control" />
-            <datalist id="suppliers">
-              <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
-              </option>
-            </datalist>
-          </div>
-          <div class="col-4">
-
-            <input (change)="filterPurchases($event,'itemNumber')" class="form-control" type="text">
-          </div>
-          <div class="col-4">
-
-            <input (change)="filterPurchases($event,'orderNumber')" class="form-control" type="text">
-          </div>
-
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-1">
-            <label class="form-control">
-              Status
-            </label>
-          </div>
-          <div class="col-1">
-            <select (change)=filterArrivalsByStatus($event) class="form-control">
-              <option value="">Choose Status</option>
-              <option value="done">Done</option>
-              <option value="part">Part</option>
-              <option value="notDone">Not Done</option>
-            </select>
-          </div>
-          <div class="col-3"></div>
-          <div class="col-2">
-
-            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-              (click)="exportAsXLSX('purchaseArrivals')">
-            <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
-              style="background: none;border:none" printSectionId="arrivals-section" ngxPrint><img
-                src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
-
-          </div>
-          <div class="col-3">
-
-          </div>
-          <div class="col-1">
-            <input [(ngModel)]="referNumberForReciept" type="number" class="form-control">
-          </div>
-          <div class="col-1">
-            <button (click)="printReciept()" class="btn btn-info form-control">Print Reciept</button>
-          </div>
-        </div>
-
-        <div id="arrivals-section" class="row mt-1">
-          <div class="col-12">
-            <table class="table table-striped">
-              <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-info text-white">
-                <tr>
-                  <th>#</th>
-                  <th>Supplier</th>
-                  <th>Order Number</th>
-                  <th>Order Date</th>
-                  <th>Comax </th>
-                  <th>Item Number</th>
-                  <th>Amount</th>
-                  <th>Arrived Amount</th>
-                  <th>Item Name</th>
-                  <th>Reference Number</th>
-                  <!-- <th>Arrival Date</th>
-                  <th>Quantity</th> -->
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container>
-                  <tr style="box-shadow: inset 0x 0x 4px 1px black !important"
-                    *ngFor="let purchase of procurementArrivals;let i = index">
-                    <td style="color:blue;text-decoration: underline;cursor: pointer;" (click)="editArrivalDetails(i)">
-                      {{i+1}}
-                    </td>
-                    <td>{{purchase.supplierName}}</td>
-                    <td>{{purchase.orderNumber}}</td>
-                    <td>{{purchase.orderDate | date: 'dd/MM/yyyy'}}</td>
-                    <td>{{purchase.comaxNumber}}</td>
-                    <td>{{purchase.itemNumber}}</td>
-                    <td>{{purchase.supplierAmount}}</td>
-                    <td [ngClass]="{'allArrived': purchase.arrivedAmount >= purchase.supplierAmount}">
-                      {{purchase.arrivedAmount}}</td>
-                    <td>{{purchase.itemName}}</td>
-                    <td>
-                      <table>
-                        <tr *ngFor="let arrival of purchase.arrivals">
-                          <td>{{arrival.referenceNumber}}</td>
-                          <td>{{arrival.arrivalDate | date: 'dd/MM/yyyy'}}</td>
-                          <td>{{arrival.arrivedAmount}}</td>
-                        </tr>
-                      </table>
-                    </td>
-                    <!-- <td>{{purchase.arrivalDate}}</td>
-                    <td>{{purchase.arrivedAmount}}</td> -->
-
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-
-
-
-
-
-
-      <div *ngIf="editArrivalModal==true" id="myModal3" class="modal3"
-        style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:50px;font-size:20px;'>
-
-        <div class="modal-content" id='modelC'>
-          <div style="display: inline-block;" id="material-header" class="modal-header">
-
-            <span class="close" id="closeId3" (click)="editArrivalModal=false;">&times;</span>
-
-          </div>
-
-          <div class="container" id="material-body" class="modal-body">
-            <table class="table table-striped">
-              <thead class="text-white bg-info">
-                <tr>
-                  <th>Item Number</th>
-                  <th>Reference Number</th>
-                  <th>Arrival Date</th>
-                  <th>Quantity</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let arrival of arrivalData">
-                  <td>{{arrival.itemNumber}}</td>
-                  <td><input [(ngModel)]="newReference.referenceNumber" class="form-control" type="text"></td>
-                  <td><input [(ngModel)]="newReference.arrivalDate" class="form-control" type="date"></td>
-                  <td><input [(ngModel)]="newReference.arrivedAmount" class="form-control" type="number"></td>
-                  <td><button (click)="addReferenceDetails(arrival)" class="form-control btn-info">Add</button></td>
-
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-
-          <div class="modal-footer">
-
-          </div>
-
-        </div>
-
-      </div>
-    </ng-template>
-  </ngb-tab>
-
-  <ngb-tab title="Certificate Maker">
-    <ng-template ngbTabContent>
-      <div class="container-fluid text-center bg-white">
-
-        <div class="row">
-          <div class="col-12">
-            <h1 class="text-info mt-4">תעודות</h1>
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-3">
-            <label class="form-control text-info">מספר חשבונית</label>
-          </div>
-          <div class="col-3">
-            <label class="form-control text-info">מספר ספק</label>
-          </div>
-          <div class="col-3">
-            <label class="form-control text-info">תעודות כניסה</label>
-          </div>
-          <div class="col-3">
-            <label class="form-control text-info">סה"כ מחיר</label>
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-3">
-            <input [(ngModel)]="newBill.billNumber" class="form-control">
-
-          </div>
-          <div class="col-3">
-            <input list="suppliers" [(ngModel)]="newBill.supplierNumber" class="form-control">
-            <datalist id="suppliers">
-              <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
-              </option>
-            </datalist>
-          </div>
-          <div class="col-2">
-            <input list="certificates" [(ngModel)]="certifNumberToPush" class="form-control">
-            <datalist id="certificates">
-              <option *ngFor="let certif of newBill.certificateNumbers" [value]="certif">{{certif}}</option>
-            </datalist>
-          </div>
-          <div class="col-1">
-            <button (click)="addCertifToBill()" class="btn btn-info form-control"><i class="fa fa-plus"></i></button>
-          </div>
-          <div class="col-3">
-            <input type="number" [(ngModel)]="newBill.totalPrice" class="form-control">
-          </div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-5"></div>
-          <div class="col-2">
-            <button (click)="createCertifForBill()" class="form-control btn btn-info">בדוק</button>
-          </div>
-          <div class="col-5"></div>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-5"></div>
-          <div class="col-2">
-
-            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-              (click)="exportAsXLSX('billsToCheck')">
-            <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
-              style="background: none;border:none" printSectionId="checkbill-section" ngxPrint><img
-                src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
-
-          </div>
-          <div class="col-5"></div>
-        </div>
-
-        <div id="checkbill-section" class="row mt-3">
-          <div class="col-12">
-            <table class="table table-striped table-hover">
-              <thead class="text-white bg-info">
-                <tr>
-                  <th>מספר פריט</th>
-                  <th>תיאור</th>
-                  <th>תעודה</th>
-                  <th>כמות</th>
-                  <th>מחיר יחידה</th>
-                  <th>מחיר</th>
-                  <th>תאריך</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of certificate">
-                  <td>{{item.itemNumber}}</td>
-                  <td>{{item.itemName}}</td>
-                  <td>{{item.referenceNumber}}</td>
-                  <td (click)="openQuantityModal(item)">{{item.quantity}}
-                    <small class="text-danger">{{item.changedQuantity}}</small>
-                  </td>
-                  <td (click)="openPriceModal(item)">{{item.supplierPrice}}
-                    <small class="text-danger">{{item.changedItemPrice}}</small>
-                  </td>
-                  <td>{{item.price}}</td>
-                  <td>{{item.arrivalDate}}</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>{{certifTotalPrice}}</td>
-                  <td></td>
-                </tr>
-
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-4"></div>
-          <div class="col-2">
-            <button (click)="saveNewInvoice('approved')" class="btn btn-info form-control">אישור</button>
-          </div>
-          <div class="col-2">
-            <button (click)="saveNewInvoice('inCheck')" class="btn btn-info form-control">בבדיקה</button>
-          </div>
-          <div class="col-4"></div>
-        </div>
-
-      </div>
-    </ng-template>
-  </ngb-tab>
-
-  <ngb-tab title="Invoices">
-    <ng-template ngbTabContent>
-      <div class="container-fluid text-center bg-white">
-
-        <div class="row">
-          <div class="col-12">
-            <h1 class="text-info mt-4">חשבוניות</h1>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-3">
-            <label class="form-control text-info">Status</label>
-          </div>
-          <div class="col-3">
-            <label class="form-control text-info">Supplier</label>
-          </div>
-          <div class="col-3">
-            <label class="form-control text-info">Invoice Number</label>
-          </div>
-          <div class="col-3">
-
-          </div>
-        </div>
-
-        <div class="row mt-2">
-          <div class="col-3">
-            <select (change)="filterInvoices($event,'status')" class="form-control">
-              <option value="">כל החשבוניות</option>
-              <option value="approved">מאושרות</option>
-              <option value="inCheck">בבדיקה</option>
-            </select>
-
-          </div>
-          <div class="col-3">
-            <input (change)="filterInvoices($event,'suppliers')" list="suppliersInvoice" class="form-control" />
-            <datalist id="suppliersInvoice">
-              <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">{{supplier.suplierName}}
-              </option>
-            </datalist>
-          </div>
-          <div class="col-3">
-            <input class="form-control" type="text" (change)="filterInvoices($event,'invoiceNumber')">
-          </div>
-          <div class="col-3"></div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-12">
-            <table class="table table-hover table-striped">
-              <thead class="text-white bg-info">
-                <tr>
-                  <th>מספר חשבונית</th>
-                  <th>חשבונית ספק</th>
-                  <th>מספר ספק</th>
-                  <th>סטטוס</th>
-                  <th></th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let invoice of allInvoices">
-                  <td>{{invoice.invoiceNumber}}</td>
-                  <td>{{invoice.supInvoiceNumber}}</td>
-                  <td>{{invoice.supplierNumber}}</td>
-                  <td [ngClass]="{'approved': invoice.status =='approved','inCheck': invoice.status == 'inCheck'}">
-                    {{invoice.status}}</td>
-                  <td><button (click)="generateInvoice(invoice)" class="btn btn-info form-control">Print
-                      Invoice</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-    </ng-template>
-  </ngb-tab>
-
-
-</ngb-tabset>
-
+      </ng-template>
+    </ng-container>
+  </nav>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
 <div *ngIf="changeItemQuantity == true" style="top:200px"
   class="container w-25 border border-info bg-dark fixed-top text-center rounded shadow-lg mx-auto my-auto p-2">

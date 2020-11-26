@@ -1,17 +1,24 @@
-<ngb-tabset #t="ngbTabset">
-  <ngb-tab id="tab-selectbyid1" title="General">
-     <ng-template  ngbTabContent>
+
+
+<nav ngbNav #nav="ngbNav" class="nav-tabs">
+    <ng-container ngbNavItem>
+      <a ngbNavLink>General</a>
+      <ng-template ngbNavContent>
         <app-itemdetais class="check"></app-itemdetais>
       </ng-template>
-      </ngb-tab>
-    <ngb-tab title="Documents" activeId="Documents" >
-          <ng-template ngbTabContent >
-           <app-item-documents></app-item-documents>
-          </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Sales" activeId="mkp">
-            <ng-template ngbTabContent>
-              mamkdakdmasmlplp
-            </ng-template>
-     </ngb-tab>
-</ngb-tabset>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Documents</a>
+      <ng-template ngbNavContent>
+        <app-item-documents></app-item-documents>
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Sales</a>
+      <ng-template ngbNavContent>
+
+      </ng-template>
+    </ng-container>
+  </nav>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>

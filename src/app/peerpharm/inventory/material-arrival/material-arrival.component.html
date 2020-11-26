@@ -1,53 +1,47 @@
-
-<ngb-tabset #tabset="ngbTabset" justify="end"  (tabChange)="beforeChange($event)" [activeId]="activeTabId" >
-
-
-  <ngb-tab id="tab-selectbyid3" style="flex-direction:row-reverse; " >
-    <ng-template ngbTabTitle ><b>חו"ג פג תוקף</b></ng-template>
-    <ng-template ngbTabContent>
-     <div class="container-fluid text-center">
-       <div class="row">
-          <div class="col-12">
-            <table class="table table-hover table-striped">
-              <thead class="bg-primary text-white">
-                <tr>
-                  <th>#</th>
-                  <th>מספר פריט</th>
-                  <th>שם חו"ג</th>
-                  <th>מיקום</th>
-                  <th>אצווה</th>
-                  <th>תאריך תפוגה</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let arrival of allExpired;let i = index">
-                  <td>{{i+1}}</td>
-                  <td>{{arrival.materialName}}</td>
-                  <td>{{arrival.internalNumber}}</td>
-                  <td>{{arrival.position}}</td>
-                  <td>{{arrival.lotNumber}}</td>
-                  <td>{{arrival.expiryDate | date: 'dd/MM/yyyy'}}</td>
-                </tr>
-              </tbody>
-            </table>
+<nav ngbNav #nav="ngbNav" class="nav-tabs">
+    <ng-container ngbNavItem>
+      <a ngbNavLink>חו"ג פג תוקף</a>
+      <ng-template ngbNavContent>
+        <div class="container-fluid text-center">
+            <div class="row">
+               <div class="col-12">
+                 <table class="table table-hover table-striped">
+                   <thead class="bg-primary text-white">
+                     <tr>
+                       <th>#</th>
+                       <th>מספר פריט</th>
+                       <th>שם חו"ג</th>
+                       <th>מיקום</th>
+                       <th>אצווה</th>
+                       <th>תאריך תפוגה</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr *ngFor="let arrival of allExpired;let i = index">
+                       <td>{{i+1}}</td>
+                       <td>{{arrival.materialName}}</td>
+                       <td>{{arrival.internalNumber}}</td>
+                       <td>{{arrival.position}}</td>
+                       <td>{{arrival.lotNumber}}</td>
+                       <td>{{arrival.expiryDate | date: 'dd/MM/yyyy'}}</td>
+                     </tr>
+                   </tbody>
+                 </table>
+               </div>
+            </div> 
           </div>
-       </div> 
-     </div>
-    </ng-template>
-  </ngb-tab>
-
-
-  <ngb-tab id="tab-selectbyid2" style="flex-direction:row-reverse; " >
-    <ng-template ngbTabTitle ><b>כניסות חו"ג</b></ng-template>
-    <ng-template ngbTabContent>
-      <app-material-arrival-table></app-material-arrival-table>
-    </ng-template>
-  </ngb-tab>
-
-  <ngb-tab id="tab-selectbyid1" style="flex-direction:row-reverse; "  >  
-    <ng-template ngbTabTitle ><b>חו"ג חדש</b></ng-template>
-    <ng-template ngbTabContent>
-
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>כניסות חו"ג</a>
+      <ng-template ngbNavContent>
+        <app-material-arrival-table></app-material-arrival-table>
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>חו"ג חדש</a>
+      <ng-template ngbNavContent>
+   
         <div #arrivalForm id="arrivalForm">
           
             <div *ngIf="!requiresFromFull" class="mh-85 container" style="overflow: auto; height: 80vh;">
@@ -448,42 +442,43 @@
           </div>
 
           </div>
-        <!-- Supplier Items Modal -->
-        <ng-template #modal1 let-c="close" let-d="dismiss"> 
-                <div class="modal-header" style="direction: rtl;">
-                  <h4 class="modal-title" id="modal-basic-title" style="cursor : pointer;"
-                  (click)="chooseOnlySupplier()">פריטים של ספר מספר: {{ supplierModalInfo.suplierNumber }} <br>שם ספק: {{ supplierModalInfo.suplierName }}  </h4>
-                  <!-- <h4 class="modal-title" id="modal-basic-title">פריטים של ספק </h4> -->
-                  <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
-                  <button type="button" class="close" aria-label="Close" (click)="c('Cross click')" style="margin-left: 0">
-                    <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+
+          <ng-template #modal1 let-c="close" let-d="dismiss"> 
+            <div class="modal-header" style="direction: rtl;">
+              <h4 class="modal-title" id="modal-basic-title" style="cursor : pointer;"
+              (click)="chooseOnlySupplier()">פריטים של ספר מספר: {{ supplierModalInfo.suplierNumber }} <br>שם ספק: {{ supplierModalInfo.suplierName }}  </h4>
+              <!-- <h4 class="modal-title" id="modal-basic-title">פריטים של ספק </h4> -->
+              <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+              <button type="button" class="close" aria-label="Close" (click)="c('Cross click')" style="margin-left: 0">
+                <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+    
+                <div class="supplierItemsList" >
+                    <input class="form-control is-valid" #supplierItemNameInput type="text" placeholder="Search.." 
+                    (keyup)="filterSupplierItems(supplierItemNameInput.value)">
+                    <ul >
+                        <li *ngFor="let item of supplierItemsList" (click)="c('chosen');  chosenItem = item"
+                        style="direction:rtl; ">{{item.componentN}}  &nbsp;&nbsp; {{item.componentName}}</li>
+                    </ul>
                 </div>
-                <div class="modal-body">
-        
-                    <div class="supplierItemsList" >
-                        <input class="form-control is-valid" #supplierItemNameInput type="text" placeholder="Search.." 
-                        (keyup)="filterSupplierItems(supplierItemNameInput.value)">
-                        <ul >
-                            <li *ngFor="let item of supplierItemsList" (click)="c('chosen');  chosenItem = item"
-                            style="direction:rtl; ">{{item.componentN}}  &nbsp;&nbsp; {{item.componentName}}</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                </div>
-        </ng-template>      
-        <!-- Supplier Items Modal -->
+            </div>
+            <div class="modal-footer">
+            </div>
+    </ng-template> 
+
+      </ng-template>
+    </ng-container>
 
 
 
+  </nav>
 
-    </ng-template>
-  </ngb-tab>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
 
-</ngb-tabset>
 
 <!-- <div class="container" [style.height]="screenHeight+'px'"> -->
  
