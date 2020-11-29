@@ -26,7 +26,8 @@ export class QaPalletsComponent implements OnInit {
   allClosedPallets: any[]
   allClosedPalletsCopy: any[]
   selectedArr: any[] = [];
-  showProductsBeforeDelivery: boolean = false;
+  showProductsBeforeDeliveryHE: boolean = false;
+  showProductsBeforeDeliveryEN: boolean = false;
   deleteOrMoveModal: boolean = false;
   itemsInPalletModal: boolean = false;
   currCustomer: string;
@@ -576,7 +577,7 @@ export class QaPalletsComponent implements OnInit {
     })
   }
 
-  openProductForm(packlist) {
+  openProductForm(packlist,language) {
     debugger;
     this.selectedArr = packlist.pallets
     this.currCustomer = packlist.costumerName
@@ -585,7 +586,12 @@ export class QaPalletsComponent implements OnInit {
     this.packedList.costumerNumber = this.currCustomerNumber
 
     this.currCustomerId = packlist._id
-    this.showProductsBeforeDelivery = true;
+    if(language == 'HE'){
+      this.showProductsBeforeDeliveryHE = true;
+    } else if (language == 'EN'){
+      this.showProductsBeforeDeliveryEN = true;
+    }
+    
   }
 
   getAllReadyForBill() {

@@ -348,6 +348,7 @@
                   <th>#</th>
                   <th>מספר רשימה</th>
                   <th>שם לקוח</th>
+                  <th>הדפסה</th>
                   <th>מספר לקוח</th>
                   <th>נשלח לחשבונית</th>
                   <th></th>
@@ -357,8 +358,8 @@
                 <tr *ngFor="let packlist of allPackedLists;let i = index">
                   <td>{{i+1}}</td>
                   <td>{{packlist.packListNumber}}</td>
-                  <td><label (click)="openProductForm(packlist)"
-                      style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
+                  <td><label>{{packlist.costumerName}}</label></td>
+                  <td><button (click)="openProductForm(packlist,'HE')" class="btn btn-success border border-dark">HE</button><button (click)="openProductForm(packlist,'EN')" class="btn btn-success border border-dark">EN</button></td>
                   <td>{{packlist.costumerNumber}}</td>
                   <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
                   <td><button class="btn btn-info" (click)="sendForBill(packlist)">שלח לחשבונית</button></td>
@@ -444,15 +445,16 @@
   </ngb-tab>
 
 </ngb-tabset>
-<div id="print-section">
-  <div style="height:0px !important" *ngIf="showProductsBeforeDelivery==true" id="myModal3" class="modal3"
-    style='border:1px; border-radius:5px;z-index: 1;position: fixed;top:130px;'>
+
+<div id="print-sectionHE">
+  <div style="height:0px !important" *ngIf="showProductsBeforeDeliveryHE==true" id="myModal3" class="modal3"
+    style='border:1px; border-radius:5px;z-index: 1;position: relative;top:50px;'>
 
     <!-- Modal content -->
     <div class="modal-content" id='modelC'>
       <div dir="rtl" id="material-header" class="modal-header">
         <div>
-          <span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDelivery=false;selectedArr = []">&times;</span>
+          <span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryHE=false;selectedArr = []">&times;</span>
         </div>
         <div>
           <h4 style="margin-top:32px;">מספר טופס:</h4>
@@ -478,7 +480,7 @@
           <h4>שם לקוח:{{currCustomer}}</h4>
         </div>
       </div>
-      <div style="height: 500px;overflow: scroll;" class="container" id="material-body" class="modal-body">
+      <div style="max-height: 100%;overflow: scroll;" class="container" id="material-body" class="modal-body">
         <table style="background:white;border:1px solid black;" class="table table-bordered">
           <thead>
             <tr>
@@ -491,6 +493,82 @@
               <th scope="col">משקל משטח</th>
               <th scope="col">מידות משטח</th>
               <th scope="col">סה"כ יחידות</th>
+              <!-- <th scope="col">סה"כ קרטונים</th> -->
+              <!-- <th scope="col">מספר קרטון</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let pallet of selectedArr;let i = index">
+            <tr *ngFor="let line of pallet.lines" >
+              <td>{{pallet.palletNumber}}</td>
+              <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">{{line.itemNumber}}</td>
+              <!-- <td></td> -->
+              <td>{{line.fullKartons}}</td>
+              <td>{{line.unitsInKarton}}</td>
+              <td>{{line.unitsQuantityPartKarton}}</td>
+              <td>{{pallet.palletWeight}}</td>
+              <td>{{pallet.palletSize}}</td>
+              <td>{{line.unitsToCombine}}</td>
+              <!-- <td>{{line.allKartons}}</td> -->
+              <!-- <td></td> -->
+
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="print-sectionEN">
+  <div style="height:0px !important" *ngIf="showProductsBeforeDeliveryEN==true" id="myModal3" class="modal3"
+    style='border:1px; border-radius:5px;z-index: 1;position: relative;top:50px;'>
+
+    <!-- Modal content -->
+    <div class="modal-content" id='modelC'>
+      <div dir="ltr" id="material-header" class="modal-header">
+        <div>
+          <span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryEN=false;selectedArr = []">&times;</span>
+        </div>
+        <div>
+          <h4 style="margin-top:32px;">Form Number:</h4>
+        </div>
+        <div>
+          <h3 style="margin-top:32px;"><button style="border:none;background: none;">Products page before delivery</button></h3>
+        </div>
+        <div>
+          <img style="width:170px;height:100px;" src="../../../../assets/images/logo.png">
+        </div>
+        <br>
+
+      </div>
+      <div class="modal-header">
+        <div dir="ltr">
+          <h4>Delivery Date:</h4>
+        </div>
+        <div dir="ltr">
+          <!-- <h4>מספר לקוח: {{currCustomerNumber}}</h4> -->
+        </div>
+        <div dir="ltr">
+          <h4>Costomer Name:{{currCustomer}}</h4>
+        </div>
+      </div>
+      <div style="height: 100%;overflow: scroll;" class="container" id="material-body" class="modal-body">
+        <table style="background:white;border:1px solid black;" class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Pallet</th>
+              <th scope="col">Item</th>
+              <!-- <th scope="col">Batch</th> -->
+              <th scope="col">Number of Cartons</th>
+              <th scope="col">Quantity in Carton</th>
+              <th scope="col">Partial Carton</th>
+              <th scope="col">Pallet Weight</th>
+              <th scope="col">Pallet Size</th>
+              <th scope="col">Sum</th>
               <!-- <th scope="col">סה"כ קרטונים</th> -->
               <!-- <th scope="col">מספר קרטון</th> -->
             </tr>
@@ -560,7 +638,10 @@
 
 </div>
 
-<button style="float:right;margin-top:200px" *ngIf="showProductsBeforeDelivery==true" class="btn btn-success" printSectionId="print-section" ngxPrint
+<button style="float:right;margin-top:100px" *ngIf="showProductsBeforeDeliveryHE==true" class="btn btn-success form-control" printSectionId="print-sectionHE" ngxPrint
+  [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},th : {'border': 'solid 1px black'}}">Print</button>
+
+<button style="float:right;margin-top:100px" *ngIf="showProductsBeforeDeliveryEN==true" class="btn btn-success form-control" printSectionId="print-sectionEN" ngxPrint
   [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},th : {'border': 'solid 1px black'}}">Print</button>
 
 
