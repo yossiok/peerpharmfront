@@ -15,6 +15,7 @@ export class QaPalletsComponent implements OnInit {
 
   EditRow: any;
   EditRowTwo: any;
+  EditRowN:any;
   editBill: any;
   customerForPL: any;
   unitsToPallet: any;
@@ -63,6 +64,8 @@ export class QaPalletsComponent implements OnInit {
 
 
   @ViewChild('billNumberToUpdate') billNumberToUpdate: ElementRef;
+  @ViewChild('newPalletWeight') newPalletWeight: ElementRef;
+  @ViewChild('newPalletSize') newPalletSize: ElementRef;
 
 
 
@@ -73,6 +76,7 @@ export class QaPalletsComponent implements OnInit {
     console.log(event);
     this.editBillNumber('')
     this.edit('', '')
+    this.editPallet('')
   }
 
   ngOnInit() {
@@ -99,6 +103,16 @@ export class QaPalletsComponent implements OnInit {
     } else {
       this.EditRow = '';
       this.EditRowTwo = '';
+    }
+  }
+
+  editPallet(palletNumber){
+    if (palletNumber != '') {
+      this.EditRowN = palletNumber;
+   
+    } else {
+      this.EditRowN = '';
+    
     }
   }
 
@@ -372,6 +386,24 @@ export class QaPalletsComponent implements OnInit {
     }
   }
 
+
+  updatePalletDetails(pallet){
+    debugger;
+    let size = this.newPalletSize.nativeElement.value;
+    let weight = this.newPalletWeight.nativeElement.value;
+    pallet.palletSize = size;
+    pallet.palletWeight = weight;
+    this.formService.updatePallet(pallet).subscribe(pallet=>{
+      debugger;
+    if(pallet){
+    let oldPallet = this.allClosedPallets.find(p=>p._id == pallet._id);
+    oldPallet.palletSize = pallet.palletSize
+    oldPallet.palletWeight = pallet.palletWeight
+    this.editPallet('')
+    this.toastr.success('פרטים עודכנו בהצלחה !')
+    }
+    })
+  }
 
 
   chooseCostumerToAdd(packedlist) {

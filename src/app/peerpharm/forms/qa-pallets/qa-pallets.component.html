@@ -226,8 +226,14 @@
                   <td (click)="viewItemsInPallet(pallet)" style="color:blue;text-decoration: underline;cursor: pointer;">{{pallet.palletNumber}}</td>
                   <td [ngClass]="checkPLstatus(pallet)">{{pallet.plStatus}}</td>
                   <td>{{pallet.customer}}</td>
-                  <td>{{pallet.palletWeight}}</td>
-                  <td>{{pallet.palletSize}}</td>
+                  <td *ngIf="pallet.palletNumber != EditRowN" (click)="editPallet(pallet.palletNumber)">{{pallet.palletWeight}}</td>
+                  <td *ngIf="pallet.palletNumber == EditRowN">
+                    <input (change)="updatePalletDetails(pallet)" #newPalletWeight [value]="pallet.palletWeight" type="text">
+                  </td>
+                  <td *ngIf="pallet.palletNumber != EditRowN" (click)="editPallet(pallet.palletNumber)">{{pallet.palletSize}}</td>
+                  <td *ngIf="pallet.palletNumber == EditRowN">
+                    <input (change)="updatePalletDetails(pallet)" #newPalletSize [value]="pallet.palletSize" type="text">
+                  </td>
 
                   <!-- <td><button class="btn btn-info form-control w-50" (click)="addPalletToPackList(pallet)">הוסף לרשימת אריזה</button></td> -->
            
