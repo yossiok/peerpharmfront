@@ -17,6 +17,7 @@ export class QaPalletsComponent implements OnInit {
   EditRowTwo: any;
   EditRowN:any;
   editBill: any;
+  currPLNumber: any;
   customerForPL: any;
   unitsToPallet: any;
   currentPallet: any;
@@ -579,6 +580,7 @@ export class QaPalletsComponent implements OnInit {
 
   openProductForm(packlist,language) {
     debugger;
+    this.currPLNumber = packlist.packListNumber
     this.selectedArr = packlist.pallets
     this.currCustomer = packlist.costumerName
     this.currCustomerNumber = packlist.costumerNumber
@@ -588,8 +590,11 @@ export class QaPalletsComponent implements OnInit {
     this.currCustomerId = packlist._id
     if(language == 'HE'){
       this.showProductsBeforeDeliveryHE = true;
-    } else if (language == 'EN'){
+      this.showProductsBeforeDeliveryEN = false;
+    }  
+    if (language == 'EN'){
       this.showProductsBeforeDeliveryEN = true;
+      this.showProductsBeforeDeliveryHE = false;
     }
     
   }

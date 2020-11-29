@@ -447,43 +447,42 @@
 </ngb-tabset>
 
 <div id="print-sectionHE">
-  <div style="height:0px !important" *ngIf="showProductsBeforeDeliveryHE==true" id="myModal3" class="modal3"
-    style='border:1px; border-radius:5px;z-index: 1;position: relative;top:50px;'>
+  <div class="bg-white" *ngIf="showProductsBeforeDeliveryHE==true" style='border:1px; border-radius:5px;z-index: 1;position: relative;top:50px;'>
 
     <!-- Modal content -->
-    <div class="modal-content" id='modelC'>
-      <div dir="rtl" id="material-header" class="modal-header">
-        <div>
-          <span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryHE=false;selectedArr = []">&times;</span>
-        </div>
-        <div>
-          <h4 style="margin-top:32px;">מספר טופס:</h4>
-        </div>
-        <div>
-          <h3 style="margin-top:32px;"><button style="border:none;background: none;">דף תיעוד מוצרים מוגמרים לפני
-              משלוח</button></h3>
-        </div>
-        <div>
-          <img style="width:170px;height:100px;" src="../../../../assets/images/logo.png">
-        </div>
-        <br>
 
-      </div>
-      <div class="modal-header">
-        <div dir="rtl">
-          <h4>תאריך משלוח:</h4>
-        </div>
-        <div dir="rtl">
-          <!-- <h4>מספר לקוח: {{currCustomerNumber}}</h4> -->
-        </div>
-        <div dir="rtl">
-          <h4>שם לקוח:{{currCustomer}}</h4>
-        </div>
-      </div>
-      <div style="max-height: 100%;overflow: scroll;" class="container" id="material-body" class="modal-body">
-        <table style="background:white;border:1px solid black;" class="table table-bordered">
+     
+
+        <table>
+          <tbody>
+            <tr style="border:none">
+              <td  style="border:none"><img style="width:170px;height:100px;" src="../../../../assets/images/logo.png"></td>
+              <td style="border:none;width:65px"></td>
+              <td style="border:none;width:65px"></td>
+              <td  style="border:none;"><h2>דף תיעוד מוצרים מוגמרים לפני משלוח</h2></td>
+              <td style="border:none;width:65px"></td>
+              <td style="border:none;width:65px"></td>
+              <td  style="border:none"><span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryHE=false;selectedArr = []">&times;</span></td>
+            </tr>
+
+            <tr>
+              <td style="border:none"><h4>שם לקוח:{{currCustomer}}</h4></td>
+              <td style="border:none;width:65px"></td>
+              <td style="border:none;width:65px"></td>
+              <td style="border:none"><h4>מספר טופס:{{currPLNumber}}</h4></td>
+              <td style="border:none;width:65px"></td>
+              <td style="border:none;width:65px"></td>
+              <td style="border:none"> <h4>תאריך משלוח:</h4></td>
+            </tr>
+          </tbody>
+        </table>
+
+  
+      <div style="max-height: 100%;" class="container-fluid">
+        <table style="background:white;border:1px solid black;margin-left:80px;" class="table table-bordered">
           <thead>
             <tr>
+              <th>#</th>
               <th scope="col">משטח</th>
               <th scope="col">פריט</th>
               <!-- <th scope="col">Batch</th> -->
@@ -500,6 +499,7 @@
           <tbody>
             <ng-container *ngFor="let pallet of selectedArr;let i = index">
             <tr *ngFor="let line of pallet.lines" >
+              <td>{{i+1}}</td>
               <td>{{pallet.palletNumber}}</td>
               <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">{{line.itemNumber}}</td>
               <!-- <td></td> -->
@@ -517,49 +517,55 @@
           </tbody>
         </table>
 
+        <table style="margin-top:50px !important">
+          <tbody>
+            <tr>
+              <td style="border:none">QA Signature:_______</td>
+              <td style="border:none;width:400px"></td>
+              <td style="border:none">Supply Manager:_______</td>
+            </tr>
+          </tbody>
+        </table>
+
       </div>
 
     </div>
   </div>
-</div>
+
 
 <div id="print-sectionEN">
-  <div style="height:0px !important" *ngIf="showProductsBeforeDeliveryEN==true" id="myModal3" class="modal3"
+  <div style="height:0px !important" *ngIf="showProductsBeforeDeliveryEN==true" id="myModal3" class="modal3 bg-white"
     style='border:1px; border-radius:5px;z-index: 1;position: relative;top:50px;'>
 
-    <!-- Modal content -->
-    <div class="modal-content" id='modelC'>
-      <div dir="ltr" id="material-header" class="modal-header">
-        <div>
-          <span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryEN=false;selectedArr = []">&times;</span>
-        </div>
-        <div>
-          <h4 style="margin-top:32px;">Form Number:</h4>
-        </div>
-        <div>
-          <h3 style="margin-top:32px;"><button style="border:none;background: none;">Products page before delivery</button></h3>
-        </div>
-        <div>
-          <img style="width:170px;height:100px;" src="../../../../assets/images/logo.png">
-        </div>
-        <br>
+    <table>
+      <tbody>
+        <tr style="border:none">
+          <td  style="border:none"><img style="width:170px;height:100px;" src="../../../../assets/images/logo.png"></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;width:65px"></td>
+          <td  style="border:none;"><h2>Products List Before Delivery</h2></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;width:65px"></td>
+          <td  style="border:none"><span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryHE=false;selectedArr = []">&times;</span></td>
+        </tr>
 
-      </div>
-      <div class="modal-header">
-        <div dir="ltr">
-          <h4>Delivery Date:</h4>
-        </div>
-        <div dir="ltr">
-          <!-- <h4>מספר לקוח: {{currCustomerNumber}}</h4> -->
-        </div>
-        <div dir="ltr">
-          <h4>Costomer Name:{{currCustomer}}</h4>
-        </div>
-      </div>
-      <div style="height: 100%;overflow: scroll;" class="container" id="material-body" class="modal-body">
-        <table style="background:white;border:1px solid black;" class="table table-bordered">
+        <tr>
+          <td style="border:none"><h4>Costumer Name:{{currCustomer}}</h4></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none"><h4>Form Number:{{currPLNumber}}</h4></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none"> <h4>Delivery Date:</h4></td>
+        </tr>
+      </tbody>
+    </table>
+ 
+      <div style="height: 100%;" class="container" id="material-body" class="modal-body">
+        <table style="background:white;border:1px solid black;margin-left:80px" class="table table-bordered">
           <thead>
             <tr>
+              <th>#</th>
               <th scope="col">Pallet</th>
               <th scope="col">Item</th>
               <!-- <th scope="col">Batch</th> -->
@@ -576,6 +582,7 @@
           <tbody>
             <ng-container *ngFor="let pallet of selectedArr;let i = index">
             <tr *ngFor="let line of pallet.lines" >
+              <td>{{i+1}}</td>
               <td>{{pallet.palletNumber}}</td>
               <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">{{line.itemNumber}}</td>
               <!-- <td></td> -->
@@ -592,12 +599,20 @@
           </ng-container>
           </tbody>
         </table>
-
+        <table style="margin-top:50px !important">
+          <tbody>
+            <tr>
+              <td style="border:none">QA Signature:_______</td>
+              <td style="border:none;width:400px"></td>
+              <td style="border:none">Supply Manager:_______</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
+     
     </div>
   </div>
-</div>
+
 
 
 <div *ngIf="deleteOrMoveModal == true" style="top:150px" class="container bg-white rounded shadow-lg mx-auto my-auto text-center fixed-top p-2 border border-info">
