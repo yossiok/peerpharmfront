@@ -228,11 +228,11 @@
                   <td>{{pallet.customer}}</td>
                   <td *ngIf="pallet.palletNumber != EditRowN" (click)="editPallet(pallet.palletNumber)">{{pallet.palletWeight}}</td>
                   <td *ngIf="pallet.palletNumber == EditRowN">
-                    <input (change)="updatePalletDetails(pallet)" #newPalletWeight [value]="pallet.palletWeight" type="text">
+                    <input class="form-control" (change)="updatePalletDetails(pallet)" #newPalletWeight [value]="pallet.palletWeight" type="text">
                   </td>
                   <td *ngIf="pallet.palletNumber != EditRowN" (click)="editPallet(pallet.palletNumber)">{{pallet.palletSize}}</td>
                   <td *ngIf="pallet.palletNumber == EditRowN">
-                    <input (change)="updatePalletDetails(pallet)" #newPalletSize [value]="pallet.palletSize" type="text">
+                    <input class="form-control" (change)="updatePalletDetails(pallet)" #newPalletSize [value]="pallet.palletSize" type="text">
                   </td>
 
                   <!-- <td><button class="btn btn-info form-control w-50" (click)="addPalletToPackList(pallet)">הוסף לרשימת אריזה</button></td> -->
@@ -349,8 +349,8 @@
                   <th>מספר רשימה</th>
                   <th>שם לקוח</th>
                   <th>הדפסה</th>
-                  <th>מספר לקוח</th>
-                  <th>נשלח לחשבונית</th>
+                  <!-- <th>מספר לקוח</th> -->
+                  <!-- <th>נשלח לחשבונית</th> -->
                   <th></th>
                 </tr>
               </thead>
@@ -360,8 +360,8 @@
                   <td>{{packlist.packListNumber}}</td>
                   <td><label>{{packlist.costumerName}}</label></td>
                   <td><button (click)="openProductForm(packlist,'HE')" class="btn btn-success border border-dark">HE</button><button (click)="openProductForm(packlist,'EN')" class="btn btn-success border border-dark">EN</button></td>
-                  <td>{{packlist.costumerNumber}}</td>
-                  <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
+                  <!-- <td>{{packlist.costumerNumber}}</td> -->
+                  <!-- <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td> -->
                   <td><button class="btn btn-info" (click)="sendForBill(packlist)">שלח לחשבונית</button></td>
                 </tr>
               </tbody>
@@ -423,11 +423,11 @@
               <tbody>
                 <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
                   <td>{{i+1}}</td>
-                  <td><label (click)="openProductForm(packlist)" style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
+                  <td><label (click)="openProductForm(packlist,'HE')" style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label></td>
                   <td>{{packlist.costumerNumber}}</td>
                   <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
                   <td *ngIf="packlist._id != editBill" style="cursor: pointer;" (click)="editBillNumber(packlist._id)" >{{packlist.billNumber}}</td>
-                  <td *ngIf="editBill == packlist._id"><input type="text" [value]="packlist.billNumber" #billNumberToUpdate></td>
+                  <td *ngIf="editBill == packlist._id"><input class="form-control" type="text" [value]="packlist.billNumber" #billNumberToUpdate></td>
                   <td *ngIf="editBill == packlist._id"><i (click)="saveBillNumber(packlist._id)" style="cursor: pointer;" class="fa fa-save text-info"></i>
                   </td>
                   <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
@@ -546,7 +546,7 @@
           <td  style="border:none;"><h2>Products List Before Delivery</h2></td>
           <td style="border:none;width:65px"></td>
           <td style="border:none;width:65px"></td>
-          <td  style="border:none"><span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryHE=false;selectedArr = []">&times;</span></td>
+          <td  style="border:none"><span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryEN=false;selectedArr = []">&times;</span></td>
         </tr>
 
         <tr>

@@ -294,7 +294,7 @@ export class QaPalletsComponent implements OnInit {
           }
 
         }
-        
+        this.editBillNumber('')
         this.toastr.success("מספר חשבונית עודכן בהצלחה!")
       }
 
@@ -535,6 +535,7 @@ export class QaPalletsComponent implements OnInit {
 
       this.formService.updatePLStatus(packlist).subscribe(data => {
         if (data) {
+          this.allPackedLists = data;
           this.toastr.success('נשלח להפקת חשבונית');
           this.getAllReadyForBill();
         }
@@ -564,16 +565,6 @@ export class QaPalletsComponent implements OnInit {
 
   getAllPackedLists() {
     this.formService.getAllPackedLists().subscribe(data => {
-      if (data) {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].readyForBill == true) {
-            data[i].readyForBill = 'Yes'
-          } else {
-            data[i].readyForBill = 'No'
-          }
-
-        }
-      }
       this.allPackedLists = data;
     })
   }

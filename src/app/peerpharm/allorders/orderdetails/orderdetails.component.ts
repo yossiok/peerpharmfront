@@ -45,9 +45,11 @@ export class OrderdetailsComponent implements OnInit {
   user: UserInfo
   openFormule: boolean = false;
   compRequirementModal: boolean = false;
+  invoiceModal: boolean = false;
   expandTr: boolean = false;
   showMaterialsForFormules: boolean = false;
   currItems: any[];
+  currBillingArr: any[];
   currFormule: any[];
   currItem: any;
   itemRequirements: any;
@@ -512,6 +514,12 @@ export class OrderdetailsComponent implements OnInit {
     } else {
       this.expandTr = false;
     }
+  }
+
+  openInvoice(billing){
+    debugger;
+    this.currBillingArr = billing
+    this.invoiceModal = true;
   }
 
   saveItemRemarks(id){

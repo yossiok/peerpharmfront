@@ -41,6 +41,9 @@ ItemsOnShelf:Array<any>;
 listToPrint:Array<any>=[];
 printAgain:Array<any>=[];
 closeResult: string;
+stickerItem:any;
+stickerQty:any;
+stickerRemarks:any;
 
 
 packingMaterialCheck = {
