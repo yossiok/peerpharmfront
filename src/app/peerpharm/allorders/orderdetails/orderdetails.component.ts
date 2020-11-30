@@ -520,7 +520,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   openInvoice(item){
-    debugger;ט
+    debugger;
     this.currItem = item
     this.currBillingArr = item.billing
     this.billQtySum = 0
