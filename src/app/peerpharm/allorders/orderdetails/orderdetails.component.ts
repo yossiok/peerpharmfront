@@ -49,6 +49,7 @@ export class OrderdetailsComponent implements OnInit {
   expandTr: boolean = false;
   showMaterialsForFormules: boolean = false;
   currItems: any[];
+  billQtySum: number = 0;
   currBillingArr: any[];
   currFormule: any[];
   currItem: any;
@@ -516,9 +517,16 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
-  openInvoice(billing){
-    debugger;
-    this.currBillingArr = billing
+
+
+  openInvoice(item){
+    debugger;ט
+    this.currItem = item
+    this.currBillingArr = item.billing
+    this.billQtySum = 0
+    this.currBillingArr.forEach(bill => {
+      this.billQtySum += Number(bill.billQty)
+    });
     this.invoiceModal = true;
   }
 

@@ -192,7 +192,7 @@
           </td>
           <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
           <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
-          <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item.billing)" style="width:40px" src="../../../../assets/images/invoice.png"></label></td>
+          <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px" src="../../../../assets/images/invoice.png"></label></td>
           <!-- <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
           <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd'
             style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
@@ -1708,6 +1708,17 @@
 <div *ngIf="invoiceModal == true" style="top:100px" class="container w-25 h-50 mx-auto my-auto fixed-top shadow-lg rounded bg-white text-center p-4">
   <div class="row">
     <div class="col">
+     <h5>Item: {{currItem.itemNumber}}</h5>
+    </div>
+    <div class="col">
+    <h5>Order Quantity: {{currItem.quantity}}</h5>
+    </div>
+    <div class="col">
+     <h5>Produced: {{currItem.quantityProduced}}</h5>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col">
       <table class="table table-bordered">
         <thead class="bg-light">
           <tr>
@@ -1719,6 +1730,10 @@
           <tr *ngFor="let bill of currBillingArr">
             <td>{{bill.billNumber}}</td>
             <td>{{bill.billQty}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Sum: {{billQtySum}}</td>
           </tr>
         </tbody>
       </table>
