@@ -103,7 +103,7 @@
   
       <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
         <td></td>
-        <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
+        <td><input type="checkbox" (change)="checkboxAllOrders(this)"></td>
         <td></td>
         <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
             class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
@@ -151,7 +151,7 @@
   
           <td *ngIf="multi==true">{{item.orderNumber}}</td>
           
-          <td *ngIf="openFormule"><button  (click)="showFormule(item,item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td>
+          <td><button style="border-radius: 30px;" [ngClass]="{'lightgreen': item.formuleExist == true,'lightred':item.formuleExist != true}">F</button></td>
           <td *ngIf="item.licsensNumber!=''">
             <button class='expendBtn' [style.background-color]="item.colorBtn"
               (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
@@ -198,7 +198,7 @@
             style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
             {{item.compiled[0].sum}}</td> -->
             <td *ngIf="item._id!==EditRowId">
-            <label (click)="openComponentsStatus(components,item.itemNumber,item.quantity,item.orderNumber)">Components - <label style="color:rgb(29, 187, 29);font-weight: bold">{{item.componentCheck}}</label></label><br>
+           
             <label>Formules</label><input [(ngModel)]="item.formuleCheck" (change)="isChecked($event,item._id)" id="formuleCheckBox" type="checkbox">
            
             </td>
@@ -1797,7 +1797,8 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
           <td>{{obj.orderNumber}}</td>
           <td>{{obj.discription}}</td>
           <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
-          <td>{{obj.netWeightGr}}</td>
+          <td *ngIf="!obj.newKG">{{calculateKG(obj.netWeightGr,obj.quantity)}}</td>
+          <td *ngIf="obj.newKG">{{obj.newKG}}</td>
           <!-- <td>{{obj.calculatedAmount}}</td> -->
         </tr>
       </tbody>

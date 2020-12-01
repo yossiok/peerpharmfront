@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PlatformLocation } from '@angular/common';
 import { log } from 'util';
 import { OrdersService } from 'src/app/services/orders.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-qa-pallets',
@@ -29,6 +30,7 @@ export class QaPalletsComponent implements OnInit {
   selectedArr: any[] = [];
   showProductsBeforeDeliveryHE: boolean = false;
   showProductsBeforeDeliveryEN: boolean = false;
+  deleteLine: boolean = false;
   deleteOrMoveModal: boolean = false;
   itemsInPalletModal: boolean = false;
   currCustomer: string;
@@ -72,7 +74,7 @@ export class QaPalletsComponent implements OnInit {
 
 
 
-  constructor(private orderService:OrdersService,private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
+  constructor(private authService:AuthService,private orderService:OrdersService,private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -87,6 +89,23 @@ export class QaPalletsComponent implements OnInit {
     this.getAllReadyForBill();
     this.getAllClosedPallets();
     this.getCostumers();
+    this.getUser();
+  }
+
+  getUser(){
+    debugger;
+    if(this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'effi'){
+      this.deleteLine = true
+    }
+  }
+
+  deleteQAPallet(id){
+    this.formService.deletePalletById(id).subscribe(data=>{
+      debugger;
+      if(data){
+
+      }
+    })
   }
 
   editBillNumber(id){

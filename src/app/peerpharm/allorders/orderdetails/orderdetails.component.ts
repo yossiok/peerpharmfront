@@ -517,6 +517,10 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
+  calculateKG(netWeightGr,quantity){
+    let result = (netWeightGr/1000)*Number(quantity)
+    return result
+  }
 
 
   openInvoice(item){
@@ -788,9 +792,16 @@ if(data){
     })
   }
 
-  checkboxAllOrders(ev) {
+  checkboxAllOrders(source) {
     debugger;
-    this.ordersItems.filter(e => e.isSelected = ev.target.checked)
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source){
+          
+        }
+           
+    }
+   
   }
 
   createProdRequirements() {
@@ -881,40 +892,36 @@ if(data){
       this.selectedArr
 
       this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
-        debugger
-        if (materials.msg == "לא קיימת פורמולה") {
-          this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
-        } else {
+            this.calculateMaterials(materials)
+      })
+    }
 
-          this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals=>{
-            debugger;
-            var count = 0;
-            for (let i = 0; i < materials.length; i++) {
-             for (let j = 0; j < arrivals.length; j++) {
-              if(arrivals[j].internalNumber == materials[i].itemNumber) {
-                materials[i].kgProduction = this.formatNumber(Number(materials[i].kgProduction));
-                  materials[i].measureType = arrivals[i].mesureType
-      
-                  if(materials[i].totalQnt) {
-                    materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
-                
-                   
-                  } else {
-                    if(arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt) )
-                    materials[i].totalQnt = parseInt(arrivals[j].totalQnt)
-                  }
-                 
-                
-              }
+    calculateMaterials(materials){
+      this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals=>{
+        debugger;
+        var count = 0;
+        for (let i = 0; i < materials.length; i++) {
+         for (let j = 0; j < arrivals.length; j++) {
+          if(arrivals[j].internalNumber == materials[i].itemNumber) {
+            materials[i].kgProduction = this.formatNumber(Number(materials[i].kgProduction));
+              materials[i].measureType = arrivals[i].mesureType
+  
+              if(materials[i].totalQnt) {
+                materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
+            
                
-             }
-             this.materialsForFormules = materials;
-             this.showMaterialsForFormules = true;
-            }
-          })
-        
+              } else {
+                if(arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt) )
+                materials[i].totalQnt = parseInt(arrivals[j].totalQnt)
+              }
+             
+            
+          }
+           
+         }
+         this.materialsForFormules = materials;
+         this.showMaterialsForFormules = true;
         }
-
       })
     }
 
@@ -944,7 +951,7 @@ if(data){
           this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
         } else {
           var item = this.selectedArr.find(i=>i.itemNumber == itemNumber);
-          item.netWeightGr = updatedQuantity
+          item.newKG = updatedQuantity
         
           this.materialsForFormules = data;
           this.materialsForFormules.forEach(item=>{
@@ -1184,6 +1191,8 @@ debugger;
     }
 
   }
+
+ 
 
   saveEdit() {
   debugger;
@@ -1726,6 +1735,8 @@ debugger;
     });
 
   }
+
+ 
 
   filterOrderItems(ev){
     this.ordersItems = this.ordersItemsCopy

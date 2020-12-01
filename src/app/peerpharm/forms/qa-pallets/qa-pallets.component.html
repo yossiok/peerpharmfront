@@ -71,6 +71,7 @@
                   <th>מספר הזמנה</th>
                   <th>סטטוס</th>
                   <th></th>
+                  <th *ngIf="deleteLine"></th>
                 </tr>
               </thead>
               <tbody>
@@ -82,6 +83,7 @@
                   <td target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ pallet.orderNumber }}"><span style="cursor: pointer;color:blue">{{pallet.orderNumber}}</span></td>
                   <td>{{pallet.qaStatus}}</td>
                   <td><button (click)="addLineToPallet(pallet)" class="form-control btn btn-info">הוסף למשטח קיים</button></td>
+                  <td *ngIf="deleteLine"><i (click)="deleteQAPallet(pallet._id)" class="fa fa-times text-danger"></i></td>
                   <!-- <td><button (click)="addPalletToCostumer(pallet)" class="btn btn-info">הוסף למשטח קיים</button></td> -->
 
                 </tr>
@@ -216,6 +218,7 @@
                   <th>שם לקוח</th>
                   <th>משקל משטח</th>
                   <th>גודל משטח</th>
+                  
                   <!-- <th></th> -->
                 </tr>
               </thead>

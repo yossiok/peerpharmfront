@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormulesService } from 'src/app/services/formules.service';
 
 @Component({
   selector: 'app-weight-production',
@@ -13,6 +14,9 @@ export class WeightProductionComponent implements OnInit {
   allMaterialArrivals:any[];
   materialArrivals:Boolean = false;
   printStickerBtn:Boolean = false;
+  currentFormule:any;
+  formuleNumber:any;
+  formuleWeight:any;
  
 
   barcode = {
@@ -23,7 +27,7 @@ export class WeightProductionComponent implements OnInit {
     formuleNumber:''
   }
 
-  constructor(private inventorySrv:InventoryService, private toastSrv:ToastrService) { }
+  constructor(private formuleSrv:FormulesService,private inventorySrv:InventoryService, private toastSrv:ToastrService) { }
 
   ngOnInit() {
   }
@@ -72,6 +76,20 @@ export class WeightProductionComponent implements OnInit {
     weight:'',
     formuleNumber:''
     };
+  }
+
+  getFormuleByNumber(){
+    debugger;
+  if(this.formuleNumber != '' && this.formuleWeight != '') {
+    this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data=>{
+      debugger;
+    this.currentFormule = data;
+
+    })
+  } else {
+    this.toastSrv.error('Please fill all fields')
+  }
+  
   }
 
 }
