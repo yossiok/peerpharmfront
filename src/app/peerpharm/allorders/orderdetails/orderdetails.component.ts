@@ -16,6 +16,7 @@ import { PlateService } from 'src/app/services/plate.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { ExcelService } from '../../../services/excel.service';
 import { AuthService } from '../../../services/auth.service';
+
 import { InventoryService } from 'src/app/services/inventory.service';
 import { FormulesService } from 'src/app/services/formules.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
@@ -50,6 +51,7 @@ export class OrderdetailsComponent implements OnInit {
   currItems: any[];
   currFormule: any[];
   currItem: any;
+  userName: any;
   billQtySum: number = 0;
   invoiceModal: boolean = false;
   itemRequirements: any;
@@ -1697,7 +1699,7 @@ debugger;
 
    getUserInfo() {
 
-    this.authService.loggedInUser.firstName
+    this.userName = this.authService.loggedInUser.userName
     debugger;
    this.authService.userEventEmitter.subscribe(user => {
      debugger;

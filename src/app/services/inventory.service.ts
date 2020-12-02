@@ -155,9 +155,9 @@ addNewBox(materialObj):Observable<any>{
   let url = this.baseUrl + "material/addNewBox";
   return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
 }
-reduceMaterialQuantity(itemNumber,shelfNumber):Observable<any>{ 
+getShelfListForMaterial(itemNumber,shelfNumber):Observable<any>{ 
   
-   let url = this.baseUrl + "material/reduceMaterialQuantity";
+   let url = this.baseUrl + "material/getShelfListForMaterial";
    return this.http.post(url, JSON.stringify({materialNumber:itemNumber,shelf:shelfNumber}), this.options).pipe(map(res => res.json()))
 }
 updateBoxLocation(id,location):Observable<any>{ 
@@ -174,6 +174,11 @@ updateProductionDetails(production):Observable<any>{
   
   let url = this.baseUrl + "material/updateProductionDetails";
   return this.http.post(url, JSON.stringify(production), this.options).pipe(map(res => res.json()))
+}
+reduceMaterialAmount(material):Observable<any>{ 
+  
+  let url = this.baseUrl + "material/reduceMaterialAmount";
+  return this.http.post(url, JSON.stringify(material), this.options).pipe(map(res => res.json()))
 }
 recieveNewComponents(allArrivals):Observable<any>{ 
   

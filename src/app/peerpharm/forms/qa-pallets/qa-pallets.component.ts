@@ -98,12 +98,16 @@ export class QaPalletsComponent implements OnInit {
   }
 
   deleteQAPallet(id){
-       this.formService.deletePalletById(id).subscribe(data=>{
-         debugger;
-         if(data){
+    if(confirm('האם לסגור משטח זה ?')) {
+      this.formService.deletePalletById(id).subscribe(data=>{
+        debugger;
+        if(data){
+         this.allQaPallets = this.allQaPallets.filter(p=>p._id != data._id)
+        }
+      })
+    }
+
     
-         }
-       })
   }
 
   editBillNumber(id){

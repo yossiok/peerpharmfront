@@ -36,7 +36,7 @@
 
 </div>
 
-<div class="container mt-2 bg-white text-center p-2 rounded shadow">
+<div *ngIf="currentFormule" class="container mt-2 bg-white text-center p-2 rounded shadow">
   <div class="row mt-1">
     <div class="col-4">
       <h3 class="text-success">Formule Number: {{currentFormule.formuleNumber}}</h3>
@@ -60,6 +60,7 @@
             <th scope="col">Percentage</th>
             <th scope="col">KG</th>
             <th scope="col">Shelf</th>
+            <th></th>
     
           </tr>
         </thead>
@@ -74,7 +75,8 @@
                 <td style="padding:5px">{{ item.itemNumber }}</td>
                 <td style="padding:5px">{{ item.percentage }}%</td>
                 <td style="padding:5px">{{ item.kgProd }}</td>
-                <td style="padding:5px"><input (change)="saveShelfNumber($event,item.itemNumber)" class="form-control"></td>
+                <td *ngIf="item.check != true" style="padding:5px"><input (change)="searchForShelf($event,item.itemNumber,item.kgProd)" class="form-control"></td>
+                <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-success"></i></td>
    
 
               </tr>
@@ -83,6 +85,49 @@
       </table>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <button (click)="finishWeight()" class="btn btn-success form-control">Finish</button>
+    </div>
+    <div class="col-4"></div>
+  </div>
+
+  <div *ngIf="materialShelfs.length > 0" style="top:150px" class="container w-25 h-50 border border-info bg-white fixed-top text-center rounded shadow-lg mx-auto my-auto p-2">
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h3>Choose Shelf</h3>
+      </div>
+      <div class="col-1">
+        <i (click)="materialShelfs = []" class="fa fa-times"></i>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div style="overflow-y: scroll;height: 450px;" class="col-12">
+        <table class="table table-hover">
+          <thead class="bg-light">
+            <tr>
+              <th>Material</th>
+              <th>Expire Date</th>
+              <th>Batch</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let material of materialShelfs">
+              <tr (click)="reduceAmountFromShelf(material)">
+                <td>{{material.item}}</td>
+                <td>{{material.expirationDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{material.batchNumber}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 

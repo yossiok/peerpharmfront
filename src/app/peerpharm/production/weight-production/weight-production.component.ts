@@ -12,9 +12,11 @@ export class WeightProductionComponent implements OnInit {
 
 
   allMaterialArrivals:any[];
+  materialShelfs:any[] = []
   materialArrivals:Boolean = false;
   printStickerBtn:Boolean = false;
   currentFormule:any;
+  kgToRemove:any;
   formuleNumber:any;
   formuleWeight:any;
   shelfNumber:any;
@@ -99,14 +101,45 @@ export class WeightProductionComponent implements OnInit {
   
   }
 
+  reduceAmountFromShelf(material){
+    if(confirm('האם להוריד כמות ממדף זה ?')){
+      material.amount = material.amount - this.kgToRemove;
+
+      this.inventorySrv.reduceMaterialAmount(material).subscribe(data=>{
+        debugger
+        if(data){
+          this.currentFormule.phases.forEach(phase => {
+            phase.items.forEach(item => {
+              if(item.itemNumber == data.item){
+                item.check = true
+              }
+            });
+          });
+          this.toastSrv.success('Amount reduced from shelf')
+        }
+      })
+    }
+  }
+
+  finishWeight(){
+  this.currentFormule = {}
+  }
+
 
   
-  saveShelfNumber(ev,itemNumber){
+  searchForShelf(ev,itemNumber,kgProd){
   let shelf = ev.target.value;
+  this.kgToRemove = kgProd
 
   if(shelf != ''){
-    this.inventorySrv.reduceMaterialQuantity(itemNumber,shelf).subscribe(data=>{
-    
+    this.inventorySrv.getShelfListForMaterial(itemNumber,shelf).subscribe(data=>{
+      debugger;
+      if(data.msg == 'noShelf'){
+        this.toastSrv.error('Material is not exist on this shelf')
+      }
+      else{
+        this.materialShelfs = data;
+      }
     })
   } else {
     this.toastSrv.error('Please fill shelf number')

@@ -134,6 +134,7 @@ import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 import { ProjectsComponent } from './schedule/projects/projects.component';
 import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
 import { UserSettingsComponent } from './user/user-settings/user-settings.component';
+import {MatTabsModule} from '@angular/material/tabs';
 import { AgGridModule } from 'ag-grid-angular';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -175,6 +176,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
     NgxBarcodeModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTabsModule,
   /*  MatDialogModule,
     MatGridListModule,
     MatMenuModule,
