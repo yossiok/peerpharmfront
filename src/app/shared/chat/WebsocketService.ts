@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import * as Rx from 'rxjs/Rx';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Injectable({providedIn:'root'})
 export class WebsocketService {
@@ -14,6 +15,7 @@ export class WebsocketService {
   constructor() { }
 
   connect(): Rx.Subject<MessageEvent> {
+    try{
     // If you aren't familiar with environment variables then
     // you can hard code `environment.ws_url` as `http://localhost:5000`
   //  this.socket = io(`http://18.221.58.99:8201`);
@@ -21,6 +23,7 @@ export class WebsocketService {
 
     // We define our observable which will observe any incoming messages
     // from our socket.io server.
+
     let observable = new Observable(observer => {
         this.socket.on('message', (data) => {
           console.log("Received message from Websocket Server")
@@ -45,7 +48,14 @@ export class WebsocketService {
 
     // we return our Rx.Subject which is a combination
     // of both an observer and observable.
+    if(Rx&& Rx.Subject)
     return Rx.Subject.create(observer, observable);
+    else  
+    return null;
+  }catch(e){
+    console.log('something wrong with sockets- maybe port');
+  }
+  return null;
   }
 
   joinroom(taskid: string): any {
