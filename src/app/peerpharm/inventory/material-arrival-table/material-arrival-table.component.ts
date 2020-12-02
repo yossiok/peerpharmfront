@@ -10,22 +10,22 @@ import { ExcelService } from 'src/app/services/excel.service';
   styleUrls: ['./material-arrival-table.component.scss']
 })
 export class MaterialArrivalTableComponent implements OnInit {
-  @ViewChild('printBtn') printBtn: ElementRef;
-  @ViewChild('internalNumber') internalNumber: ElementRef;
-  @ViewChild('materName') materName: ElementRef;
-  @ViewChild('materialPosition') materialPosition: ElementRef;
-  @ViewChild('quantity') quantity: ElementRef;
-  @ViewChild('packageType') packageType: ElementRef;
-  @ViewChild('supplierNumber') supplierNumber: ElementRef;
-  @ViewChild('supplierName') supplierName: ElementRef;
-  @ViewChild('lotNum') lotNum: ElementRef;
-  @ViewChild('remarks') remarks: ElementRef;
-  @ViewChild('expireDate') expireDate: ElementRef;
-  @ViewChild('analysisApproval') analysisApproval: ElementRef;
-  @ViewChild('arriveDate') arriveDate: ElementRef;
-  @ViewChild('modal1') modal1: ElementRef;
-  @ViewChild('fromDateStr') fromDateStr: ElementRef;
-  @ViewChild('toDateStr') toDateStr: ElementRef;
+  @ViewChild('printBtn',{ static: true }) printBtn: ElementRef;
+  @ViewChild('internalNumber',{ static: true }) internalNumber: ElementRef;
+  @ViewChild('materName',{ static: true }) materName: ElementRef;
+  @ViewChild('materialPosition',{ static: true }) materialPosition: ElementRef;
+  @ViewChild('quantity',{ static: true }) quantity: ElementRef;
+  @ViewChild('packageType',{ static: true }) packageType: ElementRef;
+  @ViewChild('supplierNumber',{ static: true }) supplierNumber: ElementRef;
+  @ViewChild('supplierName',{ static: true }) supplierName: ElementRef;
+  @ViewChild('lotNum',{ static: true }) lotNum: ElementRef;
+  @ViewChild('remarks',{ static: true }) remarks: ElementRef;
+  @ViewChild('expireDate',{ static: true }) expireDate: ElementRef;
+  @ViewChild('analysisApproval',{ static: true }) analysisApproval: ElementRef;
+  @ViewChild('arriveDate',{ static: true }) arriveDate: ElementRef;
+  @ViewChild('modal1',{ static: true }) modal1: ElementRef;
+  @ViewChild('fromDateStr',{ static: true }) fromDateStr: ElementRef;
+  @ViewChild('toDateStr',{ static: true }) toDateStr: ElementRef;
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('');
@@ -84,7 +84,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    debugger;
     this.toDateStr.nativeElement.value = new Date().toISOString().slice(0,10)
     this.fromDateStr.nativeElement.value = new Date(new Date().setDate(new Date().getDate()-7)).toISOString().slice(0,10)
 
