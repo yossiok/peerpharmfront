@@ -14,12 +14,18 @@ export class ChatService {
   
   // Our constructor calls our wsService connect method
   constructor(private wsService: WebsocketService, private http:Http) {
+    try{
     this.messages = <Subject<any>>wsService
       .connect()
       .map((response: any): any => {
         
         return response;
       })
+    }
+    catch(e)
+    {
+      console.log('socket crashed');
+    }
    }
   
   // Our simplified interface for sending
