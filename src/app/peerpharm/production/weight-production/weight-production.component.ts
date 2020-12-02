@@ -17,6 +17,7 @@ export class WeightProductionComponent implements OnInit {
   currentFormule:any;
   formuleNumber:any;
   formuleWeight:any;
+  shelfNumber:any;
  
 
   barcode = {
@@ -31,6 +32,7 @@ export class WeightProductionComponent implements OnInit {
 
   ngOnInit() {
   }
+
 
   getMaterialByNumber(){
 
@@ -83,6 +85,11 @@ export class WeightProductionComponent implements OnInit {
   if(this.formuleNumber != '' && this.formuleWeight != '') {
     this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data=>{
       debugger;
+    data.phases.forEach(phase => {
+    phase.items.forEach(item => {
+    item.kgProd = Number(this.formuleWeight)*(Number(item.percentage)/100)
+    });
+    });
     this.currentFormule = data;
 
     })
@@ -91,5 +98,21 @@ export class WeightProductionComponent implements OnInit {
   }
   
   }
+
+
+  
+  saveShelfNumber(ev,itemNumber){
+  let shelf = ev.target.value;
+
+  if(shelf != ''){
+    this.inventorySrv.reduceMaterialQuantity(itemNumber,shelf).subscribe(data=>{
+    
+    })
+  } else {
+    this.toastSrv.error('Please fill shelf number')
+  }
+    }
+
+  
 
 }

@@ -36,8 +36,53 @@
 
 </div>
 
-<div class="container mt-1 bg-white text-center p-2 rounded shadow">
+<div class="container mt-2 bg-white text-center p-2 rounded shadow">
+  <div class="row mt-1">
+    <div class="col-4">
+      <h3 class="text-success">Formule Number: {{currentFormule.formuleNumber}}</h3>
+    </div>
+    <div class="col-4">
+      <h3 class="text-success">Formule Number: {{currentFormule.formuleName}}</h3>
+    </div>
+    <div class="col-4">
+      <h3 class="text-success">PH: {{currentFormule.phFrom}}-{{currentFormule.phTo}}</h3>
+    </div>
+  </div>
 
+  <div class="row mt-3">
+    <div class="col-12">
+      <table class="table table-hover">
+        <thead class="bg-success text-white">
+          <tr>
+            <th scope="col">Phase</th>
+            <th scope="col">Raw Material Name</th>
+            <th scope="col">Name</th>
+            <th scope="col">Percentage</th>
+            <th scope="col">KG</th>
+            <th scope="col">Shelf</th>
+    
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let phase of currentFormule.phases">
+          
+              <tr *ngFor="let item of phase.items; let i = index">
+                
+                <td style="padding:5px" *ngIf="i == 0"[attr.rowspan]="phase.items.length"class="phase">{{ phase.phaseName }}</td>
+                <td style="padding:5px">{{ item.itemName }}</td>
+                <td style="padding:5px">{{ item.itemNumber }}</td>
+                <td style="padding:5px">{{ item.percentage }}%</td>
+                <td style="padding:5px">{{ item.kgProd }}</td>
+                <td style="padding:5px"><input (change)="saveShelfNumber($event,item.itemNumber)" class="form-control"></td>
+   
+
+              </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 
