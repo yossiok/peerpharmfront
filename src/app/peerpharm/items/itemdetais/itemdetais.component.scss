@@ -27,6 +27,12 @@ input:focus {
     background-color: wheat;
     border: 1px solid rgb(131, 212, 233);
 }
+.pictureTabImg {
+    transition: 0.3s;
+}
+.pictureTabImg:hover{
+    transform: scale(1.5);
+}
 
 .labelGeneral {
     margin:8px;

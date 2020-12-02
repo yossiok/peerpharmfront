@@ -1576,37 +1576,46 @@
 
                             <div class="imgContainer">
                                 <div style='display: inline-table'>
-                                    <input type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+                                    <input class="form-control" type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')"
                                         *ngIf='main1File'>>></button>
                                     <br>
-                                    <img id="id_img1" [src]=itemShown.imgMain1>
+                                    <img class="pictureTabImg" alt="תמונה ראשית" id="id_img1" [src]=itemShown.imgMain1>
                                 </div>
                                 <div style='display: inline-table'>
-                                    <input type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
+                                    <input class="form-control" type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')"
                                         *ngIf='main2File'>>></button>
                                     <br>
-                                    <img id="id_img2" [src]=itemShown.imgMain2>
+                                    <img class="pictureTabImg" alt="תמונה ראשית 2" id="id_img2" [src]=itemShown.imgMain2>
                                 </div>
                                 <div style='display: inline-table'>
-                                    <input type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
+                                    <input class="form-control" type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')"
                                         *ngIf='main3File'>>></button>
                                     <br>
-                                    <img alt="אריזה אישית" id="id_img3" [src]=itemShown.imgMain3>
+                                    <img class="pictureTabImg" alt="אריזה אישית" id="id_img3" [src]=itemShown.imgMain3>
 
 
                                 </div>
-                                <div style='display: inline-table'>
-                                    <input type="file" id="id_itemImg4" (change)="selectFile($event, 'main4')"><br>
+
+                                <div>
+                                    <hr>
+                                <div class="mt-3" style='display: inline-table'>
+                                    <input class="form-control" type="file" id="id_itemImg4" (change)="selectFile($event, 'main4')"><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('main4')"
                                         *ngIf='main4File'>>></button>
                                     <br>
-                                    <img alt="קרטון לפני סגירה" id="id_img4" [src]=itemShown.imgMain4>
+                                    <img class="pictureTabImg" alt="קרטון לפני סגירה" id="id_img4" [src]=itemShown.imgMain4>
 
 
                                 </div>
+                                <div style="display: inline-table;">
+                                    <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">  
+                                    <br>
+                                    <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">    
+                                </div>
+                            </div>
                             </div>
 
 
