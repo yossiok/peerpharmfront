@@ -1,39 +1,31 @@
-<div class="container bg-white p-2 rounded shadow">
+<div class="container bg-white text-center p-2 rounded shadow">
 
-  <div class="row text-center">
-    <div class="col-12">
-      <h2 class="text-info bold">Weight Product - Barcode</h2>
+  <div class="row mt-1">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <h3 class="text-info">Formule Weight</h3>
     </div>
+    <div class="col-4"></div>
   </div>
 
-  <div class="row p-2">
-    <div class="col-6">
-    <label class="text-info">Material Number</label>
-    <input (change)="getMaterialByNumber()" [(ngModel)]="barcode.materialNumber" type="number" class="form-control">
+  <div class="row mt-3">
+    <div class="col-3"></div>
+    <div class="col-3">
+      <input [(ngModel)]="formuleNumber" placeholder="Formule Number" class="form-control">
     </div>
-    <div class="col-6">
-      <label class="text-info">Material Name</label>
-      <input  [(ngModel)]="barcode.materialName" type="text" class="form-control">
+    <div class="col-3">
+      <input [(ngModel)]="formuleWeight" placeholder="Weight" class="form-control">
     </div>
+    <div class="col-3"></div>
   </div>
 
-  <div class="row p-2">
-    <div class="col-6">
-      <label class="text-info">Weight</label>
-      <input  [(ngModel)]="barcode.weight" type="number" class="form-control">
+  <div class="row mt-3">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <button (click)="getFormuleByNumber()" class="btn btn-info form-control">Start</button>
     </div>
-    <div class="col-6">
-      <label class="text-info">Formule Number</label>
-      <input  [(ngModel)]="barcode.formuleNumber" type="text" class="form-control">
-    </div>
+    <div class="col-4"></div>
   </div>
-  <div class="row p-2">
-    <div class="col-12">
-      <label class="text-info">Scan Material</label>
-      <input (change)="checkIfIdExist($event)"  [(ngModel)]="barcode.materialId" type="text" class="form-control">
-    </div>
-  </div>
-
   
 
   <div *ngIf="printStickerBtn == true" class="row p-2">
@@ -44,33 +36,56 @@
 
 </div>
 
-<div *ngIf="materialArrivals == true" class="container">
-  <div class="row">
-    <div class="col-12 text-center">
-      <h2 class="text-danger">שים לב ייתכן וקיים חומר גלם עם תוקף קרוב יותר</h2>
+<div class="container mt-2 bg-white text-center p-2 rounded shadow">
+  <div class="row mt-1">
+    <div class="col-4">
+      <h3 class="text-success">Formule Number: {{currentFormule.formuleNumber}}</h3>
+    </div>
+    <div class="col-4">
+      <h3 class="text-success">Formule Number: {{currentFormule.formuleName}}</h3>
+    </div>
+    <div class="col-4">
+      <h3 class="text-success">PH: {{currentFormule.phFrom}}-{{currentFormule.phTo}}</h3>
     </div>
   </div>
-  <div class="row">
+
+  <div class="row mt-3">
     <div class="col-12">
-    <table class="table table-hover table-striped">
-      <thead class="bg-info text-center text-white">
-        <tr>
-          <th>Material Name</th>
-          <th>Position</th>
-          <th>Expire Date</th>
-        </tr>
-      </thead>
-      <tbody class="text-center">
-        <tr *ngFor="let arrival of allMaterialArrivals">
-        <td>{{arrival.materialName}}</td>
-        <td>{{arrival.position}}</td>
-        <td>{{arrival.expiryDate | date: 'dd/MM/yyyy'}}</td>
-        </tr>
-      </tbody>
-    </table>
-    </div> 
-   </div>
+      <table class="table table-hover">
+        <thead class="bg-success text-white">
+          <tr>
+            <th scope="col">Phase</th>
+            <th scope="col">Raw Material Name</th>
+            <th scope="col">Name</th>
+            <th scope="col">Percentage</th>
+            <th scope="col">KG</th>
+            <th scope="col">Shelf</th>
+    
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let phase of currentFormule.phases">
+          
+              <tr *ngFor="let item of phase.items; let i = index">
+                
+                <td style="padding:5px" *ngIf="i == 0"[attr.rowspan]="phase.items.length"class="phase">{{ phase.phaseName }}</td>
+                <td style="padding:5px">{{ item.itemName }}</td>
+                <td style="padding:5px">{{ item.itemNumber }}</td>
+                <td style="padding:5px">{{ item.percentage }}%</td>
+                <td style="padding:5px">{{ item.kgProd }}</td>
+                <td style="padding:5px"><input (change)="saveShelfNumber($event,item.itemNumber)" class="form-control"></td>
+   
+
+              </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+
+
 
 
 <div class="container" id="print-section" style="visibility: hidden">

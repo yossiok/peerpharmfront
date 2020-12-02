@@ -50,8 +50,11 @@ export class OrderdetailsComponent implements OnInit {
   currItems: any[];
   currFormule: any[];
   currItem: any;
+  billQtySum: number = 0;
+  invoiceModal: boolean = false;
   itemRequirements: any;
   currPhase: any[];
+  currBillingArr: any[];
   bottleInStock: boolean;
   pumpInStock: boolean;
   sealInStock: boolean;
@@ -421,6 +424,22 @@ export class OrderdetailsComponent implements OnInit {
     this.inventoryService.getCmptByitemNumber(componentNumber)
 
   }
+
+  calculateKG(netWeightGr,quantity){
+      let result = (netWeightGr/1000)*Number(quantity)
+       return result
+  }
+
+  openInvoice(item){
+   debugger;
+   this.currItem = item
+   this.currBillingArr = item.billing
+   this.billQtySum = 0
+   this.currBillingArr.forEach(bill => {
+     this.billQtySum += Number(bill.billQty)
+   });
+   this.invoiceModal = true;
+ }
 
   getCompDetails(compNumber){
   
@@ -865,40 +884,36 @@ if(data){
       this.selectedArr
 
       this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
-        debugger
-        if (materials.msg == "לא קיימת פורמולה") {
-          this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
-        } else {
+            this.calculateMaterials(materials)
+      })
+    }
 
-          this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals=>{
-            debugger;
-            var count = 0;
-            for (let i = 0; i < materials.length; i++) {
-             for (let j = 0; j < arrivals.length; j++) {
-              if(arrivals[j].internalNumber == materials[i].itemNumber) {
-                materials[i].kgProduction = this.formatNumber(Number(materials[i].kgProduction));
-                  materials[i].measureType = arrivals[i].mesureType
-      
-                  if(materials[i].totalQnt) {
-                    materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
-                
-                   
-                  } else {
-                    if(arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt) )
-                    materials[i].totalQnt = parseInt(arrivals[j].totalQnt)
-                  }
-                 
-                
-              }
+    calculateMaterials(materials){
+      this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals=>{
+        debugger;
+        var count = 0;
+        for (let i = 0; i < materials.length; i++) {
+         for (let j = 0; j < arrivals.length; j++) {
+          if(arrivals[j].internalNumber == materials[i].itemNumber) {
+            materials[i].kgProduction = this.formatNumber(Number(materials[i].kgProduction));
+              materials[i].measureType = arrivals[i].mesureType
+  
+              if(materials[i].totalQnt) {
+                materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
+            
                
-             }
-             this.materialsForFormules = materials;
-             this.showMaterialsForFormules = true;
-            }
-          })
-        
+              } else {
+                if(arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt) )
+                materials[i].totalQnt = parseInt(arrivals[j].totalQnt)
+              }
+             
+            
+          }
+           
+         }
+         this.materialsForFormules = materials;
+         this.showMaterialsForFormules = true;
         }
-
       })
     }
 
@@ -928,7 +943,7 @@ if(data){
           this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
         } else {
           var item = this.selectedArr.find(i=>i.itemNumber == itemNumber);
-          item.netWeightGr = updatedQuantity
+          item.newKG = updatedQuantity
         
           this.materialsForFormules = data;
           this.materialsForFormules.forEach(item=>{

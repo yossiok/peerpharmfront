@@ -98,6 +98,11 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/updatePLStatus";
     return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
   }
+  updatePallet(pallet){
+    debugger;
+    let url = this.baseUrl + "formDetails/updatePalletDetails";
+    return this.http.post(url, JSON.stringify({pallet}), this.options).pipe(map(res => res.json()));
+  }
   addPalletToExistPackList(packedList){
     debugger;
     let url = this.baseUrl + "formDetails/addPalletToExistPackList";
@@ -118,9 +123,14 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/createNewPallet";
     return this.http.post(url, JSON.stringify(pallet), this.options).pipe(map(res => res.json()));
   }
-  deletePalletById(pallet){
+  deletePalletById(palletId){
     debugger;
-    let url = this.baseUrl + "formDetails/deletePalletById";
+    let url = this.baseUrl + "formDetails/deleteQAPalletById";
+    return this.http.post(url, JSON.stringify({id:palletId}), this.options).pipe(map(res => res.json()));
+  }
+  deleteQAPallet(pallet){
+    debugger;
+    let url = this.baseUrl + "formDetails/deleteQAPallet";
     return this.http.post(url, JSON.stringify(pallet), this.options).pipe(map(res => res.json()));
   }
   saveFirstAidCheck(firstAidCheck){

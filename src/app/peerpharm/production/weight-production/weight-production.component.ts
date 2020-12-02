@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormulesService } from 'src/app/services/formules.service';
 
 @Component({
   selector: 'app-weight-production',
@@ -13,6 +14,10 @@ export class WeightProductionComponent implements OnInit {
   allMaterialArrivals:any[];
   materialArrivals:Boolean = false;
   printStickerBtn:Boolean = false;
+  currentFormule:any;
+  formuleNumber:any;
+  formuleWeight:any;
+  shelfNumber:any;
  
 
   barcode = {
@@ -23,10 +28,11 @@ export class WeightProductionComponent implements OnInit {
     formuleNumber:''
   }
 
-  constructor(private inventorySrv:InventoryService, private toastSrv:ToastrService) { }
+  constructor(private formuleSrv:FormulesService,private inventorySrv:InventoryService, private toastSrv:ToastrService) { }
 
   ngOnInit() {
   }
+
 
   getMaterialByNumber(){
 
@@ -73,5 +79,40 @@ export class WeightProductionComponent implements OnInit {
     formuleNumber:''
     };
   }
+
+  getFormuleByNumber(){
+    debugger;
+  if(this.formuleNumber != '' && this.formuleWeight != '') {
+    this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data=>{
+      debugger;
+    data.phases.forEach(phase => {
+    phase.items.forEach(item => {
+    item.kgProd = Number(this.formuleWeight)*(Number(item.percentage)/100)
+    });
+    });
+    this.currentFormule = data;
+
+    })
+  } else {
+    this.toastSrv.error('Please fill all fields')
+  }
+  
+  }
+
+
+  
+  saveShelfNumber(ev,itemNumber){
+  let shelf = ev.target.value;
+
+  if(shelf != ''){
+    this.inventorySrv.reduceMaterialQuantity(itemNumber,shelf).subscribe(data=>{
+    
+    })
+  } else {
+    this.toastSrv.error('Please fill shelf number')
+  }
+    }
+
+  
 
 }

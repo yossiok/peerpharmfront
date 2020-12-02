@@ -29,6 +29,9 @@ currImageComp:String='';
 amount:Number;
 relatedOrder:String='';
 today:Date=new Date;
+stickerItem:any;
+stickerQty:any;
+stickerRemarks:any;
 
 
 currItemShelfs:Array<any>;

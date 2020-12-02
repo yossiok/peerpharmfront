@@ -777,8 +777,8 @@ export class StockComponent implements OnInit {
   }
 
   sendRecommandation() {
-      
-    if(this.recommandPurchase.amount == '' || this.recommandPurchase.supplier == '') {
+      debugger;
+    if(this.recommandPurchase.amount == '' || this.recommandPurchase.date == '') {
       this.toastSrv.error('חובה למלא כמות ותאריך')
     } else {
       this.recommandPurchase.user = this.authService.loggedInUser.userName;
