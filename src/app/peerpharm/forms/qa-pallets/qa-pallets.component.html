@@ -506,6 +506,8 @@
             <th>#</th>
             <th scope="col">משטח</th>
             <th scope="col">פריט</th>
+            <th scope="col">הזמנה</th>
+            <th scope="col">אצווה</th>
             <!-- <th scope="col">Batch</th> -->
             <th scope="col">מספר קרטונים</th>
             <th scope="col">מספר יחידות בקרטון</th>
@@ -524,6 +526,8 @@
               <td>{{pallet.palletNumber}}</td>
               <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
                 {{line.itemNumber}}</td>
+                <td>{{line.orderNumber}}</td>
+                <td>{{line.batchNumber}}</td>
               <!-- <td></td> -->
               <td>{{line.fullKartons}}</td>
               <td>{{line.unitsInKarton}}</td>
@@ -589,6 +593,8 @@
               <th>#</th>
               <th scope="col">Pallet</th>
               <th scope="col">Item</th>
+              <th scope="col">Order</th>
+              <th scope="col">Batch</th>
               <!-- <th scope="col">Batch</th> -->
               <th scope="col">Number of Cartons</th>
               <th scope="col">Quantity in Carton</th>
@@ -608,6 +614,8 @@
                 <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
                   {{line.itemNumber}}</td>
                 <!-- <td></td> -->
+                <td>{{line.orderNumber}}</td>
+                <td>{{line.batchNumber}}</td>
                 <td>{{line.fullKartons}}</td>
                 <td>{{line.unitsInKarton}}</td>
                 <td>{{line.unitsQuantityPartKarton}}</td>
