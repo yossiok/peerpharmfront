@@ -426,30 +426,35 @@
                 <tr>
                   <th>#</th>
                   <th>שם לקוח</th>
-                  <th>מספר לקוח</th>
-                  <th>מוכן לחשבונית</th>
+                  <th>מספר הזמנה</th>
                   <th>מספר לחשבונית</th>
 
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
-                  <td>{{i+1}}</td>
-                  <td><label (click)="openProductForm(packlist,'HE')"
-                      style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label>
-                  </td>
-                  <td>{{packlist.costumerNumber}}</td>
-                  <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td>
-                  <td *ngIf="packlist._id != editBill" style="cursor: pointer;" (click)="editBillNumber(packlist._id)">
-                    {{packlist.billNumber}}</td>
-                  <td *ngIf="editBill == packlist._id"><input class="form-control" type="text" [value]="packlist.billNumber"
-                      #billNumberToUpdate></td>
-                  <td *ngIf="editBill == packlist._id"><i (click)="saveBillNumber(packlist._id)"
-                      style="cursor: pointer;" class="fa fa-save text-info"></i>
-                  </td>
-                  <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
-                </tr>
+
+                    <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
+                      <td>{{i+1}}</td>
+                      <td><label (click)="openProductForm(packlist,'HE')"
+                          style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label>
+                      </td>
+                      <td>
+                        <tr *ngFor="let orderNumber of packlist.orders">
+                          <td><a target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ orderNumber }}" class="text-info">{{orderNumber}}</a></td>
+                        </tr>
+                      </td>
+                      <td *ngIf="packlist._id != editBill" style="cursor: pointer;" (click)="editBillNumber(packlist._id)">
+                        {{packlist.billNumber}}</td>
+                      <td *ngIf="editBill == packlist._id"><input class="form-control" type="text" [value]="packlist.billNumber"
+                          #billNumberToUpdate></td>
+                      <td *ngIf="editBill == packlist._id"><i (click)="saveBillNumber(packlist._id)"
+                          style="cursor: pointer;" class="fa fa-save text-info"></i>
+                      </td>
+                      <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
+                    </tr>
+ 
+            
               </tbody>
 
             </table>

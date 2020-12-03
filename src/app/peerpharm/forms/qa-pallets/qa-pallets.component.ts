@@ -614,15 +614,31 @@ export class QaPalletsComponent implements OnInit {
   getAllReadyForBill() {
     this.formService.getAllReadyForBillPLs().subscribe(data => {
       if (data) {
-
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].readyForBill == true) {
-            data[i].readyForBill = 'Yes'
-          } else {
-            data[i].readyForBill = 'No'
+ 
+        debugger;
+        data.forEach(PL => {
+          if(PL.pallets){
+            PL.pallets.forEach(pallet => {
+              if(pallet.lines){
+                pallet.lines.forEach(line => {
+                  if(PL.orders == undefined){
+                    PL.orders = []
+                    PL.orders.push(line.orderNumber)
+                  } else {
+                    PL.orders.push(line.orderNumber)
+                  }
+                 
+                });
+              }
+            });
           }
+     
+        });
 
-        }
+        data.forEach(PL => {
+          PL.orders = [...new Set(PL.orders)];
+        });
+
         this.allReadyPackedLists = data;
       }
 

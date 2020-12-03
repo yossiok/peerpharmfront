@@ -148,9 +148,12 @@
       <label class="form-control">Father</label>
     </div>
     <div class="col-2">
-      <select class="form-control" #fatherFormule>
-        <option  *ngFor="let formule of fatherFormules" [value]="formule.formuleName">{{formule.formuleName}}</option>
-      </select>
+      <input list="fathers" class="form-control" #fatherFormule>
+      <datalist id="fathers">
+        <option  *ngFor="let formule of fatherFormules" [value]="formule.formuleName">{{formule.formuleNumber}}</option>
+      </datalist>
+       
+    
     </div>
     <div class="col-1">
       <label class="form-control">Child</label>

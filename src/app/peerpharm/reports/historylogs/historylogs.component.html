@@ -1,35 +1,64 @@
-<div class="col-12">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Action History Logs</h4>
-            
-        </div>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Action</th>
-                        <th scope="col">Table</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Log Data</th>
-                   
-                    </tr>
-                </thead>
-                <tbody *ngIf="hasAuthorization">
-                    <tr *ngFor="let log of logs; let i=index">
-                        <th scope="row">{{i+1}}</th>
-                        <td>{{log.userName}}</td>
-                        <td>{{log.action}}</td>
-                        <td>{{log.model}}</td>
-                        <td>{{log.timeStamp|date: 'dd-MM-yyyy h:mm:ss a'}}</td>
-                        <td>{{log.objectToSave}}</td>
-                     
-                    </tr>
+
+<div *ngIf="loader == true" class="loading">Loading&#8230;</div>
+
+<div *ngIf="loader == false"  class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Action History Logs</h4>
                     
-                </tbody>
-            </table>
+                </div>
+                <select (change)="filterReports($event)" class="form-control">
+                    <option value="All">All</option>
+                    <option value="FormDetails2">FormDetails2</option>
+                    <option value="Item">Item</option>
+                    <option value="StockItem">StockItem</option>
+                    <option value="Batch">Batch</option>
+                </select>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">Table</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Log Data</th>
+                           
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="hasAuthorization">
+                            <tr *ngFor="let log of logs; let i=index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{log.userName}}</td>
+                                <td>{{log.action}}</td>
+                                <td>{{log.model}}</td>
+                                <td>{{log.timeStamp|date: 'dd-MM-yyyy h:mm:ss a'}}</td>
+                                <td>
+                                    <table>
+                                        <thead>
+                                            <th>
+                                                <tr>Item</tr>
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                    <td *ngIf="log.objectToSave.itemNumber">{{log.objectToSave.itemNumber}}</td>
+                                                    <td *ngIf="log.objectToSave.itemN">{{log.objectToSave.itemN}}</td>
+                                                    <td *ngIf="log.objectToSave.componentN">{{log.objectToSave.componentN}}</td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                             
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

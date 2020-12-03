@@ -12,7 +12,9 @@ export class HistorylogsComponent implements OnInit {
 
 user:UserInfo
 logs:any[]=[];
+logsCopy:any[]=[];
 hasAuthorization:boolean = false;
+loader:boolean = true;
 
 
   constructor(private authService: AuthService,private logsService:LogsService) { }
@@ -20,10 +22,15 @@ hasAuthorization:boolean = false;
   ngOnInit() {
     this.getUserInfo();
     this.logsService.getAll().subscribe(data=>
-      
+     
       {
-        
+        data.forEach(log => {
+        log.objectToSave = JSON.parse(log.objectToSave)
+        });
+        debugger;
         this.logs=data;
+        this.logsCopy=data;
+        this.loader = false;
       })
   }
 
@@ -51,6 +58,18 @@ hasAuthorization:boolean = false;
       }
 
     });
+
+  }
+
+  filterReports(ev){
+  this.logs = this.logsCopy
+  let tableType = ev.target.value;
+  if(tableType != 'All'){
+    this.logs = this.logs.filter(l=>l.model == tableType);
+  } else {
+    this.logs = this.logsCopy
+  }
+ 
 
   }
 

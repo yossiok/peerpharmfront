@@ -16,6 +16,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PlateService } from 'src/app/services/plate.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-itemdetais',
@@ -651,6 +652,12 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         debugger;
       
             this.itemShown.stickerImage = data[0].img
+            this.itemsService.updateStickerImage(this.itemShown).subscribe(data=>{
+              if(data){
+                console.log('sticker image updated');
+                
+              }
+            })
 
           })
 
