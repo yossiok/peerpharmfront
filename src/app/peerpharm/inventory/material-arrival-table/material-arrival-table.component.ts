@@ -10,20 +10,20 @@ import { ExcelService } from 'src/app/services/excel.service';
   styleUrls: ['./material-arrival-table.component.scss']
 })
 export class MaterialArrivalTableComponent implements OnInit {
-  @ViewChild('printBtn',{ static: true }) printBtn: ElementRef;
-  @ViewChild('internalNumber',{ static: true }) internalNumber: ElementRef;
-  @ViewChild('materName',{ static: true }) materName: ElementRef;
-  @ViewChild('materialPosition',{ static: true }) materialPosition: ElementRef;
-  @ViewChild('quantity',{ static: true }) quantity: ElementRef;
-  @ViewChild('packageType',{ static: true }) packageType: ElementRef;
-  @ViewChild('supplierNumber',{ static: true }) supplierNumber: ElementRef;
-  @ViewChild('supplierName',{ static: true }) supplierName: ElementRef;
-  @ViewChild('lotNum',{ static: true }) lotNum: ElementRef;
-  @ViewChild('remarks',{ static: true }) remarks: ElementRef;
-  @ViewChild('expireDate',{ static: true }) expireDate: ElementRef;
-  @ViewChild('analysisApproval',{ static: true }) analysisApproval: ElementRef;
-  @ViewChild('arriveDate',{ static: true }) arriveDate: ElementRef;
-  @ViewChild('modal1',{ static: true }) modal1: ElementRef;
+  @ViewChild('printBtn',{ static: false }) printBtn: ElementRef;
+  @ViewChild('internalNumber',{ static: false }) internalNumber: ElementRef;
+  @ViewChild('materName',{ static: false }) materName: ElementRef;
+  @ViewChild('materialPosition',{ static: false }) materialPosition: ElementRef;
+  @ViewChild('quantity',{ static: false }) quantity: ElementRef;
+  @ViewChild('packageType',{ static: false }) packageType: ElementRef;
+  @ViewChild('supplierNumber',{ static: false }) supplierNumber: ElementRef;
+  @ViewChild('supplierName',{ static: false }) supplierName: ElementRef;
+  @ViewChild('lotNum',{ static: false }) lotNum: ElementRef;
+  @ViewChild('remarks',{ static: false }) remarks: ElementRef;
+  @ViewChild('expireDate',{ static: false }) expireDate: ElementRef;
+  @ViewChild('analysisApproval',{ static: false }) analysisApproval: ElementRef;
+  @ViewChild('arriveDate',{ static: false }) arriveDate: ElementRef;
+  @ViewChild('modal1',{ static: false }) modal1: ElementRef;
   @ViewChild('fromDateStr',{ static: true }) fromDateStr: ElementRef;
   @ViewChild('toDateStr',{ static: true }) toDateStr: ElementRef;
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
