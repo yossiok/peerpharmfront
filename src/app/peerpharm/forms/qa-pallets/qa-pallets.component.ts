@@ -328,9 +328,9 @@ export class QaPalletsComponent implements OnInit {
     this.formService.insertBillNumber(id, billNumber).subscribe(data => {
       debugger;
       if (data) {
-        for (let i = 0; i < this.allPackedLists.length; i++) {
-          if (this.allPackedLists[i]._id == data._id) {
-            this.allPackedLists[i].billNumber = data.billNumber
+        for (let i = 0; i < this.allReadyPackedLists.length; i++) {
+          if (this.allReadyPackedLists[i]._id == data._id) {
+            this.allReadyPackedLists[i].billNumber = data.billNumber
           }
 
         }
@@ -614,7 +614,7 @@ export class QaPalletsComponent implements OnInit {
   getAllReadyForBill() {
     this.formService.getAllReadyForBillPLs().subscribe(data => {
       if (data) {
- 
+   
         debugger;
         data.forEach(PL => {
           if(PL.pallets){
@@ -638,6 +638,8 @@ export class QaPalletsComponent implements OnInit {
         data.forEach(PL => {
           PL.orders = [...new Set(PL.orders)];
         });
+
+      
 
         this.allReadyPackedLists = data;
       }
