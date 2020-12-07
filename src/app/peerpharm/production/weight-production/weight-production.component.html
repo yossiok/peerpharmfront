@@ -59,7 +59,7 @@
             <th scope="col">Name</th>
             <th scope="col">Percentage</th>
             <th scope="col">KG</th>
-            <th scope="col">Shelf</th>
+            <th scope="col">ID</th>
             <th></th>
     
           </tr>
@@ -75,7 +75,7 @@
                 <td style="padding:5px">{{ item.itemNumber }}</td>
                 <td style="padding:5px">{{ item.percentage }}%</td>
                 <td style="padding:5px">{{ item.kgProd }}</td>
-                <td *ngIf="item.check != true" style="padding:5px"><input (change)="searchForShelf($event,item.itemNumber,item.kgProd)" class="form-control"></td>
+                <td *ngIf="item.check != true" style="padding:5px"><input (change)="searchForShelf($event,item.kgProd)" class="form-control"></td>
                 <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-success"></i></td>
    
 
@@ -98,7 +98,7 @@
     <div class="row">
       <div class="col-1"></div>
       <div class="col-10">
-        <h3>Choose Shelf</h3>
+        <h3>Choose Batch</h3>
       </div>
       <div class="col-1">
         <i (click)="materialShelfs = []" class="fa fa-times"></i>
@@ -111,7 +111,7 @@
             <tr>
               <th>Material</th>
               <th>Expire Date</th>
-              <th>Batch</th>
+              <th>Shelf</th>
             </tr>
           </thead>
           <tbody>
@@ -119,7 +119,7 @@
               <tr (click)="reduceAmountFromShelf(material)">
                 <td>{{material.item}}</td>
                 <td>{{material.expirationDate | date: 'dd/MM/yyyy'}}</td>
-                <td>{{material.batchNumber}}</td>
+                <td>{{material.position}}</td>
               </tr>
             </ng-container>
           </tbody>

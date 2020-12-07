@@ -40,6 +40,7 @@ export class BatchesComponent implements OnInit {
   editValues: Boolean = false;
   showLoader: Boolean = true;
   specValuesModal: Boolean = false;
+  showRemarks: Boolean = true;
   closeResult: any;
   batchPrint: any;
   item: any;
@@ -87,6 +88,7 @@ export class BatchesComponent implements OnInit {
   @ViewChild('batchBarrels') batchBarrels: ElementRef;
   @ViewChild('batchOrder') batchOrder: ElementRef;
   @ViewChild('batchItem') batchItem: ElementRef;
+  @ViewChild('printValueBtn') printValueBtn: ElementRef;
 
   
 
@@ -105,6 +107,14 @@ export class BatchesComponent implements OnInit {
     this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
     this.getUserInfo();
+  }
+
+  printSpecValues(){
+    this.editValues = false;
+    this.showRemarks = false;
+    this.printValueBtn.nativeElement.click();
+
+
   }
 
 
@@ -235,10 +245,11 @@ export class BatchesComponent implements OnInit {
 
 
   openTableValues(itemNumber,batchNumber) {
-
+    debugger;
     this.batchService.getBatchData(batchNumber).subscribe(data=>{
       debugger;
       this.currBatch = data[0]
+      this.currBatch.kgProduced = Number(this.currBatch.weightKg) - Number(this.currBatch.weightQtyLeft)
     })
     
     this.specValuesModal = true;

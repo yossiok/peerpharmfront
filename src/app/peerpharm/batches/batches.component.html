@@ -354,11 +354,44 @@
 </ng-template>
 
 
-  <div *ngIf="specValuesModal == true" style="top:150px" class="container mx-auto my-auto rouneded shadow-lg fixed-top">
-    <div class="row">
+  <div id="specSection" *ngIf="specValuesModal == true" style="top:50px" class="container bg-white mx-auto text-center my-auto rouneded shadow-lg fixed-top">
+
+    <div class="row mt-3">
+      <div class="col-12">
+        <table>
+          <tr style="border:none !important">
+            <td style="border:none !important">Date: </td>
+            <td style="border:none !important">{{currBatch.produced | date :'dd/MM/yyyy'}}</td>
+          </tr>
+          <tr style="border:none !important">
+            <td style="border:none !important">Product Name: </td>
+            <td style="border:none !important">{{currBatch.itemName}}</td>
+          </tr>
+          <tr style="border:none !important">
+            <td style="border:none !important">Lot: </td>
+            <td style="border:none !important">{{currBatch.batchNumber}}</td>
+          </tr>
+          <tr style="border:none !important">
+            <td style="border:none !important">Quantity: </td>
+            <td style="border:none !important">{{currBatch.kgProduced}}</td>
+          </tr>
+          <tr style="border:none !important">
+            <td style="border:none !important">Exp: </td>
+            <td style="border:none !important">{{currBatch.expration | date :'dd/MM/yyyy'}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="col-2"></div>
+      <div class="col-1">
+        <img  style="width:30px;" (click)="printSpecValues()" src="../../../assets/images/print.jpg">
+      </div>
+    </div>
+    <div class="row mt-5">
       <div class="col-4"></div>
       <div class="col-4">
-        <h2 class="text-info">Specification Values</h2>
+        <button #printValueBtn style="border:none;" (click)="printSpecValues()" class="text-info" printSectionId="specSection" ngxPrint
+        [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},th : {'border': 'solid 1px black'}}">Specification Values</button>
       </div>
       <div class="col-3"></div>
       <div class="col-1">
@@ -373,7 +406,7 @@
             <table class="table table-bordered table-hover">
               <thead class="bg-light">
                 <tr>
-                  <th>הערות</th>
+                  <th *ngIf="showRemarks">הערות</th>
                   <th>תחומי התוצאות תחתון - Spec Limits Min</th>
                   <th>תחומי התוצאות עליון - Spec Limits Max</th>
              
@@ -383,7 +416,7 @@
               </thead>
               <tbody dir="rtl" style="text-align: center;">
                 <tr>
-                  <td>{{item.phRemarks}}</td>
+                  <td *ngIf="showRemarks">{{item.phRemarks}}</td>
                   <td>{{item.phLimitsMin}}</td>
                   <td>{{item.phLimitsMax}}</td>
                
@@ -392,7 +425,7 @@
                   <td class="bg-light">PH</td>
                 </tr>
                 <tr>
-                  <td>{{item.densityRemarks}}</td>
+                  <td *ngIf="showRemarks">{{item.densityRemarks}}</td>
                   <td>{{item.densityLimitsMin}}</td>
                   <td>{{item.densityLimitsMax}}</td>
                   <td *ngIf="editValues == false">{{currBatch.densityValue}}</td>
@@ -400,7 +433,7 @@
                   <td class="bg-light">צפיפות</td>
                 </tr>
                 <tr>
-                  <td>{{item.viscosityRemarks}}</td>
+                  <td *ngIf="showRemarks">{{item.viscosityRemarks}}</td>
                   <td>{{item.viscosityLimitsMin}}</td>
                   <td>{{item.viscosityLimitsMax}}</td>
                   <td *ngIf="editValues == false">{{currBatch.viscosityValue}}</td>
@@ -434,21 +467,21 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>{{item.colorRemarks}}</td>
+                  <td *ngIf="showRemarks">{{item.colorRemarks}}</td>
                   <td colspan="2">{{item.color}}</td>
                   <td *ngIf="editValues == false">{{currBatch.colorValue}}</td>
                   <td *ngIf="editValues == true"><input [value]="currBatch.colorValue" #colorValue type="text"></td>
                   <td class="bg-light">צבע</td>
                 </tr>
                 <tr>
-                  <td>{{item.textureRemarks}}</td>
+                  <td *ngIf="showRemarks">{{item.textureRemarks}}</td>
                   <td colspan="2">{{item.textureSpec}}</td>
                   <td *ngIf="editValues == false">{{currBatch.textureValue}}</td>
                   <td *ngIf="editValues == true"><input [value]="currBatch.textureValue" #textureValue type="text"></td>
                   <td class="bg-light">מרקם</td>
                 </tr>
                 <tr>
-                  <td>{{item.scentRemarks}}</td>
+                  <td *ngIf="showRemarks">{{item.scentRemarks}}</td>
                   <td colspan="2">{{item.scentSpec}}</td>
                   <td *ngIf="editValues == false">{{currBatch.scentValue}}</td>
                   <td *ngIf="editValues == true"><select selected="currBatch.scentValue" #scentValue
@@ -461,7 +494,7 @@
               </tbody>
             </table>
           </div>
-          <div style="text-align: center;" class="modal-footer">
+          <div *ngIf="showRemarks" style="text-align: center;" class="modal-footer">
             <button *ngIf="editValues == false && alowUserEditBatches == true" (click)="editValues = true"
               class="btn btn-info form-control">Edit</button>
             <button *ngIf="editValues == true && alowUserEditBatches == true" (click)="saveSpecValues(item.itemNumber)"
@@ -492,5 +525,18 @@
 
       </div>
     </div>
+
+    <div class="row mt-3">
+      <div class="col-3">
+       <p>Q. C. Department</p>
+       <p>Peerpharm Ltd.</p>
+
+      </div>
+      <div class="col-3"></div>
+      <div class="col-3"></div>
+      <div class="col-3"></div>
+    </div>
   </div>
+
+
 

@@ -116,6 +116,7 @@ export class WeightProductionComponent implements OnInit {
             });
           });
           this.toastSrv.success('Amount reduced from shelf')
+          this.materialShelfs = []
         }
       })
     }
@@ -127,12 +128,12 @@ export class WeightProductionComponent implements OnInit {
 
 
   
-  searchForShelf(ev,itemNumber,kgProd){
-  let shelf = ev.target.value;
+  searchForShelf(ev,kgProd){
+  let material = ev.target.value;
   this.kgToRemove = kgProd
 
-  if(shelf != ''){
-    this.inventorySrv.getShelfListForMaterial(itemNumber,shelf).subscribe(data=>{
+  if(material != ''){
+    this.inventorySrv.getShelfListForMaterial(material).subscribe(data=>{
       debugger;
       if(data.msg == 'noShelf'){
         this.toastSrv.error('Material is not exist on this shelf')
@@ -142,7 +143,7 @@ export class WeightProductionComponent implements OnInit {
       }
     })
   } else {
-    this.toastSrv.error('Please fill shelf number')
+    this.toastSrv.error('Please scan / fill the material number')
   }
     }
 
