@@ -23,7 +23,9 @@ export class QaPalletsComponent implements OnInit {
   unitsToPallet: any;
   deleteLine: boolean = false;
   currentPallet: any;
+  currPLWeight: number = 0;
   allQaPallets: any[]
+  combinedPallets: any[]
   allQaPalletsCopy: any[]
   allCustomers: any[]
   allClosedPallets: any[]
@@ -599,8 +601,47 @@ export class QaPalletsComponent implements OnInit {
     this.currCustomerNumber = packlist.costumerNumber
     this.packedList.costumerName = this.currCustomer
     this.packedList.costumerNumber = this.currCustomerNumber
+    this.currPLWeight = 0;
+    packlist.pallets.forEach(pallet => {
+      if(pallet.palletWeight){
+        this.currPLWeight += Number(pallet.palletWeight)  
+      }
+    
+    });
+    let result = []
 
+    packlist.pallets.forEach(pallet => {
+      pallet.lines.forEach(line => {
+      let obj = {
+        itemNumber:line.itemNumber,
+        quantity:line.floorNumber*line.unitsInKarton*line.kartonQuantity
+      }
+      if(line.lastFloorQuantity > 0){
+        obj.quantity = obj.quantity + (line.lastFloorQuantity*line.unitsInKarton)
+      }
+
+      if(line.unitsQuantityPartKarton > 0){
+        obj.quantity = obj.quantity + line.unitsQuantityPartKarton
+      }
+      result.push(obj)
+        
+    });
+    });
+  
+
+    const totals = result.reduce((acc, val) => {
+      const key = val.itemNumber;
+      const { quantity } = val;
+      const totalSoFar = acc[key] || 0;
+      return {...acc, [key]: totalSoFar + quantity};
+    }, {});
+    
+    const combinedResult = Object.entries(totals)
+      .map(([itemNumber, quantity]) => ({itemNumber, quantity}));
+    console.log(result);
     this.currCustomerId = packlist._id
+    this.combinedPallets = combinedResult
+
     if(language == 'HE'){
       this.showProductsBeforeDeliveryHE = true;
       this.showProductsBeforeDeliveryEN = false;

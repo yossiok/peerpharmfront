@@ -504,9 +504,9 @@
         </tr>
       </tbody>
     </table>
-    <div style="max-height: 100%;overflow: scroll;" class="container-fluid" id="material-body" class="modal-body">
+    <div style="max-height: 100%;overflow: hidden;" class="container-fluid" id="material-body" class="modal-body">
       <table style="background:white;border:1px solid black;margin-left:80px" class="table table-bordered">
-        <thead>
+        <thead style="background: lightgray !important;">
           <tr>
             <th>#</th>
             <th scope="col">משטח</th>
@@ -544,7 +544,35 @@
         </tbody>
       </table>
 
-      <table style="margin-top:50px !important">
+      <table class="table table-bordered" style="margin-top:30px;margin-left:80px">
+        <thead>
+            <th><b>סה"כ משטחים</b></th>
+            <th><b>סה"כ משקל</b></th>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>{{selectedArr.length}}</b></td>
+            <td><b>{{currPLWeight}}</b></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table style="margin-top:10px;margin-left:80px" class="table table-bordered">
+        <thead>
+          <tr>
+            <th><b>פריט</b></th>
+            <th><b>סה"כ כמות</b></th>
+          </tr>
+        </thead>
+      <tbody>
+        <tr *ngFor="let pallet of combinedPallets">
+          <td><b>{{pallet.itemNumber}}</b></td>
+          <td><b>{{pallet.quantity}}</b></td>
+        </tr>
+      </tbody>
+      </table>
+
+      <table style="margin-top:50px !important;">
         <tbody>
           <tr>
             <td style="border:none">QA Signature:_______</td>
@@ -587,7 +615,7 @@
        </tr>
      </tbody>
     </table>
-      <div style="height: 100%;overflow: scroll;" class="container" id="material-body" class="modal-body">
+      <div style="height: 100%;overflow: hidden;" class="container" id="material-body" class="modal-body">
         <table style="background:white;border:1px solid black;margin-left:80px;" class="table table-bordered">
           <thead>
             <tr>
@@ -627,6 +655,34 @@
               </tr>
             </ng-container>
           </tbody>
+        </table>
+
+        <table class="table table-bordered" style="margin-top:30px;margin-left:80px">
+          <thead>
+              <th><b>Total Pallets</b></th>
+              <th><b>Total Weight</b></th>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>{{selectedArr.length}}</b></td>
+              <td><b>{{currPLWeight}}</b></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table style="margin-top:10px;margin-left:80px" class="table table-bordered">
+          <thead>
+            <tr>
+              <th><b>Item</b></th>
+              <th><b>Total Quantity</b></th>
+            </tr>
+          </thead>
+        <tbody>
+          <tr *ngFor="let pallet of combinedPallets">
+            <td><b>{{pallet.itemNumber}}</b></td>
+            <td><b>{{pallet.quantity}}</b></td>
+          </tr>
+        </tbody>
         </table>
 
         <table style="margin-top:50px !important">
@@ -687,7 +743,7 @@
 
 <button style="float:right;margin-top:100px" *ngIf="showProductsBeforeDeliveryHE==true"
   class="btn btn-success form-control" printSectionId="print-sectionHE" ngxPrint
-  [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},th : {'border': 'solid 1px black'}}">Print</button>
+  [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},thead : {'background': 'lightgray'}, td : {'padding': '5px'},th : {'border': 'solid 1px black'}}">Print</button>
 
 <button style="float:right;margin-top:100px" *ngIf="showProductsBeforeDeliveryEN==true"
   class="btn btn-success form-control" printSectionId="print-sectionEN" ngxPrint

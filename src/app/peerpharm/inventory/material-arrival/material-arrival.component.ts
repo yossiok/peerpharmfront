@@ -72,7 +72,7 @@ bcValue: Array<any>=[ ];
 elementType = 'svg';
 format = 'CODE128';
 lineColor = '#000000';
-width = 1;
+width = 0.5;
 height = 150;
 displayValue = false; // true=display bcValue under barcode
 fontOptions = '';
