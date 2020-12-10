@@ -509,6 +509,7 @@ export class NewFormuleComponent implements OnInit {
         this.resetFormuleForm();
         this.allPercentage = null
         this.allChildren = []
+        this.newPhase.phaseName =''
       }
     } else {
       this.Toastr.success("פורמולה הוקמה בהצלחה !")
@@ -518,6 +519,7 @@ export class NewFormuleComponent implements OnInit {
       this.resetFormuleForm();
       this.allPercentage = null
       this.allChildren = []
+      this.newPhase.phaseName =''
     }
   }
 

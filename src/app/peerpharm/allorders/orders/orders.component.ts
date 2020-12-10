@@ -43,6 +43,7 @@ export class OrdersComponent implements OnInit {
   @ViewChild('orderType') orderType: ElementRef;
   @ViewChild('deliveryDate') deliveryDate: ElementRef;
   @ViewChild('orderDate') orderDate: ElementRef;
+  @ViewChild('customerOrderNum') customerOrderNum: ElementRef;
   @ViewChild('costumer') costumer: ElementRef;
   @ViewChild('orderNumber') orderNumber: ElementRef;
   @ViewChild('id') id: ElementRef;
@@ -183,6 +184,7 @@ export class OrdersComponent implements OnInit {
         orderRemarks: this.orderRemarks.nativeElement.value,
         orderType: this.orderType.nativeElement.value,
         stage: this.stage.nativeElement.value,
+        customerOrderNum:this.customerOrderNum.nativeElement.value
         
         
       }

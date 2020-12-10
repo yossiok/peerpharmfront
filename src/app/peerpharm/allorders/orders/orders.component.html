@@ -132,6 +132,9 @@
           </td>
           <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.deliveryDate}}</td>
           <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.customerOrderNum}}</td>
+          <td style="width:10%;" *ngIf="order._id===EditRowId">
+            <input #customerOrderNum type='text' [value]="order.customerOrderNum" style='width:170px'>
+          </td>
 
           <td style="width:10%;" *ngIf="order._id===EditRowId">
             <input #orderRemarks type='text' [value]="order.orderRemarks" style='width:170px'>
