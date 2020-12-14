@@ -10,6 +10,7 @@
 <div class='orderHeader' *ngIf="!showingAllOrders">
   <span class='spanTitle'>Order: </span><span class="orderSpanDetails">{{number}} </span><i
     class="ti-check text-success m-r-10" (click)="closeOrder()" style="cursor: pointer;"></i>
+    <span class="spanTitle">Total Items: {{totalOrderQty}}</span>
   <span class='spanTitle'> Order Date:</span><span class="orderSpanDetails"> {{orderDate}} </span><span
     class='spanTitle'> Delivery Date: </span><span class="orderSpanDetails">{{deliveryDate}}</span>
   <span class='spanTitle'> Costumer :</span><span class="orderSpanDetails"> {{costumer}} </span><span class='spanTitle'>
@@ -76,6 +77,7 @@
         <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()" src="../../../assets/images/excel.png"/></button></th>
         <th></th>
         <th *ngIf="openFormule"></th>
+        <th></th>
         <th *ngIf="showingAllOrders || multi">Order Number</th>
         <th style="width:200px;" class="header">Item Number </th>
         <th class="header">Item Important Remark</th>

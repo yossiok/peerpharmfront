@@ -97,7 +97,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
       // date=date.setHours(2,0,0,0);
       date=new Date(date)
       date=moment(date).format("YYYY-MM-DD");
-      
+      debugger
       this.scheduleService.getPrintScheduleByDate(date).subscribe(
         res=>{
           

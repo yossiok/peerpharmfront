@@ -53,6 +53,7 @@ export class OrderdetailsComponent implements OnInit {
   currItem: any;
   userName: any;
   billQtySum: number = 0;
+  totalOrderQty: number = 0;
   invoiceModal: boolean = false;
   itemRequirements: any;
   currPhase: any[];
@@ -973,10 +974,11 @@ if(data){
         orderNum = this.number;
       }
     //if someone loaded just one item in orders screen through "Load" button
-
+    this.totalOrderQty = 0
     document.title = "Order " + this.number;
       this.orderService.getOrderItemsByNumber(orderNum).subscribe(orderItems => {
         orderItems.map(item => {
+          this.totalOrderQty += Number(item.quantity)
           if (item.fillingStatus != null) {
             if (item.status != 'done') {
               if (item.fillingStatus.toLowerCase() == 'filled'
@@ -1023,6 +1025,8 @@ if(data){
         } else {
           this.ordersItems = orderItems;
           this.productionRequirements = orderItems;
+
+       
           this.ordersItemsCopy = orderItems;
         }
 
