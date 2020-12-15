@@ -1452,6 +1452,10 @@
             <div class="col-12 fixNoaStupidStuff">
               <ul class="nav nav-tabs justify-content-end">
                 <li class="nav-item">
+                  <a class="nav-link" style="cursor:pointer;" (click)="dirSet('withdrawForPallet')"
+                    [ngStyle]="{'background-color': amountForPalletBtnColor}">הוצאת סחורה למשטח</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" style="cursor:pointer;" (click)="dirSet('shelfChange')"
                     [ngStyle]="{'background-color': sehlfChangeNavBtnColor}">העברת סחורה למדף אחר</a>
                 </li>
@@ -1484,8 +1488,31 @@
 
            
           </div>
+          <div class="row fixNoaStupidStuff justify-content-end" *ngIf="amountChangeDir=='withdrawForPallet'">
+            
+              <div class="col-2 fixNoaStupidStuff"></div>
+              <div class="col-2 fixNoaStupidStuff">
+                <button class="btn btn-success" (click)="createNewQAPallet()">הקם
+                  משטח</button>
+              </div>
+              <div class="col-2 fixNoaStupidStuff">
+                <input list="costumers" class="form-control" type="text" placeholder="לקוח" [(ngModel)]="newQApallet.customerName" />
+                <datalist id="costumers">
+                  <option *ngFor="let customer of allCustomers" [value]="customer.costumerName">{{customer.costumerName}}</option>
+                </datalist>
+              </div>
+              <div class="col-2 fixNoaStupidStuff">
+                <input class="form-control" type="number" placeholder="כמות" [(ngModel)]="newQApallet.allUnits">
+              </div>
+              <div class="col-2 fixNoaStupidStuff">
+                <input class="form-control" type="text" placeholder="מדף נוכחי" [(ngModel)]="newQApallet.shelf" />
+              </div>
+              <div class="col-2 fixNoaStupidStuff"></div>
 
-          <div class="fixNoaStupidStuff row justify-content-end" *ngIf="amountChangeDir!='shelfChange'">
+           
+          </div>
+
+          <div class="fixNoaStupidStuff row justify-content-end" *ngIf="amountChangeDir==''">
             <div class="col-2 fixNoaStupidStuff">
               <button class="form-control btn btn-success" (click)="updateItemStock('in')">קבלת סחורה</button>
               <button class="form-control btn btn-danger" (click)="updateItemStock('out')">הוצאת סחורה</button>

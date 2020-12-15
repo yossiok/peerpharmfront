@@ -57,6 +57,10 @@ export class BatchesService {
     let url = this.baseUrl + "batch/remove";
     return this.http.post(url, JSON.stringify(batch), this.options).pipe(map(res => res.json()))
   }
+  setBatchToSchedule(id) {
+    let url = this.baseUrl + "batch/setBatchToSchedule";
+    return this.http.post(url, JSON.stringify({id:id}), this.options).pipe(map(res => res.json()))
+  }
   getBatchData(batchNumber) {
     let url = this.baseUrl + "batch?batchNumber=" + batchNumber;
     return this.http.get(url).pipe(map(reponse =>

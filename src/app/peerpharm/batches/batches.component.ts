@@ -258,6 +258,20 @@ export class BatchesComponent implements OnInit {
  
   }
 
+  setBatchAsScheduled(id){
+    debugger;
+    if(confirm('האם לשנות סטטוס לאצווה זו ?')) {
+      this.batchService.setBatchToSchedule(id).subscribe(data=>{
+        if(data){
+          let batch = this.batches.find(b=>b._id == data._id)
+          batch.scheduled = data.scheduled
+          if(batch.scheduled == 'yes') batch.color = 'yellow'
+          this.toastSrv.success('סטטוס עודכן בהצלחה')
+        }
+      })
+    }
+  }
+
 
   loadSpecTable(itemNumber) {
     debugger;

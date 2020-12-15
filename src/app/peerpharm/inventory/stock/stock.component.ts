@@ -103,6 +103,14 @@ export class StockComponent implements OnInit {
     material: '',
     price: ''
   }
+
+  newQApallet: any = {
+    customerName:'',
+    allUnits:'',
+    shelf:'',
+    qaStatus:'מוכן לשליחה',
+    itemNumber:''
+  }
   alterSuppliers: any[];
   buttonColor: string = '#2962FF';
   buttonColor2: string = 'white';
@@ -164,6 +172,7 @@ export class StockComponent implements OnInit {
   originShelfQntBefore: Number = 0;
   amountChangeDir: String;
   sehlfChangeNavBtnColor: String = "";
+  amountForPalletBtnColor: String = "";
   amountChangeNavBtnColor: String = "#1affa3";
   ItemBatchArr: Array<any>;
   filterVal: String = '';
@@ -949,6 +958,11 @@ export class StockComponent implements OnInit {
 
   }
 
+  createNewQAPallet(){
+  debugger;
+  this.newQApallet;
+  }
+
   getAllCmptTypesAndCategories() {
     this.cmptTypeList = [];
     this.cmptCategoryList = [];
@@ -1040,9 +1054,18 @@ export class StockComponent implements OnInit {
       this.amountChangeDir = 'shelfChange';
       this.sehlfChangeNavBtnColor = "#1affa3";
       this.amountChangeNavBtnColor = "";
-    } else {
+      this.amountForPalletBtnColor = "";
+    } 
+    else if(direction == 'withdrawForPallet'){
+      this.amountChangeDir = 'withdrawForPallet';
+      this.sehlfChangeNavBtnColor = "";
+      this.amountForPalletBtnColor = "#1affa3";
+      this.amountChangeNavBtnColor = "";
+    }
+    else {
       this.amountChangeDir = '';
       this.sehlfChangeNavBtnColor = "";
+      this.amountForPalletBtnColor = "";
       this.amountChangeNavBtnColor = "#1affa3";
     }
   }
