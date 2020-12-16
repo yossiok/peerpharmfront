@@ -338,6 +338,10 @@ export class QaPalletsComponent implements OnInit {
         }
         this.editBillNumber('')
         this.toastr.success("מספר חשבונית עודכן בהצלחה!")
+
+        setTimeout(() => {
+          this.getAllReadyForBill();
+        }, 2000);
       }
 
     })

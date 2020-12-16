@@ -1134,8 +1134,8 @@
                                     <label class="labelGeneral">{{ 'License' | translate }}
                                         {{ 'Shades' | translate }}</label>
 
-                                    <label class="labelGeneral">{{ 'License' | translate }}
-                                        {{ 'Used' | translate }}</label>
+                                    <label class="labelGeneral">{{ 'Original' | translate }}
+                                        {{ 'License' | translate }}</label>
 
                                     <label class="labelGeneral">{{ 'Years' | translate }} {{ 'Untill' | translate }}
                                         {{ 'Exp' | translate }}</label>
@@ -1149,12 +1149,12 @@
                                     <input type="date" class="form-control" id="id_licsensDate"
                                         [(ngModel)]=itemShown.licsensDate>
 
-                                    <input type="text" class="form-control">
+                                    <input [(ngModel)]=itemShown.licenseShade type="text" class="form-control">
 
-                                    <input type="text" class="form-control">
+                                    <input [(ngModel)]=itemShown.originalLicense type="text" class="form-control">
 
                                     <input type="number" class="form-control" id="id_yearsUntillExp"
-                                        [(ngModel)]=itemShown.yearsUntillExpired>
+                                        [(ngModel)]=itemShown.yearsUntilExpired>
                                 </div>
                             </div>
 

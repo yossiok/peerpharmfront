@@ -263,14 +263,14 @@
               <td colspan="10" style="width: 100%; padding-right: 0px; padding-left:0px"   (dragover)="startShakeDragOver($event)"   (drop)="getDroppedElemnt($event)"  >
                 <table style="width: 100%;"  >
                   <tr *ngFor="let item of phase.items; let i = index" draggable="true" style="cursor: move; border:10px solid #f0f0f0" (dragstart)="startItemDrag($event)"  (dragleave)="stopItemDrag($event)" 
-                   [attr.data-phase]="phase.phaseName"  [attr.data-itemnumber]="item.itemNumber"   >
+                   [attr.data-phase]="phase.phaseName"  [attr.data-itemnumber]="item.itemNumber">
                     <td style="width: 10%;">{{ phase.phaseName }}</td>
                     <td *ngIf="item.itemNumber !== EditRowId">
                       {{ phase.remarks }}
                     </td>
                     <td style="width: 10%;"
-                      *ngIf="item.itemNumber === EditRowId"
-                      (click)="edit(item.itemNumber)"
+                      *ngIf="item.itemNumber === EditRowId && phase.phaseName == EditPhase"
+                      (click)="edit(item.itemNumber,phase.phaseName)"
                     >
                       <textarea
                         #phaseRemarksUpdate
@@ -285,17 +285,17 @@
                    
                     <td style="width: 10%;"></td> 
                     <td style="width: 10%;"></td> 
-                    <td style="width: 10%;">{{ item.itemNumber }}</td>
-                    <td style="width: 10%;">{{ item.itemName }}</td>
-                    <td style="width: 10%;"
+                    <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;">{{ item.itemNumber }}</td>
+                    <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;">{{ item.itemName }}</td>
+                    <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;"
                       *ngIf="item.itemNumber !== EditRowId"
-                      (click)="edit(item.itemNumber)"
+                      (click)="edit(item.itemNumber,phase.phaseName)"
                     >
                       {{ item.percentage }}
                     </td>
                     <td style="width: 10%;"
-                      *ngIf="item.itemNumber === EditRowId"
-                      (click)="edit(item.itemNumber)"
+                      *ngIf="item.itemNumber === EditRowId && phase.phaseName == EditPhase"
+                     
                     >
                       <input
                         #percentageUpdate
@@ -303,16 +303,16 @@
                         [value]="item.percentage"
                       />
                     </td>
-                    <td style="width: 10%;"
+                    <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;"
                       *ngIf="item.itemNumber !== EditRowId"
-                      (click)="edit(item.itemNumber)"
+                      (click)="edit(item.itemNumber,phase.phaseName)"
                     >
                       {{ item.remarks }}
                     </td>
                   
                     <td style="width: 10%;"
-                      *ngIf="item.itemNumber === EditRowId"
-                      (click)="edit(item.itemNumber)"
+                      *ngIf="item.itemNumber === EditRowId && phase.phaseName == EditPhase"
+                      
                     >
                       <input
                         #itemRemarksUpdate
@@ -589,6 +589,7 @@
           class="btn btn-success"
           (click)="updateFormuleWhenPrint()"
           printSectionId="print-section"
+          [useExistingCss]="true"
           [printStyle]="{
             th: { border: 'solid 1px' },
             td: { border: 'solid 1px', 'font-size': '17px'}
@@ -642,17 +643,17 @@
                     {{ phase.phaseName }}
                   </td>
                   <!-- <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td> -->
-                  <td style="padding:5px">{{ item.itemName }}</td>
-                  <td style="padding:5px">{{ item.itemNumber }}</td>
+                  <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.itemName }}</td>
+                  <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.itemNumber }}</td>
                   <td style="padding:5px"></td>
                  
 
                   <!-- <td>{{ item.remarks }}</td> -->
                   <!-- <td>{{item.quantity}}&nbsp; {{item.quantityUnits}}</td> -->
                   <td style="padding:5px"></td>
-                  <td style="padding:5px">{{ item.percentage }}%</td>
+                  <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.percentage }}%</td>
                   <!-- <td>{{item.temp}}</td> -->
-                  <td style="padding:5px">{{item.itemRemarks}}{{item.remarks}}</td>
+                  <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{item.itemRemarks}}{{item.remarks}}</td>
                   <td style="padding:5px"
                     *ngIf="i == 0"
                     [attr.rowspan]="phase.items.length"

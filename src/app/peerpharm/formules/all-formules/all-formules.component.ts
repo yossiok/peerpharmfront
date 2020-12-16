@@ -20,6 +20,7 @@ export class AllFormulesComponent implements OnInit {
   materials: any[];
   materialsForFormules: any[];
   EditRowId: any = "";
+  EditPhase: any = "";
   currentDoc: any;
   currentFormule: any;
   sumFormulePrice: Number;
@@ -132,7 +133,7 @@ export class AllFormulesComponent implements OnInit {
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.edit('');
+    this.edit('','');
     this.editPhases('')
 
   }
@@ -207,21 +208,19 @@ export class AllFormulesComponent implements OnInit {
     })
   }
 
-  edit(id) {
-    debugger;
-    this.EditRowId = id;
+  edit(id,phaseName) {
 
     if (id != '') {
-      this.currentDoc = this.allFormules.filter(i => {
-        if (i._id == id) {
-          return i;
-        }
-      })[0];
+      this.EditRowId = id;
+      this.EditPhase = phaseName
     } else {
       this.EditRowId = '';
+      this.EditPhase = '';
     }
     // }
   }
+
+  
   approveFormule(id, formuleNumber) {
     debugger;
     this.user = this.authService.loggedInUser.userName;
@@ -763,7 +762,7 @@ export class AllFormulesComponent implements OnInit {
               item.remarks = this.itemRemarksUpdate.nativeElement.value
               item.percentage = Number(this.percentageUpdate.nativeElement.value)
               this.toastSrv.success('עודכן בהצלחה !')
-              this.edit('')
+              this.edit('','')
             } else {
 
             }
