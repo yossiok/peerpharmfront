@@ -103,6 +103,9 @@ export class ItemslistComponent implements OnInit {
         }
         
       })
+      items.sort(function(a, b) { 
+        return a.itemNumber- b.itemNumber;
+        })
       this.items.push(...items); 
       if(items.length<1500)
       {

@@ -360,14 +360,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      // {
-      //   path: '/peerpharm/inventory/shelf-list',
-      //   title: 'Shelf List',
-      //   icon: 'fas fa-address-book',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
+      {
+        path: '/peerpharm/inventory/shelf-list',
+        title: 'Shelf List',
+        icon: 'fas fa-address-book',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
       {
         path: '/peerpharm/inventory/wharehouse',
         title: 'Warehouse',

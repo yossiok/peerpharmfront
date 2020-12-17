@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
 
 @Component({
@@ -9,23 +10,25 @@ import { ItemsService } from 'src/app/services/items.service';
 export class ShelfListComponent implements OnInit {
 
 
-  shelfDetails:any[];
+  allShelfs:any;
 
-  constructor(private itemService:ItemsService) { }
+  constructor(private itemService:ItemsService,private inventorySrv:InventoryService) { }
 
   ngOnInit() {
   }
 
+  
+  getShelfsByWH(ev){
+    debugger;
+    let whareHouse = ev.target.value;
+    this.inventorySrv.shelfListByWH(whareHouse).subscribe(data=>{
+    if(data){
+      data.sort((a,b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0)); 
+      this.allShelfs = data;
+      
+    }
+    })
+  }
+    
 
-  getAllItemShelfs(ev){
-  var shelfNumber = ev.target.value;
-  if(shelfNumber != ''){
-    this.itemService.shelfDetailsByNumber(shelfNumber).subscribe(data=>{
-      this.shelfDetails = data;
-      })
-  } else {
-    this.shelfDetails = []
-  }
- 
-  }
 }

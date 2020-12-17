@@ -2248,6 +2248,7 @@
                 <thead class="text-white bg-success">
                   <tr>
                     <th>ספק</th>
+                    <th>הזמנה</th>
                     <th>אצווה</th>
                     <th>כמות</th>
                     <th>תאריך תפוגה</th>
@@ -2258,6 +2259,7 @@
                 <tbody style="overflow-y: scroll;">
                   <tr *ngFor="let arrival of materialArrivals">
                     <td>{{arrival.supplierName}}</td>
+                    <td>{{arrival.cmxOrderN}}</td>
                     <td>{{arrival.lotNumber}}</td>
                     <td>{{arrival.totalQnt}}</td>
                     <td>{{arrival.expiryDate | date: 'dd/MM/yyyy'}}</td>

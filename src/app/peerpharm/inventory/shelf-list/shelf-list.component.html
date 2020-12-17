@@ -12,10 +12,15 @@
     </div>
     <div class="col-2"></div>
     <div class="col-2">
-      <label class="form-control">Shelf Number</label>
+      <label class="form-control">Whare House</label>
     </div>
     <div class="col-2">
-      <input (change)="getAllItemShelfs($event)" class="form-control" type="text">
+      <select (change)="getShelfsByWH($event)" class="form-control">
+        <option selected="true" disabled="disabled">Choose WhareHouse</option> 
+        <option value="5c0d1831d1b74a43e81e8edb">Kasem</option>
+        <option value="5c1124ef2db99c4434914a0e">Rosh HaAyin</option>
+        <option value="5c31bb6f91ca6b2510349ce9">Rosh HaAyin products</option>
+      </select>
     </div>
     <div class="col-2"></div>
     <div class="col-2"></div>
@@ -23,19 +28,27 @@
 
   <div id="print-section" class="row mt-4">
     <div class="col-12">
-      <table class="table table-striped table-hover">
+      <table class="table table-bordered table-hover">
         <thead class="bg-info text-white">
           <tr>
+            <th>#</th>
             <th>Item Number</th>
-            <th>Batch Number</th>
             <th>Amount</th>
+            <th>Position</th>
+            <th>Count Date</th>
+            <th>Counted Amount</th>
+            <th>Signature</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of shelfDetails">
-            <td>{{item.item}}</td>
-            <td>{{item.batchNumber}}</td>
-            <td>{{item.amount}}</td>
+          <tr *ngFor="let shelf of allShelfs;let i = index">
+            <td>{{i+1}}</td>
+            <td>{{shelf._id}}</td>
+            <td>{{shelf.total}}</td>
+            <td>{{shelf.position}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>

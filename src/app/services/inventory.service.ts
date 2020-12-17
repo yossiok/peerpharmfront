@@ -23,6 +23,11 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell";
     return this.http.get(url).pipe(map(reponse => reponse.json())); 
   }
+  shelfListByWH(whareHouseId):Observable<any> {
+  
+    let url = this.baseUrl + "itemShell?shelfListByWH="+whareHouseId;
+    return this.http.get(url).pipe(map(reponse => reponse.json())); 
+  }
 
   getItemShellsByDate(fromDate, toDate):Observable<any>{
  
