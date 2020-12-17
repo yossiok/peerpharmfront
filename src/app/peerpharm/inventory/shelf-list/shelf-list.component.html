@@ -10,7 +10,7 @@
     <div class="col-2">
       <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}" style="background: none;border:none" printSectionId="print-section" ngxPrint><img src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>  
     </div>
-    <div class="col-2"></div>
+  
     <div class="col-2">
       <label class="form-control">Whare House</label>
     </div>
@@ -22,7 +22,12 @@
         <option value="5c31bb6f91ca6b2510349ce9">Rosh HaAyin products</option>
       </select>
     </div>
-    <div class="col-2"></div>
+    <div class="col-2">
+      <label class="form-control">Position</label>
+    </div>
+    <div class="col-2">
+      <input class="form-control" (blur)="filterByShelf($event)">
+    </div>
     <div class="col-2"></div>
   </div>
 
