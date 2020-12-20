@@ -12,6 +12,7 @@ export class ShelfListComponent implements OnInit {
 
   allShelfs:any;
   allShelfsCopy:any;
+  itemType:any;
 
   constructor(private itemService:ItemsService,private inventorySrv:InventoryService) { }
 
@@ -22,11 +23,19 @@ export class ShelfListComponent implements OnInit {
   getShelfsByWH(ev){
     debugger;
     let whareHouse = ev.target.value;
+    if(whareHouse == 'materials' || whareHouse == 'components'){
+      this.itemType = whareHouse
+      whareHouse = '5c1124ef2db99c4434914a0e'
+      
+    }
     this.inventorySrv.shelfListByWH(whareHouse).subscribe(data=>{
     if(data){
-      data.sort((a,b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0)); 
+      data.sort((a,b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0));
+      if(this.itemType == 'components') data = data.filter(s=>s.itemType == 'component')
+      if(this.itemType == 'materials') data = data.filter(s=>s.itemType == 'material')
       this.allShelfs = data;
       this.allShelfsCopy = data;
+
       
     }
     })
@@ -34,6 +43,7 @@ export class ShelfListComponent implements OnInit {
 
   filterByShelf(ev){
     debugger;
+    this.allShelfs = this.allShelfsCopy
     let position = ev.target.value;
 
     if(position != ''){

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
 import { BatchesService } from 'src/app/services/batches.service';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
   selector: 'app-new-batch',
@@ -27,7 +28,7 @@ export class NewBatchComponent implements OnInit {
   lastBatch:any;
   @ViewChild('printBtn') printBtn: ElementRef;
 
-  constructor(private toastSrv:ToastrService,private itemSrv:ItemsService,private batchService:BatchesService) { }
+  constructor(private inventorySrv:InventoryService,private toastSrv:ToastrService,private itemSrv:ItemsService,private batchService:BatchesService) { }
 
   ngOnInit() {
     this.getLastBatch();
@@ -117,25 +118,39 @@ export class NewBatchComponent implements OnInit {
     debugger;
     this.newBatch.batchNumber = this.newBatch.batchNumber.toLowerCase();
     this.newBatch.batchCreated = new Date().getTime();
-    this.batchService.addBatch(this.newBatch).subscribe(data=>{
-    if(data){
-      this.printBtn.nativeElement.click();  
-      this.toastSrv.success('באטצ נוסף בהצלחה !')
-      this.newBatch.barrels = ''
-      this.newBatch.ph = ''
-      this.newBatch.weightKg = ''
-      this.newBatch.produced = ''
-      this.newBatch.expration = ''
-      this.newBatch.order = ''
-      this.newBatch.itemName = ''
-      this.newBatch.weightQtyLeft =''
-      this.newBatch.item = ''
-      this.newBatch.batchNumber = '20pp'
-      this.allStickers = [];
-      this.getLastBatch();
-    }
-    })
 
+    if(this.newBatch.item == '' || this.newBatch.batchNumber.length < 5){
+      this.toastSrv.error('You must fill all the fields')
+    } else {
+      this.batchService.addBatch(this.newBatch).subscribe(data=>{
+        if(data){
+          this.printBtn.nativeElement.click();  
+          this.toastSrv.success('באטצ נוסף בהצלחה !')
+          // this.reduceMaterialAmounts(this.newBatch.item,this.newBatch.weightKg)
+          this.newBatch.barrels = ''
+          this.newBatch.ph = ''
+          this.newBatch.weightKg = ''
+          this.newBatch.produced = ''
+          this.newBatch.expration = ''
+          this.newBatch.order = ''
+          this.newBatch.itemName = ''
+          this.newBatch.weightQtyLeft =''
+          this.newBatch.item = ''
+          this.newBatch.batchNumber = '20pp'
+          this.allStickers = [];
+          this.getLastBatch();
+          
+        }
+        })
+    }
+
+
+  }
+
+  reduceMaterialAmounts(formuleNumber,weightKG){
+  this.inventorySrv.reduceMaterialAmounts(formuleNumber,weightKG).subscribe(data=>{
+
+  })
   }
 
 

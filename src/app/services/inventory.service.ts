@@ -185,6 +185,11 @@ reduceMaterialAmount(material):Observable<any>{
   let url = this.baseUrl + "material/reduceMaterialAmount";
   return this.http.post(url, JSON.stringify(material), this.options).pipe(map(res => res.json()))
 }
+reduceMaterialAmounts(formuleNumber,weightKG):Observable<any>{ 
+  
+  let url = this.baseUrl + "material/reduceMaterialAmounts";
+  return this.http.post(url, JSON.stringify({formuleNumber:formuleNumber,weightKG:weightKG}), this.options).pipe(map(res => res.json()))
+}
 recieveNewComponents(allArrivals):Observable<any>{ 
   
   let url = this.baseUrl + "itemShell/recieveNewComponents";

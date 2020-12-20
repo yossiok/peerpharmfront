@@ -18,8 +18,10 @@
       <select (change)="getShelfsByWH($event)" class="form-control">
         <option selected="true" disabled="disabled">Choose WhareHouse</option> 
         <option value="5c0d1831d1b74a43e81e8edb">Kasem</option>
-        <option value="5c1124ef2db99c4434914a0e">Rosh HaAyin</option>
-        <option value="5c31bb6f91ca6b2510349ce9">Rosh HaAyin products</option>
+        <option value="5cf64e77e32883115c39dc56">Materials - Outside</option>
+        <option value="materials">Rosh HaAyin - Materials</option>
+        <option value="components">Rosh HaAyin - Components</option>
+        <option value="5c31bb6f91ca6b2510349ce9">Rosh HaAyin - Products</option>
       </select>
     </div>
     <div class="col-2">
@@ -38,8 +40,8 @@
           <tr>
             <th>#</th>
             <th>Item Number</th>
-            <th>Amount</th>
             <th>Position</th>
+            <th>Amount</th>
             <th>Count Date</th>
             <th>Counted Amount</th>
             <th>Signature</th>
@@ -48,9 +50,9 @@
         <tbody>
           <tr *ngFor="let shelf of allShelfs;let i = index">
             <td>{{i+1}}</td>
-            <td>{{shelf._id}}</td>
-            <td>{{shelf.total}}</td>
+            <td>{{shelf.item}}</td>
             <td>{{shelf.position}}</td>
+            <td>{{shelf.total}}</td>
             <td></td>
             <td></td>
             <td></td>
