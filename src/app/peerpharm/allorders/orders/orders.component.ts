@@ -348,9 +348,21 @@ export class OrdersComponent implements OnInit {
     } else {
       this.orders = this.ordersCopy
     }
+  }
 
-
-
+  filterOrdersByDate(type){
+    debugger;
+    this.orders = this.ordersCopy
+  if(type == 'order'){
+    this.orders.sort(function(a,b){
+      return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+    });
+  }
+  if(type == 'delivery'){
+    this.orders.sort(function(a,b){
+      return new Date(b.deliveryDate).getTime() - new Date(a.deliveryDate).getTime()
+    });
+  }
   }
 
 

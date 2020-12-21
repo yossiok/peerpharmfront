@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, EventEmitter } from '@angular/core';
 import { FormulesService } from 'src/app/services/formules.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
@@ -47,6 +47,8 @@ export class NewFormuleComponent implements OnInit {
   @ViewChild('updatePhaseName') updatePhaseName: ElementRef;
   @ViewChild('updateItemsIndex') updateItemsIndex: ElementRef;
   @ViewChild('updatePercentage') updatePercentage: ElementRef;
+
+
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -243,6 +245,7 @@ export class NewFormuleComponent implements OnInit {
         this.formuleService.addChildToFather(obj).subscribe(data=>{
           debugger;
           if(data){
+          this.formuleService.newFormuleAdded.emit(data);
            this.Toastr.success("פורמולה מספר"+data.formuleNumber+"נוצרה בהצלחה");
            this.childrenToAdd = "";
           }

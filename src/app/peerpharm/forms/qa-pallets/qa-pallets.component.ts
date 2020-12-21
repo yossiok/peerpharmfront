@@ -618,15 +618,9 @@ export class QaPalletsComponent implements OnInit {
       pallet.lines.forEach(line => {
       let obj = {
         itemNumber:line.itemNumber,
-        quantity:line.floorNumber*line.unitsInKarton*line.kartonQuantity
-      }
-      if(line.lastFloorQuantity > 0){
-        obj.quantity = obj.quantity + (line.lastFloorQuantity*line.unitsInKarton)
+        quantity:line.unitsToCombine
       }
 
-      if(line.unitsQuantityPartKarton > 0){
-        obj.quantity = obj.quantity + line.unitsQuantityPartKarton
-      }
       result.push(obj)
         
     });

@@ -81,8 +81,12 @@
               <option value="צפון מזרחי">צפון מזרחי</option>
               <option value="ירושלים">ירושלים</option>
             </select></th>
-          <th style="padding:5px">Order date</th>
-          <th style="padding:5px">Delivery Date</th>
+          <th style="padding:5px">Order date
+            <i class="ti-exchange-vertical" (click)="filterOrdersByDate('order')" style="cursor:pointer"></i>
+          </th>
+          <th style="padding:5px">Delivery Date
+            <i class="ti-exchange-vertical" (click)="filterOrdersByDate('delivery')" style="cursor:pointer"></i>
+          </th>
           <th style="padding:5px">Customer Order</th>
           <th style="width:12%; padding:5px">Remarks</th>
           <th style="padding:5px ; width: 7%">

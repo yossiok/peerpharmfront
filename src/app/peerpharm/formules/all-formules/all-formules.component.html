@@ -141,7 +141,7 @@
         <i
           class="ti-save text-success m-r-10"
           style="font-size: 18px; cursor: pointer;"
-          (click)="saveEdit(currDoc)"
+          (click)="saveEdit(formule)"
         ></i>
       </td>
     </tr>
@@ -670,7 +670,7 @@
         </table>
       </div>
 
-      <h4 dir="rtl">{{ updateFormule.impRemarks }}</h4>
+      <h4 style="text-align: center;">{{ updateFormule.impRemarks }}</h4>
 
       <div class="modal-footer">
         <br />
@@ -702,6 +702,8 @@
             </tr>
           </tbody>
         </table>
+
+        <h4 style="text-align: center;margin-top: 5px;">אישור ניקיון מיקסר:__________</h4>
       </div>
 
       <!-- <div class="container text-center">

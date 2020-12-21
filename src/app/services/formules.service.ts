@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable,Output } from '@angular/core';
 import { Formule } from '../peerpharm/formules/models/formule';
 import { FormuleItem } from '../peerpharm/formules/models/formule-item';
 import { Http, Response } from '@angular/http';
@@ -17,6 +17,8 @@ export class FormulesService {
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = '/';
+
+  @Output() newFormuleAdded: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: Http) {}
 
@@ -65,7 +67,7 @@ export class FormulesService {
   }
 
 
-
+  
 
 
 

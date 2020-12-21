@@ -128,7 +128,14 @@ export class AllFormulesComponent implements OnInit {
 
 
 
-  constructor(private invtSer: InventoryService, private formuleService: FormulesService, private toastSrv: ToastrService, private modalService: NgbModal, private authService: AuthService) { }
+  constructor(private invtSer: InventoryService, private formuleService: FormulesService, private toastSrv: ToastrService, private modalService: NgbModal, private authService: AuthService) {
+    debugger;
+    this.formuleService.newFormuleAdded.subscribe(data=>{
+      if(data){
+        this.allFormules.push(data)
+      }
+    })
+   }
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -143,6 +150,7 @@ export class AllFormulesComponent implements OnInit {
     this.getAllMaterials();
     this.getAllParentsFormules();
 
+  
     this.today = new Date()
     debugger;
     this.user = this.authService.loggedInUser.userName;
@@ -325,38 +333,38 @@ export class AllFormulesComponent implements OnInit {
     if (this.formuleName.nativeElement.value != "") {
       
       if(this.authService.loggedInUser.userName){
-        this.currentDoc.lastUpdateUser = this.authService.loggedInUser.userName
+        currdoc.lastUpdateUser = this.authService.loggedInUser.userName
       }
       if(this.formuleName.nativeElement.value){
-        this.currentDoc.formuleName = this.formuleName.nativeElement.value.trim();
+        currdoc.formuleName = this.formuleName.nativeElement.value.trim();
       }
       if(this.formuleNumber.nativeElement.value){
-        this.currentDoc.formuleNumber = this.formuleNumber.nativeElement.value.trim();
+        currdoc.formuleNumber = this.formuleNumber.nativeElement.value.trim();
       }
       if(this.formulePhFrom.nativeElement.value){
-        this.currentDoc.phFrom = this.formulePhFrom.nativeElement.value.trim();
+        currdoc.phFrom = this.formulePhFrom.nativeElement.value.trim();
       }
       if(this.formulePhTo.nativeElement.value){
-        this.currentDoc.phTo = this.formulePhTo.nativeElement.value.trim();
+        currdoc.phTo = this.formulePhTo.nativeElement.value.trim();
       }
       // if(this.formuleClient.nativeElement.value != undefined){
-      //   this.currentDoc.client = this.formuleClient.nativeElement.value.trim();
+      //   currdoc.client = this.formuleClient.nativeElement.value.trim();
       // }
       if(this.formuleLastUpdate.nativeElement.value){
-        this.currentDoc.lastUpdate = this.formatDate(new Date())
+        currdoc.lastUpdate = this.formatDate(new Date())
       }
       // if(this.formuleParent.nativeElement.value){
-      //   this.currentDoc.parent = this.formuleParent.nativeElement.value.trim();
+      //   currdoc.parent = this.formuleParent.nativeElement.value.trim();
       // }
       // if(this.formuleCategory.nativeElement.value){
-      //   this.currentDoc.parentName = this.formuleCategory.nativeElement.value.trim();
+      //   currdoc.parentName = this.formuleCategory.nativeElement.value.trim();
       // }
-      if(this.formuleImpRemarks.nativeElement.value){
-        this.currentDoc.impRemarks = this.formuleImpRemarks.nativeElement.value.trim();
+      if(this.formuleImpRemarks.nativeElement.value != null){
+        currdoc.impRemarks = this.formuleImpRemarks.nativeElement.value.trim();
       }
 
       if (confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
-        this.updateDocument()
+        this.updateDocument(currdoc)
       }
 
     } else {
@@ -624,19 +632,19 @@ export class AllFormulesComponent implements OnInit {
   }
 
 
-  updateDocument() {
+  updateDocument(currdoc) {
     debugger;
 
 
-    this.formuleService.updateFormulesForm(this.currentDoc).subscribe(data => {
+    this.formuleService.updateFormulesForm(currdoc).subscribe(data => {
 
       this.allFormules.map(doc => {
-        if (doc._id == this.currentDoc._id) {
+        if (doc._id == currdoc._id) {
           doc = data;
         }
       });
       this.allFormulesCopy.map(doc => {
-        if (doc._id == this.currentDoc._id) {
+        if (doc._id == currdoc._id) {
           doc = data;
         }
       });
