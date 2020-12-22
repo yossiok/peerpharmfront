@@ -126,7 +126,7 @@ export class NewBatchComponent implements OnInit {
         if(data){
           this.printBtn.nativeElement.click();  
           this.toastSrv.success('באטצ נוסף בהצלחה !')
-          // this.reduceMaterialAmounts(this.newBatch.item,this.newBatch.weightKg)
+          this.reduceMaterialAmounts(this.newBatch.item,this.newBatch.weightKg)
           this.newBatch.barrels = ''
           this.newBatch.ph = ''
           this.newBatch.weightKg = ''

@@ -402,6 +402,8 @@
                 <!-- <img *ngIf="stockAdmin" (click)="deleteStockItemValidation(component.componentN)"
                   src="../../../../assets/images/deleteBtn.png" alt="delete stock item"
                   style="width: 60px ; cursor: pointer; "> -->
+                  <img (click)="deleteComponent(component._id)" *ngIf="showDeleteBtn" style="width:30px" src="../../../../assets/images/deleteBtn.png">
+                
               </td>
             </tr>
           </tbody>

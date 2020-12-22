@@ -86,7 +86,13 @@ export class UsersService  {
   changePassword(userName,newPass,oldPass):Observable<any> {
     let url = this.baseUrl2 + 'users/changepassword';
     debugger;
-    return this.httpClient.post(url, JSON.stringify({userName:userName,newPassword:newPass,oldPassword:oldPass}),httpOptions);
+    return this.httpClient.post(url, JSON.stringify({userName:userName,newEmail:newPass,oldPassword:oldPass}),httpOptions);
+      
+  }
+  updateEmail(userId,newEmail):Observable<any> {
+    let url = this.baseUrl2 + 'users/updateEmail';
+    debugger;
+    return this.httpClient.post(url, JSON.stringify({userId:userId,newEmail:newEmail}),httpOptions);
       
   }
 

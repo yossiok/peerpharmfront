@@ -20,8 +20,12 @@
                         <div class="row mt-3">
                             <div class="col-md-12"><label class="labels">Department</label><input type="text"
                                     class="form-control" disabled placeholder="{{user.userDepartment}}" value=""></div>
-                            <div class="col-md-12"><label class="labels">User Email</label><input type="text"
-                                    class="form-control" disabled placeholder="{{user.userEmail}}" value=""></div>
+                            <div class="col-md-12">
+                                <label class="labels">User Email</label>
+                                <input type="text" class="form-control" [(ngModel)]="newUserEmail" placeholder="{{user.userEmail}}" value="">
+                                <button class="btn btn-success"(click)="updateEmail(user._id)">Change Email</button>
+                                </div>
+                               
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-6"><label class="labels">Country</label><input type="text"

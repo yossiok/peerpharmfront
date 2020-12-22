@@ -14,6 +14,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 export class UserSettingsComponent implements OnInit {
   oldPassword:any;
   newPassword:any;
+  newUserEmail:any;
   user:any;
 
   userOrders:any;
@@ -46,6 +47,21 @@ export class UserSettingsComponent implements OnInit {
       this.newPassword = ''
     }
     })
+  }
+
+  updateEmail(userId){
+    if(confirm('האם לעדכן מייל חדש ?')){
+      if(this.newUserEmail != ''){
+        this.userService.updateEmail(userId,this.newUserEmail).subscribe(data=>{
+          if(data){
+            this.ToastService.success('מייל עודכן בהצלחה !')
+          }
+        })
+      } else {
+        this.ToastService.error('Email must be filled')
+      }
+    }
+
   }
 
   getOpenOrdersByUser(){

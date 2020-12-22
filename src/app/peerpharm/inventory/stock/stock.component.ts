@@ -40,6 +40,7 @@ export class StockComponent implements OnInit {
   smallLoader: boolean = true;
   openOrderRecommendModal: boolean = false;
   customersModal: boolean = false;
+  showDeleteBtn: boolean = false;
   inventoryNewReqModal: boolean = false;
   itemsMovementModal: boolean = false;
   invRequestsModal: boolean = false;
@@ -1244,7 +1245,7 @@ export class StockComponent implements OnInit {
 
 
   getUserInfo() {
-
+    debugger;
     this.authService.userEventEmitter.subscribe(user => {
       this.user = user.loggedInUser;
     })
@@ -1905,7 +1906,21 @@ export class StockComponent implements OnInit {
 
   }
 
+  deleteComponent(id){
+    this.inventoryService.deleteComponentById(id).subscribe(data=>{
+    if(data.msg == 'deleted'){
+      this.toastSrv.success('Component Deleted !')
+     this.components= this.components.filter(c=>c._id != id)
+    }
+    })
+  }
+
   async getUser() {
+    debugger;
+
+    if(this.authService.loggedInUser.userName == 'SHARK' || this.authService.loggedInUser.userName == 'sima'){
+      this.showDeleteBtn = true
+    }
     await this.authService.userEventEmitter.subscribe(user => {
       this.user = user;
       // this.user=user.loggedInUser;
