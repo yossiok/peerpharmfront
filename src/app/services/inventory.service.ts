@@ -153,6 +153,10 @@ addToFillingStorage(cmptObj):Observable<any>{
     let url = this.baseUrl + "component/addToFillingStorage";
     return this.http.post(url, JSON.stringify(cmptObj), this.options).pipe(map(res => res.json()))
 }
+updateShelf(shelf):Observable<any>{ 
+    let url = this.baseUrl + "itemShell/updateShelf";
+    return this.http.post(url, JSON.stringify(shelf), this.options).pipe(map(res => res.json()))
+}
 
 addNewMaterial(materialObj):Observable<any>{ 
   

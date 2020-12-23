@@ -291,13 +291,13 @@ export const PeerPharmRputs: Routes =[
     },
     component: ChangeShelfComponent,
   },
- /* {
+ {
     path: 'taskboard/main',
     data: {
       title: 'task-board'
     },
     component: ContentComponent
-  },*/
+  },
   {
     path: 'new-formule/new-formule',
     canActivate:[ScreenGuard],

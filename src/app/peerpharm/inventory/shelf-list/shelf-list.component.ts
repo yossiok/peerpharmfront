@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
 
@@ -11,10 +12,20 @@ export class ShelfListComponent implements OnInit {
 
 
   allShelfs:any;
+  EditRow:any;
+  materialShelfs:any;
   allShelfsCopy:any;
   itemType:any;
 
-  constructor(private itemService:ItemsService,private inventorySrv:InventoryService) { }
+  @ViewChild('shelfPosition') shelfPosition: ElementRef;
+  @ViewChild('shelfAmount') shelfAmount: ElementRef;
+
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    this.edit('');
+  }
+
+  constructor(private toastSrv:ToastrService,private itemService:ItemsService,private inventorySrv:InventoryService) { }
 
   ngOnInit() {
   }
@@ -53,6 +64,45 @@ export class ShelfListComponent implements OnInit {
     }
     
 
+  }
+
+  searchForShelfs(ev){
+    debugger;
+    if(ev.target.value != ''){
+      this.inventorySrv.getShelfListForMaterial(ev.target.value).subscribe(data=>{
+      if(data.msg =='noShelf'){
+        this.toastSrv.error('חומר גלם לא נמצא על מדף מסוים')
+      } else {
+      this.materialShelfs = data;
+      }
+      })
+    }
+  
+  }
+
+  edit(id){
+  if(id != ''){
+    this.EditRow = id
+  } else {
+    this.EditRow = ''
+  }
+  }
+
+  updateShelf(id){
+  debugger;
+  let amount = this.shelfAmount.nativeElement.value;
+  let position = this.shelfPosition.nativeElement.value;
+
+  let shelfToUpdate = this.materialShelfs.find(s=>s._id == id);
+  shelfToUpdate.amount = amount;
+  shelfToUpdate.position = position;
+
+  this.inventorySrv.updateShelf(shelfToUpdate).subscribe(data =>{
+    if(data){
+      this.toastSrv.success('מדף עודכן בהצלחה !')
+      this.edit('');
+    }
+  })
   }
     
 
