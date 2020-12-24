@@ -516,7 +516,7 @@
           <td style="border-right: 2px solid black;"></td>
           <td style="width:5%;cursor: pointer;" (click)="getCmptAmounts(material.componentN, material._id)">
 
-            {{material.amount}}
+            {{material.amount | number:'1.2-2'}}
             <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
               style="width: 40px; margin-left: 15px; cursor: pointer; float: right;">
 

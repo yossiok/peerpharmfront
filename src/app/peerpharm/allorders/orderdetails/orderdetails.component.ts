@@ -724,6 +724,7 @@ if(data){
   }
 
   async getOrderDetails() {
+    debugger;
     this.number = this.route.snapshot.paramMap.get('id');
     //if someone loaded just one item in orders screen through "Load" button
     if (this.number.includes(',')) this.number = this.number.split(",").filter(x => x != "");
@@ -1301,7 +1302,7 @@ debugger;
 
 
   async setSchedule(item, type) {
-
+    debugger;
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
