@@ -197,6 +197,10 @@ export class FormsService {
     let url = this.baseUrl + 'formDetails/getAllReadyForBillPLs';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllReadyBills() {
+    let url = this.baseUrl + 'formDetails/getAllReadyBills';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllClosedPallets() {
     let url = this.baseUrl + 'formDetails/getAllClosedPallets';
     return this.http.get(url).pipe(map(reponse => reponse.json()));

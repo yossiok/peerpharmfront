@@ -81,9 +81,11 @@
         <thead>
           <tr>
             <th>#</th>
+            <th>Name</th>
             <th>Position</th>
             <th>Amount</th>
             <th>Expire Date</th>
+            <th>Arrival Date</th>
             <th>Batch</th>
             <th>Supplier Batch</th>
             <th></th>
@@ -92,6 +94,7 @@
         <tbody>
           <tr *ngFor="let shelf of materialShelfs;let i = index">
             <td>{{i+1}}</td>
+            <td>{{shelf.materialName}}</td>
             <td (click)="edit(shelf._id)" *ngIf="EditRow != shelf._id">{{shelf.position}}</td>
             <td *ngIf="EditRow == shelf._id">
             <input #shelfPosition class="form-control" [value]="shelf.position">
@@ -103,6 +106,7 @@
             </td>
 
             <td>{{shelf.expirationDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{shelf.arrivalDate | date: 'dd/MM/yyyy'}}</td>
 
             <td>{{shelf.batchNumber}}</td>
 

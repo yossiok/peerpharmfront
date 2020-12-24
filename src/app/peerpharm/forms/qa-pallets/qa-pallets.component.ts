@@ -46,6 +46,7 @@ export class QaPalletsComponent implements OnInit {
   palletToAdd: any;
   lineToAdd: any;
   allReadyPackedLists: any[];
+  readyBills: any[];
 
 
   pallet = {
@@ -90,6 +91,7 @@ export class QaPalletsComponent implements OnInit {
     this.getAllPackedLists();
     this.getAllReadyForBill();
     this.getAllClosedPallets();
+    this.getAllReadyBills();
     this.getCostumers();
     this.getUser();
   }
@@ -648,6 +650,14 @@ export class QaPalletsComponent implements OnInit {
       this.showProductsBeforeDeliveryEN = true;
       this.showProductsBeforeDeliveryHE = false;
     }
+  }
+
+  getAllReadyBills(){
+    this.formService.getAllReadyBills().subscribe(data=>{
+      if(data){
+        this.readyBills = data
+      }
+    })
   }
 
   getAllReadyForBill() {

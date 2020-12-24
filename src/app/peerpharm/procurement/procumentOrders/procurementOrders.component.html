@@ -1035,22 +1035,22 @@
               <td>{{ line.itemName }}</td>
               <td>{{ line.itemNumber }}</td>
               <td>{{ line.componentNs }}</td>
-              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.itemRemarks }}</td>
-              <td *ngIf="line.itemNumber==EditRowId">
+              <td *ngIf="line.itemNumber!=EditRowId " (click)="edit(line.itemNumber,i)">{{ line.itemRemarks }}</td>
+              <td *ngIf="line.itemNumber==EditRowId && i == EditRowIndex">
                 <textarea #itemRemarks [value]="line.itemRemarks"></textarea>
               </td>
               <td>{{ line.measurement }}</td>
 
-              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{line.supplierPrice}}</td>
-              <td *ngIf="line.itemNumber==EditRowId">
+              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber,i)">{{line.supplierPrice}}</td>
+              <td *ngIf="line.itemNumber==EditRowId && i == EditRowIndex">
                 <input #supplierPrice [value]="line.supplierPrice" style="width:50px;" type="text">
               </td>
-              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.coin)">{{ line.coin }}</td>
-              <td *ngIf="line.itemNumber==EditRowId">
+              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.coin,i)">{{ line.coin }}</td>
+              <td *ngIf="line.itemNumber==EditRowId && i == EditRowIndex">
                 <input #orderCoin [value]="line.coin" style="width:50px;" type="text">
               </td>
 
-              <td *ngIf="line.itemNumber==EditRowId">
+              <td *ngIf="line.itemNumber==EditRowId && i == EditRowIndex">
 
 
                 <input #orderAmount [value]="line.supplierAmount" style="width:50px;" type="text">
@@ -1059,7 +1059,7 @@
               <!-- <td *ngIf="line.itemNumber==EditRowId">
              
             </td> -->
-              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">
+              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber,i)">
                 {{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
               <td *ngIf="line.itemNumber!=EditRowId"></td>
               <!--       

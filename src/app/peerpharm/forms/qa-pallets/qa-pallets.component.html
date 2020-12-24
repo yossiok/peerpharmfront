@@ -465,6 +465,54 @@
 
     </ng-template>
   </ng-container>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>חשבוניות</a>
+    <ng-template ngbNavContent>
+      <div class="container bg-white text-center">
+
+        <div class="row">
+          <div class="col-4"></div>
+          <div class="col-4 mt-3">
+            <h1 class="text-info">חשבוניות</h1>
+          </div>
+          <div class="col-4"></div>
+        </div>
+        <div class="row mt-3">
+          <div class="col">
+
+            <table class="table table-striped">
+              <thead class="text-white bg-info">
+                <tr>
+                  <th>#</th>
+                  <th>מספר</th>
+                  <th>שם לקוח</th>
+                  <th>מספר לחשבונית</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+
+                    <tr *ngFor="let packlist of readyBills;let i = index">
+                      <td>{{i+1}}</td>
+                      <td>{{packlist.packListNumber}}</td>
+                      <td><label (click)="openProductForm(packlist,'HE')"
+                          style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label>
+                      </td>
+                      <td style="cursor: pointer;">{{packlist.billNumber}}</td>
+                      <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
+                    </tr>
+ 
+            
+              </tbody>
+
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+    </ng-template>
+  </ng-container>
 </nav>
 <div [ngbNavOutlet]="nav" class="mt-2"></div>
 

@@ -56,6 +56,7 @@ export class ProcurementOrdersComponent implements OnInit {
   orderData: any[];
   arrivalData: any[];
   EditRowId: any = "";
+  EditRowIndex: any = "";
   EditRowComax: any = "";
   requestNum: any = "";
   user: any;
@@ -133,7 +134,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.edit('');
+    this.edit('','');
     this.editRecommend('', '')
   }
 
@@ -635,11 +636,13 @@ debugger;
     });
   }
 
-  edit(itemNumber) {
+  edit(itemNumber,index) {
     if (itemNumber != '') {
+      this.EditRowIndex = index
       this.EditRowId = itemNumber;
     } else {
       this.EditRowId = '';
+      this.EditRowIndex = ''
     }
   }
 
@@ -1519,7 +1522,7 @@ if(category != ''){
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice,itemRemarks,orderCoin).subscribe(data => {
+      this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice,itemRemarks,orderCoin,index).subscribe(data => {
         debugger
         for (let i = 0; i < this.procurementData.length; i++) {
           if (this.procurementData[i].orderNumber == orderNumber) {
@@ -1530,7 +1533,7 @@ if(category != ''){
             this.procurementData[i].item[index].coin = orderCoin
 
             this.toastr.success(" עודכן בהצלחה !")
-            this.edit('');
+            this.edit('','');
 
           }
 
