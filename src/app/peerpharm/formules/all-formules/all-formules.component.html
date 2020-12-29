@@ -262,7 +262,8 @@
             >
               <td colspan="10" style="width: 100%; padding-right: 0px; padding-left:0px"   (dragover)="startShakeDragOver($event)"   (drop)="getDroppedElemnt($event)"  >
                 <table style="width: 100%;"  >
-                  <tr *ngFor="let item of phase.items; let i = index" draggable="true" style="cursor: move; border:10px solid #f0f0f0" (dragstart)="startItemDrag($event)"  (dragleave)="stopItemDrag($event)" 
+                 <!-- draggable = true  -->
+                  <tr *ngFor="let item of phase.items; let i = index"  style="cursor: move; border:10px solid #f0f0f0" (dragstart)="startItemDrag($event)"  (dragleave)="stopItemDrag($event)" 
                    [attr.data-phase]="phase.phaseName"  [attr.data-itemnumber]="item.itemNumber">
                     <td style="width: 10%;">{{ phase.phaseName }}</td>
                     <td *ngIf="item.itemNumber !== EditRowId">

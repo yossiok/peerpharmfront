@@ -378,6 +378,17 @@ approvedPackgeRemarksInput: Boolean=false;
   }
   }
 
+  fillLastArrivalPosition(materialNumber){
+
+    this.invtSer.getMaterialArrivalByNumber(materialNumber).subscribe(data=>{
+    debugger;
+    if(data){
+      this.newMaterialArrival.controls.position.setValue(data[data.length-1].position)
+    }
+    })
+
+  }
+
   searchInternalNumber(){
     if(this.newMaterialArrival.value.internalNumber !=""){
       this.invtSer.getMaterialStockItemByNum(this.newMaterialArrival.value.internalNumber).subscribe(item => {
@@ -388,7 +399,7 @@ approvedPackgeRemarksInput: Boolean=false;
         }else if(item.length ==1){
           if(confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה'+' '+item[0].allowQtyInStock)){
             this.newMaterialArrival.controls.materialName.setValue(item[0].componentName);
-
+            this.fillLastArrivalPosition(this.newMaterialArrival.value.internalNumber)
             if(item[0].unit!="" && item[0].unit!=undefined && item[0].unit!=null ){
               // console.log(this.newMaterialArrival.value.mesureType)
               this.newMaterialArrival.controls.mesureType.setValue(item[0].unit);

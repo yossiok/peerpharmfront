@@ -111,6 +111,10 @@ export class InventoryService {
     let url = this.baseUrl + "material?componentN="+materialNumber
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getLastArrivalByMaterial(materialNumber):Observable<any>{
+    let url = this.baseUrl + "material?lastArrival="+materialNumber
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getMaterialsForFormules(materials):Observable<any>{
   debugger;
     let url = this.baseUrl + "material/materialsForFormule";

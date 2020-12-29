@@ -199,31 +199,36 @@ export class NewProcurementComponent implements OnInit {
 
       this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data => {
         debugger;
+        let items = data[0].items;
 
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].status == 'supplierGotOrder' || data[i].status == 'sentToSupplier') {
-            data[i].status = 'open'
-          }
-          if (data[i].supplierName == this.newProcurement.supplierName && data[i].status == 'open') {
-            this.existOpenOrderAlert = true;
-          }
-
+        if(items.length > 0) {
+          items.forEach(item => {
+            if(item.arrivedAmount != undefined){
+              if(item.arrivedAmount <= item.supplierAmount){
+                this.existOpenOrderAlert = true;
+                this.openOrdersModal = true;
+                if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
+                  this.newItem.supplierPrice = Number(data[0].price)
+                }
+              }
+            } else {
+              this.openOrdersModal = true;
+            }
+        
+            if (item.status == 'supplierGotOrder' || item.status == 'sentToSupplier') {
+              item.status = 'open'
+            }
+          }); 
         }
+        else {
+          this.itemExistInOrders = [];
+          this.openOrdersModal = false;
+        }
+
         this.itemExistInOrders = data.filter(p=>p.status != 'closed');
-
-        if (data.length > 0) {
-          this.openOrdersModal = true;
-          if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
-            this.newItem.supplierPrice = Number(data[0].price)
-          }
-        }
-       
 
       })
 
-    } else {
-      this.itemExistInOrders = [];
-      this.openOrdersModal = false;
     }
 
 
