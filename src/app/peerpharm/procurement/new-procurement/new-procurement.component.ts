@@ -383,7 +383,7 @@ export class NewProcurementComponent implements OnInit {
   sendNewProc() {
   
     debugger;
-    if(this.newProcurement.supplierEmail == ''){
+    if(this.newProcurement.supplierEmail != ''){
       if(this.newProcurement.item.length > 0 ){
         if (confirm("האם להקים הזמנה זו ?")) {
           this.newProcurement.userEmail = this.userEmail
