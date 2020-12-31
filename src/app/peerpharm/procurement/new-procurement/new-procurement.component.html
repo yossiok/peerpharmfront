@@ -83,6 +83,16 @@
               </div>
             </div>
 
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="control-label">Supplier Email</label>
+                  <input  (change)="updateSupplierEmail($event)" [ngModelOptions]="{standalone: true}" [(ngModel)]="newProcurement.supplierEmail"
+                    class="form-control" />
+                </div>
+              </div>
+            </div>
+
 
             <h4 class="card-title mt-5 text-info">Item Details</h4>
             <hr>

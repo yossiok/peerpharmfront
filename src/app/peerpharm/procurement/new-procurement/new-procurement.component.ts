@@ -20,6 +20,7 @@ export class NewProcurementComponent implements OnInit {
   openOrdersModal: boolean = false;
   newProcurementForm: any;
   supplierToUpdate: any;
+  currSupplier: any;
   currItemForPL: any;
   procurementSupplier: boolean = true;
   procurementItems: boolean = false;
@@ -62,6 +63,7 @@ export class NewProcurementComponent implements OnInit {
   newProcurement = {
     supplierNumber: '',
     supplierName: '',
+    supplierEmail:'',
     outDate: this.formatDate(new Date()),
     validDate: '',
     item: [],
@@ -259,11 +261,13 @@ export class NewProcurementComponent implements OnInit {
   }
 
   findSupplierByNumber(ev) {
-
+  debugger;
     let supplier = ev.target.value;
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
-
+    this.currSupplier = result[0]
+    
     this.newProcurement.supplierNumber = result[0].suplierNumber
+    this.newProcurement.supplierEmail = result[0].email
 
   }
 
@@ -379,35 +383,53 @@ export class NewProcurementComponent implements OnInit {
   sendNewProc() {
   
     debugger;
-    if(this.newProcurement.item.length > 0 ){
-      if (confirm("האם להקים הזמנה זו ?")) {
-        this.newProcurement.userEmail = this.userEmail
-        this.newProcurement.outDate.toString();
-        this.procurementService.addNewProcurement(this.newProcurement).subscribe(data => {
-          if (data) {
-            this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
-            this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data => {
-              if (data) {
-                this.toastr.success("כמות זו ירדה מכמות המסגרת")
-              }
-  
-            })
-            this.newProcurement.validDate = ""
-            this.newProcurement.remarks = ''
-            this.newProcurement.supplierName = ""
-            this.newProcurement.supplierNumber = ""
-            this.newProcurement.item = [];
-            this.newProcurement.comaxNumber = ''
-  
-  
-          }
-        })
+    if(this.newProcurement.supplierEmail == ''){
+      if(this.newProcurement.item.length > 0 ){
+        if (confirm("האם להקים הזמנה זו ?")) {
+          this.newProcurement.userEmail = this.userEmail
+          this.newProcurement.outDate.toString();
+          this.procurementService.addNewProcurement(this.newProcurement).subscribe(data => {
+            if (data) {
+              this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
+              this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data => {
+                if (data) {
+                  this.toastr.success("כמות זו ירדה מכמות המסגרת")
+                }
+    
+              })
+              this.newProcurement.validDate = ""
+              this.newProcurement.remarks = ''
+              this.newProcurement.supplierName = ""
+              this.newProcurement.supplierNumber = ""
+              this.newProcurement.item = [];
+              this.newProcurement.comaxNumber = ''
+    
+    
+            }
+          })
+        }
+      } else {
+        this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
       }
     } else {
-      this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
+      this.toastr.error('חובה למלא מייל ספק')
     }
- 
+  }
 
+
+  updateSupplierEmail(ev){
+    let email = ev.target.value;
+    if(confirm('האם לעדכן מייל אצל הספק ?')) {
+      this.currSupplier.email = email
+      if(email != ''){
+        this.supplierService.updateCurrSupplier(this.currSupplier).subscribe(data=>{
+        if(data){
+          this.toastr.success('מייל עודכן בהצלחה !')
+        }
+        })
+      }
+    }
+   
   }
   
 

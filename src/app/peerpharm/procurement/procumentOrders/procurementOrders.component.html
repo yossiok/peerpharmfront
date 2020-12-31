@@ -146,6 +146,7 @@
                       <th><b>Change</b></th>
                       <th><b>Close Order</b></th>
                       <th></th>
+                      <th>User</th>
                       <!-- <th><b>Payments Status</b></th>
                       <th><b>Payment Remark</b></th> -->
     
@@ -241,7 +242,7 @@
                       src="../../../../assets/images/pdf.png" alt="PDF" /></a>
                   <input class="form-control" #swiftInput style="display:none" type="file" (change)="onSelectSwift($event,line.orderNumber)">
                   </td> -->
-    
+                      <td>{{line.user}}</td>
                     </tr>
                   </tbody>
                 </table>
