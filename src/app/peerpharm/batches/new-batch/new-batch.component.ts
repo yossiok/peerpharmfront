@@ -22,7 +22,7 @@ export class NewBatchComponent implements OnInit {
     ph:'',
     weightKg:'',
     weightQtyLeft:'',
-    batchNumber:'20pp',
+    batchNumber:'21pp',
     batchCreated:0
   }
   lastBatch:any;
@@ -136,7 +136,7 @@ export class NewBatchComponent implements OnInit {
           this.newBatch.itemName = ''
           this.newBatch.weightQtyLeft =''
           this.newBatch.item = ''
-          this.newBatch.batchNumber = '20pp'
+          this.newBatch.batchNumber = '21pp'
           this.allStickers = [];
           this.getLastBatch();
           
