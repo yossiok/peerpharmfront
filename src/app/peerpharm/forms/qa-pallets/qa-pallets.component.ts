@@ -18,8 +18,10 @@ export class QaPalletsComponent implements OnInit {
   EditRowTwo: any;
   EditRowN:any;
   editBill:any;
+  editCustomer:any;
   currPLNumber: any;
   customerForPL: any;
+  customerForPallet: any;
   unitsToPallet: any;
   deleteLine: boolean = false;
   currentPallet: any;
@@ -84,6 +86,7 @@ export class QaPalletsComponent implements OnInit {
     this.editBillNumber('')
     this.edit('', '')
     this.editPallet('')
+    this.updateCustomer('')
   }
 
   ngOnInit() {
@@ -112,6 +115,26 @@ export class QaPalletsComponent implements OnInit {
     }
 
     
+  }
+
+  saveNewCustomerForPallet(ev,id){
+    
+    let pallet = this.allQaPallets.find(p=>p._id == id);
+    pallet.customerName = ev.target.value;
+    this.formService.updateQAPallet(pallet).subscribe(data=>{
+    if(data){
+      this.toastr.success('לקוח עודכן בהצלחה !')
+      this.updateCustomer('')
+    }
+    })
+  }
+
+  updateCustomer(id){
+    if(id != ''){
+      this.editCustomer = id
+    } else {
+      this.editCustomer = ''
+    }
   }
 
   editBillNumber(id){

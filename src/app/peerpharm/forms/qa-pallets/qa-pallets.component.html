@@ -81,7 +81,13 @@
                   <td>{{i+1}}</td>
                   <td><input style="width:30px !important" class="form-control" (change)="isSelected($event,pallet)"
                       type="checkbox"></td>
-                  <td>{{pallet.customerName}}</td>
+                  <td (click)="updateCustomer(pallet._id)" *ngIf="editCustomer != pallet._id">{{pallet.customerName}}</td>
+                  <td *ngIf="editCustomer == pallet._id">
+                    <input (change)="saveNewCustomerForPallet($event,pallet._id)" list="customers" class="form-control">
+                    <datalist id="customers">
+                      <option *ngFor="let customer of allCustomers">{{customer.costumerName}}</option>
+                    </datalist>
+                  </td>
                   <td target="_blank" routerLink="/peerpharm/items/itemDetails/{{ pallet.itemNumber }}"><span
                       style="cursor: pointer;color:blue">{{pallet.itemNumber}}</span></td>
                   <td target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ pallet.orderNumber }}"><span
