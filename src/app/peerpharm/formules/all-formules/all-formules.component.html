@@ -606,69 +606,71 @@
         <p>Batch____________</p>
         <p>{{updateFormule.approval}}</p>
       </div>
-      <div class="modal-body">
-        <table class="table">
-          <thead
-            style="
-              box-shadow: 1px 1px 3px black;
-              background-color: rgb(90, 149, 197);
-            "
-          >
-            <tr>
-              <th scope="col">Phase</th>
-              <th scope="col">Raw Material Name</th>
-              <th scope="col">Name</th>
-              <th scope="col">Execute</th>
-              <th scope="col">Batch Number</th>
-              <!-- <th scope="col">Item Instructions</th> -->
-              <th scope="col">Percentage</th>
-              <th scope="col">Weight/Temp</th>
-              <th scope="col">Phase Instructions</th>
-            </tr>
-          </thead>
-
-          <tbody id="table_body">
-            <ng-container
-              *ngFor="let phase of updateFormule.phases"
-              style="border: solid black 2px;"
-            >
-              <ng-container>
-                <tr *ngFor="let item of phase.items; let i = index">
-                  
-                  <td style="padding:5px"
-                    *ngIf="i == 0"
-                    [attr.rowspan]="phase.items.length"
-                    class="phase"
-                    (click)="loadPhaseToForm(phase)"
-                  >
-                    {{ phase.phaseName }}
-                  </td>
-                  <!-- <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td> -->
-                  <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.itemName }}</td>
-                  <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.itemNumber }}</td>
-                  <td style="padding:5px"></td>
-                 
-
-                  <!-- <td>{{ item.remarks }}</td> -->
-                  <!-- <td>{{item.quantity}}&nbsp; {{item.quantityUnits}}</td> -->
-                  <td style="padding:5px"></td>
-                  <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.percentage }}%</td>
-                  <!-- <td>{{item.temp}}</td> -->
-                  <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{item.itemRemarks}}{{item.remarks}}</td>
-                  <td style="padding:5px"
-                    *ngIf="i == 0"
-                    [attr.rowspan]="phase.items.length"
-                    class="phase"
-                  >
-                    {{ phase.remarks }}
-                  </td>
-
-                
+      <div class="modal-body text-center">
+        <div class="row">
+          <div class="col-12">
+            <table style="margin-left:120px;font-size: 23px;" class="table">
+              <thead class="bg-info">
+                <tr>
+                  <th scope="col">Phase</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Material Name</th>
+                  <th scope="col">--Weight--</th>
+                  <th scope="col">%</th>
+                  <!-- <th scope="col">Item Instructions</th> -->
+                  <th scope="col">Temp</th>
+                  <th scope="col">Phase Instructions</th>
                 </tr>
-              </ng-container>
-            </ng-container>
-          </tbody>
-        </table>
+              </thead>
+    
+              <tbody id="table_body">
+                <ng-container
+                  *ngFor="let phase of updateFormule.phases"
+                  style="border: solid black 2px;"
+                >
+                  <ng-container>
+                    <tr *ngFor="let item of phase.items; let i = index">
+                      
+                      <td style="padding:5px"
+                        *ngIf="i == 0"
+                        [attr.rowspan]="phase.items.length"
+                        class="phase"
+                        (click)="loadPhaseToForm(phase)"
+                      >
+                        {{ phase.phaseName }}
+                      </td>
+                      <!-- <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td> -->
+                      <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.itemNumber }}</td>
+                      <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.itemName }}</td>
+                      
+                      <td style="padding:5px"></td>
+                     
+    
+                      <!-- <td>{{ item.remarks }}</td> -->
+                      <!-- <td>{{item.quantity}}&nbsp; {{item.quantityUnits}}</td> -->
+                     
+                      <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.percentage }}%</td>
+                      <td style="padding:5px"></td>
+                      <!-- <td>{{item.temp}}</td> -->
+                      <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{item.itemRemarks}}{{item.remarks}}</td>
+                      <td style="padding:5px"
+                        *ngIf="i == 0"
+                        [attr.rowspan]="phase.items.length"
+                        class="phase"
+                      >
+                        {{ phase.remarks }}
+                      </td>
+    
+                    
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+       
       </div>
 
       <h4 style="text-align: center;">{{ updateFormule.impRemarks }}</h4>

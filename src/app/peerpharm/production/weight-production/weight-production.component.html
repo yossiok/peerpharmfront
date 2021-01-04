@@ -74,7 +74,7 @@
                 <td style="padding:5px">{{ item.itemName }}</td>
                 <td style="padding:5px">{{ item.itemNumber }}</td>
                 <td style="padding:5px">{{ item.percentage }}%</td>
-                <td style="padding:5px">{{ item.kgProd }}</td>
+                <td style="padding:5px">{{ item.kgProd | number }}</td>
                 <td *ngIf="item.check != true" style="padding:5px"><input (change)="searchForShelf($event,item.kgProd)" class="form-control"></td>
                 <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-success"></i></td>
    

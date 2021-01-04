@@ -288,6 +288,7 @@ export class QaPalletsComponent implements OnInit {
      oldPallet.palletWeight = pallet.palletWeight
      this.editPallet('')
      this.toastr.success('פרטים עודכנו בהצלחה !')
+     this.getAllPackedLists();
      }
      })
     }
