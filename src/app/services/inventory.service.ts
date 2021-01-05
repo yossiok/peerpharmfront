@@ -57,6 +57,11 @@ export class InventoryService {
     let url = this.baseUrl + "material/getAllMaterials";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllProducts():Observable<any>{
+    
+    let url = this.baseUrl + "component/getAllProducts";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getAllExpiredArrivals():Observable<any>{
     
     let url = this.baseUrl + "material/getAllExpiredArrivals";

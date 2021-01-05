@@ -676,11 +676,13 @@
               <th>#</th>
               <th scope="col">Pallet</th>
               <th scope="col">Item</th>
+              <th scope="col">Item Name</th>
+              
               <th scope="col">Order</th>
               <!-- <th scope="col">Batch</th> -->
-              <th scope="col">Number of Cartons</th>
-              <th scope="col">Quantity in Carton</th>
-              <th scope="col">Partial Carton</th>
+              <th scope="col">Num' of Cartons</th>
+              <th scope="col">Qty in Carton</th>
+              <th scope="col">Part Carton</th>
               <th scope="col">Pallet Weight</th>
               <th scope="col">Pallet Size</th>
               <th scope="col">Sum</th>
@@ -695,6 +697,7 @@
                 <td>{{pallet.palletNumber}}</td>
                 <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
                   {{line.itemNumber}}</td>
+                <td>{{line.itemName}}</td>
                 <!-- <td></td> -->
                 <td>{{line.orderNumber}}</td>
                 <td>{{line.fullKartons}}</td>

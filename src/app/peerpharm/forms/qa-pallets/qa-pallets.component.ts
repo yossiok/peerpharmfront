@@ -6,6 +6,7 @@ import { PlatformLocation } from '@angular/common';
 import { log } from 'util';
 import { OrdersService } from 'src/app/services/orders.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 @Component({
   selector: 'app-qa-pallets',
@@ -27,6 +28,7 @@ export class QaPalletsComponent implements OnInit {
   currentPallet: any;
   currPLWeight: number = 0;
   allQaPallets: any[]
+  allProducts: any[]
   combinedPallets: any[]
   allQaPalletsCopy: any[]
   allCustomers: any[]
@@ -79,7 +81,7 @@ export class QaPalletsComponent implements OnInit {
 
 
 
-  constructor(private authService:AuthService,private orderService:OrdersService,private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
+  constructor(private inventorySrv:InventoryService,private authService:AuthService,private orderService:OrdersService,private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -96,6 +98,7 @@ export class QaPalletsComponent implements OnInit {
     this.getAllClosedPallets();
     this.getAllReadyBills();
     this.getCostumers();
+    // this.getAllProducts();
     this.getUser();
   }
   getUser(){
@@ -613,7 +616,12 @@ export class QaPalletsComponent implements OnInit {
       return 'greenColor'
     }
   }
-
+    
+  getAllProducts(){
+    this.inventorySrv.getAllProducts().subscribe(data=>{
+      this.allProducts = data;
+    })
+  }
 
 
 
@@ -627,6 +635,16 @@ export class QaPalletsComponent implements OnInit {
     debugger;
     this.currPLNumber = packlist.packListNumber
     this.selectedArr = packlist.pallets
+
+    // this.selectedArr.forEach(pallet => {
+    //   pallet.lines.forEach(line => {
+    //     this.allProducts.forEach(product => {
+    //       if(product.componentN == line.itemNumber){
+    //         line.itemName = product.componentName
+    //       }
+    //     });
+    //   });
+    // });
     this.currCustomer = packlist.costumerName
     this.currCustomerNumber = packlist.costumerNumber
     this.packedList.costumerName = this.currCustomer
