@@ -431,6 +431,7 @@ export class AllFormulesComponent implements OnInit {
     debugger;
     this.selectedArr.forEach(item => {
     item.quantity = this.quantityCheck
+    this.formuleImpRemarks = item.impRemarks
     });
     this.invtSer.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
       this.materialsForFormules = materials;

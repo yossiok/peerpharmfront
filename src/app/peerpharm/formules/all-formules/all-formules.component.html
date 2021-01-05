@@ -831,6 +831,7 @@
             <th>Material Number</th>
             <th>Material Name</th>
             <th>Percentage</th>
+            <th>Price(KG)</th>
             <th></th>
             <th>Material Price</th>
           </tr>
@@ -840,6 +841,7 @@
             <td>{{ material.itemNumber }}</td>
             <td>{{ material.itemName }}</td>
             <td>{{ material.percentage }}</td>
+            <td>{{ material.kgPrice }}</td>
             <td (click)="openUpdateTempPriceModal(material)" *ngIf="material.price == 'צריך לעדכן מחיר ספק'"> 
               עדכון זמני
             </td>
@@ -855,6 +857,8 @@
            
           </tr>
           <tr>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -877,6 +881,14 @@
     <div class="col-1">
       <i (click)="showMaterialsForFormules = false" class="fa fa-times"></i>
     </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+      {{formuleImpRemarks}}
+    </div>
+    <div class="col-4"></div>
   </div>
   <table id="procurementItems" class="table table-striped">
     <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
