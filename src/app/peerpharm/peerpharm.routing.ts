@@ -66,6 +66,7 @@ import { ActiveusersComponent } from './reports/activeusers/activeusers.componen
 import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
 import { UserSettingsComponent } from './user/user-settings/user-settings.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { ItemMovementReportsComponent } from './reports/item-movement-reports/item-movement-reports.component';
 
 
 
@@ -535,6 +536,13 @@ export const PeerPharmRputs: Routes =[
       title : 'History Logs'
     },
     component: HistorylogsComponent
+  },
+  {
+    path :'item-movement-reports',
+    data :{
+      title : 'Movements Reports'
+    },
+    component: ItemMovementReportsComponent
   }
 
 

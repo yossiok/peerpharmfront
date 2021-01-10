@@ -42,9 +42,9 @@ export class AllFormulesComponent implements OnInit {
   openFormuleModal: boolean = false;
   showMaterialsForFormules: boolean = false;
   updatePercentage: any;
-  euroRate: number = 4.03;
-  usdRate: number = 3.44;
-  gbpRate: number = 4.45;
+  euroRate: number = 3.99;
+  usdRate: number = 3.20;
+  gbpRate: number = 4.35;
   newTempPrice: number;
   today: any;
   currMaterial: any;
@@ -513,7 +513,7 @@ export class AllFormulesComponent implements OnInit {
            
           }
 
-          if (material.coin == 'eur') {
+          if (material.coin == 'eur' || material.coin == 'euro') {
             if(material.price != 'צריך לעדכן מחיר ספק'){
               material.price = this.formatNumber(material.price * this.euroRate)
             }

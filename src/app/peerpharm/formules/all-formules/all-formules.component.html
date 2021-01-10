@@ -841,7 +841,7 @@
             <td>{{ material.itemNumber }}</td>
             <td>{{ material.itemName }}</td>
             <td>{{ material.percentage }}</td>
-            <td>{{ material.kgPrice }}</td>
+            <td>{{ material.kgPrice }} {{material.coin}}</td>
             <td (click)="openUpdateTempPriceModal(material)" *ngIf="material.price == 'צריך לעדכן מחיר ספק'"> 
               עדכון זמני
             </td>
@@ -852,7 +852,7 @@
                 updatePrice: material.price == 'צריך לעדכן מחיר ספק'
               }"
             >
-              {{ material.price }}
+              {{ material.price }} &#8362;
             </td>
            
           </tr>

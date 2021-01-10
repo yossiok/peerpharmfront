@@ -1,0 +1,92 @@
+<div class="container bg-white text-center p-2">
+    <div class="row mt-2">
+        <div class="col-12">
+            <h3 class="text-info">Item Movements Reports</h3>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <input (blur)="findMovementByItem($event)" placeholder="Find By Item" class="form-control">
+        </div>
+        <div class="col-4"></div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Movement Type</th>
+                        <th>Movement Date</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let movement of itemMovements">
+                        <td>{{movement.item}}</td>
+                        <td>{{movement.movementType}}</td>
+                        <td>{{movement.movementDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{movement.WH_originName}}</td>
+                        <td>{{movement.WH_destName}}</td>
+                        <td>{{movement.amount}}</td>
+                        <td><button (click)="printCertificate(movement)" class="btn btn-success">Print</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="printCerModal" class="container">
+    <div class="row">
+        <div class="col-12">
+            <button  [printStyle]="{td : {'border': 'solid 1px'}, th : {'border': 'solid 1px'},  table : {'border': 'solid 1px'}}" #printBtn printSectionId="print-section" ngxPrint style="display: none;"></button>
+        </div>
+    </div>
+    <div  id="print-section">
+    <div class="row">
+        <div class="col-12">
+          Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
+          <br>
+          <br>
+          Date: {{movementCertificate.movementDate | date: 'dd/MM/yyyy'}} <br>
+          From: {{movementCertificate.WH_originName}} <br>
+          To: {{movementCertificate.WH_destName}}
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Movement Type</th>
+                        <th>Amount</th>
+                        <th>Shelf</th>
+                        <th>User</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{movementCertificate.item}}</td>
+                        <td>{{movementCertificate.movementType}}</td>
+                        <td>{{movementCertificate.amount}}</td>
+                        <td>{{movementCertificate.shell_position_in_whareHouse_Origin}}</td>
+                        <td>{{movementCertificate.userName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
