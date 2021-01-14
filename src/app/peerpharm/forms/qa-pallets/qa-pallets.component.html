@@ -563,15 +563,18 @@
         <thead style="background: lightgray !important;">
           <tr>
             <th>#</th>
-            <th scope="col">משטח</th>
-            <th scope="col">פריט</th>
-            <th scope="col">הזמנה</th>
+            <th style="width:10px" scope="col">משטח</th>
+            <th style="width:10px" scope="col">פריט</th>
+            <th scope="col">שם פריט</th>
+            <th style="width:10px" scope="col">הזמנה</th>
             <th scope="col">אצווה</th>
             <!-- <th scope="col">Batch</th> -->
-            <th scope="col">מספר קרטונים</th>
-            <th scope="col">מספר יחידות בקרטון</th>
-            <th scope="col">קרטון חלקי</th>
-            <th scope="col">סה"כ יחידות</th>
+            <th style="width:10px" scope="col">מספר קרטונים</th>
+            <th style="width:10px" scope="col">מספר יח' בקרטון</th>
+            <th style="width:10px" scope="col">קרטון חלקי</th>
+            <th style="width:13px" scope="col">משקל משטח</th>
+            <th style="width:13px" scope="col">מידות משטח</th>
+            <th style="width:10px" scope="col">סה"כ יחידות</th>
             <!-- <th scope="col">סה"כ קרטונים</th> -->
             <!-- <th scope="col">מספר קרטון</th> -->
           </tr>
@@ -583,12 +586,15 @@
               <td>{{pallet.palletNumber}}</td>
               <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
                 {{line.itemNumber}}</td>
+              <td>{{line.itemName}}</td>
                 <td>{{line.orderNumber}}</td>
                 <td>{{line.batchNumber}}</td>
               <!-- <td></td> -->
               <td>{{line.fullKartons}}</td>
               <td>{{line.unitsInKarton}}</td>
               <td>{{line.unitsQuantityPartKarton}}</td>
+              <td>{{pallet.palletWeight}}</td>
+              <td>{{pallet.palletSize}}</td>
               <td>{{line.unitsToCombine}}</td>
               <!-- <td>{{line.allKartons}}</td> -->
               <!-- <td></td> -->
@@ -674,18 +680,18 @@
           <thead>
             <tr>
               <th>#</th>
-              <th scope="col">Pallet</th>
-              <th scope="col">Item</th>
+              <th style="width:10px" scope="col">Pallet</th>
+              <th style="width:10px" scope="col">Item</th>
               <th scope="col">Item Name</th>
               
-              <th scope="col">Order</th>
-              <!-- <th scope="col">Batch</th> -->
-              <th scope="col">Num' of Cartons</th>
-              <th scope="col">Qty in Carton</th>
-              <th scope="col">Part Carton</th>
-              <th scope="col">Pallet Weight</th>
-              <th scope="col">Pallet Size</th>
-              <th scope="col">Sum</th>
+              <th style="width:10px" scope="col">Order</th>
+              <th scope="col">Batch</th>
+              <th style="width:10px" scope="col">Num' of Cartons</th>
+              <th style="width:10px" scope="col">Qty in Carton</th>
+              <th style="width:10px" scope="col">Part Carton</th>
+              <th style="width:13px" scope="col">Pallet Weight</th>
+              <th style="width:13px" scope="col">Pallet Size</th>
+              <th style="width:10px" scope="col">Sum</th>
               <!-- <th scope="col">סה"כ קרטונים</th> -->
               <!-- <th scope="col">מספר קרטון</th> -->
             </tr>
@@ -700,6 +706,7 @@
                 <td>{{line.itemName}}</td>
                 <!-- <td></td> -->
                 <td>{{line.orderNumber}}</td>
+                <td>{{line.batchNumber}}</td>
                 <td>{{line.fullKartons}}</td>
                 <td>{{line.unitsInKarton}}</td>
                 <td>{{line.unitsQuantityPartKarton}}</td>

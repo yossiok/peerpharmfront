@@ -1180,6 +1180,8 @@ if(category != ''){
         this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
       } else if (this.filterStatus == undefined) {
         this.procurementData = this.procurementDataCopy
+      } else if(this.filterStatus == 'allOrders'){
+        this.procurementData = this.procurementDataNoFilter;
       } else {
         this.procurementData = this.procurementDataCopy.filter(p=>p.status != 'closed')
       }

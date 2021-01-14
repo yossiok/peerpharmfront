@@ -242,6 +242,9 @@
             <button (click)="addItemToFormule()" class="btn-success">
               Add
             </button>
+            <button (click)="draggable = true" class="btn-primary">
+              Draggable
+            </button>
           </td>
         </tr>
         <tbody style="height: 500px;">
@@ -262,8 +265,8 @@
             >
               <td colspan="10" style="width: 100%; padding-right: 0px; padding-left:0px"   (dragover)="startShakeDragOver($event)"   (drop)="getDroppedElemnt($event)"  >
                 <table style="width: 100%;"  >
-                 <!-- draggable = true  -->
-                  <tr *ngFor="let item of phase.items; let i = index"  style="cursor: move; border:10px solid #f0f0f0" (dragstart)="startItemDrag($event)"  (dragleave)="stopItemDrag($event)" 
+            
+                  <tr [draggable] = draggable *ngFor="let item of phase.items; let i = index"  style="cursor: move; border:10px solid #f0f0f0" (dragstart)="startItemDrag($event)"  (dragleave)="stopItemDrag($event)" 
                    [attr.data-phase]="phase.phaseName"  [attr.data-itemnumber]="item.itemNumber">
                     <td style="width: 10%;">{{ phase.phaseName }}</td>
                     <td *ngIf="item.itemNumber !== EditRowId">
@@ -279,7 +282,7 @@
                       ></textarea>
                     </td>
                   
-                    <td  style="width: 10%;"(click)="edit(item.itemNumber)">{{ i + 1 }}</td>
+                    <td  style="width: 10%;"(click)="edit(item.itemNumber,phase.phaseName)">{{ i + 1 }}</td>
                     <!-- <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
                       <input [(ngModel)]="updateItemIndex" type="number">
                     </td> -->

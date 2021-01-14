@@ -1168,7 +1168,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
     this.editSpecTable = false;
     if(this.itemShown.status == "production") {
-      if(this.authService.loggedInUser.userName == "Sigi" || this.authService.loggedInUser.userName == 'akiva'){
+      if(this.authService.loggedInUser.userName == 'akiva'){
         
         if (this.itemShown.itemNumber != "") {
           if (confirm("Save changes?")) {

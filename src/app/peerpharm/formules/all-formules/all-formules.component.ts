@@ -27,6 +27,7 @@ export class AllFormulesComponent implements OnInit {
   formuleMaterialPrices: any[];
   condition: boolean = false;
   updatePriceModal: boolean = false;
+  draggable: boolean = false;
   formulePriceModal: boolean = false;
   updateFormule: any;
   quantityCheck: any;
@@ -727,6 +728,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   saveFormuleFormation(){
+    this.draggable = false;
     this.updateFormule;
     debugger;
     this.formuleService.updateFormuleFormation(this.updateFormule).subscribe(data=>{
@@ -1001,6 +1003,7 @@ export class AllFormulesComponent implements OnInit {
 
   /****************DRAG DROP FUNCS************/
   startItemDrag(ev) {
+ 
     ev.dataTransfer.setData('Text/html', ev.target.dataset.phase+";"+ev.target.dataset.itemnumber);
     console.log('dragging');
   }
@@ -1013,7 +1016,7 @@ export class AllFormulesComponent implements OnInit {
   }
   stopItemDrag(ev)
   {
- 
+   
     ev.target.classList.remove("shakeme");
     ev.target.parentElement.classList.remove("shakeme");
     this.stopAllShakes();
@@ -1032,6 +1035,7 @@ export class AllFormulesComponent implements OnInit {
 
   getDroppedElemnt(ev)
   {
+    debugger;
     this.stopAllShakes();
     this.stopAllShakes();
   
