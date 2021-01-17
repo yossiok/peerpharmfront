@@ -23,7 +23,7 @@ export class ShelfListComponent implements OnInit {
   item = {
     countDate:this.formatDate(new Date()),
     countedAmount:'',
-    signature:''
+    signature:'עמר'
   }
 
   @ViewChild('shelfPosition') shelfPosition: ElementRef;
