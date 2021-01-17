@@ -115,7 +115,15 @@ export class ShelfListComponent implements OnInit {
     }
 
     this.inventorySrv.updateShelfAmount(objToUpdate).subscribe(data=>{
-    
+    if(data){
+      debugger;
+      let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);
+      shelf.total = data.amount
+      this.toastSrv.success('פריט עודכן בהצלחה !')
+      this.editShelfAmount('','')
+      this.item.countedAmount = ''
+      this.item.signature = ''
+    }
     })
   }
 
