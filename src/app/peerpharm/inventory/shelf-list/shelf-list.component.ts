@@ -113,18 +113,20 @@ export class ShelfListComponent implements OnInit {
       countedAmount:this.item.countedAmount,
       signature:this.item.signature
     }
-
-    this.inventorySrv.updateShelfAmount(objToUpdate).subscribe(data=>{
-    if(data){
-      debugger;
-      let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);
-      shelf.total = data.amount
-      this.toastSrv.success('פריט עודכן בהצלחה !')
-      this.editShelfAmount('','')
-      this.item.countedAmount = ''
-      this.item.signature = ''
+    if(confirm('האם לעדכן מדף ?')){
+      this.inventorySrv.updateShelfAmount(objToUpdate).subscribe(data=>{
+        if(data){
+          debugger;
+          let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);
+          shelf.total = data.amount
+          this.toastSrv.success('פריט עודכן בהצלחה !')
+          this.editShelfAmount('','')
+          this.item.countedAmount = ''
+          this.item.signature = 'עמר'
+        }
+        })
     }
-    })
+ 
   }
 
   edit(id){
