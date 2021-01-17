@@ -907,9 +907,9 @@
               <td>{{item.componentNs}}</td>
               <td>{{item.itemName}}</td>
               <td>{{item.itemRemarks}}</td>
-              <td>{{item.supplierAmount}}</td>
+              <td>{{item.supplierAmount | number}}</td>
               <td>{{item.supplierPrice}}{{currCoin}}</td>
-              <td>{{item.itemPrice}}</td>
+              <td>{{item.itemPrice | number}}</td>
 
             </tr>
             <tr *ngIf="country == true">

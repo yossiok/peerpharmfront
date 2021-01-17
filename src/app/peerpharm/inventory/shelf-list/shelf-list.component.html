@@ -45,6 +45,7 @@
             <th>Count Date</th>
             <th>Counted Amount</th>
             <th>Signature</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -53,9 +54,24 @@
             <td>{{shelf.item}}</td>
             <td>{{shelf.position}}</td>
             <td>{{shelf.total}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
+
+            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
+            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
+              <input type="date" class="form-control" [(ngModel)]="item.countDate">
+            </td>
+
+            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
+            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
+              <input type="number" class="form-control" [(ngModel)]="item.countedAmount">
+            </td>
+
+            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
+            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
+              <input type="text" class="form-control" [(ngModel)]="item.signature">
+            </td>
+            
+            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
+            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position"><i class="fa fa-save" (click)="updateShelfAmount(shelf)"></i></td>
           </tr>
         </tbody>
       </table>

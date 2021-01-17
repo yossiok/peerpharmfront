@@ -13,9 +13,18 @@ export class ShelfListComponent implements OnInit {
 
   allShelfs:any;
   EditRow:any;
+  shelfPos:any;
+  shelfItemN:any;
   materialShelfs:any;
   allShelfsCopy:any;
   itemType:any;
+
+
+  item = {
+    countDate:this.formatDate(new Date()),
+    countedAmount:'',
+    signature:''
+  }
 
   @ViewChild('shelfPosition') shelfPosition: ElementRef;
   @ViewChild('shelfAmount') shelfAmount: ElementRef;
@@ -23,6 +32,7 @@ export class ShelfListComponent implements OnInit {
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.edit('');
+    this.editShelfAmount('','')
   }
 
   constructor(private toastSrv:ToastrService,private itemService:ItemsService,private inventorySrv:InventoryService) { }
@@ -30,6 +40,18 @@ export class ShelfListComponent implements OnInit {
   ngOnInit() {
   }
 
+
+
+  editShelfAmount(item , position){
+    debugger;
+    if(item != '' && position != ''){
+      this.shelfPos = position
+      this.shelfItemN = item
+    } else {
+      this.shelfPos = ''
+      this.shelfItemN = ''
+    }
+    }
   
   getShelfsByWH(ev){
     debugger;
@@ -80,6 +102,23 @@ export class ShelfListComponent implements OnInit {
   
   }
 
+  updateShelfAmount(shelf){
+    this.item;
+    debugger;
+    let objToUpdate = {
+      item:shelf.item,
+      position:shelf.position,
+      amountBefore:shelf.total,
+      countDate:this.item.countDate,
+      countedAmount:this.item.countedAmount,
+      signature:this.item.signature
+    }
+
+    this.inventorySrv.updateShelfAmount(objToUpdate).subscribe(data=>{
+    
+    })
+  }
+
   edit(id){
   if(id != ''){
     this.EditRow = id
@@ -103,6 +142,21 @@ export class ShelfListComponent implements OnInit {
       this.edit('');
     }
   })
+  }
+
+
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
     
 

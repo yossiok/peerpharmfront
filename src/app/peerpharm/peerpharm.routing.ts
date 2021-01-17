@@ -322,7 +322,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor] 
+    // canActivate:[TwoFactor] 
   },
   {
     path :'production/lines',

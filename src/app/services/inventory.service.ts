@@ -166,6 +166,10 @@ updateShelf(shelf):Observable<any>{
     let url = this.baseUrl + "itemShell/updateShelf";
     return this.http.post(url, JSON.stringify(shelf), this.options).pipe(map(res => res.json()))
 }
+updateShelfAmount(shelf):Observable<any>{ 
+    let url = this.baseUrl + "itemShell/updateShelfAmount";
+    return this.http.post(url, JSON.stringify(shelf), this.options).pipe(map(res => res.json()))
+}
 
 addNewMaterial(materialObj):Observable<any>{ 
   

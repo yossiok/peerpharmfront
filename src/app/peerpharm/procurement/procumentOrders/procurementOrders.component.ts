@@ -1164,6 +1164,7 @@ if(category != ''){
   debugger;
     var itemNumber = ev.target.value;
     var tempArr = []
+    this.procurementData = this.procurementDataNoFilter
     if (itemNumber != "") {
       for (let i = 0; i < this.procurementData.length; i++) {
         for (let j = 0; j < this.procurementData[i].item.length; j++) {

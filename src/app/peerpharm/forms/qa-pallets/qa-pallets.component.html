@@ -562,7 +562,6 @@
       <table style="background:white;border:1px solid black;margin-left:80px" class="table table-bordered">
         <thead style="background: lightgray !important;">
           <tr>
-            <th>#</th>
             <th style="width:10px" scope="col">משטח</th>
             <th style="width:10px" scope="col">פריט</th>
             <th scope="col">שם פריט</th>
@@ -583,7 +582,6 @@
           <ng-container *ngFor="let pallet of selectedArr;let i = index">
             <tr *ngFor="let line of pallet.lines">
               <td>{{i+1}}</td>
-              <td>{{pallet.palletNumber}}</td>
               <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
                 {{line.itemNumber}}</td>
               <td>{{line.itemName}}</td>
@@ -679,7 +677,6 @@
         <table style="background:white;border:1px solid black;margin-left:80px;" class="table table-bordered">
           <thead>
             <tr>
-              <th>#</th>
               <th style="width:10px" scope="col">Pallet</th>
               <th style="width:10px" scope="col">Item</th>
               <th scope="col">Item Name</th>
@@ -700,7 +697,6 @@
             <ng-container *ngFor="let pallet of selectedArr;let i = index">
               <tr *ngFor="let line of pallet.lines">
                 <td>{{i+1}}</td>
-                <td>{{pallet.palletNumber}}</td>
                 <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
                   {{line.itemNumber}}</td>
                 <td>{{line.itemName}}</td>
