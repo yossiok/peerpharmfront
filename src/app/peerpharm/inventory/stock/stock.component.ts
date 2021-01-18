@@ -2017,7 +2017,7 @@ export class StockComponent implements OnInit {
     })
   }
   async getCmptAmounts(cmptN, cmptId) {
-
+    debugger;
     // this.currItemShelfs=[];
     this.newItemShelfPosition = '';
     this.newItemShelfQnt = 0;

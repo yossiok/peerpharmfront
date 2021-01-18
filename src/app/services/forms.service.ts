@@ -128,6 +128,11 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/deleteQAPalletById";
     return this.http.post(url, JSON.stringify({id:palletId}), this.options).pipe(map(res => res.json()));
   }
+  cancelPackListById(pLId){
+    debugger;
+    let url = this.baseUrl + "formDetails/cancelPLById";
+    return this.http.post(url, JSON.stringify({id:pLId}), this.options).pipe(map(res => res.json()));
+  }
   deleteQAPallet(pallet){
     debugger;
     let url = this.baseUrl + "formDetails/deleteQAPallet";

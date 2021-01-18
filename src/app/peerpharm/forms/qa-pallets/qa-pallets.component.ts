@@ -117,8 +117,18 @@ export class QaPalletsComponent implements OnInit {
         }
       })
     }
-
     
+  }
+
+  cancelPackList(pLId){
+    if(confirm('האם לבטל רשימה זו ?')){
+      this.formService.cancelPackListById(pLId).subscribe(data=>{
+        if(data){
+          this.toastr.success('רשימה בוטלה בהצלחה !')
+          this.getAllPackedLists();
+        }
+      })
+    }
   }
 
   saveNewCustomerForPallet(ev,id){
