@@ -91,7 +91,7 @@ export class NewProcurementComponent implements OnInit {
   ngOnInit() {
     this.getAllSuppliers();
     this.getAllMaterials();
-
+    debugger;
     if (this.route.snapshot.queryParams.id != undefined) {
       debugger
      let recommendId =  this.route.snapshot.queryParams.id
@@ -101,6 +101,16 @@ export class NewProcurementComponent implements OnInit {
       }
      })
     }
+    // if (this.route.snapshot.queryParams.multi != undefined) {
+    //   debugger
+    //  let multi =  this.route.snapshot.queryParams.multi
+    //  multi = multi.split(',')
+    //  this.procurementService.getRecommendById(multi).subscribe(data=>{
+    //   if(data){
+    //     this.fillPurchaseDetails(data)
+    //   }
+    //  })
+    // }
     if(this.authService.loggedInUser)
     {
       this.userEmail = this.authService.loggedInUser.userEmail;
@@ -150,6 +160,8 @@ export class NewProcurementComponent implements OnInit {
 
   fillPurchaseDetails(recommendation){
   debugger;
+
+
   this.newItem.itemNumber = recommendation.componentNumber;
   this.newProcurement.orderType = recommendation.type
   this.newItem.supplierAmount = recommendation.amount

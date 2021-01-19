@@ -555,7 +555,7 @@
           <td style="border:none;width:65px"></td>
           <td style="border:none;width:65px"></td>
           <td style="border:none">
-            <h4>תאריך משלוח:</h4>
+            <h4>תאריך משלוח: {{today | date: 'dd/MM/yyyy'}}</h4>
           </td>
         </tr>
       </tbody>
@@ -671,7 +671,7 @@
          <td style="border:none"><h4>Form Number:{{currPLNumber}}</h4></td>
          <td style="border:none;width:65px"></td>
          <td style="border:none;width:65px"></td>
-         <td style="border:none"> <h4>Delivery Date:</h4></td>
+         <td style="border:none"> <h4>Delivery Date: {{today | date: 'dd/MM/yyyy'}}</h4></td>
        </tr>
      </tbody>
     </table>
@@ -805,11 +805,11 @@
 
 <button style="float:right;margin-top:100px" *ngIf="showProductsBeforeDeliveryHE==true"
   class="btn btn-success form-control" printSectionId="print-sectionHE" ngxPrint
-  [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},thead : {'background': 'lightgray'}, td : {'padding': '5px'},th : {'border': 'solid 1px black'}}">Print</button>
+  [printStyle]="{table: {'font-size':'20px'},td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},thead : {'background': 'lightgray'}, td : {'padding': '5px'},th : {'border': 'solid 1px black'}}">Print</button>
 
 <button style="float:right;margin-top:100px" *ngIf="showProductsBeforeDeliveryEN==true"
   class="btn btn-success form-control" printSectionId="print-sectionEN" ngxPrint
-  [printStyle]="{td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},th : {'border': 'solid 1px black'}}">Print</button>>
+  [printStyle]="{table: {'font-size':'20px'},td : {'border': 'solid 1px black'}, tr : {'border': 'solid 1px black'},th : {'border': 'solid 1px black'}}">Print</button>>
 
 
 <div *ngIf="combineModal == true" style="top:150px;"

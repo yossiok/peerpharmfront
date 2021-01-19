@@ -221,6 +221,8 @@ export class StockComponent implements OnInit {
   @ViewChild('materialToSearch') materialToSearch: ElementRef;
 
 
+
+
   // material array // 
   materials: any[];
   allMaterialArrivals: any[];
@@ -461,6 +463,7 @@ export class StockComponent implements OnInit {
       this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
     this.getColor(new Date);
+  
   
   }
 
@@ -793,8 +796,9 @@ export class StockComponent implements OnInit {
     } else {
       this.recommandPurchase.user = this.authService.loggedInUser.userName;
       this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data => {
-  
+      // this.inventoryService.onNewRecommend(this.recommandPurchase);
         if (data) {
+          data = JSON.parse(data._body)
           this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
           this.openOrderRecommendModal = false;
           this.recommandPurchase.remarks = ""

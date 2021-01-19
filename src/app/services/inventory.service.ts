@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Http,  Headers, RequestOptions, Jsonp } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable,BehaviorSubject, ReplaySubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
+import { tap ,map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -10,13 +10,23 @@ import { map } from 'rxjs/operators';
 })
 export class InventoryService {
 
-  constructor(private http:Http) { }
+
+
+  public recommendation:any;
+  public newRecommendEmitter:ReplaySubject<any> = new ReplaySubject<any>(1);
+  constructor(private http:Http) {
+  
+   }
+
+
 
   
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = '/';
   
+
+
 
   getAllItemShells():Observable<any> {
   
@@ -216,10 +226,18 @@ recieveNewComponents(allArrivals):Observable<any>{
   let url = this.baseUrl + "itemShell/recieveNewComponents";
   return this.http.post(url, JSON.stringify(allArrivals), this.options).pipe(map(res => res.json()))
 }
+
+
+
 addNewRecommendation(purchaseRecommend):Observable<any>{ 
-  
   let url = this.baseUrl + "component/newPurchaseRecommend";
-  return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(map(res => res.json()))
+  return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(tap(data=>{
+    data = JSON.parse(data._body);
+    debugger;
+    this.recommendation = data;
+    this.newRecommendEmitter.next(data);
+  }))
+ 
 }
 
   getComponentsAmounts():Observable<any>{

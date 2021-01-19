@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { Procurementservice } from '../../../services/procurement.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ToastrService } from 'ngx-toastr';
 import { SuppliersService } from 'src/app/services/suppliers.service';
@@ -29,6 +30,7 @@ export class ProcurementOrdersComponent implements OnInit {
   purchaseRecommendationsCopy: any[];
   allComponentsCopy: any[];
   allMaterials: any[];
+  selectedArr: any[] = [];
   printBill: boolean = false;
   orderDetailsModal: boolean = false;
   newPurchaseModal: boolean = false;
@@ -83,6 +85,8 @@ export class ProcurementOrdersComponent implements OnInit {
   orderDate: any;
   outOfCountry: any;
   country:boolean = false;
+  newRecommend:any;
+  subscription: Subscription;
 
   newItem = {
 
@@ -168,13 +172,59 @@ export class ProcurementOrdersComponent implements OnInit {
        this.getAllSuppliers();
     this.getAllInvoices();
     this.user = this.authService.loggedInUser.firstName;
-
+   this.inventoryService.newRecommendEmitter.subscribe(data=>{
+     debugger;
+     console.log(data)
+       data = JSON.parse(data._body)
+      this.purchaseRecommendations.push(data)
+      this.getAllPurchaseRecommends();
+    })
+    // this.inventoryService.newRecommend.subscribe(r=>{
+    //  debugger;
+    //  this.purchaseRecommendations.push(r)
+    // })
   }
 
 
-  moveToNewPurchase(id){
-    window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id='+id)
-    // window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
+  // isSelected(ev, recommendId) {
+  //   debugger
+  //   if (ev.target.checked == true) {
+  //     var isSelected = this.selectedArr
+  //     isSelected.push(recommendId);
+  //     this.selectedArr = isSelected
+  //   }
+
+  //   if (ev.target.checked == false) {
+  //     var isSelected = this.selectedArr
+  //     var tempArr = isSelected.filter(function (str) { return str.indexOf(recommendId) === -1; });
+  //     this.selectedArr = tempArr
+  //   }
+
+
+  // }
+
+  getRecommend(){
+    this.inventoryService.recommendation;
+    debugger;
+  }
+
+  moveToNewPurchase(id,type){
+    if(type == 'single'){
+      // window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id='+id)
+      window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
+    } else {
+      window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?multi='+this.selectedArr)
+    }
+  
+  }
+  setRecommendAsDone(id){
+   this.procurementservice.closeRecommendationById(id).subscribe(data=>{
+    if(data){
+      this.toastr.success('המלצת רכש נסגרה בהצלחה !');
+      this.purchaseRecommendations = this.purchaseRecommendations.filter(p=>p._id != data._id)
+      this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.filter(p=>p._id != data._id)
+    }
+   })
   }
 
 

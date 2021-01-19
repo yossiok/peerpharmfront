@@ -53,6 +53,8 @@ export class QaPalletsComponent implements OnInit {
   allReadyPackedLists: any[];
   readyBills: any[];
 
+  today: Date = new Date();
+
 
   pallet = {
     customer: '',
