@@ -10,21 +10,28 @@
 
   <div class="row mt-3">
     <div class="col-3"></div>
-    <div class="col-3">
-      <input [(ngModel)]="formuleNumber" placeholder="Formule Number" class="form-control">
+    <div class="col-2">
+      <input id="formuleNumber" [(ngModel)]="formuleNumber" placeholder="Formule Number" class="form-control">
     </div>
-    <div class="col-3">
+    <div class="col-2">
       <input [(ngModel)]="formuleWeight" placeholder="Weight" class="form-control">
+    </div>
+    <div class="col-2">
+      <input [(ngModel)]="formuleOrder" placeholder="Order Number" class="form-control">
     </div>
     <div class="col-3"></div>
   </div>
 
   <div class="row mt-3">
-    <div class="col-4"></div>
+    <div class="col-2"></div>
     <div class="col-4">
       <button (click)="getFormuleByNumber()" class="btn btn-info form-control">Start</button>
     </div>
-    <div class="col-4"></div>
+    <div class="col-4">
+      <button (click)="printFormule()" class="btn btn-success form-control">Print</button>
+      <button #printFormuleBtn [printStyle]="{td : {'border': 'solid 1px'}, th : {'border': 'solid 1px'}}" printSectionId="formuleSection" ngxPrint style="display: none;"></button>
+    </div>
+    <div class="col-2"></div>
   </div>
   
 
@@ -36,13 +43,14 @@
 
 </div>
 
-<div *ngIf="currentFormule" class="container mt-2 bg-white text-center p-2 rounded shadow">
+<div id="formuleSection" *ngIf="currentFormule" class="container mt-2 bg-white text-center p-2 rounded shadow">
   <div class="row mt-1">
     <div class="col-4">
       <h3 class="text-success">Formule Number: {{currentFormule.formuleNumber}}</h3>
+      <h3 class="text-success">Order Number: {{formuleOrder}}</h3>
     </div>
     <div class="col-4">
-      <h3 class="text-success">Formule Number: {{currentFormule.formuleName}}</h3>
+      <h3 class="text-success">Formule Name: {{currentFormule.formuleName}}</h3>
     </div>
     <div class="col-4">
       <h3 class="text-success">PH: {{currentFormule.phFrom}}-{{currentFormule.phTo}}</h3>
@@ -86,13 +94,6 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-4"></div>
-    <div class="col-4">
-      <button (click)="finishWeight()" class="btn btn-success form-control">Finish</button>
-    </div>
-    <div class="col-4"></div>
-  </div>
 
   <div *ngIf="materialShelfs.length > 0" style="top:150px" class="container w-25 h-50 border border-info bg-white fixed-top text-center rounded shadow-lg mx-auto my-auto p-2">
     <div class="row">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormulesService } from 'src/app/services/formules.service';
@@ -11,6 +11,8 @@ import { FormulesService } from 'src/app/services/formules.service';
 export class WeightProductionComponent implements OnInit {
 
 
+  @ViewChild('printFormuleBtn') printFormuleBtn: ElementRef;
+
   allMaterialArrivals:any[];
   materialShelfs:any[] = []
   materialArrivals:Boolean = false;
@@ -19,6 +21,7 @@ export class WeightProductionComponent implements OnInit {
   kgToRemove:any;
   formuleNumber:any;
   formuleWeight:any;
+  formuleOrder:any;
   shelfNumber:any;
  
 
@@ -101,6 +104,13 @@ export class WeightProductionComponent implements OnInit {
   
   }
 
+
+  printFormule(){
+    this.printFormuleBtn.nativeElement.click();
+    this.finishWeight();
+    document.getElementById("formuleNumber").focus();
+  }
+
   reduceAmountFromShelf(material){
     if(confirm('האם להוריד כמות ממדף זה ?')){
       material.amount = material.amount - this.kgToRemove;
@@ -124,6 +134,9 @@ export class WeightProductionComponent implements OnInit {
 
   finishWeight(){
   this.currentFormule = {}
+  this.formuleNumber = ''
+  this.formuleOrder = ''
+  this.formuleWeight = ''
   }
 
 
