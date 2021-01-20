@@ -310,6 +310,16 @@ export class AllFormulesComponent implements OnInit {
 
   }
 
+  copyFormule(formule){
+    this.formuleService.copyFormule(formule).subscribe(data=>{
+      if(data){
+        this.allFormules.push(data);
+        this.toastSrv.success('פורמולה הועתקה בהצלחה !')
+      }
+
+    })
+  }
+
   isSelected(ev, item) {
     debugger
     if (ev.target.checked == true) {
@@ -851,8 +861,10 @@ export class AllFormulesComponent implements OnInit {
     debugger;
     if(confirm('האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?')){
       this.formuleService.deleteFormuleById({ id }).subscribe(data => {
-
-        this.getAllFormules();
+       if(data){
+         this.allFormules = this.allFormules.filter(f=>f._id != data._id)
+         this.toastSrv.success('פורמולה נמחקה בהצלחה !')
+       }
       })
     }
    
@@ -927,18 +939,6 @@ export class AllFormulesComponent implements OnInit {
     }
   }
 
-  copyFormule(currDoc, index) {
-    debugger;
-    var formuleToCopy = this.allFormules[index]
-
-    this.formuleService.copyFormule(formuleToCopy).subscribe(data => {
-
-      data;
-      this.allFormules.push(data);
-    })
-
-
-  }
 
 
   fillTheMaterialNumber(ev) {

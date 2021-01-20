@@ -235,6 +235,7 @@ export class FormulesService {
     return this.http.post(url, JSON.stringify(newItem), this.options).pipe(map(res => res.json()));
   }
 
+
   getTrueArray():Observable<any> {
 
     let url = this.baseUrl + "formules/istrue";
