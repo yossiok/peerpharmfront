@@ -7,7 +7,7 @@
   </div>
 
   <div class="row mt-4">
-    <div class="col-2">
+    <div class="col-1">
       <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}" style="background: none;border:none" printSectionId="print-section" ngxPrint><img src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>  
     </div>
   
@@ -16,7 +16,7 @@
     </div>
     <div class="col-2">
       <select (change)="getShelfsByWH($event)" class="form-control">
-        <option selected="true" disabled="disabled">Choose WhareHouse</option> 
+        <option selected="true" disabled="disabled">WhareHouse</option> 
         <option value="5c0d1831d1b74a43e81e8edb">Kasem</option>
         <option value="5cf64e77e32883115c39dc56">Materials - Outside</option>
         <option value="materials">Rosh HaAyin - Materials</option>
@@ -27,10 +27,18 @@
     <div class="col-2">
       <label class="form-control">Position</label>
     </div>
-    <div class="col-2">
-      <input class="form-control" (blur)="filterByShelf($event)">
+    <div class="col-1">
+      <input  class="form-control" (blur)="filterByShelf($event)">
     </div>
-    <div class="col-2"></div>
+    <div class="col-2">
+      <label class="form-control">Costumer</label>
+    </div>
+    <div class="col-2">
+      <input list="costumers" class="form-control" type="text" (change)="filterByCostumer($event)">
+      <datalist id="costumers">
+        <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}</option>
+      </datalist>
+    </div>
   </div>
 
   <div id="print-section" class="row mt-4">

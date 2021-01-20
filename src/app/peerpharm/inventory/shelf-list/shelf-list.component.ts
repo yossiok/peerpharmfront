@@ -142,6 +142,18 @@ export class ShelfListComponent implements OnInit {
   }
   }
 
+  filterByCostumer(ev){
+    debugger;
+    this.allShelfs = this.allShelfsCopy
+    let costumer = ev.target.value;
+
+    if(costumer != ''){
+      this.allShelfs = this.allShelfs.filter(s=>s.costumer == costumer)
+    } else {
+      this.allShelfs = this.allShelfsCopy
+    }
+  }
+
   updateShelfCostumer(shelf){
   this.inventorySrv.updateShelfCostumer(shelf,this.item.costumer).subscribe(data=>{
     debugger;
