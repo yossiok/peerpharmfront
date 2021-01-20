@@ -42,6 +42,7 @@
             <th>Item Number</th>
             <th>Position</th>
             <th>Amount</th>
+            <th>Costumer</th>
             <th>Count Date</th>
             <th>Counted Amount</th>
             <th>Signature</th>
@@ -54,6 +55,13 @@
             <td>{{shelf.item}}</td>
             <td>{{shelf.position}}</td>
             <td>{{shelf.total}}</td>
+            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position">{{shelf.costumer}}</td>
+            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
+              <input list="costumers" class="form-control" (change)="updateShelfCostumer(shelf)" [(ngModel)]="item.costumer">
+              <datalist id="costumers">
+                <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}</option>
+              </datalist>
+            </td>
 
             <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">

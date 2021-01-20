@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CostumersService } from 'src/app/services/costumers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
 
@@ -12,6 +13,7 @@ export class ShelfListComponent implements OnInit {
 
 
   allShelfs:any;
+  allCostumers:any;
   EditRow:any;
   shelfPos:any;
   shelfItemN:any;
@@ -23,7 +25,8 @@ export class ShelfListComponent implements OnInit {
   item = {
     countDate:this.formatDate(new Date()),
     countedAmount:'',
-    signature:'עמר'
+    signature:'עמר',
+    costumer:''
   }
 
   @ViewChild('shelfPosition') shelfPosition: ElementRef;
@@ -35,9 +38,10 @@ export class ShelfListComponent implements OnInit {
     this.editShelfAmount('','')
   }
 
-  constructor(private toastSrv:ToastrService,private itemService:ItemsService,private inventorySrv:InventoryService) { }
+  constructor(private costumerSrv:CostumersService,private toastSrv:ToastrService,private itemService:ItemsService,private inventorySrv:InventoryService) { }
 
   ngOnInit() {
+    this.getAllCostumers();
   }
 
 
@@ -63,6 +67,7 @@ export class ShelfListComponent implements OnInit {
     }
     this.inventorySrv.shelfListByWH(whareHouse).subscribe(data=>{
     if(data){
+      debugger;
       data.sort((a,b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0));
       if(this.itemType == 'components') data = data.filter(s=>s.itemType == 'component')
       if(this.itemType == 'materials') data = data.filter(s=>s.itemType == 'material')
@@ -137,6 +142,21 @@ export class ShelfListComponent implements OnInit {
   }
   }
 
+  updateShelfCostumer(shelf){
+  this.inventorySrv.updateShelfCostumer(shelf,this.item.costumer).subscribe(data=>{
+    debugger;
+    if(data){
+      let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);
+      if(shelf){
+        shelf.costumer = data.tempCostumer
+        this.toastSrv.success('לקוח עודכן בהצלחה !')
+        this.editShelfAmount('','')
+      }
+      
+    }
+  })
+  }
+
   updateShelf(id){
   debugger;
   let amount = this.shelfAmount.nativeElement.value;
@@ -151,6 +171,13 @@ export class ShelfListComponent implements OnInit {
       this.toastSrv.success('מדף עודכן בהצלחה !')
       this.edit('');
     }
+  })
+  }
+
+  getAllCostumers(){
+  this.costumerSrv.getAllCostumers().subscribe(data=>{
+    debugger;
+    this.allCostumers = data;
   })
   }
 

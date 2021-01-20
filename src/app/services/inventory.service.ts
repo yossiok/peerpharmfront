@@ -180,6 +180,10 @@ updateShelfAmount(shelf):Observable<any>{
     let url = this.baseUrl + "itemShell/updateShelfAmount";
     return this.http.post(url, JSON.stringify(shelf), this.options).pipe(map(res => res.json()))
 }
+updateShelfCostumer(shelf,costumer):Observable<any>{ 
+    let url = this.baseUrl + "itemShell/updateShelfCostumer";
+    return this.http.post(url, JSON.stringify({shelf:shelf,costumer:costumer}), this.options).pipe(map(res => res.json()))
+}
 
 addNewMaterial(materialObj):Observable<any>{ 
   
