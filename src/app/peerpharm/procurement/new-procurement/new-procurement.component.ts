@@ -415,6 +415,7 @@ export class NewProcurementComponent implements OnInit {
               this.newProcurement.supplierNumber = ""
               this.newProcurement.item = [];
               this.newProcurement.comaxNumber = ''
+              this.newProcurement.supplierEmail = ''
     
     
             }

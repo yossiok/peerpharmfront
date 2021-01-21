@@ -92,7 +92,6 @@
               <div class="col-1">
                 טען את כל הפריטים
                 <button (click)="loadPurchasesItems()" class="btn btn-info form-control">Load Items</button>
-                <button (click)="getRecommend()" class="btn btn-info form-control">check</button>
               </div>
     
               <div class="col-2">
@@ -994,7 +993,7 @@
 </div>
 
 <div *ngIf="orderDetailsModal==true" id="myModal3" class="modal3 rounded shadow-lg"
-  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:80px;top:65px;font-size:20px;'>
+  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:175px;top:65px;font-size:20px;'>
 
   <div class="modal-content" id='modelC'>
     <div style="display: inline-block;" id="material-header" class="modal-header">
@@ -1172,7 +1171,7 @@
 
   </div>
   <div class="col-3">
-
+    <img (click)="getAllPurchaseRecommends()" style="width:50px" src="../../../../assets/images/refreshData.png">
   </div>
 </div>
 

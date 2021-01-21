@@ -203,10 +203,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   // }
 
-  getRecommend(){
-    this.inventoryService.recommendation;
-    debugger;
-  }
+ 
 
   moveToNewPurchase(id,type){
     if(type == 'single'){

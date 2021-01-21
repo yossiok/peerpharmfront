@@ -958,7 +958,11 @@ export class StockComponent implements OnInit {
     }
     else if (threatment == 'toxic') {
       return "toxic"
+    } 
+    else if (threatment == 'base'){
+      return 'base'
     }
+  
 
 
   }

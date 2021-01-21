@@ -85,7 +85,12 @@ export class ShelfListComponent implements OnInit {
     let position = ev.target.value;
 
     if(position != ''){
-      this.allShelfs = this.allShelfs.filter(s=>s.position == position)
+      if(position == 'QC ROOM'){
+        this.allShelfs = this.allShelfs.filter(s=>s.position.includes(position))
+      } else {
+        this.allShelfs = this.allShelfs.filter(s=>s.position == position)
+      }
+    
     } else {
       this.allShelfs = this.allShelfsCopy
     }
