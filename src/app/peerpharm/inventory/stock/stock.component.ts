@@ -880,7 +880,7 @@ export class StockComponent implements OnInit {
         }
       });
 
-      if(components.length < 500) {
+      if(components.length < 1500) {
         this.smallLoader = false;
         this.getAllPurchases();
       }

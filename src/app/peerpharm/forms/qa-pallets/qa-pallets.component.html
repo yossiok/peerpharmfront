@@ -723,29 +723,20 @@
           <thead>
               <th><b>Total Pallets</b></th>
               <th><b>Total Weight</b></th>
+              <th><b>Item</b></th>
+              <th><b>Total Quantity</b></th>
           </thead>
           <tbody>
-            <tr>
+            <tr *ngFor="let pallet of combinedPallets">
               <td><b>{{selectedArr.length}}</b></td>
               <td><b>{{currPLWeight}}</b></td>
+              <td><b>{{pallet.itemNumber}}</b></td>
+              <td><b>{{pallet.quantity}}</b></td>
             </tr>
+
           </tbody>
         </table>
 
-        <table style="margin-top:10px;margin-left:80px" class="table table-bordered">
-          <thead>
-            <tr>
-              <th><b>Item</b></th>
-              <th><b>Total Quantity</b></th>
-            </tr>
-          </thead>
-        <tbody>
-          <tr *ngFor="let pallet of combinedPallets">
-            <td><b>{{pallet.itemNumber}}</b></td>
-            <td><b>{{pallet.quantity}}</b></td>
-          </tr>
-        </tbody>
-        </table>
 
         <table style="margin-top:50px !important">
           <tbody>
