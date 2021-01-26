@@ -593,7 +593,7 @@ export class StockComponent implements OnInit {
       price: this.price.nativeElement.value,
       coin: this.coin.nativeElement.value,
       // coinLoading: this.coinLoading.nativeElement.value,
-      // priceLoading: this.priceLoading.nativeElement.value,
+      priceLoading: this.priceLoading.nativeElement.value,
       manufacturer: this.manufacturer.nativeElement.value,
       alternativeMaterial: this.alternativeMaterial.nativeElement.value,
       alterName: this.alterName.nativeElement.value,
@@ -621,7 +621,7 @@ export class StockComponent implements OnInit {
         supplier.price = updatedSupplier.price
         supplier.coin = updatedSupplier.coin
         // supplier.coinLoading = updatedSupplier.coinLoading
-        // supplier.priceLoading = updatedSupplier.priceLoading
+        supplier.priceLoading = updatedSupplier.priceLoading
         supplier.country = updatedSupplier.country
         supplier.expectedArrival = updatedSupplier.expectedArrival
         supplier.manufacturer = updatedSupplier.manufacturer

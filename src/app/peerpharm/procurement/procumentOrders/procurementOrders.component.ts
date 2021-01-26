@@ -1010,7 +1010,6 @@ if(category != ''){
       this.currentSupplier = data[0]
       if(this.currentSupplier.import == 'outOfIsrael'){
       this.country = true;
-      this.outOfCountry = "Payment Terms:Current+95 Days"
 
       } else if(this.currentSupplier.import != 'outOfIsrael' && (line.item[0].coin).toLowerCase() != 'nis') {
         this.country = true;

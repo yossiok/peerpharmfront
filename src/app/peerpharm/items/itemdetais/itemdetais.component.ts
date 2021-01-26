@@ -31,9 +31,12 @@ export class ItemdetaisComponent implements OnInit {
   private container: ElementRef;
   // New Item Tree // 
   itemBatches:any[];
+  itemPrice:any[] = [];
   ordersItem:any[];
   allCostumers:any[]; 
   allCostumersCopy:any[]; 
+  totalItemPrice:number = 0; 
+  totalPriceLoading:number = 0; 
 
   mainLanguage: Boolean = true;
   mainLanguageTwo: Boolean = true;
@@ -58,6 +61,7 @@ export class ItemdetaisComponent implements OnInit {
   remarksAlert: Boolean = false;
   notActiveAlert:Boolean = false;
   editSpecTable:Boolean = false;
+  productPriceModal:Boolean = false;
 
   productionType: '';
   productionTwoType: '';
@@ -564,6 +568,91 @@ export class ItemdetaisComponent implements OnInit {
     this.modalService.open(orders).result.then((result) => {
       console.log(result);
     })
+  }
+
+  createPriceObj(data){
+    let objToPush = {
+      price:'',
+      priceLoading:'',
+      componentNumber:data[0].componentN,
+      componentName:data[0].componentName,
+    }
+    let price = 0
+    let suppliers = data[0].alternativeSuppliers;
+    for (let i = 0; i < suppliers.length; i++) {
+      if(suppliers[0].price != '' && suppliers[0].price != null && suppliers[0].price != undefined){
+        objToPush.price = suppliers[0].price
+      } else if (suppliers[1].price != '' && suppliers[1].price != null && suppliers[1].price != undefined) {
+        objToPush.price = suppliers[1].price
+      } else {
+        objToPush.price = 'Update Supplier Price'
+      }
+      if(suppliers[0].priceLoading != '' && suppliers[0].priceLoading != null && suppliers[0].priceLoading != undefined){
+        objToPush.priceLoading = suppliers[0].priceLoading
+      } else if (suppliers[1].priceLoading != '' && suppliers[1].priceLoading != null && suppliers[1].priceLoading != undefined) {
+        objToPush.priceLoading = suppliers[1].priceLoading
+      } else {
+        objToPush.priceLoading = 'Update Load Price'
+      }
+
+      
+    }
+    this.totalItemPrice = this.totalItemPrice + Number(objToPush.price)
+    if(typeof(Number(objToPush.priceLoading)) == typeof(0)){
+      if(!isNaN(Number(objToPush.priceLoading))){
+        this.totalPriceLoading = this.totalPriceLoading + Number(objToPush.priceLoading)
+      }      
+    }
+   
+    return objToPush
+  }
+
+  openProdctPriceModal(){
+
+    this.itemPrice = []
+    this.totalItemPrice = 0
+    if(this.itemShown.bottleNumber != '' && this.itemShown.bottleNumber != '---'){
+      this.invtSer.getCmptByitemNumber(this.itemShown.bottleNumber).subscribe(data=>{
+ 
+      if(data){
+      this.itemPrice.push(this.createPriceObj(data))
+      }
+      })
+    }
+    if(this.itemShown.capNumber != '' && this.itemShown.capNumber != '---'){
+      this.invtSer.getCmptByitemNumber(this.itemShown.capNumber).subscribe(data=>{
+        this.itemPrice.push(this.createPriceObj(data))
+      })
+    }
+    if(this.itemShown.boxNumber != '' && this.itemShown.boxNumber != '---'){
+      this.invtSer.getCmptByitemNumber(this.itemShown.boxNumber).subscribe(data=>{
+        this.itemPrice.push(this.createPriceObj(data))
+      })
+    }
+    if(this.itemShown.pumpNumber != '' && this.itemShown.pumpNumber != '---'){
+      this.invtSer.getCmptByitemNumber(this.itemShown.pumpNumber).subscribe(data=>{
+        this.itemPrice.push(this.createPriceObj(data))
+      })
+    }
+    if(this.itemShown.sealNumber != '' && this.itemShown.sealNumber != '---'){
+      this.invtSer.getCmptByitemNumber(this.itemShown.sealNumber).subscribe(data=>{
+        this.itemPrice.push(this.createPriceObj(data))
+      })
+    }
+    if(this.itemShown.stickerNumber != '' && this.itemShown.stickerNumber != '---'){
+      this.invtSer.getCmptByitemNumber(this.itemShown.stickerNumber).subscribe(data=>{
+        this.itemPrice.push(this.createPriceObj(data))
+      })
+    }
+    if(this.itemShown.cartonNumber != '' && this.itemShown.cartonNumber != '---'){
+      this.invtSer.getCmptByitemNumber(this.itemShown.cartonNumber).subscribe(data=>{
+        this.itemPrice.push(this.createPriceObj(data))
+      })
+    }
+
+    this.productPriceModal = true;
+
+
   }
  
 

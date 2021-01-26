@@ -1929,7 +1929,7 @@
                 src="/assets/images/ordered.png">
             <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX()"
                 style="width: 50px;margin:5px;cursor: pointer;">
-            <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
+            <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;" src="../../../../assets/images/price.png">
             <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
         </div>
         <div class="col-4">
@@ -2018,4 +2018,55 @@
     </div>
 
 </ng-template>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<!----------------------------------------------------- Product Price Modal ------------------------------------------------------------->
+
+
+<div *ngIf="productPriceModal == true" style="top:50px;" class="container fixed-top border border-success mx-auto my-auto text-center p-2 bg-white shadow-lg rounded">
+
+<div class="row mt-2">
+    <div class="col-1">
+    
+    </div>
+    <div class="col-10">
+        <h3>Product Price</h3>
+    </div>
+    <div class="col-1">
+       <i (click)="productPriceModal = false" class="fa fa-times"></i>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table table-bordered table-hover">
+            <thead class="bg-info text-white">
+                <tr>
+                    <th>Component Name</th>
+                    <th>Number</th>
+                    <th>Price</th>
+                    <th>Loading Price</th>
+                </tr>
+            </thead>
+            <tbody >
+                <tr *ngFor="let comp of itemPrice">
+                <td>{{comp.componentName}}</td>
+                <td>{{comp.componentNumber}}</td>
+                <td>{{comp.price}}</td>
+                <td>{{comp.priceLoading}}</td>
+               </tr>
+               <tr>
+                   <td></td>
+                   <td></td>
+                   <td>{{totalItemPrice | number}}</td>
+                   <td>{{totalPriceLoading | number}}</td>
+               </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+
+
 <!-------------------------------------------------------------------------------------------------------------------------------------------------->
