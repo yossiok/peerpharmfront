@@ -270,6 +270,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
   }
   
   setDone(id, orderN, itemN, line){
+    debugger;
     if (!line.qtyProduced) line.qtyProduced=0; 
     if (!line.amountPckgs) line.amountPckgs=0; 
 

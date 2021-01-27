@@ -1030,8 +1030,10 @@ if(category != ''){
 
       if(this.currentItems[i].itemPrice == 0) this.currentItems[i].itemPrice = Number(this.currentItems[i].supplierAmount)*Number(this.currentItems[i].supplierPrice)
       total = total + Number(this.currentItems[i].supplierAmount)
+      
       totalP = totalP + Number(this.currentItems[i].itemPrice)
-      coin = this.currentItems[i].coin
+      
+      coin = this.currentItems[0].coin
       if(line.orderType == 'component'){
         this.showImage = true;
         this.inventoryService.getCmptByNumber(this.currentItems[i].itemNumber,'component').subscribe(data=>{

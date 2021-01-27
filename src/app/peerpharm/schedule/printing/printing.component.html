@@ -13,8 +13,8 @@
 </div>
 
 
-<table style="font-size: 12px;" class='table table-sm'>
-  <thead class='tableHeader text-white'>
+<table style="font-size: 12px;" class='table table-hover table-bordered'>
+  <thead class='bg-info text-white'>
     <tr align='center'>
       <th><b>P</b></th>
       <th><b>Order</b></th>
@@ -39,18 +39,18 @@
 
   <tr id='inputTr' (click)="EditRowId=''">
     <td></td>
-    <td><input [(ngModel)]="scheduleLine.orderN" style='width:50px' onfocusout="setCostumer()"></td>
-    <td><input style="text-align: center;" [(ngModel)]="scheduleLine.itemN" style='width:60px' onfocusout="setItemDetails()"></td>
-    <td><input [(ngModel)]="scheduleLine.itemImg" style='width:40px' disabled></td>
-    <td><input type="date" [(ngModel)]="scheduleLine.scheduleDate" style='width:120px'></td>
-    <td><input [(ngModel)]="scheduleLine.costumer" style='width:80px'></td>
-    <td><input [(ngModel)]="scheduleLine.cmptN" style='width:80px'></td>
-    <td><input [(ngModel)]="scheduleLine.cmptName" style='width:100px'></td>
-    <td><input [(ngModel)]="scheduleLine.color" style='width:100px'></td>
-    <td ><input [(ngModel)]="scheduleLine.qty" style='width:80px'></td>
-    <td><input type='date' style='width:140px;' [(ngModel)]="scheduleLine.date"></td>
+    <td><input class="form-control" [(ngModel)]="scheduleLine.orderN" style='width:50px' onfocusout="setCostumer()"></td>
+    <td><input class="form-control" style="text-align: center;" [(ngModel)]="scheduleLine.itemN" style='width:60px' onfocusout="setItemDetails()"></td>
+    <td><input class="form-control" [(ngModel)]="scheduleLine.itemImg" style='width:40px' disabled></td>
+    <td><input class="form-control" type="date" [(ngModel)]="scheduleLine.scheduleDate" style='width:120px'></td>
+    <td><input class="form-control" [(ngModel)]="scheduleLine.costumer" style='width:80px'></td>
+    <td><input class="form-control" [(ngModel)]="scheduleLine.cmptN" style='width:80px'></td>
+    <td><input class="form-control" [(ngModel)]="scheduleLine.cmptName" style='width:100px'></td>
+    <td><input class="form-control" [(ngModel)]="scheduleLine.color" style='width:100px'></td>
+    <td ><input class="form-control" [(ngModel)]="scheduleLine.qty" style='width:80px'></td>
+    <td><input class="form-control" type='date' style='width:140px;' [(ngModel)]="scheduleLine.date"></td>
     <td>
-      <select [(ngModel)]="scheduleLine.nextStation">
+      <select class="form-control" [(ngModel)]="scheduleLine.nextStation">
         <option value="production">Production</option>
         <option value="makeup">Make Up</option>
         <option value="package">Package</option>
@@ -73,18 +73,18 @@
     <tr style="font-size: 12px;" style="text-align: center;" *ngFor="let line of scheduleData; let i = index" [style.background-color]="line.trColor">
 
       <td *ngIf="line._id!==editPosId" (click)="editPosition(line._id)">{{line.position}}</td>
-      <td *ngIf="line._id===editPosId"><input (change)="updateLinePosition(line._id)" #scheduleP type="number" [value]="line.position" style='width:70px'></td>
+      <td *ngIf="line._id===editPosId"><input class="form-control" (change)="updateLinePosition(line._id)" #scheduleP type="number" [value]="line.position" style='width:70px'></td>
       <!-- <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.positionN}}</td> -->
       <!-- <td *ngIf="line._id===EditRowId"><input #id type='hidden' [value]="line._id"><input #position type='text' [value]="line.positionN"
           style='width:50px'></td> -->
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.orderN}}</td>
-      <td *ngIf="line._id===EditRowId"><input #orderN type='text' [value]="line.orderN" style='width:50px' disabled></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #orderN type='text' [value]="line.orderN" style='width:50px' disabled></td>
       <td *ngIf="line._id!==EditRowId">
         <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{line.itemN}}">
           {{line.itemN}}
         </a>
       </td>
-      <td *ngIf="line._id===EditRowId"><input #item type='text' [value]="line.itemN" style='width:50px' disabled></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #item type='text' [value]="line.itemN" style='width:50px' disabled></td>
 
       <td *ngIf="line._id!==EditRowId"  style='cursor: pointer; color: blue'>
         <!-- {{line.itemImg}} -->
@@ -92,42 +92,42 @@
         <img src="../../../../assets/images/imageIcon.png" alt="imageIcon" style="width: 30px" (click)="openItemImg(line.itemN)">
       </td>
       <td *ngIf="line._id===EditRowId">
-        <input #itemImg type='text' value="" style='width:50px' disabled>
+        <input class="form-control" #itemImg type='text' value="" style='width:50px' disabled>
       </td>
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.scheduleDate | date: 'dd/MM/yyyy'}}</td>
-      <td *ngIf="line._id===EditRowId"><input #scheduleDate type='date' [value]="line.scheduleDate" style='width:140px'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #scheduleDate type='date' [value]="line.scheduleDate" style='width:140px'></td>
       
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.costumer}}</td>
-      <td *ngIf="line._id===EditRowId"><input #costumer type='text' [value]="line.costumer" style='width:50px'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #costumer type='text' [value]="line.costumer" style='width:50px'></td>
       
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.cmptN}}</td>
-      <td *ngIf="line._id===EditRowId"><input #cmptN type='text' [value]="line.cmptN" style='width:110px'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #cmptN type='text' [value]="line.cmptN" style='width:110px'></td>
       
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.cmptName}}</td>
-      <td *ngIf="line._id===EditRowId"><input #cmptName type='text' [value]="line.cmptName"  style='width:150px; text-align: center;'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #cmptName type='text' [value]="line.cmptName"  style='width:150px; text-align: center;'></td>
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.color}}</td>
-      <td *ngIf="line._id===EditRowId"><input #color type='text' [value]="line.color" style='width:110px'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #color type='text' [value]="line.color" style='width:110px'></td>
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.qty}}&nbsp;/{{line.qtyProduced}}</td>
-      <td *ngIf="line._id===EditRowId"><input #qty type='text' [value]="line.qty" style='width:50px'>&nbsp;/ {{line.qtyProduced}}</td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #qty type='text' [value]="line.qty" style='width:50px'>&nbsp;/ {{line.qtyProduced}}</td>
       <!-- <td *ngIf="line._id!==EditRowId" style="float:left;">/{{line.qtyRdy}}</td>
       <td *ngIf="line._id===EditRowId" style="float:left;">/<input #qtyRdy type='text' [value]="line.qtyRdy" style='width:50px ; float:left;' disabled></td> -->
 
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.date | date: 'dd/MM/yyyy'}}</td>
-      <td *ngIf="line._id===EditRowId"><input #date type='date' [(ngModel)]="dateToEditStr" style='width:140px'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #date type='date' [(ngModel)]="dateToEditStr" style='width:140px'></td>
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.nextStation}}</td>
-      <td *ngIf="line._id===EditRowId"><input #nextStation type='text' [value]="line.nextStation" style='width:50px'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #nextStation type='text' [value]="line.nextStation" style='width:50px'></td>
 
 
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.marks}}</td>
-      <td *ngIf="line._id===EditRowId"><input #marks type='text' [value]="line.marks" style='width:150px'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #marks type='text' [value]="line.marks" style='width:150px'></td>
       <td *ngIf="line._id!==EditRowId" (click)="edit(line._id)">{{line.printType}}</td>
-      <td *ngIf="line._id===EditRowId"><input #printType type='text' [value]="line.printType" style='width:50px'></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #printType type='text' [value]="line.printType" style='width:50px'></td>
       <td *ngIf="line._id!==EditRowId" (click) = "showImg(line.blockImg)" style='cursor: pointer; color: blue'>{{line.plate}}/{{line.plate2}}</td>
-      <td *ngIf="line._id===EditRowId"><input #blockImg type='text' [value]="line.block" style='width:50px' disabled></td>
+      <td *ngIf="line._id===EditRowId"><input class="form-control" #blockImg type='text' [value]="line.block" style='width:50px' disabled></td>
       <td *ngIf="line._id!==EditRowId">
         <img src='assets/images/deleteBtn.png' class='btnImg' style='width:30px;height: 30px' *ngIf="line.status!='printed'"
           (click)="deleteLine(line._id)">

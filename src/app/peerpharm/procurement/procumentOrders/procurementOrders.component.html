@@ -908,7 +908,12 @@
               <td>{{item.itemName}}</td>
               <td>{{item.itemRemarks}}</td>
               <td>{{item.supplierAmount | number}}</td>
-              <td>{{item.supplierPrice}}{{currCoin}}</td>
+              <td>{{item.supplierPrice}}
+                <span *ngIf="item.coin == 'nis'">&#8362;</span>
+                <span *ngIf="item.coin == 'euro'">&#8364;</span>
+                <span *ngIf="item.coin == 'eur'">&#8364;</span>
+                <span *ngIf="item.coin == 'usd'">$</span>
+              </td>
               <td>{{item.itemPrice | number}}</td>
 
             </tr>
