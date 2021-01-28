@@ -13,9 +13,9 @@ export class InventoryService {
 
 
   public recommendation:any;
-  public newRecommendEmitter:ReplaySubject<any> = new ReplaySubject<any>(1);
+  public newRecommendEmitter:EventEmitter<any> ;
   constructor(private http:Http) {
-  
+    this.newRecommendEmitter=new EventEmitter<any>();
    }
 
 
@@ -239,7 +239,7 @@ addNewRecommendation(purchaseRecommend):Observable<any>{
     data = JSON.parse(data._body);
     debugger;
     this.recommendation = data;
-    this.newRecommendEmitter.next(data);
+    this.newRecommendEmitter.emit(data);
   }))
  
 }

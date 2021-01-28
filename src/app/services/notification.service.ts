@@ -25,6 +25,7 @@ export class NotificationService {
   //  this.socket = io(`http://127.0.0.1:8200`);// Localhost
     this.socket = io(`http://18.221.58.99:8200`);
     this.socket.on("connect", () => {
+      
       this.socket.on("message", data => {
         
         this.newMessageRecivedEventEmitter.emit(data);

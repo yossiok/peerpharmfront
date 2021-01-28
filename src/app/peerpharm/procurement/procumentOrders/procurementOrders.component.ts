@@ -172,36 +172,17 @@ export class ProcurementOrdersComponent implements OnInit {
        this.getAllSuppliers();
     this.getAllInvoices();
     this.user = this.authService.loggedInUser.firstName;
-   this.inventoryService.newRecommendEmitter.subscribe(data=>{
-     debugger;
-     console.log(data)
-       data = JSON.parse(data._body)
-      this.purchaseRecommendations.push(data)
-      this.getAllPurchaseRecommends();
-    })
-    // this.inventoryService.newRecommend.subscribe(r=>{
-    //  debugger;
-    //  this.purchaseRecommendations.push(r)
-    // })
+
+    this.inventoryService.newRecommendEmitter.subscribe(data=>{
+      debugger;
+      console.log(data)
+        data = JSON.parse(data._body)
+       this.purchaseRecommendations.push(data)
+     
+     })
+ 
   }
 
-
-  // isSelected(ev, recommendId) {
-  //   debugger
-  //   if (ev.target.checked == true) {
-  //     var isSelected = this.selectedArr
-  //     isSelected.push(recommendId);
-  //     this.selectedArr = isSelected
-  //   }
-
-  //   if (ev.target.checked == false) {
-  //     var isSelected = this.selectedArr
-  //     var tempArr = isSelected.filter(function (str) { return str.indexOf(recommendId) === -1; });
-  //     this.selectedArr = tempArr
-  //   }
-
-
-  // }
 
  
 

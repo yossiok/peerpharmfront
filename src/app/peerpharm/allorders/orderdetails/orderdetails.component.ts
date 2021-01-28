@@ -1148,12 +1148,16 @@ if(data){
 
 
   edit(id) {
-debugger;
-    if (id != '') {
-      this.EditRowId = id;
+    if(this.authService.loggedInUser.userName == 'SHARK') {
+      this.EditRowId = ''
     } else {
-      this.EditRowId = '';
+      if (id != '') {
+        this.EditRowId = id;
+      } else {
+        this.EditRowId = '';
+      }
     }
+  
   }
 
   calculateAllUnits() {
