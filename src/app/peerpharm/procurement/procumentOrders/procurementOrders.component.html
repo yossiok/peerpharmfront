@@ -1143,7 +1143,7 @@
       <i (click)="newPurchaseModal = false" class="fa fa-times"></i>
     </div>
   </div>
-  <app-new-procurement></app-new-procurement>
+  <app-new-procurement (newProcurementSaved)="showLoader = true; getAllProcurementOrders()"></app-new-procurement>
 </div>
 
 <div *ngIf="purchaseRecommendationsModal == true"

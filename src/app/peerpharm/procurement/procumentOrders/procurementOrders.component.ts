@@ -78,14 +78,14 @@ export class ProcurementOrdersComponent implements OnInit {
   priceTaxes: any;
   itemAmounts: any;
   totalPrice: any;
-  totalPriceWithTaxes:any;
+  totalPriceWithTaxes: any;
   currCoin: any;
   filterStatus: any;
   importantRemarks: any;
   orderDate: any;
   outOfCountry: any;
-  country:boolean = false;
-  newRecommend:any;
+  country: boolean = false;
+  newRecommend: any;
   subscription: Subscription;
 
   newItem = {
@@ -109,7 +109,7 @@ export class ProcurementOrdersComponent implements OnInit {
     arrivedAmount: "",
     orderId: "",
     itemNumber: "",
-    user:''
+    user: ''
   }
 
   newBill = {
@@ -138,26 +138,26 @@ export class ProcurementOrdersComponent implements OnInit {
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.edit('','');
+    this.edit('', '');
     this.editRecommend('', '')
   }
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
 
     if (event.key === 'F2') {
-      if(this.newPurchaseModal == true){
+      if (this.newPurchaseModal == true) {
         this.newPurchaseModal = false;
       } else {
         this.newPurchaseModal = true;
       }
-    } 
+    }
     if (event.key === 'F4') {
-      if(this.purchaseRecommendationsModal == true){
+      if (this.purchaseRecommendationsModal == true) {
         this.purchaseRecommendationsModal = false;
       } else {
         this.purchaseRecommendationsModal = true;
       }
-    } 
+    }
   }
 
   constructor(
@@ -169,53 +169,53 @@ export class ProcurementOrdersComponent implements OnInit {
     console.log('Enter');
     this.getAllProcurementOrders();
     this.getAllPurchaseRecommends();
-       this.getAllSuppliers();
+    this.getAllSuppliers();
     this.getAllInvoices();
     this.user = this.authService.loggedInUser.firstName;
 
-    this.inventoryService.newRecommendEmitter.subscribe(data=>{
+    this.inventoryService.newRecommendEmitter.subscribe(data => {
       debugger;
       console.log(data)
-        data = JSON.parse(data._body)
-       this.purchaseRecommendations.push(data)
-     
-     })
- 
+      data = JSON.parse(data._body)
+      this.purchaseRecommendations.push(data)
+
+    })
+
   }
 
 
- 
 
-  moveToNewPurchase(id,type){
-    if(type == 'single'){
-      window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id='+id)
+
+  moveToNewPurchase(id, type) {
+    if (type == 'single') {
+      window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id=' + id)
       // window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
     } else {
-      window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?multi='+this.selectedArr)
+      window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?multi=' + this.selectedArr)
     }
-  
+
   }
-  setRecommendAsDone(id){
-   this.procurementservice.closeRecommendationById(id).subscribe(data=>{
-    if(data){
-      this.toastr.success('המלצת רכש נסגרה בהצלחה !');
-      this.purchaseRecommendations = this.purchaseRecommendations.filter(p=>p._id != data._id)
-      this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.filter(p=>p._id != data._id)
-    }
-   })
+  setRecommendAsDone(id) {
+    this.procurementservice.closeRecommendationById(id).subscribe(data => {
+      if (data) {
+        this.toastr.success('המלצת רכש נסגרה בהצלחה !');
+        this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p._id != data._id)
+        this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.filter(p => p._id != data._id)
+      }
+    })
   }
 
 
-  loadPurchasesItems(){
+  loadPurchasesItems() {
     debugger;
     var tempArr = []
     for (let i = 0; i < this.procurementData.length; i++) {
-    for (let j = 0; j < this.procurementData[i].item.length; j++) {
-      this.procurementData[i].item[j].supplier = this.procurementData[i].supplierName
-      tempArr.push(this.procurementData[i].item[j])
-      
-    }
-      
+      for (let j = 0; j < this.procurementData[i].item.length; j++) {
+        this.procurementData[i].item[j].supplier = this.procurementData[i].supplierName
+        tempArr.push(this.procurementData[i].item[j])
+
+      }
+
     }
     tempArr
     this.excelService.exportAsExcelFile(tempArr, 'data');
@@ -231,14 +231,14 @@ export class ProcurementOrdersComponent implements OnInit {
 
   fillMaterialName(ev) {
     debugger;
-  
+
     var itemNumber = ev.target.value;
     var supplierNumber = this.orderData[0].supplierNumber
-    var tempArr = this.procurementData.filter(x=>x.supplierNumber == supplierNumber && x.status != 'closed');
+    var tempArr = this.procurementData.filter(x => x.supplierNumber == supplierNumber && x.status != 'closed');
     tempArr.forEach(purchase => {
       purchase.item.forEach(item => {
-        if(item.itemNumber == itemNumber){
-          this.toastr.error('פריט זה קיים בהזמנה מספר'+' '+purchase.orderNumber)
+        if (item.itemNumber == itemNumber) {
+          this.toastr.error('פריט זה קיים בהזמנה מספר' + ' ' + purchase.orderNumber)
         } else {
           this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
             debugger;
@@ -246,7 +246,7 @@ export class ProcurementOrdersComponent implements OnInit {
               if (data[0].componentN == itemNumber) {
                 this.newItem.itemName = data[0].componentName
               }
-      
+
             }
           })
         }
@@ -264,41 +264,41 @@ export class ProcurementOrdersComponent implements OnInit {
           this.procurementArrivalsCopy = []
           var tempArr = this.procurementDataCopy.filter(p => p.supplierNumber == event.target.value && p.status != 'canceled');
           for (let i = 0; i < tempArr.length; i++) {
-            
-              for (let j = 0; j < tempArr[i].item.length; j++) {
 
-                var obj = {
-                  id: tempArr[i]._id,
-                  supplierName: tempArr[i].supplierName,
-                  comaxNumber: tempArr[i].comaxNumber,
-                  orderNumber: tempArr[i].orderNumber,
-                  orderDate:tempArr[i].outDate,
-                  arrivedAmount:tempArr[i].item[j].arrivedAmount,
-                  itemNumber: tempArr[i].item[j].itemNumber,
-                  itemName: tempArr[i].item[j].itemName,
-                  supplierAmount: tempArr[i].item[j].supplierAmount,
-                  arrivals: [],
+            for (let j = 0; j < tempArr[i].item.length; j++) {
 
+              var obj = {
+                id: tempArr[i]._id,
+                supplierName: tempArr[i].supplierName,
+                comaxNumber: tempArr[i].comaxNumber,
+                orderNumber: tempArr[i].orderNumber,
+                orderDate: tempArr[i].outDate,
+                arrivedAmount: tempArr[i].item[j].arrivedAmount,
+                itemNumber: tempArr[i].item[j].itemNumber,
+                itemName: tempArr[i].item[j].itemName,
+                supplierAmount: tempArr[i].item[j].supplierAmount,
+                arrivals: [],
 
-                }
-                if (tempArr[i].item[j].arrivals) {
-                  for (let k = 0; k < tempArr[i].item[j].arrivals.length; k++) {
-
-                    var arrival = {
-                      referenceNumber: tempArr[i].item[j].arrivals[k].referenceNumber,
-                      arrivalDate: tempArr[i].item[j].arrivals[k].arrivalDate,
-                      arrivedAmount: tempArr[i].item[j].arrivals[k].arrivedAmount
-                    }
-                    obj.arrivals.push(arrival)
-
-                  }
-                }
-
-                this.procurementArrivals.push(obj)
-                this.procurementArrivalsCopy.push(obj)
 
               }
-            
+              if (tempArr[i].item[j].arrivals) {
+                for (let k = 0; k < tempArr[i].item[j].arrivals.length; k++) {
+
+                  var arrival = {
+                    referenceNumber: tempArr[i].item[j].arrivals[k].referenceNumber,
+                    arrivalDate: tempArr[i].item[j].arrivals[k].arrivalDate,
+                    arrivedAmount: tempArr[i].item[j].arrivals[k].arrivedAmount
+                  }
+                  obj.arrivals.push(arrival)
+
+                }
+              }
+
+              this.procurementArrivals.push(obj)
+              this.procurementArrivalsCopy.push(obj)
+
+            }
+
 
           }
 
@@ -332,182 +332,182 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   }
-  openPriceModal(item){
+  openPriceModal(item) {
     this.changeItemPrice = true;
     this.currCertifItem = item;
   }
 
-  openQuantityModal(item){
+  openQuantityModal(item) {
     this.changeItemQuantity = true;
     this.currCertifItem = item;
   }
 
-  addPaymentRemark(){
-    if(this.paymentRemark != ''){
-      this.procurementservice.updatePaymentRemark(this.paymentRemark,this.currOrderNumber).subscribe(data=>{
-      if(data){
-        debugger;
-        this.toastr.success('הערה עודכנה בהצלחה !')
-        this.paymentRemarkModal = false;
-        var purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
-        purchase.paymentRemark = data.paymentRemark
-      }
+  addPaymentRemark() {
+    if (this.paymentRemark != '') {
+      this.procurementservice.updatePaymentRemark(this.paymentRemark, this.currOrderNumber).subscribe(data => {
+        if (data) {
+          debugger;
+          this.toastr.success('הערה עודכנה בהצלחה !')
+          this.paymentRemarkModal = false;
+          var purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
+          purchase.paymentRemark = data.paymentRemark
+        }
       })
     }
   }
 
-  filterRecByType(ev){
+  filterRecByType(ev) {
     let type = ev.target.value;
-   switch (type) {
-     case 'all':
-       this.purchaseRecommendations = this.purchaseRecommendationsCopy
-       break;
-    
-    case 'components':
-      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p=>p.type == 'component')
-      break;
+    switch (type) {
+      case 'all':
+        this.purchaseRecommendations = this.purchaseRecommendationsCopy
+        break;
 
-    case 'materials':
-      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p=>p.type == 'material')
-      break;
-    
-   }
+      case 'components':
+        this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.type == 'component')
+        break;
+
+      case 'materials':
+        this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.type == 'material')
+        break;
+
+    }
   }
 
-  filterRecByNumber(ev){
+  filterRecByNumber(ev) {
 
     let number = ev.target.value
-    if(number != ''){
-      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p=>p.componentNumber == number)
+    if (number != '') {
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.componentNumber == number)
     } else {
       this.purchaseRecommendations = this.purchaseRecommendationsCopy;
     }
   }
 
-  changePaymentStatus(ev,orderNumber){
+  changePaymentStatus(ev, orderNumber) {
     var paymentStatus = ev.target.value;
 
-    if(paymentStatus != ''){
-      this.procurementservice.updatePaymentStatus(paymentStatus,orderNumber).subscribe(data=>{
-        if(data){
+    if (paymentStatus != '') {
+      this.procurementservice.updatePaymentStatus(paymentStatus, orderNumber).subscribe(data => {
+        if (data) {
           this.toastr.success('סטטוס תשלום עודכן בהצלחה !')
           this.paymentRemarkModal = true;
-        
+
           this.currOrderNumber = data.orderNumber
         }
       })
     }
   }
 
-  changeCertifPrice(ev){
+  changeCertifPrice(ev) {
     debugger;
-      var newItemPrice = ev.target.value;
-      if(newItemPrice != ''){
-        var item = this.certificate.find(i=>i.itemNumber == this.currCertifItem.itemNumber && i.quantity == this.currCertifItem.quantity);
-        item.changedItemPrice = Number(newItemPrice)
-        this.changeItemPrice = false;
-        this.toastr.success('מחיר חדש נוסף בהצלחה')
-        
-      }
+    var newItemPrice = ev.target.value;
+    if (newItemPrice != '') {
+      var item = this.certificate.find(i => i.itemNumber == this.currCertifItem.itemNumber && i.quantity == this.currCertifItem.quantity);
+      item.changedItemPrice = Number(newItemPrice)
+      this.changeItemPrice = false;
+      this.toastr.success('מחיר חדש נוסף בהצלחה')
+
+    }
   }
 
 
-  filterInvoices(ev,type){
+  filterInvoices(ev, type) {
     debugger
     this.allInvoices = this.allInvoicesCopy
     var wordToFilter = ev.target.value;
-    if(wordToFilter != ''){
-      switch(type) {
+    if (wordToFilter != '') {
+      switch (type) {
         case 'suppliers':
-        this.allInvoices = this.allInvoices.filter(i=>i.supplierNumber == wordToFilter)
+          this.allInvoices = this.allInvoices.filter(i => i.supplierNumber == wordToFilter)
           break;
         case 'invoiceNumber':
-          this.allInvoices = this.allInvoices.filter(i=>i.invoiceNumber == wordToFilter)
+          this.allInvoices = this.allInvoices.filter(i => i.invoiceNumber == wordToFilter)
           break;
         case 'status':
-          this.allInvoices = this.allInvoices.filter(i=>i.status == wordToFilter)
+          this.allInvoices = this.allInvoices.filter(i => i.status == wordToFilter)
           break;
-  
+
       }
     } else {
       this.allInvoices = this.allInvoicesCopy
     }
- 
-  }
-
-  getAllInvoices(){
-
-  this.procurementservice.getAllInvoices().subscribe(data=>{
-    debugger;
-    for (let i = 0; i < data.length; i++) {
-     if(data[i].status == 'approved'){
-       data[i].status == 'מאושר'
-     }
-     if(data[i].status == 'inCheck'){
-       data[i].status == 'בבדיקה'
-     }
-      
-    }
-    this.allInvoices = data;
-    this.allInvoicesCopy = data;
-  })
 
   }
 
-  changeCertifQuantity(ev){
-    debugger;
-      var newItemQuantity = ev.target.value;
-      if(newItemQuantity != ''){
-        var item = this.certificate.find(i=>i.itemNumber == this.currCertifItem.itemNumber && i.quantity == this.currCertifItem.quantity);
-        item.changedQuantity = Number(newItemQuantity)
-        this.changeItemQuantity = false;
-        this.toastr.success('כמות חדשה נוספה בהצלחה')
-        
+  getAllInvoices() {
+
+    this.procurementservice.getAllInvoices().subscribe(data => {
+      debugger;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].status == 'approved') {
+          data[i].status == 'מאושר'
+        }
+        if (data[i].status == 'inCheck') {
+          data[i].status == 'בבדיקה'
+        }
+
       }
+      this.allInvoices = data;
+      this.allInvoicesCopy = data;
+    })
+
   }
 
-  addCertifToBill(){
+  changeCertifQuantity(ev) {
     debugger;
-    if(this.certifNumberToPush != ''){
+    var newItemQuantity = ev.target.value;
+    if (newItemQuantity != '') {
+      var item = this.certificate.find(i => i.itemNumber == this.currCertifItem.itemNumber && i.quantity == this.currCertifItem.quantity);
+      item.changedQuantity = Number(newItemQuantity)
+      this.changeItemQuantity = false;
+      this.toastr.success('כמות חדשה נוספה בהצלחה')
+
+    }
+  }
+
+  addCertifToBill() {
+    debugger;
+    if (this.certifNumberToPush != '') {
       this.newBill.certificateNumbers.push(this.certifNumberToPush)
       this.toastr.success('תעודה נוספה בהצלחה !')
       this.certifNumberToPush = ''
     } else {
       this.toastr.error('חובה למלא מספר תעודה')
     }
-    
+
   }
 
-  generateInvoice(invoice){
+  generateInvoice(invoice) {
     debugger;
-  this.invoiceModal = true;
-  var sum = 0;
-  for (let i = 0; i < invoice.invoices.length; i++) {
-    if(invoice.invoices[i].changedQuantity){
-      invoice.invoices[i].fixedQuantity = Math.abs(invoice.invoices[i].quantity - invoice.invoices[i].changedQuantity)
-    } else {
-      invoice.invoices[i].fixedQuantity = invoice.invoices[i].quantity
-    }
-    if(invoice.invoices[i].changedItemPrice){
-      invoice.invoices[i].fixedPrice = this.formatNumber(Math.abs(Number(invoice.invoices[i].supplierPrice) - invoice.invoices[i].changedItemPrice))
-    } else {
-      invoice.invoices[i].fixedPrice = this.formatNumber(Number(invoice.invoices[i].supplierPrice))
-    }
-   
-    invoice.invoices[i].chargeSupplier = Number(invoice.invoices[i].fixedPrice)*Number(invoice.invoices[i].fixedQuantity)
-    invoice.invoices[i].chargeSupplier = JSON.stringify(invoice.invoices[i].chargeSupplier).slice(0,7)
-    
+    this.invoiceModal = true;
+    var sum = 0;
+    for (let i = 0; i < invoice.invoices.length; i++) {
+      if (invoice.invoices[i].changedQuantity) {
+        invoice.invoices[i].fixedQuantity = Math.abs(invoice.invoices[i].quantity - invoice.invoices[i].changedQuantity)
+      } else {
+        invoice.invoices[i].fixedQuantity = invoice.invoices[i].quantity
+      }
+      if (invoice.invoices[i].changedItemPrice) {
+        invoice.invoices[i].fixedPrice = this.formatNumber(Math.abs(Number(invoice.invoices[i].supplierPrice) - invoice.invoices[i].changedItemPrice))
+      } else {
+        invoice.invoices[i].fixedPrice = this.formatNumber(Number(invoice.invoices[i].supplierPrice))
+      }
+
+      invoice.invoices[i].chargeSupplier = Number(invoice.invoices[i].fixedPrice) * Number(invoice.invoices[i].fixedQuantity)
+      invoice.invoices[i].chargeSupplier = JSON.stringify(invoice.invoices[i].chargeSupplier).slice(0, 7)
+
 
       sum += Number(invoice.invoices[i].chargeSupplier)
-    
-    
-  }
-  this.sumCharge = sum
-  this.sumChargeTaxes = sum + (sum*17/100)
 
-  this.sumCharge = this.formatNumber(this.sumCharge)
-  this.sumChargeTaxes = this.formatNumber(this.sumChargeTaxes)
-  this.currentInvoice = invoice;
+
+    }
+    this.sumCharge = sum
+    this.sumChargeTaxes = sum + (sum * 17 / 100)
+
+    this.sumCharge = this.formatNumber(this.sumCharge)
+    this.sumChargeTaxes = this.formatNumber(this.sumChargeTaxes)
+    this.currentInvoice = invoice;
 
 
 
@@ -527,8 +527,8 @@ export class ProcurementOrdersComponent implements OnInit {
       quantity: '',
       price: 0,
       arrivalDate: '',
-      supplierPrice:'',
-      referenceNumber:''
+      supplierPrice: '',
+      referenceNumber: ''
     }
 
     var tempArr = []
@@ -538,27 +538,27 @@ export class ProcurementOrdersComponent implements OnInit {
         if (purchases[i].item[j].arrivals == undefined) purchases[i].item[j].arrivals = []
         for (let k = 0; k < purchases[i].item[j].arrivals.length; k++) {
           for (let l = 0; l < this.newBill.certificateNumbers.length; l++) {
-            
-            if(this.newBill.certificateNumbers[l].length > 3) {
+
+            if (this.newBill.certificateNumbers[l].length > 3) {
               var refNumber = this.newBill.certificateNumbers[l].substr(this.newBill.certificateNumbers[l].length - 4); // => "1"
             } else {
               var refNumber = this.newBill.certificateNumbers[l]
             }
-         
-          if (purchases[i].item[j].arrivals[k].referenceNumber == refNumber) {
-            obj.itemNumber = purchases[i].item[j].itemNumber
-            obj.itemName = purchases[i].item[j].itemName
-            obj.arrivalDate = purchases[i].item[j].arrivals[k].arrivalDate
-            obj.quantity = purchases[i].item[j].arrivals[k].arrivedAmount
-            obj.referenceNumber = purchases[i].item[j].arrivals[k].referenceNumber
-            obj.supplierPrice = purchases[i].item[j].supplierPrice
-            var price = Number(purchases[i].item[j].supplierPrice) * Number(purchases[i].item[j].arrivals[k].arrivedAmount)
-            obj.price = Number(price.toFixed(2))
-            this.certifTotalPrice += obj.price
-            var objToPush = { ...obj }
-            tempArr.push(objToPush)
+
+            if (purchases[i].item[j].arrivals[k].referenceNumber == refNumber) {
+              obj.itemNumber = purchases[i].item[j].itemNumber
+              obj.itemName = purchases[i].item[j].itemName
+              obj.arrivalDate = purchases[i].item[j].arrivals[k].arrivalDate
+              obj.quantity = purchases[i].item[j].arrivals[k].arrivedAmount
+              obj.referenceNumber = purchases[i].item[j].arrivals[k].referenceNumber
+              obj.supplierPrice = purchases[i].item[j].supplierPrice
+              var price = Number(purchases[i].item[j].supplierPrice) * Number(purchases[i].item[j].arrivals[k].arrivedAmount)
+              obj.price = Number(price.toFixed(2))
+              this.certifTotalPrice += obj.price
+              var objToPush = { ...obj }
+              tempArr.push(objToPush)
+            }
           }
-        }
         }
 
       }
@@ -574,7 +574,7 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
     var supInvoiceNum = this.newBill.billNumber
     var supplierNumber = this.newBill.supplierNumber
-    this.procurementservice.saveNewInvoice(supInvoiceNum,supplierNumber,status, this.certificate).subscribe(data => {
+    this.procurementservice.saveNewInvoice(supInvoiceNum, supplierNumber, status, this.certificate).subscribe(data => {
       debugger;
       if (data) {
         this.toastr.success('חשבונית נשמרה בהצלחה')
@@ -585,7 +585,8 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   getAllProcurementOrders() {
-debugger;
+    this.newPurchaseModal = false;
+
     this.procurementservice.getProcurementOrder().subscribe(res => {
 
       for (let i = 0; i < res.length; i++) {
@@ -650,9 +651,9 @@ debugger;
         }
 
       }
-      this.procurementData = res.filter(p=>p.status != 'closed');
-      if(this.procurementData.length > 0){
-      this.showLoader = false;
+      this.procurementData = res.filter(p => p.status != 'closed');
+      if (this.procurementData.length > 0) {
+        this.showLoader = false;
       }
 
       this.procurementDataCopy = res
@@ -664,7 +665,7 @@ debugger;
     });
   }
 
-  edit(itemNumber,index) {
+  edit(itemNumber, index) {
     if (itemNumber != '') {
       this.EditRowIndex = index
       this.EditRowId = itemNumber;
@@ -697,26 +698,26 @@ debugger;
 
 
   }
-  
-  filterByCategory(ev){
-  debugger;
-  var category = ev.target.value;
 
-  var tempArr = [];
-if(category != ''){
-  this.procurementData.forEach(purchase => {
-    purchase.item.forEach(item => {
-      if(item.componentType == category){
-        tempArr.push(purchase);
-      }
-    });
-  });
-  var removeDuplicatesArr = [...new Set(tempArr)];
-  this.procurementData = removeDuplicatesArr
-} else {
-  this.procurementData = this.procurementDataCopy
-}
-  
+  filterByCategory(ev) {
+    debugger;
+    var category = ev.target.value;
+
+    var tempArr = [];
+    if (category != '') {
+      this.procurementData.forEach(purchase => {
+        purchase.item.forEach(item => {
+          if (item.componentType == category) {
+            tempArr.push(purchase);
+          }
+        });
+      });
+      var removeDuplicatesArr = [...new Set(tempArr)];
+      this.procurementData = removeDuplicatesArr
+    } else {
+      this.procurementData = this.procurementDataCopy
+    }
+
   }
 
 
@@ -739,7 +740,7 @@ if(category != ''){
             case 'open':
               this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
               break
-        
+
 
           }
         } else {
@@ -747,32 +748,32 @@ if(category != ''){
         }
         break;
       case 'purchases':
-     
+
         if (ev.target.value != "") {
           var status = ev.target.value;
           this.filterStatus = ev.target.value;
           if (status == 'ongoing') {
             this.procurementData = this.procurementDataCopy
             this.procurementData = this.procurementData.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
-          } else if(status == 'material'){
+          } else if (status == 'material') {
             this.procurementData = this.procurementDataCopy
-            this.procurementData = this.procurementData.filter(p=>p.orderType == 'material')
-          } else if(status == 'component'){
+            this.procurementData = this.procurementData.filter(p => p.orderType == 'material')
+          } else if (status == 'component') {
             this.procurementData = this.procurementDataCopy
-            this.procurementData = this.procurementData.filter(p=>p.orderType == 'component')
-          } else if(status == 'allOrders'){
+            this.procurementData = this.procurementData.filter(p => p.orderType == 'component')
+          } else if (status == 'allOrders') {
             this.procurementData = this.procurementDataNoFilter
-          } else if (status == 'open'){
+          } else if (status == 'open') {
             this.procurementData = this.procurementDataCopy
-            this.procurementData = this.procurementData.filter(p=> p.status == 'open' && p.status == 'הזמנה פתוחה')
+            this.procurementData = this.procurementData.filter(p => p.status == 'open' && p.status == 'הזמנה פתוחה')
           }
-           else {
+          else {
             this.procurementData = this.procurementDataNoFilter
             this.procurementData = this.procurementData.filter(p => p.status == 'closed')
           }
 
         } else {
-         
+
         }
         break;
       default:
@@ -906,7 +907,7 @@ if(category != ''){
       if (confirm("האם לעדכן סטטוס  ?")) {
         this.procurementservice.changeStatus(status, orderNumber).subscribe(data => {
           if (data) {
-            let purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber);
+            let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber);
             purchase.color = data.color;
             purchase.status = data.status
             this.toastr.success("סטטוס עודכן בהצלחה !")
@@ -962,7 +963,7 @@ if(category != ''){
 
   }
 
-  
+
 
   sortTable(typeOfSort) {
     debugger;
@@ -989,69 +990,69 @@ if(category != ''){
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
       debugger;
       this.currentSupplier = data[0]
-      if(this.currentSupplier.import == 'outOfIsrael'){
-      this.country = true;
-
-      } else if(this.currentSupplier.import != 'outOfIsrael' && (line.item[0].coin).toLowerCase() != 'nis') {
+      if (this.currentSupplier.import == 'outOfIsrael') {
         this.country = true;
-      
+
+      } else if (this.currentSupplier.import != 'outOfIsrael' && (line.item[0].coin).toLowerCase() != 'nis') {
+        this.country = true;
+
       } else {
         this.country = false;
       }
     })
-   
+
     this.currentOrder = line;
     this.currentItems = line.item
     var total = 0;
     var totalP = 0;
-    
+
     var coin = "";
 
     for (let i = 0; i < this.currentItems.length; i++) {
 
-      if(this.currentItems[i].itemPrice == 0) this.currentItems[i].itemPrice = Number(this.currentItems[i].supplierAmount)*Number(this.currentItems[i].supplierPrice)
+      if (this.currentItems[i].itemPrice == 0) this.currentItems[i].itemPrice = Number(this.currentItems[i].supplierAmount) * Number(this.currentItems[i].supplierPrice)
       total = total + Number(this.currentItems[i].supplierAmount)
-      
+
       totalP = totalP + Number(this.currentItems[i].itemPrice)
-      
+
       coin = this.currentItems[0].coin
-      if(line.orderType == 'component'){
+      if (line.orderType == 'component') {
         this.showImage = true;
-        this.inventoryService.getCmptByNumber(this.currentItems[i].itemNumber,'component').subscribe(data=>{
+        this.inventoryService.getCmptByNumber(this.currentItems[i].itemNumber, 'component').subscribe(data => {
           debugger;
-         this.currentItems[i].img = data[0].img
+          this.currentItems[i].img = data[0].img
         })
       }
 
     }
-    
+
 
     this.importantRemarks = line.remarks
-    
-    
+
+
     var num = this.formatNumber(total)
     var numTwo = this.formatNumber(totalP)
-    var numThree = this.formatNumber(totalP*17/100);
-  
+    var numThree = this.formatNumber(totalP * 17 / 100);
+
     this.totalAmount = num
     this.totalPrice = numTwo
     this.priceTaxes = numThree
-    var combined = ((totalP*17/100) + totalP)
+    var combined = ((totalP * 17 / 100) + totalP)
     var numFour = this.formatNumber(combined)
     this.totalPriceWithTaxes = numFour
-    if(coin == 'nis'){
+    if (coin == 'nis') {
       this.currCoin = '\u20AA'
     }
-    if(coin == 'eur'){
+    if (coin == 'eur') {
       this.currCoin = '\u20ac'
     }
-    if(coin == 'usd'){
+    if (coin == 'usd') {
       this.currCoin = '$'
     }
- 
+
     this.orderDate = line.outDate.slice(0, 10)
     this.printBill = true;
-   
+
   }
 
   sendOrder(line) {
@@ -1122,8 +1123,8 @@ if(category != ''){
   }
 
   searchBySupplier(ev) {
-  debugger
-  
+    debugger
+
     var supplierName = ev.target.value;
     if (supplierName != "") {
       this.procurementDataCopy = this.procurementData
@@ -1135,20 +1136,20 @@ if(category != ''){
 
   }
 
-  itemStatusDone(itemNumber,orderNumber){
-   this.procurementservice.setItemToDone({itemNumber:itemNumber,orderNumber:orderNumber}).subscribe(data=>{
-    debugger;
-    if(data){
-      var purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
-      var item = purchase.item.find(i=>i.itemNumber == itemNumber)
-      item.color = 'lightgreen'
-      purchase.color = 'orange'
-      this.toastr.success('פריט עודכן בהצלחה !')
-    }
-   })
+  itemStatusDone(itemNumber, orderNumber) {
+    this.procurementservice.setItemToDone({ itemNumber: itemNumber, orderNumber: orderNumber }).subscribe(data => {
+      debugger;
+      if (data) {
+        var purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
+        var item = purchase.item.find(i => i.itemNumber == itemNumber)
+        item.color = 'lightgreen'
+        purchase.color = 'orange'
+        this.toastr.success('פריט עודכן בהצלחה !')
+      }
+    })
 
   }
-  
+
 
 
   searchByReference(ev) {
@@ -1190,7 +1191,7 @@ if(category != ''){
   }
 
   searchByItem(ev) {
-  debugger;
+    debugger;
     var itemNumber = ev.target.value;
     var tempArr = []
     this.procurementData = this.procurementDataNoFilter
@@ -1206,16 +1207,16 @@ if(category != ''){
       }
       this.procurementData = tempArr
     } else {
-      if(this.filterStatus == 'ongoing'){
+      if (this.filterStatus == 'ongoing') {
         this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
       } else if (this.filterStatus == undefined) {
         this.procurementData = this.procurementDataCopy
-      } else if(this.filterStatus == 'allOrders'){
+      } else if (this.filterStatus == 'allOrders') {
         this.procurementData = this.procurementDataNoFilter;
       } else {
-        this.procurementData = this.procurementDataCopy.filter(p=>p.status != 'closed')
+        this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed')
       }
-     
+
     }
 
   }
@@ -1242,16 +1243,16 @@ if(category != ''){
       this.newItem.remarks = ''
   }
 
-  filterByComponent(ev){
+  filterByComponent(ev) {
     var componentN = ev.target.value;
-  if(componentN != ""){
-  this.inventoryService.getCmptByitemNumber(componentN).subscribe(data=>{
-  
-    this.purchaseRecommendations =  data[0].purchaseRecommendations
-  })
-  }  else {
-    this.purchaseRecommendations = this.purchaseRecommendationsCopy
-  }
+    if (componentN != "") {
+      this.inventoryService.getCmptByitemNumber(componentN).subscribe(data => {
+
+        this.purchaseRecommendations = data[0].purchaseRecommendations
+      })
+    } else {
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy
+    }
   }
 
 
@@ -1354,60 +1355,60 @@ if(category != ''){
     this.arrivalData[0].index = index;
   }
 
-  checkArrivalsAmount(arrivals){
+  checkArrivalsAmount(arrivals) {
     debugger;
     let amount = 0;
     arrivals.forEach(arrival => {
-      amount+=arrival.arrivedAmount
+      amount += arrival.arrivedAmount
     });
 
     return amount;
   }
 
-  filterArrivalsByStatus(ev){
+  filterArrivalsByStatus(ev) {
     debugger;
     let tempArr = []
     let tempAmount = 0;
     let status = ev.target.value;
-    if(status == 'notDone'){
+    if (status == 'notDone') {
       this.procurementArrivals = this.procurementArrivalsCopy
-      this.procurementArrivals = this.procurementArrivals.filter(p=>p.arrivals.length == 0)
+      this.procurementArrivals = this.procurementArrivals.filter(p => p.arrivals.length == 0)
     }
-    if(status == 'done'){
+    if (status == 'done') {
       this.procurementArrivals = this.procurementArrivalsCopy
       this.procurementArrivals.forEach(purchase => {
         purchase.arrivals.forEach(arrival => {
-        if(purchase.arrivals.length > 0){
+          if (purchase.arrivals.length > 0) {
+            tempAmount = this.checkArrivalsAmount(purchase.arrivals);
+            if (Number(purchase.supplierAmount) <= tempAmount) {
+              tempArr.push(purchase)
+            }
+          }
+
+        });
+      });
+      this.procurementArrivals = tempArr
+    }
+    if (status == 'part') {
+      this.procurementArrivals = this.procurementArrivalsCopy
+      this.procurementArrivals.forEach(purchase => {
+        purchase.arrivals.forEach(arrival => {
           tempAmount = this.checkArrivalsAmount(purchase.arrivals);
-          if(Number(purchase.supplierAmount) <= tempAmount) {
+          if (Number(purchase.supplierAmount) > tempAmount) {
             tempArr.push(purchase)
           }
-        }
-       
         });
       });
       this.procurementArrivals = tempArr
     }
-    if(status == 'part'){
-      this.procurementArrivals = this.procurementArrivalsCopy
-      this.procurementArrivals.forEach(purchase => {
-        purchase.arrivals.forEach(arrival => {
-          tempAmount = this.checkArrivalsAmount(purchase.arrivals);
-          if(Number(purchase.supplierAmount) > tempAmount){
-          tempArr.push(purchase)
-          }
-        });
-      });
-      this.procurementArrivals = tempArr
-    }
-    
+
   }
 
   addReferenceDetails(arrival) {
     debugger;
     this.newReference.orderId = arrival.id
     this.newReference.itemNumber = arrival.itemNumber
-    if(this.user){
+    if (this.user) {
       this.newReference.user = this.user;
     }
     this.procurementservice.updatePurchaseOrder(this.newReference).subscribe(data => {
@@ -1483,16 +1484,16 @@ if(category != ''){
 
   closeOrder(ev, orderNumber) {
     var reason = ev.target.value;
-    if(reason != 'open'){
+    if (reason != 'open') {
       if (confirm("האם לסגור הזמנה זו  ?")) {
         this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
           if (data) {
-           debugger;
-         let purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
-         if(purchase){
-           purchase.status = data.status;
-           purchase.color = data.color
-         }
+            debugger;
+            let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
+            if (purchase) {
+              purchase.status = data.status;
+              purchase.color = data.color
+            }
             this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
           } else {
             this.toastr.error('error')
@@ -1503,11 +1504,11 @@ if(category != ''){
       if (confirm("האם לפתוח הזמנה זו  ?")) {
         this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
           if (data) {
-            let purchase = this.procurementData.find(p=>p.orderNumber == data.orderNumber)
-         if(purchase){
-           purchase.status = data.status;
-           purchase.color = data.color
-         }
+            let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
+            if (purchase) {
+              purchase.status = data.status;
+              purchase.color = data.color
+            }
             this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
           } else {
             this.toastr.error('error')
@@ -1515,7 +1516,7 @@ if(category != ''){
         })
       }
     }
-  
+
   }
 
   deleteFromOrder(itemNumber, orderNumber) {
@@ -1523,18 +1524,18 @@ if(category != ''){
       this.procurementservice.deleteItemFromOrder(itemNumber, orderNumber).subscribe(data => {
         debugger;
         if (data) {
-        for (let i = 0; i < this.procurementData.length; i++) {
-          for (let j = 0; j < this.procurementData[i].item.length; j++) {
-            if(this.procurementData[i].orderNumber == orderNumber){
-              if(this.procurementData[i].item[j].itemNumber == itemNumber){
-                this.procurementData[i].item.splice(j,1)
+          for (let i = 0; i < this.procurementData.length; i++) {
+            for (let j = 0; j < this.procurementData[i].item.length; j++) {
+              if (this.procurementData[i].orderNumber == orderNumber) {
+                if (this.procurementData[i].item[j].itemNumber == itemNumber) {
+                  this.procurementData[i].item.splice(j, 1)
+                }
               }
             }
-          } 
-        }
+          }
           this.toastr.success("פריט נמחק בהצלחה")
-          
-          
+
+
 
         }
       })
@@ -1554,7 +1555,7 @@ if(category != ''){
     debugger;
     this.orderData
     if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice,itemRemarks,orderCoin,index).subscribe(data => {
+      this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice, itemRemarks, orderCoin, index).subscribe(data => {
         debugger
         for (let i = 0; i < this.procurementData.length; i++) {
           if (this.procurementData[i].orderNumber == orderNumber) {
@@ -1565,7 +1566,7 @@ if(category != ''){
             this.procurementData[i].item[index].coin = orderCoin
 
             this.toastr.success(" עודכן בהצלחה !")
-            this.edit('','');
+            this.edit('', '');
 
           }
 

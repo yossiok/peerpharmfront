@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -16,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NewProcurementComponent implements OnInit {
 
-
+  @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
   openOrdersModal: boolean = false;
   newProcurementForm: any;
   supplierToUpdate: any;
@@ -30,8 +30,8 @@ export class NewProcurementComponent implements OnInit {
   showUpdatePLModal: boolean = false;
   allMaterials: any[];
   itemExistInOrders: any[];
-  userEmail:any;
-  editRow:String = ''
+  userEmail: any;
+  editRow: String = ''
 
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
@@ -56,14 +56,14 @@ export class NewProcurementComponent implements OnInit {
     orderNumber: '',
     itemRemarks: '',
     itemPrice: '',
-    componentNs:'',
-    componentType:''
+    componentNs: '',
+    componentType: ''
 
   }
   newProcurement = {
     supplierNumber: '',
     supplierName: '',
-    supplierEmail:'',
+    supplierEmail: '',
     outDate: this.formatDate(new Date()),
     validDate: '',
     item: [],
@@ -71,20 +71,20 @@ export class NewProcurementComponent implements OnInit {
     orderType: '',
     remarks: '',
     comaxNumber: '',
-    recommendRemarks:'',
-    userEmail:'',
-    recommendId:'',
-    user:'',
+    recommendRemarks: '',
+    userEmail: '',
+    recommendId: '',
+    user: '',
 
   }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.editPurchaseItems('');
- 
+
   }
 
-  constructor(private route:ActivatedRoute,private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder, ) {
+  constructor(private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
 
   }
 
@@ -94,12 +94,12 @@ export class NewProcurementComponent implements OnInit {
     debugger;
     if (this.route.snapshot.queryParams.id != undefined) {
       debugger
-     let recommendId =  this.route.snapshot.queryParams.id
-     this.procurementService.getRecommendById(recommendId).subscribe(data=>{
-      if(data){
-        this.fillPurchaseDetails(data)
-      }
-     })
+      let recommendId = this.route.snapshot.queryParams.id
+      this.procurementService.getRecommendById(recommendId).subscribe(data => {
+        if (data) {
+          this.fillPurchaseDetails(data)
+        }
+      })
     }
     // if (this.route.snapshot.queryParams.multi != undefined) {
     //   debugger
@@ -111,20 +111,17 @@ export class NewProcurementComponent implements OnInit {
     //   }
     //  })
     // }
-    if(this.authService.loggedInUser)
-    {
+    if (this.authService.loggedInUser) {
       this.userEmail = this.authService.loggedInUser.userEmail;
       this.newProcurement.user = this.authService.loggedInUser.userName
-      
+
     }
-    else
-    {
-      this.authService.userEventEmitter.subscribe(data=>
-        {
-          this.userEmail = this.authService.loggedInUser.userEmail;
-         
-        })
-    } 
+    else {
+      this.authService.userEventEmitter.subscribe(data => {
+        this.userEmail = this.authService.loggedInUser.userEmail;
+
+      })
+    }
 
   }
 
@@ -141,11 +138,11 @@ export class NewProcurementComponent implements OnInit {
   // }
 
 
-  updateItemInPL(){
-    this.supplierService.updateSupplierPrice(this.supplierToUpdate).subscribe(data=>{
-    if(data){
-      this.toastr.success('מחיר עודכן בהצלחה !')
-    }
+  updateItemInPL() {
+    this.supplierService.updateSupplierPrice(this.supplierToUpdate).subscribe(data => {
+      if (data) {
+        this.toastr.success('מחיר עודכן בהצלחה !')
+      }
     })
   }
 
@@ -158,15 +155,15 @@ export class NewProcurementComponent implements OnInit {
     }
   }
 
-  fillPurchaseDetails(recommendation){
-  debugger;
+  fillPurchaseDetails(recommendation) {
+    debugger;
 
 
-  this.newItem.itemNumber = recommendation.componentNumber;
-  this.newProcurement.orderType = recommendation.type
-  this.newItem.supplierAmount = recommendation.amount
-  this.newProcurement.recommendId = recommendation._id
-  this.findMaterialByNumber();
+    this.newItem.itemNumber = recommendation.componentNumber;
+    this.newProcurement.orderType = recommendation.type
+    this.newItem.supplierAmount = recommendation.amount
+    this.newProcurement.recommendId = recommendation._id
+    this.findMaterialByNumber();
 
   }
 
@@ -182,7 +179,7 @@ export class NewProcurementComponent implements OnInit {
             this.newItem.coin = data[0].coin
             this.newItem.measurement = data[0].unitOfMeasure
             this.newItem.componentNs = data[0].componentNs
-            var supplier = data[0].alternativeSuppliers.find(s=>s.supplierName == this.newProcurement.supplierName);
+            var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newProcurement.supplierName);
             this.newItem.supplierPrice = parseFloat(supplier.price)
             if (data[0].frameQuantity || data[0].frameSupplier) {
               alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' + "  " + data[0].frameSupplier + " " + 'כמות:' + " " + data[0].frameQuantity)
@@ -198,7 +195,7 @@ export class NewProcurementComponent implements OnInit {
           debugger;
           this.newItem.itemName = data[0].componentName;
           this.newItem.componentNs = data[0].componentNs
-          if(this.newItem.itemName == undefined && this.newProcurement.orderType == 'fictive'){
+          if (this.newItem.itemName == undefined && this.newProcurement.orderType == 'fictive') {
             this.newItem.itemName = data[0].componentName
           }
           if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
@@ -215,10 +212,10 @@ export class NewProcurementComponent implements OnInit {
         debugger;
         let items = data[0].items;
 
-        if(items.length > 0) {
+        if (items.length > 0) {
           items.forEach(item => {
-            if(item.arrivedAmount != undefined){
-              if(item.arrivedAmount <= item.supplierAmount){
+            if (item.arrivedAmount != undefined) {
+              if (item.arrivedAmount <= item.supplierAmount) {
                 this.existOpenOrderAlert = true;
                 this.openOrdersModal = true;
                 if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
@@ -228,18 +225,18 @@ export class NewProcurementComponent implements OnInit {
             } else {
               this.openOrdersModal = true;
             }
-        
+
             if (item.status == 'supplierGotOrder' || item.status == 'sentToSupplier') {
               item.status = 'open'
             }
-          }); 
+          });
         }
         else {
           this.itemExistInOrders = [];
           this.openOrdersModal = false;
         }
 
-        this.itemExistInOrders = data.filter(p=>p.status != 'closed');
+        this.itemExistInOrders = data.filter(p => p.status != 'closed');
 
       })
 
@@ -248,7 +245,7 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
-  editPurchaseItems(itemNumber){
+  editPurchaseItems(itemNumber) {
     if (itemNumber != '') {
 
       this.editRow = itemNumber;
@@ -273,36 +270,36 @@ export class NewProcurementComponent implements OnInit {
   }
 
   findSupplierByNumber(ev) {
-  debugger;
+    debugger;
     let supplier = ev.target.value;
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
     this.currSupplier = result[0]
-    
+
     this.newProcurement.supplierNumber = result[0].suplierNumber
     this.newProcurement.supplierEmail = result[0].email
 
   }
 
-  removeItemFromPurchase(itemNumber){
-  
-  for (let i = 0; i < this.newProcurement.item.length; i++) {
-   if(this.newProcurement.item[i].itemNumber == itemNumber){
-    this.newProcurement.item.splice(i, 1);
-    this.toastr.success('פריט הוסר בהצלחה')
-   }
-    
-  }
+  removeItemFromPurchase(itemNumber) {
+
+    for (let i = 0; i < this.newProcurement.item.length; i++) {
+      if (this.newProcurement.item[i].itemNumber == itemNumber) {
+        this.newProcurement.item.splice(i, 1);
+        this.toastr.success('פריט הוסר בהצלחה')
+      }
+
+    }
 
   }
 
-  editItemInPurchase(itemNumber){
-  if(itemNumber != '' ){
-    var item = this.newProcurement.item.find(i=>i.itemNumber == itemNumber)
-    item.supplierAmount = this.updateItemAmount.nativeElement.value;
-    item.supplierPrice = this.updateItemPrice.nativeElement.value;
-    this.editPurchaseItems('')
-    this.toastr.success('פריט עודכן בהצלחה !')
-  }
+  editItemInPurchase(itemNumber) {
+    if (itemNumber != '') {
+      var item = this.newProcurement.item.find(i => i.itemNumber == itemNumber)
+      item.supplierAmount = this.updateItemAmount.nativeElement.value;
+      item.supplierPrice = this.updateItemPrice.nativeElement.value;
+      this.editPurchaseItems('')
+      this.toastr.success('פריט עודכן בהצלחה !')
+    }
   }
 
 
@@ -317,17 +314,17 @@ export class NewProcurementComponent implements OnInit {
       supplierPrice: this.supplierPrice.nativeElement.value,
       itemPrice: Number(this.supplierPrice.nativeElement.value) * Number(this.supplierAmount.nativeElement.value),
       itemRemarks: this.itemRemarks.nativeElement.value,
-      componentNs:this.newItem.componentNs,
-      componentType:this.newItem.componentType
+      componentNs: this.newItem.componentNs,
+      componentType: this.newItem.componentType
     }
 
-    if(newItem.itemName){
+    if (newItem.itemName) {
       newItem.itemName.trim()
     }
-    if(newItem.itemNumber){
+    if (newItem.itemNumber) {
       newItem.itemNumber.trim()
     }
-    if(newItem.componentNs){
+    if (newItem.componentNs) {
       newItem.componentNs.trim()
     }
 
@@ -337,12 +334,12 @@ export class NewProcurementComponent implements OnInit {
       this.toastr.error('שים לב , לא כל הפרטים מלאים.')
     } else {
       if (this.newProcurement.orderType == 'material') {
-        if(this.allMaterials != undefined){
+        if (this.allMaterials != undefined) {
           var material = this.allMaterials.find(m => m.componentN == newItem.itemNumber);
         }
-       
+
         debugger;
-        if(material){
+        if (material) {
           if (material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true') {
             if (confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + material.allowQtyInStock)) {
               this.pushAndResetItem(newItem)
@@ -351,13 +348,13 @@ export class NewProcurementComponent implements OnInit {
             this.pushAndResetItem(newItem)
           }
         }
-       else {
-        this.pushAndResetItem(newItem)
-       
+        else {
+          this.pushAndResetItem(newItem)
+
         }
       } else {
         this.pushAndResetItem(newItem)
-        
+
       }
 
 
@@ -366,9 +363,9 @@ export class NewProcurementComponent implements OnInit {
     }
   }
 
-  pushAndResetItem(newItem){
+  pushAndResetItem(newItem) {
     this.newProcurement.item.push(newItem);
-  
+
     this.newItem.coin = "";
     this.newItem.itemName = "";
     this.newItem.itemNumber = "";
@@ -393,21 +390,22 @@ export class NewProcurementComponent implements OnInit {
   }
 
   sendNewProc() {
-  
+
     debugger;
-    if(this.newProcurement.supplierEmail != ''){
-      if(this.newProcurement.item.length > 0 ){
+    if (this.newProcurement.supplierEmail != '') {
+      if (this.newProcurement.item.length > 0) {
         if (confirm("האם להקים הזמנה זו ?")) {
           this.newProcurement.userEmail = this.userEmail
           this.newProcurement.outDate.toString();
           this.procurementService.addNewProcurement(this.newProcurement).subscribe(data => {
+            // console.log('data from addNewProcurement: ',data)
             if (data) {
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data => {
                 if (data) {
                   this.toastr.success("כמות זו ירדה מכמות המסגרת")
                 }
-    
+                
               })
               this.newProcurement.validDate = ""
               this.newProcurement.remarks = ''
@@ -416,10 +414,11 @@ export class NewProcurementComponent implements OnInit {
               this.newProcurement.item = [];
               this.newProcurement.comaxNumber = ''
               this.newProcurement.supplierEmail = ''
-    
-    
+              
+              this.newProcurementSaved.emit()
             }
           })
+         
         }
       } else {
         this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
@@ -430,21 +429,21 @@ export class NewProcurementComponent implements OnInit {
   }
 
 
-  updateSupplierEmail(ev){
+  updateSupplierEmail(ev) {
     let email = ev.target.value;
-    if(confirm('האם לעדכן מייל אצל הספק ?')) {
+    if (confirm('האם לעדכן מייל אצל הספק ?')) {
       this.currSupplier.email = email
-      if(email != ''){
-        this.supplierService.updateCurrSupplier(this.currSupplier).subscribe(data=>{
-        if(data){
-          this.toastr.success('מייל עודכן בהצלחה !')
-        }
+      if (email != '') {
+        this.supplierService.updateCurrSupplier(this.currSupplier).subscribe(data => {
+          if (data) {
+            this.toastr.success('מייל עודכן בהצלחה !')
+          }
         })
       }
     }
-   
+
   }
-  
+
 
   addToSupplierPriceList() {
     debugger;
@@ -460,8 +459,8 @@ export class NewProcurementComponent implements OnInit {
 
       this.supplierService.addToSupplierPriceList(obj).subscribe(data => {
         if (data.itemNumber) {
-         this.currItemForPL = data;
-         this.showUpdatePLModal = true
+          this.currItemForPL = data;
+          this.showUpdatePLModal = true
         } else {
           this.toastr.success('פריט הוסף למחירון ספק בהצלחה !')
         }
