@@ -128,7 +128,7 @@ approvedPackgeRemarksInput: Boolean=false;
       // unitVolume: [0, ],    
       // unitMesureType: [0, ],    
       
-      warehouse: ["Rosh HaAyin"], //select 
+      warehouse: [""], //select 
       position: [""], //select 
       barcode:[""],
       deliveryNoteNumber:["", Validators.required],

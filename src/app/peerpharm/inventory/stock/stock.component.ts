@@ -1449,7 +1449,7 @@ export class StockComponent implements OnInit {
     console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
-
+    debugger;
     if (this.resCmpt.jumpRemark == "" || this.resCmpt.jumpRemark == undefined) {
       console.log("ok")
     } else {
@@ -1926,7 +1926,7 @@ export class StockComponent implements OnInit {
   async getUser() {
     debugger;
 
-    if(this.authService.loggedInUser.userName == 'SHARK' || this.authService.loggedInUser.userName == 'sima'){
+    if(this.authService.loggedInUser.userName == 'SHARK' || this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'martha'){
       this.showDeleteBtn = true
     }
     await this.authService.userEventEmitter.subscribe(user => {

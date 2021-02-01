@@ -298,6 +298,8 @@
                   (change)="handleChange('laser')" />Laser<br />
                 <input type="radio" name="typeEdit" #mkpA value="stickers" [checked]="line.mkp === 'stickers'"
                   (change)="handleChange('stickers')" />Stickers<br />
+                <input type="radio" name="typeEdit" #mkpA value="mkp2" [checked]="line.mkp === 'mkp2'"
+                  (change)="handleChange('mkp2')" />Mkp2<br />
               </td>
               <td *ngIf="line._id !== EditRowId">
                 <img src="assets/images/an.png" *ngIf="

@@ -259,10 +259,6 @@ export class OrderdetailsComponent implements OnInit {
    }, 10000);
    
 
-
-
-
-    debugger;
     this.orderService.openOrdersValidate.subscribe(res => {
       this.number = this.route.snapshot.paramMap.get('id');
 
@@ -284,7 +280,7 @@ export class OrderdetailsComponent implements OnInit {
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
 
-          debugger;
+          
      
           this.ordersItemsCopy = orders.orderItems;
           this.ordersItems.map(item => {
@@ -300,6 +296,7 @@ export class OrderdetailsComponent implements OnInit {
 
       }
       else {
+        debugger;
         this.showingAllOrders = false;
         this.orderService.ordersArr.subscribe(async res => {
           console.log(res)
@@ -366,7 +363,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   open(contentTwo) {
-    debugger;
+    
     var allForms = this.allForms;
     var orderItems = this.ordersItems;
 
@@ -434,7 +431,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   openInvoice(item){
-   debugger;
+   
    this.currItem = item
    this.currBillingArr = item.billing
    this.billQtySum = 0
@@ -447,7 +444,7 @@ export class OrderdetailsComponent implements OnInit {
   getCompDetails(compNumber){
   
   this.inventoryService.getCompStatus(compNumber).subscribe(data=>{
-  debugger;
+  
   this.compRequirement = data;
   this.compRequirementModal = true;
   })
@@ -457,14 +454,14 @@ export class OrderdetailsComponent implements OnInit {
 
   
   getProdReq() {
-    debugger;
+    
     var tempArr = []
     this.productionRequirements.forEach(p=>{
      tempArr.push(p.itemNumber)
     })
     this.itemSer.createProdRequirement(tempArr).subscribe(data=>{
     if(data){
-      debugger;
+      
       this.itemRequirements = data;
       this.productionRequirements.forEach(p=>{
         this.itemRequirements.forEach(i=>{
@@ -537,7 +534,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   saveItemRemarks(id){
-    debugger;
+    
     this.componentRemarks.nativeElement.value;
     var obj = {
       componentRemarks:this.componentRemarks.nativeElement.value,
@@ -547,7 +544,7 @@ export class OrderdetailsComponent implements OnInit {
       orderItemId:id
     }
     this.orderService.saveOrderItemRemarks(obj).subscribe(data=>{
-debugger;
+
 if(data){
   for (let i = 0; i < this.productionRequirements.length; i++) {
   if(this.productionRequirements[i]._id == data._id){
@@ -566,7 +563,7 @@ if(data){
 
   getItemDetails(itemNumber){
     this.itemSer.getItemData(itemNumber).subscribe(data=>{
-      debugger;
+      
     this.prodRequirement = data;
     
     })
@@ -577,7 +574,7 @@ if(data){
 
     debugger
     this.itemSer.getComponentsAmountByCmptNumber(itemNumber, itemQuantity).subscribe(data => {
-      debugger;
+      
       data;
 
       this.itemDetails = data;
@@ -612,7 +609,7 @@ if(data){
   }
 
   // getAllOrdersItems() { 
-  //   debugger;
+  //   
   //   this.orderService.getOpenOrdersItems().subscribe(data=>{
   //     this.orderItemsStock = data;
 
@@ -645,7 +642,7 @@ if(data){
   }
 
   addItemOrder() {
-    debugger;
+    
     this.itemData.formuleCheck = this.formuleCheck
     this.itemData.orderId = this.orderId;
     var userName = this.authService.loggedInUser.firstName
@@ -724,7 +721,7 @@ if(data){
   }
 
   async getOrderDetails() {
-    debugger;
+    
     this.number = this.route.snapshot.paramMap.get('id');
     //if someone loaded just one item in orders screen through "Load" button
     if (this.number.includes(',')) this.number = this.number.split(",").filter(x => x != "");
@@ -766,7 +763,7 @@ if(data){
   }
 
   showFormule(item,itemNumber, formuleByItem) {
-  debugger;
+  
  
     this.currItem = item;
     this.formuleService.getFormuleByNumber(itemNumber).subscribe(data => {
@@ -796,17 +793,17 @@ if(data){
   }
 
   checkboxAllOrders(ev) {
-    debugger;
+    
     this.ordersItems.filter(e => e.isSelected = ev.target.checked)
   }
 
   createProdRequirements() {
-    debugger;
+    
 
     
     for (let i = 0; i < this.productionRequirements.length; i++) {
       this.itemSer.getItemData(this.productionRequirements[i].itemNumber).subscribe(data => {
-        debugger;
+        
         data
         this.productionRequirements[i].bottleNumber = data[0].bottleNumber
         this.productionRequirements[i].pumpNumber = data[0].pumpNumber
@@ -826,7 +823,7 @@ if(data){
 
  
   changeReqStatus(ev, id, type) {
-    debugger;
+    
     var status = ev.target.value
     switch (type) {
       case 'component':
@@ -894,7 +891,7 @@ if(data){
 
     calculateMaterials(materials){
       this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals=>{
-        debugger;
+        
         var count = 0;
         for (let i = 0; i < materials.length; i++) {
          for (let j = 0; j < arrivals.length; j++) {
@@ -935,7 +932,7 @@ if(data){
   
 
     changeItemQuantity(itemNumber){
-      debugger;
+      
       var updatedQuantity = prompt('הזן כמות');
       var tempArr = [...this.selectedArr];
       var tempMaterials = [...this.materialsForFormules]
@@ -1173,7 +1170,7 @@ if(data){
 
 
   isChecked(ev, id) {
-    debugger;
+    
     var formuleStatus = ev.target.checked
     if (ev.target.checked == true) {
 
@@ -1196,7 +1193,7 @@ if(data){
   }
 
   saveEdit() {
-  debugger;
+  
 
     let itemToUpdate = {
 
@@ -1256,7 +1253,7 @@ if(data){
   }
 
   setMkpSchedule(item, date, remarks, invoice) {
-    debugger;
+      debugger;
     // we should check what about type = '' 
     if (date != '') {
 
@@ -1306,7 +1303,7 @@ if(data){
 
 
   async setSchedule(item, type) {
-    debugger;
+    
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
@@ -1371,7 +1368,7 @@ if(data){
 
 
   setBatch(item, batch, existBatch) {
-    debugger;
+    
     if (this.inputBatch.nativeElement.value != undefined) { }
     this.inputBatch.nativeElement.value;
     let updatedBatch = this.inputBatch.nativeElement.value.toLowerCase();
@@ -1429,7 +1426,7 @@ if(data){
   }
 
   sendToProduction(){
-    debugger;
+    
 
     var production = {
       orderNumber:this.currItem.orderNumber,
@@ -1449,7 +1446,7 @@ if(data){
     }
 
     this.orderService.sendFormuleToProduction(production).subscribe(data=>{
-      debugger;
+      
       if(data.msg == "sentToProduction"){
         this.toastSrv.success('Formule Sent To Production')
         this.newProductionNetWeightGr = ''
@@ -1619,7 +1616,7 @@ if(data){
     //  });
 
     await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList => {
-      debugger;
+      
       for (let i = 0; i < orderPackingList.length; i++) {
       orderPackingList[i].totalAmount = orderPackingList[i].pcsCtn*orderPackingList[i].ctnPallet
         
@@ -1640,7 +1637,7 @@ if(data){
         let packedItemsOnPallet = 0;
         await this.orderPackingList.filter(packedItem => {
           if (orderItem.itemNumber == packedItem.itemNumber) {
-            debugger;
+            
             packedItemsOnPallet = packedItem.pcsCtn * packedItem.ctnPallet;
             packedQnt = packedQnt + packedItemsOnPallet
             packedItem.totalPackedQnt = packedQnt;
@@ -1709,9 +1706,9 @@ if(data){
    getUserInfo() {
 
     this.userName = this.authService.loggedInUser.userName
-    debugger;
+    
    this.authService.userEventEmitter.subscribe(user => {
-     debugger;
+     
       this.user = user;
      
       // this.user=user.loggedInUser;
@@ -1789,7 +1786,7 @@ if(data){
   
     getDroppedElemnt(ev)
     {
-      debugger;
+      
       this.stopAllShakes();
       this.stopAllShakes();
     
@@ -1815,7 +1812,7 @@ if(data){
 
 
       this.inventoryService.updateAllocatedOrdersPos(allocatedOrders,compNumber).subscribe(data=>{
-      debugger;
+      
       if(data){
         this.toastSrv.success('מיקום עודכן בהצלחה !')
       }
@@ -1832,7 +1829,7 @@ if(data){
       // let droppedIndex= this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.findIndex(a=>a.itemNumber==droppedIntoItemNum);
       // this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.splice( droppedIndex, 0, itemToaddToNewPhase );
    
-      debugger;
+     
   
       setTimeout(()=>
       {
