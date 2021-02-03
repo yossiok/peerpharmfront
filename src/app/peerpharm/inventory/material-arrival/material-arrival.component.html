@@ -480,6 +480,53 @@
       </ng-template>
     </ng-container>
 
+    <!--new stuff-->
+    <ng-container ngbNavItem>
+      <a ngbNavLink>קרנטין</a>
+      <ng-template ngbNavContent>
+        <div class="container-fluid text-center">
+            <div class="row">
+               <div class="col-12">
+
+                <div *ngIf="!karantineMaterials" class="row text-center mx-auto my-auto mt-4 mb-4 fixNoaStupidStuff">
+                  <div class="col-4 fixNoaStupidStuff"></div>
+                  <div class="col-4 fixNoaStupidStuff">
+                    <h1>זה יקח קצת זמן, אנא המתינו בסבלנות :)</h1>
+                    <div class="bigLoader"></div>
+                  </div>
+                  <div class="col-4 fixNoaStupidStuff"></div>
+                </div>
+
+
+                 <table *ngIf="karantineMaterials" class="table table-hover table-striped">
+                   <thead class="bg-primary text-white">
+                     <tr>
+                       <th>כמות</th>
+                       <th>מדף</th>
+                       <th>שם חו"ג</th>
+                       <th>מספר פריט</th>
+                       <th>תאריך הגעה</th>
+                       <th>#</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr *ngFor="let material of karantineMaterials;let i = index">
+                       <td>{{material.amount}}</td>
+                       <td>{{material.position}}</td>
+                       <td>{{material.name}}</td>
+                       <td>{{material.item}}</td>
+                       <td>{{material.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+                       <td>{{i+1}}</td>
+                     </tr>
+                   </tbody>
+                 </table>
+               </div>
+            </div> 
+          </div>
+      </ng-template>
+    </ng-container>
+    <!--end-->
+
 
 
   </nav>
