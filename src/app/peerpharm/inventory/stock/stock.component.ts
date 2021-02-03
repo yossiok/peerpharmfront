@@ -233,7 +233,8 @@ export class StockComponent implements OnInit {
     date: this.formatDate(new Date()),
     user: '',
     type: '',
-    supplier: ''
+    supplier: '',
+    componentName:''
   }
 
   supplier: any = {
@@ -779,6 +780,7 @@ export class StockComponent implements OnInit {
   purchaseRecommend(component) {
     this.currItem = component;
     this.componentSuppliers = component.alternativeSuppliers
+    this.recommandPurchase.componentName = this.currItem.componentName
     if (component.itemType == 'material') {
       this.recommandPurchase.type = 'material'
     }
