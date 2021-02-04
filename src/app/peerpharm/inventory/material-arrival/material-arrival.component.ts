@@ -31,7 +31,12 @@ export class MaterialArrivalComponent implements OnInit {
 
   materialsLocations: any[];
   allExpired: any[];
-  karantineMaterials: any[];
+  karantineitemShells: any[];
+  shellPosition: string;
+  shellExist: boolean = true;
+  shellCheckMessage: string = 'אנא הכנס שם מדף'
+  shellMessageClass: string = "alert alert-primary"
+  itemShellID: string;
   screenHeight: number;
   activeTabId: String;
   dateStr: String;
@@ -173,7 +178,7 @@ export class MaterialArrivalComponent implements OnInit {
 
     this.getAllExpiredMaterials();
     this.getAllMaterialsLocations();
-    this.getKarantineMaterials();
+    this.getkarantineitemShells();
     // this.user =   this.authService.loggedInUser;
     this.authService.userEventEmitter.subscribe(data => {
       this.user = this.authService.loggedInUser.firstName + " " + this.authService.loggedInUser.lastName;
@@ -287,12 +292,33 @@ export class MaterialArrivalComponent implements OnInit {
     })
   }
 
-  getKarantineMaterials() {
-    this.invtSer.getAllKarantine().subscribe(materials => {
-      console.log('karantine materials: ',materials)
-      this.karantineMaterials = materials
+  getkarantineitemShells() {
+    this.invtSer.getAllKarantine().subscribe(itemShells => {
+      console.log('karantine itemShells: ', itemShells)
+      this.karantineitemShells = itemShells
     })
   }
+
+  karantineitemShellsToInventory(karToInv, itemShellID) {
+    this.itemShellID = itemShellID;
+    this.modalService.open(karToInv, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
+  }
+
+  checkShell() {
+    this.invtSer.checkIfShelfExist(this.shellPosition, '5c1124ef2db99c4434914a0e').subscribe(res => {
+      console.log('exist? ', res)
+      this.shellExist = res == 'shelfMissing' ? false : true;
+      this.shellCheckMessage = res == 'shelfMissing' ? 'מדף זה לא קיים במחסן ראשי! אנא הקם מדף' : 'עודכן בהצלחה'
+      this.shellMessageClass = res == 'shelfMissing' ? 'alert alert-danger' : 'alert alert-success'
+
+      if (res != 'shelfMissing') {
+        console.log('kghdaksdgksa')
+        this.invtSer.updateShelfPosition(this.itemShellID, res.ShelfId, this.shellPosition)
+        .subscribe( updatedShell => console.log('updated shell: ', updatedShell) )
+      }
+    })
+  }
+
 
   changeFields(ev, flag) {
     let formField = ev.target.name;
