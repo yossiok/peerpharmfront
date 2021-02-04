@@ -629,7 +629,6 @@
                   <tr>
                     <th [ngClass]="shellMessageClass">{{shellCheckMessage}}</th>
                     <th>מדף <input [(ngModel)]="shellPosition" type="text"></th>
-                    {{shellPosition}} <br> {{shellExist}}
                     <th><button class="brn btn-success mr-1" (click)="checkShell()" [disabled]="!shellPosition">
                       <i class="ti-check m-r-10" ></i>אישור
                     </button></th>
