@@ -480,7 +480,7 @@
       </ng-template>
     </ng-container>
 
-    <!--new stuff-->
+    <!--karantine-->
     <ng-container ngbNavItem>
       <a ngbNavLink>קרנטין</a>
       <ng-template ngbNavContent>
@@ -488,7 +488,7 @@
             <div class="row">
                <div class="col-12">
 
-                <div *ngIf="!karantineMaterials" class="row text-center mx-auto my-auto mt-4 mb-4 fixNoaStupidStuff">
+                <div *ngIf="!karantineitemShells" class="row text-center mx-auto my-auto mt-4 mb-4 fixNoaStupidStuff">
                   <div class="col-4 fixNoaStupidStuff"></div>
                   <div class="col-4 fixNoaStupidStuff">
                     <h1>זה יקח קצת זמן, אנא המתינו בסבלנות :)</h1>
@@ -498,9 +498,10 @@
                 </div>
 
 
-                 <table *ngIf="karantineMaterials" class="table table-hover table-striped">
+                 <table *ngIf="karantineitemShells" class="table table-hover table-striped">
                    <thead class="bg-primary text-white">
                      <tr>
+                       <th></th>
                        <th>כמות</th>
                        <th>מדף</th>
                        <th>שם חו"ג</th>
@@ -510,12 +511,13 @@
                      </tr>
                    </thead>
                    <tbody>
-                     <tr *ngFor="let material of karantineMaterials;let i = index">
-                       <td>{{material.amount}}</td>
-                       <td>{{material.position}}</td>
-                       <td>{{material.name}}</td>
-                       <td>{{material.item}}</td>
-                       <td>{{material.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+                     <tr *ngFor="let itemShell of karantineitemShells;let i = index">
+                       <td><button class="brn btn-success mr-1" (click)="karantineitemShellsToInventory(karToInv, itemShell._id)">הוכנס למלאי</button></td>
+                       <td>{{itemShell.amount}}</td>
+                       <td>{{itemShell.position}}</td>
+                       <td>{{itemShell.name}}</td>
+                       <td>{{itemShell.item}}</td>
+                       <td>{{itemShell.arrivalDate | date: 'dd/MM/yyyy'}}</td>
                        <td>{{i+1}}</td>
                      </tr>
                    </tbody>
@@ -607,3 +609,36 @@
             </table>
           </div>
         </div>
+
+
+        <!--declare karantine items entered to inventory (modal)-->
+        <ng-template #karToInv let-modal>
+
+          <div dir="rtl" class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">הכנסת פריט למלאי</h4>
+            </div>
+            <div class="modal-body">
+
+              <!-- <i class="ti-check text-success m-r-10" (click)="setOrderItemDone(item)" style="cursor: pointer;"></i> -->
+
+              <h5 class="alert alert-secondary">הוכנס למחסן ראשי</h5>
+
+              <table class='table'>
+                <thead class='tableHeader'>
+                  <tr>
+                    <th [ngClass]="shellMessageClass">{{shellCheckMessage}}</th>
+                    <th>מדף <input [(ngModel)]="shellPosition" type="text"></th>
+                    {{shellPosition}} <br> {{shellExist}}
+                    <th><button class="brn btn-success mr-1" (click)="checkShell()" [disabled]="!shellPosition">
+                      <i class="ti-check m-r-10" ></i>אישור
+                    </button></th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        
+        </ng-template>
