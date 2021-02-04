@@ -129,8 +129,8 @@ export class MaterialArrivalComponent implements OnInit {
       // unitVolume: [0, ],    
       // unitMesureType: [0, ],    
 
-      warehouse: [""], //select 
-      position: [""], //select 
+      warehouse: ["",Validators.required], //select 
+      position: ["",Validators.required], //select 
       barcode: [""],
       deliveryNoteNumber: ["", Validators.required],
     });
@@ -545,7 +545,13 @@ export class MaterialArrivalComponent implements OnInit {
   checkIfShelfExist(ev) {
 
     let shelf = ev.target.value;
-    let whareHouseId = '5c1124ef2db99c4434914a0e'
+    let whareHouseId;
+    let whareHouse = this.newMaterialArrival.controls.warehouse.value;
+    if(whareHouse == 'Karantine'){
+      whareHouseId = '5cf64e77e32883115c39dc56'
+    } else {
+      whareHouseId = '5c1124ef2db99c4434914a0e'
+    }
     if (shelf != '') {
       debugger;
       this.invtSer.checkIfShelfExist(shelf, whareHouseId).subscribe(data => {

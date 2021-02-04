@@ -22,6 +22,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { upperFirst } from 'lodash';
+import { FormsService } from 'src/app/services/forms.service';
 
 
 
@@ -110,7 +111,17 @@ export class StockComponent implements OnInit {
     allUnits:'',
     shelf:'',
     qaStatus:'מוכן לשליחה',
-    itemNumber:''
+    itemNumber:'',
+    palletStatus:'open',
+    isPersonalPackage:false,
+    kartonQuantity:'',
+    lastFloorQuantity:'',
+    orderNumber:'',
+    unitsInKarton:'',
+    unitsQuantityPartKarton:'',
+    floorNumber:''
+
+
   }
   alterSuppliers: any[];
   buttonColor: string = '#2962FF';
@@ -341,7 +352,7 @@ export class StockComponent implements OnInit {
 
 
 
-  constructor(private customerSrv: CostumersService, private supplierService: SuppliersService, private orderService: OrdersService, private modalService: NgbModal, private procuretServ: Procurementservice, private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+  constructor(private formService:FormsService,private customerSrv: CostumersService, private supplierService: SuppliersService, private orderService: OrdersService, private modalService: NgbModal, private procuretServ: Procurementservice, private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder,) {
   }
@@ -452,7 +463,8 @@ export class StockComponent implements OnInit {
   async ngOnInit() {
 
     this.getUser();
-    this.getAllSuppliers()
+    this.getAllSuppliers();
+    this.getAllCustomers();
     if(this.filterbyNum) this.filterbyNum.nativeElement.value = '';
    
     let url = this.route.snapshot;
@@ -971,7 +983,10 @@ export class StockComponent implements OnInit {
 
   createNewQAPallet(){
   debugger;
-  this.newQApallet;
+ 
+  this.formService.createNewQaPallet(this.newQApallet).subscribe(data=>{
+
+  })
   }
 
   getAllCmptTypesAndCategories() {
