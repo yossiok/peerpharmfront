@@ -416,11 +416,21 @@ export class QaPalletsComponent implements OnInit {
         break;
 
     }
-
-
-
-
   }
+
+  filterByOrderNumber(ev) {
+    
+    let orderNumber = ev.target.value;
+          let tempArray = this.allQaPalletsCopy.filter(pallet => pallet.orderNumber && pallet.orderNumber.includes(orderNumber));
+          console.log(tempArray)
+          for(let a of tempArray) {
+            console.log(a.orderNumber)
+          }
+          // this.allQaPallets = tempArray
+          // this.allQaPallets = this.allQaPalletsCopy;
+
+    }
+  
 
   // openData() {
   //   debugger;
