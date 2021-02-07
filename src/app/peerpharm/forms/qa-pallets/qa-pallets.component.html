@@ -17,19 +17,13 @@
 
         <div class="row mt-5">
           <div class="col-2">
-            <label class="form-control">Filter By Customer</label>
+            <input type="text" placeholder="Filter By Customer" class="form-control" (keyup)="filterQAPalletesByCustomer($event,'readyPallets')">
           </div>
           <div class="col-3">
-            <input type="text" class="form-control" (keyup)="filterByCustomer($event,'readyPallets')">
-          </div>
-          <div class="col-3">
-            <label class="form-control">Filter By Order Number</label>
-          </div>
-          <div class="col-3">
-            <input type="text" class="form-control" (keyup)="filterByOrderNumber($event)">
+            <input type="text" placeholder="Filter By Order Number" class="form-control" (keyup)="filterQAPalletesByOrderNumber($event)">
           </div>
           <div class="col-2">
-            <!-- <button class="btn btn-info form-control">הקם משטח</button> -->
+            <input type="text" placeholder="Filter By Item Number" class="form-control" (keyup)="filterQAPalletesByItemNumber($event)">
           </div>
         </div>
       
@@ -208,11 +202,8 @@
         </div>
 
         <div class="row mt-3">
-          <div class="col-2">
-            <label class="form-control">Filter By Customer</label>
-          </div>
           <div class="col-3">
-            <input type="text" class="form-control" (change)="filterByCustomer($event,'closedPallets')">
+            <input type="text" placeholder="Filter By Customer" class="form-control" (keyup)="filterQAPalletesByCustomer($event,'closedPallets')">
           </div>
           <div class="col-2">
             <!-- <button (click)="createNewPL()" class="btn btn-info form-control">הקם רשימת אריזה</button> -->
@@ -362,6 +353,12 @@
           <div class="col-4"></div>
         </div>
 
+        <div class="row mt-5">
+          <div class="col-2">
+            <input type="text" placeholder="Filter By Customer" class="form-control" (keyup)="filterPackedListsByCustomer($event)">
+          </div>
+        </div>
+
         <div class="row mt-3">
           <div class="col-12">
 
@@ -429,6 +426,15 @@
           </div>
           <div class="col-4"></div>
         </div>
+
+
+        <div class="row mt-5">
+          <div class="col-2">
+            <input type="text" placeholder="Filter By Customer" class="form-control" (keyup)="filterReadyPackedListsByCustomer($event)">
+          </div>
+        </div>
+
+
         <div class="row mt-3">
           <div class="col">
 
@@ -488,6 +494,14 @@
           </div>
           <div class="col-4"></div>
         </div>
+
+        <div class="row mt-5">
+          <div class="col-2">
+            <input type="text" placeholder="Filter By Bill Number" class="form-control" (keyup)="filterReadyBillsByBillNumber($event)">
+          </div>
+        </div>
+
+
         <div class="row mt-3">
           <div class="col">
 
