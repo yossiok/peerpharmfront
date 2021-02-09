@@ -749,11 +749,11 @@ export class StockComponent implements OnInit {
 
     });
   }
-
+  // printInventoryValue, { size: 'lg', ariaLabelledBy: 'modal-basic-title' });
 
   open(supplierList) {
-
-    this.modalService.open(supplierList, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+    console.log('components: ',this.components)
+    this.modalService.open(supplierList, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -896,7 +896,7 @@ export class StockComponent implements OnInit {
 
       if(components.length < 1500) {
         this.smallLoader = false;
-        this.getAllPurchases();
+        // this.getAllPurchases();
       }
       if (components.length > 0) {
         this.showLoader = false;
@@ -1463,7 +1463,6 @@ export class StockComponent implements OnInit {
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + cmptNumber;
     this.openModal = true;
-    console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
     debugger;
