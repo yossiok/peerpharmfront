@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup , Validators } from '@angular/forms';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -32,6 +32,7 @@ export class NewProcurementComponent implements OnInit {
   itemExistInOrders: any[];
   userEmail: any;
   editRow: String = ''
+  newPurchase:FormGroup
 
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
@@ -60,6 +61,20 @@ export class NewProcurementComponent implements OnInit {
     componentType: ''
 
   }
+  stockitem = {
+
+    number: '',
+    name: '',
+    coin: '',
+    measurement: '',
+    price: 0,
+    quantity: '',
+    color: '',
+    itemRemarks: '',
+    itemPrice: '',
+    supplierItemNum:''
+
+  }
   newProcurement = {
     supplierNumber: '',
     supplierName: '',
@@ -78,14 +93,37 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.editPurchaseItems('');
 
   }
 
-  constructor(private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
+  constructor(private fb:FormBuilder,private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
 
+    this.newPurchase = fb.group({
+      supplierName: ["", Validators.required],
+      supplierNumber: ["", Validators.required],
+      supplierEmail: ['', Validators.required],
+
+      creationDate: [this.formatDate(new Date()), Validators.required],
+      arrivalDate: [Date, Validators.required],
+      color: ['', Validators.required],
+      stockitems: [[], Validators.required],
+      orderNumber: ['', Validators.required],
+     
+      userEmail: ['', Validators.required],
+      user: ['', Validators.required],
+      billNumber: [[], Validators.required],
+      closeReason: ['', Validators.required],
+      orderType: ['', Validators.required],
+      remarks: ['', Validators.required],
+      status: ['', Validators.required],
+      deliveryCerts: [[], Validators.required],
+      
+ 
+    });
   }
 
   ngOnInit() {
@@ -125,17 +163,11 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
-  // checkIfExist(){
-  //   var comaxNumber = this.newProcurement.comaxNumber;
 
-  //   this.procurementService.findIfComaxExist(comaxNumber).subscribe(data=>{
-  //     if(data.length > 0){
-  //       this.toastr.error('מספר הזמנת קומקס כבר קיים במערכת')
-  //     } else {
-
-  //     }
-  //   })
-  // }
+  sendNewPurchase(){
+    debugger;
+    this.newPurchase.controls.supplierName
+  }
 
 
   updateItemInPL() {
@@ -163,82 +195,78 @@ export class NewProcurementComponent implements OnInit {
     this.newProcurement.orderType = recommendation.type
     this.newItem.supplierAmount = recommendation.amount
     this.newProcurement.recommendId = recommendation._id
-    this.findMaterialByNumber();
+    this.findStockItemByNumber();
 
   }
 
-  findMaterialByNumber() {
+  findStockItemByNumber() {
     debugger
-    if (this.newItem.itemNumber != '') {
+    if (this.stockitem.number != '') {
 
-      if (this.newProcurement.orderType == 'material') {
-        this.inventoryService.getMaterialStockItemByNum(this.newItem.itemNumber).subscribe(data => {
+      if (this.newPurchase.controls.orderType.value == 'material') {
+        this.inventoryService.getMaterialStockItemByNum(this.stockitem.number).subscribe(data => {
           debugger;
           if (data[0]) {
-            this.newItem.itemName = data[0].componentName;
-            this.newItem.coin = data[0].coin
-            this.newItem.measurement = data[0].unitOfMeasure
-            this.newItem.componentNs = data[0].componentNs
-            var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newProcurement.supplierName);
-            this.newItem.supplierPrice = parseFloat(supplier.price)
-            if (data[0].frameQuantity || data[0].frameSupplier) {
-              alert('שים לב , פריט זה נמצא במסגרת אצל ספק:' + "  " + data[0].frameSupplier + " " + 'כמות:' + " " + data[0].frameQuantity)
-            }
+            this.stockitem.name = data[0].componentName;
+            this.stockitem.coin = data[0].coin
+            this.stockitem.measurement = data[0].unitOfMeasure
+            this.stockitem.supplierItemNum = data[0].componentNs
+            var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
+            this.stockitem.price = parseFloat(supplier.price)
 
           } else {
             this.toastr.error('פריט לא קיים במערכת')
           }
 
         })
-      } else {
-        this.inventoryService.getCmptByitemNumber(this.newItem.itemNumber).subscribe(data => {
+      } else if (this.newPurchase.controls.orderType.value == 'component') {
+        this.inventoryService.getCmptByitemNumber(this.stockitem.number).subscribe(data => {
           debugger;
-          this.newItem.itemName = data[0].componentName;
-          this.newItem.componentNs = data[0].componentNs
-          if (this.newItem.itemName == undefined && this.newProcurement.orderType == 'fictive') {
-            this.newItem.itemName = data[0].componentName
+          if (data[0]) {
+            this.stockitem.name = data[0].componentName;
+            this.stockitem.measurement = data[0].unitOfMeasure
+            this.stockitem.supplierItemNum = data[0].componentNs
+            var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
+            this.stockitem.price = parseFloat(supplier.price)
+            this.stockitem.coin = supplier.coin
+
+          } else {
+            this.toastr.error('פריט לא קיים במערכת')
           }
-          if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
-            this.newItem.supplierPrice = Number(data[0].price)
-          }
-          // this.newItem.coin = data[0].coin
-          this.newItem.componentType = data[0].componentType
-          this.newItem.measurement = data[0].unitOfMeasure
-          $("#setCoin").val("data[0].coin");
         })
       }
 
-      this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data => {
-        debugger;
-        let items = data[0].items;
+      // this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data => {
+      //   debugger;
+      //   let items = data[0].items;
 
-        if (items.length > 0) {
-          items.forEach(item => {
-            if (item.arrivedAmount != undefined) {
-              if (item.arrivedAmount <= item.supplierAmount) {
-                this.existOpenOrderAlert = true;
-                this.openOrdersModal = true;
-                if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
-                  this.newItem.supplierPrice = Number(data[0].price)
-                }
-              }
-            } else {
-              this.openOrdersModal = true;
-            }
+      //   if (items.length > 0) {
+      //     items.forEach(item => {
+      //       if (item.arrivedAmount != undefined) {
+      //         if (item.arrivedAmount <= item.supplierAmount) {
+      //           this.existOpenOrderAlert = true;
+      //           this.openOrdersModal = true;
+      //           if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
+      //             this.newItem.supplierPrice = Number(data[0].price)
+      //           }
+      //         }
+      //       } else {
+      //         this.openOrdersModal = true;
+      //       }
 
-            if (item.status == 'supplierGotOrder' || item.status == 'sentToSupplier') {
-              item.status = 'open'
-            }
-          });
-        }
-        else {
-          this.itemExistInOrders = [];
-          this.openOrdersModal = false;
-        }
+      //       if (item.status == 'supplierGotOrder' || item.status == 'sentToSupplier') {
+      //         item.status = 'open'
+      //       }
+      //     });
+      //   }
+      //   else {
+      //     this.itemExistInOrders = [];
+      //     this.openOrdersModal = false;
+      //   }
 
-        this.itemExistInOrders = data.filter(p => p.status != 'closed');
+      //   this.itemExistInOrders = data.filter(p => p.status != 'closed');
 
-      })
+      // })
 
     }
 
@@ -269,14 +297,14 @@ export class NewProcurementComponent implements OnInit {
     })
   }
 
-  findSupplierByNumber(ev) {
+  fillSupplierDetails(ev) {
     debugger;
     let supplier = ev.target.value;
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
     this.currSupplier = result[0]
 
-    this.newProcurement.supplierNumber = result[0].suplierNumber
-    this.newProcurement.supplierEmail = result[0].email
+    this.newPurchase.controls.supplierNumber.setValue(this.currSupplier.suplierNumber)
+    this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
 
   }
 
@@ -302,6 +330,13 @@ export class NewProcurementComponent implements OnInit {
     }
   }
 
+
+  addItemToPurchase(){
+    let objToPush = {...this.stockitem}
+    this.newPurchase.controls.stockitems.value.push(objToPush)
+    this.resetStockItem();
+    this.toastr.success('Item Added Successfully')
+  }
 
   addItemToProcurement() {
     debugger;
@@ -385,36 +420,22 @@ export class NewProcurementComponent implements OnInit {
     var material = this.allMaterials.find(material => material.componentName == materialName)
 
     this.newItem.itemNumber = material.componentN;
-    this.findMaterialByNumber();
+    this.findStockItemByNumber();
 
   }
 
   sendNewProc() {
 
     debugger;
-    if (this.newProcurement.supplierEmail != '') {
-      if (this.newProcurement.item.length > 0) {
+   
+      if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
-          this.newProcurement.userEmail = this.userEmail
           this.newProcurement.outDate.toString();
-          this.procurementService.addNewProcurement(this.newProcurement).subscribe(data => {
+          this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
             // console.log('data from addNewProcurement: ',data)
             if (data) {
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
-              this.procurementService.removeFromFrameQuantity(data.item[0]).subscribe(data => {
-                if (data) {
-                  this.toastr.success("כמות זו ירדה מכמות המסגרת")
-                }
-                
-              })
-              this.newProcurement.validDate = ""
-              this.newProcurement.remarks = ''
-              this.newProcurement.supplierName = ""
-              this.newProcurement.supplierNumber = ""
-              this.newProcurement.item = [];
-              this.newProcurement.comaxNumber = ''
-              this.newProcurement.supplierEmail = ''
-              
+              this.newPurchase.reset();
               this.newProcurementSaved.emit()
             }
           })
@@ -423,10 +444,8 @@ export class NewProcurementComponent implements OnInit {
       } else {
         this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
       }
-    } else {
-      this.toastr.error('חובה למלא מייל ספק')
     }
-  }
+  
 
 
   updateSupplierEmail(ev) {
@@ -481,6 +500,18 @@ export class NewProcurementComponent implements OnInit {
       day = '0' + day;
 
     return [year, month, day].join('-');
+  }
+
+  resetStockItem(){
+    this.stockitem.number = '',
+    this.stockitem.name = '',
+    this.stockitem.coin = '',
+    this.stockitem.measurement = '',
+    this.stockitem.price = 0,
+    this.stockitem.quantity = '',
+    this.stockitem.color = '',
+    this.stockitem.itemRemarks = '',
+    this.stockitem.itemPrice = ''
   }
 
 }
