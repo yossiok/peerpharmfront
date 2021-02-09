@@ -2024,7 +2024,7 @@
             <div class="col-2 fixNoaStupidStuff">
               <label class="form-control">מחיר</label>
               <label class="form-control">מטבע</label>
-              <label class="form-control">מחיר לאחר טעינה</label>
+              <label class="form-control">מחיר העמסה</label>
               <label class="form-control">מטבע לאחר טעינה</label>
               <label class="form-control">משקל יחידה</label>
               <label class="form-control">יחידת מידה</label>
@@ -2078,8 +2078,8 @@
                     <th>משקל</th>
                     <th>מדינה</th>
                     <th>זמן הגעה משוער</th>
-                    <!-- <th>מטבע לפני טעינה</th>
-                    <th>מחיר לפני טעינה</th> -->
+                   <th>מחיר העמסה</th>
+                    <!--  <th>מחיר לפני טעינה</th> -->
                     <th></th>
                   </tr>
                 </thead>
@@ -2146,11 +2146,11 @@
                       <input type="text" [value]="supplier.expectedArrival" class="form-control" #expectedArrival>
                     </td>
 
-                    <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                       {{supplier.priceLoading}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
                       <input type="text" [value]="supplier.priceLoading" class="form-control" #priceLoading>
-                    </td> -->
+                    </td>
 
                     <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                       {{supplier.coinLoading}}</td>
