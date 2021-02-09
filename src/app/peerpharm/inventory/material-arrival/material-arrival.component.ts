@@ -294,7 +294,6 @@ export class MaterialArrivalComponent implements OnInit {
 
   getkarantineitemShells() {
     this.invtSer.getAllKarantine().subscribe(itemShells => {
-      console.log('karantine itemShells: ', itemShells)
       this.karantineitemShells = itemShells
     })
   }
@@ -306,13 +305,11 @@ export class MaterialArrivalComponent implements OnInit {
 
   checkShell() {
     this.invtSer.checkIfShelfExist(this.shellPosition, '5c1124ef2db99c4434914a0e').subscribe(res => {
-      console.log('exist? ', res)
       this.shellExist = res == 'shelfMissing' ? false : true;
       this.shellCheckMessage = res == 'shelfMissing' ? 'מדף זה לא קיים במחסן ראשי! אנא הקם מדף' : 'עודכן בהצלחה'
       this.shellMessageClass = res == 'shelfMissing' ? 'alert alert-danger' : 'alert alert-success'
 
       if (res != 'shelfMissing') {
-        console.log('kghdaksdgksa')
         this.invtSer.updateShelfPosition(this.itemShellID, res.ShelfId, this.shellPosition)
         .subscribe( updatedShell => console.log('updated shell: ', updatedShell) )
       }

@@ -18,9 +18,9 @@ export class QaPalletsComponent implements OnInit {
 
   EditRow: any;
   EditRowTwo: any;
-  EditRowN:any;
-  editBill:any;
-  editCustomer:any;
+  EditRowN: any;
+  editBill: any;
+  editCustomer: any;
   currPLNumber: any;
   customerForPL: any;
   customerForPallet: any;
@@ -29,9 +29,9 @@ export class QaPalletsComponent implements OnInit {
   currentPallet: any;
   currPLWeight: number = 0;
   allQaPallets: any[]
+  allQaPalletsCopy: any[]
   allProducts: any[]
   combinedPallets: any[]
-  allQaPalletsCopy: any[]
   allCustomers: any[]
   allClosedPallets: any[]
   allClosedPalletsCopy: any[]
@@ -44,6 +44,7 @@ export class QaPalletsComponent implements OnInit {
   currCustomerNumber: string;
   currCustomerId: string;
   allPackedLists: any[];
+  allPackedListsCopy: any[];
   showAllReadyCostumers: boolean = false;
   showAllClosedPallets: boolean = false;
   showAllPackedLists: boolean = false;
@@ -51,7 +52,9 @@ export class QaPalletsComponent implements OnInit {
   palletToAdd: any;
   lineToAdd: any;
   allReadyPackedLists: any[];
+  allReadyPackedListsCopy: any[];
   readyBills: any[];
+  readyBillsCopy: any[];
 
   today: Date = new Date();
 
@@ -62,8 +65,8 @@ export class QaPalletsComponent implements OnInit {
     status: '',
     palletNumber: '',
     plStatus: '',
-    palletWeight:'',
-    palletSize:''
+    palletWeight: '',
+    palletSize: ''
 
   }
 
@@ -84,7 +87,7 @@ export class QaPalletsComponent implements OnInit {
 
 
 
-  constructor(private itemService:ItemsService,private inventorySrv:InventoryService,private authService:AuthService,private orderService:OrdersService,private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
+  constructor(private itemService: ItemsService, private inventorySrv: InventoryService, private authService: AuthService, private orderService: OrdersService, private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -104,28 +107,28 @@ export class QaPalletsComponent implements OnInit {
     // this.getAllProducts();
     this.getUser();
   }
-  getUser(){
-   if(this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'effi'){
-     this.deleteLine = true
-     }
+  getUser() {
+    if (this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'effi') {
+      this.deleteLine = true
+    }
   }
 
-  deleteQAPallet(id){
-    if(confirm('האם לסגור משטח זה ?')) {
-      this.formService.deletePalletById(id).subscribe(data=>{
+  deleteQAPallet(id) {
+    if (confirm('האם לסגור משטח זה ?')) {
+      this.formService.deletePalletById(id).subscribe(data => {
         debugger;
-        if(data){
-         this.allQaPallets = this.allQaPallets.filter(p=>p._id != data._id)
+        if (data) {
+          this.allQaPallets = this.allQaPallets.filter(p => p._id != data._id)
         }
       })
     }
-    
+
   }
 
-  cancelPackList(pLId){
-    if(confirm('האם לבטל רשימה זו ?')){
-      this.formService.cancelPackListById(pLId).subscribe(data=>{
-        if(data){
+  cancelPackList(pLId) {
+    if (confirm('האם לבטל רשימה זו ?')) {
+      this.formService.cancelPackListById(pLId).subscribe(data => {
+        if (data) {
           this.toastr.success('רשימה בוטלה בהצלחה !')
           this.getAllPackedLists();
         }
@@ -133,43 +136,43 @@ export class QaPalletsComponent implements OnInit {
     }
   }
 
-  saveNewCustomerForPallet(ev,id){
-    
-    let pallet = this.allQaPallets.find(p=>p._id == id);
+  saveNewCustomerForPallet(ev, id) {
+
+    let pallet = this.allQaPallets.find(p => p._id == id);
     pallet.customerName = ev.target.value;
-    this.formService.updateQAPallet(pallet).subscribe(data=>{
-    if(data){
-      this.toastr.success('לקוח עודכן בהצלחה !')
-      this.updateCustomer('')
-    }
+    this.formService.updateQAPallet(pallet).subscribe(data => {
+      if (data) {
+        this.toastr.success('לקוח עודכן בהצלחה !')
+        this.updateCustomer('')
+      }
     })
   }
 
-  updateCustomer(id){
-    if(id != ''){
+  updateCustomer(id) {
+    if (id != '') {
       this.editCustomer = id
     } else {
       this.editCustomer = ''
     }
   }
 
-  editBillNumber(id){
-    if(id != ''){
+  editBillNumber(id) {
+    if (id != '') {
       this.editBill = id
     } else {
       this.editBill = ''
     }
   }
 
-  editPallet(palletNumber){
-     if (palletNumber != '') {
-       this.EditRowN = palletNumber;
-    
-     } else {
-       this.EditRowN = '';
-     
-     }
-   }
+  editPallet(palletNumber) {
+    if (palletNumber != '') {
+      this.EditRowN = palletNumber;
+
+    } else {
+      this.EditRowN = '';
+
+    }
+  }
 
   edit(itemNumber, customerName) {
     debugger;
@@ -230,94 +233,94 @@ export class QaPalletsComponent implements OnInit {
 
   }
 
-  filterTable(type){
+  filterTable(type) {
     debugger;
     this.allQaPallets = this.allQaPalletsCopy
-    switch(type) {
-  
+    switch (type) {
+
       case 'all':
-       this.allQaPallets = this.allQaPalletsCopy
+        this.allQaPallets = this.allQaPalletsCopy
         break;
       case 'ready':
-        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'מוכן לשליחה')
+        this.allQaPallets = this.allQaPallets.filter(p => p.qaStatus == 'מוכן לשליחה')
         break;
       case 'stickers':
-        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר מדבקות')
+        this.allQaPallets = this.allQaPallets.filter(p => p.qaStatus == 'חסר מדבקות')
         break;
       case 'laser':
-        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר לייזר')
+        this.allQaPallets = this.allQaPallets.filter(p => p.qaStatus == 'חסר לייזר')
         break;
       case 'cartons':
-        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר קרטונים')
+        this.allQaPallets = this.allQaPallets.filter(p => p.qaStatus == 'חסר קרטונים')
         break;
       case 'cartonsMaster':
-        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר קרטוני מאסטר')
+        this.allQaPallets = this.allQaPallets.filter(p => p.qaStatus == 'חסר קרטוני מאסטר')
         break;
       case 'personalPackge':
-        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'עובר לאריזה אישית')
+        this.allQaPallets = this.allQaPallets.filter(p => p.qaStatus == 'עובר לאריזה אישית')
         break;
-     
+
       case 'components':
-        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר קומפוננטים')
+        this.allQaPallets = this.allQaPallets.filter(p => p.qaStatus == 'חסר קומפוננטים')
         break;
       case 'leaflet':
-        this.allQaPallets = this.allQaPallets.filter(p=>p.qaStatus == 'חסר עלונים לצרכן')
+        this.allQaPallets = this.allQaPallets.filter(p => p.qaStatus == 'חסר עלונים לצרכן')
         break;
-     
-        
+
+
     }
   }
 
 
 
-  movePalletToPL(){
+  movePalletToPL() {
     debugger;
     this.currentPallet
     this.currentPallet.packListID = this.customerForPL
-    var objToSend = {...this.currentPallet}
-    this.formService.movePalletToPL(objToSend).subscribe(data=>{
-    if(data){
-      debugger;
-      this.toastr.success('משטח הועבר בהצלחה !')
-      this.getAllPackedLists();
-      for (let i = 0; i < this.selectedArr.length; i++) {
-       if(this.selectedArr[i]._id == this.currentPallet._id){
-        this.selectedArr.splice(i, 1);
-       }
-        
-      }
+    var objToSend = { ...this.currentPallet }
+    this.formService.movePalletToPL(objToSend).subscribe(data => {
+      if (data) {
+        debugger;
+        this.toastr.success('משטח הועבר בהצלחה !')
+        this.getAllPackedLists();
+        for (let i = 0; i < this.selectedArr.length; i++) {
+          if (this.selectedArr[i]._id == this.currentPallet._id) {
+            this.selectedArr.splice(i, 1);
+          }
 
-    }
+        }
+
+      }
     })
   }
 
-  updatePalletDetails(pallet){
-     debugger;
-     let size = this.newPalletSize.nativeElement.value;
-     let weight = this.newPalletWeight.nativeElement.value;
-     pallet.palletSize = size;
-     pallet.palletWeight = weight;
-     this.formService.updatePallet(pallet).subscribe(pallet=>{
-       debugger;
-     if(pallet){
-     let oldPallet = this.allClosedPallets.find(p=>p._id == pallet._id);
-     oldPallet.palletSize = pallet.palletSize
-     oldPallet.palletWeight = pallet.palletWeight
-     this.editPallet('')
-     this.toastr.success('פרטים עודכנו בהצלחה !')
-     this.getAllPackedLists();
-     }
-     })
-    }
+  updatePalletDetails(pallet) {
+    debugger;
+    let size = this.newPalletSize.nativeElement.value;
+    let weight = this.newPalletWeight.nativeElement.value;
+    pallet.palletSize = size;
+    pallet.palletWeight = weight;
+    this.formService.updatePallet(pallet).subscribe(pallet => {
+      debugger;
+      if (pallet) {
+        let oldPallet = this.allClosedPallets.find(p => p._id == pallet._id);
+        oldPallet.palletSize = pallet.palletSize
+        oldPallet.palletWeight = pallet.palletWeight
+        this.editPallet('')
+        this.toastr.success('פרטים עודכנו בהצלחה !')
+        this.getAllPackedLists();
+      }
+    })
+  }
 
   isSelected(ev, pallet) {
     debugger
 
-    this.orderService.getOrderItemsByNumber(pallet.orderNumber).subscribe(data=>{
-      if(data){
+    this.orderService.getOrderItemsByNumber(pallet.orderNumber).subscribe(data => {
+      if (data) {
         debugger;
         data.forEach(item => {
-          if(pallet.itemNumber == item.itemNumber){
+          if (pallet.itemNumber == item.itemNumber) {
             pallet.orderAmount = item.quantity
           }
         });
@@ -328,8 +331,8 @@ export class QaPalletsComponent implements OnInit {
       pallet.fullKartons = Number(pallet.floorNumber) * Number(pallet.kartonQuantity) + pallet.lastFloorQuantity;
       if (pallet.allUnits == undefined || pallet.allUnits == null) {
         pallet.allUnits = (Number(pallet.floorNumber) * Number(pallet.kartonQuantity) + pallet.lastFloorQuantity) * Number(pallet.unitsInKarton)
-        if(Number(pallet.lastFloorQuantity) > 0 && pallet.kartonQuantity > 0){
-         pallet.allUnits = pallet.allUnits + pallet.unitsQuantityPartKarton
+        if (Number(pallet.lastFloorQuantity) > 0 && pallet.kartonQuantity > 0) {
+          pallet.allUnits = pallet.allUnits + pallet.unitsQuantityPartKarton
         }
       }
 
@@ -390,17 +393,13 @@ export class QaPalletsComponent implements OnInit {
     })
   }
 
-  filterByCustomer(ev, type) {
-
-
-    let customerName = ev.target.value;
+  filterQAPalletesByCustomer(ev, type) {
+    let customerName = ev.target.value.toLowerCase();
     switch (type) {
       case 'readyPallets':
         if (customerName && customerName != '') {
-          
-          let tempArray = this.allQaPalletsCopy.filter(pallet => pallet.customerName && pallet.customerName.includes(customerName));
+          let tempArray = this.allQaPalletsCopy.filter(pallet => pallet.customerName && pallet.customerName.toLowerCase().includes(customerName));
           this.allQaPallets = tempArray
-
         } else {
           this.allQaPallets = this.allQaPalletsCopy;
         }
@@ -409,18 +408,54 @@ export class QaPalletsComponent implements OnInit {
         if (customerName != "") {
           let tempArray = this.allClosedPalletsCopy.filter(pallet => pallet.customer.includes(customerName));
           this.allClosedPallets = tempArray
-
         } else {
           this.allClosedPallets = this.allClosedPalletsCopy;
         }
         break;
-
     }
-
-
-
-
   }
+
+  filterQAPalletesByOrderNumber(ev) {
+    this.allQaPallets = this.allQaPalletsCopy
+    let orderNumber = ev.target.value.toLowerCase();
+    let tempArray = this.allQaPallets.filter(pallet => pallet.orderNumber && pallet.orderNumber.toLowerCase().includes(orderNumber))
+    this.allQaPallets = tempArray
+  }
+
+  filterQAPalletesByItemNumber(ev) {
+    this.allQaPallets = this.allQaPalletsCopy
+    let itemNumber = ev.target.value.toLowerCase();
+    let tempArray = this.allQaPallets.filter(pallet => pallet.itemNumber && pallet.itemNumber.toLowerCase().includes(itemNumber))
+    this.allQaPallets = tempArray
+  }
+
+  //רשימות אריזה
+  filterPackedListsByCustomer(ev) {
+    this.allPackedLists = this.allPackedListsCopy
+    let customerName = ev.target.value.toLowerCase();
+    let tempArray = this.allPackedLists.filter(list => list.costumerName && list.costumerName.toLowerCase().includes(customerName))
+    this.allPackedLists = tempArray
+  }
+
+  //מוכנים לחשבונית
+  filterReadyPackedListsByCustomer(ev) {
+    this.allReadyPackedLists = this.allReadyPackedListsCopy
+    let customerName = ev.target.value.toLowerCase();
+    let tempArray = this.allReadyPackedLists.filter(list => list.costumerName && list.costumerName.toLowerCase().includes(customerName))
+    this.allReadyPackedLists = tempArray
+  }
+
+  filterReadyBillsByBillNumber(ev) {
+    this.readyBills = this.readyBillsCopy
+    let billNumber = ev.target.value
+    let tempArray = this.readyBills.filter(bill => bill.billNumber && bill.billNumber.toLowerCase().includes(billNumber))
+    this.readyBills = tempArray
+  }
+
+
+
+
+
 
   // openData() {
   //   debugger;
@@ -458,21 +493,21 @@ export class QaPalletsComponent implements OnInit {
     })
   }
 
-  
+
 
   saveNewUnits(item) {
     debugger;
     var pallet = this.selectedArr.find(p => p._id == item._id)
     if (pallet) {
-      if(this.unitsToPallet == ''){
+      if (this.unitsToPallet == '') {
         this.toastr.error('חובה למלא כמות חדשה')
       } else {
         pallet.unitsToCombine = this.unitsToPallet
-       
+
         this.edit('', '');
         this.toastr.success('כמות חדשה עודכנה בהצלחה')
         this.unitsToPallet = ''
-       
+
       }
     }
   }
@@ -494,7 +529,7 @@ export class QaPalletsComponent implements OnInit {
   }
   choosePalletToAdd(pallet) {
     debugger;
-    if(this.lineToAdd.allUnits > 0){
+    if (this.lineToAdd.allUnits > 0) {
       pallet.lines.push(this.lineToAdd);
       this.formService.addLineToExistPallet(pallet).subscribe(data => {
         if (data) {
@@ -504,7 +539,7 @@ export class QaPalletsComponent implements OnInit {
     } else {
       this.toastr.error('שים לב פריט זה עם כמות 0')
     }
-    
+
 
   }
   choosePLToAdd(pl) {
@@ -521,6 +556,7 @@ export class QaPalletsComponent implements OnInit {
       if (data) {
         this.toastr.success('נוסף לרשימת אריזה בהצלחה')
         this.allReadyPackedLists = data;
+        this.allReadyPackedListsCopy = data;
       }
     })
 
@@ -541,8 +577,8 @@ export class QaPalletsComponent implements OnInit {
 
     this.deleteOrMoveModal = true;
     this.currentPallet = pallet
-    
-    
+
+
     // if (confirm("האם למחוק משטח זה ?")) {
     //   debugger;
     //   var palletToDelete = {
@@ -559,7 +595,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   createNewPallet() {
-    
+
     debugger;
     this.pallet.customer = this.selectedArr[0].customerName
     this.pallet.status = 'closedPallet'
@@ -582,19 +618,19 @@ export class QaPalletsComponent implements OnInit {
 
   createNewPL() {
     debugger;
-    if(this.customerForPL != '' && this.customerForPL != undefined){
+    if (this.customerForPL != '' && this.customerForPL != undefined) {
       this.packedList.costumerName = this.customerForPL
       this.formService.addNewPackedList(this.packedList).subscribe(data => {
         if (data) {
           this.toastr.success("טופס נשמר בהצלחה")
           this.allPackedLists = data;
           this.getAllClosedPallets();
-  
+
         }
-  
-  
+
+
       })
-    }  else {
+    } else {
       this.toastr.error('אנא בחר לקוח')
     }
   }
@@ -636,10 +672,11 @@ export class QaPalletsComponent implements OnInit {
   getAllPackedLists() {
     this.formService.getAllPackedLists().subscribe(data => {
       this.allPackedLists = data;
+      this.allPackedListsCopy = data;
     })
   }
 
-  openProductForm(packlist,language) {
+  openProductForm(packlist, language) {
     debugger;
     this.currPLNumber = packlist.packListNumber
     this.selectedArr = packlist.pallets
@@ -659,53 +696,54 @@ export class QaPalletsComponent implements OnInit {
     this.packedList.costumerNumber = this.currCustomerNumber
     this.currPLWeight = 0;
     packlist.pallets.forEach(pallet => {
-      if(pallet.palletWeight){
-        this.currPLWeight += Number(pallet.palletWeight)  
+      if (pallet.palletWeight) {
+        this.currPLWeight += Number(pallet.palletWeight)
       }
-    
+
     });
     let result = []
 
     packlist.pallets.forEach(pallet => {
       pallet.lines.forEach(line => {
-      let obj = {
-        itemNumber:line.itemNumber,
-        quantity:line.unitsToCombine
-      }
+        let obj = {
+          itemNumber: line.itemNumber,
+          quantity: line.unitsToCombine
+        }
 
-      result.push(obj)
-        
+        result.push(obj)
+
+      });
     });
-    });
-  
+
 
     const totals = result.reduce((acc, val) => {
       const key = val.itemNumber;
       const { quantity } = val;
       const totalSoFar = acc[key] || 0;
-      return {...acc, [key]: totalSoFar + quantity};
+      return { ...acc, [key]: totalSoFar + quantity };
     }, {});
-    
+
     const combinedResult = Object.entries(totals)
-      .map(([itemNumber, quantity]) => ({itemNumber, quantity}));
+      .map(([itemNumber, quantity]) => ({ itemNumber, quantity }));
     console.log(result);
     this.currCustomerId = packlist._id
     this.combinedPallets = combinedResult
 
-    if(language == 'HE'){
+    if (language == 'HE') {
       this.showProductsBeforeDeliveryHE = true;
       this.showProductsBeforeDeliveryEN = false;
-    }  
-    if (language == 'EN'){
+    }
+    if (language == 'EN') {
       this.showProductsBeforeDeliveryEN = true;
       this.showProductsBeforeDeliveryHE = false;
     }
   }
 
-  getAllReadyBills(){
-    this.formService.getAllReadyBills().subscribe(data=>{
-      if(data){
+  getAllReadyBills() {
+    this.formService.getAllReadyBills().subscribe(data => {
+      if (data) {
         this.readyBills = data
+        this.readyBillsCopy = data
       }
     })
   }
@@ -713,32 +751,32 @@ export class QaPalletsComponent implements OnInit {
   getAllReadyForBill() {
     this.formService.getAllReadyForBillPLs().subscribe(data => {
       if (data) {
-   
+
         debugger;
         data.forEach(PL => {
-          if(PL.pallets){
+          if (PL.pallets) {
             PL.pallets.forEach(pallet => {
-              if(pallet.lines){
+              if (pallet.lines) {
                 pallet.lines.forEach(line => {
-                  if(PL.orders == undefined){
+                  if (PL.orders == undefined) {
                     PL.orders = []
                     PL.orders.push(line.orderNumber)
                   } else {
                     PL.orders.push(line.orderNumber)
                   }
-                 
+
                 });
               }
             });
           }
-     
+
         });
 
         data.forEach(PL => {
           PL.orders = [...new Set(PL.orders)];
         });
 
-      
+
 
         this.allReadyPackedLists = data;
       }
