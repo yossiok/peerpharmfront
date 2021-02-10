@@ -203,6 +203,7 @@ export class StockComponent implements OnInit {
   loadingExcel: Boolean = false;
   allSuppliers: any[];
   allPurchases: any[];
+  totalComponentsValue: number = 0;
 
   @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
   @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
@@ -749,15 +750,13 @@ export class StockComponent implements OnInit {
 
     });
   }
+  // printInventoryValue, { size: 'lg', ariaLabelledBy: 'modal-basic-title' });
 
-
-  open(supplierList) {
-
-    this.modalService.open(supplierList, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  open(modal) {
+    if (Object.keys(modal._def.references)[0] = 'printInventoryValue') {
+      this.getTotalComponentsValue();
+    }
+    this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
 
 
@@ -776,7 +775,7 @@ export class StockComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.procuretServ.getAllComponentsPurchase().subscribe(data => {
         this.allComponentsPurchases = data;
-        resolve();
+        resolve('');
       })
     });
 
@@ -896,7 +895,7 @@ export class StockComponent implements OnInit {
 
       if(components.length < 1500) {
         this.smallLoader = false;
-        this.getAllPurchases();
+        // this.getAllPurchases();
       }
       if (components.length > 0) {
         this.showLoader = false;
@@ -1463,7 +1462,6 @@ export class StockComponent implements OnInit {
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + cmptNumber;
     this.openModal = true;
-    console.log(this.components.find(cmpt => cmpt.componentN == cmptNumber));
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
     debugger;
@@ -2314,6 +2312,21 @@ export class StockComponent implements OnInit {
     }
 
 
+  }
+
+  getTotalComponentsValue() {
+    for (let component of this.components) {
+      if (component.itemType == 'component') {
+        for (let i=0; i<3; i++) {
+          if(component.alternativeSuppliers[i] && component.alternativeSuppliers[i].price) {
+            if(component.alternativeSuppliers[i].price != "") {
+              this.totalComponentsValue +=  parseInt(component.alternativeSuppliers[i].price)*parseInt(component.amount);
+            }
+            break;
+          } 
+        }
+      }
+    }
   }
 
 
