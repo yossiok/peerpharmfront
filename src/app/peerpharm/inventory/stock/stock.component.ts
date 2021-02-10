@@ -1921,10 +1921,14 @@ export class StockComponent implements OnInit {
     if (confirm("לעדכן פריט?")) {
 
       this.inventoryService.updateMaterial(this.resMaterial).subscribe(res => {
-        if (res._id) {
-          this.toastSrv.success("פריט עודכן בהצלחה");
+        if(res.msg == 'noUpdate'){
+          this.toastSrv.error('עדכון פריט נכשל')
         } else {
-          this.toastSrv.error("עדכון פריט נכשל");
+          if (res._id) {
+            this.toastSrv.success("פריט עודכן בהצלחה");
+          } else {
+            this.toastSrv.error("עדכון פריט נכשל");
+          }
         }
       });
     }

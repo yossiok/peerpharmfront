@@ -7,7 +7,7 @@ input:focus::-webkit-input-placeholder {
     
     
 }
-input:focus {
+select:focus,input:focus {
  
     border-color: #7460ee;
     box-shadow: 0 0 5px #7460ee;

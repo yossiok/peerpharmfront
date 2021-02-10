@@ -1050,6 +1050,8 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         this.itemShown = Object.assign({}, this.itemCopy);
         this.dataDiv = ["", ""];
         this.showGoddet();
+      } else if (res.msg == 'noItem'){
+        this.toastr.error('No such ITEM !!!!!!')
       }
       else { 
         

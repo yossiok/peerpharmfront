@@ -1,17 +1,193 @@
-<div  style="border-radius: 15px;" class="container bg-white border border-primary shadow-lg text-center p-5">
+<div *ngIf="purchaseData" style="border-radius: 15px;" class="container bg-white border border-primary shadow-lg text-center p-5">
   <div class="row">
     <div class="col-12">
       <form [formGroup]="newPurchase">
 
         <div class="row">
           <div class="col-2">
-            <button class="btn btn-success rounded-pill form-control">קליטת תעודה</button>
+            <button class="btn btn-warning rounded-pill form-control">New Certificate</button>
           </div>
           <div class="col-2">
-            <button class="btn btn-success rounded-pill form-control">קליטת חשבונית</button>
+            <button class="btn btn-warning rounded-pill form-control">New Invoice</button>
           </div>
-          <div class="col-8"></div>
+          <div class="col-5"></div>
+          <div class="col-2">
+            <button (click)="disabled = false" *ngIf="user == purchaseData.user" class="btn btn-warning rounded-pill form-control">Edit</button>
+          </div>
+          <div class="col-1">
+            <i (click)="orderDetailsModal.emit(false)" class="fa fa-times text-primary"></i>
+          </div>
         </div>
+
+        <div class="row mt-3">
+          <div class="col-3">
+          
+          </div>
+          <div class="col-6 bg-primary rounded-pill">
+            <h3 class="text-white p-2">{{purchaseData.orderNumber}}</h3>
+          </div>
+          <div class="col-3">
+            
+          </div>
+        </div>
+        
+        <hr class="text-muted">
+        <div class="row mt-5">
+        <div class="col">
+          <h5 class="text-secondary">Purchase Details</h5>
+        </div>
+      </div>
+        <div class="row">
+          <div class="col form-group">
+            <select [disabled]="disabled" type="text" class="form-control" placeholder="Order Type">
+              <option [value]="purchaseData.orderType">{{purchaseData.orderType}}</option>
+            </select>
+          </div>
+          <div class="col form-group">
+            <input [disabled]="disabled" value="{{purchaseData.creationDate | date: 'dd/MM/yyyy'}}" type="text" class="form-control" placeholder="Order Date">
+          </div>
+        </div>
+        
+        <hr class="text-muted">
+        <div class="row mt-3">
+          <div class="col">
+            <h5 class="text-secondary">Supplier Details</h5>
+          </div>
+          </div>
+
+        <div class="row mt-2">
+          <div class="col-sm-12 col-md-4 form-group">
+            <input 
+            [disabled]="disabled"
+            [value]="purchaseData.supplierName" 
+            name="supplierName" 
+            (change)="fillSupplierDetails($event)" 
+            list="suppliers" type="text" 
+            class="form-control" 
+            placeholder="Supplier Name">
+            <datalist id="suppliers">
+              <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierName">{{supplier.suplierNumber}}</option>
+            </datalist>
+          </div>
+          <div class="col-sm-12 col-md-4 form-group">
+            <input [disabled]="disabled"  [value]="purchaseData.supplierNumber" type="text" class="form-control" placeholder="Supplier Number">
+          </div>            
+          <div class="col-sm-12 col-md-4 form-group">
+            <input [disabled]="disabled" [value]="purchaseData.supplierEmail" type="text" class="form-control" placeholder="Supplier Email">
+          </div>
+          
+        </div>
+
+        <hr class="text-muted">
+        
+        <div class="row mt-3">
+          <div class="col">
+            <h5 class="text-secondary">Item Details</h5>
+          </div>
+          </div>
+
+
+        <div class="row mt-2">
+          <div class="col">
+            <h6 class="text-primary">Add Item</h6>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-sm-12 col-md-4 form-group">
+            <input [disabled]="disabled" (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Item Number">
+          </div>
+          <div class="col-sm-12 col-md-4 form-group">
+            <input [disabled]="disabled" [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Item Name">
+          </div>            
+          <div class="col-sm-12 col-md-4 form-group">
+            <input [disabled]="disabled" [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="Quantity">
+          </div>
+          <div class="col-sm-12 col-md-4 form-group">
+            <select [disabled]="disabled" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
+            class="form-control custom-select">
+            <option value="kg">kg</option>
+            <option value="liter">liter</option>
+            <option value="meter">meter</option>
+            <option value="ml">ml</option>
+            <option value="unit">Unit</option>
+            <option value="ton">טון</option>
+            <option value="unit">יחידה</option>
+            <option value="box">קופסא</option>
+          </select>
+          </div>
+          <div class="col-sm-12 col-md-4 form-group">
+            <input [disabled]="disabled" [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Coin">
+          </div>            
+          <div class="col-sm-12 col-md-4 form-group">
+            <input [disabled]="disabled" [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}" type="number" class="form-control" placeholder="Price">
+          </div>
+          
+        </div>
+
+        <div class="row mt-1">
+          <div class="col-5"></div>
+          <div class="col-2">
+            <button [disabled]="disabled" (click)="addItemToPurchase()" class="btn btn-primary form-control">
+              <i  class="fa fa-plus"></i>
+            </button>
+          </div>
+          <div class="col-5"></div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <h6 class="text-primary">Purchase Items</h6>
+          </div>
+          <div class="col-4"></div>
+        </div>
+
+        <div class="row mt-3 bg-muted">
+          <div style="background: #d5cff9" class="col-12 shadow rounded">
+            <table class="table table-hover">
+             <thead>
+              <tr>
+                <th>Item</th>
+                <th>Item Name</th>
+                <th>Measurement</th>
+                <th>Quantity</th>
+                <th>Price</th>
+              </tr>
+             </thead>
+             <tbody>
+              <tr *ngFor="let stockitem of purchaseData.stockitems">
+                <td>{{stockitem.number}}</td>
+                <td>{{stockitem.name}}</td>
+                <td>{{stockitem.measurement}}</td>
+                <td>{{stockitem.quantity}}</td>
+                <td>{{stockitem.price}}</td>
+              </tr>
+             </tbody>
+            </table>
+          </div>
+        </div>
+
+  
+        <hr class="text-muted">
+
+        <div class="row mt-3">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <button (click)="sendNewProc()" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
+          </div>
+          <div class="col-4"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!----------------------------------------------------------------------------------------------------------------------->
+
+<div *ngIf="!purchaseData" style="border-radius: 15px;" class="container bg-white border border-primary shadow-lg text-center p-5">
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="newPurchase">
 
         <div class="row mt-3">
           <div class="col-3">
@@ -138,7 +314,7 @@
         </div>
 
         <div class="row mt-3 bg-muted">
-          <div class="col-12">
+          <div style="background: #d5cff9" class="col-12 shadow rounded">
             <table class="table table-hover">
              <thead>
               <tr>

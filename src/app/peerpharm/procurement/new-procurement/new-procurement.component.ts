@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter, Input } from '@angular/core';
 import { FormBuilder, FormGroup , Validators } from '@angular/forms';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -17,9 +17,14 @@ import { ActivatedRoute } from '@angular/router';
 export class NewProcurementComponent implements OnInit {
 
   @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
+  @Input() purchaseData:any;
   openOrdersModal: boolean = false;
+  disabled:boolean = true;
   newProcurementForm: any;
+  
   supplierToUpdate: any;
+  user: any;
+  @Output() orderDetailsModal:EventEmitter<boolean> = new EventEmitter<boolean>();
   currSupplier: any;
   currItemForPL: any;
   procurementSupplier: boolean = true;
@@ -127,11 +132,11 @@ export class NewProcurementComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger;
+    this.purchaseData
     this.getAllSuppliers();
     this.getAllMaterials();
-    debugger;
     if (this.route.snapshot.queryParams.id != undefined) {
-      debugger
       let recommendId = this.route.snapshot.queryParams.id
       this.procurementService.getRecommendById(recommendId).subscribe(data => {
         if (data) {
@@ -150,8 +155,11 @@ export class NewProcurementComponent implements OnInit {
     //  })
     // }
     if (this.authService.loggedInUser) {
-      this.userEmail = this.authService.loggedInUser.userEmail;
-      this.newProcurement.user = this.authService.loggedInUser.userName
+      this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
+      this.newPurchase.controls.user.setValue(this.authService.loggedInUser.userName);
+      this.user = this.authService.loggedInUser.userName
+      
+      
 
     }
     else {

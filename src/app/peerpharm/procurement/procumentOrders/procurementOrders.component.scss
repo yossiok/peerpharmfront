@@ -23,6 +23,39 @@ table  { border-collapse: collapse; width: 100%; }
   color:green;
 }
 
+input:focus::-webkit-input-placeholder {
+  color: #7460ee;
+  
+  
+}
+select:focus,input:focus {
+
+  border-color: #7460ee;
+  box-shadow: 0 0 5px #7460ee;
+
+}
+
+.smallLoader {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #7460ee;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 .loader {
  

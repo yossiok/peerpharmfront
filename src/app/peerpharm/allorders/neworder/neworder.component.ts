@@ -110,8 +110,8 @@ export class NeworderComponent implements OnInit {
 
   addNewItemOrder(post) {
     debugger;
-   if(this.shippingDetails.shippingWay == "") {
-     this.toastSrv.error("Please Add Shipping Details")
+   if(this.shippingDetails.shippingWay == "" || this.orderItemForm.controls.itemN.value == '' || this.orderItemForm.controls.itemN.value == null) {
+     this.toastSrv.error("Please fill all the details")
    } else {
       
     console.log(post);
