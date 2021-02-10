@@ -3018,15 +3018,33 @@
       </thead>
       <tbody id="table_body" class="componentTable">
         <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-          *ngFor="let component of components; let i = index">
+          *ngFor="let component of components; let i = index; ">
           <ng-container *ngIf="component.itemType == 'component'">
             <td>{{i+1}}</td>
             <td>{{component.componentN}}</td>
-            <td><span *ngIf="component.alternativeSuppliers">
-              <!-- {{component.alternativeSuppliers[0].price || component.alternativeSuppliers[1].price || component.alternativeSuppliers[2].price }} -->
-            </span></td>
-            <td></td>
-            <td></td>
+            <td>
+              <span *ngIf="component.alternativeSuppliers[0]">
+                {{ component.alternativeSuppliers[0].price }}
+              </span>
+              <span *ngIf="component.alternativeSuppliers[1]">
+                {{ component.alternativeSuppliers[1].price }}
+              </span>
+              <span *ngIf="component.alternativeSuppliers[2]">
+                {{ component.alternativeSuppliers[2].price }}
+              </span>
+            </td>
+            <td>{{component.amount}}</td>
+            <td >
+              <span *ngIf="component.alternativeSuppliers[0] && component.alternativeSuppliers[0].price">
+                {{component.alternativeSuppliers[0].price*component.amount || 0 }}
+              </span>
+              <span *ngIf="component.alternativeSuppliers[1] && component.alternativeSuppliers[1].price">
+                {{component.alternativeSuppliers[1].price*component.amount || 0 }}
+              </span>
+              <span *ngIf="component.alternativeSuppliers[2] && component.alternativeSuppliers[2].price">
+                {{component.alternativeSuppliers[2].price*component.amount || 0}}
+              </span>
+            </td>
           </ng-container>
         </tr>
         <tr>
@@ -3034,13 +3052,13 @@
           <td></td>
           <td></td>
           <td></td>
-          <td>סה"כ כללי</td>
+          <td>סה"כ כללי: {{totalComponentsValue}}</td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    <h2>שיהיה לך יום נעים ופרודוקטיבי</h2>
   </div>
 </ng-template>
