@@ -9,6 +9,7 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArrayServiceService } from 'src/app/utils/array-service.service';
+import { PurchaseData } from './PurchaseData';
 //import { p } from '@angular/core/src/render3';
 
 @Component({
@@ -19,7 +20,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
 
 export class ProcurementOrdersComponent implements OnInit {
 
-  
+
   linkDownload: String = '';
   paymentRemark: String
   orderRemarks: String;
@@ -56,7 +57,7 @@ export class ProcurementOrdersComponent implements OnInit {
   allSuppliers: any[];
   billToPrint: any[];
   currentSupplier: any;
-  purchaseData: any[];
+  purchaseData: PurchaseData[];
   arrivalData: any[];
   EditRowId: any = "";
   EditRowIndex: any = "";
@@ -88,6 +89,7 @@ export class ProcurementOrdersComponent implements OnInit {
   country: boolean = false;
   newRecommend: any;
   subscription: Subscription;
+  isEdit: boolean = false;
 
   newItem = {
 
@@ -193,8 +195,8 @@ export class ProcurementOrdersComponent implements OnInit {
     } else {
       window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?multi=' + this.selectedArr)
     }
-
   }
+
   setRecommendAsDone(id) {
     this.procurementservice.closeRecommendationById(id).subscribe(data => {
       if (data) {
@@ -205,19 +207,15 @@ export class ProcurementOrdersComponent implements OnInit {
     })
   }
 
-
+  //open in excel
   loadPurchasesItems() {
-    debugger;
     var tempArr = []
     for (let i = 0; i < this.procurementData.length; i++) {
       for (let j = 0; j < this.procurementData[i].item.length; j++) {
         this.procurementData[i].item[j].supplier = this.procurementData[i].supplierName
         tempArr.push(this.procurementData[i].item[j])
-
       }
-
     }
-    tempArr
     this.excelService.exportAsExcelFile(tempArr, 'data');
   }
 
@@ -229,153 +227,22 @@ export class ProcurementOrdersComponent implements OnInit {
     this.myRefresh = setInterval(() => { this.getAllProcurementOrders(); }, 1000 * 60 * 3);
   }
 
-  fillMaterialName(ev) {
-    debugger;
-
-    var itemNumber = ev.target.value;
-    var supplierNumber = this.purchaseData[0].supplierNumber
-    var tempArr = this.procurementData.filter(x => x.supplierNumber == supplierNumber && x.status != 'closed');
-    tempArr.forEach(purchase => {
-      purchase.item.forEach(item => {
-        if (item.itemNumber == itemNumber) {
-          this.toastr.error('פריט זה קיים בהזמנה מספר' + ' ' + purchase.orderNumber)
-        } else {
-          this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
-            debugger;
-            if (data) {
-              if (data[0].componentN == itemNumber) {
-                this.newItem.itemName = data[0].componentName
-              }
-
-            }
-          })
-        }
-      });
-    });
-
-  }
-  filterPurchases(event, type) {
-    debugger;
-
-    switch (type) {
-      case 'supplier':
-        if (event.target.value != '') {
-          this.procurementArrivals = []
-          this.procurementArrivalsCopy = []
-          var tempArr = this.procurementDataCopy.filter(p => p.supplierNumber == event.target.value && p.status != 'canceled');
-          for (let i = 0; i < tempArr.length; i++) {
-
-            for (let j = 0; j < tempArr[i].item.length; j++) {
-
-              var obj = {
-                id: tempArr[i]._id,
-                supplierName: tempArr[i].supplierName,
-                comaxNumber: tempArr[i].comaxNumber,
-                orderNumber: tempArr[i].orderNumber,
-                orderDate: tempArr[i].outDate,
-                arrivedAmount: tempArr[i].item[j].arrivedAmount,
-                itemNumber: tempArr[i].item[j].itemNumber,
-                itemName: tempArr[i].item[j].itemName,
-                supplierAmount: tempArr[i].item[j].supplierAmount,
-                arrivals: [],
-
-
-              }
-              if (tempArr[i].item[j].arrivals) {
-                for (let k = 0; k < tempArr[i].item[j].arrivals.length; k++) {
-
-                  var arrival = {
-                    referenceNumber: tempArr[i].item[j].arrivals[k].referenceNumber,
-                    arrivalDate: tempArr[i].item[j].arrivals[k].arrivalDate,
-                    arrivedAmount: tempArr[i].item[j].arrivals[k].arrivedAmount
-                  }
-                  obj.arrivals.push(arrival)
-
-                }
-              }
-
-              this.procurementArrivals.push(obj)
-              this.procurementArrivalsCopy.push(obj)
-
-            }
-
-
-          }
-
-        } else {
-          this.procurementArrivals = []
-          this.procurementArrivalsCopy = []
-        }
-
-        break;
-      case 'itemNumber':
-        var tempArr = [...this.procurementArrivals];
-        if (event.target.value != '') {
-          this.procurementArrivals = tempArr.filter(p => p.itemNumber == event.target.value)
-        } else {
-          this.procurementArrivals = this.procurementArrivalsCopy
-        }
-
-        break;
-      case 'orderNumber':
-        var tempArr = [...this.procurementArrivals];
-        if (event.target.value != '') {
-          this.procurementArrivals = tempArr.filter(p => p.orderNumber == event.target.value)
-        } else {
-          this.procurementArrivals = this.procurementArrivalsCopy
-        }
-
-        break;
-
-
-    }
-
-
-  }
-  openPriceModal(item) {
-    this.changeItemPrice = true;
-    this.currCertifItem = item;
-  }
-
-  openQuantityModal(item) {
-    this.changeItemQuantity = true;
-    this.currCertifItem = item;
-  }
-
-  addPaymentRemark() {
-    if (this.paymentRemark != '') {
-      this.procurementservice.updatePaymentRemark(this.paymentRemark, this.currOrderNumber).subscribe(data => {
-        if (data) {
-          debugger;
-          this.toastr.success('הערה עודכנה בהצלחה !')
-          this.paymentRemarkModal = false;
-          var purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
-          purchase.paymentRemark = data.paymentRemark
-        }
-      })
-    }
-  }
-
   filterRecByType(ev) {
     let type = ev.target.value;
     switch (type) {
       case 'all':
         this.purchaseRecommendations = this.purchaseRecommendationsCopy
         break;
-
       case 'components':
         this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.type == 'component')
         break;
-
       case 'materials':
         this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.type == 'material')
         break;
-
     }
   }
 
   filterRecByNumber(ev) {
-
     let number = ev.target.value
     if (number != '') {
       this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.componentNumber == number)
@@ -384,273 +251,11 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
-  changePaymentStatus(ev, orderNumber) {
-    var paymentStatus = ev.target.value;
-
-    if (paymentStatus != '') {
-      this.procurementservice.updatePaymentStatus(paymentStatus, orderNumber).subscribe(data => {
-        if (data) {
-          this.toastr.success('סטטוס תשלום עודכן בהצלחה !')
-          this.paymentRemarkModal = true;
-
-          this.currOrderNumber = data.orderNumber
-        }
-      })
-    }
-  }
-
-  changeCertifPrice(ev) {
-    debugger;
-    var newItemPrice = ev.target.value;
-    if (newItemPrice != '') {
-      var item = this.certificate.find(i => i.itemNumber == this.currCertifItem.itemNumber && i.quantity == this.currCertifItem.quantity);
-      item.changedItemPrice = Number(newItemPrice)
-      this.changeItemPrice = false;
-      this.toastr.success('מחיר חדש נוסף בהצלחה')
-
-    }
-  }
-
-
-  filterInvoices(ev, type) {
-    debugger
-    this.allInvoices = this.allInvoicesCopy
-    var wordToFilter = ev.target.value;
-    if (wordToFilter != '') {
-      switch (type) {
-        case 'suppliers':
-          this.allInvoices = this.allInvoices.filter(i => i.supplierNumber == wordToFilter)
-          break;
-        case 'invoiceNumber':
-          this.allInvoices = this.allInvoices.filter(i => i.invoiceNumber == wordToFilter)
-          break;
-        case 'status':
-          this.allInvoices = this.allInvoices.filter(i => i.status == wordToFilter)
-          break;
-
-      }
-    } else {
-      this.allInvoices = this.allInvoicesCopy
-    }
-
-  }
-
-  getAllInvoices() {
-
-    this.procurementservice.getAllInvoices().subscribe(data => {
-      debugger;
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].status == 'approved') {
-          data[i].status == 'מאושר'
-        }
-        if (data[i].status == 'inCheck') {
-          data[i].status == 'בבדיקה'
-        }
-
-      }
-      this.allInvoices = data;
-      this.allInvoicesCopy = data;
-    })
-
-  }
-
-  changeCertifQuantity(ev) {
-    debugger;
-    var newItemQuantity = ev.target.value;
-    if (newItemQuantity != '') {
-      var item = this.certificate.find(i => i.itemNumber == this.currCertifItem.itemNumber && i.quantity == this.currCertifItem.quantity);
-      item.changedQuantity = Number(newItemQuantity)
-      this.changeItemQuantity = false;
-      this.toastr.success('כמות חדשה נוספה בהצלחה')
-
-    }
-  }
-
-  addCertifToBill() {
-    debugger;
-    if (this.certifNumberToPush != '') {
-      this.newBill.certificateNumbers.push(this.certifNumberToPush)
-      this.toastr.success('תעודה נוספה בהצלחה !')
-      this.certifNumberToPush = ''
-    } else {
-      this.toastr.error('חובה למלא מספר תעודה')
-    }
-
-  }
-
-  generateInvoice(invoice) {
-    debugger;
-    this.invoiceModal = true;
-    var sum = 0;
-    for (let i = 0; i < invoice.invoices.length; i++) {
-      if (invoice.invoices[i].changedQuantity) {
-        invoice.invoices[i].fixedQuantity = Math.abs(invoice.invoices[i].quantity - invoice.invoices[i].changedQuantity)
-      } else {
-        invoice.invoices[i].fixedQuantity = invoice.invoices[i].quantity
-      }
-      if (invoice.invoices[i].changedItemPrice) {
-        invoice.invoices[i].fixedPrice = this.formatNumber(Math.abs(Number(invoice.invoices[i].supplierPrice) - invoice.invoices[i].changedItemPrice))
-      } else {
-        invoice.invoices[i].fixedPrice = this.formatNumber(Number(invoice.invoices[i].supplierPrice))
-      }
-
-      invoice.invoices[i].chargeSupplier = Number(invoice.invoices[i].fixedPrice) * Number(invoice.invoices[i].fixedQuantity)
-      invoice.invoices[i].chargeSupplier = JSON.stringify(invoice.invoices[i].chargeSupplier).slice(0, 7)
-
-
-      sum += Number(invoice.invoices[i].chargeSupplier)
-
-
-    }
-    this.sumCharge = sum
-    this.sumChargeTaxes = sum + (sum * 17 / 100)
-
-    this.sumCharge = this.formatNumber(this.sumCharge)
-    this.sumChargeTaxes = this.formatNumber(this.sumChargeTaxes)
-    this.currentInvoice = invoice;
-
-
-
-
-  }
-
-  createCertifForBill() {
-    debugger;
-    this.certificate = [];
-    this.newBill
-    var purchases = this.procurementDataNoFilter.filter(p => p.supplierNumber == this.newBill.supplierNumber)
-    purchases
-
-    var obj = {
-      itemNumber: '',
-      itemName: '',
-      quantity: '',
-      price: 0,
-      arrivalDate: '',
-      supplierPrice: '',
-      referenceNumber: ''
-    }
-
-    var tempArr = []
-
-    for (let i = 0; i < purchases.length; i++) {
-      for (let j = 0; j < purchases[i].item.length; j++) {
-        if (purchases[i].item[j].arrivals == undefined) purchases[i].item[j].arrivals = []
-        for (let k = 0; k < purchases[i].item[j].arrivals.length; k++) {
-          for (let l = 0; l < this.newBill.certificateNumbers.length; l++) {
-
-            if (this.newBill.certificateNumbers[l].length > 3) {
-              var refNumber = this.newBill.certificateNumbers[l].substr(this.newBill.certificateNumbers[l].length - 4); // => "1"
-            } else {
-              var refNumber = this.newBill.certificateNumbers[l]
-            }
-
-            if (purchases[i].item[j].arrivals[k].referenceNumber == refNumber) {
-              obj.itemNumber = purchases[i].item[j].itemNumber
-              obj.itemName = purchases[i].item[j].itemName
-              obj.arrivalDate = purchases[i].item[j].arrivals[k].arrivalDate
-              obj.quantity = purchases[i].item[j].arrivals[k].arrivedAmount
-              obj.referenceNumber = purchases[i].item[j].arrivals[k].referenceNumber
-              obj.supplierPrice = purchases[i].item[j].supplierPrice
-              var price = Number(purchases[i].item[j].supplierPrice) * Number(purchases[i].item[j].arrivals[k].arrivedAmount)
-              obj.price = Number(price.toFixed(2))
-              this.certifTotalPrice += obj.price
-              var objToPush = { ...obj }
-              tempArr.push(objToPush)
-            }
-          }
-        }
-
-      }
-
-    }
-    if (this.certifTotalPrice != Number(this.newBill.totalPrice)) {
-      this.priceAlert = true;
-    }
-    this.certificate = tempArr
-  }
-
-  saveNewInvoice(status) {
-    debugger;
-    var supInvoiceNum = this.newBill.billNumber
-    var supplierNumber = this.newBill.supplierNumber
-    this.procurementservice.saveNewInvoice(supInvoiceNum, supplierNumber, status, this.certificate).subscribe(data => {
-      debugger;
-      if (data) {
-        this.toastr.success('חשבונית נשמרה בהצלחה')
-      }
-    })
-
-
-  }
-
   getAllProcurementOrders() {
     this.newPurchaseModal = false;
 
     this.procurementservice.getProcurementOrder().subscribe(res => {
 
-      for (let i = 0; i < res.length; i++) {
-        if (res[i].closeReason == 'orderFrozen') {
-          res[i].closeReason = 'בהקפאה'
-        }
-        if (res[i].closeReason == 'havivApproval') {
-          res[i].closeReason = 'מבוטל באישור חביב'
-        }
-        if (res[i].closeReason == 'tomerApproval') {
-          res[i].closeReason = 'מבוטל באישור תומר'
-        }
-        if (res[i].closeReason == 'sigiOrAkivaApproval') {
-          res[i].closeReason = 'באיזור סיגלית/עקיבא'
-        }
-        if (res[i].closeReason == 'movedToOtherPurchase') {
-          res[i].closeReason = 'הוכנס להזמנה אחרת'
-        }
-        if (res[i].closeReason == 'balanceNotImp') {
-          res[i].closeReason = 'יתרה לא רלוונטית'
-        }
-        if (res[i].closeReason == 'NoApprovePrice') {
-          res[i].closeReason = 'מחיר לא אושר'
-        }
-        if (res[i].closeReason == 'withoutReciept') {
-          res[i].closeReason = 'נסגר ללא תעודה'
-        }
-
-
-        if (res[i].status == 'sentToSupplier') {
-          res[i].status = 'נשלחה לספק'
-        }
-
-        if (res[i].status == 'supplierGotOrder') {
-          res[i].status = 'הגיעה לספק'
-        }
-
-        if (res[i].status == 'orderOffer') {
-          res[i].status = 'הצעת מחיר הועברה לחביב'
-        }
-
-        if (res[i].status == 'havivApprovedOffer') {
-          res[i].status = 'אושרה הצעת המחיר'
-        }
-
-        if (res[i].status == 'orderPayedToSupplier' || res[i].status.startsWith('orderPayedToSupplier')) {
-          // res[i].status = 'שולם לספק'
-          res[i].status = 'שולם לספק' + ' ' + res[i].status.substr(res[i].status.indexOf(" ") + 1);
-        }
-
-        if (res[i].status == 'timeToProduction' || res[i].status.startsWith('timeToProduction')) {
-          // res[i].status = 'צפי ייצור'
-
-          res[i].status = 'צפי ייצור' + ' ' + res[i].status.substr(res[i].status.indexOf(" ") + 1);
-        }
-        if (res[i].status == 'expectedArrival' || res[i].status.startsWith('expectedArrival')) {
-          // res[i].status = 'צפי הגעה'
-          res[i].status = 'צפי הגעה' + ' ' + res[i].status.substr(res[i].status.indexOf(" ") + 1);
-        }
-        if (res[i].status == 'open') {
-          res[i].status = 'הזמנה פתוחה'
-        }
-
-      }
       this.procurementData = res.filter(p => p.status != 'closed');
       if (this.procurementData.length > 0) {
         this.showLoader = false;
@@ -660,8 +265,7 @@ export class ProcurementOrdersComponent implements OnInit {
       this.procurementDataNoFilter = res
 
 
-      console.log(this.procurementData);
-
+  
     });
   }
 
@@ -869,32 +473,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-  onSelectSwift(event, orderNumber) {
-    debugger
-    var currOrder = this.procurementData.find(o => o.orderNumber == orderNumber)
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
 
-      reader.onload = (event) => { // called once readAsDataURL is completed
-
-        currOrder.orderBill = event.target['result'];
-        currOrder.orderBill = currOrder.orderBill.replace("data:application/pdf;base64,", "");
-        // this.resMaterial.coaMaster = event.target["result"]
-        // this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
-        this.procurementservice.updatePdfFile(currOrder).subscribe(data => {
-          if (data) {
-            this.toastr.success("קובץ הועלה בהצלחה !")
-          }
-        });
-      }
-
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
-
-
-    }
-
-
-  }
 
   changeStatus(ev, orderNumber) {
     var status = ev.target.value;
@@ -1055,60 +634,8 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-  sendOrder(line) {
-    debugger;
-    this.procurementservice.sendOrderToSupplier(line).subscribe(data => {
 
-    })
-  }
 
-  printReciept() {
-    debugger;
-    this.referNumberForReciept;
-
-    var tempArr = []
-    var obj = {
-      itemNumber: '',
-      comaxNumber: '',
-      referenceNumber: '',
-      arrivedAmount: '',
-      arrivalDate: ''
-
-    }
-    for (let i = 0; i < this.procurementArrivals.length; i++) {
-      for (let j = 0; j < this.procurementArrivals[i].arrivals.length; j++) {
-        if (Number(this.procurementArrivals[i].arrivals[j].referenceNumber) == this.referNumberForReciept) {
-
-          obj.itemNumber = this.procurementArrivals[i].itemNumber
-          obj.comaxNumber = this.procurementArrivals[i].comaxNumber
-          obj.referenceNumber = this.procurementArrivals[i].arrivals[j].referenceNumber
-          obj.arrivedAmount = this.procurementArrivals[i].arrivals[j].arrivedAmount
-          obj.arrivalDate = this.procurementArrivals[i].arrivals[j].arrivalDate
-          var objectToPush = { ...obj }
-          tempArr.push(objectToPush)
-
-        }
-      }
-    }
-
-    tempArr
-    this.procurementData;
-    for (let i = 0; i < tempArr.length; i++) {
-      for (let j = 0; j < this.procurementData.length; j++) {
-        for (let k = 0; k < this.procurementData[j].item.length; k++) {
-          if (tempArr[i].comaxNumber == this.procurementData[j].comaxNumber) {
-            if (tempArr[i].itemNumber == this.procurementData[j].item[k].itemNumber) {
-              var price = this.procurementData[j].item[k].supplierPrice + this.procurementData[j].item[k].coin
-              tempArr[i].price = price
-            }
-
-          }
-        }
-      }
-    }
-    this.billToPrint = tempArr
-    this.bill = true;
-  }
 
   formatNumber(number) {
     number = number.toFixed(2) + '';
@@ -1152,26 +679,6 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
 
-  searchByReference(ev) {
-
-    var referenceNumber = ev.target.value;
-    var tempArr = []
-    if (referenceNumber != "") {
-      for (let i = 0; i < this.procurementData.length; i++) {
-        for (let j = 0; j < this.procurementData[i].item.length; j++) {
-          if (this.procurementData[i].item[j].referenceNumber == referenceNumber) {
-            tempArr.push(this.procurementData[i])
-          }
-
-        }
-
-      }
-      this.procurementData = tempArr
-    } else {
-      this.procurementData = this.procurementDataCopy
-    }
-
-  }
 
   addNewItem() {
     debugger;
@@ -1181,13 +688,14 @@ export class ProcurementOrdersComponent implements OnInit {
     this.procurementservice.addItemToProcurement(itemObject).subscribe(data => {
       debugger;
       if (data) {
-        this.purchaseData[0].item.push(itemObject);
+        this.purchaseData[0].stockitems.push(itemObject);
         this.toastr.success("פריט נוסף בהצלחה !")
         this.clearNewItem();
 
       }
     })
-   
+
+
   }
 
   searchByItem(ev) {
@@ -1335,110 +843,25 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   viewOrderDetails(index) {
-
-    debugger;
+    this.isEdit = true;
     this.orderDetailsModal = true;
-    var order = [];
-    order.push(this.procurementData[index])
-
-    this.purchaseData = order[0]
+    this
+    this.purchaseData = this.procurementData[index]
   }
-  editArrivalDetails(index) {
 
-    debugger;
+  editArrivalDetails(index) {
     this.editArrivalModal = true;
     var order = [];
     order.push(this.procurementArrivals[index])
-
-
     this.arrivalData = order
     this.arrivalData[0].index = index;
   }
 
-  checkArrivalsAmount(arrivals) {
-    debugger;
-    let amount = 0;
-    arrivals.forEach(arrival => {
-      amount += arrival.arrivedAmount
-    });
 
-    return amount;
-  }
 
-  filterArrivalsByStatus(ev) {
-    debugger;
-    let tempArr = []
-    let tempAmount = 0;
-    let status = ev.target.value;
-    if (status == 'notDone') {
-      this.procurementArrivals = this.procurementArrivalsCopy
-      this.procurementArrivals = this.procurementArrivals.filter(p => p.arrivals.length == 0)
-    }
-    if (status == 'done') {
-      this.procurementArrivals = this.procurementArrivalsCopy
-      this.procurementArrivals.forEach(purchase => {
-        purchase.arrivals.forEach(arrival => {
-          if (purchase.arrivals.length > 0) {
-            tempAmount = this.checkArrivalsAmount(purchase.arrivals);
-            if (Number(purchase.supplierAmount) <= tempAmount) {
-              tempArr.push(purchase)
-            }
-          }
 
-        });
-      });
-      this.procurementArrivals = tempArr
-    }
-    if (status == 'part') {
-      this.procurementArrivals = this.procurementArrivalsCopy
-      this.procurementArrivals.forEach(purchase => {
-        purchase.arrivals.forEach(arrival => {
-          tempAmount = this.checkArrivalsAmount(purchase.arrivals);
-          if (Number(purchase.supplierAmount) > tempAmount) {
-            tempArr.push(purchase)
-          }
-        });
-      });
-      this.procurementArrivals = tempArr
-    }
 
-  }
 
-  addReferenceDetails(arrival) {
-    debugger;
-    this.newReference.orderId = arrival.id
-    this.newReference.itemNumber = arrival.itemNumber
-    if (this.user) {
-      this.newReference.user = this.user;
-    }
-    this.procurementservice.updatePurchaseOrder(this.newReference).subscribe(data => {
-
-      if (data.msg == 'referenceExist') {
-        this.toastr.error('Reference Number Exist')
-      } else {
-        debugger;
-        for (let i = 0; i < this.procurementArrivals.length; i++) {
-
-          if (this.procurementArrivals[i].id == data._id) {
-            for (let k = 0; k < data.item.length; k++) {
-              if (this.procurementArrivals[i].itemNumber == data.item[k].itemNumber) {
-                this.procurementArrivals[this.arrivalData[0].index].arrivals = data.item[k].arrivals
-                this.getAllProcurementOrders();
-                this.editArrivalModal = false;
-                this.toastr.success("עודכן בהצלחה !")
-                this.newReference.arrivalDate = ''
-                this.newReference.arrivedAmount = ''
-                this.newReference.itemNumber = ''
-                this.newReference.referenceNumber = ''
-              }
-            }
-
-          }
-        }
-      }
-    })
-
-  }
 
   cancelOrder(orderNumber) {
     if (confirm("האם לבטל הזמנה זו ?")) {
@@ -1579,3 +1002,87 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // filterPurchases(event, type) {
+    //   switch (type) {
+    //     case 'supplier':
+    //       if (event.target.value != '') {
+    //         this.procurementArrivals = []
+    //         this.procurementArrivalsCopy = []
+    //         var tempArr = this.procurementDataCopy.filter(p => p.supplierNumber == event.target.value && p.status != 'canceled');
+    //         for (let i = 0; i < tempArr.length; i++) {
+    //           for (let j = 0; j < tempArr[i].item.length; j++) {
+    //             var obj = {
+    //               id: tempArr[i]._id,
+    //               supplierName: tempArr[i].supplierName,
+    //               comaxNumber: tempArr[i].comaxNumber,
+    //               orderNumber: tempArr[i].orderNumber,
+    //               orderDate: tempArr[i].outDate,
+    //               arrivedAmount: tempArr[i].item[j].arrivedAmount,
+    //               itemNumber: tempArr[i].item[j].itemNumber,
+    //               itemName: tempArr[i].item[j].itemName,
+    //               supplierAmount: tempArr[i].item[j].supplierAmount,
+    //               arrivals: [],
+    //             }
+    //             if (tempArr[i].item[j].arrivals) {
+    //               for (let k = 0; k < tempArr[i].item[j].arrivals.length; k++) {
+    //                 var arrival = {
+    //                   referenceNumber: tempArr[i].item[j].arrivals[k].referenceNumber,
+    //                   arrivalDate: tempArr[i].item[j].arrivals[k].arrivalDate,
+    //                   arrivedAmount: tempArr[i].item[j].arrivals[k].arrivedAmount
+    //                 }
+    //                 obj.arrivals.push(arrival)
+    //               }
+    //             }
+    //             this.procurementArrivals.push(obj)
+    //             this.procurementArrivalsCopy.push(obj)
+    //           }
+    //         }
+    //       } else {
+    //         this.procurementArrivals = []
+    //         this.procurementArrivalsCopy = []
+    //       }
+    //       break;
+    //     case 'itemNumber':
+    //       var tempArr = [...this.procurementArrivals];
+    //       if (event.target.value != '') {
+    //         this.procurementArrivals = tempArr.filter(p => p.itemNumber == event.target.value)
+    //       } else {
+    //         this.procurementArrivals = this.procurementArrivalsCopy
+    //       }
+    //       break;
+    //     case 'orderNumber':
+    //       var tempArr = [...this.procurementArrivals];
+    //       if (event.target.value != '') {
+    //         this.procurementArrivals = tempArr.filter(p => p.orderNumber == event.target.value)
+    //       } else {
+    //         this.procurementArrivals = this.procurementArrivalsCopy
+    //       }
+    //       break;
+    //   }
+    // }

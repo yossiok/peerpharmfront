@@ -199,37 +199,6 @@
   </nav>
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
-<div *ngIf="changeItemQuantity == true" style="top:200px"
-  class="container w-25 border border-primary bg-dark fixed-top text-center rounded shadow-lg mx-auto my-auto p-2">
-  <div class="row">
-    <div class="col-4 text-white">Change Quantity</div>
-    <div class="col-4">
-      <input (change)="changeCertifQuantity($event)" type="number">
-    </div>
-    <div class="col-4">
-      <i (click)="changeItemQuantity = false" class="fa fa-times text-white"></i>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="changeItemPrice == true" style="top:200px"
-  class="container w-25 border border-primary bg-dark fixed-top text-center rounded shadow-lg mx-auto my-auto p-2">
-  <div class="row">
-    <div class="col-2 text-white">Change Price</div>
-    <div class="col-2"></div>
-    <div class="col-2">
-      <input (change)="changeCertifPrice($event)" type="number">
-    </div>
-    <div class="col-2"></div>
-    <div class="col-2"></div>
-    <div class="col-2">
-      <i (click)="changeItemPrice = false" class="fa fa-times text-white"></i>
-    </div>
-  </div>
-</div>
-
-
-
 <div *ngIf="showInfoModal == true" style="top:150px"
   class="container border border-primary bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
   <div class="row">
@@ -257,33 +226,7 @@
   </div>
 
 </div>
-<div *ngIf="paymentRemarkModal == true" style="top:150px"
-  class="container border border-primary bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
-  <div class="row">
-    <div class="col-4">
 
-    </div>
-    <div class="col-4">
-      <h3>הוסף הערה לסטטוס תשלום</h3>
-    </div>
-    <div class="col-4">
-      <i (click)="paymentRemarkModal = false" class="fa fa-times"></i>
-    </div>
-  </div>
-  <div class="row">
-
-    <div class="col-2"></div>
-    <div class="col-4">
-      <input type="text" class="form-control" [(ngModel)]="paymentRemark">
-    </div>
-    <div class="col-4">
-      <button (click)="addPaymentRemark()" class="form-control btn btn-primary">Add</button>
-    </div>
-    <div class="col-2"></div>
-
-  </div>
-
-</div>
 
 <div id="bill-section" *ngIf="priceAlert == true" style="top:300px"
   class="container bg-danger fixed-top text-center rounded shadow mx-auto my-auto p-2">
@@ -546,145 +489,9 @@
 </div>
 
 <div style="overflow: auto;" *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center bg-white rounded shadow-lg">
-  <app-new-procurement (orderDetailsModal)='orderDetailsModal=$event' [purchaseData]="purchaseData"></app-new-procurement>
+  <app-new-procurement (orderDetailsModal)='orderDetailsModal=$event; isEdit=false' [isEdit]="isEdit" [purchaseData]="purchaseData"></app-new-procurement>
 </div>
 
-<div *ngIf="orderDetailsModalTwo==true" id="myModal3" class="modal3 rounded shadow-lg"
-  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:175px;top:65px;font-size:20px;'>
-
-  <div class="modal-content" id='modelC'>
-    <div style="display: inline-block;" id="material-header" class="modal-header">
-
-      <span class="close" id="closeId3" (click)="orderDetailsModal=false;">&times;</span>
-
-      <h3 style="color:black">Order Number: <span class="text-primary">{{orderData[0].orderNumber}}</span></h3>
-
-    </div>
-
-    <div style="overflow: scroll;height: 650px;" class="container" id="material-body" class="modal-body">
-      <table id="procurementItems" class="table table-striped">
-        <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-primary text-white">
-          <tr>
-            <th></th>
-            <th>Item Name</th>
-            <th>Item Number</th>
-            <th>Supplier Number</th>
-            <th>Item Remarks</th>
-            <th>Measurement</th>
-            <th>Price</th>
-            <th>Coin</th>
-            <th>Amount</th>
-            <!-- <th>Arrival Date</th>
-          <th>Expected Date</th>
-          <th>Reference Number</th> -->
-
-            <th></th>
-            <th></th>
-            <th></th>
-
-          </tr>
-        </thead>
-        <tbody id="table_body">
-          <ng-container *ngFor="let order of orderData">
-            <tr [style.background-color]="line.color" id="procurementOrderItems"
-              style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-              *ngFor="let line of order.item; let i = index">
-              <td>{{i+1}}</td>
-              <td>{{ line.itemName }}</td>
-              <td>{{ line.itemNumber }}</td>
-              <td>{{ line.componentNs }}</td>
-              <td *ngIf="line.itemNumber!=EditRowId " (click)="edit(line.itemNumber,i)">{{ line.itemRemarks }}</td>
-              <td *ngIf="line.itemNumber==EditRowId && i == EditRowIndex">
-                <textarea #itemRemarks [value]="line.itemRemarks"></textarea>
-              </td>
-              <td>{{ line.measurement }}</td>
-
-              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber,i)">{{line.supplierPrice}}</td>
-              <td *ngIf="line.itemNumber==EditRowId && i == EditRowIndex">
-                <input #supplierPrice [value]="line.supplierPrice" style="width:50px;" type="text">
-              </td>
-              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.coin,i)">{{ line.coin }}</td>
-              <td *ngIf="line.itemNumber==EditRowId && i == EditRowIndex">
-                <input #orderCoin [value]="line.coin" style="width:50px;" type="text">
-              </td>
-
-              <td *ngIf="line.itemNumber==EditRowId && i == EditRowIndex">
-
-
-                <input #orderAmount [value]="line.supplierAmount" style="width:50px;" type="text">
-              </td>
-
-              <!-- <td *ngIf="line.itemNumber==EditRowId">
-             
-            </td> -->
-              <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber,i)">
-                {{line.arrivedAmount}}/{{ line.supplierAmount }}</td>
-              <td *ngIf="line.itemNumber!=EditRowId"></td>
-              <!--       
-            <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.arrivalDate }}</td>
-            <td *ngIf="line.itemNumber==EditRowId">
-              <input #arrivalDate [value]="line.arrivalDate" style="width:150px;" type="date">
-            </td>
-
-            <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.expectedDate }}</td>
-            <td *ngIf="line.itemNumber==EditRowId">
-              <input #expectedDate [value]="line.expectedDate" style="width:150px;" type="date">
-            </td>
-
-            <td *ngIf="line.itemNumber!=EditRowId" (click)="edit(line.itemNumber)">{{ line.referenceNumber }}</td>
-            <td *ngIf="line.itemNumber==EditRowId">
-              <input #referenceNumber [value]="line.referenceNumber" style="width:150px;" type="text">
-            </td> -->
-
-              <td *ngIf="line.itemNumber==EditRowId"><i (click)="checkIfArrived(line.itemNumber,line.orderNumber,i)"
-                  class="fa fa-save" aria-hidden="true"></i></td>
-              <td><i (click)="deleteFromOrder(line.itemNumber,line.orderNumber)" class="fa fa-trash"></i></td>
-              <td><i (click)="itemStatusDone(line.itemNumber,line.orderNumber)" class="fa fa-check"></i></td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-
-    </div>
-    <div class="modal-footer">
-      <tr>
-        <td><input class="form-control" placeholder="Item Name" [(ngModel)]="newItem.itemName" type="text"></td>
-        <td><input (change)="fillMaterialName($event)" class="form-control" placeholder="Item Number"
-            [(ngModel)]="newItem.itemNumber" type="text"></td>
-        <td><input class="form-control" placeholder="Item Remarks" [(ngModel)]="newItem.itemRemarks" type="text"></td>
-        <td><input list="measurements" class="form-control" [(ngModel)]="newItem.measurement"
-            class="form-control custom-select">
-          <datalist id="measurements">
-            <option value="kg">kg</option>''ג'
-            <option value="liter">liter</option>
-            <option value="meter">meter</option>
-            <option value="ml">ml</option>
-            <option value="unit">Unit</option>
-            <option value="ton">טון</option>
-            <option value="unit">יחידה</option>
-            <option value="box">קופסא</option>
-          </datalist>
-        </td>
-        <td><input class="form-control" placeholder="Quantity" [(ngModel)]="newItem.supplierAmount" type="text"></td>
-        <td>
-          <input list="coins" class="form-control" [(ngModel)]="newItem.coin" class="form-control custom-select">
-          <datalist id="coins">
-            <option value=""></option>
-            <option value="usd">USD</option>
-            <option value="nis">NIS</option>
-            <option value="gbp">GBP</option>
-            <option value="eur">EUR</option>
-            <option value="yen">YEN</option>
-          </datalist>
-        </td>
-        <td><input class="form-control" placeholder="Price" [(ngModel)]="newItem.supplierPrice" type="text"></td>
-        <td><button class="btn btn-primary" (click)="addNewItem()">Add</button></td>
-      </tr>
-
-    </div>
-  </div>
-
-</div>
 
 <div *ngIf="newPurchaseModal == true" style="z-index: 9999;top:0px !important;height: auto;border:2px 2px 2px blue;width: 50%;right:0px !important"
   class="fixNoaStupidStuff border border-primary bg-white shadow-lg container fixed-top mx-auto my-auto text-center p-1">

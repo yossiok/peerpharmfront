@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, FormGroup , Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -7,6 +7,8 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PurchaseData } from '../procumentOrders/PurchaseData';
 
 
 @Component({
@@ -15,16 +17,26 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./new-procurement.component.scss']
 })
 export class NewProcurementComponent implements OnInit {
-
-  @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
-  @Input() purchaseData:any;
-  openOrdersModal: boolean = false;
-  disabled:boolean = true;
-  newProcurementForm: any;
   
+  @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
+  @Input() purchaseData: any;
+  @Input() isEdit: boolean;
+  @Output() orderDetailsModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @ViewChild('itemNumber') itemNumber: ElementRef;
+  @ViewChild('itemName') itemName: ElementRef;
+  @ViewChild('coin') coin: ElementRef;
+  @ViewChild('measurement') measurement: ElementRef;
+  @ViewChild('supplierPrice') supplierPrice: ElementRef;
+  @ViewChild('supplierAmount') supplierAmount: ElementRef;
+  @ViewChild('itemRemarks') itemRemarks: ElementRef;
+  @ViewChild('updateItemAmount') updateItemAmount: ElementRef;
+  @ViewChild('updateItemPrice') updateItemPrice: ElementRef;
+  
+  openOrdersModal: boolean = false;
+  disabled: boolean = true;
+  newProcurementForm: any;
   supplierToUpdate: any;
   user: any;
-  @Output() orderDetailsModal:EventEmitter<boolean> = new EventEmitter<boolean>();
   currSupplier: any;
   currItemForPL: any;
   procurementSupplier: boolean = true;
@@ -37,37 +49,8 @@ export class NewProcurementComponent implements OnInit {
   itemExistInOrders: any[];
   userEmail: any;
   editRow: String = ''
-  newPurchase:FormGroup
-
-  @ViewChild('itemNumber') itemNumber: ElementRef;
-  @ViewChild('itemName') itemName: ElementRef;
-  @ViewChild('coin') coin: ElementRef;
-  @ViewChild('measurement') measurement: ElementRef;
-  @ViewChild('supplierPrice') supplierPrice: ElementRef;
-  @ViewChild('supplierAmount') supplierAmount: ElementRef;
-  @ViewChild('itemRemarks') itemRemarks: ElementRef;
-
-  @ViewChild('updateItemAmount') updateItemAmount: ElementRef;
-  @ViewChild('updateItemPrice') updateItemPrice: ElementRef;
-
-  newItem = {
-
-    itemNumber: '',
-    itemName: '',
-    coin: '',
-    measurement: '',
-    supplierPrice: 0,
-    supplierAmount: '',
-    color: '',
-    orderNumber: '',
-    itemRemarks: '',
-    itemPrice: '',
-    componentNs: '',
-    componentType: ''
-
-  }
+  newPurchase: FormGroup
   stockitem = {
-
     number: '',
     name: '',
     coin: '',
@@ -77,8 +60,8 @@ export class NewProcurementComponent implements OnInit {
     color: '',
     itemRemarks: '',
     itemPrice: '',
-    supplierItemNum:''
-
+    supplierItemNum: '',
+    supplierAmount: 0
   }
   newProcurement = {
     supplierNumber: '',
@@ -98,26 +81,23 @@ export class NewProcurementComponent implements OnInit {
 
   }
 
-
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.editPurchaseItems('');
-
   }
 
-  constructor(private fb:FormBuilder,private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
+  constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
 
     this.newPurchase = fb.group({
+      _id: [],
       supplierName: ["", Validators.required],
       supplierNumber: ["", Validators.required],
       supplierEmail: ['', Validators.required],
-
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [Date, Validators.required],
+      arrivalDate: ['', Validators.required],
       color: ['', Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: ['', Validators.required],
-     
       userEmail: ['', Validators.required],
       user: ['', Validators.required],
       billNumber: [[], Validators.required],
@@ -126,13 +106,12 @@ export class NewProcurementComponent implements OnInit {
       remarks: ['', Validators.required],
       status: ['', Validators.required],
       deliveryCerts: [[], Validators.required],
-      
- 
     });
   }
 
   ngOnInit() {
     debugger;
+    if(this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData) 
     this.purchaseData
     this.getAllSuppliers();
     this.getAllMaterials();
@@ -158,25 +137,13 @@ export class NewProcurementComponent implements OnInit {
       this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
       this.newPurchase.controls.user.setValue(this.authService.loggedInUser.userName);
       this.user = this.authService.loggedInUser.userName
-      
-      
-
     }
     else {
       this.authService.userEventEmitter.subscribe(data => {
         this.userEmail = this.authService.loggedInUser.userEmail;
-
       })
     }
-
   }
-
-
-  sendNewPurchase(){
-    debugger;
-    this.newPurchase.controls.supplierName
-  }
-
 
   updateItemInPL() {
     this.supplierService.updateSupplierPrice(this.supplierToUpdate).subscribe(data => {
@@ -186,31 +153,16 @@ export class NewProcurementComponent implements OnInit {
     })
   }
 
-
-  moveToProcItems() {
-
-    if (this.newProcurementForm.value.orderNumber != "") {
-      this.procurementSupplier = false;
-      this.procurementItems = true;
-    }
-  }
-
   fillPurchaseDetails(recommendation) {
-    debugger;
-
-
-    this.newItem.itemNumber = recommendation.componentNumber;
+    this.stockitem.number = recommendation.componentNumber;
     this.newProcurement.orderType = recommendation.type
-    this.newItem.supplierAmount = recommendation.amount
+    this.stockitem.supplierAmount = recommendation.amount
     this.newProcurement.recommendId = recommendation._id
     this.findStockItemByNumber();
-
   }
 
   findStockItemByNumber() {
-    debugger
     if (this.stockitem.number != '') {
-
       if (this.newPurchase.controls.orderType.value == 'material') {
         this.inventoryService.getMaterialStockItemByNum(this.stockitem.number).subscribe(data => {
           debugger;
@@ -221,7 +173,6 @@ export class NewProcurementComponent implements OnInit {
             this.stockitem.supplierItemNum = data[0].componentNs
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
             this.stockitem.price = parseFloat(supplier.price)
-
           } else {
             this.toastr.error('פריט לא קיים במערכת')
           }
@@ -287,9 +238,7 @@ export class NewProcurementComponent implements OnInit {
       this.editRow = itemNumber;
     } else {
       this.editRow = '';
-
     }
-
   }
 
   getAllMaterials() {
@@ -310,150 +259,43 @@ export class NewProcurementComponent implements OnInit {
     let supplier = ev.target.value;
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
     this.currSupplier = result[0]
-
     this.newPurchase.controls.supplierNumber.setValue(this.currSupplier.suplierNumber)
     this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
-
-  }
-
-  removeItemFromPurchase(itemNumber) {
-
-    for (let i = 0; i < this.newProcurement.item.length; i++) {
-      if (this.newProcurement.item[i].itemNumber == itemNumber) {
-        this.newProcurement.item.splice(i, 1);
-        this.toastr.success('פריט הוסר בהצלחה')
-      }
-
-    }
-
-  }
-
-  editItemInPurchase(itemNumber) {
-    if (itemNumber != '') {
-      var item = this.newProcurement.item.find(i => i.itemNumber == itemNumber)
-      item.supplierAmount = this.updateItemAmount.nativeElement.value;
-      item.supplierPrice = this.updateItemPrice.nativeElement.value;
-      this.editPurchaseItems('')
-      this.toastr.success('פריט עודכן בהצלחה !')
-    }
   }
 
 
-  addItemToPurchase(){
-    let objToPush = {...this.stockitem}
+  addItemToPurchase() {
+    debugger
+    let objToPush = { ...this.stockitem }
     this.newPurchase.controls.stockitems.value.push(objToPush)
     this.resetStockItem();
     this.toastr.success('Item Added Successfully')
   }
 
-  addItemToProcurement() {
-    debugger;
-    var newItem = {
-      coin: this.coin.nativeElement.value,
-      itemName: this.itemName.nativeElement.value,
-      itemNumber: this.itemNumber.nativeElement.value,
-      measurement: this.measurement.nativeElement.value,
-      supplierAmount: this.supplierAmount.nativeElement.value,
-      supplierPrice: this.supplierPrice.nativeElement.value,
-      itemPrice: Number(this.supplierPrice.nativeElement.value) * Number(this.supplierAmount.nativeElement.value),
-      itemRemarks: this.itemRemarks.nativeElement.value,
-      componentNs: this.newItem.componentNs,
-      componentType: this.newItem.componentType
-    }
-
-    if (newItem.itemName) {
-      newItem.itemName.trim()
-    }
-    if (newItem.itemNumber) {
-      newItem.itemNumber.trim()
-    }
-    if (newItem.componentNs) {
-      newItem.componentNs.trim()
-    }
-
-
-
-    if (this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.measurement.nativeElement.value == "" || this.supplierAmount.nativeElement.value == "") {
-      this.toastr.error('שים לב , לא כל הפרטים מלאים.')
-    } else {
-      if (this.newProcurement.orderType == 'material') {
-        if (this.allMaterials != undefined) {
-          var material = this.allMaterials.find(m => m.componentN == newItem.itemNumber);
-        }
-
-        debugger;
-        if (material) {
-          if (material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true') {
-            if (confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + material.allowQtyInStock)) {
-              this.pushAndResetItem(newItem)
-            }
-          } else {
-            this.pushAndResetItem(newItem)
-          }
-        }
-        else {
-          this.pushAndResetItem(newItem)
-
-        }
-      } else {
-        this.pushAndResetItem(newItem)
-
-      }
-
-
-
-
-    }
-  }
-
-  pushAndResetItem(newItem) {
-    this.newProcurement.item.push(newItem);
-
-    this.newItem.coin = "";
-    this.newItem.itemName = "";
-    this.newItem.itemNumber = "";
-    this.newItem.measurement = "";
-    this.newItem.supplierAmount = "";
-    this.newItem.itemRemarks = '';
-    this.newItem.supplierPrice = 0;
-    this.itemExistInOrders = [];
-    this.openOrdersModal = false;
-    this.toastr.success("פריט התווסף בהצלחה!")
-  }
-
   fillMaterialNumber(ev) {
-    debugger;
     var materialName = ev.target.value;
-
     var material = this.allMaterials.find(material => material.componentName == materialName)
-
-    this.newItem.itemNumber = material.componentN;
+    this.stockitem.number = material.componentN;
     this.findStockItemByNumber();
-
   }
 
   sendNewProc() {
-
-    debugger;
-   
-      if (this.newPurchase.controls.stockitems.value) {
-        if (confirm("האם להקים הזמנה זו ?")) {
-          this.newProcurement.outDate.toString();
-          this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
-            // console.log('data from addNewProcurement: ',data)
-            if (data) {
-              this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
-              this.newPurchase.reset();
-              this.newProcurementSaved.emit()
-            }
-          })
-         
-        }
-      } else {
-        this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
+    debugger
+    if (this.newPurchase.controls.stockitems.value) {
+      if (confirm("האם להקים הזמנה זו ?")) {
+        this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
+          // console.log('data from addNewProcurement: ',data)
+          if (data) {
+            this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
+            this.newPurchase.reset();
+          }
+        })
       }
+    } else {
+      this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
     }
-  
+  }
+
 
 
   updateSupplierEmail(ev) {
@@ -472,29 +314,6 @@ export class NewProcurementComponent implements OnInit {
   }
 
 
-  addToSupplierPriceList() {
-    debugger;
-    if (confirm('האם להוסיף למחירון ספק ?')) {
-      var obj = {
-        itemName: this.newItem.itemName,
-        itemNumber: this.newItem.itemNumber,
-        supplierPrice: this.newItem.supplierPrice,
-        supplierNumber: this.newProcurement.supplierNumber
-      }
-
-      this.supplierToUpdate = obj;
-
-      this.supplierService.addToSupplierPriceList(obj).subscribe(data => {
-        if (data.itemNumber) {
-          this.currItemForPL = data;
-          this.showUpdatePLModal = true
-        } else {
-          this.toastr.success('פריט הוסף למחירון ספק בהצלחה !')
-        }
-      })
-    }
-
-  }
 
   formatDate(date) {
     var d = new Date(date),
@@ -510,16 +329,134 @@ export class NewProcurementComponent implements OnInit {
     return [year, month, day].join('-');
   }
 
-  resetStockItem(){
+  resetStockItem() {
     this.stockitem.number = '',
-    this.stockitem.name = '',
-    this.stockitem.coin = '',
-    this.stockitem.measurement = '',
-    this.stockitem.price = 0,
-    this.stockitem.quantity = '',
-    this.stockitem.color = '',
-    this.stockitem.itemRemarks = '',
-    this.stockitem.itemPrice = ''
+      this.stockitem.name = '',
+      this.stockitem.coin = '',
+      this.stockitem.measurement = '',
+      this.stockitem.price = 0,
+      this.stockitem.quantity = '',
+      this.stockitem.color = '',
+      this.stockitem.itemRemarks = '',
+      this.stockitem.itemPrice = ''
+  }
+
+  open(modal) {
+    // if (Object.keys(modal._def.references)[0] = 'printInventoryValue') {
+    //   this.getTotalComponentsValue();
+    // }
+    this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+    // addToSupplierPriceList() {
+    //   debugger;
+    //   if (confirm('האם להוסיף למחירון ספק ?')) {
+    //     var obj = {
+    //       itemName: this.newItem.itemName,
+    //       itemNumber: this.newItem.itemNumber,
+    //       supplierPrice: this.newItem.supplierPrice,
+    //       supplierNumber: this.newProcurement.supplierNumber
+    //     }
+
+    //     this.supplierToUpdate = obj;
+
+    //     this.supplierService.addToSupplierPriceList(obj).subscribe(data => {
+    //       if (data.itemNumber) {
+    //         this.currItemForPL = data;
+    //         this.showUpdatePLModal = true
+    //       } else {
+    //         this.toastr.success('פריט הוסף למחירון ספק בהצלחה !')
+    //       }
+    //     })
+    //   }
+
+    // }
+
+
+    // addItemToProcurement() {
+      //   debugger;
+      //   var newItem = {
+        //     coin: this.coin.nativeElement.value,
+        //     itemName: this.itemName.nativeElement.value,
+        //     itemNumber: this.itemNumber.nativeElement.value,
+        //     measurement: this.measurement.nativeElement.value,
+        //     supplierAmount: this.supplierAmount.nativeElement.value,
+        //     supplierPrice: this.supplierPrice.nativeElement.value,
+        //     itemPrice: Number(this.supplierPrice.nativeElement.value) * Number(this.supplierAmount.nativeElement.value),
+        //     itemRemarks: this.itemRemarks.nativeElement.value,
+        //     componentNs: this.newItem.componentNs,
+        //     componentType: this.newItem.componentType
+        //   }
+
+        //   if (newItem.itemName) {
+  //     newItem.itemName.trim()
+  //   }
+  //   if (newItem.itemNumber) {
+  //     newItem.itemNumber.trim()
+  //   }
+  //   if (newItem.componentNs) {
+  //     newItem.componentNs.trim()
+  //   }
+
+
+
+  //   if (this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.measurement.nativeElement.value == "" || this.supplierAmount.nativeElement.value == "") {
+  //     this.toastr.error('שים לב , לא כל הפרטים מלאים.')
+  //   } else {
+  //     if (this.newProcurement.orderType == 'material') {
+  //       if (this.allMaterials != undefined) {
+  //         var material = this.allMaterials.find(m => m.componentN == newItem.itemNumber);
+  //       }
+
+  //       debugger;
+  //       if (material) {
+  //         if (material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true') {
+  //           if (confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + material.allowQtyInStock)) {
+  //             this.pushAndResetItem(newItem)
+  //           }
+  //         } else {
+  //           this.pushAndResetItem(newItem)
+  //         }
+  //       }
+  //       else {
+  //         this.pushAndResetItem(newItem)
+
+  //       }
+  //     } else {
+  //       this.pushAndResetItem(newItem)
+
+  //     }
+
+
+
+
+  //   }
+  // }
+
+  // pushAndResetItem(newItem) {
+  //   this.newProcurement.item.push(newItem);
+
+  //   this.newItem.coin = "";
+  //   this.newItem.itemName = "";
+  //   this.newItem.itemNumber = "";
+  //   this.newItem.measurement = "";
+  //   this.newItem.supplierAmount = "";
+  //   this.newItem.itemRemarks = '';
+  //   this.newItem.supplierPrice = 0;
+  //   this.itemExistInOrders = [];
+  //   this.openOrdersModal = false;
+  //   this.toastr.success("פריט התווסף בהצלחה!")
+  // }
