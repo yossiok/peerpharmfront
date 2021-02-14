@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PurchaseData } from '../procumentOrders/PurchaseData';
+import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { PurchaseData } from '../procumentOrders/PurchaseData';
   styleUrls: ['./new-procurement.component.scss']
 })
 export class NewProcurementComponent implements OnInit {
-  
+
   @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
   @Input() purchaseData: any;
   @Input() isEdit: boolean;
@@ -31,10 +32,9 @@ export class NewProcurementComponent implements OnInit {
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
   @ViewChild('updateItemAmount') updateItemAmount: ElementRef;
   @ViewChild('updateItemPrice') updateItemPrice: ElementRef;
-  
+
   openOrdersModal: boolean = false;
   disabled: boolean = true;
-  newProcurementForm: any;
   supplierToUpdate: any;
   user: any;
   currSupplier: any;
@@ -48,7 +48,8 @@ export class NewProcurementComponent implements OnInit {
   allMaterials: any[];
   itemExistInOrders: any[];
   userEmail: any;
-  editRow: String = ''
+  editRow: String = '';
+
   newPurchase: FormGroup;
   deliveryCertificateForm: FormGroup;
   stockitem = {
@@ -79,9 +80,13 @@ export class NewProcurementComponent implements OnInit {
     userEmail: '',
     recommendId: '',
     user: '',
-
+    
   }
 
+  //invoice data
+  purchaseInvoiceNumber: number;
+  invoiceRemarks: string;
+  
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.editPurchaseItems('');
@@ -112,7 +117,7 @@ export class NewProcurementComponent implements OnInit {
     this.deliveryCertificateForm = fb.group({
       certificateNumber: ['', Validators.required],
       deliveryArrivalDate: [new Date(), Validators.required],
-      itemNumber: ['',Validators.required],
+      itemNumber: ['', Validators.required],
       amount: [null, Validators.required],
       remarks: [''],
       userName: [this.authService.loggedInUser.userName, Validators.required]
@@ -121,7 +126,7 @@ export class NewProcurementComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authService.loggedInUser.userName
-    if(this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData) 
+    if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
     this.purchaseData
     this.getAllSuppliers();
     this.getAllMaterials();
@@ -133,16 +138,6 @@ export class NewProcurementComponent implements OnInit {
         }
       })
     }
-    // if (this.route.snapshot.queryParams.multi != undefined) {
-    //   debugger
-    //  let multi =  this.route.snapshot.queryParams.multi
-    //  multi = multi.split(',')
-    //  this.procurementService.getRecommendById(multi).subscribe(data=>{
-    //   if(data){
-    //     this.fillPurchaseDetails(data)
-    //   }
-    //  })
-    // }
     if (this.authService.loggedInUser) {
       this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
       this.newPurchase.controls.user.setValue(this.authService.loggedInUser.userName);
@@ -204,6 +199,158 @@ export class NewProcurementComponent implements OnInit {
           }
         })
       }
+    }
+  }
+
+  editPurchaseItems(itemNumber) {
+    if (itemNumber != '') {
+
+      this.editRow = itemNumber;
+    } else {
+      this.editRow = '';
+    }
+  }
+
+  getAllMaterials() {
+    this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
+      this.allMaterials = data;
+    })
+  }
+
+  getAllSuppliers() {
+    this.supplierService.getSuppliersDiffCollection().subscribe(data => {
+      this.allSuppliers = data;
+    })
+  }
+
+  fillSupplierDetails(ev) {
+    debugger;
+    let supplier = ev.target.value;
+    let result = this.allSuppliers.filter(x => supplier == x.suplierName)
+    this.currSupplier = result[0]
+    this.newPurchase.controls.supplierNumber.setValue(this.currSupplier.suplierNumber)
+    if (this.currSupplier.email) {
+      this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
+    }
+
+  }
+
+  addItemToPurchase() {
+    debugger
+    let objToPush = { ...this.stockitem }
+    this.newPurchase.controls.stockitems.value.push(objToPush)
+    this.resetStockItem();
+    this.toastr.success('Item Added Successfully')
+  }
+
+  fillMaterialNumber(ev) {
+    var materialName = ev.target.value;
+    var material = this.allMaterials.find(material => material.componentName == materialName)
+    this.stockitem.number = material.componentN;
+    this.findStockItemByNumber();
+  }
+
+  sendNewProc() {
+    debugger
+    if (this.newPurchase.controls.stockitems.value) {
+      if (confirm("האם להקים הזמנה זו ?")) {
+        this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
+          // console.log('data from addNewProcurement: ',data)
+          if (data) {
+            this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
+            this.newPurchase.reset();
+            this.orderDetailsModal.emit(false)
+          }
+        })
+      }
+    } else {
+      this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
+    }
+  }
+
+  updateSupplierEmail(ev) {
+    let email = ev.target.value;
+    if (confirm('האם לעדכן מייל אצל הספק ?')) {
+      this.currSupplier.email = email
+      if (email != '') {
+        this.supplierService.updateCurrSupplier(this.currSupplier).subscribe(data => {
+          if (data) {
+            this.toastr.success('מייל עודכן בהצלחה !')
+          }
+        })
+      }
+    }
+
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+    return [year, month, day].join('-');
+  }
+
+  resetStockItem() {
+    this.stockitem.number = '',
+    this.stockitem.name = '',
+    this.stockitem.coin = '',
+    this.stockitem.measurement = '',
+    this.stockitem.price = 0,
+    this.stockitem.quantity = '',
+    this.stockitem.color = '',
+    this.stockitem.itemRemarks = '',
+    this.stockitem.itemPrice = ''
+  }
+
+  saveCertificate() {
+    this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificateForm.value as DeliveryCertificate);
+    this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
+      .subscribe(res => {
+        if (res) {
+          this.toastr.success(`תעודה מספר ${this.deliveryCertificateForm.get('certificateNumber').value} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
+        }
+        else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
+        this.deliveryCertificateForm.reset()
+        this.modalService.dismissAll()
+      })
+  }
+
+  saveInvoiceToPurchase() {
+    this.newPurchase.controls.billNumber.value.push({
+      invoiceNumber: this.purchaseInvoiceNumber,
+      remarks: this.invoiceRemarks
+    });
+    this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
+      .subscribe(res => {
+        if (res) {
+          this.toastr.success(`חשבונית מספר ${this.purchaseInvoiceNumber} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
+        }
+        else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
+        this.purchaseInvoiceNumber = null
+        this.modalService.dismissAll()
+      })
+  }
+
+  open(modal) {
+    this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
+  }
+
+
+
+}
+
+
+
+
+
+
+
+
 
       // this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data => {
       //   debugger;
@@ -236,144 +383,6 @@ export class NewProcurementComponent implements OnInit {
       //   this.itemExistInOrders = data.filter(p => p.status != 'closed');
 
       // })
-
-    }
-
-
-  }
-
-  editPurchaseItems(itemNumber) {
-    if (itemNumber != '') {
-
-      this.editRow = itemNumber;
-    } else {
-      this.editRow = '';
-    }
-  }
-
-  getAllMaterials() {
-    this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
-      this.allMaterials = data;
-    })
-  }
-
-
-  getAllSuppliers() {
-    this.supplierService.getSuppliersDiffCollection().subscribe(data => {
-      this.allSuppliers = data;
-    })
-  }
-
-  fillSupplierDetails(ev) {
-    debugger;
-    let supplier = ev.target.value;
-    let result = this.allSuppliers.filter(x => supplier == x.suplierName)
-    this.currSupplier = result[0]
-    this.newPurchase.controls.supplierNumber.setValue(this.currSupplier.suplierNumber)
-    if(this.currSupplier.email){
-    this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
-    }
-    
-  }
-
-
-  addItemToPurchase() {
-    debugger
-    let objToPush = { ...this.stockitem }
-    this.newPurchase.controls.stockitems.value.push(objToPush)
-    this.resetStockItem();
-    this.toastr.success('Item Added Successfully')
-  }
-
-  fillMaterialNumber(ev) {
-    var materialName = ev.target.value;
-    var material = this.allMaterials.find(material => material.componentName == materialName)
-    this.stockitem.number = material.componentN;
-    this.findStockItemByNumber();
-  }
-
-  sendNewProc() {
-    debugger
-    if (this.newPurchase.controls.stockitems.value) {
-      if (confirm("האם להקים הזמנה זו ?")) {
-        this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
-          // console.log('data from addNewProcurement: ',data)
-          if (data) {
-            this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
-            this.newPurchase.reset();
-          }
-        })
-      }
-    } else {
-      this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
-    }
-  }
-
-
-
-  updateSupplierEmail(ev) {
-    let email = ev.target.value;
-    if (confirm('האם לעדכן מייל אצל הספק ?')) {
-      this.currSupplier.email = email
-      if (email != '') {
-        this.supplierService.updateCurrSupplier(this.currSupplier).subscribe(data => {
-          if (data) {
-            this.toastr.success('מייל עודכן בהצלחה !')
-          }
-        })
-      }
-    }
-
-  }
-
-
-
-  formatDate(date) {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2)
-      month = '0' + month;
-    if (day.length < 2)
-      day = '0' + day;
-
-    return [year, month, day].join('-');
-  }
-
-  resetStockItem() {
-    this.stockitem.number = '',
-      this.stockitem.name = '',
-      this.stockitem.coin = '',
-      this.stockitem.measurement = '',
-      this.stockitem.price = 0,
-      this.stockitem.quantity = '',
-      this.stockitem.color = '',
-      this.stockitem.itemRemarks = '',
-      this.stockitem.itemPrice = ''
-  }
-
-  saveCertificate() {
-    this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificateForm)
-    console.log('purchase: ',this.newPurchase)
-    console.log('certificate: ',this.deliveryCertificateForm)
-    // this.deliveryCertificateForm.disable()
-  }
-
-  open(modal) {
-    // if (Object.keys(modal._def.references)[0] = 'printInventoryValue') {
-    //   this.getTotalComponentsValue();
-    // }
-    this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
-  }
-
-
-
-}
-
-
-
 
 
 
