@@ -4,10 +4,10 @@
 
   <div class="row fixNoaStupidStuff">
     <div class="col-1 fixNoaStupidStuff">
-      <button (click)="itemsMovementModal = true" class="btn btn-info form-control">F9 - הוצאה/קבלת סחורה</button>
+      <button (click)="itemsMovementModal = true" class="btn btn-info form-control rounded-pill">F9 - הוצאה/קבלת סחורה</button>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-info form-control">F8 - הזמנות מלאי</button>
+      <button class="btn btn-info form-control rounded-pill">F8 - הזמנות מלאי</button>
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
     <!-- <div class="col-1 fixNoaStupidStuff">
@@ -15,34 +15,34 @@
         קיימות</button>
     </div> -->
     <div class="col-2 fixNoaStupidStuff">
-      <button class="btn btn-warning form-control" (click)="procurementRecommendations('minimumStock')">F7 - בדוק המלצה
+      <button class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7 - בדוק המלצה
         לרכש</button>
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
     <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-success form-control" (click)="inventoryNewReqModal = true">F4 - בקשת מלאי</button>
+      <button class="btn btn-success form-control rounded-pill" (click)="inventoryNewReqModal = true">F4 - בקשת מלאי</button>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-success form-control" (click)="newCmpt('new')">F2 - פריט חדש</button>
+      <button class="btn btn-success form-control rounded-pill" (click)="newCmpt('new')">F2 - פריט חדש</button>
     </div>
   </div>
 
   <div class="row mt-5 fixNoaStupidStuff">
     <div class="col-2 fixNoaStupidStuff">
-      <input #filterbyNum type="text" class="form-control" placeholder="Search By Number"
+      <input #filterbyNum type="text" class="form-control rounded-pill" placeholder="Search By Number"
         (change)="filterRows($event, 'itemNum' )">
     </div>
     <div class="col-2 fixNoaStupidStuff">
-      <input #filterByCmptName type="text" class="form-control" placeholder="Search By Name"
+      <input #filterByCmptName type="text" class="form-control rounded-pill" placeholder="Search By Name"
         (change)="filterRows($event, 'itemName')">
     </div>
     <div class="col-2 fixNoaStupidStuff">
 
-      <input #filterBySupplierN type="text" class="form-control" placeholder="Supplier Number"
+      <input #filterBySupplierN type="text" class="form-control rounded-pill" placeholder="Supplier Number"
         (change)="filterRows($event , 'supplierN')">
     </div>
     <div class="col-2 fixNoaStupidStuff">
-      <select #filterByType class="form-control" (change)="filterRows($event , 'type')">
+      <select #filterByType class="form-control rounded-pill" (change)="filterRows($event , 'type')">
         <!-- <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'type')"> -->
         <option selected="true" disabled="disabled">בחר סוג</option>
         <option value='bottle_Glass'>בקבוק זכוכית</option>
@@ -76,14 +76,14 @@
       </select>
     </div>
     <div class="col-2 fixNoaStupidStuff">
-      <select #filterByCategory class="form-control" (change)="filterRows($event , 'category')">
+      <select #filterByCategory class="form-control rounded-pill" (change)="filterRows($event , 'category')">
         <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
         <option value="" selected="true" disabled="disabled">בחר קטגוריה</option>
         <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
       </select>
     </div>
     <div class="col-2 fixNoaStupidStuff">
-      <input #filterByItem type="text" class="form-control" placeholder="Search By Item"
+      <input #filterByItem type="text" class="form-control rounded-pill" placeholder="Search By Item"
         (change)="filterRows($event , 'itemNumber')">
     </div>
 

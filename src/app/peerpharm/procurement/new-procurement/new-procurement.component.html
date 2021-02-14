@@ -6,11 +6,11 @@
 
         <div class="row">
           <div class="col-2">
-            <button class="btn btn-warning rounded-pill form-control" (click)="open(recieveDeliveryCertificate)">New
-              Certificate</button>
+            <button class="btn btn-warning rounded-pill form-control" (click)="open(recieveDeliveryCertificate)">
+              New Certificate</button>
           </div>
           <div class="col-2">
-            <button class="btn btn-warning rounded-pill form-control">New Invoice</button>
+            <button (click)="open(invoiceDelivery)" class="btn btn-warning rounded-pill form-control">New Invoice</button>
           </div>
           <div class="col-5"></div>
           <div class="col-2">
@@ -404,7 +404,26 @@
       </form>
     </div>
   </div>
+<<<<<<< HEAD
     
+=======
+
+  <div class="modal-footer">
+    <h2>ישר כח!</h2>
+  </div>
+</ng-template>
+<ng-template #invoiceDelivery let-modal>
+  <div class="modal-header bg-primary">
+    <h4 class="modal-title text-white" id="modal-basic-title">קבלת חשבונית</h4>
+    <button type="button" class="close text-white" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h1>דווח על קבלת תעודת משלוח</h1>
+  </div>
+
+>>>>>>> 22e4ef180c3a8ed4e2454af37cc9ce9849d0b19a
   <div class="modal-footer">
     <h2>ישר כח!</h2>
   </div>
