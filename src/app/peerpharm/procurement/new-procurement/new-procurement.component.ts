@@ -110,7 +110,7 @@ export class NewProcurementComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
+    this.user = this.authService.loggedInUser.userName
     if(this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData) 
     this.purchaseData
     this.getAllSuppliers();
@@ -260,7 +260,10 @@ export class NewProcurementComponent implements OnInit {
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
     this.currSupplier = result[0]
     this.newPurchase.controls.supplierNumber.setValue(this.currSupplier.suplierNumber)
+    if(this.currSupplier.email){
     this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
+    }
+    
   }
 
 
@@ -347,6 +350,8 @@ export class NewProcurementComponent implements OnInit {
     // }
     this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
+
+
 
 }
 
