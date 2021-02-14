@@ -845,7 +845,6 @@ export class ProcurementOrdersComponent implements OnInit {
   viewOrderDetails(index) {
     this.isEdit = true;
     this.orderDetailsModal = true;
-    this
     this.purchaseData = this.procurementData[index]
   }
 

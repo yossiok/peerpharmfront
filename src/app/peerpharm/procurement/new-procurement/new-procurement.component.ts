@@ -49,7 +49,8 @@ export class NewProcurementComponent implements OnInit {
   itemExistInOrders: any[];
   userEmail: any;
   editRow: String = ''
-  newPurchase: FormGroup
+  newPurchase: FormGroup;
+  deliveryCertificateForm: FormGroup;
   stockitem = {
     number: '',
     name: '',
@@ -107,6 +108,15 @@ export class NewProcurementComponent implements OnInit {
       status: ['', Validators.required],
       deliveryCerts: [[], Validators.required],
     });
+
+    this.deliveryCertificateForm = fb.group({
+      certificateNumber: ['', Validators.required],
+      deliveryArrivalDate: [new Date(), Validators.required],
+      itemNumber: ['',Validators.required],
+      amount: [null, Validators.required],
+      remarks: [''],
+      userName: [this.authService.loggedInUser.userName, Validators.required]
+    })
   }
 
   ngOnInit() {
@@ -339,6 +349,13 @@ export class NewProcurementComponent implements OnInit {
       this.stockitem.color = '',
       this.stockitem.itemRemarks = '',
       this.stockitem.itemPrice = ''
+  }
+
+  saveCertificate() {
+    this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificateForm)
+    console.log('purchase: ',this.newPurchase)
+    console.log('certificate: ',this.deliveryCertificateForm)
+    // this.deliveryCertificateForm.disable()
   }
 
   open(modal) {

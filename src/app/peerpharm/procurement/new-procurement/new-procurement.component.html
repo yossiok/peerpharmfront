@@ -14,8 +14,7 @@
           </div>
           <div class="col-5"></div>
           <div class="col-2">
-            <button (click)="disabled = false" *ngIf="user == purchaseData.user"
-              class="btn btn-warning rounded-pill form-control">Edit</button>
+            <button (click)="disabled = false" class="btn btn-warning rounded-pill form-control">Edit</button>
           </div>
           <div class="col-1">
             <i (click)="orderDetailsModal.emit(false)" class="fa fa-times text-primary"></i>
@@ -360,19 +359,52 @@
   </div>
 </div>
 
-<ng-template #recieveDeliveryCertificate let-modal>
+<ng-template class="p-6" #recieveDeliveryCertificate let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">קבלת משלוח</h4>
+    <h4 class="modal-title text-center" id="modal-basic-title">קבלת משלוח</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div dir="rtl" class="modal-body p-5">
     <h1>דווח על קבלת תעודת משלוח</h1>
+    
+    <div class="container bg-white border border-primary shadow-lg text-center p-5">
+      
+      <form [formGroup]="deliveryCertificateForm" (ngSubmit)="saveCertificate()">
+        <div class="row mt-2">
+          <div class="col-md-4 form-group">
+            <label for="certificateNumber">מספר תעודה<span class="red">*</span></label>
+            <input formControlName="certificateNumber" maxlength="4"  type="text" 
+            class="form-control" placeholder="4 ספרות אחרונות" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="deliveryArrivalDate">תאריך קבלת משלוח<span class="red">*</span></label>
+            <input formControlName="deliveryArrivalDate" type="date" class="form-control" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="itemNumber">מס' פריט<span class="red">*</span></label>
+            <input formControlName="itemNumber" type="text" class="form-control" placeholder="מס' פריט" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="amount">כמות<span class="red">*</span></label>
+            <input formControlName="amount" type="number" class="form-control" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="remarks">הערות</label>
+            <input formControlName="remarks" type="text" class="form-control" placeholder="הערות">
+          </div>
+          <br>
+          <div class="row mt-2">* שדה חובה</div>
+          
+          <button type="submit" [disabled]="!deliveryCertificateForm.valid" class="btn btn-primary form-control">
+            שלח את עמי
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <form ()></form>
-
+    
   <div class="modal-footer">
     <h2>ישר כח!</h2>
   </div>

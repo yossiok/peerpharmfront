@@ -489,7 +489,7 @@
 </div>
 
 <div style="overflow: auto;" *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center bg-white rounded shadow-lg">
-  <app-new-procurement (orderDetailsModal)='orderDetailsModal=$event; isEdit=false' [isEdit]="isEdit" [purchaseData]="purchaseData"></app-new-procurement>
+  <app-new-procurement (orderDetailsModal)='orderDetailsModal=$event; isEdit=$event' [isEdit]="isEdit" [purchaseData]="purchaseData"></app-new-procurement>
 </div>
 
 
