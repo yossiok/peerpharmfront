@@ -21,6 +21,20 @@ input:hover {
   color: lightcoral;
 }
 
+.purchase-details {
+  background-color: lightgray;
+  transition-property: height;
+  transition-duration: 2s;
+}
+
+.click { 
+  cursor: pointer;
+}
+
+.click:hover {
+  background-color: lightgray;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
   }
