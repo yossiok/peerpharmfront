@@ -132,6 +132,10 @@ export class InventoryService {
     let url = this.baseUrl + "component?stockItemType=" + stockItemType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getStockItemByCategory(stockItemCategory): Observable<any> {
+    let url = this.baseUrl + "component?stockItemCategory=" + stockItemCategory;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
   getCmptBySupplierItemNumber(cmptNumber, stockType): Observable<any> {
     let url = this.baseUrl + "component?componentNs=" + cmptNumber + "&stockType=" + stockType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

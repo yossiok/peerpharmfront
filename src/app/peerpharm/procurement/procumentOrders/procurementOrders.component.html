@@ -488,18 +488,18 @@
   </div>
 </div>
 
-<div style="overflow: auto;" *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center bg-white rounded shadow-lg">
-  <app-new-procurement (orderDetailsModal)='orderDetailsModal=$event; isEdit=$event' [isEdit]="isEdit" [purchaseData]="purchaseData"></app-new-procurement>
+<div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center">
+  <app-new-procurement (orderDetailsModal)='getAllProcurementOrders(); orderDetailsModal=$event; isEdit=$event' [isEdit]="isEdit" [purchaseData]="purchaseData"></app-new-procurement>
 </div>
 
 
 <div *ngIf="newPurchaseModal == true" style="z-index: 9999;top:0px !important;height: auto;border:2px 2px 2px blue;width: 50%;right:0px !important"
-  class="fixNoaStupidStuff border border-primary bg-white shadow-lg container fixed-top mx-auto my-auto text-center p-1">
+  class="fixNoaStupidStuff border bg-white container fixed-top mx-auto my-auto text-center p-1">
   <div class="row">
     <div class="col-1"></div>
     <div class="col-10"></div>
     <div class="col-1">
-      <i (click)="newPurchaseModal = false" class="fa fa-times"></i>
+      <i (click)="newPurchaseModal = false" class="fa fa-times bg-white">close</i>
     </div>
   </div>
   <app-new-procurement (newProcurementSaved)="showLoader = true; getAllProcurementOrders()"></app-new-procurement>

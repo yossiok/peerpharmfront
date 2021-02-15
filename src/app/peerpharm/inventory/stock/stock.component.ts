@@ -173,7 +173,11 @@ export class StockComponent implements OnInit {
   newItemShelfPosition: String;
   newItemShelfWH: String;
   cmptTypeList: Array<any>;
-  cmptCategoryList: Array<any>;
+  cmptCategoryList: Array<any> = [
+'Sacara','Mineralium','Arganicare','Spa Pharma','Olive','Vitamin C','Quinoa','Andrea Milano','Dermalosophy',
+'Kreogen','Careline','Frulatte','Mediskin','4Ever','Adah Lazorgan','Avalanche','Abyssian','Jahshan',
+'Mika','Hyalunol','Hemp','Kiss','Rose','Collagen','Gaya',
+  ]
   emptyFilterArr: Boolean = true;
   currItemShelfs: Array<any>;
   updateStockItem: Boolean = false;
@@ -925,9 +929,7 @@ export class StockComponent implements OnInit {
           }
           if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
 
-        });
-        self.setType(this.stockType);
-        self.getAllCmptTypesAndCategories();
+        })
 
       });
 
@@ -1284,7 +1286,7 @@ export class StockComponent implements OnInit {
   }
 
   setType(type) {
-
+    this.components = []
     switch (type) {
       case 'component':
         this.buttonColor = "#2962FF";
@@ -1343,8 +1345,15 @@ export class StockComponent implements OnInit {
         this.inventoryService.getStockItemByNumber(value).subscribe(stockitem=>{
         if(stockitem){
           this.smallLoader = false
-          this.components = stockitem
-          this.getAmountsFromShelfs();
+          this.components = stockitem.filter(s=>s.itemType == this.stockType)
+          if(this.components.length > 0)
+          {
+            this.getAmountsFromShelfs();
+          } else 
+          {
+            this.toastSrv.error('Item does not exist')
+          }
+         
         }
         })
         break;
@@ -1352,8 +1361,14 @@ export class StockComponent implements OnInit {
         this.inventoryService.getStockItemByName(value).subscribe(stockitem=>{
         if(stockitem){
           this.smallLoader = false
-          this.components = stockitem
-          this.getAmountsFromShelfs();
+          this.components = stockitem.filter(s=>s.itemType == this.stockType)
+          if(this.components.length > 0)
+          {
+            this.getAmountsFromShelfs();
+          } else 
+          {
+            this.toastSrv.error('Item does not exist')
+          }
         }
         })
         break;
@@ -1361,7 +1376,16 @@ export class StockComponent implements OnInit {
         this.inventoryService.getStockItemByType(value).subscribe(stockitem=>{
         if(stockitem){
           this.smallLoader = false
-          this.components = stockitem
+          this.components = stockitem.filter(s=>s.itemType == this.stockType)
+          this.getAmountsFromShelfs();
+        }
+        })
+        break;
+      case 'category':
+        this.inventoryService.getStockItemByCategory(value).subscribe(stockitem=>{
+        if(stockitem){
+          this.smallLoader = false
+          this.components = stockitem.filter(s=>s.itemType == this.stockType)
           this.getAmountsFromShelfs();
         }
         })

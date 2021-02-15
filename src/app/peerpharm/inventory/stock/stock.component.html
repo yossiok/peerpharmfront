@@ -71,8 +71,7 @@
       </select>
     </div>
     <div class="col-2 fixNoaStupidStuff">
-      <select #filterByCategory class="form-control rounded-pill" (change)="filterRows($event , 'category')">
-        <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
+      <select #filterByCategory class="form-control rounded-pill" (change)="searchBy($event , 'category')">
         <option value="" selected="true" disabled="disabled">בחר קטגוריה</option>
         <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
       </select>
@@ -91,9 +90,9 @@
 
 
   <div *ngIf="stockType == 'material'" class="row mt-2 fixNoaStupidStuff">
-    <div class="col-4"></div>
-    <div class="col-2">
-      <select [(ngModel)]="materialFilterType" class="form-control">
+    <div class="col-4 fixNoaStupidStuff"></div>
+    <div class="col-2 fixNoaStupidStuff">
+      <select [(ngModel)]="materialFilterType" class="form-control rounded-pill">
         <option selected="true" disabled="disabled">בחר שדה לסינון</option>
         <option value="">כל החומרי גלם</option>
         <option value="location">מיקום במחסן</option>
@@ -104,10 +103,10 @@
         <option value="inciName">INCI Name</option>
       </select>
     </div>
-    <div class="col-2">
+    <div class="col-2 fixNoaStupidStuff">
       <input *ngIf="materialFilterType != 'threatment' && materialFilterType != 'stateOfMatter'"
-        [(ngModel)]="materialFilterValue" class="form-control">
-      <select *ngIf="materialFilterType == 'threatment'" [(ngModel)]="materialFilterValue" class="form-control">
+        [(ngModel)]="materialFilterValue" class="form-control rounded-pill">
+      <select *ngIf="materialFilterType == 'threatment'" [(ngModel)]="materialFilterValue" class="form-control rounded-pill">
         <option value="flammableLiquid">3 - נוזל דליק</option>
         <option value="flammableSolid">4 - מוצק דליק</option>
         <option value="oxidizer">5.1 - מחמצן אי אורגני</option>
@@ -119,7 +118,7 @@
         <option value="cooling">איחסון בקירור</option>
         <option value="blockedByType">חסום לפי סוג חומר</option>
       </select>
-      <select *ngIf="materialFilterType == 'stateOfMatter'" [(ngModel)]="materialFilterValue" class="form-control">
+      <select *ngIf="materialFilterType == 'stateOfMatter'" [(ngModel)]="materialFilterValue" class="form-control rounded-pill">
         <option value="liquid">Liquid</option>
         <option value="solid">Solid</option>
         <option value="gell">Gell</option>
@@ -127,7 +126,7 @@
 
     </div>
     <div class="col-1">
-      <button (click)="filterMaterialsTable()" class="btn btn-info form-control">חפש</button>
+      <button (click)="filterMaterialsTable()" class="btn-info form-control rounded-pill">חפש</button>
     </div>
     <div class="col-4"></div>
 
@@ -267,7 +266,6 @@
 
       <!-- TABLE START -->
       <div *ngIf="stockType=='component'" class="tableFixHead">
-        <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
         <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
           <thead class="text-white bg-info">
             <tr style="text-align: center;">
@@ -288,7 +286,8 @@
             </tr>
 
           </thead>
-
+  
+          <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
 
           <tbody id="table_body" class="componentTable">
             <tr *ngFor="let component of components; let i = index">
@@ -393,7 +392,6 @@
 
 
       <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
-        <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
         <thead class='text-white bg-success'>
           <tr>
 
@@ -414,6 +412,7 @@
 
         </thead>
 
+        <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
 
         <tbody id="table_body" class="productTable">
           <tr *ngFor="let component of components; let i = index">
@@ -463,7 +462,6 @@
 
 
     <table class='table stockTable table-fixed' *ngIf="stockType=='material'">
-      <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
       <thead class='bg-warning text-white'>
         <tr style="text-align: center">
 
@@ -479,6 +477,7 @@
         </tr>
 
       </thead>
+      <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
       <tbody id="table_body" class="materialsTable">
         <tr *ngFor="let material of components ; let i = index">
 
