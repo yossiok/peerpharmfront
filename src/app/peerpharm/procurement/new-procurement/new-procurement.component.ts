@@ -86,6 +86,10 @@ export class NewProcurementComponent implements OnInit {
   //invoice data
   purchaseInvoiceNumber: number;
   invoiceRemarks: string;
+
+  //toggle purchase details
+  showPurchaseDetails: boolean = false;
+  showItemDetails: boolean = false;
   
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -340,7 +344,9 @@ export class NewProcurementComponent implements OnInit {
     this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
 
+  setHeight() {
 
+  }
 
 }
 

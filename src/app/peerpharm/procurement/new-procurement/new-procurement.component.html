@@ -1,6 +1,5 @@
 <!--UPDATE-->
-<div *ngIf="purchaseData" style="border-radius: 15px;"
-  class="container bg-white border shadow-lg text-center p-3">
+<div *ngIf="purchaseData" style="border-radius: 15px;" class="container bg-white border shadow-lg text-center p-3">
   <div class="row">
     <div class="col-12">
       <form [formGroup]="newPurchase">
@@ -77,70 +76,31 @@
         </div>
 
         <hr class="text-muted">
-        <div class="row mt-5">
-          <div class="col">
-            <h5 class="text-secondary">Purchase Details</h5>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col form-group">
-            <select [disabled]="disabled" type="text" class="form-control" placeholder="Order Type">
-              <option [value]="purchaseData.orderType">{{purchaseData.orderType}}</option>
-            </select>
-          </div>
-          <div class="col form-group">
-            <input [disabled]="disabled" value="{{purchaseData.creationDate | date: 'dd/MM/yyyy'}}" type="text"
-              class="form-control" placeholder="Order Date">
-          </div>
-        </div>
-
-        <hr class="text-muted">
-        <div class="row mt-3">
-          <div class="col">
-            <h5 class="text-secondary">Supplier Details</h5>
-          </div>
-        </div>
-
-        <div class="row mt-2">
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [disabled]="disabled" [value]="purchaseData.supplierName" name="supplierName"
-              (change)="fillSupplierDetails($event)" list="suppliers" type="text" class="form-control"
-              placeholder="Supplier Name">
-            <datalist id="suppliers">
-              <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierName">{{supplier.suplierNumber}}
-              </option>
-            </datalist>
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [disabled]="disabled" [value]="purchaseData.supplierNumber" type="text" class="form-control"
-              placeholder="Supplier Number">
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [disabled]="disabled" [value]="purchaseData.supplierEmail" type="text" class="form-control"
-              placeholder="Supplier Email">
-          </div>
-
-        </div>
-
-        <hr class="text-muted">
 
         <div class="row mt-2">
           <div class="col">
-            <h6 class="text-primary">Add Item</h6>
+            <h6 (click)="showItemDetails = !showItemDetails" class="text-primary click">Add Item</h6>
           </div>
         </div>
-        <div class="row mt-4">
+        <div *ngIf="showItemDetails" class="row mt-4">
           <div class="col-sm-12 col-md-4 form-group">
+            <label for="">Item</label>
             <input [disabled]="disabled" (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number"
               [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Item Number">
           </div>
           <div class="col-sm-12 col-md-4 form-group">
-            <input [disabled]="disabled" [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text"
-              class="form-control" placeholder="Item Name">
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
+            <label for="">Quantity</label>
             <input [disabled]="disabled" [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}"
               type="number" class="form-control" placeholder="Quantity">
+          </div>
+          <div class="col-sm-12 col-md-4 form-group">
+            <label for="">Price</label>
+            <input [disabled]="disabled" [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}"
+              type="number" class="form-control" placeholder="Price">
+          </div>
+          <div class="col-sm-12 col-md-4 form-group">
+            <input [disabled]="disabled" [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text"
+              class="form-control" placeholder="Item Name">
           </div>
           <div class="col-sm-12 col-md-4 form-group">
             <select [disabled]="disabled" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
@@ -159,22 +119,78 @@
             <input [disabled]="disabled" [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" type="text"
               class="form-control" placeholder="Coin">
           </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [disabled]="disabled" [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}"
-              type="number" class="form-control" placeholder="Price">
-          </div>
 
+          
+          <div class="row mt-1">
+            <div class="col-3"></div>
+            <div class="col-7">
+              <button [disabled]="disabled" (click)="addItemToPurchase()" class="btn btn-primary form-control">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <div class="col-3"></div>
+          </div>
+          
         </div>
 
-        <div class="row mt-1">
-          <div class="col-5"></div>
-          <div class="col-2">
-            <button [disabled]="disabled" (click)="addItemToPurchase()" class="btn btn-primary form-control">
-              <i class="fa fa-plus"></i>
-            </button>
+        <hr class="text-muted">
+
+        <div class="wrapper">
+            <div class="col">
+              <h5 (click)="showPurchaseDetails = !showPurchaseDetails" class="text-secondary click">More Details
+              </h5>
+            </div>
+          <div *ngIf="showPurchaseDetails" class="purchase-details">
+
+            <div class="row">
+              <div class="col form-group">
+                <label for="">Item Type</label>
+                <select [disabled]="disabled" type="text" class="form-control" placeholder="Order Type">
+                  <option [value]="purchaseData.orderType">{{purchaseData.orderType}}</option>
+                </select>
+              </div>
+              <div class="col form-group">
+                <label for="">Order Date</label>
+                <input [disabled]="disabled" value="{{purchaseData.creationDate | date: 'dd/MM/yyyy'}}" type="text"
+                  class="form-control" placeholder="Order Date">
+              </div>
+            </div>
+
+            <hr class="text-muted">
+            <div class="row mt-3">
+              <div class="col">
+                <h5 class="text-secondary">Supplier Details</h5>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-sm-12 col-md-4 form-group">
+                <label for="supplierName">Supplier Name</label>
+                <input [disabled]="disabled" [value]="purchaseData.supplierName" name="supplierName"
+                  (change)="fillSupplierDetails($event)" list="suppliers" type="text" class="form-control"
+                  placeholder="Supplier Name">
+                <datalist id="suppliers">
+                  <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierName">
+                    {{supplier.suplierNumber}}
+                  </option>
+                </datalist>
+              </div>
+              <div class="col-sm-12 col-md-4 form-group">
+                <label for="">Supplier Number</label>
+                <input [disabled]="disabled" [value]="purchaseData.supplierNumber" type="text" class="form-control"
+                  placeholder="Supplier Number">
+              </div>
+              <div class="col-sm-12 col-md-4 form-group">
+                <label for="">Supplier Email</label>
+                <input [disabled]="disabled" [value]="purchaseData.supplierEmail" type="text" class="form-control"
+                  placeholder="Supplier Email">
+              </div>
+            </div>
           </div>
-          <div class="col-5"></div>
         </div>
+
+
+
 
 
         <hr class="text-muted">
@@ -193,8 +209,7 @@
 
 <!----------------------------------------------------------------------------------------------------------------------->
 <!--ADD-->
-<div *ngIf="!purchaseData" style="border-radius: 15px;"
-  class="container bg-white border shadow-lg text-center p-3">
+<div *ngIf="!purchaseData" style="border-radius: 15px;" class="container bg-white border shadow-lg text-center p-3">
   <div class="row">
     <div class="col-12">
       <form [formGroup]="newPurchase">
@@ -375,7 +390,7 @@
     <div class="container bg-white border border-primary shadow-lg text-center p-5">
 
       <form [formGroup]="deliveryCertificateForm" (ngSubmit)="saveCertificate()">
-        <div class="row mt-2"><span class="red">*</span>  שדה חובה  </div>
+        <div class="row mt-2"><span class="red">*</span> שדה חובה </div>
         <div class="row mt-2">
           <div class="col-md-4 form-group">
             <label for="certificateNumber">מספר תעודה<span class="red">*</span></label>
@@ -420,7 +435,7 @@
   </div>
   <div dir="rtl" class="modal-body">
     <h5>קבלת חשבונית</h5>
-     <div class="row mt-2"><span class="red">*</span>  שדה חובה  </div>
+    <div class="row mt-2"><span class="red">*</span> שדה חובה </div>
     <div class="row mt-2">
       <div class="col-md-4 form-group">
         <label for="invoiceNumber">מספר חשבונית<span class="red">*</span></label>
