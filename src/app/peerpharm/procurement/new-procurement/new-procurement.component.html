@@ -32,12 +32,12 @@
             <i (click)="orderDetailsModal.emit(false)" class="fa fa-times text-primary"></i>
           </div>
         </div>
-        <div class="row m-3">
-          <div class="col-6">
+        <div class="row mt-2">
+          <div class="col-4">
             <button (click)="open(certAndInvModal)" class="btn btn-primary rounded-pill form-control">Watch
               Certificates & Invoices</button>
           </div>
-          <div class="col-7">
+          <div class="col-8">
           </div>
         </div>
 
@@ -51,7 +51,7 @@
         </div>
 
         <div class="row mt-3 bg-muted">
-          <div style="background: #d5cff9" class="col-12 shadow rounded">
+          <div style="background: #d5cff9;overflow: auto;max-height: 300px;" class="col-12 shadow rounded">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -145,14 +145,19 @@
             <div class="row">
               <div class="col form-group">
                 <label for="">Item Type</label>
-                <select [disabled]="disabled" type="text" class="form-control" placeholder="Order Type">
+                <select disabled type="text" class="form-control" placeholder="Order Type">
                   <option [value]="purchaseData.orderType">{{purchaseData.orderType}}</option>
                 </select>
               </div>
               <div class="col form-group">
                 <label for="">Order Date</label>
-                <input [disabled]="disabled" value="{{purchaseData.creationDate | date: 'dd/MM/yyyy'}}" type="text"
+                <input disabled value="{{purchaseData.creationDate | date:'yyyy-MM-dd'}}" type="date"
                   class="form-control" placeholder="Order Date">
+              </div>
+              <div class="col form-group">
+                <label for="">Arrival Date</label>
+                <input formControlName="arrivalDate" [disabled]="disabled" value="{{purchaseData.arrivalDate | date:'yyyy-MM-dd'}}"  type="date"
+                  class="form-control" placeholder="Arrival Date">
               </div>
             </div>
 
@@ -166,7 +171,7 @@
             <div class="row mt-2">
               <div class="col-sm-12 col-md-4 form-group">
                 <label for="supplierName">Supplier Name</label>
-                <input [disabled]="disabled" [value]="purchaseData.supplierName" name="supplierName"
+                <input disabled [value]="purchaseData.supplierName" name="supplierName"
                   (change)="fillSupplierDetails($event)" list="suppliers" type="text" class="form-control"
                   placeholder="Supplier Name">
                 <datalist id="suppliers">
@@ -177,12 +182,12 @@
               </div>
               <div class="col-sm-12 col-md-4 form-group">
                 <label for="">Supplier Number</label>
-                <input [disabled]="disabled" [value]="purchaseData.supplierNumber" type="text" class="form-control"
+                <input disabled [value]="purchaseData.supplierNumber" type="text" class="form-control"
                   placeholder="Supplier Number">
               </div>
               <div class="col-sm-12 col-md-4 form-group">
                 <label for="">Supplier Email</label>
-                <input [disabled]="disabled" [value]="purchaseData.supplierEmail" type="text" class="form-control"
+                <input disabled [value]="purchaseData.supplierEmail" type="text" class="form-control"
                   placeholder="Supplier Email">
               </div>
             </div>
@@ -198,7 +203,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc()" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('update')" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -368,7 +373,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc()" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('add')" class="btn btn-primary form-control">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>

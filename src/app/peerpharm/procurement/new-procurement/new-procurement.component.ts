@@ -104,18 +104,17 @@ export class NewProcurementComponent implements OnInit {
       supplierNumber: ["", Validators.required],
       supplierEmail: ['', Validators.required],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: ['', Validators.required],
-      color: ['', Validators.required],
+      arrivalDate: [new Date(), Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: ['', Validators.required],
       userEmail: ['', Validators.required],
       user: ['', Validators.required],
       billNumber: [[], Validators.required],
-      closeReason: ['', Validators.required],
       orderType: ['', Validators.required],
       remarks: ['', Validators.required],
       status: ['', Validators.required],
       deliveryCerts: [[], Validators.required],
+      outOfCountry: ['', Validators.required],
     });
 
     this.deliveryCertificateForm = fb.group({
@@ -129,6 +128,7 @@ export class NewProcurementComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger;
     this.user = this.authService.loggedInUser.userName
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
     this.purchaseData
@@ -254,21 +254,32 @@ export class NewProcurementComponent implements OnInit {
     this.findStockItemByNumber();
   }
 
-  sendNewProc() {
+  sendNewProc(action) {
     debugger
-    if (this.newPurchase.controls.stockitems.value) {
-      if (confirm("האם להקים הזמנה זו ?")) {
-        this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
-          // console.log('data from addNewProcurement: ',data)
-          if (data) {
-            this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
-            this.newPurchase.reset();
-            this.orderDetailsModal.emit(false)
+    if(action == 'add'){
+      if (this.newPurchase.controls.stockitems.value) {
+        if (confirm("האם להקים הזמנה זו ?")) {
+          this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
+            // console.log('data from addNewProcurement: ',data)
+            if (data) {
+              this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
+              this.newPurchase.reset();
+              this.orderDetailsModal.emit(false)
+            }
+          })
+        }
+      } else {
+        this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
+      }
+    } 
+    if(action == 'update'){
+      if(confirm('האם לעדכן הזמנה זו ?')){
+        this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data=>{
+          if(data){
+            this.toastr.success('הזמנה עודכנה בהצלחה !')
           }
         })
       }
-    } else {
-      this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
     }
   }
 
