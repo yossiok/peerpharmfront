@@ -30,21 +30,16 @@
   <div class="row mt-5 fixNoaStupidStuff">
     <div class="col-2 fixNoaStupidStuff">
       <input #filterbyNum type="text" class="form-control rounded-pill" placeholder="Search By Number"
-        (change)="filterRows($event, 'itemNum' )">
+        (change)="searchBy($event, 'number' )">
     </div>
     <div class="col-2 fixNoaStupidStuff">
       <input #filterByCmptName type="text" class="form-control rounded-pill" placeholder="Search By Name"
-        (change)="filterRows($event, 'itemName')">
+        (change)="searchBy($event, 'name')">
     </div>
     <div class="col-2 fixNoaStupidStuff">
-
-      <input #filterBySupplierN type="text" class="form-control rounded-pill" placeholder="Supplier Number"
-        (change)="filterRows($event , 'supplierN')">
-    </div>
-    <div class="col-2 fixNoaStupidStuff">
-      <select #filterByType class="form-control rounded-pill" (change)="filterRows($event , 'type')">
+      <select #filterByType class="form-control rounded-pill" (change)="searchBy($event , 'type')">
         <!-- <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'type')"> -->
-        <option selected="true" disabled="disabled">בחר סוג</option>
+        <option selected="true" disabled="disabled">Choose Type</option>
         <option value='bottle_Glass'>בקבוק זכוכית</option>
         <option value='bottle_Plastic'>בקבוק פלסטיק</option>
         <option value='jar_Glass'>צנצנת זכוכית</option>
@@ -86,18 +81,14 @@
       <input #filterByItem type="text" class="form-control rounded-pill" placeholder="Search By Item"
         (change)="filterRows($event , 'itemNumber')">
     </div>
-
-  </div>
-
-  <div class="row mt-2 fixNoaStupidStuff">
-    <div class="col-5"></div>
-    <div class="col-2">
-      <button (click)="clearSearchFields()" class="btn topBtn btn-secondary form-control" type="reset"><b>נקה שדות
+    <div class="col-2 fixNoaStupidStuff">
+      <button (click)="clearSearchFields()" class="btn-secondary form-control rounded-pill" type="reset"><b>נקה שדות
           חיפוש</b></button>
     </div>
-    <div class="col-5"></div>
 
   </div>
+
+
 
   <div *ngIf="stockType == 'material'" class="row mt-2 fixNoaStupidStuff">
     <div class="col-4"></div>
@@ -152,26 +143,7 @@
     <button class="btn topBtn btn-primary" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>&nbsp;&nbsp;
   
   </div> -->
-
-  <div *ngIf="showLoader" class="row text-center mx-auto my-auto mt-4 mb-4 fixNoaStupidStuff">
-    <div class="col-4 fixNoaStupidStuff"></div>
-    <div class="col-4 fixNoaStupidStuff">
-      <h2 class="peerLoader">
-        <span>P</span>
-        <span>E</span>
-        <span>E</span>
-        <span>R</span>
-        <span>P</span>
-        <span>H</span>
-        <span>A</span>
-        <span>R</span>
-        <span>M</span>
-      </h2>
-    </div>
-    <div class="col-4 fixNoaStupidStuff"></div>
-  </div>
-
-
+ 
 
   <div style="width:100%;">
 
@@ -264,7 +236,7 @@
     <!-- ------------------------------------------------------ -->
 
 
-    <div class="tableContainer" style="width: 100% ; padding:0px; " *ngIf="components.length != 0 ">
+    <div class="tableContainer" style="width: 100% ; padding:0px; ">
 
       <!-- <input #filterbyNum type="text" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)"> -->
       <br>
@@ -279,11 +251,6 @@
         style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Cartons</div>
       <div (click)='setType("sticker")' [ngStyle]="{'background-color': buttonColor5}" class="navtab"
         style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Stickers</div> -->
-      <div style="padding-left: 10px;"><b> <span class="text-danger">Showing {{components.length}} Inventory
-            Items</span> </b>
-        <div *ngIf="smallLoader" class="smallLoader"></div>
-
-      </div>
 
       <div class="export" style="cursor:pointer;">
         <img *ngIf="loadingExcel" style="width:50px"
@@ -300,6 +267,7 @@
 
       <!-- TABLE START -->
       <div *ngIf="stockType=='component'" class="tableFixHead">
+        <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
         <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
           <thead class="text-white bg-info">
             <tr style="text-align: center;">
@@ -425,6 +393,7 @@
 
 
       <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
+        <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
         <thead class='text-white bg-success'>
           <tr>
 
@@ -494,6 +463,7 @@
 
 
     <table class='table stockTable table-fixed' *ngIf="stockType=='material'">
+      <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
       <thead class='bg-warning text-white'>
         <tr style="text-align: center">
 

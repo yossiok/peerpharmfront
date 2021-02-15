@@ -372,6 +372,7 @@
     <div class="container bg-white border border-primary shadow-lg text-center p-5">
       
       <form [formGroup]="deliveryCertificateForm" (ngSubmit)="saveCertificate()">
+        <div class="row mt-2">* שדה חובה</div>
         <div class="row mt-2">
           <div class="col-md-4 form-group">
             <label for="certificateNumber">מספר תעודה<span class="red">*</span></label>
@@ -395,7 +396,6 @@
             <input formControlName="remarks" type="text" class="form-control" placeholder="הערות">
           </div>
           <br>
-          <div class="row mt-2">* שדה חובה</div>
           
           <button type="submit" [disabled]="!deliveryCertificateForm.valid" class="btn btn-primary form-control">
             שלח את עמי

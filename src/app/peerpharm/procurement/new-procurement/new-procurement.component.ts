@@ -356,9 +356,6 @@ export class NewProcurementComponent implements OnInit {
 
   saveCertificate() {
     this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificateForm)
-    console.log('purchase: ',this.newPurchase)
-    console.log('certificate: ',this.deliveryCertificateForm)
-    // this.deliveryCertificateForm.disable()
   }
 
   open(modal) {

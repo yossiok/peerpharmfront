@@ -37,8 +37,8 @@ export class StockComponent implements OnInit {
   itemmoveBtnTitle: string = "Item Movements";
   loadingMovements: boolean = false;
   showItemDetails: boolean = true;
-  showLoader: boolean = true;
-  smallLoader: boolean = true;
+  showLoader: boolean = false;
+  smallLoader: boolean = false;
   openOrderRecommendModal: boolean = false;
   customersModal: boolean = false;
   showDeleteBtn: boolean = false;
@@ -872,7 +872,7 @@ export class StockComponent implements OnInit {
 
   getAllComponents() {
 
-      this.startDownloadingInventory();
+      // this.startDownloadingInventory();
   
   }
 
@@ -917,7 +917,7 @@ export class StockComponent implements OnInit {
       self.inventoryService.getComponentsAmounts().subscribe(res => {
         self.componentsAmount = res;
         // console.log(res);
-        self.componentsUnFiltered.forEach(cmpt => {
+        self.components.forEach(cmpt => {
           //  adding amounts to all components
           let result = self.componentsAmount.find(elem => elem._id == cmpt.componentN)
           if (result != undefined) {
@@ -926,9 +926,6 @@ export class StockComponent implements OnInit {
           if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
 
         });
-
-        self.components = self.componentsUnFiltered.filter(x => x.itemType == this.stockType);
-
         self.setType(this.stockType);
         self.getAllCmptTypesAndCategories();
 
@@ -1332,6 +1329,47 @@ export class StockComponent implements OnInit {
 
 
 
+  }
+
+  searchBy(ev,type){
+
+  debugger;
+
+  let value;
+  if(ev.target.value != '') value = ev.target.value;
+  this.smallLoader = true;
+    switch (type) {
+      case 'number':
+        this.inventoryService.getStockItemByNumber(value).subscribe(stockitem=>{
+        if(stockitem){
+          this.smallLoader = false
+          this.components = stockitem
+          this.getAmountsFromShelfs();
+        }
+        })
+        break;
+      case 'name':
+        this.inventoryService.getStockItemByName(value).subscribe(stockitem=>{
+        if(stockitem){
+          this.smallLoader = false
+          this.components = stockitem
+          this.getAmountsFromShelfs();
+        }
+        })
+        break;
+      case 'type':
+        this.inventoryService.getStockItemByType(value).subscribe(stockitem=>{
+        if(stockitem){
+          this.smallLoader = false
+          this.components = stockitem
+          this.getAmountsFromShelfs();
+        }
+        })
+        break;
+    
+      default:
+        break;
+    }
   }
 
 
