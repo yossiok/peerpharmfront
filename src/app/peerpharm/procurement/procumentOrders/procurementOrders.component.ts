@@ -57,7 +57,7 @@ export class ProcurementOrdersComponent implements OnInit {
   allSuppliers: any[];
   billToPrint: any[];
   currentSupplier: any;
-  purchaseData: PurchaseData[];
+  purchaseData: PurchaseData;
   arrivalData: any[];
   EditRowId: any = "";
   EditRowIndex: any = "";
@@ -699,23 +699,23 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
 
-  addNewItem() {
-    debugger;
-    this.newItem.orderNumber = this.purchaseData[0].orderNumber;
-    this.newItem.itemPrice = Number(this.newItem.supplierAmount) * Number(this.newItem.supplierPrice);
-    var itemObject = { ...this.newItem }
-    this.procurementservice.addItemToProcurement(itemObject).subscribe(data => {
-      debugger;
-      if (data) {
-        this.purchaseData[0].stockitems.push(itemObject);
-        this.toastr.success("פריט נוסף בהצלחה !")
-        this.clearNewItem();
+  // addNewItem() {
+  //   debugger;
+  //   this.newItem.orderNumber = this.purchaseData[0].orderNumber;
+  //   this.newItem.itemPrice = Number(this.newItem.supplierAmount) * Number(this.newItem.supplierPrice);
+  //   var itemObject = { ...this.newItem }
+  //   this.procurementservice.addItemToProcurement(itemObject).subscribe(data => {
+  //     debugger;
+  //     if (data) {
+  //       this.purchaseData[0].stockitems.push(itemObject);
+  //       this.toastr.success("פריט נוסף בהצלחה !")
+  //       this.clearNewItem();
 
-      }
-    })
+  //     }
+  //   })
 
 
-  }
+  // }
 
   searchByItem(ev) {
     debugger;
@@ -862,9 +862,10 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   viewOrderDetails(index) {
+    this.purchaseData = <PurchaseData>this.procurementData[index]
+    if(!this.purchaseData.outOfCountry) this.purchaseData.outOfCountry = false;
     this.isEdit = true;
     this.orderDetailsModal = true;
-    this.purchaseData = this.procurementData[index]
   }
 
   editArrivalDetails(index) {

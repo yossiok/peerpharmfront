@@ -18,4 +18,5 @@ export interface PurchaseData {
     remarks: string;
     status: string;
     deliveryCerts: DeliveryCertificate[];
+    outOfCountry: boolean;
 }
