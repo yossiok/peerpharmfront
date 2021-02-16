@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -17,7 +17,7 @@ import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
   templateUrl: './new-procurement.component.html',
   styleUrls: ['./new-procurement.component.scss']
 })
-export class NewProcurementComponent implements OnInit {
+export class NewProcurementComponent implements OnInit, OnChanges {
 
   @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
   @Input() purchaseData: any;
@@ -114,7 +114,7 @@ export class NewProcurementComponent implements OnInit {
       remarks: ['', Validators.required],
       status: ['', Validators.required],
       deliveryCerts: [[], Validators.required],
-      outOfCountry: ['', Validators.required],
+      outOfCountry: [false, Validators.required],
     });
 
     this.deliveryCertificateForm = fb.group({
@@ -129,6 +129,7 @@ export class NewProcurementComponent implements OnInit {
 
   ngOnInit() {
     debugger;
+    console.log('purchase data: ',this.purchaseData)
     this.user = this.authService.loggedInUser.userName
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
     this.purchaseData
@@ -152,6 +153,12 @@ export class NewProcurementComponent implements OnInit {
         this.userEmail = this.authService.loggedInUser.userEmail;
       })
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log('new purchase on change: ',this.newPurchase.value)
+    // console.log('changes: ',changes)
+    this.newPurchase.setValue(changes.purchaseData.currentValue)
   }
 
   updateItemInPL() {

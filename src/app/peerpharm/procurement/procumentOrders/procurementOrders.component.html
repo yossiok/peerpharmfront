@@ -132,24 +132,24 @@
                   </thead>
                   <tbody id="table_body">
                     <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"
-                      *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
+                      *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color"
+                      >
                       <td>{{i+1}}</td>
-                      <td style="cursor: pointer;" (click)="viewOrderDetails(i)"><span
+                      <td class="click"  (click)="viewOrderDetails(i)" style="cursor: pointer;" ><span
                           style="color:blue;">{{line.orderNumber}}</span>
                       </td>
                       <td>{{ line.supplierName }}</td>
                       <td>{{ line.supplierNumber }}</td>
                       <td>{{ line.creationDate | date: 'dd/MM/yyyy' }}</td>
-                      <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">
+                      <td *ngIf="EditRowId != line.orderNumber">
                         {{ line.arrivalDate | date: 'dd/MM/yyyy' }}</td>
                       <td *ngIf="EditRowId == line.orderNumber">
                         <input (change)="updateArrivalDate($event,line.orderNumber)" type="date" class="form-control">
                       </td>
-                      <td (click)="editRemarks(line.orderNumber)" *ngIf="EditRowId != line.orderNumber">{{line.remarks}}
+                      <td *ngIf="EditRowId != line.orderNumber">{{line.remarks}}
                       </td>
                       <td *ngIf="EditRowId == line.orderNumber">
                         <textarea [value]="line.remarks" #purchaseRemarks></textarea>
-                        <button (click)="saveOrderRemarks(line)" class="btn btn-primary"><i class="fa fa-save"></i></button>
                       </td>
                       <!-- <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
                     <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td> -->

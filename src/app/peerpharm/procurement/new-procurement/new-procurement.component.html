@@ -63,7 +63,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let stockitem of this.newPurchase.controls.stockitems.value">
+                <tr *ngFor="let stockitem of newPurchase.controls.stockitems.value">
                   <td>{{stockitem.number}}</td>
                   <td>{{stockitem.name}}</td>
                   <td>{{stockitem.measurement}}</td>
@@ -79,7 +79,9 @@
 
         <div class="row mt-2">
           <div class="col">
-            <h6 (click)="showItemDetails = !showItemDetails" class="text-primary click">Add Item</h6>
+            <button (click)="showItemDetails = !showItemDetails" class="btn btn-primary dropdown-toggle" >
+              Add Item
+            </button>
           </div>
         </div>
         <div *ngIf="showItemDetails" class="row mt-4">
@@ -137,10 +139,13 @@
 
         <div class="wrapper">
             <div class="col">
-              <h5 (click)="showPurchaseDetails = !showPurchaseDetails" class="text-secondary click">More Details
+              <button (click)="showPurchaseDetails = !showPurchaseDetails" class="btn btn-primary dropdown-toggle" >
+                More Details
+              </button>
+              <h5  class="text-secondary click">
               </h5>
             </div>
-          <div *ngIf="showPurchaseDetails" class="purchase-details">
+          <div *ngIf="showPurchaseDetails"  class="purchase-details">
 
             <div class="row">
               <div class="col form-group">
@@ -203,7 +208,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('update')" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('update'); orderDetailsModal.emit(false)" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -373,7 +378,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add')" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('add'); orderDetailsModal.emit(false)" class="btn btn-primary form-control">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>
