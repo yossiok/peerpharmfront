@@ -717,6 +717,26 @@ export class ProcurementOrdersComponent implements OnInit {
 
   // }
 
+  searchByReference(ev){
+    debugger;
+    let referenceNum = ev.target.value;
+    let tempArr = []
+    if(referenceNum != ''){
+      this.procurementData.forEach(purchase => {
+        purchase.deliveryCerts.forEach(cert => {
+          if(cert.certificateNumber == referenceNum){
+            tempArr.push(purchase)
+          }
+        });
+      });
+
+      this.procurementData = tempArr
+    } else {
+      this.procurementData = this.procurementDataNoFilter
+    }
+
+  }
+
   searchByItem(ev) {
     debugger;
     var itemNumber = ev.target.value;
@@ -724,8 +744,8 @@ export class ProcurementOrdersComponent implements OnInit {
     this.procurementData = this.procurementDataNoFilter
     if (itemNumber != "") {
       for (let i = 0; i < this.procurementData.length; i++) {
-        for (let j = 0; j < this.procurementData[i].item.length; j++) {
-          if (this.procurementData[i].item[j].itemNumber == itemNumber) {
+        for (let j = 0; j < this.procurementData[i].stockitems.length; j++) {
+          if (this.procurementData[i].stockitems[j].number == itemNumber) {
             tempArr.push(this.procurementData[i])
           }
 
