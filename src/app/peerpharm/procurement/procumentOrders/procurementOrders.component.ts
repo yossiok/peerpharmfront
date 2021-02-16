@@ -608,8 +608,8 @@ export class ProcurementOrdersComponent implements OnInit {
 
     for (let i = 0; i < this.currentItems.length; i++) {
 
-      if (this.currentItems[i].itemPrice == 0) this.currentItems[i].itemPrice = Number(this.currentItems[i].supplierAmount) * Number(this.currentItems[i].supplierPrice)
-      total = total + Number(this.currentItems[i].supplierAmount)
+      if (this.currentItems[i].itemPrice == 0 || isNaN(this.currentItems[i].itemPrice) ) this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
+      total = total + Number(this.currentItems[i].quantity)
 
       totalP = totalP + Number(this.currentItems[i].itemPrice)
 
@@ -648,7 +648,7 @@ export class ProcurementOrdersComponent implements OnInit {
       this.currCoin = '$'
     }
 
-    this.orderDate = line.outDate.slice(0, 10)
+    this.orderDate = line.creationDate.slice(0, 10)
     this.printBill = true;
 
   }

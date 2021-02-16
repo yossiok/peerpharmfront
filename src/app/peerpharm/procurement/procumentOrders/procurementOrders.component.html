@@ -396,10 +396,10 @@
               <td *ngIf="showImage == true"><img style="width:50px;" alt="Item Image" [src]="item.img"></td>
               <td>{{item.itemNumber}}</td>
               <td>{{item.componentNs}}</td>
-              <td>{{item.itemName}}</td>
+              <td>{{item.name}}</td>
               <td>{{item.itemRemarks}}</td>
-              <td>{{item.supplierAmount | number}}</td>
-              <td>{{item.supplierPrice}}
+              <td>{{item.quantity | number}}</td>
+              <td>{{item.price}}
                 <span *ngIf="item.coin == 'nis'">&#8362;</span>
                 <span *ngIf="item.coin == 'euro'">&#8364;</span>
                 <span *ngIf="item.coin == 'eur'">&#8364;</span>
@@ -414,6 +414,7 @@
               <td></td>
               <td></td>
               <td></td>
+              <td></td>
               <td><b>{{totalAmount}}</b></td>
               <td></td>
               <td><b>{{totalPrice}}{{currCoin}}</b></td>
@@ -421,6 +422,7 @@
             <tr *ngIf="country == false">
               <td></td>
               <td *ngIf="showImage == true"></td>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>
@@ -432,6 +434,7 @@
             <tr *ngIf="country == false">
               <td></td>
               <td *ngIf="showImage == true"></td>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>
