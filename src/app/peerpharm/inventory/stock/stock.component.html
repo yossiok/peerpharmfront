@@ -143,7 +143,7 @@
   
   </div> -->
  
-
+  <div style="margin-right:auto !important" *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff mx-auto my-auto"></div>
   <div style="width:100%;">
 
     <!-- <div style="width:100%; padding: 0px">
@@ -266,7 +266,7 @@
 
       <!-- TABLE START -->
       <div *ngIf="stockType=='component'" class="tableFixHead">
-        <table class='table stockTable table-fixed' *ngIf="stockType=='component'">
+        <table class='table stockTable table-fixed text-center' *ngIf="stockType=='component'">
           <thead class="text-white bg-info">
             <tr style="text-align: center;">
 
@@ -286,10 +286,9 @@
             </tr>
 
           </thead>
-  
-          <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
 
           <tbody id="table_body" class="componentTable">
+          
             <tr *ngFor="let component of components; let i = index">
               <td style="width:3%;">{{i+1}}</td>
               <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}
@@ -383,8 +382,9 @@
               </td>
             </tr>
           </tbody>
+         
         </table>
-
+        
       </div>
 
       <app-expected-arrivals *ngIf="openProcurementModal" [componentData]='resCmpt'
@@ -412,7 +412,7 @@
 
         </thead>
 
-        <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
+       
 
         <tbody id="table_body" class="productTable">
           <tr *ngFor="let component of components; let i = index">
@@ -454,8 +454,9 @@
             </td> -->
           </tr>
         </tbody>
-      </table>
 
+      </table>
+     
     </div>
 
     <!-- TABLE END -->
@@ -468,7 +469,6 @@
           <th style="width:5%;"></th>
           <th style="width:10%;"><b>מספר פריט</b></th>
           <th style="width:15%;"><b>שם פריט</b></th>
-          <th style="width:9%;"><b>רמת סיכון</b></th>
           <th style="width:9%;"><b>כמות מוקצת</b></th>
           <th style="width:9%;"><b>כמות</b></th>
           <th></th>
@@ -477,7 +477,7 @@
         </tr>
 
       </thead>
-      <div *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff"></div>
+     
       <tbody id="table_body" class="materialsTable">
         <tr *ngFor="let material of components ; let i = index">
 
@@ -486,13 +486,10 @@
             <div style="float:none;">{{material.componentN}}</div>
           </td>
 
-          <td style="width:15%">
+          <td [ngClass]="dangerColor(material.threatment)" style="width:15%">
             <div style="float:none;">{{material.componentName}}</div>
           </td>
 
-          <td [ngClass]="dangerColor(material.threatment)" style="width:9%">
-            <div style="width:9%;;float:none;text-align: center;">{{material.threatment}}</div>
-          </td>
           <td style="border-right: 2px solid black;"></td>
           <td style="width:5%;cursor: pointer;" (click)="getCmptAmounts(material.componentN, material._id)">
 
@@ -514,7 +511,7 @@
         </tr>
       </tbody>
     </table>
-
+  
     <!-- <ng-template #supplierList let-modal>
       <div style="width:140% !important;" class="modal-content">
         <div class="modal-header">
@@ -1715,7 +1712,9 @@
       </div>
    
     </div> -->
+    
   </div>
+ 
 
   <div class="container bg-light rounded shadow fixed-top mx-auto my-auto border border-success"
     *ngIf="openModal == true && stockType=='material'">
@@ -2762,13 +2761,13 @@
   </div>
 
 
-  <div style="margin-right:auto !important" *ngIf="openOrderRecommendModal==true"
+  <div style="margin-right:auto !important;border-radius: 15px !important;" *ngIf="openOrderRecommendModal==true"
     class="container border border-info fixNoaStupidStuff bg-white shadow-lg rounded mx-auto my-auto text-center fixed-top p-4">
     <div class="row mt-2 fixNoaStupidStuff">
       <div class="col-1 fixNoaStupidStuff"></div>
       <div class="col-3 fixNoaStupidStuff"></div>
       <div class="col-4 fixNoaStupidStuff">
-        <h2 class="text-info">המלצת רכש חדשה - {{currItem.componentN}}</h2>
+        <h2 class="text-info">בקשת רכש חדשה - {{currItem.componentN}}</h2>
       </div>
       <div class="col-3 fixNoaStupidStuff"></div>
       <div class="col-1 fixNoaStupidStuff">
@@ -2789,9 +2788,42 @@
           </thead>
           <tbody>
             <tr>
-              <td><input class="form-control" [(ngModel)]="recommandPurchase.remarks" type="text"></td>
-              <td><input class="form-control" [(ngModel)]="recommandPurchase.date" type="date"></td>
-              <td><input class="form-control" [(ngModel)]="recommandPurchase.amount" type="number"></td>
+              <td><input class="form-control rounded-pill" [(ngModel)]="recommandPurchase.remarks" type="text"></td>
+              <td><input class="form-control rounded-pill" [(ngModel)]="recommandPurchase.date" type="date"></td>
+              <td><input class="form-control rounded-pill" [(ngModel)]="recommandPurchase.amount" type="number"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="stockItemPurchases.length > 0" class="row mt-1 fixNoaStupidStuff">
+      <div class="col-4 fixNoaStupidStuff"></div>
+      <div class="col-4 fixNoaStupidStuff">
+        <h3 class="text-danger">שים לב פריט זה קיים בהזמנות הבאות</h3>
+      </div>
+      <div class="col-4 fixNoaStupidStuff"></div>
+    </div>
+
+    <div *ngIf="stockItemPurchases.length > 0" class="row mt-1 fixNoaStupidStuff">
+      <div class="col-12 fixNoaStupidStuff">
+        <table class="table table-striped">
+           <thead>
+             <tr>
+               <th>Order</th>
+               <th>Date</th>
+               <th>Amount</th>
+               <th>Price</th>
+               <th>Status</th>
+             </tr>
+           </thead>
+          <tbody>
+            <tr *ngFor="let purchase of stockItemPurchases">
+              <td>{{purchase.orderNumber}}</td>
+              <td>{{purchase.orderDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{purchase.amount}}</td>
+              <td>{{purchase.price}}</td>
+              <td>{{purchase.status}}</td>
             </tr>
           </tbody>
         </table>
@@ -2801,7 +2833,7 @@
     <div class="row mt-1 fixNoaStupidStuff">
       <div class="col-5 fixNoaStupidStuff"></div>
       <div class="col-2 fixNoaStupidStuff">
-        <button (click)="sendRecommandation()" class="btn-success form-control">שלח</button>
+        <button (click)="sendRecommandation()" class="btn-success rounded-pill form-control">שלח</button>
       </div>
       <div class="col-5 fixNoaStupidStuff"></div>
     </div>

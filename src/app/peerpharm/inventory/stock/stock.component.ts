@@ -47,6 +47,7 @@ export class StockComponent implements OnInit {
   invRequestsModal: boolean = false;
   itemMovements: any = [];
   materialPurchases: any[]
+  stockItemPurchases: any[]
   allCustomers: any[]
   componentSuppliers: any[]
   itemShell: any[];
@@ -793,7 +794,12 @@ export class StockComponent implements OnInit {
   }
 
   purchaseRecommend(component) {
+    debugger;
     this.currItem = component;
+
+    this.procuretServ.getPurchaseOrderByItem(component.componentN).subscribe(data=>{
+    this.stockItemPurchases = data;
+    })
     this.componentSuppliers = component.alternativeSuppliers
     this.recommandPurchase.componentName = this.currItem.componentName
     if (component.itemType == 'material') {
@@ -974,9 +980,6 @@ export class StockComponent implements OnInit {
     else if (threatment == 'base'){
       return 'base'
     }
-  
-
-
   }
 
   createNewQAPallet(){

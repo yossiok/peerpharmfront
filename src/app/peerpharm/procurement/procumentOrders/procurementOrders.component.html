@@ -506,13 +506,13 @@
 </div>
 
 <div *ngIf="purchaseRecommendationsModal == true"
-  style="z-index: 9999;top:50px !important;height: auto;border:2px 2px 2px blue;width: 50%;right:0px !important"
-  class="fixNoaStupidStuff border border-primary bg-white shadow-lg container fixed-top mx-auto my-auto text-center p-1">
+  style="z-index: 9999;top:50px !important;height: auto"
+  class="border border-primary bg-white shadow-lg rounded container-fluid fixed-top mx-auto my-auto text-center p-1">
 
   <div class="row mt-2">
     <div class="col-1"></div>
     <div class="col-10">
-      <h2>המלצות רכש</h2>
+      <h1 class="text-success">בקשות רכש</h1>
     </div>
     <div class="col-1">
       <i (click)="purchaseRecommendationsModal = false" class="fa fa-times"></i>
@@ -521,7 +521,7 @@
 
 <div class="row mt-1">
   <div class="col-3">
-  <select (change)="filterRecByType($event)" class="form-control">
+  <select (change)="filterRecByType($event)" class="form-control rounded-pill">
     <option selected="true" disabled="disabled">Choose Type</option>   
     <option value="all">All</option> 
     <option value="components">Components</option> 
@@ -529,7 +529,7 @@
   </select>
   </div>
   <div class="col-3">
-  <input (change)="filterRecByNumber($event)" type="text" class="form-control" placeholder="Search By Number">
+  <input (change)="filterRecByNumber($event)" type="text" class="form-control rounded-pill" placeholder="Search By Number">
   </div>
   <div class="col-3">
 
@@ -545,6 +545,7 @@
         <thead class="bg-warning text-white">
           <tr>
             <!-- <th></th> -->
+            <th>#</th>
             <th>Type</th>
             <th>Number</th>
             <th>Name</th>
@@ -557,8 +558,9 @@
           </tr>
         </thead>
         <tbody *ngFor="let recommend of purchaseRecommendations">
-            <tr>
+            <tr [ngClass]="dangerColor(recommend.threatment)">
               <!-- <td><input type="checkbox" (change)="isSelected($event,recommend._id)"></td> -->
+              <td>{{recommend.recommendNumber}}</td>
               <td>{{recommend.type}}</td>
               <td>{{recommend.componentNumber}}</td>
               <td>{{recommend.componentName}}</td>
@@ -566,8 +568,8 @@
               <td>{{recommend.date | date: 'dd/MM/yyyy'}}</td>
               <td>{{recommend.remarks}}</td>
               <td>{{recommend.user}}</td>
-              <td><button (click)="moveToNewPurchase(recommend._id,'single')" class="btn btn-success form-control">Order</button></td>
-              <td><button (click)="setRecommendAsDone(recommend._id)" class="btn btn-warning form-control">Done</button></td>
+              <td><button (click)="moveToNewPurchase(recommend._id,'single')" class="btn btn-success form-control rounded-pill">Order</button></td>
+              <td><button (click)="setRecommendAsDone(recommend._id)" class="btn btn-warning form-control rounded-pill">Done</button></td>
             </tr>
         </tbody>
       </table>

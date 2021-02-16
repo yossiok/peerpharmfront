@@ -114,7 +114,7 @@ export class NewProcurementComponent implements OnInit {
       remarks: ['', Validators.required],
       status: ['', Validators.required],
       deliveryCerts: [[], Validators.required],
-      outOfCountry: ['', Validators.required],
+      outOfCountry: [false, Validators.required],
     });
 
     this.deliveryCertificateForm = fb.group({

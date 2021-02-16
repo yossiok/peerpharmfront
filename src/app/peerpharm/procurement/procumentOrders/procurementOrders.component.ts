@@ -290,6 +290,25 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
+  dangerColor(threatment) {
+    console.log("threatment:"+threatment);
+    if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
+      return "flame";
+    }
+    else if (threatment == 'acid') {
+      return "acid";
+    }
+    else if (threatment == ' oxidizer') {
+      return 'oxidizer'
+    }
+    else if (threatment == 'toxic') {
+      return "toxic"
+    } 
+    else if (threatment == 'base'){
+      return 'base'
+    }
+  }
+
   editRemarks(orderNumber) {
     debugger;
     if (orderNumber != '') {

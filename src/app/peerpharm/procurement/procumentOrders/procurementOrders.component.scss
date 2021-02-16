@@ -28,6 +28,23 @@ input:focus::-webkit-input-placeholder {
   
   
 }
+
+.flame{
+  background-color: rgb(252, 76, 76);
+}
+.toxic{
+  background-color: rgb(29, 212, 59);
+}
+.oxidizer{
+  background-color: rgb(255, 225, 56);
+}
+.acid{
+  background-color: rgb(71, 71, 252);
+}
+.base{
+  background-color: rgb(247, 180, 35);
+}
+
 select:focus,input:focus {
 
   border-color: #7460ee;
@@ -39,8 +56,8 @@ select:focus,input:focus {
   border: 5px solid #f3f3f3;
   border-radius: 50%;
   border-top: 5px solid #7460ee;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
