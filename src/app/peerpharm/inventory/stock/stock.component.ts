@@ -210,12 +210,8 @@ export class StockComponent implements OnInit {
   allPurchases: any[];
   totalComponentsValue: number = 0;
 
-  @ViewChild('filterByType') filterByType: ElementRef;//this.filterByType.nativeElement.value
-  @ViewChild('filterByCategory') filterByCategory: ElementRef;//this.filterByCategory.nativeElement.value
-  @ViewChild('filterBySupplierN') filterBySupplierN: ElementRef; //this.filterBySupplierN.nativeElement.value
   @ViewChild('filterByItem') filterByItem: ElementRef; //this.filterBySupplierN.nativeElement.value
-  @ViewChild('filterByCmptName') filterByCmptName: ElementRef; //this.filterByCmptName.nativeElement.value
-  @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
+  // @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
   @ViewChild('filterBySupplier') filterBySupplier: ElementRef; //this.filterbyNum.nativeElement.value
 
   @ViewChild('suppliedAlloc') suppliedAlloc: ElementRef;
@@ -359,9 +355,9 @@ export class StockComponent implements OnInit {
   filterParams: FormGroup = new FormGroup({
     componentN: new FormControl(''),
     componentName: new FormControl(''),
-    stockItemType: new FormControl(''),
-    stockItemCategory: new FormControl(''),
-    productName: new FormControl('')
+    componentType: new FormControl(''),
+    componentCategory: new FormControl(''),
+    // productName: new FormControl('')
   })
 
 
@@ -479,7 +475,7 @@ export class StockComponent implements OnInit {
     this.getUser();
     this.getAllSuppliers();
     this.getAllCustomers();
-    if (this.filterbyNum) this.filterbyNum.nativeElement.value = '';
+    // if (this.filterbyNum) this.filterbyNum.nativeElement.value = '';
 
     let url = this.route.snapshot;
     this.components = [];
@@ -1298,7 +1294,7 @@ export class StockComponent implements OnInit {
 
     }
     if (this.stockType != type) {
-      this.filterbyNum.nativeElement.value = "";
+      // this.filterbyNum.nativeElement.value = "";
     }
     this.stockType = type;
     if (this.stockType == 'cartons') {
@@ -1314,17 +1310,19 @@ export class StockComponent implements OnInit {
   }
 
   filterComponents() {
-    console.log('filter parameters: ',this.filterParams)
-    // this.smallLoader = true;
-    // this.inventoryService.getFilteredComponents(this.filterParams.value).subscribe(filteredComponents => {
-    //   this.components = filteredComponents.filter(s => s.itemType == this.stockType)
-    // })
-    // this.smallLoader = false
-    // if (this.components.length > 0) {
-    //   this.getAmountsFromShelfs();
-    // } else {
-    //   this.toastSrv.error('Item does not exist')
-    // }
+    // console.log('filter parameters: ',this.filterParams)
+   console.log(this.filterParams.value)
+    this.smallLoader = true;
+    this.inventoryService.getFilteredComponents(this.filterParams.value).subscribe(filteredComponents => {
+      // console.log(filteredComponents)
+      this.components = filteredComponents.filter(s => s.itemType == this.stockType)
+      this.smallLoader = false
+      if (this.components.length > 0) {
+        this.getAmountsFromShelfs();
+      } else {
+        this.toastSrv.error('Item does not exist')
+      }
+    })
 
   }
 
@@ -1625,7 +1623,7 @@ export class StockComponent implements OnInit {
 
           // this.getAllComponents();
           this.resetResCmptData();
-          this.filterbyNum.nativeElement.value = '';
+          // this.filterbyNum.nativeElement.value = '';
 
 
         }
@@ -1677,14 +1675,12 @@ export class StockComponent implements OnInit {
   }
 
   clearSearchFields() {
-
-    this.filterbyNum.nativeElement.value = ''
-    this.filterByCategory.nativeElement.value = ''
-    this.filterByCmptName.nativeElement.value = ''
-    this.filterByType.nativeElement.value = ''
-    this.filterBySupplierN.nativeElement.value = ''
-    this.filterByItem.nativeElement.value = ''
-
+    this.filterParams.setValue({
+      componentN: '',
+      componentName: '',
+      componentType: '',
+      componentCategory: ''
+    })
   }
 
   clearFields() {
@@ -2381,7 +2377,7 @@ export class StockComponent implements OnInit {
 
 
 
-  
+
   // filterRows(event, filterType) {
   //   debugger;
   //   this.emptyFilterArr = true;
