@@ -314,14 +314,14 @@ export const ROUTES: RouteInfo[] = [
       //   extralink: false,
       //   submenu: []
       // },
-      {
-        path: '/peerpharm/procurement/newProcurement',
-        title: 'New Purchase',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/procurement/newProcurement',
+      //   title: 'New Purchase',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
 
     ]
   },

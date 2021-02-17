@@ -558,6 +558,7 @@
             <th>User</th>
             <th></th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody *ngFor="let recommend of purchaseRecommendations">
@@ -573,6 +574,7 @@
               <td>{{recommend.user}}</td>
               <td><button (click)="moveToNewPurchase(recommend._id,'single')" class="btn btn-success form-control rounded-pill">Order</button></td>
               <td><button (click)="setRecommendAsDone(recommend._id)" class="btn btn-warning form-control rounded-pill">Done</button></td>
+              <td><button (click)="printRecommend(recommend)" class="btn btn-primary form-control rounded-pill">Print</button></td>
             </tr>
         </tbody>
       </table>

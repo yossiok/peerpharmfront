@@ -190,8 +190,8 @@ export class ProcurementOrdersComponent implements OnInit {
 
   moveToNewPurchase(id, type) {
     if (type == 'single') {
-      window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id=' + id)
-      // window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
+      // window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id=' + id)
+      window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
     } else {
       window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?multi=' + this.selectedArr)
     }

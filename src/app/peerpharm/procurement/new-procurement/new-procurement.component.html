@@ -25,7 +25,7 @@
           </div>
           <div class="col-5"></div>
           <div class="col-2">
-            <button (click)="disabled = false" class="btn btn-warning rounded-pill form-control">Update
+            <button (click)="disabled = false" class="btn btn-warning rounded-pill form-control">Edit
               Purchase</button>
           </div>
           <div class="col-1">
@@ -37,8 +37,16 @@
             <button (click)="open(certAndInvModal)" class="btn btn-primary rounded-pill form-control">Watch
               Certificates & Invoices</button>
           </div>
-          <div class="col-8">
+          <div class="col-5"></div>
+          <div class="col-2">
+            <select [disabled]="disabled" (change)="setPurchaseStatus($event)" class="form-control rounded-pill">
+              <option selected="true" disabled="disabled">Choose Status</option>
+              <option value="sentToSupplier">נשלח לספק</option>
+              <option value="supplierGotOrder">לקוח קיבל הזמנה</option>
+              <option value="closed">סגירת הזמנה</option>
+            </select>
           </div>
+          <div class="col-1"></div>
         </div>
 
 
@@ -60,6 +68,7 @@
                   <th>Measurement</th>
                   <th>Quantity</th>
                   <th>Price</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -69,6 +78,7 @@
                   <td>{{stockitem.measurement}}</td>
                   <td>{{stockitem.quantity}}</td>
                   <td>{{stockitem.price}}</td>
+                  <td><i *ngIf="disabled == false" (click)="removeStockitemFromPurchase(stockitem)" class="fa fa-times text-danger"></i></td>
                 </tr>
               </tbody>
             </table>
@@ -126,7 +136,7 @@
           <div class="row mt-1">
             <div class="col-3"></div>
             <div class="col-7">
-              <button [disabled]="disabled" (click)="addItemToPurchase()" class="btn btn-primary form-control">
+              <button type="button" [disabled]="disabled" (click)="addItemToPurchase()" class="btn btn-primary form-control">
                 <i class="fa fa-plus"></i>
               </button>
             </div>
@@ -198,10 +208,6 @@
             </div>
           </div>
         </div>
-
-
-
-
 
         <hr class="text-muted">
 
@@ -332,7 +338,7 @@
         <div class="row mt-1">
           <div class="col-5"></div>
           <div class="col-2">
-            <button (click)="addItemToPurchase()" class="btn btn-primary form-control">
+            <button type="button" (click)="addItemToPurchase()" class="btn btn-primary form-control">
               <i class="fa fa-plus"></i>
             </button>
           </div>
@@ -357,6 +363,7 @@
                   <th>Measurement</th>
                   <th>Quantity</th>
                   <th>Price</th>
+                  <th>-</th>
                 </tr>
               </thead>
               <tbody>
@@ -366,6 +373,7 @@
                   <td>{{stockitem.measurement}}</td>
                   <td>{{stockitem.quantity}}</td>
                   <td>{{stockitem.price}}</td>
+                  <td><i (click)="removeStockitemFromPurchase(stockitem)" class="fa fa-times text-danger"></i></td>
                 </tr>
               </tbody>
             </table>

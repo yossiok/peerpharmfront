@@ -104,7 +104,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierNumber: ["", Validators.required],
       supplierEmail: ['', Validators.required],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [new Date(), Validators.required],
+      arrivalDate: ['', Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: ['', Validators.required],
       userEmail: ['', Validators.required],
@@ -169,10 +169,17 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     })
   }
 
+  setPurchaseStatus(ev){
+  
+  this.newPurchase.controls.status.setValue(ev.target.value);
+  this.toastr.success('אנא לחץ על Confirm על מנת לשמור שינויים')
+
+  }
+
   fillPurchaseDetails(recommendation) {
     this.stockitem.number = recommendation.componentNumber;
-    this.newProcurement.orderType = recommendation.type
-    this.stockitem.supplierAmount = recommendation.amount
+    this.newPurchase.controls.orderType.setValue(recommendation.type);
+    this.stockitem.quantity = recommendation.amount
     this.newProcurement.recommendId = recommendation._id
     this.findStockItemByNumber();
   }
@@ -246,6 +253,21 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   }
 
+  removeStockitemFromPurchase(stockitem){
+  debugger;
+  if(confirm('האם להסיר פריט זה ?')){
+    for (let i = 0; i < this.newPurchase.controls.stockitems.value.length; i++) {
+      if(this.newPurchase.controls.stockitems.value[i].number == stockitem.number){
+        this.newPurchase.controls.stockitems.value.splice(i,1)
+        this.toastr.success('פריט הוסר בהצלחה !')
+      }
+        
+      }
+  }
+
+  
+  }
+
   addItemToPurchase() {
     debugger
     let objToPush = { ...this.stockitem }
@@ -271,6 +293,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             if (data) {
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.newPurchase.reset();
+              this.newProcurementSaved.emit()
               this.orderDetailsModal.emit(false)
             }
           })

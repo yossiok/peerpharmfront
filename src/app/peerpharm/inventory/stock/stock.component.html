@@ -868,7 +868,7 @@
                   </thead>
                   <tbody>
 
-                    <tr *ngFor="let supplier of resCmpt.alternativeSuppliers">
+                    <tr *ngFor="let supplier of resCmpt.alternativeSuppliers;let i = index">
                       <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                         {{supplier.supplierName}}</td>
                       <td *ngIf="EditRowId == supplier.supplierName">

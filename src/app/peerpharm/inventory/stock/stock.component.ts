@@ -1250,7 +1250,7 @@ export class StockComponent implements OnInit {
 
 
   deleteSupplier(index, componentN) {
-    ;
+    debugger;
     if (confirm('האם למחוק ספק ?')) {
       var material = this.components.find(c => c.componentN == componentN);
       material.alternativeSuppliers.splice(index, 1);
