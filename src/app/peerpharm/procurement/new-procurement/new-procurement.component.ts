@@ -361,6 +361,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
         this.deliveryCertificateForm.reset()
+        this.deliveryCertificateForm.controls['userName'].setValue(this.authService.loggedInUser.userName)
         this.modalService.dismissAll()
       })
   }
