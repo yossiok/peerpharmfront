@@ -4,7 +4,8 @@
 
   <div class="row fixNoaStupidStuff">
     <div class="col-1 fixNoaStupidStuff">
-      <button (click)="itemsMovementModal = true" class="btn btn-info form-control rounded-pill">F9 - הוצאה/קבלת סחורה</button>
+      <button (click)="itemsMovementModal = true" class="btn btn-info form-control rounded-pill">F9 - הוצאה/קבלת
+        סחורה</button>
     </div>
     <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-info form-control rounded-pill">F8 - הזמנות מלאי</button>
@@ -15,29 +16,40 @@
         קיימות</button>
     </div> -->
     <div class="col-2 fixNoaStupidStuff">
-      <button class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7 - בדוק המלצה
+      <button class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7
+        - בדוק המלצה
         לרכש</button>
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
     <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-success form-control rounded-pill" (click)="inventoryNewReqModal = true">F4 - בקשת מלאי</button>
+      <button class="btn btn-success form-control rounded-pill" (click)="inventoryNewReqModal = true">F4 - בקשת
+        מלאי</button>
     </div>
     <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-success form-control rounded-pill" (click)="newCmpt('new')">F2 - פריט חדש</button>
     </div>
   </div>
 
+
+
+
+  <!--filter components-->
+  <div class="fixNoaStupidStuff centered">
+  <h2>אנא הזן את כל הפרמטרים הרצויים לחיפוש</h2>
+  </div>
+  <form [formGroup]="filterParams" (ngSubmit)="filterComponents()">
   <div class="row mt-5 fixNoaStupidStuff">
+
     <div class="col-2 fixNoaStupidStuff">
-      <input #filterbyNum type="text" class="form-control rounded-pill" placeholder="Search By Number"
-        (change)="searchBy($event, 'number' )">
+      <input formControlName="componentN" #filterbyNum type="text" class="form-control rounded-pill" placeholder="Search By Number">
     </div>
+
     <div class="col-2 fixNoaStupidStuff">
-      <input #filterByCmptName type="text" class="form-control rounded-pill" placeholder="Search By Name"
-        (change)="searchBy($event, 'name')">
+      <input formControlName="componentName" #filterByCmptName type="text" class="form-control rounded-pill" placeholder="Search By Name">
     </div>
+
     <div class="col-2 fixNoaStupidStuff">
-      <select #filterByType class="form-control rounded-pill" (change)="searchBy($event , 'type')">
+      <select formControlName="stockItemType" #filterByType class="form-control rounded-pill">
         <!-- <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'type')"> -->
         <option selected="true" disabled="disabled">Choose Type</option>
         <option value='bottle_Glass'>בקבוק זכוכית</option>
@@ -71,21 +83,26 @@
       </select>
     </div>
     <div class="col-2 fixNoaStupidStuff">
-      <select #filterByCategory class="form-control rounded-pill" (change)="searchBy($event , 'category')">
+      <select formControlName="stockItemCategory" #filterByCategory class="form-control rounded-pill">
         <option value="" selected="true" disabled="disabled">בחר קטגוריה</option>
         <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
       </select>
     </div>
     <div class="col-2 fixNoaStupidStuff">
-      <input #filterByItem type="text" class="form-control rounded-pill" placeholder="Search By Item"
-        (change)="filterRows($event , 'itemNumber')">
+      <input formControlName="productName" #filterByItem type="text" class="form-control rounded-pill" placeholder="Search By Item">
+    </div>
+  </div>
+  <div dir="rtl" class="row mt-5 fixNoaStupidStuff">
+    <div class="col-4 fixNoaStupidStuff"></div>
+    <div class="col-2 fixNoaStupidStuff">
+      <button (click)="clearSearchFields()" class="btn-secondary form-control rounded-pill" type="reset"><b>נקה</b></button>
     </div>
     <div class="col-2 fixNoaStupidStuff">
-      <button (click)="clearSearchFields()" class="btn-secondary form-control rounded-pill" type="reset"><b>נקה שדות
-          חיפוש</b></button>
+      <button class="btn-primary form-control rounded-pill">חיפוש</button>
     </div>
-
+    <div class="col-4 fixNoaStupidStuff"></div>
   </div>
+</form>
 
 
 
@@ -106,7 +123,8 @@
     <div class="col-2 fixNoaStupidStuff">
       <input *ngIf="materialFilterType != 'threatment' && materialFilterType != 'stateOfMatter'"
         [(ngModel)]="materialFilterValue" class="form-control rounded-pill">
-      <select *ngIf="materialFilterType == 'threatment'" [(ngModel)]="materialFilterValue" class="form-control rounded-pill">
+      <select *ngIf="materialFilterType == 'threatment'" [(ngModel)]="materialFilterValue"
+        class="form-control rounded-pill">
         <option value="flammableLiquid">3 - נוזל דליק</option>
         <option value="flammableSolid">4 - מוצק דליק</option>
         <option value="oxidizer">5.1 - מחמצן אי אורגני</option>
@@ -118,7 +136,8 @@
         <option value="cooling">איחסון בקירור</option>
         <option value="blockedByType">חסום לפי סוג חומר</option>
       </select>
-      <select *ngIf="materialFilterType == 'stateOfMatter'" [(ngModel)]="materialFilterValue" class="form-control rounded-pill">
+      <select *ngIf="materialFilterType == 'stateOfMatter'" [(ngModel)]="materialFilterValue"
+        class="form-control rounded-pill">
         <option value="liquid">Liquid</option>
         <option value="solid">Solid</option>
         <option value="gell">Gell</option>
@@ -142,8 +161,9 @@
     <button class="btn topBtn btn-primary" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>&nbsp;&nbsp;
   
   </div> -->
- 
-  <div style="margin-right:auto !important" *ngIf="smallLoader == true" class="smallLoader fixNoaStupidStuff mx-auto my-auto"></div>
+
+  <div style="margin-right:auto !important" *ngIf="smallLoader == true"
+    class="smallLoader fixNoaStupidStuff mx-auto my-auto"></div>
   <div style="width:100%;">
 
     <!-- <div style="width:100%; padding: 0px">
@@ -260,7 +280,7 @@
       </div>
       <div class="export" style="cursor:pointer;" (click)="open(printInventoryValue)">
         <button class="btn btn-primary">Value For Money</button>
-    </div>
+      </div>
 
 
 
@@ -288,7 +308,7 @@
           </thead>
 
           <tbody id="table_body" class="componentTable">
-          
+
             <tr *ngFor="let component of components; let i = index">
               <td style="width:3%;">{{i+1}}</td>
               <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}
@@ -382,9 +402,9 @@
               </td>
             </tr>
           </tbody>
-         
+
         </table>
-        
+
       </div>
 
       <app-expected-arrivals *ngIf="openProcurementModal" [componentData]='resCmpt'
@@ -412,7 +432,7 @@
 
         </thead>
 
-       
+
 
         <tbody id="table_body" class="productTable">
           <tr *ngFor="let component of components; let i = index">
@@ -456,7 +476,7 @@
         </tbody>
 
       </table>
-     
+
     </div>
 
     <!-- TABLE END -->
@@ -477,7 +497,7 @@
         </tr>
 
       </thead>
-     
+
       <tbody id="table_body" class="materialsTable">
         <tr *ngFor="let material of components ; let i = index">
 
@@ -511,7 +531,7 @@
         </tr>
       </tbody>
     </table>
-  
+
     <!-- <ng-template #supplierList let-modal>
       <div style="width:140% !important;" class="modal-content">
         <div class="modal-header">
@@ -1712,9 +1732,9 @@
       </div>
    
     </div> -->
-    
+
   </div>
- 
+
 
   <div class="container bg-light rounded shadow fixed-top mx-auto my-auto border border-success"
     *ngIf="openModal == true && stockType=='material'">
@@ -2067,7 +2087,7 @@
                     <th>משקל</th>
                     <th>מדינה</th>
                     <th>זמן הגעה משוער</th>
-                   <th>מחיר העמסה</th>
+                    <th>מחיר העמסה</th>
                     <!--  <th>מחיר לפני טעינה</th> -->
                     <th></th>
                   </tr>
@@ -2808,15 +2828,15 @@
     <div *ngIf="stockItemPurchases.length > 0" class="row mt-1 fixNoaStupidStuff">
       <div class="col-12 fixNoaStupidStuff">
         <table class="table table-striped">
-           <thead>
-             <tr>
-               <th>Order</th>
-               <th>Date</th>
-               <th>Amount</th>
-               <th>Price</th>
-               <th>Status</th>
-             </tr>
-           </thead>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Price</th>
+              <th>Status</th>
+            </tr>
+          </thead>
           <tbody>
             <tr *ngFor="let purchase of stockItemPurchases">
               <td>{{purchase.orderNumber}}</td>
@@ -3035,7 +3055,7 @@
               </span>
             </td>
             <td>{{component.amount}}</td>
-            <td >
+            <td>
               <span *ngIf="component.alternativeSuppliers[0] && component.alternativeSuppliers[0].price">
                 {{component.alternativeSuppliers[0].price*component.amount || 0 }}
               </span>

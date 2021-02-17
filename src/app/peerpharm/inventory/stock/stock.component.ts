@@ -108,19 +108,19 @@ export class StockComponent implements OnInit {
   }
 
   newQApallet: any = {
-    customerName:'',
-    allUnits:'',
-    shelf:'',
-    qaStatus:'מוכן לשליחה',
-    itemNumber:'',
-    palletStatus:'open',
-    isPersonalPackage:false,
-    kartonQuantity:'',
-    lastFloorQuantity:'',
-    orderNumber:'',
-    unitsInKarton:'',
-    unitsQuantityPartKarton:'',
-    floorNumber:''
+    customerName: '',
+    allUnits: '',
+    shelf: '',
+    qaStatus: 'מוכן לשליחה',
+    itemNumber: '',
+    palletStatus: 'open',
+    isPersonalPackage: false,
+    kartonQuantity: '',
+    lastFloorQuantity: '',
+    orderNumber: '',
+    unitsInKarton: '',
+    unitsQuantityPartKarton: '',
+    floorNumber: ''
 
 
   }
@@ -128,9 +128,9 @@ export class StockComponent implements OnInit {
   buttonColor: string = '#2962FF';
   buttonColor2: string = 'white';
   buttonColor3: string = 'white';
-  fontColor:string = 'white';
-  fontColor2:string = 'black';
-  fontColor3:string = 'black';
+  fontColor: string = 'white';
+  fontColor2: string = 'black';
+  fontColor3: string = 'black';
   openModal: boolean = false;
   openImgModal: boolean = false;
   openAmountsModal: boolean = false;
@@ -138,8 +138,8 @@ export class StockComponent implements OnInit {
   openOrderAmountsModal: boolean = false;
   openProductAmountModal: boolean = false;
   procurementModalHeader: string;
-  openModalHeader: string; 
-  filteredComponents: any[];
+  openModalHeader: string;
+  // filteredComponents: any[];
   componentsUnFiltered: any[];
   componentsAmount: any[];
   tempHiddenImgSrc: any;
@@ -175,9 +175,9 @@ export class StockComponent implements OnInit {
   newItemShelfWH: String;
   cmptTypeList: Array<any>;
   cmptCategoryList: Array<any> = [
-'Sacara','Mineralium','Arganicare','Spa Pharma','Olive','Vitamin C','Quinoa','Andrea Milano','Dermalosophy',
-'Kreogen','Careline','Frulatte','Mediskin','4Ever','Adah Lazorgan','Avalanche','Abyssian','Jahshan',
-'Mika','Hyalunol','Hemp','Kiss','Rose','Collagen','Gaya',
+    'Sacara', 'Mineralium', 'Arganicare', 'Spa Pharma', 'Olive', 'Vitamin C', 'Quinoa', 'Andrea Milano', 'Dermalosophy',
+    'Kreogen', 'Careline', 'Frulatte', 'Mediskin', '4Ever', 'Adah Lazorgan', 'Avalanche', 'Abyssian', 'Jahshan',
+    'Mika', 'Hyalunol', 'Hemp', 'Kiss', 'Rose', 'Collagen', 'Gaya',
   ]
   emptyFilterArr: Boolean = true;
   currItemShelfs: Array<any>;
@@ -251,7 +251,7 @@ export class StockComponent implements OnInit {
     user: '',
     type: '',
     supplier: '',
-    componentName:''
+    componentName: ''
   }
 
   supplier: any = {
@@ -356,9 +356,17 @@ export class StockComponent implements OnInit {
 
   }
 
+  filterParams: FormGroup = new FormGroup({
+    componentN: new FormControl(''),
+    componentName: new FormControl(''),
+    stockItemType: new FormControl(''),
+    stockItemCategory: new FormControl(''),
+    productName: new FormControl('')
+  })
 
 
-  constructor(private formService:FormsService,private customerSrv: CostumersService, private supplierService: SuppliersService, private orderService: OrdersService, private modalService: NgbModal, private procuretServ: Procurementservice, private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
+
+  constructor(private formService: FormsService, private customerSrv: CostumersService, private supplierService: SuppliersService, private orderService: OrdersService, private modalService: NgbModal, private procuretServ: Procurementservice, private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder,) {
   }
@@ -434,8 +442,8 @@ export class StockComponent implements OnInit {
       alterName: "",
       subGroup: "",
       packageWeight: "",
-      expectedArrival:"",
-      country:"",
+      expectedArrival: "",
+      country: "",
     }
   }
   addSupplierToComponent() {
@@ -471,8 +479,8 @@ export class StockComponent implements OnInit {
     this.getUser();
     this.getAllSuppliers();
     this.getAllCustomers();
-    if(this.filterbyNum) this.filterbyNum.nativeElement.value = '';
-   
+    if (this.filterbyNum) this.filterbyNum.nativeElement.value = '';
+
     let url = this.route.snapshot;
     this.components = [];
     await this.getUserAllowedWH();
@@ -482,25 +490,25 @@ export class StockComponent implements OnInit {
       this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
     this.getColor(new Date);
-  
-  
+
+
   }
 
-  getAllPurchases(){
+  getAllPurchases() {
 
-      this.procuretServ.getAllPurchases().subscribe(data=>{
-        debugger;
-        this.components.forEach(comp => {
-      
-        let allPurchases = data.filter(x=>x.item.filter(x=>x.itemNumber== comp.componentN).length>0)
+    this.procuretServ.getAllPurchases().subscribe(data => {
+      debugger;
+      this.components.forEach(comp => {
+
+        let allPurchases = data.filter(x => x.item.filter(x => x.itemNumber == comp.componentN).length > 0)
         comp.purchaseOrders = allPurchases
-        if(comp.purchaseOrders.length > 0){
+        if (comp.purchaseOrders.length > 0) {
           debugger;
         }
-       });
-      })
-    
-    
+      });
+    })
+
+
   }
 
 
@@ -604,7 +612,7 @@ export class StockComponent implements OnInit {
 
   updateSupplierDetails() {
 
-  debugger;
+    debugger;
 
     var obj = {
       id: this.resMaterial._id,
@@ -617,10 +625,10 @@ export class StockComponent implements OnInit {
       alternativeMaterial: this.alternativeMaterial.nativeElement.value,
       alterName: this.alterName.nativeElement.value,
       packageWeight: this.packageWeight.nativeElement.value,
-      country:'',
-      expectedArrival:''
+      country: '',
+      expectedArrival: ''
     }
-    if(this.resMaterial._id != undefined){
+    if (this.resMaterial._id != undefined) {
       obj.country = this.country.nativeElement.value;
       obj.expectedArrival = this.expectedArrival.nativeElement.value;
     }
@@ -797,8 +805,8 @@ export class StockComponent implements OnInit {
     debugger;
     this.currItem = component;
 
-    this.procuretServ.getPurchaseOrderByItem(component.componentN).subscribe(data=>{
-    this.stockItemPurchases = data;
+    this.procuretServ.getPurchaseOrderByItem(component.componentN).subscribe(data => {
+      this.stockItemPurchases = data;
     })
     this.componentSuppliers = component.alternativeSuppliers
     this.recommandPurchase.componentName = this.currItem.componentName
@@ -813,13 +821,13 @@ export class StockComponent implements OnInit {
   }
 
   sendRecommandation() {
-      debugger;
-    if(this.recommandPurchase.amount == '' || this.recommandPurchase.date == '') {
+    debugger;
+    if (this.recommandPurchase.amount == '' || this.recommandPurchase.date == '') {
       this.toastSrv.error('חובה למלא כמות ותאריך')
     } else {
       this.recommandPurchase.user = this.authService.loggedInUser.userName;
       this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data => {
-      // this.inventoryService.onNewRecommend(this.recommandPurchase);
+        // this.inventoryService.onNewRecommend(this.recommandPurchase);
         if (data) {
           data = JSON.parse(data._body)
           this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
@@ -828,11 +836,11 @@ export class StockComponent implements OnInit {
           this.recommandPurchase.amount = ""
           this.recommandPurchase.componentNumber = ""
           this.recommandPurchase.supplier = ""
-  
+
         }
       })
     }
-  
+
   }
 
 
@@ -882,62 +890,31 @@ export class StockComponent implements OnInit {
 
   getAllComponents() {
 
-      // this.startDownloadingInventory();
-  
+    // this.startDownloadingInventory();
+
   }
 
-  startDownloadingInventory() {
-    debugger;
-    this.inventoryService.startNewItemObservable().subscribe((components) => {
-      debugger;
-      components.forEach(comp => {
-        if(comp.alternativeSuppliers) {
-          comp.alternativeSuppliers.forEach(supplier => {
-            if(supplier.country == undefined){
-              supplier.country = ''
-            }
-            if(supplier.expectedArrival == undefined){
-              supplier.expectedArrival = ''
-            }
-          });
-        }
-      });
 
-      if(components.length < 1500) {
-        this.smallLoader = false;
-        // this.getAllPurchases();
-      }
-      if (components.length > 0) {
-        this.showLoader = false;
-        this.components= this.components.concat([...components]);
-        if (!this.componentsUnFiltered) {
-          this.componentsUnFiltered = [];
-        }
-        this.componentsUnFiltered= this.componentsUnFiltered.concat([...components]);
-        // this.calculateMaterialArrival();
-        this.getAmountsFromShelfs();
-      }
-    });
-  }
+
+
   getAmountsFromShelfs() {
 
-    debugger;
-    var self = this;
+    // var self = this;
 
-      self.inventoryService.getComponentsAmounts().subscribe(res => {
-        self.componentsAmount = res;
-        // console.log(res);
-        self.components.forEach(cmpt => {
-          //  adding amounts to all components
-          let result = self.componentsAmount.find(elem => elem._id == cmpt.componentN)
-          if (result != undefined) {
-            cmpt.amount = result.total;
-          }
-          if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
+    this.inventoryService.getComponentsAmounts().subscribe(res => {
+      this.componentsAmount = res;
+      // console.log(res);
+      this.components.forEach(cmpt => {
+        //  adding amounts to all components
+        let matchedComponent = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
+        if (this.componentsAmount.find(elem => elem._id == cmpt.componentN)) {
+          cmpt.amount = matchedComponent.total;
+        }
+        if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
 
-        })
+      })
 
-      });
+    });
 
   }
 
@@ -964,7 +941,7 @@ export class StockComponent implements OnInit {
   }
 
   dangerColor(threatment) {
-    console.log("threatment:"+threatment);
+    console.log("threatment:" + threatment);
     if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
       return "flame";
     }
@@ -976,18 +953,18 @@ export class StockComponent implements OnInit {
     }
     else if (threatment == 'toxic') {
       return "toxic"
-    } 
-    else if (threatment == 'base'){
+    }
+    else if (threatment == 'base') {
       return 'base'
     }
   }
 
-  createNewQAPallet(){
-  debugger;
- 
-  this.formService.createNewQaPallet(this.newQApallet).subscribe(data=>{
+  createNewQAPallet() {
+    debugger;
 
-  })
+    this.formService.createNewQaPallet(this.newQApallet).subscribe(data => {
+
+    })
   }
 
   getAllCmptTypesAndCategories() {
@@ -1082,8 +1059,8 @@ export class StockComponent implements OnInit {
       this.sehlfChangeNavBtnColor = "#1affa3";
       this.amountChangeNavBtnColor = "";
       this.amountForPalletBtnColor = "";
-    } 
-    else if(direction == 'withdrawForPallet'){
+    }
+    else if (direction == 'withdrawForPallet') {
       this.amountChangeDir = 'withdrawForPallet';
       this.sehlfChangeNavBtnColor = "";
       this.amountForPalletBtnColor = "#1affa3";
@@ -1103,7 +1080,7 @@ export class StockComponent implements OnInit {
   }
 
   async updateItemStock(direction) {
-  debugger;
+    debugger;
     //check enough amount for "out"
     this.newItemShelfPosition = this.newItemShelfPosition.toUpperCase().trim();
     var shelfExsit = false;
@@ -1261,11 +1238,11 @@ export class StockComponent implements OnInit {
 
 
   filterByComponentN(componentN) {
-    let comp = this.components.find(c=>c.componentN == componentN);
+    let comp = this.components.find(c => c.componentN == componentN);
     if (this.componentsUnFiltered)
 
       this.stockType = comp.itemType
-      this.components = this.componentsUnFiltered.filter(c => c.componentN == componentN);
+    this.components = this.componentsUnFiltered.filter(c => c.componentN == componentN);
   }
 
 
@@ -1318,7 +1295,7 @@ export class StockComponent implements OnInit {
         this.fontColor3 = 'white'
 
         break;
-   
+
     }
     if (this.stockType != type) {
       this.filterbyNum.nativeElement.value = "";
@@ -1336,155 +1313,22 @@ export class StockComponent implements OnInit {
 
   }
 
-  searchBy(ev,type){
-
-  debugger;
-
-  let value;
-  if(ev.target.value != '') value = ev.target.value;
-  this.smallLoader = true;
-    switch (type) {
-      case 'number':
-        this.inventoryService.getStockItemByNumber(value).subscribe(stockitem=>{
-        if(stockitem){
-          this.smallLoader = false
-          this.components = stockitem.filter(s=>s.itemType == this.stockType)
-          if(this.components.length > 0)
-          {
-            this.getAmountsFromShelfs();
-          } else 
-          {
-            this.toastSrv.error('Item does not exist')
-          }
-         
-        }
-        })
-        break;
-      case 'name':
-        this.inventoryService.getStockItemByName(value).subscribe(stockitem=>{
-        if(stockitem){
-          this.smallLoader = false
-          this.components = stockitem.filter(s=>s.itemType == this.stockType)
-          if(this.components.length > 0)
-          {
-            this.getAmountsFromShelfs();
-          } else 
-          {
-            this.toastSrv.error('Item does not exist')
-          }
-        }
-        })
-        break;
-      case 'type':
-        this.inventoryService.getStockItemByType(value).subscribe(stockitem=>{
-        if(stockitem){
-          this.smallLoader = false
-          this.components = stockitem.filter(s=>s.itemType == this.stockType)
-          this.getAmountsFromShelfs();
-        }
-        })
-        break;
-      case 'category':
-        this.inventoryService.getStockItemByCategory(value).subscribe(stockitem=>{
-        if(stockitem){
-          this.smallLoader = false
-          this.components = stockitem.filter(s=>s.itemType == this.stockType)
-          this.getAmountsFromShelfs();
-        }
-        })
-        break;
-    
-      default:
-        break;
-    }
-  }
-
-
-  filterRows(event, filterType) {
-  debugger;
-    this.emptyFilterArr = true;
-    this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
-    this.filterVal = '';
-    this.filterVal = event.target.value;
-    if (this.route.snapshot.queryParams.componentN) {
-      this.filterVal = this.route.snapshot.queryParams.componentN
-    }
-    if (this.stockType != 'product') {
-      if (this.filterByType != undefined) {
-        if (this.filterByType.nativeElement.value != "" && this.filterByType.nativeElement.value != 'בחר סוג' ) {
-          let CmptType = this.filterByType.nativeElement.value;
-          this.components = this.components.filter(x => (x.componentType == CmptType));
-          this.components
-        }
-      }
-      if (this.filterByCategory != undefined) {
-        if (this.filterByCategory.nativeElement.value != "" && this.filterByCategory != undefined) {
-          let category = this.filterByCategory.nativeElement.value;
-          this.components = this.components.filter(x => (x.componentCategory == category && x.itemType.includes(this.stockType)));
-
-        }
-      }
-      if (this.filterBySupplierN != undefined) {
-        if (this.filterBySupplierN.nativeElement.value != "" && this.filterBySupplierN != undefined) {
-          let supplierN = this.filterBySupplierN.nativeElement.value;
-
-          this.components = this.components.filter(x => (x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType)));
-        }
-      }
-      if (this.filterBySupplier != undefined) {
-        if (this.filterBySupplier.nativeElement.value != "" && this.filterBySupplier != undefined) {
-          let supplierName = this.filterBySupplier.nativeElement.value;
-
-          this.components = this.components.filter(x => (x.suplierName.includes(supplierName) && x.itemType.includes(this.stockType)));
-        }
-      }
-    }
-    if (this.filterbyNum.nativeElement.value != "" && this.filterbyNum != undefined) {
-      let itemNum = this.filterbyNum.nativeElement.value;
-      this.components = this.components.filter(x => (x.componentN == itemNum && x.itemType == this.stockType));
-    }
-
-    if (this.filterByItem.nativeElement.value != '' && this.filterByItem != undefined) {
-
-      let itemNumber = this.filterByItem.nativeElement.value;
-      this.itemService.getItemData(itemNumber).subscribe(data => {
-        this.components = this.components.filter(x => x.componentN == data[0].bottleNumber || x.componentN == data[0].sealNumber || x.componentN == data[0].tubeNumber || x.componentN == data[0].capNumber
-          || x.componentN == data[0].boxNumber || x.componentN == data[0].stickerNumber)
-      })
-    }
-
-    if (this.filterByCmptName.nativeElement.value != "") {
-      let word = event.target.value;
-      let wordsArr = word.split(" ");
-      wordsArr = wordsArr.filter(x => x != "");
-      if (wordsArr.length > 0) {
-        let tempArr = [];
-        this.components.filter(stk => {
-          var check = false;
-          var matchAllArr = 0;
-          wordsArr.forEach(w => {
-            if (stk.componentName.toLowerCase().includes(w.toLowerCase()) && stk.itemType == this.stockType) {
-              matchAllArr++
-            }
-            if (stk.inciName && stk.inciName.toLowerCase().includes(w.toLowerCase()) && stk.itemType == this.stockType) {
-              matchAllArr++
-            }
-            (matchAllArr == wordsArr.length) ? check = true : check = false;
-          });
-
-          if (!tempArr.includes(stk) && check) tempArr.push(stk);
-        });
-        this.components = tempArr;
-
-      }
-    }
-
-    if (this.components.length == 0) {
-      this.emptyFilterArr = false;
-      this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
-    }
+  filterComponents() {
+    console.log('filter parameters: ',this.filterParams)
+    // this.smallLoader = true;
+    // this.inventoryService.getFilteredComponents(this.filterParams.value).subscribe(filteredComponents => {
+    //   this.components = filteredComponents.filter(s => s.itemType == this.stockType)
+    // })
+    // this.smallLoader = false
+    // if (this.components.length > 0) {
+    //   this.getAmountsFromShelfs();
+    // } else {
+    //   this.toastSrv.error('Item does not exist')
+    // }
 
   }
+
+
 
 
 
@@ -1542,7 +1386,7 @@ export class StockComponent implements OnInit {
     this.currModalImgSrc = componentImg;
   }
   async openAmountsData(cmptNumber, cmptId) {
-    
+
     this.openModalHeader = "כמויות פריט במלאי  " + cmptNumber;
     this.openAmountsModal = true;
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
@@ -1984,7 +1828,7 @@ export class StockComponent implements OnInit {
     if (confirm("לעדכן פריט?")) {
 
       this.inventoryService.updateMaterial(this.resMaterial).subscribe(res => {
-        if(res.msg == 'noUpdate'){
+        if (res.msg == 'noUpdate') {
           this.toastSrv.error('עדכון פריט נכשל')
         } else {
           if (res._id) {
@@ -1998,19 +1842,19 @@ export class StockComponent implements OnInit {
 
   }
 
-  deleteComponent(id){
-    this.inventoryService.deleteComponentById(id).subscribe(data=>{
-    if(data.msg == 'deleted'){
-      this.toastSrv.success('Component Deleted !')
-     this.components= this.components.filter(c=>c._id != id)
-    }
+  deleteComponent(id) {
+    this.inventoryService.deleteComponentById(id).subscribe(data => {
+      if (data.msg == 'deleted') {
+        this.toastSrv.success('Component Deleted !')
+        this.components = this.components.filter(c => c._id != id)
+      }
     })
   }
 
   async getUser() {
     debugger;
 
-    if(this.authService.loggedInUser.userName == 'SHARK' || this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'martha'){
+    if (this.authService.loggedInUser.userName == 'SHARK' || this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'martha') {
       this.showDeleteBtn = true
     }
     await this.authService.userEventEmitter.subscribe(user => {
@@ -2382,13 +2226,13 @@ export class StockComponent implements OnInit {
   getTotalComponentsValue() {
     for (let component of this.components) {
       if (component.itemType == 'component') {
-        for (let i=0; i<3; i++) {
-          if(component.alternativeSuppliers[i] && component.alternativeSuppliers[i].price) {
-            if(component.alternativeSuppliers[i].price != "") {
-              this.totalComponentsValue +=  parseInt(component.alternativeSuppliers[i].price)*parseInt(component.amount);
+        for (let i = 0; i < 3; i++) {
+          if (component.alternativeSuppliers[i] && component.alternativeSuppliers[i].price) {
+            if (component.alternativeSuppliers[i].price != "") {
+              this.totalComponentsValue += parseInt(component.alternativeSuppliers[i].price) * parseInt(component.amount);
             }
             break;
-          } 
+          }
         }
       }
     }
@@ -2499,3 +2343,127 @@ export class StockComponent implements OnInit {
 
 
 
+ // startDownloadingInventory() {
+  //   debugger;
+  //   this.inventoryService.startNewItemObservable().subscribe((components) => {
+  //     debugger;
+  //     components.forEach(comp => {
+  //       if(comp.alternativeSuppliers) {
+  //         comp.alternativeSuppliers.forEach(supplier => {
+  //           if(supplier.country == undefined){
+  //             supplier.country = ''
+  //           }
+  //           if(supplier.expectedArrival == undefined){
+  //             supplier.expectedArrival = ''
+  //           }
+  //         });
+  //       }
+  //     });
+
+  //     if(components.length < 1500) {
+  //       this.smallLoader = false;
+  //       // this.getAllPurchases();
+  //     }
+  //     if (components.length > 0) {
+  //       this.showLoader = false;
+  //       this.components= this.components.concat([...components]);
+  //       if (!this.componentsUnFiltered) {
+  //         this.componentsUnFiltered = [];
+  //       }
+  //       this.componentsUnFiltered= this.componentsUnFiltered.concat([...components]);
+  //       // this.calculateMaterialArrival();
+  //       this.getAmountsFromShelfs();
+  //     }
+  //   });
+  // }
+
+
+
+
+
+  
+  // filterRows(event, filterType) {
+  //   debugger;
+  //   this.emptyFilterArr = true;
+  //   this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
+  //   this.filterVal = '';
+  //   this.filterVal = event.target.value;
+  //   if (this.route.snapshot.queryParams.componentN) {
+  //     this.filterVal = this.route.snapshot.queryParams.componentN
+  //   }
+  //   if (this.stockType != 'product') {
+  //     if (this.filterByType != undefined) {
+  //       if (this.filterByType.nativeElement.value != "" && this.filterByType.nativeElement.value != 'בחר סוג') {
+  //         let CmptType = this.filterByType.nativeElement.value;
+  //         this.components = this.components.filter(x => (x.componentType == CmptType));
+  //         this.components
+  //       }
+  //     }
+  //     if (this.filterByCategory != undefined) {
+  //       if (this.filterByCategory.nativeElement.value != "" && this.filterByCategory != undefined) {
+  //         let category = this.filterByCategory.nativeElement.value;
+  //         this.components = this.components.filter(x => (x.componentCategory == category && x.itemType.includes(this.stockType)));
+
+  //       }
+  //     }
+  //     if (this.filterBySupplierN != undefined) {
+  //       if (this.filterBySupplierN.nativeElement.value != "" && this.filterBySupplierN != undefined) {
+  //         let supplierN = this.filterBySupplierN.nativeElement.value;
+
+  //         this.components = this.components.filter(x => (x.componentNs.includes(supplierN) && x.itemType.includes(this.stockType)));
+  //       }
+  //     }
+  //     if (this.filterBySupplier != undefined) {
+  //       if (this.filterBySupplier.nativeElement.value != "" && this.filterBySupplier != undefined) {
+  //         let supplierName = this.filterBySupplier.nativeElement.value;
+
+  //         this.components = this.components.filter(x => (x.suplierName.includes(supplierName) && x.itemType.includes(this.stockType)));
+  //       }
+  //     }
+  //   }
+  //   if (this.filterbyNum.nativeElement.value != "" && this.filterbyNum != undefined) {
+  //     let itemNum = this.filterbyNum.nativeElement.value;
+  //     this.components = this.components.filter(x => (x.componentN == itemNum && x.itemType == this.stockType));
+  //   }
+
+  //   if (this.filterByItem.nativeElement.value != '' && this.filterByItem != undefined) {
+
+  //     let itemNumber = this.filterByItem.nativeElement.value;
+  //     this.itemService.getItemData(itemNumber).subscribe(data => {
+  //       this.components = this.components.filter(x => x.componentN == data[0].bottleNumber || x.componentN == data[0].sealNumber || x.componentN == data[0].tubeNumber || x.componentN == data[0].capNumber
+  //         || x.componentN == data[0].boxNumber || x.componentN == data[0].stickerNumber)
+  //     })
+  //   }
+
+  //   if (this.filterByCmptName.nativeElement.value != "") {
+  //     let word = event.target.value;
+  //     let wordsArr = word.split(" ");
+  //     wordsArr = wordsArr.filter(x => x != "");
+  //     if (wordsArr.length > 0) {
+  //       let tempArr = [];
+  //       this.components.filter(stk => {
+  //         var check = false;
+  //         var matchAllArr = 0;
+  //         wordsArr.forEach(w => {
+  //           if (stk.componentName.toLowerCase().includes(w.toLowerCase()) && stk.itemType == this.stockType) {
+  //             matchAllArr++
+  //           }
+  //           if (stk.inciName && stk.inciName.toLowerCase().includes(w.toLowerCase()) && stk.itemType == this.stockType) {
+  //             matchAllArr++
+  //           }
+  //           (matchAllArr == wordsArr.length) ? check = true : check = false;
+  //         });
+
+  //         if (!tempArr.includes(stk) && check) tempArr.push(stk);
+  //       });
+  //       this.components = tempArr;
+
+  //     }
+  //   }
+
+  //   if (this.components.length == 0) {
+  //     this.emptyFilterArr = false;
+  //     this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
+  //   }
+
+  // }
