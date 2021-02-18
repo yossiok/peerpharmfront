@@ -22,7 +22,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
   @Input() purchaseData: any;
   @Input() isEdit: boolean;
-  @Output() orderDetailsModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() closeOrderModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
   @ViewChild('coin') coin: ElementRef;
@@ -48,7 +48,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   allMaterials: any[];
   itemExistInOrders: any[];
   userEmail: any;
-  editRow: String = '';
+  editItem:boolean = false;
 
   newPurchase: FormGroup;
   deliveryCertificateForm: FormGroup;
@@ -80,7 +80,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     userEmail: '',
     recommendId: '',
     user: '',
-    
+
   }
 
   //invoice data
@@ -90,10 +90,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   //toggle purchase details
   showPurchaseDetails: boolean = false;
   showItemDetails: boolean = false;
-  
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.editPurchaseItems('');
   }
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
@@ -123,16 +122,15 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       itemNumber: ['', Validators.required],
       amount: [null, Validators.required],
       remarks: [''],
-      userName: [this.authService.loggedInUser.userName, Validators.required]
+      userName: ['']
     })
   }
 
   ngOnInit() {
     debugger;
-    console.log('purchase data: ',this.purchaseData)
-    this.user = this.authService.loggedInUser.userName
+    console.log('purchase data: ', this.purchaseData)
+    // this.user = this.authService.loggedInUser.userName
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
-    this.purchaseData
     this.getAllSuppliers();
     this.getAllMaterials();
     if (this.route.snapshot.queryParams.id != undefined) {
@@ -143,16 +141,16 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         }
       })
     }
-    if (this.authService.loggedInUser) {
-      this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
-      this.newPurchase.controls.user.setValue(this.authService.loggedInUser.userName);
-      this.user = this.authService.loggedInUser.userName
-    }
-    else {
-      this.authService.userEventEmitter.subscribe(data => {
-        this.userEmail = this.authService.loggedInUser.userEmail;
-      })
-    }
+    // if (this.authService.loggedInUser) {
+    //   // this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
+    //   // this.newPurchase.controls.user.setValue(this.authService.loggedInUser.userName);
+    //   // this.user = this.authService.loggedInUser.userName
+    // }
+    // else {
+    //   this.authService.userEventEmitter.subscribe(data => {
+    //     this.userEmail = this.authService.loggedInUser.userEmail;
+    //   })
+    // }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -169,10 +167,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     })
   }
 
-  setPurchaseStatus(ev){
-  
-  this.newPurchase.controls.status.setValue(ev.target.value);
-  this.toastr.success('אנא לחץ על Confirm על מנת לשמור שינויים')
+  setPurchaseStatus(ev) {
+
+    this.newPurchase.controls.status.setValue(ev.target.value);
+    this.toastr.success('אנא לחץ על Confirm על מנת לשמור שינויים')
+    
 
   }
 
@@ -220,14 +219,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
   }
 
-  editPurchaseItems(itemNumber) {
-    if (itemNumber != '') {
-
-      this.editRow = itemNumber;
-    } else {
-      this.editRow = '';
-    }
-  }
 
   getAllMaterials() {
     this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
@@ -253,19 +244,21 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   }
 
-  removeStockitemFromPurchase(stockitem){
-  debugger;
-  if(confirm('האם להסיר פריט זה ?')){
-    for (let i = 0; i < this.newPurchase.controls.stockitems.value.length; i++) {
-      if(this.newPurchase.controls.stockitems.value[i].number == stockitem.number){
-        this.newPurchase.controls.stockitems.value.splice(i,1)
-        this.toastr.success('פריט הוסר בהצלחה !')
+  removeStockitemFromPurchase(stockitem) {
+    if (confirm('האם להסיר פריט זה ?')) {
+      for (let i = 0; i < this.newPurchase.controls.stockitems.value.length; i++) {
+        if (this.newPurchase.controls.stockitems.value[i].number == stockitem.number) {
+          this.newPurchase.controls.stockitems.value.splice(i, 1)
+          this.toastr.success('פריט הוסר בהצלחה !')
+        }
       }
-        
-      }
+    }
   }
 
-  
+  updateItems(stockItem) {
+    this.toastr.warning('שים לב!!!!!!!')
+    this.toastr.warning("! 'confirm' כדי שהפריט יתעדכן יש ללחוץ  ")
+    this.editItem = false;
   }
 
   addItemToPurchase() {
@@ -285,29 +278,34 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   sendNewProc(action) {
     debugger
-    if(action == 'add'){
+    if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
+          this.newPurchase.controls['user'].setValue(this.authService.loggedInUser.userName)
           this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
             // console.log('data from addNewProcurement: ',data)
             if (data) {
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.newPurchase.reset();
               this.newProcurementSaved.emit()
-              this.orderDetailsModal.emit(false)
+              this.closeOrderModal.emit(false)
             }
+            else this.toastr.error('משהו השתבש...')
           })
         }
       } else {
         this.toastr.error('אין אפשרות להקים הזמנה ללא פריטים')
       }
-    } 
-    if(action == 'update'){
-      if(confirm('האם לעדכן הזמנה זו ?')){
-        this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data=>{
-          if(data){
+    }
+    if (action == 'update') {
+      if (confirm('האם לעדכן הזמנה זו ?')) {
+        console.log('AAAAAAAAAAAAA', this.newPurchase.value)
+        this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data => {
+          if (data) {
             this.toastr.success('הזמנה עודכנה בהצלחה !')
+            this.closeOrderModal.emit(false)
           }
+          else this.toastr.error('משהו השתבש...')
         })
       }
     }
@@ -342,14 +340,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   resetStockItem() {
     this.stockitem.number = '',
-    this.stockitem.name = '',
-    this.stockitem.coin = '',
-    this.stockitem.measurement = '',
-    this.stockitem.price = 0,
-    this.stockitem.quantity = '',
-    this.stockitem.color = '',
-    this.stockitem.itemRemarks = '',
-    this.stockitem.itemPrice = ''
+      this.stockitem.name = '',
+      this.stockitem.coin = '',
+      this.stockitem.measurement = '',
+      this.stockitem.price = 0,
+      this.stockitem.quantity = '',
+      this.stockitem.color = '',
+      this.stockitem.itemRemarks = '',
+      this.stockitem.itemPrice = ''
   }
 
   saveCertificate() {

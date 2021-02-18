@@ -492,7 +492,7 @@
 </div>
 
 <div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center">
-  <app-new-procurement (orderDetailsModal)='getAllProcurementOrders(); orderDetailsModal=$event; isEdit=$event' [isEdit]="isEdit" [purchaseData]="purchaseData"></app-new-procurement>
+  <app-new-procurement (closeOrderModal)='orderDetailsModal=$event; isEdit=$event' (newProcurementSaved)="getAllProcurementOrders()" [isEdit]="isEdit" [purchaseData]="purchaseData"></app-new-procurement>
 </div>
 
 
