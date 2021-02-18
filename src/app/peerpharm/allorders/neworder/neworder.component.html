@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="col-12" *ngIf="!submited">
         <div class="card">
@@ -11,7 +10,8 @@
                     <h4 class="card-title">Order Info</h4>
 
                     <div class="form-group row">
-                        <label for="lname" class="col-sm-4 text-right control-label col-form-label"><strong>Costumer</strong></label>
+                        <label for="lname"
+                            class="col-sm-4 text-right control-label col-form-label"><strong>Costumer</strong></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
                             <input type='hidden' formControlName="costumerInternalId">
@@ -25,28 +25,36 @@
                               </mat-form-field>-->
                             <!---->
                         </div>
-                        <button style="box-shadow: 2px 2px 2px black;" (click)="openSearch(content);  submited=false;" class='btn btn-info'><strong>List</strong></button>
+                        <button style="box-shadow: 2px 2px 2px black;" (click)="openSearch(content);  submited=false;"
+                            class='btn btn-info'><strong>List</strong></button>
                     </div>
                     <div class="form-group row">
-                        <label for="email1" class="col-sm-4 text-right control-label col-form-label"><strong>Date Of Order</strong></label>
+                        <label for="email1" class="col-sm-4 text-right control-label col-form-label"><strong>Date Of
+                                Order</strong></label>
                         <div class="col-sm-4">
-                            <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate">
+                            <input type="date" class="form-control" placeholder="Date of order"
+                                formControlName="orderdate">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Delivery Date</strong></label>
+                        <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Delivery
+                                Date</strong></label>
                         <div class="col-sm-4">
-                            <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
+                            <input type="date" class="form-control" placeholder="Delivery date"
+                                formControlName="delivery">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Customer Order</strong></label>
+                        <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Customer
+                                Order</strong></label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" placeholder="Customer Order Number" formControlName="customerOrderNum">
+                            <input type="text" class="form-control" placeholder="Customer Order Number"
+                                formControlName="customerOrderNum">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Remarks</strong></label>
+                        <label for="cono1"
+                            class="col-sm-4 text-right control-label col-form-label"><strong>Remarks</strong></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
                         </div>
@@ -64,16 +72,18 @@
                     <div class="col-sm-1">
                         <!--    <img src="../../../../assets/images/refreshData.png" style="width: 30px;cursor: pointer;" alt="get user name"
                             (click)="getUserName()">-->
-                          </div>
-                          <div class="col-sm-3">
-                            <label for="user">Username</label>
-                            <input type="text"  class="form-control is-valid" placeholder="user name" formControlName="user"
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="user">Username</label>
+                        <input type="text" class="form-control is-valid" placeholder="user name" formControlName="user"
                             required disabled>
-                          </div> 
+                    </div>
                     <div class="card-body">
                         <div class="form-group m-b-0 text-right">
-                            <button style="box-shadow: 2px 2px 2px black;" type="submit" class="btn btn-info waves-effect waves-light">Save</button>
-                            <button style="box-shadow: 2px 2px 2px black;" type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
+                            <button style="box-shadow: 2px 2px 2px black;" type="submit"
+                                class="btn btn-info waves-effect waves-light">Save</button>
+                            <button style="box-shadow: 2px 2px 2px black;" type="button" (click)="closed.emit()"
+                                class="btn btn-dark waves-effect waves-light">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -82,47 +92,75 @@
         </div>
     </div>
 </div>
-
-<div class="row" *ngIf="submited">
-    <h3>Order Number : &nbsp;{{orderNumber}}</h3>
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Items Assigning</h4>
-            </div>
-            <hr>
-            <table>
-                <thead>
-                    <tr>
-                     <th>Shipping Method</th>
-                     <th>Shipping Quantity</th>
-                     <th></th>
-                    </tr>
-               
-                
-                    <tr>
-                 <td>
-                    <select required style="box-shadow: 1px 1px 1px;" [ngModelOptions]="{standalone: true}" [(ngModel)]="shippingDetails.shippingWay" class="form-control">
-                        <option value="land">יבשה</option>
-                        <option value="flight">אוויר</option>
-                        <option value="sea">ים</option>
-                    </select>
-                    </td>
-                    <td><input [ngModelOptions]="{standalone: true}"  [(ngModel)]="shippingDetails.shippingQuantity" class="form-control"></td>
-                    <td><button style="box-shadow: 1px 1px 1px;" type="button" (click)="addShipping()" class="btn btn-info waves-effect waves-light">Add Shipping</button></td>
-                </tr> 
+<!-- 
+<div class="row mt-3 bg-muted">
+    <div style="background: #d5cff9" class="col-12 shadow rounded">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Item Name</th>
+                    <th>Measurement</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>-</th>
+                </tr>
             </thead>
-                <tbody *ngFor="let shipping of shippingMethod">
-                    <tr *ngIf="shippingMethod != []">
-                        <td>{{shipping.shippingWay}}</td>
-                        <td>{{shipping.shippingQuantity}}</td>
-                    </tr>
+            <tbody>
+                <tr *ngFor="let stockitem of this.newPurchase.controls.stockitems.value">
+                    <td>{{stockitem.number}}</td>
+                    <td>{{stockitem.name}}</td>
+                    <td>{{stockitem.measurement}}</td>
+                    <td>{{stockitem.quantity}}</td>
+                    <td>{{stockitem.price}}</td>
+                    <td><i (click)="removeStockitemFromPurchase(stockitem)" class="fa fa-times text-danger"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> -->
 
-                    </tbody>
-                </table>
-            <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)'>
+<div class="p-5 rounded-pill" *ngIf="submited">
+    <h3>Order Number : {{ orderNumber}}</h3>
+    <h4 class="card-title">Items Assigning</h4>
+    <hr>
+    <div class="row mt-5">
+        <div class="col-2">
+            <label for="">Shipping Method</label>
+            <select required style="box-shadow: 1px 1px 1px;" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="shippingDetails.shippingWay" class="form-control">
+                <option value="land">יבשה</option>
+                <option value="flight">אוויר</option>
+                <option value="sea">ים</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <label for="">Shipping Quantity</label>
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="shippingDetails.shippingQuantity"
+                class="form-control">
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-primary mt-2" (click)="addShipping()">Add Shipping</button>
+        </div>
+        <div class="col-6"></div>
+    </div>
 
-                <table>
+    <ul class="list-group">
+        <li *ngFor="let shipping of shippingMethod" class="list-group-item w-25 d-flex justify-content-between align-items-center">
+            <span *ngIf="shippingMethod != []">{{shipping.shippingWay}}</span>
+          <span *ngIf="shippingMethod != []" class="badge badge-primary badge-pill">{{shipping.shippingQuantity}}</span>
+        </li>
+      </ul>
+
+    <!-- <div *ngFor="let shipping of shippingMethod" class="m-2 p-2">
+        <div *ngIf="shippingMethod != []">
+            <span class="border border-success">{{shipping.shippingWay}} - {{shipping.shippingQuantity}}</span>
+        </div>
+    </div> -->
+    <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)'>
+        <div class="row mt-3 bg-muted">
+            <div style="background: #d5cff9" class="col-12 shadow rounded">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -136,13 +174,14 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><input formControlName="itemN" class="form-control" #itemN (focusout)="searchItem(itemN.value)"></td>
+                            <td><input formControlName="itemN" class="form-control" #itemN
+                                    (focusout)="searchItem(itemN.value)"></td>
                             <td><input formControlName="discription" class="form-control" style='width:370px'></td>
                             <td><input formControlName="netWeightK" class="form-control"></td>
                             <td><input formControlName="quantity" class="form-control"></td>
                             <td><input formControlName="qtyKg" class="form-control"></td>
                             <td><input formControlName="remarks" class="form-control"></td>
-                          
+
                             <td><input type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
                         </tr>
                     </thead>
@@ -159,28 +198,29 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
 
-            </form>
-            <br>
-        </div>
-        <h1 style="color:red" *ngIf="existOrderItem">שים לב! פריט זה קיים בהזמנות קודמות ,ייתכן ותוכל לשלוח  אותם ביחד לייצור</h1>
-        <div style="width:500px;" *ngIf="existOrderItem">
-            <table class="table table-striped">
-                <thead>
-                    <tr style="text-align: center;">
-                        <th>כמות</th>
-                        <th>מספר הזמנה</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="text-align: center;" *ngFor="let item of existOrderItem">
-                        
-                      <td>{{item.quantity}}</td>  
-                      <td>{{item.orderNumber}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    </form>
+    <br>
+    <h1 style="color:red" *ngIf="existOrderItem">שים לב! פריט זה קיים בהזמנות קודמות ,ייתכן ותוכל לשלוח אותם ביחד
+        לייצור</h1>
+    <div style="width:500px;" *ngIf="existOrderItem">
+        <table class="table table-striped">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>כמות</th>
+                    <th>מספר הזמנה</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align: center;" *ngFor="let item of existOrderItem">
+
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.orderNumber}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -188,28 +228,30 @@
 
 <ng-template #content let-c="close" let-d="dismiss">
 
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Add Costumer</h4>
-          <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
-          <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Add Costumer</h4>
+        <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+        <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
             <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
             <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
             <div class="input-group">
-              <input class="form-control mb-8" #costumerSearch placeholder="Search Costumer"  (keyup)="searchCostumer(costumerSearch.value)">
+                <input class="form-control mb-8" #costumerSearch placeholder="Search Costumer"
+                    (keyup)="searchCostumer(costumerSearch.value)">
             </div>
-          </div>
         </div>
-        <div >
-            <ul *ngFor="let costumer of costumers">
-                <li (click)="c('Saved'); choosedCostumer = costumer">{{costumer.costumerName}} - {{costumer.costumerId}}</li>
-            </ul>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
-        </div>
-      
+    </div>
+    <div>
+        <ul *ngFor="let costumer of costumers">
+            <li (click)="c('Saved'); choosedCostumer = costumer">{{costumer.costumerName}} - {{costumer.costumerId}}
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
+    </div>
+
 </ng-template>
