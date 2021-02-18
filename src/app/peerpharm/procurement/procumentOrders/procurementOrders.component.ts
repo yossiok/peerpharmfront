@@ -853,12 +853,14 @@ export class ProcurementOrdersComponent implements OnInit {
         if (!tempArr.includes(x) && check) tempArr.push(x);
       });
       this.procurementData = tempArr;
+      console.log('tempArr: ', tempArr)
 
 
     } else {
 
       this.procurementData = this.procurementDataNoFilter
     }
+
   }
 
   exportAsXLSX(expression): void {

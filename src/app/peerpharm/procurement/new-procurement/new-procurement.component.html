@@ -29,7 +29,7 @@
               Purchase</button>
           </div>
           <div class="col-1">
-            <i (click)="orderDetailsModal.emit(false)" class="fa fa-times text-primary"></i>
+            <i (click)="closeOrderModal.emit(false)" class="fa fa-times text-primary"></i>
           </div>
         </div>
         <div class="row mt-2">
@@ -71,14 +71,28 @@
                   <th></th>
                 </tr>
               </thead>
+
+
               <tbody>
                 <tr *ngFor="let stockitem of newPurchase.controls.stockitems.value">
                   <td>{{stockitem.number}}</td>
                   <td>{{stockitem.name}}</td>
-                  <td>{{stockitem.measurement}}</td>
-                  <td>{{stockitem.quantity}}</td>
-                  <td>{{stockitem.price}}</td>
-                  <td><i *ngIf="disabled == false" (click)="removeStockitemFromPurchase(stockitem)" class="fa fa-times text-danger"></i></td>
+                  <td *ngIf="!editItem">{{stockitem.measurement}}</td>
+                  <td *ngIf="editItem">
+                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement" class="form-control">
+                  </td>
+                  <td *ngIf="!editItem">{{stockitem.quantity}}</td>
+                  <td *ngIf="editItem">
+                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity" class="form-control">
+                  </td>
+                  <td *ngIf="!editItem">{{stockitem.price}}</td>
+                  <td *ngIf="editItem">
+                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price" class="form-control">
+                  </td>
+                  <td><i *ngIf="!disabled  && !editItem" (click)="editItem = !editItem" class="click fa fa-pencil-alt text-primary"></i></td>
+                  <td><i *ngIf="!disabled  && editItem" (click)="editItem = !editItem" class="click fa fa-times text-primary"></i></td>
+                  <td><i *ngIf="!disabled && editItem" (click)="updateItems(stockitem)" class="click fa fa-save text-primary h4"></i></td>
+                  <td><i *ngIf="!disabled && !editItem" (click)="removeStockitemFromPurchase(stockitem)" class="click fa fa-times text-danger"></i></td>
                 </tr>
               </tbody>
             </table>
@@ -214,7 +228,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('update'); orderDetailsModal.emit(false)" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('update')" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -386,7 +400,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add'); orderDetailsModal.emit(false)" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" class="btn btn-primary form-control">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>

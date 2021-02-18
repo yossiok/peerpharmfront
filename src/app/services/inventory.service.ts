@@ -120,22 +120,24 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getStockItemByNumber(stockItemNumber): Observable<any> {
-    let url = this.baseUrl + "component?stockItemNumber=" + stockItemNumber;
-    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  //search
+  getFilteredComponents(params): Observable<any> {
+    let url = this.baseUrl + "component/search";
+    return this.http.post(url, params).pipe(map(reponse => reponse.json()));
   }
-  getStockItemByName(stockItemName): Observable<any> {
-    let url = this.baseUrl + "component?stockItemName=" + stockItemName;
-    return this.http.get(url).pipe(map(reponse => reponse.json()));
-  }
-  getStockItemByType(stockItemType): Observable<any> {
-    let url = this.baseUrl + "component?stockItemType=" + stockItemType;
-    return this.http.get(url).pipe(map(reponse => reponse.json()));
-  }
-  getStockItemByCategory(stockItemCategory): Observable<any> {
-    let url = this.baseUrl + "component?stockItemCategory=" + stockItemCategory;
-    return this.http.get(url).pipe(map(reponse => reponse.json()));
-  }
+
+  // getStockItemByName(stockItemName): Observable<any> {
+  //   let url = this.baseUrl + "component?stockItemName=" + stockItemName;
+  //   return this.http.get(url).pipe(map(reponse => reponse.json()));
+  // }
+  // getStockItemByType(stockItemType): Observable<any> {
+  //   let url = this.baseUrl + "component?stockItemType=" + stockItemType;
+  //   return this.http.get(url).pipe(map(reponse => reponse.json()));
+  // }
+  // getStockItemByCategory(stockItemCategory): Observable<any> {
+  //   let url = this.baseUrl + "component?stockItemCategory=" + stockItemCategory;
+  //   return this.http.get(url).pipe(map(reponse => reponse.json()));
+  // }
   getCmptBySupplierItemNumber(cmptNumber, stockType): Observable<any> {
     let url = this.baseUrl + "component?componentNs=" + cmptNumber + "&stockType=" + stockType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

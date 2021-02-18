@@ -168,15 +168,27 @@ td {
   float: right;
   
 }
+
+.title {
+  margin-bottom: -48px;
+  margin-top: 86px;
+  color: deeppink;
+}
+
 @keyframes fadeIn {
   from {opacity: 0;}
-  to {opacity: 100;}
+  to {opacity: 100;;}
 }
+
+
 .flame{
   background-color: rgb(255, 57, 57);
   animation-name: fadeIn;
   animation-duration: 5s;
   animation-iteration-count:infinite;
+}
+.centered {
+  margin: auto;
 }
 .toxic{
   background-color: rgb(29, 212, 59);
