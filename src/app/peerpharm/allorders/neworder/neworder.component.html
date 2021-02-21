@@ -152,11 +152,6 @@
         </li>
       </ul>
 
-    <!-- <div *ngFor="let shipping of shippingMethod" class="m-2 p-2">
-        <div *ngIf="shippingMethod != []">
-            <span class="border border-success">{{shipping.shippingWay}} - {{shipping.shippingQuantity}}</span>
-        </div>
-    </div> -->
     <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)'>
         <div class="row mt-3 bg-muted">
             <div style="background: #d5cff9" class="col-12 shadow rounded">
@@ -165,7 +160,7 @@
                         <tr>
                             <th>#</th>
                             <th>Item</th>
-                            <th>Discription </th>
+                            <th>Description </th>
                             <th>neto Weight (Gr)</th>
                             <th>Quantity</th>
                             <th>Weight</th>
