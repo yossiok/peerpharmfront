@@ -6,6 +6,16 @@ input:focus::-webkit-input-placeholder {
     color: #7460ee;
 }
 
+.big {
+  font-size: 30px
+}
+
+.items {
+  background: #d5cff9;
+  overflow: auto;
+  max-height: 300px;
+}
+
 .fixed {
   position: fixed;
   width: 251px;
