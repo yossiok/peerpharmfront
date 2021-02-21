@@ -228,7 +228,9 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('update')" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('update')" [disabled]="disabled" 
+            class="btn btn-primary form-control" [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''"
+            >Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -304,29 +306,33 @@
         <hr class="text-muted">
         <div class="row mt-2">
           <div class="col">
-            <h4 class="text-primary">Add Item</h4>
+            <button (click)="showItemDetails = !showItemDetails" class="btn btn-primary dropdown-toggle" >
+              Add Item
+            </button>
           </div>
         </div>
-        <div class="row mt-3">
-          <div class="col">
-            <h5 class="text-secondary">Item Details</h5>
+        <div *ngIf="showItemDetails">
+
+          <div class="row mt-3">
+            <div class="col">
+              <h5 class="text-secondary">Item Details</h5>
+            </div>
           </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-sm-12 col-md-4 form-group">
-            <input (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number" [ngModelOptions]="{standalone: true}"
+          <div class="row mt-4">
+            <div class="col-sm-12 col-md-4 form-group">
+              <input (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number" [ngModelOptions]="{standalone: true}"
               type="text" class="form-control" placeholder="Item Number">
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+            </div>
+            <div class="col-sm-12 col-md-4 form-group">
+              <input [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
               placeholder="Item Name">
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}" type="number"
+            </div>
+            <div class="col-sm-12 col-md-4 form-group">
+              <input [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}" type="number"
               class="form-control" placeholder="Quantity">
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
+            </div>
+            <div class="col-sm-12 col-md-4 form-group">
+              <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
               class="form-control custom-select">
               <option value="kg">kg</option>
               <option value="liter">liter</option>
@@ -340,15 +346,14 @@
           </div>
           <div class="col-sm-12 col-md-4 form-group">
             <input [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-              placeholder="Coin">
+            placeholder="Coin">
           </div>
           <div class="col-sm-12 col-md-4 form-group">
             <input [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}" type="number"
-              class="form-control" placeholder="Price">
+            class="form-control" placeholder="Price">
           </div>
-
+          
         </div>
-
         <div class="row mt-1">
           <div class="col-5"></div>
           <div class="col-2">
@@ -358,6 +363,8 @@
           </div>
           <div class="col-5"></div>
         </div>
+      </div>
+        
 
         <div class="row mt-4">
           <div class="col-4"></div>
@@ -400,7 +407,8 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" 
+            class="btn btn-primary form-control" [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>

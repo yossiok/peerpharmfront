@@ -4,15 +4,22 @@
 
 input:focus::-webkit-input-placeholder {
     color: #7460ee;
-    
-    
 }
+
+.fixed {
+  position: fixed;
+  width: 251px;
+  height: 44px;
+  left: 817px;
+  top: 861px;
+  border-radius: 20px;
+}
+
 select:focus,input:focus {
- 
-    border-color: #7460ee;
-    box-shadow: 0 0 5px #7460ee;
-  
+  border-color: #7460ee;
+  box-shadow: 0 0 5px #7460ee;
 }
+
 input:hover {
     cursor: auto;
 }
@@ -29,10 +36,6 @@ input:hover {
 .click { 
   cursor: pointer;
 }
-
-// .click:hover {
-//   background-color: lightgray;
-// }
 
 ::-webkit-scrollbar {
     width: 10px;
