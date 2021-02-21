@@ -220,6 +220,14 @@
                   placeholder="Supplier Email">
               </div>
             </div>
+
+            <div class="row mt-1">
+              <div class="col-sm-12 col-md-12 form-group">
+                <label for="remarks">Remarks</label>
+                <textarea formControlName="remarks" [disabled]="disabled" value="purchaseData.remarks"
+                class="form-control" placeholder="Purchase Remarks"></textarea>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -275,6 +283,12 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-12 form-group">
+            <textarea placeholder="Purchase Remarks" formControlName="remarks" class="form-control"></textarea>
+          </div>
+        </div>
+
         <hr class="text-muted">
         <div class="row mt-3">
           <div class="col">
@@ -304,15 +318,17 @@
         <hr class="text-muted">
         <div class="row mt-2">
           <div class="col">
-            <h4 class="text-primary">Add Item</h4>
+            <button (click)="showItemDetails = !showItemDetails" class="btn btn-primary dropdown-toggle" >
+              Add Item
+            </button>
           </div>
         </div>
-        <div class="row mt-3">
+        <div *ngIf="showItemDetails" class="row mt-3">
           <div class="col">
             <h5 class="text-secondary">Item Details</h5>
           </div>
         </div>
-        <div class="row mt-4">
+        <div *ngIf="showItemDetails" class="row mt-4">
           <div class="col-sm-12 col-md-4 form-group">
             <input (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number" [ngModelOptions]="{standalone: true}"
               type="text" class="form-control" placeholder="Item Number">
@@ -349,7 +365,7 @@
 
         </div>
 
-        <div class="row mt-1">
+        <div *ngIf="showItemDetails" class="row mt-1">
           <div class="col-5"></div>
           <div class="col-2">
             <button type="button" (click)="addItemToPurchase()" class="btn btn-primary form-control">
