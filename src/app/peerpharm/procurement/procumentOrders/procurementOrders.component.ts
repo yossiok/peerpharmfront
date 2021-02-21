@@ -64,6 +64,7 @@ export class ProcurementOrdersComponent implements OnInit {
   EditRowComax: any = "";
   requestNum: any = "";
   user: any;
+  currRecommend: any;
   currCertifItem: any;
   currentInvoice: any;
   sumCharge: any;
@@ -131,6 +132,7 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild('recommendRemarks') recommendRemarks: ElementRef;
   @ViewChild('supplierPrice') supplierPrice: ElementRef;
   @ViewChild('expectedDate') expectedDate: ElementRef;
+  @ViewChild('printRecommendBtn') printRecommendBtn: ElementRef;
 
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
@@ -190,8 +192,8 @@ export class ProcurementOrdersComponent implements OnInit {
 
   moveToNewPurchase(id, type) {
     if (type == 'single') {
-      // window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id=' + id)
-      window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
+      window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id=' + id)
+      // window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
     } else {
       window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?multi=' + this.selectedArr)
     }
@@ -211,9 +213,9 @@ export class ProcurementOrdersComponent implements OnInit {
   loadPurchasesItems() {
     var tempArr = []
     for (let i = 0; i < this.procurementData.length; i++) {
-      for (let j = 0; j < this.procurementData[i].item.length; j++) {
-        this.procurementData[i].item[j].supplier = this.procurementData[i].supplierName
-        tempArr.push(this.procurementData[i].item[j])
+      for (let j = 0; j < this.procurementData[i].stockitems.length; j++) {
+        this.procurementData[i].stockitems[j].supplier = this.procurementData[i].supplierName
+        tempArr.push(this.procurementData[i].stockitems[j])
       }
     }
     this.excelService.exportAsExcelFile(tempArr, 'data');
@@ -319,6 +321,13 @@ export class ProcurementOrdersComponent implements OnInit {
 
     }
 
+
+  }
+
+  printRecommend(recommend){
+    debugger;
+  this.currRecommend = recommend
+  this.printRecommendBtn.nativeElement.click();
 
   }
 

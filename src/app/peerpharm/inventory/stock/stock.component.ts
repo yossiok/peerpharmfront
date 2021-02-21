@@ -492,14 +492,14 @@ export class StockComponent implements OnInit {
 
   getAllPurchases() {
 
-    this.procuretServ.getAllPurchases().subscribe(data => {
+    this.procuretServ.getAllPurchases().subscribe(allPurchases => {
       debugger;
       this.components.forEach(comp => {
 
-        let allPurchases = data.filter(x => x.item.filter(x => x.itemNumber == comp.componentN).length > 0)
-        comp.purchaseOrders = allPurchases
+        let filteredPurchases = allPurchases.filter(x => x.item.filter(x => x.itemNumber == comp.componentN).length > 0)
+        comp.purchaseOrders = filteredPurchases
         if (comp.purchaseOrders.length > 0) {
-          debugger;
+          
         }
       });
     })

@@ -1282,6 +1282,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       }
     } else { 
       if (this.itemShown.itemNumber != "") {
+        debugger;
         if (confirm("Save changes?")) {
           await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes => {
             if (itemNumRes.length > 0) {
@@ -1310,7 +1311,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       // this.itemShown.updateDate;
       this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => {
         console.log(res)
-        this.toastr.success("Saved", "Changes Saved fot item number: " + this.itemShown.itemNumber);
+        this.toastr.success("Saved", "Changes Saved for item number: " + this.itemShown.itemNumber);
         this.editSpecTable = false;
       });
     } else {
