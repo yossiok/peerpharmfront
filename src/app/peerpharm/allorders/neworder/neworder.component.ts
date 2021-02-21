@@ -9,6 +9,7 @@ import { map, startWith } from "rxjs/operators";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
+import { InventoryService } from "src/app/services/inventory.service";
 
 @Component({
   selector: "app-neworder",
@@ -49,6 +50,7 @@ export class NeworderComponent implements OnInit {
     private costumerService: CostumersService,
     private toastSrv: ToastrService,
     private authService: AuthService,
+    private inventoryService: InventoryService
   ) {
     this.orderForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -142,7 +144,12 @@ export class NeworderComponent implements OnInit {
   }
 
   addNewItemOrder(post) {
-    debugger;
+    let weightKG = Number(this.orderItemForm.controls['netWeightK'].value)*Number(this.orderItemForm.controls['quantity'].value)/1000
+    let formule = this.orderItemForm.controls['itemN'].value
+    //check amounts
+    this.inventoryService.reduceMaterialAmounts(formule, weightKG, false).subscribe (amounts => {
+      console.log(amounts)
+    })
     if (this.shippingDetails.shippingWay == "" || this.orderItemForm.controls.itemN.value == '' || this.orderItemForm.controls.itemN.value == null) {
       this.toastSrv.error("Please fill all the details")
     } else {

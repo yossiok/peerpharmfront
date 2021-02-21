@@ -155,15 +155,16 @@
     <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)'>
         <div class="row mt-3 bg-muted">
             <div style="background: #d5cff9" class="col-12 shadow rounded">
+                <div class="row mt-2"> Required <span class="red">*</span></div>
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Item</th>
-                            <th>Description </th>
-                            <th>neto Weight (Gr)</th>
-                            <th>Quantity</th>
-                            <th>Weight</th>
+                            <th>Item<span class="red">*</span> </th>
+                            <th>Description <span class="red">*</span> </th>
+                            <th>neto Weight (Gr)<span class="red">*</span> </th>
+                            <th>Quantity<span class="red">*</span> </th>
+                            <th>Weight<span class="red">*</span> </th>
                             <th>Remarks</th>
                             <th></th>
                         </tr>
@@ -177,7 +178,7 @@
                             <td><input formControlName="qtyKg" class="form-control"></td>
                             <td><input formControlName="remarks" class="form-control"></td>
 
-                            <td><input type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
+                            <td><input [disabled]="!orderItemForm.valid" type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
                         </tr>
                     </thead>
                     <tbody>
