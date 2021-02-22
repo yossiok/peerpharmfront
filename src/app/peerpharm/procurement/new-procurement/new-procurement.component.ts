@@ -141,11 +141,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         }
       })
     }
-    // if (this.authService.loggedInUser) {
-    //   // this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
-    //   // this.newPurchase.controls.user.setValue(this.authService.loggedInUser.userName);
-    //   // this.user = this.authService.loggedInUser.userName
-    // }
+    if (this.authService.loggedInUser) {
+      this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
+      this.user = this.authService.loggedInUser.userName
+    }
     // else {
     //   this.authService.userEventEmitter.subscribe(data => {
     //     this.userEmail = this.authService.loggedInUser.userEmail;

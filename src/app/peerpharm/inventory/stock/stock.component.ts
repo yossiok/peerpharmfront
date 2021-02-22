@@ -36,6 +36,7 @@ export class StockComponent implements OnInit {
   // resCmpt: any;
   itemmoveBtnTitle: string = "Item Movements";
   loadingMovements: boolean = false;
+  currShelf:any;
   showItemDetails: boolean = true;
   showLoader: boolean = false;
   smallLoader: boolean = false;
@@ -111,15 +112,17 @@ export class StockComponent implements OnInit {
     customerName: '',
     allUnits: '',
     shelf: '',
+    shelfId:'',
+    shelfAmount:'',
     qaStatus: 'מוכן לשליחה',
     itemNumber: '',
     palletStatus: 'open',
     isPersonalPackage: false,
     kartonQuantity: '',
-    lastFloorQuantity: '',
+    lastFloorQuantity: 0,
     orderNumber: '',
     unitsInKarton: '',
-    unitsQuantityPartKarton: '',
+    unitsQuantityPartKarton: 0,
     floorNumber: ''
 
 
@@ -956,11 +959,27 @@ export class StockComponent implements OnInit {
   }
 
   createNewQAPallet() {
-    debugger;
-
-    this.formService.createNewQaPallet(this.newQApallet).subscribe(data => {
-
-    })
+    
+    let amountToReduce = this.newQApallet.floorNumber*this.newQApallet.kartonQuantity*this.newQApallet.unitsInKarton;
+    if(this.newQApallet.lastFloorQuantity > 0){
+      amountToReduce = amountToReduce+(this.newQApallet.lastFloorQuantity*this.newQApallet.unitsInKarton);
+    }
+    if(this.newQApallet.unitsQuantityPartKarton > 0){
+      amountToReduce = amountToReduce + this.newQApallet.unitsQuantityPartKarton
+    }
+    if(this.newQApallet.shelfAmount < amountToReduce){
+      this.toastSrv.error('שים לב , כמות מדף קטנה מהכמות שאתה מבקש למשוך')
+    } else {
+      this.newQApallet.itemNumber = this.resCmpt.componentN
+      this.formService.createNewQaPallet(this.newQApallet).subscribe(data => {
+      if(data){
+        this.toastSrv.success('הועבר לרשימת פריטים בהצלחה !')
+        this.currShelf.amount -= amountToReduce
+        this.getAmountsFromShelfs();
+      }
+      })
+    }
+   
   }
 
   getAllCmptTypesAndCategories() {
@@ -1352,10 +1371,16 @@ export class StockComponent implements OnInit {
   }
 
 
-  loadShelfToInput(position, ev) {
-    if (!position.includes("NO SHELFS")) {
-      this.newItemShelfPosition = position;
+  loadShelfToInput(shelf, ev) {
+    debugger;
+    if (!shelf.position.includes("NO SHELFS")) {
+      this.newItemShelfPosition = shelf.position;
+      this.newQApallet.shelf = shelf.position
+      this.newQApallet.shelfId = shelf._id
+      this.newQApallet.shelfAmount = shelf.amount
+      this.currShelf = shelf;
     }
+
   }
 
 

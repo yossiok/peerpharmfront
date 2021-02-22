@@ -1476,7 +1476,7 @@
             </div>
             <ng-container *ngFor="let itemShelf of currItemShelfs">
               <div class="col-sm-3 bg-white rounded border border-success"
-                (click)="loadShelfToInput(itemShelf.position, $event)"
+                (click)="loadShelfToInput(itemShelf, $event)"
                 style="margin-left:5px; cursor:pointer; padding: 3px; ">
                 <span><u>{{itemShelf.position}}</u>: <b>{{itemShelf.amount}}</b> Units </span>&nbsp;<br>
                 <span *ngIf="itemShelf.arrivalDate!='undefined' && itemShelf.itemType=='product' ">Batch:
