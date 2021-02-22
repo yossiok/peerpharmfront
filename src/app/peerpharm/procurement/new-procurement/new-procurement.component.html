@@ -65,6 +65,7 @@
                 <tr>
                   <th>Item</th>
                   <th>Item Name</th>
+                  <th>Remarks</th>
                   <th>Measurement</th>
                   <th>Quantity</th>
                   <th>Price</th>
@@ -77,18 +78,22 @@
                 <tr *ngFor="let stockitem of newPurchase.controls.stockitems.value">
                   <td>{{stockitem.number}}</td>
                   <td>{{stockitem.name}}</td>
+                  <td>{{stockitem.itemRemarks}}</td>
                   <td *ngIf="!editItem">{{stockitem.measurement}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement" class="form-control">
                   </td>
+
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity" class="form-control">
                   </td>
+
                   <td *ngIf="!editItem">{{stockitem.price}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price" class="form-control">
                   </td>
+
                   <td><i *ngIf="!disabled  && !editItem" (click)="editItem = !editItem" class="click fa fa-pencil-alt text-primary"></i></td>
                   <td><i *ngIf="!disabled  && editItem" (click)="editItem = !editItem" class="click fa fa-times text-primary"></i></td>
                   <td><i *ngIf="!disabled && editItem" (click)="updateItems(stockitem)" class="click fa fa-save text-primary h4"></i></td>
@@ -265,7 +270,7 @@
         </div>
 
         <hr class="text-muted">
-        <div class="row mt-5">
+        <div class="row mt-3">
           <div class="col">
             <h5 class="text-secondary">Purchase Details</h5>
           </div>
@@ -323,12 +328,12 @@
             </button>
           </div>
         </div>
-        <div *ngIf="showItemDetails" class="row mt-3">
+        <div *ngIf="showItemDetails" class="row mt-2">
           <div class="col">
             <h5 class="text-secondary">Item Details</h5>
           </div>
         </div>
-        <div *ngIf="showItemDetails" class="row mt-4">
+        <div *ngIf="showItemDetails" class="row mt-2">
           <div class="col-sm-12 col-md-4 form-group">
             <input (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number" [ngModelOptions]="{standalone: true}"
               type="text" class="form-control" placeholder="Item Number">
@@ -363,6 +368,11 @@
               class="form-control" placeholder="Price">
           </div>
 
+        </div>
+
+        <div *ngIf="showItemDetails" class="row mt-1">
+        <textarea [(ngModel)]="stockitem.itemRemarks" [ngModelOptions]="{standalone: true}" type="number"
+        class="form-control" placeholder="Item Remarks" ></textarea>
         </div>
 
         <div *ngIf="showItemDetails" class="row mt-1">
