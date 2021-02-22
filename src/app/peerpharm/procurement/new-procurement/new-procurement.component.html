@@ -29,7 +29,7 @@
               Purchase</button>
           </div>
           <div class="col-1">
-            <i (click)="closeOrderModal.emit(false)" class="fa fa-times text-primary"></i>
+            <i (click)="closeOrderModal.emit(false)" class="big click fa fa-times text-primary"></i>
           </div>
         </div>
         <div class="row mt-2">
@@ -59,7 +59,7 @@
         </div>
 
         <div class="row mt-3 bg-muted">
-          <div style="background: #d5cff9;overflow: auto;max-height: 300px;" class="col-12 shadow rounded">
+          <div class="col-12 shadow rounded items">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -109,7 +109,7 @@
         <div class="row mt-2">
           <div class="col">
             <button (click)="showItemDetails = !showItemDetails" class="btn btn-primary dropdown-toggle" >
-              Add Item
+              {{showItemDetails ? 'Hide Derails' : 'Add Item'}}
             </button>
           </div>
         </div>
@@ -241,7 +241,9 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('update')" [disabled]="disabled" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('update')" [disabled]="disabled" 
+            class="btn btn-primary form-control" [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''"
+            >Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -252,25 +254,17 @@
 
 <!----------------------------------------------------------------------------------------------------------------------->
 <!--ADD-->
-<div *ngIf="!purchaseData" style="border-radius: 15px;" class="container bg-white border shadow-lg text-center p-3">
+<div *ngIf="!purchaseData" style="border-radius: 15px;" class="container bg-white border shadow-lg text-center p-2">
   <div class="row">
     <div class="col-12">
       <form [formGroup]="newPurchase">
 
-        <div class="row mt-3">
-          <div class="col-3">
-
-          </div>
-          <div class="col-6 bg-primary rounded-pill">
+  
+          <div class="bg-primary rounded-pill">
             <h3 class="text-white p-2">New Purchase Order</h3>
           </div>
-          <div class="col-3">
-
-          </div>
-        </div>
-
-        <hr class="text-muted">
-        <div class="row mt-3">
+        
+        <div class="row mt-5">
           <div class="col">
             <h5 class="text-secondary">Purchase Details</h5>
           </div>
@@ -324,7 +318,7 @@
         <div class="row mt-2">
           <div class="col">
             <button (click)="showItemDetails = !showItemDetails" class="btn btn-primary dropdown-toggle" >
-              Add Item
+              {{showItemDetails ? 'Hide Details' : 'Add Item'}}
             </button>
           </div>
         </div>
@@ -337,17 +331,17 @@
           <div class="col-sm-12 col-md-4 form-group">
             <input (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number" [ngModelOptions]="{standalone: true}"
               type="text" class="form-control" placeholder="Item Number">
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+            </div>
+            <div class="col-sm-12 col-md-4 form-group">
+              <input [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
               placeholder="Item Name">
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}" type="number"
+            </div>
+            <div class="col-sm-12 col-md-4 form-group">
+              <input [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}" type="number"
               class="form-control" placeholder="Quantity">
-          </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
+            </div>
+            <div class="col-sm-12 col-md-4 form-group">
+              <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
               class="form-control custom-select">
               <option value="kg">kg</option>
               <option value="liter">liter</option>
@@ -361,13 +355,13 @@
           </div>
           <div class="col-sm-12 col-md-4 form-group">
             <input [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-              placeholder="Coin">
+            placeholder="Coin">
           </div>
           <div class="col-sm-12 col-md-4 form-group">
             <input [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}" type="number"
-              class="form-control" placeholder="Price">
+            class="form-control" placeholder="Price">
           </div>
-
+          
         </div>
 
         <div *ngIf="showItemDetails" class="row mt-1">
@@ -384,6 +378,8 @@
           </div>
           <div class="col-5"></div>
         </div>
+      </div>
+        
 
         <div class="row mt-4">
           <div class="col-4"></div>
@@ -394,7 +390,7 @@
         </div>
 
         <div class="row mt-3 bg-muted">
-          <div style="background: #d5cff9" class="col-12 shadow rounded">
+          <div class="col-12 shadow rounded items">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -413,7 +409,7 @@
                   <td>{{stockitem.measurement}}</td>
                   <td>{{stockitem.quantity}}</td>
                   <td>{{stockitem.price}}</td>
-                  <td><i (click)="removeStockitemFromPurchase(stockitem)" class="fa fa-times text-danger"></i></td>
+                  <td><i (click)="removeStockitemFromPurchase(stockitem)" class="click fa fa-times text-danger"></i></td>
                 </tr>
               </tbody>
             </table>
@@ -426,7 +422,8 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" class="btn btn-primary form-control">Confirm</button>
+            <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" 
+            class="btn btn-primary form-control" [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>

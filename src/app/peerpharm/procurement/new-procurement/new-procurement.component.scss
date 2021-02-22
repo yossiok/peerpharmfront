@@ -4,8 +4,6 @@
 
 input:focus::-webkit-input-placeholder {
     color: #7460ee;
-    
-    
 }
 select:focus,input:focus,textarea:focus {
  
@@ -13,6 +11,7 @@ select:focus,input:focus,textarea:focus {
     box-shadow: 0 0 5px #7460ee;
   
 }
+
 input:hover {
     cursor: auto;
 }
@@ -29,10 +28,6 @@ input:hover {
 .click { 
   cursor: pointer;
 }
-
-// .click:hover {
-//   background-color: lightgray;
-// }
 
 ::-webkit-scrollbar {
     width: 10px;
