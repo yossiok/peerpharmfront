@@ -199,8 +199,9 @@
 
     </form>
     <br>
-    <h1 style="color:red" *ngIf="existOrderItem">שים לב! פריט זה קיים בהזמנות קודמות ,ייתכן ותוכל לשלוח אותם ביחד
+    <h1 style="color:red" *ngIf="existOrderItem">שים לב! פריט זה קיים בהזמנות קודמות ,ייתכן ותוכל לשלוח אותם ביחד *
         לייצור</h1>
+      
     <div style="width:500px;" *ngIf="existOrderItem">
         <table class="table table-striped">
             <thead>
@@ -221,6 +222,29 @@
 </div>
 
 
+
+<ng-template #amounts let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">שים לב! אין כמות מספיקה לפריטים הבאים: </h1>
+    </div>
+    <div class="modal-body">
+        <div>
+            <ul class="list-group" *ngFor="let material of materialsNotEnoughAmount">
+                <li class="list-group-item list-group-item-action list-group-item-warning">{{material}}
+                </li>
+            </ul>
+        </div>
+        <h2>האם ברצונך להמשיך?</h2>
+        <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+            <span aria-hidden="true">&times;</span>המשך
+        </button>
+    </div>
+ 
+    <div class="modal-footer">
+    </div>
+
+</ng-template>
 
 <ng-template #content let-c="close" let-d="dismiss">
 

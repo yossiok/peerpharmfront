@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { OrdersService } from "../../../services/orders.service";
 import { CostumersService } from "../../../services/costumers.service";
@@ -18,6 +18,7 @@ import { InventoryService } from "src/app/services/inventory.service";
 })
 export class NeworderComponent implements OnInit {
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('amounts') amounts;
   orderItemForm: FormGroup;
   orderForm: FormGroup;
   orderNumber: string;
@@ -41,6 +42,7 @@ export class NeworderComponent implements OnInit {
   submited: boolean = false;
   openModal: boolean = false;
   titleAlert: string = "This field is required";
+  materialsNotEnoughAmount: []
 
 
   constructor(
@@ -143,12 +145,22 @@ export class NeworderComponent implements OnInit {
     }
   }
 
-  addNewItemOrder(post) {
+  async addNewItemOrder(post) {
     let weightKG = Number(this.orderItemForm.controls['netWeightK'].value)*Number(this.orderItemForm.controls['quantity'].value)/1000
     let formule = this.orderItemForm.controls['itemN'].value
     //check amounts
-    this.inventoryService.reduceMaterialAmounts(formule, weightKG, false).subscribe (amounts => {
-      console.log(amounts)
+    this.inventoryService.reduceMaterialAmounts(formule, weightKG, false).subscribe (response => {
+      this.materialsNotEnoughAmount = response.materials
+      if(response.materials.length > 0) {
+        let materialNames = <any>[]
+        // console.log('materials:  ',response.materials)
+        for(let material of response.materials) {
+          this.inventoryService.getMaterialByNumber(material, 'material').subscribe(
+            material => materialNames.push(material[0].componentN))
+        }
+        this.materialsNotEnoughAmount = materialNames;
+        this.modalService.open(this.amounts)
+      }  
     })
     if (this.shippingDetails.shippingWay == "" || this.orderItemForm.controls.itemN.value == '' || this.orderItemForm.controls.itemN.value == null) {
       this.toastSrv.error("Please fill all the details")
@@ -334,6 +346,7 @@ export class NeworderComponent implements OnInit {
   }
 
   openSearch(content, costumer) {
+    console.log('AKAKAKAKAKAKAKAKAKAK ',content)
     this.modalService
       .open(content, { ariaLabelledBy: "modal-basic-title" })
       .result.then(
