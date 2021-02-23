@@ -174,7 +174,7 @@
                                     (focusout)="searchItem(itemN.value)"></td>
                             <td><input formControlName="discription" class="form-control" style='width:370px'></td>
                             <td><input formControlName="netWeightK" class="form-control"></td>
-                            <td><input formControlName="quantity" class="form-control"></td>
+                            <td><input formControlName="quantity" class="form-control" (change)="checkAmounts()"></td>
                             <td><input formControlName="qtyKg" class="form-control"></td>
                             <td><input formControlName="remarks" class="form-control"></td>
 
@@ -223,31 +223,31 @@
 
 
 
-<ng-template #amounts let-c="close" let-d="dismiss">
-
-    <div class="modal-header">
-        <h1 class="modal-title" id="modal-basic-title">שים לב! אין כמות מספיקה לפריטים הבאים: </h1>
+<ng-template dir="rtl" #amounts let-c="close" let-d="dismiss">
+    <div class="p-2" dir="rtl" *ngIf="waitForAmounts">
+        <h1 class="red">בודק כמויות. אנא המתן</h1>
+        <div class="bigLoader" ></div>
     </div>
-    <div class="modal-body">
+    <div dir="rtl" *ngIf="!waitForAmounts" class="modal-header">
+        <h1 class="modal-title red" id="modal-basic-title">שים לב! אין כמות מספיקה לפריטים הבאים: </h1>
+    </div>
+    <div *ngIf="!waitForAmounts" class="modal-body">
         <div>
             <ul class="list-group" *ngFor="let material of materialsNotEnoughAmount">
                 <li class="list-group-item list-group-item-action list-group-item-warning">{{material}}
                 </li>
             </ul>
         </div>
-        <h2>האם ברצונך להמשיך?</h2>
-        <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
-            <span aria-hidden="true">&times;</span>המשך
+        <h4>האם ברצונך להמשיך?</h4>
+    </div>
+    <div dir="rtl" class="modal-footer">
+        <button type="button" class="btn btn-secondary" aria-label="Close" (click)="c('Cross click')">
+          המשך
         </button>
     </div>
- 
-    <div class="modal-footer">
-    </div>
-
 </ng-template>
 
 <ng-template #content let-c="close" let-d="dismiss">
-
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Add Costumer</h4>
         <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
@@ -273,5 +273,4 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
     </div>
-
 </ng-template>

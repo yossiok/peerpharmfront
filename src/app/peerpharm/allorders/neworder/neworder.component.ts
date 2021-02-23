@@ -43,6 +43,7 @@ export class NeworderComponent implements OnInit {
   openModal: boolean = false;
   titleAlert: string = "This field is required";
   materialsNotEnoughAmount: []
+  waitForAmounts: boolean = false;
 
 
   constructor(
@@ -145,23 +146,36 @@ export class NeworderComponent implements OnInit {
     }
   }
 
-  async addNewItemOrder(post) {
-    let weightKG = Number(this.orderItemForm.controls['netWeightK'].value)*Number(this.orderItemForm.controls['quantity'].value)/1000
-    let formule = this.orderItemForm.controls['itemN'].value
-    //check amounts
-    this.inventoryService.reduceMaterialAmounts(formule, weightKG, false).subscribe (response => {
-      this.materialsNotEnoughAmount = response.materials
-      if(response.materials.length > 0) {
-        let materialNames = <any>[]
-        // console.log('materials:  ',response.materials)
-        for(let material of response.materials) {
-          this.inventoryService.getMaterialByNumber(material, 'material').subscribe(
-            material => materialNames.push(material[0].componentN))
-        }
-        this.materialsNotEnoughAmount = materialNames;
-        this.modalService.open(this.amounts)
-      }  
-    })
+  checkAmounts() {
+    this.waitForAmounts = true;
+    this.modalService.open(this.amounts);
+    if(this.orderItemForm.controls['netWeightK'].value != "" && this.orderItemForm.controls['quantity'].value != "") {
+
+      let weightKG = Number(this.orderItemForm.controls['netWeightK'].value)*Number(this.orderItemForm.controls['quantity'].value)/1000
+      let formule = this.orderItemForm.controls['itemN'].value
+      //check amounts
+      this.inventoryService.reduceMaterialAmounts(formule, weightKG, false).subscribe (response => {
+        this.materialsNotEnoughAmount = response.materials
+        if(response.materials.length > 0) {
+          let materialNames = <any>[]
+          // console.log('materials:  ',response.materials)
+          for(let material of response.materials) {
+            this.inventoryService.getMaterialByNumber(material, 'material')
+            .subscribe(material => {
+                materialNames.push(material[0].componentName)
+                console.log(material[0].componentName)
+              })
+            }
+            this.materialsNotEnoughAmount = materialNames;
+            this.waitForAmounts = false;
+          }  
+        })
+      }
+      else this.toastSrv.warning('יש להזין משקל וכמות')
+  }
+
+  addNewItemOrder(post) {
+  
     if (this.shippingDetails.shippingWay == "" || this.orderItemForm.controls.itemN.value == '' || this.orderItemForm.controls.itemN.value == null) {
       this.toastSrv.error("Please fill all the details")
     } else {
