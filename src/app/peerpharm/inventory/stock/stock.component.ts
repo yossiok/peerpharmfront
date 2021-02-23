@@ -310,6 +310,7 @@ export class StockComponent implements OnInit {
   }
   itemExpectedArrivals: any;
   closeResult: string;
+  filterParams:FormGroup;
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -355,19 +356,21 @@ export class StockComponent implements OnInit {
 
   }
 
-  filterParams: FormGroup = new FormGroup({
-    componentN: new FormControl(''),
-    componentName: new FormControl(''),
-    componentType: new FormControl(''),
-    componentCategory: new FormControl(''),
-    // productName: new FormControl('')
-  })
-
 
 
   constructor(private formService: FormsService, private customerSrv: CostumersService, private supplierService: SuppliersService, private orderService: OrdersService, private modalService: NgbModal, private procuretServ: Procurementservice, private excelService: ExcelService, private route: ActivatedRoute, private inventoryService: InventoryService, private uploadService: UploadFileService,
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder,) {
+
+
+      this.filterParams = fb.group({
+        componentN: new FormControl('',Validators.pattern('^[a-zA-Z]+$')),
+        componentName: new FormControl('',Validators.pattern('^[a-zA-Z]+$')),
+        componentType: new FormControl(''),
+        componentCategory: new FormControl(''),
+      }) 
+    
+
   }
   @Output() sendDataToExpectedArrivalsModal = new EventEmitter();
   @Input() expectedArrivalItemData: any;
@@ -486,7 +489,7 @@ export class StockComponent implements OnInit {
     this.getAllComponents();
 
     if (this.route.queryParams) {
-      this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+      if(this.route.snapshot.queryParams.componentN) this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
     this.getColor(new Date);
 
@@ -1316,14 +1319,6 @@ export class StockComponent implements OnInit {
       // this.filterbyNum.nativeElement.value = "";
     }
     this.stockType = type;
-    if (this.stockType == 'cartons') {
-      this.components = this.componentsUnFiltered.filter(x => x.componentType == 'master_carton');
-    } else if (this.stockType == 'sticker') {
-      this.components = this.componentsUnFiltered.filter(x => x.componentType == 'sticker');
-    } else {
-      this.components = this.componentsUnFiltered.filter(x => x.itemType == type);
-    }
-
 
 
   }

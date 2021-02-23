@@ -52,7 +52,7 @@
 
       <div class="col-2 fixNoaStupidStuff">
         <label for="">Component Name</label>
-        <input formControlName="componentName" type="text" class="form-control rounded-pill"
+        <input pattern="^[a-z0-9_-]{8,15}$" formControlName="componentName" type="text" class="form-control rounded-pill"
           placeholder="Search By Name">
       </div>
 
