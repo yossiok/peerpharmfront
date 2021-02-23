@@ -217,47 +217,41 @@ export class InventoryService {
   }
 
   addNewMaterial(materialObj): Observable<any> {
-
     let url = this.baseUrl + "material/add";
     return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
   }
   addNewBox(materialObj): Observable<any> {
-
     let url = this.baseUrl + "material/addNewBox";
     return this.http.post(url, JSON.stringify(materialObj), this.options).pipe(map(res => res.json()))
   }
   getShelfListForMaterial(material): Observable<any> {
-
     let url = this.baseUrl + "material/getShelfListForMaterial";
     return this.http.post(url, JSON.stringify({ materialNumber: material }), this.options).pipe(map(res => res.json()))
   }
   updateBoxLocation(id, location): Observable<any> {
-
     let url = this.baseUrl + "material/updateBoxLocation";
     return this.http.post(url, JSON.stringify({ id, location }), this.options).pipe(map(res => res.json()))
   }
   updateSupplier(obj): Observable<any> {
-
     let url = this.baseUrl + "material/updateSupplier";
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res => res.json()))
   }
   updateProductionDetails(production): Observable<any> {
-
     let url = this.baseUrl + "material/updateProductionDetails";
     return this.http.post(url, JSON.stringify(production), this.options).pipe(map(res => res.json()))
   }
-  reduceMaterialAmount(material): Observable<any> {
 
+  reduceMaterialAmount(material): Observable<any> {
     let url = this.baseUrl + "material/reduceMaterialAmount";
     return this.http.post(url, JSON.stringify(material), this.options).pipe(map(res => res.json()))
   }
-  reduceMaterialAmounts(formuleNumber, weightKG): Observable<any> {
 
+  reduceMaterialAmounts(formuleNumber, weightKG, reduce): Observable<any> {
     let url = this.baseUrl + "material/reduceMaterialAmounts";
-    return this.http.post(url, JSON.stringify({ formuleNumber: formuleNumber, weightKG: weightKG }), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ formuleNumber: formuleNumber, weightKG: weightKG, reduce: reduce }), this.options).pipe(map(res => res.json()))
   }
-  recieveNewComponents(allArrivals): Observable<any> {
 
+  recieveNewComponents(allArrivals): Observable<any> {
     let url = this.baseUrl + "itemShell/recieveNewComponents";
     return this.http.post(url, JSON.stringify(allArrivals), this.options).pipe(map(res => res.json()))
   }

@@ -16,8 +16,17 @@ import { ChatService } from 'src/app/shared/chat.service';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
+  @ViewChild('orderRemarks') orderRemarks: ElementRef;
+  @ViewChild('orderType') orderType: ElementRef;
+  @ViewChild('deliveryDate') deliveryDate: ElementRef;
+  @ViewChild('orderDate') orderDate: ElementRef;
+  @ViewChild('customerOrderNum') customerOrderNum: ElementRef;
+  @ViewChild('costumer') costumer: ElementRef;
+  @ViewChild('orderNumber') orderNumber: ElementRef;
+  @ViewChild('id') id: ElementRef;
+  @ViewChild('stage') stage: ElementRef;
+  @ViewChild('onHoldDate') onHoldDate: ElementRef;
 
-  constructor(private chat:ChatService,private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService) { }
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
@@ -39,16 +48,6 @@ export class OrdersComponent implements OnInit {
   //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
   //private orderSrc = new BehaviorSubject<string>("");
 
-  @ViewChild('orderRemarks') orderRemarks: ElementRef;
-  @ViewChild('orderType') orderType: ElementRef;
-  @ViewChild('deliveryDate') deliveryDate: ElementRef;
-  @ViewChild('orderDate') orderDate: ElementRef;
-  @ViewChild('customerOrderNum') customerOrderNum: ElementRef;
-  @ViewChild('costumer') costumer: ElementRef;
-  @ViewChild('orderNumber') orderNumber: ElementRef;
-  @ViewChild('id') id: ElementRef;
-  @ViewChild('stage') stage: ElementRef;
-  @ViewChild('onHoldDate') onHoldDate: ElementRef;
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('');
@@ -65,7 +64,14 @@ export class OrdersComponent implements OnInit {
     }
 
   }
-  
+
+  constructor(
+    private chat: ChatService,
+    private ordersService: OrdersService,
+    private router: Router,
+    private toastSrv: ToastrService
+  ) { }
+
   ngOnInit() {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
@@ -75,14 +81,14 @@ export class OrdersComponent implements OnInit {
     this.chat.messages.subscribe(data => {
       console.log(data);
       if (data.msg == "order_refresh" && data.to == "allusers") {
-     this.getOrders();
-      } 
+        this.getOrders();
+      }
     })
   }
 
-  checkfunc(){ 
-    this.ordersService.refreshOrders.subscribe(order=>{
-    
+  checkfunc() {
+    this.ordersService.refreshOrders.subscribe(order => {
+
       this.orders.push(order)
     })
   }
@@ -161,7 +167,7 @@ export class OrdersComponent implements OnInit {
 
   edit(id) {
     this.EditRowId = id;
- 
+
     if (id != '') {
       let i = this.orders.findIndex(elemnt => elemnt._id == id);
       if (this.orders[i].onHoldDate != null && this.orders[i].onHoldDate != "" && this.orders[i].onHoldDate != undefined) {
@@ -172,7 +178,7 @@ export class OrdersComponent implements OnInit {
 
 
   saveEdit(closedOrder, orderId) {
-  debugger;
+    debugger;
     // a - is if the request is to set order - ready
     if (!closedOrder) {
       let orderToUpdate = {
@@ -184,11 +190,11 @@ export class OrdersComponent implements OnInit {
         orderRemarks: this.orderRemarks.nativeElement.value,
         orderType: this.orderType.nativeElement.value,
         stage: this.stage.nativeElement.value,
-        customerOrderNum:this.customerOrderNum.nativeElement.value
-        
-        
+        customerOrderNum: this.customerOrderNum.nativeElement.value
+
+
       }
-  
+
 
       this.ordersService.editOrder(orderToUpdate).subscribe(res => {
         if (res != "order missing") {
@@ -226,7 +232,7 @@ export class OrdersComponent implements OnInit {
               orderToUpdate['status'] = "";
               orderToUpdate['stage'] = "done";
               // this.orders[i] = orderToUpdate;
-           
+
               this.orders.splice(i, 1);
               console.log('this.orders after', this.orders)
 
@@ -249,7 +255,7 @@ export class OrdersComponent implements OnInit {
 
 
   deleteOrder(order) {
-  
+
     if (confirm("Delete Order?")) {
       this.ordersService.deleteOrder(order).subscribe(res => {
         //  let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
@@ -273,7 +279,7 @@ export class OrdersComponent implements OnInit {
 
       let urlPrefixIndex = window.location.href.indexOf("#");
       let urlPrefix = window.location.href.substring(0, urlPrefixIndex)
-  
+
       window.open(urlPrefix + "#/peerpharm/allorders/orderitems/" + tempArrStr);
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
     } else {
@@ -291,7 +297,7 @@ export class OrdersComponent implements OnInit {
   }
 
   changeText(ev) {
- 
+
     let word = ev.target.value;
     let wordsArr = word.split(" ");
     wordsArr = wordsArr.filter(x => x != "");
@@ -314,19 +320,19 @@ export class OrdersComponent implements OnInit {
       this.orders = this.ordersCopy.slice();
     }
   }
-  
-  filterOrdersByArea(ev){ 
-  let orderArea = ev.target.value
-  this.ordersService.getOrdersByArea(orderArea).subscribe(data=>{
-  this.orders = data;
-  })
+
+  filterOrdersByArea(ev) {
+    let orderArea = ev.target.value
+    this.ordersService.getOrdersByArea(orderArea).subscribe(data => {
+      this.orders = data;
+    })
 
   }
-  searchByType(ev) { 
+  searchByType(ev) {
     debugger;
     let word = ev.target.value;
     if (word != "") {
-  
+
       if (word == "Cosmetic") {
         this.orders = this.ordersCopy
         var tempArr = this.orders.filter(x => x.type == "Cosmetic")
@@ -350,19 +356,19 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  filterOrdersByDate(type){
+  filterOrdersByDate(type) {
     debugger;
     this.orders = this.ordersCopy
-  if(type == 'order'){
-    this.orders.sort(function(a,b){
-      return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
-    });
-  }
-  if(type == 'delivery'){
-    this.orders.sort(function(a,b){
-      return new Date(b.deliveryDate).getTime() - new Date(a.deliveryDate).getTime()
-    });
-  }
+    if (type == 'order') {
+      this.orders.sort(function (a, b) {
+        return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+      });
+    }
+    if (type == 'delivery') {
+      this.orders.sort(function (a, b) {
+        return new Date(b.deliveryDate).getTime() - new Date(a.deliveryDate).getTime()
+      });
+    }
   }
 
 
@@ -388,14 +394,14 @@ export class OrdersComponent implements OnInit {
       } else if (order.stage == "done") {
         stageDoneArr.push(order);
       } else {
-     
+
       }
 
       if (key + 1 == this.orders.length) {
-   
+
       }
       if ((stageNewArr.length + stagePartialCmptArr.length + stageAllCmptArr.length + stageProductionArr.length + stageProdFinishArr.length + stageDoneArr.length) == this.orders.length) {
-      
+
         if (this.stageSortDir == "new") {
           stageDoneArr.map(order => tempArr.push(order))
           stageProdFinishArr.map(order => tempArr.push(order))
