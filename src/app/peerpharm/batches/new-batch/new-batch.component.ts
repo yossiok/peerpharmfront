@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
 import { BatchesService } from 'src/app/services/batches.service';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-new-batch',
@@ -11,146 +12,131 @@ import { InventoryService } from 'src/app/services/inventory.service';
 })
 export class NewBatchComponent implements OnInit {
 
-  allStickers:any[]=[];
+  allStickers: any[] = [];
   newBatch = {
-    order:'',
-    item:'',
-    itemName:'',
-    produced:this.formatDate(new Date()),
-    expration:'',
-    barrels:'',
-    ph:'',
-    weightKg:'',
-    weightQtyLeft:'',
-    batchNumber:'21pp',
-    batchCreated:0
+    order: '',
+    item: '',
+    itemName: '',
+    produced: new Date(),
+    expration: '',
+    barrels: '',
+    ph: '',
+    weightKg: '',
+    weightQtyLeft: '',
+    batchNumber: '21pp',
+    batchCreated: 0
   }
-  lastBatch:any;
+  newBatchForm: FormGroup = new FormGroup({
+    order: new FormControl('', Validators.required),
+    item: new FormControl('', Validators.required),
+    itemName: new FormControl('', Validators.required),
+    produced: new FormControl(new Date(), Validators.required),
+    expration: new FormControl('', Validators.required),
+    barrels: new FormControl('', Validators.required),
+    ph: new FormControl('', Validators.required),
+    weightKg: new FormControl('', Validators.required),
+    weightQtyLeft: new FormControl('', Validators.required),
+    batchNumber: new FormControl('21pp', Validators.required),
+    batchCreated: new FormControl(0, Validators.required)
+  })
+  lastBatch: any;
   @ViewChild('printBtn') printBtn: ElementRef;
 
-  constructor(private inventorySrv:InventoryService,private toastSrv:ToastrService,private itemSrv:ItemsService,private batchService:BatchesService) { }
+  constructor(private inventorySrv: InventoryService, private toastSrv: ToastrService, private itemSrv: ItemsService, private batchService: BatchesService) { }
 
   ngOnInit() {
     this.getLastBatch();
   }
 
-  formatDate(date) {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2)
-      month = '0' + month;
-    if (day.length < 2)
-      day = '0' + day;
-
-    return [year, month, day].join('-');
-  }
-
-  getLastBatch(){
-    this.batchService.getLastBatch().subscribe(data=>{
-    this.lastBatch = data;
+  getLastBatch() {
+    this.batchService.getLastBatch().subscribe(data => {
+      this.lastBatch = data;
     })
   }
 
 
 
-  fillItemName(ev){
-  var itemNumber = ev.target.value;
+  fillItemName(ev) {
+    var itemNumber = ev.target.value;
 
-  this.itemSrv.getItemData(itemNumber).subscribe(data=>{
-    if(data){
-      this.newBatch.itemName = data[0].name+' '+data[0].subName+' '+data[0].discriptionK
+    this.itemSrv.getItemData(itemNumber).subscribe(data => {
+      console.log('data: ',data)
+      if (data) {
+        this.newBatchForm.controls['itemName'].setValue( data[0].name + ' ' + data[0].subName + ' ' + data[0].discriptionK) 
 
-    } else {
-      this.toastSrv.error('פריט לא קיים במערכת')
-    }
-  })
+      } else {
+        this.toastSrv.error('פריט לא קיים במערכת')
+      }
+    })
   }
 
-  addNewBatch(){
-   
-    
-    if(parseInt(this.newBatch.barrels)>1)
-    {
-      for(let x=1; x<parseInt(this.newBatch.barrels)+1 ;x++)
-      {
-        let obj={
-          item:{currentItem:this.newBatch.item,
-            currentItemName: this.newBatch.itemName ,
-            currentBarrels: this.newBatch.barrels ,
-            currentBatchNumber: this.newBatch.batchNumber ,
-            currentExpDate:  this.newBatch.expration ,
-            currentProduced: this.newBatch.produced  ,
-            currentOrderN: this.newBatch.order ,
-            currentPH: this.newBatch.ph ,
-            currentWeightKG: this.newBatch.weightKg   
-          },
-          printNum:""+x+"/"+(parseInt(this.newBatch.barrels))
-        } 
-        this.allStickers.push(obj);
-  
-      }
-   
-    }
-    else{
-      let obj={
-        item:{currentItem:this.newBatch.item,
-          currentItemName: this.newBatch.itemName ,
-          currentBarrels: this.newBatch.barrels ,
-          currentBatchNumber: this.newBatch.batchNumber ,
-          currentExpDate:  this.newBatch.expration ,
-          currentProduced: this.newBatch.produced  ,
-          currentOrderN: this.newBatch.order ,
-          currentPH: this.newBatch.ph ,
-          currentWeightKG: this.newBatch.weightKg   
-        },
-        printNum:"1/1"
-      } 
-      this.allStickers.push(obj);
-    }
-    this.newBatch.weightQtyLeft = this.newBatch.weightKg
-    var today = new Date();
-    today.setFullYear(today.getFullYear() + Number(this.newBatch.expration));
-    this.newBatch.expration = JSON.stringify(today)
-    this.newBatch.expration = this.newBatch.expration.slice(1,11)
-    ;
-    this.newBatch.batchNumber = this.newBatch.batchNumber.toLowerCase();
-    this.newBatch.batchCreated = new Date().getTime();
+  addNewBatch() {
 
-    if(this.newBatch.item == '' || this.newBatch.batchNumber.length < 5){
+    debugger;
+    if (parseInt(this.newBatchForm.controls['barrels'].value) > 1) {
+      for (let x = 1; x < parseInt(this.newBatchForm.controls['barrels'].value) + 1; x++) {
+        let batchSticker = {
+          batch: this.newBatchForm.value,
+          printNum: "" + x + "/" + (parseInt(this.newBatchForm.controls['barrels'].value))
+        }
+        this.allStickers.push(batchSticker);
+      }
+
+    }
+    else {
+      let batchSticker = {
+        batch: this.newBatchForm.value,
+        printNum: "1/1"
+      }
+      this.allStickers.push(batchSticker);
+    }
+
+    console.log('stickers: ')
+    for (let sticker of this.allStickers) {
+      console.log(sticker)
+    }
+    this.newBatchForm.controls['weightQtyLeft'].setValue(this.newBatchForm.controls['weightKg'].value)
+    var today = new Date();
+    today.setFullYear(today.getFullYear() + Number(this.newBatchForm.controls['expration'].value));
+    let expration = JSON.stringify(today)
+    this.newBatchForm.controls['expration'].setValue(expration.slice(1, 11))
+    this.newBatchForm.controls['batchNumber'].setValue(this.newBatchForm.get('batchNumber').value.toLowerCase());
+    this.newBatchForm.controls['batchCreated'].setValue(new Date().getTime());
+
+    if (this.newBatchForm.controls['item'].value == '' || this.newBatchForm.controls['batchNumber'].value.length < 5) {
       this.toastSrv.error('You must fill all the fields')
     } else {
-      this.batchService.addBatch(this.newBatch).subscribe(data=>{
-        if(data){
-          this.printBtn.nativeElement.click();  
+      this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
+        if (data) {
+          this.printBtn.nativeElement.click();
           this.toastSrv.success('באטצ נוסף בהצלחה !')
-          this.reduceMaterialAmounts(this.newBatch.item,this.newBatch.weightKg)
-          this.newBatch.barrels = ''
-          this.newBatch.ph = ''
-          this.newBatch.weightKg = ''
-          this.newBatch.produced = ''
-          this.newBatch.expration = ''
-          this.newBatch.order = ''
-          this.newBatch.itemName = ''
-          this.newBatch.weightQtyLeft =''
-          this.newBatch.item = ''
-          this.newBatch.batchNumber = '21pp'
+          this.reduceMaterialAmounts(this.newBatchForm.controls['item'].value, this.newBatchForm.controls['weightKg'].value)
+          this.newBatchForm.reset()
           this.allStickers = [];
+          // this.newBatchForm.controls['barrels = ''
+          // this.newBatchForm.controls['ph = ''
+          // this.newBatchForm.controls['weightKg = ''
+          // this.newBatchForm.controls['produced = ''
+          // this.newBatchForm.controls['expration = ''
+          // this.newBatchForm.controls['order = ''
+          // this.newBatchForm.controls['itemName = ''
+          // this.newBatchForm.controls['weightQtyLeft = ''
+          // this.newBatchForm.controls['item = ''
+          // this.newBatchForm.controls['batchNumber = '21pp'
           this.getLastBatch();
-          
+         
         }
-        })
+      })
     }
+    
 
 
   }
 
-  reduceMaterialAmounts(formuleNumber,weightKG){
-  this.inventorySrv.reduceMaterialAmounts(formuleNumber,weightKG, true).subscribe(data=>{
-    console.log(data.updatedShells)
-  })
+  reduceMaterialAmounts(formuleNumber, weightKG) {
+    this.inventorySrv.reduceMaterialAmounts(formuleNumber, weightKG, true).subscribe(data => {
+      console.log(data.updatedShells)
+    })
   }
 
 
