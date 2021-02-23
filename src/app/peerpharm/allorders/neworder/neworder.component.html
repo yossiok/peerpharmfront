@@ -164,7 +164,7 @@
                             <th>Description <span class="red">*</span> </th>
                             <th>neto Weight (Gr)<span class="red">*</span> </th>
                             <th>Quantity<span class="red">*</span> </th>
-                            <th>Weight<span class="red">*</span> </th>
+                            <th>Weight </th>
                             <th>Remarks</th>
                             <th></th>
                         </tr>
@@ -174,11 +174,14 @@
                                     (focusout)="searchItem(itemN.value)"></td>
                             <td><input formControlName="discription" class="form-control" style='width:370px'></td>
                             <td><input formControlName="netWeightK" class="form-control"></td>
-                            <td><input formControlName="quantity" class="form-control" (change)="checkAmounts()"></td>
+                            <td><input formControlName="quantity" class="form-control" (focusout)="checkAmounts()"></td>
                             <td><input formControlName="qtyKg" class="form-control"></td>
                             <td><input formControlName="remarks" class="form-control"></td>
 
-                            <td><input [disabled]="!orderItemForm.valid" type="submit" class="btn btn-info waves-effect waves-light" value="Add"></td>
+                            <td><button [disabled]="!orderItemForm.valid" type="submit" 
+                                [style.cursor]="orderItemForm.valid ? 'pointer' : 'not-allowed'" 
+                                class="btn btn-info waves-effect waves-light">Add
+                            </button></td>
                         </tr>
                     </thead>
                     <tbody>

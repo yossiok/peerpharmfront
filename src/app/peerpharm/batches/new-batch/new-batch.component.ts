@@ -149,7 +149,7 @@ export class NewBatchComponent implements OnInit {
 
   reduceMaterialAmounts(formuleNumber,weightKG){
   this.inventorySrv.reduceMaterialAmounts(formuleNumber,weightKG, true).subscribe(data=>{
-
+    console.log(data.updatedShells)
   })
   }
 

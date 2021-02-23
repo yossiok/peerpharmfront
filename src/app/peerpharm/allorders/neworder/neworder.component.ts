@@ -147,35 +147,38 @@ export class NeworderComponent implements OnInit {
   }
 
   checkAmounts() {
-    this.waitForAmounts = true;
-    this.modalService.open(this.amounts);
-    if(this.orderItemForm.controls['netWeightK'].value != "" && this.orderItemForm.controls['quantity'].value != "") {
+    if (
+      this.orderItemForm.controls['netWeightK'].value != "" && this.orderItemForm.controls['quantity'].value != ""
+      && this.orderItemForm.controls['netWeightK'].value != null && this.orderItemForm.controls['quantity'].value != null
+    ) {
+      this.waitForAmounts = true;
+      this.modalService.open(this.amounts);
 
-      let weightKG = Number(this.orderItemForm.controls['netWeightK'].value)*Number(this.orderItemForm.controls['quantity'].value)/1000
+      let weightKG = Number(this.orderItemForm.controls['netWeightK'].value) * Number(this.orderItemForm.controls['quantity'].value) / 1000
       let formule = this.orderItemForm.controls['itemN'].value
       //check amounts
-      this.inventoryService.reduceMaterialAmounts(formule, weightKG, false).subscribe (response => {
+      this.inventoryService.reduceMaterialAmounts(formule, weightKG, false).subscribe(response => {
         this.materialsNotEnoughAmount = response.materials
-        if(response.materials.length > 0) {
+        if (response.materials.length > 0) {
           let materialNames = <any>[]
           // console.log('materials:  ',response.materials)
-          for(let material of response.materials) {
+          for (let material of response.materials) {
             this.inventoryService.getMaterialByNumber(material, 'material')
-            .subscribe(material => {
+              .subscribe(material => {
                 materialNames.push(material[0].componentName)
                 console.log(material[0].componentName)
               })
-            }
-            this.materialsNotEnoughAmount = materialNames;
-            this.waitForAmounts = false;
-          }  
-        })
-      }
-      else this.toastSrv.warning('יש להזין משקל וכמות')
+          }
+          this.materialsNotEnoughAmount = materialNames;
+          this.waitForAmounts = false;
+        }
+      })
+    }
+    else this.toastSrv.warning('יש להזין משקל נטו וכמות')
   }
 
   addNewItemOrder(post) {
-  
+
     if (this.shippingDetails.shippingWay == "" || this.orderItemForm.controls.itemN.value == '' || this.orderItemForm.controls.itemN.value == null) {
       this.toastSrv.error("Please fill all the details")
     } else {
@@ -360,7 +363,7 @@ export class NeworderComponent implements OnInit {
   }
 
   openSearch(content, costumer) {
-    console.log('AKAKAKAKAKAKAKAKAKAK ',content)
+    console.log('AKAKAKAKAKAKAKAKAKAK ', content)
     this.modalService
       .open(content, { ariaLabelledBy: "modal-basic-title" })
       .result.then(
