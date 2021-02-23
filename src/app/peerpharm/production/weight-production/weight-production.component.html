@@ -29,7 +29,7 @@
     </div>
     <div class="col-4">
       <button (click)="printFormule()" class="btn btn-success form-control">Print</button>
-      <button #printFormuleBtn [printStyle]="{td : {'border': 'solid 1px'}, th : {'border': 'solid 1px'}}" printSectionId="formuleSection" ngxPrint style="display: none;"></button>
+      <button #printFormuleBtn [printStyle]="{td : {'border-top': 'solid 1px'}, th : {'border': 'solid 1px'}}" printSectionId="formuleSection" ngxPrint style="display: none;"></button>
     </div>
     <div class="col-2"></div>
   </div>
@@ -65,11 +65,11 @@
         <thead class="bg-success text-white">
           <tr>
             <th scope="col">Phase</th>
-            <th scope="col">Raw Material Name</th>
             <th scope="col">Name</th>
-            <th scope="col">Percentage</th>
+            <th scope="col">Raw Material Name</th>
             <th scope="col">KG</th>
             <th scope="col">ID</th>
+            <th scope="col">Percentage</th>
             <th></th>
     
           </tr>
@@ -81,12 +81,12 @@
               <tr *ngFor="let item of phase.items; let i = index">
                 
                 <td style="padding:5px" *ngIf="i == 0"[attr.rowspan]="phase.items.length"class="phase">{{ phase.phaseName }}</td>
-                <td style="padding:5px">{{ item.itemName }}</td>
                 <td style="padding:5px">{{ item.itemNumber }}</td>
-                <td style="padding:5px">{{ item.percentage }}%</td>
+                <td style="padding:5px">{{ item.itemName }}</td>
                 <td style="padding:5px">{{ item.kgProd | number }}</td>
                 <td *ngIf="item.check != true" style="padding:5px"><input (change)="searchForShelf($event,item.kgProd)" class="form-control"></td>
                 <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-success"></i></td>
+                <td style="padding:5px">{{ item.percentage }}%</td>
    
 
               </tr>
