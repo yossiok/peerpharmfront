@@ -78,7 +78,7 @@
                 <tr *ngFor="let stockitem of newPurchase.controls.stockitems.value">
                   <td>{{stockitem.number}}</td>
                   <td>{{stockitem.name}}</td>
-                  <td>{{stockitem.itemRem}}</td>
+                  <td>{{stockitem.itemRemarks}}</td>
                   <td *ngIf="!editItem">{{stockitem.measurement}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement" class="form-control">
@@ -109,11 +109,11 @@
         <div class="row mt-2">
           <div class="col">
             <button (click)="showItemDetails = !showItemDetails" class="btn btn-primary dropdown-toggle" >
-              {{showItemDetails ? 'Hide Derails' : 'Add Item'}}
+              {{showItemDetails ? 'Hide Details' : 'Add Item'}}
             </button>
           </div>
         </div>
-        <div *ngIf="showItemDetails" class="row mt-4">
+        <div *ngIf="showItemDetails" class="row mt-3">
           <div class="col-sm-12 col-md-4 form-group">
             <label for="">Item</label>
             <input [disabled]="disabled" (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number"
@@ -150,18 +150,17 @@
             <input [disabled]="disabled" [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" type="text"
               class="form-control" placeholder="Coin">
           </div>
-
           
-          <div class="row mt-1">
-            <div class="col-3"></div>
-            <div class="col-7">
-              <button type="button" [disabled]="disabled" (click)="addItemToPurchase()" class="btn btn-primary form-control">
-                <i class="fa fa-plus"></i>
-              </button>
-            </div>
-            <div class="col-3"></div>
+        </div>
+               
+        <div *ngIf="showItemDetails" class="row mt-1">
+          <div class="col-5"></div>
+          <div class="col-2">
+            <button type="button" [disabled]="disabled" (click)="addItemToPurchase()" class="btn btn-primary form-control">
+              <i class="fa fa-plus"></i>
+            </button>
           </div>
-          
+          <div class="col-5"></div>
         </div>
 
         <hr class="text-muted">
@@ -334,14 +333,22 @@
               <input (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number" [ngModelOptions]="{standalone: true}"
               type="text" class="form-control" placeholder="Item Number">
             </div>
-            <div class="col-sm-12 col-md-4 form-group">
-              <input [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-              placeholder="Item Name">
-            </div>
+
             <div class="col-sm-12 col-md-4 form-group">
               <input [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}" type="number"
               class="form-control" placeholder="Quantity">
             </div>
+
+            <div class="col-sm-12 col-md-4 form-group">
+              <input [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}" type="number"
+              class="form-control" placeholder="Price">
+            </div>
+
+            <div class="col-sm-12 col-md-4 form-group">
+              <input [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+              placeholder="Item Name">
+            </div>
+        
             <div class="col-sm-12 col-md-4 form-group">
               <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
               class="form-control custom-select">
@@ -359,10 +366,7 @@
             <input [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
             placeholder="Coin">
           </div>
-          <div class="col-sm-12 col-md-4 form-group">
-            <input [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}" type="number"
-            class="form-control" placeholder="Price">
-          </div>
+        
           
         </div>
 

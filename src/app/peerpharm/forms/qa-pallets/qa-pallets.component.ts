@@ -137,7 +137,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   saveNewCustomerForPallet(ev, id) {
-
+    debugger;
     let pallet = this.allQaPallets.find(p => p._id == id);
     pallet.customerName = ev.target.value;
     this.formService.updateQAPallet(pallet).subscribe(data => {
