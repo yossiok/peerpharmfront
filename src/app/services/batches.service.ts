@@ -17,12 +17,11 @@ export class BatchesService {
   constructor(private http:Http) { }
 
   addBatch(newBatch) {
-    
     let url = this.baseUrl + "batch/add";
     return this.http.post(url, JSON.stringify(newBatch), this.options).pipe(map(res => res.json()))
   }
+
   addNewMkpBatch(newMkpBatch) {
-    
     let url = this.baseUrl + "batch/addMkpBatch";
     return this.http.post(url, JSON.stringify(newMkpBatch), this.options).pipe(map(res => res.json()))
   }
