@@ -116,7 +116,7 @@ export class QaPalletsComponent implements OnInit {
   deleteQAPallet(id) {
     if (confirm('האם לסגור משטח זה ?')) {
       this.formService.deletePalletById(id).subscribe(data => {
-        debugger;
+        ;
         if (data) {
           this.allQaPallets = this.allQaPallets.filter(p => p._id != data._id)
         }
@@ -175,7 +175,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   edit(itemNumber, customerName) {
-    debugger;
+    ;
     if (itemNumber != '' && customerName != '') {
       this.EditRow = itemNumber;
       this.EditRowTwo = customerName;
@@ -186,14 +186,14 @@ export class QaPalletsComponent implements OnInit {
   }
 
   addPalletToPackList(pallet) {
-    debugger;
+    ;
     pallet.plStatus = 'occupied'
     this.palletToAdd = pallet
     this.showAllPackedLists = true
   }
 
   addLineToPallet(line) {
-    debugger;
+    ;
     this.showAllClosedPallets = true;
 
     line.fullKartons = Number(line.floorNumber) * Number(line.kartonQuantity) + Number(line.lastFloorQuantity)
@@ -216,14 +216,14 @@ export class QaPalletsComponent implements OnInit {
   addPalletToCostumer(pallet) {
     this.showAllReadyCostumers = true;
     this.palletToAdd = pallet
-    debugger;
+    ;
 
 
 
   }
 
   getAllqaPallets() {
-    debugger;
+    ;
     this.formService.getAllqaPallets().subscribe(data => {
       this.allQaPallets = data;
       this.allQaPalletsCopy = data;
@@ -234,7 +234,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   filterTable(type) {
-    debugger;
+    ;
     this.allQaPallets = this.allQaPalletsCopy
     switch (type) {
 
@@ -274,13 +274,13 @@ export class QaPalletsComponent implements OnInit {
 
 
   movePalletToPL() {
-    debugger;
+    ;
     this.currentPallet
     this.currentPallet.packListID = this.customerForPL
     var objToSend = { ...this.currentPallet }
     this.formService.movePalletToPL(objToSend).subscribe(data => {
       if (data) {
-        debugger;
+        ;
         this.toastr.success('משטח הועבר בהצלחה !')
         this.getAllPackedLists();
         for (let i = 0; i < this.selectedArr.length; i++) {
@@ -295,13 +295,13 @@ export class QaPalletsComponent implements OnInit {
   }
 
   updatePalletDetails(pallet) {
-    debugger;
+    ;
     let size = this.newPalletSize.nativeElement.value;
     let weight = this.newPalletWeight.nativeElement.value;
     pallet.palletSize = size;
     pallet.palletWeight = weight;
     this.formService.updatePallet(pallet).subscribe(pallet => {
-      debugger;
+      ;
       if (pallet) {
         let oldPallet = this.allClosedPallets.find(p => p._id == pallet._id);
         oldPallet.palletSize = pallet.palletSize
@@ -314,11 +314,11 @@ export class QaPalletsComponent implements OnInit {
   }
 
   isSelected(ev, pallet) {
-    debugger
+    
 
     this.orderService.getOrderItemsByNumber(pallet.orderNumber).subscribe(data => {
       if (data) {
-        debugger;
+        ;
         data.forEach(item => {
           if (pallet.itemNumber == item.itemNumber) {
             pallet.orderAmount = item.quantity
@@ -354,7 +354,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   selectedForPL(ev, pallet) {
-    debugger
+    
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr;
       isSelected.push(pallet);
@@ -371,10 +371,10 @@ export class QaPalletsComponent implements OnInit {
   }
 
   saveBillNumber(id) {
-    debugger;
+    ;
     var billNumber = this.billNumberToUpdate.nativeElement.value;
     this.formService.insertBillNumber(id, billNumber).subscribe(data => {
-      debugger;
+      ;
       if (data) {
         for (let i = 0; i < this.allReadyPackedLists.length; i++) {
           if (this.allReadyPackedLists[i]._id == data._id) {
@@ -458,13 +458,13 @@ export class QaPalletsComponent implements OnInit {
 
 
   // openData() {
-  //   debugger;
+  //   ;
 
   //   this.currCustomer = this.selectedArr[0].customerName
   //   this.packedList.costumerName = this.selectedArr[0].customerName
 
   //   this.customerService.getCostumerByName(this.currCustomer).subscribe(data => {
-  //     debugger;
+  //     ;
   //     this.currCustomerNumber = data[0].costumerId
   //     this.packedList.costumerNumber = data[0].costumerId
   //     this.packedForBill();
@@ -473,7 +473,7 @@ export class QaPalletsComponent implements OnInit {
   // }
 
   getAllClosedPallets() {
-    debugger;
+    ;
     this.formService.getAllClosedPallets().subscribe(data => {
 
       if (data) {
@@ -496,7 +496,7 @@ export class QaPalletsComponent implements OnInit {
 
 
   saveNewUnits(item) {
-    debugger;
+    ;
     var pallet = this.selectedArr.find(p => p._id == item._id)
     if (pallet) {
       if (this.unitsToPallet == '') {
@@ -515,7 +515,7 @@ export class QaPalletsComponent implements OnInit {
 
 
   chooseCostumerToAdd(packedlist) {
-    debugger;
+    ;
     this.palletToAdd;
     packedlist.pallets.push(this.palletToAdd);
 
@@ -528,7 +528,7 @@ export class QaPalletsComponent implements OnInit {
     })
   }
   choosePalletToAdd(pallet) {
-    debugger;
+    ;
     if (this.lineToAdd.allUnits > 0) {
       pallet.lines.push(this.lineToAdd);
       this.formService.addLineToExistPallet(pallet).subscribe(data => {
@@ -543,7 +543,7 @@ export class QaPalletsComponent implements OnInit {
 
   }
   choosePLToAdd(pl) {
-    debugger;
+    ;
     if (pl.readyForBill == 'Yes') {
       pl.readyForBill = true
     } else {
@@ -567,20 +567,20 @@ export class QaPalletsComponent implements OnInit {
   }
 
   viewItemsInPallet(pallet) {
-    debugger;
+    ;
     this.currentPallet = pallet;
     this.itemsInPalletModal = true;
   }
 
   delOrMovePallet(pallet) {
-    debugger;
+    ;
 
     this.deleteOrMoveModal = true;
     this.currentPallet = pallet
 
 
     // if (confirm("האם למחוק משטח זה ?")) {
-    //   debugger;
+    //   ;
     //   var palletToDelete = {
     //     id: pallet._id,
     //     costumerName: pallet.customerName,
@@ -596,7 +596,7 @@ export class QaPalletsComponent implements OnInit {
 
   createNewPallet() {
 
-    debugger;
+    ;
     this.pallet.customer = this.selectedArr[0].customerName
     this.pallet.status = 'closedPallet'
     this.pallet.plStatus = 'occupied'
@@ -617,7 +617,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   createNewPL() {
-    debugger;
+    ;
     if (this.customerForPL != '' && this.customerForPL != undefined) {
       this.packedList.costumerName = this.customerForPL
       this.formService.addNewPackedList(this.packedList).subscribe(data => {
@@ -636,7 +636,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   sendForBill(packlist) {
-    debugger;
+    ;
     if (confirm('האם לשלוח להפקת חשבונית ?')) {
       packlist.readyForBill = true;
 
@@ -677,7 +677,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   openProductForm(packlist, language) {
-    debugger;
+    ;
     this.currPLNumber = packlist.packListNumber
     this.selectedArr = packlist.pallets
 
@@ -752,7 +752,7 @@ export class QaPalletsComponent implements OnInit {
     this.formService.getAllReadyForBillPLs().subscribe(data => {
       if (data) {
 
-        debugger;
+        ;
         data.forEach(PL => {
           if (PL.pallets) {
             PL.pallets.forEach(pallet => {

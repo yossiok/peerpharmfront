@@ -343,7 +343,7 @@ export class MaterialArrivalComponent implements OnInit {
   }
 
   filterSuppliers() {
-    debugger;
+    ;
     var supplierName = this.supplierNameInput.nativeElement.value;
 
     var supplier = this.suppliers.find(s => s.suplierName == supplierName)
@@ -352,7 +352,7 @@ export class MaterialArrivalComponent implements OnInit {
   }
 
   filterSupplierItems(input) {
-    debugger;
+    ;
 
 
     if (input != "") {
@@ -394,7 +394,7 @@ export class MaterialArrivalComponent implements OnInit {
   }
 
   checkIfIOrderExist(ev) {
-    debugger;
+    ;
     var orderNumber = ev.target.value
     if (orderNumber != '') {
       this.procuretServ.findIfOrderExist(orderNumber).subscribe(data => {
@@ -413,7 +413,7 @@ export class MaterialArrivalComponent implements OnInit {
   fillLastArrivalPosition(materialNumber) {
 
     this.invtSer.getMaterialArrivalByNumber(materialNumber).subscribe(data => {
-      debugger;
+      ;
       if (data) {
         this.newMaterialArrival.controls.position.setValue(data[data.length - 1].position)
       }
@@ -424,7 +424,7 @@ export class MaterialArrivalComponent implements OnInit {
   searchInternalNumber() {
     if (this.newMaterialArrival.value.internalNumber != "") {
       this.invtSer.getMaterialStockItemByNum(this.newMaterialArrival.value.internalNumber).subscribe(item => {
-        debugger
+        
         console.log(item);
         if (item.length == 0) {
           this.toastSrv.error("Can't find item number")
@@ -576,7 +576,7 @@ export class MaterialArrivalComponent implements OnInit {
       whareHouseId = '5c1124ef2db99c4434914a0e'
     }
     if (shelf != '') {
-      debugger;
+      ;
       this.invtSer.checkIfShelfExist(shelf, whareHouseId).subscribe(data => {
         if (data == 'shelfMissing') {
           this.toastSrv.error('מדף אינו קיים , אנא הקם מדף בניהול מחסן')
@@ -591,12 +591,12 @@ export class MaterialArrivalComponent implements OnInit {
   }
 
   addMaterialToStock() {
-    debugger;
+    ;
     let formToSend = this.newMaterialArrival.value;
     formToSend.lastUpdate = new Date();
     formToSend.lastUpdateUser = this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe(res => {
-      debugger
+      
       this.toastSrv.success("New material arrival saved!");
       this.resetForm();
       if (res) {

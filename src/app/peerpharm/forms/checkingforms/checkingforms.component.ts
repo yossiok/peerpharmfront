@@ -178,7 +178,7 @@ export class CheckingformsComponent implements OnInit {
 
 
   fillFormFields(ev) {
-    debugger;
+    ;
     var phNumber = ev.target.value;
     var date = new Date();
     this.calibrationWeek.year = JSON.stringify(date.getFullYear());
@@ -231,13 +231,13 @@ export class CheckingformsComponent implements OnInit {
     }
 
     this.formsService.addNewPHToCalWeek(obj).subscribe(data=>{
-      debugger;
+      ;
       data;
     })
   }
 
   filterByDate(type){
-    debugger;
+    ;
 
     switch(type) {
       case 'calibrationWeek':
@@ -349,7 +349,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   addNewLibra(){
-    debugger;
+    ;
 
     
   var libraCalibration = {
@@ -370,7 +370,7 @@ export class CheckingformsComponent implements OnInit {
     remarks:this.libraRemarks.nativeElement.value
   }
     this.formsService.addNewLibra(libraCalibration).subscribe(data=>{
-    debugger;
+    ;
    if(data.msg == 'exist'){
      this.toastSrv.error('Libra Number Exist');
    } else {
@@ -413,7 +413,7 @@ export class CheckingformsComponent implements OnInit {
 
 
   saveLibra(){
-    debugger;
+    ;
     var libraCalibration = {
 
       balanceSerialNum:Number(this.libra.nativeElement.value),
@@ -465,7 +465,7 @@ export class CheckingformsComponent implements OnInit {
     this.libraCalibrationTests = [];
   }
   saveTest(){
-  debugger;
+  ;
     this.calibrationWeek;
 
 
@@ -488,11 +488,11 @@ export class CheckingformsComponent implements OnInit {
   }
 
   chooseCalibrationForm(ev){
-    debugger;
+    ;
     var calibrationForm = ev.target.value;
 
     this.formsService.getCalibrationFormByYear(calibrationForm).subscribe(data=>{
-      debugger;
+      ;
       if(data.length > 0 ) {
         this.saveBtn = false;
         this.editBtn = true;
@@ -540,17 +540,17 @@ export class CheckingformsComponent implements OnInit {
 
   editTest(){
     this.formsService.editCalibrationWeek(this.calibrationWeek).subscribe(data=>{
-      debugger;
+      ;
       data;
     })
   }
 
   getLibraByNumber(ev){
-    debugger
+    
     var balanceSerialNum = ev.target.value
     this.currBalanceSerialNum = balanceSerialNum
     this.formsService.getLibraByNumber(balanceSerialNum).subscribe(data=>{
-      debugger;
+      ;
       if(data){
         this.libraCalibration = data[0]
       }
@@ -558,7 +558,7 @@ export class CheckingformsComponent implements OnInit {
     })
 
     this.formsService.getLibraTestsByNumber(balanceSerialNum).subscribe(data=>{
-      debugger;
+      ;
       data.forEach(obj => {
         for (let i in obj) {
           if (obj[i] === true || obj[i] === 'true') {
@@ -663,7 +663,7 @@ export class CheckingformsComponent implements OnInit {
   addNewLibraCalibrationTest() {
     this.libraCalibrationDetails.libraCalibration = this.libraCalibration
     this.formsService.addNewLibraTest(this.libraCalibrationDetails).subscribe(data=>{
-      debugger;
+      ;
       data.forEach(obj => {
         for (let i in obj) {
           if (obj[i] === true || obj[i] === 'true') {
@@ -677,7 +677,7 @@ export class CheckingformsComponent implements OnInit {
         
       })
       this.formsService.getLibraTestsByNumber(this.currBalanceSerialNum).subscribe(data=>{
-        debugger;
+        ;
         data.forEach(obj => {
           for (let i in obj) {
             if (obj[i] === true || obj[i] === 'true') {
@@ -699,7 +699,7 @@ export class CheckingformsComponent implements OnInit {
   addNewWaterTest() {
     this.waterTest.system = 'new'
     this.formsService.addNewWaterTest(this.waterTest).subscribe(data=>{
-      debugger;
+      ;
       data.forEach(obj => {
         for (let i in obj) {
           if (obj[i] === 'exist') {
@@ -739,7 +739,7 @@ export class CheckingformsComponent implements OnInit {
   addOldWaterTest() {
     this.waterTest.system = 'old'
     this.formsService.addOldWaterTest(this.waterTest).subscribe(data=>{
-      debugger;
+      ;
       data.forEach(obj => {
         for (let i in obj) {
           if (obj[i] === 'exist') {
@@ -778,7 +778,7 @@ export class CheckingformsComponent implements OnInit {
   
   addNewTempTest() {
     this.formsService.addNewTempTest(this.temperatureTest).subscribe(data=>{
-      debugger;
+      ;
       if(data){
         this.allTempTests = data;
 
@@ -792,7 +792,7 @@ export class CheckingformsComponent implements OnInit {
   }
   addNewCalibDayTest() {
     this.formsService.addNewCalibDayTest(this.calibrationDayTest).subscribe(data=>{
-      debugger;
+      ;
       if(data){
         this.getAllCalibDayTests(this.calibrationDayTest.phNumber)
       }
@@ -802,7 +802,7 @@ export class CheckingformsComponent implements OnInit {
   }
   addNewSewerPHTest() {
     this.formsService.addNewSewerPHTest(this.sewerPhTest).subscribe(data=>{
-      debugger;
+      ;
       this.allSewerPHTests = data;
 
     })
@@ -810,7 +810,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   updateCalibTest(id){
-    debugger;
+    ;
     this.calibrationTestRemarks
 
     var obj = {
@@ -819,7 +819,7 @@ export class CheckingformsComponent implements OnInit {
     }
 
     this.formsService.updateCalibTestRemarks(obj).subscribe(data=>{
-      debugger;
+      ;
       if(data.length > 0) {
         this.libraCalibrationTests = data;
         this.EditRowId = '';
@@ -829,7 +829,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   updateCalibWeekTest(id){
-    debugger;
+    ;
   
 
     var obj = {
@@ -838,7 +838,7 @@ export class CheckingformsComponent implements OnInit {
     }
 
     this.formsService.updateCalibWeekRemarks(obj).subscribe(data=>{
-      debugger;
+      ;
       if(data.length > 0) {
         this.calibrationWeekTests = data;
         this.EditRowId = '';
@@ -848,7 +848,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   updateWaterTest(id){
-    debugger;
+    ;
     this.waterTestRemarks
 
     var obj = {
@@ -857,7 +857,7 @@ export class CheckingformsComponent implements OnInit {
     }
 
     this.formsService.updateWaterTestRemarks(obj).subscribe(data=>{
-      debugger;
+      ;
       if(data.length > 0) {
         this.allWaterTests = data;
         this.EditRowId = '';
@@ -867,7 +867,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   updateTempTest(id){
-    debugger;
+    ;
 
     var obj = {
       _id:id,
@@ -875,7 +875,7 @@ export class CheckingformsComponent implements OnInit {
     }
 
     this.formsService.updateTempTestRemarks(obj).subscribe(data=>{
-      debugger;
+      ;
       if(data.length > 0) {
         this.allTempTests = data;
         this.EditRowId = '';
@@ -885,7 +885,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   updateCalibDayTest(id){
-    debugger;
+    ;
 
     var obj = {
       _id:id,
@@ -893,7 +893,7 @@ export class CheckingformsComponent implements OnInit {
     }
 
     this.formsService.updateCalibDayRemarks(obj).subscribe(data=>{
-      debugger;
+      ;
       if(data.length > 0) {
         this.allCalibrationDayTests = data;
         this.EditRowId = '';
@@ -903,7 +903,7 @@ export class CheckingformsComponent implements OnInit {
   }
 
   updateSewerTest(id){
-    debugger;
+    ;
 
     var obj = {
       _id:id,
@@ -911,7 +911,7 @@ export class CheckingformsComponent implements OnInit {
     }
 
     this.formsService.updateSewerTestRemarks(obj).subscribe(data=>{
-      debugger;
+      ;
       if(data.length > 0) {
         this.allSewerPHTests = data;
         this.EditRowId = '';

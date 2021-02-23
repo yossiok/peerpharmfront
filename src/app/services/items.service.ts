@@ -106,7 +106,7 @@ export class ItemsService {
 
 
   newFloor(newFloor) {
-    debugger
+    
     let url = this.baseUrl + "item/newFloorItem";
     return this.http.post(url, JSON.stringify(newFloor), this.options).pipe(map(res => res.json))
   }

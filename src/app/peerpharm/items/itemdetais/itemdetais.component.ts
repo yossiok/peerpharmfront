@@ -512,11 +512,11 @@ export class ItemdetaisComponent implements OnInit {
 
   fillPump(pumpNumber) {
 
-    debugger;
+    ;
 
     pumpNumber = this.itemShown.pumpNumber
     if (pumpNumber != "---" && pumpNumber != "") {
-      debugger;
+      ;
       this.invtSer.getCmptByNumber(pumpNumber, "component").subscribe(data => {
         this.itemShown.pumpTube = data[0].componentName
         this.itemShown.pumpImage = data[0].img
@@ -695,7 +695,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
   searchPlateByNumber(plateNumber,type){
   
-  debugger;
+  ;
     switch(type) {
       case 'pallet':
         if(plateNumber != ''){
@@ -733,12 +733,12 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
   searchCompNumberByComp(compNumber, src)
   {
     var itemType = "component";
-    debugger;
+    ;
     switch (src) {
       case 'sticker':
         if (compNumber != "") {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
-        debugger;
+        ;
       
             this.itemShown.stickerImage = data[0].img
             this.itemsService.updateStickerImage(this.itemShown).subscribe(data=>{
@@ -794,7 +794,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionThreeInput':
-        debugger;
+        ;
         if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
@@ -1042,7 +1042,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
     
     this.itemsService.getItemData(item).subscribe(res => {
-      debugger;
+      ;
       console.log(res.length)
      
       if (res.length == 0) {
@@ -1282,7 +1282,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       }
     } else { 
       if (this.itemShown.itemNumber != "") {
-        debugger;
+        ;
         if (confirm("Save changes?")) {
           await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes => {
             if (itemNumRes.length > 0) {
@@ -1673,7 +1673,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
   loadCartonName(cartonNumber){
   this.invtSer.getCmptByitemNumber(cartonNumber).subscribe(data=>{
-    debugger;
+    ;
     if(data){
     this.itemShown.cartonName = data[0].componentName
     }
@@ -1694,7 +1694,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
             this.itemShown.item2s = res[0].packageType;
             break;
           case 'pump':
-            debugger;
+            ;
             this.itemShown.item3w = res[0].packageWeight;
             this.itemShown.item3s = res[0].packageType;
             break;

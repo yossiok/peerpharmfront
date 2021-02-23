@@ -84,7 +84,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    debugger;
+    ;
     this.toDateStr.nativeElement.value = new Date().toISOString().slice(0,10)
     this.fromDateStr.nativeElement.value = new Date(new Date().setDate(new Date().getDate()-7)).toISOString().slice(0,10)
 
@@ -113,9 +113,9 @@ export class MaterialArrivalTableComponent implements OnInit {
 
 
     this.materialsArrivals.filter((m, key) => {
-debugger
+
       if (m._id == id) {
-        debugger;
+        ;
         this.bcValue = [m._id];
         this.materialNum = m.internalNumber;
         this.materialName = m.materialName;
@@ -167,7 +167,7 @@ debugger
   }
 
   exportAsXLSX():void {
-    debugger
+    
     this.excelService.exportAsExcelFile(this.materialsArrivals, 'data');
   }
 
@@ -193,7 +193,7 @@ debugger
   }
 
   saveEdit(currDoc) { 
-    debugger;
+    ;
     this.currentDoc.remarks = this.remarks.nativeElement.value;
     if(this.packageType.nativeElement.value != "" ){
     this.currentDoc.packageType = this.packageType.nativeElement.value;

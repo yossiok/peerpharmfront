@@ -152,7 +152,7 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getMaterialsForFormules(materials): Observable<any> {
-    debugger;
+    ;
     let url = this.baseUrl + "material/materialsForFormule";
     return this.http.post(url, JSON.stringify(materials), this.options).pipe(map(res => res.json()))
   }
@@ -262,7 +262,7 @@ export class InventoryService {
     let url = this.baseUrl + "component/newPurchaseRecommend";
     return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(tap(data => {
       data = JSON.parse(data._body);
-      debugger;
+      ;
       this.recommendation = data;
       this.newRecommendEmitter.emit(data);
     }))
@@ -374,7 +374,7 @@ export class InventoryService {
 
 
   startNewItemObservable() {
-    debugger;
+    ;
     let itemResultObservable: Observable<any[]> = new Observable(observer => {
       let self = this;
       let skip = 0;

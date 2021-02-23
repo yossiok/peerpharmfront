@@ -97,7 +97,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
       // date=date.setHours(2,0,0,0);
       date=new Date(date)
       date=moment(date).format("YYYY-MM-DD");
-      debugger
+      
       this.scheduleService.getPrintScheduleByDate(date).subscribe(
         res=>{
           
@@ -133,7 +133,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
   
 
     getOpenAllSchedule(){
-      debugger
+      
       this.date.nativeElement.value="";
 
       this.scheduleService.getOpenPrintSchedule().subscribe(res=>{
@@ -182,7 +182,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
   
     var position = Number(this.scheduleP.nativeElement.value);
     this.scheduleService.updatePrintPosition(id,position).subscribe(data=>{
-    debugger;
+    ;
     let schedule = this.scheduleData.find(s=>s._id == data._id);
     schedule.position = data.position;
     this.editPosition('');
@@ -202,7 +202,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
   
   
   updateSchedule(line){
-    debugger;
+    ;
     if (!line.qtyProduced) line.qtyProduced=0; 
     if (!line.amountPckgs) line.amountPckgs=0; 
 
@@ -270,7 +270,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
   }
   
   setDone(id, orderN, itemN, line){
-    debugger;
+    ;
     if (!line.qtyProduced) line.qtyProduced=0; 
     if (!line.amountPckgs) line.amountPckgs=0; 
 

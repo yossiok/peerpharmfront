@@ -40,7 +40,7 @@ export class FormdetailsComponent implements OnInit {
   }
 
   async getFormData() {
-    debugger;
+    ;
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       await this.formsService.getFormData(id).subscribe(res => {
@@ -54,7 +54,7 @@ export class FormdetailsComponent implements OnInit {
         }
        
         this.form.produc
-        debugger;
+        ;
         this.form.checkNetoWeight.forEach(element => {
           if (element) {
             const netNumber = parseInt(element, 10);

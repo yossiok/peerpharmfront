@@ -130,7 +130,7 @@ export class AllFormulesComponent implements OnInit {
 
 
   constructor(private invtSer: InventoryService, private formuleService: FormulesService, private toastSrv: ToastrService, private modalService: NgbModal, private authService: AuthService) {
-    debugger;
+    ;
     this.formuleService.newFormuleAdded.subscribe(data=>{
       if(data){
         this.allFormules.push(data)
@@ -153,7 +153,7 @@ export class AllFormulesComponent implements OnInit {
 
   
     this.today = new Date()
-    debugger;
+    ;
     this.user = this.authService.loggedInUser.userName;
   }
 
@@ -167,7 +167,7 @@ export class AllFormulesComponent implements OnInit {
   getAllParentsFormules() {
 
     this.formuleService.getAllFathers().subscribe(data => {
-      debugger;
+      ;
       this.allParentsFormules = data;
 
     })
@@ -196,7 +196,7 @@ export class AllFormulesComponent implements OnInit {
   addNewPhase() {
     this.formuleService.addPhase(this.addPhase).subscribe(data => {
 
-      debugger;
+      ;
       if (data) {
         this.updateFormule.phases = data.phases;
         this.toastSrv.success("Phase added successfully")
@@ -207,7 +207,7 @@ export class AllFormulesComponent implements OnInit {
 
   getAllFormules() {
     this.formuleService.getAllFormules().subscribe(data => {
-      debugger;
+      ;
       if (data) {
         this.allFormules = data;
         this.allFormulesCopy = data;
@@ -231,12 +231,12 @@ export class AllFormulesComponent implements OnInit {
 
   
   approveFormule(id, formuleNumber) {
-    debugger;
+    ;
     this.user = this.authService.loggedInUser.userName;
     if (this.user == "martha" || this.user == "akiva" || this.user == "sima") {
       if (confirm("האם לאשר פורמולה מספר: " + formuleNumber)) {
         this.formuleService.approveFormule(id).subscribe(data => {
-          debugger;
+          ;
           if (data) {
             this.toastSrv.success("פורמולה אושרה בהצלחה !")
           }
@@ -273,7 +273,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   editItems(itemNumber, index, phaseId) {
-    debugger;
+    ;
     this.updateItems
     this.EditRowId = itemNumber
 
@@ -321,7 +321,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   isSelected(ev, item) {
-    debugger
+    
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr
       isSelected.push({ ...item });
@@ -339,7 +339,7 @@ export class AllFormulesComponent implements OnInit {
 
   saveEdit(currdoc) {
 
-  debugger;
+  ;
 
     if (this.formuleName.nativeElement.value != "") {
       
@@ -387,7 +387,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   addItemToFormule() {
-    debugger;
+    ;
 
     var newPhase = {
       phaseName: '',
@@ -404,7 +404,7 @@ export class AllFormulesComponent implements OnInit {
     }
     this.newItem.formuleNumber = this.currentFormuleNumber
     this.formuleService.addItemToFormule(this.newItem).subscribe(data => {
-      debugger;
+      ;
       data;
       if (data) {
         var formule = this.allFormules.find(f => f._id == data._id)
@@ -439,7 +439,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   getMaterialsForFormules(){
-    debugger;
+    ;
     this.selectedArr.forEach(item => {
     item.quantity = this.quantityCheck
     this.formuleImpRemarks = item.impRemarks
@@ -480,7 +480,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   filterByMaterial(ev){
-    debugger;
+    ;
     var materialNumber = ev.target.value;
     var tempArr = []
     if(materialNumber != ""){
@@ -506,12 +506,12 @@ export class AllFormulesComponent implements OnInit {
 
 
   getFormulePrice(formule) {
-    debugger;
+    ;
     this.spinnerLoader = true;
     this.currentFormule = formule
     var count = 0;
     this.formuleService.getFormulePrice(formule._id).subscribe(data => {
-      debugger;
+      ;
       if (data) {
         this.spinnerLoader = false;
         data.forEach(material => {
@@ -559,7 +559,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   savePhaseEdit(currDoc) {
-    debugger;
+    ;
 
 
     if (this.phaseToUpdate.phaseName != "") {
@@ -587,7 +587,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   updateTempPrice(){
-    debugger;
+    ;
     this.currMaterial
 
     let material = this.formuleMaterialPrices.find(m=>m.itemNumber == this.currMaterial.itemNumber);
@@ -597,7 +597,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   saveItemEdit(currDoc, index) {
-    debugger;
+    ;
     this.currentDoc;
 
     if (this.itemToUpdate.itemNumber != "") {
@@ -620,7 +620,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   updatePhase() {
-    debugger;
+    ;
     this.formuleService.updateFormulePhaseId(this.currentDoc).subscribe(data => {
 
       data;
@@ -645,7 +645,7 @@ export class AllFormulesComponent implements OnInit {
 
 
   updateDocument(currdoc) {
-    debugger;
+    ;
 
 
     this.formuleService.updateFormulesForm(currdoc).subscribe(data => {
@@ -668,9 +668,9 @@ export class AllFormulesComponent implements OnInit {
 
 
   openPrint(printFormule, formuleNum) {
-    debugger;
+    ;
     this.updateFormule = [];
-    debugger;
+    ;
     this.modalService.open(printFormule, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -681,7 +681,7 @@ export class AllFormulesComponent implements OnInit {
 
 
   fillMaterialName(ev) {
-    debugger;
+    ;
     var itemNumber = ev.target.value
     if (itemNumber != "buffer" || itemNumber != "") {
       this.chooseFromBuffer = false;
@@ -699,13 +699,13 @@ export class AllFormulesComponent implements OnInit {
 
     var material = this.materials.find(m => m.componentName == materialName)
     this.newItem.itemNumber = material.componentN
-    debugger;
+    ;
 
 
   }
 
   loadDataPrint(formuleNum) {
-    debugger;
+    ;
     var formuleToUpdate = [];
     formuleToUpdate = this.allFormules.find(formule => formule.formuleNumber == formuleNum);
     this.updateFormule = formuleToUpdate
@@ -730,7 +730,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   open(formuleNum) {
-    debugger;
+    ;
     this.updateFormule = [];
     this.openFormuleModal = true;
     this.currFormulePercentage = 0;
@@ -740,7 +740,7 @@ export class AllFormulesComponent implements OnInit {
   saveFormuleFormation(){
     this.draggable = false;
     this.updateFormule;
-    debugger;
+    ;
     this.formuleService.updateFormuleFormation(this.updateFormule).subscribe(data=>{
       if(data){
         this.toastSrv.success('פורמולה עודכנה בהצלחה !')
@@ -750,7 +750,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   saveFormuleUpdate(formuleId, itemNumber, phaseName, index) {
-    debugger;
+    ;
 
 
     var formuleData = {
@@ -774,7 +774,7 @@ export class AllFormulesComponent implements OnInit {
         } else if (data.msg == 'notExist') {
           this.formuleService.updateFormule(formuleData).subscribe(data => {
             if (data) {
-              debugger;
+              ;
               var formule = this.allFormules.find(f => f.formuleNumber == data.formuleNumber);
               var phase = formule.phases.find(p => p.phaseName == phaseName);
               var item = phase.items.find(i => i.itemNumber == itemNumber)
@@ -795,11 +795,11 @@ export class AllFormulesComponent implements OnInit {
   }
 
   updateAllFromBase() {
-    debugger;
+    ;
     this.updateBaseToAll.updateChildren = this.allChosenChildsToUpdate
     this.updateBaseToAll.updateFather = this.allChosenFathersToUpdate
     this.formuleService.updateFormuleData(this.updateBaseToAll).subscribe(data => {
-      debugger;
+      ;
       data
       this.chooseFathersToUpdate = false;
       this.updateBaseToAll.updateChildren = ''
@@ -829,7 +829,7 @@ export class AllFormulesComponent implements OnInit {
 
 
   loadData(formuleNum) {
-    debugger;
+    ;
     this.currentFormuleNumber = formuleNum
     var formuleToUpdate;
     formuleToUpdate = this.allFormules.find(formule => formule.formuleNumber == formuleNum);
@@ -842,7 +842,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   deleteItemFromFormule(itemNumber){
-    debugger;
+    ;
     let formuleNumber = this.currentFormuleNumber;
     
     let formule = this.allFormules.find(f=>f.formuleNumber == formuleNumber);
@@ -858,7 +858,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   deleteFormule(id) {
-    debugger;
+    ;
     if(confirm('האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?')){
       this.formuleService.deleteFormuleById({ id }).subscribe(data => {
        if(data){
@@ -910,7 +910,7 @@ export class AllFormulesComponent implements OnInit {
   openItem(itemData, phaseNumber) {
 
 
-    debugger;
+    ;
 
     this.modalService.open(itemData, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -986,7 +986,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   choseChildToUpdate(ev, child) {
-    debugger;
+    ;
     if (ev.target.checked == true) {
       var isSelected = this.allChosenChildsToUpdate
       isSelected.push(child);
@@ -1035,7 +1035,7 @@ export class AllFormulesComponent implements OnInit {
 
   getDroppedElemnt(ev)
   {
-    debugger;
+    ;
     this.stopAllShakes();
     this.stopAllShakes();
   
@@ -1056,7 +1056,7 @@ export class AllFormulesComponent implements OnInit {
     let droppedIndex= this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.findIndex(a=>a.itemNumber==droppedIntoItemNum);
     this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.splice( droppedIndex, 0, itemToaddToNewPhase );
  
-    debugger;
+    ;
 
     setTimeout(()=>
     {

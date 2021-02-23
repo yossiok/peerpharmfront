@@ -93,7 +93,7 @@ export class WizardComponent implements OnInit {
     });
   }
   checkItemQnt(ev){
-    debugger
+    
       // this.inputValue = materialStockItem._id (27/06/2019) needs to be stockItem._id for itemType='mateiral'
       var userQnt=  this.qntInput.nativeElement.value;
       // var userQnt=  ev.target.value;

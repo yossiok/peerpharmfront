@@ -33,7 +33,7 @@ export class ScanProductComponent implements OnInit {
     if(inputValue.length==24){
       
       location.href="http://localhost:4200/#/peerpharm/inventory/scanMaterialView?id="+inputValue;
-      debugger
+      
       location.href="http://www.peerpharmsystem.com/#/peerpharm/inventory/scanMaterialView?id="+inputValue;
       // this.router.navigate(["http://localhost:4200/#/peerpharm/inventory/scanMaterialView?id="+inputValue]);
     }
@@ -41,18 +41,18 @@ export class ScanProductComponent implements OnInit {
 
 
   findMaterial(ev){
-    debugger;
+    ;
     var material = ev.target.value;
 
     this.inventorySrv.getMaterialArrivalByNumber(material).subscribe(data=>{
-    debugger;
+    ;
     if(data.length > 0){
       this.materialArrivals = data
       this.showTable = true;
       this.showUpdateAll = true;
     } else {
       this.inventorySrv.getMaterialArrivalByName(material).subscribe(data=>{
-      debugger;
+      ;
       this.materialArrivals = data;
       this.showTable = true;
       this.showUpdateAll = true;
@@ -83,7 +83,7 @@ export class ScanProductComponent implements OnInit {
 
     var position = this.materialPosition.nativeElement.value;
   this.inventorySrv.updateMaterialPosition(id,position).subscribe(data=>{
-    debugger;
+    ;
 
     this.materialArrivals
     if(data){
@@ -96,7 +96,7 @@ export class ScanProductComponent implements OnInit {
   }
 
   updatePositionToAll(ev){
-  debugger;
+  ;
 
     var position = this.positionForAll
     
@@ -110,7 +110,7 @@ export class ScanProductComponent implements OnInit {
           this.toastSrv.success('כל הפריטים עודכנו בהצלחה !')
           
           this.inventorySrv.getMaterialArrivalByNumber(materialNumber).subscribe(data=>{
-            debugger;
+            ;
             if(data){
               this.materialArrivals = data
               this.showTable = true;

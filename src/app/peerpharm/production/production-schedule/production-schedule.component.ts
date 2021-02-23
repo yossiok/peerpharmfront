@@ -65,7 +65,7 @@ export class ProductionScheduleComponent implements OnInit {
   }
 
   startFormuleForm(request){
-    debugger
+    
     if(request.status == 'new'){
       this.formuleService.startFormuleForm(request).subscribe(formuleAssemblyForm=>{
         if(formuleAssemblyForm != null ){
@@ -80,13 +80,13 @@ export class ProductionScheduleComponent implements OnInit {
     }
   }
   continueFormuleForm(request){
-    debugger
+    
     this.formuleService.getFormBySchedleId(request._id).subscribe(formuleAssemblyForm=>{
-      debugger
+      
       if(formuleAssemblyForm != null){
         let urlPrefixIndex=window.location.href.indexOf("#");
         let urlPrefix=window.location.href.substring(0,urlPrefixIndex)
-        debugger
+        
         window.open(urlPrefix+"#/peerpharm/production/wizard?schedule="+formuleAssemblyForm.productionScheduleId);
       }
     });

@@ -27,7 +27,7 @@ loader:boolean = true;
         data.forEach(log => {
         log.objectToSave = JSON.parse(log.objectToSave)
         });
-        debugger;
+        ;
         this.logs=data;
         this.logsCopy=data;
         this.loader = false;

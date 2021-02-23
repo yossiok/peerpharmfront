@@ -14,7 +14,6 @@ export class UserloggedinGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean { 
-      debugger;
      /* if(location.href.includes('/items/itemDetails'))
       {
         return false;

@@ -178,7 +178,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.user = this.authService.loggedInUser.firstName;
 
     this.inventoryService.newRecommendEmitter.subscribe(data => {
-      debugger;
+      ;
       console.log(data)
       data = JSON.parse(data._body)
       this.purchaseRecommendations.push(data)
@@ -282,7 +282,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   editRecommend(id, requestNumber) {
-    debugger;
+    ;
     if (id != '') {
       this.requestNum = requestNumber
       this.EditRowId = id;
@@ -312,7 +312,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   editRemarks(orderNumber) {
-    debugger;
+    ;
     if (orderNumber != '') {
 
       this.EditRowId = orderNumber;
@@ -325,14 +325,14 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   printRecommend(recommend){
-    debugger;
+    ;
   this.currRecommend = recommend
   this.printRecommendBtn.nativeElement.click();
 
   }
 
   filterByCategory(ev) {
-    debugger;
+    ;
     var category = ev.target.value;
 
     var tempArr = [];
@@ -355,7 +355,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   filterByStatus(ev, expression) {
 
-    debugger;
+    ;
     switch (expression) {
       case 'recommendations':
         this.purchaseRecommendations = this.purchaseRecommendationsCopy
@@ -424,7 +424,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   updateArrivalDate(ev, orderNumber) {
-    debugger;
+    ;
     var arrivalDate = ev.target.value;
 
     var order = this.procurementData.find(o => o.orderNumber == orderNumber);
@@ -440,12 +440,12 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   saveRecommendRemarks(purchase) {
-    debugger;
+    ;
 
     purchase.recommendRemarks = this.recommendRemarks.nativeElement.value;
 
     this.procurementservice.updateRecommendRemarks(purchase).subscribe(data => {
-      debugger;
+      ;
       if (data) {
         for (let i = 0; i < this.purchaseRecommendations.length; i++) {
           if (this.purchaseRecommendations[i].componentNumber == data.componentNumber && this.purchaseRecommendations[i].requestNumber == data.requestNumber) {
@@ -474,7 +474,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   onSelectOrderBill(event, orderNumber) {
-    debugger;
+    ;
     var currOrder = this.procurementData.find(o => o.orderNumber == orderNumber)
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
@@ -543,11 +543,11 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   changeStatusToDone(purchase) {
-    debugger;
+    ;
     this.user = this.authService.loggedInUser.firstName;
     if (this.user == "shanie" || this.user == "sima") {
       this.procurementservice.updateComponentPurchase(purchase).subscribe(data => {
-        debugger;
+        ;
         if (data) {
           for (let i = 0; i < this.purchaseRecommendations.length; i++) {
             if (this.purchaseRecommendations[i].componentNumber == data.componentNumber && this.purchaseRecommendations[i].requestNumber == data.requestNumber) {
@@ -573,7 +573,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   sortTable(typeOfSort) {
-    debugger;
+    ;
     switch (typeOfSort) {
       case 'supplier':
         this.purchaseRecommendations = this.arrayService.sortByAttribute(this.purchaseRecommendations, 'supplierName')
@@ -591,11 +591,11 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
   printOrder(line) {
-    debugger;
+    ;
     this.showImage = false;
     var supplierNumber = line.supplierNumber
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
-      debugger;
+      ;
       this.currentSupplier = data[0]
       if (this.currentSupplier.import == 'outOfIsrael') {
         this.country = true;
@@ -626,7 +626,7 @@ export class ProcurementOrdersComponent implements OnInit {
       if (line.orderType == 'component') {
         this.showImage = true;
         this.inventoryService.getCmptByNumber(this.currentItems[i].number, 'component').subscribe(data => {
-          debugger;
+          ;
           this.currentItems[i].img = data[0].img
         })
       }
@@ -678,7 +678,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   searchBySupplier(ev) {
-    debugger
+    
 
     var supplierName = ev.target.value;
     if (supplierName != "") {
@@ -693,7 +693,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   itemStatusDone(itemNumber, orderNumber) {
     this.procurementservice.setItemToDone({ itemNumber: itemNumber, orderNumber: orderNumber }).subscribe(data => {
-      debugger;
+      ;
       if (data) {
         var purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
         var item = purchase.item.find(i => i.itemNumber == itemNumber)
@@ -709,12 +709,12 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   // addNewItem() {
-  //   debugger;
+  //   ;
   //   this.newItem.orderNumber = this.purchaseData[0].orderNumber;
   //   this.newItem.itemPrice = Number(this.newItem.supplierAmount) * Number(this.newItem.supplierPrice);
   //   var itemObject = { ...this.newItem }
   //   this.procurementservice.addItemToProcurement(itemObject).subscribe(data => {
-  //     debugger;
+  //     ;
   //     if (data) {
   //       this.purchaseData[0].stockitems.push(itemObject);
   //       this.toastr.success("פריט נוסף בהצלחה !")
@@ -727,7 +727,7 @@ export class ProcurementOrdersComponent implements OnInit {
   // }
 
   searchByReference(ev){
-    debugger;
+    ;
     let referenceNum = ev.target.value;
     let tempArr = []
     if(referenceNum != ''){
@@ -747,7 +747,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   searchByItem(ev) {
-    debugger;
+    ;
     var itemNumber = ev.target.value;
     var tempArr = []
     this.procurementData = this.procurementDataNoFilter
@@ -813,7 +813,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   dateChange() {
-    debugger;
+    ;
     if (this.fromDateStr.nativeElement.value != "" && this.toDateStr.nativeElement.value != "") {
 
       this.procurementservice.getProcurementOrderItemByDate(this.fromDateStr.nativeElement.value, this.toDateStr.nativeElement.value).subscribe(data => {
@@ -916,7 +916,7 @@ export class ProcurementOrdersComponent implements OnInit {
   cancelOrder(orderNumber) {
     if (confirm("האם לבטל הזמנה זו ?")) {
       this.procurementservice.cancelOrder(orderNumber).subscribe(data => {
-        debugger
+        
         if (data) {
           this.procurementData = data;
           this.toastr.success("הזמנה בוטלה !")
@@ -961,7 +961,7 @@ export class ProcurementOrdersComponent implements OnInit {
       if (confirm("האם לסגור הזמנה זו  ?")) {
         this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
           if (data) {
-            debugger;
+            ;
             let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
             if (purchase) {
               purchase.status = data.status;
@@ -995,7 +995,7 @@ export class ProcurementOrdersComponent implements OnInit {
   deleteFromOrder(itemNumber, orderNumber) {
     if (confirm("האם למחוק פריט מספר " + itemNumber)) {
       this.procurementservice.deleteItemFromOrder(itemNumber, orderNumber).subscribe(data => {
-        debugger;
+        ;
         if (data) {
           for (let i = 0; i < this.procurementData.length; i++) {
             for (let j = 0; j < this.procurementData[i].item.length; j++) {
@@ -1017,7 +1017,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   checkIfArrived(itemNumber, orderNumber, index) {
-    debugger;
+    ;
 
     var orderAmount = this.orderAmount.nativeElement.value;
     var supplierPrice = this.supplierPrice.nativeElement.value;
@@ -1027,7 +1027,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
     if (confirm("האם לשנות?") == true) {
       this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice, itemRemarks, orderCoin, index).subscribe(data => {
-        debugger
+        
         for (let i = 0; i < this.procurementData.length; i++) {
           if (this.procurementData[i].orderNumber == orderNumber) {
 

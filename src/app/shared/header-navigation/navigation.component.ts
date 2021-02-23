@@ -39,7 +39,7 @@ export class NavigationComponent implements AfterViewInit {
     
      }
   ngOnInit() {
-    debugger;
+    ;
     this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
     this.authService.userEventEmitter.subscribe(data => {
       
@@ -55,7 +55,7 @@ export class NavigationComponent implements AfterViewInit {
         let newArr = [];
     
         this.authService.loggedInUser.modules.forEach(elm => {
-        debugger;
+        ;
           let tempArr = this.sidebarnavItems.filter(e => e.title == elm);
           if (tempArr.length > 0)
             newArr.push(tempArr[0]);

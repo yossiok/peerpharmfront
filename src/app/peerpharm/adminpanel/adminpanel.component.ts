@@ -34,7 +34,6 @@ export class AdminpanelComponent implements OnInit {
 
   getAllUsers() {
     this.userService.getAllUsers().subscribe(users => {
-      debugger;
       this.users = users;
     })
   }
@@ -60,8 +59,6 @@ export class AdminpanelComponent implements OnInit {
   }
 
   savePermission(name) {
-    debugger;
-
     if(this.screenValue.nativeElement.value != ''){
       this.userService.savePermissionToScreen({ name: name, permission:this.screenValue.nativeElement.value}).subscribe(data => {
         if(data){

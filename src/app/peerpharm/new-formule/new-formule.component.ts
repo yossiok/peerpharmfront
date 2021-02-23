@@ -115,7 +115,7 @@ export class NewFormuleComponent implements OnInit {
   async ngOnInit() {
 
     await this.authService.userEventEmitter.subscribe(user => {
-      debugger;
+      ;
       this.user = user.userName
       this.newFormule.user = user.userName
     });
@@ -127,7 +127,7 @@ export class NewFormuleComponent implements OnInit {
 
   async getUserDetails(){
     this.user = this.authService.loggedInUser.userName
-    debugger;
+    ;
     this.newFormule.user = this.user
     
   }
@@ -139,12 +139,12 @@ export class NewFormuleComponent implements OnInit {
     })
   }
   fillTheNameByNumber(ev){
-    debugger;
+    ;
     var formuleNumber = ev.target.value;
 
     if(formuleNumber != "") {
       this.itemService.getItemData(formuleNumber).subscribe(data=>{
-        debugger;
+        ;
         this.newFormule.formuleName = data[0].name+" "+data[0].subName+" "+data[0].discriptionK     
        })
     }
@@ -152,9 +152,9 @@ export class NewFormuleComponent implements OnInit {
 
   createFormuleFromBase(ev){
   var formuleName = ev.target.value;
-  debugger;
+  ;
   this.formuleService.getFormuleByName(formuleName).subscribe(data=>{
-    debugger;
+    ;
     data;
     this.currentBaseFormule = data;
     this.updateCurrBaseFormule = true;
@@ -165,7 +165,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
   newFormuleFromBase(){
-    debugger;
+    ;
     this.newFormule.children = this.allChildren
     this.newFormule.baseFormule = this.currentBaseFormule.formuleNumber
     
@@ -205,12 +205,12 @@ export class NewFormuleComponent implements OnInit {
 
 
   fillTheNumberByType(ev){
-  debugger;
+  ;
     var formuleType = ev.target.value;
 
     if(formuleType == "father"){
      this.formuleService.getLastFatherFormule().subscribe(data=>{
-       debugger;
+       ;
        this.newFormule.formuleNumber = "F"+(Number(data.formuleNumber.slice(1,5))+1)
        this.chooseChildren = true;
 
@@ -220,7 +220,7 @@ export class NewFormuleComponent implements OnInit {
     }
     if(formuleType == "base"){
       this.formuleService.getLastBaseFormule().subscribe(data=>{
-        debugger;
+        ;
         this.newFormule.formuleNumber = "B"+(Number(data.formuleNumber.slice(1,5))+1)
         this.chooseChildren = false;
  
@@ -231,7 +231,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
   addChildToExistFather(){
-    debugger;
+    ;
     var obj = {
       fatherFormule: this.fatherFormule.nativeElement.value,
       childNumber: this.childrenToAdd,
@@ -243,7 +243,7 @@ export class NewFormuleComponent implements OnInit {
       } else {
 
         this.formuleService.addChildToFather(obj).subscribe(data=>{
-          debugger;
+          ;
           if(data){
           this.formuleService.newFormuleAdded.emit(data);
            this.Toastr.success("פורמולה מספר"+data.formuleNumber+"נוצרה בהצלחה");
@@ -263,7 +263,7 @@ export class NewFormuleComponent implements OnInit {
 
   var material = this.allMaterials.find(m=>m.componentName == materialName)
   this.newItem.itemNumber = material.componentN
-  debugger;
+  ;
   if(material.mixedMaterial.length > 0) {
     this.hasMixedMaterial = true;
     this.mixedMaterials = material.mixedMaterial;
@@ -274,11 +274,11 @@ export class NewFormuleComponent implements OnInit {
   }
 
   addChildrenToFather(){
-    debugger;
+    ;
     var childrenNumber = this.addChildren.nativeElement.value;
     if(childrenNumber != "") {
       this.formuleService.getFormuleByNumber(childrenNumber).subscribe(data=>{
-        debugger;
+        ;
         if(data){
           this.Toastr.error("פורמולת בן קיימת אצל אב אחר")
         } else {
@@ -315,7 +315,7 @@ export class NewFormuleComponent implements OnInit {
 
 
   moveToPhases() {
-    debugger
+    
 
     this.newFormule.children = this.allChildren
     if (this.newFormule.user == "" || this.newFormule.date == "" || this.newFormule.formuleCategory == "" || 
@@ -325,7 +325,7 @@ export class NewFormuleComponent implements OnInit {
     } else {
 
       this.formuleService.newFormule(this.newFormule).subscribe(data => {
-        debugger;
+        ;
         if (data == "formule number exist") {
           this.Toastr.error("מספר פורמולה קיים")
         } else {
@@ -342,7 +342,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
   addItemsToPhase() {
-  debugger;
+  ;
     var newItem = {
       itemName: this.itemName.nativeElement.value,
       itemNumber: this.itemNumber.nativeElement.value,
@@ -367,7 +367,7 @@ export class NewFormuleComponent implements OnInit {
   }
   
   addItemToBasePhase(){
-    debugger;
+    ;
     var newItem = {
       itemName: this.itemName.nativeElement.value,
       itemNumber: this.itemNumber.nativeElement.value,
@@ -409,7 +409,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
   addItemToNewPhase(){
-    debugger;
+    ;
 
     var newItem = {
       itemName: this.itemName.nativeElement.value,
@@ -441,12 +441,12 @@ export class NewFormuleComponent implements OnInit {
   }
 
   addNewPhase() {
-    debugger
+    
     if(this.newPhase.items.length < Number(this.newPhase.amountOfItems)){
       this.Toastr.error("מספר הפריטים שהוספת קטן יותר מאשר מצוין בפאזה")
     } else {
       this.formuleService.addNewPhase(this.newPhase).subscribe(data => {
-        debugger
+        
         if (data) {
           this.Toastr.success("פאזה הוקמה בהצלחה")
           this.resetPhaseForm();
@@ -468,7 +468,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
   fillMaterialName(ev) {
-    debugger;
+    ;
     var itemNumber = ev.target.value
     if(itemNumber != "buffer" || itemNumber != "") {
       this.chooseFromBuffer = false;
@@ -494,7 +494,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
   edit(itemNumber) {
-    debugger;
+    ;
     if (itemNumber != '') {
       this.EditRowId = itemNumber;
     } else {
@@ -527,7 +527,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
   saveEdit(itemNumber,phaseName,index) {
-    debugger;
+    ;
 
     var phase = this.currentFormule.phases.find(p=>p.phaseName == phaseName);
     var item = phase.items.find(i=>i.itemNumber == itemNumber)

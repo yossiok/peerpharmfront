@@ -19,9 +19,9 @@ export class PackingListComponent implements OnInit {
 
 
   getAllPackingLists(){
-    debugger;
+    ;
     this.formsService.getAllPLs().subscribe(data=>{
-    debugger;
+    ;
     this.allPLs = data;
     this.allPLsCopy = data;
     
@@ -29,7 +29,7 @@ export class PackingListComponent implements OnInit {
   }
 
   filterByOrder(ev){
-    debugger;
+    ;
     var orderNumber = ev.target.value;
     if(orderNumber != "") {
         
@@ -42,7 +42,7 @@ export class PackingListComponent implements OnInit {
     
   }
   filterByItem(ev){
-    debugger;
+    ;
     var itemNumber = ev.target.value;
     if(itemNumber != "") {
         

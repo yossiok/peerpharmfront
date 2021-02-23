@@ -63,7 +63,7 @@ export class StoragesComponent implements OnInit {
 
 
   fillItemName(ev){
-    debugger;
+    ;
     let itemNumber = ev.target.value;
     this.inventorySrv.getCmptByitemNumber(itemNumber).subscribe(data=>{
     if(data){
@@ -109,7 +109,7 @@ export class StoragesComponent implements OnInit {
   }
 
   printMoveToKasem(certif){
-    debugger;
+    ;
     this.currentCertif = certif
     this.printCertif = true; 
   }
@@ -123,7 +123,7 @@ export class StoragesComponent implements OnInit {
   }
 
   filterTable(ev,type){
-    debugger;
+    ;
     var tempArr = []
     if(ev.target.value != ''){
       switch(type) {

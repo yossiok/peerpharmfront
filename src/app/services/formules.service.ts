@@ -182,7 +182,7 @@ export class FormulesService {
     return this.http.post(url, JSON.stringify(baseFormule), this.options).pipe(map(res => res.json()));
   }
   updatePercentage(formule){
-    debugger;
+    ;
     let url = this.baseUrl + "formules/updatePercentage";
     return this.http.post(url, JSON.stringify({formule}), this.options).pipe(map(res => res.json()));
   }

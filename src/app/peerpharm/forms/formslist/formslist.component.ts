@@ -85,7 +85,7 @@ export class FormslistComponent implements OnInit {
   //         [checkNetoWeight_filedName]:x.checkNetoWeight[i],
   //         [checkBox_stickerPrinting_filedName]:x.checkBox_stickerPrinting[i],
   //       });
-  //       debugger
+  //       
   //     }
   //     arrToExcel.push(newObj);
   //   });
@@ -96,7 +96,7 @@ export class FormslistComponent implements OnInit {
 
 
   FilterForms(enteredText, field) {
-    debugger;
+    ;
     const enteredValue = enteredText.target.value;
     if (enteredValue !== '') {
       switch (field) {

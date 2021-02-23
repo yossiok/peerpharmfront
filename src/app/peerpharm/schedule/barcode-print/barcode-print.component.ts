@@ -179,7 +179,7 @@ export class BarcodePrintComponent implements OnInit {
 
   // Modal Functions
   openPrintBarkod(content, line) {
-    debugger
+    
     this.schedLine = line;
     this.amountOfStickersArr = [];
     this.GetItemAllData()
@@ -206,7 +206,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   openPrintBarkodHul(contentHul, line) {
-    debugger;
+    ;
     this.schedLine = line;
     this.amountOfStickersArr = [];
     this.GetItemAllData()
@@ -264,7 +264,7 @@ export class BarcodePrintComponent implements OnInit {
   }
 
   initPrintScheduleForm(line) {
-    debugger;
+    ;
     this.pcsCarton = this.itemData[0].PcsCarton.replace(/\D/g, "") + " Pcs";
     this.barcodeK = this.itemData[0].barcodeK;
     this.volumeK = this.itemData[0].volumeKey + ' ml';

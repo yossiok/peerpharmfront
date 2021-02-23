@@ -48,7 +48,7 @@ export class WeightProductionComponent implements OnInit {
   })
 
   this.inventorySrv.getMaterialArrivalByNumber(this.barcode.materialNumber).subscribe(data=>{
-    debugger;
+    ;
     if(data){
       this.allMaterialArrivals = data.reverse();
       this.materialArrivals = true;
@@ -86,10 +86,10 @@ export class WeightProductionComponent implements OnInit {
   }
 
   getFormuleByNumber(){
-    debugger;
+    ;
   if(this.formuleNumber != '' && this.formuleWeight != '') {
     this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data=>{
-      debugger;
+      ;
     data.phases.forEach(phase => {
     phase.items.forEach(item => {
     item.kgProd = Number(this.formuleWeight)*(Number(item.percentage)/100)
@@ -116,7 +116,7 @@ export class WeightProductionComponent implements OnInit {
       material.amount = material.amount - this.kgToRemove;
 
       this.inventorySrv.reduceMaterialAmount(material).subscribe(data=>{
-        debugger
+        
         if(data){
           this.currentFormule.phases.forEach(phase => {
             phase.items.forEach(item => {
@@ -147,7 +147,7 @@ export class WeightProductionComponent implements OnInit {
 
   if(material != ''){
     this.inventorySrv.getShelfListForMaterial(material).subscribe(data=>{
-      debugger;
+      ;
       if(data.msg == 'noShelf'){
         this.toastSrv.error('Material is not exist on this shelf')
       }

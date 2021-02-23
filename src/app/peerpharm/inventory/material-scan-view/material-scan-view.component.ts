@@ -42,10 +42,10 @@ export class MaterialScanViewComponent implements OnInit {
       this.activatedRoute.queryParams.subscribe(params => {
         if(params.id){     
           this.invtSer.getMaterialArrivalFormById(params.id).subscribe(data=>{
-            debugger
+            
             this.currMaterial = data;
             this.invtSer.getAllMaterialsArrivalsByInternalNumber(data.internalNumber).subscribe(data=>{
-              debugger;
+              ;
               this.materialArrivalsByNumber = data.reverse();
 
             })

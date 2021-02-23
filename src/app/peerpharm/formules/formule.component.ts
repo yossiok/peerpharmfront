@@ -169,7 +169,7 @@ export class FormuleComponent implements AfterViewInit {
 
         this.phase = phaseToSave;
 
-        debugger;
+        ;
         this.addItemToScreen()
       } else {
         this.toastSrv.error('phase exist in formule\nChanges not saved')
@@ -206,7 +206,7 @@ export class FormuleComponent implements AfterViewInit {
             p = updatedPhase;
           }
         });
-        debugger
+        
         var num = 0;
         this.toastSrv.success("Item added to phase");
         for (let i = 0; i < this.allPhasesForm.length; i++) {

@@ -146,7 +146,7 @@ export class InventoryNewRequestComponent implements OnInit {
 
 
   async addItemToRequsetList(reqItemLine){
-    debugger;
+    ;
     reqItemLine.itemNumInput= reqItemLine.itemNumInput.trim();
     console.log('reqItemLine.itemNumInput: '+reqItemLine.itemNumInput);
     reqItemLine.relatedOrder= reqItemLine.relatedOrder.trim();

@@ -141,7 +141,7 @@ packingMaterialCheck = {
   }
 
   printCertifAgain(){
-  debugger;
+  ;
   this.listToPrint = this.printAgain
   this.printBtn.nativeElement.click();
   
@@ -149,7 +149,7 @@ packingMaterialCheck = {
 
   dirSet(action, direction) {
     
-    debugger;
+    ;
    
       if(direction!="production") this.multiInputLines=false;
       this.inventoryUpdateList=[] //reseting list before direction change
@@ -306,7 +306,7 @@ packingMaterialCheck = {
   //   })
   // }
   addNewWhareHouse(whareHouseName) {
-    debugger
+    
     this.inventoryService.addNewWhareHouse(whareHouseName).subscribe(res => {
       console.log(res)
       if (res.name) {
@@ -317,7 +317,7 @@ packingMaterialCheck = {
   }
 
   setWhareHouse(whname) {
-    debugger;
+    ;
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
     this.curentWhareHouseId = this.whareHouses[i]._id;
     this.curentWhareHouseName = this.whareHouses[i].name;
@@ -329,7 +329,7 @@ packingMaterialCheck = {
   // }
 
   searchShelf(shelf) {
-    debugger;
+    ;
     shelf = shelf.toUpperCase();
     console.log(shelf)
     if (shelf == "") {
@@ -386,7 +386,7 @@ packingMaterialCheck = {
 // NEW - insted of all the rendering
 // ********************************************************************************************************************
   async searchItemShelfs(ev){
-    debugger;
+    ;
     if(!this.multiInputLines && ev!=""){
       await this.inventoryService.getShelfListForItemInWhareHouse(ev.target.value, this.curentWhareHouseId).subscribe(async res => {
         if(res.length>0){
@@ -519,7 +519,7 @@ deleteLine(itemFromInvReq,index,ev){
 
   async sendList(){
     let ObjToUpdate;
-    debugger;
+    ;
     let sendConfirm=confirm("עדכון שינויים במלאי");
     if(sendConfirm && this.inventoryUpdateList.length>0) {
       
@@ -539,7 +539,7 @@ deleteLine(itemFromInvReq,index,ev){
             this.toastSrv.success("פעולות מחסנאי נשמרו");
           });
           this.inventoryService.deleteZeroStockAmounts().subscribe(x=> {
-            debugger
+            
             console.log(x.n+" items with amount=0 deleted");
           });
 
@@ -562,17 +562,17 @@ deleteLine(itemFromInvReq,index,ev){
   }
   
   async printStockTransferCertificate(){
-    debugger;
+    ;
     //print
     // setTimeout( ()=> {
       if(this.dir == 'production' || this.dir == 'out'){
-        debugger
+        
         this.printBtn.nativeElement.click();
       
         this.listToPrint=[];
       }
       if(this.dir == 'in'){
-        debugger;
+        ;
         this.printBtn2.nativeElement.click();
    
         this.listToPrint=[];

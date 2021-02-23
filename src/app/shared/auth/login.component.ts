@@ -27,9 +27,9 @@ export class LoginComponent implements OnInit {
     let loginfrm = { username: this.username, password: this.password };
     this.auth.login(loginfrm).subscribe((resp) => {
       if (resp) {
-        debugger;
+        ;
         if (this.redirectUrl && this.redirectUrl != "") {
-          debugger
+          
           this.router.navigate([this.redirectUrl]);
         }
         else {
@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
+    ;
 
 
     this.activatedRoute.queryParams.subscribe(params => {

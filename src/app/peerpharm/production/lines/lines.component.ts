@@ -27,7 +27,7 @@ export class LinesComponent implements OnInit {
   }
 
   addLine(){
-    debugger;
+    ;
     this.productionSer.addNewProductionLine(this.lineObj).subscribe(res=>console.log(res));
   }
 

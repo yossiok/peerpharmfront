@@ -77,7 +77,7 @@ export class CostumersListComponent implements OnInit {
   }
 
   openDetails(i) { 
-    debugger;
+    ;
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
     this.getOrderDetailsForCustomer(this.costumer.costumerName)
@@ -142,7 +142,7 @@ export class CostumersListComponent implements OnInit {
   }
 
   deleteContact(contact){
-    debugger;
+    ;
     if(confirm('האם למחוק איש קשר זה ? ')){
       for (let i = 0; i < this.costumer.contact.length; i++) {
         if(this.costumer.contact[i].phone == contact.phone){

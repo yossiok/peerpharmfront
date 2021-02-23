@@ -27,7 +27,7 @@ export class UsersService  {
   constructor(private http:Http, private httpClient:HttpClient) {
     this.getAllScreens().subscribe(data=>
       {
-        debugger;
+        ;
         this.allScreens=[...data];
       });
    }
@@ -79,19 +79,19 @@ export class UsersService  {
   
   savePermissionToScreen(screen:any):Observable<any> {
     let url = this.baseUrl2 + 'users/setPermissionToScreen';
-    debugger;
+    ;
     return this.httpClient.post(url, JSON.stringify(screen),httpOptions);
       
   }
   changePassword(userName,newPass,oldPass):Observable<any> {
     let url = this.baseUrl2 + 'users/changepassword';
-    debugger;
+    ;
     return this.httpClient.post(url, JSON.stringify({userName:userName,newEmail:newPass,oldPassword:oldPass}),httpOptions);
       
   }
   updateEmail(userId,newEmail):Observable<any> {
     let url = this.baseUrl2 + 'users/updateEmail';
-    debugger;
+    ;
     return this.httpClient.post(url, JSON.stringify({userId:userId,newEmail:newEmail}),httpOptions);
       
   }

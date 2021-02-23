@@ -99,7 +99,7 @@ export class ChangeShelfComponent implements OnInit {
 
 
   getShellDetailByNumber(ev) {
-    debugger;
+    ;
   this.itemShell = {
     item:'',
     amount:'',
@@ -263,10 +263,10 @@ export class ChangeShelfComponent implements OnInit {
       position:'',
       _id:'',
     }
-    debugger;
+    ;
   var shelfNumber = ev.target.value;
   this.itemService.getShelfDetailByShelf(shelfNumber).subscribe(data=>{
-    debugger
+    
     if(data.length > 0) {
       if(data[0]){this.itemShell = data[0]}
       if(data[1]){this.itemShellTwo = data[1]}
@@ -286,9 +286,9 @@ export class ChangeShelfComponent implements OnInit {
   }
   
   findByIdAndUpdate(){
- debugger;
+ ;
     this.itemService.findByIdAndUpdate(this.itemShell).subscribe(data=>{
-      debugger
+      
     if(data){
       this.toastSrv.success("כמות עודכנה בהצלחה !")
     } else {
@@ -382,7 +382,7 @@ export class ChangeShelfComponent implements OnInit {
   }
 
   async getUserInfo() {
-    debugger
+    
     await this.AuthService.userEventEmitter.subscribe(user => {
       this.user = user;
 

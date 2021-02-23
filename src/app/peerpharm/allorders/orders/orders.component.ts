@@ -178,7 +178,6 @@ export class OrdersComponent implements OnInit {
 
 
   saveEdit(closedOrder, orderId) {
-    debugger;
     // a - is if the request is to set order - ready
     if (!closedOrder) {
       let orderToUpdate = {
@@ -329,7 +328,6 @@ export class OrdersComponent implements OnInit {
 
   }
   searchByType(ev) {
-    debugger;
     let word = ev.target.value;
     if (word != "") {
 
@@ -357,7 +355,6 @@ export class OrdersComponent implements OnInit {
   }
 
   filterOrdersByDate(type) {
-    debugger;
     this.orders = this.ordersCopy
     if (type == 'order') {
       this.orders.sort(function (a, b) {

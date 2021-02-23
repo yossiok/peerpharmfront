@@ -32,7 +32,7 @@ export class ItemMovementReportsComponent implements OnInit {
   }
 
   printCertificate(movement){
-    debugger;
+    ;
     this.movementCertificate = movement;
     this.printCerModal = true;
     setTimeout(() => {

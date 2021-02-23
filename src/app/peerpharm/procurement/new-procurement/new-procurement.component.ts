@@ -127,7 +127,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    debugger;
+    ;
     console.log('purchase data: ', this.purchaseData)
     // this.user = this.authService.loggedInUser.userName
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
@@ -186,7 +186,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     if (this.stockitem.number != '') {
       if (this.newPurchase.controls.orderType.value == 'material') {
         this.inventoryService.getMaterialStockItemByNum(this.stockitem.number).subscribe(data => {
-          debugger;
+          ;
           if (data[0]) {
             this.stockitem.name = data[0].componentName;
             this.stockitem.coin = data[0].coin
@@ -201,7 +201,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         })
       } else if (this.newPurchase.controls.orderType.value == 'component') {
         this.inventoryService.getCmptByitemNumber(this.stockitem.number).subscribe(data => {
-          debugger;
+          ;
           if (data[0]) {
             this.stockitem.name = data[0].componentName;
             this.stockitem.measurement = data[0].unitOfMeasure
@@ -232,7 +232,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   fillSupplierDetails(ev) {
-    debugger;
+    ;
     let supplier = ev.target.value;
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
     this.currSupplier = result[0]
@@ -261,7 +261,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   addItemToPurchase() {
-    debugger
+    
     let objToPush = { ...this.stockitem }
     this.newPurchase.controls.stockitems.value.push(objToPush)
     this.resetStockItem();
@@ -276,7 +276,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   sendNewProc(action) {
-    debugger
+    
     if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
@@ -400,7 +400,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
       // this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data => {
-      //   debugger;
+      //   ;
       //   let items = data[0].items;
 
       //   if (items.length > 0) {
@@ -440,7 +440,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
     // addToSupplierPriceList() {
-    //   debugger;
+    //   ;
     //   if (confirm('האם להוסיף למחירון ספק ?')) {
     //     var obj = {
     //       itemName: this.newItem.itemName,
@@ -465,7 +465,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
     // addItemToProcurement() {
-      //   debugger;
+      //   ;
       //   var newItem = {
         //     coin: this.coin.nativeElement.value,
         //     itemName: this.itemName.nativeElement.value,
@@ -499,7 +499,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   //         var material = this.allMaterials.find(m => m.componentN == newItem.itemNumber);
   //       }
 
-  //       debugger;
+  //       ;
   //       if (material) {
   //         if (material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true') {
   //           if (confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + material.allowQtyInStock)) {

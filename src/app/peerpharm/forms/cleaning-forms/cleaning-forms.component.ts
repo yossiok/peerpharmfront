@@ -64,7 +64,7 @@ export class CleaningFormsComponent implements OnInit {
 
   
   saveProdDailyClean(){
-    debugger;
+    ;
     
     
    
@@ -89,12 +89,12 @@ export class CleaningFormsComponent implements OnInit {
     
   }
   saveDailyCleanForm(){
-    debugger;
+    ;
     
 
       this.formsService.saveNewDailyClean(this.dailyCleanForm).subscribe(data=>{
         if(data.length > 0) {
-          debugger;
+          ;
         this.toastr.success('Successfuly Saved - נשמר בהצלחה')
         this.allDailyCleanForms = data;
         } else if (data._id){
@@ -113,11 +113,11 @@ export class CleaningFormsComponent implements OnInit {
   }
 
   saveDailyCleanFormSecond(){
-    debugger;
+    ;
     
     
       this.formsService.saveNewDailyCleanSecond(this.dailyCleanFormSecond).subscribe(data=>{
-        debugger;
+        ;
         if(data.length > 0) {
         this.toastr.success('Successfuly Saved - נשמר בהצלחה')
         this.allDailyCleanSecondForms = data;
@@ -137,9 +137,9 @@ export class CleaningFormsComponent implements OnInit {
 
   
   getAllDailyCleanForms(){
-    debugger;
+    ;
     this.formsService.getAllDailyCleanForms().subscribe(data=>{
-      debugger
+      
       data.forEach(obj => {
         for (let i in obj) {
           if (obj[i] === true) {

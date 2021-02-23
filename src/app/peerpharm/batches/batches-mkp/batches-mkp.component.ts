@@ -49,7 +49,7 @@ export class BatchesMkpComponent implements OnInit {
 
   getAllMkpBatches(){
     this.batchService.getAllMkpBatches().subscribe(data=>{
-      debugger;
+      ;
       this.mkpBatches = data;
 
     })
@@ -105,7 +105,7 @@ export class BatchesMkpComponent implements OnInit {
     this.allStickers.push(obj);
   }
  
- debugger;
+ ;
 
       setTimeout(() => {
         this.printBtn.nativeElement.click();   
@@ -172,7 +172,7 @@ export class BatchesMkpComponent implements OnInit {
     this.allStickers.push(obj);
   }
  
- debugger;
+ ;
   if(this.newMkpBatch.batchNumber != "") {
     this.newMkpBatch.type = 'makeup'
     this.batchService.addNewMkpBatch(this.newMkpBatch).subscribe(data=>{
@@ -181,7 +181,7 @@ export class BatchesMkpComponent implements OnInit {
         this.printBtn.nativeElement.click();   
        
       }, 500);
-      debugger;
+      ;
       this.toastSr.success("נוספה אצווה חדשה")
      this.newMkpBatch.item = ""
    this.newMkpBatch.itemName = ""
@@ -211,10 +211,10 @@ export class BatchesMkpComponent implements OnInit {
 
 
   fillItemName(ev){
-    debugger;
+    ;
     var itemNumber = ev.target.value;
     this.itemService.getItemData(itemNumber).subscribe(data=>{
-      debugger;
+      ;
       this.newMkpBatch.itemName = data[0].name +' '+ data[0].subName +' '+ data[0].discriptionK
 
     })

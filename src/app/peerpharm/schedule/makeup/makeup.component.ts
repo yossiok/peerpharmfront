@@ -43,7 +43,7 @@ mkpSchedule = {
 
   getAllCustomers(){
   this.customerService.getAllCostumers().subscribe(data=>{
-    debugger;
+    ;
   this.allCustomers = data;
   })
   }

@@ -52,7 +52,7 @@ export class MaterialsComponent implements OnInit {
   }
 
   getBatchDetails(ev){
-    debugger;
+    ;
     this.batchService.getBatchData(ev.target.value).subscribe(data=>{
     if(data.length > 0){
       this.material.orderNumber = data[0].order
@@ -64,7 +64,7 @@ export class MaterialsComponent implements OnInit {
   }
 
   edit(id) {
-    debugger;
+    ;
     if (id != '') {
       this.editRow = true
       this.EditRowId = id;
@@ -76,7 +76,7 @@ export class MaterialsComponent implements OnInit {
 
   getAllMatBoxes(){
     this.inventorySrv.getAllMatBoxes().subscribe(data=>{
-      debugger;
+      ;
     this.allMaterialBoxes= data;
     })
   }

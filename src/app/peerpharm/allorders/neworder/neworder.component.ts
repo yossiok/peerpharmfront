@@ -132,7 +132,6 @@ export class NeworderComponent implements OnInit {
         onHoldDate: null,
         user: post.user
       }
-      debugger;
       this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
 
         this.orderId = res._id;
@@ -254,7 +253,6 @@ export class NeworderComponent implements OnInit {
 
 
   searchItem(itemNumber) {
-    debugger
     this.itemName = "";
     this.existOrderItem = []
     //console.log(itemNumber);
@@ -269,7 +267,6 @@ export class NeworderComponent implements OnInit {
         //   this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
         //   this.netWeightK = res[0].netWeightK;
         this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe(data => {
-          debugger
           if (data.length > 0) {
             this.existOrderItem = data;
           } else {

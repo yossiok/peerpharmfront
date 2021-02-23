@@ -115,7 +115,7 @@ export class NewBatchComponent implements OnInit {
     today.setFullYear(today.getFullYear() + Number(this.newBatch.expration));
     this.newBatch.expration = JSON.stringify(today)
     this.newBatch.expration = this.newBatch.expration.slice(1,11)
-    debugger;
+    ;
     this.newBatch.batchNumber = this.newBatch.batchNumber.toLowerCase();
     this.newBatch.batchCreated = new Date().getTime();
 

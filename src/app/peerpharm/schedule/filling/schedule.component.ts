@@ -128,7 +128,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   get printBarcodeValues(): string[] {
-    debugger;
+    ;
     return this.printBarkod.barcode.split("\n");
   }
 
@@ -141,7 +141,7 @@ export class ScheduleComponent implements OnInit {
 
 
   writeScheduleData() {
-    debugger;
+    ;
     if(this.scheduleLine.orderN!=''){
 
     console.log(this.scheduleLine);
@@ -224,7 +224,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   dateChanged(date) {
-    debugger
+    
     console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
@@ -251,7 +251,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   getAllSchedule(today) {
-    debugger
+    
     this.scheduleService.getScheduleByDate(today).subscribe(res => {
       res.map(sced => {
         console.log(sced);
@@ -290,12 +290,12 @@ export class ScheduleComponent implements OnInit {
   }
 
   isSelected(ev,item){
-    debugger
+    
     if(ev.target.checked == true) {
     var isSelected = this.selectedArr
 
     this.itemSer.createFillingReport(item.item).subscribe(data=>{
-      debugger;
+      ;
       item.impRemarks = data[0].impRemarks
       item.bottleNumber = data[0].bottleNumber
       item.pumpNumber = data[0].pumpNumber
@@ -334,7 +334,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   makeFillingReport(){
-    debugger;
+    ;
 
     this.fillingReport = true;
     this.selectedArr;
@@ -343,7 +343,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   setType(type, elem) {
-    debugger
+    
     console.log('hi ' + type);
     console.log('hi ' + elem.style);
     switch (type) {
@@ -449,7 +449,7 @@ export class ScheduleComponent implements OnInit {
  
   getAllUnpackedSchedules(){
     this.scheduleService.getUnpackedSchedules().subscribe(data=>{
-      debugger
+      
       data.forEach(element => {
         element.mkp = 'unpacked'
       });
@@ -485,7 +485,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule() {
-    debugger;
+    ;
     if(this.orderN.nativeElement.value!=''){
       this.EditRowId;
       this.scheduleData;
@@ -595,7 +595,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   filterSchedule() {
-    debugger;
+    ;
     this.scheduleData = this.selectedArr
 
   }
@@ -606,7 +606,7 @@ export class ScheduleComponent implements OnInit {
   setDone() {}
 
   moveAllOpenScedToToday() {
-  debugger;
+  ;
     if(this.selectedArr.length > 0) {
       this.scheduleService.moveToNextDay(this.selectedArr).subscribe(data=>{
         if(data.msg == "success"){
@@ -633,7 +633,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   markMkpDone(id){
-    debugger;
+    ;
     this.scheduleService.setMpkDone(id).subscribe(data=>{
       if(data){
         let schedule = this.scheduleData.find(s=>s._id == id);
@@ -649,13 +649,13 @@ export class ScheduleComponent implements OnInit {
   openPrintBarkod(content, line) {
     this.showPrintBtn = false;
     this.schedFillLine = line;
-    debugger;
+    ;
     this.newBatchChange = false;
     setTimeout(() => {
       this.showPrintBtn = true;
     }, 3000);
     this.itemSer.getItemData(this.schedFillLine.item).subscribe(data=>{
-      debugger;
+      ;
       data;
 
       this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
@@ -667,7 +667,7 @@ export class ScheduleComponent implements OnInit {
     })
 
     this.batchService.getBatchData(this.schedFillLine.batch).subscribe(data=>{
-      debugger;
+      ;
       this.expireDate = data[0].expration.slice(1,11);
   
     })
@@ -715,7 +715,7 @@ export class ScheduleComponent implements OnInit {
 
   onSubmit(): void {
     const newPrintBarkod = this.printScheduleFillingForm.value;
-    debugger;
+    ;
     this.printCostumerBarcode = true;
     this.printExpBarcode = true;
     this.printItemBarcode = true;
@@ -729,7 +729,7 @@ export class ScheduleComponent implements OnInit {
     this.newBatchChange = true;
    }
    savePcsCarton(){
-     debugger;
+     ;
     this.pcsCarton = this.printScheduleFillingForm.value.pcsCartonQuantity
    }
 

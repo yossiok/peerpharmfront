@@ -53,7 +53,7 @@ export class ItemslistComponent implements OnInit {
   }
 
     this.itemsService.updateItemDetails(obj).subscribe(data=>{
-      debugger;
+      ;
       data
       if(data){
         var item = this.items.find(i=>i._id == data._id)
@@ -129,7 +129,7 @@ export class ItemslistComponent implements OnInit {
   }
 
   filterByComponent(ev){
-    debugger;
+    ;
     this.items = this.itemsCopy
     var compNumber = ev.target.value;
     if(compNumber != ''){

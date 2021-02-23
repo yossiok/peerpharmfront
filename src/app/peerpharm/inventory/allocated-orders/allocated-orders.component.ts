@@ -32,7 +32,7 @@ export class AllocatedOrdersComponent implements OnInit {
 
   getAllItems(){
     this.itemService.getAllItemsTwo().subscribe(data=>{
-      debugger;
+      ;
       if(data.length > 5000) {
         this.loader = true;
       if(data){
@@ -62,7 +62,7 @@ export class AllocatedOrdersComponent implements OnInit {
     
     if (confirm("האם סיימת ?") == true) {
     this.orderService.allocatedDone(id).subscribe(data=>{
-      debugger;
+      ;
       if(data) {
         for (let i = 0; i < this.orderItems.length; i++) {
          if(this.orderItems[i]._id == id) {
@@ -78,7 +78,7 @@ export class AllocatedOrdersComponent implements OnInit {
 }
 
 filterByItemNumber(ev) {
-  debugger;
+  ;
   var itemNumber = ev.target.value;
 
 if(itemNumber != "") {

@@ -496,7 +496,7 @@ export class StockComponent implements OnInit {
   getAllPurchases() {
 
     this.procuretServ.getAllPurchases().subscribe(allPurchases => {
-      debugger;
+      ;
       this.components.forEach(comp => {
 
         let filteredPurchases = allPurchases.filter(x => x.item.filter(x => x.itemNumber == comp.componentN).length > 0)
@@ -611,7 +611,7 @@ export class StockComponent implements OnInit {
 
   updateSupplierDetails() {
 
-    debugger;
+    ;
 
     var obj = {
       id: this.resMaterial._id,
@@ -801,7 +801,7 @@ export class StockComponent implements OnInit {
   }
 
   purchaseRecommend(component) {
-    debugger;
+    ;
     this.currItem = component;
 
     this.procuretServ.getPurchaseOrderByItem(component.componentN).subscribe(data => {
@@ -820,7 +820,7 @@ export class StockComponent implements OnInit {
   }
 
   sendRecommandation() {
-    debugger;
+    ;
     if (this.recommandPurchase.amount == '' || this.recommandPurchase.date == '') {
       this.toastSrv.error('חובה למלא כמות ותאריך')
     } else {
@@ -1095,7 +1095,7 @@ export class StockComponent implements OnInit {
   }
 
   async updateItemStock(direction) {
-    debugger;
+    ;
     //check enough amount for "out"
     this.newItemShelfPosition = this.newItemShelfPosition.toUpperCase().trim();
     var shelfExsit = false;
@@ -1242,7 +1242,7 @@ export class StockComponent implements OnInit {
 
 
   deleteSupplier(index, componentN) {
-    debugger;
+    ;
     if (confirm('האם למחוק ספק ?')) {
       var material = this.components.find(c => c.componentN == componentN);
       material.alternativeSuppliers.splice(index, 1);
@@ -1263,7 +1263,7 @@ export class StockComponent implements OnInit {
 
 
   getUserInfo() {
-    debugger;
+    ;
     this.authService.userEventEmitter.subscribe(user => {
       this.user = user.loggedInUser;
     })
@@ -1354,7 +1354,7 @@ export class StockComponent implements OnInit {
 
 
   searchItemShelfs() {
-    debugger;
+    ;
     if (this.newItemShelfWH != '') {
       this.inventoryService.getShelfListForItemInWhareHouse(this.resCmpt.componentN, this.newItemShelfWH).subscribe(async res => {
         if (res.length > 0) {
@@ -1372,7 +1372,7 @@ export class StockComponent implements OnInit {
 
 
   loadShelfToInput(shelf, ev) {
-    debugger;
+    ;
     if (!shelf.position.includes("NO SHELFS")) {
       this.newItemShelfPosition = shelf.position;
       this.newQApallet.shelf = shelf.position
@@ -1396,7 +1396,7 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.loadComponentItems();
-    debugger;
+    ;
     if (this.resCmpt.jumpRemark == "" || this.resCmpt.jumpRemark == undefined) {
       console.log("ok")
     } else {
@@ -1873,7 +1873,7 @@ export class StockComponent implements OnInit {
   }
 
   async getUser() {
-    debugger;
+    ;
 
     if (this.authService.loggedInUser.userName == 'SHARK' || this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'martha') {
       this.showDeleteBtn = true
@@ -1974,7 +1974,7 @@ export class StockComponent implements OnInit {
     })
   }
   async getCmptAmounts(cmptN, cmptId) {
-    debugger;
+    ;
     // this.currItemShelfs=[];
     this.newItemShelfPosition = '';
     this.newItemShelfQnt = 0;
@@ -2365,9 +2365,9 @@ export class StockComponent implements OnInit {
 
 
  // startDownloadingInventory() {
-  //   debugger;
+  //   ;
   //   this.inventoryService.startNewItemObservable().subscribe((components) => {
-  //     debugger;
+  //     ;
   //     components.forEach(comp => {
   //       if(comp.alternativeSuppliers) {
   //         comp.alternativeSuppliers.forEach(supplier => {
@@ -2404,7 +2404,7 @@ export class StockComponent implements OnInit {
 
 
   // filterRows(event, filterType) {
-  //   debugger;
+  //   ;
   //   this.emptyFilterArr = true;
   //   this.components = this.componentsUnFiltered.filter(x => x.itemType == this.stockType);
   //   this.filterVal = '';

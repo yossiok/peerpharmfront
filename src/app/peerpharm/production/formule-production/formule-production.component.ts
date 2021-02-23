@@ -50,7 +50,7 @@ export class FormuleProductionComponent implements OnInit {
 
   getAllFormulesProduction(){
   this.FormuleService.getAllsentToProduction().subscribe(data=>{
-    debugger;
+    ;
   this.allFormules = data;
   })
   }
@@ -60,7 +60,7 @@ export class FormuleProductionComponent implements OnInit {
     this.chooseCookingFormule = false;
     this.showFormuleModal = true;
     this.FormuleService.getFormuleByNumber(formuleNumber).subscribe(data=>{
-    debugger;
+    ;
     this.currFormule = data;
     this.currPhases = data.phases
 
@@ -86,13 +86,13 @@ export class FormuleProductionComponent implements OnInit {
   }
 
   saveEdit(production){
-      debugger;
+      ;
       var updateProduction = {...production}
       updateProduction.netWeightGr = Number(this.productionNetWeight.nativeElement.value)
       updateProduction.quantity = Number(this.productionQuantity.nativeElement.value)   
 
     this.InventorySrv.updateProductionDetails(updateProduction).subscribe(data=>{
-      debugger;
+      ;
       data;
       var formule = this.allFormules.find(f=>f._id == data.formuleId);
       var production = formule.production.find(p=>p.orderNumber == data.orderNumber);
@@ -104,7 +104,7 @@ export class FormuleProductionComponent implements OnInit {
   }
   
   isSelected(ev, item) {
-    debugger
+    
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr
       isSelected.push({ ...item });
@@ -119,11 +119,11 @@ export class FormuleProductionComponent implements OnInit {
   }
 
   loadMaterialsForFormule(){
-    debugger
+    
     this.selectedArr
 
     this.InventorySrv.getMaterialsForFormules(this.selectedArr).subscribe(data => {
-      debugger
+      
       if (data.msg == "לא קיימת פורמולה") {
         this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
       } else {
@@ -136,11 +136,11 @@ export class FormuleProductionComponent implements OnInit {
   }
 
   searchMaterialByNumber(materialNumber){
-    debugger;
+    ;
    
 
     this.InventorySrv.getMaterialArrivalByNumber(materialNumber).subscribe(data=>{
-    debugger;
+    ;
     if(data){
       this.materialArrivals = data.reverse();
       this.showTable = true;
@@ -156,7 +156,7 @@ export class FormuleProductionComponent implements OnInit {
   }
 
   continueCook(){
-    debugger;
+    ;
     this.showTable = false;
     this.showFormuleModal = true;
     this.showInput = this.currItemNumber
@@ -164,7 +164,7 @@ export class FormuleProductionComponent implements OnInit {
   }
 
   insertId(itemNumber,itemName){
-    debugger;
+    ;
     this.kgProductionAmount
     if(itemNumber != "" && itemNumber != "buffer"){
       this.currItemNumber = itemNumber
@@ -201,7 +201,7 @@ export class FormuleProductionComponent implements OnInit {
   }
 
   searchMaterial(event,itemNumber){
-    debugger;
+    ;
 
     this.InventorySrv.getMaterialArrivalFormById(event.target.value).subscribe(data=>{
       

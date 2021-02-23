@@ -141,7 +141,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   fillItemName(ev){
-    debugger;
+    ;
   var itemNumber = ev.target.value;
   
   if(itemNumber != ''){
@@ -208,7 +208,7 @@ setType(type) {
 
 
   saveSupplier() {
-    debugger;
+    ;
     if(this.supplier.suplierName != "" && this.supplier.suplierNumber != "") {
     this.supplierService.addorUpdateSupplier(this.supplier).subscribe(res => {
       console.log(res);
@@ -271,7 +271,7 @@ setType(type) {
 
 
   searchSupplier(supplierName){
-debugger;
+;
     var word = supplierName
     if(word != "" && word != undefined){
       this.suppliers = this.suppliersCopy.filter(s=>s.suplierName == supplierName);
@@ -350,7 +350,7 @@ debugger;
   }
 
   addItemToPriceList(){
-    debugger;
+    ;
     if(this.priceListItem.itemName != '' && this.priceListItem.itemNumber != '' && this.priceListItem.supplierPrice != '' ){
       this.currentSupplier.priceList.push(this.priceListItem)
       this.priceListItem = {
@@ -387,7 +387,7 @@ debugger;
   }
 
   openData(supplierNumber){
-  debugger;
+  ;
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data=>{
       if(data){
         this.currentSupplier = data[0]
@@ -397,7 +397,7 @@ debugger;
   }
 
   showAllPurchases(itemNumber){
-    debugger;
+    ;
     this.procurementService.getAllItemPurchases(itemNumber).subscribe(data=>{
     if(data){
      this.itemPurchases = data; 
@@ -409,7 +409,7 @@ debugger;
 
   updateCurrSupplier(){
     this.supplierService.updateCurrSupplier(this.currentSupplier).subscribe(data=>{
-  debugger;
+  ;
     if(data){
       this.toastSrv.success('ספק עודכן בהצלחה !');
       this.updateSupplier = false;
@@ -429,7 +429,7 @@ debugger;
     this.getSuppliers();
     this.getAlternativeSuppliers();
     this.getSuppliersOrderedItems();
-    debugger;
+    ;
     if(this.route.queryParams){
       setTimeout(() => {
         this.searchSupplier(this.route.snapshot.queryParams.supplierName)

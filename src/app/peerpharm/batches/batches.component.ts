@@ -147,7 +147,7 @@ export class BatchesComponent implements OnInit {
   }
 
   getAllBatches() {
-    debugger;
+    ;
     this.batchService.getAllBatches().subscribe((res) => {
       console.log(res);
       this.batches = res;
@@ -194,7 +194,7 @@ export class BatchesComponent implements OnInit {
 
 
   getAllBatchesYear() {
-    debugger;
+    ;
     this.batchService.getAllBatchesYear().subscribe((res) => {
       console.log(res);
       this.batches = res.filter(b=>b.type !='makeup');
@@ -235,7 +235,7 @@ export class BatchesComponent implements OnInit {
     });
   }
   private getDismissReason(reason: any): string {
-    debugger;
+    ;
     if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
@@ -245,9 +245,9 @@ export class BatchesComponent implements OnInit {
 
 
   openTableValues(itemNumber,batchNumber) {
-    debugger;
+    ;
     this.batchService.getBatchData(batchNumber).subscribe(data=>{
-      debugger;
+      ;
       this.currBatch = data[0]
       this.currBatch.kgProduced = Number(this.currBatch.weightKg) - Number(this.currBatch.weightQtyLeft)
     })
@@ -259,7 +259,7 @@ export class BatchesComponent implements OnInit {
   }
 
   setBatchAsScheduled(id){
-    debugger;
+    ;
     if(confirm('האם לשנות סטטוס לאצווה זו ?')) {
       this.batchService.setBatchToSchedule(id).subscribe(data=>{
         if(data){
@@ -274,7 +274,7 @@ export class BatchesComponent implements OnInit {
 
 
   loadSpecTable(itemNumber) {
-    debugger;
+    ;
     this.itemService.getItemData(itemNumber).subscribe(data => {
       if(data[0].valueStatus == undefined){
         data[0].valueStatus = ''
@@ -322,7 +322,7 @@ export class BatchesComponent implements OnInit {
   }
 
   openPrint(printBatch, batchNumber) {
-    debugger;
+    ;
     this.modalService.open(printBatch, { size: 'sm', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -332,7 +332,7 @@ export class BatchesComponent implements OnInit {
   }
 
   loadDataPrint(batchNumber) {
-    debugger;
+    ;
     var batchToPrint = [];
     batchToPrint = this.batches.find(batch => batch.batchNumber == batchNumber);
     this.batchPrint = batchToPrint
@@ -444,7 +444,7 @@ export class BatchesComponent implements OnInit {
   }
 
   saveEdit(currdoc) {
-    debugger;
+    ;
     if (this.batchNumber.nativeElement.value && this.batchItemName.nativeElement.value != "") {
 
       this.currentDoc.batchNumber = this.batchNumber.nativeElement.value.trim();
@@ -469,7 +469,7 @@ export class BatchesComponent implements OnInit {
   }
 
   saveSpecValues(itemNumber) {
-    debugger;
+    ;
     var obj = {
       date: this.lastValueUpdate,
       user: this.userValueUpdate
@@ -528,7 +528,7 @@ export class BatchesComponent implements OnInit {
   }
 
   async getUserInfo() {
-    debugger
+    
     if (this.authService.loggedInUser) {
       if (this.authService.loggedInUser.authorization.includes("editBatches")) {
         this.alowUserEditBatches = true;

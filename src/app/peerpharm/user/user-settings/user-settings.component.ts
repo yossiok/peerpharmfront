@@ -21,7 +21,7 @@ export class UserSettingsComponent implements OnInit {
   constructor(private orderService:OrdersService,private ToastService:ToastrService,private authService:AuthService,private userService: UsersService) { }
 
   ngOnInit() {
-    debugger;
+    ;
     this.user = this.authService.loggedInUser;
 
     if(!this.user){
@@ -65,9 +65,9 @@ export class UserSettingsComponent implements OnInit {
   }
 
   getOpenOrdersByUser(){
-    debugger
+    
     this.orderService.getOpenOrdersByUser(this.user.userName).subscribe(data=>{
-      debugger;
+      ;
       this.userOrders = data;
     })
   }

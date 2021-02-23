@@ -120,7 +120,7 @@ export class ProjectsComponent implements OnInit {
 
 
   edit(id){
-    debugger;
+    ;
  
     if(id != ''){
       this.EditRowId = id
@@ -146,7 +146,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   addNewItem(){
-    debugger;
+    ;
     this.newItem.projectId = this.currProjectId
     this.scheduleService.addNewItemToProject(this.newItem).subscribe(data=>{
     if(data){
@@ -168,7 +168,7 @@ export class ProjectsComponent implements OnInit {
         this.newProjectModal = false;
         this.getAllProjects();
         this. resetFields();
-      debugger;
+      ;
       })
     } else{
     this.toastSrv.error('חובה למלא שם מנהל')
@@ -198,7 +198,7 @@ export class ProjectsComponent implements OnInit {
       
       });
       this.managers = [...new Set(tempArr)];
-      debugger;
+      ;
       this.allProjects = data
       this.allProjectsCopy = data
     })
@@ -215,10 +215,10 @@ export class ProjectsComponent implements OnInit {
 
 
   getItemDetails(ev){
-    debugger;
+    ;
     if(ev.target.value != ''){
       this.itemService.getItemData(ev.target.value).subscribe(data=>{
-        debugger;
+        ;
         if(data[0].bottleNumber != '' && data[0].bottleNumber != '---'){
         this.itemComponents.push(data[0].bottleNumber)
         }
@@ -253,13 +253,13 @@ export class ProjectsComponent implements OnInit {
   }
 
   getOrderDetails(ev,project){
-    debugger;
+    ;
     if(ev.target.value != ''){
       this.orderService.getOrderByNumber(ev.target.value).subscribe(data=>{
         if(data){
           this.projectCustumerOrder.nativeElement.value = data[0].customerOrderNum
           this.orderService.getAmountsForProject(ev.target.value,project._id).subscribe(data=>{
-            debugger;
+            ;
             
             var allEqual = data.every( v => v.hasEnoughAmount === true )
             if(allEqual == true){
@@ -281,7 +281,7 @@ export class ProjectsComponent implements OnInit {
 
 
   saveEdit(id){
-    debugger;
+    ;
     let objectToUpdate = {
     productName:this.projectProduct.nativeElement.value,
     remarks:this.projectRemarks.nativeElement.value,
@@ -304,7 +304,7 @@ export class ProjectsComponent implements OnInit {
     deliveryCoordination:this.projectDelCoor.nativeElement.value,
     id:id,
     }
-    debugger;
+    ;
     this.scheduleService.updateProject(objectToUpdate).subscribe(data=>{
     if(data){
       this.toastSrv.success('פרויקט עודכן בהצלחה !');

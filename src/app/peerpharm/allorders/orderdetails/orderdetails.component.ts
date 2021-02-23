@@ -296,7 +296,6 @@ export class OrderdetailsComponent implements OnInit {
 
       }
       else {
-        debugger;
         this.showingAllOrders = false;
         this.orderService.ordersArr.subscribe(async res => {
           console.log(res)
@@ -570,9 +569,6 @@ if(data){
   }
 
   openComponentsStatus(components, itemNumber, itemQuantity, orderNumber) {
-
-
-    debugger
     this.itemSer.getComponentsAmountByCmptNumber(itemNumber, itemQuantity).subscribe(data => {
       
       data;
@@ -592,7 +588,6 @@ if(data){
   }
 
   isSelected(ev, item) {
-    debugger
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr
       isSelected.push({ ...item });
@@ -881,7 +876,6 @@ if(data){
     }
 
     loadMaterialsForFormule(){
-      debugger
       this.selectedArr
 
       this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
@@ -939,7 +933,6 @@ if(data){
       var item = tempArr.find(i => i.itemNumber == itemNumber);
       item.calculatedAmount = updatedQuantity
       this.inventoryService.getMaterialsForFormules(tempArr).subscribe(data => {
-        debugger
         if (data.msg == "לא קיימת פורמולה") {
           this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
         } else {
@@ -1253,7 +1246,6 @@ if(data){
   }
 
   setMkpSchedule(item, date, remarks, invoice) {
-      debugger;
     // we should check what about type = '' 
     if (date != '') {
 

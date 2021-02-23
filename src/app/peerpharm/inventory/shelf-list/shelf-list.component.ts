@@ -47,7 +47,7 @@ export class ShelfListComponent implements OnInit {
 
 
   editShelfAmount(item , position){
-    debugger;
+    ;
     if(item != '' && position != ''){
       this.shelfPos = position
       this.shelfItemN = item
@@ -58,7 +58,7 @@ export class ShelfListComponent implements OnInit {
     }
   
   getShelfsByWH(ev){
-    debugger;
+    ;
     let whareHouse = ev.target.value;
     if(whareHouse == 'materials' || whareHouse == 'components'){
       this.itemType = whareHouse
@@ -67,7 +67,7 @@ export class ShelfListComponent implements OnInit {
     }
     this.inventorySrv.shelfListByWH(whareHouse).subscribe(data=>{
     if(data){
-      debugger;
+      ;
       data.sort((a,b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0));
       if(this.itemType == 'components') data = data.filter(s=>s.itemType == 'component')
       if(this.itemType == 'materials') data = data.filter(s=>s.itemType == 'material')
@@ -80,7 +80,7 @@ export class ShelfListComponent implements OnInit {
   }
 
   filterByShelf(ev){
-    debugger;
+    ;
     this.allShelfs = this.allShelfsCopy
     let position = ev.target.value;
 
@@ -99,7 +99,7 @@ export class ShelfListComponent implements OnInit {
   }
 
   searchForShelfs(ev){
-    debugger;
+    ;
     if(ev.target.value != ''){
       this.inventorySrv.getShelfListForMaterial(ev.target.value).subscribe(data=>{
       if(data.msg =='noShelf'){
@@ -114,7 +114,7 @@ export class ShelfListComponent implements OnInit {
 
   updateShelfAmount(shelf){
     this.item;
-    debugger;
+    ;
     let objToUpdate = {
       item:shelf.item,
       position:shelf.position,
@@ -126,7 +126,7 @@ export class ShelfListComponent implements OnInit {
     if(confirm('האם לעדכן מדף ?')){
       this.inventorySrv.updateShelfAmount(objToUpdate).subscribe(data=>{
         if(data){
-          debugger;
+          ;
           let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);
           shelf.total = data.amount
           this.toastSrv.success('פריט עודכן בהצלחה !')
@@ -148,7 +148,7 @@ export class ShelfListComponent implements OnInit {
   }
 
   filterByCostumer(ev){
-    debugger;
+    ;
     this.allShelfs = this.allShelfsCopy
     let costumer = ev.target.value;
 
@@ -161,7 +161,7 @@ export class ShelfListComponent implements OnInit {
 
   updateShelfCostumer(shelf){
   this.inventorySrv.updateShelfCostumer(shelf,this.item.costumer).subscribe(data=>{
-    debugger;
+    ;
     if(data){
       let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);
       if(shelf){
@@ -175,7 +175,7 @@ export class ShelfListComponent implements OnInit {
   }
 
   updateShelf(id){
-  debugger;
+  ;
   let amount = this.shelfAmount.nativeElement.value;
   let position = this.shelfPosition.nativeElement.value;
 
@@ -193,7 +193,7 @@ export class ShelfListComponent implements OnInit {
 
   getAllCostumers(){
   this.costumerSrv.getAllCostumers().subscribe(data=>{
-    debugger;
+    ;
     this.allCostumers = data;
   })
   }

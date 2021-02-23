@@ -41,7 +41,7 @@ export class FirstAidComponent implements OnInit {
 
   getAllFirstAids(){
     this.formsService.getAllFirstAids().subscribe(data=>{
-      debugger;
+      ;
       for (let i = 0; i < data.length; i++) {
         if(data[i].roomType == 'offices'){
           data[i].roomType = "מזכירות"
