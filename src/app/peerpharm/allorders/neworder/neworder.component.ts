@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { OrdersService } from "../../../services/orders.service";
 import { CostumersService } from "../../../services/costumers.service";
@@ -9,6 +9,7 @@ import { map, startWith } from "rxjs/operators";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
+import { InventoryService } from "src/app/services/inventory.service";
 
 @Component({
   selector: "app-neworder",
@@ -16,6 +17,8 @@ import { AuthService } from "src/app/services/auth.service";
   styleUrls: ["./neworder.component.scss"]
 })
 export class NeworderComponent implements OnInit {
+  @Output() closed: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('amounts') amounts;
   orderItemForm: FormGroup;
   orderForm: FormGroup;
   orderNumber: string;
@@ -25,12 +28,12 @@ export class NeworderComponent implements OnInit {
   itemName: String;
   netWeightK: Number = 0;
   lastOrderNumber: Number;
-  user:any;
-  existOrderItem:any[];
-  shippingMethod:any[] = [];
-  shippingDetails:any = {
+  user: any;
+  existOrderItem: any[];
+  shippingMethod: any[] = [];
+  shippingDetails: any = {
     shippingQuantity: "",
-    shippingWay:"",
+    shippingWay: "",
   }
   items: any[] = [];
   costumers: any[] = [];
@@ -39,6 +42,9 @@ export class NeworderComponent implements OnInit {
   submited: boolean = false;
   openModal: boolean = false;
   titleAlert: string = "This field is required";
+  materialsNotEnoughAmount: []
+  waitForAmounts: boolean = false;
+
 
   constructor(
     private modalService: NgbModal,
@@ -46,7 +52,8 @@ export class NeworderComponent implements OnInit {
     private orderSer: OrdersService,
     private costumerService: CostumersService,
     private toastSrv: ToastrService,
-    private authService:AuthService,
+    private authService: AuthService,
+    private inventoryService: InventoryService
   ) {
     this.orderForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -57,8 +64,8 @@ export class NeworderComponent implements OnInit {
       remarks: [null],
       customerOrderNum: [null],
       type: [null],
-      user:[null,Validators.required],
-      area:[null]
+      user: [null, Validators.required],
+      area: [null]
 
     });
 
@@ -73,112 +80,174 @@ export class NeworderComponent implements OnInit {
     });
   }
 
-  addNewOrder(post) {
- 
-  if(this.orderForm.controls.costumerInternalId.value==null){
-    this.orderForm.controls.costumerInternalId.setValue(this.choosedCostumer.costumerId);
-  };
+  ngOnInit() {
+    //this.getLastOrderNumber();
 
-  if(this.orderForm.valid){
-    let newOrderObj = {
-      area:this.choosedCostumer.area,
-      costumer: post.costumer,
-      orderDate: post.orderdate,
-      costumerInternalId:post.costumerInternalId,
-      deliveryDate: post.delivery,
-      orderRemarks: post.remarks,
-      customerOrderNum:post.customerOrderNum,
-      type: post.type,
-      status: 'open',
-      stage: 'new',
-      onHoldDate: null,
-      user:post.user
+    /* this.rForm.get('validate').valueChanges.subscribe(
+  
+       (validate) => {
+  
+           if (validate == '1') {
+               this.rForm.get('name').setValidators([Validators.required, Validators.minLength(3)]);
+               this.titleAlert = 'You need to specify at least 3 characters';
+           } else {
+               this.rForm.get('name').setValidators(Validators.required);
+           }
+           this.rForm.get('name').updateValueAndValidity();
+  
+       });
+  */
+    this.getCostumers();
+    if (this.authService.loggedInUser) {
+      this.user = this.authService.loggedInUser.firstName;
+      this.orderForm.controls.user.setValue(this.user);
     }
-    debugger;
-    this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
- 
-      this.orderId = res._id;
-      this.orderNumber = res.orderNumber;
-      this.submited = true;
-      this.orderSer.refreshOrders.emit(res)
-      console.log(res)
-    });
-  }else{
-    this.toastSrv.error("Failed please finish filling the form");
+    else {
+      this.authService.userEventEmitter.subscribe(data => {
+        this.user = this.authService.loggedInUser.firstName;
+        this.orderForm.controls.user.setValue(this.user);
+      })
+    }
+
   }
-}
+
+  addNewOrder(post) {
+
+    if (this.orderForm.controls.costumerInternalId.value == null) {
+      this.orderForm.controls.costumerInternalId.setValue(this.choosedCostumer.costumerId);
+    };
+
+    if (this.orderForm.valid) {
+      let newOrderObj = {
+        area: this.choosedCostumer.area,
+        costumer: post.costumer,
+        orderDate: post.orderdate,
+        costumerInternalId: post.costumerInternalId,
+        deliveryDate: post.delivery,
+        orderRemarks: post.remarks,
+        customerOrderNum: post.customerOrderNum,
+        type: post.type,
+        status: 'open',
+        stage: 'new',
+        onHoldDate: null,
+        user: post.user
+      }
+      debugger;
+      this.orderSer.addNewOrder(newOrderObj).subscribe(res => {
+
+        this.orderId = res._id;
+        this.orderNumber = res.orderNumber;
+        this.submited = true;
+        this.orderSer.refreshOrders.emit(res)
+        console.log(res)
+      });
+    } else {
+      this.toastSrv.error("Failed please finish filling the form");
+    }
+  }
+
+  checkAmounts() {
+    if (
+      this.orderItemForm.controls['netWeightK'].value != "" && this.orderItemForm.controls['quantity'].value != ""
+      && this.orderItemForm.controls['netWeightK'].value != null && this.orderItemForm.controls['quantity'].value != null
+    ) {
+      this.waitForAmounts = true;
+      this.modalService.open(this.amounts);
+
+      let weightKG = Number(this.orderItemForm.controls['netWeightK'].value) * Number(this.orderItemForm.controls['quantity'].value) / 1000
+      let formule = this.orderItemForm.controls['itemN'].value
+      //check amounts
+      this.inventoryService.reduceMaterialAmounts(formule, weightKG, false).subscribe(response => {
+        this.materialsNotEnoughAmount = response.materials
+        if (response.materials.length > 0) {
+          let materialNames = <any>[]
+          // console.log('materials:  ',response.materials)
+          for (let material of response.materials) {
+            this.inventoryService.getMaterialByNumber(material, 'material')
+              .subscribe(material => {
+                materialNames.push(material[0].componentName)
+                console.log(material[0].componentName)
+              })
+          }
+          this.materialsNotEnoughAmount = materialNames;
+          this.waitForAmounts = false;
+        }
+      })
+    }
+    else this.toastSrv.warning('יש להזין משקל נטו וכמות')
+  }
 
   addNewItemOrder(post) {
-    debugger;
-   if(this.shippingDetails.shippingWay == "" || this.orderItemForm.controls.itemN.value == '' || this.orderItemForm.controls.itemN.value == null) {
-     this.toastSrv.error("Please fill all the details")
-   } else {
-      
-    console.log(post);
-    var shippingQuantitySum = 0;
 
-    this.shippingMethod.forEach(function(details) {
-      shippingQuantitySum += parseInt(details.shippingQuantity);
+    if (this.shippingDetails.shippingWay == "" || this.orderItemForm.controls.itemN.value == '' || this.orderItemForm.controls.itemN.value == null) {
+      this.toastSrv.error("Please fill all the details")
+    } else {
 
-      return shippingQuantitySum
-    });
-    
-    console.log(shippingQuantitySum)
-    
+      console.log(post);
+      var shippingQuantitySum = 0;
 
-    if(post.quantity) {
-   
-    // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
-    //if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
-    // if(this.netWeightK!=0 && this.netWeightK!=null) post.netWeightK = this.netWeightK;
-    let newOrderItemObj = {
-      itemNumber: post.itemN,
-      discription: post.discription,
-      netWeightGr: post.netWeightK,
-      quantity: post.quantity,
-      qtyKg: post.qtyKg,
-      shippingMethod: this.shippingMethod,
-      batch: "",
-      price: "",
-      discount: "",
-      totalPrice: "",
-      itemRemarks: post.remarks,
-      orderId: this.orderId,
-      orderNumber: this.orderNumber
-    };
-    console.log(newOrderItemObj);
-    this.orderItemForm.reset();
-    this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
-      if(res.msg == 'notActive'){
-        this.toastSrv.error('שים לב פריט זה אינו פעיל')
+      this.shippingMethod.forEach(function (details) {
+        shippingQuantitySum += parseInt(details.shippingQuantity);
+
+        return shippingQuantitySum
+      });
+
+      console.log(shippingQuantitySum)
+
+
+      if (post.quantity) {
+
+        // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
+        //if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
+        // if(this.netWeightK!=0 && this.netWeightK!=null) post.netWeightK = this.netWeightK;
+        let newOrderItemObj = {
+          itemNumber: post.itemN,
+          discription: post.discription,
+          netWeightGr: post.netWeightK,
+          quantity: post.quantity,
+          qtyKg: post.qtyKg,
+          shippingMethod: this.shippingMethod,
+          batch: "",
+          price: "",
+          discount: "",
+          totalPrice: "",
+          itemRemarks: post.remarks,
+          orderId: this.orderId,
+          orderNumber: this.orderNumber
+        };
+        console.log(newOrderItemObj);
+        this.orderItemForm.reset();
+        this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => {
+          if (res.msg == 'notActive') {
+            this.toastSrv.error('שים לב פריט זה אינו פעיל')
+          }
+          else if (res != 'error') {
+            this.items.push(res);
+            console.log(this.items)
+            this.itemName = "";
+            this.netWeightK = 0;
+            this.toastSrv.success('item ' + res.itemNumber + ' added');
+
+          } else {
+            this.toastSrv.error('Adding item faild');
+          }
+
+          this.shippingMethod = [];
+
+        });
+
+        //  orderId:this.orderId
       }
-      else if(res!='error'){
-        this.items.push(res);
-        console.log(this.items)
-        this.itemName = "";
-        this.netWeightK = 0;
-        this.toastSrv.success('item '+res.itemNumber+' added');
- 
-      } else{
-        this.toastSrv.error('Adding item faild');
-      }
-     
-      this.shippingMethod = [];
 
-    });
-   
-    //  orderId:this.orderId
+    }
+
+
   }
 
-   }
-   
-  
-  }
+  addShipping() {
 
-  addShipping() { 
- 
-    let DetailsToPush ={...this.shippingDetails};
-    
+    let DetailsToPush = { ...this.shippingDetails };
+
     this.shippingMethod.push(DetailsToPush)
 
   }
@@ -190,7 +259,7 @@ export class NeworderComponent implements OnInit {
     this.existOrderItem = []
     //console.log(itemNumber);
     if (itemNumber != "") {
-      
+
       this.orderSer.getItemByNumber(itemNumber).subscribe(res => {
         // console.log(res[0]);
         this.orderItemForm.controls.discription.setValue(
@@ -199,14 +268,14 @@ export class NeworderComponent implements OnInit {
         this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
         //   this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
         //   this.netWeightK = res[0].netWeightK;
-        this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe(data=>{
+        this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe(data => {
           debugger
-          if(data.length > 0) {
+          if (data.length > 0) {
             this.existOrderItem = data;
           } else {
             this.existOrderItem = undefined
           }
-          
+
         })
       });
     }
@@ -214,39 +283,6 @@ export class NeworderComponent implements OnInit {
 
   getLastOrderNumber() {
     this.orderSer.getLastOrderNumber().subscribe();
-  }
-  ngOnInit() {
-    //this.getLastOrderNumber();
-
-    /* this.rForm.get('validate').valueChanges.subscribe(
-
-       (validate) => {
-
-           if (validate == '1') {
-               this.rForm.get('name').setValidators([Validators.required, Validators.minLength(3)]);
-               this.titleAlert = 'You need to specify at least 3 characters';
-           } else {
-               this.rForm.get('name').setValidators(Validators.required);
-           }
-           this.rForm.get('name').updateValueAndValidity();
-
-       });
-  */
-    this.getCostumers();
-    if(this.authService.loggedInUser)
-    {
-      this.user = this.authService.loggedInUser.firstName;
-      this.orderForm.controls.user.setValue(this.user);
-    }
-    else
-    {
-      this.authService.userEventEmitter.subscribe(data=>
-        {
-          this.user = this.authService.loggedInUser.firstName;
-          this.orderForm.controls.user.setValue(this.user);
-        })
-    } 
-  
   }
 
   // addNewSavedOrder(post) {
@@ -269,7 +305,7 @@ export class NeworderComponent implements OnInit {
   // }
 
   addNewSavedOrderItem(post) {
- 
+
     console.log(post);
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
     if (post.discription == null || post.discription != this.itemName)
@@ -293,12 +329,12 @@ export class NeworderComponent implements OnInit {
     };
     console.log(newOrderItemObj);
     this.orderItemForm.reset();
-    this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res => 
+    this.orderSer.addNewOrderItem(newOrderItemObj).subscribe(res =>
       this.items.push(res)
-      
-      );
-   
-   
+
+    );
+
+
   }
 
   getCostumers() {
@@ -327,6 +363,7 @@ export class NeworderComponent implements OnInit {
   }
 
   openSearch(content, costumer) {
+    console.log('AKAKAKAKAKAKAKAKAKAK ', content)
     this.modalService
       .open(content, { ariaLabelledBy: "modal-basic-title" })
       .result.then(
@@ -356,7 +393,7 @@ export class NeworderComponent implements OnInit {
   }
 
   searchCostumer(costumerValue) {
- 
+
     if (costumerValue != "") {
       this.costumers = this.costumers.filter(costumer =>
         costumer.costumerName.toLowerCase().includes(costumerValue)
@@ -367,9 +404,9 @@ export class NeworderComponent implements OnInit {
   }
 
   chooseCostumer() {
- 
-    if(this.choosedCostumer.impRemark != null && this.choosedCostumer.impRemark!= undefined && this.choosedCostumer.impRemark!="" ){
-      alert("ללקוח יש הערה חשובה:\n"+this.choosedCostumer.impRemark);
+
+    if (this.choosedCostumer.impRemark != null && this.choosedCostumer.impRemark != undefined && this.choosedCostumer.impRemark != "") {
+      alert("ללקוח יש הערה חשובה:\n" + this.choosedCostumer.impRemark);
     }
     this.orderForm.controls.costumer.setValue(
       this.choosedCostumer.costumerName
@@ -378,5 +415,5 @@ export class NeworderComponent implements OnInit {
       this.choosedCostumer.costumerId
     );
   }
- 
+
 }
