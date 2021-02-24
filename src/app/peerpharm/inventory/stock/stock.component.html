@@ -11,10 +11,6 @@
       <button class="btn btn-info form-control rounded-pill">F8 - הזמנות מלאי</button>
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
-    <!-- <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-warning form-control" (click)="procurementRecommendations('haveRecommendation')">המלצות רכש
-        קיימות</button>
-    </div> -->
     <div class="col-2 fixNoaStupidStuff">
       <button class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7
         - בדוק המלצה
@@ -29,11 +25,6 @@
       <button class="btn btn-success form-control rounded-pill" (click)="newCmpt('new')">F2 - פריט חדש</button>
     </div>
   </div>
-
-  <!--Bar Animations https://www.youtube.com/watch?v=zHUpx90NerM-->
-
-
-
 
   <!--filter components-->
   <div class="fixNoaStupidStuff  title">
@@ -59,7 +50,6 @@
       <div class="col-2 fixNoaStupidStuff">
         <label for="">Component Type</label>
         <select formControlName="componentType" class="form-control rounded-pill">
-          <!-- <select #filterByType class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'type')"> -->
           <option value="" selected="true">בחר קטגוריה</option>
           <option value='bottle_Glass'>בקבוק זכוכית</option>
           <option value='bottle_Plastic'>בקבוק פלסטיק</option>
@@ -85,12 +75,9 @@
           <option value='sticker'>מדבקה</option>
           <option value='sachet'>סאשט</option>
           <option value='plate'>גלופה</option>
-          <!-- <option value='component'>לא מוגדר</option> -->
-
-
-          <!-- <option *ngFor="let cmptType of cmptTypeList">{{cmptType}}</option> -->
         </select>
       </div>
+
       <div class="col-2 fixNoaStupidStuff">
         <label for="">Category</label>
         <select formControlName="componentCategory" class="form-control rounded-pill">
@@ -98,10 +85,8 @@
           <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
         </select>
       </div>
+
       <div class="col-2 fixNoaStupidStuff"></div>
-      <!-- <div class="col-2 fixNoaStupidStuff">
-      <input formControlName="productName" #filterByItem type="text" class="form-control rounded-pill" placeholder="Search By Item">
-    </div> -->
     </div>
     <div dir="rtl" class="row mt-5 fixNoaStupidStuff">
       <div class="col-4 fixNoaStupidStuff"></div>
@@ -115,8 +100,6 @@
       <div class="col-4 fixNoaStupidStuff"></div>
     </div>
   </form>
-
-
 
   <div *ngIf="stockType == 'material'" class="row mt-10 fixNoaStupidStuff">
     <div class="col-4 fixNoaStupidStuff"></div>
@@ -154,25 +137,12 @@
         <option value="solid">Solid</option>
         <option value="gell">Gell</option>
       </select>
-
     </div>
     <div class="col-1">
       <button (click)="filterMaterialsTable()" class="btn-info form-control rounded-pill">חפש</button>
     </div>
     <div class="col-4"></div>
-
   </div>
-
-
-  <!-- <div>
-    <button class='btn topBtn btn-success' (click)="newCmpt('new')"><b>פריט חדש</b></button> &nbsp;&nbsp;
-    <button class="btn topBtn btn-info" (click)="procurementRecommendations('minimumStock')"><b>בדוק המלצה
-        לרכש</b></button> &nbsp;&nbsp;
-    <button class="btn topBtn btn-info" (click)="procurementRecommendations('haveRecommendation')"><b>המלצות רכש
-        קיימות</b></button> &nbsp;&nbsp;
-    <button class="btn topBtn btn-primary" (click)="ngOnInit()"><b>טען פריטים מחדש</b></button>&nbsp;&nbsp;
-  
-  </div> -->
 
   <div style="margin-right:auto !important" *ngIf="smallLoader == true"
     class="smallLoader fixNoaStupidStuff mx-auto my-auto"></div>
@@ -193,30 +163,21 @@
         style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Products</div>
       <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2,'color':fontColor2}"
         class="navtab" style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Materials</div>
-      <!-- <div (click)='setType("cartons")' [ngStyle]="{'background-color': buttonColor4}" class="navtab"
-        style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Cartons</div>
-      <div (click)='setType("sticker")' [ngStyle]="{'background-color': buttonColor5}" class="navtab"
-        style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Stickers</div> -->
-
       <div class="export" style="cursor:pointer;">
         <img *ngIf="loadingExcel" style="width:50px"
           src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
         <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
           (click)="exportCurrTable()">
-
       </div>
       <div class="export" style="cursor:pointer;" (click)="open(printInventoryValue)">
         <button class="btn btn-primary">Value For Money</button>
       </div>
-
-
 
       <!-- TABLE START -->
       <div *ngIf="stockType=='component'" class="tableFixHead">
         <table class='table stockTable table-fixed text-center' *ngIf="stockType=='component'">
           <thead class="text-white bg-info">
             <tr style="text-align: center;">
-
               <th style="width:3%;"></th>
               <th style="width:6%;"><b>מספר פריט</b></th>
               <th style="width:5%;"><b>מק"ט פריט-ספק</b></th>
@@ -227,15 +188,11 @@
               <th style="width:5%;"><b>תמונה</b></th>
               <th style="width:5%"></th>
               <th style="width:12%;"><b>צפי הגעה הזמנת רכש</b></th>
-              <!-- <th style=" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th> -->
               <th style="width:3%;"></th>
               <th style="width:3%;"></th>
             </tr>
-
           </thead>
-
           <tbody id="table_body" class="componentTable">
-
             <tr *ngFor="let component of components; let i = index">
               <td style="width:3%;">{{i+1}}</td>
               <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}
@@ -253,14 +210,7 @@
                 {{component.amount}}
                 <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
                   style="width: 40px; margin-left: 15px; cursor: pointer; float: right;">
-                <!-- <button class="btn btn-info" (click)="getCmptAmounts(component.componentN, component._id)"
-                style="float:right;">צפיה בכמויות</button> -->
               </td>
-
-              <!-- <td>
-              <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}</div>
-            </td> -->
-
               <td style="width:5%; text-align: center;">
                 <img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)">
               </td>

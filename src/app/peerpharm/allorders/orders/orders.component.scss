@@ -1,9 +1,13 @@
 
+button, input {
+  border-radius: 5px;
+}
 
 .table-fixed thead {
     width: 100%;
     display: block;
-    }
+}
+
 .table-fixed tbody {
     height: 700px;
     overflow-y: auto;
@@ -11,34 +15,34 @@
     display: block;
 }
 
-.table-fixed th{
+.table-fixed th {
     width:8%;
     /* width:8%; */
     display: inline-block;
     border: none;
-  }
-  .table-fixed td{
+}
+
+.table-fixed td {
     width:8%;
     /* width:8%; */
     display: inline-block;
     border-bottom: none;
     /* border-left: 1px black solid;     */
-  }
-  .table-fixed tr{
+}
+
+.table-fixed tr {
     width: 100%;
     display: block;
     font-size: 18px;
-  }
-  
+}
 
-  .table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
+.table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
     width:8%;
     /* width:8%; */
     display: inline-block;
     border-bottom: none;
     font-family: "Times New Roman", Times, serif;
 }
-
 
 input[type=checkbox]
 {
@@ -50,41 +54,45 @@ input[type=checkbox]
   padding: 10px;
 }
 
-.subHeader{
+.subHeader {
     background-color: #d6d6d6;
     padding: 3px;
     width:250px;
     font-weight: bold;
 }
-.subMain{
+
+.subMain {
     background-color:white;
     width:250px;
     text-align: center;
     padding: 20px;
 }
-.subContainer{
+
+.subContainer {
     border-radius: 4px;
     border: 3px solid  #d6d6d6;
     width:256px;
     margin-right: 95px;
 }
-.mainDiv{
+
+.mainDiv {
     display:inline-flex;
 }
+
 i{
     font-size: 20px;
 }
-table{
+table {
     color:black;
     font-size: 16px;
-  }
+}
   
 td {
       /* background-color: white; */
       border-bottom: 1px solid #ddd;
       font-family: "Berlin Sans FB";
 
-  }
+}
 
 /* .stageTags{
     display:inline-block;  
@@ -97,13 +105,12 @@ td {
     border: black 1px solid;
     font-size: 18px
 } */
-.searchInput{ 
+.searchInput { 
   line-height: 40px;
   margin-bottom: 5px;
   width: 300px;
   font-size: 16px;
   box-shadow: 2px 2px 2px black;
-
 }
 
 
