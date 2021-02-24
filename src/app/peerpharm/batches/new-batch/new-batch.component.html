@@ -36,7 +36,7 @@
             <input type="text" formControlName="order" class="form-control">
             <input type="text" (change)="fillItemName($event)" formControlName="item" class="form-control">
             <input type="text" formControlName="itemName" class="form-control">
-            <input type="date" formControlName="produced" class="form-control">
+            <input type="date" formControlName="produced" value="{{ today | date:'yyyy-MM-dd' }}" class="form-control">
             <input type="date" formControlName="expration" class="form-control">
             <input type="number" formControlName="barrels" class="form-control">
             <input type="text" formControlName="weightKg" class="form-control">
