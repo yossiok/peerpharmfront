@@ -160,16 +160,14 @@ export class NeworderComponent implements OnInit {
         this.materialsNotEnoughAmount = response.materials
         if (response.materials.length > 0) {
           let materialNames = <any>[]
-          // console.log('materials:  ',response.materials)
           for (let material of response.materials) {
-            this.inventoryService.getMaterialByNumber(material, 'material')
+            this.inventoryService.getMaterialByNumber(material.material, 'material')
               .subscribe(material => {
                 materialNames.push(material[0].componentName)
-                console.log(material[0].componentName)
               })
           }
           this.materialsNotEnoughAmount = materialNames;
-          this.waitForAmounts = false;
+          setTimeout(()=> this.waitForAmounts = false, 3000);
         }
       })
     }

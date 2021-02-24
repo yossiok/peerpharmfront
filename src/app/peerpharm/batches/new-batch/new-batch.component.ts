@@ -102,9 +102,11 @@ export class NewBatchComponent implements OnInit {
   }
 
   reduceMaterialAmounts(formuleNumber, weightKG) {
-    this.inventorySrv.reduceMaterialAmounts(formuleNumber, weightKG, true).subscribe(data => {
-      // console.log(data.updatedShells)
-    })
+    // if(confirm('חומרי גלם הולכים לרדת מהמלאי. האם אתה בטוח שברצונך להמשיך?')) {
+      this.inventorySrv.reduceMaterialAmounts(formuleNumber, weightKG, true).subscribe(data => {
+        // console.log(data.updatedShells)
+      })
+    // }
   }
 
 
