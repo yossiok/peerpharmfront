@@ -46,6 +46,7 @@ export class StockComponent implements OnInit {
   inventoryNewReqModal: boolean = false;
   itemsMovementModal: boolean = false;
   invRequestsModal: boolean = false;
+  newPurchaseRecommendModal: boolean = false;
   itemMovements: any = [];
   materialPurchases: any[]
   stockItemPurchases: any[]
@@ -158,7 +159,7 @@ export class StockComponent implements OnInit {
   EditRowId: any = "";
   orderItems: any;
   procurementInputEvent: any;
-
+  newPurchaseRecommendation:FormGroup;
   stockType: String = "component";
   newItem: String = '';
   newItemBtn: String = 'new';
@@ -311,6 +312,13 @@ export class StockComponent implements OnInit {
   itemExpectedArrivals: any;
   closeResult: string;
   filterParams:FormGroup;
+ 
+  recommendStockItem = {
+    stockitemName:'',
+    stockitemNumber:'',
+    amount:'',
+    threatment:''
+  }
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -353,6 +361,9 @@ export class StockComponent implements OnInit {
         this.itemsMovementModal = true;
       }
     }
+    if (event.key === 'F10') {
+      this.newPurchaseRecommendModal = !this.newPurchaseRecommendModal;
+    }
 
   }
 
@@ -368,6 +379,19 @@ export class StockComponent implements OnInit {
         componentName: new FormControl('',Validators.pattern('^[a-zA-Z]+$')),
         componentType: new FormControl(''),
         componentCategory: new FormControl(''),
+      }) 
+
+      this.newPurchaseRecommendation = fb.group({
+        recommendNumber: new FormControl(''),
+        remarks: new FormControl(''),
+        date: new FormControl(this.formatDate(new Date()),Validators.required),
+        user: new FormControl(''),
+        type: new FormControl('',Validators.required),
+        supplierNumber: new FormControl('',Validators.required),
+        supplierName: new FormControl('',Validators.required),
+        status: new FormControl('open'),
+        stockitems: new FormControl([]),
+
       }) 
     
 
@@ -415,6 +439,11 @@ export class StockComponent implements OnInit {
     }
   }
 
+  fillSupplierInRec(ev){
+  let supplier = this.allSuppliers.find(s=>s.suplierNumber == ev.target.value);
+  this.newPurchaseRecommendation.controls.supplierName.setValue(supplier.suplierName)
+  }
+
   fillSupplierDetails() {
     if (this.resCmpt.suplierN != '') {
       this.supplierService.getSuppliersByNumber(this.resCmpt.suplierN).subscribe(data => {
@@ -427,6 +456,16 @@ export class StockComponent implements OnInit {
     }
   }
 
+
+  addStockItemToRecommend(){
+    debugger;
+    let objToPush = {...this.recommendStockItem}
+    this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
+    this.toastSrv.success('פריט נוסף בהצלחה !');
+    this.recommendStockItem.amount = '';
+    this.recommendStockItem.stockitemName = '';
+    this.recommendStockItem.stockitemNumber = '';
+  }
 
 
   addSupplierToMaterial() {
@@ -803,45 +842,35 @@ export class StockComponent implements OnInit {
     })
   }
 
-  purchaseRecommend(component) {
-    ;
-    this.currItem = component;
+  getStockItemByNumber(ev){
+    if(ev.target.value != ''){
+      this.inventoryService.getCmptByitemNumber(ev.target.value).subscribe(data=>{
+      if(data){
+        this.recommendStockItem.stockitemName = data[0].componentName
+        if(data[0].itemType = 'material'){
+          if(data[0].threatment) this.recommendStockItem.threatment = data[0].threatment
 
-    this.procuretServ.getPurchaseOrderByItem(component.componentN).subscribe(data => {
-      this.stockItemPurchases = data;
-    })
-    this.componentSuppliers = component.alternativeSuppliers
-    this.recommandPurchase.componentName = this.currItem.componentName
-    if (component.itemType == 'material') {
-      this.recommandPurchase.type = 'material'
+        }
+      }
+      })
     }
-    if (component.itemType == 'component') {
-      this.recommandPurchase.type = 'component'
-    }
-    this.recommandPurchase.componentNumber = component.componentN
-    this.openOrderRecommendModal = true;
   }
 
+
+
   sendRecommandation() {
-    ;
-    if (this.recommandPurchase.amount == '' || this.recommandPurchase.date == '') {
-      this.toastSrv.error('חובה למלא כמות ותאריך')
-    } else {
-      this.recommandPurchase.user = this.authService.loggedInUser.userName;
-      this.inventoryService.addNewRecommendation(this.recommandPurchase).subscribe(data => {
+      
+      this.newPurchaseRecommendation.controls.user.setValue(this.authService.loggedInUser.userName);
+      this.inventoryService.addNewRecommendation(this.newPurchaseRecommendation.value).subscribe(data => {
         // this.inventoryService.onNewRecommend(this.recommandPurchase);
         if (data) {
-          data = JSON.parse(data._body)
           this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
-          this.openOrderRecommendModal = false;
-          this.recommandPurchase.remarks = ""
-          this.recommandPurchase.amount = ""
-          this.recommandPurchase.componentNumber = ""
-          this.recommandPurchase.supplier = ""
+          this.newPurchaseRecommendModal = false;
+          this.newPurchaseRecommendation.reset();
 
         }
       })
-    }
+    
 
   }
 
@@ -2192,7 +2221,7 @@ export class StockComponent implements OnInit {
 
   procurementRecommendations(filterType) {
 
-    this.components = this.componentsUnFiltered;
+
     if (filterType == "minimumStock") {
       if (this.stockType != "product") {
         let recommendList = this.components.filter(cmpt => cmpt.minimumStock >= cmpt.amount);

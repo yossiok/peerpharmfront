@@ -15,10 +15,14 @@
       <button class="btn btn-warning form-control" (click)="procurementRecommendations('haveRecommendation')">המלצות רכש
         קיימות</button>
     </div> -->
-    <div class="col-2 fixNoaStupidStuff">
+    <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7
         - בדוק המלצה
         לרכש</button>
+    </div>
+    <div class="col-1 fixNoaStupidStuff">
+      <button class="btn btn-warning form-control rounded-pill" (click)="newPurchaseRecommendModal = true">F10
+        בקשה לרכש חדשה</button>
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
     <div class="col-1 fixNoaStupidStuff">
@@ -225,7 +229,6 @@
               <th style="width:5%;"><b>כמות מוקצת</b></th>
               <th style="width:5%;"><b>כמות</b></th>
               <th style="width:5%;"><b>תמונה</b></th>
-              <th style="width:5%"></th>
               <th style="width:12%;"><b>צפי הגעה הזמנת רכש</b></th>
               <!-- <th style=" ><b *ngIf="updateStockItem">כמות להזמנת רכש</b></th> -->
               <th style="width:3%;"></th>
@@ -264,9 +267,7 @@
               <td style="width:5%; text-align: center;">
                 <img [src]="component.img" style='width:50px ; cursor: pointer;' (click)="openImg(component.img)">
               </td>
-              <td style="width:5%;">
-                <button (click)="purchaseRecommend(component)" class="btn btn-warning form-control">המלצה לרכש</button>
-              </td>
+
               <td>
                 <table style="zoom:0.7" class="table table-sm">
                   <thead style="background: rgb(235, 190, 108);" class="text-white">
@@ -393,7 +394,6 @@
           <th style="width:15%;"><b>שם פריט</b></th>
           <th style="width:9%;"><b>כמות מוקצת</b></th>
           <th style="width:9%;"><b>כמות</b></th>
-          <th></th>
           <th>צפי הגעה המלצות רכש</th>
           <th></th>
         </tr>
@@ -421,9 +421,6 @@
 
           </td>
 
-          <td>
-            <button (click)="purchaseRecommend(material)" class="btn btn-warning form-control">המלצה לרכש</button>
-          </td>
           <td></td>
           <td>
             <img (click)="deleteComponent(material._id)" *ngIf="showDeleteBtn" style="width:30px"
@@ -2548,82 +2545,115 @@
   </div>
 
 
-  <div style="margin-right:auto !important;border-radius: 15px !important;" *ngIf="openOrderRecommendModal==true"
-    class="container border border-info fixNoaStupidStuff bg-white shadow-lg rounded mx-auto my-auto text-center fixed-top p-4">
+  <div style="margin-right:auto !important;border-radius: 15px !important;" *ngIf="newPurchaseRecommendModal==true"
+    class="container border border-info fixNoaStupidStuff bg-white shadow-lg rounded mx-auto my-auto text-center fixed-top p-5">
+    <form [formGroup]="newPurchaseRecommendation">
     <div class="row mt-2 fixNoaStupidStuff">
       <div class="col-1 fixNoaStupidStuff"></div>
       <div class="col-3 fixNoaStupidStuff"></div>
       <div class="col-4 fixNoaStupidStuff">
-        <h2 class="text-info">בקשת רכש חדשה - {{currItem.componentN}}</h2>
+        <h2 class="text-info">בקשת רכש חדשה</h2>
       </div>
       <div class="col-3 fixNoaStupidStuff"></div>
       <div class="col-1 fixNoaStupidStuff">
-        <i class="fa fa-times" (click)="openOrderRecommendModal = false"></i>
+        <i class="fa fa-times" (click)="newPurchaseRecommendModal = false"></i>
       </div>
     </div>
 
     <div class="row mt-2 fixNoaStupidStuff">
-      <div class="col-12 fixNoaStupidStuff">
-        <table class="table table-striped fixNoaStupidStuff">
-          <thead class="bg-info text-white">
-            <tr>
-              <th>הערות</th>
-              <th>תאריך המלצה</th>
-              <th>כמות</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input class="form-control rounded-pill" [(ngModel)]="recommandPurchase.remarks" type="text"></td>
-              <td><input class="form-control rounded-pill" [(ngModel)]="recommandPurchase.date" type="date"></td>
-              <td><input class="form-control rounded-pill" [(ngModel)]="recommandPurchase.amount" type="number"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div *ngIf="stockItemPurchases.length > 0" class="row mt-1 fixNoaStupidStuff">
-      <div class="col-4 fixNoaStupidStuff"></div>
       <div class="col-4 fixNoaStupidStuff">
-        <h3 class="text-danger">שים לב פריט זה קיים בהזמנות הבאות</h3>
+      <label class="text-info">Supplier</label>
       </div>
-      <div class="col-4 fixNoaStupidStuff"></div>
+      <div class="col-4 fixNoaStupidStuff">
+        <label class="text-info">Type</label>
+      </div>
+      <div class="col-4 fixNoaStupidStuff">
+        <label class="text-info">Date</label>
+      </div>
     </div>
-
-    <div *ngIf="stockItemPurchases.length > 0" class="row mt-1 fixNoaStupidStuff">
-      <div class="col-12 fixNoaStupidStuff">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Order</th>
-              <th>Date</th>
-              <th>Amount</th>
-              <th>Price</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let purchase of stockItemPurchases">
-              <td>{{purchase.orderNumber}}</td>
-              <td>{{purchase.orderDate | date: 'dd/MM/yyyy'}}</td>
-              <td>{{purchase.amount}}</td>
-              <td>{{purchase.price}}</td>
-              <td>{{purchase.status}}</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="row mt-1 fixNoaStupidStuff">
+      <div class="col-4 fixNoaStupidStuff">
+        <input (change)="fillSupplierInRec($event)" formControlName="supplierNumber" type="text" list="suppliers" class="form-control rounded-pill">
+        <datalist id="suppliers">
+        <option selected disabled>Choose Supplier</option>    
+        <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierNumber">{{supplier.suplierName}}</option>
+        </datalist>
+      </div>
+      <div class="col-4 fixNoaStupidStuff">
+      <select formControlName="type" class="form-control rounded-pill">
+        <option selected="true" disabled="disabled">Choose Type</option>    
+        <option value="component">Component</option>
+        <option value="material">Material</option>
+      </select>
+      </div>
+      <div class="col-4 fixNoaStupidStuff">
+      <input formControlName="date" class="form-control rounded-pill" type="date">
       </div>
     </div>
 
     <div class="row mt-1 fixNoaStupidStuff">
+      <div class="col-12 fixNoaStupidStuff">
+        <textarea formControlName="remarks" placeholder="Remarks" class="form-control rounded-pill"></textarea>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row mt-2 fixNoaStupidStuff">
+      <div class="col-4 fixNoaStupidStuff"></div>
+      <div class="col-4 fixNoaStupidStuff">
+        <h5>Add Item</h5>
+      </div>
+      <div class="col-4 fixNoaStupidStuff"></div>
+    </div>
+
+    <div class="row mt-1 fixNoaStupidStuff">
+      <div class="col-3 fixNoaStupidStuff">
+        <input (focusout)="getStockItemByNumber($event)" [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.stockitemNumber" class="form-control rounded-pill" type="text" placeholder="StockItem Number">
+      </div>
+      <div [ngModelOptions]="{standalone: true}" class="col-3 fixNoaStupidStuff">
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.stockitemName" class="form-control rounded-pill" type="text" placeholder="StockItem Name">
+      </div>
+      <div class="col-3 fixNoaStupidStuff">
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.amount" class="form-control rounded-pill" type="number" placeholder="amount">
+      </div>
+      <div class="col-3 fixNoaStupidStuff">
+      <button (click)="addStockItemToRecommend()" class="btn btn-info form-control rounded-pill">
+        <i class="fa fa-plus"></i>
+      </button>
+      </div>
+    </div>
+
+    <div class="row mt-2 fixNoaStupidStuff">
+      <div class="col-12">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th class="text-info">StockItem Number</th>
+              <th class="text-info">StockItem Name</th>
+              <th class="text-info">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let stockitem of this.newPurchaseRecommendation.controls.stockitems.value">
+              <td>{{stockitem.stockitemNumber}}</td>
+              <td>{{stockitem.stockitemName}}</td>
+              <td>{{stockitem.amount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="row mt-2 fixNoaStupidStuff">
       <div class="col-5 fixNoaStupidStuff"></div>
       <div class="col-2 fixNoaStupidStuff">
         <button (click)="sendRecommandation()" class="btn-success rounded-pill form-control">שלח</button>
       </div>
       <div class="col-5 fixNoaStupidStuff"></div>
     </div>
+  </form>
   </div>
 
 

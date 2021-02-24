@@ -89,7 +89,7 @@
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity" class="form-control">
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price}}</td>
+                  <td *ngIf="!editItem">{{stockitem.price}}{{stockitem.coin}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price" class="form-control">
                   </td>

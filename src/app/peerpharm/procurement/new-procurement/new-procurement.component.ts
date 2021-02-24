@@ -18,9 +18,10 @@ import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
   styleUrls: ['./new-procurement.component.scss']
 })
 export class NewProcurementComponent implements OnInit, OnChanges {
-
+  
   @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
   @Input() purchaseData: any;
+  @Input() stam: any;
   @Input() isEdit: boolean;
   @Output() closeOrderModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('itemNumber') itemNumber: ElementRef;
@@ -127,7 +128,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    ;
+    debugger;
     console.log('purchase data: ', this.purchaseData)
     // this.user = this.authService.loggedInUser.userName
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
@@ -153,9 +154,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    debugger;
     // console.log('new purchase on change: ',this.newPurchase.value)
     // console.log('changes: ',changes)
     this.newPurchase.setValue(changes.purchaseData.currentValue)
+    
   }
 
   updateItemInPL() {

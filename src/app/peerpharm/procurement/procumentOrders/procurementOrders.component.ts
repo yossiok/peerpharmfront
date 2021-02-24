@@ -24,8 +24,10 @@ export class ProcurementOrdersComponent implements OnInit {
   linkDownload: String = '';
   paymentRemark: String
   orderRemarks: String;
+  expandNumber: String;
   myRefresh: any = null;
   allComponents: any[];
+  stam:any;
   allInvoices: any[];
   allInvoicesCopy: any[];
   purchaseRecommendations: any[];
@@ -34,6 +36,7 @@ export class ProcurementOrdersComponent implements OnInit {
   allMaterials: any[];
   selectedArr: any[] = [];
   printBill: boolean = false;
+  recommendStockItemsCollapse: boolean = false;
   orderDetailsModal: boolean = false;
   newPurchaseModal: boolean = false;
   purchaseRecommendationsModal: boolean = false;
@@ -187,16 +190,25 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-
-
-
-  moveToNewPurchase(id, type) {
-    if (type == 'single') {
-      window.open('http://peerpharmsystem.com/#/peerpharm/procurement/newProcurement?id=' + id)
-      // window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?id='+id)
+  expandRecommend(recommendNumber){
+    if(this.recommendStockItemsCollapse == false){
+      this.recommendStockItemsCollapse = true
+      this.expandNumber = recommendNumber
     } else {
-      window.open('http://localhost:4200/#/peerpharm/procurement/newProcurement?multi=' + this.selectedArr)
+      this.recommendStockItemsCollapse = false
     }
+  }
+
+
+
+
+  moveToNewPurchase(recommend) {
+    debugger;
+  this.purchaseRecommendationsModal = false;
+  this.stam = recommend
+  this.newPurchaseModal = true;
+
+
   }
 
   setRecommendAsDone(id) {
