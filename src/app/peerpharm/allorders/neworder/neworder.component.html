@@ -145,7 +145,7 @@
         <div class="col-6"></div>
     </div>
 
-    <ul class="list-group">
+    <ul class="list-group d-flex flex-row">
         <li *ngFor="let shipping of shippingMethod" class="list-group-item w-25 d-flex justify-content-between align-items-center">
             <span *ngIf="shippingMethod != []">{{shipping.shippingWay}}</span>
           <span *ngIf="shippingMethod != []" class="badge badge-primary badge-pill">{{shipping.shippingQuantity}}</span>
