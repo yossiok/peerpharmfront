@@ -85,7 +85,7 @@
 
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>ת.ייצור: </span>{{newBatchForm.controls['produced'].value}}
+          <span>ת.ייצור: </span>{{newBatchForm.controls['produced'].value | date: 'yyyy-MM-dd' }}
         </div>
         <div style="border-bottom: 1px solid black;" class="col-6">
           <span>מק"ט: </span>{{newBatchForm.controls['item'].value}}
@@ -94,7 +94,7 @@
 
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>ת.תפוגה: </span>{{newBatchForm.controls['expration'].value}} YEARS
+          <span>ת.תפוגה: </span>{{newBatchForm.controls['expration'].value}}
         </div>
         <div style="border-bottom: 1px solid black;" class="col-6">
           <span>PH: </span>{{newBatchForm.controls['ph'].value}}{{newBatchForm.ph}}
