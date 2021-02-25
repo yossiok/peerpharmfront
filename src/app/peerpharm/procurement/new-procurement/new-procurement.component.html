@@ -89,7 +89,7 @@
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity" class="form-control">
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price}}</td>
+                  <td *ngIf="!editItem">{{stockitem.price}}{{stockitem.coin}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price" class="form-control">
                   </td>
@@ -258,10 +258,18 @@
     <div class="col-12">
       <form [formGroup]="newPurchase">
 
-  
-          <div class="bg-primary rounded-pill">
-            <h3 class="text-white p-2">New Purchase Order</h3>
+        <div class="row mt-1">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <div class="bg-primary rounded-pill">
+              <h3 class="text-white p-2">New Purchase Order</h3>
+            </div>
           </div>
+          <div class="col-4">
+            <i (click)="closeOrderModal.emit(false)" class="h3 click fa fa-times text-primary float-right"></i>
+          </div>
+        </div>
+          
         
         <div class="row mt-5">
           <div class="col">
@@ -406,15 +414,26 @@
                   <th>Quantity</th>
                   <th>Price</th>
                   <th>-</th>
+                  <th>-</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let stockitem of this.newPurchase.controls.stockitems.value">
+                <tr *ngFor="let stockitem of this.newPurchase.controls.stockitems.value;let i = index">
                   <td>{{stockitem.number}}</td>
                   <td>{{stockitem.name}}</td>
                   <td>{{stockitem.measurement}}</td>
-                  <td>{{stockitem.quantity}}</td>
-                  <td>{{stockitem.price}}</td>
+                  <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>
+                  <td *ngIf="EditRowId == stockitem.number">
+                    <input #editQuantity class="form-control rounded-pill" [value]="stockitem.quantity"  type="number">
+                  </td>
+
+                  <td *ngIf="EditRowId == ''">{{stockitem.price}}</td>
+                  <td *ngIf="EditRowId == stockitem.number">
+                    <input #editPrice class="form-control rounded-pill" [value]="stockitem.price" type="number">
+                  </td>
+
+                  <i *ngIf="EditRowId == ''" (click)="editStockItem(stockitem.number)" class="click fa fa-pencil-alt text-primary"></i>
+                  <i *ngIf="EditRowId == stockitem.number" (click)="saveStockItem(i)" class="click fa fa-save text-primary"></i>
                   <td><i (click)="removeStockitemFromPurchase(stockitem)" class="click fa fa-times text-danger"></i></td>
                 </tr>
               </tbody>

@@ -341,7 +341,7 @@ export class BatchesComponent implements OnInit {
   filterBatchesBiggerThenBatchN() {
     var excelTable = [];
     if (this.lastBatchToExport != "" && this.lastBatchToExport != null) {
-      this.batchesCopy.map(batch => {
+      this.batches.map(batch => {
         var lastBatchYear;
         var lastBatchNum;
         var year;

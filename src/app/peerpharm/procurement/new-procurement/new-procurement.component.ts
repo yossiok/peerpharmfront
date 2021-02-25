@@ -18,9 +18,10 @@ import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
   styleUrls: ['./new-procurement.component.scss']
 })
 export class NewProcurementComponent implements OnInit, OnChanges {
-
+  
   @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
   @Input() purchaseData: any;
+  @Input() requestToPurchase: any;
   @Input() isEdit: boolean;
   @Output() closeOrderModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('itemNumber') itemNumber: ElementRef;
@@ -33,10 +34,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   @ViewChild('updateItemAmount') updateItemAmount: ElementRef;
   @ViewChild('updateItemPrice') updateItemPrice: ElementRef;
 
+  @ViewChild('editQuantity') editQuantity: ElementRef;
+  @ViewChild('editPrice') editPrice: ElementRef;
+
   openOrdersModal: boolean = false;
   disabled: boolean = true;
   supplierToUpdate: any;
   user: any;
+  EditRowId: string = ''
   currSupplier: any;
   currItemForPL: any;
   procurementSupplier: boolean = true;
@@ -98,7 +103,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
 
     this.newPurchase = fb.group({
-      _id: [],
+      _id:[''],
       supplierName: ["", Validators.required],
       supplierNumber: ["", Validators.required],
       supplierEmail: ['', Validators.required],
@@ -114,6 +119,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       status: ['', Validators.required],
       deliveryCerts: [[], Validators.required],
       outOfCountry: [false, Validators.required],
+      recommendId:'',
     });
 
     this.deliveryCertificateForm = fb.group({
@@ -127,20 +133,33 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    ;
+    debugger;
+    if(this.requestToPurchase){
+    this.newPurchase.patchValue({
+    _id:'',
+    supplierName:this.requestToPurchase.supplierName,
+    supplierNumber:this.requestToPurchase.supplierNumber,
+    creationDate:this.formatDate(new Date()),
+    arrivalDate:'',
+    stockitems:this.requestToPurchase.stockitems,
+    orderNumber: '',
+    userEmail: '',
+    user: this.requestToPurchase.user,
+    billNumber:[],
+    orderType: this.requestToPurchase.type,
+    remarks: this.requestToPurchase.remarks,
+    status: 'open',
+    deliveryCerts:[],
+    outOfCountry: false,
+    recommendId:this.requestToPurchase._id
+
+    })
+    }
     console.log('purchase data: ', this.purchaseData)
     // this.user = this.authService.loggedInUser.userName
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
     this.getAllSuppliers();
     this.getAllMaterials();
-    if (this.route.snapshot.queryParams.id != undefined) {
-      let recommendId = this.route.snapshot.queryParams.id
-      this.procurementService.getRecommendById(recommendId).subscribe(data => {
-        if (data) {
-          this.fillPurchaseDetails(data)
-        }
-      })
-    }
     if (this.authService.loggedInUser) {
       this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
       this.user = this.authService.loggedInUser.userName
@@ -153,9 +172,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    debugger;
     // console.log('new purchase on change: ',this.newPurchase.value)
     // console.log('changes: ',changes)
-    this.newPurchase.setValue(changes.purchaseData.currentValue)
+    changes.purchaseData.currentValue.recommendId = ''
+    if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
+    
+    
   }
 
   updateItemInPL() {
@@ -218,6 +241,25 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
   }
 
+  editStockItem(number){
+    debugger;
+  if(number != ''){
+    this.EditRowId = number
+  } else {
+    this.EditRowId = ''
+  }
+  }
+
+  saveStockItem(index){
+    debugger;
+  let stockitem = this.newPurchase.controls.stockitems.value[index];
+
+  stockitem.price = this.editPrice.nativeElement.value;
+  stockitem.quantity = this.editQuantity.nativeElement.value;
+  this.toastr.success('פריט עודכן בהצלחה')
+  this.editStockItem('')
+  }
+
 
   getAllMaterials() {
     this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
@@ -276,7 +318,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   sendNewProc(action) {
-    
+    debugger;
     if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
@@ -288,6 +330,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.newPurchase.reset();
               this.newProcurementSaved.emit()
               this.closeOrderModal.emit(false)
+            
             }
             else this.toastr.error('משהו השתבש...')
           })
