@@ -576,8 +576,8 @@
               <table>
                 <tbody>
                   <tr *ngFor="let stockitem of recommend.stockitems">
-                    <td>{{stockitem.stockitemNumber}}</td>
-                    <td>{{stockitem.stockitemName}}</td>
+                    <td>{{stockitem.number}}</td>
+                    <td>{{stockitem.name}}</td>
                     <td>{{stockitem.amount}}</td>
                     <td *ngIf="stockitem.threatment" [ngClass]="dangerColor(stockitem.threatment)" >{{stockitem.threatment}}</td>
                   </tr>
