@@ -22,13 +22,13 @@ export class NewBatchComponent implements OnInit {
     order: new FormControl('', Validators.required),
     item: new FormControl('', Validators.required),
     itemName: new FormControl('', Validators.required),
-    produced: new FormControl(this.today, Validators.required),
+    produced: new FormControl(new Date(this.today), Validators.required),
     expration: new FormControl('', Validators.required),
     barrels: new FormControl('', Validators.required),
     ph: new FormControl('', Validators.required),
     weightKg: new FormControl('', Validators.required),
     weightQtyLeft: new FormControl('', Validators.required),
-    batchNumber: new FormControl(this.batchDefaultNumber, Validators.required),
+    batchNumber: new FormControl(this.batchDefaultNumber, [Validators.required, Validators.minLength(5)]),
     batchCreated: new FormControl(0, Validators.required)
   })
 
@@ -50,12 +50,10 @@ export class NewBatchComponent implements OnInit {
 
   fillItemName(ev) {
     var itemNumber = ev.target.value;
-
     this.itemSrv.getItemData(itemNumber).subscribe(data => {
       console.log('data: ',data)
       if (data) {
         this.newBatchForm.controls['itemName'].setValue( data[0].name + ' ' + data[0].subName + ' ' + data[0].discriptionK) 
-
       } else {
         this.toastSrv.error('פריט לא קיים במערכת')
       }
