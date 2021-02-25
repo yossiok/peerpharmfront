@@ -27,7 +27,7 @@ export class ProcurementOrdersComponent implements OnInit {
   expandNumber: String;
   myRefresh: any = null;
   allComponents: any[];
-  stam:any;
+  requestToPurchase:any;
   allInvoices: any[];
   allInvoicesCopy: any[];
   purchaseRecommendations: any[];
@@ -153,10 +153,10 @@ export class ProcurementOrdersComponent implements OnInit {
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
 
     if (event.key === 'F2') {
-      if (this.newPurchaseModal == true) {
-        this.newPurchaseModal = false;
+      if (this.orderDetailsModal == true) {
+        this.orderDetailsModal = false;
       } else {
-        this.newPurchaseModal = true;
+        this.orderDetailsModal = true;
       }
     }
     if (event.key === 'F4') {
@@ -205,8 +205,8 @@ export class ProcurementOrdersComponent implements OnInit {
   moveToNewPurchase(recommend) {
     debugger;
   this.purchaseRecommendationsModal = false;
-  this.stam = recommend
-  this.newPurchaseModal = true;
+  this.requestToPurchase = recommend
+  this.orderDetailsModal = true;
 
 
   }
@@ -266,7 +266,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   getAllProcurementOrders() {
-    this.newPurchaseModal = false;
+    this.orderDetailsModal = false;
 
     this.procurementservice.getProcurementOrder().subscribe(res => {
 

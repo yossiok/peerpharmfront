@@ -15,7 +15,7 @@
             </div>
             <div class="row mt-4">
               <div class="col-3">
-                <button (click)="newPurchaseModal = true" class="btn btn-warning rounded-pill">New Purchase - F2</button>
+                <button (click)="orderDetailsModal = true" class="btn btn-warning rounded-pill">New Purchase - F2</button>
               </div>
               <div class="col-2"></div>
               <div class="col-2"></div>
@@ -492,17 +492,17 @@
 </div>
 
 <div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center">
-  <app-new-procurement (closeOrderModal)='orderDetailsModal=$event; isEdit=$event' (newProcurementSaved)="getAllProcurementOrders()" [isEdit]="isEdit" [stam]="stam" [purchaseData]="purchaseData"></app-new-procurement>
+  <app-new-procurement (closeOrderModal)='orderDetailsModal=$event; isEdit=$event' [requestToPurchase]="requestToPurchase" (newProcurementSaved)="showLoader = true;getAllProcurementOrders();getAllPurchaseRecommends()" [isEdit]="isEdit"  [purchaseData]="purchaseData"></app-new-procurement>
 </div>
 
 
-<div *ngIf="newPurchaseModal == true"
-  class="fixNoaStupidStuff new-purchase-modal border bg-white container fixed-top text-center p-1">
+<!-- <div *ngIf="newPurchaseModal == true"
+  class="new-purchase-modal border bg-white container fixed-top text-center p-1">
     <div class="col-1">
       <i (click)="newPurchaseModal = false" class="big click fa fa-times bg-white"></i>
     </div>
-  <app-new-procurement (newProcurementSaved)="showLoader = true; getAllProcurementOrders()"></app-new-procurement>
-</div>
+  <app-new-procurement  (newProcurementSaved)="showLoader = true; getAllProcurementOrders()"></app-new-procurement>
+</div> -->
 
 <div *ngIf="purchaseRecommendationsModal == true"
   style="z-index: 9999;top:50px !important;height: auto"

@@ -314,10 +314,11 @@ export class StockComponent implements OnInit {
   filterParams:FormGroup;
  
   recommendStockItem = {
-    stockitemName:'',
-    stockitemNumber:'',
-    amount:'',
-    threatment:''
+    name:'',
+    number:'',
+    quantity:'',
+    threatment:'',
+    measurement:''
   }
 
   // currentFileUpload: File; //for img upload creating new component
@@ -459,12 +460,18 @@ export class StockComponent implements OnInit {
 
   addStockItemToRecommend(){
     debugger;
-    let objToPush = {...this.recommendStockItem}
-    this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
-    this.toastSrv.success('פריט נוסף בהצלחה !');
-    this.recommendStockItem.amount = '';
-    this.recommendStockItem.stockitemName = '';
-    this.recommendStockItem.stockitemNumber = '';
+    if(this.recommendStockItem.quantity =='' || this.recommendStockItem.name =='' || this.recommendStockItem.number =='' || this.recommendStockItem.measurement == ''){
+      this.toastSrv.error('אנא תמלא את כל הפרטים של הפריט')
+    } else {
+      let objToPush = {...this.recommendStockItem}
+      this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
+      this.toastSrv.success('פריט נוסף בהצלחה !');
+      this.recommendStockItem.quantity = '';
+      this.recommendStockItem.name = '';
+      this.recommendStockItem.number = '';
+      this.recommendStockItem.measurement = '';
+    }
+   
   }
 
 
@@ -846,7 +853,7 @@ export class StockComponent implements OnInit {
     if(ev.target.value != ''){
       this.inventoryService.getCmptByitemNumber(ev.target.value).subscribe(data=>{
       if(data){
-        this.recommendStockItem.stockitemName = data[0].componentName
+        this.recommendStockItem.name = data[0].componentName
         if(data[0].itemType = 'material'){
           if(data[0].threatment) this.recommendStockItem.threatment = data[0].threatment
 

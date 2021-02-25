@@ -11,7 +11,7 @@
       <button class="btn btn-info form-control rounded-pill">F8 - הזמנות מלאי</button>
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
-    <div class="col-2 fixNoaStupidStuff">
+    <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7
         - בדוק המלצה
         לרכש</button>
@@ -2559,19 +2559,27 @@
 
     <div class="row mt-1 fixNoaStupidStuff">
       <div class="col-3 fixNoaStupidStuff">
-        <input (focusout)="getStockItemByNumber($event)" [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.stockitemNumber" class="form-control rounded-pill" type="text" placeholder="StockItem Number">
+        <input (focusout)="getStockItemByNumber($event)" [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.number" class="form-control rounded-pill" type="text" placeholder="StockItem Number">
       </div>
       <div [ngModelOptions]="{standalone: true}" class="col-3 fixNoaStupidStuff">
-        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.stockitemName" class="form-control rounded-pill" type="text" placeholder="StockItem Name">
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.name" class="form-control rounded-pill" type="text" placeholder="StockItem Name">
       </div>
       <div class="col-3 fixNoaStupidStuff">
-        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.amount" class="form-control rounded-pill" type="number" placeholder="amount">
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.quantity" class="form-control rounded-pill" type="number" placeholder="amount">
       </div>
       <div class="col-3 fixNoaStupidStuff">
-      <button (click)="addStockItemToRecommend()" class="btn btn-info form-control rounded-pill">
-        <i class="fa fa-plus"></i>
-      </button>
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.measurement" class="form-control rounded-pill" type="text" placeholder="Measurement">
       </div>
+    </div>
+
+    <div class="row mt-1 fixNoaStupidStuff">
+      <div class="col-4"></div>
+      <div class="col-4">
+        <button (click)="addStockItemToRecommend()" class="btn btn-info form-control rounded-pill">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+      <div class="col-4"></div>
     </div>
 
     <div class="row mt-2 fixNoaStupidStuff">
@@ -2581,14 +2589,16 @@
             <tr>
               <th class="text-info">StockItem Number</th>
               <th class="text-info">StockItem Name</th>
-              <th class="text-info">Amount</th>
+              <th class="text-info">Quantity</th>
+              <th class="text-info">Measurement</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let stockitem of this.newPurchaseRecommendation.controls.stockitems.value">
-              <td>{{stockitem.stockitemNumber}}</td>
-              <td>{{stockitem.stockitemName}}</td>
-              <td>{{stockitem.amount}}</td>
+              <td>{{stockitem.number}}</td>
+              <td>{{stockitem.name}}</td>
+              <td>{{stockitem.quantity}}</td>
+              <td>{{stockitem.measurement}}</td>
             </tr>
           </tbody>
         </table>
