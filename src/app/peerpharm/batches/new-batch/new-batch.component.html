@@ -19,33 +19,33 @@
   <div class="row">
     <div class="container bg-white shadow-lg p-4">
       <form [formGroup]="newBatchForm" (ngSubmit)="addNewBatch()">
-      <div class="row mt-4">
-        <div class="col-3"></div>
-        <div class="col-3">
-          <label style="margin-bottom: 0" class="form-control"><b>Order Number</b></label>
-          <label style="margin-bottom: 0" class="form-control"><b>Item Number</b></label>
-          <label style="margin-bottom: 0" class="form-control"><b>Name</b></label>
-          <label style="margin-bottom: 0" class="form-control"><b>Production Date</b></label>
-          <label style="margin-bottom: 0" class="form-control"><b>Expiration Date</b></label>
-          <label style="margin-bottom: 0" class="form-control"><b>Barrels</b></label>
-          <label style="margin-bottom: 0" class="form-control"><b>KG</b></label>
-          <label style="margin-bottom: 0" class="form-control"><b>PH</b></label>
-          <label style="margin-bottom: 0" class="form-control"><b>Batch</b></label>
-        </div>
-        <div class="col-3"> 
+        <div class="row mt-4">
+          <div class="col-3"></div>
+          <div class="col-3">
+            <label style="margin-bottom: 0" class="form-control"><b>Order Number</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>Item Number</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>Name</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>Production Date</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>Expiration Date</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>Barrels</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>KG</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>PH</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>Batch</b></label>
+          </div>
+          <div class="col-3">
             <input type="text" formControlName="order" class="form-control">
             <input type="text" (change)="fillItemName($event)" formControlName="item" class="form-control">
             <input type="text" formControlName="itemName" class="form-control">
-            <input type="date" formControlName="produced" class="form-control">
+            <input type="date" formControlName="produced" value="{{ today | date:'yyyy-MM-dd' }}" class="form-control">
             <input type="date" formControlName="expration" class="form-control">
             <input type="number" formControlName="barrels" class="form-control">
             <input type="text" formControlName="weightKg" class="form-control">
             <input type="text" formControlName="ph" class="form-control">
-            <input type="text" formControlName="batchNumber" class="form-control">
+            <input type="text" formControlName="batchNumber" minlength="5" class="form-control">
           </div>
           <div class="col-3"></div>
         </div>
-        
+          
         <div class="row mt-4">
           <div class="col-4"></div>
           <div class="col-4">
@@ -54,7 +54,7 @@
           <div class="col-4"></div>
         </div>
       </form>
-        
+      
       <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
@@ -85,7 +85,7 @@
 
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>ת.ייצור: </span>{{newBatchForm.controls['produced'].value}}
+          <span>ת.ייצור: </span>{{newBatchForm.controls['produced'].value | date: 'yyyy-MM-dd' }}
         </div>
         <div style="border-bottom: 1px solid black;" class="col-6">
           <span>מק"ט: </span>{{newBatchForm.controls['item'].value}}
@@ -94,7 +94,7 @@
 
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>ת.תפוגה: </span>{{newBatchForm.controls['expration'].value}} YEARS
+          <span>ת.תפוגה: </span>{{newBatchForm.controls['expration'].value}}
         </div>
         <div style="border-bottom: 1px solid black;" class="col-6">
           <span>PH: </span>{{newBatchForm.controls['ph'].value}}{{newBatchForm.ph}}
