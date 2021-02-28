@@ -1,35 +1,37 @@
-<div class="container bg-white text-center p-2 rounded shadow">
+<div class="container bg-white text-center p-4 rounded shadow">
 
   <div class="row mt-1">
-    <div class="col-4"></div>
-    <div class="col-4">
-      <h3 class="text-info">Formule Weight</h3>
+    <div class="col-3"></div>
+    <div class="col-6 bg-info rounded-pill">
+      <h2 class="text-white">Formule Weight</h2>
     </div>
-    <div class="col-4"></div>
+    <div class="col-3"></div>
   </div>
 
-  <div class="row mt-3">
+  <div class="row mt-5">
     <div class="col-3"></div>
     <div class="col-2">
-      <input id="formuleNumber" [(ngModel)]="formuleNumber" placeholder="Formule Number" class="form-control">
+      <input id="formuleNumber" [(ngModel)]="formuleNumber" placeholder="Formule Number" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input [(ngModel)]="formuleWeight" placeholder="Weight" class="form-control">
+      <input [(ngModel)]="formuleWeight" placeholder="Weight" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input [(ngModel)]="formuleOrder" placeholder="Order Number" class="form-control">
+      <input [(ngModel)]="formuleOrder" placeholder="Order Number" class="form-control rounded-pill">
     </div>
     <div class="col-3"></div>
   </div>
+
+  <hr>
 
   <div class="row mt-3">
     <div class="col-2"></div>
     <div class="col-4">
-      <button (click)="getFormuleByNumber()" class="btn btn-info form-control">Start</button>
+      <button (click)="getFormuleByNumber()" class="btn btn-info form-control rounded-pill">Start</button>
     </div>
     <div class="col-4">
-      <button (click)="printFormule()" class="btn btn-success form-control">Print</button>
-      <button #printFormuleBtn [printStyle]="{td : {'border-top': 'solid 1px'}}" printSectionId="formuleSection" ngxPrint style="display: none;"></button>
+      <button (click)="printFormule()" class="btn btn-success form-control rounded-pill">Print</button>
+      <button #printFormuleBtn [printStyle]="{td : {'border-top': 'solid 1px'}, th : {'border': 'solid 1px'}}" printSectionId="formuleSection" ngxPrint style="display: none;"></button>
     </div>
     <div class="col-2"></div>
   </div>
@@ -46,23 +48,22 @@
 <div id="formuleSection" *ngIf="currentFormule" class="container mt-2 bg-white text-center p-2 rounded shadow">
   <div class="row mt-1">
     <div class="col-4">
-      <h3 class="text-success">Formule Number: {{currentFormule.formuleNumber}}</h3>
-      <h3 class="text-success">Order Number: {{formuleOrder}}</h3>
-      <h3 class="text-success">Weight
-        : {{formuleWeight}}</h3>
+      <h4 class="text-info">Formule Number: <span style="color:black">{{currentFormule.formuleNumber}}</span> </h4>
+      <h4 class="text-info">Order Number: <span  style="color:black">{{formuleOrder}}</span></h4>
+      <h4 class="text-info">Weight: <span  style="color:black">{{formuleWeight}}</span></h4>
     </div>
     <div class="col-4">
-      <h3 class="text-success">Formule Name: {{currentFormule.formuleName}}</h3>
+      <h4 class="text-info">Formule Name: <span style="color:black">{{currentFormule.formuleName}}</span></h4>
     </div>
     <div class="col-4">
-      <h3 class="text-success">PH: {{currentFormule.phFrom}}-{{currentFormule.phTo}}</h3>
+      <h4 class="text-info">PH: <span style="color:black">{{currentFormule.phFrom}}-{{currentFormule.phTo}}</span></h4>
     </div>
   </div>
 
   <div class="row mt-3">
     <div class="col-12">
       <table class="table table-hover">
-        <thead class="bg-success text-white">
+        <thead class="bg-info text-white">
           <tr>
             <th scope="col">Phase</th>
             <th scope="col">Name</th>
@@ -84,8 +85,8 @@
                 <td style="padding:5px">{{ item.itemNumber }}</td>
                 <td style="padding:5px">{{ item.itemName }}</td>
                 <td style="padding:5px">{{ item.kgProd | number }}</td>
-                <td *ngIf="item.check != true" style="padding:5px"><input (change)="searchForShelf($event,item.kgProd)" class="form-control"></td>
-                <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-success"></i></td>
+                <td *ngIf="item.check != true" style="padding:5px"><input (change)="searchForShelf($event,item.kgProd)" class="form-control rounded-pill"></td>
+                <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i></td>
                 <td style="padding:5px">{{ item.percentage }}%</td>
    
 
@@ -97,18 +98,18 @@
   </div>
 
 
-  <div *ngIf="materialShelfs.length > 0" style="top:150px" class="container w-25 h-50 border border-info bg-white fixed-top text-center rounded shadow-lg mx-auto my-auto p-2">
+  <div *ngIf="materialShelfs.length > 0" style="top:150px;border-radius: 15px;" class="container w-25 h-50 border border-info bg-white fixed-top text-center  shadow-lg mx-auto my-auto p-2">
     <div class="row">
       <div class="col-1"></div>
       <div class="col-10">
-        <h3>Choose Batch</h3>
+        <h3 class="text-info">Choose Batch</h3>
       </div>
       <div class="col-1">
-        <i (click)="materialShelfs = []" class="fa fa-times"></i>
+        <i (click)="materialShelfs = []" class="fa fa-times text-info h4"></i>
       </div>
     </div>
     <div class="row mt-3">
-      <div style="overflow-y: scroll;height: 450px;" class="col-12">
+      <div style="overflow-y: auto;height: 450px;" class="col-12">
         <table class="table table-hover">
           <thead class="bg-light">
             <tr>

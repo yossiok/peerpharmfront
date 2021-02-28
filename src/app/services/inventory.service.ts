@@ -226,7 +226,7 @@ export class InventoryService {
   }
   getShelfListForMaterial(material): Observable<any> {
     let url = this.baseUrl + "material/getShelfListForMaterial";
-    return this.http.post(url, JSON.stringify({ materialNumber: material }), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ arrivalFormId: material }), this.options).pipe(map(res => res.json()))
   }
   updateBoxLocation(id, location): Observable<any> {
     let url = this.baseUrl + "material/updateBoxLocation";
