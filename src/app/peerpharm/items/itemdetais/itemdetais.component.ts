@@ -306,6 +306,29 @@ export class ItemdetaisComponent implements OnInit {
 
   }
 
+  selectedFiles: FileList;
+  currentFileUpload: File;
+  progress: { percentage: number } = { percentage: 0 };
+  docPath;
+  bottleFile: boolean = false;
+  pumpFile: boolean = false;
+  sealFile: boolean = false;
+  capFile: boolean = false;
+  
+  
+  extra1File: boolean = false;
+  extra2File: boolean = false;
+  laser1File: boolean = false;
+  laser2File: boolean = false;
+  
+  main1File: boolean = false;
+  main2File: boolean = false;
+  main3File: boolean = false;
+  main4File: boolean = false;
+  
+  labelText: boolean = false;
+  plateText: boolean = false;
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     
@@ -557,6 +580,7 @@ export class ItemdetaisComponent implements OnInit {
     })
   }
 
+  
 
   openOrderModal(orders){
     var itemNumber = this.itemShown.itemNumber
@@ -1336,28 +1360,6 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
  
   }
 
-  selectedFiles: FileList;
-  currentFileUpload: File;
-  progress: { percentage: number } = { percentage: 0 };
-  docPath;
-  bottleFile: boolean = false;
-  pumpFile: boolean = false;
-  sealFile: boolean = false;
-  capFile: boolean = false;
-
-
-  extra1File: boolean = false;
-  extra2File: boolean = false;
-  laser1File: boolean = false;
-  laser2File: boolean = false;
-
-  main1File: boolean = false;
-  main2File: boolean = false;
-  main3File: boolean = false;
-  main4File: boolean = false;
-
-  labelText: boolean = false;
-  plateText: boolean = false;
 
 
 

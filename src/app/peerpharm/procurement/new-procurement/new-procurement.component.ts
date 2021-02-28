@@ -155,30 +155,19 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
     })
     }
-    console.log('purchase data: ', this.purchaseData)
-    // this.user = this.authService.loggedInUser.userName
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
+    else this.purchaseData = undefined
     this.getAllSuppliers();
     this.getAllMaterials();
     if (this.authService.loggedInUser) {
       this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
       this.user = this.authService.loggedInUser.userName
     }
-    // else {
-    //   this.authService.userEventEmitter.subscribe(data => {
-    //     this.userEmail = this.authService.loggedInUser.userEmail;
-    //   })
-    // }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    debugger;
-    // console.log('new purchase on change: ',this.newPurchase.value)
-    // console.log('changes: ',changes)
-    changes.purchaseData.currentValue.recommendId = ''
+   changes.purchaseData.currentValue.recommendId ? changes.purchaseData.currentValue.recommendId = '' : console.log('no recommendId')
     if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
-    
-    
   }
 
   updateItemInPL() {
