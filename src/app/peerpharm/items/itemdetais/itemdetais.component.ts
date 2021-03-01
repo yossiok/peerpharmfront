@@ -18,6 +18,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { PlateService } from 'src/app/services/plate.service';
 import { log } from 'console';
 
+
+
 @Component({
   selector: 'app-itemdetais',
   templateUrl: './itemdetais.component.html',
@@ -30,13 +32,13 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('container')
   private container: ElementRef;
   // New Item Tree // 
-  itemBatches:any[];
-  itemPrice:any[] = [];
-  ordersItem:any[];
-  allCostumers:any[]; 
-  allCostumersCopy:any[]; 
-  totalItemPrice:number = 0; 
-  totalPriceLoading:number = 0; 
+  itemBatches: any[];
+  itemPrice: any[] = [];
+  ordersItem: any[];
+  allCostumers: any[];
+  allCostumersCopy: any[];
+  totalItemPrice: number = 0;
+  totalPriceLoading: number = 0;
 
   mainLanguage: Boolean = true;
   mainLanguageTwo: Boolean = true;
@@ -59,9 +61,9 @@ export class ItemdetaisComponent implements OnInit {
   peerPharmTone: Boolean = true
   laserAndExp: Boolean = true;
   remarksAlert: Boolean = false;
-  notActiveAlert:Boolean = false;
-  editSpecTable:Boolean = false;
-  productPriceModal:Boolean = false;
+  notActiveAlert: Boolean = false;
+  editSpecTable: Boolean = false;
+  productPriceModal: Boolean = false;
 
   productionType: '';
   productionTwoType: '';
@@ -72,14 +74,14 @@ export class ItemdetaisComponent implements OnInit {
   productionSevenType: '';
   productionEightType: '';
 
-  productionImage:'';
-  productionTwoImage:'';
-  productionThreeImage:'';
-  productionFourImage:'';
-  productionFiveImage:'';
-  productionSixImage:'';
-  productionSevenImage:'';
-  productionEightImage:'';
+  productionImage: '';
+  productionTwoImage: '';
+  productionThreeImage: '';
+  productionFourImage: '';
+  productionFiveImage: '';
+  productionSixImage: '';
+  productionSevenImage: '';
+  productionEightImage: '';
 
   // End of New Item Tree //
   alowUserEditItemTree: Boolean = false;
@@ -92,93 +94,94 @@ export class ItemdetaisComponent implements OnInit {
   licsensDateToSend: Date;
   user: UserInfo;
   userName = ""
+
   itemShown = {
     itemNumber: '',
     name: '',
     subName: '',
     discriptionK: '',
     proRemarks: '',
-    batchN:'',
+    batchN: '',
     impRemarks: '',
-    boxImage:'',
-    stickerImage:'',
-    palletImage:'',
-    palletImage2:'',
-    palletImage3:'',
-  
-    typeOfComponent:'',
-    typeOfComponentTwo:'',
-    typeOfComponentThree:'',
-    typeOfComponentFour:'',
-    typeOfComponentFive:'',
-    typeOfComponentSix:'',
-    typeOfComponentSeven:'',
-    typeOfComponentEight:'',
+    boxImage: '',
+    stickerImage: '',
+    palletImage: '',
+    palletImage2: '',
+    palletImage3: '',
 
-    numberOfPcs:'',
-    numberOfPcsTwo:'',
-    numberOfPcsThree:'',
-    numberOfPcsFour:'',
-    numberOfPcsFive:'',
-    numberOfPcsSix:'',
-    numberOfPcsSeven:'',
-    numberOfPcsEight:'',
+    typeOfComponent: '',
+    typeOfComponentTwo: '',
+    typeOfComponentThree: '',
+    typeOfComponentFour: '',
+    typeOfComponentFive: '',
+    typeOfComponentSix: '',
+    typeOfComponentSeven: '',
+    typeOfComponentEight: '',
 
-    laserYear:'',
-    laserPP:'',
-    laserMonth:'',
-    expMonth:'',
-    expYear:'',
-    laserLocation:'',
+    numberOfPcs: '',
+    numberOfPcsTwo: '',
+    numberOfPcsThree: '',
+    numberOfPcsFour: '',
+    numberOfPcsFive: '',
+    numberOfPcsSix: '',
+    numberOfPcsSeven: '',
+    numberOfPcsEight: '',
+
+    laserYear: '',
+    laserPP: '',
+    laserMonth: '',
+    expMonth: '',
+    expYear: '',
+    laserLocation: '',
 
 
     updateDate: '',
     nameOfupdating: '',
     versionNumber: '',
-    scheduleRemark:'',
+    scheduleRemark: '',
 
-    status:'',
-    department:'',
+    status: '',
+    department: '',
     stickerNumber: '',
     stickerTypeK: '',
     boxNumber: '',
     boxTypeK: '',
     barcodeK: '',
     StickerLanguageK: '',
-    StickerLanguageKTwo:'',
-    StickerLanguageKThree:'',
-    StickerLanguageKFour:'',
+    StickerLanguageKTwo: '',
+    StickerLanguageKThree: '',
+    StickerLanguageKFour: '',
     volumeKey: '',
     netWeightK: '',
     grossUnitWeightK: '',
-    peerPharmTone:'',
+    peerPharmTone: '',
 
-    productionInput:'',
-    productionTwoInput:'',
-    productionThreeInput:'',
-    productionFourInput:'',
-    productionFiveInput:'',
-    productionSixInput:'',
-    productionSevenInput:'',
-    productionEightInput:'',
+    productionInput: '',
+    productionTwoInput: '',
+    productionThreeInput: '',
+    productionFourInput: '',
+    productionFiveInput: '',
+    productionSixInput: '',
+    productionSevenInput: '',
+    productionEightInput: '',
 
-    productionImage:'',
-    productionTwoImage:'',
-    productionThreeImage:'',
-    productionFourImage:'',
-    productionFiveImage:'',
-    productionSixImage:'',
-    productionSevenImage:'',
-    productionEightImage:'',
+    productionImage: '',
+    productionTwoImage: '',
+    productionThreeImage: '',
+    productionFourImage: '',
+    productionFiveImage: '',
+    productionSixImage: '',
+    productionSevenImage: '',
+    productionEightImage: '',
 
-    productionType:'',
-    productionTwoType:'',
-    productionThreeType:'',
-    productionFourType:'',
-    productionFiveType:'',
-    productionSixType:'',
-    productionSevenType:'',
-    productionEightType:'',
+    productionType: '',
+    productionTwoType: '',
+    productionThreeType: '',
+    productionFourType: '',
+    productionFiveType: '',
+    productionSixType: '',
+    productionSevenType: '',
+    productionEightType: '',
 
 
 
@@ -198,9 +201,9 @@ export class ItemdetaisComponent implements OnInit {
     st1layerCarton: '',
     totalCartonPalette: '',
 
-    brand:'',
-    costumerId:'',
-    costumerName:'',
+    brand: '',
+    costumerId: '',
+    costumerName: '',
 
     cbm: '',
     motherP: '',
@@ -224,13 +227,13 @@ export class ItemdetaisComponent implements OnInit {
     euPallet: '',
     usPallet: '',
 
-    euSt1layerCarton:'',
-    usSt1layerCarton:'',
-    euTotalCartonPalette:'',
-    usTotalCartonPalette:'',
-    usCbm:'',
-    euCbm:'',
-    
+    euSt1layerCarton: '',
+    usSt1layerCarton: '',
+    euTotalCartonPalette: '',
+    usTotalCartonPalette: '',
+    usCbm: '',
+    euCbm: '',
+
     bottleNumber: '',
     capNumber: '',
     pumpNumber: '',
@@ -244,11 +247,11 @@ export class ItemdetaisComponent implements OnInit {
     extraText1: '',
     extraText2: '',
 
-    componentType:'',
-    componentTwoType:'',
-    componentThreeType:'',
-    componentFourType:'',
-    componentFiveType:'',
+    componentType: '',
+    componentTwoType: '',
+    componentThreeType: '',
+    componentFourType: '',
+    componentFiveType: '',
 
     bottleImage: '',
     capImage: '',
@@ -283,26 +286,26 @@ export class ItemdetaisComponent implements OnInit {
     wordLabelFileLink: '',
     coaFileLink: '',
 
-    phRemarks:'',
-    phLimitsMin:'',
-    phLimitsMax:'',
-    densityRemarks:'',
-    densityLimitsMin:'',
-    densityLimitsMax:'',
-    viscosityRemarks:'',
-    viscosityLimitsMin:'',
-    viscosityLimitsMax:'',
-    spinFieldNum:'',
-    modelType:'',
-    spinSpeed:'',
-    percentageResult:'',
-    testTemp:'',
-    colorRemarks:'',
-    color:'',
-    textureRemarks:'',
-    textureSpec:'',
-    scentRemarks:'',
-    scentSpec:'',
+    phRemarks: '',
+    phLimitsMin: '',
+    phLimitsMax: '',
+    densityRemarks: '',
+    densityLimitsMin: '',
+    densityLimitsMax: '',
+    viscosityRemarks: '',
+    viscosityLimitsMin: '',
+    viscosityLimitsMax: '',
+    spinFieldNum: '',
+    modelType: '',
+    spinSpeed: '',
+    percentageResult: '',
+    testTemp: '',
+    colorRemarks: '',
+    color: '',
+    textureRemarks: '',
+    textureSpec: '',
+    scentRemarks: '',
+    scentSpec: '',
 
   }
 
@@ -314,32 +317,36 @@ export class ItemdetaisComponent implements OnInit {
   pumpFile: boolean = false;
   sealFile: boolean = false;
   capFile: boolean = false;
-  
-  
+
+
   extra1File: boolean = false;
   extra2File: boolean = false;
   laser1File: boolean = false;
   laser2File: boolean = false;
-  
+
   main1File: boolean = false;
   main2File: boolean = false;
   main3File: boolean = false;
   main4File: boolean = false;
-  
+
   labelText: boolean = false;
   plateText: boolean = false;
 
+  editOrAdd: string = 'Add';
+  lookingForItem: boolean = false;
+  itemExist: boolean = false;
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    
+
   }
 
 
-  constructor(private plateService:PlateService,private translate:TranslateService,private excelService:ExcelService,private orderService:OrdersService,private batchService:BatchesService ,private modalService:NgbModal,private costumersService: CostumersService,private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
+  constructor(private plateService: PlateService, private translate: TranslateService, private excelService: ExcelService, private orderService: OrdersService, private batchService: BatchesService, private modalService: NgbModal, private costumersService: CostumersService, private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
-   
 
-   
+
+
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
       itemNumber: [null, Validators.required],
@@ -382,7 +389,7 @@ export class ItemdetaisComponent implements OnInit {
       motherP: [null, Validators.required],
       itemType: [null, Validators.required],
       scheduleRemark: [null, Validators.required],
-     
+
 
       item1w: [null, Validators.required],
       item1s: [null, Validators.required],
@@ -479,32 +486,31 @@ export class ItemdetaisComponent implements OnInit {
 
 
   exportAsXLSX() {
-     
+
     this.excelService.exportAsExcelFile([this.itemShown], 'data');
- }
+  }
 
 
- changeLanguage(type){
-  switch(type) {
-    case 'english':
-      this.translate.use('en')
-      this.hebrewLang = true;
-      this.englishLang = false;
-      break;
-    case 'hebrew':
-      this.translate.use('he')
-      this.englishLang = true;
-      this.hebrewLang = false;
-      break;
+  changeLanguage(type) {
+    switch (type) {
+      case 'english':
+        this.translate.use('en')
+        this.hebrewLang = true;
+        this.englishLang = false;
+        break;
+      case 'hebrew':
+        this.translate.use('he')
+        this.englishLang = true;
+        this.hebrewLang = false;
+        break;
+
+    }
 
   }
-  
- }
 
 
   fillBottle(bottleNumber) {
 
-    
     bottleNumber = this.itemShown.bottleNumber
     if (bottleNumber != "---" && bottleNumber != "") {
       this.invtSer.getCmptByNumber(bottleNumber, "component").subscribe(data => {
@@ -520,7 +526,7 @@ export class ItemdetaisComponent implements OnInit {
 
   fillCap(capNumber) {
 
-  capNumber = this.itemShown.capNumber
+    capNumber = this.itemShown.capNumber
     if (capNumber != "---" && capNumber != "") {
       this.invtSer.getCmptByNumber(capNumber, "component").subscribe(data => {
         this.itemShown.capTube = data[0].componentName
@@ -552,7 +558,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillSeal(sealNumber) {
- 
+
     sealNumber = this.itemShown.sealNumber
     if (sealNumber != "---" && sealNumber != "") {
       this.invtSer.getCmptByNumber(sealNumber, "component").subscribe(data => {
@@ -570,23 +576,23 @@ export class ItemdetaisComponent implements OnInit {
   openBatchModal(batches) {
 
     var itemNumber = this.itemShown.itemNumber
-    this.batchService.getBatchesByItemNumber(itemNumber).subscribe(data=>{
+    this.batchService.getBatchesByItemNumber(itemNumber).subscribe(data => {
       this.itemBatches = data;
     })
     // this.contact = this.costumers[i].contact[0];
     this.modalService.open(batches).result.then((result) => {
       console.log(result);
-    
+
     })
   }
 
-  
 
-  openOrderModal(orders){
+
+  openOrderModal(orders) {
     var itemNumber = this.itemShown.itemNumber
-  
-    this.orderService.getOrderItemsByitemNumber(itemNumber).subscribe(data=>{
-    
+
+    this.orderService.getOrderItemsByitemNumber(itemNumber).subscribe(data => {
+
       this.ordersItem = data;
     })
     this.modalService.open(orders).result.then((result) => {
@@ -594,24 +600,24 @@ export class ItemdetaisComponent implements OnInit {
     })
   }
 
-  createPriceObj(data){
+  createPriceObj(data) {
     let objToPush = {
-      price:'',
-      priceLoading:'',
-      componentNumber:data[0].componentN,
-      componentName:data[0].componentName,
+      price: '',
+      priceLoading: '',
+      componentNumber: data[0].componentN,
+      componentName: data[0].componentName,
     }
     let price = 0
     let suppliers = data[0].alternativeSuppliers;
     for (let i = 0; i < suppliers.length; i++) {
-      if(suppliers[0].price != '' && suppliers[0].price != null && suppliers[0].price != undefined){
+      if (suppliers[0].price != '' && suppliers[0].price != null && suppliers[0].price != undefined) {
         objToPush.price = suppliers[0].price
       } else if (suppliers[1].price != '' && suppliers[1].price != null && suppliers[1].price != undefined) {
         objToPush.price = suppliers[1].price
       } else {
         objToPush.price = 'Update Supplier Price'
       }
-      if(suppliers[0].priceLoading != '' && suppliers[0].priceLoading != null && suppliers[0].priceLoading != undefined){
+      if (suppliers[0].priceLoading != '' && suppliers[0].priceLoading != null && suppliers[0].priceLoading != undefined) {
         objToPush.priceLoading = suppliers[0].priceLoading
       } else if (suppliers[1].priceLoading != '' && suppliers[1].priceLoading != null && suppliers[1].priceLoading != undefined) {
         objToPush.priceLoading = suppliers[1].priceLoading
@@ -619,57 +625,57 @@ export class ItemdetaisComponent implements OnInit {
         objToPush.priceLoading = 'Update Load Price'
       }
 
-      
+
     }
     this.totalItemPrice = this.totalItemPrice + Number(objToPush.price)
-    if(typeof(Number(objToPush.priceLoading)) == typeof(0)){
-      if(!isNaN(Number(objToPush.priceLoading))){
+    if (typeof (Number(objToPush.priceLoading)) == typeof (0)) {
+      if (!isNaN(Number(objToPush.priceLoading))) {
         this.totalPriceLoading = this.totalPriceLoading + Number(objToPush.priceLoading)
-      }      
+      }
     }
-   
+
     return objToPush
   }
 
-  openProdctPriceModal(){
+  openProdctPriceModal() {
 
     this.itemPrice = []
     this.totalItemPrice = 0
-    if(this.itemShown.bottleNumber != '' && this.itemShown.bottleNumber != '---'){
-      this.invtSer.getCmptByitemNumber(this.itemShown.bottleNumber).subscribe(data=>{
- 
-      if(data){
-      this.itemPrice.push(this.createPriceObj(data))
-      }
+    if (this.itemShown.bottleNumber != '' && this.itemShown.bottleNumber != '---') {
+      this.invtSer.getCmptByitemNumber(this.itemShown.bottleNumber).subscribe(data => {
+
+        if (data) {
+          this.itemPrice.push(this.createPriceObj(data))
+        }
       })
     }
-    if(this.itemShown.capNumber != '' && this.itemShown.capNumber != '---'){
-      this.invtSer.getCmptByitemNumber(this.itemShown.capNumber).subscribe(data=>{
+    if (this.itemShown.capNumber != '' && this.itemShown.capNumber != '---') {
+      this.invtSer.getCmptByitemNumber(this.itemShown.capNumber).subscribe(data => {
         this.itemPrice.push(this.createPriceObj(data))
       })
     }
-    if(this.itemShown.boxNumber != '' && this.itemShown.boxNumber != '---'){
-      this.invtSer.getCmptByitemNumber(this.itemShown.boxNumber).subscribe(data=>{
+    if (this.itemShown.boxNumber != '' && this.itemShown.boxNumber != '---') {
+      this.invtSer.getCmptByitemNumber(this.itemShown.boxNumber).subscribe(data => {
         this.itemPrice.push(this.createPriceObj(data))
       })
     }
-    if(this.itemShown.pumpNumber != '' && this.itemShown.pumpNumber != '---'){
-      this.invtSer.getCmptByitemNumber(this.itemShown.pumpNumber).subscribe(data=>{
+    if (this.itemShown.pumpNumber != '' && this.itemShown.pumpNumber != '---') {
+      this.invtSer.getCmptByitemNumber(this.itemShown.pumpNumber).subscribe(data => {
         this.itemPrice.push(this.createPriceObj(data))
       })
     }
-    if(this.itemShown.sealNumber != '' && this.itemShown.sealNumber != '---'){
-      this.invtSer.getCmptByitemNumber(this.itemShown.sealNumber).subscribe(data=>{
+    if (this.itemShown.sealNumber != '' && this.itemShown.sealNumber != '---') {
+      this.invtSer.getCmptByitemNumber(this.itemShown.sealNumber).subscribe(data => {
         this.itemPrice.push(this.createPriceObj(data))
       })
     }
-    if(this.itemShown.stickerNumber != '' && this.itemShown.stickerNumber != '---'){
-      this.invtSer.getCmptByitemNumber(this.itemShown.stickerNumber).subscribe(data=>{
+    if (this.itemShown.stickerNumber != '' && this.itemShown.stickerNumber != '---') {
+      this.invtSer.getCmptByitemNumber(this.itemShown.stickerNumber).subscribe(data => {
         this.itemPrice.push(this.createPriceObj(data))
       })
     }
-    if(this.itemShown.cartonNumber != '' && this.itemShown.cartonNumber != '---'){
-      this.invtSer.getCmptByitemNumber(this.itemShown.cartonNumber).subscribe(data=>{
+    if (this.itemShown.cartonNumber != '' && this.itemShown.cartonNumber != '---') {
+      this.invtSer.getCmptByitemNumber(this.itemShown.cartonNumber).subscribe(data => {
         this.itemPrice.push(this.createPriceObj(data))
       })
     }
@@ -678,7 +684,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   }
- 
+
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -693,82 +699,79 @@ export class ItemdetaisComponent implements OnInit {
   findInInventory(componentN) {
 
 
-window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='+componentN)
+    window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN=' + componentN)
   }
 
 
-  getAllCostumers(){
-    this.costumersService.getAllCostumers().subscribe(data=>{
+  getAllCostumers() {
+    this.costumersService.getAllCostumers().subscribe(data => {
       this.allCostumers = data;
       this.allCostumersCopy = data;
     })
   }
 
-  fillCostumerDetails(ev){
+  fillCostumerDetails(ev) {
 
 
     ev.target.value;
     var costumerName = ev.target.value;
 
-   var costumer = this.allCostumers.find(costumer=>costumer.costumerName == costumerName )
+    var costumer = this.allCostumers.find(costumer => costumer.costumerName == costumerName)
 
-   this.itemShown.costumerId = costumer.costumerId
-   
-   
+    this.itemShown.costumerId = costumer.costumerId
+
+
   }
 
-  searchPlateByNumber(plateNumber,type){
-  
-  ;
-    switch(type) {
+  searchPlateByNumber(plateNumber, type) {
+
+    switch (type) {
       case 'pallet':
-        if(plateNumber != ''){
-          this.plateService.getPlatesByNumber(plateNumber).subscribe(data=>{
-            if(data){
+        if (plateNumber != '') {
+          this.plateService.getPlatesByNumber(plateNumber).subscribe(data => {
+            if (data) {
               this.itemShown.palletImage = data[0].palletImg
             }
           })
         }
-     
+
         break;
       case 'pallet2':
-        if(plateNumber != ''){
-        this.plateService.getPlatesByNumber(plateNumber).subscribe(data=>{
-          if(data){
-            this.itemShown.palletImage2 = data[0].palletImg
-          }
-        })
-      }
+        if (plateNumber != '') {
+          this.plateService.getPlatesByNumber(plateNumber).subscribe(data => {
+            if (data) {
+              this.itemShown.palletImage2 = data[0].palletImg
+            }
+          })
+        }
         break;
       case 'pallet3':
-        if(plateNumber != ''){
-        this.plateService.getPlatesByNumber(plateNumber).subscribe(data=>{
-          if(data){
-            this.itemShown.palletImage3 = data[0].palletImg
-          }
-        })
-      }
+        if (plateNumber != '') {
+          this.plateService.getPlatesByNumber(plateNumber).subscribe(data => {
+            if (data) {
+              this.itemShown.palletImage3 = data[0].palletImg
+            }
+          })
+        }
         break;
 
     }
-   
+
   }
 
-  searchCompNumberByComp(compNumber, src)
-  {
+  searchCompNumberByComp(compNumber, src) {
     var itemType = "component";
-    ;
     switch (src) {
       case 'sticker':
         if (compNumber != "") {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
-        ;
-      
+            ;
+
             this.itemShown.stickerImage = data[0].img
-            this.itemsService.updateStickerImage(this.itemShown).subscribe(data=>{
-              if(data){
+            this.itemsService.updateStickerImage(this.itemShown).subscribe(data => {
+              if (data) {
                 console.log('sticker image updated');
-                
+
               }
             })
 
@@ -782,7 +785,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         if (compNumber != "") {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
             data
-  
+
             this.itemShown.boxImage = data[0].img
 
           })
@@ -792,7 +795,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionInput':
-        if (compNumber != ""  && compNumber != '---') {
+        if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
             data
             this.itemShown.productionType = data[0].componentType
@@ -805,7 +808,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionTwoInput':
-        if (compNumber != ""  && compNumber != '---') {
+        if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionTwoType = data[0].componentType
@@ -832,7 +835,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionFourInput':
-        if (compNumber != ""  && compNumber != '---') {
+        if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionFourType = data[0].componentType
@@ -845,11 +848,11 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionFiveInput':
-        if (compNumber != ""  && compNumber != '---') {
+        if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionFiveType = data[0].componentType
-            this.itemShown.productionFiveImage = data[0].img  
+            this.itemShown.productionFiveImage = data[0].img
           })
 
         } else {
@@ -857,11 +860,11 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionSixInput':
-        if (compNumber != ""  && compNumber != '---') {
+        if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionSixType = data[0].componentType
-            this.itemShown.productionSixImage = data[0].img  
+            this.itemShown.productionSixImage = data[0].img
           })
 
         } else {
@@ -869,7 +872,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionSevenInput':
-        if (compNumber != ""  && compNumber != '---')  {
+        if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionSevenType = data[0].componentType
@@ -882,7 +885,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
         break;
       case 'productionEightInput':
-        if (compNumber != ""  && compNumber != '---') {
+        if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByNumber(compNumber, itemType).subscribe(data => {
             data
             this.itemShown.productionEightType = data[0].componentType
@@ -904,18 +907,18 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
   }
 
-  saveSpecTable(){
+  saveSpecTable() {
     this.editSpecTable = false;
 
-    this.itemsService.saveSpecSettings(this.itemShown).subscribe(data=>{
-      if(data){
+    this.itemsService.saveSpecSettings(this.itemShown).subscribe(data => {
+      if (data) {
         this.toastr.success('עודכן בהצלחה !')
       }
     })
   }
 
   getGoddetData() {
-    
+
     let div = this.container.nativeElement;
     this.mainDivArr = [];
     let divArr = [];
@@ -977,153 +980,137 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
     this.getUserInfo();
     this.getItemData();
 
-   
+
     //  this.showGoddetData();
   }
 
 
-  jumpingRemark(){
-    if(this.itemShown.proRemarks != "" && this.itemShown.proRemarks != undefined && this.itemShown.proRemarks != null) {
-      if(this.remarksAlert == true){
+  jumpingRemark() {
+    if (this.itemShown.proRemarks != "" && this.itemShown.proRemarks != undefined && this.itemShown.proRemarks != null) {
+      if (this.remarksAlert == true) {
         this.remarksAlert = false;
-      } 
-      else { 
+      }
+      else {
         this.remarksAlert = true;
       }
-      
-   
+
+
     }
   }
-  notActive(){
-    if(this.itemShown.status == "notActive") {
-      if(this.notActiveAlert == true){
+  notActive() {
+    if (this.itemShown.status == "notActive") {
+      if (this.notActiveAlert == true) {
         this.notActiveAlert = false;
-      } 
-      else { 
+      }
+      else {
         this.notActiveAlert = true;
       }
-      
-   
+
+
     }
   }
 
-  checkItemStatus()
-  {
-    
-      if(this.itemShown.status === 'perfect') {
-       
-        return "green";
-      
-      } if (this.itemShown.status === 'notActive') {
+  checkItemStatus() {
 
-        return "red"
-      } if (this.itemShown.status === 'active'){
-        return "red"
-      }
+    if (this.itemShown.status === 'perfect') {
+
+      return "green";
+
+    } if (this.itemShown.status === 'notActive') {
+
+      return "red"
+    } if (this.itemShown.status === 'active') {
+      return "red"
+    }
 
   }
 
-  itemBackgroundByStatus() { 
-    if(this.itemShown.status === 'notActive'){
+  itemBackgroundByStatus() {
+    if (this.itemShown.status === 'notActive') {
       return "backgroundRed"
     }
   }
 
+
+
+
   getItemData() {
 
-   this.route.params.subscribe(data=>
-      {
-        let number=data.itemNumber;
-        if (number) {
-          this.itemsService.getItemData(number).subscribe(res => {
-            console.log(res);
-            
-            this.item = res[0];
-            this.itemShown = res[0];
-            this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
-            if (this.itemShown.licsensDate != null) {
-              this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
-            }
-            
-            
-            this.searchForItem(data.itemNumber)
+    this.route.params.subscribe(data => {
+      let number = data.itemNumber;
+      if (number) {
+        this.editOrAdd = 'Edit'
+        this.itemsService.getItemData(number).subscribe(res => {
+          console.log(res);
 
-            this.dataDiv = res[0].goddet;
-            this.showGoddetData();
-          
-          });
-        }
-      })
- 
- 
+          this.item = res[0];
+          this.itemShown = res[0];
+          this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
+          if (this.itemShown.licsensDate != null) {
+            this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
+          }
+
+
+          this.searchForItem(data.itemNumber)
+
+          this.dataDiv = res[0].goddet;
+          this.showGoddetData();
+
+        });
+      }
+    })
+
+
   }
-  search(event, item) {
-    if (event.key === "Enter") {
-      this.searchForItem(item)
-    }
-  }
+
   searchForItem(item) {
 
-    
+    this.editOrAdd = 'Edit'
     this.itemsService.getItemData(item).subscribe(res => {
-      ;
-      console.log(res.length)
-     
       if (res.length == 0) {
         this.toastr.error(item, "Item Not found");
         this.itemShown = Object.assign({}, this.itemCopy);
         this.dataDiv = ["", ""];
         this.showGoddet();
-      } else if (res.msg == 'noItem'){
+      } else if (res.msg == 'noItem') {
         this.toastr.error('No such ITEM !!!!!!')
       }
-      else { 
-        
+      else {
         this.item = res[0];
         this.itemShown = res[0];
-       
-        
-       
-     
-     
-     
-        this.itemShown.productionInput = this.itemShown.bottleNumber
-        this.itemShown.productionTwoInput = this.itemShown.capNumber
-        this.itemShown.productionThreeInput = this.itemShown.pumpNumber
-        this.itemShown.productionFourInput = this.itemShown.sealNumber
-        if(this.itemShown.bottleNumber != ''){
-          this.fillBottle(this.itemShown.bottleNumber)
-          this.searchCompNumberByComp(this.itemShown.bottleNumber,'productionInput')
+        if (this.itemShown.bottleNumber != '') {
+          this.fillBottle(this.itemShown.bottleNumber) // 
+          this.searchCompNumberByComp(this.itemShown.bottleNumber, 'productionInput') // תמונה וסוג קומפוננט
         } else {
           this.itemShown.bottleImage = ''
           this.itemShown.bottleNumber = ''
           this.itemShown.bottleTube = ''
           this.itemShown.componentType = ''
         }
-        
-        if(this.itemShown.capNumber != ''){
+
+        if (this.itemShown.capNumber != '') {
           this.fillCap(this.itemShown.capNumber)
-          this.searchCompNumberByComp(this.itemShown.capNumber,'productionTwoInput')
+          this.searchCompNumberByComp(this.itemShown.capNumber, 'productionTwoInput')
         } else {
           this.itemShown.capImage = ''
           this.itemShown.capNumber = ''
           this.itemShown.capTube = ''
           this.itemShown.componentTwoType = ''
         }
-        
-        if(this.itemShown.pumpNumber != ''){
+
+        if (this.itemShown.pumpNumber != '') {
           this.fillPump(this.itemShown.pumpNumber)
-          this.searchCompNumberByComp(this.itemShown.pumpNumber,'productionThreeInput')
+          this.searchCompNumberByComp(this.itemShown.pumpNumber, 'productionThreeInput')
         } else {
           this.itemShown.pumpImage = ''
           this.itemShown.pumpNumber = ''
           this.itemShown.pumpTube = ''
           this.itemShown.componentThreeType = ''
         }
-        
-        if(this.itemShown.sealNumber != ''){
+
+        if (this.itemShown.sealNumber != '') {
           this.fillSeal(this.itemShown.sealNumber)
-          this.searchCompNumberByComp(this.itemShown.sealNumber,'productionFourInput')
+          this.searchCompNumberByComp(this.itemShown.sealNumber, 'productionFourInput')
         } else {
           this.itemShown.sealImage = ''
           this.itemShown.sealNumber = ''
@@ -1131,21 +1118,21 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
           this.itemShown.componentFourType = ''
         }
 
-        this.searchCompNumberByComp(this.itemShown.boxNumber,'box')
-        this.searchCompNumberByComp(this.itemShown.stickerNumber,'sticker')
-        this.searchPlateByNumber(this.itemShown.pallet,'pallet')
-        this.searchPlateByNumber(this.itemShown.pallet2,'pallet2')
-        this.searchPlateByNumber(this.itemShown.pallet3,'pallet3')
-      
+        this.searchCompNumberByComp(this.itemShown.boxNumber, 'box')
+        this.searchCompNumberByComp(this.itemShown.stickerNumber, 'sticker')
+        this.searchPlateByNumber(this.itemShown.pallet, 'pallet')
+        this.searchPlateByNumber(this.itemShown.pallet2, 'pallet2')
+        this.searchPlateByNumber(this.itemShown.pallet3, 'pallet3')
+
         // var costumer = this.allCostumersCopy.filter(costumer=>costumer.brand == this.itemShown.name);
         // this.allCostumers = costumer
-        
+
         this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
         //null as moment format returns="invalid date"
         if (this.itemShown.licsensDate != null) {
           this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
         };
-        this.checkIfTrueOrFalse();
+        this.checkIfTrueOrFalse(); // check the plus if true or false
         console.log(res[0]);
         this.dataDiv = res[0].goddet;
         // this.showGoddetData();
@@ -1155,71 +1142,71 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
     })
   }
 
-  checkIfTrueOrFalse(){
+  checkIfTrueOrFalse() {
 
-    if(this.itemShown.StickerLanguageK == '' || this.itemShown.StickerLanguageK == '---' || this.itemShown.StickerLanguageK == undefined ) {
+    if (this.itemShown.StickerLanguageK == '' || this.itemShown.StickerLanguageK == '---' || this.itemShown.StickerLanguageK == undefined) {
       this.mainLanguage = false
-     
+
     } else {
       this.mainLanguage = true
     }
 
-    if(this.itemShown.StickerLanguageKTwo == '' || this.itemShown.StickerLanguageKTwo == '---' || this.itemShown.StickerLanguageKTwo == undefined) {
+    if (this.itemShown.StickerLanguageKTwo == '' || this.itemShown.StickerLanguageKTwo == '---' || this.itemShown.StickerLanguageKTwo == undefined) {
       this.mainLanguageTwo = false
     } else {
       this.mainLanguageTwo = true
     }
 
-    if(this.itemShown.StickerLanguageKThree == '' || this.itemShown.StickerLanguageKThree == '---' || this.itemShown.StickerLanguageKThree == undefined) {
+    if (this.itemShown.StickerLanguageKThree == '' || this.itemShown.StickerLanguageKThree == '---' || this.itemShown.StickerLanguageKThree == undefined) {
       this.mainLanguageThree = false
     } else {
       this.mainLanguageThree = true
     }
-    if(this.itemShown.StickerLanguageKFour == '' || this.itemShown.StickerLanguageKFour == '---' || this.itemShown.StickerLanguageKFour == undefined) {
+    if (this.itemShown.StickerLanguageKFour == '' || this.itemShown.StickerLanguageKFour == '---' || this.itemShown.StickerLanguageKFour == undefined) {
       this.mainLanguageFour = false
     } else {
       this.mainLanguageFour = true
     }
 
-    if(this.itemShown.department == '' || this.itemShown.department == '---' || this.itemShown.department == undefined) {
+    if (this.itemShown.department == '' || this.itemShown.department == '---' || this.itemShown.department == undefined) {
       this.department = false
     } else {
       this.department = true
     }
 
-    if(this.itemShown.volumeKey == '' || this.itemShown.volumeKey == '---' || this.itemShown.volumeKey == undefined) {
+    if (this.itemShown.volumeKey == '' || this.itemShown.volumeKey == '---' || this.itemShown.volumeKey == undefined) {
       this.volumeMl = false
     } else {
       this.volumeMl = true
     }
 
-    if(this.itemShown.netWeightK == '' || this.itemShown.netWeightK == '---' || this.itemShown.netWeightK == undefined) {
+    if (this.itemShown.netWeightK == '' || this.itemShown.netWeightK == '---' || this.itemShown.netWeightK == undefined) {
       this.netWeightK = false
     } else {
       this.netWeightK = true
     }
 
-    if(this.itemShown.grossUnitWeightK == '' || this.itemShown.grossUnitWeightK == '---' || this.itemShown.grossUnitWeightK == undefined) {
+    if (this.itemShown.grossUnitWeightK == '' || this.itemShown.grossUnitWeightK == '---' || this.itemShown.grossUnitWeightK == undefined) {
       this.grossWeightUnit = false
     } else {
       this.grossWeightUnit = true
     }
 
-    if(this.itemShown.peerPharmTone == '' || this.itemShown.peerPharmTone == '---' || this.itemShown.peerPharmTone == undefined) {
+    if (this.itemShown.peerPharmTone == '' || this.itemShown.peerPharmTone == '---' || this.itemShown.peerPharmTone == undefined) {
       this.peerPharmTone = false
     } else {
       this.peerPharmTone = true
     }
 
-    if(this.itemShown.productionInput == '' || this.itemShown.productionInput == '---' || this.itemShown.productionInput == undefined) {
+    if (this.itemShown.productionInput == '' || this.itemShown.productionInput == '---' || this.itemShown.productionInput == undefined) {
       this.production = false
       this.productionType = ''
       this.productionImage = ''
     } else {
       this.production = true
     }
-    
-    if(this.itemShown.productionTwoInput == '' || this.itemShown.productionTwoInput == '---' || this.itemShown.productionTwoInput == undefined) {
+
+    if (this.itemShown.productionTwoInput == '' || this.itemShown.productionTwoInput == '---' || this.itemShown.productionTwoInput == undefined) {
       this.productionTwo = false
       this.productionTwoType = ''
       this.productionTwoImage = ''
@@ -1227,16 +1214,16 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       this.productionTwo = true
     }
 
-    if(this.itemShown.productionThreeInput == '' || this.itemShown.productionThreeInput == '---' || this.itemShown.productionThreeInput == undefined) {
+    if (this.itemShown.productionThreeInput == '' || this.itemShown.productionThreeInput == '---' || this.itemShown.productionThreeInput == undefined) {
       this.productionThree = false
       this.productionThreeType = ''
       this.productionThreeImage = ''
-      
+
     } else {
       this.productionThree = true
     }
 
-    if(this.itemShown.productionFourInput == '' || this.itemShown.productionFourInput == '---' || this.itemShown.productionFourInput == undefined) {
+    if (this.itemShown.productionFourInput == '' || this.itemShown.productionFourInput == '---' || this.itemShown.productionFourInput == undefined) {
       this.productionFour = false
       this.productionFourType = ''
       this.productionFourImage = ''
@@ -1244,7 +1231,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       this.productionFour = true
     }
 
-    if(this.itemShown.productionFiveInput == '' || this.itemShown.productionFiveInput == '---' || this.itemShown.productionFiveInput == undefined) {
+    if (this.itemShown.productionFiveInput == '' || this.itemShown.productionFiveInput == '---' || this.itemShown.productionFiveInput == undefined) {
       this.productionFive = false
       this.productionFiveType = ''
       this.productionFiveImage = ''
@@ -1252,7 +1239,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       this.productionFive = true
     }
 
-    if(this.itemShown.productionSixInput == '' || this.itemShown.productionSixInput == '---' || this.itemShown.productionSixInput == undefined) {
+    if (this.itemShown.productionSixInput == '' || this.itemShown.productionSixInput == '---' || this.itemShown.productionSixInput == undefined) {
       this.productionSix = false
       this.productionSixType = ''
       this.productionSixImage = ''
@@ -1260,7 +1247,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       this.productionSix = true
     }
 
-    if(this.itemShown.productionSevenInput == '' || this.itemShown.productionSevenInput == '---' || this.itemShown.productionSevenInput == undefined) {
+    if (this.itemShown.productionSevenInput == '' || this.itemShown.productionSevenInput == '---' || this.itemShown.productionSevenInput == undefined) {
       this.productionSeven = false
       this.productionSevenType = ''
       this.productionSevenImage = ''
@@ -1268,7 +1255,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       this.productionSeven = true
     }
 
-    if(this.itemShown.productionEightInput == '' || this.itemShown.productionEightInput == '---' || this.itemShown.productionEightInput == undefined) {
+    if (this.itemShown.productionEightInput == '' || this.itemShown.productionEightInput == '---' || this.itemShown.productionEightInput == undefined) {
       this.productionEight = false
       this.productionEightType = ''
       this.productionEightImage = ''
@@ -1279,85 +1266,53 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
 
   }
 
-  async writeItemData() {
 
-    this.editSpecTable = false;
-    if(this.itemShown.status == "production") {
-      if(this.authService.loggedInUser.userName == 'akiva'){
-        
-        if (this.itemShown.itemNumber != "") {
-          if (confirm("Save changes?")) {
-            await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes => {
-              if (itemNumRes.length > 0) {
-                if (confirm("Item alerady exist!\nDo you want to update item number: " + this.itemShown.itemNumber + " ?")) {
-                  this.updateItemTree();
-                }
-              } else {
-                if (confirm("Create New item number : " + this.itemShown.itemNumber + " ?")) {
-                  this.updateItemTree();
-                }
-              }
-            });
-          }
-        }
-    
-      } else {
-        this.toastr.error("Only Sigalit & Akiva can change this item Status")
-      }
-    } else { 
-      if (this.itemShown.itemNumber != "") {
-        ;
-        if (confirm("Save changes?")) {
-          await this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(itemNumRes => {
-            if (itemNumRes.length > 0) {
-              if (confirm("Item alerady exist!\nDo you want to update item number: " + this.itemShown.itemNumber + " ?")) {
-                this.updateItemTree();
-              }
-            } else {
-              if (confirm("Create New item number : " + this.itemShown.itemNumber + " ?")) {
-                this.updateItemTree();
-              }
-            }
-          });
-        }
-      }
-    }
+  checkIfItemExist(itemNumber) {
+    this.itemsService.getItemData(itemNumber).subscribe(data => {
+      if(data.length > 0) this.itemExist = true;
+      else this.itemExist = false;
+    })
 
   }
 
-  updateItemTree() {
-   
-    if(this.itemShown.status == 'production') {
-      if(confirm('שים לב , אתה מנסה לעדכן מוצר עם סטטוס פיתוח')){
-         if (this.itemShown.itemNumber != "") {
-      this.itemShown.nameOfupdating = this.user.userName;
-      // this.getGoddetData();
-      // this.itemShown.updateDate;
-      this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => {
-        console.log(res)
-        this.toastr.success("Saved", "Changes Saved for item number: " + this.itemShown.itemNumber);
-        this.editSpecTable = false;
-      });
-    } else {
-      this.toastr.error("No item number!");
-    } 
-      } 
-    } else {
-      if (this.itemShown.itemNumber != "") {
-        this.itemShown.nameOfupdating = this.user.userName;
-        // this.getGoddetData();
-        // this.itemShown.updateDate;
-        this.itemsService.addorUpdateItem(this.itemShown).subscribe(res => {
-          console.log(res)
-          this.toastr.success("Saved", "Changes Saved fot item number: " + this.itemShown.itemNumber);
-        });
-      } else {
-        this.toastr.error("No item number!");
-      } 
+  async addNewItem() {
+    debugger;
+    this.editSpecTable = false;  // specification auth
+    if (this.itemShown.itemNumber != "") {
+      this.itemsService.addItem(this.itemShown).subscribe(data => {
+      this.toastr.success(''+data)
+      })
     }
-       
-    
- 
+  }
+
+  updateItem() {
+    this.lookingForItem = true;
+    console.log(this.itemShown)
+    this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(data => {
+      console.log(data);
+      if(data.length == 0) {
+        if(confirm('You are about to add a new item! Continue?')) {
+          this.addNewItem()
+          this.lookingForItem = false;
+          this.modalService.dismissAll()
+        }
+      }
+      else {
+        if (this.itemShown.itemNumber != "") {
+          this.itemShown.nameOfupdating = this.user.userName;
+          this.itemsService.updateItem(this.itemShown).subscribe(res => {
+            this.toastr.success("Saved", "Changes Saved for item number: " + this.itemShown.itemNumber);
+            this.editSpecTable = false;
+            this.lookingForItem = false;
+            this.modalService.dismissAll()
+          });
+        } else {
+          this.toastr.error("No item number!");
+          this.lookingForItem = false;
+          this.modalService.dismissAll()
+        }
+      }
+    })
   }
 
 
@@ -1572,7 +1527,7 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
       case 'laserAndExp':
         if (this.laserAndExp == true) {
           this.laserAndExp = false;
-          
+
         } else {
           this.laserAndExp = true
         }
@@ -1673,18 +1628,18 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
     this.toastr.info('Successful upload!');
   }
 
-  loadCartonName(cartonNumber){
-  this.invtSer.getCmptByitemNumber(cartonNumber).subscribe(data=>{
-    ;
-    if(data){
-    this.itemShown.cartonName = data[0].componentName
-    }
-  })
+  loadCartonName(cartonNumber) {
+    this.invtSer.getCmptByitemNumber(cartonNumber).subscribe(data => {
+      ;
+      if (data) {
+        this.itemShown.cartonName = data[0].componentName
+      }
+    })
   }
 
 
   loadPackagDetails(number, src) {
-    if(number != ''){
+    if (number != '') {
       this.invtSer.getCmptByNumber(number, 'product').subscribe(res => {
         switch (src) {
           case 'bottle':
@@ -1710,28 +1665,28 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
         }
       })
     }
-  
+
   }
 
-   getUserInfo() {
+  getUserInfo() {
 
 
-    if(this.authService.loggedInUser) {
-        this.user = this.authService.loggedInUser
+    if (this.authService.loggedInUser) {
+      this.user = this.authService.loggedInUser
       if (this.user.authorization) {
         if (this.authService.loggedInUser.authorization.includes("updateItemTree")) {
           this.alowUserEditItemTree = true;
-         
+
         }
         if (this.authService.loggedInUser.authorization.includes("updateItemSpecs")) {
-        
+
           this.allowEditSpecTable = true
         }
 
 
       }
 
-     } else { 
+    } else {
       this.authService.userEventEmitter.subscribe(user => {
         this.user = user;
         if (this.user.authorization) {
@@ -1739,13 +1694,13 @@ window.open('http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN='
             this.alowUserEditItemTree = true;
           }
           if (this.authService.loggedInUser.authorization.includes("updateItemSpecs")) {
-        
+
             this.allowEditSpecTable = true
           }
         }
       });
-  
+
     }
-  
+
   }
 }

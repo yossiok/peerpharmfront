@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 
+export interface Response { 
+  message: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -87,10 +91,12 @@ export class ItemsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  addorUpdateItem(itemObj) {
-    console.log(itemObj);
-    
+  addItem(itemObj) {
     let url = this.baseUrl + "item/add";
+    return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json))
+  }
+  updateItem(itemObj) {
+    let url = this.baseUrl + "item/update";
     return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json))
   }
 

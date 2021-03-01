@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
-            <h1 [ngClass]="checkItemStatus()" class="itemHeadline">ITEM TREE</h1>
+            <h1 [ngClass]="checkItemStatus()" class="itemHeadline">{{editOrAdd}} Item <span *ngIf="editOrAdd == 'Edit'">{{itemShown.itemNumber}}</span></h1>
             <div *ngIf="remarksAlert==true" class="alert">
                 <span dir="rtl" class="closebtn" (click)="jumpingRemark()">&times;</span>
                 <strong>הערה חשובה:</strong> {{this.itemShown.proRemarks}}
@@ -70,8 +70,9 @@
         </div>
         <div class="col-3">
             <div>
-                <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.itemNumber #itemNum
-                    id="id_item" (keydown)='search($event,itemNum.value )'>
+                <input [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)" 
+                        (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" 
+                        [(ngModel)]="itemShown.itemNumber" #itemNum id="id_item">
                 <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search"
                     src='/assets/images/search.png' style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
             </div>
@@ -1932,10 +1933,11 @@
             <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;" src="../../../../assets/images/price.png">
             <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
         </div>
-        <div class="col-4">
+        <div class="col-4 d-flex justify-content-between">
 
-            <button *ngIf="alowUserEditItemTree" class="btn btn-success" (click)="writeItemData()">Submit</button>
-            <button style="float: right" type='reset' class="btn btn-success">Reset</button>
+            <button *ngIf="alowUserEditItemTree" [disabled]="itemExist" [style.cursor]="itemExist ? 'not-allowed' : 'pointer'" class="btn btn-success" (click)="addNewItem(); checkIfItemExist(itemShown.itemNumber)">New</button>
+            <button *ngIf="alowUserEditItemTree" class="btn btn-warning" (click)="this.modalService.open(editItemModal)">Update</button>
+            <button style="float: right" type='reset' class="btn btn-secondary">Reset</button>
         </div>
         <div class="col-4"></div>
     </div>
@@ -1975,6 +1977,29 @@
         </table>
     </div>
     <div class="modal-footer">
+    </div>
+
+</ng-template>
+
+
+<ng-template #editItemModal let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-basic-title">Edit item Number {{itemShown.itemNumber}}</h3>
+
+        <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <h4>Please enter the Item Number you are editting</h4>
+      <div *ngIf="lookingForItem" class="smallLoader"></div>
+
+      <input [(ngModel)]="approveItemNumber" type="text">
+    </div>
+    <div class="modal-footer">
+        <button (click)="updateItem(); approveItemNumber = ''" [disabled]="approveItemNumber != itemShown.itemNumber" [ngClass]="approveItemNumber == itemShown.itemNumber ? 'btn btn-success' : 'disabled'">Update</button>
     </div>
 
 </ng-template>
