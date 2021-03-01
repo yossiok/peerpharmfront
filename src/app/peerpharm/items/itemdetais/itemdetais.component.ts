@@ -1280,7 +1280,7 @@ export class ItemdetaisComponent implements OnInit {
     this.editSpecTable = false;  // specification auth
     if (this.itemShown.itemNumber != "") {
       this.itemsService.addItem(this.itemShown).subscribe(data => {
-      this.toastr.success(''+data)
+      this.toastr.success(''+data.message)
       })
     }
   }
