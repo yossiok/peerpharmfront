@@ -615,17 +615,22 @@ export class StockComponent implements OnInit {
       if (that.stockType == 'component') {
 
         for (let i = 0; i < that.components.length; i++) {
-
-          line = {
-            'מספר פריט': that.components[i].componentN,
-            'מק"ט פריט אצל הספק': that.components[i].componentNs,
-            'שם הפריט': that.components[i].componentName,
-            'סוג פריט': that.components[i].componentType,
-            'כמות': that.components[i].amount,
-            'כמות מוקצת': that.components[i].alloAmount,
-
-          }
-          arr.push(line)
+          
+            line = {
+              'מספר פריט': that.components[i].componentN,
+              'מק"ט פריט אצל הספק': that.components[i].componentNs,
+              'שם הפריט': that.components[i].componentName,
+              'סוג פריט': that.components[i].componentType,
+              'כמות': that.components[i].amount,
+              'כמות מוקצת': that.components[i].alloAmount,
+              'מחיר':that.components[i].alternativeSuppliers[0]? that.components[i].alternativeSuppliers[0].supplierName + ' ' + that.components[i].alternativeSuppliers[0].price : '',
+              'מחיר2':that.components[i].alternativeSuppliers[1] ?that.components[i].alternativeSuppliers[1].supplierName + ' ' + that.components[i].alternativeSuppliers[1].price : '',
+              'מחיר3':that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].supplierName + ' ' + that.components[i].alternativeSuppliers[2].price : '',
+  
+            }
+            arr.push(line)
+        
+         
         }
         resolve(arr);
       } else if (that.stockType == 'product') {

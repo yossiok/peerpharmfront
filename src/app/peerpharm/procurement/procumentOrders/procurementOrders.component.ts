@@ -25,7 +25,6 @@ export class ProcurementOrdersComponent implements OnInit {
   paymentRemark: String
   orderRemarks: String;
   expandNumber: String;
-  myRefresh: any = null;
   allComponents: any[];
   requestToPurchase:any;
   allInvoices: any[];
@@ -233,13 +232,6 @@ export class ProcurementOrdersComponent implements OnInit {
     this.excelService.exportAsExcelFile(tempArr, 'data');
   }
 
-  stopInterval() {
-    clearInterval(this.myRefresh)
-  }
-
-  startInterval() {
-    this.myRefresh = setInterval(() => { this.getAllProcurementOrders(); }, 1000 * 60 * 3);
-  }
 
   filterRecByType(ev) {
     let type = ev.target.value;
