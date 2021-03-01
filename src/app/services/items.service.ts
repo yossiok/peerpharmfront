@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 
+export interface Response { 
+  message: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -87,20 +91,22 @@ export class ItemsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  addorUpdateItem(itemObj) {
-    console.log(itemObj);
-    
+  addItem(itemObj) {
     let url = this.baseUrl + "item/add";
-    return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json))
+    return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json()))
+  }
+  updateItem(itemObj) {
+    let url = this.baseUrl + "item/update";
+    return this.http.post(url, JSON.stringify(itemObj), this.options).pipe(map(res => res.json()))
   }
 
   updateDocuments(itemDocObj) {
     let url = this.baseUrl + "item/updateDocs";
-    return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json))
+    return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json()))
   }
   findByIdAndUpdate(itemShell) {
     let url = this.baseUrl + "item/updateItemShellById";
-    return this.http.post(url, JSON.stringify(itemShell), this.options).pipe(map(res => res.json))
+    return this.http.post(url, JSON.stringify(itemShell), this.options).pipe(map(res => res.json()))
   }
 
 
@@ -108,7 +114,7 @@ export class ItemsService {
   newFloor(newFloor) {
     
     let url = this.baseUrl + "item/newFloorItem";
-    return this.http.post(url, JSON.stringify(newFloor), this.options).pipe(map(res => res.json))
+    return this.http.post(url, JSON.stringify(newFloor), this.options).pipe(map(res => res.json()))
   }
  
   updateLicenseLimition(itemDocObj) {
