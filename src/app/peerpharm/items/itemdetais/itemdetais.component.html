@@ -3,7 +3,8 @@
     <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
-            <h1 [ngClass]="checkItemStatus()" class="itemHeadline">{{editOrAdd}} Item <span *ngIf="editOrAdd == 'Edit'">{{itemShown.itemNumber}}</span></h1>
+            <h1 [ngClass]="checkItemStatus()" class="itemHeadline">{{editOrAdd}} Item <span
+                    *ngIf="editOrAdd == 'Edit'">{{itemShown.itemNumber}}</span></h1>
             <div *ngIf="remarksAlert==true" class="alert">
                 <span dir="rtl" class="closebtn" (click)="jumpingRemark()">&times;</span>
                 <strong>הערה חשובה:</strong> {{this.itemShown.proRemarks}}
@@ -70,11 +71,14 @@
         </div>
         <div class="col-3">
             <div>
-                <input [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)" 
-                        (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" 
-                        [(ngModel)]="itemShown.itemNumber" #itemNum id="id_item">
-                <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search"
-                    src='/assets/images/search.png' style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
+                <input [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
+                    (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" [(ngModel)]="itemShown.itemNumber"
+                    #itemNum id="id_item">
+                <button type="submit">
+                    <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search"
+                        src='/assets/images/search.png'
+                        style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
+                </button>
             </div>
 
             <div>
@@ -1079,8 +1083,8 @@
                             <div class="row mt-4">
 
                                 <div class="col-4">
-                                    <label
-                                        class="form-control">{{ 'Carton' | translate }}/{{ 'Pallet' | translate }}</label>
+                                    <label class="form-control">{{ 'Carton' | translate }}/{{ 'Pallet' | translate
+                                        }}</label>
                                 </div>
                                 <div class="col-4"></div>
                                 <div class="col-4">
@@ -1093,8 +1097,8 @@
                                     <label class="labelGeneral">{{ 'Carton' | translate }}
                                         {{ 'Number' | translate }}</label>
 
-                                    <label
-                                        class="labelGeneral">{{ 'Pcs' | translate }}/{{ 'Carton' | translate }}</label>
+                                    <label class="labelGeneral">{{ 'Pcs' | translate }}/{{ 'Carton' | translate
+                                        }}</label>
                                     <label class="labelGeneral">{{ 'Pallet' | translate }}
                                         {{ 'Type' | translate }}</label>
                                     <label class="labelGeneral">{{ 'Pump' | translate }}
@@ -1577,21 +1581,25 @@
 
                             <div class="imgContainer">
                                 <div style='display: inline-table'>
-                                    <input class="form-control" type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+                                    <input class="form-control" type="file" id="id_itemImg1"
+                                        (change)="selectFile($event, 'main1')"><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')"
                                         *ngIf='main1File'>>></button>
                                     <br>
                                     <img class="pictureTabImg" alt="תמונה ראשית" id="id_img1" [src]=itemShown.imgMain1>
                                 </div>
                                 <div style='display: inline-table'>
-                                    <input class="form-control" type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
+                                    <input class="form-control" type="file" id="id_itemImg2"
+                                        (change)="selectFile($event, 'main2')"><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')"
                                         *ngIf='main2File'>>></button>
                                     <br>
-                                    <img class="pictureTabImg" alt="תמונה ראשית 2" id="id_img2" [src]=itemShown.imgMain2>
+                                    <img class="pictureTabImg" alt="תמונה ראשית 2" id="id_img2"
+                                        [src]=itemShown.imgMain2>
                                 </div>
                                 <div style='display: inline-table'>
-                                    <input class="form-control" type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
+                                    <input class="form-control" type="file" id="id_itemImg3"
+                                        (change)="selectFile($event, 'main3')"><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')"
                                         *ngIf='main3File'>>></button>
                                     <br>
@@ -1602,21 +1610,23 @@
 
                                 <div>
                                     <hr>
-                                <div class="mt-3" style='display: inline-table'>
-                                    <input class="form-control" type="file" id="id_itemImg4" (change)="selectFile($event, 'main4')"><br>
-                                    <button class="btn" [disabled]="!selectedFiles" (click)="upload('main4')"
-                                        *ngIf='main4File'>>></button>
-                                    <br>
-                                    <img class="pictureTabImg" alt="קרטון לפני סגירה" id="id_img4" [src]=itemShown.imgMain4>
+                                    <div class="mt-3" style='display: inline-table'>
+                                        <input class="form-control" type="file" id="id_itemImg4"
+                                            (change)="selectFile($event, 'main4')"><br>
+                                        <button class="btn" [disabled]="!selectedFiles" (click)="upload('main4')"
+                                            *ngIf='main4File'>>></button>
+                                        <br>
+                                        <img class="pictureTabImg" alt="קרטון לפני סגירה" id="id_img4"
+                                            [src]=itemShown.imgMain4>
 
 
+                                    </div>
+                                    <div style="display: inline-table;">
+                                        <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
+                                        <br>
+                                        <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
+                                    </div>
                                 </div>
-                                <div style="display: inline-table;">
-                                    <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">  
-                                    <br>
-                                    <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">    
-                                </div>
-                            </div>
                             </div>
 
 
@@ -1777,7 +1787,8 @@
                                                                         <option value="BROOKFIELD MODEL D220">BROOKFIELD
                                                                             MODEL D220</option>
                                                                         <option value="Myr VR300">Myr VR300</option>
-                                                                    </select></td>
+                                                                    </select>
+                                                                </td>
                                                                 <td style="padding: 0rem !important">סוג מכשיר</td>
                                                             </tr>
                                                             <tr style="padding: 0rem !important">
@@ -1930,13 +1941,20 @@
                 src="/assets/images/ordered.png">
             <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX()"
                 style="width: 50px;margin:5px;cursor: pointer;">
-            <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;" src="../../../../assets/images/price.png">
+            <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;"
+                src="../../../../assets/images/price.png">
             <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
         </div>
         <div class="col-4 d-flex justify-content-between">
 
-            <button *ngIf="alowUserEditItemTree" [disabled]="itemExist" [style.cursor]="itemExist ? 'not-allowed' : 'pointer'" class="btn btn-success" (click)="addNewItem(); checkIfItemExist(itemShown.itemNumber)">New</button>
-            <button *ngIf="alowUserEditItemTree" class="btn btn-warning" (click)="this.modalService.open(editItemModal)">Update</button>
+            <button *ngIf="alowUserEditItemTree" [disabled]="itemExist"
+                [style.cursor]="itemExist ? 'not-allowed' : 'pointer'" class="btn btn-success"
+                (click)="addNewItem(); checkIfItemExist(itemShown.itemNumber)">New
+            </button>
+            <button *ngIf="alowUserEditItemTree" [disabled]="!itemExist"
+                [style.cursor]="itemExist ? 'pointer' : 'not-allowed'" class="btn btn-warning"
+                (click)="this.modalService.open(editItemModal)">Update
+            </button>
             <button style="float: right" type='reset' class="btn btn-secondary">Reset</button>
         </div>
         <div class="col-4"></div>
@@ -1993,13 +2011,17 @@
         </button>
     </div>
     <div class="modal-body">
-      <h4>Please enter the Item Number you are editting</h4>
-      <div *ngIf="lookingForItem" class="smallLoader"></div>
+        <h4>Please enter the Item Number you are editting</h4>
+        <p class="red back-red under"> שים לב! </p>
+        <p class="red back-red rounded p-2">
+            כל הפרטים של הפריט יידרסו על ידי הפרטים שהזנת</p>
+        <div *ngIf="lookingForItem" class="smallLoader"></div>
 
-      <input [(ngModel)]="approveItemNumber" type="text">
+        <input [(ngModel)]="approveItemNumber" type="text">
     </div>
     <div class="modal-footer">
-        <button (click)="updateItem(); approveItemNumber = ''" [disabled]="approveItemNumber != itemShown.itemNumber" [ngClass]="approveItemNumber == itemShown.itemNumber ? 'btn btn-success' : 'disabled'">Update</button>
+        <button (click)="updateItem(); approveItemNumber = ''" [disabled]="approveItemNumber != itemShown.itemNumber"
+            [ngClass]="approveItemNumber == itemShown.itemNumber ? 'btn btn-success' : 'disabled'">Update</button>
     </div>
 
 </ng-template>
@@ -2048,48 +2070,49 @@
 <!----------------------------------------------------- Product Price Modal ------------------------------------------------------------->
 
 
-<div *ngIf="productPriceModal == true" style="top:50px;" class="container fixed-top border border-success mx-auto my-auto text-center p-2 bg-white shadow-lg rounded">
+<div *ngIf="productPriceModal == true" style="top:50px;"
+    class="container fixed-top border border-success mx-auto my-auto text-center p-2 bg-white shadow-lg rounded">
 
-<div class="row mt-2">
-    <div class="col-1">
-    
-    </div>
-    <div class="col-10">
-        <h3>Product Price</h3>
-    </div>
-    <div class="col-1">
-       <i (click)="productPriceModal = false" class="fa fa-times"></i>
-    </div>
-</div>
+    <div class="row mt-2">
+        <div class="col-1">
 
-<div class="row">
-    <div class="col-12">
-        <table class="table table-bordered table-hover">
-            <thead class="bg-info text-white">
-                <tr>
-                    <th>Component Name</th>
-                    <th>Number</th>
-                    <th>Price</th>
-                    <th>Loading Price</th>
-                </tr>
-            </thead>
-            <tbody >
-                <tr *ngFor="let comp of itemPrice">
-                <td>{{comp.componentName}}</td>
-                <td>{{comp.componentNumber}}</td>
-                <td>{{comp.price}}</td>
-                <td>{{comp.priceLoading}}</td>
-               </tr>
-               <tr>
-                   <td></td>
-                   <td></td>
-                   <td>{{totalItemPrice | number}}</td>
-                   <td>{{totalPriceLoading | number}}</td>
-               </tr>
-            </tbody>
-        </table>
+        </div>
+        <div class="col-10">
+            <h3>Product Price</h3>
+        </div>
+        <div class="col-1">
+            <i (click)="productPriceModal = false" class="fa fa-times"></i>
+        </div>
     </div>
-</div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered table-hover">
+                <thead class="bg-info text-white">
+                    <tr>
+                        <th>Component Name</th>
+                        <th>Number</th>
+                        <th>Price</th>
+                        <th>Loading Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let comp of itemPrice">
+                        <td>{{comp.componentName}}</td>
+                        <td>{{comp.componentNumber}}</td>
+                        <td>{{comp.price}}</td>
+                        <td>{{comp.priceLoading}}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>{{totalItemPrice | number}}</td>
+                        <td>{{totalPriceLoading | number}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </div>
 

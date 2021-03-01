@@ -340,7 +340,10 @@ export class ItemdetaisComponent implements OnInit {
     console.log(event);
 
   }
-
+  
+  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
+    if(event.key == "Enter") this.searchForItem(this.itemShown.itemNumber)
+  }
 
   constructor(private plateService: PlateService, private translate: TranslateService, private excelService: ExcelService, private orderService: OrdersService, private batchService: BatchesService, private modalService: NgbModal, private costumersService: CostumersService, private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
@@ -1269,7 +1272,7 @@ export class ItemdetaisComponent implements OnInit {
 
   checkIfItemExist(itemNumber) {
     this.itemsService.getItemData(itemNumber).subscribe(data => {
-      if(data.length > 0) this.itemExist = true;
+      if (data.length > 0) this.itemExist = true;
       else this.itemExist = false;
     })
 
@@ -1280,39 +1283,32 @@ export class ItemdetaisComponent implements OnInit {
     this.editSpecTable = false;  // specification auth
     if (this.itemShown.itemNumber != "") {
       this.itemsService.addItem(this.itemShown).subscribe(data => {
-      this.toastr.success(''+data.message)
+        this.toastr.success('' + data.message)
       })
     }
   }
 
   updateItem() {
     this.lookingForItem = true;
-    console.log(this.itemShown)
-    this.itemsService.getItemData(this.itemShown.itemNumber).subscribe(data => {
-      console.log(data);
-      if(data.length == 0) {
-        if(confirm('You are about to add a new item! Continue?')) {
-          this.addNewItem()
-          this.lookingForItem = false;
-          this.modalService.dismissAll()
-        }
-      }
-      else {
-        if (this.itemShown.itemNumber != "") {
-          this.itemShown.nameOfupdating = this.user.userName;
-          this.itemsService.updateItem(this.itemShown).subscribe(res => {
-            this.toastr.success("Saved", "Changes Saved for item number: " + this.itemShown.itemNumber);
-            this.editSpecTable = false;
-            this.lookingForItem = false;
-            this.modalService.dismissAll()
-          });
-        } else {
-          this.toastr.error("No item number!");
-          this.lookingForItem = false;
-          this.modalService.dismissAll()
-        }
-      }
-    })
+    if (this.itemShown.itemNumber != "") {
+      this.itemShown.nameOfupdating = this.user.userName;
+      this.itemsService.updateItem(this.itemShown).subscribe(res => {
+        console.log(res.message)
+        if (res.message == 'Success') {
+          this.toastr.success(`Item ${this.itemShown.itemNumber} updated successfully!`)
+        } 
+        else if (res.message == 'Failed') {
+          this.toastr.error('Something gone bad..')
+        } 
+         this.editSpecTable = false;
+        this.lookingForItem = false;
+        this.modalService.dismissAll()
+      });
+    } else {
+      this.toastr.error("No item number!");
+      this.lookingForItem = false;
+      this.modalService.dismissAll()
+    }
   }
 
 
