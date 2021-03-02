@@ -119,7 +119,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       status: ['', Validators.required],
       deliveryCerts: [[], Validators.required],
       outOfCountry: [false, Validators.required],
-      recommendId:'',
+      recommendId:[''],
     });
 
     this.deliveryCertificateForm = fb.group({
@@ -168,8 +168,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.purchaseData) changes.purchaseData.currentValue.recommendId ? changes.purchaseData.currentValue.recommendId = '' : console.log('no recommendId')
-    if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
+    if(changes.isEdit.currentValue){
+      if(changes.purchaseData) changes.purchaseData.currentValue.recommendId ? changes.purchaseData.currentValue.recommendId = '' : console.log('no recommendId')
+      if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
+    }
+  
   }
 
   updateItemInPL() {

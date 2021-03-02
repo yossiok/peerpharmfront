@@ -21,7 +21,7 @@
               <div class="col-2"></div>
               <div class="col-2"></div>
               <div class="col-3">
-                <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning rounded-pill">Recommendations - F4</button>
+                <button (click)="purchaseRecommendationsModal = true;getAllPurchaseRecommends();" class="btn btn-warning rounded-pill">Recommendations - F4</button>
               </div>
             </div>
     
@@ -576,10 +576,12 @@
               <table>
                 <tbody>
                   <tr *ngFor="let stockitem of recommend.stockitems">
-                    <td>{{stockitem.number}}</td>
+                    <td [style.backgroundColor]="stockitem.status == 'ordered'?'lightgreen':''">{{stockitem.number}}</td>
                     <td>{{stockitem.name}}</td>
                     <td>{{stockitem.amount}}</td>
+                    
                     <td *ngIf="stockitem.threatment" [ngClass]="dangerColor(stockitem.threatment)" >{{stockitem.threatment}}</td>
+                    <td><input *ngIf="stockitem.status != 'ordered'" (change)="isSelected($event,stockitem)" type="checkbox"></td>
                   </tr>
                 </tbody>
               </table>
@@ -590,14 +592,6 @@
         </tbody>
       </table>
     </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="col-2"></div>
-    <div class="col-8">
-      <button (click)="moveToNewPurchase(selectedArr,'multi')" class="btn btn-success form-control">Order Multiple</button>
-    </div>
-    <div class="col-2"></div>
   </div>
 
 </div>
