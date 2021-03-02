@@ -147,7 +147,6 @@ export class BatchesComponent implements OnInit {
   }
 
   getAllBatches() {
-    ;
     this.batchService.getAllBatches().subscribe((res) => {
       console.log(res);
       this.batches = res;
