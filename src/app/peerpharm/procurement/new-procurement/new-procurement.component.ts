@@ -101,7 +101,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
-
+    debugger;
     this.newPurchase = fb.group({
       _id:[''],
       supplierName: ["", Validators.required],
@@ -155,6 +155,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
     })
     }
+    this.purchaseData.recommendId = '';
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
     else this.purchaseData = undefined
     this.getAllSuppliers();
