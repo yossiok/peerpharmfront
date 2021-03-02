@@ -162,6 +162,7 @@ export class ProcurementOrdersComponent implements OnInit {
       if (this.purchaseRecommendationsModal == true) {
         this.purchaseRecommendationsModal = false;
       } else {
+        this.getAllPurchaseRecommends();
         this.purchaseRecommendationsModal = true;
       }
     }
@@ -189,6 +190,22 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
+  isSelected(ev, stockitem) {
+    debugger;
+    if (ev.target.checked == true) {
+      var isSelected = this.selectedArr
+      isSelected.push({ ...stockitem });
+      this.selectedArr = isSelected
+    }
+
+    if (ev.target.checked == false) {
+      var isSelected = this.selectedArr
+      var tempArr = isSelected.filter(x => x.number != stockitem.number)
+      this.selectedArr = tempArr
+    }
+
+
+  }
   expandRecommend(recommendNumber){
     if(this.recommendStockItemsCollapse == false){
       this.recommendStockItemsCollapse = true
@@ -204,7 +221,10 @@ export class ProcurementOrdersComponent implements OnInit {
   moveToNewPurchase(recommend) {
     debugger;
   this.purchaseRecommendationsModal = false;
-  this.requestToPurchase = recommend
+  let recommendToPush = {...recommend}
+  recommendToPush.stockitems = this.selectedArr;
+
+  this.requestToPurchase = recommendToPush
   this.orderDetailsModal = true;
 
 

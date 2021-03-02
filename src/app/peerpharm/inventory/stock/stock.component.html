@@ -230,11 +230,11 @@
                   <tbody>
 
                     <ng-container *ngFor="let purchase of component.purchaseOrders">
-                      <ng-container *ngFor="let item of purchase.item">
-                        <tr *ngIf="item.itemNumber == component.componentN">
-                          <td>{{purchase.outDate | date: 'dd/MM/yyyy'}}</td>
-                          <td>{{item.supplierAmount}}</td>
-                          <td>{{item.validDate | date: 'dd/MM/yyyy'}}</td>
+                      <ng-container *ngFor="let item of purchase.stockitems">
+                        <tr *ngIf="item.number == component.componentN">
+                          <td>{{purchase.creationDate | date: 'dd/MM/yyyy'}}</td>
+                          <td>{{item.quantity}}</td>
+                          <td>{{purchase.arrivalDate | date: 'dd/MM/yyyy'}}</td>
                         </tr>
                       </ng-container>
                     </ng-container>
@@ -2511,32 +2511,22 @@
     </div>
 
     <div class="row mt-2 fixNoaStupidStuff">
-      <div class="col-4 fixNoaStupidStuff">
-      <label class="text-info">Supplier</label>
-      </div>
-      <div class="col-4 fixNoaStupidStuff">
+      <div class="col-6 fixNoaStupidStuff">
         <label class="text-info">Type</label>
       </div>
-      <div class="col-4 fixNoaStupidStuff">
+      <div class="col-6 fixNoaStupidStuff">
         <label class="text-info">Date</label>
       </div>
     </div>
     <div class="row mt-1 fixNoaStupidStuff">
-      <div class="col-4 fixNoaStupidStuff">
-        <input (change)="fillSupplierInRec($event)" formControlName="supplierNumber" type="text" list="suppliers" class="form-control rounded-pill">
-        <datalist id="suppliers">
-        <option selected disabled>Choose Supplier</option>    
-        <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierNumber">{{supplier.suplierName}}</option>
-        </datalist>
-      </div>
-      <div class="col-4 fixNoaStupidStuff">
+      <div class="col-6 fixNoaStupidStuff">
       <select formControlName="type" class="form-control rounded-pill">
         <option selected="true" disabled="disabled">Choose Type</option>    
         <option value="component">Component</option>
         <option value="material">Material</option>
       </select>
       </div>
-      <div class="col-4 fixNoaStupidStuff">
+      <div class="col-6 fixNoaStupidStuff">
       <input formControlName="date" class="form-control rounded-pill" type="date">
       </div>
     </div>

@@ -168,10 +168,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.purchaseData && changes.purchaseData.currentValue) {
-      changes.purchaseData.currentValue.recommendId ? changes.purchaseData.currentValue.recommendId = '' : console.log('no recommendId')
+    if(changes.isEdit.currentValue){
+      if(changes.purchaseData) changes.purchaseData.currentValue.recommendId ? changes.purchaseData.currentValue.recommendId = '' : console.log('no recommendId')
+      if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
     }
-    if (this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
+  
   }
 
   updateItemInPL() {

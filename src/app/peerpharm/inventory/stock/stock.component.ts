@@ -388,8 +388,6 @@ export class StockComponent implements OnInit {
         date: new FormControl(this.formatDate(new Date()),Validators.required),
         user: new FormControl(''),
         type: new FormControl('',Validators.required),
-        supplierNumber: new FormControl('',Validators.required),
-        supplierName: new FormControl('',Validators.required),
         status: new FormControl('open'),
         stockitems: new FormControl([]),
 
@@ -545,10 +543,14 @@ export class StockComponent implements OnInit {
   getAllPurchases() {
 
     this.procuretServ.getAllPurchases().subscribe(allPurchases => {
-      ;
+     
       this.components.forEach(comp => {
 
-        let filteredPurchases = allPurchases.filter(x => x.item.filter(x => x.itemNumber == comp.componentN).length > 0)
+        let filteredPurchases = allPurchases.filter(
+          purchase => purchase.status != 'closed' && purchase.status != 'canceled' &&
+          purchase.stockitems.filter(
+            stockitem => stockitem.number == comp.componentN
+          ).length > 0)
         comp.purchaseOrders = filteredPurchases
         if (comp.purchaseOrders.length > 0) {
           
@@ -1374,6 +1376,7 @@ export class StockComponent implements OnInit {
       this.smallLoader = false
       if (this.components.length > 0) {
         this.getAmountsFromShelfs();
+        this.getAllPurchases();
       } else {
         this.toastSrv.error('Item does not exist')
       }
