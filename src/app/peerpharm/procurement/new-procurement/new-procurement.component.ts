@@ -155,7 +155,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
     })
     }
-    this.purchaseData.recommendId = '';
+    
+    this.purchaseData ? this.purchaseData.recommendId = '' : console.log('no rec Id')
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
     else this.purchaseData = undefined
     this.getAllSuppliers();
@@ -167,7 +168,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-   changes.purchaseData.currentValue.recommendId ? changes.purchaseData.currentValue.recommendId = '' : console.log('no recommendId')
+    if(changes.purchaseData) changes.purchaseData.currentValue.recommendId ? changes.purchaseData.currentValue.recommendId = '' : console.log('no recommendId')
     if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
   }
 
@@ -264,7 +265,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   fillSupplierDetails(ev) {
-    ;
+    
     let supplier = ev.target.value;
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
     this.currSupplier = result[0]
@@ -313,6 +314,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
           this.newPurchase.controls['user'].setValue(this.authService.loggedInUser.userName)
+          this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
           this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
             // console.log('data from addNewProcurement: ',data)
             if (data) {
@@ -331,7 +333,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     if (action == 'update') {
       if (confirm('האם לעדכן הזמנה זו ?')) {
-        console.log('AAAAAAAAAAAAA', this.newPurchase.value)
         this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data => {
           if (data) {
             

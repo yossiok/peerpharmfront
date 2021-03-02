@@ -763,6 +763,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   searchCompNumberByComp(compNumber, src) {
+    debugger;
     var itemType = "component";
     switch (src) {
       case 'sticker':
@@ -800,10 +801,14 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionInput':
         if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
-            data
-            this.itemShown.productionType = data[0].componentType
-            this.itemShown.productionImage = data[0].img
-
+            if(data.length > 0){
+              this.itemShown.productionType = data[0].componentType
+              this.itemShown.productionImage = data[0].img
+            } else {
+              this.itemShown.productionType = ''
+              this.itemShown.productionImage = ''
+            }
+            
           })
 
         } else {

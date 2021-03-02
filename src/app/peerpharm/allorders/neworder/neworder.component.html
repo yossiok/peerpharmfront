@@ -15,15 +15,6 @@
                         <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
                             <input type='hidden' formControlName="costumerInternalId">
-                            <!--<mat-form-field class="example-full-width">
-                                <input type="text"  aria-label="Assignee" matInput formControlName="costumer" [matAutocomplete]="auto">
-                                <mat-autocomplete #auto="matAutocomplete">
-                                  <mat-option *ngFor="let option of filterCostumers | async" [value]="option">
-                                    {{option.costumerName}}
-                                  </mat-option>
-                                </mat-autocomplete>
-                              </mat-form-field>-->
-                            <!---->
                         </div>
                         <button style="box-shadow: 2px 2px 2px black;" (click)="openSearch(content);  submited=false;"
                             class='btn btn-info'><strong>List</strong></button>
