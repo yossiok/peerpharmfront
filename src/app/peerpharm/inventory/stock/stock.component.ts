@@ -648,17 +648,17 @@ export class StockComponent implements OnInit {
         resolve(arr);
       } else if (that.stockType == 'material') {
         for (let i = 0; i < that.components.length; i++) {
-          for (let j = 0; j < that.components[i].alternativeSuppliers.length; j++) {
+
             line = {
               'מספר פריט': that.components[i].componentN,
               'שם החו"ג': that.components[i].componentName,
               'כמות ': that.components[i].amount,
-              'מחיר ': that.components[i].alternativeSuppliers[j].price,
-              'מחיר 2': that.components[i].price,
-
+              'מחיר':that.components[i].alternativeSuppliers[0]? that.components[i].alternativeSuppliers[0].price + ' ' + that.components[i].alternativeSuppliers[0].coin : '',
+              'מחיר2':that.components[i].alternativeSuppliers[1] ?that.components[i].alternativeSuppliers[1].price + ' ' + that.components[i].alternativeSuppliers[1].coin : '',
+              'מחיר3':that.components[i].alternativeSuppliers[2] ?that.components[i].alternativeSuppliers[2].price + ' ' + that.components[i].alternativeSuppliers[2].coin : '',
             }
             arr.push(line)
-          }
+          
         }
         resolve(arr);
       }
