@@ -26,7 +26,7 @@
             <label style="margin-bottom: 0" class="form-control"><b>Item Number</b></label>
             <label style="margin-bottom: 0" class="form-control"><b>Name</b></label>
             <label style="margin-bottom: 0" class="form-control"><b>Production Date</b></label>
-            <label style="margin-bottom: 0" class="form-control"><b>Expiration Date</b></label>
+            <label style="margin-bottom: 0" class="form-control"><b>Expires in (years)</b></label>
             <label style="margin-bottom: 0" class="form-control"><b>Barrels</b></label>
             <label style="margin-bottom: 0" class="form-control"><b>KG</b></label>
             <label style="margin-bottom: 0" class="form-control"><b>PH</b></label>
@@ -37,7 +37,12 @@
             <input type="text" (change)="fillItemName($event)" formControlName="item" class="form-control">
             <input type="text" formControlName="itemName" class="form-control">
             <input type="date" formControlName="produced" value="{{ today | date:'yyyy-MM-dd' }}" class="form-control">
-            <input type="date" formControlName="expration" class="form-control">
+            <select formControlName="expration" class="form-control">
+              <option value=2>2</option>
+              <option value=3>3</option>
+              <option value=4 selected='true'>4</option>
+              <option value=5>5</option>
+            </select>
             <input type="number" formControlName="barrels" class="form-control">
             <input type="text" formControlName="weightKg" class="form-control">
             <input type="text" formControlName="ph" class="form-control">
@@ -45,7 +50,7 @@
           </div>
           <div class="col-3"></div>
         </div>
-          
+
         <div class="row mt-4">
           <div class="col-4"></div>
           <div class="col-4">
@@ -54,7 +59,7 @@
           <div class="col-4"></div>
         </div>
       </form>
-      
+
       <div class="row">
         <div class="col-4"></div>
         <div class="col-4">

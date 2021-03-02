@@ -19,4 +19,5 @@ export interface PurchaseData {
     status: string;
     deliveryCerts: DeliveryCertificate[];
     outOfCountry: boolean;
+    recommendId: string;
 }
