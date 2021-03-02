@@ -492,7 +492,12 @@
 </div>
 
 <div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center">
-  <app-new-procurement (closeOrderModal)='orderDetailsModal=$event; isEdit=$event' [requestToPurchase]="requestToPurchase" (newProcurementSaved)="showLoader = true;getAllProcurementOrders();getAllPurchaseRecommends()" [isEdit]="isEdit"  [purchaseData]="purchaseData"></app-new-procurement>
+  <app-new-procurement 
+    (closeOrderModal)='orderDetailsModal=$event; isEdit=$event' 
+    [requestToPurchase]="requestToPurchase" 
+    (newProcurementSaved)="showLoader = true;getAllProcurementOrders();getAllPurchaseRecommends()" 
+    [isEdit]="isEdit"  [purchaseData]="purchaseData">
+  </app-new-procurement>
 </div>
 
 

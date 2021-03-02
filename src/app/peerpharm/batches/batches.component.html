@@ -67,8 +67,8 @@
    
   </div>
   <div *ngIf="tableType=='batch'" class="row">
-    <div class="col-4">
-      <b class="text-danger">Showing {{batches.length}} Batches</b>
+    <div *ngIf="batches" class="col-4">
+      <b  class="text-danger">Showing {{batches.length}} Batches</b>
     </div>
     <div class="col-4">
 

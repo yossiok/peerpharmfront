@@ -52,7 +52,7 @@ export class NewBatchComponent implements OnInit {
     var itemNumber = ev.target.value;
     this.itemSrv.getItemData(itemNumber).subscribe(data => {
       console.log('data: ',data)
-      if (data) {
+      if (data.length > 0) {
         this.newBatchForm.controls['itemName'].setValue( data[0].name + ' ' + data[0].subName + ' ' + data[0].discriptionK) 
       } else {
         this.toastSrv.error('פריט לא קיים במערכת')
@@ -81,6 +81,12 @@ export class NewBatchComponent implements OnInit {
     this.newBatchForm.controls.weightQtyLeft.setValue(this.newBatchForm.controls.weightKg.value)
     this.newBatchForm.controls.batchNumber.setValue(this.newBatchForm.get('batchNumber').value.toLowerCase());
     this.newBatchForm.controls.batchCreated.setValue(new Date().getTime());
+
+    // set expiration date
+    let expirationDate = new Date()
+    let expirationYear = this.newBatchForm.get('expration').value
+    expirationDate.setFullYear(Number(expirationDate.getFullYear()) + Number(expirationYear))
+    this.newBatchForm.controls.expration.setValue(expirationDate)
 
     if (this.newBatchForm.controls.item.value == '' || this.newBatchForm.controls.batchNumber.value.length < 5) {
       this.toastSrv.error('You must fill all the fields')

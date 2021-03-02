@@ -18,7 +18,7 @@ import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
   styleUrls: ['./new-procurement.component.scss']
 })
 export class NewProcurementComponent implements OnInit, OnChanges {
-  
+
   @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
   @Input() purchaseData: any;
   @Input() requestToPurchase: any;
@@ -53,7 +53,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   allMaterials: any[];
   itemExistInOrders: any[];
   userEmail: any;
-  editItem:boolean = false;
+  editItem: boolean = false;
 
   newPurchase: FormGroup;
   deliveryCertificateForm: FormGroup;
@@ -103,7 +103,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
     debugger;
     this.newPurchase = fb.group({
-      _id:[''],
+      _id: [''],
       supplierName: ["", Validators.required],
       supplierNumber: ["", Validators.required],
       supplierEmail: ['', Validators.required],
@@ -119,7 +119,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       status: ['', Validators.required],
       deliveryCerts: [[], Validators.required],
       outOfCountry: [false, Validators.required],
-      recommendId:[''],
+      recommendId: ['']
     });
 
     this.deliveryCertificateForm = fb.group({
@@ -133,29 +133,28 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    debugger;
-    if(this.requestToPurchase){
-    this.newPurchase.patchValue({
-    _id:'',
-    supplierName:this.requestToPurchase.supplierName,
-    supplierNumber:this.requestToPurchase.supplierNumber,
-    creationDate:this.formatDate(new Date()),
-    arrivalDate:'',
-    stockitems:this.requestToPurchase.stockitems,
-    orderNumber: '',
-    userEmail: '',
-    user: this.requestToPurchase.user,
-    billNumber:[],
-    orderType: this.requestToPurchase.type,
-    remarks: this.requestToPurchase.remarks,
-    status: 'open',
-    deliveryCerts:[],
-    outOfCountry: false,
-    recommendId:this.requestToPurchase._id
+    if (this.requestToPurchase) {
+      this.newPurchase.patchValue({
+        _id: '',
+        supplierName: this.requestToPurchase.supplierName,
+        supplierNumber: this.requestToPurchase.supplierNumber,
+        creationDate: this.formatDate(new Date()),
+        arrivalDate: '',
+        stockitems: this.requestToPurchase.stockitems,
+        orderNumber: '',
+        userEmail: '',
+        user: this.requestToPurchase.user,
+        billNumber: [],
+        orderType: this.requestToPurchase.type,
+        remarks: this.requestToPurchase.remarks,
+        status: 'open',
+        deliveryCerts: [],
+        outOfCountry: false,
+        recommendId: this.requestToPurchase._id
 
-    })
+      })
     }
-    
+
     this.purchaseData ? this.purchaseData.recommendId = '' : console.log('no rec Id')
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
     else this.purchaseData = undefined
@@ -187,7 +186,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
     this.newPurchase.controls.status.setValue(ev.target.value);
     this.toastr.success('אנא לחץ על Confirm על מנת לשמור שינויים')
-    
+
 
   }
 
@@ -235,23 +234,21 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
   }
 
-  editStockItem(number){
-    debugger;
-  if(number != ''){
-    this.EditRowId = number
-  } else {
-    this.EditRowId = ''
-  }
+  editStockItem(number) {
+    if (number != '') {
+      this.EditRowId = number
+    } else {
+      this.EditRowId = ''
+    }
   }
 
-  saveStockItem(index){
-    debugger;
-  let stockitem = this.newPurchase.controls.stockitems.value[index];
+  saveStockItem(index) {
+    let stockitem = this.newPurchase.controls.stockitems.value[index];
 
-  stockitem.price = this.editPrice.nativeElement.value;
-  stockitem.quantity = this.editQuantity.nativeElement.value;
-  this.toastr.success('פריט עודכן בהצלחה')
-  this.editStockItem('')
+    stockitem.price = this.editPrice.nativeElement.value;
+    stockitem.quantity = this.editQuantity.nativeElement.value;
+    this.toastr.success('פריט עודכן בהצלחה')
+    this.editStockItem('')
   }
 
 
@@ -268,7 +265,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   fillSupplierDetails(ev) {
-    
+
     let supplier = ev.target.value;
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
     this.currSupplier = result[0]
@@ -297,7 +294,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   addItemToPurchase() {
-    
+
     let objToPush = { ...this.stockitem }
     this.newPurchase.controls.stockitems.value.push(objToPush)
     this.resetStockItem();
@@ -325,7 +322,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.newPurchase.reset();
               this.newProcurementSaved.emit()
               this.closeOrderModal.emit(false)
-            
+
             }
             else this.toastr.error('משהו השתבש...')
           })
@@ -338,7 +335,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (confirm('האם לעדכן הזמנה זו ?')) {
         this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data => {
           if (data) {
-            
+
             this.toastr.success('הזמנה עודכנה בהצלחה !')
             this.closeOrderModal.emit(false)
             this.newProcurementSaved.emit()

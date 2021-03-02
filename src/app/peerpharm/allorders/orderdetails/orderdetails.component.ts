@@ -252,7 +252,6 @@ export class OrderdetailsComponent implements OnInit {
     this.getAllFormsDetails()
     this.getUserInfo();
     this.getAllComponents();
-    this.getAllMaterialsFormules();
     
    setTimeout(() => {
     this.getProdReq();
@@ -418,11 +417,6 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
-  checkIfAvailable(componentNumber, quantity) {
-
-    this.inventoryService.getCmptByitemNumber(componentNumber)
-
-  }
 
   calculateKG(netWeightGr,quantity){
       let result = (netWeightGr/1000)*Number(quantity)
@@ -451,7 +445,7 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
-  
+  // check with Akiva if still necessery , in html it's Production Requirements
   getProdReq() {
     
     var tempArr = []
@@ -532,34 +526,38 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
-  saveItemRemarks(id){
-    
-    this.componentRemarks.nativeElement.value;
-    var obj = {
-      componentRemarks:this.componentRemarks.nativeElement.value,
-      packageRemarks:this.packageRemarks.nativeElement.value,
-      stickerRemarks:this.stickerRemarks.nativeElement.value,
-      cartonRemarks:this.cartonRemarks.nativeElement.value,
-      orderItemId:id
-    }
-    this.orderService.saveOrderItemRemarks(obj).subscribe(data=>{
+// not used in html 
 
-if(data){
-  for (let i = 0; i < this.productionRequirements.length; i++) {
-  if(this.productionRequirements[i]._id == data._id){
-    this.productionRequirements[i].componentRemarks = data.componentRemarks
-    this.productionRequirements[i].packageRemarks = data.packageRemarks
-    this.productionRequirements[i].stickerRemarks = data.stickerRemarks
-    this.productionRequirements[i].cartonRemarks = data.cartonRemarks
-    this.edit('');
-    this.toastSrv.success("עודכן בהצלחה !")
-  }
+//   saveItemRemarks(id){
     
-  }
-}
-    })
-  }
+//     this.componentRemarks.nativeElement.value;
+//     var obj = {
+//       componentRemarks:this.componentRemarks.nativeElement.value,
+//       packageRemarks:this.packageRemarks.nativeElement.value,
+//       stickerRemarks:this.stickerRemarks.nativeElement.value,
+//       cartonRemarks:this.cartonRemarks.nativeElement.value,
+//       orderItemId:id
+//     }
+//     this.orderService.saveOrderItemRemarks(obj).subscribe(data=>{
 
+// if(data){
+//   for (let i = 0; i < this.productionRequirements.length; i++) {
+//   if(this.productionRequirements[i]._id == data._id){
+//     this.productionRequirements[i].componentRemarks = data.componentRemarks
+//     this.productionRequirements[i].packageRemarks = data.packageRemarks
+//     this.productionRequirements[i].stickerRemarks = data.stickerRemarks
+//     this.productionRequirements[i].cartonRemarks = data.cartonRemarks
+//     this.edit('');
+//     this.toastSrv.success("עודכן בהצלחה !")
+//   }
+    
+//   }
+// }
+//     })
+//   }
+
+
+ // check with Akiva if still necessery , in html it's Production Requirements
   getItemDetails(itemNumber){
     this.itemSer.getItemData(itemNumber).subscribe(data=>{
       
@@ -568,24 +566,24 @@ if(data){
     })
   }
 
-  openComponentsStatus(components, itemNumber, itemQuantity, orderNumber) {
-    this.itemSer.getComponentsAmountByCmptNumber(itemNumber, itemQuantity).subscribe(data => {
+  // openComponentsStatus(components, itemNumber, itemQuantity, orderNumber) {
+  //   this.itemSer.getComponentsAmountByCmptNumber(itemNumber, itemQuantity).subscribe(data => {
       
-      data;
+  //     data;
 
-      this.itemDetails = data;
+  //     this.itemDetails = data;
 
-    });
+  //   });
 
 
 
-    this.modalService.open(components, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  //   this.modalService.open(components, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+  //     this.closeResult = `Closed with: ${result}`;
+  //   }, (reason) => {
+  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  //   });
 
-  }
+  // }
 
   isSelected(ev, item) {
     if (ev.target.checked == true) {
@@ -628,13 +626,13 @@ if(data){
     }
   }
 
-  saveProductDoc() {
+  // saveProductDoc() {
 
-    this.orderService.addNewProductDoc(this.documentationBeforeSend).subscribe(data => {
-      console.log(data);
+  //   this.orderService.addNewProductDoc(this.documentationBeforeSend).subscribe(data => {
+  //     console.log(data);
 
-    })
-  }
+  //   })
+  // }
 
   addItemOrder() {
     
@@ -751,47 +749,17 @@ if(data){
 
   // }
 
-  getAllMaterialsFormules() {
-    this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
-      this.allMaterials = data;
-    })
-  }
-
-  showFormule(item,itemNumber, formuleByItem) {
-  
+  // check with Akiva if still needed because Weight Production is the SAME
  
-    this.currItem = item;
-    this.formuleService.getFormuleByNumber(itemNumber).subscribe(data => {
 
-      if (data == null) {
-        this.toastSrv.error("There is no formule yet")
-      } else {
-        this.modalService.open(formuleByItem, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-          this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
-        this.currFormule = [data];
-        console.log(this.currFormule)
-        // this.currPhase = data.phases
-        // var items = []
-        // for (let i = 0; i < data.phases.length; i++) {
-
-        //   items.push(data.phases[i].items)
-
-        // }
-        // this.currItems = items
-
-      }
-
-    })
-  }
 
   checkboxAllOrders(ev) {
     
     this.ordersItems.filter(e => e.isSelected = ev.target.checked)
   }
 
+
+  // check with Akiva if still necessery , in html it's Production Requirements
   createProdRequirements() {
     
 
@@ -817,63 +785,63 @@ if(data){
 
 
  
-  changeReqStatus(ev, id, type) {
+  // changeReqStatus(ev, id, type) {
     
-    var status = ev.target.value
-    switch (type) {
-      case 'component':
-        this.orderService.changeReqStatus(status, id,type).subscribe(data => {
-          if (data) {
-            for (let i = 0; i < this.productionRequirements.length; i++) {
-              if (this.productionRequirements[i]._id == data._id) {
-                this.productionRequirements[i].componentStatus = data.componentStatus
+  //   var status = ev.target.value
+  //   switch (type) {
+  //     case 'component':
+  //       this.orderService.changeReqStatus(status, id,type).subscribe(data => {
+  //         if (data) {
+  //           for (let i = 0; i < this.productionRequirements.length; i++) {
+  //             if (this.productionRequirements[i]._id == data._id) {
+  //               this.productionRequirements[i].componentStatus = data.componentStatus
                
-              }
+  //             }
 
-            }
-          }
-        })
-        break;
-      case 'package':
-        this.orderService.changeReqStatus(status, id,type).subscribe(data => {
-          if (data) {
-            for (let i = 0; i < this.productionRequirements.length; i++) {
-              if (this.productionRequirements[i]._id == data._id) {
-                this.productionRequirements[i].packageStatus = data.packageStatus
+  //           }
+  //         }
+  //       })
+  //       break;
+  //     case 'package':
+  //       this.orderService.changeReqStatus(status, id,type).subscribe(data => {
+  //         if (data) {
+  //           for (let i = 0; i < this.productionRequirements.length; i++) {
+  //             if (this.productionRequirements[i]._id == data._id) {
+  //               this.productionRequirements[i].packageStatus = data.packageStatus
            
-              }
+  //             }
 
-            }
-          }
-        })
-        break;
-      case 'carton':
-        this.orderService.changeReqStatus(status, id,type).subscribe(data => {
-          if (data) {
-            for (let i = 0; i < this.productionRequirements.length; i++) {
-              if (this.productionRequirements[i]._id == data._id) {
-                this.productionRequirements[i].cartonStatus = data.cartonStatus
-              }
+  //           }
+  //         }
+  //       })
+  //       break;
+  //     case 'carton':
+  //       this.orderService.changeReqStatus(status, id,type).subscribe(data => {
+  //         if (data) {
+  //           for (let i = 0; i < this.productionRequirements.length; i++) {
+  //             if (this.productionRequirements[i]._id == data._id) {
+  //               this.productionRequirements[i].cartonStatus = data.cartonStatus
+  //             }
 
-            }
-          }
-        })
-        break;
-      case 'sticker':
-        this.orderService.changeReqStatus(status, id,type).subscribe(data => {
-          if (data) {
-            for (let i = 0; i < this.productionRequirements.length; i++) {
-              if (this.productionRequirements[i]._id == data._id) {
-                this.productionRequirements[i].stickerStatus = data.stickerStatus
-              }
+  //           }
+  //         }
+  //       })
+  //       break;
+  //     case 'sticker':
+  //       this.orderService.changeReqStatus(status, id,type).subscribe(data => {
+  //         if (data) {
+  //           for (let i = 0; i < this.productionRequirements.length; i++) {
+  //             if (this.productionRequirements[i]._id == data._id) {
+  //               this.productionRequirements[i].stickerStatus = data.stickerStatus
+  //             }
 
-            }
-          }
-        })
-        break;
-    }
+  //           }
+  //         }
+  //       })
+  //       break;
+  //   }
 
-    }
+  //   }
 
     loadMaterialsForFormule(){
       this.selectedArr
@@ -924,7 +892,7 @@ if(data){
       return x1 + x2;
     }
   
-
+ // Related To Formule Button
     changeItemQuantity(itemNumber){
       
       var updatedQuantity = prompt('הזן כמות');
@@ -1231,11 +1199,6 @@ if(data){
 
 
 
-  fillTotalUnits() {
-
-    this.ordersItems
-  }
-
   deleteItem(item) {
     console.log(item._id);
     this.orderService.deleteOrderItem(item._id).subscribe(res => {
@@ -1416,7 +1379,7 @@ if(data){
     }
 
   }
-
+ // related to Formule Button
   sendToProduction(){
     
 
@@ -1592,66 +1555,62 @@ if(data){
     }
   }
 
+  // לא בשימוש
+  // async openPackingModal(itemNumber, orderNumber, index) {
+  //   this.packingItemN = itemNumber;
+  //   this.packingOrderN = orderNumber;
+  //   this.palletsData = [];
 
-  async openPackingModal(itemNumber, orderNumber, index) {
-    this.packingItemN = itemNumber;
-    this.packingOrderN = orderNumber;
-    this.palletsData = [];
+  //   await this.orderService.getItemPackingList(itemNumber, this.packingOrderN).subscribe(async itemPackingList => {
+  //     this.itemPackingList = itemPackingList;
 
-    await this.orderService.getItemPackingList(itemNumber, this.packingOrderN).subscribe(async itemPackingList => {
-      this.itemPackingList = itemPackingList;
+  //   });
 
-    });
 
-    //   await this.orderService.getPalletsDataByOrderNumber(orderNumber).subscribe(orderPallets=>{
-    //     this.palletsData = orderPallets
-    //  });
-
-    await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList => {
+  //   await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList => {
       
-      for (let i = 0; i < orderPackingList.length; i++) {
-      orderPackingList[i].totalAmount = orderPackingList[i].pcsCtn*orderPackingList[i].ctnPallet
+  //     for (let i = 0; i < orderPackingList.length; i++) {
+  //     orderPackingList[i].totalAmount = orderPackingList[i].pcsCtn*orderPackingList[i].ctnPallet
         
-      }
-      this.orderPackingList = orderPackingList;
+  //     }
+  //     this.orderPackingList = orderPackingList;
     
-      await this.orderPackingList.forEach(item => {
-        let obj = { palletId: item.palletId, palletNumber: item.palletNumber, palletWeight: item.palletWeight, palletMesures: item.palletMesures }
-        let palletId = item.palletId;
-        if (!this.orderPalletsNumArr.includes(palletId)) {
-          this.orderPalletsNumArr.push(palletId);
-          this.orderPalletsArr.push(obj);
-        }
-      });
+  //     await this.orderPackingList.forEach(item => {
+  //       let obj = { palletId: item.palletId, palletNumber: item.palletNumber, palletWeight: item.palletWeight, palletMesures: item.palletMesures }
+  //       let palletId = item.palletId;
+  //       if (!this.orderPalletsNumArr.includes(palletId)) {
+  //         this.orderPalletsNumArr.push(palletId);
+  //         this.orderPalletsArr.push(obj);
+  //       }
+  //     });
 
-      await this.ordersItems.forEach(async (orderItem, key) => {
-        let packedQnt = 0;
-        let packedItemsOnPallet = 0;
-        await this.orderPackingList.filter(packedItem => {
-          if (orderItem.itemNumber == packedItem.itemNumber) {
+  //     await this.ordersItems.forEach(async (orderItem, key) => {
+  //       let packedQnt = 0;
+  //       let packedItemsOnPallet = 0;
+  //       await this.orderPackingList.filter(packedItem => {
+  //         if (orderItem.itemNumber == packedItem.itemNumber) {
             
-            packedItemsOnPallet = packedItem.pcsCtn * packedItem.ctnPallet;
-            packedQnt = packedQnt + packedItemsOnPallet
-            packedItem.totalPackedQnt = packedQnt;
+  //           packedItemsOnPallet = packedItem.pcsCtn * packedItem.ctnPallet;
+  //           packedQnt = packedQnt + packedItemsOnPallet
+  //           packedItem.totalPackedQnt = packedQnt;
 
-            if (orderItem.quantity == packedItem.totalPackedQnt) {
-              packedItem.lineColor = "rgb(204, 255, 204)";
-            } else {
-              packedItem.lineColor = "rgb(255, 255, 204)";
-            }
-          }
-        });
-      });
-
-
-    });
-    this.openOrderPackingModalHeader = "אריזת הזמנה מספר  " + this.packingOrderN;
-    this.openItemPackingModalHeader = "אריזת פריט מספר  " + this.packingItemN;
-    // this.openOrderPackingModalHeader="אריזת הזמנה מספר  "+ this.packingItemN;
-    this.packingModal = true;
+  //           if (orderItem.quantity == packedItem.totalPackedQnt) {
+  //             packedItem.lineColor = "rgb(204, 255, 204)";
+  //           } else {
+  //             packedItem.lineColor = "rgb(255, 255, 204)";
+  //           }
+  //         }
+  //       });
+  //     });
 
 
-  }
+  //   });
+  //   this.openOrderPackingModalHeader = "אריזת הזמנה מספר  " + this.packingOrderN;
+  //   this.openItemPackingModalHeader = "אריזת פריט מספר  " + this.packingItemN;
+  //   this.packingModal = true;
+
+
+  // }
 
 
   // checkboxAllOrders(ev){
