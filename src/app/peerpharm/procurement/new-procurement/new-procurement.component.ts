@@ -40,6 +40,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   openOrdersModal: boolean = false;
   disabled: boolean = true;
   supplierToUpdate: any;
+  stockItems: any[] = [];
   user: any;
   EditRowId: string = ''
   currSupplier: any;
@@ -106,19 +107,19 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       _id: [''],
       supplierName: ["", Validators.required],
       supplierNumber: ["", Validators.required],
-      supplierEmail: ['', Validators.required],
+      supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: ['', Validators.required],
+      arrivalDate: [''],
       stockitems: [[], Validators.required],
-      orderNumber: ['', Validators.required],
-      userEmail: ['', Validators.required],
-      user: ['', Validators.required],
-      billNumber: [[], Validators.required],
+      orderNumber: [''],
+      userEmail: [''],
+      user: [''],
+      billNumber: [[]],
       orderType: ['', Validators.required],
-      remarks: ['', Validators.required],
-      status: ['', Validators.required],
-      deliveryCerts: [[], Validators.required],
-      outOfCountry: [false, Validators.required],
+      remarks: [''],
+      status: ['open'],
+      deliveryCerts: [[]],
+      outOfCountry: [false],
       recommendId: ['']
     });
 
@@ -182,11 +183,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   setPurchaseStatus(ev) {
-
     this.newPurchase.controls.status.setValue(ev.target.value);
     this.toastr.success('אנא לחץ על Confirm על מנת לשמור שינויים')
-
-
   }
 
   fillPurchaseDetails(recommendation) {
@@ -243,13 +241,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   saveStockItem(index) {
     let stockitem = this.newPurchase.controls.stockitems.value[index];
-
     stockitem.price = this.editPrice.nativeElement.value;
     stockitem.quantity = this.editQuantity.nativeElement.value;
     this.toastr.success('פריט עודכן בהצלחה')
     this.editStockItem('')
   }
-
 
   getAllMaterials() {
     this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
@@ -264,7 +260,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   fillSupplierDetails(ev) {
-
     let supplier = ev.target.value;
     let result = this.allSuppliers.filter(x => supplier == x.suplierName)
     this.currSupplier = result[0]
@@ -272,7 +267,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     if (this.currSupplier.email) {
       this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
     }
-
   }
 
   removeStockitemFromPurchase(stockitem) {
@@ -293,9 +287,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   addItemToPurchase() {
-
     let objToPush = { ...this.stockitem }
-    this.newPurchase.controls.stockitems.value.push(objToPush)
+    this.stockItems.push(objToPush)
+    this.newPurchase.controls.stockitems.setValue(this.stockItems)
     this.resetStockItem();
     this.toastr.success('Item Added Successfully')
   }
@@ -308,14 +302,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   sendNewProc(action) {
-    debugger;
     if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
           this.newPurchase.controls['user'].setValue(this.authService.loggedInUser.userName)
           this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
           this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
-            // console.log('data from addNewProcurement: ',data)
             if (data) {
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.newPurchase.reset();
@@ -334,7 +326,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (confirm('האם לעדכן הזמנה זו ?')) {
         this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data => {
           if (data) {
-
             this.toastr.success('הזמנה עודכנה בהצלחה !')
             this.closeOrderModal.emit(false)
             this.newProcurementSaved.emit()
@@ -357,7 +348,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         })
       }
     }
-
   }
 
   formatDate(date) {
@@ -416,10 +406,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   open(modal) {
     this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
-  }
-
-  setHeight() {
-
   }
 
 }

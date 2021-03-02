@@ -253,7 +253,7 @@
 
 <!----------------------------------------------------------------------------------------------------------------------->
 <!--ADD-->
-<div *ngIf="!purchaseData" style="border-radius: 15px;" class="container bg-white border shadow-lg text-center p-2">
+<div *ngIf="!purchaseData" style="border-radius: 15px;" class="container bg-white border shadow-lg text-center p-2 m-2">
   <div class="row">
     <div class="col-12">
       <form [formGroup]="newPurchase">
@@ -261,7 +261,7 @@
         <div class="row mt-1">
           <div class="col-4"></div>
           <div class="col-4">
-            <div class="bg-primary rounded-pill">
+            <div class="bg-primary rounded">
               <h3 class="text-white p-2">New Purchase Order</h3>
             </div>
           </div>
@@ -278,6 +278,7 @@
         </div>
         <div class="row">
           <div class="col form-group">
+            <span class="red float-left h4">*</span>
             <select formControlName="orderType" type="text" class="form-control" placeholder="Order Type">
               <option selected="true" disabled="disabled">Choose Type</option>
               <option value="component">Component</option>
@@ -285,6 +286,7 @@
             </select>
           </div>
           <div class="col form-group">
+            <span class="red float-left h4">*</span>
             <input formControlName="creationDate" type="date" class="form-control" placeholder="Order Date">
           </div>
         </div>
@@ -304,17 +306,20 @@
 
         <div class="row mt-2">
           <div class="col-sm-12 col-md-4 form-group">
+            <span class="red float-left h4">*</span>
             <input formControlName="supplierName" name="supplierName" (change)="fillSupplierDetails($event)"
-              list="suppliers" type="text" class="form-control" placeholder="Supplier Name">
+              list="suppliers" type="text" class="form-control" placeholder="Supplier Name" required>
             <datalist id="suppliers">
               <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierName">{{supplier.suplierNumber}}
               </option>
             </datalist>
           </div>
           <div class="col-sm-12 col-md-4 form-group">
-            <input formControlName="supplierNumber" type="text" class="form-control" placeholder="Supplier Number">
+            <span class="red float-left h4">*</span>
+            <input formControlName="supplierNumber" type="text" class="form-control" placeholder="Supplier Number" required>
           </div>
           <div class="col-sm-12 col-md-4 form-group">
+            <span class="red float-left h4"> &nbsp;</span>
             <input (change)="updateSupplierEmail($event)" formControlName="supplierEmail" type="text"
               class="form-control" placeholder="Supplier Email">
           </div>
@@ -338,28 +343,33 @@
           </div>
           <div class="row mt-4">
             <div class="col-sm-12 col-md-4 form-group">
+              <label>Item</label>
+              <span class="red float-left h4">*</span>
               <input (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number" [ngModelOptions]="{standalone: true}"
-              type="text" class="form-control" placeholder="Item Number">
+              type="text" class="form-control" placeholder="Item Number" required>
             </div>
 
             <div class="col-sm-12 col-md-4 form-group">
+              <label>Quantity</label>
+              <span class="red float-left h4">*</span>
               <input [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}" type="number"
-              class="form-control" placeholder="Quantity">
+              class="form-control" placeholder="Quantity" required>
             </div>
 
             <div class="col-sm-12 col-md-4 form-group">
+              <label>Price</label>
               <input [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}" type="number"
               class="form-control" placeholder="Price">
             </div>
 
             <div class="col-sm-12 col-md-4 form-group">
               <input [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-              placeholder="Item Name">
+              placeholder="Item Name" required>
             </div>
         
             <div class="col-sm-12 col-md-4 form-group">
               <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
-              class="form-control custom-select">
+              class="form-control custom-select" required>
               <option value="kg">kg</option>
               <option value="liter">liter</option>
               <option value="meter">meter</option>
@@ -448,7 +458,7 @@
           <div class="col-4"></div>
           <div class="col-4">
             <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" 
-            class="btn btn-primary form-control" [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
+            class="btn btn-primary form-control" [disabled]="!newPurchase.valid" [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'" [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>
