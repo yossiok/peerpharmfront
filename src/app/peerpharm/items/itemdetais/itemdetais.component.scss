@@ -54,11 +54,28 @@ input:focus {
     margin:8px;
 }
 
+.disabled {
+    cursor: not-allowed;
+}
+
 .productionInput {
     margin:4px;
     width: 180px;
     
+
+
 }
+
+.smallLoader {
+    margin: auto;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 30px;
+    height: 30px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
 
 .image-upload>input {
  
@@ -95,6 +112,14 @@ input:focus {
 }
 .red { 
     color:rgb(207, 28, 28);
+}
+
+.back-red {
+    background-color: lightcoral;
+}
+
+.under {
+    text-decoration: underline;
 }
 
 .green { 

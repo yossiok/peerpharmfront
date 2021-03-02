@@ -1366,7 +1366,7 @@ export class StockComponent implements OnInit {
 
   filterComponents() {
     // console.log('filter parameters: ',this.filterParams)
-   console.log(this.filterParams.value)
+   console.log('filter parameters: ',this.filterParams.value)
     this.smallLoader = true;
     this.inventoryService.getFilteredComponents(this.filterParams.value).subscribe(filteredComponents => {
       // console.log(filteredComponents)
