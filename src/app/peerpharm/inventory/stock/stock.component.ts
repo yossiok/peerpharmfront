@@ -623,9 +623,9 @@ export class StockComponent implements OnInit {
               'סוג פריט': that.components[i].componentType,
               'כמות': that.components[i].amount,
               'כמות מוקצת': that.components[i].alloAmount,
-              'מחיר':that.components[i].alternativeSuppliers[0]? that.components[i].alternativeSuppliers[0].price : '',
-              'מחיר2':that.components[i].alternativeSuppliers[1] ?that.components[i].alternativeSuppliers[1].price : '',
-              'מחיר3':that.components[i].alternativeSuppliers[2] ?that.components[i].alternativeSuppliers[2].price : '',
+              'מחיר':that.components[i].alternativeSuppliers[0]? that.components[i].alternativeSuppliers[0].price + ' ' + that.components[i].alternativeSuppliers[0].coin : '',
+              'מחיר2':that.components[i].alternativeSuppliers[1] ?that.components[i].alternativeSuppliers[1].price + ' ' + that.components[i].alternativeSuppliers[1].coin : '',
+              'מחיר3':that.components[i].alternativeSuppliers[2] ?that.components[i].alternativeSuppliers[2].price + ' ' + that.components[i].alternativeSuppliers[2].coin : '',
   
             }
             arr.push(line)
