@@ -607,7 +607,7 @@ export class StockComponent implements OnInit {
 
   }
   makeFileForExcelDownload() {
-
+    debugger;
     var that = this;
     var arr: any[] = []
     return new Promise(function (resolve, reject) {
