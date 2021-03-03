@@ -196,7 +196,6 @@
 </div>
 
 <div *ngIf="newOrderModal == true"
-    style="z-index: 1;top:150px !important;height: auto;border:2px 2px 2px blue;right:0px !important"
-    class="border border-info bg-white container fixed-top mx-auto my-auto text-center">
+    class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal">
     <app-neworder (closed)="newOrderModal = false"></app-neworder>
   </div>

@@ -499,7 +499,7 @@
   </div>
 </div>
 
-<div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center">
+<div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center modal-inner">
   <app-new-procurement 
     (closeOrderModal)='orderDetailsModal=$event; isEdit=$event' 
     [requestToPurchase]="requestToPurchase" 
