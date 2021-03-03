@@ -29,20 +29,22 @@
             <!-- <form [formGroup]="filterParams" (ngSubmit)="filterPurchases()"> -->
             <div class="row mt-4">
 
-              <div class="col-3"><input type="text " class="form-control rounded" placeholder="Search By Order Number"
-                (keyup)="searchNumber($event)" /></div>
+              <div class="col-3">
+                <input type="text " class="form-control rounded" placeholder="Search By Order Number"
+                (keyup)="searchNumber($event)" />
+              </div>
                 <div class="col-3">
                   <input type="text" class="form-control rounded" list="suppliers" placeholder="Search By Supplier Name"
                   (keyup)="searchBySupplier($event)" />
-                  <datalist id="suppliers">
+                  <!-- <datalist id="suppliers">
                     <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
                     </option>
-                  </datalist>
+                  </datalist> -->
                 </div>
                 <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
                   (keyup)="searchByItem($event)" /></div>
-                  <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Reference Number"
-                    (keyup)="searchByReference($event)" /></div>
+                  <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Certificate Number"
+                    (keyup)="searchByCertNum($event)" /></div>
                   </div>
                   <!-- <div class="row mt-4">
                     <button></button>

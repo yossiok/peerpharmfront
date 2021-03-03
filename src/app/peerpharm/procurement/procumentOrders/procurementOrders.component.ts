@@ -701,19 +701,7 @@ export class ProcurementOrdersComponent implements OnInit {
     return x1 + x2;
   }
 
-  searchBySupplier(ev) {
-    
 
-    var supplierName = ev.target.value;
-    if (supplierName != "") {
-      this.procurementDataCopy = this.procurementData
-      var tempArr = this.procurementData.filter(purchase => purchase.supplierName.includes(supplierName))
-      this.procurementData = tempArr
-    } else {
-      this.procurementData = this.procurementDataCopy
-    }
-
-  }
 
   itemStatusDone(itemNumber, orderNumber) {
     this.procurementservice.setItemToDone({ itemNumber: itemNumber, orderNumber: orderNumber }).subscribe(data => {
@@ -750,56 +738,9 @@ export class ProcurementOrdersComponent implements OnInit {
 
   // }
 
-  searchByReference(ev){
-    ;
-    let referenceNum = ev.target.value;
-    let tempArr = []
-    if(referenceNum != ''){
-      this.procurementData.forEach(purchase => {
-        purchase.deliveryCerts.forEach(cert => {
-          if(cert.certificateNumber == referenceNum){
-            tempArr.push(purchase)
-          }
-        });
-      });
 
-      this.procurementData = tempArr
-    } else {
-      this.procurementData = this.procurementDataNoFilter
-    }
 
-  }
 
-  searchByItem(ev) {
-    ;
-    var itemNumber = ev.target.value;
-    var tempArr = []
-    this.procurementData = this.procurementDataNoFilter
-    if (itemNumber != "") {
-      for (let i = 0; i < this.procurementData.length; i++) {
-        for (let j = 0; j < this.procurementData[i].stockitems.length; j++) {
-          if (this.procurementData[i].stockitems[j].number == itemNumber) {
-            tempArr.push(this.procurementData[i])
-          }
-
-        }
-
-      }
-      this.procurementData = tempArr
-    } else {
-      if (this.filterStatus == 'ongoing') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
-      } else if (this.filterStatus == undefined) {
-        this.procurementData = this.procurementDataCopy
-      } else if (this.filterStatus == 'allOrders') {
-        this.procurementData = this.procurementDataNoFilter;
-      } else {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed')
-      }
-
-    }
-
-  }
 
 
   getAllPurchaseRecommends() {
@@ -851,39 +792,93 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   searchNumber(ev) {
+    this.procurementData = this.procurementDataCopy.filter(purchase => {
+      return purchase.orderNumber.toString().includes(ev.target.value)
+    })
+  }
 
-    if (ev.target.value == "") {
-      this.procurementData = this.procurementDataCopy
-    }
+  searchBySupplier(ev) {
 
-    let word = ev.target.value;
-    let wordsArr = word.split(" ");
-    wordsArr = wordsArr.filter(x => x != "");
-    if (wordsArr.length > 0) {
+    this.procurementData = this.procurementDataCopy.filter(purchase => {
+      return purchase.supplierName.includes(ev.target.value)
+    })
+    // var supplierName = ev.target.value;
+    // if (supplierName != "") {
+    //   this.procurementDataCopy = this.procurementData
+    //   var tempArr = this.procurementData.filter(purchase => purchase.supplierName.includes(supplierName))
+    //   this.procurementData = tempArr
+    // } else {
+    //   this.procurementData = this.procurementDataCopy
+    // }
+  }
 
-      let tempArr = [];
-      this.procurementData.filter(x => {
-
-        var check = false;
-        var matchAllArr = 0;
-        wordsArr.forEach(w => {
-
-          if (x.orderNumber == w) {
-            matchAllArr++
-          }
-          (matchAllArr == wordsArr.length) ? check = true : check = false;
-        });
-
-        if (!tempArr.includes(x) && check) tempArr.push(x);
-      });
-      this.procurementData = tempArr;
-      console.log('tempArr: ', tempArr)
+  searchByItem(ev) {
+    this.procurementData = this.procurementDataCopy.filter(purchase => {
+      if( purchase.stockitems.length == 0 && ev.target.value == "") return true
+      for (let item of purchase.stockitems) {
+        if (item.number && item.number.includes(ev.target.value)) {
+          return true
+        }
+      }
+    })
 
 
-    } else {
+    // var itemNumber = ev.target.value;
+    // var tempArr = []
+    // this.procurementData = this.procurementDataNoFilter
+    // if (itemNumber != "") {
+    //   for (let i = 0; i < this.procurementData.length; i++) {
+    //     for (let j = 0; j < this.procurementData[i].stockitems.length; j++) {
+    //       if (this.procurementData[i].stockitems[j].number == itemNumber) {
+    //         tempArr.push(this.procurementData[i])
+    //       }
 
-      this.procurementData = this.procurementDataNoFilter
-    }
+    //     }
+
+    //   }
+    //   this.procurementData = tempArr
+    // } else {
+    //   if (this.filterStatus == 'ongoing') {
+    //     this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
+    //   } else if (this.filterStatus == undefined) {
+    //     this.procurementData = this.procurementDataCopy
+    //   } else if (this.filterStatus == 'allOrders') {
+    //     this.procurementData = this.procurementDataNoFilter;
+    //   } else {
+    //     this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed')
+    //   }
+
+    // }
+
+  }
+
+  searchByCertNum(ev){
+
+    this.procurementData = this.procurementDataCopy.filter(purchase => {
+      if( purchase.deliveryCerts.length == 0 && ev.target.value == "") return true
+      for (let deliveryCert of purchase.deliveryCerts) {
+        if (deliveryCert.certificateNumber && deliveryCert.certificateNumber.includes(ev.target.value)) {
+          return true
+        }
+      }
+    })
+
+
+    // let referenceNum = ev.target.value;
+    // let tempArr = []
+    // if(referenceNum != ''){
+    //   this.procurementData.forEach(purchase => {
+    //     purchase.deliveryCerts.forEach(cert => {
+    //       if(cert.certificateNumber == referenceNum){
+    //         tempArr.push(purchase)
+    //       }
+    //     });
+    //   });
+
+    //   this.procurementData = tempArr
+    // } else {
+    //   this.procurementData = this.procurementDataNoFilter
+    // }
 
   }
 
