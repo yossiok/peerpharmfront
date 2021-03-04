@@ -73,7 +73,7 @@
             <div>
                 <input [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
                     (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" [(ngModel)]="itemShown.itemNumber"
-                    #itemNum id="id_item">
+                    #itemNum id="id_item" autocomplete="off">
                 <button type="submit">
                     <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search"
                         src='/assets/images/search.png'
