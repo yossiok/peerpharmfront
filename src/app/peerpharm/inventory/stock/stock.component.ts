@@ -457,9 +457,8 @@ export class StockComponent implements OnInit {
 
 
   addStockItemToRecommend(){
-    debugger;
     if(this.recommendStockItem.quantity =='' || this.recommendStockItem.name =='' || this.recommendStockItem.number =='' || this.recommendStockItem.measurement == ''){
-      this.toastSrv.error('אנא תמלא את כל הפרטים של הפריט')
+      this.toastSrv.error('אנא מלא את כל הפרטים של הפריט')
     } else {
       let objToPush = {...this.recommendStockItem}
       this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
