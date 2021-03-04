@@ -38,6 +38,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   @ViewChild('editPrice') editPrice: ElementRef;
 
   openOrdersModal: boolean = false;
+  shippingInvoiceDetails: boolean = false;
   disabled: boolean = true;
   supplierToUpdate: any;
   stockItems: any[] = [];
@@ -92,6 +93,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   //invoice data
   purchaseInvoiceNumber: number;
   invoiceRemarks: string;
+  coinRate:number = 1
+  invoiceCoin:string;
+  invoicePrice:number;
+  taxes:number = 0
+  taxesTwo:number = 0
+  fixedPrice:number;
 
   //toggle purchase details
   showPurchaseDetails: boolean = false;
@@ -120,7 +127,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       status: ['open'],
       deliveryCerts: [[]],
       outOfCountry: [false],
-      recommendId: ['']
+      recommendId: [''],
+      sumShippingCost:[0]
     });
 
     this.deliveryCertificateForm = fb.group({
@@ -184,8 +192,16 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   setPurchaseStatus(ev) {
-    this.newPurchase.controls.status.setValue(ev.target.value);
-    this.toastr.success('אנא לחץ על Confirm על מנת לשמור שינויים')
+    if(confirm('האם לשנות סטטוס הזמנה ?')) {
+      this.newPurchase.controls.status.setValue(ev.target.value);
+      this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data=>{
+      if(data){
+        this.toastr.success('סטטוס עודכן בהצלחה !')
+      }
+      })
+    }
+   
+ 
   }
 
   fillPurchaseDetails(recommendation) {
@@ -393,14 +409,34 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   saveInvoiceToPurchase() {
+    this.fixedPrice = (this.invoicePrice-(this.taxes+this.taxesTwo))*this.coinRate
     this.newPurchase.controls.billNumber.value.push({
       invoiceNumber: this.purchaseInvoiceNumber,
-      remarks: this.invoiceRemarks
+      remarks: this.invoiceRemarks,
+      invoicePrice:this.invoicePrice,
+      invoiceCoin:this.invoiceCoin,
+      coinRate:this.coinRate,
+      taxes:this.taxes,
+      taxesTwo:this.taxesTwo,
+      fixedPrice:this.fixedPrice
+
     });
+
+    this.newPurchase.controls.sumShippingCost.setValue(this.newPurchase.controls.sumShippingCost.value + this.fixedPrice)
     this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
       .subscribe(res => {
         if (res) {
+          this.newPurchase.patchValue({
+            stockitems:res.stockitems
+          })
           this.toastr.success(`חשבונית מספר ${this.purchaseInvoiceNumber} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
+          this.purchaseInvoiceNumber = 0
+          this.invoiceRemarks = ''
+          this.invoicePrice = 0
+          this.invoiceCoin = ''
+          this.coinRate = 0
+          this.taxes = 0
+          this.taxesTwo = 0
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
         this.purchaseInvoiceNumber = null

@@ -191,6 +191,11 @@ export class Procurementservice {
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
   
+  setPurchaseStatus(obj):Observable<any>{
+    let url = this.baseUrl + 'procurementOrderController/setPurchaseStatus';
+    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
+  }
+  
   changeColor(itemNumber,orderNumber,orderAmount,supplierPrice,itemRemarks,orderCoin,index):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/changeColor';
     return this.http.post(url, JSON.stringify({itemNumber,orderNumber,orderAmount,supplierPrice,itemRemarks,orderCoin,index}), this.options).pipe(map(res=>res.json()));
