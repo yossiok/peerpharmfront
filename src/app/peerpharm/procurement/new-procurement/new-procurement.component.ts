@@ -288,7 +288,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   addItemToPurchase() {
+    debugger;
     let objToPush = { ...this.stockitem }
+    
+    this.stockItems = this.newPurchase.controls.stockitems.value;
     this.stockItems.push(objToPush)
     this.newPurchase.controls.stockitems.setValue(this.stockItems)
     this.resetStockItem();

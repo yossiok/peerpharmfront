@@ -520,16 +520,26 @@
 
 
 
-<ng-template #receiveInvoice let-modal>
-  <div class="modal-header bg-primary">
-    <h4 class="modal-title text-white" id="modal-basic-title">קבלת חשבונית</h4>
+<ng-template  #receiveInvoice let-modal>
+  <div  class="modal-header bg-primary">
+    <h4 style="margin-left:auto" class="modal-title text-white" id="modal-basic-title">קבלת חשבונית</h4>
     <button type="button" class="close text-white" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div dir="rtl" class="modal-body">
-    <h5>קבלת חשבונית</h5>
-    <div class="row mt-2"><span class="red">*</span> שדה חובה </div>
+    <div class="row">
+      <div class="col-12">
+        <h4>קבלת חשבונית</h4>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-2">
+        <span class="red">*</span> שדה חובה 
+      </div>
+      <div class="col-10"></div>
+    
+    </div>
     <div class="row mt-2">
       <div class="col-md-4 form-group">
         <label for="invoiceNumber">מספר חשבונית<span class="red">*</span></label>
@@ -543,6 +553,18 @@
       <button [disabled]="!invoiceNumber.value" (click)="saveInvoiceToPurchase()" class="btn btn-primary form-control">
         הוסף חשבונית להזמנה מס' {{purchaseData.orderNumber}}
       </button>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-4 form-group">
+        <label for="invoiceNumber">מספר חשבונית<span class="red">*</span></label>
+        <input type="number" class="form-control" #invoiceNumber="ngModel" name="invoiceNumber" id="invoiceNumber"
+          [(ngModel)]="purchaseInvoiceNumber" placeholder="מספר חשבונית" required>
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="remarks">הערות</label>
+        <input type="text" class="form-control" [(ngModel)]="invoiceRemarks" placeholder="הערות">
+      </div>
     </div>
   </div>
 </ng-template>

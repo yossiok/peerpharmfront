@@ -15,6 +15,13 @@ select:focus,input:focus,textarea:focus {
 input:hover {
     cursor: auto;
 }
+::ng-deep .modal-content  {
+ border-radius: 10px;
+}
+::ng-deep .modal-header  {
+ border-top-right-radius: 10px;
+ border-top-left-radius: 10px;
+}
 
 .red {
   color: lightcoral;
