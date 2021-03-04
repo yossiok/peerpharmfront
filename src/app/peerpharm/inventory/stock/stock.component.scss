@@ -248,6 +248,11 @@ label {
   cursor: pointer;
 }
 
+.modal-inner {
+  max-height: 800px;
+  overflow-y: auto;
+}
+
 #myModal3,
 #myModal2,
 .modal-content {

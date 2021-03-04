@@ -8,7 +8,7 @@
         <div class="container-fluid bg-white text-center">
             <div class="row">
               <div class="col-4"></div>
-              <div class="col-4 border border-primary rounded-pill">
+              <div class="col-4 rounded">
                 <h3 class="p-2 text-primary">Purchase Orders</h3>
               </div>
               <div class="col-4"></div>
@@ -26,22 +26,30 @@
             </div>
     
     
+            <!-- <form [formGroup]="filterParams" (ngSubmit)="filterPurchases()"> -->
             <div class="row mt-4">
-              <div class="col-3"><input type="text " class="form-control rounded-pill" placeholder="Search By Order Number"
-                  (change)="searchNumber($event)" /></div>
+
               <div class="col-3">
-                <input type="text" class="form-control rounded-pill" list="suppliers" placeholder="Search By Supplier Name"
-                  (change)="searchBySupplier($event)" />
-                <datalist id="suppliers">
-                  <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
-                  </option>
-                </datalist>
+                <input type="text " class="form-control rounded" placeholder="Search By Order Number"
+                (keyup)="searchNumber($event)" />
               </div>
-              <div class="col-3"><input type="text" class="form-control rounded-pill" placeholder="Search By Item Number"
-                  (change)="searchByItem($event)" /></div>
-              <div class="col-3"><input type="text" class="form-control rounded-pill" placeholder="Search By Reference Number"
-                  (change)="searchByReference($event)" /></div>
-            </div>
+                <div class="col-3">
+                  <input type="text" class="form-control rounded" list="suppliers" placeholder="Search By Supplier Name"
+                  (keyup)="searchBySupplier($event)" />
+                  <!-- <datalist id="suppliers">
+                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
+                    </option>
+                  </datalist> -->
+                </div>
+                <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
+                  (keyup)="searchByItem($event)" /></div>
+                  <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Certificate Number"
+                    (keyup)="searchByCertNum($event)" /></div>
+                  </div>
+                  <!-- <div class="row mt-4">
+                    <button></button>
+                  </div> -->
+                <!-- </form> -->
     
             <div class="row mt-4">
               <div class="col-3"></div>
@@ -491,7 +499,7 @@
   </div>
 </div>
 
-<div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center">
+<div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center modal-inner">
   <app-new-procurement 
     (closeOrderModal)='orderDetailsModal=$event; isEdit=$event' 
     [requestToPurchase]="requestToPurchase" 
