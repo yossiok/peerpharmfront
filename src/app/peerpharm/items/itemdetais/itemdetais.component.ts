@@ -1050,9 +1050,10 @@ export class ItemdetaisComponent implements OnInit {
         this.editOrAdd = 'Edit'
         this.itemsService.getItemData(number).subscribe(res => {
           console.log(res);
-
+          this.itemExist = true;
           this.item = res[0];
           this.itemShown = res[0];
+
           this.itemShown.updateDate = moment(this.itemShown.updateDate).format("YYYY-MM-DD");
           if (this.itemShown.licsensDate != null) {
             this.itemShown.licsensDate = moment(this.itemShown.licsensDate).format("YYYY-MM-DD");
