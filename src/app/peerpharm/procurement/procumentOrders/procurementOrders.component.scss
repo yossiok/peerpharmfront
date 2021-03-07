@@ -30,8 +30,9 @@ input:focus::-webkit-input-placeholder {
 }
 
 .modal-inner {
-  max-height: 900px;
+  max-height: 700px;
   overflow-y: auto;
+  // background: rgb(211, 167, 167);
 }
 
 ::-webkit-scrollbar {

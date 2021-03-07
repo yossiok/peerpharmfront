@@ -143,6 +143,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     if (this.requestToPurchase) {
+      debugger
       this.newPurchase.patchValue({
         _id: '',
         supplierName: this.requestToPurchase.supplierName,
@@ -164,7 +165,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       })
     }
 
-    this.purchaseData ? this.purchaseData.recommendId = '' : console.log('no rec Id')
+    if (this.purchaseData) {
+      this.purchaseData.recommendId = ''
+    }
+    else console.log('') 
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
     else this.purchaseData = undefined
     this.getAllSuppliers();
@@ -177,7 +181,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.isEdit.currentValue){
-      if(changes.purchaseData) changes.purchaseData.currentValue.recommendId ? changes.purchaseData.currentValue.recommendId = '' : console.log('no recommendId')
+      if(changes.purchaseData) if(!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = '' 
       if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
     }
   
