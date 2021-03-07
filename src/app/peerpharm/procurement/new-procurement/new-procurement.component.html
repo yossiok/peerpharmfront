@@ -122,27 +122,28 @@
           </div>
         </div>
         <div *ngIf="showItemDetails" class="row mt-3">
+          <form [formGroup]="itemForm" (ngSubmit)="addItemToPurchase()"></form>
           <div class="col-sm-12 col-md-4 form-group">
             <label for="">Item</label>
-            <input [disabled]="disabled" (blur)="findStockItemByNumber()" [(ngModel)]="stockitem.number"
-              [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Item Number">
+            <input [disabled]="disabled" (blur)="findStockItemByNumber()" formControlName="number"
+                  type="text" class="form-control" placeholder="Item Number">
           </div>
           <div class="col-sm-12 col-md-4 form-group">
             <label for="">Quantity</label>
-            <input [disabled]="disabled" [(ngModel)]="stockitem.quantity" [ngModelOptions]="{standalone: true}"
+            <input [disabled]="disabled" formControlName="quantity" 
               type="number" class="form-control" placeholder="Quantity">
           </div>
           <div class="col-sm-12 col-md-4 form-group">
             <label for="">Price</label>
-            <input [disabled]="disabled" [(ngModel)]="stockitem.price" [ngModelOptions]="{standalone: true}"
+            <input [disabled]="disabled" formControlName="price"
               type="number" class="form-control" placeholder="Price">
           </div>
           <div class="col-sm-12 col-md-4 form-group">
-            <input [disabled]="disabled" [(ngModel)]="stockitem.name" [ngModelOptions]="{standalone: true}" type="text"
+            <input [disabled]="disabled" formControlName="name" type="text"
               class="form-control" placeholder="Item Name">
           </div>
           <div class="col-sm-12 col-md-4 form-group">
-            <select [disabled]="disabled" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
+            <select [disabled]="disabled" formControlName="measurement"
               class="form-control custom-select">
               <option value="kg">kg</option>
               <option value="liter">liter</option>
@@ -155,7 +156,7 @@
             </select>
           </div>
           <div class="col-sm-12 col-md-4 form-group">
-            <input [disabled]="disabled" [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" type="text"
+            <input [disabled]="disabled" formControlName="coin" type="text"
               class="form-control" placeholder="Coin">
           </div>
           
@@ -164,7 +165,7 @@
         <div *ngIf="showItemDetails" class="row mt-1">
           <div class="col-5"></div>
           <div class="col-2">
-            <button type="button" [disabled]="disabled" (click)="addItemToPurchase()" class="btn btn-primary form-control">
+            <button type="submit" [disabled]="disabled || !itemForm.valid" class="btn btn-primary form-control">
               <i class="fa fa-plus"></i>
             </button>
           </div>

@@ -59,19 +59,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   newPurchase: FormGroup;
   deliveryCertificateForm: FormGroup;
-  stockitem = {
-    number: '',
-    name: '',
-    coin: '',
-    measurement: '',
-    price: 0,
-    quantity: '',
-    color: '',
-    itemRemarks: '',
-    itemPrice: '',
-    supplierItemNum: '',
-    supplierAmount: 0
-  }
+  itemForm: FormGroup;
+  
   newProcurement = {
     supplierNumber: '',
     supplierName: '',
@@ -138,6 +127,20 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       amount: [null, Validators.required],
       remarks: [''],
       userName: ['']
+    })
+
+    this.itemForm = fb.group({
+      number: ['', Validators.required],
+      name: ['', Validators.required],
+      coin: [''],
+      measurement: ['', Validators.required],
+      price: [0],
+      quantity: ['', Validators.required],
+      color: [''],
+      itemRemarks: [''],
+      itemPrice: [''],
+      supplierItemNum: [''],
+      supplierAmount: [0]
     })
   }
 
@@ -209,40 +212,40 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   fillPurchaseDetails(recommendation) {
-    this.stockitem.number = recommendation.componentNumber;
+    this.itemForm.value.controls.number = recommendation.componentNumber;
     this.newPurchase.controls.orderType.setValue(recommendation.type);
-    this.stockitem.quantity = recommendation.amount
+    this.itemForm.value.controls.quantity = recommendation.amount
     this.newProcurement.recommendId = recommendation._id
     this.findStockItemByNumber();
   }
 
   findStockItemByNumber() {
-    if (this.stockitem.number != '') {
+    if (this.itemForm.get('number').value != '') {
       if (this.newPurchase.controls.orderType.value == 'material') {
-        this.inventoryService.getMaterialStockItemByNum(this.stockitem.number).subscribe(data => {
+        this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
           ;
           if (data[0]) {
-            this.stockitem.name = data[0].componentName;
-            this.stockitem.coin = data[0].coin
-            this.stockitem.measurement = data[0].unitOfMeasure
-            this.stockitem.supplierItemNum = data[0].componentNs
+            this.itemForm.value.controls.name = data[0].componentName;
+            this.itemForm.value.controls.coin = data[0].coin
+            this.itemForm.value.controls.measurement = data[0].unitOfMeasure
+            this.itemForm.value.controls.supplierItemNum = data[0].componentNs
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            this.stockitem.price = parseFloat(supplier.price)
+            this.itemForm.value.controls.price = parseFloat(supplier.price)
           } else {
             this.toastr.error('פריט לא קיים במערכת')
           }
 
         })
       } else if (this.newPurchase.controls.orderType.value == 'component') {
-        this.inventoryService.getCmptByitemNumber(this.stockitem.number).subscribe(data => {
+        this.inventoryService.getCmptByitemNumber(this.itemForm.value.controls.number).subscribe(data => {
           ;
           if (data[0]) {
-            this.stockitem.name = data[0].componentName;
-            this.stockitem.measurement = data[0].unitOfMeasure
-            this.stockitem.supplierItemNum = data[0].componentNs
+            this.itemForm.value.controls.name = data[0].componentName;
+            this.itemForm.value.controls.measurement = data[0].unitOfMeasure
+            this.itemForm.value.controls.supplierItemNum = data[0].componentNs
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            this.stockitem.price = parseFloat(supplier.price)
-            this.stockitem.coin = supplier.coin
+            this.itemForm.value.controls.price = parseFloat(supplier.price)
+            this.itemForm.value.controls.coin = supplier.coin
 
           } else {
             this.toastr.error('פריט לא קיים במערכת')
@@ -308,11 +311,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   addItemToPurchase() {
-    debugger;
-    let objToPush = { ...this.stockitem }
-    
-    this.stockItems = this.newPurchase.controls.stockitems.value;
-    this.stockItems.push(objToPush)
+    this.stockItems.push(this.itemForm.value)
     this.newPurchase.controls.stockitems.setValue(this.stockItems)
     this.resetStockItem();
     this.toastr.success('Item Added Successfully')
