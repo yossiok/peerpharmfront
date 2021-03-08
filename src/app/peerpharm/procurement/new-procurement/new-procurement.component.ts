@@ -59,36 +59,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   newPurchase: FormGroup;
   deliveryCertificateForm: FormGroup;
-  stockitem = {
-    number: '',
-    name: '',
-    coin: '',
-    measurement: '',
-    price: 0,
-    quantity: '',
-    color: '',
-    itemRemarks: '',
-    itemPrice: '',
-    supplierItemNum: '',
-    supplierAmount: 0
-  }
-  newProcurement = {
-    supplierNumber: '',
-    supplierName: '',
-    supplierEmail: '',
-    outDate: this.formatDate(new Date()),
-    validDate: '',
-    item: [],
-    outOfCountry: false,
-    orderType: '',
-    remarks: '',
-    comaxNumber: '',
-    recommendRemarks: '',
-    userEmail: '',
-    recommendId: '',
-    user: '',
-
-  }
+  itemForm: FormGroup;
 
   //invoice data
   purchaseInvoiceNumber: number;
@@ -116,7 +87,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierNumber: ["", Validators.required],
       supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [''],
+      arrivalDate: [{value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit}, Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: [''],
       userEmail: [''],
@@ -138,6 +109,20 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       amount: [null, Validators.required],
       remarks: [''],
       userName: ['']
+    })
+
+    this.itemForm = fb.group({
+      number: ['', Validators.required],
+      name: ['', Validators.required],
+      coin: [''],
+      measurement: ['kg', Validators.required],
+      price: [0],
+      quantity: ['', Validators.required],
+      color: [''],
+      itemRemarks: [''],
+      itemPrice: [''],
+      supplierItemNum: [''],
+      supplierAmount: [0]
     })
   }
 
@@ -166,7 +151,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
 
     if (this.purchaseData) {
-      this.purchaseData.recommendId = ''
+      this.purchaseData.recommendId = '';
+      this.stockItems = this.purchaseData.stockitems
     }
     else console.log('') 
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
@@ -208,48 +194,60 @@ export class NewProcurementComponent implements OnInit, OnChanges {
  
   }
 
-  fillPurchaseDetails(recommendation) {
-    this.stockitem.number = recommendation.componentNumber;
-    this.newPurchase.controls.orderType.setValue(recommendation.type);
-    this.stockitem.quantity = recommendation.amount
-    this.newProcurement.recommendId = recommendation._id
-    this.findStockItemByNumber();
-  }
+  // fillPurchaseDetails(recommendation) {
+  //   this.itemForm.value.controls.number = recommendation.componentNumber;
+  //   this.newPurchase.controls.orderType.setValue(recommendation.type);
+  //   this.itemForm.value.controls.quantity = recommendation.amount
+  //   this.newProcurement.recommendId = recommendation._id
+  //   this.findStockItemByNumber();
+  // }
 
   findStockItemByNumber() {
-    if (this.stockitem.number != '') {
+    if (this.itemForm.get('number').value != '') {
       if (this.newPurchase.controls.orderType.value == 'material') {
-        this.inventoryService.getMaterialStockItemByNum(this.stockitem.number).subscribe(data => {
-          ;
+        this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
-            this.stockitem.name = data[0].componentName;
-            this.stockitem.coin = data[0].coin
-            this.stockitem.measurement = data[0].unitOfMeasure
-            this.stockitem.supplierItemNum = data[0].componentNs
+            this.itemForm.controls.name.setValue(data[0].componentName);
+            this.itemForm.controls.coin.setValue(data[0].coin)
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
+            this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            this.stockitem.price = parseFloat(supplier.price)
+            if(!supplier) console.log('Supplier undefined') 
+            else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
           } else {
             this.toastr.error('פריט לא קיים במערכת')
           }
 
         })
       } else if (this.newPurchase.controls.orderType.value == 'component') {
-        this.inventoryService.getCmptByitemNumber(this.stockitem.number).subscribe(data => {
-          ;
+        this.inventoryService.getCmptByitemNumber(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
-            this.stockitem.name = data[0].componentName;
-            this.stockitem.measurement = data[0].unitOfMeasure
-            this.stockitem.supplierItemNum = data[0].componentNs
+            this.itemForm.controls.name.setValue(data[0].componentName) 
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure) 
+            this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs) 
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            this.stockitem.price = parseFloat(supplier.price)
-            this.stockitem.coin = supplier.coin
+            if(!supplier) console.log('Supplier undefined')
+            else {
+              this.itemForm.controls.price.setValue(parseFloat(supplier.price)) 
+              this.itemForm.controls.coin = supplier.coin
+            } 
 
           } else {
             this.toastr.error('פריט לא קיים במערכת')
           }
         })
       }
+      else if (this.newPurchase.controls.orderType.value == '' || this.newPurchase.controls.orderType.value == null || this.newPurchase.controls.orderType.value == undefined) {
+        this.toastr.warning('Must Choose Component Type')
+      }
     }
+  }
+
+  addItemToPurchase() {
+    this.stockItems.push(this.itemForm.value)
+    this.newPurchase.controls.stockitems.setValue(this.stockItems)
+    this.resetStockItem();
+    this.toastr.success('Item Added Successfully')
   }
 
   editStockItem(number) {
@@ -290,14 +288,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
   }
 
-  removeStockitemFromPurchase(stockitem) {
+  removeStockitemFromPurchase(i) {
     if (confirm('האם להסיר פריט זה ?')) {
-      for (let i = 0; i < this.newPurchase.controls.stockitems.value.length; i++) {
-        if (this.newPurchase.controls.stockitems.value[i].number == stockitem.number) {
           this.newPurchase.controls.stockitems.value.splice(i, 1)
           this.toastr.success('פריט הוסר בהצלחה !')
-        }
-      }
     }
   }
 
@@ -307,21 +301,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.editItem = false;
   }
 
-  addItemToPurchase() {
-    debugger;
-    let objToPush = { ...this.stockitem }
-    
-    this.stockItems = this.newPurchase.controls.stockitems.value;
-    this.stockItems.push(objToPush)
-    this.newPurchase.controls.stockitems.setValue(this.stockItems)
-    this.resetStockItem();
-    this.toastr.success('Item Added Successfully')
-  }
+ 
 
   fillMaterialNumber(ev) {
     var materialName = ev.target.value;
     var material = this.allMaterials.find(material => material.componentName == materialName)
-    this.stockitem.number = material.componentN;
+    this.itemForm.controls.number.setValue(material.componentN);
     this.findStockItemByNumber();
   }
 
@@ -387,15 +372,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   resetStockItem() {
-    this.stockitem.number = '',
-      this.stockitem.name = '',
-      this.stockitem.coin = '',
-      this.stockitem.measurement = '',
-      this.stockitem.price = 0,
-      this.stockitem.quantity = '',
-      this.stockitem.color = '',
-      this.stockitem.itemRemarks = '',
-      this.stockitem.itemPrice = ''
+    this.itemForm.reset()
   }
 
   saveCertificate() {
