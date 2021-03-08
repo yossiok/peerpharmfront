@@ -246,7 +246,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     else this.toastr.warning('יש לרשום מספר פריט.')
   }
 
-  addItemToPurchase() {
+  addItemToPurchase() { 
     this.stockItems.push(this.itemForm.value)
     this.newPurchase.controls.stockitems.setValue(this.stockItems)
     this.resetStockItem();

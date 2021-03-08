@@ -414,7 +414,7 @@
             <div *ngIf="showItemDetails" class="row mt-1">
               <div class="col-5"></div>
               <div class="col-2">
-                <button type="submit" [disabled]="itemForm.invalid" [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
+                <button type="button" (click)="addItemToPurchase()" [disabled]="itemForm.invalid" [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
                   <i class="fa fa-plus"></i>
                 </button>
               </div>
