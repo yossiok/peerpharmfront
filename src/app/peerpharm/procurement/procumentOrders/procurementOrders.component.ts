@@ -222,7 +222,7 @@ export class ProcurementOrdersComponent implements OnInit {
     debugger;
   this.purchaseRecommendationsModal = false;
   let recommendToPush = {...recommend}
-  recommendToPush.stockitems = this.selectedArr;
+  // recommendToPush.stockitems = this.selectedArr;
 
   this.requestToPurchase = recommendToPush
   this.orderDetailsModal = true;
