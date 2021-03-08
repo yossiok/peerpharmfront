@@ -60,24 +60,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   newPurchase: FormGroup;
   deliveryCertificateForm: FormGroup;
   itemForm: FormGroup;
-  
-  newProcurement = {
-    supplierNumber: '',
-    supplierName: '',
-    supplierEmail: '',
-    outDate: this.formatDate(new Date()),
-    validDate: '',
-    item: [],
-    outOfCountry: false,
-    orderType: '',
-    remarks: '',
-    comaxNumber: '',
-    recommendRemarks: '',
-    userEmail: '',
-    recommendId: '',
-    user: '',
-
-  }
 
   //invoice data
   purchaseInvoiceNumber: number;
@@ -105,7 +87,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierNumber: ["", Validators.required],
       supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [''],
+      arrivalDate: [{value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit}, Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: [''],
       userEmail: [''],
@@ -212,13 +194,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
  
   }
 
-  fillPurchaseDetails(recommendation) {
-    this.itemForm.value.controls.number = recommendation.componentNumber;
-    this.newPurchase.controls.orderType.setValue(recommendation.type);
-    this.itemForm.value.controls.quantity = recommendation.amount
-    this.newProcurement.recommendId = recommendation._id
-    this.findStockItemByNumber();
-  }
+  // fillPurchaseDetails(recommendation) {
+  //   this.itemForm.value.controls.number = recommendation.componentNumber;
+  //   this.newPurchase.controls.orderType.setValue(recommendation.type);
+  //   this.itemForm.value.controls.quantity = recommendation.amount
+  //   this.newProcurement.recommendId = recommendation._id
+  //   this.findStockItemByNumber();
+  // }
 
   findStockItemByNumber() {
     if (this.itemForm.get('number').value != '') {
@@ -238,15 +220,17 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
         })
       } else if (this.newPurchase.controls.orderType.value == 'component') {
-        this.inventoryService.getCmptByitemNumber(this.itemForm.value.controls.number).subscribe(data => {
+        this.inventoryService.getCmptByitemNumber(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName) 
             this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure) 
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs) 
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
             if(!supplier) console.log('Supplier undefined')
-            else this.itemForm.controls.price.setValue(parseFloat(supplier.price)) 
-            this.itemForm.controls.coin = supplier.coin
+            else {
+              this.itemForm.controls.price.setValue(parseFloat(supplier.price)) 
+              this.itemForm.controls.coin = supplier.coin
+            } 
 
           } else {
             this.toastr.error('פריט לא קיים במערכת')
@@ -304,14 +288,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
   }
 
-  removeStockitemFromPurchase(stockitem) {
+  removeStockitemFromPurchase(i) {
     if (confirm('האם להסיר פריט זה ?')) {
-      for (let i = 0; i < this.newPurchase.controls.stockitems.value.length; i++) {
-        if (this.newPurchase.controls.stockitems.value[i].number == stockitem.number) {
           this.newPurchase.controls.stockitems.value.splice(i, 1)
           this.toastr.success('פריט הוסר בהצלחה !')
-        }
-      }
     }
   }
 

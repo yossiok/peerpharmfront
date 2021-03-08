@@ -124,7 +124,7 @@
 
         <div class="row mt-2">
           <div class="col">
-            <button (click)="showItemDetails = !showItemDetails" class="btn btn-primary dropdown-toggle">
+            <button (click)="showItemDetails = !showItemDetails" [disabled]="disabled" class="btn btn-primary dropdown-toggle">
               {{showItemDetails ? 'Hide Details' : 'Add Item'}}
             </button>
           </div>
@@ -202,13 +202,12 @@
             </div>
             <div class="col form-group">
               <label for="">Order Date</label>
-              <input disabled value="{{purchaseData.creationDate | date:'yyyy-MM-dd'}}" type="date" class="form-control"
+              <input disabled value="{{purchaseData.creationDate | date:'d-M-yy'}}" type="date" class="form-control"
                 placeholder="Order Date">
             </div>
             <div class="col form-group">
               <label for="">Arrival Date</label>
-              <input formControlName="arrivalDate" [disabled]="disabled"
-                value="{{purchaseData.arrivalDate | date:'yyyy-MM-dd'}}" type="date" class="form-control"
+              <input formControlName="arrivalDate" [disabled]="disabled" type="date" class="form-control"
                 placeholder="Arrival Date">
             </div>
           </div>
@@ -307,6 +306,9 @@
             <span class="red float-left h4">*</span>
             <input formControlName="creationDate" type="date" class="form-control" placeholder="Order Date">
           </div>
+          <div *ngIf="false">
+            <input formControlName="arrivalDate" type="date">
+          </div>
         </div>
 
         <div class="row">
@@ -386,7 +388,7 @@
               <div class="col-sm-12 col-md-4 form-group">
                 <select formControlName="measurement" class="form-control custom-select" required>
                   <option value="">Measurement</option>
-                  <option value="kg">kg</option>
+                  <option value="kilogram">kilogram</option>
                   <option value="liter">liter</option>
                   <option value="meter">meter</option>
                   <option value="ml">ml</option>
@@ -462,7 +464,7 @@
                   class="click fa fa-pencil-alt text-primary"></i>
                 <i *ngIf="EditRowId == stockitem.number" (click)="saveStockItem(i)"
                   class="click fa fa-save text-primary"></i>
-                <td><i (click)="removeStockitemFromPurchase(stockitem)" class="click fa fa-times text-danger"></i></td>
+                <td><i (click)="removeStockitemFromPurchase(i)" class="click fa fa-times text-danger"></i></td>
               </tr>
             </tbody>
           </table>
