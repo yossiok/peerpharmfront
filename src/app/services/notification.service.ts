@@ -23,17 +23,17 @@ export class NotificationService {
 
   constructor(private http: Http) {
   //  this.socket = io(`http://127.0.0.1:8200`);// Localhost
-    this.socket = io(`http://18.221.58.99:8200`);
-    this.socket.on("connect", () => {
+    // this.socket = io(`http://18.221.58.99:8200`);
+    // this.socket.on("connect", () => {
       
-      this.socket.on("message", data => {
+    //   this.socket.on("message", data => {
         
-        this.newMessageRecivedEventEmitter.emit(data);
-      });
-      this.socket.on("newInventoryReq", data => {
-        this.newInventoryReqEventEmitter.emit(data);
-      });
-    });
+    //     this.newMessageRecivedEventEmitter.emit(data);
+    //   });
+    //   this.socket.on("newInventoryReq", data => {
+    //     this.newInventoryReqEventEmitter.emit(data);
+    //   });
+    // });
   }
 
   // Our simplified interface for sending
