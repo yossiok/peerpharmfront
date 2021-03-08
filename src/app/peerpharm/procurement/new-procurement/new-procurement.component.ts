@@ -133,7 +133,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       number: ['', Validators.required],
       name: ['', Validators.required],
       coin: [''],
-      measurement: ['', Validators.required],
+      measurement: ['kg', Validators.required],
       price: [0],
       quantity: ['', Validators.required],
       color: [''],
@@ -169,7 +169,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
 
     if (this.purchaseData) {
-      this.purchaseData.recommendId = ''
+      this.purchaseData.recommendId = '';
+      this.stockItems = this.purchaseData.stockitems
     }
     else console.log('') 
     if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
@@ -223,14 +224,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     if (this.itemForm.get('number').value != '') {
       if (this.newPurchase.controls.orderType.value == 'material') {
         this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
-          ;
           if (data[0]) {
-            this.itemForm.value.controls.name = data[0].componentName;
-            this.itemForm.value.controls.coin = data[0].coin
-            this.itemForm.value.controls.measurement = data[0].unitOfMeasure
-            this.itemForm.value.controls.supplierItemNum = data[0].componentNs
+            this.itemForm.controls.name.setValue(data[0].componentName);
+            this.itemForm.controls.coin.setValue(data[0].coin)
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
+            this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            this.itemForm.value.controls.price = parseFloat(supplier.price)
+            if(!supplier) console.log('Supplier undefined') 
+            else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
           } else {
             this.toastr.error('פריט לא קיים במערכת')
           }
@@ -238,21 +239,31 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         })
       } else if (this.newPurchase.controls.orderType.value == 'component') {
         this.inventoryService.getCmptByitemNumber(this.itemForm.value.controls.number).subscribe(data => {
-          ;
           if (data[0]) {
-            this.itemForm.value.controls.name = data[0].componentName;
-            this.itemForm.value.controls.measurement = data[0].unitOfMeasure
-            this.itemForm.value.controls.supplierItemNum = data[0].componentNs
+            this.itemForm.controls.name.setValue(data[0].componentName) 
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure) 
+            this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs) 
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            this.itemForm.value.controls.price = parseFloat(supplier.price)
-            this.itemForm.value.controls.coin = supplier.coin
+            if(!supplier) console.log('Supplier undefined')
+            else this.itemForm.controls.price.setValue(parseFloat(supplier.price)) 
+            this.itemForm.controls.coin = supplier.coin
 
           } else {
             this.toastr.error('פריט לא קיים במערכת')
           }
         })
       }
+      else if (this.newPurchase.controls.orderType.value == '' || this.newPurchase.controls.orderType.value == null || this.newPurchase.controls.orderType.value == undefined) {
+        this.toastr.warning('Must Choose Component Type')
+      }
     }
+  }
+
+  addItemToPurchase() {
+    this.stockItems.push(this.itemForm.value)
+    this.newPurchase.controls.stockitems.setValue(this.stockItems)
+    this.resetStockItem();
+    this.toastr.success('Item Added Successfully')
   }
 
   editStockItem(number) {
@@ -310,17 +321,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.editItem = false;
   }
 
-  addItemToPurchase() {
-    this.stockItems.push(this.itemForm.value)
-    this.newPurchase.controls.stockitems.setValue(this.stockItems)
-    this.resetStockItem();
-    this.toastr.success('Item Added Successfully')
-  }
+ 
 
   fillMaterialNumber(ev) {
     var materialName = ev.target.value;
     var material = this.allMaterials.find(material => material.componentName == materialName)
-    this.stockitem.number = material.componentN;
+    this.itemForm.controls.number.setValue(material.componentN);
     this.findStockItemByNumber();
   }
 
@@ -386,15 +392,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   resetStockItem() {
-    this.stockitem.number = '',
-      this.stockitem.name = '',
-      this.stockitem.coin = '',
-      this.stockitem.measurement = '',
-      this.stockitem.price = 0,
-      this.stockitem.quantity = '',
-      this.stockitem.color = '',
-      this.stockitem.itemRemarks = '',
-      this.stockitem.itemPrice = ''
+    this.itemForm.reset()
   }
 
   saveCertificate() {
