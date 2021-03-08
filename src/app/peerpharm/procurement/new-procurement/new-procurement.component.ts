@@ -134,7 +134,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         supplierName: this.requestToPurchase.supplierName,
         supplierNumber: this.requestToPurchase.supplierNumber,
         creationDate: this.formatDate(new Date()),
-        arrivalDate: '',
+        arrivalDate: new Date(),
         stockitems: this.requestToPurchase.stockitems,
         orderNumber: '',
         userEmail: '',
@@ -204,6 +204,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   findStockItemByNumber() {
     if (this.itemForm.get('number').value != '') {
+      this.toastr.warning('שים לב! יש ללחוץ על + בסיום')
+      this.toastr.warning('אחרת הפריט לא יישמר!')
       if (this.newPurchase.controls.orderType.value == 'material') {
         this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
@@ -241,6 +243,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         this.toastr.warning('Must Choose Component Type')
       }
     }
+    else this.toastr.warning('יש לרשום מספר פריט.')
   }
 
   addItemToPurchase() {
