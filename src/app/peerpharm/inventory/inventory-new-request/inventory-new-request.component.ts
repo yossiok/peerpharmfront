@@ -21,8 +21,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 })
 export class InventoryNewRequestComponent implements OnInit {
-  // private socket: any;
-  // newInventoryReqEventEmitter: EventEmitter<any> = new EventEmitter<any>();
+
 
   reqItemToAdd= new inventoryReqItem;
   userName: any;
@@ -49,13 +48,7 @@ export class InventoryNewRequestComponent implements OnInit {
   }
 
   constructor(private authService: AuthService, private http: Http, private fb: FormBuilder, private inventoryReqService: InventoryRequestService, private toastSrv: ToastrService) { 
-  //  this.socket = io(`http://127.0.0.1:8200`); Localhost
-  // this.socket = io(`http://18.221.58.99:8200`);
-  // this.socket.on("connect", () => {
-  //   this.socket.on("newInventoryReq", data => {
-  //     this.newInventoryReqEventEmitter.emit(data);
-  //   });
-  // });
+
     this.inventoryReqForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
       reqNum: [{value:Number}, Validators.required],

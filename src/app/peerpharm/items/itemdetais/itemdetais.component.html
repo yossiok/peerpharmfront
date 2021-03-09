@@ -3,8 +3,7 @@
     <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
-            <h1 [ngClass]="checkItemStatus()" class="itemHeadline">{{editOrAdd}} Item <span
-                    *ngIf="editOrAdd == 'Edit'">{{itemShown.itemNumber}}</span></h1>
+            <h1 [ngClass]="checkItemStatus()" class="itemHeadline">{{editOrAdd}} Item</h1>
             <div *ngIf="remarksAlert==true" class="alert">
                 <span dir="rtl" class="closebtn" (click)="jumpingRemark()">&times;</span>
                 <strong>הערה חשובה:</strong> {{this.itemShown.proRemarks}}

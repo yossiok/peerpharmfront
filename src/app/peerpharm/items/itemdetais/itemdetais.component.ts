@@ -987,8 +987,6 @@ export class ItemdetaisComponent implements OnInit {
     this.getAllCostumers()
     this.getUserInfo();
     this.getItemData();
-
-
     //  this.showGoddetData();
   }
 
@@ -1074,8 +1072,10 @@ export class ItemdetaisComponent implements OnInit {
 
   searchForItem(item) {
 
+    
     this.editOrAdd = 'Edit'
     this.itemsService.getItemData(item).subscribe(res => {
+      alert('Loading data. Please wait')
       if (res.length == 0) {
         this.toastr.error(item, "Item Not found");
         this.itemShown = Object.assign({}, this.itemCopy);
@@ -1096,10 +1096,18 @@ export class ItemdetaisComponent implements OnInit {
           this.itemShown.bottleTube = ''
           this.itemShown.componentType = ''
         }
-
+        
         if (this.itemShown.capNumber != '') {
           this.fillCap(this.itemShown.capNumber)
           this.searchCompNumberByComp(this.itemShown.capNumber, 'productionTwoInput')
+          if (this.itemShown.itemNumber == '6876') setTimeout(()=> this.addRemoveInputs('productionTwo'), 100) //ugly bug fix
+          if (this.itemShown.itemNumber == '5479') setTimeout(()=> {
+            this.addRemoveInputs('production') //ugly bug fix
+            this.addRemoveInputs('productionTwo') //ugly bug fix
+
+          }, 100)
+          
+    
         } else {
           this.itemShown.capImage = ''
           this.itemShown.capNumber = ''
@@ -1277,11 +1285,12 @@ export class ItemdetaisComponent implements OnInit {
 
 
   checkIfItemExist(itemNumber) {
-    this.itemsService.getItemData(itemNumber).subscribe(data => {
-      if (data.length > 0) this.itemExist = true;
-      else this.itemExist = false;
-    })
-
+    if(itemNumber != '') {
+      this.itemsService.getItemData(itemNumber).subscribe(data => {
+        if (data.length > 0) this.itemExist = true;
+        else this.itemExist = false;
+      })
+    }
   }
 
   async addNewItem() {
@@ -1290,6 +1299,7 @@ export class ItemdetaisComponent implements OnInit {
     if (this.itemShown.itemNumber != "") {
       this.itemsService.addItem(this.itemShown).subscribe(data => {
         this.toastr.success('' + data.message)
+        location.reload()
       })
     }
   }
@@ -1302,6 +1312,7 @@ export class ItemdetaisComponent implements OnInit {
         console.log(res.message)
         if (res.message == 'Success') {
           this.toastr.success(`Item ${this.itemShown.itemNumber} updated successfully!`)
+          location.reload()
         } 
         else if (res.message == 'Failed') {
           this.toastr.error('Something gone bad..')

@@ -18,17 +18,25 @@ export class WebsocketService {
     try{
     // If you aren't familiar with environment variables then
     // you can hard code `environment.ws_url` as `http://localhost:5000`
-  //  this.socket = io(`http://18.221.58.99:8201`);
-    // this.socket = io(`http://localhost:8200`);
+    this.socket = io(`http://18.221.58.99:8200`);
+  //  this.socket = io(`http://localhost:8200`);
 
     // We define our observable which will observe any incoming messages
     // from our socket.io server.
 
     let observable = new Observable(observer => {
         this.socket.on('message', (data) => {
+          console.log('websocket service socket connected');
           console.log("Received message from Websocket Server")
           observer.next(data);
         })
+
+        this.socket.on('error', (err)=>
+        {
+          console.log(err);
+          console.log('websocket service socket err- disconnecting');
+          this.socket.disconnect();
+        });
         return () => {
           this.socket.disconnect();
         }

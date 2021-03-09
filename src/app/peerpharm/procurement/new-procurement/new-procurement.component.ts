@@ -325,6 +325,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.newPurchase.reset();
               this.newProcurementSaved.emit()
               this.closeOrderModal.emit(false)
+              location.reload()
 
             }
             else this.toastr.error('משהו השתבש...')
@@ -341,6 +342,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.toastr.success('הזמנה עודכנה בהצלחה !')
             this.closeOrderModal.emit(false)
             this.newProcurementSaved.emit()
+            location.reload()
           }
           else this.toastr.error('משהו השתבש...')
         })
