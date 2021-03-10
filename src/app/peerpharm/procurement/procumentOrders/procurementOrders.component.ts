@@ -615,7 +615,6 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
   printOrder(line) {
-    ;
     this.showImage = false;
     var supplierNumber = line.supplierNumber
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
@@ -641,7 +640,9 @@ export class ProcurementOrdersComponent implements OnInit {
 
     for (let i = 0; i < this.currentItems.length; i++) {
 
-      if (this.currentItems[i].itemPrice == 0 || isNaN(this.currentItems[i].itemPrice) ) this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
+      if (this.currentItems[i].itemPrice == 0 || isNaN(this.currentItems[i].itemPrice) || this.currentItems[i].itemPrice == null ) {
+        this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
+      } 
       total = total + Number(this.currentItems[i].quantity)
 
       totalP = totalP + Number(this.currentItems[i].itemPrice)
