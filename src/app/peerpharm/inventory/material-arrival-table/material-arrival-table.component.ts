@@ -60,7 +60,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   elementType = 'svg';
   format = 'CODE128';
   lineColor = '#000000';
-  width = 1;
+  width = 0.85;
   height = 100;
   displayValue = false; // true=display bcValue under barcode
   fontOptions = '';
@@ -113,7 +113,7 @@ export class MaterialArrivalTableComponent implements OnInit {
 
 
     this.materialsArrivals.filter((m, key) => {
-
+debugger;
       if (m._id == id) {
         ;
         this.bcValue = [m._id];

@@ -151,11 +151,16 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
 
     if (this.purchaseData) {
-      this.purchaseData.recommendId = '';
+      this.purchaseData.recommendId = ''; 
       this.stockItems = this.purchaseData.stockitems
     }
     else console.log('') 
-    if (this.isEdit) this.newPurchase.setValue(this.purchaseData as PurchaseData)
+    if (this.isEdit) 
+    {
+    this.newPurchase.setValue(this.purchaseData as PurchaseData);
+    this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
+    debugger;
+    }
     else this.purchaseData = undefined
     this.getAllSuppliers();
     this.getAllMaterials();
@@ -206,6 +211,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     if (this.itemForm.get('number').value != '') {
       this.toastr.warning('שים לב! יש ללחוץ על + בסיום')
       this.toastr.warning('אחרת הפריט לא יישמר!')
+      //this.purchaseData.orderType
+      if(this.newPurchase && this.purchaseData)
+      {
+      this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
+      }
       if (this.newPurchase.controls.orderType.value == 'material') {
         this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
