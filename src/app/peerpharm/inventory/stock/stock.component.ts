@@ -578,7 +578,7 @@ export class StockComponent implements OnInit {
   }
 
   exportCurrTable() {
-
+debugger;
     this.loadingExcel = true;
 
     this.makeFileForExcelDownload().then((data: any[]) => {
@@ -624,9 +624,12 @@ export class StockComponent implements OnInit {
               'סוג פריט': that.components[i].componentType,
               'כמות': that.components[i].amount,
               'כמות מוקצת': that.components[i].alloAmount,
-              'מחיר':that.components[i].alternativeSuppliers[0]? that.components[i].alternativeSuppliers[0].price + ' ' + that.components[i].alternativeSuppliers[0].coin : '',
-              'מחיר2':that.components[i].alternativeSuppliers[1] ?that.components[i].alternativeSuppliers[1].price + ' ' + that.components[i].alternativeSuppliers[1].coin : '',
-              'מחיר3':that.components[i].alternativeSuppliers[2] ?that.components[i].alternativeSuppliers[2].price + ' ' + that.components[i].alternativeSuppliers[2].coin : '',
+              '1מחיר':that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].price : '',
+              'מטבע1': that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].coin : '',
+              'מחיר2':that.components[i].alternativeSuppliers[1] ? that.components[i].alternativeSuppliers[1].price  : '',
+              'מטבע2': that.components[i].alternativeSuppliers[1] ?  that.components[i].alternativeSuppliers[1].coin : '',
+              'מחיר3':that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].price  : '',
+              'מטבע3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].coin : '',
   
             }
             arr.push(line)
@@ -652,9 +655,12 @@ export class StockComponent implements OnInit {
               'מספר פריט': that.components[i].componentN,
               'שם החו"ג': that.components[i].componentName,
               'כמות ': that.components[i].amount,
-              'מחיר':that.components[i].alternativeSuppliers[0]? that.components[i].alternativeSuppliers[0].price + ' ' + that.components[i].alternativeSuppliers[0].coin : '',
-              'מחיר2':that.components[i].alternativeSuppliers[1] ?that.components[i].alternativeSuppliers[1].price + ' ' + that.components[i].alternativeSuppliers[1].coin : '',
-              'מחיר3':that.components[i].alternativeSuppliers[2] ?that.components[i].alternativeSuppliers[2].price + ' ' + that.components[i].alternativeSuppliers[2].coin : '',
+              '1מחיר':that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].price : '',
+              'מטבע1': that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].coin : '',
+              'מחיר2':that.components[i].alternativeSuppliers[1] ? that.components[i].alternativeSuppliers[1].price  : '',
+              'מטבע2': that.components[i].alternativeSuppliers[1] ?  that.components[i].alternativeSuppliers[1].coin : '',
+              'מחיר3':that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].price  : '',
+              'מטבע3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].coin : '',
             }
             arr.push(line)
           
@@ -949,10 +955,16 @@ export class StockComponent implements OnInit {
       this.componentsAmount = res;
       // console.log(res);
       this.components.forEach(cmpt => {
+
+        //הסר נקודה עשרונית אם לא חומר גלם
         //  adding amounts to all components
         let matchedComponent = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
         if (this.componentsAmount.find(elem => elem._id == cmpt.componentN)) {
           cmpt.amount = matchedComponent.total;
+          if(cmpt.itemType!="material")
+          {
+            cmpt.amount= Math.round(cmpt.amount);
+          }
         }
         if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
 
