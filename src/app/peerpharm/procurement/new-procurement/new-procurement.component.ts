@@ -172,7 +172,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.isEdit.currentValue){
-      if(changes.purchaseData) if(!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = '' 
+      if(changes.purchaseData) {
+        if(!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = '' 
+        if(!changes.purchaseData.currentValue.sumShippingCost) changes.purchaseData.currentValue.sumShippingCost = '' 
+      } 
       if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
     }
   

@@ -10,6 +10,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArrayServiceService } from 'src/app/utils/array-service.service';
 import { PurchaseData } from './PurchaseData';
+import { forEach } from 'lodash';
 //import { p } from '@angular/core/src/render3';
 
 @Component({
@@ -29,11 +30,11 @@ export class ProcurementOrdersComponent implements OnInit {
   requestToPurchase:any;
   allInvoices: any[];
   allInvoicesCopy: any[];
-  purchaseRecommendations: any[];
-  purchaseRecommendationsCopy: any[];
+  purchaseRecommendations: any[] = [];
+  purchaseRecommendationsCopy: any[] = [];
   allComponentsCopy: any[];
   allMaterials: any[];
-  selectedArr: any[] = [];
+  checkedRecommendations: any[] = [];
   printBill: boolean = false;
   recommendStockItemsCollapse: boolean = false;
   orderDetailsModal: boolean = false;
@@ -162,7 +163,6 @@ export class ProcurementOrdersComponent implements OnInit {
       if (this.purchaseRecommendationsModal == true) {
         this.purchaseRecommendationsModal = false;
       } else {
-        this.getAllPurchaseRecommends();
         this.purchaseRecommendationsModal = true;
       }
     }
@@ -181,7 +181,6 @@ export class ProcurementOrdersComponent implements OnInit {
     this.user = this.authService.loggedInUser.firstName;
 
     this.inventoryService.newRecommendEmitter.subscribe(data => {
-      ;
       console.log(data)
       data = JSON.parse(data._body)
       this.purchaseRecommendations.push(data)
@@ -191,52 +190,35 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   isSelected(ev, stockitem) {
-    debugger;
     if (ev.target.checked == true) {
-      var isSelected = this.selectedArr
-      isSelected.push({ ...stockitem });
-      this.selectedArr = isSelected
+      this.checkedRecommendations.push(stockitem)
     }
-
-    if (ev.target.checked == false) {
-      var isSelected = this.selectedArr
-      var tempArr = isSelected.filter(x => x.number != stockitem.number)
-      this.selectedArr = tempArr
-    }
-
-
-  }
-  expandRecommend(recommendNumber){
-    if(this.recommendStockItemsCollapse == false){
-      this.recommendStockItemsCollapse = true
-      this.expandNumber = recommendNumber
-    } else {
-      this.recommendStockItemsCollapse = false
-    }
-  }
-
-
-
-
-  moveToNewPurchase(recommend) {
-    debugger;
-  this.purchaseRecommendationsModal = false;
-  let recommendToPush = {...recommend}
-  // recommendToPush.stockitems = this.selectedArr;
-
-  this.requestToPurchase = recommendToPush
-  this.orderDetailsModal = true;
-
-
-  }
-
-  setRecommendAsDone(id) {
-    this.procurementservice.closeRecommendationById(id).subscribe(data => {
-      if (data) {
-        this.toastr.success('המלצת רכש נסגרה בהצלחה !');
-        this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p._id != data._id)
-        this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.filter(p => p._id != data._id)
+    else {
+      for (let i = 0; i < this.checkedRecommendations.length; i++) {
+        if (this.checkedRecommendations[i].itemNumber == stockitem.itemNumber) this.checkedRecommendations.slice(i, 1)
       }
+    }
+  }
+
+  expandRecommend(recommendNumber){
+      this.recommendStockItemsCollapse = !this.recommendStockItemsCollapse
+      this.expandNumber = this.recommendStockItemsCollapse ? '' : recommendNumber
+  }
+
+
+
+
+  moveToNewPurchase() {
+    this.purchaseRecommendationsModal = false;
+    this.requestToPurchase = {stockitems: this.checkedRecommendations}
+    this.orderDetailsModal = true;
+  }
+
+  removeItemFromRecommendation(recommendationNumber, itemNumber) {
+    this.procurementservice.removeItemFromRecommendation(recommendationNumber, itemNumber).subscribe( updatedRecommendation => {
+      console.log(updatedRecommendation)
+      // remove immediately from DOM
+      this.purchaseRecommendations = this.purchaseRecommendations.filter(item => item.itemNumber != recommendationNumber)
     })
   }
 
@@ -746,8 +728,22 @@ export class ProcurementOrdersComponent implements OnInit {
 
   getAllPurchaseRecommends() {
     this.procurementservice.getAllPurchaseRecommends().subscribe(data => {
-      this.purchaseRecommendations = data;
-      this.purchaseRecommendationsCopy = data;
+      //data = all purchase recommendations (recommendation object)
+      data.forEach(purchaseRecommendation => {
+        //purchaseRecommendation = one object
+        if (purchaseRecommendation.stockitems && purchaseRecommendation.stockitems.length > 0) {
+          purchaseRecommendation.stockitems.forEach(item => {
+            // item - recommended item to purchase
+            // give id to every item (from which recommendation he is coming from)
+            item.recommendationNumber = purchaseRecommendation.recommendNumber
+          })
+        }
+      })
+      data.forEach(purchaseRecommendation => {
+        this.purchaseRecommendations = this.purchaseRecommendations.concat(purchaseRecommendation.stockitems)
+        this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.concat(purchaseRecommendation.stockitems)
+      })
+      this.purchaseRecommendations = this.purchaseRecommendations.filter(recommendedItem => recommendedItem != null )
     })
   }
 

@@ -72,25 +72,30 @@ export class Procurementservice {
     let url = this.baseUrl + 'expectedArrivalController/all';
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
+
   componentsWithPurchaseRec(): Observable<any> {
-    
     let url = this.baseUrl + 'procurementOrderController/componentsWithPurchaseRec';
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
+
   getAllPurchaseRecommends(): Observable<any> {
-    
     let url = this.baseUrl + 'procurementOrderController/getAllPurchaseRecommends';
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
+
   getAllPurchases(): Observable<any> {
-    
     let url = this.baseUrl + 'procurementOrderController/getAllPurchases';
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
+
   getRecommendById(recommendId): Observable<any> {
-    
     let url = this.baseUrl + 'procurementOrderController?getRecommendById='+recommendId;
     return this.http.get(url).pipe( map(reponse => reponse.json()));
+  }
+
+  removeItemFromRecommendation(recommendationNumber, itemNumber) {
+    let url = this.baseUrl + 'procurementOrderController/removeItemFromRecommendation'
+    return this.http.post(url, {recommendationNumber, itemNumber}, this.options).pipe(map(res=>res.json()));
   }
 
   getItemExpectedArrivals(componentN): Observable<any> {
@@ -177,8 +182,8 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/setItemToDone';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
   }
+
   closeRecommendationById(id):Observable<any>{
-    
     let url = this.baseUrl + 'procurementOrderController/closeRecommendationById';
     return this.http.post(url, JSON.stringify({id:id}), this.options).pipe(map(res=>res.json()));
   }
