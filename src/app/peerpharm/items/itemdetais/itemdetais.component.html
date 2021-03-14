@@ -1952,7 +1952,7 @@
             </button>
             <button *ngIf="alowUserEditItemTree" [disabled]="!itemExist"
                 [style.cursor]="itemExist ? 'pointer' : 'not-allowed'" class="btn btn-warning"
-                (click)="this.modalService.open(editItemModal)">Update
+                (click)="updateItem()">Update
             </button>
             <button style="float: right" type='reset' class="btn btn-secondary">Reset</button>
         </div>
@@ -1999,7 +1999,7 @@
 </ng-template>
 
 
-<ng-template #editItemModal let-c="close" let-d="dismiss">
+<!-- <ng-template #editItemModal let-c="close" let-d="dismiss">
 
     <div class="modal-header">
         <h3 class="modal-title" id="modal-basic-title">Edit item Number {{itemShown.itemNumber}}</h3>
@@ -2023,7 +2023,7 @@
             [ngClass]="approveItemNumber == itemShown.itemNumber ? 'btn btn-success' : 'disabled'">Update</button>
     </div>
 
-</ng-template>
+</ng-template> -->
 
 
 
