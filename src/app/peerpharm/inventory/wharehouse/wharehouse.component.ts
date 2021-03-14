@@ -141,7 +141,6 @@ export class WharehouseComponent implements OnInit {
   }
 
   printCertifAgain() {
-    ;
     this.listToPrint = this.printAgain
     this.printBtn.nativeElement.click();
 
@@ -510,6 +509,8 @@ export class WharehouseComponent implements OnInit {
 
   deleteRow(index) {
     this.inventoryUpdateList.splice(index, 1);
+    this.listToPrint.splice(index, 1)
+    this.printAgain.splice(index, 1)
   }
 
   cleanList() {
