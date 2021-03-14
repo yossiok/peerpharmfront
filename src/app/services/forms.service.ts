@@ -204,6 +204,11 @@ export class FormsService {
     let url = this.baseUrl + 'formDetails';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getAllUnfinished() {
+    let url = this.baseUrl + 'formDetails/getformsfillednotready';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getAllPackedLists() {
     let url = this.baseUrl + 'formDetails/getAllPackedLists';
     return this.http.get(url).pipe(map(reponse => reponse.json()));

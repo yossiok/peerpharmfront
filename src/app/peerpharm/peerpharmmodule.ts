@@ -141,6 +141,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarComponent } from './calendar/calendar.component';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { ItemMovementReportsComponent } from './reports/item-movement-reports/item-movement-reports.component';
+import { UnfinishedProductsComponent } from './reports/unfinished-products/unfinished-products.component';
 
 
 
@@ -291,6 +292,7 @@ import { ItemMovementReportsComponent } from './reports/item-movement-reports/it
     ActiveusersComponent,
     AllocatedOrdersComponent,
     ReportBuilderComponent,
+    UnfinishedProductsComponent,
 
 
   ],

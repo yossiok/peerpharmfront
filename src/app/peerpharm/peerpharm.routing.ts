@@ -63,6 +63,7 @@ import { MaterialsComponent } from './production/materials/materials.component';
 import { NewBatchComponent } from './batches/new-batch/new-batch.component';
 import { ProjectsComponent } from './schedule/projects/projects.component';
 import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
+import { UnfinishedProductsComponent } from './reports/unfinished-products/unfinished-products.component';
 import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
 import { UserSettingsComponent } from './user/user-settings/user-settings.component';
 import { CalendarComponent } from './calendar/calendar.component';
@@ -514,6 +515,14 @@ export const PeerPharmRputs: Routes =[
       title : 'Active Users'
     },
     component: ActiveusersComponent
+  },
+  {
+    path :'unfinishedproducts',
+    canActivate:[],
+    data :{
+      title : 'Unfinished Products'
+    },
+    component: UnfinishedProductsComponent
   }
 
 
