@@ -176,7 +176,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if(!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = '' 
         if(!changes.purchaseData.currentValue.sumShippingCost) changes.purchaseData.currentValue.sumShippingCost = '' 
       } 
-      if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
+      if(this.isEdit) {
+        if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''   
+        this.newPurchase.setValue(changes.purchaseData.currentValue)
+      } 
     }
   
   }
