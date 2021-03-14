@@ -263,23 +263,43 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
-  getAllProcurementOrders() {
-    this.orderDetailsModal = false;
+  // getAllProcurementOrders() {
+  //   this.orderDetailsModal = false;
 
-    this.procurementservice.getProcurementOrder().subscribe(res => {
+  //   this.procurementservice.getProcurementOrder().subscribe(res => {
 
-      this.procurementData = res.filter(p => p.status != 'closed');
-      if (this.procurementData.length > 0) {
-        this.showLoader = false;
-      }
+  //     this.procurementData = res.filter(p => p.status != 'closed');
+  //     if (this.procurementData.length > 0) {
+  //       this.showLoader = false;
+  //     }
 
-      this.procurementDataCopy = res
-      this.procurementDataNoFilter = res
+  //     this.procurementDataCopy = res
+  //     this.procurementDataNoFilter = res
 
 
   
+  //   });
+  // }
+
+
+
+  
+  getAllProcurementOrders() {
+  this.orderDetailsModal = false;
+    this.procurementservice.getAllPurchasesObservable().subscribe((purchases) => {
+      if (purchases.length > 0) {
+        this.showLoader = false;
+        if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]);
+        else this.procurementData = purchases
+        if (!this.procurementDataCopy) {
+          this.procurementDataCopy = [];
+        }
+        this.procurementDataCopy= this.procurementDataCopy.concat([...purchases]).filter(purchase => purchase.status != 'closed' && purchase.status != 'canceled');
+      }
     });
   }
+
+
 
   edit(itemNumber, index) {
     if (itemNumber != '') {

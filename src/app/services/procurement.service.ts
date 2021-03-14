@@ -41,6 +41,40 @@ export class Procurementservice {
     console.log(url);
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+
+
+
+  
+  getAllPurchasesObservable():Observable<any> {
+    return new Observable(observer => {
+      let skip = 0;
+      let limit = 400;
+      this.startNewCall(skip, limit, observer);
+    });
+  }
+
+  startNewCall(skip, limit, observer) {
+    let url = this.baseUrl + "procurementOrderController/getAllPurchases?skip=" + skip + "&limit=" + limit;
+    console.log("new call=> " + url);
+    this.http.get(url).subscribe(response => {
+      let items = <any[]>response.json();
+      skip = skip + 400;
+      if (items.length > 0) {
+        console.log("got items bigger than 0");
+        observer.next(items);
+        this.startNewCall(skip, limit, observer);
+      }
+      else {
+        console.log("complete!!");
+        observer.complete();
+      }
+    })
+  }
+
+
+
+
   getAllInvoices() {
     const url = this.baseUrl + 'procurementOrderController/getAllInvoices';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
