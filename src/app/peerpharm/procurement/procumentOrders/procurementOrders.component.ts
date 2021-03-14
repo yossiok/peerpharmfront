@@ -218,7 +218,11 @@ export class ProcurementOrdersComponent implements OnInit {
     this.procurementservice.removeItemFromRecommendation(recommendationNumber, itemNumber).subscribe( updatedRecommendation => {
       console.log(updatedRecommendation)
       // remove immediately from DOM
-      this.purchaseRecommendations = this.purchaseRecommendations.filter(item => item.itemNumber != recommendationNumber)
+      for (let i=0; i < this.purchaseRecommendations.length; i++) {
+        if ( this.purchaseRecommendations[i].number == itemNumber && this.purchaseRecommendations[i].recommendationNumber == recommendationNumber) {
+          this.purchaseRecommendations.splice(i, 1)
+        }
+      }
     })
   }
 

@@ -174,9 +174,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     if(changes.isEdit.currentValue){
       if(changes.purchaseData) {
         if(!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = '' 
-        if(!changes.purchaseData.currentValue.sumShippingCost) changes.purchaseData.currentValue.sumShippingCost = '' 
+        if(!changes.purchaseData.currentValue.sumShippingCost) changes.purchaseData.currentValue.sumShippingCost = 0 
       } 
-      if(this.isEdit) this.newPurchase.setValue(changes.purchaseData.currentValue)
+      if(this.isEdit) {
+        if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''   
+        this.newPurchase.setValue(changes.purchaseData.currentValue)
+      } 
     }
   
   }
@@ -194,8 +197,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       this.newPurchase.controls.status.setValue(ev.target.value);
       this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data=>{
       if(data){
+        console.log(data)
         this.toastr.success('סטטוס עודכן בהצלחה !')
+        location.reload()
       }
+      else this.toastr.error('משהו השתבש...')
       })
     }
    
@@ -408,7 +414,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   saveInvoiceToPurchase() {
-    this.fixedPrice = (this.invoicePrice-(this.taxes+this.taxesTwo))*this.coinRate
+    this.fixedPrice = (this.invoicePrice-(this.taxes+this.taxesTwo)) / this.coinRate
     this.newPurchase.controls.billNumber.value.push({
       invoiceNumber: this.purchaseInvoiceNumber,
       remarks: this.invoiceRemarks,

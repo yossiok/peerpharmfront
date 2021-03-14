@@ -70,8 +70,7 @@
                   <th>Quantity</th>
                   <th>Price</th>
                   <th>Coin</th>
-                  <th>Shipping Price</th>
-                  <th></th>
+                  <th>1 Unit Shipping Price</th>
                 </tr>
               </thead>
 
@@ -573,20 +572,19 @@
     <div class="row mt-2">
       <div class="col-4"></div>
       <div class="col-4">
-        <button (click)="shippingInvoiceDetails = !shippingInvoiceDetails" class="form-control btn btn-primary">חשבונית
-          העמסה</button>
+        <button (click)="shippingInvoiceDetails = !shippingInvoiceDetails" class="form-control btn btn-primary">{{shippingInvoiceDetails ? 'סגור' : 'הוסף פרטי העמסה'}}</button>
       </div>
       <div class="col-4"></div>
     </div>
 
     <div *ngIf="shippingInvoiceDetails" class="row mt-2">
       <div class="col-md-4 form-group">
-        <label for="invoicePrice">מחיר סה"כ</label>
+        <label for="invoicePrice">מחיר סה"כ </label>
         <input type="number" class="form-control" name="invoicePrice" id="invoicePrice" [(ngModel)]="invoicePrice"
           placeholder="Total Price" required>
       </div>
       <div class="col-md-4 form-group">
-        <label for="taxes">מע"מ</label>
+        <label for="taxes">מע"מ 1</label>
         <input type="number" class="form-control" [(ngModel)]="taxes" placeholder="Taxes">
       </div>
       <div class="col-md-4 form-group">
@@ -596,12 +594,20 @@
       </div>
       <div class="col-md-4 form-group">
         <label for="invoiceCoin">מטבע</label>
-        <input type="text" class="form-control" [(ngModel)]="invoiceCoin" placeholder="Coin">
+        <select [(ngModel)]="Coin" class="form-control">
+          <option selected value="NIS">NIS</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
       </div>
       <div class="col-md-4 form-group">
         <label for="coinRate">ערך מטבע</label>
         <input type="number" class="form-control" [(ngModel)]="coinRate" placeholder="Coin Rate">
+     
       </div>
+    </div>
+    <div class="row mt-2">
       <button [disabled]="!invoiceNumber.value" (click)="saveInvoiceToPurchase()" class="btn btn-primary form-control">
         הוסף חשבונית להזמנה מס' {{purchaseData.orderNumber}}
       </button>
@@ -632,12 +638,14 @@
             <thead>
               <tr>
                 <th>מספר חשבונית</th>
+                <th>מחיר העמסה </th>
                 <th>הערות</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let invoice of purchaseData.billNumber">
                 <td>{{invoice.invoiceNumber}}</td>
+                <td>{{invoice.fixedPrice}}</td>
                 <td>{{invoice.remarks}}</td>
               </tr>
             </tbody>
