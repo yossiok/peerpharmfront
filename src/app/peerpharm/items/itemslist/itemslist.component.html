@@ -5,47 +5,42 @@
     </div>
   </div>
 
+ 
 
-  <div *ngIf="!hasMoreItemsToload" class="row mt-4">
+
+  <!-- <div *ngIf="!hasMoreItemsToload" class="row mt-4">
     <div class="col-1"></div>
     <div class="col-2">
-      <label class="form-control text-info">Search By Number</label>
+      <label class="form-control text-info"></label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Search By Component</label>
+      <label class="form-control text-info"></label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Search By Name</label>
+      <label class="form-control text-info"></label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Filter By Status</label>
+      <label class="form-control text-info"></label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Filter By Language</label>
+      <label class="form-control text-info"></label>
     </div>
     <div class="col-1"></div>
-  </div>
+  </div> -->
 
   <div *ngIf="!hasMoreItemsToload" class="row">
-    <div class="col-1">
-      <button style="float: right; background: none;" (click)="getCurrListToExcel()" data-toggle="tooltip"
-        title="get cuurent item list">
-        <label style="float: right; line-height: 30px; margin-left: 5px"><b>Export List</b></label>
-        <img src="../../../assets/images/excel.png" alt="excel export" style="width: 35px; float: right;" />
-      </button>
+    <div class="col-2">
+      <input (change)="filterByNumber($event)" type="text" class="form-control" placeholder="Search By Number">
     </div>
     <div class="col-2">
-      <input (change)="filterByNumber($event)" type="text" class="form-control">
+      <input (change)="filterByComponent($event)" type="text" class="form-control" placeholder="Search By Component">
     </div>
     <div class="col-2">
-      <input (change)="filterByComponent($event)" type="text" class="form-control">
-    </div>
-    <div class="col-2">
-      <input matInput class="form-control" (change)="changeText($event)" />
+      <input matInput class="form-control" (change)="changeText($event)" placeholder="Search By Name">
     </div>
     <div class="col-2">
       <select class="form-control" (change)="filterByStatus($event)">
-        <option value=""></option>
+        <option value="">Filter By Status</option>
         <option value="active">פעיל</option>
         <option value="notActive">לא פעיל</option>
         <option value="perfect">מושלם</option>
@@ -53,13 +48,15 @@
     </div>
     <div class="col-2">
       <select class="form-control" (change)="filterByLanguage($event)">
-        <option value=""></option>
+        <option value="">Filter By Language</option>
         <option value="Hebrew">Hebrew</option>
         <option value="English">English</option>
       </select>
     </div>
     <div class="col-3"></div>
   </div>
+
+
 
   <div *ngIf="hasMoreItemsToload" class="row">
     <div class="col-12">
@@ -72,6 +69,13 @@
     <div class="col-12">
 
       <span class="text-danger h5"><b>Showing {{ items.length }} Items</b></span>
+      <div class="col-1">
+        <button style="float: right; background: none;" (click)="getCurrListToExcel()" data-toggle="tooltip"
+          title="get cuurent item list">
+          <label style="float: right; line-height: 30px; margin-left: 5px"><b>Export List</b></label>
+          <img src="../../../assets/images/excel.png" alt="excel export" style="width: 35px; float: right;" />
+        </button>
+      </div>
       <table class="table table-hover table-striped table-fixed mt-2">
         <thead style="box-shadow: inset 0px 0px 4px 1px black;" class="bg-info text-white">
           <tr>

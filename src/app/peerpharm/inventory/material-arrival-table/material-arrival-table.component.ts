@@ -113,7 +113,6 @@ export class MaterialArrivalTableComponent implements OnInit {
 
 
     this.materialsArrivals.filter((m, key) => {
-debugger;
       if (m._id == id) {
         ;
         this.bcValue = [m._id];

@@ -763,7 +763,6 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   searchCompNumberByComp(compNumber, src) {
-    debugger;
     var itemType = "component";
     switch (src) {
       case 'sticker':
@@ -1294,7 +1293,6 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   async addNewItem() {
-    debugger;
     this.editSpecTable = false;  // specification auth
     if (this.itemShown.itemNumber != "") {
       this.itemsService.addItem(this.itemShown).subscribe(data => {
@@ -1553,8 +1551,8 @@ export class ItemdetaisComponent implements OnInit {
 
 
   upload(src) {
-
-    const number = this.route.snapshot.paramMap.get('itemNumber');
+    // const number = this.route.snapshot.paramMap.get('itemNumber');
+    const number = this.itemShown.itemNumber;
     this.progress.percentage = 0;
     this.currentFileUpload = this.selectedFiles.item(0);
     this.uploadService.pushFileToStorage(this.currentFileUpload, src, number).subscribe(event => {

@@ -80,7 +80,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
-    debugger;
     this.newPurchase = fb.group({
       _id: [''],
       supplierName: ["", Validators.required],
@@ -128,7 +127,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     if (this.requestToPurchase) {
-      debugger
       this.newPurchase.patchValue({
         _id: '',
         supplierName: this.requestToPurchase.supplierName,
@@ -159,7 +157,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     {
     this.newPurchase.setValue(this.purchaseData as PurchaseData);
     this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
-    debugger;
     }
     else this.purchaseData = undefined
     this.getAllSuppliers();

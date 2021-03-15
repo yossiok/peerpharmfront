@@ -578,7 +578,6 @@ export class StockComponent implements OnInit {
   }
 
   exportCurrTable() {
-debugger;
     this.loadingExcel = true;
 
     this.makeFileForExcelDownload().then((data: any[]) => {
@@ -608,7 +607,6 @@ debugger;
 
   }
   makeFileForExcelDownload() {
-    debugger;
     var that = this;
     var arr: any[] = []
     return new Promise(function (resolve, reject) {
