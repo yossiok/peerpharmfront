@@ -310,7 +310,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   removeStockitemFromPurchase(i) {
     if (confirm('האם להסיר פריט זה ?')) {
           this.newPurchase.controls.stockitems.value.splice(i, 1)
-          this.toastr.success('פריט הוסר בהצלחה !')
+          confirm('יש לשמור את ההזמנה על מנת לעדכן את מחיקת הפריט')
     }
   }
 

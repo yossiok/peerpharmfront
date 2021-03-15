@@ -76,7 +76,7 @@
 
 
               <tbody>
-                <tr *ngFor="let stockitem of newPurchase.controls.stockitems.value">
+                <tr *ngFor="let stockitem of newPurchase.controls.stockitems.value; let i = index">
                   <td>{{stockitem.number}}</td>
                   <td>{{stockitem.name}}</td>
                   <td>{{stockitem.itemRemarks}}</td>
@@ -111,7 +111,7 @@
                       class="click fa fa-times text-primary"></i></td>
                   <td><i *ngIf="!disabled && editItem" (click)="updateItems(stockitem)"
                       class="click fa fa-save text-primary h4"></i></td>
-                  <td><i *ngIf="!disabled && !editItem" (click)="removeStockitemFromPurchase(stockitem)"
+                  <td><i *ngIf="!disabled && !editItem" (click)="removeStockitemFromPurchase(i)"
                       class="click fa fa-times text-danger"></i></td>
                 </tr>
               </tbody>
