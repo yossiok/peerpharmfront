@@ -7,6 +7,7 @@ import { TaskModel } from '../peerpharm/taskboard/models/task-model';
 import { SubTaskModel } from '../peerpharm/taskboard/models/subtask-model'
 import { UserInfo } from '../peerpharm/taskboard/models/UserInfo';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 
@@ -36,6 +37,7 @@ export class AuthService {
   getLoggedInUser(): Observable<any> {
     return this.httpClient.get(this.authURL ).pipe(map((data) =>  {
       this.loggedInUser=<UserInfo> data;
+      this.isLoggedIn=true;
       this.userEventEmitter.emit(<UserInfo>data)})
       );
 

@@ -10,6 +10,7 @@ import { CDK_DESCRIBEDBY_HOST_ATTRIBUTE } from '@angular/cdk/a11y';
 })
 export class FormsService {
 
+
   constructor(private http:Http) { }
 
 
@@ -108,6 +109,17 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/updatePalletDetails";
     return this.http.post(url, JSON.stringify({pallet}), this.options).pipe(map(res => res.json()));
   }
+
+  closeForm(id) {
+    let url = this.baseUrl + "formDetails/closeForm?id="+id; 
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  closeFormPallets(id) {
+    let url = this.baseUrl + "formDetails/closeFormPallets?id="+id; 
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   addPalletToExistPackList(packedList){
     ;
     let url = this.baseUrl + "formDetails/addPalletToExistPackList";
@@ -206,6 +218,11 @@ export class FormsService {
   }
   getAllUnfinished() {
     let url = this.baseUrl + 'formDetails/getformsfillednotready';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAllUnfinished2() {
+    let url = this.baseUrl + 'formDetails/getformsfillednotready2';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

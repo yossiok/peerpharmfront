@@ -13,6 +13,7 @@ import { xor } from 'lodash';
 export class UnfinishedProductsComponent implements OnInit {
 
   unfinishedProducts:any[]=[];
+  unfinishedProducts2:any[]=[];
  
   
   constructor( private formsService:FormsService) { }
@@ -21,11 +22,22 @@ export class UnfinishedProductsComponent implements OnInit {
   //this.getUserInfo();
   this.formsService.getAllUnfinished().subscribe(data=>
   {
- 
+ debugger;
     data=data.filter(x=>x.remarks!="עובר לאריזה אישית" && x.qaStatus!="עובר לאריזה אישית");
 
    this.unfinishedProducts=data;
   });
+
+
+
+    //this.getUserInfo();
+    this.formsService.getAllUnfinished2().subscribe(data=>
+      {
+     this.unfinishedProducts2=data;
+      });
+
+
+
   }
 
  

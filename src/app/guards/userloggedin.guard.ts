@@ -20,9 +20,14 @@ export class UserloggedinGuard implements CanActivate {
       }
       else{
 */
+
+if(this.auth.isLoggedIn)
+{
+  return true;
+}
       
     return this.auth.isUserLoggedIn().pipe(
-        map((response) => { 
+         map((response) => { 
  
          
           if(!response)
@@ -31,6 +36,7 @@ export class UserloggedinGuard implements CanActivate {
           }
          return response;
         })) ; 
+       
   }
 // }
 }

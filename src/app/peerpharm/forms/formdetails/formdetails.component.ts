@@ -22,6 +22,7 @@ export class FormdetailsComponent implements OnInit {
   pPackingTabBtn:String ="transperent";
   compileTabBtn:String ="transperent";
   allChecks: Array<any>=[];
+  formid="";
 
   constructor(
     private excelService:ExcelService,
@@ -42,6 +43,7 @@ export class FormdetailsComponent implements OnInit {
   async getFormData() {
     ;
     const id = this.route.snapshot.paramMap.get('id');
+    this.formid=id;
     if (id) {
       await this.formsService.getFormData(id).subscribe(res => {
         this.form = res[0];
@@ -123,10 +125,39 @@ export class FormdetailsComponent implements OnInit {
 
         break;
       }
-    }
+    } 
   }
 
+  closeForm()
+    {
+      debugger;
+      if(confirm('האם אתה בטוח שברצונך לאשר את הטופס?'))
+      {
+        this.formsService.closeForm(this.formid).subscribe(data=>
+          {
+            alert('הטופס אושר');
+            location.reload();
+          })
+      }
 
+    }
+
+    closeFormPallets()
+    {
+      debugger;
+      if(confirm('האם אתה בטוח שברצונך לאשר את משטחי הטופס כמוכנים למשלוח? ?'))
+      {
+        this.formsService.closeFormPallets(this.formid).subscribe(data=>
+          {
+            alert('המשטחים אושרו');
+            location.reload();
+          })
+      }
+
+    }
+
+
+    
   
 
 

@@ -18,7 +18,7 @@ export class ScreenGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
  return new Promise((resolve, reject)=>
  {
-   
+   debugger;
   if (this.authService.loggedInUser) {
     let screenPermission = this.authService.loggedInUser.screenPermission;
     if (this.userService.allScreens.length>0) { 
