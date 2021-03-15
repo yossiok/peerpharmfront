@@ -84,6 +84,18 @@ select:focus,input:focus {
 
 }
 
+.verySmallLoader {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #7460ee;
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  font-size: 12px;
+  text-align: center;
+}
 .smallLoader {
   border: 5px solid #f3f3f3;
   border-radius: 50%;

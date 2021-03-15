@@ -94,6 +94,7 @@ export class ProcurementOrdersComponent implements OnInit {
   newRecommend: any;
   subscription: Subscription;
   isEdit: boolean = false;
+  fetchingOrders: boolean = true;
 
   newItem = {
 
@@ -286,17 +287,18 @@ export class ProcurementOrdersComponent implements OnInit {
   
   getAllProcurementOrders() {
   this.orderDetailsModal = false;
+  this.fetchingOrders = true;
     this.procurementservice.getAllPurchasesObservable().subscribe((purchases) => {
       if (purchases.length > 0) {
         this.showLoader = false;
-        if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]);
+        if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]).filter(order => order.status != 'closed');
         else this.procurementData = purchases
         if (!this.procurementDataCopy) {
           this.procurementDataCopy = [];
         }
-        this.procurementDataCopy= this.procurementDataCopy.concat([...purchases]).filter(purchase => purchase.status != 'closed' && purchase.status != 'canceled');
+        this.procurementDataCopy= this.procurementDataCopy.concat([...purchases]).filter(purchase => purchase.status != 'canceled');
       }
-    });
+    }, () => {}, () => this.fetchingOrders = false);
   }
 
 
@@ -362,87 +364,48 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   filterByCategory(ev) {
-    ;
     var category = ev.target.value;
-
-    var tempArr = [];
-    if (category != '') {
-      this.procurementData.forEach(purchase => {
-        purchase.item.forEach(item => {
-          if (item.componentType == category) {
-            tempArr.push(purchase);
-          }
-        });
-      });
-      var removeDuplicatesArr = [...new Set(tempArr)];
-      this.procurementData = removeDuplicatesArr
-    } else {
-      this.procurementData = this.procurementDataCopy
-    }
+    // var tempArr = [];
+    // if (category != '') {
+    //   this.procurementData.forEach(purchase => {
+    //     purchase.item.forEach(item => {
+    //       if (item.componentType == category) {
+    //         tempArr.push(purchase);
+    //       }
+    //     });
+    //   });
+    //   var removeDuplicatesArr = [...new Set(tempArr)];
+    //   this.procurementData = removeDuplicatesArr
+    // } else {
+    //   this.procurementData = this.procurementDataCopy
+    // }
+    this.procurementData = this.procurementDataCopy.filter( order => {
+      for (let item of order.stockitems) {
+        if(item.componentType == category) return true
+      }
+    })
 
   }
 
 
-  filterByStatus(ev, expression) {
-
-    ;
-    switch (expression) {
-      case 'recommendations':
-        this.purchaseRecommendations = this.purchaseRecommendationsCopy
-        if (ev.target.value != '') {
-          var status = ev.target.value;
-          var type = ev.target.value;
-          switch (type) {
-            case 'closed':
-              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
-              break
-            case 'hold':
-              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
-              break
-            case 'open':
-              this.purchaseRecommendations = this.purchaseRecommendations.filter(p => p.status == status)
-              break
-
-
-          }
-        } else {
-          this.purchaseRecommendations = this.purchaseRecommendationsCopy
-        }
-        break;
-      case 'purchases':
-
+  filterByStatus(ev) {
         if (ev.target.value != "") {
           var status = ev.target.value;
           this.filterStatus = ev.target.value;
           if (status == 'ongoing') {
-            this.procurementData = this.procurementDataCopy
-            this.procurementData = this.procurementData.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
+            this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
           } else if (status == 'material') {
-            this.procurementData = this.procurementDataCopy
-            this.procurementData = this.procurementData.filter(p => p.orderType == 'material')
+            this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'material')
           } else if (status == 'component') {
-            this.procurementData = this.procurementDataCopy
-            this.procurementData = this.procurementData.filter(p => p.orderType == 'component')
+            this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'component')
           } else if (status == 'allOrders') {
-            this.procurementData = this.procurementDataNoFilter
-          } else if (status == 'open') {
             this.procurementData = this.procurementDataCopy
-            this.procurementData = this.procurementData.filter(p => p.status == 'open' && p.status == 'הזמנה פתוחה')
+          } else if (status == 'open') {
+            this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
+          } else if (status == 'closed') {
+            this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
           }
-          else {
-            this.procurementData = this.procurementDataNoFilter
-            this.procurementData = this.procurementData.filter(p => p.status == 'closed')
-          }
-
-        } else {
-
-        }
-        break;
-      default:
-
-    }
-
-
+        } 
   }
 
   setLinkDownlowd(id) {

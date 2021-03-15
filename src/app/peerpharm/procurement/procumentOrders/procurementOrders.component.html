@@ -24,48 +24,64 @@
         </div>
 
 
-        <!-- <form [formGroup]="filterParams" (ngSubmit)="filterPurchases()"> -->
-        <div class="row mt-4">
-
-          <div class="col-3">
-            <input type="text " class="form-control rounded" placeholder="Search By Order Number"
-              (keyup)="searchNumber($event)" />
+        <div class="row mt-2" *ngIf="fetchingOrders">
+          <div class="verySmallLoader">
+            Loading <br> Orders
           </div>
-          <div class="col-3">
-            <input type="text" class="form-control rounded" list="suppliers" placeholder="Search By Supplier Name"
-              (keyup)="searchBySupplier($event)" />
-            <!-- <datalist id="suppliers">
-                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
-                    </option>
-                  </datalist> -->
-          </div>
-          <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
-              (keyup)="searchByItem($event)" /></div>
-          <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Certificate Number"
-              (keyup)="searchByCertNum($event)" /></div>
-        </div>
-        <!-- <div class="row mt-4">
-                    <button></button>
-                  </div> -->
-        <!-- </form> -->
-
-        <div class="row mt-4">
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
+          <span class="float-left">
+            You don't have to wait for me...
+          </span>
         </div>
 
 
-        <div class="row mt-4">
-          <div class="col-2">
-            חפש לפי סטטוס <select (change)="filterByStatus($event,'purchases')" class="form-control rounded-pill">
-              <option selected="true" disabled="disabled">בחר סטטוס</option>
-              <option value="allOrders">כל ההזמנות</option>
-              <option value="ongoing">בטיפול</option>
-              <option value="closed">הזמנות סגורות</option>
-              <option value="material">חומרי גלם</option>
-              <option value="component">קומפוננטים</option>
+        <div  *ngIf="!fetchingOrders" class="search-container">
+
+          
+          <!-- <form [formGroup]="filterParams" (ngSubmit)="filterPurchases()"> -->
+            <div class="row mt-4">
+              
+              <div class="col-3">
+                <input type="text " class="form-control rounded" placeholder="Search By Order Number"
+                (keyup)="searchNumber($event)" />
+              </div>
+              <div class="col-3">
+                <input type="text" class="form-control rounded" list="suppliers" placeholder="Search By Supplier Name"
+                (keyup)="searchBySupplier($event)" />
+                <!-- <datalist id="suppliers">
+                  <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
+                  </option>
+                </datalist> -->
+              </div>
+              <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
+                (keyup)="searchByItem($event)" /></div>
+                <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Certificate Number"
+                  (keyup)="searchByCertNum($event)" /></div>
+                </div>
+                <!-- <div class="row mt-4">
+                  <button></button>
+                </div> -->
+                <!-- </form> -->
+                
+                <div class="row mt-4">
+                  <div class="col-3"></div>
+                  <div class="col-3"></div>
+                  <div class="col-3"></div>
+                  <div class="col-3"></div>
+                </div>
+                
+                
+                
+                
+                <div class="row mt-4">
+                  <div class="col-2">
+                    חפש לפי סטטוס <select (change)="filterByStatus($event)" class="form-control rounded-pill">
+                      <option selected="true" disabled="disabled">בחר סטטוס</option>
+                      <option value="allOrders">כל ההזמנות</option>
+                      <option value="ongoing">בטיפול</option>
+                      <option value="closed">הזמנות סגורות</option>
+                      <option value="material">חומרי גלם</option>
+                      <option value="component">קומפוננטים</option>
+              <option value="open">פתוחות</option>
             </select>
           </div>
           <div class="col-2">
@@ -96,10 +112,11 @@
               <option value='sachet'>סאשט</option>
             </select>
           </div>
-          <div class="col-1">
+        </div>
+          <!-- <div class="col-1">
             טען את כל הפריטים
             <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
-          </div>
+          </div> -->
 
           <div class="col-2">
             <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
