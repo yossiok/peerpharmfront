@@ -23,97 +23,100 @@
           </div>
         </div>
 
-
-        <!-- <form [formGroup]="filterParams" (ngSubmit)="filterPurchases()"> -->
-        <div class="row mt-4">
-
-          <div class="col-3">
-            <input type="text " class="form-control rounded" placeholder="Search By Order Number"
-              (keyup)="searchNumber($event)" />
+        <div class="row mt-2 " *ngIf="fetchingOrders">
+          <div class="verySmallLoader ml-8">
+            Loading <br> Orders
           </div>
-          <div class="col-3">
-            <input type="text" class="form-control rounded" list="suppliers" placeholder="Search By Supplier Name"
-              (keyup)="searchBySupplier($event)" />
-            <!-- <datalist id="suppliers">
-                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">{{supplier.suplierNumber}}
-                    </option>
-                  </datalist> -->
-          </div>
-          <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
-              (keyup)="searchByItem($event)" /></div>
-          <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Certificate Number"
-              (keyup)="searchByCertNum($event)" /></div>
-        </div>
-        <!-- <div class="row mt-4">
-                    <button></button>
-                  </div> -->
-        <!-- </form> -->
-
-        <div class="row mt-4">
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
+          <span class="float-left">
+            You don't have to wait for me...
+          </span>
         </div>
 
-
-        <div class="row mt-4">
-          <div class="col-2">
-            חפש לפי סטטוס <select (change)="filterByStatus($event,'purchases')" class="form-control rounded-pill">
-              <option selected="true" disabled="disabled">בחר סטטוס</option>
-              <option value="allOrders">כל ההזמנות</option>
-              <option value="ongoing">בטיפול</option>
-              <option value="closed">הזמנות סגורות</option>
-              <option value="material">חומרי גלם</option>
-              <option value="component">קומפוננטים</option>
-            </select>
-          </div>
-          <div class="col-2">
-            חפש לפי קטגוריה <select (change)="filterByCategory($event,'category')" class="form-control rounded-pill">
-              <option selected="true" disabled="disabled">בחר קטגוריה</option>
-              <option value='bottle_Glass'>בקבוק זכוכית</option>
-              <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-              <option value='jar_Glass'>צנצנת זכוכית</option>
-              <option value='jar_Plastic'>צנצנת פלסטיק</option>
-              <option value='cap'>פקק</option>
-              <option value='cover'>מכסה</option>
-              <option value='pump'>משאבה</option>
-              <option value='cosmetic_pump'>משאבה קוסמטית</option>
-              <option value='over_cap'>מכסה עילי</option>
-              <option value='tube'>שפורפרת</option>
-              <option value='colons'>קולונים</option>
-              <option value='hair_life'>היירלייפ</option>
-              <option value='compacts'>קומפקטים</option>
-              <option value='personal_package'>אריזות אישיות</option>
-              <option value='master_carton'>קרטוני מאסטר</option>
-              <option value='newsletter'>עלון לצרכן</option>
-              <option value='irosol_valve'>אירוסול- שסתום</option>
-              <option value='irosol_bottle'>איירוסול- בקבוק</option>
-              <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-              <option value='irosol_bottle'>איירוסול- בקבוק</option>
-              <option value='cellophane'>צלופן</option>
-              <option value='sticker'>מדבקה</option>
-              <option value='sachet'>סאשט</option>
-            </select>
-          </div>
-          <div class="col-1">
-            טען את כל הפריטים
-            <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
+        <div *ngIf="!fetchingOrders" class="search-container">
+          <div class="row mt-4">
+            <div class="col-3">
+              <input type="text " class="form-control rounded" placeholder="Search By Order Number"
+                (keyup)="searchNumber($event)" />
+            </div>
+            <div class="col-3">
+              <input type="text" class="form-control rounded" list="suppliers" placeholder="Search By Supplier Name"
+                (keyup)="searchBySupplier($event)" />
+            </div>
+            <div class="col-3"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
+                (keyup)="searchByItem($event)" /></div>
+            <div class="col-3"><input type="text" class="form-control rounded"
+                placeholder="Search By Certificate Number" (keyup)="searchByCertNum($event)" /></div>
           </div>
 
-          <div class="col-2">
-            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+          <div class="row mt-4">
+            <div class="col-3"></div>
+            <div class="col-3"></div>
+            <div class="col-3"></div>
+            <div class="col-3"></div>
+          </div>
+
+
+
+
+          <div class="row mt-4">
+            <div class="col-2">
+              חפש לפי סטטוס <select (change)="filterByStatus($event)" class="form-control rounded-pill">
+                <option selected="true" disabled="disabled">בחר סטטוס</option>
+                <option value="allOrders">כל ההזמנות</option>
+                <option value="ongoing">בטיפול</option>
+                <option value="closed">הזמנות סגורות</option>
+                <option value="material">חומרי גלם</option>
+                <option value="component">קומפוננטים</option>
+                <option value="open">פתוחות</option>
+              </select>
+            </div>
+            <div class="col-2">
+              חפש לפי קטגוריה <select (change)="filterByCategory($event,'category')" class="form-control rounded-pill">
+                <option selected="true" disabled="disabled">בחר קטגוריה</option>
+                <option value='bottle_Glass'>בקבוק זכוכית</option>
+                <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+                <option value='jar_Glass'>צנצנת זכוכית</option>
+                <option value='jar_Plastic'>צנצנת פלסטיק</option>
+                <option value='cap'>פקק</option>
+                <option value='cover'>מכסה</option>
+                <option value='pump'>משאבה</option>
+                <option value='cosmetic_pump'>משאבה קוסמטית</option>
+                <option value='over_cap'>מכסה עילי</option>
+                <option value='tube'>שפורפרת</option>
+                <option value='colons'>קולונים</option>
+                <option value='hair_life'>היירלייפ</option>
+                <option value='compacts'>קומפקטים</option>
+                <option value='personal_package'>אריזות אישיות</option>
+                <option value='master_carton'>קרטוני מאסטר</option>
+                <option value='newsletter'>עלון לצרכן</option>
+                <option value='irosol_valve'>אירוסול- שסתום</option>
+                <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+                <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                <option value='cellophane'>צלופן</option>
+                <option value='sticker'>מדבקה</option>
+                <option value='sachet'>סאשט</option>
+              </select>
+            </div>
+            <!-- <div class="col-1">
+              טען את כל הפריטים
+              <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
+            </div> -->
+            
+            <div class="col-2">
+              <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
               (click)="exportAsXLSX('purchaseData')">
-            <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
+              <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
               style="background: none;border:none" printSectionId="print-section" ngxPrint><img
-                src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
-          </div>
-          <div class="col-3"></div>
-          <div class="col-1">
-            From: <input class="form-control rounded-pill" (change)="dateChange()" #fromDateStr type="date">
-          </div>
-          <div class="col-1">
-            To: <input class="form-control rounded-pill" (change)="dateChange()" #toDateStr type="date">
+              src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+            </div>
+            <div class="col-3"></div>
+            <div class="col-1">
+              From: <input class="form-control rounded-pill" (change)="dateChange()" #fromDateStr type="date">
+            </div>
+            <div class="col-1">
+              To: <input class="form-control rounded-pill" (change)="dateChange()" #toDateStr type="date">
+            </div>
           </div>
         </div>
 
@@ -156,40 +159,8 @@
                   <td *ngIf="EditRowId == line.orderNumber">
                     <textarea [value]="line.remarks" #purchaseRemarks></textarea>
                   </td>
-                  <!-- <td><i (click)="orderSentToClient(line.orderNumber)" class="fa fa-paper-plane" aria-hidden="true"></i></td>
-                    <td><i (click)="clientGotTheOrder(line.orderNumber)" class="fa fa-check-square" aria-hidden="true"></i></td> -->
-
                   <td><label class="form-control">{{line.status}}</label></td>
                   <td><button class="btn btn-primary" (click)="printOrder(line)">Print</button></td>
-                  <!-- <td>
-                        <input [(ngModel)]="line.paymentStatus" (change)="changePaymentStatus($event,line.orderNumber)"
-                          list="payments" class="form-control">
-                        <datalist id="payments">
-                          <option value=" "> </option>
-                          <option value="fullyPaid">שולם במלואו</option>
-                          <option value="partlyPaid">שולם חלקית</option>
-                          <option value="advancePaid">שולם מקדמה</option>
-    
-                        </datalist>
-                      </td>
-                      <td><label class="form-control">{{line.paymentRemark}}</label></td> -->
-
-
-                  <!-- <td><button class="btn btn-info form-control" (click)="orderInput.click()">O</button></td> -->
-
-                  <!-- <td><button class="btn btn-info" (click)="sendOrder(line)">Send Order</button></td> -->
-                  <!-- <td>   <a style="display:block" target="_blank" (click)="setLinkDownlowd(line._id)" [href]="linkDownload"><img style="height: 30px; width:30px;"
-                    src="../../../../assets/images/pdf.png" alt="PDF" /></a>
-    
-                <input class="form-control" #orderInput style="display:none" type="file"
-                  (change)="onSelectOrderBill($event,line.orderNumber)"></td>
-    
-                  <td><button class="btn btn-info form-control" (click)="swiftInput.click()">S</button></td>
-                  <td>
-                    <a style="display:block" target="_blank" (click)="setLinkDownlowdTwo(line._id)" [href]="linkDownload"> <img style="height: 30px; width:30px;"
-                      src="../../../../assets/images/pdf.png" alt="PDF" /></a>
-                  <input class="form-control" #swiftInput style="display:none" type="file" (change)="onSelectSwift($event,line.orderNumber)">
-                  </td> -->
                   <td>{{line.user}}</td>
                 </tr>
               </tbody>
