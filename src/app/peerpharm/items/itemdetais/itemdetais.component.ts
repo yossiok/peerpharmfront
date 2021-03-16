@@ -31,6 +31,9 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('colums') colums: ElementRef;
   @ViewChild('container')
   private container: ElementRef;
+
+  loadingItem: boolean = false
+
   // New Item Tree // 
   itemBatches: any[];
   itemPrice: any[] = [];
@@ -1071,10 +1074,10 @@ export class ItemdetaisComponent implements OnInit {
 
   searchForItem(item) {
 
-    
+    this.loadingItem = true;
     this.editOrAdd = 'Edit'
     this.itemsService.getItemData(item).subscribe(res => {
-      alert('Loading data. Please wait')
+      this.loadingItem = false;
       if (res.length == 0) {
         this.toastr.error(item, "Item Not found");
         this.itemShown = Object.assign({}, this.itemCopy);
