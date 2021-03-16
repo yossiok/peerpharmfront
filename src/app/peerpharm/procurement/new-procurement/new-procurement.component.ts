@@ -10,6 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PurchaseData } from '../procumentOrders/PurchaseData';
 import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
+import { InvoiceData } from './InvoiceData';
+import { InvoiceStockItem } from './InvoiceStockItem';
 
 
 @Component({
@@ -62,14 +64,25 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   itemForm: FormGroup;
 
   //invoice data
-  purchaseInvoiceNumber: number;
-  invoiceRemarks: string;
-  coinRate:number = 1
-  invoiceCoin:string;
-  invoicePrice:number;
-  taxes:number = 0
-  taxesTwo:number = 0
-  fixedPrice:number;
+  invoice: InvoiceData = {
+    purchaseInvoiceNumber: 0,
+    invoiceRemarks: '',
+    coinRate: 0,
+    invoiceCoin: '',
+    invoicePrice: 0,
+    taxes: 0,
+    taxesTwo: 0,
+    fixedPrice: 0,
+    stockitems: [],
+    itemShipping: 0
+  }
+
+  invoiceStockitem:InvoiceStockItem = {
+    number: '',
+    name: '',
+    amount: 0,
+    shippingPrice: null
+  }
 
   //toggle purchase details
   showPurchaseDetails: boolean = false;
@@ -410,38 +423,72 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       })
   }
 
-  saveInvoiceToPurchase() {
-    this.fixedPrice = (this.invoicePrice-(this.taxes+this.taxesTwo)) / this.coinRate
-    this.newPurchase.controls.billNumber.value.push({
-      invoiceNumber: this.purchaseInvoiceNumber,
-      remarks: this.invoiceRemarks,
-      invoicePrice:this.invoicePrice,
-      invoiceCoin:this.invoiceCoin,
-      coinRate:this.coinRate,
-      taxes:this.taxes,
-      taxesTwo:this.taxesTwo,
-      fixedPrice:this.fixedPrice
+  addItemToInvoice() {
+    this.invoice.stockitems.push(this.invoiceStockitem)
+    this.invoiceStockitem = {
+      number: '',
+      name: '',
+      amount: 0,
+      shippingPrice: null
+    }
+  }
 
+  removeStockitemFromInvoice(i) {
+    this.invoice.stockitems.slice(i, 1)
+  }
+  
+  calculateShipping() {
+    this.invoice.fixedPrice = (this.invoice.invoicePrice-(this.invoice.taxes+this.invoice.taxesTwo)) / this.invoice.coinRate
+    let purchaseItems = this.invoice.stockitems
+    let itemShippingPrice;
+
+    // sum total amount and 
+    let totalAmount = 0;
+    purchaseItems.forEach(stockitem => {
+      totalAmount += Number(stockitem.amount)
     });
 
-    this.newPurchase.controls.sumShippingCost.setValue(this.newPurchase.controls.sumShippingCost.value + this.fixedPrice)
+    // 1 item shipping price
+    itemShippingPrice = this.invoice.fixedPrice / totalAmount
+
+    // not needed? 
+    // set item percentage from tatal amount
+    // purchaseItems.forEach(stockitem=> {
+    //   stockitem.amountPercentage = 100*Number(stockitem.quantity)/totalAmount
+    // })
+
+    // not needed??
+    // set Shipping Price for each item
+    // purchaseItems.forEach(stockitem=> {
+    //   let allAmountCost = updatedOrder.sumShippingCost/100*stockitem.amountPercentage
+    //   stockitem.shipItemCost = allAmountCost / stockitem.quantity
+    // })
+
+    this.invoice.stockitems.map(item => item.shippingPrice = itemShippingPrice)
+    this.invoice.itemShipping = itemShippingPrice
+  }
+
+  saveInvoiceToPurchase() {
+    this.newPurchase.controls.billNumber.value.push(this.invoice);
+    this.newPurchase.controls.sumShippingCost.setValue(this.newPurchase.controls.sumShippingCost.value + this.invoice.fixedPrice)
     this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
       .subscribe(res => {
         if (res) {
           this.newPurchase.patchValue({
             stockitems:res.stockitems
           })
-          this.toastr.success(`חשבונית מספר ${this.purchaseInvoiceNumber} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
-          this.purchaseInvoiceNumber = 0
-          this.invoiceRemarks = ''
-          this.invoicePrice = 0
-          this.invoiceCoin = ''
-          this.coinRate = 0
-          this.taxes = 0
-          this.taxesTwo = 0
+          this.toastr.success(`חשבונית מספר ${this.invoice.purchaseInvoiceNumber} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
+          this.invoice.purchaseInvoiceNumber = 0
+          this.invoice.invoiceRemarks = ''
+          this.invoice.invoicePrice = 0
+          this.invoice.invoiceCoin = ''
+          this.invoice.coinRate = 0
+          this.invoice.taxes = 0
+          this.invoice.taxesTwo = 0
+          this.invoice.stockitems = []
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
-        this.purchaseInvoiceNumber = null
+        this.invoice.purchaseInvoiceNumber = null
         this.modalService.dismissAll()
       })
   }

@@ -123,13 +123,14 @@
 
         <div class="row mt-2">
           <div class="col">
-            <button (click)="showItemDetails = !showItemDetails" [disabled]="disabled" class="btn btn-primary dropdown-toggle">
+            <button (click)="showItemDetails = !showItemDetails" [disabled]="disabled"
+              class="btn btn-primary dropdown-toggle">
               {{showItemDetails ? 'Hide Details' : 'Add Item'}}
             </button>
           </div>
         </div>
         <form [formGroup]="itemForm" (ngSubmit)="addItemToPurchase()">
-        <div *ngIf="showItemDetails" class="row mt-3">
+          <div *ngIf="showItemDetails" class="row mt-3">
             <div class="col-sm-12 col-md-4 form-group">
               <label for="">Item</label>
               <span class="red float-left h4">*</span>
@@ -167,102 +168,103 @@
               <input [disabled]="disabled" formControlName="coin" type="text" class="form-control" placeholder="Coin">
             </div>
 
-        </div>
+          </div>
 
-        <div *ngIf="showItemDetails" class="row mt-1">
-          <div class="col-5"></div>
-          <div class="col-2">
-            <button type="submit" [disabled]="itemForm.invalid" [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
-              <i class="fa fa-plus"></i>
+          <div *ngIf="showItemDetails" class="row mt-1">
+            <div class="col-5"></div>
+            <div class="col-2">
+              <button type="submit" [disabled]="itemForm.invalid"
+                [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            <div class="col-5"></div>
+          </div>
+        </form>
+
+        <hr class="text-muted">
+
+        <div class="wrapper">
+          <div class="col">
+            <button (click)="showPurchaseDetails = !showPurchaseDetails" class="btn btn-primary dropdown-toggle">
+              More Details
             </button>
+            <h5 class="text-secondary click">
+            </h5>
           </div>
-          <div class="col-5"></div>
-        </div>
-      </form>
+          <div *ngIf="showPurchaseDetails" class="purchase-details">
 
-      <hr class="text-muted">
-
-      <div class="wrapper">
-        <div class="col">
-          <button (click)="showPurchaseDetails = !showPurchaseDetails" class="btn btn-primary dropdown-toggle">
-            More Details
-          </button>
-          <h5 class="text-secondary click">
-          </h5>
-        </div>
-        <div *ngIf="showPurchaseDetails" class="purchase-details">
-
-          <div class="row">
-            <div class="col form-group">
-              <label for="">Item Type</label>
-              <select disabled type="text" class="form-control" placeholder="Order Type">
-                <option [value]="purchaseData.orderType">{{purchaseData.orderType}}</option>
-              </select>
-            </div>
-            <div class="col form-group">
-              <label for="">Order Date</label>
-              <input disabled value="{{purchaseData.creationDate | date:'d-M-yy'}}" type="date" class="form-control"
-                placeholder="Order Date">
-            </div>
-            <div class="col form-group">
-              <label for="">Arrival Date</label>
-              <input formControlName="arrivalDate" [disabled]="disabled" type="date" class="form-control"
-                placeholder="Arrival Date">
+            <div class="row">
+              <div class="col form-group">
+                <label for="">Item Type</label>
+                <select disabled type="text" class="form-control" placeholder="Order Type">
+                  <option [value]="purchaseData.orderType">{{purchaseData.orderType}}</option>
+                </select>
+              </div>
+              <div class="col form-group">
+                <label for="">Order Date</label>
+                <input disabled value="{{purchaseData.creationDate | date:'d-M-yy'}}" type="date" class="form-control"
+                  placeholder="Order Date">
+              </div>
+              <div class="col form-group">
+                <label for="">Arrival Date</label>
+                <input formControlName="arrivalDate" [disabled]="disabled" type="date" class="form-control"
+                  placeholder="Arrival Date">
                 <span>{{purchaseData.arrivalDate | date: 'd-M-yy'}}</span>
+              </div>
             </div>
-          </div>
 
-          <hr class="text-muted">
-          <div class="row mt-3">
-            <div class="col">
-              <h5 class="text-secondary">Supplier Details</h5>
+            <hr class="text-muted">
+            <div class="row mt-3">
+              <div class="col">
+                <h5 class="text-secondary">Supplier Details</h5>
+              </div>
             </div>
-          </div>
 
-          <div class="row mt-2">
-            <div class="col-sm-12 col-md-4 form-group">
-              <label for="supplierName">Supplier Name</label>
-              <input disabled [value]="purchaseData.supplierName" name="supplierName"
-                (change)="fillSupplierDetails($event)" list="suppliers" type="text" class="form-control"
-                placeholder="Supplier Name">
-              <datalist id="suppliers">
-                <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierName">
-                  {{supplier.suplierNumber}}
-                </option>
-              </datalist>
+            <div class="row mt-2">
+              <div class="col-sm-12 col-md-4 form-group">
+                <label for="supplierName">Supplier Name</label>
+                <input disabled [value]="purchaseData.supplierName" name="supplierName"
+                  (change)="fillSupplierDetails($event)" list="suppliers" type="text" class="form-control"
+                  placeholder="Supplier Name">
+                <datalist id="suppliers">
+                  <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierName">
+                    {{supplier.suplierNumber}}
+                  </option>
+                </datalist>
+              </div>
+              <div class="col-sm-12 col-md-4 form-group">
+                <label for="">Supplier Number</label>
+                <input disabled [value]="purchaseData.supplierNumber" type="text" class="form-control"
+                  placeholder="Supplier Number">
+              </div>
+              <div class="col-sm-12 col-md-4 form-group">
+                <label for="">Supplier Email</label>
+                <input disabled [value]="purchaseData.supplierEmail" type="text" class="form-control"
+                  placeholder="Supplier Email">
+              </div>
             </div>
-            <div class="col-sm-12 col-md-4 form-group">
-              <label for="">Supplier Number</label>
-              <input disabled [value]="purchaseData.supplierNumber" type="text" class="form-control"
-                placeholder="Supplier Number">
-            </div>
-            <div class="col-sm-12 col-md-4 form-group">
-              <label for="">Supplier Email</label>
-              <input disabled [value]="purchaseData.supplierEmail" type="text" class="form-control"
-                placeholder="Supplier Email">
-            </div>
-          </div>
 
-          <div class="row mt-1">
-            <div class="col-sm-12 col-md-12 form-group">
-              <label for="remarks">Remarks</label>
-              <textarea formControlName="remarks" [disabled]="disabled" value="purchaseData.remarks"
-                class="form-control" placeholder="Purchase Remarks"></textarea>
+            <div class="row mt-1">
+              <div class="col-sm-12 col-md-12 form-group">
+                <label for="remarks">Remarks</label>
+                <textarea formControlName="remarks" [disabled]="disabled" value="purchaseData.remarks"
+                  class="form-control" placeholder="Purchase Remarks"></textarea>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <hr class="text-muted">
+        <hr class="text-muted">
 
-      <div class="row mt-3">
-        <div class="col-4"></div>
-        <div class="col-4">
-          <button (click)="sendNewProc('update')" [disabled]="disabled" class="btn btn-primary form-control"
-            [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''">Confirm</button>
+        <div class="row mt-3">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <button (click)="sendNewProc('update')" [disabled]="disabled" class="btn btn-primary form-control"
+              [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''">Confirm</button>
+          </div>
+          <div class="col-4"></div>
         </div>
-        <div class="col-4"></div>
-      </div>
       </form>
     </div>
   </div>
@@ -356,7 +358,7 @@
           </div>
         </div>
         <form [formGroup]="itemForm" (ngSubmit)="addItemToPurchase()">
-        <div *ngIf="showItemDetails">
+          <div *ngIf="showItemDetails">
             <div class="row mt-3">
               <div class="col">
                 <h5 class="text-secondary">Item Details</h5>
@@ -413,76 +415,77 @@
             <div *ngIf="showItemDetails" class="row mt-1">
               <div class="col-5"></div>
               <div class="col-2">
-                <button type="button" (click)="addItemToPurchase()" [disabled]="itemForm.invalid" [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
+                <button type="button" (click)="addItemToPurchase()" [disabled]="itemForm.invalid"
+                  [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
                   <i class="fa fa-plus"></i>
                 </button>
               </div>
               <div class="col-5"></div>
             </div>
+          </div>
+        </form>
+
+
+        <div class="row mt-4">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <h6 class="text-primary">Purchase Items</h6>
+          </div>
+          <div class="col-4"></div>
         </div>
-      </form>
 
+        <div class="row mt-3 bg-muted">
+          <div style="height: 300px;overflow-y: scroll;" class="col-12 shadow rounded items">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Item Name</th>
+                  <th>Measurement</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>-</th>
+                  <th>-</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let stockitem of this.newPurchase.controls.stockitems.value;let i = index">
+                  <td>{{stockitem.number}}</td>
+                  <td>{{stockitem.name}}</td>
+                  <td>{{stockitem.measurement}}</td>
+                  <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>
+                  <td *ngIf="EditRowId == stockitem.number">
+                    <input #editQuantity class="form-control rounded-pill" [value]="stockitem.quantity" type="number">
+                  </td>
 
-      <div class="row mt-4">
-        <div class="col-4"></div>
-        <div class="col-4">
-          <h6 class="text-primary">Purchase Items</h6>
+                  <td *ngIf="EditRowId == ''">{{stockitem.price}}</td>
+                  <td *ngIf="EditRowId == stockitem.number">
+                    <input #editPrice class="form-control rounded-pill" [value]="stockitem.price" type="number">
+                  </td>
+
+                  <i *ngIf="EditRowId == ''" (click)="editStockItem(stockitem.number)"
+                    class="click fa fa-pencil-alt text-primary"></i>
+                  <i *ngIf="EditRowId == stockitem.number" (click)="saveStockItem(i)"
+                    class="click fa fa-save text-primary"></i>
+                  <td><i (click)="removeStockitemFromPurchase(i)" class="click fa fa-times text-danger"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="col-4"></div>
-      </div>
 
-      <div class="row mt-3 bg-muted">
-        <div style="height: 300px;overflow-y: scroll;" class="col-12 shadow rounded items">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Item Name</th>
-                <th>Measurement</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>-</th>
-                <th>-</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let stockitem of this.newPurchase.controls.stockitems.value;let i = index">
-                <td>{{stockitem.number}}</td>
-                <td>{{stockitem.name}}</td>
-                <td>{{stockitem.measurement}}</td>
-                <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>
-                <td *ngIf="EditRowId == stockitem.number">
-                  <input #editQuantity class="form-control rounded-pill" [value]="stockitem.quantity" type="number">
-                </td>
 
-                <td *ngIf="EditRowId == ''">{{stockitem.price}}</td>
-                <td *ngIf="EditRowId == stockitem.number">
-                  <input #editPrice class="form-control rounded-pill" [value]="stockitem.price" type="number">
-                </td>
+        <hr class="text-muted">
 
-                <i *ngIf="EditRowId == ''" (click)="editStockItem(stockitem.number)"
-                  class="click fa fa-pencil-alt text-primary"></i>
-                <i *ngIf="EditRowId == stockitem.number" (click)="saveStockItem(i)"
-                  class="click fa fa-save text-primary"></i>
-                <td><i (click)="removeStockitemFromPurchase(i)" class="click fa fa-times text-danger"></i></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="row mt-3">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" class="btn btn-primary form-control"
+              [disabled]="!newPurchase.valid" [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'"
+              [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
+          </div>
+          <div class="col-4"></div>
         </div>
-      </div>
-
-
-      <hr class="text-muted">
-
-      <div class="row mt-3">
-        <div class="col-4"></div>
-        <div class="col-4">
-          <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" class="btn btn-primary form-control"
-            [disabled]="!newPurchase.valid" [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'"
-            [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
-        </div>
-        <div class="col-4"></div>
-      </div>
       </form>
     </div>
   </div>
@@ -559,12 +562,12 @@
     <div class="row mt-2">
       <div class="col-md-4 form-group">
         <label for="invoiceNumber">מספר חשבונית<span class="red">*</span></label>
-        <input type="number" class="form-control" #invoiceNumber="ngModel" name="invoiceNumber" id="invoiceNumber"
-          [(ngModel)]="purchaseInvoiceNumber" placeholder="מספר חשבונית" required>
+        <input type="number" class="form-control" [(ngModel)]="invoice.purchaseInvoiceNumber" placeholder="מספר חשבונית"
+          required>
       </div>
       <div class="col-md-4 form-group">
         <label for="remarks">הערות</label>
-        <input type="text" class="form-control" [(ngModel)]="invoiceRemarks" placeholder="הערות">
+        <input type="text" class="form-control" [(ngModel)]="invoice.invoiceRemarks" placeholder="הערות">
       </div>
 
     </div>
@@ -572,43 +575,99 @@
     <div class="row mt-2">
       <div class="col-4"></div>
       <div class="col-4">
-        <button (click)="shippingInvoiceDetails = !shippingInvoiceDetails" class="form-control btn btn-primary">{{shippingInvoiceDetails ? 'סגור' : 'הוסף פרטי העמסה'}}</button>
+        <button (click)="shippingInvoiceDetails = !shippingInvoiceDetails"
+          class="form-control btn btn-primary">{{shippingInvoiceDetails ? 'הסתר פרטי העמסה' : 'הוסף פרטי העמסה'}}</button>
       </div>
       <div class="col-4"></div>
     </div>
 
+
+
     <div *ngIf="shippingInvoiceDetails" class="row mt-2">
-      <div class="col-md-4 form-group">
-        <label for="invoicePrice">מחיר סה"כ </label>
-        <input type="number" class="form-control" name="invoicePrice" id="invoicePrice" [(ngModel)]="invoicePrice"
-          placeholder="Total Price" required>
+    <h5>פריטים בחשבונית</h5>
+
+      <div class="row mt-2">
+        <div class="col-md-6 form-group">
+          <label>שם פריט</label>
+          <select [(ngModel)]="invoiceStockitem.name" name="stockItemName" class="form-control rounded-pill">
+            <option *ngFor="let item of this.newPurchase.controls.stockitems.value;let i = index" [value]="item.name">
+              {{item.name}}</option>
+          </select>
+        </div>
+        <div class="col-md-2 form-group">
+          <label>כמות</label>
+          <input type="number" [(ngModel)]="invoiceStockitem.amount" name="stockItemAmount"
+            class="form-control rounded-pill">
+        </div>
+        <div class="col-md-2 form-group">
+          <button class="btn btn-primary" style="margin-top: 31px;" (click)="addItemToInvoice()"><i class="fa fa-plus"></i></button>
+        </div>
       </div>
-      <div class="col-md-4 form-group">
-        <label for="taxes">מע"מ 1</label>
-        <input type="number" class="form-control" [(ngModel)]="taxes" placeholder="Taxes">
+
+      <div class="row mt-3 bg-muted m-3">
+        <div class="shadow rounded items">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>מק"ט</th>
+                <th>שם הפריט</th>
+                <th>כמות</th>
+                <th>מחיר העמסה (ליחידה)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let stockitem of invoice.stockitems; let i = index">
+                <td>{{stockitem.number}}</td>
+                <td>{{stockitem.name}}</td>
+                <td>{{stockitem.amount}}</td>
+                <td>{{stockitem.shippingPrice | currency: invoice.invoiceCoin}}</td>
+                <td><i (click)="removeStockitemFromInvoice(i)" class="click fa fa-times text-danger"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="col-md-4 form-group">
-        <label for="taxesTwo">מע"מ 2</label>
-        <input type="number" class="form-control" name="taxesTwo" id="taxesTwo" [(ngModel)]="taxesTwo"
-          placeholder="Taxes 2" required>
+
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <label for="invoicePrice">מחיר העמסה (שקלים) </label>
+          <input type="number" class="form-control" name="invoicePrice" id="invoicePrice" [(ngModel)]="invoice.invoicePrice"
+            placeholder="Total Price" required>
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="taxes"> מע"מ 1 (שקלים) </label>
+          <input type="number" class="form-control" [(ngModel)]="invoice.taxes" placeholder="Taxes">
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="taxesTwo">מע"מ 2 (שקלים)</label>
+          <input type="number" class="form-control" name="taxesTwo" id="taxesTwo" [(ngModel)]="invoice.taxesTwo"
+            placeholder="Taxes 2" required>
+        </div>
       </div>
-      <div class="col-md-4 form-group">
-        <label for="invoiceCoin">מטבע</label>
-        <select [(ngModel)]="Coin" class="form-control">
-          <option selected value="NIS">NIS</option>
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
-        </select>
-      </div>
-      <div class="col-md-4 form-group">
-        <label for="coinRate">ערך מטבע</label>
-        <input type="number" class="form-control" [(ngModel)]="coinRate" placeholder="Coin Rate">
-     
+
+      <div class="row mt-2">
+        <div class="col-md-4 form-group">
+          <label for="invoiceCoin">מטבע</label>
+          <select [(ngModel)]="invoice.invoiceCoin" class="form-control">
+            <option selected value="NIS">NIS</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+          </select>
+        </div>
+        <div class="col-md-4 form-group">
+          <label for="coinRate">שער מטבע מעודכן</label>
+          <input type="number" class="form-control" [(ngModel)]="invoice.coinRate" placeholder="Coin Rate">
+        </div>
+        <div class="col-md-4 form-group">
+          <button (click)="calculateShipping()" class="btn btn-primary">חשב מחיר העמסה לפריט</button>
+        </div>
       </div>
     </div>
     <div class="row mt-2">
-      <button [disabled]="!invoiceNumber.value" (click)="saveInvoiceToPurchase()" class="btn btn-primary form-control">
+      <button [disabled]="!invoice.purchaseInvoiceNumber || invoice.purchaseInvoiceNumber == 0"
+        (click)="saveInvoiceToPurchase()" class="btn btn-primary form-control">
         הוסף חשבונית להזמנה מס' {{purchaseData.orderNumber}}
       </button>
     </div>
@@ -639,13 +698,15 @@
               <tr>
                 <th>מספר חשבונית</th>
                 <th>מחיר העמסה </th>
+                <th> מחיר העמסה לפריט </th>
                 <th>הערות</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let invoice of purchaseData.billNumber">
-                <td>{{invoice.invoiceNumber}}</td>
+                <td>{{invoice.purchaseInvoiceNumber}}</td>
                 <td>{{invoice.fixedPrice}}</td>
+                <td>{{invoice.itemShipping | currency: invoice.invoiceCoin}}</td>
                 <td>{{invoice.remarks}}</td>
               </tr>
             </tbody>
