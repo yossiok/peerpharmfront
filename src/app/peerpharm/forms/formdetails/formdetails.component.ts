@@ -130,7 +130,6 @@ export class FormdetailsComponent implements OnInit {
 
   closeForm()
     {
-      debugger;
       if(confirm('האם אתה בטוח שברצונך לאשר את הטופס?'))
       {
         this.formsService.closeForm(this.formid).subscribe(data=>
@@ -144,7 +143,6 @@ export class FormdetailsComponent implements OnInit {
 
     closeFormPallets()
     {
-      debugger;
       if(confirm('האם אתה בטוח שברצונך לאשר את משטחי הטופס כמוכנים למשלוח? ?'))
       {
         this.formsService.closeFormPallets(this.formid).subscribe(data=>

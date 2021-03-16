@@ -11,6 +11,13 @@ button, input {
   justify-content: center;
 }
 
+.search {
+  background: #c5c2b7;
+  width: 61%;
+  height: 279px;
+  margin-left: 338px;
+}
+
 .fr {
   float: right;
 }
@@ -257,7 +264,7 @@ label {
 }
 
 .modal-inner {
-  max-height: 800px;
+  max-height: 600px;
   overflow-y: auto;
 }
 

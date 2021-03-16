@@ -34,6 +34,9 @@ import { FormsService } from 'src/app/services/forms.service';
 })
 export class StockComponent implements OnInit {
   // resCmpt: any;
+
+  @ViewChild('numberSearchInput') numberSearchInput: ElementRef;
+
   itemmoveBtnTitle: string = "Item Movements";
   loadingMovements: boolean = false;
   currShelf:any;
@@ -76,6 +79,7 @@ export class StockComponent implements OnInit {
   allowUserEditItem = false;
   updateSupplier = false;
   check = false;
+
   resCmpt: any = {
     whoPays: '',
     payingCustomersList: [],
@@ -400,14 +404,11 @@ export class StockComponent implements OnInit {
 
   //expected Arrivals modal
   getNewExpectedArrivalsData(outputeEvent) {
-
-
     console.log('getting new updated expected arrivals data')
     console.log(outputeEvent)
     if (outputeEvent == 'closeModal') {
       this.openProcurementModal = false;
       this.resCmpt = {}
-
       //update expected arrivals info for item 
     } else if (outputeEvent == 'stockLineChanged') {
       console.log('this.resCmpt', this.resCmpt)
@@ -536,6 +537,8 @@ export class StockComponent implements OnInit {
     }
     this.getColor(new Date);
 
+    this.numberSearchInput.nativeElement.focus()
+
 
   }
 
@@ -579,11 +582,8 @@ export class StockComponent implements OnInit {
 
   exportCurrTable() {
     this.loadingExcel = true;
-
     this.makeFileForExcelDownload().then((data: any[]) => {
       console.log(data)
-
-
       // var anyArr: any[]=data;
       switch (this.stockType) {
         case 'component':
@@ -604,8 +604,8 @@ export class StockComponent implements OnInit {
     }).catch(errMsg => {
       this.toastSrv.error(errMsg);
     });
-
   }
+
   makeFileForExcelDownload() {
     var that = this;
     var arr: any[] = []
@@ -1433,8 +1433,6 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
-
-
     this.sixMonth = 0;
     this.switchModalView(cmptNumber)
     this.showItemDetails = true;
