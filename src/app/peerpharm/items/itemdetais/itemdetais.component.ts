@@ -31,6 +31,7 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('colums') colums: ElementRef;
   @ViewChild('container')
   private container: ElementRef;
+  @ViewChild('itemNum') itemNum: ElementRef
 
   loadingItem: boolean = false
 
@@ -990,6 +991,7 @@ export class ItemdetaisComponent implements OnInit {
     this.getUserInfo();
     this.getItemData();
     //  this.showGoddetData();
+    setTimeout(() => this.itemNum.nativeElement.focus(), 300);
   }
 
 
