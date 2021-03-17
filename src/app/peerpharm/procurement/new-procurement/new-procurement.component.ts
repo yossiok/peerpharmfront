@@ -62,6 +62,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   newPurchase: FormGroup;
   deliveryCertificateForm: FormGroup;
   itemForm: FormGroup;
+  selectedItems: InvoiceStockItem[] = []
 
   //invoice data
   invoice: InvoiceData = {
@@ -73,11 +74,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     taxes: 0,
     taxesTwo: 0,
     fixedPrice: 0,
-    stockitems: [],
+    stockitems: this.selectedItems,
     itemShipping: 0
   }
 
-  invoiceStockitem:InvoiceStockItem = {
+  invoiceStockitem: InvoiceStockItem = {
     number: '',
     name: '',
     amount: 0,
@@ -99,7 +100,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierNumber: ["", Validators.required],
       supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [{value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit}, Validators.required],
+      arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }, Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: [''],
       userEmail: [''],
@@ -111,7 +112,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       deliveryCerts: [[]],
       outOfCountry: [false],
       recommendId: [''],
-      sumShippingCost:[0]
+      sumShippingCost: [0]
     });
 
     this.deliveryCertificateForm = fb.group({
@@ -162,14 +163,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
 
     if (this.purchaseData) {
-      this.purchaseData.recommendId = ''; 
+      this.purchaseData.recommendId = '';
       this.stockItems = this.purchaseData.stockitems
     }
-    else console.log('') 
-    if (this.isEdit) 
-    {
-    this.newPurchase.setValue(this.purchaseData as PurchaseData);
-    this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
+    else console.log('')
+    if (this.isEdit) {
+      this.newPurchase.setValue(this.purchaseData as PurchaseData);
+      this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
     }
     else this.purchaseData = undefined
     this.getAllSuppliers();
@@ -181,17 +181,29 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.isEdit.currentValue){
-      if(changes.purchaseData) {
-        if(!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = '' 
-        if(!changes.purchaseData.currentValue.sumShippingCost) changes.purchaseData.currentValue.sumShippingCost = 0 
-      } 
-      if(this.isEdit) {
-        if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''   
+    if (changes.isEdit.currentValue) {
+      if (changes.purchaseData) {
+        if (!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = ''
+        if (!changes.purchaseData.currentValue.sumShippingCost) changes.purchaseData.currentValue.sumShippingCost = 0
+      }
+      if (this.isEdit) {
+        if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''
         this.newPurchase.setValue(changes.purchaseData.currentValue)
-      } 
+      }
     }
-  
+
+  }
+
+  formatDate(date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+    return [year, month, day].join('-');
   }
 
   updateItemInPL() {
@@ -203,37 +215,76 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   setPurchaseStatus(ev) {
-    if(confirm('האם לשנות סטטוס הזמנה ?')) {
+    if (confirm('האם לשנות סטטוס הזמנה ?')) {
       this.newPurchase.controls.status.setValue(ev.target.value);
-      this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data=>{
-      if(data){
-        console.log(data)
-        this.toastr.success('סטטוס עודכן בהצלחה !')
-        location.reload()
-      }
-      else this.toastr.error('משהו השתבש...')
+      this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
+        if (data) {
+          console.log(data)
+          this.toastr.success('סטטוס עודכן בהצלחה !')
+          location.reload()
+        }
+        else this.toastr.error('משהו השתבש...')
       })
     }
-   
- 
   }
 
-  // fillPurchaseDetails(recommendation) {
-  //   this.itemForm.value.controls.number = recommendation.componentNumber;
-  //   this.newPurchase.controls.orderType.setValue(recommendation.type);
-  //   this.itemForm.value.controls.quantity = recommendation.amount
-  //   this.newProcurement.recommendId = recommendation._id
-  //   this.findStockItemByNumber();
-  // }
 
+  //Materials
+  fillMaterialNumber(ev) {
+    var materialName = ev.target.value;
+    var material = this.allMaterials.find(material => material.componentName == materialName)
+    this.itemForm.controls.number.setValue(material.componentN);
+    this.findStockItemByNumber();
+  }
+
+
+  getAllMaterials() {
+    this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
+      this.allMaterials = data;
+    })
+  }
+
+
+  // Suppliers
+  getAllSuppliers() {
+    this.supplierService.getSuppliersDiffCollection().subscribe(data => {
+      this.allSuppliers = data;
+    })
+  }
+
+  fillSupplierDetails(ev) {
+    let supplier = ev.target.value;
+    let result = this.allSuppliers.filter(x => supplier == x.suplierName)
+    this.currSupplier = result[0]
+    this.newPurchase.controls.supplierNumber.setValue(this.currSupplier.suplierNumber)
+    if (this.currSupplier.email) {
+      this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
+    }
+  }
+
+  updateSupplierEmail(ev) {
+    let email = ev.target.value;
+    if (confirm('האם לעדכן מייל אצל הספק ?')) {
+      this.currSupplier.email = email
+      if (email != '') {
+        this.supplierService.updateCurrSupplier(this.currSupplier).subscribe(data => {
+          if (data) {
+            this.toastr.success('מייל עודכן בהצלחה !')
+          }
+        })
+      }
+    }
+  }
+
+
+  //Stock Items
   findStockItemByNumber() {
     if (this.itemForm.get('number').value != '') {
       this.toastr.warning('שים לב! יש ללחוץ על + בסיום')
       this.toastr.warning('אחרת הפריט לא יישמר!')
       //this.purchaseData.orderType
-      if(this.newPurchase && this.purchaseData)
-      {
-      this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
+      if (this.newPurchase && this.purchaseData) {
+        this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
       }
       if (this.newPurchase.controls.orderType.value == 'material') {
         this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
@@ -243,7 +294,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            if(!supplier) console.log('Supplier undefined') 
+            if (!supplier) console.log('Supplier undefined')
             else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
           } else {
             this.toastr.error('פריט לא קיים במערכת')
@@ -253,15 +304,15 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       } else if (this.newPurchase.controls.orderType.value == 'component') {
         this.inventoryService.getCmptByitemNumber(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
-            this.itemForm.controls.name.setValue(data[0].componentName) 
-            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure) 
-            this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs) 
+            this.itemForm.controls.name.setValue(data[0].componentName)
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
+            this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            if(!supplier) console.log('Supplier undefined')
+            if (!supplier) console.log('Supplier undefined')
             else {
-              this.itemForm.controls.price.setValue(parseFloat(supplier.price)) 
+              this.itemForm.controls.price.setValue(parseFloat(supplier.price))
               this.itemForm.controls.coin = supplier.coin
-            } 
+            }
 
           } else {
             this.toastr.error('פריט לא קיים במערכת')
@@ -275,7 +326,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     else this.toastr.warning('יש לרשום מספר פריט.')
   }
 
-  addItemToPurchase() { 
+  addItemToPurchase() {
     this.stockItems.push(this.itemForm.value)
     this.newPurchase.controls.stockitems.setValue(this.stockItems)
     this.resetStockItem();
@@ -298,32 +349,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.editStockItem('')
   }
 
-  getAllMaterials() {
-    this.inventoryService.getAllMaterialsForFormules().subscribe(data => {
-      this.allMaterials = data;
-    })
-  }
-
-  getAllSuppliers() {
-    this.supplierService.getSuppliersDiffCollection().subscribe(data => {
-      this.allSuppliers = data;
-    })
-  }
-
-  fillSupplierDetails(ev) {
-    let supplier = ev.target.value;
-    let result = this.allSuppliers.filter(x => supplier == x.suplierName)
-    this.currSupplier = result[0]
-    this.newPurchase.controls.supplierNumber.setValue(this.currSupplier.suplierNumber)
-    if (this.currSupplier.email) {
-      this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
-    }
-  }
 
   removeStockitemFromPurchase(i) {
     if (confirm('האם להסיר פריט זה ?')) {
-          this.newPurchase.controls.stockitems.value.splice(i, 1)
-          confirm('יש לשמור את ההזמנה על מנת לעדכן את מחיקת הפריט')
+      this.newPurchase.controls.stockitems.value.splice(i, 1)
+      confirm('יש לשמור את ההזמנה על מנת לעדכן את מחיקת הפריט')
     }
   }
 
@@ -333,14 +363,102 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.editItem = false;
   }
 
- 
 
-  fillMaterialNumber(ev) {
-    var materialName = ev.target.value;
-    var material = this.allMaterials.find(material => material.componentName == materialName)
-    this.itemForm.controls.number.setValue(material.componentN);
-    this.findStockItemByNumber();
+  resetStockItem() {
+    this.itemForm.reset()
   }
+
+  selectItem(i, checked) {
+    if (checked) this.selectedItems.push(this.newPurchase.controls.stockitems.value[i])
+    else this.selectedItems.forEach( (item, index) => { 
+      if (item.name == this.newPurchase.controls.stockitems.value[i].name) {
+        this.selectedItems = this.selectedItems.slice(index, 1)
+      }})
+  }
+
+  // Invoices and Certificates
+  saveCertificate() {
+    this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificateForm.value as DeliveryCertificate);
+    this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
+      .subscribe(res => {
+        if (res) {
+          this.toastr.success(`תעודה מספר ${this.deliveryCertificateForm.get('certificateNumber').value} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
+        }
+        else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
+        this.deliveryCertificateForm.reset()
+        this.deliveryCertificateForm.controls['userName'].setValue(this.authService.loggedInUser.userName)
+        this.modalService.dismissAll()
+      })
+  }
+
+  addItemToInvoice() {
+    this.invoice.stockitems.push(this.invoiceStockitem)
+    this.invoiceStockitem = {
+      number: '',
+      name: '',
+      amount: 0,
+      shippingPrice: null
+    }
+  }
+
+
+  saveInvoiceToPurchase() {
+    this.newPurchase.controls.billNumber.value.push(this.invoice);
+    this.newPurchase.controls.sumShippingCost.setValue(this.newPurchase.controls.sumShippingCost.value + this.invoice.fixedPrice)
+    this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
+      .subscribe(res => {
+        if (res) {
+          this.newPurchase.patchValue({
+            stockitems: res.stockitems
+          })
+          this.toastr.success(`חשבונית מספר ${this.invoice.purchaseInvoiceNumber} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
+          this.invoice.purchaseInvoiceNumber = 0
+          this.invoice.invoiceRemarks = ''
+          this.invoice.invoicePrice = 0
+          this.invoice.invoiceCoin = ''
+          this.invoice.coinRate = 0
+          this.invoice.taxes = 0
+          this.invoice.taxesTwo = 0
+          this.invoice.stockitems = []
+        }
+        else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
+        this.invoice.purchaseInvoiceNumber = null
+        this.modalService.dismissAll()
+      })
+  }
+
+
+  calculateShipping() {
+    this.invoice.fixedPrice = (this.invoice.invoicePrice - (this.invoice.taxes + this.invoice.taxesTwo)) / this.invoice.coinRate
+    let purchaseItems = this.invoice.stockitems
+    let itemShippingPrice;
+
+    // sum total amount and 
+    let totalAmount = 0;
+    purchaseItems.forEach(stockitem => {
+      totalAmount += Number(stockitem.amount)
+    });
+
+    // 1 item shipping price
+    itemShippingPrice = this.invoice.fixedPrice / totalAmount
+
+    // not needed? 
+    // set item percentage from tatal amount
+    // purchaseItems.forEach(stockitem=> {
+    //   stockitem.amountPercentage = 100*Number(stockitem.quantity)/totalAmount
+    // })
+
+    // not needed??
+    // set Shipping Price for each item
+    // purchaseItems.forEach(stockitem=> {
+    //   let allAmountCost = updatedOrder.sumShippingCost/100*stockitem.amountPercentage
+    //   stockitem.shipItemCost = allAmountCost / stockitem.quantity
+    // })
+
+    this.invoice.stockitems.map(item => item.shippingPrice = itemShippingPrice)
+    this.invoice.itemShipping = itemShippingPrice
+  }
+
 
   sendNewProc(action) {
     if (action == 'add') {
@@ -379,123 +497,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
   }
 
-  updateSupplierEmail(ev) {
-    let email = ev.target.value;
-    if (confirm('האם לעדכן מייל אצל הספק ?')) {
-      this.currSupplier.email = email
-      if (email != '') {
-        this.supplierService.updateCurrSupplier(this.currSupplier).subscribe(data => {
-          if (data) {
-            this.toastr.success('מייל עודכן בהצלחה !')
-          }
-        })
-      }
-    }
-  }
-
-  formatDate(date) {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-    if (month.length < 2)
-      month = '0' + month;
-    if (day.length < 2)
-      day = '0' + day;
-    return [year, month, day].join('-');
-  }
-
-  resetStockItem() {
-    this.itemForm.reset()
-  }
-
-  saveCertificate() {
-    this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificateForm.value as DeliveryCertificate);
-    this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
-      .subscribe(res => {
-        if (res) {
-          this.toastr.success(`תעודה מספר ${this.deliveryCertificateForm.get('certificateNumber').value} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
-        }
-        else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
-        this.deliveryCertificateForm.reset()
-        this.deliveryCertificateForm.controls['userName'].setValue(this.authService.loggedInUser.userName)
-        this.modalService.dismissAll()
-      })
-  }
-
-  addItemToInvoice() {
-    this.invoice.stockitems.push(this.invoiceStockitem)
-    this.invoiceStockitem = {
-      number: '',
-      name: '',
-      amount: 0,
-      shippingPrice: null
-    }
-  }
-
-  removeStockitemFromInvoice(i) {
-    this.invoice.stockitems.slice(i, 1)
-  }
-  
-  calculateShipping() {
-    this.invoice.fixedPrice = (this.invoice.invoicePrice-(this.invoice.taxes+this.invoice.taxesTwo)) / this.invoice.coinRate
-    let purchaseItems = this.invoice.stockitems
-    let itemShippingPrice;
-
-    // sum total amount and 
-    let totalAmount = 0;
-    purchaseItems.forEach(stockitem => {
-      totalAmount += Number(stockitem.amount)
-    });
-
-    // 1 item shipping price
-    itemShippingPrice = this.invoice.fixedPrice / totalAmount
-
-    // not needed? 
-    // set item percentage from tatal amount
-    // purchaseItems.forEach(stockitem=> {
-    //   stockitem.amountPercentage = 100*Number(stockitem.quantity)/totalAmount
-    // })
-
-    // not needed??
-    // set Shipping Price for each item
-    // purchaseItems.forEach(stockitem=> {
-    //   let allAmountCost = updatedOrder.sumShippingCost/100*stockitem.amountPercentage
-    //   stockitem.shipItemCost = allAmountCost / stockitem.quantity
-    // })
-
-    this.invoice.stockitems.map(item => item.shippingPrice = itemShippingPrice)
-    this.invoice.itemShipping = itemShippingPrice
-  }
-
-  saveInvoiceToPurchase() {
-    this.newPurchase.controls.billNumber.value.push(this.invoice);
-    this.newPurchase.controls.sumShippingCost.setValue(this.newPurchase.controls.sumShippingCost.value + this.invoice.fixedPrice)
-    this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
-      .subscribe(res => {
-        if (res) {
-          this.newPurchase.patchValue({
-            stockitems:res.stockitems
-          })
-          this.toastr.success(`חשבונית מספר ${this.invoice.purchaseInvoiceNumber} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
-          this.invoice.purchaseInvoiceNumber = 0
-          this.invoice.invoiceRemarks = ''
-          this.invoice.invoicePrice = 0
-          this.invoice.invoiceCoin = ''
-          this.invoice.coinRate = 0
-          this.invoice.taxes = 0
-          this.invoice.taxesTwo = 0
-          this.invoice.stockitems = []
-        }
-        else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
-        this.invoice.purchaseInvoiceNumber = null
-        this.modalService.dismissAll()
-      })
-  }
-
   open(modal) {
     this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
+
+
 
 }
 
@@ -506,6 +512,17 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
 
+
+
+
+
+  // fillPurchaseDetails(recommendation) {
+  //   this.itemForm.value.controls.number = recommendation.componentNumber;
+  //   this.newPurchase.controls.orderType.setValue(recommendation.type);
+  //   this.itemForm.value.controls.quantity = recommendation.amount
+  //   this.newProcurement.recommendId = recommendation._id
+  //   this.findStockItemByNumber();
+  // }
 
       // this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data => {
       //   ;
