@@ -589,9 +589,11 @@ export class ScheduleComponent implements OnInit {
   }
 
   deleteLine(id) {
-    this.scheduleService.deleteSchedule(id).subscribe(res => {
-      this.scheduleData = this.scheduleData.filter(elem => elem._id != id);
-    });
+    if(confirm('האם אתה בטוח שברצונך למחוק את השורה?')) {
+      this.scheduleService.deleteSchedule(id).subscribe(res => {
+        this.scheduleData = this.scheduleData.filter(elem => elem._id != id);
+      });
+    }
   }
 
   filterSchedule() {
