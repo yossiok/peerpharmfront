@@ -48,6 +48,7 @@ export class ScheduleComponent implements OnInit {
   printCostumerBarcode:boolean = true;
   printExpBarcode:boolean = true;
   newBatchChange:boolean = false;
+  time: any;
 
   closeResult: string;
   public printScheduleFillingForm: FormGroup;
@@ -105,6 +106,7 @@ export class ScheduleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.startTime()
     this.getAllUnpackedSchedules();
     this.today = new Date();
     this.today = moment(this.today).format('YYYY-MM-DD');
@@ -125,6 +127,24 @@ export class ScheduleComponent implements OnInit {
       mkp: new FormControl('', [Validators.required]),
       pcsCartonQuantity: new FormControl('', [Validators.required])
     });
+  }
+
+  checkTime(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+  
+  startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    // add a zero in front of numbers<10
+    m = this.checkTime(m);
+    s = this.checkTime(s);
+    this.time = h + ":" + m + ":" + s;
   }
 
   get printBarcodeValues(): string[] {
@@ -224,7 +244,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   dateChanged(date) {
-    
+    this.startTime()
     console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {

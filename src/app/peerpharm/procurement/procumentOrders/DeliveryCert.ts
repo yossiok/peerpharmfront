@@ -1,8 +1,9 @@
+import { StockItem } from "../new-procurement/StockItem";
+
 export interface DeliveryCertificate {
     certificateNumber: string;
     deliveryArrivalDate: Date;
-    itemNumber: string;
-    amount: number;
-    remarks: string[];
+    stockitems: StockItem[];
+    remarks: string;
     userName: string;
 }

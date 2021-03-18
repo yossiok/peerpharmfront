@@ -2,7 +2,7 @@
   <div class="row fixNoaStupidStuff">
     <div class="col-4 fixNoaStupidStuff"></div>
     <div class="col-4 fixNoaStupidStuff">
-      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Filling Schedule</h1>
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Filling Schedule <span *ngIf="time"></span>{{today | date: 'd-M-yy'}} {{time}}</h1>
     </div>
     <div class="col-4 fixNoaStupidStuff"></div>
   </div>
