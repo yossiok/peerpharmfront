@@ -11,7 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PurchaseData } from '../procumentOrders/PurchaseData';
 import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
 import { InvoiceData } from './InvoiceData';
-import { InvoiceStockItem } from './InvoiceStockItem';
+import { StockItem } from './StockItem';
 
 
 @Component({
@@ -60,9 +60,20 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   editItem: boolean = false;
 
   newPurchase: FormGroup;
-  deliveryCertificateForm: FormGroup;
+  // deliveryCertificateForm: FormGroup;
   itemForm: FormGroup;
-  selectedItems: InvoiceStockItem[] = []
+
+  // Items to select for invoice / deliveryCert
+  selectedItems: StockItem[] = []
+
+  deliveryCertificate: DeliveryCertificate = {
+    certificateNumber: '',
+    deliveryArrivalDate: null,
+    stockitems: this.selectedItems,
+    remarks: '',
+    userName: this.authService.loggedInUser.userName
+  }
+  certValid: boolean = false
 
   //invoice data
   invoice: InvoiceData = {
@@ -76,13 +87,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     fixedPrice: 0,
     stockitems: this.selectedItems,
     itemShipping: 0
-  }
-
-  invoiceStockitem: InvoiceStockItem = {
-    number: '',
-    name: '',
-    amount: 0,
-    shippingPrice: null
   }
 
   //toggle purchase details
@@ -115,14 +119,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       sumShippingCost: [0]
     });
 
-    this.deliveryCertificateForm = fb.group({
-      certificateNumber: ['', Validators.required],
-      deliveryArrivalDate: [new Date(), Validators.required],
-      itemNumber: ['', Validators.required],
-      amount: [null, Validators.required],
-      remarks: [''],
-      userName: ['']
-    })
+    // this.deliveryCertificateForm = fb.group({
+    //   certificateNumber: ['', Validators.required],
+    //   deliveryArrivalDate: [new Date(), Validators.required],
+    //   // itemNumber: ['', Validators.required],
+    //   amount: [null, Validators.required],
+    //   remarks: [''],
+    //   userName: ['']
+    // })
 
     this.itemForm = fb.group({
       number: ['', Validators.required],
@@ -369,37 +373,69 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   selectItem(i, checked) {
-    if (checked) this.selectedItems.push(this.newPurchase.controls.stockitems.value[i])
+    if (checked) {
+      this.selectedItems.push({...this.newPurchase.controls.stockitems.value[i]})
+      this.selectedItems[this.selectedItems.length - 1].quantity = 0
+    } 
     else this.selectedItems.forEach( (item, index) => { 
       if (item.name == this.newPurchase.controls.stockitems.value[i].name) {
-        this.selectedItems = this.selectedItems.slice(index, 1)
+        this.selectedItems.splice(index, 1)
       }})
+  }
+
+  checkItemAmount(i, itemNumber, amount, inputRef) {
+    amount = amount.target.value
+    for (let item of this.newPurchase.controls.stockitems.value) {
+      if (item.number == itemNumber) {
+        if (amount > item.quantity) {
+          this.toastr.warning('שים לב! הכמות שהזנת גדולה מהכמות בהזמנה')
+        } 
+        else this.selectedItems[i].quantity = amount
+      }
+    }
+  }
+
+  checkCertValidation() {
+    let bool = false;
+    if(this.deliveryCertificate.certificateNumber != null && this.deliveryCertificate.certificateNumber != '' && this.deliveryCertificate.certificateNumber != undefined) {
+      if(this.deliveryCertificate.deliveryArrivalDate != null && this.deliveryCertificate.deliveryArrivalDate != undefined) {
+        if(this.selectedItems.length > 0) {
+          let allAmountsFilled = true;
+          for (let item of this.selectedItems) {
+            if (item.quantity <= 0) allAmountsFilled = false
+          }
+          bool = allAmountsFilled
+        } 
+      } 
+    }
+    this.certValid = bool;
+    // if(bool) this.toastr.success('תעודה תקינה. ניתן לשמור.')
+    // else this.toastr.error('תעודה לא תקינה. אנא בדוק את כל השדות')
   }
 
   // Invoices and Certificates
   saveCertificate() {
-    this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificateForm.value as DeliveryCertificate);
+    this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificate);
     this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
       .subscribe(res => {
         if (res) {
-          this.toastr.success(`תעודה מספר ${this.deliveryCertificateForm.get('certificateNumber').value} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
+          this.toastr.success(`תעודה מספר ${this.deliveryCertificate.certificateNumber} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
-        this.deliveryCertificateForm.reset()
-        this.deliveryCertificateForm.controls['userName'].setValue(this.authService.loggedInUser.userName)
+        this.deliveryCertificate.userName = this.authService.loggedInUser.userName
         this.modalService.dismissAll()
       })
   }
 
-  addItemToInvoice() {
-    this.invoice.stockitems.push(this.invoiceStockitem)
-    this.invoiceStockitem = {
-      number: '',
-      name: '',
-      amount: 0,
-      shippingPrice: null
-    }
-  }
+  // addItemToInvoice() {
+  //   this.invoice.stockitems.push(this.invoiceStockitem)
+  //   this.invoiceStockitem = {
+  //     number: '',
+  //     name: '',
+  //     amount: 0,
+  //     shippingPrice: null
+  //   }
+  // }
 
 
   saveInvoiceToPurchase() {
@@ -436,7 +472,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     // sum total amount and 
     let totalAmount = 0;
     purchaseItems.forEach(stockitem => {
-      totalAmount += Number(stockitem.amount)
+      totalAmount += Number(stockitem.quantity)
     });
 
     // 1 item shipping price
@@ -498,6 +534,26 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   open(modal) {
+    this.certValid = false;
+    this.deliveryCertificate = {
+      certificateNumber: '',
+      deliveryArrivalDate: null,
+      stockitems: this.selectedItems,
+      remarks: '',
+      userName: this.authService.loggedInUser.userName
+    }
+    this.invoice = {
+      purchaseInvoiceNumber: 0,
+      invoiceRemarks: '',
+      coinRate: 0,
+      invoiceCoin: '',
+      invoicePrice: 0,
+      taxes: 0,
+      taxesTwo: 0,
+      fixedPrice: 0,
+      stockitems: this.selectedItems,
+      itemShipping: 0
+    }
     this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
 

@@ -19,6 +19,11 @@ select:focus,input:focus,textarea:focus {
 input:hover {
     cursor: auto;
 }
+
+.smaller-input {
+  width: 70px;
+}
+
 ::ng-deep .modal-content  {
  border-radius: 10px;
 }

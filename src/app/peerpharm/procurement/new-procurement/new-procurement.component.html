@@ -63,14 +63,15 @@
             <table class="table table-hover">
               <thead>
                 <tr>
+                  <th></th>
                   <th>Item</th>
                   <th>Item Name</th>
-                  <th>Remarks</th>
-                  <th>Measurement</th>
                   <th>Quantity</th>
+                  <th>Measurement</th>
                   <th>Price</th>
                   <th>Coin</th>
                   <th>1 Unit Shipping Price</th>
+                  <th>Remarks</th>
                 </tr>
               </thead>
 
@@ -80,32 +81,32 @@
                   <td><input class="text-primary" #cb type="checkbox" (change)="selectItem(i, cb.checked)"></td>
                   <td>{{stockitem.number}}</td>
                   <td>{{stockitem.name}}</td>
-                  <td>{{stockitem.itemRemarks}}</td>
-                  <td *ngIf="!editItem">{{stockitem.measurement}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
-                      class="form-control">
+                    class="form-control">
                   </td>
-
+                  
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
+                  <td *ngIf="!editItem">{{stockitem.measurement}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity"
-                      class="form-control">
+                    class="form-control">
                   </td>
-
+                  
                   <td *ngIf="!editItem">{{stockitem.price}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
-                      class="form-control">
+                    class="form-control">
                   </td>
                   <td *ngIf="!editItem">{{stockitem.coin}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.coin"
-                      class="form-control">
+                    class="form-control">
                   </td>
-
+                  
                   <td>{{stockitem.shipItemCost}}</td>
-
+                  <td>{{stockitem.itemRemarks}}</td>
+                  
                   <td><i *ngIf="!disabled  && !editItem" (click)="editItem = !editItem"
                       class="click fa fa-pencil-alt text-primary"></i></td>
                   <td><i *ngIf="!disabled  && editItem" (click)="editItem = !editItem"
@@ -504,36 +505,53 @@
 
     <div class="container bg-white border border-primary shadow-lg text-center p-5">
 
-      <form [formGroup]="deliveryCertificateForm" (ngSubmit)="saveCertificate()">
+      <!-- <form [formGroup]="deliveryCertificateForm" (ngSubmit)="saveCertificate()"> -->
         <div class="row mt-2"><span class="red">*</span> שדה חובה </div>
         <div class="row mt-2">
           <div class="col-md-4 form-group">
             <label for="certificateNumber">מספר תעודה<span class="red">*</span></label>
-            <input formControlName="certificateNumber" maxlength="4" type="text" class="form-control"
+            <input [(ngModel)]="deliveryCertificate.certificateNumber" (keyup)="checkCertValidation()" maxlength="4" type="text" class="form-control"
               placeholder="4 ספרות אחרונות" required>
           </div>
           <div class="col-md-4 form-group">
             <label for="deliveryArrivalDate">תאריך קבלת משלוח<span class="red">*</span></label>
-            <input formControlName="deliveryArrivalDate" type="date" class="form-control" required>
+            <input [(ngModel)]="deliveryCertificate.deliveryArrivalDate" (change)="checkCertValidation()" type="date" class="form-control" required>
           </div>
-          <div class="col-md-4 form-group">
-            <label for="itemNumber">מס' פריט<span class="red">*</span></label>
-            <input formControlName="itemNumber" type="text" class="form-control" placeholder="מס' פריט" required>
+
+          <div class="row mt-3 bg-muted m-3">
+            <div class="shadow rounded items">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>מק"ט</th>
+                    <th>שם הפריט</th>
+                    <th>כמות</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let stockitem of selectedItems; let i = index">
+                    <td>{{stockitem.number}}</td>
+                    <td>{{stockitem.name}}</td>
+                    <td><input class="smaller-input" type="number" #certItemAmount (keyup)="checkCertValidation()" 
+                      (keyup)="checkItemAmount(i, stockitem.number, $event, certItemAmount)"
+                       (blur)="checkCertValidation()" (click)="checkItemAmount(i, stockitem.number, $event, certItemAmount)"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="col-md-4 form-group">
-            <label for="amount">כמות<span class="red">*</span></label>
-            <input formControlName="amount" type="number" class="form-control" required>
-          </div>
+
           <div class="col-md-4 form-group">
             <label for="remarks">הערות</label>
-            <input formControlName="remarks" type="text" class="form-control" placeholder="הערות">
+            <input [(ngModel)]="deliveryCertificate.remarks" type="text" class="form-control" placeholder="הערות">
           </div>
           <br>
-          <button type="submit" [disabled]="!deliveryCertificateForm.valid" class="btn btn-primary form-control">
+          <!-- <button (click)="checkCertValidation()">בדוק תקינות</button> -->
+          <button (click)="saveCertificate()" [style.cursor]="certValid ? 'pointer' : 'not-allowed'" [disabled]="!certValid" class="btn btn-primary form-control">
             הוסף את התעודה להזמנה מס' {{purchaseData.orderNumber}}
           </button>
         </div>
-      </form>
+      <!-- </form> -->
     </div>
   </div>
 </ng-template>
@@ -573,19 +591,14 @@
 
     </div>
 
-    <div class="row mt-2">
-      <div class="col-4"></div>
-      <div class="col-4">
-        <button (click)="shippingInvoiceDetails = !shippingInvoiceDetails"
-          class="form-control btn btn-primary">{{shippingInvoiceDetails ? 'הסתר פרטי העמסה' : 'הוסף פרטי העמסה'}}</button>
+  
+
+
+
+    
+      <div class="row">
+        <h5>פריטים בחשבונית</h5>
       </div>
-      <div class="col-4"></div>
-    </div>
-
-
-
-    <div *ngIf="shippingInvoiceDetails" class="row mt-2">
-    <h5>פריטים בחשבונית</h5>
 
       <!-- <div class="row mt-2">
         <div class="col-md-6 form-group">
@@ -620,7 +633,7 @@
               <tr *ngFor="let stockitem of selectedItems; let i = index">
                 <td>{{stockitem.number}}</td>
                 <td>{{stockitem.name}}</td>
-                <td>{{stockitem.amount}}</td>
+                <td><input type="number" class="smaller-input" #invoiceItemAmount (keyup)="checkItemAmount(i, stockitem.number, $event, invoiceItemAmount)"></td>
                 <td>{{stockitem.shippingPrice | currency: invoice.invoiceCoin}}</td>
               </tr>
             </tbody>
@@ -628,44 +641,56 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-4 form-group">
-          <label for="invoicePrice">מחיר העמסה (שקלים) </label>
-          <input type="number" class="form-control" name="invoicePrice" id="invoicePrice" [(ngModel)]="invoice.invoicePrice"
-            placeholder="Total Price" required>
+      <div class="row mt-2">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <button (click)="shippingInvoiceDetails = !shippingInvoiceDetails"
+            class="form-control btn dropdown-toggle">{{shippingInvoiceDetails ? 'הסתר פרטי העמסה' : 'הוסף פרטי העמסה'}}</button>
         </div>
-        <div class="col-md-4 form-group">
-          <label for="taxes"> מע"מ 1 (שקלים) </label>
-          <input type="number" class="form-control" [(ngModel)]="invoice.taxes" placeholder="Taxes">
-        </div>
-        <div class="col-md-4 form-group">
-          <label for="taxesTwo">מע"מ 2 (שקלים)</label>
-          <input type="number" class="form-control" name="taxesTwo" id="taxesTwo" [(ngModel)]="invoice.taxesTwo"
-            placeholder="Taxes 2" required>
-        </div>
+        <div class="col-4"></div>
       </div>
 
-      <div class="row mt-2">
-        <div class="col-md-4 form-group">
-          <label for="invoiceCoin">מטבע</label>
-          <select [(ngModel)]="invoice.invoiceCoin" class="form-control">
-            <option selected value="NIS">NIS</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-          </select>
+      <div *ngIf="shippingInvoiceDetails" class="shipping">
+
+        
+        <div class="row">
+          <div class="col-md-4 form-group">
+            <label for="invoicePrice">מחיר העמסה (שקלים) </label>
+            <input type="number" class="form-control" name="invoicePrice" id="invoicePrice" [(ngModel)]="invoice.invoicePrice"
+            placeholder="Total Price" required>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="taxes"> מע"מ 1 (שקלים) </label>
+            <input type="number" class="form-control" [(ngModel)]="invoice.taxes" placeholder="Taxes">
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="taxesTwo">מע"מ 2 (שקלים)</label>
+            <input type="number" class="form-control" name="taxesTwo" id="taxesTwo" [(ngModel)]="invoice.taxesTwo"
+            placeholder="Taxes 2" required>
+          </div>
         </div>
-        <div class="col-md-4 form-group">
-          <label for="coinRate">שער מטבע מעודכן</label>
-          <input type="number" class="form-control" [(ngModel)]="invoice.coinRate" placeholder="Coin Rate">
-        </div>
-        <div class="col-md-4 form-group">
-          <button (click)="calculateShipping()" class="btn btn-primary">חשב מחיר העמסה לפריט</button>
+        
+        <div class="row mt-2">
+          <div class="col-md-4 form-group">
+            <label for="invoiceCoin">מטבע</label>
+            <select [(ngModel)]="invoice.invoiceCoin" class="form-control">
+              <option selected value="NIS">NIS</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+            </select>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="coinRate">שער מטבע מעודכן</label>
+            <input type="number" class="form-control" [(ngModel)]="invoice.coinRate" placeholder="Coin Rate">
+          </div>
+          <div class="col-md-4 form-group">
+            <button (click)="calculateShipping()" class="btn btn-primary">חשב מחיר העמסה לפריט</button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row mt-2">
-      <button [disabled]="!invoice.purchaseInvoiceNumber || invoice.purchaseInvoiceNumber == 0"
+      <div class="row mt-2">
+        <button [disabled]="!invoice.purchaseInvoiceNumber || invoice.purchaseInvoiceNumber == 0"
         (click)="saveInvoiceToPurchase()" class="btn btn-primary form-control">
         הוסף חשבונית להזמנה מס' {{purchaseData.orderNumber}}
       </button>
@@ -716,13 +741,12 @@
       <h5>תעודות משלוח</h5>
       <div class="row mt-3 bg-muted">
         <div *ngIf="purchaseData.deliveryCerts" style="background: #d5cff9" class="col-12 shadow rounded">
-          <table style="overflow: auto;" class="table table-hover">
+          <table style="overflow: auto;" class="table table-striped">
             <thead>
               <tr>
                 <th>מספר תעודה</th>
                 <th>תאריך הגעה</th>
-                <th>מספר פריט</th>
-                <th>כמות</th>
+                <th>פריטים</th>
                 <th>מקבל התעודה</th>
                 <th>הערות</th>
               </tr>
@@ -731,11 +755,26 @@
               <tr *ngFor="let deliveryCert of purchaseData.deliveryCerts">
                 <td>{{deliveryCert.certificateNumber}}</td>
                 <td>{{deliveryCert.deliveryArrivalDate | date:'d/M/YY'}}</td>
-                <td>{{deliveryCert.itemNumber}}</td>
-                <td>{{deliveryCert.amount}}</td>
+                <td>
+                  <table style="overflow: auto;" class="table">
+                    <!-- <thead>
+                      <tr>
+                        <th>מספר פריט</th>
+                        <th>שם פריט</th>
+                        <th>כמות</th>
+                      </tr>
+                    </thead> -->
+                    <tbody>
+                      <tr *ngFor="let item of deliveryCert.stockitems">
+                        <td>{{item.number}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.quantity}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
                 <td>{{deliveryCert.userName}}</td>
                 <td>{{deliveryCert.remarks}}</td>
-                <td></td>
               </tr>
             </tbody>
           </table>

@@ -1,10 +1,10 @@
-import { InvoiceStockItem } from "./InvoiceStockItem";
+import { StockItem } from "./StockItem";
 
 export interface InvoiceData {
     purchaseInvoiceNumber: number,
     invoiceRemarks: string,
     coinRate: number,
-    stockitems: InvoiceStockItem[],
+    stockitems: StockItem[],
     invoiceCoin: string,
     invoicePrice: number,
     taxes: number ,
