@@ -68,6 +68,7 @@ import { ReportBuilderComponent } from './reports/report-builder/report-builder.
 import { UserSettingsComponent } from './user/user-settings/user-settings.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { ItemMovementReportsComponent } from './reports/item-movement-reports/item-movement-reports.component';
+import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.component';
 
 
 
@@ -396,6 +397,14 @@ export const PeerPharmRputs: Routes =[
       title: 'Item Barcode'
     },
     component: ItemScanViewComponent,
+  },
+  {
+    path: 'production/printBarcode',
+    // canActivate:[ScreenGuard],
+    data: {
+      title: 'Print Barcode'
+    },
+    component: PrintBarcodeComponent,
   },
   {
     path: 'production/materials',

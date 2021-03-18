@@ -35,6 +35,11 @@ export class CostumersService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getCustomerNamesRegex(name: string) {
+    let url = this.baseUrl + "costumers/regexname?name="+name
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+    
   addorUpdateCostumer(CostumerObj){
     
     let url = this.baseUrl + "costumers/add";

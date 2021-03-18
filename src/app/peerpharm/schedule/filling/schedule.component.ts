@@ -677,10 +677,7 @@ export class ScheduleComponent implements OnInit {
       this.showPrintBtn = true;
     }, 3000);
     this.itemSer.getItemData(this.schedFillLine.item).subscribe(data=>{
-      ;
-      data;
-
-      this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
+    this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
     this.barcodeK = data[0].barcodeK;
     this.volumeK = data[0].volumeKey + ' ml';
     this.netoW = data[0].netWeightK;
@@ -689,9 +686,7 @@ export class ScheduleComponent implements OnInit {
     })
 
     this.batchService.getBatchData(this.schedFillLine.batch).subscribe(data=>{
-      ;
       this.expireDate = data[0].expration.slice(1,11);
-  
     })
     console.log(this.schedFillLine);
 

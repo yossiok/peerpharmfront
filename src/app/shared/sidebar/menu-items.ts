@@ -572,6 +572,14 @@ export const ROUTES: RouteInfo[] = [
             submenu: []
           },
           {
+            path: '/peerpharm/production/printBarcode',
+            title: 'Print Barcode',
+            icon: 'fas fa-i-cursor',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
             path: '/peerpharm/production/scanItem',
             title: 'Scan Item',
             icon: 'fas fa-i-cursor',
