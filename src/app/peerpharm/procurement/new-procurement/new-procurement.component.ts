@@ -116,7 +116,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       deliveryCerts: [[]],
       outOfCountry: [false],
       recommendId: [''],
-      sumShippingCost: [0]
+      sumShippingCost: [0],
+      closeReason: ['']
     });
 
     // this.deliveryCertificateForm = fb.group({
@@ -172,6 +173,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     else console.log('')
     if (this.isEdit) {
+      if(!this.purchaseData.closeReason) this.purchaseData.closeReason = ''
+      if(!this.purchaseData.userEmail) this.purchaseData.userEmail = ''
+      if(!this.purchaseData.user) this.purchaseData.user = ''
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
       this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
     }
@@ -192,6 +196,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       }
       if (this.isEdit) {
         if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''
+        if(!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = ''
+        if(!changes.purchaseData.currentValue.userEmail) changes.purchaseData.currentValue.userEmail = ''
+        if(!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = ''
         this.newPurchase.setValue(changes.purchaseData.currentValue)
       }
     }
