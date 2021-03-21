@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { BatchesService } from 'src/app/services/batches.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { ItemsService } from 'src/app/services/items.service';
@@ -18,7 +19,7 @@ import { ItemsService } from 'src/app/services/items.service';
             <input [(ngModel)]="customerName" type="text">
             <button (click)="findMyCostumer()">Complete Me</button>
             <div *ngIf="customerNames.length > 0" class="list-group">
-                <a *ngFor="let name of customerNames"  class="list-group-item list-group-item-action" (click)="this.customerName=name; this.customerNames = []">
+                <a *ngFor="let name of customerNames"  class="list-group-item list-group-item-action wfc" (click)="this.customerName=name; this.customerNames = []">
                     {{name}}
                 </a>
             </div>
@@ -52,7 +53,8 @@ import { ItemsService } from 'src/app/services/items.service';
             </table>
         </div>
         
-    `
+    `,
+    styles: ['.wfc { width:300px; cursor: pointer }']
 })
 export class PrintBarcodeComponent {
 
@@ -72,10 +74,11 @@ export class PrintBarcodeComponent {
     constructor(
         private itemService: ItemsService,
         private batchService: BatchesService,
-        private costumerService: CostumersService) { }
+        private costumerService: CostumersService,
+        private toastr: ToastrService) { }
 
     findMyCostumer() {
-        this.costumerService.getCustomerNamesRegex(this.customerName).subscribe( customers => {
+        this.costumerService.getCustomerNamesRegex(this.customerName).subscribe(customers => {
             for (let customer of customers) {
                 this.customerNames.push(customer.costumerName)
             }
@@ -84,16 +87,22 @@ export class PrintBarcodeComponent {
 
     printBarcodeForItem() {
         this.itemService.getItemData(this.itemNumber).subscribe(data => {
-            this.itemName = data[0].itemName
-            this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs"
-            this.barcodeK = data[0].barcodeK;
-            this.volumeK = data[0].volumeKey + ' ml';
-            this.netoW = data[0].netWeightK;
-            this.grossW = data[0].grossUnitWeightK;
-            this.batchService.getBatchData(this.batch).subscribe(data => {
-                this.expireDate = data[0].expration.slice(1, 11);
-                this.printbtn.nativeElement.click()
-            })
+            if (data.length > 0) {
+                this.itemName = data[0].itemName
+                this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs"
+                this.barcodeK = data[0].barcodeK;
+                this.volumeK = data[0].volumeKey + ' ml';
+                this.netoW = data[0].netWeightK;
+                this.grossW = data[0].grossUnitWeightK;
+                this.batchService.getBatchData(this.batch).subscribe(data => {
+                    if(data.length > 0) {
+                        this.expireDate = data[0].expration.slice(0, 11);
+                        this.printbtn.nativeElement.click()
+                    }
+                    else this.toastr.error('Batch Not Found.')
+                })
+            }
+            else this.toastr.error('Item Not Found.')
         })
 
 
