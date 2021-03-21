@@ -97,7 +97,7 @@ export class PrintBarcodeComponent {
                 this.batchService.getBatchData(this.batch).subscribe(data => {
                     if(data.length > 0) {
                         this.expireDate = data[0].expration.slice(0, 11);
-                        this.printbtn.nativeElement.click()
+                        setTimeout(()=>this.printbtn.nativeElement.click(),500)
                     }
                     else this.toastr.error('Batch Not Found.')
                 })
