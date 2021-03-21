@@ -863,7 +863,7 @@
                       <ng-container *ngFor="let itemMovement of itemMovements">
                         <tr *ngIf="itemMovement.WH_originName != 'Filling'">
                           <td>{{itemMovement.amount}}</td>
-                          <td>{{itemMovement.originShelfQntBefore}}</td>
+                          <td>{{itemMovement.destShelfQntBefore}}</td>
                           <td>{{itemMovement.movementType}}</td>
                           <td>{{itemMovement.movementDate | date: 'dd/MM/yyyy'}}</td>
                           <td>{{itemMovement.shell_position_in_whareHouse_Origin}}</td>
