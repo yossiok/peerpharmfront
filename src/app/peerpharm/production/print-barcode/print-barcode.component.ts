@@ -123,7 +123,7 @@ export class PrintBarcodeComponent {
     fetchItemData() {
         this.itemService.getItemData(this.itemNumber).subscribe(data => {
             if (data.length > 0) {
-                this.itemName = data[0].itemName
+                this.itemName = data[0].name
                 this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs"
                 this.barcodeK = data[0].barcodeK;
                 this.volumeK = data[0].volumeKey + ' ml';
