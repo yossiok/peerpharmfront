@@ -241,7 +241,8 @@
             />
           </td>
           <td style="width: 10%;">
-            <button (click)="addItemToFormule()" class="btn-success">
+            <button (click)="addItemToFormule()" [style.cursor]="newItem.itemNumber ? 'pointer' : 'not-allowed'" 
+            [disabled]="!newItem.itemNumber" class="btn-success">
               Add
             </button>
             <button (click)="draggable = true" class="btn-primary">
