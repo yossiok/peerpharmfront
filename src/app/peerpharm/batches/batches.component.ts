@@ -56,7 +56,7 @@ export class BatchesComponent implements OnInit {
     order: '',
     ph: '',
     produced: '',
-    weightQtyLeft: '',
+    weightQtyLeft: 0,
     weightKg: '',
     color: ''
 
@@ -136,7 +136,7 @@ export class BatchesComponent implements OnInit {
         order: '',
         ph: '',
         produced: '',
-        weightQtyLeft: '',
+        weightQtyLeft: 0,
         weightKg: '',
         color: ''
 

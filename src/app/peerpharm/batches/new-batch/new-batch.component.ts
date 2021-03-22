@@ -27,7 +27,7 @@ export class NewBatchComponent implements OnInit {
     barrels: new FormControl('', Validators.required),
     ph: new FormControl('', Validators.required),
     weightKg: new FormControl('', Validators.required),
-    weightQtyLeft: new FormControl('', Validators.required),
+    weightQtyLeft: new FormControl(0, Validators.required),
     batchNumber: new FormControl(this.batchDefaultNumber, [Validators.required, Validators.minLength(5)]),
     batchCreated: new FormControl(0, Validators.required)
   })
