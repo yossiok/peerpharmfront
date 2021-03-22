@@ -104,7 +104,7 @@
                     class="form-control">
                   </td>
                   
-                  <td>{{stockitem.shipItemCost}}</td>
+                  <td>{{stockitem.shippingPrice}}</td>
                   <td>{{stockitem.itemRemarks}}</td>
                   
                   <td><i *ngIf="!disabled  && !editItem" (click)="editItem = !editItem"
@@ -730,7 +730,7 @@
               <tr *ngFor="let invoice of purchaseData.billNumber">
                 <td>{{invoice.purchaseInvoiceNumber}}</td>
                 <td>{{invoice.fixedPrice}}</td>
-                <td>{{invoice.itemShipping | currency: invoice.invoiceCoin}}</td>
+                <td>{{invoice.shippingPrice | currency: invoice.invoiceCoin}}</td>
                 <td>{{invoice.remarks}}</td>
               </tr>
             </tbody>

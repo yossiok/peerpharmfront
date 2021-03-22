@@ -86,7 +86,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     taxesTwo: 0,
     fixedPrice: 0,
     stockitems: this.selectedItems,
-    itemShipping: 0
+    shippingPrice: 0
   }
 
   //toggle purchase details
@@ -225,9 +225,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     })
   }
 
-  setPurchaseStatus(ev) {
+  async setPurchaseStatus(ev) {
     if (confirm('האם לשנות סטטוס הזמנה ?')) {
       this.newPurchase.controls.status.setValue(ev.target.value);
+      // calculate final shipping price
+      if(ev.target.value == 'closed') {
+        await this.calaculateFinalShipping()
+      } 
+
       this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
         if (data) {
           console.log(data)
@@ -499,7 +504,29 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     // })
 
     this.invoice.stockitems.map(item => item.shippingPrice = itemShippingPrice)
-    this.invoice.itemShipping = itemShippingPrice
+    this.invoice.shippingPrice = itemShippingPrice
+  }
+
+  calaculateFinalShipping() {
+    let itemsShipping = [];
+    for(let invoice of this.newPurchase.controls.billNumber.value) {
+      for (let i=0; i<invoice.stockitems.length; i++) {
+        let j = itemsShipping.findIndex(incomingItem =>  incomingItem.item == invoice.stockitems[i].name)
+        if(j != -1) {
+          itemsShipping[j].shippingPrice = (itemsShipping[j].shippingPrice + invoice.shippingPrice) / 2
+          j = -1
+        }
+        else {
+          itemsShipping.push({item: invoice.stockitems[i].name, shippingPrice: invoice.shippingPrice})
+        }
+      }
+    }
+
+    for (let ship of itemsShipping) {
+      for (let item of this.newPurchase.controls.stockitems.value) {
+        if(ship.item == item.name) item.shippingPrice = ship.shippingPrice
+      }
+    }
   }
 
 
@@ -559,7 +586,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       taxesTwo: 0,
       fixedPrice: 0,
       stockitems: this.selectedItems,
-      itemShipping: 0
+      shippingPrice: 0
     }
     this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
