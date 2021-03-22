@@ -402,7 +402,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if (amount > item.quantity) {
           this.toastr.warning('שים לב! הכמות שהזנת גדולה מהכמות בהזמנה')
         } 
-        else this.selectedItems[i].quantity = amount
+        this.selectedItems[i].quantity = amount
       }
     }
   }
@@ -470,6 +470,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           this.invoice.stockitems = []
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
+        this.selectedItems = []
         this.invoice.purchaseInvoiceNumber = null
         this.modalService.dismissAll()
       })
@@ -480,29 +481,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.invoice.fixedPrice = (this.invoice.invoicePrice - (this.invoice.taxes + this.invoice.taxesTwo)) / this.invoice.coinRate
     let purchaseItems = this.invoice.stockitems
     let itemShippingPrice;
-
-    // sum total amount and 
+    // sum total amount 
     let totalAmount = 0;
     purchaseItems.forEach(stockitem => {
       totalAmount += Number(stockitem.quantity)
     });
-
     // 1 item shipping price
     itemShippingPrice = this.invoice.fixedPrice / totalAmount
-
-    // not needed? 
-    // set item percentage from tatal amount
-    // purchaseItems.forEach(stockitem=> {
-    //   stockitem.amountPercentage = 100*Number(stockitem.quantity)/totalAmount
-    // })
-
-    // not needed??
-    // set Shipping Price for each item
-    // purchaseItems.forEach(stockitem=> {
-    //   let allAmountCost = updatedOrder.sumShippingCost/100*stockitem.amountPercentage
-    //   stockitem.shipItemCost = allAmountCost / stockitem.quantity
-    // })
-
     this.invoice.stockitems.map(item => item.shippingPrice = itemShippingPrice)
     this.invoice.shippingPrice = itemShippingPrice
   }
