@@ -528,7 +528,7 @@ export class WharehouseComponent implements OnInit {
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList, this.inventoryUpdateList[0].itemType).subscribe(async res => {
         // res = [itemNumber,itemNumber,itemNumber...]
         if (res == "all updated" || res.msg == "all updated") {
-          if(res.reception) this.certificateReception == res.reception
+          if(res.reception) this.certificateReception = res.reception
           this.toastSrv.success("שינויים בוצעו בהצלחה");
           let actionLogObj = {
             dateAndTime: new Date(),
@@ -576,7 +576,7 @@ export class WharehouseComponent implements OnInit {
     }
     if (this.dir == 'in') {
       ;
-      this.printBtn2.nativeElement.click();
+      setTimeout(()=> this.printBtn2.nativeElement.click(), 500);
 
       this.listToPrint = [];
     }
