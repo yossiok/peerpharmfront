@@ -527,7 +527,7 @@ export class WharehouseComponent implements OnInit {
 
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList, this.inventoryUpdateList[0].itemType).subscribe(async res => {
         // res = [itemNumber,itemNumber,itemNumber...]
-        if (res == "all updated" || res.msg == "all updated") {
+        if (res == "all updated" || (res.msg && res.msg == "all updated")) {
           if(res.reception) this.certificateReception = res.reception
           this.toastSrv.success("שינויים בוצעו בהצלחה");
           let actionLogObj = {
