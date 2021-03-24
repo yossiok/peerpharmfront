@@ -193,7 +193,7 @@ export const PeerPharmRputs: Routes =[
     path: 'items/itemreports',
     canActivate:[ScreenGuard],
     data: {
-      title: ''
+      title: 'Item Reports'
     },
     component: ItemreportsComponent
   },
@@ -324,7 +324,7 @@ export const PeerPharmRputs: Routes =[
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor] 
+    // canActivate:[TwoFactor] 
   },
   {
     path :'production/lines',
