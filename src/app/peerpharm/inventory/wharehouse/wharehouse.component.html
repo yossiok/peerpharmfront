@@ -379,28 +379,28 @@
 
   <div *ngIf="dir=='managment'" class="row m-1">
     <div class="container">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-12">
           <h2 class="text-info">ניהול מחסן - מורשים בלבד</h2>
         </div>
-      </div>
+      </div> -->
 
       <div class="row mt-5">
         <div class="col-4"></div>
         <div class="col-4">
-          <label class="form-control text-warning">הוספת מחסן חדש</label>
+         <h2 (click)="addNewWHDiv = !addNewWHDiv" class="text-warning click mask-1 w-100 rounded">הוספת מחסן חדש</h2>
         </div>
         <div class="col-4"></div>
       </div>
 
-      <div class="row">
+      <div *ngIf="addNewWHDiv" class="row">
         <div class="col-4"></div>
         <div class="col-2">
           <input class="form-control" type=text id='wh' #whName placeholder="WhareHouse Name">
         </div>
         <div class="col-2">
-          <button class="form-control" id='updateWh' class='btn btn-warning' (click)="addNewWhareHouse(whName.value)">Add New
-            WhareHouse</button>
+          <button class="form-control" id='updateWh' class='btn btn-warning' (click)="addNewWhareHouse(whName.value)">
+            Add New WhareHouse</button>
         </div>
         <div class="col-4"></div>
       </div>
@@ -411,91 +411,113 @@
   
       </div>
 
+
       <div class="row mt-5">
         <div class="col-4"></div>
         <div class="col-4">
-          <label class="form-control text-success">הוספת מדף חדש</label>
+          <h2 (click)="existingWHDiv = !existingWHDiv" class="text-warning click mask-1 w-100 rounded">פעולות בתוך מחסן קיים</h2>
         </div>
         <div class="col-4"></div>
       </div>
 
-      <div class="row mt-2">
-        <div class="col-4"></div>
-        <div class="col-2">
-          <label class="form-control">בחר מחסן</label>
-        </div>
-        <div class="col-2">
-          <select #wh class="form-control" (change)="getShelfsList(wh.value)">
-            <option></option>
-            <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
-          </select>
-      
-        </div>
-        <div class="col-4"></div>
-      </div>
-  
-   
+      <div *ngIf="existingWHDiv">
 
-     <div class="row mt-5">
-       <div class="col-2"></div>
-       <div class="col-2"></div>
-       <div class="col-2">
-        <input class="form-control" #shelf placeholder="הוסף מדף">
-       </div>
-       <div class="col-2">
-
-        <button class='btn btn-success form-control' (click)="addNewShelf(shelf.value)">Add
-          Shelf</button>
-       </div>
-       <div class="col-2"></div>
-       <div class="col-2"></div>
-     </div>
-
-     <div class="row">
-       <div class="col-2"></div>
-       <div class="col-2"></div>
-       <div class="col-2">
-        <input class="form-control" #searchS placeholder="חפש מדף">
-       </div>
-       <div class="col-2">
-        <button class='btn btn-info form-control' (click)="searchShelf(searchS.value)">Find Shelf</button>
-       </div>
-       <div class="col-2"></div>
-       <div class="col-2"></div>
-     </div>
-  
-        <div style="height: 300px;overflow-y: auto;" class="row">
-        <div [style.background-color]="response.color">{{response.body}}</div>
-        <table class="table">
-          <thead class="bg-info text-white">
-            <tr>
-              <th>Details</th>
-              <th>Id</th>
-              <th>Position</th>
+        
+        <div class="row mt-2">
+          <div class="col-4"></div>
+          <div class="col-2">
+            <label class="form-control">בחר מחסן</label>
+          </div>
+          <div class="col-2">
+            <select #wh class="form-control" (change)="getShelfsList(wh.value)">
+              <option></option>
+              <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
+            </select>
             
-            </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let shelf of shelfs;">
-            <td>
-              <tr *ngFor="let item of shelf.shelfsArr">
-                <td><b>Item:</b>{{item.item}}</td>
-                <td><b>Amount:</b>{{item.amount}}</td>
-              </tr>
-            </td>
-            <td>{{shelf._id}}</td>
-            <td>{{shelf.position}}</td>
-           
-          </tr>
-        </tbody>
-        </table>
+          </div>
+          <div class="col-4"></div>
+        </div>
+        
+        
+        <div class="row mt-5">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <label (click)="addShelfDiv = !addShelfDiv" class="form-control text-success click mask-2">הוספת מדף חדש</label>
+          </div>
+          <div class="col-4"></div>
+        </div>
+        
+        <div *ngIf="addShelfDiv" class="row">
+          <div class="col-2"></div>
+          <div class="col-2"></div>
+          <div class="col-2">
+            <input class="form-control" #shelf placeholder="הוסף מדף">
+          </div>
+          <div class="col-2">
+            <button class='btn btn-success form-control' (click)="addNewShelf(shelf.value)">Add
+              Shelf</button>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-2"></div>
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-4"></div>
+            <div class="col-4">
+              <label (click)="findShelfDiv = !findShelfDiv" class="form-control text-info click mask-3">חיפוש מדף קיים</label>
+            </div>
+            <div class="col-4"></div>
+          </div>
+          
+          
+          <div *ngIf="findShelfDiv" class="row">
+            <div class="col-2"></div>
+            <div class="col-2"></div>
+            <div class="col-2">
+              <input class="form-control" #searchS placeholder="חפש מדף">
+            </div>
+            <div class="col-2">
+              <button class='btn btn-info form-control' (click)="searchShelf(searchS.value)">Find Shelf</button>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-2"></div>
+          </div>
+
+          <div *ngIf="shelfs.length == 0 && loadShelfs" class="bigLoader"></div>
+          
+          <div *ngIf="shelfs.length > 0" style="height: 300px;overflow-y: auto;" class="row mt-5">
+            <div [style.background-color]="response.color">{{response.body}}</div>
+            <table class="table ml-10">
+              <thead class="bg-success text-white">
+                <tr>
+                  <th>Details</th>
+                  <th>Id</th>
+                  <th>Position</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let shelf of shelfs;">
+                  <td>
+                    <tr *ngFor="let item of shelf.itemsArr">
+                      <td><b>Item:</b>{{item.item}}</td>
+                      <td><b>Amount:</b>{{item.amount}}</td>
+                    </tr>
+                  </td>
+                  <td>{{shelf._id}}</td>
+                  <td>{{shelf.position}}</td>
+                  
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id='shell_wh_div' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+          </div>
+          
+          
+        </div>
       </div>
-      <div id='shell_wh_div' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
       </div>
-  
-    
-  </div>
-  </div>
  
 
   <div *ngIf="screen == 'stkManagment'" class="row mt-5">

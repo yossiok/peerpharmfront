@@ -89,6 +89,7 @@ export class WharehouseComponent implements OnInit {
   currTab: string = '';
   loadingToTable: boolean = false;
   editWharehouses: Boolean = false;
+  loadShelfs: boolean = false;
 
   constructor(private procurementSrv: Procurementservice, private modalService: NgbModal, private fb: FormBuilder, private renderer: Renderer2, private authService: AuthService, private inventoryService: InventoryService, private inventoryReqService: InventoryRequestService, private toastSrv: ToastrService,) {
 
@@ -162,32 +163,32 @@ export class WharehouseComponent implements OnInit {
       this.StkMngNavBtnColor = "";
 
       this.dir = 'managment';
-      const childElements = this.container.nativeElement.children;
-      for (let child of childElements) {
-        const elemnts = child.children;
-        for (let elm of elemnts) {
-          const mnts = elm.children;
-          for (let e of mnts) {
-            console.log(e.getAttribute("name"))
-            if (e.getAttribute("name")) {
-              if (direction == "shellChange" && e.getAttribute("name") == "newShelfName") {
-                e.style.display = 'inline';
-                e.className = "dataInput";
-              }
-              else if (direction == "production" && e.getAttribute("name") == "newDemandId") {
-                e.style.display = 'inline';
-                e.className = "dataInput";
-                // e.style.visibility = "hidden";
-              }
-              else {
-                e.style.display = 'none';
-                e.className = "no";
-                e.value = "";
-              }
-            }
-          }
-        }
-      }
+      // const childElements = this.container.nativeElement.children;
+      // for (let child of childElements) {
+      //   const elemnts = child.children;
+      //   for (let elm of elemnts) {
+      //     const mnts = elm.children;
+      //     for (let e of mnts) {
+      //       console.log(e.getAttribute("name"))
+      //       if (e.getAttribute("name")) {
+      //         if (direction == "shellChange" && e.getAttribute("name") == "newShelfName") {
+      //           e.style.display = 'inline';
+      //           e.className = "dataInput";
+      //         }
+      //         else if (direction == "production" && e.getAttribute("name") == "newDemandId") {
+      //           e.style.display = 'inline';
+      //           e.className = "dataInput";
+      //           // e.style.visibility = "hidden";
+      //         }
+      //         else {
+      //           e.style.display = 'none';
+      //           e.className = "no";
+      //           e.value = "";
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
     } else if (action == 'stkManagment') {
       //change active navbar colors 
       this.WhMngNavBtnColor = "";
@@ -262,7 +263,9 @@ export class WharehouseComponent implements OnInit {
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
     this.whareHouseId = this.whareHouses[i]._id;
     this.shelfs = [];
+    this.loadShelfs = true
     this.inventoryService.getWhareHouseShelfList(this.whareHouseId).subscribe(res => {
+      this.loadShelfs = false;
       this.shelfs = res;
       this.shelfsCopy = res;
       console.log(this.whareHouses);
@@ -336,22 +339,25 @@ export class WharehouseComponent implements OnInit {
       this.shelfs = this.shelfsCopy.slice();
     }
     else {
-      this.shelfs = this.shelfs.filter(x => x.position.toLowerCase().includes(shelf.toLowerCase()));
-      this.inventoryService.getShelfByShelfId(this.shelfs[0]._id).subscribe(data => {
-        let tempArr = []
-        data.forEach(shelf => {
-          let obj = {
-            item: shelf.item,
-            amount: shelf.amount
-          }
-          tempArr.push(obj)
-        });
-        this.shelfs[0].shelfsArr = tempArr
-        this.shelfs
+      this.shelfs = this.shelfsCopy.filter(x => x.position.toLowerCase() == shelf.toLowerCase());
+      if (this.shelfs.length == 0) this.toastSrv.error('לא קיים מדף כזה במחסן הזה')
+      else {
+        for (let shelf of this.shelfs) {
+          this.inventoryService.getShelfByShelfId(shelf._id).subscribe(data => {
+            let tempArr = []
+            data.forEach(shelf => {
+              let obj = {
+                item: shelf.item,
+                amount: shelf.amount
+              }
+              tempArr.push(obj)
+            });
+            shelf.itemsArr = tempArr
+            console.log(this.shelfs)
+          })
+        }
+      }
 
-
-        console.log(this.shelfs)
-      })
     }
   }
 
@@ -528,7 +534,7 @@ export class WharehouseComponent implements OnInit {
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList, this.inventoryUpdateList[0].itemType).subscribe(async res => {
         // res = [itemNumber,itemNumber,itemNumber...]
         if (res == "all updated" || (res.msg && res.msg == "all updated")) {
-          if(res.reception) this.certificateReception = res.reception
+          if (res.reception) this.certificateReception = res.reception
           this.toastSrv.success("שינויים בוצעו בהצלחה");
           let actionLogObj = {
             dateAndTime: new Date(),
@@ -576,7 +582,7 @@ export class WharehouseComponent implements OnInit {
     }
     if (this.dir == 'in') {
       ;
-      setTimeout(()=> this.printBtn2.nativeElement.click(), 500);
+      setTimeout(() => this.printBtn2.nativeElement.click(), 500);
 
       this.listToPrint = [];
     }
