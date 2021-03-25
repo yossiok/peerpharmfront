@@ -2515,11 +2515,7 @@
       <div class="row mt-1 fixNoaStupidStuff">
         <div class="col-6 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
-          <select formControlName="type" class="form-control rounded-pill">
-            <option selected="true" disabled="disabled">Choose Type</option>
-            <option value="component">Component</option>
-            <option value="material">Material</option>
-          </select>
+      
         </div>
         <div class="col-6 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
@@ -2544,7 +2540,16 @@
       </div>
 
       <div class="row mt-1 fixNoaStupidStuff">
-        <div class="col-3 fixNoaStupidStuff">
+        <div class="col-2 fixNoaStupidStuff">
+          <span class="hot-red float-left">*</span>
+          <select formControlName="type" class="form-control rounded-pill">
+            <option selected="true" disabled="disabled">Choose Type</option>
+            <option value="component">Component</option>
+            <option value="material">Material</option>
+          </select>
+       
+        </div>
+        <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <input (focusout)="getStockItemByNumber($event)" [ngModelOptions]="{standalone: true}"
             [(ngModel)]="recommendStockItem.number" class="form-control rounded-pill" type="text"
@@ -2555,12 +2560,13 @@
           <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.name"
             class="form-control rounded-pill" type="text" placeholder="StockItem Name">
         </div>
-        <div class="col-3 fixNoaStupidStuff">
+    
+        <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.quantity"
             class="form-control rounded-pill" type="number" placeholder="amount">
         </div>
-        <div class="col-3 fixNoaStupidStuff">
+        <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <select [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.measurement"
             class="form-control rounded-pill" required>
@@ -2574,7 +2580,23 @@
             <option value="box">קופסא</option>
           </select>
         </div>
+        <div>   <table id='amountsTable' class="table table-hover fr">
+          <thead class="text-white bg-success">
+            <tr>
+              <th style="padding:5px">מדף</th>
+              <th style="padding:5px">כמות</th>
+            </tr>
+          </thead>
+          <tbody id='amountsInWhTbody'>
+            <tr *ngFor="let shelfAmount of itemAmountsData">
+              <td  >{{shelfAmount.ps}}</td>
+              <td  >{{shelfAmount.sumShelfAmounts | number}}</td>
+              <!-- <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td> -->
+            </tr>
+          </tbody>
+        </table></div>
       </div>
+ 
 
       <div class="row mt-1 fixNoaStupidStuff">
         <div class="col-4"></div>

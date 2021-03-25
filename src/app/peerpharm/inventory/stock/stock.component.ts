@@ -861,6 +861,13 @@ export class StockComponent implements OnInit {
 
   getStockItemByNumber(ev){
     if(ev.target.value != ''){
+      //get existing amounts of and locations on shelfs
+      this.inventoryService.getAmountOnShelfs(ev.target.value).subscribe(async res => { 
+        debugger;
+        this.itemAmountsData = res.data;
+        this.itemAmountsWh = res.whList; 
+      }); 
+
       this.inventoryService.getCmptByitemNumber(ev.target.value).subscribe(data=>{
       if(data){
         this.recommendStockItem.name = data[0].componentName
