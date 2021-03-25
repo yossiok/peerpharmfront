@@ -86,7 +86,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     taxesTwo: 0,
     fixedPrice: 0,
     stockitems: this.selectedItems,
-    itemShipping: 0
+    shippingPrice: 0
   }
 
   //toggle purchase details
@@ -116,7 +116,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       deliveryCerts: [[]],
       outOfCountry: [false],
       recommendId: [''],
-      sumShippingCost: [0]
+      sumShippingCost: [0],
+      closeReason: ['']
     });
 
     // this.deliveryCertificateForm = fb.group({
@@ -172,6 +173,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     else console.log('')
     if (this.isEdit) {
+      if(!this.purchaseData.closeReason) this.purchaseData.closeReason = ''
+      if(!this.purchaseData.userEmail) this.purchaseData.userEmail = ''
+      if(!this.purchaseData.user) this.purchaseData.user = ''
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
       this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
     }
@@ -192,6 +196,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       }
       if (this.isEdit) {
         if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''
+        if(!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = ''
+        if(!changes.purchaseData.currentValue.userEmail) changes.purchaseData.currentValue.userEmail = ''
+        if(!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = ''
         this.newPurchase.setValue(changes.purchaseData.currentValue)
       }
     }
@@ -218,9 +225,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     })
   }
 
-  setPurchaseStatus(ev) {
+  async setPurchaseStatus(ev) {
     if (confirm('האם לשנות סטטוס הזמנה ?')) {
       this.newPurchase.controls.status.setValue(ev.target.value);
+      // calculate final shipping price
+      if(ev.target.value == 'closed') {
+        await this.calaculateFinalShipping()
+      } 
+
       this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
         if (data) {
           console.log(data)
@@ -390,7 +402,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if (amount > item.quantity) {
           this.toastr.warning('שים לב! הכמות שהזנת גדולה מהכמות בהזמנה')
         } 
-        else this.selectedItems[i].quantity = amount
+        this.selectedItems[i].quantity = amount
       }
     }
   }
@@ -458,6 +470,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           this.invoice.stockitems = []
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
+        this.selectedItems = []
         this.invoice.purchaseInvoiceNumber = null
         this.modalService.dismissAll()
       })
@@ -468,31 +481,37 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.invoice.fixedPrice = (this.invoice.invoicePrice - (this.invoice.taxes + this.invoice.taxesTwo)) / this.invoice.coinRate
     let purchaseItems = this.invoice.stockitems
     let itemShippingPrice;
-
-    // sum total amount and 
+    // sum total amount 
     let totalAmount = 0;
     purchaseItems.forEach(stockitem => {
       totalAmount += Number(stockitem.quantity)
     });
-
     // 1 item shipping price
     itemShippingPrice = this.invoice.fixedPrice / totalAmount
-
-    // not needed? 
-    // set item percentage from tatal amount
-    // purchaseItems.forEach(stockitem=> {
-    //   stockitem.amountPercentage = 100*Number(stockitem.quantity)/totalAmount
-    // })
-
-    // not needed??
-    // set Shipping Price for each item
-    // purchaseItems.forEach(stockitem=> {
-    //   let allAmountCost = updatedOrder.sumShippingCost/100*stockitem.amountPercentage
-    //   stockitem.shipItemCost = allAmountCost / stockitem.quantity
-    // })
-
     this.invoice.stockitems.map(item => item.shippingPrice = itemShippingPrice)
-    this.invoice.itemShipping = itemShippingPrice
+    this.invoice.shippingPrice = itemShippingPrice
+  }
+
+  calaculateFinalShipping() {
+    let itemsShipping = [];
+    for(let invoice of this.newPurchase.controls.billNumber.value) {
+      for (let i=0; i<invoice.stockitems.length; i++) {
+        let j = itemsShipping.findIndex(incomingItem =>  incomingItem.item == invoice.stockitems[i].name)
+        if(j != -1) {
+          itemsShipping[j].shippingPrice = (itemsShipping[j].shippingPrice + invoice.shippingPrice) / 2
+          j = -1
+        }
+        else {
+          itemsShipping.push({item: invoice.stockitems[i].name, shippingPrice: invoice.shippingPrice})
+        }
+      }
+    }
+
+    for (let ship of itemsShipping) {
+      for (let item of this.newPurchase.controls.stockitems.value) {
+        if(ship.item == item.name) item.shippingPrice = ship.shippingPrice
+      }
+    }
   }
 
 
@@ -552,7 +571,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       taxesTwo: 0,
       fixedPrice: 0,
       stockitems: this.selectedItems,
-      itemShipping: 0
+      shippingPrice: 0
     }
     this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }

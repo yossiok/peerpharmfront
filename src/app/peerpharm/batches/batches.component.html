@@ -151,7 +151,7 @@
             <td *ngIf="batch._id!==EditRowId" style="width:9%" (click)="edit(batch._id)"> {{batch.weightQtyLeft}} /
               {{batch.weightKg}}</td>
             <td *ngIf="batch._id===EditRowId" style="width:9%" (click)="edit(batch._id)">
-              <input class="editInput" #batchWeightQtyLeft type='text' [value]="batch.weightQtyLeft" style='width:40px'>
+              <input class="editInput" #batchWeightQtyLeft type='number' [value]="batch.weightQtyLeft" style='width:40px'>
               <input class="editInput" #batchWeightQty type='text' [value]="batch.weightKg" style='width:40px'>
 
             </td>
@@ -259,7 +259,7 @@
             <td *ngIf="batch._id!==EditRowId" style="width:9%" (click)="edit(batch._id)"> {{batch.weightQtyLeft}} /
               {{batch.weightKg}}</td>
             <td *ngIf="batch._id===EditRowId" style="width:9%" (click)="edit(batch._id)">
-              <input class="editInput" #batchWeightQtyLeft type='text' [value]="batch.weightQtyLeft" style='width:40px'>
+              <input class="editInput" #batchWeightQtyLeft type='number' [value]="batch.weightQtyLeft" style='width:40px'>
               <input class="editInput" #batchWeightQty type='text' [value]="batch.weightKg" style='width:40px'>
 
             </td>

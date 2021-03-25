@@ -781,7 +781,7 @@
                       </td>
 
                       <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.coinLoading}}</td>
+                       <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice}}</span></td>
                       <td *ngIf="EditRowId == supplier.supplierName">
                         <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
                       </td>
@@ -863,7 +863,7 @@
                       <ng-container *ngFor="let itemMovement of itemMovements">
                         <tr *ngIf="itemMovement.WH_originName != 'Filling'">
                           <td>{{itemMovement.amount}}</td>
-                          <td>{{itemMovement.originShelfQntBefore}}</td>
+                          <td>{{itemMovement.destShelfQntBefore}}</td>
                           <td>{{itemMovement.movementType}}</td>
                           <td>{{itemMovement.movementDate | date: 'dd/MM/yyyy'}}</td>
                           <td>{{itemMovement.shell_position_in_whareHouse_Origin}}</td>

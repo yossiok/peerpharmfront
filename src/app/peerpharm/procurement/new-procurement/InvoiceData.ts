@@ -10,5 +10,5 @@ export interface InvoiceData {
     taxes: number ,
     taxesTwo: number,
     fixedPrice: number;
-    itemShipping: number;
+    shippingPrice: number;
 }

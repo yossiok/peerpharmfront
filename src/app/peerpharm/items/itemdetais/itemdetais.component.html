@@ -77,10 +77,8 @@
                 <input [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
                     (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" [(ngModel)]="itemShown.itemNumber"
                     #itemNum id="id_item" autocomplete="off">
-                <button type="submit">
-                    <img id="id_img_item" (click)='searchForItem(itemNum.value)' title="search"
-                        src='/assets/images/search.png'
-                        style='width:30px;cursor:pointer; margin-left:5px; margin-top:0px;'>
+                <button class="btn btn-warning ml-2" (click)='searchForItem(itemNum.value)'>
+                    Find Tree
                 </button>
             </div>
 
@@ -1954,7 +1952,7 @@
             </button>
             <button *ngIf="alowUserEditItemTree" [disabled]="!itemExist"
                 [style.cursor]="itemExist ? 'pointer' : 'not-allowed'" class="btn btn-warning"
-                (click)="updateItem()">Update
+                (click)="this.modalService.open(editItemModal)">Update
             </button>
             <button style="float: right" type='reset' class="btn btn-secondary">Reset</button>
         </div>
@@ -2001,31 +1999,46 @@
 </ng-template>
 
 
-<!-- <ng-template #editItemModal let-c="close" let-d="dismiss">
+<ng-template #editItemModal let-c="close" let-d="dismiss">
 
     <div class="modal-header">
-        <h3 class="modal-title" id="modal-basic-title">Edit item Number {{itemShown.itemNumber}}</h3>
+        <h3 class="modal-title" id="modal-basic-title">Edit item</h3>
 
-        <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+        <button type="button" class="close" aria-label="Close" (click)="c('Cross click'); approveItemNumber = ''; updateConfirmModal = false">
 
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="modal-body">
-        <h4>Please enter the Item Number you are editting</h4>
-        <p class="red back-red under"> שים לב! </p>
-        <p class="red back-red rounded p-2">
-            כל הפרטים של הפריט יידרסו על ידי הפרטים שהזנת</p>
+    <div dir="rtl" class="modal-body">
+        <h4>אנא הקישו את מספר המוצר שאתם מעדכנים.</h4>
+        <div class="red back-red rounded p-2 w-50">
+            <h4>אנא וודאו שזהו המוצר הנכון.</h4>
+        </div>
         <div *ngIf="lookingForItem" class="smallLoader"></div>
-
+        <br>
         <input [(ngModel)]="approveItemNumber" type="text">
+
+        <div class="p-2 m-2 rounded" *ngIf="updateConfirmModal">
+            <h5>עץ המוצר הבא עומד להתעדכן עם הפרטים הבאים:</h5> 
+            <div dir="ltr" class="border border-primary p-2 m-2 rounded">
+                <h5 class="text-primary text-center">{{itemShown.itemNumber}}</h5>
+                <h3 class="text-danger text-center fw-bold">{{itemShown.name}}</h3>
+                <h3 class="text-primary text-center">{{itemShown.subName}}</h3>
+                <h4 dir="auto" class="text-danger d-flex justify-content-start">{{itemShown.discriptionK}}</h4>
+            </div>
+            <h5>האם את/ה מאשר/ת?</h5>
+            <div class="d-flex justify-content-between">
+                <button class="bg-primary text-white rounded" (click)="updateItem(); approveItemNumber = ''; updateConfirmModal = false">אישור</button>
+                <button class="bg-secondary text-white rounded" (click)="this.modalService.dismissAll(); approveItemNumber = ''; updateConfirmModal = false">ביטול</button>
+            </div>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button (click)="updateItem(); approveItemNumber = ''" [disabled]="approveItemNumber != itemShown.itemNumber"
-            [ngClass]="approveItemNumber == itemShown.itemNumber ? 'btn btn-success' : 'disabled'">Update</button>
+    <div *ngIf="!updateConfirmModal" class="modal-footer">
+        <button (click)="updateConfirmModal = true" [disabled]="approveItemNumber != itemShown.itemNumber"
+            [ngClass]="approveItemNumber == itemShown.itemNumber ? 'btn btn-success' : 'disabled'">עדכון</button>
     </div>
 
-</ng-template> -->
+</ng-template>
 
 
 

@@ -359,7 +359,7 @@ export class ItemScanViewComponent implements OnInit {
 
               await this.inventoryService.updateInventoryChangesTest(ObjToUpdate, this.stockType).subscribe(res => {
                 console.log('ObjToUpdate', ObjToUpdate);
-                if (res == "all updated") {
+                if (res == "all updated" || (res.msg && res.msg == "all updated")) {
                   this.toastSrv.success("Changes Saved");
 
                   this.inventoryService.getAmountOnShelfs(this.resCmpt.componentN).subscribe(async res => {

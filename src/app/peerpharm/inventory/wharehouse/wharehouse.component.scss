@@ -33,3 +33,41 @@ a{
 .compImgInWh:hover{
     transform: scale(2);
 }
+
+.click {
+    cursor: pointer;
+}
+
+.mask-1:hover {
+    background-color: #ffbc34;
+    color: white !important
+}
+
+.mask-2:hover {
+    background-color: #36bea6;
+    color: white !important;
+    
+}
+
+.mask-3:hover {
+    background-color: #2962FF;
+    color: white !important;
+
+}
+
+// .table {
+//     width: 52%;
+//     margin-bottom: 1rem;
+//     color: #3e5569;
+// }
+
+.bigLoader {
+    margin: auto;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 300px;
+    height: 300px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
