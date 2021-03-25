@@ -2608,7 +2608,7 @@
         <div class="col-4"></div>
       </div>
 
-      <div class="row mt-2 fixNoaStupidStuff">
+      <div  id="print-section" class="row mt-2 fixNoaStupidStuff">
         <div class="col-12">
           <table class="table table-hover table-striped">
             <thead>
@@ -2636,6 +2636,9 @@
         <div class="col-5 fixNoaStupidStuff"></div>
         <div class="col-2 fixNoaStupidStuff">
           <button (click)="sendRecommandation()" class="btn-success rounded-pill form-control">שלח</button>
+        </div>
+        <div class="col-2 fixNoaStupidStuff">
+          <button printSectionId="print-section" ngxPrint  class="btn-success rounded-pill form-control">הדפסה</button>
         </div>
         <div class="col-5 fixNoaStupidStuff"></div>
       </div>

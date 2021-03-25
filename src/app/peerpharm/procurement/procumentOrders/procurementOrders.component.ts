@@ -181,6 +181,8 @@ export class ProcurementOrdersComponent implements OnInit {
     this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
 
+
+    debugger;
     this.inventoryService.newRecommendEmitter.subscribe(data => {
       console.log(data)
       data = JSON.parse(data._body)
@@ -658,6 +660,12 @@ export class ProcurementOrdersComponent implements OnInit {
 
   getAllPurchaseRecommends() {
     this.procurementservice.getAllPurchaseRecommends().subscribe(data => {
+
+      console.log(data);
+
+      this.purchaseRecommendations=data;
+      /*
+ 
       //data = all purchase recommendations (recommendation object)
       data.forEach(purchaseRecommendation => {
         //purchaseRecommendation = one object
@@ -673,7 +681,10 @@ export class ProcurementOrdersComponent implements OnInit {
         this.purchaseRecommendations = this.purchaseRecommendations.concat(purchaseRecommendation.stockitems)
         this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.concat(purchaseRecommendation.stockitems)
       })
-      this.purchaseRecommendations = this.purchaseRecommendations.filter(recommendedItem => recommendedItem != null )
+      this.purchaseRecommendations = this.purchaseRecommendations.filter(recommendedItem => recommendedItem != null );
+
+      debugger;*/
+
     })
   }
 

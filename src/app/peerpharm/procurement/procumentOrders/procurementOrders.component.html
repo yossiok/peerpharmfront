@@ -529,24 +529,38 @@
             <!-- <th></th> -->
             <th>#</th>
             <th>Recommendation Number</th>
-            <th>Item Number</th>
-            <th>Item Name</th>
-            <th>Amount</th>
-            <th>Measurement</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>status</th>
+            <th>Items</th>
+            <th>Remarks</th> 
           </tr>
         </thead>
-        <tbody *ngFor="let recommendedStockitem of purchaseRecommendations">
+        <tbody *ngFor="let purchaseRecommendation of purchaseRecommendations">
           <ng-container>
             <tr>
               <td><input type="checkbox" (change)="isSelected($event,recommendedStockitem)"></td>
-              <td>{{recommendedStockitem.recommendationNumber}}</td>
-              <td>{{recommendedStockitem.number}}</td>
-              <td>{{recommendedStockitem.name}}</td>
-              <td>{{recommendedStockitem.quantity}}</td>
-              <td>{{recommendedStockitem.measurement}}</td>
+              <td>{{purchaseRecommendation.recommendNumber}}</td>
+              <td>{{purchaseRecommendation.status}}</td>
+              <td>
+                <table>
+                  <tr *ngFor="let stockitem of purchaseRecommendation.stockitems">
+                <td>
+                  {{stockitem.name}} 
+                </td>
+
+                <td>
+                  {{stockitem.number}} 
+                </td>
+
+                <td>
+                  {{stockitem.quantity}} 
+                </td>
+
+
+
+                  </tr>
+                </table>
+                 </td>
+              <td>{{purchaseRecommendation.remarks}}</td> 
               <td>
                 <button
                   (click)="removeItemFromRecommendation(recommendedStockitem.recommendationNumber, recommendedStockitem.number)"

@@ -880,17 +880,20 @@ export class StockComponent implements OnInit {
     }
   }
 
+ 
 
 
   sendRecommandation() {
       
       this.newPurchaseRecommendation.controls.user.setValue(this.authService.loggedInUser.userName);
       this.inventoryService.addNewRecommendation(this.newPurchaseRecommendation.value).subscribe(data => {
+        debugger;
         // this.inventoryService.onNewRecommend(this.recommandPurchase);
         if (data) {
           this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
           this.newPurchaseRecommendModal = false;
           this.newPurchaseRecommendation.reset();
+          alert('מספר הבקשה: '+ JSON.parse(data._body).reqNum);
 
         }
       })
