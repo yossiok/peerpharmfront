@@ -468,6 +468,7 @@ export class StockComponent implements OnInit {
       this.recommendStockItem.name = '';
       this.recommendStockItem.number = '';
       this.recommendStockItem.measurement = '';
+      this.itemAmountsData = []
     }
    
   }
@@ -863,7 +864,6 @@ export class StockComponent implements OnInit {
     if(ev.target.value != ''){
       //get existing amounts of and locations on shelfs
       this.inventoryService.getAmountOnShelfs(ev.target.value).subscribe(async res => { 
-        debugger;
         this.itemAmountsData = res.data;
         this.itemAmountsWh = res.whList; 
       }); 
