@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ArrayServiceService } from 'src/app/utils/array-service.service';
 import { PurchaseData } from './PurchaseData';
 import { forEach } from 'lodash';
+import { ActivatedRoute } from '@angular/router';
 //import { p } from '@angular/core/src/render3';
 
 @Component({
@@ -171,10 +172,13 @@ export class ProcurementOrdersComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService, private procurementservice: Procurementservice, private excelService: ExcelService, private supplierService: SuppliersService,
-    private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService,
+    private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService,private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+
+    console.log('Called Constructor');
+   
     console.log('Enter');
     this.getAllProcurementOrders();
     this.getAllPurchaseRecommends();
@@ -199,19 +203,64 @@ export class ProcurementOrdersComponent implements OnInit {
         if (purchases.length > 0) {
           this.showLoader = false;
           if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]).filter(order => order.status != 'closed');
-          else this.procurementData = purchases
+          else this.procurementData = purchases;
+
+       
+
           if (!this.procurementDataCopy) {
             this.procurementDataCopy = [];
           }
           this.procurementDataCopy= this.procurementDataCopy.concat([...purchases]).filter(purchase => purchase.status != 'canceled');
         }
-      }, () => {}, () => this.fetchingOrders = false);
+      }, () => {}, () => {
+        this.fetchingOrders = false
+        debugger;
+
+        this.procurementData.forEach(pd=>
+          {
+            if(pd.status=='open')
+            {
+              pd.stockitems.forEach(si => {
+                if(si.recommendationnum)
+                {
+                  this.purchaseRecommendations.find(x=>x.recommendNumber==si.recommendationnum).stockitems.find(y=>y.number==si.number).remarks="open order exists from date:"+new Date(pd.creationDate).toLocaleDateString() +" order: "+pd.orderNumber;
+                }
+              });
+            }
+           
+          })
+
+        this.route.queryParams.subscribe(params => {
+          if(params['orderNumber'])
+          {
+            for(let i=1; i<this.procurementData.length; i++)
+            {
+              if(this.procurementData[i].orderNumber==params['orderNumber'])
+              {
+                this.viewOrderDetails(i);
+              }
+            }
+               
+          }
+           
+        });
+
+      });
     }
   
 
   isSelected(ev, stockitem) {
     if (ev.target.checked == true) {
-      this.checkedRecommendations.push(stockitem)
+      stockitem.price= stockitem.lastorder.price;
+      stockitem.recommendationnum=ev.target.title;
+      this.checkedRecommendations.push(stockitem);
+      //check if this supplier is also in other purchase reccomendations
+      this.purchaseRecommendations.forEach(pr => {
+        pr.stockitems.forEach(si => { 
+          if(si.lastorder.supplierName==stockitem.lastorder.supplierName)
+          si.color="yellow";
+        });
+      });
     }
     else {
       for (let i = 0; i < this.checkedRecommendations.length; i++) {
@@ -226,9 +275,14 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   moveToNewPurchase() {
-    this.purchaseRecommendationsModal = false;
-    this.requestToPurchase = {stockitems: this.checkedRecommendations}
-    this.orderDetailsModal = true;
+    let result= confirm('are you sure you want to create a new order?');
+    if(result)
+    {
+      this.purchaseRecommendationsModal = false; 
+      this.requestToPurchase = {stockitems: this.checkedRecommendations}
+      this.orderDetailsModal = true;
+    }
+   
   }
 
   removeItemFromRecommendation(recommendationNumber, itemNumber) {
@@ -662,8 +716,19 @@ export class ProcurementOrdersComponent implements OnInit {
     this.procurementservice.getAllPurchaseRecommends().subscribe(data => {
 
       console.log(data);
+      //let cleandOrdersWithNoData= data.filter(x=>x.stockitems.length>0);
+
+   
 
       this.purchaseRecommendations=data;
+      this.purchaseRecommendations.forEach(pr => {
+        pr.stockitems.forEach(si => {
+           si.tooltip=`supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
+          price:${si.lastorder.price} | price:  ${si.lastorder.price}| coin: ${si.lastorder.coin} | quantity: ${si.lastorder.quantity}
+          `;
+          si.color="white"
+        });
+      });
       /*
  
       //data = all purchase recommendations (recommendation object)

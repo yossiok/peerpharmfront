@@ -523,28 +523,35 @@
 
   <div class="row mt-1">
     <div style="height:700px;overflow-y: scroll;" class="col-12">
-      <table class="table table-hover">
+      <table class="table table-hover" border="0">
         <thead class="bg-warning text-white">
           <tr>
             <!-- <th></th> -->
-            <th>#</th>
-            <th>Recommendation Number</th>
-            <th>status</th>
-            <th>Items</th>
-            <th>Remarks</th> 
+           
+            <th style="width:10%">Recommendation Number</th>
+            <th style="width:10%">Date</th>
+            <th style="width:10%">status</th>
+            <th style="width:50%">Items</th>
+            <th style="width:20%">Remarks</th> 
           </tr>
         </thead>
         <tbody *ngFor="let purchaseRecommendation of purchaseRecommendations">
           <ng-container>
-            <tr>
-              <td><input type="checkbox" (change)="isSelected($event,recommendedStockitem)"></td>
+            <tr  >
+             
               <td>{{purchaseRecommendation.recommendNumber}}</td>
+              <td>{{purchaseRecommendation.date | date}}</td>
               <td>{{purchaseRecommendation.status}}</td>
               <td>
-                <table>
-                  <tr *ngFor="let stockitem of purchaseRecommendation.stockitems">
-                <td>
-                  {{stockitem.name}} 
+                <table >
+                  <tr *ngFor="let stockitem of purchaseRecommendation.stockitems"    >
+                    <td><input type="checkbox"  title={{purchaseRecommendation.recommendNumber}} (change)="isSelected($event,stockitem)">
+                  
+                    
+                    </td>
+                <td  [style.background]="stockitem.color"   >
+                  {{stockitem.name}} <a target="_blank" href="/#/peerpharm/procurement/procurementOrders?orderNumber={{stockitem.lastorder.orderNumber}}"   > <i class="fas fa-info"  placement="bottom" ngbTooltip={{stockitem.tooltip}} ></i></a>
+                
                 </td>
 
                 <td>
@@ -554,19 +561,19 @@
                 <td>
                   {{stockitem.quantity}} 
                 </td>
-
-
-
+                <td>
+                  {{stockitem.remarks}} 
+                </td>
                   </tr>
                 </table>
                  </td>
               <td>{{purchaseRecommendation.remarks}}</td> 
-              <td>
+             <!-- <td>
                 <button
                   (click)="removeItemFromRecommendation(recommendedStockitem.recommendationNumber, recommendedStockitem.number)"
                   class="btn btn-warning form-control rounded-pill">Delete
                 </button>
-              </td>
+              </td>-->
             </tr>
           </ng-container>
 
