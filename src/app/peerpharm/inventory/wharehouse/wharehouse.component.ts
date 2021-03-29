@@ -526,6 +526,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   async sendList() {
+
     let ObjToUpdate;
     ;
     let sendConfirm = confirm("עדכון שינויים במלאי");
@@ -537,6 +538,7 @@ export class WharehouseComponent implements OnInit {
           if (res.reception) this.certificateReception = res.reception
           this.toastSrv.success("שינויים בוצעו בהצלחה");
           let actionLogObj = {
+            certNum: this.certificateReception,
             dateAndTime: new Date(),
             logs: this.inventoryUpdateList,
             userName: this.authService.loggedInUser.firstName + " " + this.authService.loggedInUser.lastName,
@@ -571,9 +573,6 @@ export class WharehouseComponent implements OnInit {
   }
 
   async printStockTransferCertificate() {
-    ;
-    //print
-    // setTimeout( ()=> {
     if (this.dir == 'production' || this.dir == 'out') {
 
       this.printBtn.nativeElement.click();
@@ -582,34 +581,19 @@ export class WharehouseComponent implements OnInit {
     }
     if (this.dir == 'in') {
       ;
-      setTimeout(() => this.printBtn2.nativeElement.click(), 500);
+      setTimeout(() => {
+        this.printBtn2.nativeElement.click() 
+        this.listToPrint = [];
+      }, 500);
 
-      this.listToPrint = [];
     }
-    // },200);
-    // await this.list.filter((i,key)=>{
-    //   let tempObj= Object.assign({},i);
-    //   this.listToPrint.push(tempObj);
-    //   if( key+1 == this.inventoryUpdateList.length){
-    //     this.listToPrint.forEach(j=>{
-    //       if(j.amount<0){
-    //         j.amount=Math.abs(j.amount);
-    //       }
-    //     });
-    //     // setTimeout( ()=> {},100);
-    //     this.printBtn.nativeElement.click();
-    //     this.listToPrint=[];
-    //   }
-    // });
   }
 
   getItemLineQnt(i, ev) {
     this.multiLinesArr[i].amount = ev.target.value;
-
   }
 
   async checkLineValidation(itemLine, index, ev: any, lineqnt) {
-
     let stockType;
     if (
       this.curentWhareHouseName == "Rosh HaAyin" ||
