@@ -2004,7 +2004,8 @@
     <div class="modal-header">
         <h3 class="modal-title" id="modal-basic-title">Edit item</h3>
 
-        <button type="button" class="close" aria-label="Close" (click)="c('Cross click'); approveItemNumber = ''; updateConfirmModal = false">
+        <button type="button" class="close" aria-label="Close"
+            (click)="c('Cross click'); approveItemNumber = ''; updateConfirmModal = false; lookingForItem = false">
 
             <span aria-hidden="true">&times;</span>
         </button>
@@ -2019,7 +2020,7 @@
         <input [(ngModel)]="approveItemNumber" type="text">
 
         <div class="p-2 m-2 rounded" *ngIf="updateConfirmModal">
-            <h5>עץ המוצר הבא עומד להתעדכן עם הפרטים הבאים:</h5> 
+            <h5>עץ המוצר הבא עומד להתעדכן עם הפרטים הבאים:</h5>
             <div dir="ltr" class="border border-primary p-2 m-2 rounded">
                 <h5 class="text-primary text-center">{{itemShown.itemNumber}}</h5>
                 <h3 class="text-danger text-center fw-bold">{{itemShown.name}}</h3>
@@ -2028,8 +2029,14 @@
             </div>
             <h5>האם את/ה מאשר/ת?</h5>
             <div class="d-flex justify-content-between">
-                <button class="bg-primary text-white rounded" (click)="updateItem(); approveItemNumber = ''; updateConfirmModal = false">אישור</button>
-                <button class="bg-secondary text-white rounded" (click)="this.modalService.dismissAll(); approveItemNumber = ''; updateConfirmModal = false">ביטול</button>
+                <button class="bg-primary text-white rounded"
+                    (click)="updateItem(); approveItemNumber = ''; updateConfirmModal = false">
+                    אישור
+                </button>
+                <button class="bg-secondary text-white rounded"
+                    (click)="this.modalService.dismissAll(); approveItemNumber = ''; updateConfirmModal = false">
+                    ביטול
+                </button>
             </div>
         </div>
     </div>

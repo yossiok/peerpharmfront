@@ -345,10 +345,6 @@ export class ItemdetaisComponent implements OnInit {
     console.log(event);
 
   }
-  
-  // @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
-  //   if(event.key == "Enter") this.searchForItem(this.itemShown.itemNumber)
-  // }
 
   constructor(private plateService: PlateService, private translate: TranslateService, private excelService: ExcelService, private orderService: OrdersService, private batchService: BatchesService, private modalService: NgbModal, private costumersService: CostumersService, private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
