@@ -188,9 +188,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
     this.inventoryService.newRecommendEmitter.subscribe(data => {
       console.log(data)
-      data = JSON.parse(data._body)
       this.purchaseRecommendations.push(data)
-
     })
 
   }

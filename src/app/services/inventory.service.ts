@@ -255,17 +255,21 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell/recieveNewComponents";
     return this.http.post(url, JSON.stringify(allArrivals), this.options).pipe(map(res => res.json()))
   }
-
-
-
+  
+  
+  
   addNewRecommendation(purchaseRecommend): Observable<any> {
     let url = this.baseUrl + "component/newPurchaseRecommend";
-    return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(tap(data => {
-      data = JSON.parse(data._body);
-      ;
-      this.recommendation = data;
-      this.newRecommendEmitter.emit(data);
-    }))
+    return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(map(res => {
+      this.recommendation = res.json()
+      this.newRecommendEmitter.emit(res.json());
+      return res.json()
+    } ))
+    // return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(tap(data => {
+    //   data = JSON.parse(data._body);
+    //   ;
+    //   this.recommendation = data;
+    // }))
 
   }
 
