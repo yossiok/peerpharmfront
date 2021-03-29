@@ -516,6 +516,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
   sendNewProc(action) {
+    debugger;
     if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
@@ -527,7 +528,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.newPurchase.reset();
               this.newProcurementSaved.emit()
               this.closeOrderModal.emit(false)
-              location.reload()
+              location.reload();
 
             }
             else this.toastr.error('משהו השתבש...')
