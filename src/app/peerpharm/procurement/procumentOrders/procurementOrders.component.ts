@@ -186,7 +186,6 @@ export class ProcurementOrdersComponent implements OnInit {
     this.user = this.authService.loggedInUser.firstName;
 
 
-    debugger;
     this.inventoryService.newRecommendEmitter.subscribe(data => {
       console.log(data)
       data = JSON.parse(data._body)
@@ -214,21 +213,26 @@ export class ProcurementOrdersComponent implements OnInit {
         }
       }, () => {}, () => {
         this.fetchingOrders = false
-        debugger;
+        if(this.procurementData.length > 0) {
 
-        this.procurementData.forEach(pd=>
-          {
-            if(pd.status=='open')
+          this.procurementData.forEach(pd=>
             {
-              pd.stockitems.forEach(si => {
-                if(si.recommendationnum)
-                {
-                  this.purchaseRecommendations.find(x=>x.recommendNumber==si.recommendationnum).stockitems.find(y=>y.number==si.number).remarks="open order exists from date:"+new Date(pd.creationDate).toLocaleDateString() +" order: "+pd.orderNumber;
-                }
-              });
-            }
-           
-          })
+              if(pd.status=='open')
+              {
+                pd.stockitems.forEach(si => {
+                  if(si.recommendationnum)
+                  {
+                    let pr = this.purchaseRecommendations.find(x=>x.recommendNumber==si.recommendationnum)
+                    if(pr) {
+                      let prsi = pr.stockitems.find(y=>y.number==si.number)
+                      if (prsi) prsi.remarks="open order exists from date:"+new Date(pd.creationDate).toLocaleDateString() +" order: "+pd.orderNumber;
+                    } 
+                  }
+                });
+              }
+              
+            })
+          }
 
         this.route.queryParams.subscribe(params => {
           if(params['orderNumber'])
