@@ -44,6 +44,7 @@ import { FirstAidComponent } from './forms/first-aid/first-aid.component';
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component'; 
+import { OutServicesComponent} from './out-services/out-services.component'
 
 import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
@@ -143,6 +144,7 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { ItemMovementReportsComponent } from './reports/item-movement-reports/item-movement-reports.component';
 import { UnfinishedProductsComponent } from './reports/unfinished-products/unfinished-products.component';
 import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.component';
+import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
 
 
 
@@ -294,9 +296,9 @@ import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.
     AllocatedOrdersComponent,
     ReportBuilderComponent,
     UnfinishedProductsComponent,
-    PrintBarcodeComponent
-
-
+    PrintBarcodeComponent,
+    OutServicesComponent,
+    NewOutServiceComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   

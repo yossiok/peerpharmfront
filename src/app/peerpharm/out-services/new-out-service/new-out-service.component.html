@@ -1,0 +1,35 @@
+<div dir="rtl" class="container">
+    <form [formGroup]="addOutservice" (ngSubmit)="addOutServiceToDB()">
+        
+        <div class="form-group">
+            <label>סוג שירות</label>
+            <select class="form-control" placeholder="סוג שירות" formControlName="type"></select>
+            <option *ngFor="let serviceType of serviceTypes" [value]="serviceType.name"></option>
+        </div>
+
+        <div class="form-group">
+            <label>תאריך פתיחת הזמנה</label>
+            <input type="date" class="form-control" placeholder="תאריך פתיחת הזמנה" formControlName="openedAt">
+        </div>
+
+        <div class="form-group">
+            <label>מספק השירות</label>
+            <select class="form-control" placeholder="מספק השירות" formControlName="supplierName"></select>
+            <option *ngFor="let supplierName of supplierNames" [value]="supplierName"></option>
+        </div>
+
+        
+        <div class="form-group">
+            <label>תאריך ביצוע</label>
+            <input type="date" class="form-control" placeholder="תאריך ביצוע" formControlName="date">
+        </div>
+
+        <div class="form-group">
+            <label>מקים ההזמנה</label>
+            <input type="text" disabled class="form-control" formControlName="userName">
+            <label>כתובת מייל</label>
+            <input type="text" disabled class="form-control" formControlName="userEmail">
+        </div>
+        
+    </form>
+</div>

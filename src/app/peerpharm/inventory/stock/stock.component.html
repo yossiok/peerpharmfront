@@ -781,7 +781,8 @@
                       </td>
 
                       <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                       <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice}}</span></td>
+                        <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice}}</span>
+                      </td>
                       <td *ngIf="EditRowId == supplier.supplierName">
                         <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
                       </td>
@@ -2502,32 +2503,20 @@
         </div>
       </div>
 
-      <span> * Required field</span>
+      <span class="float-left"> * Required field</span>
 
       <div class="row mt-2 fixNoaStupidStuff">
-        <div class="col-6 fixNoaStupidStuff">
-          <label class="text-info">Type</label>
-        </div>
-        <div class="col-6 fixNoaStupidStuff">
+        <div class="col-3">
           <label class="text-info">Date</label>
-        </div>
-      </div>
-      <div class="row mt-1 fixNoaStupidStuff">
-        <div class="col-6 fixNoaStupidStuff">
-          <span class="hot-red float-left">*</span>
-      
-        </div>
-        <div class="col-6 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <input formControlName="date" class="form-control rounded-pill" type="date">
         </div>
-      </div>
-
-      <div class="row mt-1 fixNoaStupidStuff">
-        <div class="col-12 fixNoaStupidStuff">
+        <div class="col-8">
+          <label class="text-info">Remarks</label>
           <textarea formControlName="remarks" placeholder="Remarks" class="form-control rounded-pill"></textarea>
         </div>
       </div>
+    
 
       <hr>
 
@@ -2542,35 +2531,40 @@
       <div class="row mt-1 fixNoaStupidStuff">
         <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
+          <label class="text-info">Type</label>
           <select formControlName="type" class="form-control rounded-pill">
             <option selected="true" disabled="disabled">Choose Type</option>
             <option value="component">Component</option>
             <option value="material">Material</option>
           </select>
-       
         </div>
+        
         <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
+          <label class="text-info">Item Number</label>
           <input (focusout)="getStockItemByNumber($event)" [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="recommendStockItem.number" class="form-control rounded-pill" type="text"
-            placeholder="StockItem Number">
+          [(ngModel)]="recommendStockItem.number" class="form-control rounded-pill" type="text"
+          placeholder="StockItem Number">
         </div>
         <div [ngModelOptions]="{standalone: true}" class="col-3 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
+          <label class="text-info">Item Name</label>
           <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.name"
-            class="form-control rounded-pill" type="text" placeholder="StockItem Name">
+          class="form-control rounded-pill" type="text" placeholder="StockItem Name">
         </div>
-    
+        
         <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
+          <label class="text-info">Amount</label>
           <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.quantity"
-            class="form-control rounded-pill" type="number" placeholder="amount">
+          class="form-control rounded-pill" type="number" placeholder="amount">
         </div>
         <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
+          <label class="text-info">Measurement</label>
           <select [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.measurement"
-            class="form-control rounded-pill" required>
-            <option value="kg">kg</option>
+          class="form-control rounded-pill" required>
+          <option value="kg">kg</option>
             <option value="liter">liter</option>
             <option value="meter">meter</option>
             <option value="ml">ml</option>
@@ -2580,23 +2574,25 @@
             <option value="box">קופסא</option>
           </select>
         </div>
-        <div>   <table id='amountsTable' class="table table-hover fr">
-          <thead class="text-white bg-success">
-            <tr>
-              <th style="padding:5px">מדף</th>
-              <th style="padding:5px">כמות</th>
-            </tr>
-          </thead>
-          <tbody id='amountsInWhTbody'>
-            <tr *ngFor="let shelfAmount of itemAmountsData">
-              <td  >{{shelfAmount.ps}}</td>
-              <td  >{{shelfAmount.sumShelfAmounts | number}}</td>
-              <!-- <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td> -->
-            </tr>
-          </tbody>
-        </table></div>
+        <div *ngIf="itemAmountsData.length > 0" class="col-12">
+          <table id='amountsTable' class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">כמות</th>
+                <th scope="col">מדף</th>
+              </tr>
+            </thead>
+            <tbody id='amountsInWhTbody'>
+              <tr *ngFor="let shelfAmount of itemAmountsData">
+                <th scope="row">{{shelfAmount.sumShelfAmounts | number}}</th>
+                <th scope="row">{{shelfAmount.ps}}</th>
+                <!-- <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
- 
+
 
       <div class="row mt-1 fixNoaStupidStuff">
         <div class="col-4"></div>
@@ -2608,7 +2604,7 @@
         <div class="col-4"></div>
       </div>
 
-      <div  id="print-section" class="row mt-2 fixNoaStupidStuff">
+      <div id="print-section" class="row mt-2 fixNoaStupidStuff">
         <div class="col-12">
           <table class="table table-hover table-striped">
             <thead>
@@ -2638,7 +2634,7 @@
           <button (click)="sendRecommandation()" class="btn-success rounded-pill form-control">שלח</button>
         </div>
         <div class="col-2 fixNoaStupidStuff">
-          <button printSectionId="print-section" ngxPrint  class="btn-success rounded-pill form-control">הדפסה</button>
+          <button printSectionId="print-section" ngxPrint class="btn-success rounded-pill form-control">הדפסה</button>
         </div>
         <div class="col-5 fixNoaStupidStuff"></div>
       </div>

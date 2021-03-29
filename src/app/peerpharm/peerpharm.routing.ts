@@ -1,40 +1,40 @@
 import { OrdersComponent } from './allorders/orders/orders.component';
 import { AllordersComponent } from './allorders/allorders/allorders.component';
-import {OrderdetailsComponent} from './allorders/orderdetails/orderdetails.component'
+import { OrderdetailsComponent } from './allorders/orderdetails/orderdetails.component'
 
 //import { PeerPharmModule } from './peerpharmmodule';
 import { Routes } from '@angular/router';
-import {ScheduleComponent} from './schedule/filling/schedule.component'
-import {PrintingComponent} from './schedule/printing/printing.component'
-import {ItemslistComponent} from './items/itemslist/itemslist.component'
-import {ItemdetaisComponent} from './items/itemdetais/itemdetais.component'
-import {PlateComponent} from './plate/plate.component'
-import {StockComponent} from './inventory/stock/stock.component'
-import {NeworderComponent} from './allorders/neworder/neworder.component'
-import {FormuleComponent} from './formules/formule.component'
-import {LinesComponent} from './production/lines/lines.component'
-import {ProductionComponent} from './production/production/production.component';
-import {ProductionRequestComponent} from './production/production-request/production-request.component';
-import {ProductionScheduleComponent} from './production/production-schedule/production-schedule.component';
-import {ContentComponent} from './taskboard/core/content/content.component'
+import { ScheduleComponent } from './schedule/filling/schedule.component'
+import { PrintingComponent } from './schedule/printing/printing.component'
+import { ItemslistComponent } from './items/itemslist/itemslist.component'
+import { ItemdetaisComponent } from './items/itemdetais/itemdetais.component'
+import { PlateComponent } from './plate/plate.component'
+import { StockComponent } from './inventory/stock/stock.component'
+import { NeworderComponent } from './allorders/neworder/neworder.component'
+import { FormuleComponent } from './formules/formule.component'
+import { LinesComponent } from './production/lines/lines.component'
+import { ProductionComponent } from './production/production/production.component';
+import { ProductionRequestComponent } from './production/production-request/production-request.component';
+import { ProductionScheduleComponent } from './production/production-schedule/production-schedule.component';
+import { ContentComponent } from './taskboard/core/content/content.component'
 import { BatchesComponent } from './batches/batches.component';
-import {CostumersListComponent} from './costumers/costumers-list/costumers-list.component'
+import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component'
 import { FormslistComponent } from './forms/formslist/formslist.component';
 import { CheckingformsComponent } from './forms/checkingforms/checkingforms.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
 import { MakeupComponent } from './schedule/makeup/makeup.component';
-import {  WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
+import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
 import { PackingComponent } from './schedule/packing/packing.component';
 import { BarcodePrintComponent } from './schedule/barcode-print/barcode-print.component';
 import { NotificationComponent } from './notification/notification.component';
-import { ProcurementOrderItemBalanceComponent} from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
+import { ProcurementOrderItemBalanceComponent } from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
 import { TwoFactor } from '../guards/twofactor.guard';
 
-import { ProcurementOrdersComponent} from './procurement/procumentOrders/procurementOrders.component';
-import { ProcurementOrderItemComponent} from './procurement/procumentOrderItem/procurementOrderItem.component';
+import { ProcurementOrdersComponent } from './procurement/procumentOrders/procurementOrders.component';
+import { ProcurementOrderItemComponent } from './procurement/procumentOrderItem/procurementOrderItem.component';
 import { BatchesMkpComponent } from './batches/batches-mkp/batches-mkp.component';
 import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
 import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
@@ -42,7 +42,7 @@ import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
 import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
 import { ItemreportsComponent } from './items/itemreports/itemreports.component';
-import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component'; 
+import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
 import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
@@ -69,22 +69,24 @@ import { UserSettingsComponent } from './user/user-settings/user-settings.compon
 import { CalendarComponent } from './calendar/calendar.component';
 import { ItemMovementReportsComponent } from './reports/item-movement-reports/item-movement-reports.component';
 import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.component';
+import { OutServicesComponent } from './out-services/out-services.component';
+import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
 
 
 
 
 
-export const PeerPharmRputs: Routes =[
+export const PeerPharmRputs: Routes = [
 
   {
-    path: 'user/user-settings', 
+    path: 'user/user-settings',
     data: {
       title: 'User Settings'
     },
     component: UserSettingsComponent
   },
   {
-    path: 'calendar/calendar', 
+    path: 'calendar/calendar',
     data: {
       title: 'Calendar'
     },
@@ -92,8 +94,8 @@ export const PeerPharmRputs: Routes =[
   },
 
   {
-    path: 'allorders/orders', 
-    canActivate:[  ScreenGuard],
+    path: 'allorders/orders',
+    canActivate: [ScreenGuard],
     data: {
       title: 'Open Orders'
     },
@@ -101,7 +103,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'allorders/orders/allorders',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'All Orders'
     },
@@ -109,7 +111,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'allorders/orderitems/:id',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Order Items'
     },
@@ -118,7 +120,7 @@ export const PeerPharmRputs: Routes =[
 
   {
     path: 'allorders/neworder',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'New Order'
     },
@@ -126,7 +128,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/fillschedule',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Filling Schedule'
     },
@@ -142,7 +144,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/printschedule',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Print Schedule'
     },
@@ -150,7 +152,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/makeupschedule',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Make Up Schedule'
     },
@@ -158,24 +160,24 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'schedule/packingschedule',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Packing Schedule'
     },
     component: PackingComponent
   },
-  {
-    path: 'schedule/barcode-print',
-    canActivate:[ScreenGuard],
-    data: {
-      title: 'Print Barcode'
-    },
-    component: BarcodePrintComponent
-  },
+  // {
+  //   path: 'schedule/barcode-print',
+  //   canActivate: [ScreenGuard],
+  //   data: {
+  //     title: 'Print Barcode'
+  //   },
+  //   component: BarcodePrintComponent
+  // },
 
   {
     path: 'items/itemslist',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Items List'
     },
@@ -183,7 +185,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'items/itemDetails',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Item Tree'
     },
@@ -191,7 +193,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'items/itemreports',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Item Reports'
     },
@@ -199,16 +201,16 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'items/itemDetails/:itemNumber',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Item Tree'
     },
-   // component: ItemdetaisComponent
+    // component: ItemdetaisComponent
     component: ItemDetailsTabComponent
   },
   {
     path: 'plates/plates',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Plates'
     },
@@ -216,7 +218,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/stock',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Inventory'
     },
@@ -224,7 +226,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/wharehouse',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Warehouse'
     },
@@ -232,7 +234,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/inventoryRequest',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Inventory Request'
     },
@@ -240,7 +242,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/materialArrival',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Material Arrival'
     },
@@ -248,7 +250,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/storages',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Storages'
     },
@@ -256,7 +258,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/shelf-list',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Shelf List'
     },
@@ -264,7 +266,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/suppliers',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Suppliers'
     },
@@ -273,7 +275,7 @@ export const PeerPharmRputs: Routes =[
 
   {
     path: 'inventory/scanMaterialView',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Material Scan'
     },
@@ -281,7 +283,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'inventory/allocatedOrders',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Allocated Orders'
     },
@@ -294,7 +296,7 @@ export const PeerPharmRputs: Routes =[
     },
     component: ChangeShelfComponent,
   },
- {
+  {
     path: 'taskboard/main',
     data: {
       title: 'task-board'
@@ -303,11 +305,11 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'new-formule/new-formule',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'add-formule'
     },
-   component: NewFormuleComponent,
+    component: NewFormuleComponent,
     // canActivate:[TwoFactor]
   },
   {
@@ -327,64 +329,64 @@ export const PeerPharmRputs: Routes =[
     // canActivate:[TwoFactor] 
   },
   {
-    path :'production/lines',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Production Lines'
+    path: 'production/lines',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Production Lines'
     },
-    component:LinesComponent
+    component: LinesComponent
   },
   {
-    path :'production/productionHall',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Production Hall'
+    path: 'production/productionHall',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Production Hall'
     },
-    component:ProductionComponent
+    component: ProductionComponent
   },
   {
-    path : 'production/productionRequest',
-    canActivate:[ScreenGuard],
-    data : {
-      title : 'Production Request'
+    path: 'production/productionRequest',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Production Request'
     },
     component: ProductionRequestComponent
   },
   {
-    path : 'production/productionSchedule',
-    canActivate:[ScreenGuard],
-    data : {
-      title : 'Production Schedule'
+    path: 'production/productionSchedule',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Production Schedule'
     },
     component: ProductionScheduleComponent
   },
   {
-    path : 'production/wizard',
-    canActivate:[ScreenGuard],
-    data : {
-      title : 'Wizard'
+    path: 'production/wizard',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Wizard'
     },
     component: WizardComponent
   },
   {
-    path : 'production/formule-production/formule-production',
-    canActivate:[ScreenGuard],
-    data : {
-      title : 'Formule Production'
+    path: 'production/formule-production/formule-production',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Formule Production'
     },
     component: FormuleProductionComponent
   },
   {
-    path : 'production/weight-production/weight-production',
-    canActivate:[ScreenGuard],
-    data : {
-      title : 'Weight Production'
+    path: 'production/weight-production/weight-production',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Weight Production'
     },
     component: WeightProductionComponent
   },
   {
     path: 'production/scanMaterial',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Material Barcode'
     },
@@ -392,7 +394,7 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'production/scanItem',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Item Barcode'
     },
@@ -408,128 +410,128 @@ export const PeerPharmRputs: Routes =[
   },
   {
     path: 'production/materials',
-    canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Ready Materials'
     },
     component: MaterialsComponent,
   },
   {
-    path :'batches/batchesList',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Batches List'
+    path: 'batches/batchesList',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Batches List'
     },
-    component:BatchesComponent
+    component: BatchesComponent
   },
   {
-    path :'batches/mkpBatchesList',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Make-Up Batches List'
+    path: 'batches/mkpBatchesList',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Make-Up Batches List'
     },
-    component:BatchesMkpComponent
+    component: BatchesMkpComponent
   },
   {
-    path :'batches/newBatch',
-   
-    data :{
-      title : 'New Batch'
+    path: 'batches/newBatch',
+
+    data: {
+      title: 'New Batch'
     },
-    component:NewBatchComponent
+    component: NewBatchComponent
   },
   {
-    path :'costumers/costumers_list',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'All Costumers'
+    path: 'costumers/costumers_list',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'All Costumers'
     },
-    component:CostumersListComponent
+    component: CostumersListComponent
   }
 
   ,
   {
-    path :'forms/forms_list',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Forms'
+    path: 'forms/forms_list',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Forms'
     },
-    component:FormslistComponent
+    component: FormslistComponent
   }
 
   ,
   {
-    path :'forms/formDetails/:id',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Forms'
+    path: 'forms/formDetails/:id',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Forms'
     },
-    component:FormdetailsComponent
+    component: FormdetailsComponent
   }
   ,
   {
-    path :'forms/checkingforms',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Check Forms'
+    path: 'forms/checkingforms',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Check Forms'
     },
-    component:CheckingformsComponent
+    component: CheckingformsComponent
   },
   {
-    path :'forms/cleaning-forms',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Cleaning Forms'
+    path: 'forms/cleaning-forms',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Cleaning Forms'
     },
-    component:CleaningFormsComponent
-  } ,
+    component: CleaningFormsComponent
+  },
   {
-    path :'qa/packing-list',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Packing Lists'
+    path: 'qa/packing-list',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Packing Lists'
     },
-    component:PackingListComponent
-  } ,
+    component: PackingListComponent
+  },
   {
-    path :'forms/first-aid',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'First Aid'
+    path: 'forms/first-aid',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'First Aid'
     },
-    component:FirstAidComponent
-  } ,
+    component: FirstAidComponent
+  },
   {
-    path :'forms/qa-pallets',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'QA Pallets'
+    path: 'forms/qa-pallets',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'QA Pallets'
     },
-    component:QaPalletsComponent
-  } ,
+    component: QaPalletsComponent
+  },
   {
-    path :'notification',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Notification'
+    path: 'notification',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Notification'
     },
     component: NotificationComponent
   }
 
   ,
   {
-    path :'activeusers',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Active Users'
+    path: 'activeusers',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Active Users'
     },
     component: ActiveusersComponent
   },
   {
-    path :'unfinishedproducts',
-    canActivate:[],
-    data :{
-      title : 'Unfinished Products'
+    path: 'unfinishedproducts',
+    canActivate: [],
+    data: {
+      title: 'Unfinished Products'
     },
     component: UnfinishedProductsComponent
   }
@@ -538,9 +540,9 @@ export const PeerPharmRputs: Routes =[
   ,
 
   {
-    path :'builder',
-    data :{
-      title : 'Report Builder'
+    path: 'builder',
+    data: {
+      title: 'Report Builder'
     },
     component: ReportBuilderComponent
   }
@@ -549,16 +551,16 @@ export const PeerPharmRputs: Routes =[
   ,
 
   {
-    path :'historylogs',
-    data :{
-      title : 'History Logs'
+    path: 'historylogs',
+    data: {
+      title: 'History Logs'
     },
     component: HistorylogsComponent
   },
   {
-    path :'item-movement-reports',
-    data :{
-      title : 'Movements Reports'
+    path: 'item-movement-reports',
+    data: {
+      title: 'Movements Reports'
     },
     component: ItemMovementReportsComponent
   }
@@ -567,54 +569,71 @@ export const PeerPharmRputs: Routes =[
 
   ,
   {
-    path :'procurement/procurementOrderItemBalance',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Procurement Order Item Balance'
+    path: 'procurement/procurementOrderItemBalance',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Procurement Order Item Balance'
     },
     component: ProcurementOrderItemBalanceComponent
   },
   {
-    path :'procurement/procurementOrders',
-    canActivate:[ScreenGuard],
-    data :{
-      title : 'Procurement Orders'
+    path: 'procurement/procurementOrders',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Procurement Orders'
     },
     component: ProcurementOrdersComponent
   },
   {
-    path : 'procurement/procurementOrderItems/:orderNumber',
-    canActivate:[ScreenGuard],
-    data : {
-      title : 'Procurement Order Items'
+    path: 'procurement/procurementOrderItems/:orderNumber',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Procurement Order Items'
     },
     component: ProcurementOrderItemComponent
   },
   {
-    path : 'procurement/procurementOrderItems',
-    canActivate:[ScreenGuard],
-    data : {
-      title : 'Procurement Order Items'
+    path: 'procurement/procurementOrderItems',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Procurement Order Items'
     },
     component: ProcurementOrderItemComponent
   },
   {
-    path : 'procurement/newProcurement',
-    canActivate:[ScreenGuard],
-    data : {
-      title : 'New Procurement'
+    path: 'procurement/newProcurement',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'New Procurement'
     },
     component: NewProcurementComponent
-  } 
+  }
   ,
   {
-    path : 'admin',
-  canActivate:[  ScreenGuard],
-    data : {
-      title : 'Admin panel'
+    path: 'admin',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Admin panel'
     },
     component: AdminpanelComponent
-  } 
+  },
+
+  {
+    path: 'services/ordered',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'services'
+    },
+    component: OutServicesComponent
+  },
+  {
+    path: 'services/new',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Add Service'
+    },
+    component: NewOutServiceComponent
+  },
 
 ];
 
