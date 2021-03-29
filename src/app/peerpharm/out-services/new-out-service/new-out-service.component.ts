@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { OutServiceService } from 'src/app/services/out-service.service';
 import { UsersService } from 'src/app/services/users.service';
 import { OutService } from '../OutService';
+import { ServiceType } from '../ServiceType';
 
 @Component({
   selector: 'app-new-out-service',
@@ -11,6 +12,9 @@ import { OutService } from '../OutService';
   styleUrls: ['./new-out-service.component.scss']
 })
 export class NewOutServiceComponent implements OnInit {
+
+  serviceTypes: ServiceType[]
+  supplierNames: any[]
 
   addOutservice: FormGroup = new FormGroup({
     type: new FormControl('', Validators.required),
