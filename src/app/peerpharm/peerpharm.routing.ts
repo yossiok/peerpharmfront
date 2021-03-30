@@ -71,6 +71,7 @@ import { ItemMovementReportsComponent } from './reports/item-movement-reports/it
 import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.component';
 import { OutServicesComponent } from './out-services/out-services.component';
 import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
+import { TicketFormComponent } from './ticket-form/ticket-form.component';
 
 
 
@@ -326,7 +327,7 @@ export const PeerPharmRputs: Routes = [
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate:[TwoFactor] 
+    canActivate: [TwoFactor]
   },
   {
     path: 'production/lines',
@@ -535,7 +536,15 @@ export const PeerPharmRputs: Routes = [
     },
     component: UnfinishedProductsComponent
   }
-
+  ,
+  {
+    path: 'newticket',
+    canActivate: [],
+    data: {
+      title: 'Open Ticket'
+    },
+    component: TicketFormComponent
+  }
 
   ,
 

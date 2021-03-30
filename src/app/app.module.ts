@@ -1,7 +1,7 @@
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import {ExcelService} from './services/excel.service';
-
+import { AlertModalComponent } from './component/alert-modal/alert-modal.component';
 import { SignupComponent } from './shared/auth/signup.component';
 import { LoginComponent } from './shared/auth/login.component';
 import * as $ from 'jquery';
@@ -84,7 +84,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SidebarComponent ,
     LoginComponent, 
 
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent,
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent,AlertModalComponent
 
   ],
   entryComponents:[ConfirmModalComponent],

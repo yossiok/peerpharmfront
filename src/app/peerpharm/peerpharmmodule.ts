@@ -143,8 +143,10 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { ItemMovementReportsComponent } from './reports/item-movement-reports/item-movement-reports.component';
 import { UnfinishedProductsComponent } from './reports/unfinished-products/unfinished-products.component';
+ 
 import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.component';
 import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
+import { TicketFormComponent } from './ticket-form/ticket-form.component';
 
 
 
@@ -296,6 +298,7 @@ import { NewOutServiceComponent } from './out-services/new-out-service/new-out-s
     AllocatedOrdersComponent,
     ReportBuilderComponent,
     UnfinishedProductsComponent,
+    TicketFormComponent,
     PrintBarcodeComponent,
     OutServicesComponent,
     NewOutServiceComponent

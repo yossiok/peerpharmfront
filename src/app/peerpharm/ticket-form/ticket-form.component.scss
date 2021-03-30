@@ -1,0 +1,68 @@
+
+.ticket-form {
+    margin: auto;
+    text-align: center;
+  
+    .control-label {
+      margin: 0;
+      text-align: right;
+    }
+    .row {
+      align-items: center;
+    }
+  
+    textarea,
+    select {
+      resize: none;
+      border-radius: 5px;
+      box-shadow: 1px 1px 1px black;
+    }
+  
+    select,
+    input[type="file"] {
+      cursor: pointer;
+    }
+  
+    p {
+      margin-bottom: 0;
+    }
+  
+    .description {
+      text-align: right;
+    }
+    input[type="file"] {
+      padding-left: 0;
+    }
+    .btn {
+      color: #fff;
+    }
+    .btn-primary {
+      background: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+    .btn-danger {
+      background: #dc3545;
+      border-color: #dc3545;
+    }
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+    .btn:hover {
+      box-shadow: 1px 1px 1px black;
+    }
+    .btn:active,
+    .btn:focus,
+    .btn:disabled:hover {
+      outline: 0;
+      box-shadow: none;
+    }
+    .btn:disabled {
+      opacity: 0.5;
+    }
+  }
+  

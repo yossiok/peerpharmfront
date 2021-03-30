@@ -1,0 +1,129 @@
+
+<div class="row">
+    <div class="col-12">
+        <form class="ticket-form" [formGroup]="ticketForm" (ngSubmit)="onTicketFormSubmit()">
+            <h1>Ticket Form</h1>
+            <hr>
+            <div class="form-group row">
+                <label
+                       for="username"
+                       class="col-sm-4 control-label">Username</label>
+                <div class="col-sm-4">
+                    <input
+                           type="text"
+                           formControlName="username"
+                           class="form-control"
+                           placeholder="Username" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                       for="ticketTitle"
+                       class="col-sm-4 control-label">Title</label>
+                <div class="col-sm-4">
+                    <input
+                           type="text"
+                           formControlName="ticketTitle"
+                           class="form-control"
+                           placeholder="Title" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                       for="screen"
+                       class="col-sm-4 control-label">What Screen ?</label>
+                <div class="col-sm-4">
+                    <select
+                            formControlName="screen"
+                            class="form-control">
+                        <option *ngFor="let screen of tfScreens" [value]="screen">{{screen}}</option>
+                        <!--from array of all screens -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                       for="severity"
+                       class="col-sm-4 control-label">Severity</label>
+                <div class="col-sm-4">
+                    <select
+                            formControlName="severity"
+                            class="form-control">
+                        <option *ngFor="let severity of tfSeverities" [value]="severity">{{severity}}</option>
+                        <!--from array of all severities -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                       for="urgency"
+                       class="col-sm-4 control-label">Urgency</label>
+                <div class="col-sm-4">
+                    <select
+                            formControlName="urgency"
+                            class="form-control">
+                        <option *ngFor="let urgency of tfUrgencies" [value]="urgency">{{urgency}}</option>
+                        <!--from array of all urgencies -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <!-- <label
+                       for="description"
+                       class="col-sm-4 control-label">Description</label> -->
+                <div class="col-sm-4 description">
+                    <label>Description:</label>
+                    <p>What values did you input ?<br />
+                        (serial number, customer name, order number etc...)</p>
+                    <p>What buttons did you click ?</p>
+                    <p>What text was input and in which fields ?</p>
+                </div>
+                <div class="col-sm-4">
+                    <textarea
+                              formControlName="description"
+                              class="form-control"
+                              placeholder="Description"
+                              cols="30"
+                              rows="10"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                       for="comments"
+                       class="col-sm-4 control-label">Comments</label>
+                <div class="col-sm-4">
+                    <textarea
+                              formControlName="comments"
+                              class="form-control"
+                              placeholder="Comments"
+                              cols="30"
+                              rows="10"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                       for="screenshot"
+                       class="col-sm-4 control-label">Screenshot</label>
+                <div class="col-sm-4">
+                    <input
+                           type="file"
+                           accept="image/*"
+                           class="form-control"
+                           formControlName="screenshot"
+                           (change)="validateFileInput($event)" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <button
+                            type="submit"
+                            class="btn btn-larg btn-primary">Submit</button>&nbsp;
+                    <button
+                            type="button"
+                            class="btn btn-larg btn-danger"
+                            (click)="onTicketFormReset()">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
