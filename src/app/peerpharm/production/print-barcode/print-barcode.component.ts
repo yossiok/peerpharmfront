@@ -6,9 +6,8 @@ import { ItemsService } from 'src/app/services/items.service';
 
 @Component({
     template: `
-    <h4>Order</h4>
-        <div class="form-group">
-        <label>Enter Order Number</label> <br>
+    <div class="form-group">
+        <label>Enter Order Number (optional)</label> <br>
         <input [(ngModel)]="orderNumber" type="number">
     </div>
     <h4>Item</h4>
@@ -19,8 +18,12 @@ import { ItemsService } from 'src/app/services/items.service';
             <p class="mt-2"><button class="btn btn-default" (click)="fetchItemData()">Get Item Data</button></p>
         </div>
         <div class="form-group ml-1">
-            <label>Description</label> <br>
+            <label>Name</label> <br>
             <input [(ngModel)]="itemName" type="text">
+        </div>
+        <div class="form-group ml-1">
+            <label>Description</label> <br>
+            <input [(ngModel)]="itemDesc" type="text">
         </div>
         <div class="form-group ml-1">
             <label>Carton Pieces</label> <br>
@@ -44,13 +47,11 @@ import { ItemsService } from 'src/app/services/items.service';
         </div>
     </div>
     <div class="d-flex flex-column">
-        <h4>Batch</h4>
         <div class="form-group"> 
             <label>Enter Batch</label> <br>
             <input [(ngModel)]="batch" type="text">
             <h5 class="mt-2"><input type="checkbox" (change)="printExpiration = !printExpiration">Print Expiration Date</h5>
         </div>
-        <h4>Customer</h4>        
         <div class="form-group">
             <label>Enter Customer Name</label> <br>
             <input [(ngModel)]="customerName" type="text">
@@ -75,6 +76,9 @@ import { ItemsService } from 'src/app/services/items.service';
             </tr>
             <tr>
                 <td>{{itemName}}</td>
+            </tr>
+            <tr>
+                <td>{{itemDesc}}</td>
             </tr>
             <tr>
                 <td>Item Number: {{itemNumber}}</td>
@@ -105,6 +109,7 @@ export class PrintBarcodeComponent {
     batch: string = "---"
     customerName: string
     itemName: string
+    itemDesc: string
     pcsCarton: string
     barcodeK: string
     volumeK: string
@@ -131,7 +136,8 @@ export class PrintBarcodeComponent {
     fetchItemData() {
         this.itemService.getItemData(this.itemNumber).subscribe(data => {
             if (data.length > 0) {
-                this.itemName = data[0].discriptionK
+                this.itemName = data[0].name
+                this.itemDesc = data[0].discriptionK
                 this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs"
                 this.barcodeK = data[0].barcodeK;
                 this.volumeK = data[0].volumeKey + ' ml';

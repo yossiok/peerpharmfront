@@ -63,11 +63,12 @@
               חפש לפי סטטוס <select (change)="filterByStatus($event)" class="form-control rounded-pill">
                 <option selected="true" disabled="disabled">בחר סטטוס</option>
                 <option value="allOrders">כל ההזמנות</option>
+                <option value="open">פתוחות</option>
+                <option value="closed">סגורות</option>
                 <option value="ongoing">בטיפול</option>
-                <option value="closed">הזמנות סגורות</option>
+                <option value="canceled">בוטלו</option>
                 <option value="material">חומרי גלם</option>
                 <option value="component">קומפוננטים</option>
-                <option value="open">פתוחות</option>
               </select>
             </div>
             <div class="col-2">
@@ -102,13 +103,13 @@
               טען את כל הפריטים
               <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
             </div> -->
-            
+
             <div class="col-2">
               <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-              (click)="exportAsXLSX('purchaseData')">
+                (click)="exportAsXLSX('purchaseData')">
               <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
-              style="background: none;border:none" printSectionId="print-section" ngxPrint><img
-              src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+                style="background: none;border:none" printSectionId="print-section" ngxPrint><img
+                  src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
             </div>
             <div class="col-3"></div>
             <div class="col-1">
@@ -485,12 +486,12 @@
 </div> -->
 
 <div *ngIf="purchaseRecommendationsModal == true" style="z-index: 9999;top:50px !important;height: auto"
-  class="border border-primary bg-white shadow-lg rounded container-fluid fixed-top mx-auto my-auto text-center p-1">
+  class="border border-primary bg-white shadow-lg rounded container-fluid fixed-top mx-auto my-auto text-center p-1 h-100">
 
   <div class="row mt-2">
     <div class="col-1"></div>
     <div class="col-10">
-      <h1 class="text-success">בקשות רכש</h1>
+      <h1 class="text-primary">Purchase Requests</h1>
     </div>
     <div class="col-1">
       <i (click)="purchaseRecommendationsModal = false" class="fa fa-times"></i>
@@ -521,54 +522,63 @@
   </div> -->
   </div>
 
-  <div class="row mt-1">
+  <div *ngIf="!purchaseRecommendations || purchaseRecommendations.length == 0" class="smallLoader ml-5"></div>
+  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0" class="row mt-1">
     <div style="height:700px;overflow-y: scroll;" class="col-12">
-      <table class="table table-hover" border="0">
+      <table class="table table-striped">
         <thead class="bg-warning text-white">
           <tr>
             <!-- <th></th> -->
-           
-            <th style="width:10%">Recommendation Number</th>
-            <th style="width:10%">Date</th>
-            <th style="width:10%">status</th>
-            <th style="width:50%">Items</th>
-            <th style="width:20%">Remarks</th> 
+
+            <th>Number</th>
+            <th>Date</th>
+            <th>status</th>
+            <th>Items</th>
+            <th>Remarks</th>
           </tr>
         </thead>
         <tbody *ngFor="let purchaseRecommendation of purchaseRecommendations">
           <ng-container>
-            <tr  >
-             
-              <td>{{purchaseRecommendation.recommendNumber}}</td>
+            <tr>
+              <th scope="row">{{purchaseRecommendation.recommendNumber}}</th>
               <td>{{purchaseRecommendation.date | date}}</td>
               <td>{{purchaseRecommendation.status}}</td>
               <td>
-                <table >
-                  <tr *ngFor="let stockitem of purchaseRecommendation.stockitems"    >
-                    <td><input type="checkbox"  title={{purchaseRecommendation.recommendNumber}} (change)="isSelected($event,stockitem)">
-                  
-                    
-                    </td>
-                <td  [style.background]="stockitem.color"   >
-                  {{stockitem.name}} <a target="_blank" href="/#/peerpharm/procurement/procurementOrders?orderNumber={{stockitem.lastorder.orderNumber}}"   > <i class="fas fa-info"  placement="bottom" ngbTooltip={{stockitem.tooltip}} ></i></a>
-                
-                </td>
-
-                <td>
-                  {{stockitem.number}} 
-                </td>
-
-                <td>
-                  {{stockitem.quantity}} 
-                </td>
-                <td>
-                  {{stockitem.remarks}} 
-                </td>
-                  </tr>
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Item</th>
+                      <th>Name</th>
+                      <th>Amount</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let stockitem of purchaseRecommendation.stockitems">
+                      <td><input type="checkbox" title={{purchaseRecommendation.recommendNumber}}
+                        (change)="isSelected($event,stockitem)">
+                      </td>
+                      <td>
+                        {{stockitem.number}}
+                      </td>
+                      <td [style.background]="stockitem.color">
+                        {{stockitem.name}} <a target="_blank"
+                        href="/#/peerpharm/procurement/procurementOrders?orderNumber={{stockitem.lastorder.orderNumber}}">
+                        <i class="fas fa-info" placement="bottom" ngbTooltip={{stockitem.tooltip}}></i></a>
+                      </td>
+                      <td>
+                        {{stockitem.quantity}}
+                      </td>
+                      <td>
+                        {{stockitem.remarks}}
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
-                 </td>
-              <td>{{purchaseRecommendation.remarks}}</td> 
-             <!-- <td>
+              </td>
+              <td>{{purchaseRecommendation.remarks}}</td>
+              <!-- <td>
                 <button
                   (click)="removeItemFromRecommendation(recommendedStockitem.recommendationNumber, recommendedStockitem.number)"
                   class="btn btn-warning form-control rounded-pill">Delete

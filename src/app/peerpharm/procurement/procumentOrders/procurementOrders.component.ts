@@ -364,6 +364,8 @@ export class ProcurementOrdersComponent implements OnInit {
             this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
           } else if (status == 'closed') {
             this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
+          } else if (status == 'canceled') {
+            this.procurementData = this.procurementDataCopy.filter(p => p.status == 'canceled')
           }
         } 
   }
@@ -728,7 +730,7 @@ export class ProcurementOrdersComponent implements OnInit {
            si.tooltip=`supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
           price:${si.lastorder.price} | price:  ${si.lastorder.price}| coin: ${si.lastorder.coin} | quantity: ${si.lastorder.quantity}
           `;
-          si.color="white"
+          si.color="#e9ecef"
         });
       });
       /*

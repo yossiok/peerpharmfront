@@ -391,6 +391,7 @@ export class StockComponent implements OnInit {
         remarks: new FormControl(''),
         date: new FormControl(this.formatDate(new Date()),Validators.required),
         user: new FormControl(''),
+        mail: new FormControl('', Validators.required),
         type: new FormControl('',Validators.required),
         status: new FormControl('open'),
         stockitems: new FormControl([]),
@@ -884,8 +885,10 @@ export class StockComponent implements OnInit {
 
 
   sendRecommandation() {
-      
-    debugger;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    
+    if(re.test(String(this.newPurchaseRecommendation.controls.mail.value).toLowerCase())) {
+
       this.newPurchaseRecommendation.controls.user.setValue(this.authService.loggedInUser.userName);
       this.inventoryService.addNewRecommendation(this.newPurchaseRecommendation.value).subscribe(data => {
         // this.inventoryService.onNewRecommend(this.recommandPurchase);
@@ -893,10 +896,13 @@ export class StockComponent implements OnInit {
           this.toastSrv.success("המלצת רכש נשלחה בהצלחה !")
           this.newPurchaseRecommendModal = false;
           this.newPurchaseRecommendation.reset();
+          this.newPurchaseRecommendation.controls.stockitems.setValue([])
           alert('מספר הבקשה: '+ data.recommendNumber);
-
+          
         }
       })
+    }
+    else this.toastSrv.error('אנא הכנס מייל תקין')
     
 
   }

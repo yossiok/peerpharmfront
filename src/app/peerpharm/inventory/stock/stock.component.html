@@ -2488,7 +2488,7 @@
   </div>
 
 
-  <div style="margin-right:auto !important;border-radius: 15px !important;" *ngIf="newPurchaseRecommendModal==true"
+  <div style="margin-right:auto !important" *ngIf="newPurchaseRecommendModal==true"
     class="container border border-info fixNoaStupidStuff bg-white shadow-lg rounded mx-auto my-auto text-center fixed-top p-5">
     <form [formGroup]="newPurchaseRecommendation" class="modal-inner">
       <div class="row mt-2 fixNoaStupidStuff">
@@ -2509,11 +2509,16 @@
         <div class="col-3">
           <label class="text-info">Date</label>
           <span class="hot-red float-left">*</span>
-          <input formControlName="date" class="form-control rounded-pill" type="date">
+          <input formControlName="date" class="form-control rounded-pill" type="date" required>
         </div>
-        <div class="col-8">
+        <div class="col-3">
+          <label class="text-info">My Email</label>
+          <span class="hot-red float-left">*</span>
+          <input formControlName="mail" class="form-control rounded-pill" type="text" required>
+        </div>
+        <div class="col-5">
           <label class="text-info">Remarks</label>
-          <textarea formControlName="remarks" placeholder="Remarks" class="form-control rounded-pill"></textarea>
+          <input type="text" formControlName="remarks" placeholder="Remarks" class="form-control rounded-pill">
         </div>
       </div>
     
@@ -2532,7 +2537,7 @@
         <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <label class="text-info">Type</label>
-          <select formControlName="type" class="form-control rounded-pill">
+          <select formControlName="type" class="form-control rounded-pill" required>
             <option selected="true" disabled="disabled">Choose Type</option>
             <option value="component">Component</option>
             <option value="material">Material</option>
@@ -2544,20 +2549,20 @@
           <label class="text-info">Item Number</label>
           <input (focusout)="getStockItemByNumber($event)" [ngModelOptions]="{standalone: true}"
           [(ngModel)]="recommendStockItem.number" class="form-control rounded-pill" type="text"
-          placeholder="StockItem Number">
+          placeholder="StockItem Number" required>
         </div>
         <div [ngModelOptions]="{standalone: true}" class="col-3 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <label class="text-info">Item Name</label>
           <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.name"
-          class="form-control rounded-pill" type="text" placeholder="StockItem Name">
+          class="form-control rounded-pill" type="text" placeholder="StockItem Name" required>
         </div>
         
         <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <label class="text-info">Amount</label>
           <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.quantity"
-          class="form-control rounded-pill" type="number" placeholder="amount">
+          class="form-control rounded-pill" type="number" placeholder="amount" (focusout)="itemAmountsData = []" required>
         </div>
         <div class="col-2 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
