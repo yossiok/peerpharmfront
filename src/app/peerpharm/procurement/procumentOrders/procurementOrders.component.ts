@@ -730,7 +730,7 @@ export class ProcurementOrdersComponent implements OnInit {
            si.tooltip=`supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
           price:${si.lastorder.price} | price:  ${si.lastorder.price}| coin: ${si.lastorder.coin} | quantity: ${si.lastorder.quantity}
           `;
-          si.color="#e9ecef"
+          si.color=""
         });
       });
       /*

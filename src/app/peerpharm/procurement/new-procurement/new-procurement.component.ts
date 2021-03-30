@@ -395,18 +395,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       }})
   }
 
-  checkItemAmount(i, itemNumber, amount, inputRef) {
-    amount = amount.target.value
-    for (let item of this.newPurchase.controls.stockitems.value) {
-      if (item.number == itemNumber) {
-        if (amount > item.quantity) {
-          this.toastr.warning('שים לב! הכמות שהזנת גדולה מהכמות בהזמנה')
-        } 
-        this.selectedItems[i].quantity = amount
-      }
-    }
-  }
-
+  // Invoices and Certificates
   checkCertValidation() {
     let bool = false;
     if(this.deliveryCertificate.certificateNumber != null && this.deliveryCertificate.certificateNumber != '' && this.deliveryCertificate.certificateNumber != undefined) {
@@ -425,7 +414,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     // else this.toastr.error('תעודה לא תקינה. אנא בדוק את כל השדות')
   }
 
-  // Invoices and Certificates
   saveCertificate() {
     this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificate);
     this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
@@ -449,10 +437,34 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   //   }
   // }
 
+  checkItemAmount(i, itemNumber, amount, inputRef) {
+    if(amount <= 0) {
+      this.toastr.error('יש להזין כמות')
+    } 
+    amount = amount.target.value
+    for (let item of this.newPurchase.controls.stockitems.value) {
+      if (item.number == itemNumber) {
+        if (amount > item.quantity) {
+          this.toastr.warning('שים לב! הכמות שהזנת גדולה מהכמות בהזמנה')
+        } 
+        this.selectedItems[i].quantity = amount
+      }
+    }
+  }
+
 
   saveInvoiceToPurchase() {
+
+    // calculate shipping price for each item
+    for (let item of this.newPurchase.controls.stockitems.value) {
+      item.shippingPrice = item.shippingPrice ? (item.shippingPrice + this.invoice.shippingPrice) / 2 : this.invoice.shippingPrice
+    }
     this.newPurchase.controls.billNumber.value.push(this.invoice);
+
+    // calculate overall shipping price
     this.newPurchase.controls.sumShippingCost.setValue(this.newPurchase.controls.sumShippingCost.value + this.invoice.fixedPrice)
+
+    // update order
     this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
       .subscribe(res => {
         if (res) {
@@ -478,18 +490,29 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
   calculateShipping() {
-    this.invoice.fixedPrice = (this.invoice.invoicePrice - (this.invoice.taxes + this.invoice.taxesTwo)) / this.invoice.coinRate
-    let purchaseItems = this.invoice.stockitems
-    let itemShippingPrice;
-    // sum total amount 
-    let totalAmount = 0;
-    purchaseItems.forEach(stockitem => {
-      totalAmount += Number(stockitem.quantity)
-    });
-    // 1 item shipping price
-    itemShippingPrice = this.invoice.fixedPrice / totalAmount
-    this.invoice.stockitems.map(item => item.shippingPrice = itemShippingPrice)
-    this.invoice.shippingPrice = itemShippingPrice
+    if( this.invoice.invoicePrice == 0 || this.invoice.taxes == 0 || this.invoice.taxesTwo == 0 || this.invoice.coinRate == 0 ) {
+      this.toastr.error('מחיר צריך ליהיות גדול מאפס')
+    }
+    else {
+      this.invoice.fixedPrice = (this.invoice.invoicePrice - (this.invoice.taxes + this.invoice.taxesTwo)) / this.invoice.coinRate
+      let purchaseItems = this.invoice.stockitems
+      for(let item of purchaseItems) {
+        if(item.quantity <= 0) {
+          this.toastr.error('יש להזין כמות לכל הפריטים')
+          return
+        } 
+      }
+      let invoiceShippingPrice;
+      // sum total amount 
+      let totalAmount = 0;
+      purchaseItems.forEach(stockitem => {
+        totalAmount += Number(stockitem.quantity)
+      });
+      // 1 item shipping price
+      invoiceShippingPrice = this.invoice.fixedPrice / totalAmount
+      this.invoice.stockitems.map(item => item.shippingPrice = invoiceShippingPrice)
+      this.invoice.shippingPrice = invoiceShippingPrice
+    }
   }
 
   calaculateFinalShipping() {
@@ -506,7 +529,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         }
       }
     }
-
     for (let ship of itemsShipping) {
       for (let item of this.newPurchase.controls.stockitems.value) {
         if(ship.item == item.name) item.shippingPrice = ship.shippingPrice

@@ -69,7 +69,7 @@
                   <th>Quantity</th>
                   <th>Measurement</th>
                   <th>Price</th>
-                  <th>Coin</th>
+                  <!-- <th>Coin</th> -->
                   <th>1 Unit Shipping Price</th>
                   <th>Remarks</th>
                 </tr>
@@ -93,12 +93,12 @@
                     class="form-control">
                   </td>
                   
-                  <td *ngIf="!editItem">{{stockitem.price}}</td>
+                  <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
                     class="form-control">
                   </td>
-                  <td *ngIf="!editItem">{{stockitem.coin}}</td>
+                  <!-- <td *ngIf="!editItem">{{stockitem.coin}}</td> -->
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.coin"
                     class="form-control">
@@ -167,7 +167,13 @@
               </select>
             </div>
             <div class="col-sm-12 col-md-4 form-group">
-              <input [disabled]="disabled" formControlName="coin" type="text" class="form-control" placeholder="Coin">
+              <select [disabled]="disabled" formControlName="coin" class="form-control">
+                <option disabled value="kilogram">Coin</option>
+                <option value="NIS">NIS</option>
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+              </select>
             </div>
 
           </div>
@@ -403,7 +409,6 @@
                 </select>
               </div>
               <div class="col-sm-12 col-md-4 form-group">
-                <input formControlName="coin" type="text" class="form-control" placeholder="Coin">
                 <select formControlName="coin" class="form-control custom-select" required>
                   <option value="" disabled>Coin</option>
                   <option value="nis">NIS</option>
@@ -467,7 +472,7 @@
                     <input #editQuantity class="form-control rounded-pill" [value]="stockitem.quantity" type="number">
                   </td>
 
-                  <td *ngIf="EditRowId == ''">{{stockitem.price}}</td>
+                  <td *ngIf="EditRowId == ''">{{stockitem.price | currency: stcokitem.coin}}</td>
                   <td *ngIf="EditRowId == stockitem.number">
                     <input #editPrice class="form-control rounded-pill" [value]="stockitem.price" type="number">
                   </td>
@@ -583,8 +588,9 @@
         <span class="red">*</span> שדה חובה
       </div>
       <div class="col-10"></div>
-
     </div>
+
+    <!-- invoice number and remarks-->
     <div class="row mt-2">
       <div class="col-md-4 form-group">
         <label for="invoiceNumber">מספר חשבונית<span class="red">*</span></label>
@@ -595,18 +601,12 @@
         <label for="remarks">הערות</label>
         <input type="text" class="form-control" [(ngModel)]="invoice.invoiceRemarks" placeholder="הערות">
       </div>
-
     </div>
 
-  
-
-
-
-    
+    <!--invoice stockitems-->
       <div class="row">
         <h5>פריטים בחשבונית</h5>
       </div>
-
       <div class="row mt-3 bg-muted m-3">
         <div class="shadow rounded items">
           <table class="table table-hover">
@@ -622,7 +622,9 @@
               <tr *ngFor="let stockitem of selectedItems; let i = index">
                 <td>{{stockitem.number}}</td>
                 <td>{{stockitem.name}}</td>
-                <td><input type="number" class="smaller-input" #invoiceItemAmount (keyup)="checkItemAmount(i, stockitem.number, $event, invoiceItemAmount)"></td>
+                <td><input type="number" class="smaller-input" #invoiceItemAmount 
+                  (change)="checkItemAmount(i, stockitem.number, $event, invoiceItemAmount)" 
+                  (keyup)="checkItemAmount(i, stockitem.number, $event, invoiceItemAmount)"></td>
                 <td>{{stockitem.shippingPrice | currency: invoice.invoiceCoin}}</td>
               </tr>
             </tbody>
@@ -630,6 +632,7 @@
         </div>
       </div>
 
+      <!--Shipping-->
       <div class="row mt-2">
         <div class="col-4"></div>
         <div class="col-4">
@@ -638,10 +641,7 @@
         </div>
         <div class="col-4"></div>
       </div>
-
       <div *ngIf="shippingInvoiceDetails" class="shipping">
-
-        
         <div class="row">
           <div class="col-md-4 form-group">
             <label for="invoicePrice">מחיר העמסה (שקלים) </label>
@@ -658,7 +658,6 @@
             placeholder="Taxes 2" required>
           </div>
         </div>
-        
         <div class="row mt-2">
           <div class="col-md-4 form-group">
             <label for="invoiceCoin">מטבע</label>
@@ -678,6 +677,7 @@
           </div>
         </div>
       </div>
+
       <div class="row mt-2">
         <button [disabled]="!invoice.purchaseInvoiceNumber || invoice.purchaseInvoiceNumber == 0"
         (click)="saveInvoiceToPurchase()" class="btn btn-primary form-control">
