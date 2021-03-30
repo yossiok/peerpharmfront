@@ -128,33 +128,6 @@ export class FormdetailsComponent implements OnInit {
     } 
   }
 
-  closeForm()
-    {
-      if(confirm('האם אתה בטוח שברצונך לאשר את הטופס?'))
-      {
-        this.formsService.closeForm(this.formid).subscribe(data=>
-          {
-            alert('הטופס אושר');
-            location.reload();
-          })
-      }
-
-    }
-
-    closeFormPallets()
-    {
-      if(confirm('האם אתה בטוח שברצונך לאשר את משטחי הטופס כמוכנים למשלוח? ?'))
-      {
-        this.formsService.closeFormPallets(this.formid).subscribe(data=>
-          {
-            alert('המשטחים אושרו');
-            location.reload();
-          })
-      }
-
-    }
-
-
     
   
 

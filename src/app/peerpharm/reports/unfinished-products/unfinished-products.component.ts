@@ -22,7 +22,7 @@ export class UnfinishedProductsComponent implements OnInit {
   //this.getUserInfo();
   this.formsService.getAllUnfinished().subscribe(data=>
   {
-    data=data.filter(x=>x.remarks!="עובר לאריזה אישית" && x.qaStatus!="עובר לאריזה אישית");
+    data=data.filter(x=>x.remarks!="עובר לאריזה אישית" && x.qaStatus!="עובר לאריזה אישית"&& (typeof x.tifulApprovedBy == 'undefined' ) );
 
    this.unfinishedProducts=data;
   });
@@ -32,12 +32,46 @@ export class UnfinishedProductsComponent implements OnInit {
     //this.getUserInfo();
     this.formsService.getAllUnfinished2().subscribe(data=>
       {
+        data=data.filter(x=> (typeof x.tifulApprovedBy == 'undefined' ) );
      this.unfinishedProducts2=data;
       });
 
 
 
   }
+
+
+
+  
+  closeForm(ev,form)
+    {
+      debugger;
+      if(confirm('האם אתה בטוח שברצונך לאשר את הטופס?'))
+      {
+        this.formsService.closeForm(form._id).subscribe(data=>
+          {
+            alert('הטופס אושר');
+            location.reload();
+          })
+      }
+
+    }
+
+    closeFormPallets(ev, form)
+    {
+      debugger;
+      if(confirm('האם אתה בטוח שברצונך לאשר את משטחי הטופס ? ?'))
+      {
+        this.formsService.closeFormPallets(form.formDetailsId).subscribe(data=>
+          {
+            alert('המשטחים אושרו');
+            location.reload();
+          })
+      }
+
+    }
+
+
 
  
 
