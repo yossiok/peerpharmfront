@@ -16,6 +16,7 @@
                         <td>Status</td>
                         <th scope="col">Remarks</th>
                         <th scope="col">Link</th>
+                        <td  >Approve</td>
                     </tr>
                 </thead>
                 <tbody  >
@@ -28,6 +29,7 @@
                         <td style='color:red'>{{form.qaStatus}}</td>
                         <td style='color:red' >{{form.remarks}}</td>
                         <td  ><a  [href]="'/#/peerpharm/forms/formDetails/'+form.formDetailsId" >Go to form</a></td>
+                        <td  ><button  (click)="closeFormPallets($event,form)">Approve</button></td>
                     </tr>
                   
                 </tbody>
@@ -53,6 +55,7 @@
                         <td>Status</td>
                         <th scope="col">Remarks</th>
                         <th scope="col">Link</th>
+                        <th scope="col">Approve</th>
                     </tr>
                 </thead>
                 <tbody  >
@@ -65,6 +68,7 @@
                         <td style='color:red'>{{form.status}}</td>
                         <td style='color:red' >{{form.frontRemarks}}</td>
                         <td  ><a  [href]="'/#/peerpharm/forms/formDetails/'+form._id" >Go to form</a></td>
+                        <td  ><button  (click)="closeForm($event,form)" >Approve</button></td>
                     </tr>
                   
                 </tbody>

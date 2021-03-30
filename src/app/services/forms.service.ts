@@ -217,12 +217,12 @@ export class FormsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getAllUnfinished() {
-    let url = this.baseUrl + 'formDetails/getformsfillednotready';
+    let url = this.baseUrl + 'formDetails/getformsfillednotready?limit=100';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   getAllUnfinished2() {
-    let url = this.baseUrl + 'formDetails/getformsfillednotready2';
+    let url = this.baseUrl + 'formDetails/getformsfillednotready2?limit=100';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
