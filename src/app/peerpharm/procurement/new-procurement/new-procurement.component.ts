@@ -232,7 +232,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if(ev.target.value == 'closed') {
         await this.calaculateFinalShipping()
       } 
-
       this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
         if (data) {
           console.log(data)
@@ -454,17 +453,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
   saveInvoiceToPurchase() {
-
-    // calculate shipping price for each item
-    for (let item of this.newPurchase.controls.stockitems.value) {
-      item.shippingPrice = item.shippingPrice ? (item.shippingPrice + this.invoice.shippingPrice) / 2 : this.invoice.shippingPrice
-    }
     this.newPurchase.controls.billNumber.value.push(this.invoice);
-
-    // calculate overall shipping price
-    this.newPurchase.controls.sumShippingCost.setValue(this.newPurchase.controls.sumShippingCost.value + this.invoice.fixedPrice)
-
-    // update order
     this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
       .subscribe(res => {
         if (res) {
@@ -482,7 +471,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           this.invoice.stockitems = []
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
-        this.selectedItems = []
         this.invoice.purchaseInvoiceNumber = null
         this.modalService.dismissAll()
       })
@@ -502,20 +490,27 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           return
         } 
       }
-      let invoiceShippingPrice;
-      // sum total amount 
-      let totalAmount = 0;
-      purchaseItems.forEach(stockitem => {
-        totalAmount += Number(stockitem.quantity)
-      });
-      // 1 item shipping price
-      invoiceShippingPrice = this.invoice.fixedPrice / totalAmount
-      this.invoice.stockitems.map(item => item.shippingPrice = invoiceShippingPrice)
-      this.invoice.shippingPrice = invoiceShippingPrice
+    
+      // calculate shipping percent
+
+
+      // let invoiceShippingPrice;
+      // // sum total amount 
+      // let totalAmount = 0;
+      // purchaseItems.forEach(stockitem => {
+      //   totalAmount += Number(stockitem.quantity)
+      // });
+      // // 1 item shipping price
+      // invoiceShippingPrice = this.invoice.fixedPrice / totalAmount
+      // this.invoice.stockitems.map(item => item.shippingPrice = invoiceShippingPrice)
+      // this.invoice.shippingPrice = invoiceShippingPrice
     }
   }
 
   calaculateFinalShipping() {
+
+    
+
     let itemsShipping = [];
     for(let invoice of this.newPurchase.controls.billNumber.value) {
       for (let i=0; i<invoice.stockitems.length; i++) {
