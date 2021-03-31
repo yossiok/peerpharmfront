@@ -727,9 +727,12 @@ export class ProcurementOrdersComponent implements OnInit {
       this.purchaseRecommendations=data;
       this.purchaseRecommendations.forEach(pr => {
         pr.stockitems.forEach(si => {
-           si.tooltip=`supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
-          price:${si.lastorder.price} | price:  ${si.lastorder.price}| coin: ${si.lastorder.coin} | quantity: ${si.lastorder.quantity}
-          `;
+          if(si.lastorder) {
+            si.tooltip=`supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
+            price:${si.lastorder.price} | price:  ${si.lastorder.price}| coin: ${si.lastorder.coin} | quantity: ${si.lastorder.quantity}
+            `;
+          }
+          else si.tooltip = ''
           si.color=""
         });
       });
