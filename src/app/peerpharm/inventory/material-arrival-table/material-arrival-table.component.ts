@@ -136,7 +136,7 @@ export class MaterialArrivalTableComponent implements OnInit {
           console.log(this.materialNum)
           console.log(this.materialName)
           console.log(this.lotNumber)
-         // this.printBtn.nativeElement.click();
+         this.printBtn.nativeElement.click();
         }, 500);
       }
     });

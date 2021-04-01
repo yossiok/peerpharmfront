@@ -113,16 +113,15 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
               <!-- PRINT BARCODE SECTION -->
             <div 
             >
-                <!-- <button #printBtn style="visibility: hidden" -->
-              <button #printBtn 
+            <!-- <button #printBtn  -->
+                <button #printBtn style="visibility: hidden"
               [printStyle]="{ 'body' : {'margin-top': '20px' }, 'table' : {'text-align': 'center','width': '100%'} , 'td': {'border-top': 'solid black 1px'} }"
               printSectionId="print-section"
               ngxPrint>print
               </button>
     
-                <!-- <div class="row clearfix" id="print-section" style="visibility: hidden"> -->
-              <div class="row clearfix" id="print-section" 
-              >
+                <div class="row clearfix" id="print-section" style="visibility: hidden">
+              <!-- <div class="row clearfix" id="print-section"   > -->
                   <table
                     class="barcodeTbl"
                     dir="rtl"
