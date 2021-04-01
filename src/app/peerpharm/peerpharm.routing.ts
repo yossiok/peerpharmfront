@@ -167,14 +167,14 @@ export const PeerPharmRputs: Routes = [
     },
     component: PackingComponent
   },
-  // {
-  //   path: 'schedule/barcode-print',
-  //   canActivate: [ScreenGuard],
-  //   data: {
-  //     title: 'Print Barcode'
-  //   },
-  //   component: BarcodePrintComponent
-  // },
+  {
+    path: 'schedule/barcode-print',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Print Barcode'
+    },
+    component: BarcodePrintComponent
+  },
 
   {
     path: 'items/itemslist',
