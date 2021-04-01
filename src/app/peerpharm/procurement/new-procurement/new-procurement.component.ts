@@ -143,7 +143,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.itemForm = fb.group({
       number: ['', Validators.required],
       name: ['', Validators.required],
-      coin: [''],
+      coin: ['', Validators.required],
       measurement: ['kg', Validators.required],
       price: [0],
       quantity: ['', Validators.required],
@@ -178,7 +178,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
       })
     }
-
+debugger
     if (this.purchaseData) {
       this.purchaseData.recommendId = '';
       this.stockItems = this.purchaseData.stockitems
@@ -206,6 +206,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if (!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = ''
         if (!changes.purchaseData.currentValue.sumShippingCost) changes.purchaseData.currentValue.sumShippingCost = 0
       }
+      debugger
       if (this.isEdit) {
         if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''
         if(!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = ''
@@ -251,31 +252,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     })
   }
 
-   setPurchaseStatus(ev) {
-    if (confirm('האם לשנות סטטוס הזמנה ?')) {
-      this.newPurchase.controls.status.setValue(ev.target.value);
-      // calculate final shipping price
-      if(ev.target.value == 'closed') {
-        try{
-          this.calculateShipping(this.newPurchase.controls.finalPurchasePrice.value, this.newPurchase.controls.sumShippingCost.value)
-          this.setFinalStatus()
-        } catch {
-          this.toastr.error('יש להזין נתוני העמסה')
-        }
-      } 
-      else this.setFinalStatus()
-    }
-  }
 
-  setFinalStatus() {
-    this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
-      if (data) {
-        this.toastr.success('סטטוס עודכן בהצלחה !')
-        location.reload()
-      }
-      else this.toastr.error('משהו השתבש...')
-    })
-  }
 
 
   //Materials
@@ -519,7 +496,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       })
   }
 
-  calculateShipping(orderPrice, shippingPrice) {
+  calculateShipping(orderPrice, shippingPrice, update) {
 
     // sum order value
     this.newPurchase.controls.finalPurchasePrice.setValue(orderPrice)
@@ -530,6 +507,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.newPurchase.controls.stockitems.value.map(si => {
       si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value 
     })
+
+    if(update) this.sendNewProc('update')
 
     
   }
@@ -571,6 +550,32 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         })
       }
     }
+  }
+
+  setPurchaseStatus(ev) {
+    if (confirm('האם לשנות סטטוס הזמנה ?')) {
+      // calculate final shipping price
+      if(ev.target.value == 'closed') {
+        try{
+          this.calculateShipping(this.newPurchase.controls.finalPurchasePrice.value, this.newPurchase.controls.sumShippingCost.value, false)
+          this.setFinalStatus(ev)
+        } catch {
+          this.toastr.error('יש להזין נתוני העמסה')
+        }
+      } 
+      else this.setFinalStatus(ev)
+    }
+  }
+  
+  setFinalStatus(ev) {
+    this.newPurchase.controls.status.setValue(ev.target.value);
+    this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
+      if (data) {
+        this.toastr.success('סטטוס עודכן בהצלחה !')
+        location.reload()
+      }
+      else this.toastr.error('משהו השתבש...')
+    })
   }
 
   open(modal) {

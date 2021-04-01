@@ -87,7 +87,7 @@
                   <td><input class="text-primary" #cb type="checkbox" (change)="selectItem(i, cb.checked)"></td>
                   <td>{{stockitem.number}}</td>
                   <td>{{stockitem.name}}</td>
-                  
+
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity"
@@ -95,7 +95,7 @@
                   </td>
 
                   <td><span *ngIf="stockitem.arrivedAmount">{{stockitem.arrivedAmount}}</span></td>
-                  
+
                   <td *ngIf="!editItem">{{stockitem.measurement}}</td>
                   <td *ngIf="editItem">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
@@ -176,8 +176,8 @@
               </select>
             </div>
             <div class="col-sm-12 col-md-4 form-group">
-              <select [disabled]="disabled" formControlName="coin" class="form-control">
-                <option disabled value="kilogram">Coin</option>
+              <select [disabled]="disabled" formControlName="coin" class="form-control" required>
+                <option disabled value="">Coin</option>
                 <option value="NIS">NIS</option>
                 <option value="EUR">EUR</option>
                 <option value="USD">USD</option>
@@ -823,14 +823,17 @@
 
     <div class="row mt-2">
       <div class="col-md-4 form-group">
-        <label>מחיר העמסה</label>
-        <input type="number" class="form-control" placeholder="מחיר העמסה סופי" #shippingPrice>
-      </div>
-      <div class="col-md-4 form-group">
         <label>מחיר הזמנה סופי</label>
         <input type="number" class="form-control" placeholder="מחיר הזמנה סופי" #orderPrice>
       </div>
-      <button (click)="calculateShipping(orderPrice.value, shippingPrice.value)">חשב נתוני העמסה</button>
+      <div class="col-md-4 form-group">
+        <label>מחיר העמסה</label>
+        <input type="number" class="form-control" placeholder="מחיר העמסה סופי" #shippingPrice>
+      </div>
+      <button class="btn btn-secondary"
+        (click)="calculateShipping(orderPrice.value, shippingPrice.value, true); modal.dismiss('Cross click'); ">
+        עדכן נתוני העמסה
+      </button>
     </div>
   </div>
 
