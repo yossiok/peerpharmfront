@@ -96,11 +96,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   showItemDetails: boolean = false;
 
   //currencies
-  currencies: Currencies = {
-    USD: 0,
-    EUR: 0,
-    GBP: 0
-  }
+  currencies: Currencies
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -156,7 +152,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // this.getCurrencies()
+    this.getCurrencies()
     if (this.requestToPurchase) {
       this.newPurchase.patchValue({
         _id: '',
@@ -178,7 +174,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
       })
     }
-debugger
     if (this.purchaseData) {
       this.purchaseData.recommendId = '';
       this.stockItems = this.purchaseData.stockitems
@@ -206,7 +201,6 @@ debugger
         if (!changes.purchaseData.currentValue.recommendId) changes.purchaseData.currentValue.recommendId = ''
         if (!changes.purchaseData.currentValue.sumShippingCost) changes.purchaseData.currentValue.sumShippingCost = 0
       }
-      debugger
       if (this.isEdit) {
         if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''
         if(!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = ''
@@ -219,17 +213,20 @@ debugger
   }
 
   getCurrencies(): void {
-    debugger
     this.procurementService.getCurrencies().subscribe(currencies => {
-      this.currencies = currencies
+      delete currencies[0]._id
+      this.currencies = currencies[0]
     })
   }
 
   setCurrencies() {
-    this.toastr.success('שינויים נשמרו.')
-    // this.procurementService.setCurrencies(this.currencies).subscribe(currencies => {
-    //   this.toastr.info(`שערים שנשמרו: ${currencies}`)
-    // })
+    this.procurementService.setCurrencies(this.currencies).subscribe(res => {
+      if (res.error) this.toastr.error(res.error)
+      else {
+        delete res._id
+        this.toastr.info(`שערים שנשמרו: ${JSON.stringify(res)}`)
+      }
+    })
   }
 
   formatDate(date) {

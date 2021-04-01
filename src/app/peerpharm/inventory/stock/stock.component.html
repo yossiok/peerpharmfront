@@ -692,7 +692,7 @@
                   <option value="eur">EUR</option>
                   <option value="yen">YEN</option>
                 </datalist>
-                <input [(ngModel)]="supplier.priceLoading" type="text" class="form-control" />
+                <input [(ngModel)]="supplier.shippingPrice" type="text" class="form-control" />
                 <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control">
                 <datalist id="coinsLoading">
                   <option value="usd">USD</option>
@@ -1863,9 +1863,9 @@
                     </td>
 
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.priceLoading}}</td>
+                      {{supplier.shippingPrice}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.priceLoading" class="form-control" #priceLoading>
+                      <input type="text" [value]="supplier.shippingPrice" class="form-control" #priceLoading>
                     </td>
 
                     <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">

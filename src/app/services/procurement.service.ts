@@ -241,9 +241,9 @@ export class Procurementservice {
     return <Observable<Currencies>>this.http.get(url).pipe(map(res=>res.json()));
   }
 
-  setCurrencies(currencies: Currencies): Observable<Currencies> {
+  setCurrencies(currencies: Currencies): Observable<any> {
     let url = this.baseUrl + 'procurementOrderController/currencies';
-    return <Observable<Currencies>>this.http.post(url, JSON.stringify(currencies), this.options).pipe(map(res=>res.json()));
+    return this.http.post(url, JSON.stringify(currencies), this.options).pipe(map(res=>res.json()));
   }
   
   changeColor(itemNumber,orderNumber,orderAmount,supplierPrice,itemRemarks,orderCoin,index):Observable<any>{

@@ -750,18 +750,18 @@
     </button>
   </div>
   <div dir="rtl" class="modal-body p-5">
-    <div class="form-group">
+    <div class="col-md-4 form-group">
       <label>USD &#x24;</label>
-      <input type="number" [(ngModel)]="currencies.USD">
+      <input class="form-control" type="number" [(ngModel)]="currencies.USD">
     </div>
-    <div class="form-group">
+    <div class="col-md-4 form-group">
       <label>EUR &#x20AC;</label>
-      <input type="number" [(ngModel)]="currencies.EUR">
+      <input class="form-control" type="number" [(ngModel)]="currencies.EUR">
 
     </div>
-    <div class="form-group">
+    <div class="col-md-4 form-group">
       <label>GBP &#xa3;</label>
-      <input type="number" [(ngModel)]="currencies.GBP">
+      <input class="form-control" type="number" [(ngModel)]="currencies.GBP">
 
     </div>
     <button (click)="setCurrencies(); modal.dismiss('Cross click')">שמור שינויים</button>
