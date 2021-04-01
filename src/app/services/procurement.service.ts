@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { Observable } from '../../../node_modules/rxjs';
+import { Currencies } from '../peerpharm/procurement/Currencies';
 
 @Injectable({
   providedIn: 'root'
@@ -233,6 +234,16 @@ export class Procurementservice {
   setPurchaseStatus(obj):Observable<any>{
     let url = this.baseUrl + 'procurementOrderController/setPurchaseStatus';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res=>res.json()));
+  }
+
+  getCurrencies(): Observable<Currencies> {
+    let url = this.baseUrl + 'procurementOrderController/currencies';
+    return <Observable<Currencies>>this.http.get(url).pipe(map(res=>res.json()));
+  }
+
+  setCurrencies(currencies: Currencies): Observable<Currencies> {
+    let url = this.baseUrl + 'procurementOrderController/currencies';
+    return <Observable<Currencies>>this.http.post(url, JSON.stringify(currencies), this.options).pipe(map(res=>res.json()));
   }
   
   changeColor(itemNumber,orderNumber,orderAmount,supplierPrice,itemRemarks,orderCoin,index):Observable<any>{

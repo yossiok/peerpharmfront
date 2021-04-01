@@ -12,6 +12,7 @@ import { PurchaseData } from '../procumentOrders/PurchaseData';
 import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
 import { InvoiceData } from './InvoiceData';
 import { StockItem } from './StockItem';
+import { Currencies } from '../Currencies';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   @ViewChild('editQuantity') editQuantity: ElementRef;
   @ViewChild('editPrice') editPrice: ElementRef;
+  @ViewChild('sumShipping') sumShipping: ElementRef;
 
   openOrdersModal: boolean = false;
   shippingInvoiceDetails: boolean = false;
@@ -93,6 +95,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   showPurchaseDetails: boolean = false;
   showItemDetails: boolean = false;
 
+  //currencies
+  currencies: Currencies = {
+    USD: 0,
+    EUR: 0,
+    GBP: 0
+  }
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
   }
@@ -117,7 +126,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       outOfCountry: [false],
       recommendId: [''],
       sumShippingCost: [0],
-      closeReason: ['']
+      closeReason: [''],
+      shippingPercentage: [0],
+      finalPurchasePrice: [0]
     });
 
     // this.deliveryCertificateForm = fb.group({
@@ -145,6 +156,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    // this.getCurrencies()
     if (this.requestToPurchase) {
       this.newPurchase.patchValue({
         _id: '',
@@ -205,6 +217,20 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   }
 
+  getCurrencies(): void {
+    debugger
+    this.procurementService.getCurrencies().subscribe(currencies => {
+      this.currencies = currencies
+    })
+  }
+
+  setCurrencies() {
+    this.toastr.success('שינויים נשמרו.')
+    // this.procurementService.setCurrencies(this.currencies).subscribe(currencies => {
+    //   this.toastr.info(`שערים שנשמרו: ${currencies}`)
+    // })
+  }
+
   formatDate(date) {
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
@@ -225,22 +251,30 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     })
   }
 
-  async setPurchaseStatus(ev) {
+   setPurchaseStatus(ev) {
     if (confirm('האם לשנות סטטוס הזמנה ?')) {
       this.newPurchase.controls.status.setValue(ev.target.value);
       // calculate final shipping price
       if(ev.target.value == 'closed') {
-        await this.calaculateFinalShipping()
-      } 
-      this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
-        if (data) {
-          console.log(data)
-          this.toastr.success('סטטוס עודכן בהצלחה !')
-          location.reload()
+        try{
+          this.calculateShipping(this.newPurchase.controls.finalPurchasePrice.value, this.newPurchase.controls.sumShippingCost.value)
+          this.setFinalStatus()
+        } catch {
+          this.toastr.error('יש להזין נתוני העמסה')
         }
-        else this.toastr.error('משהו השתבש...')
-      })
+      } 
+      else this.setFinalStatus()
     }
+  }
+
+  setFinalStatus() {
+    this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
+      if (data) {
+        this.toastr.success('סטטוס עודכן בהצלחה !')
+        location.reload()
+      }
+      else this.toastr.error('משהו השתבש...')
+    })
   }
 
 
@@ -414,6 +448,15 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   saveCertificate() {
+    // set purchase stockitems arrived amounts
+    for (let arrivedItem of this.deliveryCertificate.stockitems) {
+      let item = this.newPurchase.controls.stockitems.value.find(si => si.name == arrivedItem.name)
+      if(item.arrivedAmount) {
+        item.arrivedAmount = Number(item.arrivedAmount) + Number(arrivedItem.quantity)
+      }
+      else item.arrivedAmount = Number(arrivedItem.quantity)
+    }
+
     this.newPurchase.controls.deliveryCerts.value.push(this.deliveryCertificate);
     this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
       .subscribe(res => {
@@ -476,59 +519,19 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       })
   }
 
+  calculateShipping(orderPrice, shippingPrice) {
 
-  calculateShipping() {
-    if( this.invoice.invoicePrice == 0 || this.invoice.taxes == 0 || this.invoice.taxesTwo == 0 || this.invoice.coinRate == 0 ) {
-      this.toastr.error('מחיר צריך ליהיות גדול מאפס')
-    }
-    else {
-      this.invoice.fixedPrice = (this.invoice.invoicePrice - (this.invoice.taxes + this.invoice.taxesTwo)) / this.invoice.coinRate
-      let purchaseItems = this.invoice.stockitems
-      for(let item of purchaseItems) {
-        if(item.quantity <= 0) {
-          this.toastr.error('יש להזין כמות לכל הפריטים')
-          return
-        } 
-      }
-    
-      // calculate shipping percent
+    // sum order value
+    this.newPurchase.controls.finalPurchasePrice.setValue(orderPrice)
+    this.newPurchase.controls.sumShippingCost.setValue(shippingPrice)
+    this.newPurchase.controls.shippingPercentage.setValue( Number(this.newPurchase.value.sumShippingCost) / Number(this.newPurchase.value.finalPurchasePrice))
 
-
-      // let invoiceShippingPrice;
-      // // sum total amount 
-      // let totalAmount = 0;
-      // purchaseItems.forEach(stockitem => {
-      //   totalAmount += Number(stockitem.quantity)
-      // });
-      // // 1 item shipping price
-      // invoiceShippingPrice = this.invoice.fixedPrice / totalAmount
-      // this.invoice.stockitems.map(item => item.shippingPrice = invoiceShippingPrice)
-      // this.invoice.shippingPrice = invoiceShippingPrice
-    }
-  }
-
-  calaculateFinalShipping() {
+    // set shipping price for each item in purchase
+    this.newPurchase.controls.stockitems.value.map(si => {
+      si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value 
+    })
 
     
-
-    let itemsShipping = [];
-    for(let invoice of this.newPurchase.controls.billNumber.value) {
-      for (let i=0; i<invoice.stockitems.length; i++) {
-        let j = itemsShipping.findIndex(incomingItem =>  incomingItem.item == invoice.stockitems[i].name)
-        if(j != -1) {
-          itemsShipping[j].shippingPrice = (itemsShipping[j].shippingPrice + invoice.shippingPrice) / 2
-          j = -1
-        }
-        else {
-          itemsShipping.push({item: invoice.stockitems[i].name, shippingPrice: invoice.shippingPrice})
-        }
-      }
-    }
-    for (let ship of itemsShipping) {
-      for (let item of this.newPurchase.controls.stockitems.value) {
-        if(ship.item == item.name) item.shippingPrice = ship.shippingPrice
-      }
-    }
   }
 
 
