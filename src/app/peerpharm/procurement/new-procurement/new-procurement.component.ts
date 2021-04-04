@@ -12,6 +12,7 @@ import { PurchaseData } from '../procumentOrders/PurchaseData';
 import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
 import { InvoiceData } from './InvoiceData';
 import { StockItem } from './StockItem';
+import { Currencies } from '../Currencies';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   @Input() purchaseData: any;
   @Input() requestToPurchase: any;
   @Input() isEdit: boolean;
+  @Input() currencies: Currencies;
   @Output() newProcurementSaved: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeOrderModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('itemNumber') itemNumber: ElementRef;
@@ -482,7 +484,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
     // set shipping price for each item in purchase
     this.newPurchase.controls.stockitems.value.map(si => {
-      debugger
       if(si.arrivedAmount) si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value 
     })
 
@@ -492,7 +493,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
   sendNewProc(action) {
-    debugger;
     if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {

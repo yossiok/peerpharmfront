@@ -133,9 +133,14 @@ export class Procurementservice {
     return this.http.post(url, {recommendationNumber, itemNumber}, this.options).pipe(map(res=>res.json()));
   }
 
-  checkRecommendationItemAsOrdered(recommendationNumber, itemNumber) {
+  deletePurchaseRequest(recommendationNumber) {
+    let url = this.baseUrl + 'procurementOrderController/deletePurchaseRequest'
+    return this.http.post(url, {recommendationNumber}, this.options).pipe(map(res=>res.json()));
+  }
+
+  checkRecommendationItemAsOrdered(itemNumber, recommendationNumber) {
     let url = this.baseUrl + 'procurementOrderController/checkRecommendationItemAsOrdered'
-    return this.http.post(url, {recommendationNumber, itemNumber}, this.options).pipe(map(res=>res.json()));
+    return this.http.post(url, {itemNumber, recommendationNumber}, this.options).pipe(map(res=>res.json()));
   }
 
   getItemExpectedArrivals(componentN): Observable<any> {

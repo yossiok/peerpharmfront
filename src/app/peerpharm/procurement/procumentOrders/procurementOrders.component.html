@@ -20,7 +20,7 @@
           </div>
           <div class="col-2"></div>
           <div class="col-3">
-            <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning rounded-pill">Recommendations -
+            <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning rounded-pill">Purchase Requests -
               F4</button>
           </div>
         </div>
@@ -474,6 +474,7 @@
   <app-new-procurement
     [requestToPurchase]="requestToPurchase" 
     [isEdit]="isEdit" 
+    [currencies]="currencies"
     [purchaseData]="purchaseData"
     (newProcurementSaved)="newProcurementSaved($event)"
     (closeOrderModal)='closeOrderModal($event)'>
@@ -539,6 +540,7 @@
             <th>status</th>
             <th>Items</th>
             <th>Remarks</th>
+            <th></th>
           </tr>
         </thead>
         <tbody *ngFor="let purchaseRecommendation of purchaseRecommendations">
@@ -582,12 +584,12 @@
                 </table>
               </td>
               <td>{{purchaseRecommendation.remarks}}</td>
-              <!-- <td>
+              <td>
                 <button
-                  (click)="removeItemFromRecommendation(recommendedStockitem.recommendationNumber, recommendedStockitem.number)"
-                  class="btn btn-warning form-control rounded-pill">Delete
+                  (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)"
+                  class="btn btn-danger form-control rounded-pill">Delete Request
                 </button>
-              </td>-->
+              </td>
             </tr>
           </ng-container>
 
@@ -748,7 +750,6 @@
     <div class="col-md-4 form-group">
       <label>GBP &#xa3;</label>
       <input class="form-control" type="number" [(ngModel)]="currencies.GBP">
-
     </div>
     <button (click)="setCurrencies(); modal.dismiss('Cross click')">שמור שינויים</button>
   </div>

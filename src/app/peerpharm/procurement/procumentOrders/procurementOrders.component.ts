@@ -1,19 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Procurementservice } from '../../../services/procurement.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ToastrService } from 'ngx-toastr';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ArrayServiceService } from 'src/app/utils/array-service.service';
 import { PurchaseData } from './PurchaseData';
-import { forEach } from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Currencies } from '../Currencies';
-//import { p } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -23,19 +19,29 @@ import { Currencies } from '../Currencies';
 
 export class ProcurementOrdersComponent implements OnInit {
 
+  @ViewChild('arrivedAmount') arrivedAmount: ElementRef;
+  @ViewChild('itemRemarks') itemRemarks: ElementRef;
+  @ViewChild('orderAmount') orderAmount: ElementRef;
+  @ViewChild('orderCoin') orderCoin: ElementRef;
+  @ViewChild('referenceNumber') referenceNumber: ElementRef;
+  @ViewChild('arrivalDate') arrivalDate: ElementRef;
+  @ViewChild('recommendRemarks') recommendRemarks: ElementRef;
+  @ViewChild('supplierPrice') supplierPrice: ElementRef;
+  @ViewChild('expectedDate') expectedDate: ElementRef;
+  @ViewChild('printRecommendBtn') printRecommendBtn: ElementRef;
+  @ViewChild('fromDateStr') fromDateStr: ElementRef;
+  @ViewChild('toDateStr') toDateStr: ElementRef;
+  @ViewChild('purchaseRemarks') purchaseRemarks: ElementRef;
+  @ViewChild('purchaseArrivalDate') purchaseArrivalDate: ElementRef;
+  @ViewChild('printBillBtn') printBillBtn: ElementRef;
+  @ViewChild('updateCurrencies') updateCurrencies: ElementRef;
+
 
   linkDownload: String = '';
-  paymentRemark: String
-  orderRemarks: String;
   expandNumber: String;
-  allComponents: any[];
   requestToPurchase: any;
-  allInvoices: any[];
-  allInvoicesCopy: any[];
   purchaseRecommendations: any[] = [];
   purchaseRecommendationsCopy: any[] = [];
-  allComponentsCopy: any[];
-  allMaterials: any[];
   checkedRecommendations: any[] = [];
   printBill: boolean = false;
   recommendStockItemsCollapse: boolean = false;
@@ -45,11 +51,7 @@ export class ProcurementOrdersComponent implements OnInit {
   showImage: boolean = false;
   showLoader: boolean = true;
   showInfoModal: boolean = false;
-  editArrivalModal: boolean = false;
-  changeItemQuantity: boolean = false;
-  paymentRemarkModal: boolean = false;
   invoiceModal: boolean = false;
-  changeItemPrice: boolean = false;
   bill: boolean = false;
   procurementData: any[];
   procurementDataNoFilter: any[];
@@ -63,28 +65,17 @@ export class ProcurementOrdersComponent implements OnInit {
   billToPrint: any[];
   currentSupplier: any;
   purchaseData: PurchaseData;
-  arrivalData: any[];
-  EditRowId: any = "";
-  EditRowIndex: any = "";
-  EditRowComax: any = "";
-  requestNum: any = "";
   user: any;
   currRecommend: any;
-  currCertifItem: any;
   currentInvoice: any;
   sumCharge: any;
   sumChargeTaxes: any;
-  newItemQuantity: string = '';
-  certifNumberToPush: any;
   priceAlert: Boolean = false;
   currStatus: any;
   currOrderNumber: any;
   infoToStatus: any;
-  referNumberForReciept: any;
-  certifTotalPrice: number = 0;
   totalAmount: any;
   priceTaxes: any;
-  itemAmounts: any;
   totalPrice: any;
   totalPriceWithTaxes: any;
   currCoin: any;
@@ -94,13 +85,11 @@ export class ProcurementOrdersComponent implements OnInit {
   outOfCountry: any;
   country: boolean = false;
   newRecommend: any;
-  subscription: Subscription;
   isEdit: boolean = false;
   fetchingOrders: boolean = true;
   currencies: Currencies
-
+  EditRowId: any = "";
   newItem = {
-
     itemNumber: '',
     itemName: '',
     coin: '',
@@ -112,51 +101,39 @@ export class ProcurementOrdersComponent implements OnInit {
     itemRemarks: '',
     itemPrice: 0,
     remarks: ''
-
-  }
-  newReference = {
-    referenceNumber: "",
-    arrivalDate: "",
-    arrivedAmount: "",
-    orderId: "",
-    itemNumber: "",
-    user: ''
   }
 
-  newBill = {
-    billNumber: '',
-    supplierNumber: '',
-    certificateNumbers: [],
-    totalPrice: '',
-  }
-
-  @ViewChild('arrivedAmount') arrivedAmount: ElementRef;
-  @ViewChild('itemRemarks') itemRemarks: ElementRef;
-  @ViewChild('orderAmount') orderAmount: ElementRef;
-  @ViewChild('orderCoin') orderCoin: ElementRef;
-  @ViewChild('referenceNumber') referenceNumber: ElementRef;
-  @ViewChild('arrivalDate') arrivalDate: ElementRef;
-  @ViewChild('recommendRemarks') recommendRemarks: ElementRef;
-  @ViewChild('supplierPrice') supplierPrice: ElementRef;
-  @ViewChild('expectedDate') expectedDate: ElementRef;
-  @ViewChild('printRecommendBtn') printRecommendBtn: ElementRef;
-
-  @ViewChild('fromDateStr') fromDateStr: ElementRef;
-  @ViewChild('toDateStr') toDateStr: ElementRef;
-
-  @ViewChild('purchaseRemarks') purchaseRemarks: ElementRef;
-  @ViewChild('purchaseArrivalDate') purchaseArrivalDate: ElementRef;
-  @ViewChild('printBillBtn') printBillBtn: ElementRef;
-  @ViewChild('updateCurrencies') updateCurrencies: ElementRef;
+  //NOT USED
+  // currCertifItem: any;
+  // arrivalData: any[];
+  // allComponentsCopy: any[];
+  // allMaterials: any[];
+  // editArrivalModal: boolean = false;
+  // changeItemQuantity: boolean = false;
+  // paymentRemarkModal: boolean = false;
+  // changeItemPrice: boolean = false;
+  // paymentRemark: String
+  // orderRemarks: String;
+  // allComponents: any[];
+  // EditRowIndex: any = "";
+  // EditRowComax: any = "";
+  // requestNum: any = "";
+  // newItemQuantity: string = '';
+  // certifNumberToPush: any;
+  // referNumberForReciept: any;
+  // certifTotalPrice: number = 0;
+  // itemAmounts: any;
+  // subscription: Subscription;
+  // allInvoices: any[];
+  // allInvoicesCopy: any[];
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.edit('', '');
-    this.editRecommend('', '')
+    // this.edit('', '');
+    // this.editRecommend('', '')
   }
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
-
     if (event.key === 'F2') {
       if (this.orderDetailsModal == true) {
         this.orderDetailsModal = false;
@@ -234,7 +211,6 @@ export class ProcurementOrdersComponent implements OnInit {
         this.procurementData.forEach(pd => {
           if (pd.status == 'open') {
             pd.stockitems.forEach(si => {
-              si.shippingPrice = Number(si.price) + si.shippingPrice
               if (si.recommendationnum) {
                 let pr = this.purchaseRecommendations.find(x => x.recommendNumber == si.recommendationnum)
                 if (pr) {
@@ -267,7 +243,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.purchaseRecommendationsModal = false;
     this.purchaseRecommendations.forEach(pr => {
       pr.stockitems.forEach(si => {
-        si.color = si.color == 'green' ? "green" : '';
+        si.color = si.color == 'lightgreen' ? "lightgreen" : '';
       });
     });
   }
@@ -280,7 +256,7 @@ export class ProcurementOrdersComponent implements OnInit {
       //check if this supplier is also in other purchase reccomendations
       this.purchaseRecommendations.forEach(pr => {
         pr.stockitems.forEach(si => {
-          if (si.lastorder.supplierName == stockitem.lastorder.supplierName)
+          if (si.lastorder.supplierName == stockitem.lastorder.supplierName && si.color != 'lightgreen')
             si.color = "yellow";
         });
       });
@@ -288,7 +264,7 @@ export class ProcurementOrdersComponent implements OnInit {
     else {
       this.purchaseRecommendations.forEach(pr => {
         pr.stockitems.forEach(si => {
-          if (si.lastorder.supplierName == stockitem.lastorder.supplierName)
+          if (si.lastorder.supplierName == stockitem.lastorder.supplierName && si.color != 'lightgreen')
             si.color = "";
         });
       });
@@ -313,26 +289,26 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-  checkRecommendedOrderedItems () {
+  checkRecommendedOrderedItems() {
     debugger
     if (this.checkedRecommendations && this.checkedRecommendations.length > 0) {
-
       for (let item of this.checkedRecommendations) {
-        this.procurementservice.checkRecommendationItemAsOrdered(123, 123)
+        this.procurementservice.checkRecommendationItemAsOrdered(item.number, item.recommendationnum).subscribe(updatedRecommend => {
+          console.log(updatedRecommend)
+        })
       }
+      this.getAllPurchaseRecommends();
     }
   }
 
-  removeItemFromRecommendation(recommendationNumber, itemNumber) {
-    this.procurementservice.removeItemFromRecommendation(recommendationNumber, itemNumber).subscribe(updatedRecommendation => {
-      console.log(updatedRecommendation)
-      // remove immediately from DOM
-      for (let i = 0; i < this.purchaseRecommendations.length; i++) {
-        if (this.purchaseRecommendations[i].number == itemNumber && this.purchaseRecommendations[i].recommendationNumber == recommendationNumber) {
-          this.purchaseRecommendations.splice(i, 1)
-        }
-      }
-    })
+  deletePurchaseRequest(recommendationNumber) {
+    if (confirm(`בקשה מספר ${recommendationNumber} תימחק לצמיתות. האם להמשיך?`)) {
+      this.purchaseRecommendations = []
+      this.procurementservice.deletePurchaseRequest(recommendationNumber).subscribe(deleteResult => {
+        console.log(deleteResult)
+        this.getAllPurchaseRecommends()
+      })
+    }
   }
 
   //open in excel
@@ -347,19 +323,18 @@ export class ProcurementOrdersComponent implements OnInit {
     this.excelService.exportAsExcelFile(tempArr, 'data');
   }
 
-  newProcurementSaved(e) {
+  async newProcurementSaved(e) {
     debugger
     this.showLoader = e;
-    this.getAllProcurementOrders(); 
-    this.checkRecommendedOrderedItems()
+    await this.checkRecommendedOrderedItems();
+    this.getAllProcurementOrders();
   }
 
   closeOrderModal(e) {
-    debugger
-    this.orderDetailsModal=e; 
-    this.isEdit=e; 
-    this.requestToPurchase = null; 
-    this.purchaseData = null; 
+    this.orderDetailsModal = e;
+    this.isEdit = e;
+    this.requestToPurchase = null;
+    this.purchaseData = null;
     this.checkedRecommendations = []
   }
 
@@ -422,45 +397,6 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
-  edit(itemNumber, index) {
-    if (itemNumber != '') {
-      this.EditRowIndex = index
-      this.EditRowId = itemNumber;
-    } else {
-      this.EditRowId = '';
-      this.EditRowIndex = ''
-    }
-  }
-
-  editRecommend(id, requestNumber) {
-    ;
-    if (id != '') {
-      this.requestNum = requestNumber
-      this.EditRowId = id;
-    } else {
-      this.EditRowId = '';
-      this.requestNum = '';
-    }
-  }
-
-  dangerColor(threatment) {
-    console.log("threatment:" + threatment);
-    if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
-      return "flame";
-    }
-    else if (threatment == 'acid') {
-      return "acid";
-    }
-    else if (threatment == ' oxidizer') {
-      return 'oxidizer'
-    }
-    else if (threatment == 'toxic') {
-      return "toxic"
-    }
-    else if (threatment == 'base') {
-      return 'base'
-    }
-  }
 
   editRemarks(orderNumber) {
     ;
@@ -507,113 +443,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-  saveRecommendRemarks(purchase) {
-    ;
 
-    purchase.recommendRemarks = this.recommendRemarks.nativeElement.value;
-
-    this.procurementservice.updateRecommendRemarks(purchase).subscribe(data => {
-      ;
-      if (data) {
-        for (let i = 0; i < this.purchaseRecommendations.length; i++) {
-          if (this.purchaseRecommendations[i].componentNumber == data.componentNumber && this.purchaseRecommendations[i].requestNumber == data.requestNumber) {
-            this.purchaseRecommendations[i].recommendRemarks = data.recommendRemarks
-            this.editRecommend('', '')
-            this.toastr.success("הערה להמלצה עודכנה בהצלחה !")
-          }
-
-        }
-      }
-
-    })
-  }
-
-  saveOrderRemarks(order) {
-
-    order.remarks = this.purchaseRemarks.nativeElement.value;
-    this.procurementservice.updatePurchaseRemarks(order).subscribe(data => {
-      if (data) {
-        var purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
-        purchase.remarks = data.remarks
-        this.toastr.success('הערה עודכנה בהצלחה !')
-        this.editRemarks('')
-      }
-    })
-  }
-
-  onSelectOrderBill(event, orderNumber) {
-    ;
-    var currOrder = this.procurementData.find(o => o.orderNumber == orderNumber)
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-
-
-
-      reader.onload = (event) => { // called once readAsDataURL is completed
-
-        currOrder.orderBill = event.target['result'];
-        currOrder.orderBill = currOrder.orderBill.replace("data:application/pdf;base64,", "")
-        // this.resMaterial.coaMaster = event.target["result"]
-        // this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
-        this.procurementservice.updatePdfFile(currOrder).subscribe(data => {
-          if (data) {
-            this.toastr.success("קובץ הועלה בהצלחה !")
-          }
-        })
-      }
-
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
-    }
-
-  }
-
-
-
-  changeStatus(ev, orderNumber) {
-    var status = ev.target.value;
-
-    if (status == 'orderPayedToSupplier' || status == 'timeToProduction' || status == 'expectedArrival') {
-      this.showInfoModal = true;
-      this.currStatus = ev.target.value;
-      this.currOrderNumber = orderNumber
-    } else {
-      if (confirm("האם לעדכן סטטוס  ?")) {
-        this.procurementservice.changeStatus(status, orderNumber).subscribe(data => {
-          if (data) {
-            let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber);
-            purchase.color = data.color;
-            purchase.status = data.status
-            this.toastr.success("סטטוס עודכן בהצלחה !")
-          } else {
-            this.toastr.error('error')
-          }
-        })
-      }
-
-    }
-  }
-
-  changeStatusToDone(purchase) {
-    ;
-    this.user = this.authService.loggedInUser.firstName;
-    if (this.user == "shanie" || this.user == "sima") {
-      this.procurementservice.updateComponentPurchase(purchase).subscribe(data => {
-        ;
-        if (data) {
-          for (let i = 0; i < this.purchaseRecommendations.length; i++) {
-            if (this.purchaseRecommendations[i].componentNumber == data.componentNumber && this.purchaseRecommendations[i].requestNumber == data.requestNumber) {
-              this.purchaseRecommendations[i].color = data.color
-            }
-          }
-          this.toastr.success("סטטוס עודכן בהצלחה")
-        }
-
-      })
-    } else {
-      this.toastr.error("רק משתמש מורשה רשאי לערוך זאת")
-    }
-
-  }
 
   addMoreInfo() {
 
@@ -751,20 +581,6 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
 
-  itemStatusDone(itemNumber, orderNumber) {
-    this.procurementservice.setItemToDone({ itemNumber: itemNumber, orderNumber: orderNumber }).subscribe(data => {
-      ;
-      if (data) {
-        var purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
-        var item = purchase.item.find(i => i.itemNumber == itemNumber)
-        item.color = 'lightgreen'
-        purchase.color = 'orange'
-        this.toastr.success('פריט עודכן בהצלחה !')
-      }
-    })
-
-  }
-
 
 
 
@@ -788,29 +604,11 @@ export class ProcurementOrdersComponent implements OnInit {
             `;
           }
           else si.tooltip = ''
-          si.color = si.color == 'green' ? 'green' : ""
+          debugger
+          si.color = si.color == 'lightgreen' ? 'lightgreen' : ""
         });
       });
-      /*
- 
-      //data = all purchase recommendations (recommendation object)
-      data.forEach(purchaseRecommendation => {
-        //purchaseRecommendation = one object
-        if (purchaseRecommendation.stockitems && purchaseRecommendation.stockitems.length > 0) {
-          purchaseRecommendation.stockitems.forEach(item => {
-            // item - recommended item to purchase
-            // give id to every item (from which recommendation he is coming from)
-            item.recommendationNumber = purchaseRecommendation.recommendNumber
-          })
-        }
-      })
-      data.forEach(purchaseRecommendation => {
-        this.purchaseRecommendations = this.purchaseRecommendations.concat(purchaseRecommendation.stockitems)
-        this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.concat(purchaseRecommendation.stockitems)
-      })
-      this.purchaseRecommendations = this.purchaseRecommendations.filter(recommendedItem => recommendedItem != null );
 
-      debugger;*/
 
     })
   }
@@ -927,158 +725,6 @@ export class ProcurementOrdersComponent implements OnInit {
     this.orderDetailsModal = true;
   }
 
-  editArrivalDetails(index) {
-    this.editArrivalModal = true;
-    var order = [];
-    order.push(this.procurementArrivals[index])
-    this.arrivalData = order
-    this.arrivalData[0].index = index;
-  }
-
-
-
-
-
-
-
-  cancelOrder(orderNumber) {
-    if (confirm("האם לבטל הזמנה זו ?")) {
-      this.procurementservice.cancelOrder(orderNumber).subscribe(data => {
-
-        if (data) {
-          this.procurementData = data;
-          this.toastr.success("הזמנה בוטלה !")
-        } else {
-          this.toastr.error('error')
-        }
-
-      })
-    }
-
-  }
-
-  orderSentToClient(orderNumber) {
-    if (confirm("האם לעדכן סטטוס נשלח ללקוח ?")) {
-      this.procurementservice.orderSentToClient(orderNumber).subscribe(data => {
-        if (data) {
-          this.procurementData = data;
-          this.toastr.success("סטטוס 'נשלח ללקוח' עודכן בהצלחה !")
-        } else {
-          this.toastr.error('error')
-        }
-      })
-    }
-  }
-
-  clientGotTheOrder(orderNumber) {
-    if (confirm("האם לעדכן סטטוס הזמנה הגיעה ללקוח ?")) {
-      this.procurementservice.clientGotTheOrder(orderNumber).subscribe(data => {
-        if (data) {
-          this.procurementData = data;
-          this.toastr.success("סטטוס 'הזמנה הגיעה ללקוח' עודכן בהצלחה !")
-        } else {
-          this.toastr.error('error')
-        }
-      })
-    }
-  }
-
-  closeOrder(ev, orderNumber) {
-    var reason = ev.target.value;
-    if (reason != 'open') {
-      if (confirm("האם לסגור הזמנה זו  ?")) {
-        this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
-          if (data) {
-            ;
-            let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
-            if (purchase) {
-              purchase.status = data.status;
-              purchase.color = data.color
-            }
-            this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
-          } else {
-            this.toastr.error('error')
-          }
-        })
-      }
-    } else {
-      if (confirm("האם לפתוח הזמנה זו  ?")) {
-        this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
-          if (data) {
-            let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
-            if (purchase) {
-              purchase.status = data.status;
-              purchase.color = data.color
-            }
-            this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
-          } else {
-            this.toastr.error('error')
-          }
-        })
-      }
-    }
-
-  }
-
-  deleteFromOrder(itemNumber, orderNumber) {
-    if (confirm("האם למחוק פריט מספר " + itemNumber)) {
-      this.procurementservice.deleteItemFromOrder(itemNumber, orderNumber).subscribe(data => {
-        ;
-        if (data) {
-          for (let i = 0; i < this.procurementData.length; i++) {
-            for (let j = 0; j < this.procurementData[i].item.length; j++) {
-              if (this.procurementData[i].orderNumber == orderNumber) {
-                if (this.procurementData[i].item[j].itemNumber == itemNumber) {
-                  this.procurementData[i].item.splice(j, 1)
-                }
-              }
-            }
-          }
-          this.toastr.success("פריט נמחק בהצלחה")
-
-
-
-        }
-      })
-    }
-
-  }
-
-  checkIfArrived(itemNumber, orderNumber, index) {
-    ;
-
-    var orderAmount = this.orderAmount.nativeElement.value;
-    var supplierPrice = this.supplierPrice.nativeElement.value;
-    var itemRemarks = this.itemRemarks.nativeElement.value;
-    var orderCoin = this.orderCoin.nativeElement.value;
-
-
-    if (confirm("האם לשנות?") == true) {
-      this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice, itemRemarks, orderCoin, index).subscribe(data => {
-
-        for (let i = 0; i < this.procurementData.length; i++) {
-          if (this.procurementData[i].orderNumber == orderNumber) {
-
-            this.procurementData[i].item[index].supplierAmount = orderAmount
-            this.procurementData[i].item[index].supplierPrice = supplierPrice
-            this.procurementData[i].item[index].itemRemarks = itemRemarks
-            this.procurementData[i].item[index].coin = orderCoin
-
-            this.toastr.success(" עודכן בהצלחה !")
-            this.edit('', '');
-
-          }
-
-        }
-
-      })
-    } else {
-
-    }
-
-
-  }
-
   open(modal) {
     this.modalService.open(modal)
   }
@@ -1086,27 +732,315 @@ export class ProcurementOrdersComponent implements OnInit {
 }
 
 
+  // editArrivalDetails(index) {
+  //   this.editArrivalModal = true;
+  //   var order = [];
+  //   order.push(this.procurementArrivals[index])
+  //   this.arrivalData = order
+  //   this.arrivalData[0].index = index;
+  // }
+
+
+
+  // itemStatusDone(itemNumber, orderNumber) {
+  //   this.procurementservice.setItemToDone({ itemNumber: itemNumber, orderNumber: orderNumber }).subscribe(data => {
+  //     ;
+  //     if (data) {
+  //       var purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
+  //       var item = purchase.item.find(i => i.itemNumber == itemNumber)
+  //       item.color = 'lightgreen'
+  //       purchase.color = 'orange'
+  //       this.toastr.success('פריט עודכן בהצלחה !')
+  //     }
+  //   })
+
+  // }
+
+
+
+  // edit(itemNumber, index) {
+  //   if (itemNumber != '') {
+  //     this.EditRowIndex = index
+  //     this.EditRowId = itemNumber;
+  //   } else {
+  //     this.EditRowId = '';
+  //     this.EditRowIndex = ''
+  //   }
+  // }
+
+  // editRecommend(id, requestNumber) {
+  //   ;
+  //   if (id != '') {
+  //     this.requestNum = requestNumber
+  //     this.EditRowId = id;
+  //   } else {
+  //     this.EditRowId = '';
+  //     this.requestNum = '';
+  //   }
+  // }
+
+  // dangerColor(threatment) {
+  //   console.log("threatment:" + threatment);
+  //   if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
+  //     return "flame";
+  //   }
+  //   else if (threatment == 'acid') {
+  //     return "acid";
+  //   }
+  //   else if (threatment == ' oxidizer') {
+  //     return 'oxidizer'
+  //   }
+  //   else if (threatment == 'toxic') {
+  //     return "toxic"
+  //   }
+  //   else if (threatment == 'base') {
+  //     return 'base'
+  //   }
+  // }
+
+
+
+  // saveRecommendRemarks(purchase) {
+  //   purchase.recommendRemarks = this.recommendRemarks.nativeElement.value;
+  //   this.procurementservice.updateRecommendRemarks(purchase).subscribe(data => {
+  //     if (data) {
+  //       for (let i = 0; i < this.purchaseRecommendations.length; i++) {
+  //         if (this.purchaseRecommendations[i].componentNumber == data.componentNumber && this.purchaseRecommendations[i].requestNumber == data.requestNumber) {
+  //           this.purchaseRecommendations[i].recommendRemarks = data.recommendRemarks
+  //           this.editRecommend('', '')
+  //           this.toastr.success("הערה להמלצה עודכנה בהצלחה !")
+  //         }
+  //       }
+  //     }
+  //   })
+  // }
+
+  // saveOrderRemarks(order) {
+
+  //   order.remarks = this.purchaseRemarks.nativeElement.value;
+  //   this.procurementservice.updatePurchaseRemarks(order).subscribe(data => {
+  //     if (data) {
+  //       var purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
+  //       purchase.remarks = data.remarks
+  //       this.toastr.success('הערה עודכנה בהצלחה !')
+  //       this.editRemarks('')
+  //     }
+  //   })
+  // }
+
+  // onSelectOrderBill(event, orderNumber) {
+  //   var currOrder = this.procurementData.find(o => o.orderNumber == orderNumber)
+  //   if (event.target.files && event.target.files[0]) {
+  //     var reader = new FileReader();
+
+
+
+  //     reader.onload = (event) => { // called once readAsDataURL is completed
+
+  //       currOrder.orderBill = event.target['result'];
+  //       currOrder.orderBill = currOrder.orderBill.replace("data:application/pdf;base64,", "")
+  //       // this.resMaterial.coaMaster = event.target["result"]
+  //       // this.resMaterial.coaMaster=this.resMaterial.coaMaster.replace("data:application/pdf;base64,","");
+  //       this.procurementservice.updatePdfFile(currOrder).subscribe(data => {
+  //         if (data) {
+  //           this.toastr.success("קובץ הועלה בהצלחה !")
+  //         }
+  //       })
+  //     }
+
+  //     reader.readAsDataURL(event.target.files[0]); // read file as data url
+  //   }
+
+  // }
+
+
+
+  // changeStatus(ev, orderNumber) {
+  //   var status = ev.target.value;
+
+  //   if (status == 'orderPayedToSupplier' || status == 'timeToProduction' || status == 'expectedArrival') {
+  //     this.showInfoModal = true;
+  //     this.currStatus = ev.target.value;
+  //     this.currOrderNumber = orderNumber
+  //   } else {
+  //     if (confirm("האם לעדכן סטטוס  ?")) {
+  //       this.procurementservice.changeStatus(status, orderNumber).subscribe(data => {
+  //         if (data) {
+  //           let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber);
+  //           purchase.color = data.color;
+  //           purchase.status = data.status
+  //           this.toastr.success("סטטוס עודכן בהצלחה !")
+  //         } else {
+  //           this.toastr.error('error')
+  //         }
+  //       })
+  //     }
+
+  //   }
+  // }
+
+  // changeStatusToDone(purchase) {
+  //   ;
+  //   this.user = this.authService.loggedInUser.firstName;
+  //   if (this.user == "shanie" || this.user == "sima") {
+  //     this.procurementservice.updateComponentPurchase(purchase).subscribe(data => {
+  //       ;
+  //       if (data) {
+  //         for (let i = 0; i < this.purchaseRecommendations.length; i++) {
+  //           if (this.purchaseRecommendations[i].componentNumber == data.componentNumber && this.purchaseRecommendations[i].requestNumber == data.requestNumber) {
+  //             this.purchaseRecommendations[i].color = data.color
+  //           }
+  //         }
+  //         this.toastr.success("סטטוס עודכן בהצלחה")
+  //       }
+
+  //     })
+  //   } else {
+  //     this.toastr.error("רק משתמש מורשה רשאי לערוך זאת")
+  //   }
+
+  // }
 
 
 
 
+  // cancelOrder(orderNumber) {
+  //   if (confirm("האם לבטל הזמנה זו ?")) {
+  //     this.procurementservice.cancelOrder(orderNumber).subscribe(data => {
+
+  //       if (data) {
+  //         this.procurementData = data;
+  //         this.toastr.success("הזמנה בוטלה !")
+  //       } else {
+  //         this.toastr.error('error')
+  //       }
+
+  //     })
+  //   }
+
+  // }
+
+  // orderSentToClient(orderNumber) {
+  //   if (confirm("האם לעדכן סטטוס נשלח ללקוח ?")) {
+  //     this.procurementservice.orderSentToClient(orderNumber).subscribe(data => {
+  //       if (data) {
+  //         this.procurementData = data;
+  //         this.toastr.success("סטטוס 'נשלח ללקוח' עודכן בהצלחה !")
+  //       } else {
+  //         this.toastr.error('error')
+  //       }
+  //     })
+  //   }
+  // }
+
+  // clientGotTheOrder(orderNumber) {
+  //   if (confirm("האם לעדכן סטטוס הזמנה הגיעה ללקוח ?")) {
+  //     this.procurementservice.clientGotTheOrder(orderNumber).subscribe(data => {
+  //       if (data) {
+  //         this.procurementData = data;
+  //         this.toastr.success("סטטוס 'הזמנה הגיעה ללקוח' עודכן בהצלחה !")
+  //       } else {
+  //         this.toastr.error('error')
+  //       }
+  //     })
+  //   }
+  // }
+
+  // closeOrder(ev, orderNumber) {
+  //   var reason = ev.target.value;
+  //   if (reason != 'open') {
+  //     if (confirm("האם לסגור הזמנה זו  ?")) {
+  //       this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
+  //         if (data) {
+  //           ;
+  //           let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
+  //           if (purchase) {
+  //             purchase.status = data.status;
+  //             purchase.color = data.color
+  //           }
+  //           this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
+  //         } else {
+  //           this.toastr.error('error')
+  //         }
+  //       })
+  //     }
+  //   } else {
+  //     if (confirm("האם לפתוח הזמנה זו  ?")) {
+  //       this.procurementservice.closeOrder(orderNumber, reason).subscribe(data => {
+  //         if (data) {
+  //           let purchase = this.procurementData.find(p => p.orderNumber == data.orderNumber)
+  //           if (purchase) {
+  //             purchase.status = data.status;
+  //             purchase.color = data.color
+  //           }
+  //           this.toastr.success("סטטוס 'הזמנה סגורה' עודכן בהצלחה !")
+  //         } else {
+  //           this.toastr.error('error')
+  //         }
+  //       })
+  //     }
+  //   }
+
+  // }
+
+  // deleteFromOrder(itemNumber, orderNumber) {
+  //   if (confirm("האם למחוק פריט מספר " + itemNumber)) {
+  //     this.procurementservice.deleteItemFromOrder(itemNumber, orderNumber).subscribe(data => {
+  //       ;
+  //       if (data) {
+  //         for (let i = 0; i < this.procurementData.length; i++) {
+  //           for (let j = 0; j < this.procurementData[i].item.length; j++) {
+  //             if (this.procurementData[i].orderNumber == orderNumber) {
+  //               if (this.procurementData[i].item[j].itemNumber == itemNumber) {
+  //                 this.procurementData[i].item.splice(j, 1)
+  //               }
+  //             }
+  //           }
+  //         }
+  //         this.toastr.success("פריט נמחק בהצלחה")
 
 
 
+  //       }
+  //     })
+  //   }
+
+  // }
+
+  // checkIfArrived(itemNumber, orderNumber, index) {
+  //   ;
+
+  //   var orderAmount = this.orderAmount.nativeElement.value;
+  //   var supplierPrice = this.supplierPrice.nativeElement.value;
+  //   var itemRemarks = this.itemRemarks.nativeElement.value;
+  //   var orderCoin = this.orderCoin.nativeElement.value;
 
 
+  //   if (confirm("האם לשנות?") == true) {
+  //     this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice, itemRemarks, orderCoin, index).subscribe(data => {
+
+  //       for (let i = 0; i < this.procurementData.length; i++) {
+  //         if (this.procurementData[i].orderNumber == orderNumber) {
+
+  //           this.procurementData[i].item[index].supplierAmount = orderAmount
+  //           this.procurementData[i].item[index].supplierPrice = supplierPrice
+  //           this.procurementData[i].item[index].itemRemarks = itemRemarks
+  //           this.procurementData[i].item[index].coin = orderCoin
+
+  //           this.toastr.success(" עודכן בהצלחה !")
+  //           this.edit('', '');
+
+  //         }
+
+  //       }
+
+  //     })
+  //   } else {
+
+  //   }
 
 
-
-
-
-
-
-
-
-
-
-
+  // }
 
 
 
@@ -1168,3 +1102,26 @@ export class ProcurementOrdersComponent implements OnInit {
     //       break;
     //   }
     // }
+
+
+
+/*
+
+//data = all purchase recommendations (recommendation object)
+data.forEach(purchaseRecommendation => {
+//purchaseRecommendation = one object
+if (purchaseRecommendation.stockitems && purchaseRecommendation.stockitems.length > 0) {
+  purchaseRecommendation.stockitems.forEach(item => {
+    // item - recommended item to purchase
+    // give id to every item (from which recommendation he is coming from)
+    item.recommendationNumber = purchaseRecommendation.recommendNumber
+  })
+}
+})
+data.forEach(purchaseRecommendation => {
+this.purchaseRecommendations = this.purchaseRecommendations.concat(purchaseRecommendation.stockitems)
+this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.concat(purchaseRecommendation.stockitems)
+})
+this.purchaseRecommendations = this.purchaseRecommendations.filter(recommendedItem => recommendedItem != null );
+
+debugger;*/

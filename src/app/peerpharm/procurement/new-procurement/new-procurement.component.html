@@ -25,6 +25,7 @@
               Invoice</button>
           </div>
           <div class="col-5">
+            <button class="btn btn-warning rounded-pill" (click)="open(sumShipping)">הזן נתוני העמסה</button>
           </div>
           <div class="col-2">
             <button (click)="disabled = false" class="btn btn-warning rounded-pill form-control">Edit
@@ -41,7 +42,6 @@
               Certificates & Invoices</button>
           </div>
           <div class="col-5">
-            <button class="btn btn-secondary rounded-pill" (click)="open(sumShipping)">נתוני העמסה</button>
           </div>
           <div class="col-2">
             <select [disabled]="disabled" (change)="setPurchaseStatus($event)" class="form-control rounded-pill">
@@ -503,7 +503,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add'); closeOrderModal.emit(false)" class="btn btn-primary form-control"
+            <button (click)="sendNewProc('add')" class="btn btn-primary form-control"
               [disabled]="!newPurchase.valid" [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'"
               [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
@@ -747,61 +747,30 @@
 <ng-template class="p-6" #sumShipping let-modal>
   <div class="modal-header bg-primary">
     <h4 class="modal-title text-center" id="modal-basic-title">נתוני סגירה</h4>
+   
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div dir="rtl" class="modal-body p-5">
-
-
-    <!--Shipping-->
-    <!-- <div class="row mt-2">
-        <div class="col-4"></div>
-        <div class="col-4">
-          <button (click)="shippingInvoiceDetails = !shippingInvoiceDetails"
-            class="form-control btn dropdown-toggle">{{shippingInvoiceDetails ? 'הסתר פרטי העמסה' : 'הוסף פרטי העמסה'}}</button>
-        </div>
-        <div class="col-4"></div>
-      </div>
-      <div *ngIf="shippingInvoiceDetails" class="shipping">
-        <div class="row">
-          <div class="col-md-4 form-group">
-            <label for="invoicePrice">מחיר העמסה (שקלים) </label>
-            <input type="number" class="form-control" name="invoicePrice" id="invoicePrice" [(ngModel)]="invoice.invoicePrice"
-            placeholder="Total Price" required>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="taxes"> מע"מ 1 (שקלים) </label>
-            <input type="number" class="form-control" [(ngModel)]="invoice.taxes" placeholder="Taxes">
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="taxesTwo">מע"מ 2 (שקלים)</label>
-            <input type="number" class="form-control" name="taxesTwo" id="taxesTwo" [(ngModel)]="invoice.taxesTwo"
-            placeholder="Taxes 2" required>
-          </div>
-        </div> -->
-    <!-- <div class="row mt-2">
-          <div class="col-md-4 form-group">
-            <label for="invoiceCoin">מטבע</label>
-            <select [(ngModel)]="invoice.invoiceCoin" class="form-control">
-              <option selected value="NIS">NIS</option>
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="GBP">GBP</option>
-            </select>
-          </div>
-          <div class="col-md-4 form-group">
-            <label for="coinRate">שער מטבע מעודכן</label>
-            <input type="number" class="form-control" [(ngModel)]="invoice.coinRate" placeholder="Coin Rate">
-          </div>
-        </div> -->
-    <!-- </div> -->
-
+    <div class="d-flex flex-row justify-content-around">
+      <li class="list-group-item">
+           &#x24; = {{currencies.USD}} &#8362;
+      </li>
+      <li class="list-group-item">
+           &#xa3; = {{currencies.GBP}} &#8362;
+      </li>
+      <li class="list-group-item">
+           &#x20AC; = {{currencies.EUR}} &#8362;
+      </li>
+    </div>
     <div class="row mt-2">
       <div class="col-md-4 form-group">
         <label>מחיר הזמנה סופי</label>
         <input type="number" class="form-control" placeholder="מחיר הזמנה סופי" #orderPrice>
       </div>
+    </div>
+    <div class="row mt-2">
       <div class="col-md-4 form-group">
         <label>מחיר העמסה</label>
         <input type="number" class="form-control" placeholder="מחיר העמסה סופי" #shippingPrice>
@@ -814,10 +783,12 @@
         <label>מע"מ 2</label>
         <input type="number" class="form-control" placeholder='מע"מ 2' #tax2>
       </div>
-      <button class="btn btn-secondary"
+      <div class="col-md-4 form-group">
+        <button class="btn btn-secondary"
         (click)="calculateShipping(orderPrice.value, shippingPrice.value, tax1.value, tax2.value, true); modal.dismiss('Cross click'); ">
         עדכן נתוני העמסה
       </button>
+      </div>
     </div>
   </div>
 
