@@ -25,7 +25,6 @@
               Invoice</button>
           </div>
           <div class="col-5">
-            <button class="btn btn-secondary rounded-pill" (click)="open(updateCurrencies)">Update Currencies</button>
           </div>
           <div class="col-2">
             <button (click)="disabled = false" class="btn btn-warning rounded-pill form-control">Edit
@@ -77,7 +76,7 @@
                   <th>Measurement</th>
                   <th>Price</th>
                   <!-- <th>Coin</th> -->
-                  <th>Shipping</th>
+                  <th>+ shipping</th>
                   <th>Remarks</th>
                 </tr>
               </thead>
@@ -105,7 +104,7 @@
 
                   <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin}}</td>
                   <td *ngIf="editItem">
-                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
+                    <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
                       class="form-control">
                   </td>
                   <!-- <td *ngIf="!editItem">{{stockitem.coin}}</td> -->
@@ -743,31 +742,7 @@
   </div>
 </ng-template>
 
-<ng-template class="p-6" #updateCurrencies let-modal>
-  <div class="modal-header bg-primary">
-    <h4 class="modal-title text-center" id="modal-basic-title">הזנת שערים</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div dir="rtl" class="modal-body p-5">
-    <div class="col-md-4 form-group">
-      <label>USD &#x24;</label>
-      <input class="form-control" type="number" [(ngModel)]="currencies.USD">
-    </div>
-    <div class="col-md-4 form-group">
-      <label>EUR &#x20AC;</label>
-      <input class="form-control" type="number" [(ngModel)]="currencies.EUR">
 
-    </div>
-    <div class="col-md-4 form-group">
-      <label>GBP &#xa3;</label>
-      <input class="form-control" type="number" [(ngModel)]="currencies.GBP">
-
-    </div>
-    <button (click)="setCurrencies(); modal.dismiss('Cross click')">שמור שינויים</button>
-  </div>
-</ng-template>
 
 <ng-template class="p-6" #sumShipping let-modal>
   <div class="modal-header bg-primary">
@@ -831,8 +806,16 @@
         <label>מחיר העמסה</label>
         <input type="number" class="form-control" placeholder="מחיר העמסה סופי" #shippingPrice>
       </div>
+      <div class="col-md-4 form-group">
+        <label>מע"מ 1</label>
+        <input type="number" class="form-control" placeholder='מע"מ 1' #tax1>
+      </div>
+      <div class="col-md-4 form-group">
+        <label>מע"מ 2</label>
+        <input type="number" class="form-control" placeholder='מע"מ 2' #tax2>
+      </div>
       <button class="btn btn-secondary"
-        (click)="calculateShipping(orderPrice.value, shippingPrice.value, true); modal.dismiss('Cross click'); ">
+        (click)="calculateShipping(orderPrice.value, shippingPrice.value, tax1.value, tax2.value, true); modal.dismiss('Cross click'); ">
         עדכן נתוני העמסה
       </button>
     </div>

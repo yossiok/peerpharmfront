@@ -12,6 +12,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
 import { PurchaseData } from './PurchaseData';
 import { forEach } from 'lodash';
 import { ActivatedRoute } from '@angular/router';
+import { Currencies } from '../Currencies';
 //import { p } from '@angular/core/src/render3';
 
 @Component({
@@ -96,6 +97,7 @@ export class ProcurementOrdersComponent implements OnInit {
   subscription: Subscription;
   isEdit: boolean = false;
   fetchingOrders: boolean = true;
+  currencies: Currencies
 
   newItem = {
 
@@ -145,6 +147,7 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild('purchaseRemarks') purchaseRemarks: ElementRef;
   @ViewChild('purchaseArrivalDate') purchaseArrivalDate: ElementRef;
   @ViewChild('printBillBtn') printBillBtn: ElementRef;
+  @ViewChild('updateCurrencies') updateCurrencies: ElementRef;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -161,6 +164,11 @@ export class ProcurementOrdersComponent implements OnInit {
         this.orderDetailsModal = true;
       }
     }
+
+    if (event.key === 'F8') {
+      this.modalService.open(this.updateCurrencies)
+    }
+
     if (event.key === 'F4') {
       if (this.purchaseRecommendationsModal == true) {
         this.purchaseRecommendationsModal = false;
@@ -172,25 +180,37 @@ export class ProcurementOrdersComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService, private procurementservice: Procurementservice, private excelService: ExcelService, private supplierService: SuppliersService,
-    private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService, private route: ActivatedRoute
+    private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService, private route: ActivatedRoute,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
-
-    console.log('Called Constructor');
-
-    console.log('Enter');
+    this.getCurrencies()
     this.getAllProcurementOrders();
     this.getAllPurchaseRecommends();
     this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
-
-
     this.inventoryService.newRecommendEmitter.subscribe(data => {
       console.log(data)
       this.purchaseRecommendations.push(data)
     })
+  }
 
+  getCurrencies(): void {
+    this.procurementservice.getCurrencies().subscribe(currencies => {
+      delete currencies[0]._id
+      this.currencies = currencies[0]
+    })
+  }
+
+  setCurrencies() {
+    this.procurementservice.setCurrencies(this.currencies).subscribe(res => {
+      if (res.error) this.toastr.error(res.error)
+      else {
+        delete res._id
+        this.toastr.info(`שערים שנשמרו: ${JSON.stringify(res)}`)
+      }
+    })
   }
 
   getAllProcurementOrders() {
@@ -201,8 +221,6 @@ export class ProcurementOrdersComponent implements OnInit {
         this.showLoader = false;
         if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]).filter(order => order.status != 'closed');
         else this.procurementData = purchases;
-
-
 
         if (!this.procurementDataCopy) {
           this.procurementDataCopy = [];
@@ -216,6 +234,7 @@ export class ProcurementOrdersComponent implements OnInit {
         this.procurementData.forEach(pd => {
           if (pd.status == 'open') {
             pd.stockitems.forEach(si => {
+              si.shippingPrice = Number(si.price) + si.shippingPrice
               if (si.recommendationnum) {
                 let pr = this.purchaseRecommendations.find(x => x.recommendNumber == si.recommendationnum)
                 if (pr) {
@@ -1058,6 +1077,10 @@ export class ProcurementOrdersComponent implements OnInit {
     }
 
 
+  }
+
+  open(modal) {
+    this.modalService.open(modal)
   }
 
 }

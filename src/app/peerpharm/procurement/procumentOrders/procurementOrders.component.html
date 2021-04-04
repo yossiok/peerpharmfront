@@ -15,7 +15,9 @@
             <button (click)="orderDetailsModal = true" class="btn btn-warning rounded-pill">New Purchase - F2</button>
           </div>
           <div class="col-2"></div>
-          <div class="col-2"></div>
+          <div class="col-2">
+            <button class="btn btn-warning rounded-pill" (click)="open(updateCurrencies)">Update Currencies - F8</button>
+          </div>
           <div class="col-2"></div>
           <div class="col-3">
             <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning rounded-pill">Recommendations -
@@ -724,3 +726,30 @@
     </div>
   </div>
 </div>
+
+
+<ng-template class="p-6" #updateCurrencies let-modal>
+  <div class="modal-header bg-primary">
+    <h4 class="modal-title text-center" id="modal-basic-title">הזנת שערים</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class="modal-body p-5">
+    <div class="col-md-4 form-group">
+      <label>USD &#x24;</label>
+      <input class="form-control" type="number" [(ngModel)]="currencies.USD">
+    </div>
+    <div class="col-md-4 form-group">
+      <label>EUR &#x20AC;</label>
+      <input class="form-control" type="number" [(ngModel)]="currencies.EUR">
+
+    </div>
+    <div class="col-md-4 form-group">
+      <label>GBP &#xa3;</label>
+      <input class="form-control" type="number" [(ngModel)]="currencies.GBP">
+
+    </div>
+    <button (click)="setCurrencies(); modal.dismiss('Cross click')">שמור שינויים</button>
+  </div>
+</ng-template>

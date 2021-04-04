@@ -12,7 +12,6 @@ import { PurchaseData } from '../procumentOrders/PurchaseData';
 import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
 import { InvoiceData } from './InvoiceData';
 import { StockItem } from './StockItem';
-import { Currencies } from '../Currencies';
 
 
 @Component({
@@ -95,9 +94,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   showPurchaseDetails: boolean = false;
   showItemDetails: boolean = false;
 
-  //currencies
-  currencies: Currencies
-
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
   }
@@ -152,7 +148,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.getCurrencies()
     if (this.requestToPurchase) {
       this.newPurchase.patchValue({
         _id: '',
@@ -212,22 +207,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   }
 
-  getCurrencies(): void {
-    this.procurementService.getCurrencies().subscribe(currencies => {
-      delete currencies[0]._id
-      this.currencies = currencies[0]
-    })
-  }
-
-  setCurrencies() {
-    this.procurementService.setCurrencies(this.currencies).subscribe(res => {
-      if (res.error) this.toastr.error(res.error)
-      else {
-        delete res._id
-        this.toastr.info(`שערים שנשמרו: ${JSON.stringify(res)}`)
-      }
-    })
-  }
+ 
 
   formatDate(date) {
     var d = new Date(date),
@@ -493,17 +473,17 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       })
   }
 
-  calculateShipping(orderPrice, shippingPrice, update) {
+  calculateShipping(orderPrice, shippingPrice, tax1, tax2, update) {
 
     // sum order value
     this.newPurchase.controls.finalPurchasePrice.setValue(orderPrice)
-    this.newPurchase.controls.sumShippingCost.setValue(shippingPrice)
+    this.newPurchase.controls.sumShippingCost.setValue(shippingPrice - tax1 - tax2)
     this.newPurchase.controls.shippingPercentage.setValue( Number(this.newPurchase.value.sumShippingCost) / Number(this.newPurchase.value.finalPurchasePrice))
 
     // set shipping price for each item in purchase
     this.newPurchase.controls.stockitems.value.map(si => {
       debugger
-      if(si.arrived) si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value 
+      if(si.arrivedAmount) si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value 
     })
 
     if(update) this.sendNewProc('update')
@@ -554,7 +534,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       // calculate final shipping price
       if(ev.target.value == 'closed') {
         try{
-          this.calculateShipping(this.newPurchase.controls.finalPurchasePrice.value, this.newPurchase.controls.sumShippingCost.value, false)
+          this.calculateShipping(this.newPurchase.controls.finalPurchasePrice.value, this.newPurchase.controls.sumShippingCost.value, 0, 0, false)
           this.setFinalStatus(ev)
         } catch {
           this.toastr.error('יש להזין נתוני העמסה')
