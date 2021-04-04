@@ -12,7 +12,7 @@ import {
   LocationStrategy,
   HashLocationStrategy
 } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
@@ -57,6 +57,7 @@ import { ReportBuilderComponent } from './peerpharm/reports/report-builder/repor
 import { AgGridModule } from 'ag-grid-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandlerService } from './services/error-handler.service';
 
 
 // import { OrderStagePipe } from './pipes/order-stage.pipe';
@@ -126,6 +127,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
     },
+    {provide: ErrorHandler, useClass: ErrorHandlerService}
   ],
   bootstrap: [AppComponent]
 })
