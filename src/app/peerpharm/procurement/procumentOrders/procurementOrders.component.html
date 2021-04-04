@@ -485,8 +485,8 @@
   <app-new-procurement  (newProcurementSaved)="showLoader = true; getAllProcurementOrders()"></app-new-procurement>
 </div> -->
 
-<div *ngIf="purchaseRecommendationsModal == true" style="z-index: 9999;top:50px !important;height: auto"
-  class="border border-primary bg-white shadow-lg rounded container-fluid fixed-top mx-auto my-auto text-center p-1 h-100">
+<div *ngIf="purchaseRecommendationsModal == true"
+  class="border border-primary bg-white shadow-lg rounded container-fluid fixed-top my-auto text-center p-1 h-100 inner">
 
   <div class="row mt-2">
     <div class="col-1"></div>
@@ -523,8 +523,8 @@
   </div>
 
   <div *ngIf="!purchaseRecommendations || purchaseRecommendations.length == 0" class="smallLoader ml-5"></div>
-  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0" class="row mt-1">
-    <div style="height:700px;overflow-y: scroll;" class="col-12">
+  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0" class="requests row mt-1">
+    <div class="col-12">
       <table class="table table-striped">
         <thead class="bg-warning text-white">
           <tr>
@@ -563,7 +563,7 @@
                         {{stockitem.number}}
                       </td>
                       <td [style.background]="stockitem.color">
-                        {{stockitem.name}} <a target="_blank"
+                        {{stockitem.name}} <a *ngIf="stockitem.lastorder" target="_blank"
                         href="/#/peerpharm/procurement/procurementOrders?orderNumber={{stockitem.lastorder.orderNumber}}">
                         <i class="fas fa-info" placement="bottom" ngbTooltip={{stockitem.tooltip}}></i></a>
                       </td>

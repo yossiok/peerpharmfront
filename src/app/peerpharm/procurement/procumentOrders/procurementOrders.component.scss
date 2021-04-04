@@ -1,3 +1,7 @@
+.requests {
+  font-size: 20px
+}
+
 
 table {
   width:100%;
@@ -33,6 +37,10 @@ input:focus::-webkit-input-placeholder {
   max-height: 700px;
   overflow-y: auto;
   // background: rgb(211, 167, 167);
+}
+
+.inner {
+  overflow-y: auto;
 }
 
 ::-webkit-scrollbar {
