@@ -781,7 +781,7 @@
                       </td>
 
                       <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice}}</span>
+                        <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'NIS'}}</span>
                       </td>
                       <td *ngIf="EditRowId == supplier.supplierName">
                         <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
@@ -1863,7 +1863,7 @@
                     </td>
 
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.shippingPrice}}</td>
+                      {{supplier.shippingPrice | currency: 'NIS'}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
                       <input type="text" [value]="supplier.shippingPrice" class="form-control" #priceLoading>
                     </td>

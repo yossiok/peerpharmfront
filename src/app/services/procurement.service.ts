@@ -133,6 +133,11 @@ export class Procurementservice {
     return this.http.post(url, {recommendationNumber, itemNumber}, this.options).pipe(map(res=>res.json()));
   }
 
+  checkRecommendationItemAsOrdered(recommendationNumber, itemNumber) {
+    let url = this.baseUrl + 'procurementOrderController/checkRecommendationItemAsOrdered'
+    return this.http.post(url, {recommendationNumber, itemNumber}, this.options).pipe(map(res=>res.json()));
+  }
+
   getItemExpectedArrivals(componentN): Observable<any> {
     let url = this.baseUrl + 'expectedArrivalController?componentN=' +componentN;
     return this.http.get(url).pipe( map(reponse => reponse.json()));

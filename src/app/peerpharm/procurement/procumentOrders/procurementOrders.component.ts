@@ -28,7 +28,7 @@ export class ProcurementOrdersComponent implements OnInit {
   orderRemarks: String;
   expandNumber: String;
   allComponents: any[];
-  requestToPurchase:any;
+  requestToPurchase: any;
   allInvoices: any[];
   allInvoicesCopy: any[];
   purchaseRecommendations: any[] = [];
@@ -172,13 +172,13 @@ export class ProcurementOrdersComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService, private procurementservice: Procurementservice, private excelService: ExcelService, private supplierService: SuppliersService,
-    private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService,private route: ActivatedRoute
+    private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService, private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
 
     console.log('Called Constructor');
-   
+
     console.log('Enter');
     this.getAllProcurementOrders();
     this.getAllPurchaseRecommends();
@@ -196,103 +196,120 @@ export class ProcurementOrdersComponent implements OnInit {
   getAllProcurementOrders() {
     this.orderDetailsModal = false;
     this.fetchingOrders = true;
-      this.procurementservice.getAllPurchasesObservable().subscribe((purchases) => {
-        if (purchases.length > 0) {
-          this.showLoader = false;
-          if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]).filter(order => order.status != 'closed');
-          else this.procurementData = purchases;
+    this.procurementservice.getAllPurchasesObservable().subscribe((purchases) => {
+      if (purchases.length > 0) {
+        this.showLoader = false;
+        if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]).filter(order => order.status != 'closed');
+        else this.procurementData = purchases;
 
-       
 
-          if (!this.procurementDataCopy) {
-            this.procurementDataCopy = [];
-          }
-          this.procurementDataCopy= this.procurementDataCopy.concat([...purchases]).filter(purchase => purchase.status != 'canceled');
+
+        if (!this.procurementDataCopy) {
+          this.procurementDataCopy = [];
         }
-      }, () => {}, () => {
-        this.fetchingOrders = false
-        if(this.procurementData.length > 0) {
+        this.procurementDataCopy = this.procurementDataCopy.concat([...purchases]).filter(purchase => purchase.status != 'canceled');
+      }
+    }, () => { }, () => {
+      this.fetchingOrders = false
+      if (this.procurementData.length > 0) {
 
-          this.procurementData.forEach(pd=>
-            {
-              if(pd.status=='open')
-              {
-                pd.stockitems.forEach(si => {
-                  if(si.recommendationnum)
-                  {
-                    let pr = this.purchaseRecommendations.find(x=>x.recommendNumber==si.recommendationnum)
-                    if(pr) {
-                      let prsi = pr.stockitems.find(y=>y.number==si.number)
-                      if (prsi) prsi.remarks="open order exists from date:"+new Date(pd.creationDate).toLocaleDateString() +" order: "+pd.orderNumber;
-                    } 
-                  }
-                });
+        this.procurementData.forEach(pd => {
+          if (pd.status == 'open') {
+            pd.stockitems.forEach(si => {
+              if (si.recommendationnum) {
+                let pr = this.purchaseRecommendations.find(x => x.recommendNumber == si.recommendationnum)
+                if (pr) {
+                  let prsi = pr.stockitems.find(y => y.number == si.number)
+                  if (prsi) prsi.remarks = "open order exists from date:" + new Date(pd.creationDate).toLocaleDateString() + " order: " + pd.orderNumber;
+                }
               }
-              
-            })
+            });
           }
 
-        this.route.queryParams.subscribe(params => {
-          if(params['orderNumber'])
-          {
-            for(let i=1; i<this.procurementData.length; i++)
-            {
-              if(this.procurementData[i].orderNumber==params['orderNumber'])
-              {
-                this.viewOrderDetails(i);
-              }
+        })
+      }
+
+      this.route.queryParams.subscribe(params => {
+        if (params['orderNumber']) {
+          for (let i = 1; i < this.procurementData.length; i++) {
+            if (this.procurementData[i].orderNumber == params['orderNumber']) {
+              this.viewOrderDetails(i);
             }
-               
           }
-           
-        });
+
+        }
 
       });
-    }
-  
+
+    });
+  }
+
+  closePurchaseRequestsModal() {
+    this.purchaseRecommendationsModal = false;
+    this.purchaseRecommendations.forEach(pr => {
+      pr.stockitems.forEach(si => {
+        si.color = si.color == 'green' ? "green" : '';
+      });
+    });
+  }
 
   isSelected(ev, stockitem) {
     if (ev.target.checked == true) {
-      stockitem.price= stockitem.lastorder.price;
-      stockitem.recommendationnum=ev.target.title;
+      stockitem.price = stockitem.lastorder.price;
+      stockitem.recommendationnum = ev.target.title;
       this.checkedRecommendations.push(stockitem);
       //check if this supplier is also in other purchase reccomendations
       this.purchaseRecommendations.forEach(pr => {
-        pr.stockitems.forEach(si => { 
-          if(si.lastorder.supplierName==stockitem.lastorder.supplierName)
-          si.color="yellow";
+        pr.stockitems.forEach(si => {
+          if (si.lastorder.supplierName == stockitem.lastorder.supplierName)
+            si.color = "yellow";
         });
       });
     }
     else {
+      this.purchaseRecommendations.forEach(pr => {
+        pr.stockitems.forEach(si => {
+          if (si.lastorder.supplierName == stockitem.lastorder.supplierName)
+            si.color = "";
+        });
+      });
       for (let i = 0; i < this.checkedRecommendations.length; i++) {
         if (this.checkedRecommendations[i].itemNumber == stockitem.itemNumber) this.checkedRecommendations.slice(i, 1)
       }
     }
   }
 
-  expandRecommend(recommendNumber){
-      this.recommendStockItemsCollapse = !this.recommendStockItemsCollapse
-      this.expandNumber = this.recommendStockItemsCollapse ? '' : recommendNumber
+  expandRecommend(recommendNumber) {
+    this.recommendStockItemsCollapse = !this.recommendStockItemsCollapse
+    this.expandNumber = this.recommendStockItemsCollapse ? '' : recommendNumber
   }
 
   moveToNewPurchase() {
-    let result= confirm('are you sure you want to create a new order?');
-    if(result)
-    {
-      this.purchaseRecommendationsModal = false; 
-      this.requestToPurchase = {stockitems: this.checkedRecommendations}
+    let result = confirm('are you sure you want to create a new order?');
+    if (result) {
+      this.purchaseRecommendationsModal = false;
+      this.requestToPurchase = { stockitems: this.checkedRecommendations }
       this.orderDetailsModal = true;
     }
-   
+
+  }
+
+  checkRecommendedOrderedItems () {
+    debugger
+    if (this.checkedRecommendations && this.checkedRecommendations.length > 0) {
+
+      for (let item of this.checkedRecommendations) {
+        this.procurementservice.checkRecommendationItemAsOrdered(123, 123)
+      }
+    }
   }
 
   removeItemFromRecommendation(recommendationNumber, itemNumber) {
-    this.procurementservice.removeItemFromRecommendation(recommendationNumber, itemNumber).subscribe( updatedRecommendation => {
+    this.procurementservice.removeItemFromRecommendation(recommendationNumber, itemNumber).subscribe(updatedRecommendation => {
       console.log(updatedRecommendation)
       // remove immediately from DOM
-      for (let i=0; i < this.purchaseRecommendations.length; i++) {
-        if ( this.purchaseRecommendations[i].number == itemNumber && this.purchaseRecommendations[i].recommendationNumber == recommendationNumber) {
+      for (let i = 0; i < this.purchaseRecommendations.length; i++) {
+        if (this.purchaseRecommendations[i].number == itemNumber && this.purchaseRecommendations[i].recommendationNumber == recommendationNumber) {
           this.purchaseRecommendations.splice(i, 1)
         }
       }
@@ -309,6 +326,22 @@ export class ProcurementOrdersComponent implements OnInit {
       }
     }
     this.excelService.exportAsExcelFile(tempArr, 'data');
+  }
+
+  newProcurementSaved(e) {
+    debugger
+    this.showLoader = e;
+    this.getAllProcurementOrders(); 
+    this.checkRecommendedOrderedItems()
+  }
+
+  closeOrderModal(e) {
+    debugger
+    this.orderDetailsModal=e; 
+    this.isEdit=e; 
+    this.requestToPurchase = null; 
+    this.purchaseData = null; 
+    this.checkedRecommendations = []
   }
 
 
@@ -336,12 +369,12 @@ export class ProcurementOrdersComponent implements OnInit {
     }
   }
 
-  
+
   filterByCategory(ev) {
     var category = ev.target.value;
-    this.procurementData = this.procurementDataCopy.filter( order => {
+    this.procurementData = this.procurementDataCopy.filter(order => {
       for (let item of order.stockitems) {
-        if(item.componentType == category) return true
+        if (item.componentType == category) return true
       }
     })
 
@@ -349,25 +382,25 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   filterByStatus(ev) {
-        if (ev.target.value != "") {
-          var status = ev.target.value;
-          this.filterStatus = ev.target.value;
-          if (status == 'ongoing') {
-            this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
-          } else if (status == 'material') {
-            this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'material')
-          } else if (status == 'component') {
-            this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'component')
-          } else if (status == 'allOrders') {
-            this.procurementData = this.procurementDataCopy
-          } else if (status == 'open') {
-            this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
-          } else if (status == 'closed') {
-            this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
-          } else if (status == 'canceled') {
-            this.procurementData = this.procurementDataCopy.filter(p => p.status == 'canceled')
-          }
-        } 
+    if (ev.target.value != "") {
+      var status = ev.target.value;
+      this.filterStatus = ev.target.value;
+      if (status == 'ongoing') {
+        this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
+      } else if (status == 'material') {
+        this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'material')
+      } else if (status == 'component') {
+        this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'component')
+      } else if (status == 'allOrders') {
+        this.procurementData = this.procurementDataCopy
+      } else if (status == 'open') {
+        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
+      } else if (status == 'closed') {
+        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
+      } else if (status == 'canceled') {
+        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'canceled')
+      }
+    }
   }
 
   edit(itemNumber, index) {
@@ -392,7 +425,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   dangerColor(threatment) {
-    console.log("threatment:"+threatment);
+    console.log("threatment:" + threatment);
     if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
       return "flame";
     }
@@ -404,8 +437,8 @@ export class ProcurementOrdersComponent implements OnInit {
     }
     else if (threatment == 'toxic') {
       return "toxic"
-    } 
-    else if (threatment == 'base'){
+    }
+    else if (threatment == 'base') {
       return 'base'
     }
   }
@@ -423,10 +456,10 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-  printRecommend(recommend){
+  printRecommend(recommend) {
     ;
-  this.currRecommend = recommend
-  this.printRecommendBtn.nativeElement.click();
+    this.currRecommend = recommend
+    this.printRecommendBtn.nativeElement.click();
 
   }
 
@@ -632,9 +665,9 @@ export class ProcurementOrdersComponent implements OnInit {
 
     for (let i = 0; i < this.currentItems.length; i++) {
 
-      if (this.currentItems[i].itemPrice == 0 || isNaN(this.currentItems[i].itemPrice) || this.currentItems[i].itemPrice == null ) {
+      if (this.currentItems[i].itemPrice == 0 || isNaN(this.currentItems[i].itemPrice) || this.currentItems[i].itemPrice == null) {
         this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
-      } 
+      }
       total = total + Number(this.currentItems[i].quantity)
 
       totalP = totalP + Number(this.currentItems[i].itemPrice)
@@ -664,14 +697,17 @@ export class ProcurementOrdersComponent implements OnInit {
     var combined = ((totalP * 17 / 100) + totalP)
     var numFour = this.formatNumber(combined)
     this.totalPriceWithTaxes = numFour
-    if (coin == 'nis') {
+    if (coin == 'nis' || coin == 'NIS') {
       this.currCoin = '\u20AA'
     }
-    if (coin == 'eur') {
+    if (coin == 'eur' || coin == 'EUR') {
       this.currCoin = '\u20ac'
     }
-    if (coin == 'usd') {
+    if (coin == 'usd' || coin == 'USD') {
       this.currCoin = '$'
+    }
+    if (coin == 'gbp' || coin == 'GBP') {
+      this.currCoin = 'GBP'
     }
 
     this.orderDate = line.creationDate.slice(0, 10)
@@ -722,18 +758,18 @@ export class ProcurementOrdersComponent implements OnInit {
       console.log(data);
       //let cleandOrdersWithNoData= data.filter(x=>x.stockitems.length>0);
 
-   
 
-      this.purchaseRecommendations=data;
+
+      this.purchaseRecommendations = data;
       this.purchaseRecommendations.forEach(pr => {
         pr.stockitems.forEach(si => {
-          if(si.lastorder) {
-            si.tooltip=`supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
+          if (si.lastorder) {
+            si.tooltip = `supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
             price:${si.lastorder.price} | price:  ${si.lastorder.price}| coin: ${si.lastorder.coin} | quantity: ${si.lastorder.quantity}
             `;
           }
           else si.tooltip = ''
-          si.color=""
+          si.color = si.color == 'green' ? 'green' : ""
         });
       });
       /*
@@ -813,7 +849,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   searchByItem(ev) {
     this.procurementData = this.procurementDataCopy.filter(purchase => {
-      if( purchase.stockitems.length == 0 && ev.target.value == "") return true
+      if (purchase.stockitems.length == 0 && ev.target.value == "") return true
       for (let item of purchase.stockitems) {
         if (item.number && item.number.includes(ev.target.value)) {
           return true
@@ -823,10 +859,10 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-  searchByCertNum(ev){
+  searchByCertNum(ev) {
 
     this.procurementData = this.procurementDataCopy.filter(purchase => {
-      if( purchase.deliveryCerts.length == 0 && ev.target.value == "") return true
+      if (purchase.deliveryCerts.length == 0 && ev.target.value == "") return true
       for (let deliveryCert of purchase.deliveryCerts) {
         if (deliveryCert.certificateNumber && deliveryCert.certificateNumber.includes(ev.target.value)) {
           return true
@@ -867,7 +903,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   viewOrderDetails(index) {
     this.purchaseData = <PurchaseData>this.procurementData[index]
-    if(!this.purchaseData.outOfCountry) this.purchaseData.outOfCountry = false;
+    if (!this.purchaseData.outOfCountry) this.purchaseData.outOfCountry = false;
     this.isEdit = true;
     this.orderDetailsModal = true;
   }
@@ -889,7 +925,7 @@ export class ProcurementOrdersComponent implements OnInit {
   cancelOrder(orderNumber) {
     if (confirm("האם לבטל הזמנה זו ?")) {
       this.procurementservice.cancelOrder(orderNumber).subscribe(data => {
-        
+
         if (data) {
           this.procurementData = data;
           this.toastr.success("הזמנה בוטלה !")
@@ -1000,7 +1036,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
     if (confirm("האם לשנות?") == true) {
       this.procurementservice.changeColor(itemNumber, orderNumber, orderAmount, supplierPrice, itemRemarks, orderCoin, index).subscribe(data => {
-        
+
         for (let i = 0; i < this.procurementData.length; i++) {
           if (this.procurementData[i].orderNumber == orderNumber) {
 

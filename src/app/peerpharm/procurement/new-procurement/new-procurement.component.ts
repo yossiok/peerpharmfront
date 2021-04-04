@@ -22,10 +22,10 @@ import { Currencies } from '../Currencies';
 })
 export class NewProcurementComponent implements OnInit, OnChanges {
 
-  @Output() newProcurementSaved: EventEmitter<any> = new EventEmitter<any>();
   @Input() purchaseData: any;
   @Input() requestToPurchase: any;
   @Input() isEdit: boolean;
+  @Output() newProcurementSaved: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeOrderModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
@@ -502,12 +502,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
     // set shipping price for each item in purchase
     this.newPurchase.controls.stockitems.value.map(si => {
-      si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value 
+      debugger
+      if(si.arrived) si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value 
     })
 
     if(update) this.sendNewProc('update')
 
-    
   }
 
 
@@ -522,9 +522,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             if (data) {
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.newPurchase.reset();
-              this.newProcurementSaved.emit()
+              this.newProcurementSaved.emit(true)
               this.closeOrderModal.emit(false)
-              location.reload();
+              // location.reload();
 
             }
             else this.toastr.error('משהו השתבש...')
@@ -540,7 +540,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           if (data) {
             this.toastr.success('הזמנה עודכנה בהצלחה !')
             this.closeOrderModal.emit(false)
-            this.newProcurementSaved.emit()
+            this.newProcurementSaved.emit(true)
             location.reload()
           }
           else this.toastr.error('משהו השתבש...')

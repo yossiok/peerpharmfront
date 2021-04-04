@@ -470,9 +470,11 @@
 
 <div *ngIf="orderDetailsModal==true" class="container fixed-top mx-auto my-auto text-center p-3 modal-inner">
   <app-new-procurement
-    (closeOrderModal)='orderDetailsModal=$event; isEdit=$event; requestToPurchase = null; purchaseData = null; checkedRecommendations = []'
-    [requestToPurchase]="requestToPurchase" (newProcurementSaved)="showLoader = true;getAllProcurementOrders()"
-    [isEdit]="isEdit" [purchaseData]="purchaseData">
+    [requestToPurchase]="requestToPurchase" 
+    [isEdit]="isEdit" 
+    [purchaseData]="purchaseData"
+    (newProcurementSaved)="newProcurementSaved($event)"
+    (closeOrderModal)='closeOrderModal($event)'>
   </app-new-procurement>
 </div>
 
@@ -494,7 +496,7 @@
       <h1 class="text-primary">Purchase Requests</h1>
     </div>
     <div class="col-1">
-      <i (click)="purchaseRecommendationsModal = false" class="fa fa-times"></i>
+      <i (click)="closePurchaseRequestsModal()" class="fa fa-times"></i>
     </div>
   </div>
 
