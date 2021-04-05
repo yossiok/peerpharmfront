@@ -60,7 +60,7 @@ export class NewBatchComponent implements OnInit {
     })
   }
 
-  addNewBatch() {
+  addNewBatch(justStickers: boolean) {
     if (parseInt(this.newBatchForm.controls['barrels'].value) > 1) {
       for (let x = 1; x < parseInt(this.newBatchForm.controls['barrels'].value) + 1; x++) {
         let batchSticker = {
@@ -91,17 +91,39 @@ export class NewBatchComponent implements OnInit {
     if (this.newBatchForm.controls.item.value == '' || this.newBatchForm.controls.batchNumber.value.length < 5) {
       this.toastSrv.error('You must fill all the fields')
     } else {
-      this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
-        if (data) {
-          this.printBtn.nativeElement.click();
-          this.toastSrv.success('באטצ נוסף בהצלחה !')
-          this.reduceMaterialAmounts(this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value)
-          this.newBatchForm.reset()
-          this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-          this.allStickers = [];
-          this.getLastBatch();
+      // just print stickers
+      if(justStickers) {
+        if (confirm("בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?")){
+          this.batchService.addBatch({}).subscribe(data => {
+            if (data) {
+              this.printBtn.nativeElement.click();
+              this.toastSrv.success('באטצ נוסף בהצלחה !')
+              // this.reduceMaterialAmounts(this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value)
+              this.newBatchForm.reset()
+              this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+              this.allStickers = [];
+              this.getLastBatch();
+            }
+          })
         }
-      })
+    
+      }
+      // add batch AND REDUCE AMOUNTS
+      else {
+        if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")){
+          this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
+            if (data) {
+              this.printBtn.nativeElement.click();
+              this.toastSrv.success('באטצ נוסף בהצלחה !')
+              this.reduceMaterialAmounts(this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value)
+              this.newBatchForm.reset()
+              this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+              this.allStickers = [];
+              this.getLastBatch();
+            }
+          })
+        }
+      }
     }
   }
 
