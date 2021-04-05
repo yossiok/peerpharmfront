@@ -604,7 +604,6 @@ export class ProcurementOrdersComponent implements OnInit {
             `;
           }
           else si.tooltip = ''
-          debugger
           si.color = si.color == 'lightgreen' ? 'lightgreen' : ""
         });
       });
