@@ -97,8 +97,6 @@ export class NewBatchComponent implements OnInit {
           this.batchService.addBatch({}).subscribe(data => {
             if (data) {
               this.printBtn.nativeElement.click();
-              this.toastSrv.success('באטצ נוסף בהצלחה !')
-              // this.reduceMaterialAmounts(this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value)
               this.newBatchForm.reset()
               this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
               this.allStickers = [];
