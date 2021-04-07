@@ -32,4 +32,9 @@ export class TicketsService {
     console.log(ticket);
     return this.http.post(url, ticket).pipe(map(res => res.json()))
   }
+
+  getAllTickets(): Observable<any> {
+    let url = this.baseUrl + 'tickets/getAllTickets';
+    return this.http.get(url, {}).pipe(map(res => res.json()));
+  }
 }

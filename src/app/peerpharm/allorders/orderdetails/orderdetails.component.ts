@@ -199,6 +199,7 @@ export class OrderdetailsComponent implements OnInit {
   multiCostumerImpRemark: Array<any> = [];
   editBatchN: Boolean = false;
   formDetailsAmounts: Array<any>;
+  customerOrderNum: string;
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -723,6 +724,7 @@ export class OrderdetailsComponent implements OnInit {
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
       this.costumerInternalId = res[0].costumerInternalId;
+      this.customerOrderNum = res[0].customerOrderNum;
       // this.costumerSrevice.getCostumerData(CostumerNumber).subscribe(res => {});
       this.orderDate = res[0].orderDate;
       this.deliveryDate = res[0].deliveryDate;

@@ -657,6 +657,48 @@ export const ROUTES: RouteInfo[] = [
           // }
 
         ]
+      },
+      {
+        path: '',
+        title: 'System Request / Bug',
+        icon: 'fas fa-bug',
+        class: 'has-arrow',
+        extralink: false,
+        submenu: [
+          // {
+          //   path: '/peerpharm/procurement/procurementOrderItemBalance',
+          //   title: 'Procurement Order Item Balance',
+          //   icon: 'fas fa-list-ol',
+          //   class: '',
+          //   extralink: false,
+          //   submenu: []
+          // },
+          {
+            path: '/peerpharm/newticket',
+            title: 'Open new bug / request',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          // {
+          //   path: '/peerpharm/procurement/procurementOrderItems',
+          //   title: 'Procurement Order Items',
+          //   icon: 'fas fa-list-ol',
+          //   class: '',
+          //   extralink: false,
+          //   submenu: []
+          // },
+          // {
+          //   path: '/peerpharm/procurement/newProcurement',
+          //   title: 'New Purchase',
+          //   icon: 'fas fa-list-ol',
+          //   class: '',
+          //   extralink: false,
+          //   submenu: []
+          // },
+    
+        ]
       }
 
       /*

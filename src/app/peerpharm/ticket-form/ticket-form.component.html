@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="col-12">
         <form class="ticket-form" [formGroup]="ticketForm" (ngSubmit)="onTicketFormSubmit()">
@@ -125,5 +124,57 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h1>List of All Tickets</h1>
+        <table class="table table-striped tickets-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Ticket Number</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Screen</th>
+                    <th scope="col">Severity</th>
+                    <th scope="col">Urgency</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Comments</th>
+                    <th scope="col">Screenshot</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ticket of tickets; let i = index">
+                    <th scope="row">{{i}}</th>
+                    <td>
+                        <p>{{ticket.ticketNumber}}</p>
+                    </td>
+                    <td>
+                        <p>{{ticket.username}}</p>
+                    </td>
+                    <td>
+                        <p>{{ticket.ticketTitle}}</p>
+                    </td>
+                    <td>
+                        <p>{{ticket.screen}}</p>
+                    </td>
+                    <td>
+                        <p>{{ticket.severity}}</p>
+                    </td>
+                    <td>
+                        <p>{{ticket.urgency}}</p>
+                    </td>
+                    <td>
+                        <p>{{ticket.description}}</p>
+                    </td>
+                    <td>
+                        <p>{{ticket.comments}}</p>
+                    </td>
+                    <td class="screenshot"><img src={{ticket.screenshot}} alt="screenshot"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

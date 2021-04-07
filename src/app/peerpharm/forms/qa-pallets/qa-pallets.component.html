@@ -17,16 +17,19 @@
 
         <div class="row mt-5">
           <div class="col-2">
-            <input type="text" placeholder="Filter By Customer" class="form-control" (keyup)="filterQAPalletesByCustomer($event,'readyPallets')">
+            <input type="text" placeholder="Filter By Customer" class="form-control"
+              (keyup)="filterQAPalletesByCustomer($event,'readyPallets')">
           </div>
           <div class="col-3">
-            <input type="text" placeholder="Filter By Order Number" class="form-control" (keyup)="filterQAPalletesByOrderNumber($event)">
+            <input type="text" placeholder="Filter By Order Number" class="form-control"
+              (keyup)="filterQAPalletesByOrderNumber($event)">
           </div>
           <div class="col-2">
-            <input type="text" placeholder="Filter By Item Number" class="form-control" (keyup)="filterQAPalletesByItemNumber($event)">
+            <input type="text" placeholder="Filter By Item Number" class="form-control"
+              (keyup)="filterQAPalletesByItemNumber($event)">
           </div>
         </div>
-      
+
 
         <div class="row mt-3">
           <div class="col-1">
@@ -78,7 +81,8 @@
                   <td>{{i+1}}</td>
                   <td><input style="width:30px !important" class="form-control" (change)="isSelected($event,pallet)"
                       type="checkbox"></td>
-                  <td (click)="updateCustomer(pallet._id)" *ngIf="editCustomer != pallet._id">{{pallet.customerName}}</td>
+                  <td (click)="updateCustomer(pallet._id)" *ngIf="editCustomer != pallet._id">{{pallet.customerName}}
+                  </td>
                   <td *ngIf="editCustomer == pallet._id">
                     <input (change)="saveNewCustomerForPallet($event,pallet._id)" list="customers" class="form-control">
                     <datalist id="customers">
@@ -90,9 +94,13 @@
                   <td target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ pallet.orderNumber }}"><span
                       style="cursor: pointer;color:blue">{{pallet.orderNumber}}</span></td>
                   <td>{{pallet.qaStatus}}</td>
-                  <td><button (click)="addLineToPallet(pallet)" class="form-control btn btn-info">הוסף למשטח
-                      קיים</button></td>
-                      <td *ngIf="deleteLine"><i (click)="deleteQAPallet(pallet._id)" class="fa fa-times text-danger"></i></td>
+                  <td>
+                    <button (click)="addLineToPallet(pallet)" class="form-control btn btn-info">
+                      הוסף למשטח קיים
+                    </button>
+                  </td>
+                  <td *ngIf="deleteLine"><i (click)="deleteQAPallet(pallet._id)" class="fa fa-times text-danger"></i>
+                  </td>
                   <!-- <td><button (click)="addPalletToCostumer(pallet)" class="btn btn-info">הוסף למשטח קיים</button></td> -->
 
                 </tr>
@@ -203,7 +211,8 @@
 
         <div class="row mt-3">
           <div class="col-3">
-            <input type="text" placeholder="Filter By Customer" class="form-control" (keyup)="filterQAPalletesByCustomer($event,'closedPallets')">
+            <input type="text" placeholder="Filter By Customer" class="form-control"
+              (keyup)="filterQAPalletesByCustomer($event,'closedPallets')">
           </div>
           <div class="col-2">
             <!-- <button (click)="createNewPL()" class="btn btn-info form-control">הקם רשימת אריזה</button> -->
@@ -240,14 +249,14 @@
                   <td *ngIf="pallet.palletNumber != EditRowN" (click)="editPallet(pallet.palletNumber)">
                     {{pallet.palletWeight}}</td>
                   <td *ngIf="pallet.palletNumber == EditRowN">
-                    <input class="form-control" (change)="updatePalletDetails(pallet)" #newPalletWeight [value]="pallet.palletWeight"
-                      type="text">
+                    <input class="form-control" (change)="updatePalletDetails(pallet)" #newPalletWeight
+                      [value]="pallet.palletWeight" type="text">
                   </td>
                   <td *ngIf="pallet.palletNumber != EditRowN" (click)="editPallet(pallet.palletNumber)">
                     {{pallet.palletSize}}</td>
                   <td *ngIf="pallet.palletNumber == EditRowN">
-                    <input class="form-control" (change)="updatePalletDetails(pallet)" #newPalletSize [value]="pallet.palletSize"
-                      type="text">
+                    <input class="form-control" (change)="updatePalletDetails(pallet)" #newPalletSize
+                      [value]="pallet.palletSize" type="text">
                   </td>
                   <!-- <td><button class="btn btn-info form-control w-50" (click)="addPalletToPackList(pallet)">הוסף לרשימת אריזה</button></td> -->
 
@@ -355,7 +364,8 @@
 
         <div class="row mt-5">
           <div class="col-2">
-            <input type="text" placeholder="Filter By Customer" class="form-control" (keyup)="filterPackedListsByCustomer($event)">
+            <input type="text" placeholder="Filter By Customer" class="form-control"
+              (keyup)="filterPackedListsByCustomer($event)">
           </div>
         </div>
 
@@ -387,7 +397,8 @@
                   <!-- <td>{{packlist.costumerNumber}}</td>
                   <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td> -->
                   <td><button class="btn btn-info" (click)="sendForBill(packlist)">שלח לחשבונית</button></td>
-                  <td *ngIf="deleteLine"><i (click)="cancelPackList(packlist._id)" class="fa fa-times text-danger"></i></td>
+                  <td *ngIf="deleteLine"><i (click)="cancelPackList(packlist._id)" class="fa fa-times text-danger"></i>
+                  </td>
                 </tr>
               </tbody>
 
@@ -430,7 +441,8 @@
 
         <div class="row mt-5">
           <div class="col-2">
-            <input type="text" placeholder="Filter By Customer" class="form-control" (keyup)="filterReadyPackedListsByCustomer($event)">
+            <input type="text" placeholder="Filter By Customer" class="form-control"
+              (keyup)="filterReadyPackedListsByCustomer($event)">
           </div>
         </div>
 
@@ -451,27 +463,28 @@
               </thead>
               <tbody>
 
-                    <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
-                      <td>{{i+1}}</td>
-                      <td><label (click)="openProductForm(packlist,'HE')"
-                          style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label>
-                      </td>
-                      <td>
-                        <tr *ngFor="let orderNumber of packlist.orders">
-                          <td><a target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ orderNumber }}" class="text-info">{{orderNumber}}</a></td>
-                        </tr>
-                      </td>
-                      <td *ngIf="packlist._id != editBill" style="cursor: pointer;" (click)="editBillNumber(packlist._id)">
-                        {{packlist.billNumber}}</td>
-                      <td *ngIf="editBill == packlist._id"><input class="form-control" type="text" [value]="packlist.billNumber"
-                          #billNumberToUpdate></td>
-                      <td *ngIf="editBill == packlist._id"><i (click)="saveBillNumber(packlist._id)"
-                          style="cursor: pointer;" class="fa fa-save text-info"></i>
-                      </td>
-                      <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
-                    </tr>
- 
-            
+                <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
+                  <td>{{i+1}}</td>
+                  <td><label (click)="openProductForm(packlist,'HE')"
+                      style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label>
+                  </td>
+                  <td>
+                <tr *ngFor="let orderNumber of packlist.orders">
+                  <td><a target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ orderNumber }}"
+                      class="text-info">{{orderNumber}}</a></td>
+                </tr>
+                </td>
+                <td *ngIf="packlist._id != editBill" style="cursor: pointer;" (click)="editBillNumber(packlist._id)">
+                  {{packlist.billNumber}}</td>
+                <td *ngIf="editBill == packlist._id"><input class="form-control" type="text"
+                    [value]="packlist.billNumber" #billNumberToUpdate></td>
+                <td *ngIf="editBill == packlist._id"><i (click)="saveBillNumber(packlist._id)" style="cursor: pointer;"
+                    class="fa fa-save text-info"></i>
+                </td>
+                <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
+                </tr>
+
+
               </tbody>
 
             </table>
@@ -497,7 +510,8 @@
 
         <div class="row mt-5">
           <div class="col-2">
-            <input type="text" placeholder="Filter By Bill Number" class="form-control" (keyup)="filterReadyBillsByBillNumber($event)">
+            <input type="text" placeholder="Filter By Bill Number" class="form-control"
+              (keyup)="filterReadyBillsByBillNumber($event)">
           </div>
         </div>
 
@@ -517,17 +531,17 @@
               </thead>
               <tbody>
 
-                    <tr *ngFor="let packlist of readyBills;let i = index">
-                      <td>{{i+1}}</td>
-                      <td>{{packlist.packListNumber}}</td>
-                      <td><label (click)="openProductForm(packlist,'HE')"
-                          style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label>
-                      </td>
-                      <td style="cursor: pointer;">{{packlist.billNumber}}</td>
-                      <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
-                    </tr>
- 
-            
+                <tr *ngFor="let packlist of readyBills;let i = index">
+                  <td>{{i+1}}</td>
+                  <td>{{packlist.packListNumber}}</td>
+                  <td><label (click)="openProductForm(packlist,'HE')"
+                      style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label>
+                  </td>
+                  <td style="cursor: pointer;">{{packlist.billNumber}}</td>
+                  <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
+                </tr>
+
+
               </tbody>
 
             </table>
@@ -604,8 +618,8 @@
               <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
                 {{line.itemNumber}}</td>
               <td>{{line.itemName}}</td>
-                <td>{{line.orderNumber}}</td>
-                <td>{{line.batchNumber}}</td>
+              <td>{{line.orderNumber}}</td>
+              <td>{{line.batchNumber}}</td>
               <!-- <td></td> -->
               <td>{{line.fullKartons}}</td>
               <td>{{line.unitsInKarton}}</td>
@@ -623,8 +637,8 @@
 
       <table class="table table-bordered" style="margin-top:30px;margin-left:80px">
         <thead>
-            <th><b>סה"כ משטחים</b></th>
-            <th><b>סה"כ משקל</b></th>
+          <th><b>סה"כ משטחים</b></th>
+          <th><b>סה"כ משקל</b></th>
         </thead>
         <tbody>
           <tr>
@@ -641,12 +655,12 @@
             <th><b>סה"כ כמות</b></th>
           </tr>
         </thead>
-      <tbody>
-        <tr *ngFor="let pallet of combinedPallets">
-          <td><b>{{pallet.itemNumber}}</b></td>
-          <td><b>{{pallet.quantity}}</b></td>
-        </tr>
-      </tbody>
+        <tbody>
+          <tr *ngFor="let pallet of combinedPallets">
+            <td><b>{{pallet.itemNumber}}</b></td>
+            <td><b>{{pallet.quantity}}</b></td>
+          </tr>
+        </tbody>
       </table>
 
       <table style="margin-top:50px !important;">
@@ -661,7 +675,7 @@
 
     </div>
 
-</div>
+  </div>
 </div>
 
 <div id="print-sectionEN">
@@ -670,104 +684,113 @@
 
     <!-- Modal content -->
     <table>
-     <tbody>
-       <tr style="border:none">
-         <td  style="border:none"><img style="width:170px;height:100px;" src="../../../../assets/images/logo.png"></td>
-         <td style="border:none;width:65px"></td>
-         <td style="border:none;width:65px"></td>
-         <td  style="border:none;"><h2>Products List Before Delivery</h2></td>
-         <td style="border:none;width:65px"></td>
-         <td style="border:none;width:65px"></td>
-         <td  style="border:none"><span class="close" id="closeId3" style="cursor: pointer;" (click)="showProductsBeforeDeliveryEN=false;selectedArr = []">&times;</span></td>
-       </tr>
-      
-       <tr>
-         <td style="border:none"><h4>Costumer Name:{{currCustomer}}</h4></td>
-         <td style="border:none;width:65px"></td>
-         <td style="border:none;width:65px"></td>
-         <td style="border:none"><h4>Form Number:{{currPLNumber}}</h4></td>
-         <td style="border:none;width:65px"></td>
-         <td style="border:none;width:65px"></td>
-         <td style="border:none"> <h4>Delivery Date: {{today | date: 'dd/MM/yyyy'}}</h4></td>
-       </tr>
-     </tbody>
+      <tbody>
+        <tr style="border:none">
+          <td style="border:none"><img style="width:170px;height:100px;" src="../../../../assets/images/logo.png"></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;">
+            <h2>Products List Before Delivery</h2>
+          </td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none"><span class="close" id="closeId3" style="cursor: pointer;"
+              (click)="showProductsBeforeDeliveryEN=false;selectedArr = []">&times;</span></td>
+        </tr>
+
+        <tr>
+          <td style="border:none">
+            <h4>Costumer Name:{{currCustomer}}</h4>
+          </td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none">
+            <h4>Form Number:{{currPLNumber}}</h4>
+          </td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none;width:65px"></td>
+          <td style="border:none">
+            <h4>Delivery Date: {{today | date: 'dd/MM/yyyy'}}</h4>
+          </td>
+        </tr>
+      </tbody>
     </table>
-      <div style="height: 100%;overflow: hidden;" class="container" id="material-body" class="modal-body">
-        <table style="background:white;border:1px solid black;margin-left:80px;" class="table table-bordered">
-          <thead>
-            <tr>
-              <th style="width:10px" scope="col">Pallet</th>
-              <th style="width:10px" scope="col">Item</th>
-              <th style="width:100px" scope="col">Item Name</th>
-              
-              <th style="width:10px" scope="col">Order</th>
-              <th style="width:80px" scope="col">Batch</th>
-              <th style="width:10px" scope="col">Num' of Cartons</th>
-              <th style="width:10px" scope="col">Qty in Carton</th>
-              <th style="width:10px" scope="col">Part Carton</th>
-              <th style="width:13px" scope="col">Pallet Weight</th>
-              <th style="width:13px" scope="col">Pallet Size</th>
-              <th style="width:10px" scope="col">Sum</th>
-              <!-- <th scope="col">סה"כ קרטונים</th> -->
-              <!-- <th scope="col">מספר קרטון</th> -->
+    <div style="height: 100%;overflow: hidden;" class="container" id="material-body" class="modal-body">
+      <table style="background:white;border:1px solid black;margin-left:80px;" class="table table-bordered">
+        <thead>
+          <tr>
+            <th style="width:10px" scope="col">Pallet</th>
+            <th style="width:10px" scope="col">Item</th>
+            <th style="width:100px" scope="col">Item Name</th>
+
+            <th style="width:10px" scope="col">Order</th>
+            <th style="width:80px" scope="col">Batch</th>
+            <th style="width:10px" scope="col">Num' of Cartons</th>
+            <th style="width:10px" scope="col">Qty in Carton</th>
+            <th style="width:10px" scope="col">Part Carton</th>
+            <th style="width:13px" scope="col">Pallet Weight</th>
+            <th style="width:13px" scope="col">Pallet Size</th>
+            <th style="width:10px" scope="col">Sum</th>
+            <!-- <th scope="col">סה"כ קרטונים</th> -->
+            <!-- <th scope="col">מספר קרטון</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let pallet of selectedArr;let i = index">
+            <tr *ngFor="let line of pallet.lines">
+              <td>{{i+1}}</td>
+              <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
+                {{line.itemNumber}}</td>
+              <td>{{line.itemName}}</td>
+              <!-- <td></td> -->
+              <td>{{line.orderNumber}}</td>
+              <td>{{line.batchNumber}}</td>
+              <td>{{line.fullKartons}}</td>
+              <td>{{line.unitsInKarton}}</td>
+              <td>{{line.unitsQuantityPartKarton}}</td>
+              <td>{{pallet.palletWeight}}</td>
+              <td>{{pallet.palletSize}}</td>
+              <td>{{line.unitsToCombine}}</td>
+              <!-- <td>{{line.allKartons}}</td> -->
+              <!-- <td></td> -->
+
             </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let pallet of selectedArr;let i = index">
-              <tr *ngFor="let line of pallet.lines">
-                <td>{{i+1}}</td>
-                <td style="cursor: pointer;text-decoration: underline;" (click)="delOrMovePallet(pallet)">
-                  {{line.itemNumber}}</td>
-                <td>{{line.itemName}}</td>
-                <!-- <td></td> -->
-                <td>{{line.orderNumber}}</td>
-                <td>{{line.batchNumber}}</td>
-                <td>{{line.fullKartons}}</td>
-                <td>{{line.unitsInKarton}}</td>
-                <td>{{line.unitsQuantityPartKarton}}</td>
-                <td>{{pallet.palletWeight}}</td>
-                <td>{{pallet.palletSize}}</td>
-                <td>{{line.unitsToCombine}}</td>
-                <!-- <td>{{line.allKartons}}</td> -->
-                <!-- <td></td> -->
+          </ng-container>
+        </tbody>
+      </table>
 
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
+      <table class="table table-bordered" style="margin-top:30px;margin-left:80px">
+        <thead>
+          <th><b>Total Pallets</b></th>
+          <th><b>Total Weight</b></th>
+          <th><b>Item</b></th>
+          <th><b>Total Quantity</b></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pallet of combinedPallets">
+            <td><b>{{selectedArr.length}}</b></td>
+            <td><b>{{currPLWeight}}</b></td>
+            <td><b>{{pallet.itemNumber}}</b></td>
+            <td><b>{{pallet.quantity}}</b></td>
+          </tr>
 
-        <table class="table table-bordered" style="margin-top:30px;margin-left:80px">
-          <thead>
-              <th><b>Total Pallets</b></th>
-              <th><b>Total Weight</b></th>
-              <th><b>Item</b></th>
-              <th><b>Total Quantity</b></th>
-          </thead>
-          <tbody>
-            <tr *ngFor="let pallet of combinedPallets">
-              <td><b>{{selectedArr.length}}</b></td>
-              <td><b>{{currPLWeight}}</b></td>
-              <td><b>{{pallet.itemNumber}}</b></td>
-              <td><b>{{pallet.quantity}}</b></td>
-            </tr>
-
-          </tbody>
-        </table>
+        </tbody>
+      </table>
 
 
-        <table style="margin-top:50px !important">
-          <tbody>
-            <tr>
-              <td style="border:none">QA Signature:_______</td>
-              <td style="border:none;width:400px"></td>
-              <td style="border:none">Supply Manager:_______</td>
-            </tr>
-          </tbody>
-        </table>
+      <table style="margin-top:50px !important">
+        <tbody>
+          <tr>
+            <td style="border:none">QA Signature:_______</td>
+            <td style="border:none;width:400px"></td>
+            <td style="border:none">Supply Manager:_______</td>
+          </tr>
+        </tbody>
+      </table>
 
-      </div>
+    </div>
 
-    
+
   </div>
 </div>
 

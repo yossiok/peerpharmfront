@@ -75,8 +75,8 @@
                   <th>Arrived</th>
                   <th>Measurement</th>
                   <th>Price</th>
-                  <!-- <th>Coin</th> -->
                   <th>+ shipping</th>
+                  <th *ngIf="editItem">Coin</th>
                   <th>Remarks</th>
                 </tr>
               </thead>
@@ -102,7 +102,7 @@
                       class="form-control">
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin}}</td>
+                  <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin.toUpperCase()}}</td>
                   <td *ngIf="editItem">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
                       class="form-control">
@@ -114,7 +114,20 @@
                   </td> -->
 
                   <td>{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
-                  <td>{{stockitem.itemRemarks}}</td>
+                  <td *ngIf="editItem">
+                    <select  [(ngModel)]="stockitem.coin" class="form-control custom-select" required>
+                      <option value="" disabled>Coin</option>
+                      <option value="nis">NIS</option>
+                      <option value="usd">USD</option>
+                      <option value="eur">EUR</option>
+                      <option value="gbp">GBP</option>
+                    </select>
+                  </td>
+                  <td *ngIf="!editItem">{{stockitem.itemRemarks}}</td>
+                  <td *ngIf="editItem">
+                    <textarea [(ngModel)]="stockitem.remarks" type="number" class="form-control"
+                    placeholder="Item Remarks"></textarea>
+                  </td>
 
                   <td><i *ngIf="!disabled  && !editItem" (click)="editItem = !editItem"
                       class="click fa fa-pencil-alt text-primary"></i></td>

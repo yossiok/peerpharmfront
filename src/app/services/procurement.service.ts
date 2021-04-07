@@ -55,6 +55,11 @@ export class Procurementservice {
     });
   }
 
+
+  
+  
+ 
+
   startNewCall(skip, limit, observer) {
     let url = this.baseUrl + "procurementOrderController/getAllPurchases?skip=" + skip + "&limit=" + limit;
     console.log("new call=> " + url);
@@ -72,12 +77,17 @@ export class Procurementservice {
       }
     })
   }
-
-
-
+ 
 
   getAllInvoices() {
     const url = this.baseUrl + 'procurementOrderController/getAllInvoices';
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+
+  
+  getLastOrdersForItem(itemNum, numOfOrders) { 
+    const url = this.baseUrl + 'procurementOrderController/getLastOrdersForItem?itemNum='+itemNum+"&orderRetrieve="+numOfOrders;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 

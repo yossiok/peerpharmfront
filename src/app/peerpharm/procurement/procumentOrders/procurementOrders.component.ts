@@ -163,7 +163,6 @@ export class ProcurementOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.getCurrencies()
-    this.getAllProcurementOrders();
     this.getAllPurchaseRecommends();
     this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
@@ -171,6 +170,7 @@ export class ProcurementOrdersComponent implements OnInit {
       console.log(data)
       this.purchaseRecommendations.push(data)
     })
+    this.getAllProcurementOrders();
   }
 
   getCurrencies(): void {
@@ -604,7 +604,6 @@ export class ProcurementOrdersComponent implements OnInit {
             `;
           }
           else si.tooltip = ''
-          debugger
           si.color = si.color == 'lightgreen' ? 'lightgreen' : ""
         });
       });

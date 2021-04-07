@@ -180,6 +180,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if(!this.purchaseData.closeReason) this.purchaseData.closeReason = ''
       if(!this.purchaseData.userEmail) this.purchaseData.userEmail = ''
       if(!this.purchaseData.user) this.purchaseData.user = ''
+      if(!this.purchaseData.shippingPercentage) this.purchaseData.shippingPercentage = 0
+      if(!this.purchaseData.finalPurchasePrice) this.purchaseData.finalPurchasePrice = 0
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
       this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
     }
@@ -203,6 +205,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if(!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = ''
         if(!changes.purchaseData.currentValue.userEmail) changes.purchaseData.currentValue.userEmail = ''
         if(!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = ''
+        if(!changes.purchaseData.currentValue.shippingPercentage) changes.purchaseData.currentValue.shippingPercentage = 0
+        if(!changes.purchaseData.currentValue.finalPurchasePrice) changes.purchaseData.currentValue.finalPurchasePrice = 0
         this.newPurchase.setValue(changes.purchaseData.currentValue)
       }
     }
@@ -295,11 +299,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName);
-            this.itemForm.controls.coin.setValue(data[0].coin)
+            this.itemForm.controls.coin.setValue(data[0].coin.toUpperCase())
             this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            if (!supplier) console.log('Supplier undefined')
+            if (!supplier) this.toastr.error('הספק אינו ברשימת הספקים של הפריט')
             else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
           } else {
             this.toastr.error('פריט לא קיים במערכת')
@@ -313,7 +317,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            if (!supplier) console.log('Supplier undefined')
+            if (!supplier) this.toastr.error('הספק אינו ברשימת הספקים של הפריט')
             else {
               this.itemForm.controls.price.setValue(parseFloat(supplier.price))
               this.itemForm.controls.coin = supplier.coin
