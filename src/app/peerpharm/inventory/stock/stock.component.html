@@ -477,6 +477,7 @@
 
                 <label class="form-control">שם קומקס</label>
                 <label class="form-control">פריט חלופי</label>
+                <label class="form-control">מחיר העמסה</label>
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <input (change)="checkIfItemExist($event)" class="form-control" type='text'
@@ -484,6 +485,7 @@
 
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
+                <input class="form-control" type="text" [(ngModel)]="resCmpt.shippingPrice">
 
               </div>
               <div class="col-2 fixNoaStupidStuff">
@@ -1470,7 +1472,6 @@
 
           </div>
           <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
-            <div class="col-2 fixNoaStupidStuff"></div>
             <div class="col-2 fixNoaStupidStuff"><label class="form-control">Item Number</label></div>
             <div class="col-2 fixNoaStupidStuff">
               <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentN">
@@ -1479,7 +1480,10 @@
             <div class="col-2 fixNoaStupidStuff">
               <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentName">
             </div>
-            <div class="col-2 fixNoaStupidStuff"></div>
+            <div class="col-2 fixNoaStupidStuff"><label class="form-control">Shipping</label></div>
+            <div class="col-2 fixNoaStupidStuff">
+              <input class="form-control" [(ngModel)]="resMaterial.shippingPrice">
+            </div>
           </div>
 
           <div dir="rtl" style="padding: 0rem;" class="row fixNoaStupidStuff text-center">
