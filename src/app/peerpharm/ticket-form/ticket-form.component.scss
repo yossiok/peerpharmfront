@@ -66,3 +66,24 @@
     }
   }
   
+
+  
+
+.tickets-table {
+  thead {
+    tr {
+      th {
+        text-align: center;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .screenshot {
+    text-align: center;
+
+    img {
+      width: 50%;
+    }
+  }
+}
