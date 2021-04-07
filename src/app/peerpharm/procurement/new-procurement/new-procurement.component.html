@@ -102,7 +102,7 @@
                       class="form-control">
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin.toUpperCase()}}</td>
+                  <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin}}</td>
                   <td *ngIf="editItem">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
                       class="form-control">
