@@ -9,11 +9,12 @@ import { ExcelService } from 'src/app/services/excel.service';
 })
 export class FormslistComponent implements OnInit {
   myRefresh: any = null;
-  forms: any[]=[];
+  forms: any[] = [];
   formsCopy: any[];
   sortByFillingDate: Boolean = false;
   showLoader: Boolean = true;
-  constructor(private formsService: FormsService,  private excelService:ExcelService) {}
+  year: string = '2021'
+  constructor(private formsService: FormsService, private excelService: ExcelService) { }
 
   ngOnInit() {
     this.getForms();
@@ -21,32 +22,43 @@ export class FormslistComponent implements OnInit {
   }
 
   getForms() {
-    this.formsService.getAllForms().subscribe(res => {
-      if(res){
+    this.showLoader = true
+    this.formsService.getAllForms(this.year).subscribe(forms => {
+      if (forms) {
+        forms.map(form => {
+          let dateStr = this.year + "/01/01";
+          try {
+            let dateSAsArrray = form.fillingDate.split('/');
+            dateStr = dateSAsArrray[2] + "/" + dateSAsArrray[1] + "/" + dateSAsArrray[0];
+          } catch (e) { console.log(e) }
+          form.formatedDate = new Date(dateStr);
+          return form;
+        })
+        forms.sort((a, b) => b.formatedDate - a.formatedDate)
         this.showLoader = false;
-        this.forms = res;
-        this.formsCopy = res;
+        this.forms = forms;
+        this.formsCopy = forms;
       }
-     
+
     });
   }
-  sortFormsByFormNumber(){
+  sortFormsByFormNumber() {
     this.forms.reverse()
   }
 
-  exportAsXLSX():void { 
+  exportAsXLSX(): void {
     this.excelService.exportAsExcelFile(this.forms, 'form');
   }
   sortFormsByFillingDate() {
     // NOT WOTKING WELL !! NEED TO DIVIDE YEAR/MONTH/DAY
-    this.sortByFillingDate=(this.sortByFillingDate) ? false:true;
-    let sortDir=this.sortByFillingDate;
-    this.forms.sort(function(a, b) {
-      let aFillingDate= new Date(a.fillingDate);
-      let bFillingDate= new Date(b.fillingDate);
-      if(sortDir){
+    this.sortByFillingDate = (this.sortByFillingDate) ? false : true;
+    let sortDir = this.sortByFillingDate;
+    this.forms.sort(function (a, b) {
+      let aFillingDate = new Date(a.fillingDate);
+      let bFillingDate = new Date(b.fillingDate);
+      if (sortDir) {
         return aFillingDate.getTime() - bFillingDate.getTime();
-      } else{
+      } else {
         return bFillingDate.getTime() - aFillingDate.getTime();
       }
     });
@@ -90,9 +102,9 @@ export class FormslistComponent implements OnInit {
   //     arrToExcel.push(newObj);
   //   });
   //   this.excelService.exportAsExcelFile(arrToExcel, 'forms');
-    // var data=[];
-    // this.excelService.exportAsExcelFile(data, 'fault_forms');
- // }
+  // var data=[];
+  // this.excelService.exportAsExcelFile(data, 'fault_forms');
+  // }
 
 
   FilterForms(enteredText, field) {
@@ -124,10 +136,10 @@ export class FormslistComponent implements OnInit {
           this.forms = this.forms.filter(x => x.productionLine == enteredValue);
           break;
         }
-       
-        
+
+
       }
-    } else { 
+    } else {
       this.getForms();
     }
   }

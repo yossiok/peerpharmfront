@@ -212,8 +212,9 @@ export class FormsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getAllForms() {
+  getAllForms(year?: string) {
     let url = this.baseUrl + 'formDetails';
+    if(year) url = this.baseUrl + 'formDetails?year='+year
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getAllUnfinished() {

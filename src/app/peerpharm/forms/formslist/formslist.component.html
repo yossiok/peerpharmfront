@@ -2,29 +2,15 @@
 
   <div class="row mt-4">
     <div class="col-12">
-      <h1 class="text-info text-center">QA Forms</h1>
-    </div>
-  </div>
-
-  <div class="row mt-4">
-
-    <div class="col-2">
-      <label class="form-control">Item Number</label>
+      <h1 class="text-info text-center">{{year}} QA Forms</h1>
     </div>
     <div class="col-2">
-      <label class="form-control">Order Number</label>
-    </div>
-    <div class="col-2">
-      <label class="form-control">Filling Date</label>
-    </div>
-    <div class="col-2">
-      <label class="form-control">Batch Number</label>
-    </div>
-    <div class="col-2">
-      <label class="form-control">Line Number</label>
-    </div>
-    <div class="col-2">
-      <label class="form-control">Export Excel</label>
+      <select [(ngModel)]="year" (change)="getForms()" class="form-control" >
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+      </select>
     </div>
   </div>
 
@@ -36,9 +22,7 @@
     <div class="col-2">
       <input matInput placeholder="Order Number" (keyup)="FilterForms($event, 'order')" class="form-control" />
     </div>
-    <div class="col-2">
-      <input matInput placeholder="Filling Date" (keyup)="FilterForms($event, 'fill')" class="form-control" />
-    </div>
+  
     <div class="col-2">
       <input matInput placeholder="Batch Number" (keyup)="FilterForms($event, 'batch')" class="form-control" />
     </div>
@@ -70,11 +54,22 @@
         <span>R</span>
         <span>M</span>
       </h2>
+      <h3 class="peerLoader">
+        <span>{{year}} </span>
+        <span>QA </span>
+        <span>Forms </span>
+        <span>on </span>
+        <span>the </span>
+        <span>way</span>
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </h3>
     </div>
     <div class="col-4"></div>
   </div>
 
-  <div class="row mt-4">
+  <div class="row mt-4" *ngIf="!showLoader">
     <div class="col-12">
       <table class="table table-hover table-striped">
         <thead class="text-white bg-info">

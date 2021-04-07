@@ -324,6 +324,7 @@ export class StockComponent implements OnInit {
     threatment:'',
     measurement:''
   }
+  lastOrdersOfItem=[];
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1389,6 +1390,15 @@ export class StockComponent implements OnInit {
     this.stockType = type;
 
 
+  }
+
+  getLastOrdersItem(numOfOrders) {
+    this.procuretServ.getLastOrdersForItem(this.resCmpt.componentN , numOfOrders).subscribe(orders=> {
+      if(orders && orders.length > 0) this.lastOrdersOfItem = orders;
+      else this.lastOrdersOfItem = [
+        {orderNumber: 'No Orders'}
+      ]
+      })
   }
 
   filterComponents() {

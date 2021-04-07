@@ -444,7 +444,7 @@
                 <h2 class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
               </div>
               <div class="col-4 fixNoaStupidStuff">
-                <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+                <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
               </div>
             </div>
 
@@ -641,7 +641,7 @@
                 <h4 class="text-success">ספקים</h4>
               </div>
               <div class="col-1 fixNoaStupidStuff">
-                <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+                <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
               </div>
             </div>
 
@@ -839,7 +839,7 @@
                 <h3 class="text-success">Item Movements</h3>
               </div>
               <div class="col-1 fixNoaStupidStuff">
-                <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+                <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
               </div>
             </div>
             <div class="row fixNoaStupidStuff text-center p-2">
@@ -881,6 +881,53 @@
           </div>
         </mat-tab>
 
+        <!--component-->
+        <mat-tab label="Item Purchase History">
+          <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
+            <div class="row">
+                <label>Number of orders: </label> &nbsp;
+                <input type="text" #numOfOrders />
+                <div class="col-1"></div>
+                <button (click)="getLastOrdersItem(numOfOrders.value); fetching = true" >Watch History</button>
+            </div>
+          <div class="container modal-inner">
+            <div class="smallLoader" *ngIf="lastOrdersOfItem.length == 0 && fetching"></div>
+              <div *ngIf="lastOrdersOfItem.length > 0" class="row fixNoaStupidStuff text-center p-2">
+              <div style="overflow:scroll;height:500px;width:100%">
+                <h3>Purchase History for Item {{lastOrdersOfItem[0].number}}</h3>
+                <table class="table table-striped table-hover">
+                  <thead class="bg-success text-white">
+                    <tr>
+                      <th>#</th>
+                      <th>Order Number</th>
+                      <th>Item Price</th>
+                      <th>Currency</th>
+                      <th>Supplier</th>
+                      <th>Amount</th>
+                      <th>Order Date</th> 
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let lastorderitem of lastOrdersOfItem; let i = index">
+                      <tr>
+                        <td>{{i+1}}</td>
+                        <td>{{lastorderitem.orderNumber}}</td>
+                        <td>{{lastorderitem.price}}</td>
+                        <td>{{lastorderitem.coin}}</td>
+                        <td>{{lastorderitem.supplierName}}</td>
+                        <td>{{lastorderitem.quantity}}</td> 
+                        <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
+                         
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+
       </mat-tab-group>
     </div>
 
@@ -890,7 +937,7 @@
       <!-- Modal content -->
       <div class="modal-content" style='width:700px; background: rgb(165, 185, 250);' id='modelC'>
         <div class="modal-header">
-          <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+          <span class="close" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
           <!-- <img src="peerpharm.png"  width='140px' align='left'> -->
           <h2 id='div_h3'>{{openModalHeader}}</h2><br>
           <button class="btn btn-primary" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
@@ -1111,7 +1158,7 @@
       <!-- Modal content -->
       <div class="modal-content" style='width:700px; height: 50vh; background: rgb(165, 185, 250);' id='modelC'>
         <div class="modal-header">
-          <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+          <span class="close" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
           <!-- <img src="peerpharm.png"  width='140px' align='left'> -->
           <h2 id='div_h3'>{{openModalHeader}}</h2><br>
         </div>
@@ -1183,7 +1230,7 @@
       <!-- Modal content -->
       <div class="modal-content" style='width:700px' id='modelD'>
         <div class="modal-header">
-          <span class="close" id="closeId2" (click)="ImgModal=false ; currModalImgSrc='' ">&times;</span>
+          <span class="close" id="closeId2" (click)="ImgModal=false ; currModalImgSrc=''; lastOrdersOfItem = [] ">&times;</span>
         </div>
         <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
           <img [src]="currModalImgSrc" width="100%">
@@ -1458,7 +1505,7 @@
               <h2 style="padding: 0rem;" class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
             </div>
             <div style="padding: 0rem;" class="col-1 fixNoaStupidStuff">
-              <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+              <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
             </div>
           </div>
 
@@ -1606,7 +1653,7 @@
           <div dir="rtl" style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
 
             <div class="col-4 fixNoaStupidStuff">
-              <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+              <span class="close" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
             </div>
             <div class="col-4 fixNoaStupidStuff">
               <h5 class="text-success">מחסן/מחלקת בישול</h5>
@@ -1705,7 +1752,7 @@
               <h4 class="text-success">ספקים</h4>
             </div>
             <div class="col-1 fixNoaStupidStuff">
-              <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+              <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
             </div>
           </div>
 
@@ -1927,7 +1974,7 @@
             <h4 class="text-success">רכש</h4>
           </div>
           <div class="col-1 fixNoaStupidStuff ">
-            <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+            <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
           </div>
         </div>
         <div class="row fixNoaStupidStuff text-center">
@@ -1972,7 +2019,7 @@
               <h3 class="text-success">הגעות חומרי גלם</h3>
             </div>
             <div class="col-4 fixNoaStupidStuff">
-              <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+              <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
             </div>
           </div>
 
@@ -2010,10 +2057,56 @@
               </table>
             </div>
           </div>
-
-
+       
         </div>
       </mat-tab>
+
+      <!--material-->
+      <mat-tab label="Item Purchase History">
+        <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
+          <div class="row">
+              <label>Number of orders: </label> &nbsp;
+              <input type="text" #numOfOrders />
+              <div class="col-1"></div>
+              <button (click)="getLastOrdersItem(numOfOrders.value); fetching = true" >Watch History</button>
+          </div>
+        <div class="container modal-inner">
+          <div class="smallLoader" *ngIf="lastOrdersOfItem.length == 0 && fetching"></div>
+            <div *ngIf="lastOrdersOfItem.length > 0" class="row fixNoaStupidStuff text-center p-2">
+            <div style="overflow:scroll;height:500px;width:100%">
+              <h3>Purchase History for Item {{lastOrdersOfItem[0].number}}</h3>
+              <table class="table table-striped table-hover">
+                <thead class="bg-success text-white">
+                  <tr>
+                    <th>#</th>
+                    <th>Order Number</th>
+                    <th>Item Price</th>
+                    <th>Currency</th>
+                    <th>Supplier</th>
+                    <th>Amount</th>
+                    <th>Order Date</th> 
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let lastorderitem of lastOrdersOfItem; let i = index">
+                    <tr>
+                      <td>{{i+1}}</td>
+                      <td>{{lastorderitem.orderNumber}}</td>
+                      <td>{{lastorderitem.price}}</td>
+                      <td>{{lastorderitem.coin}}</td>
+                      <td>{{lastorderitem.supplierName}}</td>
+                      <td>{{lastorderitem.quantity}}</td> 
+                      <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
+                       
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
     </mat-tab-group>
   </div>
 
@@ -2023,7 +2116,7 @@
     <!-- Modal content -->
     <div class="modal-content" id='modelC'>
       <div id="material-header" class="modal-header">
-        <span class="close" id="closeId2" (click)="openModal=false;newItem='';">&times;</span>
+        <span class="close" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
 
         <h2 id='div_h3'>{{openModalHeader}}</h2><br>
         <button class="btn btn-primary" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
