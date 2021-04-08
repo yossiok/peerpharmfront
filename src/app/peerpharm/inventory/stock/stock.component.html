@@ -902,8 +902,8 @@
                     <tr>
                       <th>#</th>
                       <th>Order Number</th>
-                      <th>Item Price</th>
-                      <th>Currency</th>
+                      <th>Item Price (Foreign)</th>
+                      <th>Item Price (NIS)</th>
                       <th>Supplier</th>
                       <th>Amount</th>
                       <th>Order Date</th> 
@@ -914,8 +914,8 @@
                       <tr>
                         <td>{{i+1}}</td>
                         <td>{{lastorderitem.orderNumber}}</td>
-                        <td>{{lastorderitem.price}}</td>
-                        <td>{{lastorderitem.coin}}</td>
+                        <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
+                        <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
                         <td>{{lastorderitem.supplierName}}</td>
                         <td>{{lastorderitem.quantity}}</td> 
                         <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
@@ -2086,8 +2086,8 @@
                   <tr>
                     <th>#</th>
                     <th>Order Number</th>
-                    <th>Item Price</th>
-                    <th>Currency</th>
+                    <th>Item Price (Foreign)</th>
+                    <th>Item Price (NIS)</th>
                     <th>Supplier</th>
                     <th>Amount</th>
                     <th>Order Date</th> 
@@ -2098,8 +2098,8 @@
                     <tr>
                       <td>{{i+1}}</td>
                       <td>{{lastorderitem.orderNumber}}</td>
-                      <td>{{lastorderitem.price}}</td>
-                      <td>{{lastorderitem.coin}}</td>
+                      <td>{{lastorderitem.price | currency:lastorderitem.coin}}</td>
+                      <td>{{lastorderitem.localPrice | currency:'NIS'}}</td>
                       <td>{{lastorderitem.supplierName}}</td>
                       <td>{{lastorderitem.quantity}}</td> 
                       <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>

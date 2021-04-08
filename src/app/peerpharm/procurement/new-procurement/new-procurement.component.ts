@@ -95,6 +95,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   //toggle purchase details
   showPurchaseDetails: boolean = false;
   showItemDetails: boolean = false;
+  itemIndex: number;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -289,8 +290,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   //Stock Items
   findStockItemByNumber() {
     if (this.itemForm.get('number').value != '') {
-      this.toastr.warning('שים לב! יש ללחוץ על + בסיום')
-      this.toastr.warning('אחרת הפריט לא יישמר!')
       //this.purchaseData.orderType
       if (this.newPurchase && this.purchaseData) {
         this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
@@ -306,7 +305,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             if (!supplier) this.toastr.error('הספק אינו ברשימת הספקים של הפריט')
             else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
           } else {
-            this.toastr.error('פריט לא קיים במערכת')
+            this.toastr.error(""+this.newPurchase.controls.orderType.value+'פריט לא קיים במערכת כ')
           }
 
         })
@@ -324,7 +323,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             }
 
           } else {
-            this.toastr.error('פריט לא קיים במערכת')
+            this.toastr.error(""+this.newPurchase.controls.orderType.value+'פריט לא קיים במערכת כ')
           }
         })
       }
@@ -366,9 +365,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
   }
 
+  openToEdit(i: number) {
+    this.editItem = !this.editItem
+    this.itemIndex = i;
+  }
+
   updateItems(stockItem) {
-    this.toastr.warning('שים לב!!!!!!!')
-    this.toastr.warning("! 'confirm' כדי שהפריט יתעדכן יש ללחוץ  ")
+    this.itemIndex = -1
+    this.toastr.warning("שמור את ההזמנה על מנת לשמור את שינויים")
     this.editItem = false;
   }
 
