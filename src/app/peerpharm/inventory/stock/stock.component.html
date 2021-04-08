@@ -888,13 +888,13 @@
                 <label>Number of orders: </label> &nbsp;
                 <input type="text" #numOfOrders />
                 <div class="col-1"></div>
-                <button (click)="getLastOrdersItem(numOfOrders.value); fetching = true" >Watch History</button>
+                <button (click)="getLastOrdersItem(numOfOrders.value, 'component')" >Watch History</button>
             </div>
           <div class="container modal-inner">
-            <div class="smallLoader" *ngIf="lastOrdersOfItem.length == 0 && fetching"></div>
+            <div class="smallLoader" *ngIf="fetchingOrders"></div>
               <div *ngIf="lastOrdersOfItem.length > 0" class="row fixNoaStupidStuff text-center p-2">
               <div style="overflow:scroll;height:500px;width:100%">
-                <h3>Purchase History for Item {{lastOrdersOfItem[0].number}}</h3>
+                <h3>Purchase History for Item {{resCmpt.number}}</h3>
                 <table class="table table-striped table-hover">
                   <thead class="bg-success text-white">
                     <tr>
@@ -2068,10 +2068,10 @@
               <label>Number of orders: </label> &nbsp;
               <input type="text" #numOfOrders />
               <div class="col-1"></div>
-              <button (click)="getLastOrdersItem(numOfOrders.value); fetching = true" >Watch History</button>
+              <button (click)="getLastOrdersItem(numOfOrders.value, 'material')" >Watch History</button>
           </div>
         <div class="container modal-inner">
-          <div class="smallLoader" *ngIf="lastOrdersOfItem.length == 0 && fetching"></div>
+          <div class="smallLoader" *ngIf="fetchingOrders"></div>
             <div *ngIf="lastOrdersOfItem.length > 0" class="row fixNoaStupidStuff text-center p-2">
             <div style="overflow:scroll;height:500px;width:100%">
               <h3>Purchase History for Item {{lastOrdersOfItem[0].number}}</h3>
