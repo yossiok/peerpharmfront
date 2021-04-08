@@ -191,6 +191,7 @@ export class StockComponent implements OnInit {
   currItemShelfs: Array<any>;
   updateStockItem: Boolean = false;
   stockAdmin: Boolean = false;
+  isSuperAdmin: boolean = false;
   destShelfId: String;
   destShelf: String;
   destShelfQntBefore: Number = 0;
@@ -805,6 +806,9 @@ export class StockComponent implements OnInit {
           }
           if (this.authService.loggedInUser.authorization.includes("stockAdmin")) {
             this.stockAdmin = true;
+          }
+          if (this.authService.loggedInUser.screenPermission == '1') {
+            this.isSuperAdmin = true;
           }
         }
 

@@ -669,27 +669,27 @@
     <table>
       <tbody>
         <tr>
-          <th>מספר פריט</th>
+          <th>מק"ט</th>
+          <th>מק"ט ספק</th>
+          <th>שם פריט</th>
           <th>מחסן</th>
           <th>מיקום</th>
           <th>כמות</th>
-          <th class='itemNamePrint'>שם פריט</th>
-          <th>פריט מק"ט ספק</th>
         </tr>
         <ng-container>
           <tr>
             <td>{{materialArrivalCertif.itemInternalNumber}}</td>
+            <td>{{materialArrivalCertif.itemSupplierNumber}}</td>
+            <td>{{materialArrivalCertif.itemName}}</td>
             <td>{{materialArrivalCertif.wareHouse}}</td>
             <td>{{materialArrivalCertif.position}}</td>
             <td>{{materialArrivalCertif.amount}}</td>
-            <td>{{materialArrivalCertif.itemName}}</td>
-            <td>{{materialArrivalCertif.supplierItemNumber}}</td>
           </tr>
         </ng-container>
       </tbody>
     </table>
   </main>
-  <div class="signatures">
+  <div>
     <p>
       <span>שם המקבל:</span>&nbsp;&nbsp;
       <span>
