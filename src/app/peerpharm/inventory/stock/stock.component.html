@@ -882,7 +882,7 @@
         </mat-tab>
 
         <!--component-->
-        <mat-tab label="Item Purchase History">
+        <mat-tab *ngIf="isSuperAdmin" label="Item Purchase History">
           <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
             <div class="row">
                 <label>Number of orders: </label> &nbsp;
@@ -2062,7 +2062,7 @@
       </mat-tab>
 
       <!--material-->
-      <mat-tab label="Item Purchase History">
+      <mat-tab *ngIf="isSuperAdmin" label="Item Purchase History">
         <span class="close text-success" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
           <div class="row">
               <label>Number of orders: </label> &nbsp;

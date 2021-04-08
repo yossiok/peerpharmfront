@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { NgbModal, NgbNav, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { MaterialArrivalCertif } from './MaterialArrivalCertif';
 
 @Component({
   selector: 'app-material-arrival',
@@ -27,8 +28,9 @@ export class MaterialArrivalComponent implements OnInit {
   @ViewChild('tabset') tabset: NgbNav;
   @ViewChild('analysisFlag') analysisFlag: ElementRef;
   @ViewChild('requirementsFormDate') requirementsFormDate: ElementRef;
+  @ViewChild('printBtn2') printBtn2: ElementRef;
 
-
+  today: Date = new Date()
   materialsLocations: any[];
   allExpired: any[];
   karantineitemShells: any[];
@@ -100,6 +102,18 @@ export class MaterialArrivalComponent implements OnInit {
   batchNumRemarksInput: Boolean = false;
   orderedQntRemarksInput: Boolean = false;
   approvedPackgeRemarksInput: Boolean = false;
+
+  materialArrivalCertif: MaterialArrivalCertif = {
+    certifNumber: 0,
+    userName: this.authService.loggedInUser.userName,
+    itemInternalNumber: '',
+    itemName: '',
+    itemSupplierNumber: '',
+    wareHouse: '',
+    position: '',
+    amount: 0,
+    date: new Date()
+  }
 
 
 
@@ -596,26 +610,35 @@ export class MaterialArrivalComponent implements OnInit {
     formToSend.lastUpdate = new Date();
     formToSend.lastUpdateUser = this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe(res => {
-      
-      this.toastSrv.success("New material arrival saved!");
-      this.resetForm();
       if (res) {
-        this.bcValue = [res._id];
-        this.materialNum = res.internalNumber;
-        this.materialName = res.materialName;
-        this.lotNumber = res.lotNumber;
-        this.productionDate = res.productionDate;
-        this.arrivalDate = res.arrivalDate;
-        this.expiryDate = res.expiryDate;
+        // certificate
+        this.materialArrivalCertif.certifNumber = res.saved.reqNum
+        this.materialArrivalCertif.itemInternalNumber = res.saved.internalNumber
+        this.materialArrivalCertif.itemSupplierNumber = res.saved.supplierNumber
+        this.materialArrivalCertif.itemName = res.saved.materialName
+        this.materialArrivalCertif.wareHouse = res.saved.warehouse
+        this.materialArrivalCertif.position = res.saved.position
+        this.materialArrivalCertif.amount = res.saved.totalQnt
+        setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
+        
+        this.toastSrv.success("New material arrival saved!");
+        this.resetForm();
+        this.bcValue = [res.saved._id];
+        this.materialNum = res.saved.internalNumber;
+        this.materialName = res.saved.materialName;
+        this.lotNumber = res.saved.lotNumber;
+        this.productionDate = res.saved.productionDate;
+        this.arrivalDate = res.saved.arrivalDate;
+        this.expiryDate = res.saved.expiryDate;
 
         this.smallText = (this.materialName.length > 80) ? true : false;
 
-        this.printBarcode(res._id, res.internalNumber);// we might need to change the value to numbers
+        this.printBarcode(res.saved._id, res.internalNumber);// we might need to change the value to numbers
         this.toastSrv.success("New material arrival saved!");
         this.resetForm();
         this.analysisFlag.nativeElement.checked = false;
         //print barcode;
-      } else if (res == 'no material with number') {
+      } else if (res.msg == 'no material with number') {
         this.toastSrv.error("Item number wrong")
       } else {
         this.toastSrv.error("Something went wrong, saving faild")
