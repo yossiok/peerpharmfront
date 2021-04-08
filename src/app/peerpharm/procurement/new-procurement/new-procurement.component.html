@@ -75,7 +75,7 @@
                   <th>Arrived</th>
                   <th>Measurement</th>
                   <th>Price</th>
-                  <th>+ shipping</th>
+                  <th *ngIf="!editItem">shipping</th>
                   <th *ngIf="editItem">Coin</th>
                   <th>Remarks</th>
                 </tr>
@@ -99,7 +99,7 @@
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity"
-                      class="form-control">
+                      [style.width]="'77px'" class="form-control">
                   </td>
 
                   <td *ngIf="!editItem"><span *ngIf="stockitem.arrivedAmount">{{stockitem.arrivedAmount}}</span></td>
@@ -109,18 +109,18 @@
                   <td *ngIf="!editItem">{{stockitem.measurement}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
-                      class="form-control">
+                    [style.width]="'50px'" class="form-control">
                   </td>
 
                   <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
-                      class="form-control">
+                    [style.width]="'77px'" class="form-control">
                   </td>
 
-                  <td *ngIf="!editItem || editItem && itemIndex == i">{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
+                  <td *ngIf="!editItem">{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" class="form-control custom-select" required>
+                    <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" [style.width]="'77px'" class="form-control custom-select" required>
                       <option value="" disabled>Coin</option>
                       <option value="nis">NIS</option>
                       <option value="usd">USD</option>
@@ -132,7 +132,7 @@
                   <td *ngIf="!editItem">{{stockitem.itemRemarks}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <textarea [(ngModel)]="stockitem.remarks" [ngModelOptions]="{standalone: true}" type="number" class="form-control"
-                      placeholder="Item Remarks"></textarea>
+                    [style.width]="'100px'" placeholder="Item Remarks"></textarea>
                   </td>
 
                   <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)"
