@@ -281,7 +281,7 @@
                     >
                       <textarea
                         #phaseRemarksUpdate
-                        [value]="phase.remarks"
+                        [(ngModel)]="phase.remarks"
                       ></textarea>
                     </td>
                   
@@ -307,7 +307,7 @@
                       <input
                         #percentageUpdate
                         style="width: 50px;"
-                        [value]="item.percentage"
+                        [(ngModel)]="item.percentage"
                       />
                     </td>
                     <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;"
@@ -323,7 +323,7 @@
                     >
                       <input
                         #itemRemarksUpdate
-                        [value]="item.remarks"
+                        [(ngModel)]="item.remarks"
                         type="text"
                       />
                     </td>
