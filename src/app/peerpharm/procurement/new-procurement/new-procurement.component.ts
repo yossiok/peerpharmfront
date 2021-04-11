@@ -301,9 +301,24 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.itemForm.controls.coin.setValue(data[0].coin.toUpperCase())
             this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
+            this.itemForm.controls.coin.setValue(data[0].coin)
+
+            //set price
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            if (!supplier) this.toastr.error('הספק אינו ברשימת הספקים של הפריט')
+            if (!supplier) {
+              this.toastr.info('הספק אינו ברשימת הספקים של הפריט')
+              for (let aSupplier of data[0].alternativeSuppliers) {
+                if(aSupplier.price) this.itemForm.controls.price.setValue(parseFloat(aSupplier.price))
+                if(aSupplier.coin) this.itemForm.controls.coin.setValue(parseFloat(aSupplier.coin))
+                break;
+              }
+            } 
             else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
+            if(!this.itemForm.controls.price.value) {
+              this.itemForm.controls.price.setValue(parseFloat(data[0].price))
+              this.itemForm.controls.coin.setValue('NIS')
+            }
+
           } else {
             this.toastr.error(""+this.newPurchase.controls.orderType.value+'פריט לא קיים במערכת כ')
           }
@@ -315,11 +330,21 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.itemForm.controls.name.setValue(data[0].componentName)
             this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
+
+               //set price
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            if (!supplier) this.toastr.error('הספק אינו ברשימת הספקים של הפריט')
-            else {
-              this.itemForm.controls.price.setValue(parseFloat(supplier.price))
-              this.itemForm.controls.coin = supplier.coin
+            if (!supplier) {
+              this.toastr.info('הספק אינו ברשימת הספקים של הפריט')
+              for (let aSupplier of data[0].alternativeSuppliers) {
+                if(aSupplier.price) this.itemForm.controls.price.setValue(parseFloat(aSupplier.price))
+                if(aSupplier.coin) this.itemForm.controls.coin.setValue(parseFloat(aSupplier.coin))
+                break;
+              }
+            } 
+            else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
+            if(!this.itemForm.controls.price.value) {
+              this.itemForm.controls.price.setValue(parseFloat(data[0].price))
+              this.itemForm.controls.coin.setValue('NIS')
             }
 
           } else {
