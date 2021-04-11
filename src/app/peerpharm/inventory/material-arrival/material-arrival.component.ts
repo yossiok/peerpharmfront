@@ -6,7 +6,16 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { NgbModal, NgbNav, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { MaterialArrivalCertif } from './MaterialArrivalCertif';
+import { MaterialArrivalCertif, MaterialArrivalLine } from './MaterialArrivalCertif';
+
+const defaultLine = {
+  itemInternalNumber: '',
+  itemName: '',
+  itemSupplierNumber: '',
+  wareHouse: '',
+  position: '',
+  amount: 0
+}
 
 @Component({
   selector: 'app-material-arrival',
@@ -73,6 +82,7 @@ export class MaterialArrivalComponent implements OnInit {
   productionDate: String;
   arrivalDate: String;
   expiryDate: String;
+  lastOrders: any[] = [];
 
   smallText: Boolean = false;
 
@@ -106,14 +116,17 @@ export class MaterialArrivalComponent implements OnInit {
   materialArrivalCertif: MaterialArrivalCertif = {
     certifNumber: 0,
     userName: this.authService.loggedInUser.userName,
-    itemInternalNumber: '',
-    itemName: '',
-    itemSupplierNumber: '',
-    wareHouse: '',
-    position: '',
-    amount: 0,
-    date: new Date()
+    date: new Date(),
+    materialArrivalLines: [],
+    supplierCertifNumber: '',
+    supplierName: '',
+    supplierNumber: '',
+    supplierOrderNumber: '',
+    purchaseOrderNumber: 0,
+    sumAmount: 0
   }
+
+  materialArrivalLine: MaterialArrivalLine = defaultLine
 
 
 
@@ -134,24 +147,25 @@ export class MaterialArrivalComponent implements OnInit {
       expiryDate: [Date, Validators.nullValidator],
       productionDate: [Date,],
 
-      supplierName: ["", Validators.required],
-      supplierNumber: ["", Validators.required],
+      supplierName: [this.materialArrivalCertif.supplierName, Validators.required],
+      supplierNumber: [this.materialArrivalCertif.supplierNumber, Validators.required],
+      supplierOrderNumber: [this.materialArrivalCertif.supplierOrderNumber],
       analysisApproval: [Boolean, false,],
 
       totalQnt: [null, Validators.required],
       mesureType: ['kg', Validators.required],
       remarks: ["",],
-      cmxOrderN: ["",],
+      cmxOrderN: [this.materialArrivalCertif.purchaseOrderNumber, Validators.required],
       packageType: ["", Validators.required], //select 
       packageQnt: [1, Validators.min(1)],
       unitsInPack: [null, Validators.min(1)],
       // unitVolume: [0, ],    
       // unitMesureType: [0, ],    
 
-      warehouse: ["",Validators.required], //select 
-      position: ["",Validators.required], //select 
+      warehouse: ["", Validators.required], //select 
+      position: ["", Validators.required], //select 
       barcode: [""],
-      deliveryNoteNumber: ["", Validators.required],
+      deliveryNoteNumber: [this.materialArrivalCertif.supplierCertifNumber, Validators.required],
     });
 
 
@@ -212,6 +226,13 @@ export class MaterialArrivalComponent implements OnInit {
     console.log('screenHeight: ' + this.screenHeight)
     // two displays "tab-selectbyid1" OR "tab-selectbyid2"
     this.activeTabId = "tab-selectbyid1"
+  }
+
+  getLatestOrders() {
+    this.procuretServ.getLastOrdersForItem(this.newMaterialArrival.value.internalNumber, 10).subscribe(orders => {
+      console.log('OOOOOOOOOrders: ',orders)
+      this.lastOrders = orders
+    })
   }
 
 
@@ -325,7 +346,7 @@ export class MaterialArrivalComponent implements OnInit {
 
       if (res != 'shelfMissing') {
         this.invtSer.updateShelfPosition(this.itemShellID, res.ShelfId, this.shellPosition)
-        .subscribe( updatedShell => console.log('updated shell: ', updatedShell) )
+          .subscribe(updatedShell => console.log('updated shell: ', updatedShell))
       }
     })
   }
@@ -438,7 +459,7 @@ export class MaterialArrivalComponent implements OnInit {
   searchInternalNumber() {
     if (this.newMaterialArrival.value.internalNumber != "") {
       this.invtSer.getMaterialStockItemByNum(this.newMaterialArrival.value.internalNumber).subscribe(item => {
-        
+
         console.log(item);
         if (item.length == 0) {
           this.toastSrv.error("Can't find item number")
@@ -546,6 +567,7 @@ export class MaterialArrivalComponent implements OnInit {
       this.toastSrv.error("Fill all required fields")
       this.fieldsColor();
     }
+
   }
 
 
@@ -584,7 +606,7 @@ export class MaterialArrivalComponent implements OnInit {
     let shelf = ev.target.value;
     let whareHouseId;
     let whareHouse = this.newMaterialArrival.controls.warehouse.value;
-    if(whareHouse == 'Karantine'){
+    if (whareHouse == 'Karantine') {
       whareHouseId = '5cf64e77e32883115c39dc56'
     } else {
       whareHouseId = '5c1124ef2db99c4434914a0e'
@@ -611,18 +633,34 @@ export class MaterialArrivalComponent implements OnInit {
     formToSend.lastUpdateUser = this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe(res => {
       if (res) {
-        // certificate
-        this.materialArrivalCertif.certifNumber = res.saved.reqNum
-        this.materialArrivalCertif.itemInternalNumber = res.saved.internalNumber
-        this.materialArrivalCertif.itemSupplierNumber = res.saved.supplierNumber
-        this.materialArrivalCertif.itemName = res.saved.materialName
-        this.materialArrivalCertif.wareHouse = res.saved.warehouse
-        this.materialArrivalCertif.position = res.saved.position
-        this.materialArrivalCertif.amount = res.saved.totalQnt
-        setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
-        
+        // certificate - general
+        if (this.materialArrivalCertif.certifNumber == 0) {
+          this.materialArrivalCertif.certifNumber = res.saved.reqNum
+          this.materialArrivalCertif.supplierCertifNumber = res.saved.deliveryNoteNumber
+          this.materialArrivalCertif.purchaseOrderNumber = res.saved.reqNum
+          this.materialArrivalCertif.supplierName = res.saved.supplierName
+          this.materialArrivalCertif.supplierOrderNumber = res.saved.supplierOrderNumber
+          this.materialArrivalCertif.purchaseOrderNumber = Number(this.currentComaxOrder)
+        }
+
+        //certificate - line
+        this.materialArrivalLine.itemInternalNumber = res.saved.internalNumber
+        this.materialArrivalLine.itemSupplierNumber = res.saved.supplierNumber
+        this.materialArrivalLine.itemName = res.saved.materialName
+        this.materialArrivalLine.wareHouse = res.saved.warehouse
+        this.materialArrivalLine.position = res.saved.position
+        this.materialArrivalLine.amount = res.saved.totalQnt
+
+        this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
+        this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
+
+        this.materialArrivalLine = defaultLine
+        // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
+
         this.toastSrv.success("New material arrival saved!");
         this.resetForm();
+        this.requiresFromFull = !this.requiresFromFull
+
         this.bcValue = [res.saved._id];
         this.materialNum = res.saved.internalNumber;
         this.materialName = res.saved.materialName;
