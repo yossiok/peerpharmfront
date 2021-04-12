@@ -372,112 +372,118 @@
                 <input type="text" class="form-control is-valid" placeholder="supplier order number"
                   formControlName="supplierOrderNumber" name='supplierOrderNumber'>
               </div>
-            <div class="col-sm-2">
-              <label>מספר הזמנת רכש</label>
-              <select placeholder="Purchase Order Number" formControlName="cmxOrderN" name='cmxOrderN'>
-                <option *ngFor="let order of lastOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
-              </select>
-              <!-- <input type="text" (change)="checkIfIOrderExist($event)" class="form-control is-valid"
-                placeholder="Order number" formControlName="cmxOrderN" name='cmxOrderN'> -->
             </div>
-          </div>
-        <div class="form-row w-100 flex-row-reverse">
-          <div class="col-sm-2">
-            <label>כמות כוללת</label>
-            <input type="number" class="form-control is-valid" formControlName="totalQnt" name='totalQnt'>
-          </div>
-          <div class="col-sm-2">
-            <label>יח' מדידה</label>
-            <select class="form-control is-valid" formControlName="mesureType" name='mesureType'>
-              <option value="kg">קילוגרם</option>
-              <option value="liter">ליטר</option>
-            </select>
-          </div>
-          <div *ngIf="lastOrders.length > 0" class="col-sm-8">
-            <h3>הזמנות אחרונות {{newMaterialArrival.value.internalNumber}}</h3>
-            <table class="table table-hover table-striped">
-              <thead>
-                <tr>
-                  <th>תאריך</th>
-                  <th>מספר הזמנה</th>
-                  <th>ספק</th>
-                  <th>כמות</th>
-                  <th>יח' מידה</th>
-                  <th>הערות</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr *ngFor="let order of lastOrders">
-                    <td>{{order.orderDate}}</td>
-                    <td>{{order.orderNumber}}</td>
-                    <td>{{order.supplierName}}</td>
-                    <td>{{order.quantity}}</td>
-                    <td>{{order.measurement}}</td>
-                    <td>{{order.itemRemarks}}</td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
+            <div class="form-row w-100 flex-row-reverse">
+              <div class="col-sm-4">
+                <label>מספר הזמנת רכש</label>
+                <select placeholder="Purchase Order Number" class="form-control is-valid" formControlName="cmxOrderN" name='cmxOrderN'>
+                  <option value="0">לא קיים</option>
+                  <option *ngFor="let order of lastOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
+                </select>
+                <!-- <input type="text" (change)="checkIfIOrderExist($event)" class="form-control is-valid"
+                placeholder="Order number" formControlName="cmxOrderN" name='cmxOrderN'> -->
+              </div>
+            </div>
+            <div class="form-row w-100 flex-row-reverse">
+              <div class="col-sm-2">
+                <label>כמות כוללת</label>
+                <input type="number" class="form-control is-valid" formControlName="totalQnt" name='totalQnt'>
+              </div>
+              <div class="col-sm-2">
+                <label>יח' מדידה</label>
+                <select class="form-control is-valid" formControlName="mesureType" name='mesureType'>
+                  <option value="kg">קילוגרם</option>
+                  <option value="liter">ליטר</option>
+                </select>
+              </div>
+              <div *ngIf="lastOrders.length > 0 && bd" class="col-sm-8">
+                <div class="float-right">
+                  <button (click)="bd = !bd">סגור</button>
+                </div>
+                <h3>הזמנות אחרונות {{newMaterialArrival.value.internalNumber}}</h3>
+                <table class="table table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>תאריך</th>
+                      <th>מספר הזמנה</th>
+                      <th>ספק</th>
+                      <th>כמות</th>
+                      <th>יח' מידה</th>
+                      <th>הערות</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let order of lastOrders">
+                      <td>{{order.orderDate}}</td>
+                      <td>{{order.orderNumber}}</td>
+                      <td>{{order.supplierName}}</td>
+                      <td>{{order.quantity}}</td>
+                      <td>{{order.measurement}}</td>
+                      <td>{{order.itemRemarks}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="form-row w-100 flex-row-reverse">
+
+              <div class="col-sm-2">
+                <label>סוג אריזה</label>
+                <select class="form-control is-valid" formControlName="packageType" name='packageType'>
+                  <option value="">בחר אריזה</option>
+                  <option value="plasticBarrel">חבית פלסטיק</option>
+                  <option value="cartonBarrel">חבית קרטון</option>
+                  <option value="metalBarrel">חבית מתכת</option>
+                  <option value="can">פח</option>
+                  <option value="jerrycan‏‏‏‏">ג'ריקן</option>
+                  <option value="bag">שק</option>
+                  <option value="plasticBag">שקית</option>
+                  <option value="cube">קוביה</option>
+                  <option value="bucket">דלי</option>
+                  <option value="carton">קרטון</option>
+                  <option value="bottel">בקבוק</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <label>כמות אריזות</label>
+                <input type="number" class="form-control is-valid" formControlName="packageQnt" name='packageQnt'>
+              </div>
+              <div class="col-sm-2" *ngIf="newMaterialArrival.value.packageType == 'carton'">
+                <label>יח' בקרטון</label>
+                <input type="number" class="form-control is-valid" formControlName="unitsInPack" name='unitsInPack'>
+              </div>
+            </div>
+
+            <div class="form-row w-100 flex-row-reverse">
+              <div class="col-sm-2">
+                <label>מחסן</label>
+                <select type="text" class="form-control is-valid" formControlName="warehouse" name='warehouse'>
+                  <option value="Rosh HaAyin">Rosh HaAyin</option>
+                  <option value="Karantine">Karantine</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <label>מיקום הסחורה</label>
+                <input type="text" (focusout)="checkIfShelfExist($event)" class="form-control is-valid"
+                  formControlName="position" name='position'>
+              </div>
+
+              <div class="col-sm-2">
+                <label>הערות</label>
+                <input type="text" class="form-control is-valid" placeholder="remarks..." formControlName="remarks"
+                  name='remarks'>
+              </div>
+            </div>
+
+            <div class="form-row w-100 d-flex justify-content-around">
+              <div class="col-sm-4">
+                <button (click)="submitForm()" class="btn btn-success">אישור</button>
+                <button (click)="resetForm()" class="btn btn-danger">איפוס</button>
+              </div>
+            </div>
+
+          </form>
         </div>
-        <div class="form-row w-100 flex-row-reverse">
-
-          <div class="col-sm-2">
-            <label>סוג אריזה</label>
-            <select class="form-control is-valid" formControlName="packageType" name='packageType'>
-              <option value="">בחר אריזה</option>
-              <option value="plasticBarrel">חבית פלסטיק</option>
-              <option value="cartonBarrel">חבית קרטון</option>
-              <option value="metalBarrel">חבית מתכת</option>
-              <option value="can">פח</option>
-              <option value="jerrycan‏‏‏‏">ג'ריקן</option>
-              <option value="bag">שק</option>
-              <option value="plasticBag">שקית</option>
-              <option value="cube">קוביה</option>
-              <option value="bucket">דלי</option>
-              <option value="carton">קרטון</option>
-              <option value="bottel">בקבוק</option>
-            </select>
-          </div>
-          <div class="col-sm-2">
-            <label>כמות אריזות</label>
-            <input type="number" class="form-control is-valid" formControlName="packageQnt" name='packageQnt'>
-          </div>
-          <div class="col-sm-2" *ngIf="newMaterialArrival.value.packageType == 'carton'">
-            <label>יח' בקרטון</label>
-            <input type="number" class="form-control is-valid" formControlName="unitsInPack" name='unitsInPack'>
-          </div>
-        </div>
-
-        <div class="form-row w-100 flex-row-reverse">
-          <div class="col-sm-2">
-            <label>מחסן</label>
-            <select type="text" class="form-control is-valid" formControlName="warehouse" name='warehouse'>
-              <option value="Rosh HaAyin">Rosh HaAyin</option>
-              <option value="Karantine">Karantine</option>
-            </select>
-          </div>
-          <div class="col-sm-2">
-            <label>מיקום הסחורה</label>
-            <input type="text" (focusout)="checkIfShelfExist($event)" class="form-control is-valid"
-              formControlName="position" name='position'>
-          </div>
-
-          <div class="col-sm-2">
-            <label>הערות</label>
-            <input type="text" class="form-control is-valid" placeholder="remarks..." formControlName="remarks"
-              name='remarks'>
-          </div>
-        </div>
-
-        <div class="form-row w-100 d-flex justify-content-around">
-          <div class="col-sm-4">
-            <button (click)="submitForm()" class="btn btn-success">אישור</button>
-            <button (click)="resetForm()" class="btn btn-danger">איפוס</button>
-          </div>
-        </div>
-
-        </form>
-      </div>
 
       </div>
 
@@ -654,11 +660,10 @@
 
 
 
-
-
 <!--Print Of Material Arrivals Certificates-->
-<div dir="rtl" class="row mt-5 print-wrapper">
-  <div id="print-section2" style="direction: rtl; text-align: right;  ">
+<div class="row mt-5 print-wrapper">
+
+  <div id="print-section2" dir="rtl" style="direction: rtl; text-align: right">
     <header>
       <h1>פאר פארם בע"מ</h1>
       <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
@@ -686,26 +691,20 @@
         <span><u>מס' תעודת ספק:</u></span>&nbsp;&nbsp;
         <span>{{materialArrivalCertif.supplierOrderNumber}}</span>&nbsp;&nbsp;
       </p>
-      <p>
-        <span></span>
-        <span><u>מס' הזמנת רכש:</u></span>&nbsp;&nbsp;
-        <span>{{materialArrivalCertif.purchaseOrderNumber}}</span>&nbsp;&nbsp;
-      </p>
-      <p>
-        <span></span>
-        <span><u>פריטים:</u></span>&nbsp;&nbsp;
-      </p>
       <br>
-      <table>
+      <table dir="rtl" border="1">
         <tbody>
           <tr>
             <th>#</th>
             <th>מק"ט</th>
             <th>מק"ט ספק</th>
             <th>שם פריט</th>
+            <th>הזמנת רכש</th>
             <th>מחסן</th>
             <th>מיקום</th>
-            <th>כמות</th>
+            <th>משקל / כמות</th>
+            <th>כמות אריזות</th>
+            <th>הערות</th>
           </tr>
           <ng-container>
             <tr *ngFor="let certif of materialArrivalCertif.materialArrivalLines; let i = index">
@@ -713,31 +712,46 @@
               <td>{{certif.itemInternalNumber}}</td>
               <td>{{certif.itemSupplierNumber}}</td>
               <td>{{certif.itemName}}</td>
+              <td>{{certif.purchaseOrderNumber}}</td>
               <td>{{certif.wareHouse}}</td>
               <td>{{certif.position}}</td>
               <td>{{certif.amount}}</td>
+              <td>{{certif.unitsAmount}}</td>
+              <td>{{certif.remarks}}</td>
             </tr>
           </ng-container>
           <tr>
-            <td>{{materialArrivalCertif.materialArrivalLines.length}}</td>
+            <td><strong>סה"כ: {{materialArrivalCertif.materialArrivalLines.length}}</strong></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td>{{materialArrivalCertif.sumAmount}}</td>
+            <td></td>
+            <td><strong>{{materialArrivalCertif.sumAmount}}</strong></td>
+            <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
     </main>
-    <div>
+    <div class="signatures">
       <p>
         <span>שם המקבל:</span>&nbsp;&nbsp;
         <span>
-          {{materialArrivalCertif.userName}}
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <u>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </u>
         </span>&nbsp;&nbsp;
         <span>חתימה:</span>&nbsp;&nbsp;
+        <span>
+          <u>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </u>
+        </span>&nbsp;&nbsp;
+        <span>תאריך:</span>&nbsp;&nbsp;
         <span>
           <u>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -749,17 +763,18 @@
     <footer>
     </footer>
   </div>
-  <button class="btn btn-success" #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
-header : {'border-bottom': 'solid 1px'},
-main : {'border-bottom': 'solid 1px' },
-table :{ 'text-align': 'right' },
-footer : { 'position': 'absolute' , 'width': '100%' },
-h2 : {'text-align': 'center'},
-'.originDestWh':{'text-align':'right'},
-th : {'width': '16%' },
-td : {'width': '16%' },
-'.itemNamePrint' : {'width': '35%'},
-'.signatures' : { 'margin' : '50px'},
-'.cellPadding' : { 'padding' : '15px 0px'}
+  <button class="btn btn-success" #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl', 'padding-right': '20px'}, 
+  header : {'border-bottom': 'solid 1px'},
+  main : {'border-bottom': 'solid 1px' },
+  table :{ 'text-align': 'right' },
+  footer : { 'position': 'absolute' , 'width': '100%' },
+  h2 : {'text-align': 'center'},
+  '.originDestWh':{'text-align':'right'},
+  th : {'width': '16%' },
+  td : {'width': '16%' },
+  '.itemNamePrint' : {'width': '35%'},
+  '.signatures' : { 'margin' : '50px'},
+  '.cellPadding' : { 'padding' : '15px 0px'}
 }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>הדפס</button>
+
 </div>

@@ -41,6 +41,13 @@ export class NewOutServiceComponent implements OnInit {
   constructor(private authService: AuthService, private outServiceService: OutServiceService) { }
 
   ngOnInit(): void {
+    this.getAllServiceTypes()
+  }
+
+  getAllServiceTypes() {
+    this.outServiceService.getAllTypes().subscribe(types => {
+      this.serviceTypes = types
+    })
   }
 
   addOutServiceToDB() {

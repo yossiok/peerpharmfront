@@ -1,10 +1,12 @@
 <div dir="rtl" class="container">
+
+    <h2>דווח על פתיחת שירות</h2>
     <form [formGroup]="addOutservice" (ngSubmit)="addOutServiceToDB()">
         
         <div class="form-group">
             <label>סוג שירות</label>
             <select class="form-control" placeholder="סוג שירות" formControlName="type"></select>
-            <option *ngFor="let serviceType of serviceTypes" [value]="serviceType.name"></option>
+            <option *ngFor="let serviceType of serviceTypes" [value]="serviceType.name">{{serviceType.name}}</option>
         </div>
 
         <div class="form-group">

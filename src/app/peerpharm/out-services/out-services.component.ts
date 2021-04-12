@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OutServiceService } from 'src/app/services/out-service.service';
+import { SuppliersService } from 'src/app/services/suppliers.service';
 import { OutService } from './OutService';
 
 @Component({
@@ -11,7 +12,10 @@ export class OutServicesComponent implements OnInit {
 
   services: OutService[]
 
-  constructor(private outServiceService: OutServiceService) { }
+  constructor(
+    private outServiceService: OutServiceService,
+    private supplierService: SuppliersService
+    ) { }
 
   ngOnInit(): void {
     this.getAllServices()

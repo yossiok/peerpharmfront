@@ -6,7 +6,6 @@ export interface MaterialArrivalCertif {
     supplierName: string;
     supplierNumber: string;
     supplierOrderNumber: string;
-    purchaseOrderNumber: number;
     materialArrivalLines: MaterialArrivalLine [];
     sumAmount: number;
 }
@@ -14,8 +13,11 @@ export interface MaterialArrivalCertif {
 export interface MaterialArrivalLine {
     itemInternalNumber: string;
     itemName: string;
+    purchaseOrderNumber: number;
     itemSupplierNumber: string;
     wareHouse: string;
     position: string;
     amount: number;
+    unitsAmount: number;
+    remarks: string
 }

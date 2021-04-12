@@ -12,9 +12,12 @@ const defaultLine = {
   itemInternalNumber: '',
   itemName: '',
   itemSupplierNumber: '',
+  purchaseOrderNumber: 0,
   wareHouse: '',
   position: '',
-  amount: 0
+  amount: 0,
+  unitsAmount: 0,
+  remarks: ''
 }
 
 @Component({
@@ -23,13 +26,14 @@ const defaultLine = {
   styleUrls: ['./material-arrival.component.scss']
 })
 export class MaterialArrivalComponent implements OnInit {
-  public beforeChange($event: NgbNavChangeEvent) {
 
+  public beforeChange($event: NgbNavChangeEvent) {
     this.activeTabId = $event.activeId;
     // if ($event.activeId === 'tab-preventchange2') {
     //   $event.preventDefault();
     // }
   }
+
   @ViewChild('modal1') modal1: ElementRef;
   @ViewChild('supplierNameInput') supplierNameInput: ElementRef;
   @ViewChild('supplierItemNameInput') supplierItemNameInput: ElementRef;
@@ -122,11 +126,10 @@ export class MaterialArrivalComponent implements OnInit {
     supplierName: '',
     supplierNumber: '',
     supplierOrderNumber: '',
-    purchaseOrderNumber: 0,
     sumAmount: 0
   }
 
-  materialArrivalLine: MaterialArrivalLine = defaultLine
+  materialArrivalLine: MaterialArrivalLine = {...defaultLine}
 
 
 
@@ -155,7 +158,7 @@ export class MaterialArrivalComponent implements OnInit {
       totalQnt: [null, Validators.required],
       mesureType: ['kg', Validators.required],
       remarks: ["",],
-      cmxOrderN: [this.materialArrivalCertif.purchaseOrderNumber, Validators.required],
+      cmxOrderN: [null, Validators.required],
       packageType: ["", Validators.required], //select 
       packageQnt: [1, Validators.min(1)],
       unitsInPack: [null, Validators.min(1)],
@@ -637,24 +640,26 @@ export class MaterialArrivalComponent implements OnInit {
         if (this.materialArrivalCertif.certifNumber == 0) {
           this.materialArrivalCertif.certifNumber = res.saved.reqNum
           this.materialArrivalCertif.supplierCertifNumber = res.saved.deliveryNoteNumber
-          this.materialArrivalCertif.purchaseOrderNumber = res.saved.reqNum
           this.materialArrivalCertif.supplierName = res.saved.supplierName
           this.materialArrivalCertif.supplierOrderNumber = res.saved.supplierOrderNumber
-          this.materialArrivalCertif.purchaseOrderNumber = Number(this.currentComaxOrder)
+          // this.materialArrivalCertif.purchaseOrderNumber = Number(this.currentComaxOrder)
         }
-
+        
         //certificate - line
         this.materialArrivalLine.itemInternalNumber = res.saved.internalNumber
         this.materialArrivalLine.itemSupplierNumber = res.saved.supplierNumber
         this.materialArrivalLine.itemName = res.saved.materialName
+        this.materialArrivalLine.purchaseOrderNumber = res.saved.cmxOrderN
         this.materialArrivalLine.wareHouse = res.saved.warehouse
         this.materialArrivalLine.position = res.saved.position
-        this.materialArrivalLine.amount = res.saved.totalQnt
+        this.materialArrivalLine.amount = Number(res.saved.totalQnt)
+        this.materialArrivalLine.unitsAmount = Number(res.saved.packageQnt)
+        this.materialArrivalLine.remarks = res.saved.remarks
 
         this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
         this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
 
-        this.materialArrivalLine = defaultLine
+        this.materialArrivalLine = {...defaultLine}
         // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
 
         this.toastSrv.success("New material arrival saved!");
