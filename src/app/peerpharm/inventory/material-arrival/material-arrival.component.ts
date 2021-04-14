@@ -120,13 +120,14 @@ export class MaterialArrivalComponent implements OnInit {
   materialArrivalCertif: MaterialArrivalCertif = {
     certifNumber: 0,
     userName: this.authService.loggedInUser.userName,
-    date: new Date(),
+    date: this.today,
     materialArrivalLines: [],
     supplierCertifNumber: '',
     supplierName: '',
     supplierNumber: '',
     supplierOrderNumber: '',
-    sumAmount: 0
+    sumAmount: 0,
+    sumUnits: 0
   }
 
   materialArrivalLine: MaterialArrivalLine = {...defaultLine}
@@ -141,7 +142,7 @@ export class MaterialArrivalComponent implements OnInit {
     private modalService: NgbModal,) {
 
     this.newMaterialArrival = fb.group({
-      arrivalDate: [Date, Validators.required],
+      arrivalDate: [this.today, Validators.required],
       user: ["", Validators.required],
       internalNumber: ["", Validators.required],
       materialName: ["", Validators.required],
@@ -352,6 +353,10 @@ export class MaterialArrivalComponent implements OnInit {
           .subscribe(updatedShell => console.log('updated shell: ', updatedShell))
       }
     })
+  }
+
+  deleteLineFromCert(i: number) {
+    if(confirm(`line ${i} will be erased.`)) this.materialArrivalCertif.materialArrivalLines.splice(i, 1)
   }
 
 
@@ -658,6 +663,7 @@ export class MaterialArrivalComponent implements OnInit {
 
         this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
         this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
+        this.materialArrivalCertif.sumUnits += this.materialArrivalLine.unitsAmount
 
         this.materialArrivalLine = {...defaultLine}
         // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
@@ -744,6 +750,10 @@ export class MaterialArrivalComponent implements OnInit {
         break;
       }
     }
+  }
+
+  open(modal) {
+    this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
 
 

@@ -8,6 +8,7 @@ export interface MaterialArrivalCertif {
     supplierOrderNumber: string;
     materialArrivalLines: MaterialArrivalLine [];
     sumAmount: number;
+    sumUnits: number;
 }
 
 export interface MaterialArrivalLine {

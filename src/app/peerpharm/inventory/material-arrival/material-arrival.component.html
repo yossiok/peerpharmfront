@@ -675,7 +675,7 @@
       </p>
     </header>
     <main>
-      <h2>תעודת קליטה {{materialArrivalCertif.certifNumber}}</h2>
+      <h2>תעודת קליטה מס' {{materialArrivalCertif.certifNumber}}</h2>
       <p>
         <span></span>
         <span><u>תאריך:</u></span>&nbsp;&nbsp;
@@ -729,7 +729,7 @@
             <td></td>
             <td></td>
             <td><strong>{{materialArrivalCertif.sumAmount}}</strong></td>
-            <td></td>
+            <td>{{materialArrivalCertif.sumUnits}}</td>
             <td></td>
           </tr>
         </tbody>
@@ -763,18 +763,89 @@
     <footer>
     </footer>
   </div>
-  <button class="btn btn-success" #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl', 'padding-right': '20px'}, 
-  header : {'border-bottom': 'solid 1px'},
-  main : {'border-bottom': 'solid 1px' },
-  table :{ 'text-align': 'right' },
-  footer : { 'position': 'absolute' , 'width': '100%' },
-  h2 : {'text-align': 'center'},
-  '.originDestWh':{'text-align':'right'},
-  th : {'width': '16%' },
-  td : {'width': '16%' },
-  '.itemNamePrint' : {'width': '35%'},
-  '.signatures' : { 'margin' : '50px'},
-  '.cellPadding' : { 'padding' : '15px 0px'}
-}" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>הדפס</button>
-
+  <div class="d-flex flex-row justify-content-between">
+    <button class="btn btn-success" #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl', 'padding-right': '20px'}, 
+    header : {'border-bottom': 'solid 1px'},
+    main : {'border-bottom': 'solid 1px' },
+    table :{ 'text-align': 'right' },
+    footer : { 'position': 'absolute' , 'width': '100%' },
+    h2 : {'text-align': 'center'},
+    '.originDestWh':{'text-align':'right'},
+    th : {'width': '16%' },
+    td : {'width': '16%' },
+    '.itemNamePrint' : {'width': '35%'},
+    '.signatures' : { 'margin' : '50px'},
+    '.cellPadding' : { 'padding' : '15px 0px'}
+  }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>הדפס
+</button>
+  
+  <button (click)="open(editCertificateModal)" class="btn btn-warning">ערוך</button>
+  
 </div>
+</div>
+
+
+
+<ng-template class="p-6" #editCertificateModal let-modal>
+  <div class="modal-header bg-success">
+    <h4 class="modal-title text-center" id="modal-basic-title">ערוך תעודת קליטה</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div dir="rtl" class="modal-body p-5">
+
+    <main>
+      <h2>תעודת קליטה מס' {{materialArrivalCertif.certifNumber}}</h2>
+      <p>
+        <span></span>
+        <span><u>תאריך:</u></span>&nbsp;&nbsp;
+        <input type="date" [(ngModel)]="materialArrivalCertif.date">
+      </p>
+      <p>
+        <span></span>
+        <span><u>ספק:</u></span>&nbsp;&nbsp;
+        <span>{{materialArrivalCertif.supplierName}}</span>&nbsp;&nbsp;
+      </p>
+      <p>
+        <span></span>
+        <span><u>מס' תעודת ספק:</u></span>&nbsp;&nbsp;
+        <span>{{materialArrivalCertif.supplierOrderNumber}}</span>&nbsp;&nbsp;
+      </p>
+      <br>
+      <table dir="rtl" border="1">
+        <tbody>
+          <tr>
+            <th>#</th>
+            <th>מק"ט</th>
+            <th>מק"ט ספק</th>
+            <th>שם פריט</th>
+            <th>הזמנת רכש</th>
+            <th>מחסן</th>
+            <th>מיקום</th>
+            <th>משקל / כמות</th>
+            <th>כמות אריזות</th>
+            <th>הערות</th>
+            <th></th>
+          </tr>
+          <ng-container>
+            <tr *ngFor="let certif of materialArrivalCertif.materialArrivalLines; let i = index">
+              <td>{{i+1}}</td>
+              <td>{{certif.itemInternalNumber}}</td>
+              <td>{{certif.itemSupplierNumber}}</td>
+              <td>{{certif.itemName}}</td>
+              <td>{{certif.purchaseOrderNumber}}</td>
+              <td>{{certif.wareHouse}}</td>
+              <td>{{certif.position}}</td>
+              <td>{{certif.amount}}</td>
+              <td>{{certif.unitsAmount}}</td>
+              <td>{{certif.remarks}}</td>
+              <td><button class="btn btn-danger" (click)="deleteLineFromCert(i)">מחק שורה</button></td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </main>
+  </div>
+</ng-template>
