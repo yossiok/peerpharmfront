@@ -68,13 +68,13 @@ export class OrderdetailsComponent implements OnInit {
   allMaterials: any[];
   formuleCheck: boolean;
   itemDetails: any;
-  bottleQuantity:number = 0;
-  capsQuantity:number = 0;
-  sealsQuantity:number = 0;
-  boxesQuantity:number = 0;
-  stickersQuantity:number = 0;
-  pumpsQuantity:number = 0;
-  cartonsQuantity:number = 0;
+  bottleQuantity: number = 0;
+  capsQuantity: number = 0;
+  sealsQuantity: number = 0;
+  boxesQuantity: number = 0;
+  stickersQuantity: number = 0;
+  pumpsQuantity: number = 0;
+  cartonsQuantity: number = 0;
   newProductionNetWeightGr: any;
   newProductionQuantity: any;
   componentStatus: any;
@@ -253,11 +253,10 @@ export class OrderdetailsComponent implements OnInit {
     this.getAllFormsDetails()
     this.getUserInfo();
     this.getAllComponents();
-    
-   setTimeout(() => {
-    this.getProdReq();
-   }, 10000);
-   
+
+    //  setTimeout(() => {
+    //   this.getProdReq();
+    //  }, 10000);
 
     this.orderService.openOrdersValidate.subscribe(res => {
       this.number = this.route.snapshot.paramMap.get('id');
@@ -279,9 +278,8 @@ export class OrderdetailsComponent implements OnInit {
           await this.colorOrderItemsLines(orders.orderItems).then(data => { });
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
+          this.getProdReq();
 
-          
-     
           this.ordersItemsCopy = orders.orderItems;
           this.ordersItems.map(item => {
             item.itemFullName = item.itemNumber + " " + item.discription;
@@ -290,8 +288,6 @@ export class OrderdetailsComponent implements OnInit {
           //this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
           console.log(orders.orderItems)
-      
-
         });
 
       }
@@ -319,12 +315,12 @@ export class OrderdetailsComponent implements OnInit {
                   await this.colorOrderItemsLines(orderItems).then(data => { });
                   this.ordersItems = orderItems;
                   this.productionRequirements = orderItems;
-              
+
                   this.ordersItemsCopy = orderItems;
 
                   this.multi = true;
                   console.log(orderItems);
-               
+
                 });
               } else {  //one order: but came through load button
                 await this.getOrderDetails();
@@ -362,7 +358,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   open(contentTwo) {
-    
+
     var allForms = this.allForms;
     var orderItems = this.ordersItems;
 
@@ -419,157 +415,159 @@ export class OrderdetailsComponent implements OnInit {
   }
 
 
-  calculateKG(netWeightGr,quantity){
-      let result = (netWeightGr/1000)*Number(quantity)
-       return result
+  calculateKG(netWeightGr, quantity) {
+    let result = (netWeightGr / 1000) * Number(quantity)
+    return result
   }
 
-  openInvoice(item){
-   
-   this.currItem = item
-   this.currBillingArr = item.billing
-   this.billQtySum = 0
-   this.currBillingArr.forEach(bill => {
-     this.billQtySum += Number(bill.billQty)
-   });
-   this.invoiceModal = true;
- }
+  openInvoice(item) {
 
-  getCompDetails(compNumber){
-  
-  this.inventoryService.getCompStatus(compNumber).subscribe(data=>{
-  
-  this.compRequirement = data;
-  this.compRequirementModal = true;
-  })
-    
+    this.currItem = item
+    this.currBillingArr = item.billing
+    this.billQtySum = 0
+    this.currBillingArr.forEach(bill => {
+      this.billQtySum += Number(bill.billQty)
+    });
+    this.invoiceModal = true;
+  }
+
+  getCompDetails(compNumber) {
+
+    this.inventoryService.getCompStatus(compNumber).subscribe(data => {
+
+      this.compRequirement = data;
+      this.compRequirementModal = true;
+    })
+
 
   }
 
   // check with Akiva if still necessery , in html it's Production Requirements
   getProdReq() {
-    
+
     var tempArr = []
-    this.productionRequirements.forEach(p=>{
-     tempArr.push(p.itemNumber)
-    })
-    this.itemSer.createProdRequirement(tempArr).subscribe(data=>{
-    if(data){
-      
-      this.itemRequirements = data;
-      this.productionRequirements.forEach(p=>{
-        this.itemRequirements.forEach(i=>{
-          if(p.itemNumber == i.itemNumber){
-            i.quantity = Number(p.quantity)
-          }
-        })
+    if (this.productionRequirements) {
+      this.productionRequirements.forEach(p => {
+        tempArr.push(p.itemNumber)
       })
- 
-      const bottles = _.countBy(this.itemRequirements, 'bottleNumber');
-      const caps = _.countBy(this.itemRequirements, 'capNumber');
-      const seals = _.countBy(this.itemRequirements, 'sealNumber');
-      const stickers = _.countBy(this.itemRequirements, 'stickerNumber');
-      const boxes = _.countBy(this.itemRequirements, 'boxNumber');
-      const pumps = _.countBy(this.itemRequirements, 'pumpNumber');
-      const cartons = _.countBy(this.itemRequirements, 'cartonNumber');
-      
-      delete bottles.undefined
-      delete caps.undefined
-      delete seals.undefined
-      delete stickers.undefined
-      delete boxes.undefined
-      delete pumps.undefined
-      delete cartons.undefined
-
-      var bottleArray = _.filter(this.itemRequirements, x => bottles[x.bottleNumber] > 1);
-      var capsArray = _.filter(this.itemRequirements, x => caps[x.bottleNumber] > 1);
-      var sealsArray = _.filter(this.itemRequirements, x => seals[x.bottleNumber] > 1);
-      var stickersArray = _.filter(this.itemRequirements, x => stickers[x.bottleNumber] > 1);
-      var boxesArray = _.filter(this.itemRequirements, x => boxes[x.bottleNumber] > 1);
-      var pumpsArray = _.filter(this.itemRequirements, x => pumps[x.bottleNumber] > 1);
-      var cartonsArray = _.filter(this.itemRequirements, x => cartons[x.bottleNumber] > 1);
-
-    
-
-      bottleArray.forEach(element => {
-        this.bottleQuantity+=element.quantity;
-      });
-      capsArray.forEach(element => {
-        this.capsQuantity+=element.quantity;
-      });
-      sealsArray.forEach(element => {
-        this.sealsQuantity+=element.quantity;
-      });
-      stickersArray.forEach(element => {
-        this.stickersQuantity+=element.quantity;
-      });
-      boxesArray.forEach(element => {
-        this.boxesQuantity+=element.quantity;
-      });
-      pumpsArray.forEach(element => {
-        this.pumpsQuantity+=element.quantity;
-      });
-      cartonsArray.forEach(element => {
-        this.cartonsQuantity+=element.quantity;
-      });
-      
-    
-
     }
+    this.itemSer.createProdRequirement(tempArr).subscribe(data => {
+      if (data) {
+
+        this.itemRequirements = data;
+        this.productionRequirements.forEach(p => {
+          this.itemRequirements.forEach(i => {
+            if (p.itemNumber == i.itemNumber) {
+              i.quantity = Number(p.quantity)
+            }
+          })
+        })
+
+        const bottles = _.countBy(this.itemRequirements, 'bottleNumber');
+        const caps = _.countBy(this.itemRequirements, 'capNumber');
+        const seals = _.countBy(this.itemRequirements, 'sealNumber');
+        const stickers = _.countBy(this.itemRequirements, 'stickerNumber');
+        const boxes = _.countBy(this.itemRequirements, 'boxNumber');
+        const pumps = _.countBy(this.itemRequirements, 'pumpNumber');
+        const cartons = _.countBy(this.itemRequirements, 'cartonNumber');
+
+        delete bottles.undefined
+        delete caps.undefined
+        delete seals.undefined
+        delete stickers.undefined
+        delete boxes.undefined
+        delete pumps.undefined
+        delete cartons.undefined
+
+        var bottleArray = _.filter(this.itemRequirements, x => bottles[x.bottleNumber] > 1);
+        var capsArray = _.filter(this.itemRequirements, x => caps[x.bottleNumber] > 1);
+        var sealsArray = _.filter(this.itemRequirements, x => seals[x.bottleNumber] > 1);
+        var stickersArray = _.filter(this.itemRequirements, x => stickers[x.bottleNumber] > 1);
+        var boxesArray = _.filter(this.itemRequirements, x => boxes[x.bottleNumber] > 1);
+        var pumpsArray = _.filter(this.itemRequirements, x => pumps[x.bottleNumber] > 1);
+        var cartonsArray = _.filter(this.itemRequirements, x => cartons[x.bottleNumber] > 1);
+
+
+
+        bottleArray.forEach(element => {
+          this.bottleQuantity += element.quantity;
+        });
+        capsArray.forEach(element => {
+          this.capsQuantity += element.quantity;
+        });
+        sealsArray.forEach(element => {
+          this.sealsQuantity += element.quantity;
+        });
+        stickersArray.forEach(element => {
+          this.stickersQuantity += element.quantity;
+        });
+        boxesArray.forEach(element => {
+          this.boxesQuantity += element.quantity;
+        });
+        pumpsArray.forEach(element => {
+          this.pumpsQuantity += element.quantity;
+        });
+        cartonsArray.forEach(element => {
+          this.cartonsQuantity += element.quantity;
+        });
+
+
+
+      }
     })
   }
 
-  expandTableRow(){
-    if(this.expandTr == false){
+  expandTableRow() {
+    if (this.expandTr == false) {
       this.expandTr = true;
     } else {
       this.expandTr = false;
     }
   }
 
-// not used in html 
+  // not used in html 
 
-//   saveItemRemarks(id){
-    
-//     this.componentRemarks.nativeElement.value;
-//     var obj = {
-//       componentRemarks:this.componentRemarks.nativeElement.value,
-//       packageRemarks:this.packageRemarks.nativeElement.value,
-//       stickerRemarks:this.stickerRemarks.nativeElement.value,
-//       cartonRemarks:this.cartonRemarks.nativeElement.value,
-//       orderItemId:id
-//     }
-//     this.orderService.saveOrderItemRemarks(obj).subscribe(data=>{
+  //   saveItemRemarks(id){
 
-// if(data){
-//   for (let i = 0; i < this.productionRequirements.length; i++) {
-//   if(this.productionRequirements[i]._id == data._id){
-//     this.productionRequirements[i].componentRemarks = data.componentRemarks
-//     this.productionRequirements[i].packageRemarks = data.packageRemarks
-//     this.productionRequirements[i].stickerRemarks = data.stickerRemarks
-//     this.productionRequirements[i].cartonRemarks = data.cartonRemarks
-//     this.edit('');
-//     this.toastSrv.success("עודכן בהצלחה !")
-//   }
-    
-//   }
-// }
-//     })
-//   }
+  //     this.componentRemarks.nativeElement.value;
+  //     var obj = {
+  //       componentRemarks:this.componentRemarks.nativeElement.value,
+  //       packageRemarks:this.packageRemarks.nativeElement.value,
+  //       stickerRemarks:this.stickerRemarks.nativeElement.value,
+  //       cartonRemarks:this.cartonRemarks.nativeElement.value,
+  //       orderItemId:id
+  //     }
+  //     this.orderService.saveOrderItemRemarks(obj).subscribe(data=>{
+
+  // if(data){
+  //   for (let i = 0; i < this.productionRequirements.length; i++) {
+  //   if(this.productionRequirements[i]._id == data._id){
+  //     this.productionRequirements[i].componentRemarks = data.componentRemarks
+  //     this.productionRequirements[i].packageRemarks = data.packageRemarks
+  //     this.productionRequirements[i].stickerRemarks = data.stickerRemarks
+  //     this.productionRequirements[i].cartonRemarks = data.cartonRemarks
+  //     this.edit('');
+  //     this.toastSrv.success("עודכן בהצלחה !")
+  //   }
+
+  //   }
+  // }
+  //     })
+  //   }
 
 
- // check with Akiva if still necessery , in html it's Production Requirements
-  getItemDetails(itemNumber){
-    this.itemSer.getItemData(itemNumber).subscribe(data=>{
-      
-    this.prodRequirement = data;
-    
+  // check with Akiva if still necessery , in html it's Production Requirements
+  getItemDetails(itemNumber) {
+    this.itemSer.getItemData(itemNumber).subscribe(data => {
+
+      this.prodRequirement = data;
+
     })
   }
 
   // openComponentsStatus(components, itemNumber, itemQuantity, orderNumber) {
   //   this.itemSer.getComponentsAmountByCmptNumber(itemNumber, itemQuantity).subscribe(data => {
-      
+
   //     data;
 
   //     this.itemDetails = data;
@@ -636,7 +634,7 @@ export class OrderdetailsComponent implements OnInit {
   // }
 
   addItemOrder() {
-    
+
     this.itemData.formuleCheck = this.formuleCheck
     this.itemData.orderId = this.orderId;
     var userName = this.authService.loggedInUser.firstName
@@ -649,7 +647,7 @@ export class OrderdetailsComponent implements OnInit {
 
     this.orderService.addNewOrderItem(this.itemData).subscribe(item => {
 
-      if(item.msg == 'notActive'){
+      if (item.msg == 'notActive') {
         this.toastSrv.error('שים לב פריט זה אינו פעיל')
       }
       if (item.itemNumber == this.itemData.itemNumber) {
@@ -715,7 +713,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   async getOrderDetails() {
-    
+
     this.number = this.route.snapshot.paramMap.get('id');
     //if someone loaded just one item in orders screen through "Load" button
     if (this.number.includes(',')) this.number = this.number.split(",").filter(x => x != "");
@@ -752,23 +750,23 @@ export class OrderdetailsComponent implements OnInit {
   // }
 
   // check with Akiva if still needed because Weight Production is the SAME
- 
+
 
 
   checkboxAllOrders(ev) {
-    
+
     this.ordersItems.filter(e => e.isSelected = ev.target.checked)
   }
 
 
   // check with Akiva if still necessery , in html it's Production Requirements
   createProdRequirements() {
-    
 
-    
+
+
     for (let i = 0; i < this.productionRequirements.length; i++) {
       this.itemSer.getItemData(this.productionRequirements[i].itemNumber).subscribe(data => {
-        
+
         data
         this.productionRequirements[i].bottleNumber = data[0].bottleNumber
         this.productionRequirements[i].pumpNumber = data[0].pumpNumber
@@ -786,9 +784,9 @@ export class OrderdetailsComponent implements OnInit {
   }
 
 
- 
+
   // changeReqStatus(ev, id, type) {
-    
+
   //   var status = ev.target.value
   //   switch (type) {
   //     case 'component':
@@ -797,7 +795,7 @@ export class OrderdetailsComponent implements OnInit {
   //           for (let i = 0; i < this.productionRequirements.length; i++) {
   //             if (this.productionRequirements[i]._id == data._id) {
   //               this.productionRequirements[i].componentStatus = data.componentStatus
-               
+
   //             }
 
   //           }
@@ -810,7 +808,7 @@ export class OrderdetailsComponent implements OnInit {
   //           for (let i = 0; i < this.productionRequirements.length; i++) {
   //             if (this.productionRequirements[i]._id == data._id) {
   //               this.productionRequirements[i].packageStatus = data.packageStatus
-           
+
   //             }
 
   //           }
@@ -845,262 +843,262 @@ export class OrderdetailsComponent implements OnInit {
 
   //   }
 
-    loadMaterialsForFormule(){
-      this.selectedArr
+  loadMaterialsForFormule() {
+    this.selectedArr
 
-      this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
-            this.calculateMaterials(materials)
-      })
-    }
+    this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
+      this.calculateMaterials(materials)
+    })
+  }
 
-    calculateMaterials(materials){
-      this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals=>{
-        
-        var count = 0;
-        for (let i = 0; i < materials.length; i++) {
-         for (let j = 0; j < arrivals.length; j++) {
-          if(arrivals[j].internalNumber == materials[i].itemNumber) {
+  calculateMaterials(materials) {
+    this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals => {
+
+      var count = 0;
+      for (let i = 0; i < materials.length; i++) {
+        for (let j = 0; j < arrivals.length; j++) {
+          if (arrivals[j].internalNumber == materials[i].itemNumber) {
             materials[i].kgProduction = this.formatNumber(Number(materials[i].kgProduction));
-              materials[i].measureType = arrivals[i].mesureType
-  
-              if(materials[i].totalQnt) {
-                materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
-            
-               
-              } else {
-                if(arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt) )
+            materials[i].measureType = arrivals[i].mesureType
+
+            if (materials[i].totalQnt) {
+              materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
+
+
+            } else {
+              if (arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt))
                 materials[i].totalQnt = parseInt(arrivals[j].totalQnt)
-              }
-             
-            
+            }
+
+
           }
-           
-         }
-         this.materialsForFormules = materials;
-         this.showMaterialsForFormules = true;
+
         }
-      })
-    }
-
-    formatNumber(number) {
-      number = number.toFixed(3) + '';
-      var x = number.split('.');
-      var x1 = x[0];
-      var x2 = x.length > 1 ? '.' + x[1] : '';
-      var rgx = /(\d+)(\d{3})/;
-      while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        this.materialsForFormules = materials;
+        this.showMaterialsForFormules = true;
       }
-      return x1 + x2;
+    })
+  }
+
+  formatNumber(number) {
+    number = number.toFixed(3) + '';
+    var x = number.split('.');
+    var x1 = x[0];
+    var x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + ',' + '$2');
     }
-  
- // Related To Formule Button
-    changeItemQuantity(itemNumber){
-      
-      var updatedQuantity = prompt('הזן כמות');
-      var tempArr = [...this.selectedArr];
-      var tempMaterials = [...this.materialsForFormules]
-      var item = tempArr.find(i => i.itemNumber == itemNumber);
-      item.calculatedAmount = updatedQuantity
-      this.inventoryService.getMaterialsForFormules(tempArr).subscribe(data => {
-        if (data.msg == "לא קיימת פורמולה") {
-          this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
-        } else {
-          var item = this.selectedArr.find(i=>i.itemNumber == itemNumber);
-          item.newKG = updatedQuantity
-        
-          this.materialsForFormules = data;
-          this.materialsForFormules.forEach(item=>{
-            tempMaterials.forEach(element => {
-              if(item.itemNumber == element.itemNumber){
-                item.totalQnt = element.totalQnt
-              }
-            });
-          })
-          this.showMaterialsForFormules = true;
-        }
+    return x1 + x2;
+  }
 
-      })
-    }
+  // Related To Formule Button
+  changeItemQuantity(itemNumber) {
 
+    var updatedQuantity = prompt('הזן כמות');
+    var tempArr = [...this.selectedArr];
+    var tempMaterials = [...this.materialsForFormules]
+    var item = tempArr.find(i => i.itemNumber == itemNumber);
+    item.calculatedAmount = updatedQuantity
+    this.inventoryService.getMaterialsForFormules(tempArr).subscribe(data => {
+      if (data.msg == "לא קיימת פורמולה") {
+        this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
+      } else {
+        var item = this.selectedArr.find(i => i.itemNumber == itemNumber);
+        item.newKG = updatedQuantity
 
-
-    getOrderItems(singleLine): void {
-      var orderNum;
-      this.number = this.route.snapshot.paramMap.get('id');
-      if(this.number.includes(',')) this.number = this.number.split(",").filter(x => x != "");
-      if(singleLine) {
-        orderNum = this.itemData.orderNumber.trim();
-      }else{
-        orderNum = this.number;
+        this.materialsForFormules = data;
+        this.materialsForFormules.forEach(item => {
+          tempMaterials.forEach(element => {
+            if (item.itemNumber == element.itemNumber) {
+              item.totalQnt = element.totalQnt
+            }
+          });
+        })
+        this.showMaterialsForFormules = true;
       }
+
+    })
+  }
+
+
+
+  getOrderItems(singleLine): void {
+    var orderNum;
+    this.number = this.route.snapshot.paramMap.get('id');
+    if (this.number.includes(',')) this.number = this.number.split(",").filter(x => x != "");
+    if (singleLine) {
+      orderNum = this.itemData.orderNumber.trim();
+    } else {
+      orderNum = this.number;
+    }
     //if someone loaded just one item in orders screen through "Load" button
     this.totalOrderQty = 0
     document.title = "Order " + this.number;
-      this.orderService.getOrderItemsByNumber(orderNum).subscribe(orderItems => {
-        orderItems.map(item => {
-          this.totalOrderQty += Number(item.quantity)
-          if (item.fillingStatus != null) {
-            if (item.status != 'done') {
-              if (item.fillingStatus.toLowerCase() == 'filled'
-                || item.fillingStatus.toLowerCase() == 'partfilled') {
-                item.color = '#CE90FF';
-              }
-              else if (item.fillingStatus.toLowerCase() == 'beingfilled'
-                || item.fillingStatus.toLowerCase().includes("scheduled")
-                || item.fillingStatus.toLowerCase().includes('formula porduced')
-                || item.fillingStatus.toLowerCase().includes('batch exist')) {
-                item.color = 'yellow';
-              }
-              else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
-              else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
-                if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
-                  let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
-                  item.fillingStatus += ", " + lackAmount + " lack";
-                  item.infoColor = '#ff7272';
-                }
-                else item.color = '#CE90FF';
-              }
-              else if (item.fillingStatus == 'packed') item.color = '#FFC058';
-              else item.color = 'none';
-
-            } else {
-              item.color = 'aquamarine';
+    this.orderService.getOrderItemsByNumber(orderNum).subscribe(orderItems => {
+      orderItems.map(item => {
+        this.totalOrderQty += Number(item.quantity)
+        if (item.fillingStatus != null) {
+          if (item.status != 'done') {
+            if (item.fillingStatus.toLowerCase() == 'filled'
+              || item.fillingStatus.toLowerCase() == 'partfilled') {
+              item.color = '#CE90FF';
             }
-          } else if (item.fillingStatus == undefined && item.status == 'done') {
+            else if (item.fillingStatus.toLowerCase() == 'beingfilled'
+              || item.fillingStatus.toLowerCase().includes("scheduled")
+              || item.fillingStatus.toLowerCase().includes('formula porduced')
+              || item.fillingStatus.toLowerCase().includes('batch exist')) {
+              item.color = 'yellow';
+            }
+            else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+            else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+              if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
+                let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
+                item.fillingStatus += ", " + lackAmount + " lack";
+                item.infoColor = '#ff7272';
+              }
+              else item.color = '#CE90FF';
+            }
+            else if (item.fillingStatus == 'packed') item.color = '#FFC058';
+            else item.color = 'none';
+
+          } else {
             item.color = 'aquamarine';
           }
-
-
-          item.isExpand = '+';
-          item.colorBtn = '#33FFE0';
-        });
-
-        if (singleLine) {
-          this.ordersItems.filter(item => {
-            if (item.itemNumber == orderItems[0].itemNumber) {
-              item = orderItems[0];
-
-            }
-          });
-        } else {
-          this.ordersItems = orderItems;
-          this.productionRequirements = orderItems;
-
-       
-          this.ordersItemsCopy = orderItems;
+        } else if (item.fillingStatus == undefined && item.status == 'done') {
+          item.color = 'aquamarine';
         }
 
-        this.getComponents(this.ordersItems[0].orderNumber);
 
+        item.isExpand = '+';
+        item.colorBtn = '#33FFE0';
       });
-    }
 
-    colorOrderItemsLines(orderItems){
+      if (singleLine) {
+        this.ordersItems.filter(item => {
+          if (item.itemNumber == orderItems[0].itemNumber) {
+            item = orderItems[0];
 
-      return new Promise(async function (resolve, reject) {
-        await orderItems.map(item => {
-          if (item.fillingStatus != null) {
-            if (item.status != 'done') {
-              if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
-              else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
-              else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
-              else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
-                if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
-                  let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
-                  item.fillingStatus += ", " + lackAmount + " lack";
-                  item.infoColor = '#ff7272';
-                }
-                else item.color = '#CE90FF';
+          }
+        });
+      } else {
+        this.ordersItems = orderItems;
+        this.productionRequirements = orderItems;
+
+
+        this.ordersItemsCopy = orderItems;
+      }
+
+      this.getComponents(this.ordersItems[0].orderNumber);
+
+    });
+  }
+
+  colorOrderItemsLines(orderItems) {
+
+    return new Promise(async function (resolve, reject) {
+      await orderItems.map(item => {
+        if (item.fillingStatus != null) {
+          if (item.status != 'done') {
+            if (item.fillingStatus.toLowerCase() == 'filled' || item.fillingStatus.toLowerCase() == 'partfilled') item.color = '#CE90FF';
+            else if (item.fillingStatus.toLowerCase() == 'beingfilled' || item.fillingStatus.toLowerCase().includes("scheduled") || item.fillingStatus.toLowerCase().includes('formula porduced') || item.fillingStatus.toLowerCase().includes('batch exist')) item.color = 'yellow';
+            else if (item.fillingStatus.toLowerCase() == 'problem') item.color = 'red';
+            else if (item.quantityProduced != "" && item.quantityProduced != null && item.quantityProduced != undefined) {
+              if (parseInt(item.quantity) >= parseInt(item.quantityProduced)) {
+                let lackAmount = parseInt(item.quantity) - parseInt(item.quantityProduced);
+                item.fillingStatus += ", " + lackAmount + " lack";
+                item.infoColor = '#ff7272';
               }
-              else if (item.fillingStatus == 'packed') item.color = '#FFC058';
-              else item.color = 'none';
-
-            } else {
-              item.color = 'aquamarine';
+              else item.color = '#CE90FF';
             }
-          } else if (item.fillingStatus == undefined && item.status == 'done') {
+            else if (item.fillingStatus == 'packed') item.color = '#FFC058';
+            else item.color = 'none';
+
+          } else {
             item.color = 'aquamarine';
           }
-          item.isExpand = '+';
-          item.colorBtn = '#33FFE0';
-        });
-
-        resolve(orderItems);
+        } else if (item.fillingStatus == undefined && item.status == 'done') {
+          item.color = 'aquamarine';
+        }
+        item.isExpand = '+';
+        item.colorBtn = '#33FFE0';
       });
 
-    }
+      resolve(orderItems);
+    });
 
-    // OrderCompileData(orderNumber){
-    //   this.orderService.getOrderCompileData(orderNumber).subscribe(itemPackingList => {
-    //     // this. = components;
-    //     this.ordersItems.map(item=>{
-    //       item.compiled=[] ;
+  }
 
-    //       itemPackingList.map(packedItemData=> {
-    //         if(packedItemData._id==item.itemNumber){
-    //           item.compiled.push(packedItemData);
-    //         }
-    //       });
-    //     });
-    //     console.log(this.ordersItems);
-    //   });
+  // OrderCompileData(orderNumber){
+  //   this.orderService.getOrderCompileData(orderNumber).subscribe(itemPackingList => {
+  //     // this. = components;
+  //     this.ordersItems.map(item=>{
+  //       item.compiled=[] ;
+
+  //       itemPackingList.map(packedItemData=> {
+  //         if(packedItemData._id==item.itemNumber){
+  //           item.compiled.push(packedItemData);
+  //         }
+  //       });
+  //     });
+  //     console.log(this.ordersItems);
+  //   });
+  // }
+  //not in use at this moments
+  getComponents(orderNumber): void {
+    this.orderService.getComponentsSum(orderNumber).subscribe(components => {
+      this.components = components;
+      console.log("a" + components);
+    })
+  }
+
+  editBatch(batch) {
+    this.editBatchN = true;
+    setTimeout(() => {
+      this.inputBatch.nativeElement.value = batch;
+    }, 100);
+  }
+
+  getDetails(itemNumber, itemId): void {
+
+    // if(this.inputBatch.nativeElement.value !=undefined){
+    //   this.inputBatch.nativeElement.value='';
     // }
-    //not in use at this moments
-    getComponents(orderNumber): void {
-      this.orderService.getComponentsSum(orderNumber).subscribe(components => {
-        this.components = components;
-        console.log("a" + components);
-      })
-    }
+    this.editBatchN = false;
+    this.EditRowId2nd = itemId;
+    console.log(itemNumber + " , " + itemId);
+    this.orderService.getItemByNumber(itemNumber).subscribe(
+      itemDetais => {
 
-    editBatch(batch){
-      this.editBatchN = true;
-      setTimeout(() => {
-        this.inputBatch.nativeElement.value = batch;
-      }, 100);
-    }
-
-    getDetails(itemNumber, itemId): void {
-
-      // if(this.inputBatch.nativeElement.value !=undefined){
-      //   this.inputBatch.nativeElement.value='';
-      // }
-      this.editBatchN = false;
-      this.EditRowId2nd = itemId;
-      console.log(itemNumber + " , " + itemId);
-      this.orderService.getItemByNumber(itemNumber).subscribe(
-        itemDetais => {
-
-          console.log(itemDetais);
-          this.detailsArr = [];
-          itemDetais.forEach(element => {
-            if (element.bottleNumber != null && element.bottleNumber != "") this.detailsArr.push({ type: "Bottle", number: element.bottleNumber, discription: element.bottleTube });
-            if (element.capNumber != null && element.capNumber != "") this.detailsArr.push({ type: "Cap", number: element.capNumber, discription: element.capTube });
-            console.log(this.detailsArr);
-          });
-          if (this.expand === true) { this.expand = false; }
-          else { this.expand = true; }
-
+        console.log(itemDetais);
+        this.detailsArr = [];
+        itemDetais.forEach(element => {
+          if (element.bottleNumber != null && element.bottleNumber != "") this.detailsArr.push({ type: "Bottle", number: element.bottleNumber, discription: element.bottleTube });
+          if (element.capNumber != null && element.capNumber != "") this.detailsArr.push({ type: "Cap", number: element.capNumber, discription: element.capTube });
+          console.log(this.detailsArr);
         });
+        if (this.expand === true) { this.expand = false; }
+        else { this.expand = true; }
 
-
-      this.ordersItems.filter(item => item.itemNumber == itemNumber).map(item => {
-        this.EditRowId = '';
-
-        this.documentationBeforeSend.itemNumber = item.itemNumber;
-        this.documentationBeforeSend.batchNumber = item.batch;
-        if (item.isExpand == "+") {
-          item.isExpand = "-";
-          item.colorBtn = '#F7866A';
-        }
-        else {
-          item.isExpand = "+";
-          item.colorBtn = '#33FFE0';
-        }
       });
-      setTimeout(() => {
-      this.inputBatch.nativeElement.value = '';
+
+
+    this.ordersItems.filter(item => item.itemNumber == itemNumber).map(item => {
+      this.EditRowId = '';
+
+      this.documentationBeforeSend.itemNumber = item.itemNumber;
+      this.documentationBeforeSend.batchNumber = item.batch;
+      if (item.isExpand == "+") {
+        item.isExpand = "-";
+        item.colorBtn = '#F7866A';
+      }
+      else {
+        item.isExpand = "+";
+        item.colorBtn = '#33FFE0';
+      }
+    });
+    setTimeout(() => {
+      this.inputBatch ? this.inputBatch.nativeElement.value = '' : true;
       this.editBatchN = false;
     }, 100);
   }
@@ -1108,7 +1106,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   edit(id) {
-    if(this.authService.loggedInUser.userName == 'SHARK') {
+    if (this.authService.loggedInUser.userName == 'SHARK') {
       this.EditRowId = ''
     } else {
       if (id != '') {
@@ -1117,7 +1115,7 @@ export class OrderdetailsComponent implements OnInit {
         this.EditRowId = '';
       }
     }
-  
+
   }
 
   calculateAllUnits() {
@@ -1133,7 +1131,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   isChecked(ev, id) {
-    
+
     var formuleStatus = ev.target.checked
     if (ev.target.checked == true) {
 
@@ -1156,7 +1154,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   saveEdit() {
-  
+
 
     let itemToUpdate = {
 
@@ -1260,7 +1258,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   async setSchedule(item, type) {
-    
+
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
@@ -1300,7 +1298,7 @@ export class OrderdetailsComponent implements OnInit {
           if (scheduleLine.mkp == "laser") scheduleLine.productionLine = "13";
           if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
           if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
-      
+
 
           this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
           let dateSced = this.date.nativeElement.value;
@@ -1325,12 +1323,12 @@ export class OrderdetailsComponent implements OnInit {
 
 
   setBatch(item, batch, existBatch) {
-    
+
     if (this.inputBatch.nativeElement.value != undefined) { }
     this.inputBatch.nativeElement.value;
     let updatedBatch = this.inputBatch.nativeElement.value.toLowerCase();
     updatedBatch = updatedBatch.trim();
-    
+
     updatedBatch = updatedBatch.replace(/\s/g, '')
     // batch=batch.toLowerCase();
     // batch=batch.trim();
@@ -1381,34 +1379,34 @@ export class OrderdetailsComponent implements OnInit {
     }
 
   }
- // related to Formule Button
-  sendToProduction(){
-    
+  // related to Formule Button
+  sendToProduction() {
+
 
     var production = {
-      orderNumber:this.currItem.orderNumber,
-      formuleNumber:this.currItem.itemNumber,
-      formuleName:'',
-      quantity:this.currItem.quantity,
-      netWeightGr:this.currItem.netWeightGr,
-      formuleId:this.currFormule[0]._id,
-      user:this.user.userName
+      orderNumber: this.currItem.orderNumber,
+      formuleNumber: this.currItem.itemNumber,
+      formuleName: '',
+      quantity: this.currItem.quantity,
+      netWeightGr: this.currItem.netWeightGr,
+      formuleId: this.currFormule[0]._id,
+      user: this.user.userName
     }
 
-    if(this.newProductionNetWeightGr != ''){
+    if (this.newProductionNetWeightGr != '') {
       production.netWeightGr = Number(this.newProductionNetWeightGr)
     }
-    if(this.newProductionQuantity != ''){
+    if (this.newProductionQuantity != '') {
       production.quantity = Number(this.newProductionQuantity)
     }
 
-    this.orderService.sendFormuleToProduction(production).subscribe(data=>{
-      
-      if(data.msg == "sentToProduction"){
+    this.orderService.sendFormuleToProduction(production).subscribe(data => {
+
+      if (data.msg == "sentToProduction") {
         this.toastSrv.success('Formule Sent To Production')
         this.newProductionNetWeightGr = ''
         this.newProductionQuantity = ''
-        
+
       }
     })
   }
@@ -1570,13 +1568,13 @@ export class OrderdetailsComponent implements OnInit {
 
 
   //   await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList => {
-      
+
   //     for (let i = 0; i < orderPackingList.length; i++) {
   //     orderPackingList[i].totalAmount = orderPackingList[i].pcsCtn*orderPackingList[i].ctnPallet
-        
+
   //     }
   //     this.orderPackingList = orderPackingList;
-    
+
   //     await this.orderPackingList.forEach(item => {
   //       let obj = { palletId: item.palletId, palletNumber: item.palletNumber, palletWeight: item.palletWeight, palletMesures: item.palletMesures }
   //       let palletId = item.palletId;
@@ -1591,7 +1589,7 @@ export class OrderdetailsComponent implements OnInit {
   //       let packedItemsOnPallet = 0;
   //       await this.orderPackingList.filter(packedItem => {
   //         if (orderItem.itemNumber == packedItem.itemNumber) {
-            
+
   //           packedItemsOnPallet = packedItem.pcsCtn * packedItem.ctnPallet;
   //           packedQnt = packedQnt + packedItemsOnPallet
   //           packedItem.totalPackedQnt = packedQnt;
@@ -1656,14 +1654,14 @@ export class OrderdetailsComponent implements OnInit {
     });
   }
 
-   getUserInfo() {
+  getUserInfo() {
 
     this.userName = this.authService.loggedInUser.userName
-    
-   this.authService.userEventEmitter.subscribe(user => {
-     
+
+    this.authService.userEventEmitter.subscribe(user => {
+
       this.user = user;
-     
+
       // this.user=user.loggedInUser;
       // if (!this.authService.loggedInUser) {
       //   this.authService.userEventEmitter.subscribe(user => {
@@ -1687,109 +1685,104 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
-  filterOrderItems(ev){
+  filterOrderItems(ev) {
     this.ordersItems = this.ordersItemsCopy
     let status = ev.target.value;
-    if(status == 'done'){
-      this.ordersItems = this.ordersItems.filter(i=>i.status == status )
+    if (status == 'done') {
+      this.ordersItems = this.ordersItems.filter(i => i.status == status)
     }
-    if(status == 'open'){
-      this.ordersItems = this.ordersItems.filter(i=>i.status != 'done' )
-    } 
-    if(status == 'all'){
+    if (status == 'open') {
+      this.ordersItems = this.ordersItems.filter(i => i.status != 'done')
+    }
+    if (status == 'all') {
       this.ordersItems = this.ordersItemsCopy
     }
-   
+
   }
 
 
 
 
-    /****************DRAG DROP FUNCS************/
-    startItemDrag(ev) {
+  /****************DRAG DROP FUNCS************/
+  startItemDrag(ev) {
 
-      ev.dataTransfer.setData('Text/html', ev.target.dataset.ordernumber+";"+ev.target.dataset.alloamount+";"+ev.target.dataset.index);
-      console.log('dragging');
+    ev.dataTransfer.setData('Text/html', ev.target.dataset.ordernumber + ";" + ev.target.dataset.alloamount + ";" + ev.target.dataset.index);
+    console.log('dragging');
+  }
+
+  startShakeDragOver(ev) {
+    ev.preventDefault();
+
+    ev.target.classList.add("shakeme");
+  }
+  stopItemDrag(ev) {
+
+    ev.target.classList.remove("shakeme");
+    ev.target.parentElement.classList.remove("shakeme");
+    this.stopAllShakes();
+
+  }
+  stopAllShakes() {
+    let allShakes = document.getElementsByClassName("shakeme");
+    let allShakeslength = allShakes.length
+    for (let i = 0; i < allShakeslength; i++) {
+      if (allShakes[i])
+        allShakes[i].classList.remove("shakeme");
     }
-  
-    startShakeDragOver(ev)
-    {
-      ev.preventDefault();
-   
-      ev.target.classList.add("shakeme");
-    }
-    stopItemDrag(ev)
-    {
-   
-      ev.target.classList.remove("shakeme");
-      ev.target.parentElement.classList.remove("shakeme");
-      this.stopAllShakes();
-    
-    }
-    stopAllShakes()
-    {
-      let allShakes= document.getElementsByClassName("shakeme");
-      let allShakeslength= allShakes.length
-      for (let i = 0; i <allShakeslength; i++) {
-        if( allShakes[i])
-        allShakes[i].classList.remove("shakeme"); 
-      }
-  
-    }
-  
-    getDroppedElemnt(ev)
-    {
-      
-      this.stopAllShakes();
-      this.stopAllShakes();
-    
-      //ev.target.parentElement.data.id
-      var data = ev.dataTransfer.getData("text/html");
-      let dataArr=data.split(";");
-      let droppedOrderNum=dataArr[0];
-      let droppedAlloAmount= dataArr[1];
-      let droppedIndex = dataArr[2]
-  
-      let droppedIntoOrderNum=ev.target.parentElement.dataset.ordernumber;
-      let droppedIntoAlloAmount=ev.target.parentElement.dataset.alloamount;
-      let droppedIntoIndex = ev.target.parentElement.dataset.index
-      var compNumber = this.compRequirement.compNumber;
 
-      let allocatedOrders = this.compRequirement.allocatedOrders;
+  }
 
-      let itemToMove = allocatedOrders[droppedIndex];
-      let movedOnItem = allocatedOrders[droppedIntoIndex]
+  getDroppedElemnt(ev) {
 
-      allocatedOrders[droppedIndex]  = movedOnItem
-      allocatedOrders[droppedIntoIndex] = itemToMove
+    this.stopAllShakes();
+    this.stopAllShakes();
+
+    //ev.target.parentElement.data.id
+    var data = ev.dataTransfer.getData("text/html");
+    let dataArr = data.split(";");
+    let droppedOrderNum = dataArr[0];
+    let droppedAlloAmount = dataArr[1];
+    let droppedIndex = dataArr[2]
+
+    let droppedIntoOrderNum = ev.target.parentElement.dataset.ordernumber;
+    let droppedIntoAlloAmount = ev.target.parentElement.dataset.alloamount;
+    let droppedIntoIndex = ev.target.parentElement.dataset.index
+    var compNumber = this.compRequirement.compNumber;
+
+    let allocatedOrders = this.compRequirement.allocatedOrders;
+
+    let itemToMove = allocatedOrders[droppedIndex];
+    let movedOnItem = allocatedOrders[droppedIntoIndex]
+
+    allocatedOrders[droppedIndex] = movedOnItem
+    allocatedOrders[droppedIntoIndex] = itemToMove
 
 
-      this.inventoryService.updateAllocatedOrdersPos(allocatedOrders,compNumber).subscribe(data=>{
-      
-      if(data){
+    this.inventoryService.updateAllocatedOrdersPos(allocatedOrders, compNumber).subscribe(data => {
+
+      if (data) {
         this.toastSrv.success('מיקום עודכן בהצלחה !')
       }
-      })
+    })
 
 
 
-      //remove from old phase
-      // let itemToaddToNewPhase=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.find(a=>a.itemNumber==droppedItemNum);
-      // this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.filter(a=>a.itemNumber!=droppedItemNum);
-   
-  
-      // //find update to phase:
-      // let droppedIndex= this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.findIndex(a=>a.itemNumber==droppedIntoItemNum);
-      // this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.splice( droppedIndex, 0, itemToaddToNewPhase );
-   
-     
-  
-      setTimeout(()=>
-      {
-    this.stopAllShakes();
-      },500);
-    
-    }
+    //remove from old phase
+    // let itemToaddToNewPhase=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.find(a=>a.itemNumber==droppedItemNum);
+    // this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.filter(a=>a.itemNumber!=droppedItemNum);
+
+
+    // //find update to phase:
+    // let droppedIndex= this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.findIndex(a=>a.itemNumber==droppedIntoItemNum);
+    // this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.splice( droppedIndex, 0, itemToaddToNewPhase );
+
+
+
+    setTimeout(() => {
+      this.stopAllShakes();
+    }, 500);
+
+  }
 
 
 
