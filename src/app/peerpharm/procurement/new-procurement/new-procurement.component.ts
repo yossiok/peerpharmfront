@@ -458,6 +458,22 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       })
   }
 
+  deleteCert(i, cn) {
+    if(confirm(`Erase certificate ${cn}.`)) {
+
+      this.newPurchase.controls.deliveryCerts.value.splice(i, 1)
+      this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
+      .subscribe(res => {
+        if (res) {
+          this.toastr.success(`Certificate no. ${cn} erased successfully.`)
+        }
+        else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
+        this.deliveryCertificate.userName = this.authService.loggedInUser.userName
+        this.modalService.dismissAll()
+      })
+    }
+  }
+
   // addItemToInvoice() {
   //   this.invoice.stockitems.push(this.invoiceStockitem)
   //   this.invoiceStockitem = {

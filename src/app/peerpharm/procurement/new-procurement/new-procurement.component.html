@@ -732,6 +732,7 @@
           <table style="overflow: auto;" class="table table-striped">
             <thead>
               <tr>
+                <th></th>
                 <th>מספר תעודה</th>
                 <th>תאריך הגעה</th>
                 <th>פריטים</th>
@@ -740,7 +741,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let deliveryCert of purchaseData.deliveryCerts">
+              <tr *ngFor="let deliveryCert of purchaseData.deliveryCerts; let i = index">
+                <td class="click hover-red text-danger" (click)="deleteCert(i, deliveryCert.certificateNumber)">
+                  <i class="fa fa-times text-danger"></i>
+                  <strong>מחק תעודה</strong>
+                </td>
                 <td>{{deliveryCert.certificateNumber}}</td>
                 <td>{{deliveryCert.deliveryArrivalDate | date:'d/M/YY'}}</td>
                 <td>
