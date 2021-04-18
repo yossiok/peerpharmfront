@@ -817,7 +817,7 @@ export class StockComponent implements OnInit {
           if (this.authService.loggedInUser.authorization.includes("stockAdmin")) {
             this.stockAdmin = true;
           }
-          if (this.authService.loggedInUser.screenPermission == '1') {
+          if (this.authService.loggedInUser.screenPermission == '1' || this.authService.loggedInUser.screenPermission == '4') {
             this.isSuperAdmin = true;
           }
         }
