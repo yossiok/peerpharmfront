@@ -427,6 +427,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           for (let item of this.selectedItems) {
             if (item.quantity <= 0) allAmountsFilled = false
           }
+          for(let cert of this.newPurchase.controls.deliveryCerts.value) {
+            if(cert.certificateNumber == this.deliveryCertificate.certificateNumber) {
+              allAmountsFilled = false
+              this.toastr.error(`Certificate ${this.deliveryCertificate.certificateNumber} allready exist.`)
+            }
+          }
           bool = allAmountsFilled
         } 
       } 
@@ -605,27 +611,34 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   open(modal) {
-    this.certValid = false;
-    this.deliveryCertificate = {
-      certificateNumber: '',
-      deliveryArrivalDate: null,
-      stockitems: this.selectedItems,
-      remarks: '',
-      userName: this.authService.loggedInUser.userName
+    debugger
+    if(modal._def.references.recieveDeliveryCertificate && this.selectedItems.length == 0) {
+      this.toastr.error('Must choose at least one item.')
     }
-    this.invoice = {
-      purchaseInvoiceNumber: 0,
-      invoiceRemarks: '',
-      coinRate: 0,
-      invoiceCoin: '',
-      invoicePrice: 0,
-      taxes: 0,
-      taxesTwo: 0,
-      fixedPrice: 0,
-      stockitems: this.selectedItems,
-      shippingPrice: 0
+    else {
+
+      this.certValid = false;
+      this.deliveryCertificate = {
+        certificateNumber: '',
+        deliveryArrivalDate: null,
+        stockitems: this.selectedItems,
+        remarks: '',
+        userName: this.authService.loggedInUser.userName
+      }
+      this.invoice = {
+        purchaseInvoiceNumber: 0,
+        invoiceRemarks: '',
+        coinRate: 0,
+        invoiceCoin: '',
+        invoicePrice: 0,
+        taxes: 0,
+        taxesTwo: 0,
+        fixedPrice: 0,
+        stockitems: this.selectedItems,
+        shippingPrice: 0
+      }
+      this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
     }
-    this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
 
 

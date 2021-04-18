@@ -26,6 +26,7 @@ const defaultLine = {
   styleUrls: ['./material-arrival.component.scss']
 })
 export class MaterialArrivalComponent implements OnInit {
+  position: any;
 
   public beforeChange($event: NgbNavChangeEvent) {
     this.activeTabId = $event.activeId;
@@ -514,6 +515,7 @@ export class MaterialArrivalComponent implements OnInit {
     this.productionDate = this.newMaterialArrival.value.productionDate;
     this.arrivalDate = this.newMaterialArrival.value.arrivalDate;
     this.expiryDate = this.newMaterialArrival.value.expiryDate;
+    this.position = this.newMaterialArrival.value.position;
     this.newMaterialArrival.value.deliveryNoteNumber.trim();
 
 
@@ -694,6 +696,21 @@ export class MaterialArrivalComponent implements OnInit {
       }
     });
 
+  }
+
+  resetCertificate() {
+    this.materialArrivalCertif = {
+      certifNumber: 0,
+      userName: this.authService.loggedInUser.userName,
+      date: this.today,
+      materialArrivalLines: [],
+      supplierCertifNumber: '',
+      supplierName: '',
+      supplierNumber: '',
+      supplierOrderNumber: '',
+      sumAmount: 0,
+      sumUnits: 0
+    }
   }
 
   printBarcode(id, number) {

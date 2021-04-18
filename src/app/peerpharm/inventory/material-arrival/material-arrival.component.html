@@ -622,6 +622,9 @@
           </ngx-barcode>
         </td>
       </tr>
+      <tr>
+        <td>מיקום: <u dir="rtl">{{ position }}</u></td>
+      </tr>
     </table>
   </div>
 </div>
@@ -763,23 +766,29 @@
     <footer>
     </footer>
   </div>
-  <div class="d-flex flex-row justify-content-between">
-    <button class="btn btn-success" #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl', 'padding-right': '20px'}, 
-    header : {'border-bottom': 'solid 1px'},
-    main : {'border-bottom': 'solid 1px' },
-    table :{ 'text-align': 'right' },
-    footer : { 'position': 'absolute' , 'width': '100%' },
-    h2 : {'text-align': 'center'},
-    '.originDestWh':{'text-align':'right'},
-    th : {'width': '16%' },
-    td : {'width': '16%' },
-    '.itemNamePrint' : {'width': '35%'},
-    '.signatures' : { 'margin' : '50px'},
-    '.cellPadding' : { 'padding' : '15px 0px'}
-  }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>הדפס
-</button>
-  
-  <button (click)="open(editCertificateModal)" class="btn btn-warning">ערוך</button>
+  <div class="d-flex flex-row justify-content-between w-100">
+    <div>
+      <button (click)="resetCertificate()" class="btn btn-secondary">איפוס</button>
+    </div>
+    <div>
+      <button (click)="open(editCertificateModal)" class="btn btn-warning">עריכה</button>
+    </div>
+    <div>
+      <button class="btn btn-success" #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl', 'padding-right': '20px'}, 
+      header : {'border-bottom': 'solid 1px'},
+      main : {'border-bottom': 'solid 1px' },
+      table :{ 'text-align': 'right' },
+      footer : { 'position': 'absolute' , 'width': '100%' },
+      h2 : {'text-align': 'center'},
+      '.originDestWh':{'text-align':'right'},
+      th : {'width': '16%' },
+      td : {'width': '16%' },
+      '.itemNamePrint' : {'width': '35%'},
+      '.signatures' : { 'margin' : '50px'},
+      '.cellPadding' : { 'padding' : '15px 0px'}
+    }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>הדפסה
+  </button>
+</div>
   
 </div>
 </div>
