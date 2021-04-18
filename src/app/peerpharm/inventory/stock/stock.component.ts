@@ -23,6 +23,7 @@ import { SuppliersService } from 'src/app/services/suppliers.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { upperFirst } from 'lodash';
 import { FormsService } from 'src/app/services/forms.service';
+import { Currencies } from '../../procurement/Currencies';
 
 
 
@@ -191,6 +192,7 @@ export class StockComponent implements OnInit {
   currItemShelfs: Array<any>;
   updateStockItem: Boolean = false;
   stockAdmin: Boolean = false;
+  isSuperAdmin: boolean = false;
   destShelfId: String;
   destShelf: String;
   destShelfQntBefore: Number = 0;
@@ -325,6 +327,8 @@ export class StockComponent implements OnInit {
     measurement:''
   }
   lastOrdersOfItem=[];
+  fetchingOrders: boolean = false
+  currencies: Currencies
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -525,6 +529,7 @@ export class StockComponent implements OnInit {
 
   async ngOnInit() {
 
+    this.getCurrencies()
     this.getUser();
     this.getAllSuppliers();
     this.getAllCustomers();
@@ -576,6 +581,13 @@ export class StockComponent implements OnInit {
   getAllItemShell() {
     this.itemService.getAllItemShells().subscribe(data => {
       this.itemShell = data;
+    })
+  }
+
+  getCurrencies() {
+    this.procuretServ.getCurrencies().subscribe(currencies => {
+      delete currencies[0]._id
+      this.currencies = currencies[0]
     })
   }
 
@@ -804,6 +816,9 @@ export class StockComponent implements OnInit {
           }
           if (this.authService.loggedInUser.authorization.includes("stockAdmin")) {
             this.stockAdmin = true;
+          }
+          if (this.authService.loggedInUser.screenPermission == '1') {
+            this.isSuperAdmin = true;
           }
         }
 
@@ -1392,11 +1407,26 @@ export class StockComponent implements OnInit {
 
   }
 
-  getLastOrdersItem(numOfOrders) {
-    this.procuretServ.getLastOrdersForItem(this.resCmpt.componentN , numOfOrders).subscribe(orders=> {
-      if(orders && orders.length > 0) this.lastOrdersOfItem = orders;
+  getLastOrdersItem(numOfOrders, type) {
+    this.fetchingOrders = true;
+    let componentN;
+    switch(type) {
+      case 'material': componentN = this.resMaterial.componentN
+      break;
+      case 'component': componentN = this.resCmpt.componentN
+    }
+    this.procuretServ.getLastOrdersForItem(componentN , numOfOrders).subscribe(orders=> {
+      this.fetchingOrders = false;
+      if(orders && orders.length > 0) {
+        orders.map(order => {
+          if(order.coin) order.coin = order.coin.toUpperCase()
+          if(order.price) order.localPrice = order.price * this.currencies[order.coin]
+          return order
+        })
+        this.lastOrdersOfItem = orders;
+      } 
       else this.lastOrdersOfItem = [
-        {orderNumber: 'No Orders'}
+        {orderNumber: 'Sorry.', price: 'There', coin: 'are no', supplierName: 'orders', quantity: 'for this', date: 'item.'}
       ]
       })
   }

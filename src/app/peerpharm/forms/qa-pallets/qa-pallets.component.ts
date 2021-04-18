@@ -125,6 +125,20 @@ export class QaPalletsComponent implements OnInit {
 
   }
 
+  deleteNewPallete(palletNumber, customerName) {
+    if (confirm(`DELETE PALLET ${palletNumber}`)) {
+      if(confirm('המשטח וכל הפריטים שבו יימחקו. האם להמשיך?')) {
+        this.formService.deleteNewPallete(palletNumber, customerName).subscribe(data => {
+          if(!data.msg) {
+            this.toastr.success('משטח נמחק בהצלחה')
+            // location.reload()
+          }
+          else this.toastr.error(data.msg)
+        })
+      }
+    }
+  }
+
   cancelPackList(pLId) {
     if (confirm('האם לבטל רשימה זו ?')) {
       this.formService.cancelPackListById(pLId).subscribe(data => {

@@ -69,6 +69,8 @@ export class NewFormuleComponent implements OnInit {
     date: this.formatDate(new Date()),
     phFrom: '',
     phTo: '',
+    viscoFrom: '',
+    viscoTo: '',
     impRemarks: '',
     user: '',
     phases: [],
@@ -578,6 +580,8 @@ export class NewFormuleComponent implements OnInit {
     this.newFormule.formuleCategory= ''
     this.newFormule. phFrom= ''
     this.newFormule.phTo= ''
+    this.newFormule.viscoFrom= ''
+    this.newFormule.viscoTo= ''
     this.newFormule.impRemarks= ''
   }
 

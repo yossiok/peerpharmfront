@@ -4,6 +4,7 @@ import { RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OutService } from '../peerpharm/out-services/OutService';
+import { ServiceType } from '../peerpharm/out-services/ServiceType';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class OutServiceService {
 
   getAllServices(): Observable<OutService[]> {
     return <Observable<OutService[]>>this.http.get(this.url);
+  }
+
+  getAllTypes(): Observable<ServiceType[]> {
+    return <Observable<ServiceType[]>>this.http.get(`${this.url}/types`);
   }
 
   addService(service: OutService): Observable<OutService> {

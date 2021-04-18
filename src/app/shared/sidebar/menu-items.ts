@@ -660,7 +660,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: '',
-        title: 'System Request / Bug',
+        title: '',
         icon: 'fas fa-bug',
         class: 'has-arrow',
         extralink: false,
@@ -675,7 +675,7 @@ export const ROUTES: RouteInfo[] = [
           // },
           {
             path: '/peerpharm/newticket',
-            title: 'Open new bug / request',
+            title: 'Open BUG',
             icon: 'fas fa-list-ol',
             class: '',
             extralink: false,

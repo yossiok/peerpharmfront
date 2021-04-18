@@ -6,6 +6,19 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { NgbModal, NgbNav, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { MaterialArrivalCertif, MaterialArrivalLine } from './MaterialArrivalCertif';
+
+const defaultLine = {
+  itemInternalNumber: '',
+  itemName: '',
+  itemSupplierNumber: '',
+  purchaseOrderNumber: 0,
+  wareHouse: '',
+  position: '',
+  amount: 0,
+  unitsAmount: 0,
+  remarks: ''
+}
 
 @Component({
   selector: 'app-material-arrival',
@@ -13,13 +26,14 @@ import { NgbModal, NgbNav, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap'
   styleUrls: ['./material-arrival.component.scss']
 })
 export class MaterialArrivalComponent implements OnInit {
-  public beforeChange($event: NgbNavChangeEvent) {
 
+  public beforeChange($event: NgbNavChangeEvent) {
     this.activeTabId = $event.activeId;
     // if ($event.activeId === 'tab-preventchange2') {
     //   $event.preventDefault();
     // }
   }
+
   @ViewChild('modal1') modal1: ElementRef;
   @ViewChild('supplierNameInput') supplierNameInput: ElementRef;
   @ViewChild('supplierItemNameInput') supplierItemNameInput: ElementRef;
@@ -27,8 +41,9 @@ export class MaterialArrivalComponent implements OnInit {
   @ViewChild('tabset') tabset: NgbNav;
   @ViewChild('analysisFlag') analysisFlag: ElementRef;
   @ViewChild('requirementsFormDate') requirementsFormDate: ElementRef;
+  @ViewChild('printBtn2') printBtn2: ElementRef;
 
-
+  today: Date = new Date()
   materialsLocations: any[];
   allExpired: any[];
   karantineitemShells: any[];
@@ -71,6 +86,7 @@ export class MaterialArrivalComponent implements OnInit {
   productionDate: String;
   arrivalDate: String;
   expiryDate: String;
+  lastOrders: any[] = [];
 
   smallText: Boolean = false;
 
@@ -101,6 +117,21 @@ export class MaterialArrivalComponent implements OnInit {
   orderedQntRemarksInput: Boolean = false;
   approvedPackgeRemarksInput: Boolean = false;
 
+  materialArrivalCertif: MaterialArrivalCertif = {
+    certifNumber: 0,
+    userName: this.authService.loggedInUser.userName,
+    date: this.today,
+    materialArrivalLines: [],
+    supplierCertifNumber: '',
+    supplierName: '',
+    supplierNumber: '',
+    supplierOrderNumber: '',
+    sumAmount: 0,
+    sumUnits: 0
+  }
+
+  materialArrivalLine: MaterialArrivalLine = {...defaultLine}
+
 
 
   constructor(private fb: FormBuilder,
@@ -111,7 +142,7 @@ export class MaterialArrivalComponent implements OnInit {
     private modalService: NgbModal,) {
 
     this.newMaterialArrival = fb.group({
-      arrivalDate: [Date, Validators.required],
+      arrivalDate: [this.today, Validators.required],
       user: ["", Validators.required],
       internalNumber: ["", Validators.required],
       materialName: ["", Validators.required],
@@ -120,24 +151,25 @@ export class MaterialArrivalComponent implements OnInit {
       expiryDate: [Date, Validators.nullValidator],
       productionDate: [Date,],
 
-      supplierName: ["", Validators.required],
-      supplierNumber: ["", Validators.required],
+      supplierName: [this.materialArrivalCertif.supplierName, Validators.required],
+      supplierNumber: [this.materialArrivalCertif.supplierNumber, Validators.required],
+      supplierOrderNumber: [this.materialArrivalCertif.supplierOrderNumber],
       analysisApproval: [Boolean, false,],
 
       totalQnt: [null, Validators.required],
       mesureType: ['kg', Validators.required],
       remarks: ["",],
-      cmxOrderN: ["",],
+      cmxOrderN: [null, Validators.required],
       packageType: ["", Validators.required], //select 
       packageQnt: [1, Validators.min(1)],
       unitsInPack: [null, Validators.min(1)],
       // unitVolume: [0, ],    
       // unitMesureType: [0, ],    
 
-      warehouse: ["",Validators.required], //select 
-      position: ["",Validators.required], //select 
+      warehouse: ["", Validators.required], //select 
+      position: ["", Validators.required], //select 
       barcode: [""],
-      deliveryNoteNumber: ["", Validators.required],
+      deliveryNoteNumber: [this.materialArrivalCertif.supplierCertifNumber, Validators.required],
     });
 
 
@@ -198,6 +230,13 @@ export class MaterialArrivalComponent implements OnInit {
     console.log('screenHeight: ' + this.screenHeight)
     // two displays "tab-selectbyid1" OR "tab-selectbyid2"
     this.activeTabId = "tab-selectbyid1"
+  }
+
+  getLatestOrders() {
+    this.procuretServ.getLastOrdersForItem(this.newMaterialArrival.value.internalNumber, 10).subscribe(orders => {
+      console.log('OOOOOOOOOrders: ',orders)
+      this.lastOrders = orders
+    })
   }
 
 
@@ -311,9 +350,13 @@ export class MaterialArrivalComponent implements OnInit {
 
       if (res != 'shelfMissing') {
         this.invtSer.updateShelfPosition(this.itemShellID, res.ShelfId, this.shellPosition)
-        .subscribe( updatedShell => console.log('updated shell: ', updatedShell) )
+          .subscribe(updatedShell => console.log('updated shell: ', updatedShell))
       }
     })
+  }
+
+  deleteLineFromCert(i: number) {
+    if(confirm(`line ${i} will be erased.`)) this.materialArrivalCertif.materialArrivalLines.splice(i, 1)
   }
 
 
@@ -424,7 +467,7 @@ export class MaterialArrivalComponent implements OnInit {
   searchInternalNumber() {
     if (this.newMaterialArrival.value.internalNumber != "") {
       this.invtSer.getMaterialStockItemByNum(this.newMaterialArrival.value.internalNumber).subscribe(item => {
-        
+
         console.log(item);
         if (item.length == 0) {
           this.toastSrv.error("Can't find item number")
@@ -532,6 +575,7 @@ export class MaterialArrivalComponent implements OnInit {
       this.toastSrv.error("Fill all required fields")
       this.fieldsColor();
     }
+
   }
 
 
@@ -570,7 +614,7 @@ export class MaterialArrivalComponent implements OnInit {
     let shelf = ev.target.value;
     let whareHouseId;
     let whareHouse = this.newMaterialArrival.controls.warehouse.value;
-    if(whareHouse == 'Karantine'){
+    if (whareHouse == 'Karantine') {
       whareHouseId = '5cf64e77e32883115c39dc56'
     } else {
       whareHouseId = '5c1124ef2db99c4434914a0e'
@@ -596,26 +640,54 @@ export class MaterialArrivalComponent implements OnInit {
     formToSend.lastUpdate = new Date();
     formToSend.lastUpdateUser = this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe(res => {
-      
-      this.toastSrv.success("New material arrival saved!");
-      this.resetForm();
       if (res) {
-        this.bcValue = [res._id];
-        this.materialNum = res.internalNumber;
-        this.materialName = res.materialName;
-        this.lotNumber = res.lotNumber;
-        this.productionDate = res.productionDate;
-        this.arrivalDate = res.arrivalDate;
-        this.expiryDate = res.expiryDate;
+        // certificate - general
+        if (this.materialArrivalCertif.certifNumber == 0) {
+          this.materialArrivalCertif.certifNumber = res.saved.reqNum
+          this.materialArrivalCertif.supplierCertifNumber = res.saved.deliveryNoteNumber
+          this.materialArrivalCertif.supplierName = res.saved.supplierName
+          this.materialArrivalCertif.supplierOrderNumber = res.saved.supplierOrderNumber
+          // this.materialArrivalCertif.purchaseOrderNumber = Number(this.currentComaxOrder)
+        }
+        
+        //certificate - line
+        this.materialArrivalLine.itemInternalNumber = res.saved.internalNumber
+        this.materialArrivalLine.itemSupplierNumber = res.saved.supplierNumber
+        this.materialArrivalLine.itemName = res.saved.materialName
+        this.materialArrivalLine.purchaseOrderNumber = res.saved.cmxOrderN
+        this.materialArrivalLine.wareHouse = res.saved.warehouse
+        this.materialArrivalLine.position = res.saved.position
+        this.materialArrivalLine.amount = Number(res.saved.totalQnt)
+        this.materialArrivalLine.unitsAmount = Number(res.saved.packageQnt)
+        this.materialArrivalLine.remarks = res.saved.remarks
+
+        this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
+        this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
+        this.materialArrivalCertif.sumUnits += this.materialArrivalLine.unitsAmount
+
+        this.materialArrivalLine = {...defaultLine}
+        // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
+
+        this.toastSrv.success("New material arrival saved!");
+        this.resetForm();
+        this.requiresFromFull = !this.requiresFromFull
+
+        this.bcValue = [res.saved._id];
+        this.materialNum = res.saved.internalNumber;
+        this.materialName = res.saved.materialName;
+        this.lotNumber = res.saved.lotNumber;
+        this.productionDate = res.saved.productionDate;
+        this.arrivalDate = res.saved.arrivalDate;
+        this.expiryDate = res.saved.expiryDate;
 
         this.smallText = (this.materialName.length > 80) ? true : false;
 
-        this.printBarcode(res._id, res.internalNumber);// we might need to change the value to numbers
+        this.printBarcode(res.saved._id, res.internalNumber);// we might need to change the value to numbers
         this.toastSrv.success("New material arrival saved!");
         this.resetForm();
         this.analysisFlag.nativeElement.checked = false;
         //print barcode;
-      } else if (res == 'no material with number') {
+      } else if (res.msg == 'no material with number') {
         this.toastSrv.error("Item number wrong")
       } else {
         this.toastSrv.error("Something went wrong, saving faild")
@@ -678,6 +750,10 @@ export class MaterialArrivalComponent implements OnInit {
         break;
       }
     }
+  }
+
+  open(modal) {
+    this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
 
 

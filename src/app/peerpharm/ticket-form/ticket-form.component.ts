@@ -28,7 +28,7 @@ export class TicketFormComponent implements OnInit {
       urgency: ['', Validators.required],
       description: ['', Validators.required],
       comments: [''],
-      screenshot: [null, [Validators.required]]
+      screenshot: [null]
     });
     this.userService.getAllScreens().subscribe(data => {
       this.tfScreens = data.map(d => d.name);

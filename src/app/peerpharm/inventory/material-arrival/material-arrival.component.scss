@@ -89,6 +89,14 @@ select {
     box-shadow: 2px 2px 4px black;
 }
 
+print-wrapper {
+    width: 100%;
+}
+
+print-wrapper > button {
+    height: fit-content;
+}
+
 .spanTDStyle{
     display: inline-block; 
     margin-right: 20px;

@@ -155,6 +155,13 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/deleteQAPallet";
     return this.http.post(url, JSON.stringify(pallet), this.options).pipe(map(res => res.json()));
   }
+
+  // מחיקת משטח
+  deleteNewPallete(palletNumber, customerName) {
+    let url = this.baseUrl + "formDetails/deleteNewPallete";
+    return this.http.post(url, JSON.stringify({palletNumber, customerName}), this.options).pipe(map(res => res.json()));
+  }
+
   saveFirstAidCheck(firstAidCheck){
     ;
     let url = this.baseUrl + "forms/saveFirstAidCheck";

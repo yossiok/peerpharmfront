@@ -16,6 +16,11 @@ select:focus,input:focus,textarea:focus {
   background: rgb(228, 206, 238) !important
 }
 
+.hover-red:hover {
+  background-color: red;
+  color: black;
+} 
+
 input:hover {
     cursor: auto;
 }

@@ -235,7 +235,7 @@
                   <th>שם לקוח</th>
                   <th>משקל משטח</th>
                   <th>גודל משטח</th>
-                  <!-- <th></th> -->
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -258,7 +258,7 @@
                     <input class="form-control" (change)="updatePalletDetails(pallet)" #newPalletSize
                       [value]="pallet.palletSize" type="text">
                   </td>
-                  <!-- <td><button class="btn btn-info form-control w-50" (click)="addPalletToPackList(pallet)">הוסף לרשימת אריזה</button></td> -->
+                  <td><button class="btn btn-danger form-control" (click)="deleteNewPallete(pallet.palletNumber, pallet.customer)">מחק משטח</button></td>
 
 
                 </tr>

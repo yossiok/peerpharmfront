@@ -75,7 +75,7 @@
                   <th>Arrived</th>
                   <th>Measurement</th>
                   <th>Price</th>
-                  <th>+ shipping</th>
+                  <th *ngIf="!editItem">shipping</th>
                   <th *ngIf="editItem">Coin</th>
                   <th>Remarks</th>
                 </tr>
@@ -84,59 +84,77 @@
 
               <tbody>
                 <tr *ngFor="let stockitem of newPurchase.controls.stockitems.value; let i = index">
-                  <td><input class="text-primary" #cb type="checkbox" (change)="selectItem(i, cb.checked)"></td>
-                  <td>{{stockitem.number}}</td>
-                  <td>{{stockitem.name}}</td>
+
+                  <td *ngIf="!editItem"><input class="text-primary" #cb type="checkbox"
+                      (change)="selectItem(i, cb.checked)"></td>
+                  <td *ngIf="editItem && itemIndex == i"><input class="text-primary" #cb type="checkbox"
+                      (change)="selectItem(i, cb.checked)"></td>
+
+                  <td *ngIf="!editItem">{{stockitem.number}}</td>
+                  <td *ngIf="editItem && itemIndex == i">{{stockitem.number}}</td>
+
+                  <td *ngIf="!editItem">{{stockitem.name}}</td>
+                  <td *ngIf="editItem && itemIndex == i">{{stockitem.name}}</td>
 
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
-                  <td *ngIf="editItem">
+                  <td *ngIf="editItem && itemIndex == i">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity"
-                      class="form-control">
+                      [style.width]="'77px'" class="form-control">
                   </td>
 
-                  <td><span *ngIf="stockitem.arrivedAmount">{{stockitem.arrivedAmount}}</span></td>
+                  <td *ngIf="!editItem"><span *ngIf="stockitem.arrivedAmount">{{stockitem.arrivedAmount}}</span></td>
+                  <td *ngIf="editItem && itemIndex == i"><span
+                      *ngIf="stockitem.arrivedAmount">{{stockitem.arrivedAmount}}</span></td>
 
                   <td *ngIf="!editItem">{{stockitem.measurement}}</td>
-                  <td *ngIf="editItem">
+                  <td *ngIf="editItem && itemIndex == i">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
-                      class="form-control">
+                    [style.width]="'50px'" class="form-control">
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin.toUpperCase()}}</td>
-                  <td *ngIf="editItem">
+                  <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin}}</td>
+                  <td *ngIf="editItem && itemIndex == i">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
-                      class="form-control">
+                    [style.width]="'77px'" class="form-control">
                   </td>
-                  <!-- <td *ngIf="!editItem">{{stockitem.coin}}</td> -->
-                  <!-- <td *ngIf="editItem">
-                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.coin"
-                      class="form-control">
-                  </td> -->
 
-                  <td>{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
-                  <td *ngIf="editItem">
-                    <select  [(ngModel)]="stockitem.coin" class="form-control custom-select" required>
+                  <td *ngIf="!editItem">{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
+                  <td *ngIf="editItem && itemIndex == i">
+                    <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" [style.width]="'77px'" class="form-control custom-select" required>
                       <option value="" disabled>Coin</option>
-                      <option value="nis">NIS</option>
+                      <option value="NIS">NIS</option>
                       <option value="usd">USD</option>
                       <option value="eur">EUR</option>
                       <option value="gbp">GBP</option>
                     </select>
                   </td>
+
                   <td *ngIf="!editItem">{{stockitem.itemRemarks}}</td>
-                  <td *ngIf="editItem">
-                    <textarea [(ngModel)]="stockitem.remarks" type="number" class="form-control"
-                    placeholder="Item Remarks"></textarea>
+                  <td *ngIf="editItem && itemIndex == i">
+                    <textarea [(ngModel)]="stockitem.remarks" [ngModelOptions]="{standalone: true}" type="number" class="form-control"
+                    [style.width]="'100px'" placeholder="Item Remarks"></textarea>
                   </td>
 
-                  <td><i *ngIf="!disabled  && !editItem" (click)="editItem = !editItem"
+                  <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)"
                       class="click fa fa-pencil-alt text-primary"></i></td>
-                  <td><i *ngIf="!disabled  && editItem" (click)="editItem = !editItem"
+                  <td><i *ngIf="!disabled  && editItem && itemIndex == i" (click)="openToEdit(i)"
+                      class="click fa fa-pencil-alt text-primary"></i></td>
+
+                  <!-- <td *ngIf="!disabled && !editItem"><i (click)="editItem = !editItem"
+                      class="click fa fa-times text-primary"></i></td> -->
+                  <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="editItem = !editItem"
                       class="click fa fa-times text-primary"></i></td>
-                  <td><i *ngIf="!disabled && editItem" (click)="updateItems(stockitem)"
+
+                  <!-- <td *ngIf="!disabled && !editItem"><i (click)="updateItems(stockitem)"
+                      class="click fa fa-save text-primary h4"></i></td> -->
+                  <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="updateItems(stockitem)"
                       class="click fa fa-save text-primary h4"></i></td>
-                  <td><i *ngIf="!disabled && !editItem" (click)="removeStockitemFromPurchase(i)"
+
+                  <td *ngIf="!disabled && !editItem"><i (click)="removeStockitemFromPurchase(i)"
                       class="click fa fa-times text-danger"></i></td>
+                  <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="removeStockitemFromPurchase(i)"
+                      class="click fa fa-times text-danger"></i></td>
+
                 </tr>
               </tbody>
             </table>
@@ -433,7 +451,7 @@
               <div class="col-sm-12 col-md-4 form-group">
                 <select formControlName="coin" class="form-control custom-select" required>
                   <option value="" disabled>Coin</option>
-                  <option value="nis">NIS</option>
+                  <option value="NIS">NIS</option>
                   <option value="usd">USD</option>
                   <option value="eur">EUR</option>
                   <option value="gbp">GBP</option>
@@ -516,8 +534,8 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add')" class="btn btn-primary form-control"
-              [disabled]="!newPurchase.valid" [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'"
+            <button (click)="sendNewProc('add')" class="btn btn-primary form-control" [disabled]="!newPurchase.valid"
+              [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'"
               [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>
@@ -714,6 +732,7 @@
           <table style="overflow: auto;" class="table table-striped">
             <thead>
               <tr>
+                <th></th>
                 <th>מספר תעודה</th>
                 <th>תאריך הגעה</th>
                 <th>פריטים</th>
@@ -722,7 +741,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let deliveryCert of purchaseData.deliveryCerts">
+              <tr *ngFor="let deliveryCert of purchaseData.deliveryCerts; let i = index">
+                <td class="click hover-red text-danger" (click)="deleteCert(i, deliveryCert.certificateNumber)">
+                  <i class="fa fa-times text-danger"></i>
+                  <strong>מחק תעודה</strong>
+                </td>
                 <td>{{deliveryCert.certificateNumber}}</td>
                 <td>{{deliveryCert.deliveryArrivalDate | date:'d/M/YY'}}</td>
                 <td>
@@ -760,7 +783,7 @@
 <ng-template class="p-6" #sumShipping let-modal>
   <div class="modal-header bg-primary">
     <h4 class="modal-title text-center" id="modal-basic-title">נתוני סגירה</h4>
-   
+
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -768,13 +791,13 @@
   <div dir="rtl" class="modal-body p-5">
     <div class="d-flex flex-row justify-content-around">
       <li class="list-group-item">
-           &#x24; = {{currencies.USD}} &#8362;
+        &#x24; = {{currencies.USD}} &#8362;
       </li>
       <li class="list-group-item">
-           &#xa3; = {{currencies.GBP}} &#8362;
+        &#xa3; = {{currencies.GBP}} &#8362;
       </li>
       <li class="list-group-item">
-           &#x20AC; = {{currencies.EUR}} &#8362;
+        &#x20AC; = {{currencies.EUR}} &#8362;
       </li>
     </div>
     <div class="row mt-2">
@@ -798,9 +821,9 @@
       </div>
       <div class="col-md-4 form-group">
         <button class="btn btn-secondary"
-        (click)="calculateShipping(orderPrice.value, shippingPrice.value, tax1.value, tax2.value, true); modal.dismiss('Cross click'); ">
-        עדכן נתוני העמסה
-      </button>
+          (click)="calculateShipping(orderPrice.value, shippingPrice.value, tax1.value, tax2.value, true); modal.dismiss('Cross click'); ">
+          עדכן נתוני העמסה
+        </button>
       </div>
     </div>
   </div>

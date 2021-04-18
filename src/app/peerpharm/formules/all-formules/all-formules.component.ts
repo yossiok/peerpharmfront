@@ -5,6 +5,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { RandomColor } from 'angular-randomcolor';
+import { Currencies } from '../../procurement/Currencies';
+import { Procurementservice } from 'src/app/services/procurement.service';
 
 @Component({
   selector: 'app-all-formules',
@@ -43,9 +45,10 @@ export class AllFormulesComponent implements OnInit {
   openFormuleModal: boolean = false;
   showMaterialsForFormules: boolean = false;
   updatePercentage: any;
-  euroRate: number = 3.99;
-  usdRate: number = 3.20;
-  gbpRate: number = 4.35;
+  // euroRate: number = 3.99;
+  // usdRate: number = 3.20;
+  // gbpRate: number = 4.35;
+  currencies: Currencies;
   newTempPrice: number;
   today: any;
   currMaterial: any;
@@ -129,7 +132,14 @@ export class AllFormulesComponent implements OnInit {
 
 
 
-  constructor(private invtSer: InventoryService, private formuleService: FormulesService, private toastSrv: ToastrService, private modalService: NgbModal, private authService: AuthService) {
+  constructor(
+    private invtSer: InventoryService, 
+    private formuleService: FormulesService, 
+    private toastSrv: ToastrService, 
+    private modalService: NgbModal, 
+    private authService: AuthService,
+    private procServ: Procurementservice
+    ) {
     ;
     this.formuleService.newFormuleAdded.subscribe(data=>{
       if(data){
@@ -150,10 +160,9 @@ export class AllFormulesComponent implements OnInit {
     this.getAllFormules();
     this.getAllMaterials();
     this.getAllParentsFormules();
-
+    this.getCurrencies()
   
     this.today = new Date()
-    ;
     this.user = this.authService.loggedInUser.userName;
   }
 
@@ -170,6 +179,12 @@ export class AllFormulesComponent implements OnInit {
       ;
       this.allParentsFormules = data;
 
+    })
+  }
+
+  getCurrencies() {
+    this.procServ.getCurrencies().subscribe(currencies=>{
+      this.currencies = currencies
     })
   }
 
@@ -526,19 +541,19 @@ export class AllFormulesComponent implements OnInit {
 
           if (material.coin == 'eur' || material.coin == 'euro') {
             if(material.price != 'צריך לעדכן מחיר ספק'){
-              material.price = this.formatNumber(material.price * this.euroRate)
+              material.price = this.formatNumber(material.price * this.currencies[0].EUR)
             }
            
           }
           if (material.coin == 'usd') {
             if(material.price != 'צריך לעדכן מחיר ספק'){
-              material.price = this.formatNumber(material.price * this.usdRate)
+              material.price = this.formatNumber(material.price * this.currencies[0].USD)
             }
             
           }
           if (material.coin == 'gbp') {
             if(material.price != 'צריך לעדכן מחיר ספק'){
-              material.price = this.formatNumber(material.price * this.gbpRate)
+              material.price = this.formatNumber(material.price * this.currencies[0].GBP)
             }
             
           }

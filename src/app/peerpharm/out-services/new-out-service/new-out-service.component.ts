@@ -2,19 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { OutServiceService } from 'src/app/services/out-service.service';
+import { SuppliersService } from 'src/app/services/suppliers.service';
 import { UsersService } from 'src/app/services/users.service';
 import { OutService } from '../OutService';
 import { ServiceType } from '../ServiceType';
+
+interface supNameAndId {
+  _id: string;
+  suplierName: string;
+}
 
 @Component({
   selector: 'app-new-out-service',
   templateUrl: './new-out-service.component.html',
   styleUrls: ['./new-out-service.component.scss']
 })
+
 export class NewOutServiceComponent implements OnInit {
 
   serviceTypes: ServiceType[]
-  supplierNames: any[]
+  suppliers: supNameAndId[]
 
   addOutservice: FormGroup = new FormGroup({
     type: new FormControl('', Validators.required),
@@ -38,9 +45,25 @@ export class NewOutServiceComponent implements OnInit {
     country: new FormControl('', Validators.required),
   })
 
-  constructor(private authService: AuthService, private outServiceService: OutServiceService) { }
+  constructor(private authService: AuthService, 
+    private outServiceService: OutServiceService,
+    private supplierService: SuppliersService) { }
 
   ngOnInit(): void {
+    this.getAllServiceTypes()
+    this.getAllSuppliers()
+  }
+
+  getAllServiceTypes() {
+    this.outServiceService.getAllTypes().subscribe(types => {
+      this.serviceTypes = types
+    })
+  }
+
+  getAllSuppliers() {
+    this.supplierService.getAllNamesAndIds().subscribe(namesAndIds => {
+      this.suppliers = namesAndIds
+    })
   }
 
   addOutServiceToDB() {
