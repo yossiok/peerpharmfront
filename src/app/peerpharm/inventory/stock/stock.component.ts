@@ -528,44 +528,37 @@ export class StockComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     this.getCurrencies()
     this.getUser();
     this.getAllSuppliers();
     this.getAllCustomers();
-    // if (this.filterbyNum) this.filterbyNum.nativeElement.value = '';
-
-    let url = this.route.snapshot;
-    this.components = [];
     await this.getUserAllowedWH();
-    this.getAllComponents();
-
     if (this.route.queryParams) {
       if(this.route.snapshot.queryParams.componentN) this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
     this.getColor(new Date);
-
     this.numberSearchInput.nativeElement.focus()
-
-
   }
 
   getAllPurchases() {
-
-    this.procuretServ.getAllPurchases().subscribe(allPurchases => {
+debugger
+    this.procuretServ.getPurchasesForComponents(this.components).subscribe(allPurchases => {
      
       this.components.forEach(comp => {
 
-        let filteredPurchases = allPurchases.filter(
-          purchase => purchase.status != 'closed' && purchase.status != 'canceled' &&
-          purchase.stockitems.filter(
-            stockitem => stockitem.number == comp.componentN
-          ).length > 0)
+        let filteredPurchases = allPurchases.filter(purchase => {
+          let purchasesWithItem = purchase.stockitems.filter(stockitem => stockitem.number == comp.componentN)
+          if(purchasesWithItem) return true
+
+        })
+
+        // let filteredPurchases = allPurchases.filter(
+        //   purchase => purchase.stockitems.filter(
+        //     stockitem => stockitem.number == comp.componentN
+        //   ))
         comp.purchaseOrders = filteredPurchases
-        if (comp.purchaseOrders.length > 0) {
-          
-        }
-      });
+ 
+      })
     })
 
 
@@ -757,47 +750,7 @@ export class StockComponent implements OnInit {
 
 
   }
-  filterMaterials(ev) {
 
-    var nameToSearch = ev.target.value;
-
-    this.materialToSearch.nativeElement.value;
-
-  }
-
-  // devExcelExport(){
-
-  //   this.inventoryService.getOldProcurementAmount().subscribe(data=>{
-  //     this.excelService.exportAsExcelFile(data, "oldProcurementAmounts");
-  //       });
-  // }
-  // ExportAllCmpts() {
-  //   this.inventoryService.getAllComponentsByType('component').subscribe(data=>{
-  //     
-  //     this.excelService.exportAsExcelFile(data.items, "stock components");
-  //       });
-  //  }
-  // ExportKasemAllCmptsOnShelfs() {
-  //   this.inventoryService.getKasemAllCmptsOnShelfs().subscribe(data=>{
-  //     this.excelService.exportAsExcelFile(data, "kasemItemsOnShelfs");
-  //       });
-  //  }
-  //   exportAsXLSX(data, title) {
-  //     this.excelService.exportAsExcelFile(data, title);
-  //  }
-  // getDoubleItemShelfs(){
-  //   this.inventoryService.getDoubleItemShelfs().subscribe(res=>{
-  //     this.exportAsXLSX(res, "DoubleItemShelfs");
-  //   })}
-  // getDoubleStockItems(){
-  //   this.inventoryService.getDoubleStockItems().subscribe(res=>{
-  //     this.exportAsXLSX(res, "DoubleStockItems");
-
-  //   })}
-  //   deleteDoubleStockItemsProducts(){
-  //     this.inventoryService.deleteDoubleStockItemsProducts().subscribe(res=>{
-  //       console.log(res);
-  //   })}
 
   //************************************************/
 
@@ -826,20 +779,16 @@ export class StockComponent implements OnInit {
         this.curentWhareHouseId = displayAllowedWH[0]._id;
         this.curentWhareHouseName = displayAllowedWH[0].name;
         if (this.curentWhareHouseName.includes('product')) {
-          // this.setType("product");
           this.stockType = "product";
         } else {
           this.stockType = "component";
         }
-
-        // this.getAllComponentsByType();
 
       }
       console.log(res);
 
     });
   }
-  // printInventoryValue, { size: 'lg', ariaLabelledBy: 'modal-basic-title' });
 
   open(modal) {
     if (Object.keys(modal._def.references)[0] = 'printInventoryValue') {
@@ -848,34 +797,6 @@ export class StockComponent implements OnInit {
     this.modalService.open(modal, { size: 'lg', ariaLabelledBy: 'modal-basic-title' })
   }
 
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
-
-  getAllPurchaseOrders() {
-    return new Promise((resolve, reject) => {
-      this.procuretServ.getAllComponentsPurchase().subscribe(data => {
-        this.allComponentsPurchases = data;
-        resolve('');
-      })
-    });
-
-
-  }
-  getAllPurchaseOrdersMaterial() {
-
-    this.procuretServ.getAllMaterialsPurchase().subscribe(data => {
-      this.allMaterialsPurchases = data;
-    })
-  }
 
   getStockItemByNumber(ev){
     if(ev.target.value != ''){
@@ -897,14 +818,10 @@ export class StockComponent implements OnInit {
     }
   }
 
- 
-
 
   sendRecommandation() {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    
     if(re.test(String(this.newPurchaseRecommendation.controls.mail.value).toLowerCase())) {
-
       this.newPurchaseRecommendation.controls.user.setValue(this.authService.loggedInUser.userName);
       this.inventoryService.addNewRecommendation(this.newPurchaseRecommendation.value).subscribe(data => {
         // this.inventoryService.onNewRecommend(this.recommandPurchase);
@@ -914,13 +831,10 @@ export class StockComponent implements OnInit {
           this.newPurchaseRecommendation.reset();
           this.newPurchaseRecommendation.controls.stockitems.setValue([])
           alert('מספר הבקשה: '+ data.recommendNumber);
-          
         }
       })
     }
     else this.toastSrv.error('אנא הכנס מייל תקין')
-    
-
   }
 
 
@@ -938,9 +852,6 @@ export class StockComponent implements OnInit {
       this.mixMaterialPercentage = "";
       this.toastSrv.success("חומר גלם נוסף בהצלחה!")
     }
-
-
-
   }
 
 
@@ -949,13 +860,11 @@ export class StockComponent implements OnInit {
       for (let j = 0; j < this.componentsUnFiltered.length; j++) {
         if (this.allMaterialArrivals[i].internalNumber == this.componentsUnFiltered[j].componentN) {
           this.componentsUnFiltered[j].measureType = this.allMaterialArrivals[i].mesureType;
-
           if (this.componentsUnFiltered[j].totalQnt) {
             this.componentsUnFiltered[j].totalQnt = Number(this.componentsUnFiltered[j].totalQnt) + this.allMaterialArrivals[i].totalQnt
             if (this.route.snapshot.queryParams.componentN) {
               this.filterByComponentN(this.route.snapshot.queryParams.componentN)
             }
-
           } else {
             this.componentsUnFiltered[j].totalQnt = this.allMaterialArrivals[i].totalQnt;
             if (this.route.snapshot.queryParams.componentN) {
@@ -968,26 +877,14 @@ export class StockComponent implements OnInit {
   }
 
 
-  getAllComponents() {
-
-    // this.startDownloadingInventory();
-
-  }
 
 
 
 
   getAmountsFromShelfs() {
-
-    // var self = this;
-
     this.inventoryService.getComponentsAmounts().subscribe(res => {
       this.componentsAmount = res;
-      // console.log(res);
       this.components.forEach(cmpt => {
-
-        //הסר נקודה עשרונית אם לא חומר גלם
-        //  adding amounts to all components
         let matchedComponent = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
         if (this.componentsAmount.find(elem => elem._id == cmpt.componentN)) {
           cmpt.amount = matchedComponent.total;
@@ -999,18 +896,14 @@ export class StockComponent implements OnInit {
         if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
 
       })
-
     });
-
   }
 
 
 
   getAllExpectedArrivalsData() {
     this.procuretServ.getAllExpectedArrivals().subscribe(res => {
-
       this.itemExpectedArrivals = res;
-
     });
   }
 
@@ -1107,10 +1000,8 @@ export class StockComponent implements OnInit {
   }
 
   loadMaterialItems() {
-
     this.inventoryService.updateMaterial(this.resMaterial).subscribe(data => {
       this.components.map(doc => {
-
         if (doc.id == this.resMaterial._id) {
           doc = data;
         }
@@ -1123,11 +1014,7 @@ export class StockComponent implements OnInit {
   }
 
   async updateItemStockShelfChange(direction) {
-    // this.newItemShelfPosition
-    // this.newItemShelfQnt
-    // this.destShelf
     this.destShelf = this.destShelf.toLocaleUpperCase();
-    //destination shelf
     await this.inventoryService.checkIfShelfExist(this.destShelf, this.newItemShelfWH).subscribe(async shelfRes => {
       if (shelfRes.ShelfId) {
         this.destShelfId = shelfRes.ShelfId;
@@ -1135,12 +1022,10 @@ export class StockComponent implements OnInit {
         if (shelfRes.stock.length > 0) {
           shelfRes.stock.map(shl => {
             if (shl.item == this.resCmpt.componentN) {
-
               this.destShelfQntBefore = shl.amount;
             }
           });
         }
-
         this.updateItemStock(direction);
       } else {
         this.toastSrv.error("מדף יעד לא קיים")
@@ -1150,7 +1035,6 @@ export class StockComponent implements OnInit {
     /* we need to send two objects with negitive and positive amounts
     both with dir="shelfchange",
    and make sure server side will deal with this dir and update movments
-  
     */
   }
 
@@ -1177,12 +1061,7 @@ export class StockComponent implements OnInit {
   }
 
 
-  checkTwo() {
-
-  }
-
   async updateItemStock(direction) {
-    ;
     //check enough amount for "out"
     this.newItemShelfPosition = this.newItemShelfPosition.toUpperCase().trim();
     var shelfExsit = false;
@@ -1342,7 +1221,6 @@ export class StockComponent implements OnInit {
   filterByComponentN(componentN) {
     let comp = this.components.find(c => c.componentN == componentN);
     if (this.componentsUnFiltered)
-
       this.stockType = comp.itemType
     this.components = this.componentsUnFiltered.filter(c => c.componentN == componentN);
   }
@@ -1350,11 +1228,9 @@ export class StockComponent implements OnInit {
 
 
   getUserInfo() {
-    ;
     this.authService.userEventEmitter.subscribe(user => {
       this.user = user.loggedInUser;
     })
-
     if (!this.authService.loggedInUser) {
       this.authService.userEventEmitter.subscribe(user => {
         if (user.userName) {
@@ -1432,11 +1308,10 @@ export class StockComponent implements OnInit {
   }
 
   filterComponents() {
-    // console.log('filter parameters: ',this.filterParams)
    console.log('filter parameters: ',this.filterParams.value)
     this.smallLoader = true;
     this.inventoryService.getFilteredComponents(this.filterParams.value).subscribe(filteredComponents => {
-      // console.log(filteredComponents)
+      console.log('items: ',filteredComponents)
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.smallLoader = false
       if (this.components.length > 0) {

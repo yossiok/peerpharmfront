@@ -32,6 +32,10 @@ export class NewOutServiceComponent implements OnInit {
     userEmail: new FormControl(this.authService.loggedInUser.userEmail)
   })
 
+  addServiceType: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+  })
+
   addSupplier: FormGroup = new FormGroup({
     suplierNumber: new FormControl('', Validators.required),
     suplierName: new FormControl('', Validators.required),
@@ -69,6 +73,12 @@ export class NewOutServiceComponent implements OnInit {
   addOutServiceToDB() {
     this.outServiceService.addService(<OutService>this.addOutservice.value).subscribe( addedService => {
       console.log('addedService: ',addedService)
+    })
+  }
+
+  addServiceTypeToDB() {
+    this.outServiceService.addServiceType(<ServiceType>this.addServiceType.value).subscribe( addedType => {
+      console.log('addedService: ',addedType)
     })
   }
 
