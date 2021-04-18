@@ -539,24 +539,24 @@ export class AllFormulesComponent implements OnInit {
            
           }
 
-          if (material.coin == 'eur' || material.coin == 'euro') {
-            if(material.price != 'צריך לעדכן מחיר ספק'){
-              material.price = this.formatNumber(material.price * this.currencies[0].EUR)
-            }
+          // if (material.coin == 'eur' || material.coin == 'euro') {
+          //   if(material.price != 'צריך לעדכן מחיר ספק'){
+          //     material.price = this.formatNumber(material.price * this.currencies[0].EUR)
+          //   }
            
-          }
-          if (material.coin == 'usd') {
-            if(material.price != 'צריך לעדכן מחיר ספק'){
-              material.price = this.formatNumber(material.price * this.currencies[0].USD)
-            }
+          // }
+          // if (material.coin == 'usd') {
+          //   if(material.price != 'צריך לעדכן מחיר ספק'){
+          //     material.price = this.formatNumber(material.price * this.currencies[0].USD)
+          //   }
             
-          }
-          if (material.coin == 'gbp') {
-            if(material.price != 'צריך לעדכן מחיר ספק'){
-              material.price = this.formatNumber(material.price * this.currencies[0].GBP)
-            }
+          // }
+          // if (material.coin == 'gbp') {
+          //   if(material.price != 'צריך לעדכן מחיר ספק'){
+          //     material.price = this.formatNumber(material.price * this.currencies[0].GBP)
+          //   }
             
-          }
+          // }
           if (material.price != 'צריך לעדכן מחיר ספק') {
             count += Number(material.price)
           }
