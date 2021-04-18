@@ -487,7 +487,7 @@
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
-                <input class="form-control" type="text" [(ngModel)]="resCmpt.shippingPrice">
+                <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice">
 
               </div>
               <div class="col-2 fixNoaStupidStuff">
@@ -696,7 +696,7 @@
                   <option value="eur">EUR</option>
                   <option value="yen">YEN</option>
                 </datalist>
-                <input [(ngModel)]="supplier.shippingPrice" type="text" class="form-control" />
+                <input [(ngModel)]="supplier.shippingPrice" type="number" class="form-control" />
                 <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control">
                 <datalist id="coinsLoading">
                   <option value="usd">USD</option>
@@ -1535,7 +1535,7 @@
             </div>
             <div class="col-2 fixNoaStupidStuff"><label class="form-control">Shipping (NIS)</label></div>
             <div class="col-2 fixNoaStupidStuff">
-              <input class="form-control" [(ngModel)]="resMaterial.shippingPrice">
+              <input type="number" class="form-control" [(ngModel)]="resMaterial.shippingPrice">
             </div>
           </div>
 
@@ -1922,7 +1922,7 @@
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                       {{supplier.shippingPrice | currency: 'NIS'}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.shippingPrice" class="form-control" #priceLoading>
+                      <input type="number" [value]="supplier.shippingPrice" class="form-control" #priceLoading>
                     </td>
 
                     <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
