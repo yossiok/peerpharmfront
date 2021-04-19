@@ -18,8 +18,8 @@ export class WebsocketService {
     try{
     // If you aren't familiar with environment variables then
     // you can hard code `environment.ws_url` as `http://localhost:5000`
-  //  this.socket = io(`http://18.221.58.99:8200`);
-   this.socket = io(`http://18.221.58.99:8200`);
+   this.socket = io(`http://127.0.0.1:8201`);
+  //  this.socket = io(`http://18.221.58.99:8201`);
 
     // We define our observable which will observe any incoming messages
     // from our socket.io server.

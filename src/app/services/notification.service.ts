@@ -22,8 +22,8 @@ export class NotificationService {
   private options = new RequestOptions({ headers: this.headers });
 
   constructor(private http: Http) {
-  //  this.socket = io(`http://127.0.0.1:8200`);// Localhost
-     this.socket = io(`http://18.221.58.99:8200`);
+   this.socket = io(`http://127.0.0.1:8201`);// Localhost
+    //  this.socket = io(`http://18.221.58.99:8201`);
      this.socket.on("connect", () => {
       console.log('notification service socket connected');
        this.socket.on("message", data => {
