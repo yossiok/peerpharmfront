@@ -1295,12 +1295,14 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   async addNewItem() {
-    this.editSpecTable = false;  // specification auth
-    if (this.itemShown.itemNumber != "") {
-      this.itemsService.addItem(this.itemShown).subscribe(data => {
-        this.toastr.success('' + data.message)
-        location.reload()
-      })
+    if(confirm(`You are going to create a new Item Tree num. ${this.itemShown.itemNumber} . Continue?`)) {
+      this.editSpecTable = false;  // specification auth
+      if (this.itemShown.itemNumber != "") {
+        this.itemsService.addItem(this.itemShown).subscribe(data => {
+          this.toastr.success('' + data.message)
+          location.reload()
+        })
+      }
     }
   }
 
