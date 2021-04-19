@@ -541,7 +541,6 @@ export class StockComponent implements OnInit {
   }
 
   getAllPurchases() {
-debugger
     this.procuretServ.getPurchasesForComponents(this.components).subscribe(allPurchases => {
      
       this.components.forEach(comp => {
@@ -1372,6 +1371,7 @@ debugger
     this.openModalHeader = "פריט במלאי  " + cmptNumber;
     this.openModal = true;
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    this.resCmpt.finalPrice = this.resCmpt.shippingPrice ? Number(this.resCmpt.price) + Number(this.resCmpt.shippingPrice) : this.resCmpt.price
     this.loadComponentItems();
     ;
     if (this.resCmpt.jumpRemark == "" || this.resCmpt.jumpRemark == undefined) {
@@ -1471,6 +1471,7 @@ debugger
     this.openModalHeader = "פריט במלאי  " + materNum;
     this.openModal = true;
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
+    this.resMaterial.finalPrice = this.resMaterial.shippingPrice ? Number(this.resMaterial.price) + Number(this.resMaterial.shippingPrice) : this.resMaterial.price
 
     this.linkDownload = "http://peerpharmsystem.com/material/getpdf?_id=" + this.resMaterial._id;
     this.loadComponentItems();

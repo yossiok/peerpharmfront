@@ -478,7 +478,7 @@
                 <label class="form-control">שם קומקס</label>
                 <label class="form-control">פריט חלופי</label>
                 <label class="form-control">מחיר אחרון (שקלים)</label>
-                <label class="form-control">מחיר העמסה (שקלים)</label>
+                <!-- <label class="form-control">מחיר העמסה (שקלים)</label> -->
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <input (change)="checkIfItemExist($event)" class="form-control" type='text'
@@ -486,8 +486,9 @@
 
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
-                <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
-                <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice">
+                <input class="form-control" type="number" [(ngModel)]="resCmpt.finalPrice">
+                <!-- <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
+                <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice"> -->
 
               </div>
               <div class="col-2 fixNoaStupidStuff">
@@ -682,7 +683,7 @@
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">מחיר</label>
                 <label class="form-control">מטבע</label>
-                <label class="form-control">מחיר העמסה</label>
+                <label class="form-control"> מחיר העמסה (מטבע קניה)</label>
                 <label class="form-control">מטבע לאחר טעינה</label>
                 <label class="form-control">משקל יחידה</label>
               </div>
@@ -727,7 +728,7 @@
                       <th>מחיר</th>
                       <th>מטבע</th>
                       <th>משקל</th>
-                      <th>מחיר העמסה</th>
+                      <th>מחיר העמסה (מטבע קניה)</th>
                       <th>מטבע לפני טעינה</th>
                       <th></th>
                     </tr>
@@ -1529,13 +1530,17 @@
             <div class="col-2 fixNoaStupidStuff">
               <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentName">
             </div>
-            <div class="col-2 fixNoaStupidStuff"><label class="form-control">Last Price (NIS)</label></div>
+            <!-- <div class="col-2 fixNoaStupidStuff"><label class="form-control">Last Price (NIS)</label></div>
             <div class="col-2 fixNoaStupidStuff">
               <input class="form-control" [(ngModel)]="resMaterial.price">
             </div>
             <div class="col-2 fixNoaStupidStuff"><label class="form-control">Shipping (NIS)</label></div>
             <div class="col-2 fixNoaStupidStuff">
               <input type="number" class="form-control" [(ngModel)]="resMaterial.shippingPrice">
+            </div> -->
+            <div class="col-2 fixNoaStupidStuff"><label class="form-control">Last Price (NIS)</label></div>
+            <div class="col-2 fixNoaStupidStuff">
+              <input type="number" class="form-control" [(ngModel)]="resMaterial.finalPrice">
             </div>
           </div>
 

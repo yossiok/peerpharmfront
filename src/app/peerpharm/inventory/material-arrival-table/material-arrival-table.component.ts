@@ -80,7 +80,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   elementType = 'svg';
   format = 'CODE128';
   lineColor = '#000000';
-  width = 0.89;
+  width = 2;
   height = 150;
   displayValue = false; // true=display bcValue under barcode
   fontOptions = '';

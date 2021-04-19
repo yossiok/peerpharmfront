@@ -184,6 +184,7 @@ export class OrderdetailsComponent implements OnInit {
   orderItemsComponents: Array<any> = [];
   orderItemsStock;
 
+  // for order explosion
   bottleList: Array<any> = [];
   capList: Array<any> = [];
   pumpList: Array<any> = [];
@@ -1793,7 +1794,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
 
-
+//order explosion
   async openCmptDemandsModal() {
 
     this.bottleList = [];
@@ -1805,12 +1806,15 @@ export class OrderdetailsComponent implements OnInit {
     this.cartonList = [];
     this.itemTreeRemarks = [];
     if (this.ordersItems.length > 0) {
-      ;
-      this.internalNumArr = [];
+      
+      this.internalNumArr = []; //just numbers
       this.ordersItems.map(i => this.internalNumArr.push(i.itemNumber.trim()));
+
+      //get all orderItem-demands
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe(async res => {
         await res.forEach(async item => {
 
+          //for each order-item-demand, get all internal items and their quantities 
           let i = this.ordersItems.filter(x => x.itemNumber == item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
           item.itemName = i.discription;
