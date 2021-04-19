@@ -56,25 +56,48 @@ export class MaterialArrivalTableComponent implements OnInit {
 
 
   // barcode values
+  // bcValue: Array<any> = [];
+  // elementType = 'svg';
+  // format = 'CODE128';
+  // lineColor = '#000000';
+  // width = 0.85;
+  // height = 100;
+  // displayValue = false; // true=display bcValue under barcode
+  // fontOptions = '';
+  // font = 'monospace';
+  // textAlign = 'center';
+  // textPosition = 'bottom';
+  // textMargin = 1.5;
+  // fontSize = 20;
+  // background = '#ffffff';
+  // margin = 10;
+  // marginTop = 20;
+  // marginBottom = 10;
+  // marginLeft = 10;
+  // marginRight = 10;
+
   bcValue: Array<any> = [];
   elementType = 'svg';
   format = 'CODE128';
   lineColor = '#000000';
-  width = 0.85;
-  height = 100;
+  width = 0.89;
+  height = 150;
   displayValue = false; // true=display bcValue under barcode
   fontOptions = '';
   font = 'monospace';
   textAlign = 'center';
   textPosition = 'bottom';
   textMargin = 1.5;
-  fontSize = 20;
+  fontSize = 30;
   background = '#ffffff';
   margin = 10;
   marginTop = 20;
   marginBottom = 10;
   marginLeft = 10;
   marginRight = 10;
+
+
+
   constructor(
     private invtSer: InventoryService,
     private toastSrv: ToastrService,

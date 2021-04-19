@@ -163,7 +163,17 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
 
                   <tr>
                     <td colspan="2" id='barcode'>
-                      <ngx-barcode [bc-value]="bcValue" [bc-display-value]="true"></ngx-barcode>
+                      <!-- <ngx-barcode [bc-value]="bcValue" [bc-display-value]="true"></ngx-barcode> -->
+
+
+                      <ngx-barcode [bc-element-type]="elementType" [bc-value]="bcValue" [bc-format]="format"
+                      [bc-line-color]="lineColor" [bc-width]="width" [bc-height]="height" [bc-display-value]="displayValue"
+                      [bc-font-options]="fontOptions" [bc-font]="font" [bc-text-align]="textAlign"
+                      [bc-text-position]="textPosition" [bc-text-margin]="textMargin" [bc-font-size]="fontSize"
+                      [bc-background]="background" [bc-margin]="margin" [bc-margin-top]="marginTop"
+                      [bc-margin-bottom]="marginBottom" [bc-margin-left]="marginLeft" [bc-margin-right]="marginRight">
+                    </ngx-barcode>
+
                  <!--   <ngx-barcode 
                     [bc-element-type]="elementType" 
                     [bc-value]="bcValue" 
