@@ -114,6 +114,13 @@ export class OrdersService {
     );
   }
 
+  getCostumerByOrder(orderNumber): Observable<any> {
+    let url = this.baseUrl + 'order/costumerNameByOrderNumber?orderNumber=' + orderNumber;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    );
+  }
+
   getOrdersByArea(orderArea): Observable<any> {
     let url = this.baseUrl + 'order?orderArea=' + orderArea;
     return this.http.get(url).pipe(

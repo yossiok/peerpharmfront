@@ -296,7 +296,9 @@ export class OrderdetailsComponent implements OnInit {
         this.orderService.ordersArr.subscribe(async res => {
           console.log(res)
           var numArr = this.number.split(",").filter(x => x != "");
-          if (numArr.length > 1) { //multi orders:  came through load button
+
+          //multi orders:  came through load button
+          if (numArr.length > 1) { 
             this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async orders => {
               if (orders.ordersIds.length > 1) {
                 this.ordersData = orders.ordersData;
@@ -1262,13 +1264,16 @@ export class OrderdetailsComponent implements OnInit {
     console.log(item);
     console.log(this.chosenType);
     console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
+
     if (this.date.nativeElement.value != "") {
       var packageP = "";
       var impremark = "";
-      if (item.itemNumber != "") {
-        await this.itemSer.getItemData(item.itemNumber).subscribe(res => {
-
-          // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
+      if (item.itemNumber != "" && item.orderNumber && item.orderNumber != "") {
+        this.orderService.getCostumerByOrder(item.orderNumber).subscribe( async res=> {
+          this.costumer = res.costumer
+          await this.itemSer.getItemData(item.itemNumber).subscribe(res => {
+            
+            // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
           if (res[0]._id) {
             packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
             impremark = res[0].impRemarks;
@@ -1298,8 +1303,8 @@ export class OrderdetailsComponent implements OnInit {
           if (scheduleLine.mkp == "laser") scheduleLine.productionLine = "13";
           if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
           if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
-
-
+          
+          
           this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
           let dateSced = this.date.nativeElement.value;
           dateSced = moment(dateSced).format("DD/MM/YYYY");
@@ -1307,10 +1312,10 @@ export class OrderdetailsComponent implements OnInit {
           this.orderService.editItemOrder(orderObj).subscribe(res => {
             console.log(res);
             this.toastSrv.success(dateSced, "Schedule Saved");
-
           });
           console.log(scheduleLine);
         });
+      })
 
       } else {
         this.toastSrv.error("Item number missing");
