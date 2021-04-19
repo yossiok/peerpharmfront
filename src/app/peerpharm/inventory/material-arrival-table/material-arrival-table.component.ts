@@ -138,8 +138,8 @@ export class MaterialArrivalTableComponent implements OnInit {
 
     this.materialsArrivals.filter((m, key) => {
       if (m._id == id) {
-        ;
-        this.bcValue = [m._id];
+        debugger
+        this.bcValue = [m.reqNum];
         this.materialNum = m.internalNumber;
         this.materialName = m.materialName;
         this.lotNumber = m.lotNumber;

@@ -674,7 +674,8 @@ export class MaterialArrivalComponent implements OnInit {
         this.resetForm();
         this.requiresFromFull = !this.requiresFromFull
 
-        this.bcValue = [res.saved._id];
+        debugger
+        this.bcValue = [res.saved.reqNum];
         this.materialNum = res.saved.internalNumber;
         this.materialName = res.saved.materialName;
         this.lotNumber = res.saved.lotNumber;
