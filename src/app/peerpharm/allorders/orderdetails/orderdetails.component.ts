@@ -255,12 +255,14 @@ export class OrderdetailsComponent implements OnInit {
     this.getUserInfo();
     this.getAllComponents();
 
-    //  setTimeout(() => {
-    //   this.getProdReq();
-    //  }, 10000);
-
+     setTimeout(() => {
+      this.getProdReq();
+     }, 10000);
+  debugger
     this.orderService.openOrdersValidate.subscribe(res => {
       this.number = this.route.snapshot.paramMap.get('id');
+
+      // this.getProdReq();
 
       if (res == true || this.number == "00") {
         // Getting All OrderItems!
@@ -448,7 +450,7 @@ export class OrderdetailsComponent implements OnInit {
   // check with Akiva if still necessery , in html it's Production Requirements
   getProdReq() {
 
-    var tempArr = []
+    var tempArr = [] // just product numbers
     if (this.productionRequirements) {
       this.productionRequirements.forEach(p => {
         tempArr.push(p.itemNumber)

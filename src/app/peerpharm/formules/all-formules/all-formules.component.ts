@@ -533,7 +533,7 @@ export class AllFormulesComponent implements OnInit {
           if(material.price == null || material.price == undefined) {
             material.price = 'צריך לעדכן מחיר ספק'
           } else {
-            if(material.price != 'צריך לעדכן מחיר ספק'){
+            if(material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה'){
               material.price = this.formatNumber(material.price)
             }
            
@@ -557,7 +557,7 @@ export class AllFormulesComponent implements OnInit {
           //   }
             
           // }
-          if (material.price != 'צריך לעדכן מחיר ספק') {
+          if (material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה') {
             count += Number(material.price)
           }
         })

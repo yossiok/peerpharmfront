@@ -141,12 +141,12 @@ export class WeightProductionComponent implements OnInit {
 
 
   
-  searchForShelf(ev,kgProd){
-  let material = ev.target.value;
+  searchForShelf(materialNumber,kgProd){
+  // let material = ev.target.value;
   this.kgToRemove = kgProd
 
-  if(material != ''){
-    this.inventorySrv.getShelfListForMaterial(material).subscribe(data=>{
+  if(materialNumber != ''){
+    this.inventorySrv.getShelfListForMaterial(materialNumber).subscribe(data=>{
       ;
       if(data.msg == 'noShelf'){
         this.toastSrv.error('Material is not exist on this shelf')
