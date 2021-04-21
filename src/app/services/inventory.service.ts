@@ -454,6 +454,11 @@ export class InventoryService {
     return this.http.post(url, JSON.stringify(objToUpdate), this.options).pipe(map(res => res.json()));
   }
 
+  arrivalsCertificate(materialArrivalCertif): Observable<any> {
+    let url = this.baseUrl + "material/arrivalsCertificate";
+    return this.http.post(url, JSON.stringify(materialArrivalCertif), this.options).pipe(map(reponse => reponse.json()));
+  }
+
   getMaterialStockItemByNum(internalNumber): Observable<any> {
     let url = this.baseUrl + "material?materialNumber=" + internalNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

@@ -644,12 +644,10 @@ export class MaterialArrivalComponent implements OnInit {
     this.invtSer.newMatrialArrival(formToSend).subscribe(res => {
       if (res) {
         // certificate - general
-        if (this.materialArrivalCertif.certifNumber == 0) {
-          this.materialArrivalCertif.certifNumber = res.saved.reqNum
+        if (this.materialArrivalCertif.materialArrivalLines.length == 0) { // new certif
           this.materialArrivalCertif.supplierCertifNumber = res.saved.deliveryNoteNumber
           this.materialArrivalCertif.supplierName = res.saved.supplierName
           this.materialArrivalCertif.supplierOrderNumber = res.saved.supplierOrderNumber
-          // this.materialArrivalCertif.purchaseOrderNumber = Number(this.currentComaxOrder)
         }
         
         //certificate - line
@@ -666,6 +664,8 @@ export class MaterialArrivalComponent implements OnInit {
         this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
         this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
         this.materialArrivalCertif.sumUnits += this.materialArrivalLine.unitsAmount
+
+
 
         this.materialArrivalLine = {...defaultLine}
         // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
@@ -697,6 +697,17 @@ export class MaterialArrivalComponent implements OnInit {
       }
     });
 
+  }
+
+  saveCertif() {
+    this.invtSer.arrivalsCertificate(this.materialArrivalCertif).subscribe(response=>{
+      if(response.materialArrivalCertifToSave) {
+        this.materialArrivalCertif.certifNumber = response.materialArrivalCertifToSave.certNum
+        this.toastSrv.success(response.msg)
+        setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
+      } 
+      else if(response.msg) this.toastSrv.error(response.msg)
+    })
   }
 
   resetCertificate() {

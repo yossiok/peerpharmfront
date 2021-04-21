@@ -540,27 +540,21 @@ export class StockComponent implements OnInit {
     this.numberSearchInput.nativeElement.focus()
   }
 
-  getAllPurchases() {
-    this.procuretServ.getPurchasesForComponents(this.components).subscribe(allPurchases => {
-     
-      this.components.forEach(comp => {
-
-        let filteredPurchases = allPurchases.filter(purchase => {
-          let purchasesWithItem = purchase.stockitems.filter(stockitem => stockitem.number == comp.componentN)
-          if(purchasesWithItem) return true
-
-        })
-
-        // let filteredPurchases = allPurchases.filter(
-        //   purchase => purchase.stockitems.filter(
-        //     stockitem => stockitem.number == comp.componentN
-        //   ))
-        comp.purchaseOrders = filteredPurchases
- 
-      })
+  getItemPurchases(component) {
+    component.showPurch = true
+    component.purchaseOrders = []
+    this.procuretServ.getPurchasesForComponent(component.componentN).subscribe(purchases => {
+      component.purchaseOrders = purchases
     })
 
 
+  }
+
+  // Not used
+  getAllPurchases() {
+    for (let component of this.components) {
+      this.getItemPurchases(component)
+    }
   }
 
 
@@ -1315,7 +1309,6 @@ export class StockComponent implements OnInit {
       this.smallLoader = false
       if (this.components.length > 0) {
         this.getAmountsFromShelfs();
-        this.getAllPurchases();
       } else {
         this.toastSrv.error('Item does not exist')
       }

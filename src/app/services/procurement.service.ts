@@ -133,9 +133,9 @@ export class Procurementservice {
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
 
-  getPurchasesForComponents(components) {
-    let url = this.baseUrl + 'procurementOrderController/getPurchasesForComponent'
-    return this.http.post(url, {components}, this.options).pipe(map(res=>res.json()));
+  getPurchasesForComponent(componentN) {
+    let url = this.baseUrl + 'procurementOrderController/getPurchasesForComponent?componentNumber='+componentN
+    return this.http.get(url).pipe(map(res=>res.json()));
   }
 
   getRecommendById(recommendId): Observable<any> {
