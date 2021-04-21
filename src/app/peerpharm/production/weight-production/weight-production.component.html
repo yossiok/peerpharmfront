@@ -11,7 +11,7 @@
   <div class="row mt-5">
     <div class="col-3"></div>
     <div class="col-2">
-      <input id="formuleNumber" [(ngModel)]="formuleNumber" placeholder="Formule Number" class="form-control rounded-pill">
+      <input id="formuleNumber" #formuleNumberElement [(ngModel)]="formuleNumber" placeholder="Formule Number" class="form-control rounded-pill">
     </div>
     <div class="col-2">
       <input [(ngModel)]="formuleWeight" placeholder="Weight" class="form-control rounded-pill">
@@ -85,8 +85,8 @@
                 <td style="padding:5px">{{ item.itemNumber }}</td>
                 <td style="padding:5px">{{ item.itemName }}</td>
                 <td style="padding:5px">{{ item.kgProd | number }}</td>
-                <!-- <td *ngIf="item.check != true" style="padding:5px"><input (change)="searchForShelf($event,item.kgProd)" class="form-control rounded-pill"></td> -->
-                <td *ngIf="item.check != true" style="padding:5px"><button (click)="searchForShelf(item.itemNumber, item.kgProd)" class="btn btn-primary">Choose Shelf</button></td>
+                <td *ngIf="item.check != true" style="padding:5px"><input (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)" class="form-control rounded-pill"></td>
+                <!-- <td *ngIf="item.check != true" style="padding:5px"><button (click)="searchForShelf(item.itemNumber, item.kgProd)" class="btn btn-primary">Choose Shelf</button></td> -->
                 <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i></td>
                 <td style="padding:5px">{{ item.percentage }}%</td>
    
@@ -162,3 +162,24 @@
   
 </div>
 </div>
+
+  <ng-template #reduceMaterialAmount let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Reduce Material From Shelf</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex flex-column">
+        <h3>{{materialNumber}}</h3>
+        <h3>{{materialName}}</h3>
+        <h3>{{shelfPosition}}</h3>
+        <h3>{{kgToRemove}}</h3>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="reduceAmountFromShelf()">Reduce</button>
+      <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+  </ng-template>

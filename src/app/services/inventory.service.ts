@@ -72,15 +72,18 @@ export class InventoryService {
     let url = this.baseUrl + "component/getAllProducts";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-
   
   getAllExpiredArrivals(): Observable<any> {
-
     let url = this.baseUrl + "material/getAllExpiredArrivals";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  getAllMaterialLocations(): Observable<any> {
 
+  checkExpirationsForMaterial(materialNum, arrivalReqNum): Observable<any> {
+    let url = this.baseUrl + `material/checkExpiration?materialNum=${materialNum}&arrivalReqNum=${arrivalReqNum}`;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAllMaterialLocations(): Observable<any> {
     let url = this.baseUrl + "material/allMaterialLocations";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -242,8 +245,13 @@ export class InventoryService {
   }
 
   reduceMaterialAmount(material): Observable<any> {
-    let url = this.baseUrl + "material/reduceMaterialAmount";
+    let url = this.baseUrl + "material/reduceMaterial";
     return this.http.post(url, JSON.stringify(material), this.options).pipe(map(res => res.json()))
+  }
+
+  reduceMaterialAmountFromShelf(materialNum, shelf, amount): Observable<any> {
+    let url = this.baseUrl + "material/reduceMaterialAmountFromShelf";
+    return this.http.post(url, JSON.stringify({materialNum, shelf, amount}), this.options).pipe(map(res => res.json()))
   }
 
   reduceMaterialAmounts(formuleNumber, weightKG, reduce): Observable<any> {

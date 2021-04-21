@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormulesService } from 'src/app/services/formules.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-weight-production',
@@ -12,7 +13,9 @@ export class WeightProductionComponent implements OnInit {
 
 
   @ViewChild('printFormuleBtn') printFormuleBtn: ElementRef;
-
+  @ViewChild('reduceMaterialAmount') reduceMaterialAmount: ElementRef;
+  @ViewChild('formuleNumberElement') formuleNumberElement: ElementRef;
+  
   allMaterialArrivals:any[];
   materialShelfs:any[] = []
   materialArrivals:Boolean = false;
@@ -23,6 +26,8 @@ export class WeightProductionComponent implements OnInit {
   formuleWeight:any;
   formuleOrder:any;
   shelfNumber:any;
+  shelfPosition
+  earlierExpiries:any = []
  
 
   barcode = {
@@ -32,10 +37,17 @@ export class WeightProductionComponent implements OnInit {
     weight:'',
     formuleNumber:''
   }
+  materialName: any;
+  materialNumber: any;
 
-  constructor(private formuleSrv:FormulesService,private inventorySrv:InventoryService, private toastSrv:ToastrService) { }
+  constructor(
+    private formuleSrv:FormulesService,
+    private inventorySrv:InventoryService, 
+    private toastSrv:ToastrService,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.formuleNumberElement.nativeElement.focus()
   }
 
 
@@ -115,17 +127,17 @@ export class WeightProductionComponent implements OnInit {
     if(confirm('האם להוריד כמות ממדף זה ?')){
       material.amount = material.amount - this.kgToRemove;
 
-      this.inventorySrv.reduceMaterialAmount(material).subscribe(data=>{
+      this.inventorySrv.reduceMaterialAmountFromShelf(this.materialNumber, this.shelfPosition, this.kgToRemove).subscribe(response=>{
         
-        if(data){
+        if(response){
           this.currentFormule.phases.forEach(phase => {
             phase.items.forEach(item => {
-              if(item.itemNumber == data.item){
+              if(item.itemNumber == response.updatedMaterial.item){
                 item.check = true
               }
             });
           });
-          this.toastSrv.success('Amount reduced from shelf')
+          this.toastSrv.success(`${this.kgToRemove} kg reduced from shelf ${this.shelfPosition} for material ${this.materialNumber} - ${this.materialName}`)
           this.materialShelfs = []
         }
       })
@@ -141,25 +153,50 @@ export class WeightProductionComponent implements OnInit {
 
 
   
-  searchForShelf(materialNumber,kgProd){
-  // let material = ev.target.value;
-  this.kgToRemove = kgProd
+  weightProduction(materialNumber, materialName, ev, kgProd){
 
-  if(materialNumber != ''){
-    this.inventorySrv.getShelfListForMaterial(materialNumber).subscribe(data=>{
-      ;
-      if(data.msg == 'noShelf'){
-        this.toastSrv.error('Material is not exist on this shelf')
-      }
-      else{
-        this.materialShelfs = data;
-      }
+    // First, we need to check if there is an older expired (פג תוקף)
+    // reqNum = arrival ID scanned
+    let materialArrivalReqNum = ev.target.value;
+    this.inventorySrv.checkExpirationsForMaterial(materialNumber, materialArrivalReqNum).subscribe(response=>{
+        switch (response.msg) {
+          case 'Scanned wrong line. Try again.':
+            this.toastSrv.error(response.msg)
+            break;
+          case 'Earlier Expiries Exist':
+            this.materialShelfs = response.allEarlierExpiries
+            break
+          case 'No Earlier Expiries': 
+            this.openReduceMaterialModal(materialName, materialNumber, response.shelfPosition, kgProd)
+        }
     })
-  } else {
-    this.toastSrv.error('Please scan / fill the material number')
-  }
-    }
 
+
+
+    // this.kgToRemove = kgProd
+
+    // if(materialArrivalReqNum != ''){
+    //   this.inventorySrv.getShelfListForMaterial(materialNumber).subscribe(data=>{
+    //     ;
+    //     if(data.msg == 'noShelf'){
+    //       this.toastSrv.error('Material is not exist on this shelf')
+    //     }
+    //     else{
+    //       this.materialShelfs = data;
+    //     }
+    //   })
+    // } else {
+    //   this.toastSrv.error('Please scan / fill the material number')
+    // }
+  }
+
+  openReduceMaterialModal(materialName, materialNumber, shelfPosition, kgProd) {
+    this.materialName = materialName
+    this.materialNumber = materialNumber
+    this.shelfPosition = shelfPosition
+    this.kgToRemove = kgProd
+    this.modalService.open(this.reduceMaterialAmount)
+  }
   
 
 }
