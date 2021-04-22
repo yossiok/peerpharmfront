@@ -364,8 +364,10 @@
               <th>Item Name</th>
               <th>Remarks</th>
               <th>Qty</th>
-              <th>Unit Price</th>
-              <th>Amount</th>
+
+              <th>Unit Price (Foreign)</th>
+              <th>Total Price (Foreign)</th>
+              <th>Total Price (NIS)</th>
 
             </tr>
           </thead>
@@ -377,14 +379,11 @@
               <td>{{item.componentNs}}</td>
               <td>{{item.name}}</td>
               <td>{{item.itemRemarks}}</td>
-              <td>{{item.quantity | number}}</td>
-              <td>{{item.price}}
-                <span *ngIf="item.coin == 'nis'">&#8362;</span>
-                <span *ngIf="item.coin == 'euro'">&#8364;</span>
-                <span *ngIf="item.coin == 'eur'">&#8364;</span>
-                <span *ngIf="item.coin == 'usd'">$</span>
-              </td>
-              <td>{{item.itemPrice | number}}</td>
+              <td>{{item.quantity}}</td>
+
+              <td>{{item.price | currency:item.coin}}</td>
+              <td>{{item.itemPrice | currency:item.coin}}</td>
+              <td>{{item.localTotal | number}}{{nisSymbol}}</td>
 
             </tr>
             <tr *ngIf="country == true">
@@ -396,46 +395,37 @@
               <td></td>
               <td><b>{{totalAmount}}</b></td>
               <td></td>
-              <td><b>{{totalPrice}}{{currCoin}}</b></td>
+              <td><b *ngIf="printSum">{{totalPrice}}{{currCoin}}</b></td>
+              <td><b>{{totalPriceNis | number}}{{nisSymbol}}</b></td>
             </tr>
-            <tr *ngIf="country == false">
-              <td></td>
-              <td *ngIf="showImage == true"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td><b>{{totalAmount}}</b></td>
-              <td></td>
-              <td dir="rtl"><b>סה"כ לפני מע"מ: {{totalPrice}}{{currCoin}}</b></td>
-            </tr>
-
-            <tr *ngIf="country == false">
-              <td></td>
-              <td *ngIf="showImage == true"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td><b>{{totalAmount}}</b></td>
-              <td></td>
-              <td dir="rtl"><b>17% מע"מ: {{priceTaxes}}{{currCoin}}</b></td>
-            </tr>
-            <tr *ngIf="country == false">
-              <td></td>
-              <td *ngIf="showImage == true"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td dir="rtl"><b>סה"כ כולל מע"מ: {{totalPriceWithTaxes}}{{currCoin}}</b></td>
-            </tr>
-
-
+            <ng-container *ngIf="country == false">
+              <tr>
+                <td></td>
+                <td *ngIf="showImage == true"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>{{totalAmount}}</b></td>
+                <td></td>
+                <td dir="rtl"><b *ngIf="printSum">{{totalPrice | number}}{{currCoin}}</b></td>
+                <td><b>{{totalPriceNis | number}}{{nisSymbol}}</b></td>
+              </tr>
+            </ng-container>
           </tbody>
-
         </table>
+
+        <div dir="rtl" *ngIf="country == false">
+          <div class="row">
+            <b *ngIf="printSum">סה"כ לפני מע"מ: {{totalPrice | number}}{{currCoin}}</b>
+          </div>
+          <div class="row">
+            <b>17% מע"מ: {{priceTaxes | number}}{{currCoin}}</b>
+          </div>
+          <div class="row">
+            <b>סה"כ כולל מע"מ: {{totalPriceWithTaxes}}{{currCoin}}</b>
+          </div>
+        </div>
 
         <div class="row">
           <div style="display: inline-block;" class="col-6">

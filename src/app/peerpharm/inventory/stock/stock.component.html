@@ -302,7 +302,7 @@
                 src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
                 style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
             <td style="width:9%;">{{component.amount}}</td>
-            <td style="width:9%;"><button class="btn btn-info"
+            <td style="width:9%;"><button [style.cursor]="callingForCmptAmounts ? 'not-allowed' : 'pointer'" [disabled]="callingForCmptAmounts" class="btn btn-info"
                 (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
             <td style="width:9%;">
               <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}
@@ -351,8 +351,10 @@
         <tr *ngFor="let material of components ; let i = index">
 
           <td style="width:5%">{{i+1}}</td>
-          <td style="width:10%" class="compNum" (click)="openDataMaterial(material.componentN)">
-            <div style="float:none;">{{material.componentN}}</div>
+          <td style="width:10%" class="compNum">
+            <fieldset >
+            <div (click)="openDataMaterial(material.componentN)" style="float:none;">{{material.componentN}}</div>
+            </fieldset>
           </td>
 
           <td [ngClass]="dangerColor(material.threatment)" style="width:15%">
@@ -938,17 +940,14 @@
       </mat-tab-group>
     </div>
 
-    <div dir="ltr" *ngIf="check==true" id="myModal2" class="modal2"
+    <!-- <div dir="ltr" *ngIf="check==true" id="myModal2" class="modal2"
       style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:185px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
-      <!-- Modal content -->
       <div class="modal-content" style='width:700px; background: rgb(165, 185, 250);' id='modelC'>
         <div class="modal-header">
           <span class="close" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
-          <!-- <img src="peerpharm.png"  width='140px' align='left'> -->
           <h2 id='div_h3'>{{openModalHeader}}</h2><br>
           <button class="btn btn-primary" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
-          <!-- <div class='tabDiv' id='dTag' onclick="changeTag(details)" >פרטים</div><div  class='tabDiv' id='cTag' onclick="changeTag(changes)">רשימת תנועות</div> -->
         </div>
         <div dir="rtl" class="modal-body"
           style="overflow-y:scroll; overflow-x:hidden; float:right; height: 500px; padding-left: 0px; background: rgb(165, 185, 250);">
@@ -983,8 +982,6 @@
                   </td>
                 </tr>
                 <tr>
-                  <!-- <th >בפועל ml כמות</th>
-                  <td><input type='number' [(ngModel)]="resCmpt.actualMlCapacity" id="input_actualMlCapacity"></td> -->
 
                   <th>קטגוריה</th>
                   <td>
@@ -1039,9 +1036,7 @@
                 <tr>
                   <th>מותג</th>
                   <td>
-                    <!-- <input type='text' id="input_componentCategory" [(ngModel)]="resCmpt.componentCategory"> -->
                     <input list="categories" [(ngModel)]="resCmpt.componentCategory">
-                    <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
                     <datalist id="categories">
                       <option value=""></option>
                       <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
@@ -1092,7 +1087,6 @@
                   </td>
                 </tr>
                 <tr>
-                  <!-- <th><button (click)="loadComponentItems()">צפיה בפריטים מקושרים</button></th> -->
                   <th>פריטים מקושרים</th>
                   <td><span *ngFor="let item of resCmpt.componentItems"
                       style="border: grey solid; border-style: outset; margin:3px;  padding: 3px; display:inline-block; ">
@@ -1103,8 +1097,6 @@
                   <th></th>
                 </tr>
               </tbody>
-              <!-- <tbody id='changesTbody' dir='rtl'>
-              </tbody> -->
             </table>
 
           </div>
@@ -1153,7 +1145,7 @@
         </div>
       </div>
 
-    </div>
+    </div> -->
 
 
 
@@ -1290,6 +1282,9 @@
 
       <div class="row fixNoaStupidStuff">
         <div class="col-12 fixNoaStupidStuff">
+          <div *ngIf="itemAmountsWh.length == 0">
+            <h4>לא קיים במלאי</h4>
+          </div>
           <div class="text-center" *ngFor="let whName of itemAmountsWh">
             <div style="width:210px;zoom:0.9" class="container bg-white shadow fr justify-content-end">
               <h4>{{whName}}</h4>
@@ -2125,10 +2120,9 @@
     </mat-tab-group>
   </div>
 
-  <div *ngIf="check==true && stockType=='material'" id="myModal3" class="modal3"
+  <!-- <div *ngIf="check==true && stockType=='material'" id="myModal3" class="modal3"
     style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:185px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
 
-    <!-- Modal content -->
     <div class="modal-content" id='modelC'>
       <div id="material-header" class="modal-header">
         <span class="close" id="closeId2" (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
@@ -2530,7 +2524,7 @@
       </div>
     </div>
 
-  </div>
+  </div> -->
 
   <div style="height:0px !important" *ngIf="openOrderAmountsModal==true" id="myModal3" class="modal3"
     style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:400px;top:130px;'>

@@ -251,7 +251,7 @@
           </td>
         </tr>
         <tbody style="height: 500px;">
-          <ng-container *ngFor="let phase of updateFormule.phases">
+          <ng-container *ngFor="let phase of updateFormule.phases; let j = index">
             <tr
               rcRandomColor
               [bgColor]="[
@@ -340,7 +340,7 @@
                         "
                       ></i>
                     </td>
-                    <td *ngIf="item.itemNumber != EditRowId"><img style="width:30px;" (click)="deleteItemFromFormule(item.itemNumber)" src="../../../../assets/images/deleteBtn.png"></td>
+                    <td *ngIf="item.itemNumber != EditRowId"><img style="width:30px;" (click)="deleteItemFromFormule(item.itemNumber, j, i)" src="../../../../assets/images/deleteBtn.png"></td>
                   </tr>
 
                 </table>

@@ -712,7 +712,7 @@ export class AllFormulesComponent implements OnInit {
   fillMaterialNumber(ev) {
     var materialName = ev.target.value;
 
-    var material = this.materials.find(m => m.componentName == materialName)
+    var material = this.materials.find(m => m.componentName.includes(materialName))
     this.newItem.itemNumber = material.componentN
     ;
 
@@ -856,18 +856,18 @@ export class AllFormulesComponent implements OnInit {
     this.updateFormule = formuleToUpdate
   }
 
-  deleteItemFromFormule(itemNumber){
+  deleteItemFromFormule(itemNumber, ii, jj){
     ;
     let formuleNumber = this.currentFormuleNumber;
     
     let formule = this.allFormules.find(f=>f.formuleNumber == formuleNumber);
     let phases = formule.phases;
     for (let i = 0; i < phases.length; i++) {
-   for (let j = 0; j < phases[i].items.length; j++) {
-      if(phases[i].items[j].itemNumber == itemNumber){
-        phases[i].items.splice(j,1)
+      for (let j = 0; j < phases[i].items.length; j++) {
+        if (phases[i].items[j].itemNumber == itemNumber && i == ii && j == jj) {
+          phases[i].items.splice(j,1)
+        }
       }
-   }
       
     }
   }

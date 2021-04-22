@@ -74,9 +74,9 @@ export class ProcurementOrdersComponent implements OnInit {
   currStatus: any;
   currOrderNumber: any;
   infoToStatus: any;
-  totalAmount: any;
+  totalAmount: number = 0
   priceTaxes: any;
-  totalPrice: any;
+  totalPrice: number = 0
   totalPriceWithTaxes: any;
   currCoin: any;
   filterStatus: any;
@@ -102,30 +102,12 @@ export class ProcurementOrdersComponent implements OnInit {
     itemPrice: 0,
     remarks: ''
   }
-
-  //NOT USED
-  // currCertifItem: any;
-  // arrivalData: any[];
-  // allComponentsCopy: any[];
-  // allMaterials: any[];
-  // editArrivalModal: boolean = false;
-  // changeItemQuantity: boolean = false;
-  // paymentRemarkModal: boolean = false;
-  // changeItemPrice: boolean = false;
-  // paymentRemark: String
-  // orderRemarks: String;
-  // allComponents: any[];
-  // EditRowIndex: any = "";
-  // EditRowComax: any = "";
-  // requestNum: any = "";
-  // newItemQuantity: string = '';
-  // certifNumberToPush: any;
-  // referNumberForReciept: any;
-  // certifTotalPrice: number = 0;
-  // itemAmounts: any;
-  // subscription: Subscription;
-  // allInvoices: any[];
-  // allInvoicesCopy: any[];
+  totalPriceNis: number = 0
+  printSum: boolean = false
+  nisSymbol: string = '\u20AA'
+  usdSymbol: string = '$'
+  eurSymbol: string = '\u20AC'
+  gbpSymbol: string = '\u00A3'
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -506,62 +488,72 @@ export class ProcurementOrdersComponent implements OnInit {
     })
 
     this.currentOrder = line;
-    this.currentItems = line.stockitems
-    var total = 0;
-    var totalP = 0;
+    this.currentItems = [...line.stockitems]
+    // var total = 0;
+    // var totalP = 0;
+    // var totalN = 0;
 
     var coin = "";
 
-    for (let i = 0; i < this.currentItems.length; i++) {
+    this.totalAmount = 0
+    this.totalPriceNis = 0
+    this.totalPrice = 0
+    this.printSum = false
 
+    for (let i = 0; i < this.currentItems.length; i++) {
+      if(i==0) {
+        coin = this.currentItems[i].coin
+        if(this.currentItems.length == 1) this.printSum = true
+      } 
+      else {
+        if (this.currentItems[i].coin == coin) this.printSum = true
+        else this.printSum = false
+      }
+      this.currentItems[i].coin = this.currentItems[i].coin.toUpperCase() 
       if (this.currentItems[i].itemPrice == 0 || isNaN(this.currentItems[i].itemPrice) || this.currentItems[i].itemPrice == null) {
         this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
       }
-      total = total + Number(this.currentItems[i].quantity)
+      this.currentItems[i].localTotal =this.currentItems[i].itemPrice * this.currencies[this.currentItems[i].coin.toUpperCase()] 
+      this.totalAmount = this.totalAmount + Number(this.currentItems[i].quantity)
+      this.totalPriceNis = this.totalPriceNis + Number(this.currentItems[i].localTotal)
+      this.totalPrice = this.totalPrice + Number(this.currentItems[i].itemPrice)
 
-      totalP = totalP + Number(this.currentItems[i].itemPrice)
-
-      coin = this.currentItems[0].coin
+      
       if (line.orderType == 'component') {
         this.showImage = true;
         this.inventoryService.getCmptByNumber(this.currentItems[i].number, 'component').subscribe(data => {
-          ;
           this.currentItems[i].img = data[0].img
         })
       }
-
     }
-
 
     this.importantRemarks = line.remarks
 
-
-    var num = this.formatNumber(total)
-    var numTwo = this.formatNumber(totalP)
-    var numThree = this.formatNumber(totalP * 17 / 100);
-
-    this.totalAmount = num
-    this.totalPrice = numTwo
-    this.priceTaxes = numThree
-    var combined = ((totalP * 17 / 100) + totalP)
+    // var num = this.formatNumber(total)
+    // var numTwo = this.formatNumber(totalP)
+    this.priceTaxes = this.totalPrice * 17 / 100
+    // var numFour = this.formatNumber(totalN);
+    var combined = ((this.totalPrice * 17 / 100) + this.totalPrice)
     var numFour = this.formatNumber(combined)
     this.totalPriceWithTaxes = numFour
-    if (coin == 'nis' || coin == 'NIS') {
-      this.currCoin = '\u20AA'
-    }
-    if (coin == 'eur' || coin == 'EUR') {
-      this.currCoin = '\u20ac'
-    }
-    if (coin == 'usd' || coin == 'USD') {
-      this.currCoin = '$'
-    }
-    if (coin == 'gbp' || coin == 'GBP') {
-      this.currCoin = 'GBP'
+
+    if(this.printSum) {
+      if (coin == 'nis' || coin == 'NIS') {
+        this.currCoin = this.nisSymbol
+      }
+      if (coin == 'eur' || coin == 'EUR') {
+        this.currCoin = '\u20AC'
+      }
+      if (coin == 'usd' || coin == 'USD') {
+        this.currCoin = '$'
+      }
+      if (coin == 'gbp' || coin == 'GBP') {
+        this.currCoin = '\u00A3'
+      }
     }
 
     this.orderDate = line.creationDate.slice(0, 10)
     this.printBill = true;
-
   }
 
 

@@ -329,6 +329,7 @@ export class StockComponent implements OnInit {
   lastOrdersOfItem=[];
   fetchingOrders: boolean = false
   currencies: Currencies
+  callingForCmptAmounts: boolean = false;
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1303,7 +1304,9 @@ export class StockComponent implements OnInit {
   filterComponents() {
    console.log('filter parameters: ',this.filterParams.value)
     this.smallLoader = true;
-    this.inventoryService.getFilteredComponents(this.filterParams.value).subscribe(filteredComponents => {
+    let query = this.filterParams.value
+    query.itemType = this.stockType
+    this.inventoryService.getFilteredComponents(query).subscribe(filteredComponents => {
       console.log('items: ',filteredComponents)
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.smallLoader = false
@@ -1365,7 +1368,7 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.resCmpt.finalPrice = this.resCmpt.shippingPrice ? Number(this.resCmpt.price) + Number(this.resCmpt.shippingPrice) : this.resCmpt.price
-    this.loadComponentItems();
+    // this.loadComponentItems();
     ;
     if (this.resCmpt.jumpRemark == "" || this.resCmpt.jumpRemark == undefined) {
       console.log("ok")
@@ -1467,7 +1470,7 @@ export class StockComponent implements OnInit {
     this.resMaterial.finalPrice = this.resMaterial.shippingPrice ? Number(this.resMaterial.price) + Number(this.resMaterial.shippingPrice) : this.resMaterial.price
 
     this.linkDownload = "http://peerpharmsystem.com/material/getpdf?_id=" + this.resMaterial._id;
-    this.loadComponentItems();
+    // this.loadComponentItems();
   }
 
   async openAllocatedOrders(componentN) {
@@ -1946,11 +1949,13 @@ export class StockComponent implements OnInit {
   }
   async getCmptAmounts(cmptN, cmptId) {
     ;
+    this.callingForCmptAmounts = true;
     // this.currItemShelfs=[];
     this.newItemShelfPosition = '';
     this.newItemShelfQnt = 0;
     this.destShelf = '';
     await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(async res => {
+      this.callingForCmptAmounts = false;
 
 
       this.itemAmountsData = res.data;
