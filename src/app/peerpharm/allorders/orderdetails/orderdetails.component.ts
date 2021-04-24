@@ -132,7 +132,7 @@ export class OrderdetailsComponent implements OnInit {
     sum: '',
   }
 
-  allComponents: any[];
+
   stockItems: any;
   ordersItems;
   ordersItemsCopy;
@@ -143,6 +143,7 @@ export class OrderdetailsComponent implements OnInit {
   detailsArr: any[];
   components: any[];
   multi: boolean = false;
+  orderExplodeLoader: boolean = false;
   loadData: boolean = false;
   itemData: any = {
     itemNumber: '',
@@ -251,18 +252,12 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.getAllFormsDetails()
+    // this.getAllFormsDetails()
     this.getUserInfo();
-    this.getAllComponents();
-
-     setTimeout(() => {
-      this.getProdReq();
-     }, 10000);
-  debugger
     this.orderService.openOrdersValidate.subscribe(res => {
       this.number = this.route.snapshot.paramMap.get('id');
 
-      // this.getProdReq();
+    
 
       if (res == true || this.number == "00") {
         // Getting All OrderItems!
@@ -281,7 +276,7 @@ export class OrderdetailsComponent implements OnInit {
           await this.colorOrderItemsLines(orders.orderItems).then(data => { });
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
-          this.getProdReq();
+      
 
           this.ordersItemsCopy = orders.orderItems;
           this.ordersItems.map(item => {
@@ -1654,13 +1649,6 @@ export class OrderdetailsComponent implements OnInit {
   // }
 
 
-  getAllComponents() {
-    this.inventoryService.getAllComponents().subscribe(components => {
-      this.allComponents = components;
-
-
-    });
-  }
 
   getUserInfo() {
 
@@ -1798,7 +1786,8 @@ export class OrderdetailsComponent implements OnInit {
 
 //order explosion
   async openCmptDemandsModal() {
-
+      debugger;
+    this.orderExplodeLoader = true
     this.bottleList = [];
     this.capList = [];
     this.pumpList = [];
@@ -1840,9 +1829,7 @@ export class OrderdetailsComponent implements OnInit {
             } else {
               if (newCmpt) {
 
-                let bottleAmount = []
-                bottleAmount = this.allComponents.filter(x => x.componentN == item.bottleNumber)
-                this.bottleList.push({ bottleNumber: item.bottleNumber, qnt: item.quantity, amount: (bottleAmount[0].amountKasem + bottleAmount[0].amountRH) });
+                this.bottleList.push({ bottleNumber: item.bottleNumber, qnt: item.quantity, amount: item.bottleAmount });
                 newCmpt = false;
 
               }
@@ -1860,9 +1847,8 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-                let capAmount = []
-                capAmount = this.allComponents.filter(x => x.componentN == item.capNumber)
-                this.capList.push({ capNumber: item.capNumber, qnt: item.quantity, amount: (capAmount[0].amountKasem + capAmount[0].amountRH) });
+
+                this.capList.push({ capNumber: item.capNumber, qnt: item.quantity, amount: item.capAmount });
                 newCmpt = false;
               }
             }
@@ -1880,9 +1866,8 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-                let pumpAmount = []
-                pumpAmount = this.allComponents.filter(x => x.componentN == item.pumpNumber)
-                this.pumpList.push({ pumpNumber: item.pumpNumber, qnt: item.quantity, amount: (pumpAmount[0].amountKasem + pumpAmount[0].amountRH) });
+
+                this.pumpList.push({ pumpNumber: item.pumpNumber, qnt: item.quantity, amount: item.pumpAmount });
                 newCmpt = false;
               }
             }
@@ -1899,9 +1884,8 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-                let sealAmount = []
-                sealAmount = this.allComponents.filter(x => x.componentN == item.sealNumber)
-                this.sealList.push({ sealNumber: item.sealNumber, qnt: item.quantity, amount: (sealAmount[0].amountKasem + sealAmount[0].amountRH) });
+
+                this.sealList.push({ sealNumber: item.sealNumber, qnt: item.quantity, amount: item.sealAmount });
                 newCmpt = false;
               }
             }
@@ -1919,7 +1903,7 @@ export class OrderdetailsComponent implements OnInit {
             } else {
               if (newCmpt) {
 
-                this.stickerList.push({ stickerNumber: item.stickerNumber, qnt: item.quantity });
+                this.stickerList.push({ stickerNumber: item.stickerNumber, qnt: item.quantity , amount: item.stickerAmount });
                 newCmpt = false;
               }
             }
@@ -1935,7 +1919,7 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-                this.stickerList.push({ stickerNumber: item.stickerTypeK, qnt: item.quantity });
+                this.stickerList.push({ stickerNumber: item.stickerTypeK, qnt: item.quantity , amount: item.stickerAmount });
                 newCmpt = false;
               }
             }
@@ -1952,9 +1936,8 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-                let boxAmount = []
-                boxAmount = this.allComponents.filter(x => x.componentN == item.boxNumber)
-                this.boxList.push({ boxNumber: item.boxNumber, qnt: item.quantity, amount: (boxAmount[0].amountKasem + boxAmount[0].amountRH) });
+
+                this.boxList.push({ boxNumber: item.boxNumber, qnt: item.quantity, amount: item.boxAmount });
                 newCmpt = false;
               }
             }
@@ -1987,9 +1970,8 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-                let cartonAmount = []
-                cartonAmount = this.allComponents.filter(x => x.componentN == item.cartonNumber)
-                this.cartonList.push({ cartonNumber: item.cartonNumber, qnt: (item.quantity / parseInt(item.PcsCarton)), amount: (cartonAmount[0].amountKasem + cartonAmount[0].amountRH) });
+
+                this.cartonList.push({ cartonNumber: item.cartonNumber, qnt: (item.quantity / parseInt(item.PcsCarton)), amount: item.cartonAmount });
                 newCmpt = false;
               }
             }
@@ -2044,11 +2026,14 @@ export class OrderdetailsComponent implements OnInit {
           if (item.impRemarks != '' || item.proRemarks != '') {
             this.itemTreeRemarks.push(item);
           }
-
+          debugger;
+          this.orderExplodeLoader = false;
+          this.cmptModal = true;
         });
 
         this.orderItemsComponents = res;
-        this.cmptModal = true;
+       
+        
       });
     }
 

@@ -71,6 +71,8 @@
   <option value="done">Closed</option>
 </select>
 
+<div *ngIf="orderExplodeLoader" class="loading">Loading&#8230;</div>
+
 <mat-tab-group>
   <mat-tab label="Order Items"> <table style="border: 1px solid black;" class='table' *ngIf="loadData==false">
     <thead class='bg-info tableHeader text-white' (click)="edit('')">
@@ -837,7 +839,7 @@
           <div *ngFor="let cap of capList" class="cmptListData">
             <label>Number: {{cap.capNumber}}</label> &nbsp;&nbsp;
             <label>Quantity: {{cap.qnt}}</label> &nbsp;&nbsp;
-            <label>Amount: {{cap.amount}}</label>
+            <label [ngClass]="{ minAmount: cap.qnt > cap.amount}">Amount: {{cap.amount}}</label>
           </div>
         </div>
         <div *ngIf="pumpList.length>0" class="cmptListDiv">
@@ -845,7 +847,7 @@
           <div *ngFor="let pump of pumpList" class="cmptListData">
             <label>Number: {{pump.pumpNumber}}</label> &nbsp;&nbsp;
             <label>Quantity: {{pump.qnt}}</label> &nbsp;&nbsp;
-            <label>Amount: {{pump.amount}}</label>
+            <label [ngClass]="{ minAmount: pump.qnt > pump.amount}">Amount: {{pump.amount}}</label>
           </div>
         </div>
         <div *ngIf="sealList.length>0" class="cmptListDiv">
@@ -853,7 +855,7 @@
           <div *ngFor="let seal of sealList" class="cmptListData">
             <label>Number: {{seal.sealNumber}}</label> &nbsp;&nbsp;
             <label>Quantity: {{seal.qnt}}</label> &nbsp;&nbsp;
-            <label>Amount: {{seal.amount}}</label>
+            <label [ngClass]="{ minAmount: seal.qnt > seal.amount}">Amount: {{seal.amount}}</label>
           </div>
         </div>
         <div *ngIf="stickerList.length>0" class="cmptListDiv">
@@ -861,6 +863,7 @@
           <div *ngFor="let sticker of stickerList" class="cmptListData">
             <label>Number: {{sticker.stickerNumber}}</label> &nbsp;&nbsp;
             <label>Quantity: {{sticker.qnt}}</label> &nbsp;&nbsp;
+            <label [ngClass]="{ minAmount: sticker.qnt > sticker.amount}">Amount: {{sticker.amount}}</label> &nbsp;&nbsp;
 
           </div>
         </div>
@@ -869,7 +872,7 @@
           <div *ngFor="let box of boxList" class="cmptListData">
             <label>Number: {{box.boxNumber}}</label> &nbsp;&nbsp;
             <label>Quantity: {{box.qnt}}</label> &nbsp;&nbsp;
-            <label>Amount: {{box.amount}}</label>
+            <label [ngClass]="{ minAmount: box.qnt > box.amount}">Amount: {{box.amount}}</label>
           </div>
         </div>
         <div *ngIf="cartonList.length>0" class="cmptListDiv">
@@ -877,7 +880,7 @@
           <div *ngFor="let carton of cartonList" class="cmptListData">
             <label>Number: {{carton.cartonNumber}}</label> &nbsp;&nbsp;
             <label>Quantity: {{carton.qnt}}</label> &nbsp;&nbsp;
-            <label>Amount: {{carton.amount}}</label>
+            <label [ngClass]="{ minAmount: carton.qnt > carton.amount}">Amount: {{carton.amount}}</label>
           </div>
         </div>
         <div *ngIf="platesList.length>0" class="cmptListDiv">
@@ -892,7 +895,7 @@
       <!-- <div clas="modalFullWidth" width="100%">
 
       </div> -->
-
+     
       <div style="width: 100%; float: right ;" class="itemTreesTb">
 
         <table class="table table-bordered" style="width: 98% ; ">
@@ -927,7 +930,7 @@
               <th scope="col"><b>Important Note</b></th>
             </tr>
           </thead>
-          <tbody *ngFor="let item of ordersItems">
+          <tbody>
             <tr scope="row" *ngFor="let itemCmpts of orderItemsComponents; let i =index">
               <td scope="col">{{i+1}}</td>
               <td scope="col">{{itemCmpts.itemNumber}}</td>
@@ -935,7 +938,7 @@
               <td scope="col" style=" background-color:aliceblue; ">{{itemCmpts.currStock}}</td>
               <td scope="col">{{itemCmpts.quantity}}</td>
               <td scope="col">{{itemCmpts.bottleNumber}}</td>
-              <td scope="col">{{item.netWeightGr}}</td>
+              <td scope="col"></td>
               <td scope="col">{{itemCmpts.capNumber}}</td>
               <td scope="col">{{itemCmpts.pumpNumber}}</td>
               <td scope="col">{{itemCmpts.sealNumber}}</td>
