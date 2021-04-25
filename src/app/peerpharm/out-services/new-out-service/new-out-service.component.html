@@ -1,23 +1,23 @@
 <div dir="rtl" class="container">
 
-    <h2>דווח על פתיחת שירות</h2>
+    <h2>הוסף שירות חיצוני למעקב</h2>
     <form [formGroup]="addOutservice" (ngSubmit)="addOutServiceToDB()">
         
         <div class="form-group">
             <label>סוג שירות</label>
-            <select class="form-control" placeholder="סוג שירות" formControlName="type">
+            <select class="form-control" placeholder="סוג שירות" formControlName="type" required>
                 <option *ngFor="let serviceType of serviceTypes" [value]="serviceType.name">{{serviceType.name}}</option>
             </select>
         </div>
 
         <div class="form-group">
             <label>תאריך פתיחת הזמנה</label>
-            <input type="date" class="form-control" placeholder="תאריך פתיחת הזמנה" formControlName="openedAt">
+            <input type="date" class="form-control" placeholder="תאריך פתיחת הזמנה" formControlName="openedAt" required>
         </div>
 
         <div class="form-group">
             <label>מספק השירות</label>
-            <select class="form-control" placeholder="מספק השירות" formControlName="supplierName">
+            <select class="form-control" placeholder="מספק השירות" formControlName="supplierName" required>
                 <option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.suplierName}}</option>
             </select>
         </div>
@@ -34,18 +34,22 @@
         
         <div class="form-group">
             <label>תאריך ביצוע</label>
-            <input type="date" class="form-control" placeholder="תאריך ביצוע" formControlName="date">
+            <input type="date" class="form-control" placeholder="תאריך ביצוע" formControlName="date" required>
         </div>
 
         <div class="form-group">
             <label>מקים ההזמנה</label>
-            <input type="text" disabled class="form-control" formControlName="userName">
+            <input type="text" disabled class="form-control" formControlName="userName" required>
             <label>כתובת מייל</label>
-            <input type="text" disabled class="form-control" formControlName="userEmail">
+            <input type="text" class="form-control" formControlName="userEmail" required>
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">הוסף שירות</button>
+            <button type="submit" class="btn btn-primary" 
+                [disabled]="addOutservice.invalid" 
+                [style.cursor]="addOutservice.invalid ? 'not-allowed' : 'pointer'">
+                הוסף שירות
+            </button>
         </div>
         
     </form>
