@@ -27,6 +27,7 @@ const defaultLine = {
 })
 export class MaterialArrivalComponent implements OnInit {
   position: any;
+  submittingForm: boolean;
 
   public beforeChange($event: NgbNavChangeEvent) {
     this.activeTabId = $event.activeId;
@@ -508,6 +509,7 @@ export class MaterialArrivalComponent implements OnInit {
   submitForm() {
 
     // shelf general position
+    this.submittingForm = true;
 
     this.materialNum = this.newMaterialArrival.value.internalNumber;
     this.materialName = this.newMaterialArrival.value.materialName;
@@ -568,7 +570,10 @@ export class MaterialArrivalComponent implements OnInit {
           // }
           ;
           this.addMaterialToStock();
-        });
+        }).catch(e=> {
+          this.toastSrv.error(e);
+          this.submittingForm = false
+        })
 
       }
     }
@@ -576,6 +581,7 @@ export class MaterialArrivalComponent implements OnInit {
     if (!continueSend || !this.newMaterialArrival.valid) {
       this.toastSrv.error("Fill all required fields")
       this.fieldsColor();
+      this.submittingForm = false
     }
 
   }
@@ -671,10 +677,8 @@ export class MaterialArrivalComponent implements OnInit {
         // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
 
         this.toastSrv.success("New material arrival saved!");
-        this.resetForm();
         this.requiresFromFull = !this.requiresFromFull
 
-        debugger
         this.bcValue = [res.saved.reqNum];
         this.materialNum = res.saved.internalNumber;
         this.materialName = res.saved.materialName;
@@ -695,6 +699,7 @@ export class MaterialArrivalComponent implements OnInit {
       } else {
         this.toastSrv.error("Something went wrong, saving faild")
       }
+      this.submittingForm = false
     });
 
   }
