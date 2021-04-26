@@ -390,6 +390,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           // this.itemHistory += `order: ${order.number} | quantity: ${order.quantity} | price: ${order.price}</br>`
         }
       } 
+      else this.itemForm.controls.historyAmounts.setValue([])
       })
   }
 
