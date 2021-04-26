@@ -187,7 +187,7 @@
             </div>
             <div class="col-sm-12 col-md-4 form-group">
               <label for="">Price</label>
-              <input [disabled]="disabled" formControlName="price" type="number" class="form-control"
+              <input [disabled]="disabled" formControlName="price" type="number" step="any" class="form-control"
                 placeholder="Price">
             </div>
             <div class="col-sm-12 col-md-4 form-group">
@@ -512,7 +512,7 @@
                     <input #editQuantity class="form-control rounded-pill" [value]="stockitem.quantity" type="number">
                   </td>
 
-                  <td *ngIf="EditRowId == ''">{{stockitem.price | currency: stockitem.coin}}</td>
+                  <td *ngIf="EditRowId == ''">{{stockitem.price}} {{stockitem.coin}}</td>
                   <td *ngIf="EditRowId == stockitem.number">
                     <input #editPrice class="form-control rounded-pill" [value]="stockitem.price" type="number">
                   </td>

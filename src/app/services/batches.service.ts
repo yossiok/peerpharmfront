@@ -66,6 +66,12 @@ export class BatchesService {
       reponse.json()
     ));
   }
+  getMkpBatchData(batchNumber) {
+    let url = this.baseUrl + "batch?batchNumberMkp=" + batchNumber;
+    return this.http.get(url).pipe(map(reponse =>
+      reponse.json()
+    ));
+  }
 
 
   // BATCHES OF MAKE-UP
