@@ -182,8 +182,8 @@
             <div class="col-sm-12 col-md-4 form-group">
               <label for="">Quantity</label>
               <span class="red float-left h4">*</span>
-              <input [disabled]="disabled" formControlName="quantity" type="number" class="form-control"
-                placeholder="Quantity">
+              <input [disabled]="disabled" placement="bottom" [ngbTooltip]="lastorders" formControlName="quantity" 
+                type="number" class="form-control" placeholder="Quantity">
             </div>
             <div class="col-sm-12 col-md-4 form-group">
               <label for="">Price</label>
@@ -423,7 +423,7 @@
               <div class="col-sm-12 col-md-4 form-group">
                 <label>Quantity</label>
                 <span class="red float-left h4">*</span>
-                <input formControlName="quantity" type="number" class="form-control" placeholder="Quantity" required>
+                <input placement="bottom" [ngbTooltip]="lastorders" formControlName="quantity" type="number" class="form-control" placeholder="Quantity" required>
               </div>
 
               <div class="col-sm-12 col-md-4 form-group">
@@ -601,10 +601,11 @@
         </div>
         <br>
         <!-- <button (click)="checkCertValidation()">בדוק תקינות</button> -->
-        <button (click)="saveCertificate()" [style.cursor]="certValid ? 'pointer' : 'not-allowed'"
+        <button *ngIf="!submittingCert" (click)="saveCertificate()" [style.cursor]="certValid ? 'pointer' : 'not-allowed'"
           [disabled]="!certValid" class="btn btn-primary form-control">
           הוסף את התעודה להזמנה מס' {{purchaseData.orderNumber}}
         </button>
+        <div class="smallLoader" *ngIf="submittingCert"></div>
       </div>
       <!-- </form> -->
     </div>
@@ -828,4 +829,13 @@
     </div>
   </div>
 
+</ng-template>
+
+<ng-template #lastorders>
+  <h4>Last Orders:</h4>
+  <div class="d-flex flex-column">
+    <div *ngFor="let orderItem of itemForm.controls.historyAmounts.value">
+      <span>{{orderItem.date}}: {{ orderItem.quantity}} {{orderItem.measurement}} </span>
+    </div>
+  </div>
 </ng-template>

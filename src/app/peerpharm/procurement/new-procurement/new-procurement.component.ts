@@ -96,6 +96,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   showPurchaseDetails: boolean = false;
   showItemDetails: boolean = false;
   itemIndex: number;
+  itemHistory: any;
+  submittingCert: boolean;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -146,7 +148,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       itemRemarks: [''],
       itemPrice: [''],
       supplierItemNum: [''],
-      supplierAmount: [0]
+      supplierAmount: [0],
+      historyAmounts: [['']]
     })
   }
 
@@ -289,6 +292,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   //Stock Items
   findStockItemByNumber() {
+
+    this.getLastOrdersForItem(this.itemForm.get('number').value)
+
     if (this.itemForm.get('number').value != '') {
       //this.purchaseData.orderType
       if (this.newPurchase && this.purchaseData) {
@@ -319,6 +325,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.itemForm.controls.coin.setValue('NIS')
             }
 
+            // display last quantities
+            // console.log('1: ',this.itemForm.controls.historyAmounts.value)
+            // this.itemForm.controls.historyAmounts.setValue('ABCDEFG')
+            // console.log('2: ', this.itemForm.controls.historyAmounts.value)
+
           } else {
             this.toastr.error(""+this.newPurchase.controls.orderType.value+'פריט לא קיים במערכת כ')
           }
@@ -347,6 +358,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.itemForm.controls.coin.setValue('NIS')
             }
 
+            // display last quantities
+            // console.log('1: ',this.itemForm.controls.historyAmounts.value)
+            // this.itemForm.controls.historyAmounts.setValue(this.itemHistory)
+            // console.log('2: ', this.itemForm.controls.historyAmounts.value)
+
           } else {
             this.toastr.error(""+this.newPurchase.controls.orderType.value+'פריט לא קיים במערכת כ')
           }
@@ -357,6 +373,24 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       }
     }
     else this.toastr.warning('יש לרשום מספר פריט.')
+  }
+
+  getLastOrdersForItem(componentN){
+    this.itemForm.controls.historyAmounts.setValue([])
+    this.procurementService.getLastOrdersForItem(componentN , 20).subscribe(orders=> {
+      debugger
+      if(orders && orders.length > 0) {
+        for (let order of orders) {
+          this.itemForm.controls.historyAmounts.value.push({
+            quantity: order.quantity,
+            price: order.price,
+            measurement: order.measurement,
+            date: order.orderDate.slice(0,10)
+          })
+          // this.itemHistory += `order: ${order.number} | quantity: ${order.quantity} | price: ${order.price}</br>`
+        }
+      } 
+      })
   }
 
   addItemToPurchase() {
@@ -443,6 +477,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   saveCertificate() {
+    this.submittingCert = true
     // set purchase stockitems arrived amounts
     for (let arrivedItem of this.deliveryCertificate.stockitems) {
       let item = this.newPurchase.controls.stockitems.value.find(si => si.name == arrivedItem.name)
@@ -460,6 +495,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
         this.deliveryCertificate.userName = this.authService.loggedInUser.userName
+        this.submittingCert = false
         this.modalService.dismissAll()
       })
   }
@@ -611,7 +647,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   open(modal) {
-    debugger
     if(modal._def.references.recieveDeliveryCertificate && this.selectedItems.length == 0) {
       this.toastr.error('Must choose at least one item.')
     }

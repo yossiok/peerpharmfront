@@ -15,12 +15,41 @@
             <input type="date" class="form-control" placeholder="תאריך פתיחת הזמנה" formControlName="openedAt" required>
         </div>
 
+
         <div class="form-group">
             <label>מספק השירות</label>
-            <select class="form-control" placeholder="מספק השירות" formControlName="supplierName" required>
+            <select class="form-control" placeholder="מספק השירות" formControlName="supplierName" name="supplierName" (change)="fillSupplierDetails($event)" required>
+                <option *ngFor="let supplier of suppliers" [value]="supplier.suplierNumber">{{supplier.suplierName}}</option>
+            </select>
+            <label>מייל</label>
+            <input class="form-control" type="text" formControlName="email" name="email" required>
+            <label>טלפון</label>
+            <input class="form-control" type="text" formControlName="phoneNum" name="phoneNum" required>
+            <label>טלפון נוסף</label>
+            <input class="form-control" type="text" formControlName="cellularNum" name="cellularNum">
+            <label>שם איש קשר</label>
+            <input class="form-control" type="text" formControlName="supplierContact" name="supplierContact" required>
+            <label>פקס</label>
+            <input class="form-control" type="text" formControlName="faxNum" name="faxNum">
+            <label>רחוב</label>
+            <input class="form-control" type="text" formControlName="address" name="address">
+            <label>עיר</label>
+            <input class="form-control" type="text" formControlName="city" name="city">
+            <label>ארץ</label>
+            <input class="form-control" type="text" formControlName="country" name="country">
+         </div>
+        <!-- <div class="form-group">
+            <label>מספק השירות</label>
+            <select class="form-control" placeholder="מספק השירות" formControlName="supplierName" (change)="fillSupplierDetails($event)" required>
                 <option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.suplierName}}</option>
             </select>
-        </div>
+            <label>מייל</label>
+            <input type="text" formControlName="supplierMail">
+            <label>טלפון</label>
+            <input type="text" formControlName="supplierPhone">
+            <label>איש קשר</label>
+            <input type="text" formControlName="supplierContact">
+        </div> -->
 
         <!-- <div class="form-group">
             <h4 class="click hover-black" (click)="newSup = !newSup">ספק חדש</h4>
