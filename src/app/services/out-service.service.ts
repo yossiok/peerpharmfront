@@ -25,7 +25,7 @@ export class OutServiceService {
     return <Observable<ServiceType[]>>this.http.get(`${this.url}/types`);
   }
 
-  addService(service: OutService): Observable<OutService> {
+  addService(service: OutService): Observable<any> {
     return <Observable<any>>this.http.post(this.url, service)
   }
 

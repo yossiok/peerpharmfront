@@ -66,6 +66,12 @@ export class BatchesService {
       reponse.json()
     ));
   }
+  getMkpBatchData(batchNumber) {
+    let url = this.baseUrl + "batch?batchNumberMkp=" + batchNumber;
+    return this.http.get(url).pipe(map(reponse =>
+      reponse.json()
+    ));
+  }
 
 
   // BATCHES OF MAKE-UP
@@ -80,5 +86,12 @@ export class BatchesService {
     let url = this.baseUrl + "batch/";
     return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
   }
+
+  updateSpecvalue(batchNum, specStatus) {
+    let url = this.baseUrl + "batch/specvalue";
+    return this.http.post(url, JSON.stringify({batchNum, specStatus}), this.options).pipe(map(res => res.json()))
+  }
+
+
 
 }

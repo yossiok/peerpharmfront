@@ -193,7 +193,6 @@ export class BatchesComponent implements OnInit {
 
 
   getAllBatchesYear() {
-    ;
     this.batchService.getAllBatchesYear().subscribe((res) => {
       console.log(res);
       this.batches = res.filter(b=>b.type !='makeup');
@@ -244,7 +243,6 @@ export class BatchesComponent implements OnInit {
 
 
   openTableValues(itemNumber,batchNumber) {
-    ;
     this.batchService.getBatchData(batchNumber).subscribe(data=>{
       ;
       this.currBatch = data[0]
@@ -468,6 +466,21 @@ export class BatchesComponent implements OnInit {
   }
 
   saveSpecValues(itemNumber) {
+    switch (this.item.valueStatus) {
+      case 'confirm':
+        this.currBatch.specStatus = {color: 'green', status: 1}
+        break;
+      case 'noConfirm':
+        this.currBatch.specStatus = {color: 'red', status: 0}
+        break;
+      case 'hold':
+        this.currBatch.specStatus = {color: 'orange', status: 2}
+        break;
+      default: this.currBatch.specStatus = {color: '#2962FF', status: -1 }
+    }
+    this.batchService.updateSpecvalue(this.currBatch.batchNumber, this.currBatch.specStatus).subscribe(response => {
+      response.msg == 'success' ? this.toastSrv.success('Spec status saved.') : this.toastSrv.error('Spec status not saved')
+    })
     ;
     var obj = {
       date: this.lastValueUpdate,
@@ -508,7 +521,6 @@ export class BatchesComponent implements OnInit {
   }
 
   updateDocument() {
-
     this.batchService.updateBatchesForm(this.currentDoc).subscribe(data => {
       this.batches.map(doc => {
         if (doc.id == this.currentDoc._id) {

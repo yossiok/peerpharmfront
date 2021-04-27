@@ -1360,6 +1360,7 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
+    this.getLastOrdersItem(10, 'component')
     this.sixMonth = 0;
     this.switchModalView(cmptNumber)
     this.showItemDetails = true;
@@ -1438,7 +1439,7 @@ export class StockComponent implements OnInit {
 
   async openDataMaterial(materNum) {
 
-
+    this.getLastOrdersItem(10, 'material')  
     this.materialArrivals = []
 
     this.materialArrivals = []
@@ -1528,6 +1529,7 @@ export class StockComponent implements OnInit {
               remarks: "",
               suplierN: "",
               suplierName: "",
+              measurement: ""
             };
 
 

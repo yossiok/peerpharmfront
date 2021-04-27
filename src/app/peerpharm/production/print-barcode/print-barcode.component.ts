@@ -50,6 +50,7 @@ import { ItemsService } from 'src/app/services/items.service';
         <div class="form-group"> 
             <label>Enter Batch</label> <br>
             <input [(ngModel)]="batch" type="text">
+            <h5 class="mt-2"><input type="checkbox" (change)="mkp = !mkp">Make-up Batch</h5>
             <h5 class="mt-2"><input type="checkbox" (change)="printExpiration = !printExpiration">Print Expiration Date</h5>
         </div>
         <div class="form-group">
@@ -118,6 +119,7 @@ export class PrintBarcodeComponent {
     expireDate: any
     customerNames: string[] = []
     printExpiration: boolean = false;
+    mkp: boolean = false
 
     constructor(
         private itemService: ItemsService,
@@ -153,13 +155,25 @@ export class PrintBarcodeComponent {
 
     printBarCode() {
         if(this.batch != '---') {
-            this.batchService.getBatchData(this.batch).subscribe(data => {
-                if(data.length > 0) {
-                    this.expireDate = data[0].expration.slice(0, 11);
-                    setTimeout(()=>this.printbtn.nativeElement.click(),500)
-                }
-                else this.toastr.error('Batch Not Found.')
-            })
+            if(this.mkp) {
+                this.batchService.getMkpBatchData(this.batch).subscribe(data => {
+                    if(data.length > 0) {
+                        this.expireDate = data[0].expration.slice(0, 11);
+                        setTimeout(()=>this.printbtn.nativeElement.click(),500)
+                    }
+                    else this.toastr.error('Batch Not Found.')
+                })
+            }
+            else {
+
+                this.batchService.getBatchData(this.batch).subscribe(data => {
+                    if(data.length > 0) {
+                        this.expireDate = data[0].expration.slice(0, 11);
+                        setTimeout(()=>this.printbtn.nativeElement.click(),500)
+                    }
+                    else this.toastr.error('Batch Not Found.')
+                })
+            }
         }
         else setTimeout(()=>this.printbtn.nativeElement.click(),500)
     }

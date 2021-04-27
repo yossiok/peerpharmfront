@@ -616,13 +616,16 @@
                 <label>מדף חדש</label>
                 <input type="text" class="form-control" placeholder="New Position" formControlName="destShelf">
               </div>
-              <div class="col-sm-1" style="position: relative;">
-                <img (click)="checkLineValidation(itemLine.value, $event.value)" src="assets/images/add.png" width="50px" style="cursor: pointer;" />
-                <!-- <button type="submit" (click)="checkLineValidation(itemLine.value, $event.value)"
-                  style="cursor: pointer; position: absolute; bottom: 0px;">
-                  <img (click)="checkLineValidation(itemLine.value, $event.value)" src="assets/images/add.png" width="30px" style="cursor: pointer;" />
-                </button> -->
-              </div>
+                <div  class="col-sm-1" style="position: relative;">
+                  <button  class="btn btn-success h-100 w-75" [disabled]="addingItem" [style.cursor]="addingItem ? 'not-allowed' : 'pointer'"
+                    (click)="checkLineValidation(itemLine.value, $event.value)">
+                      Add
+                  </button>
+                  <!-- <button type="submit" (click)="checkLineValidation(itemLine.value, $event.value)"
+                    style="cursor: pointer; position: absolute; bottom: 0px;">
+                    <img (click)="checkLineValidation(itemLine.value, $event.value)" src="assets/images/add.png" width="30px" style="cursor: pointer;" />
+                  </button> -->
+                </div>
             </div>
             <!-- <div *ngIf="dir=='in'">
               <h3 (click)="open(packMaterialForm)"><u>טופס קבלת חומר אריזה</u></h3>

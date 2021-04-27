@@ -538,6 +538,7 @@
                 <label class="form-control">קטגוריה</label>
                 <label class="form-control">מותג</label>
                 <label class="form-control">משקל/סוג</label>
+                <label class="form-control">יח' מידה</label>
                 <label class="form-control">כמות מל'</label>
                 <label class="form-control">על חשבון</label>
                 <!-- <label class="form-control">רשימת לקוחות</label> -->
@@ -577,6 +578,9 @@
                   <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
                 </select>
 
+              
+
+
                 <select class="form-control" [(ngModel)]="resCmpt.packageType">
                   <option value='paperCarton'>נייר/קרטון</option>
                   <option value='drinkCarton'>קרטוניות משקה</option>
@@ -592,6 +596,18 @@
                   <option value='wood'>עץ</option>
                   <option value='otherMaterial'>חומר אחר</option>
                 </select>
+
+                <select class="form-control" [(ngModel)]="resCmpt.measurement">
+                  <option value="kilogram">kilogram</option>
+                  <option value="liter">liter</option>
+                  <option value="meter">meter</option>
+                  <option value="ml">ml</option>
+                  <option value="unit">Unit</option>
+                  <option value="ton">טון</option>
+                  <option value="unit">יחידה</option>
+                  <option value="box">קופסא</option>
+                </select>
+                
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.actualMlCapacity">
                 <select class="form-control" (change)="checkWhoPays($event)" [(ngModel)]="resCmpt.whoPays">
                   <option value="peerpharm">פארפארם</option>
@@ -867,8 +883,7 @@
                     </thead>
                     <div class="fixNoaStupidStuff row text-center" *ngIf="itemMovements.length==0">
                       <div class="col-12 text-center">
-                        <img class="w-50 h-100"
-                          src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+                      <h4>No Movements for Item.</h4>
                       </div>
                     </div>
                     <tbody>

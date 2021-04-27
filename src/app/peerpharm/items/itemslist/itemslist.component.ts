@@ -76,16 +76,16 @@ export class ItemslistComponent implements OnInit {
     this.showCurtain=true;
     var reader = new FileReader();
 
-    reader.readAsDataURL(ev.target.files[0]); // read file as data url
+    reader.readAsDataURL(ev.files[0]); // read file as data url
 
     reader.onload = (event) => { // called once readAsDataURL is completed
       
-    var excelToSend = event.target["result"]
-   // excelToSend = excelToSend.replace("data:application/pdf;base64,","");
-    this.itemsService.sendExcel({data:excelToSend}).subscribe(data=>{
-      this.showCurtain=false;
-      alert(data.msg);
-    })
+      var excelToSend = event.target["result"]
+    // excelToSend = excelToSend.replace("data:application/pdf;base64,","");
+      this.itemsService.sendExcel({data:excelToSend}).subscribe(data=>{
+        this.showCurtain=false;
+        alert(data.msg);
+      })
     }
   
   }

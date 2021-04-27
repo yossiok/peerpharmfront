@@ -172,9 +172,9 @@
             <td *ngIf="batch._id===EditRowId" style="width:9%" (click)="edit(batch._id)">
               <input class="editInput" #batchItem type='text' [value]="batch.item" style='width:100px'>
             </td>
-            <td style="width:9%;" *ngIf="batch._id!==EditRowId"><button
+            <td  style="width:9%;" *ngIf="batch._id!==EditRowId"><button
                 (click)="openPrint(printBatch,batch.batchNumber)" class="btn btn-info">Print</button>
-              <button (click)="openTableValues(batch.item,batch.batchNumber)" class="btn btn-info">Spec Values</button>
+              <button [style.background-color]="batch.specStatus ? batch.specStatus.color : '#2962FF'" (click)="openTableValues(batch.item,batch.batchNumber)" class="btn btn-info">Spec Values</button>
             </td>
             <td style="width:3%;" *ngIf="batch._id!==EditRowId && alowUserEditBatches == true" ><i
                 class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i>

@@ -164,7 +164,7 @@ export class WeightProductionComponent implements OnInit {
             this.toastSrv.error(response.msg)
             break;
           case 'Earlier Expiries Exist':
-            this.materialShelfs = response.allEarlierExpiries
+            this.materialShelfs = response.itemShelfs
             break
           case 'No Earlier Expiries': 
             this.openReduceMaterialModal(materialName, materialNumber, response.shelfPosition, kgProd)
