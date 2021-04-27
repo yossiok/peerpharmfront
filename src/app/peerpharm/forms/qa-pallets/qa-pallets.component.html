@@ -444,6 +444,11 @@
             <input type="text" placeholder="Filter By Customer" class="form-control"
               (keyup)="filterReadyPackedListsByCustomer($event)">
           </div>
+          <div class="col-9"></div>
+          <div class="col-1">
+            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+            (click)="exportAsXLSX()">
+          </div>
         </div>
 
 

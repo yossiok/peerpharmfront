@@ -1309,6 +1309,7 @@ export class StockComponent implements OnInit {
     this.inventoryService.getFilteredComponents(query).subscribe(filteredComponents => {
       console.log('items: ',filteredComponents)
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
+      this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
       this.smallLoader = false
       if (this.components.length > 0) {
         this.getAmountsFromShelfs();
@@ -2188,33 +2189,33 @@ export class StockComponent implements OnInit {
   }
 
   filterMaterialsTable() {
-
-    this.components = this.componentsUnFiltered;
+    debugger;
+    let tempArr = [...this.componentsUnFiltered]
     let type = this.materialFilterType;
     let value = this.materialFilterValue;
     if (type == 'location') {
-      let filteredArray = this.components.filter(m => m.location == value);
+      let filteredArray = tempArr.filter(m => m.location == value);
       this.components = filteredArray;
     }
     if (type == 'permissionDangerMaterials') {
-      let filteredArray = this.components.filter(m => m.permissionDangerMaterials == 'true');
+      let filteredArray = tempArr.filter(m => m.permissionDangerMaterials == 'true');
       this.components = filteredArray;
     }
     if (type == 'threatment') {
-      let filteredArray = this.components.filter(m => m.threatment == value);
+      let filteredArray = tempArr.filter(m => m.threatment == value);
       this.components = filteredArray;
     }
     if (type == 'function') {
 
-      let filteredArray = this.components.filter(m => m.function && m.function.includes(value))
+      let filteredArray = tempArr.filter(m => m.function && m.function.includes(value))
       this.components = filteredArray;
     }
     if (type == 'stateOfMatter') {
-      let filteredArray = this.components.filter(m => m.stateOfMatter == value);
+      let filteredArray = tempArr.filter(m => m.stateOfMatter == value);
       this.components = filteredArray;
     }
     if (type == "") {
-      this.components = this.componentsUnFiltered.filter(x => x.itemType == 'material');
+      this.components = this.components.filter(x => x.itemType == 'material');
     }
 
 
