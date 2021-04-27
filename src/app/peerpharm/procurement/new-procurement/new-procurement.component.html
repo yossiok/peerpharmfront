@@ -195,6 +195,7 @@
                 placeholder="Item Name">
             </div>
             <div class="col-sm-12 col-md-4 form-group">
+              <!-- Activate when all measurements are updated <input type="text" disabled formControlName="measurement" class="form-control"> -->
               <select [disabled]="disabled" formControlName="measurement" class="form-control">
                 <option selected value="kilogram">kilogram</option>
                 <option value="liter">liter</option>
@@ -436,6 +437,7 @@
               </div>
 
               <div class="col-sm-12 col-md-4 form-group">
+                <!--  Activate when all measurements are updated  <input disabled formControlName="measurement" class="form-control custom-select" required> -->
                 <select formControlName="measurement" class="form-control custom-select" required>
                   <option value="">Measurement</option>
                   <option value="kilogram">kilogram</option>
@@ -839,3 +841,12 @@
     </div>
   </div>
 </ng-template>
+
+<!-- <ng-template #itemFormErrors>
+  <h4>Errors:</h4>
+  <div class="d-flex flex-column">
+    <div *ngFor="let input of itemForm.controls">
+      <span *ngIf="input.invalid">Please fill {{input}}</span>
+    </div>
+  </div>
+</ng-template> -->

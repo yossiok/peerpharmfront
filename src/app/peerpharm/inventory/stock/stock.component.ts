@@ -1528,6 +1528,7 @@ export class StockComponent implements OnInit {
               remarks: "",
               suplierN: "",
               suplierName: "",
+              measurement: ""
             };
 
 

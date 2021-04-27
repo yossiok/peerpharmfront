@@ -21,6 +21,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import { FormulesService } from 'src/app/services/formules.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { FormsService } from 'src/app/services/forms.service';
+import { BatchesService } from 'src/app/services/batches.service';
 var _ = require('lodash');
 
 
@@ -226,7 +227,7 @@ export class OrderdetailsComponent implements OnInit {
     console.log(event);
     this.edit('');
   }
-  constructor(private formService: FormsService, private formuleService: FormulesService, private inventoryService: InventoryService, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
+  constructor(private formService: FormsService, private batchService: BatchesService, private inventoryService: InventoryService, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
     private scheduleService: ScheduleService, private location: Location, private plateSer: PlateService, private toastSrv: ToastrService,
     private costumerSrevice: CostumersService, private excelService: ExcelService, private authService: AuthService) { }
 
@@ -257,7 +258,7 @@ export class OrderdetailsComponent implements OnInit {
     this.orderService.openOrdersValidate.subscribe(res => {
       this.number = this.route.snapshot.paramMap.get('id');
 
-    
+
 
       if (res == true || this.number == "00") {
         // Getting All OrderItems!
@@ -276,7 +277,7 @@ export class OrderdetailsComponent implements OnInit {
           await this.colorOrderItemsLines(orders.orderItems).then(data => { });
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
-      
+
 
           this.ordersItemsCopy = orders.orderItems;
           this.ordersItems.map(item => {
@@ -296,7 +297,7 @@ export class OrderdetailsComponent implements OnInit {
           var numArr = this.number.split(",").filter(x => x != "");
 
           //multi orders:  came through load button
-          if (numArr.length > 1) { 
+          if (numArr.length > 1) {
             this.orderService.getOrdersIdsByNumbers(numArr).subscribe(async orders => {
               if (orders.ordersIds.length > 1) {
                 this.ordersData = orders.ordersData;
@@ -1267,53 +1268,53 @@ export class OrderdetailsComponent implements OnInit {
       var packageP = "";
       var impremark = "";
       if (item.itemNumber != "" && item.orderNumber && item.orderNumber != "") {
-        this.orderService.getCostumerByOrder(item.orderNumber).subscribe( async res=> {
+        this.orderService.getCostumerByOrder(item.orderNumber).subscribe(async res => {
           this.costumer = res.costumer
           await this.itemSer.getItemData(item.itemNumber).subscribe(res => {
-            
+
             // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
-          if (res[0]._id) {
-            packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
-            impremark = res[0].impRemarks;
-          }
-          let scheduleLine = {
-            positionN: '',
-            orderN: item.orderNumber,
-            item: item.itemNumber,
-            costumer: this.costumer,
-            productName: item.discription,
-            batch: item.batch.trim(),
-            packageP: packageP,
-            qty: item.quantity,
-            qtyRdy: '',
-            date: this.date.nativeElement.value,
-            marks: this.marks.nativeElement.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
-            shift: this.shift.nativeElement.value,
-            mkp: this.chosenType,
-            status: 'open',
-            productionLine: '',
-            pLinePositionN: 999,
-            itemImpRemark: impremark,
-          }
-          if (scheduleLine.mkp == "sachet") scheduleLine.productionLine = "10";
-          if (scheduleLine.mkp == "mkp") scheduleLine.productionLine = "11";
-          if (scheduleLine.mkp == "tube") scheduleLine.productionLine = "12";
-          if (scheduleLine.mkp == "laser") scheduleLine.productionLine = "13";
-          if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
-          if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
-          
-          
-          this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
-          let dateSced = this.date.nativeElement.value;
-          dateSced = moment(dateSced).format("DD/MM/YYYY");
-          let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " + dateSced };
-          this.orderService.editItemOrder(orderObj).subscribe(res => {
-            console.log(res);
-            this.toastSrv.success(dateSced, "Schedule Saved");
+            if (res[0]._id) {
+              packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+              impremark = res[0].impRemarks;
+            }
+            let scheduleLine = {
+              positionN: '',
+              orderN: item.orderNumber,
+              item: item.itemNumber,
+              costumer: this.costumer,
+              productName: item.discription,
+              batch: item.batch.trim(),
+              packageP: packageP,
+              qty: item.quantity,
+              qtyRdy: '',
+              date: this.date.nativeElement.value,
+              marks: this.marks.nativeElement.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
+              shift: this.shift.nativeElement.value,
+              mkp: this.chosenType,
+              status: 'open',
+              productionLine: '',
+              pLinePositionN: 999,
+              itemImpRemark: impremark,
+            }
+            if (scheduleLine.mkp == "sachet") scheduleLine.productionLine = "10";
+            if (scheduleLine.mkp == "mkp") scheduleLine.productionLine = "11";
+            if (scheduleLine.mkp == "tube") scheduleLine.productionLine = "12";
+            if (scheduleLine.mkp == "laser") scheduleLine.productionLine = "13";
+            if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
+            if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
+
+
+            this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
+            let dateSced = this.date.nativeElement.value;
+            dateSced = moment(dateSced).format("DD/MM/YYYY");
+            let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " + dateSced };
+            this.orderService.editItemOrder(orderObj).subscribe(res => {
+              console.log(res);
+              this.toastSrv.success(dateSced, "Schedule Saved");
+            });
+            console.log(scheduleLine);
           });
-          console.log(scheduleLine);
-        });
-      })
+        })
 
       } else {
         this.toastSrv.error("Item number missing");
@@ -1327,45 +1328,45 @@ export class OrderdetailsComponent implements OnInit {
 
   setBatch(item, batch, existBatch) {
 
-    if (this.inputBatch.nativeElement.value != undefined) { }
-    this.inputBatch.nativeElement.value;
-    let updatedBatch = this.inputBatch.nativeElement.value.toLowerCase();
-    updatedBatch = updatedBatch.trim();
-
-    updatedBatch = updatedBatch.replace(/\s/g, '')
-    // batch=batch.toLowerCase();
-    // batch=batch.trim();
-    let cont = true;
-    if (item.batch != "" && updatedBatch == '') {
-      cont = confirm('למחוק אצווה?')
-    }
-
-
-    // if(existBatch!=null && existBatch!=undefined && existBatch!=""){
-    //   //adding to exist batch number to oreder item
-    //   updatedBatch=batch + "+" + existBatch;
-    // }else{
-    //   //adding new batch number to oreder item
-    //   updatedBatch=batch;
-    // }
-    // let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
-    if (cont) {
-      let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
-      console.log(batchObj);
-      this.orderService.editItemOrder(batchObj).subscribe(res => {
-        console.log(res);
-        this.ordersItems.map(orderItem => {
-          if (orderItem._id == item._id) {
-            orderItem.batch = updatedBatch;
-            orderItem.fillingStatus = "formula porduced " + updatedBatch;
+    if (this.inputBatch.nativeElement.value != undefined) {
+      this.batchService.getBatchData(this.inputBatch.nativeElement.value).subscribe(batches => {
+        if (batches.length == 1) {
+          if (batches[0].specStatus && (batches[0].specStatus.status == 0 || batches[0].specStatus.status == 2)){
+            this.toastSrv.error('Batch Specifications not Approved!')
           }
-        });
-        this.toastSrv.success(updatedBatch, "Changes Saved");
-        this.inputBatch.nativeElement.value = "";
-        this.editBatchN = false;
-      });
+          else {
+            let updatedBatch = this.inputBatch.nativeElement.value.toLowerCase();
+            updatedBatch = updatedBatch.trim();
+            updatedBatch = updatedBatch.replace(/\s/g, '')
+            let cont = true;
+            if (item.batch != "" && updatedBatch == '') {
+              cont = confirm('למחוק אצווה?')
+            }
+      
+            if (cont) {
+              let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
+              console.log(batchObj);
+              this.orderService.editItemOrder(batchObj).subscribe(res => {
+                console.log(res);
+                this.ordersItems.map(orderItem => {
+                  if (orderItem._id == item._id) {
+                    orderItem.batch = updatedBatch;
+                    orderItem.fillingStatus = "formula porduced " + updatedBatch;
+                  }
+                });
+                this.toastSrv.success(updatedBatch, "Changes Saved");
+                this.inputBatch.nativeElement.value = "";
+                this.editBatchN = false;
+              });
+      
+            }
+          }
+        }
+        else if (batches.length > 1) this.toastSrv.error('More than one batch exist with Number '+this.inputBatch.nativeElement.value)
+        else this.toastSrv.error('Batch Not Found.')
+      })
 
-    }
+    } else this.toastSrv.error('Please Fill Batch Number')
 
   }
 
@@ -1784,9 +1785,8 @@ export class OrderdetailsComponent implements OnInit {
 
 
 
-//order explosion
+  //order explosion
   async openCmptDemandsModal() {
-      debugger;
     this.orderExplodeLoader = true
     this.bottleList = [];
     this.capList = [];
@@ -1797,7 +1797,7 @@ export class OrderdetailsComponent implements OnInit {
     this.cartonList = [];
     this.itemTreeRemarks = [];
     if (this.ordersItems.length > 0) {
-      
+
       this.internalNumArr = []; //just numbers
       this.ordersItems.map(i => this.internalNumArr.push(i.itemNumber.trim()));
 
@@ -1903,7 +1903,7 @@ export class OrderdetailsComponent implements OnInit {
             } else {
               if (newCmpt) {
 
-                this.stickerList.push({ stickerNumber: item.stickerNumber, qnt: item.quantity , amount: item.stickerAmount });
+                this.stickerList.push({ stickerNumber: item.stickerNumber, qnt: item.quantity, amount: item.stickerAmount });
                 newCmpt = false;
               }
             }
@@ -1919,7 +1919,7 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-                this.stickerList.push({ stickerNumber: item.stickerTypeK, qnt: item.quantity , amount: item.stickerAmount });
+                this.stickerList.push({ stickerNumber: item.stickerTypeK, qnt: item.quantity, amount: item.stickerAmount });
                 newCmpt = false;
               }
             }
@@ -2032,8 +2032,8 @@ export class OrderdetailsComponent implements OnInit {
         });
 
         this.orderItemsComponents = res;
-       
-        
+
+
       });
     }
 

@@ -87,4 +87,11 @@ export class BatchesService {
     return this.http.put(url, JSON.stringify(formToUpdate), this.options).pipe(map(res => res.json()));
   }
 
+  updateSpecvalue(batchNum, specStatus) {
+    let url = this.baseUrl + "batch/specvalue";
+    return this.http.post(url, JSON.stringify({batchNum, specStatus}), this.options).pipe(map(res => res.json()))
+  }
+
+
+
 }

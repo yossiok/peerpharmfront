@@ -292,7 +292,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   //Stock Items
   findStockItemByNumber() {
-
     this.getLastOrdersForItem(this.itemForm.get('number').value)
 
     if (this.itemForm.get('number').value != '') {
@@ -305,7 +304,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName);
             this.itemForm.controls.coin.setValue(data[0].coin.toUpperCase())
-            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
+            this.itemForm.controls.measurement.setValue(data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
             this.itemForm.controls.coin.setValue(data[0].coin)
 
@@ -339,7 +338,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         this.inventoryService.getCmptByitemNumber(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName)
-            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure)
+            this.itemForm.controls.measurement.setValue(data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
 
                //set price

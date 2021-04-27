@@ -31,9 +31,13 @@ style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;height:30p
           <div class="col-4">
             <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Suppliers</h1>
           </div>
+        </div>
+        <div class="row p-2 mt-2 text-center">
+          <div class="col-3"></div>
           <div class="col-4">
-            <button style="float:right" class="form-control btn btn-info w-50" (click)="open(content)">Add Supplier</button>
+            <button style="float:right" class="form-control btn btn-info w-50" (click)="open(content)">New Supplier</button>
           </div>
+          <div class="col-5"></div>
         </div>
 
         <div *ngIf="suppliers.length == 0" class="row text-center mt-4 mb-4">

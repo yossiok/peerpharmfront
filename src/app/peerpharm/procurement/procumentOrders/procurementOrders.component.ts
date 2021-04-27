@@ -499,7 +499,6 @@ export class ProcurementOrdersComponent implements OnInit {
     this.totalPriceNis = 0
     this.totalPrice = 0
     this.printSum = false
-
     for (let i = 0; i < this.currentItems.length; i++) {
       if(i==0) {
         coin = this.currentItems[i].coin
@@ -510,9 +509,7 @@ export class ProcurementOrdersComponent implements OnInit {
         else this.printSum = false
       }
       this.currentItems[i].coin = this.currentItems[i].coin.toUpperCase() 
-      if (this.currentItems[i].itemPrice == 0 || isNaN(this.currentItems[i].itemPrice) || this.currentItems[i].itemPrice == null) {
-        this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
-      }
+      this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
       this.currentItems[i].localTotal =this.currentItems[i].itemPrice * this.currencies[this.currentItems[i].coin.toUpperCase()] 
       this.totalAmount = this.totalAmount + Number(this.currentItems[i].quantity)
       this.totalPriceNis = this.totalPriceNis + Number(this.currentItems[i].localTotal)
