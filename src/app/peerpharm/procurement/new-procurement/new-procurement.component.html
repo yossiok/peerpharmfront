@@ -208,6 +208,7 @@
               </select>
             </div>
             <div class="col-sm-12 col-md-4 form-group">
+              <!-- <label>Coin</label> -->
               <select [disabled]="disabled" formControlName="coin" class="form-control" required>
                 <option disabled value="">Coin</option>
                 <option value="NIS">NIS</option>
@@ -221,7 +222,7 @@
 
           <div *ngIf="showItemDetails" class="row mt-1">
             <div class="col-5"></div>
-            <div class="col-2">
+            <div class="col-2" [ngbTooltip]="itemFormErrors" placement="bottom">
               <button type="submit" [disabled]="itemForm.invalid"
                 [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
                 <i class="fa fa-plus"></i>
@@ -470,8 +471,8 @@
 
             <div *ngIf="showItemDetails" class="row mt-1">
               <div class="col-5"></div>
-              <div class="col-2">
-                <button type="button" (click)="addItemToPurchase()" [disabled]="itemForm.invalid"
+              <div [ngbTooltip]="itemFormErrors" placement="bottom" class="col-2">
+                <button type="button" (click)="addItemToPurchase()" [disabled]="itemForm.invalid" 
                   [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
                   <i class="fa fa-plus"></i>
                 </button>
@@ -537,7 +538,7 @@
           <div class="col-4"></div>
           <div class="col-4">
             <button (click)="sendNewProc('add')" class="btn btn-primary form-control" [disabled]="!newPurchase.valid"
-              [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'"
+              [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'" 
               [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>
@@ -842,11 +843,12 @@
   </div>
 </ng-template>
 
-<!-- <ng-template #itemFormErrors>
-  <h4>Errors:</h4>
-  <div class="d-flex flex-column">
-    <div *ngFor="let input of itemForm.controls">
-      <span *ngIf="input.invalid">Please fill {{input}}</span>
+<ng-template  #itemFormErrors>
+  <div *ngIf="itemForm.invalid" class="bg-danger">
+    <div class="d-flex flex-column">
+      <div *ngFor="let control of itemForm.controls | keyvalue">
+        <h4 *ngIf="control.value.status == 'INVALID'">Please fill {{control.key}}</h4>
+      </div>
     </div>
   </div>
-</ng-template> -->
+</ng-template>

@@ -142,7 +142,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       name: ['', Validators.required],
       coin: ['', Validators.required],
       measurement: ['kg', Validators.required],
-      price: [0],
+      price: [0, Validators.required],
       quantity: ['', Validators.required],
       color: [''],
       itemRemarks: [''],
@@ -306,7 +306,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.itemForm.controls.coin.setValue(data[0].coin.toUpperCase())
             this.itemForm.controls.measurement.setValue(data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
-            this.itemForm.controls.coin.setValue(data[0].coin)
 
             //set price
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
@@ -340,6 +339,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.itemForm.controls.name.setValue(data[0].componentName)
             this.itemForm.controls.measurement.setValue(data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
+            this.itemForm.controls.coin.setValue(data[0].coin.toUpperCase())
 
                //set price
             var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
