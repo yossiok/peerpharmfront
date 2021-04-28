@@ -629,7 +629,7 @@
               </div>
 
               <div class="col-2 fixNoaStupidStuff">
-                <button (click)="getProductsWithItem()">הצג מוצרים שמכילים את הפריט</button>
+                <button [disabled]="gettingProducts" [style.cursor]="gettingProducts ? 'not-allowed' : 'pointer'" (click)="getProductsWithItem()">הצג מוצרים שמכילים את הפריט</button>
               </div>
 
               <div class="col-2 fixNoaStupidStuff modal-inner border" *ngIf="resCmpt.connectedProducts">

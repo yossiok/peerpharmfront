@@ -331,6 +331,7 @@ export class StockComponent implements OnInit {
   fetchingOrders: boolean = false
   currencies: Currencies
   callingForCmptAmounts: boolean = false;
+  gettingProducts: boolean;
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -631,6 +632,7 @@ export class StockComponent implements OnInit {
               'מטבע2': that.components[i].alternativeSuppliers[1] ?  that.components[i].alternativeSuppliers[1].coin : '',
               'מחיר3':that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].price  : '',
               'מטבע3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].coin : '',
+              'קישור לתמונה': that.components[i].img
   
             }
             arr.push(line)
@@ -1851,7 +1853,9 @@ export class StockComponent implements OnInit {
   }
 
   getProductsWithItem() {
+    this.gettingProducts = true;
     this.inventoryService.getAllProductsWithItem(this.resCmpt.componentN).subscribe(response=>{
+      this.gettingProducts = false;
       if(response.allProductsWithItem) this.resCmpt.connectedProducts = response.allProductsWithItem
     })
   }
