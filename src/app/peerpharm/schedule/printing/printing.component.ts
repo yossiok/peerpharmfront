@@ -275,7 +275,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
     if (!line.amountPckgs) line.amountPckgs=0; 
 
     var amountPrinted = prompt("Enter Amount Printed\nCurrent printed amount: "+ line.qtyProduced +"\nFrom total Amount of:"+line.qty, line.qtyProduced);
-    var amountPckgs = prompt("Enter Amount Printed\nCurrent printed amount: "+line.amountPckgs,line.amountPckgs ); 
+    var amountPckgs = prompt("How many packages?\nCurrent printed amount: "+line.amountPckgs,line.amountPckgs ); 
     if(amountPckgs!=null && amountPrinted!=null){
       var scheduleToUpdate={
         scheduleId:id,
@@ -286,14 +286,12 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
         itemN:itemN,
         status:'partial printing'
       }
-      if (amountPrinted >= line.qty ){
           var a = confirm("Amount printed: "+amountPrinted+"\nRequired Amount: "+line.qty+"\nPrint process is done ?");
           if (a == true) {
             scheduleToUpdate.status="printed";
             line.trColor="Aquamarine";
             
           }
-      }
       this.scheduleService.updatePrintSchedule(scheduleToUpdate).subscribe(res=>{
         if(res._id){
           console.log(res);
