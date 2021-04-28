@@ -1805,6 +1805,7 @@ export class OrderdetailsComponent implements OnInit {
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe(async res => {
         await res.forEach(async item => {
 
+          item.weight = this.ordersItems.find(i=>i.itemNumber==item.itemNumber).netWeightGr
           //for each order-item-demand, get all internal items and their quantities 
           let i = this.ordersItems.filter(x => x.itemNumber == item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
@@ -2027,14 +2028,18 @@ export class OrderdetailsComponent implements OnInit {
             this.itemTreeRemarks.push(item);
           }
           debugger;
-          this.orderExplodeLoader = false;
-          this.cmptModal = true;
-        });
+          item.GT = item.quantity / Number(item.PcsCarton)
+          item.prodWeight = item.weight * item.quantity / 1000
 
+        });
+        
+        this.orderExplodeLoader = false;
+        this.cmptModal = true;
         this.orderItemsComponents = res;
 
 
       });
+    }
     }
 
 
@@ -2067,7 +2072,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
 
-}
+
 
   // getItemWhShelfsList(orderItemsCmptArr) {
 

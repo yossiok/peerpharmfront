@@ -105,7 +105,8 @@ export class StockComponent implements OnInit {
     alternativeComponent: '',
     comaxName: '',
     alternativeSuppliers: [],
-    price: ''
+    price: '',
+    connectedProducts: []
 
   }
   alternativeSupplier: any = {
@@ -1845,6 +1846,12 @@ export class StockComponent implements OnInit {
         this.toastSrv.success('Component Deleted !')
         this.components = this.components.filter(c => c._id != id)
       }
+    })
+  }
+
+  getProductsWithItem() {
+    this.inventoryService.getAllProductsWithItem(this.resCmpt.componentN).subscribe(response=>{
+      if(response.allProductsWithItem) this.resCmpt.connectedProducts = response.allProductsWithItem
     })
   }
 

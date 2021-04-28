@@ -628,6 +628,19 @@
                   [(ngModel)]="resCmpt.jumpRemark"></textarea>
               </div>
 
+              <div class="col-2 fixNoaStupidStuff">
+                <button (click)="getProductsWithItem()">הצג מוצרים שמכילים את הפריט</button>
+              </div>
+
+              <div class="col-2 fixNoaStupidStuff modal-inner border" *ngIf="resCmpt.connectedProducts">
+                <div *ngFor="let product of resCmpt.connectedProducts">
+                  <h5>{{product.itemNumber}}</h5>
+                  <h5>{{product.name}}</h5>
+                  <h5>{{product.subName}}</h5>
+                  <h5>{{product.discriptionK}}</h5>
+                </div>
+              </div>
+
               <div class="col-4 fixNoaStupidStuff">
                 <img *ngIf="resCmpt.img!=''" [src]="resCmpt.img" style="max-height: 250px;"
                   class="hoverImg w-25 h-100 border border-success" alt="Item main image please wait ...">
