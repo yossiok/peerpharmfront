@@ -1326,48 +1326,69 @@ export class OrderdetailsComponent implements OnInit {
   }
 
 
-  setBatch(item, batch, existBatch) {
+  async setBatch(item, batch, existBatch) {
 
-    if (this.inputBatch.nativeElement.value != undefined) {
-      this.batchService.getBatchData(this.inputBatch.nativeElement.value).subscribe(batches => {
-        if (batches.length == 1) {
-          if (batches[0].specStatus && (batches[0].specStatus.status == 0 || batches[0].specStatus.status == 2)){
-            this.toastSrv.error('Batch Specifications not Approved!')
-          }
-          else {
-            let updatedBatch = this.inputBatch.nativeElement.value.toLowerCase();
-            updatedBatch = updatedBatch.trim();
-            updatedBatch = updatedBatch.replace(/\s/g, '')
-            let cont = true;
-            if (item.batch != "" && updatedBatch == '') {
-              cont = confirm('למחוק אצווה?')
+    let updatedBatch = this.inputBatch.nativeElement.value.toLowerCase();
+    updatedBatch = updatedBatch.trim();
+    updatedBatch = updatedBatch.replace(/\s/g, '')
+    let cont = true;
+
+    // if no text - delete batch
+    if (item.batch != "" && updatedBatch == '') {
+      if (confirm('למחוק אצווה?')) {
+        let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
+        this.orderService.editItemOrder(batchObj).subscribe(res => {
+          this.ordersItems.map(orderItem => {
+            if (orderItem._id == item._id) {
+              orderItem.batch = updatedBatch;
+              orderItem.fillingStatus = "formula porduced " + updatedBatch;
             }
-      
-            if (cont) {
-              let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
-              console.log(batchObj);
-              this.orderService.editItemOrder(batchObj).subscribe(res => {
-                console.log(res);
-                this.ordersItems.map(orderItem => {
-                  if (orderItem._id == item._id) {
-                    orderItem.batch = updatedBatch;
-                    orderItem.fillingStatus = "formula porduced " + updatedBatch;
-                  }
-                });
-                this.toastSrv.success(updatedBatch, "Changes Saved");
-                this.inputBatch.nativeElement.value = "";
-                this.editBatchN = false;
-              });
-      
+          });
+          this.toastSrv.success(updatedBatch, "Changes Saved");
+          this.inputBatch.nativeElement.value = "";
+          this.editBatchN = false;
+        });
+      }
+    }
+
+    // else - check batches
+    else {
+      this.checkBatches().then(() => {
+        // if all is good - continue and save batch number/s to orderItem
+        let batchObj = { orderItemId: item._id, batch: updatedBatch, fillingStatus: "formula porduced " + updatedBatch };
+        this.orderService.editItemOrder(batchObj).subscribe(res => {
+          this.ordersItems.map(orderItem => {
+            if (orderItem._id == item._id) {
+              orderItem.batch = updatedBatch;
+              orderItem.fillingStatus = "formula porduced " + updatedBatch;
             }
+          });
+          this.toastSrv.success(updatedBatch, "Changes Saved");
+          this.inputBatch.nativeElement.value = "";
+          this.editBatchN = false;
+        });
+      }).catch(err => this.toastSrv.error(err))
+
+    }
+  }
+
+  // check batches and spec status
+  async checkBatches() {
+    return new Promise((resolve, reject) => {
+      let allBatches = this.inputBatch.nativeElement.value.split('+')
+      allBatches.forEach(batch => {
+        this.batchService.getBatchData(batch).subscribe(batches => {
+          if (batches.length == 1) {
+            if (batches[0].specStatus && (batches[0].specStatus.status == 0 || batches[0].specStatus.status == 2)) {
+              reject('Batch Specifications not Approved!')
+            }
+            else resolve('Changes Saved.')
           }
-        }
-        else if (batches.length > 1) this.toastSrv.error('More than one batch exist with Number '+this.inputBatch.nativeElement.value)
-        else this.toastSrv.error('Batch Not Found.')
+          else if (batches.length > 1) reject('More than one batch exist with Number ' + this.inputBatch.nativeElement.value)
+          else if (batches.length == 0) reject(`Batch ${batch} Not Found.`)
+        })
       })
-
-    } else this.toastSrv.error('Please Fill Batch Number')
-
+    })
   }
 
   updateBatchExist(item, batch) {
@@ -1805,7 +1826,7 @@ export class OrderdetailsComponent implements OnInit {
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe(async res => {
         await res.forEach(async item => {
 
-          item.weight = this.ordersItems.find(i=>i.itemNumber==item.itemNumber).netWeightGr
+          item.weight = this.ordersItems.find(i => i.itemNumber == item.itemNumber).netWeightGr
           //for each order-item-demand, get all internal items and their quantities 
           let i = this.ordersItems.filter(x => x.itemNumber == item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
@@ -2032,7 +2053,7 @@ export class OrderdetailsComponent implements OnInit {
           item.prodWeight = item.weight * item.quantity / 1000
 
         });
-        
+
         this.orderExplodeLoader = false;
         this.cmptModal = true;
         this.orderItemsComponents = res;
@@ -2040,36 +2061,36 @@ export class OrderdetailsComponent implements OnInit {
 
       });
     }
-    }
-
-
-
-
-    /*
-    FIELDS WE WANT TO GET FOR EACH ORDER_ITEM FROM ITEMS COLLECTION
-
-    itemNumber
-
-    stickerNumber: String,
-    stickerTypeK: String,
-    StickerLanguageK: String,
-
-    boxNumber: String,
-    boxTypeK: String,
-
-    cartonNumber: String,
-    PcsCarton: String,
-    *** cartonNumberQnt:  =Qnt/PcsCarton: ***
-
-    bottleNumber: String,
-    capNumber: String,
-    pumpNumber: String,
-    sealNumber: String,
-    goddet: ???
-
-
-    */
   }
+
+
+
+
+  /*
+  FIELDS WE WANT TO GET FOR EACH ORDER_ITEM FROM ITEMS COLLECTION
+
+  itemNumber
+
+  stickerNumber: String,
+  stickerTypeK: String,
+  StickerLanguageK: String,
+
+  boxNumber: String,
+  boxTypeK: String,
+
+  cartonNumber: String,
+  PcsCarton: String,
+  *** cartonNumberQnt:  =Qnt/PcsCarton: ***
+
+  bottleNumber: String,
+  capNumber: String,
+  pumpNumber: String,
+  sealNumber: String,
+  goddet: ???
+
+
+  */
+}
 
 
 
