@@ -8,6 +8,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-qa-pallets',
@@ -87,7 +88,7 @@ export class QaPalletsComponent implements OnInit {
 
 
 
-  constructor(private itemService: ItemsService, private inventorySrv: InventoryService, private authService: AuthService, private orderService: OrdersService, private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
+  constructor(private excelService: ExcelService,private itemService: ItemsService, private inventorySrv: InventoryService, private authService: AuthService, private orderService: OrdersService, private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -123,6 +124,10 @@ export class QaPalletsComponent implements OnInit {
       })
     }
 
+  }
+
+  exportAsXLSX(){
+    this.excelService.exportAsExcelFile(this.allReadyPackedLists, 'data');
   }
 
   deleteNewPallete(palletNumber, customerName) {
