@@ -112,7 +112,7 @@
                     [style.width]="'50px'" class="form-control">
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price | currency: stockitem.coin}}</td>
+                  <td *ngIf="!editItem">{{stockitem.price}} {{stockitem.coin}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
                     [style.width]="'77px'" class="form-control">
@@ -310,7 +310,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('update')" [disabled]="disabled" class="btn btn-primary form-control"
+            <button (click)="sendNewProc('update')" [disabled]="disabled || sendingPurchase" [style.cursor]="sendingPurchase ? 'not-allowed' : 'pointer'" class="btn btn-primary form-control"
               [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>
@@ -537,8 +537,9 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add')" class="btn btn-primary form-control" [disabled]="!newPurchase.valid"
-              [style.cursor]="newPurchase.valid ? 'pointer' : 'not-allowed'" 
+            <button (click)="sendNewProc('add')" [disabled]="!newPurchase.valid || sendingPurchase" 
+              [style.cursor]="sendingPurchase || !newPurchase.valid ? 'not-allowed' : 'pointer'" class="btn btn-primary form-control" 
+             
               [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>

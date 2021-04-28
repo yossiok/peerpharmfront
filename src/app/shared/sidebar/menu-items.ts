@@ -616,7 +616,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [
     
           {
-            path: '/peerpharm/inventory/suppliers',
+            path: '/peerpharm/suppliers/suppliers',
             title: 'All Suppliers',
             icon: 'fas fa-address-book',
             class: '',

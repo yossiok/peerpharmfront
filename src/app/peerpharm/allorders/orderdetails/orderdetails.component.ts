@@ -238,18 +238,18 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   exportAsXLSX(data) {
-
-    for (let i = 0; i < data.length; i++) {
-      for (let j = 0; j < this.ordersItems.length; j++) {
-        if (data[i].itemNumber == this.ordersItems[j].itemNumber) {
-
-          data[i].netWeightGr = this.ordersItems[j].netWeightGr
-        }
-
-      }
-
-    }
-    this.excelService.exportAsExcelFile(data, 'Order ' + this.ordersItems[0].orderNumber + ' Explode');
+    let orderItemsToExcel = [...data]
+    orderItemsToExcel.map(orderItem=>{
+      orderItem.orderNumber = this.number
+      delete orderItem._id
+      delete orderItem.pallet2
+      delete orderItem.pallet3
+      delete orderItem.boxTypeK
+      delete orderItem.proRemarks
+      delete orderItem.impRemarks
+      return orderItem
+    })
+    this.excelService.exportAsExcelFile(orderItemsToExcel, 'Order ' + this.number + ' Explode');
   }
 
   async ngOnInit() {
@@ -2048,7 +2048,6 @@ export class OrderdetailsComponent implements OnInit {
           if (item.impRemarks != '' || item.proRemarks != '') {
             this.itemTreeRemarks.push(item);
           }
-          debugger;
           item.GT = item.quantity / Number(item.PcsCarton)
           item.prodWeight = item.weight * item.quantity / 1000
 

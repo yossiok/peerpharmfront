@@ -266,7 +266,7 @@ export const PeerPharmRputs: Routes = [
     component: ShelfListComponent
   },
   {
-    path: 'inventory/suppliers',
+    path: 'suppliers/suppliers',
     canActivate: [ScreenGuard],
     data: {
       title: 'Suppliers'

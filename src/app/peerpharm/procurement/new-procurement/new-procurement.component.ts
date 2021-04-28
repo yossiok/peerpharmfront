@@ -98,6 +98,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   itemIndex: number;
   itemHistory: any;
   submittingCert: boolean;
+  sendingPurchase: boolean;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -584,12 +585,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
   sendNewProc(action) {
+    this.sendingPurchase = true;
     if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
           this.newPurchase.controls['user'].setValue(this.authService.loggedInUser.userName)
           this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
           this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
+            this.sendingPurchase = false;
             if (data) {
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.newPurchase.reset();
@@ -608,6 +611,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     if (action == 'update') {
       if (confirm('האם לעדכן הזמנה זו ?')) {
         this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data => {
+          this.sendingPurchase = false;
           if (data) {
             this.toastr.success('הזמנה עודכנה בהצלחה !')
             this.closeOrderModal.emit(false)
