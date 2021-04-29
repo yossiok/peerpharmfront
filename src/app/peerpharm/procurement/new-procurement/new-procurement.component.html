@@ -129,7 +129,7 @@
                     </select>
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.itemRemarks}}</td>
+                  <td *ngIf="!editItem">{{stockitem.remarks}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <textarea [(ngModel)]="stockitem.remarks" [ngModelOptions]="{standalone: true}" type="number" class="form-control"
                     [style.width]="'100px'" placeholder="Item Remarks"></textarea>
@@ -465,7 +465,7 @@
             </div>
 
             <div *ngIf="showItemDetails" class="row mt-1">
-              <textarea formControlName="itemRemarks" type="number" class="form-control"
+              <textarea formControlName="remarks" type="number" class="form-control"
                 placeholder="Item Remarks"></textarea>
             </div>
 

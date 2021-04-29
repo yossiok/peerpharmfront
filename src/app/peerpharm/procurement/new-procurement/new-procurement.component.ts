@@ -146,7 +146,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       price: [0, Validators.required],
       quantity: ['', Validators.required],
       color: [''],
-      itemRemarks: [''],
+      remarks: [''],
       itemPrice: [''],
       supplierItemNum: [''],
       supplierAmount: [0],
