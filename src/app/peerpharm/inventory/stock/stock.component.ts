@@ -1060,6 +1060,7 @@ export class StockComponent implements OnInit {
 
   async updateItemStock(direction) {
     //check enough amount for "out"
+    debugger;
     this.newItemShelfPosition = this.newItemShelfPosition.toUpperCase().trim();
     var shelfExsit = false;
     let itemShelfCurrAmounts = []
@@ -1334,6 +1335,7 @@ export class StockComponent implements OnInit {
   searchItemShelfs() {
     ;
     if (this.newItemShelfWH != '') {
+      debugger;
       this.inventoryService.getShelfListForItemInWhareHouse(this.resCmpt.componentN, this.newItemShelfWH).subscribe(async res => {
         if (res.length > 0) {
           this.currItemShelfs = res;
