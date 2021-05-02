@@ -1830,7 +1830,6 @@ export class OrderdetailsComponent implements OnInit {
 
       this.internalNumArr = []; //just numbers
       this.ordersItems.map(i => this.internalNumArr.push(i.itemNumber.trim()));
-
       //get all orderItem-demands
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe(async res => {
         await res.forEach(async item => {
@@ -1841,15 +1840,10 @@ export class OrderdetailsComponent implements OnInit {
           item.quantity = parseInt(i.quantity);
           item.itemName = i.discription;
 
-          console.log("i from orderItems ", i)
-          console.log("i.quantity", i.quantity);
-          console.log("item.quantity", item.quantity);
-
-
           if (item.bottleNumber != '' && item.bottleNumber != '---') {
 
             let newCmpt = true;
-            if (this.bottleList.map(function (el) { return el.bottleNumber; }).includes(item.bottleNumber)) {
+            if (this.bottleList.map(el => el.bottleNumber).includes(item.bottleNumber)) {
               this.bottleList.map(i => {
                 if (i.bottleNumber == item.bottleNumber) {
                   newCmpt = false;
@@ -1859,17 +1853,15 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-
                 this.bottleList.push({ bottleNumber: item.bottleNumber, qnt: item.quantity, amount: item.bottleAmount });
                 newCmpt = false;
-
               }
             }
           }
 
           if (item.capNumber != '' && item.capNumber != '---') {
             let newCmpt = true;
-            if (this.capList.map(function (el) { return el.capNumber; }).includes(item.capNumber)) {
+            if (this.capList.map(el => el.capNumber).includes(item.capNumber)) {
               this.capList.map(i => {
                 if (i.capNumber == item.capNumber) {
                   newCmpt = false;
@@ -1878,7 +1870,6 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-
                 this.capList.push({ capNumber: item.capNumber, qnt: item.quantity, amount: item.capAmount });
                 newCmpt = false;
               }
@@ -1887,7 +1878,7 @@ export class OrderdetailsComponent implements OnInit {
 
           if (item.pumpNumber != '' && item.pumpNumber != '---') {
             let newCmpt = true;
-            if (this.pumpList.map(function (el) { return el.pumpNumber; }).includes(item.pumpNumber)) {
+            if (this.pumpList.map(el => el.pumpNumber).includes(item.pumpNumber)) {
               this.pumpList.map(i => {
                 if (i.pumpNumber == item.pumpNumber) {
                   newCmpt = false;
@@ -1897,7 +1888,6 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-
                 this.pumpList.push({ pumpNumber: item.pumpNumber, qnt: item.quantity, amount: item.pumpAmount });
                 newCmpt = false;
               }
@@ -1906,7 +1896,7 @@ export class OrderdetailsComponent implements OnInit {
 
           if (item.sealNumber != '' && item.sealNumber != '---') {
             let newCmpt = true;
-            if (this.sealList.map(function (el) { return el.sealNumber; }).includes(item.sealNumber)) {
+            if (this.sealList.map(el =>  el.sealNumber).includes(item.sealNumber)) {
               this.sealList.map(i => {
                 if (i.sealNumber == item.sealNumber) {
                   newCmpt = false;
@@ -1915,7 +1905,6 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-
                 this.sealList.push({ sealNumber: item.sealNumber, qnt: item.quantity, amount: item.sealAmount });
                 newCmpt = false;
               }
@@ -1924,7 +1913,7 @@ export class OrderdetailsComponent implements OnInit {
 
           if (item.stickerNumber != '' && item.stickerNumber != '---') {
             let newCmpt = true;
-            if (this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerNumber)) {
+            if (this.stickerList.map(el =>  el.stickerNumber).includes(item.stickerNumber)) {
               this.stickerList.map(i => {
                 if (i.stickerNumber == item.stickerNumber) {
                   newCmpt = false;
@@ -1933,7 +1922,6 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-
                 this.stickerList.push({ stickerNumber: item.stickerNumber, qnt: item.quantity, amount: item.stickerAmount });
                 newCmpt = false;
               }
@@ -1941,7 +1929,7 @@ export class OrderdetailsComponent implements OnInit {
           }
           if (item.stickerTypeK != '' && item.stickerTypeK != '---') {
             let newCmpt = true;
-            if (this.stickerList.map(function (el) { return el.stickerNumber; }).includes(item.stickerTypeK)) {
+            if (this.stickerList.map(el => el.stickerNumber).includes(item.stickerTypeK)) {
               this.stickerList.map(i => {
                 if (i.stickerNumber == item.stickerTypeK) {
                   newCmpt = false;
@@ -1958,7 +1946,7 @@ export class OrderdetailsComponent implements OnInit {
 
           if (item.boxNumber != '' && item.boxNumber != '---') {
             let newCmpt = true;
-            if (this.boxList.map(function (el) { return el.boxNumber; }).includes(item.boxNumber)) {
+            if (this.boxList.map(el => el.boxNumber).includes(item.boxNumber)) {
               this.boxList.map(i => {
                 if (i.boxNumber == item.boxNumber) {
                   newCmpt = false;
@@ -1967,7 +1955,6 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-
                 this.boxList.push({ boxNumber: item.boxNumber, qnt: item.quantity, amount: item.boxAmount });
                 newCmpt = false;
               }
@@ -1975,7 +1962,7 @@ export class OrderdetailsComponent implements OnInit {
           }
           if (item.boxTypeK != '' && item.boxTypeK != '---') {
             let newCmpt = true;
-            if (this.boxList.map(function (el) { return el.boxNumber; }).includes(item.boxTypeK)) {
+            if (this.boxList.map(el => el.boxNumber).includes(item.boxTypeK)) {
               this.boxList.map(i => {
                 if (i.boxNumber == item.boxTypeK) {
                   newCmpt = false;
@@ -1992,7 +1979,7 @@ export class OrderdetailsComponent implements OnInit {
 
           if (item.cartonNumber != '' && item.cartonNumber != '---') {
             let newCmpt = true;
-            if (this.cartonList.map(function (el) { return el.cartonNumber; }).includes(item.cartonNumber)) {
+            if (this.cartonList.map(el => el.cartonNumber).includes(item.cartonNumber)) {
               this.cartonList.map(i => {
                 if (i.cartonNumber == item.cartonNumber) {
                   newCmpt = false;
@@ -2001,7 +1988,6 @@ export class OrderdetailsComponent implements OnInit {
               });
             } else {
               if (newCmpt) {
-
                 this.cartonList.push({ cartonNumber: item.cartonNumber, qnt: (item.quantity / parseInt(item.PcsCarton)), amount: item.cartonAmount });
                 newCmpt = false;
               }
@@ -2010,7 +1996,7 @@ export class OrderdetailsComponent implements OnInit {
 
           if (item.pallet != '' && item.pallet != '---') {
             let newCmpt = true;
-            if (this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet)) {
+            if (this.platesList.map(el => el.palletNumber).includes(item.pallet)) {
               this.platesList.map(i => {
                 if (i.palletNumber == item.pallet) {
                   newCmpt = false;
@@ -2025,7 +2011,7 @@ export class OrderdetailsComponent implements OnInit {
           }
           if (item.pallet2 != '' && item.pallet2 != '---') {
             let newCmpt = true;
-            if (this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet2)) {
+            if (this.platesList.map(el => el.palletNumber).includes(item.pallet2)) {
               this.platesList.map(i => {
                 if (i.palletNumber == item.pallet2) {
                   newCmpt = false;
@@ -2040,7 +2026,7 @@ export class OrderdetailsComponent implements OnInit {
           }
           if (item.pallet3 != '' && item.pallet3 != '---') {
             let newCmpt = true;
-            if (this.platesList.map(function (el) { return el.palletNumber; }).includes(item.pallet3)) {
+            if (this.platesList.map(el => el.palletNumber).includes(item.pallet3)) {
               this.platesList.map(i => {
                 if (i.palletNumber == item.pallet3) {
                   newCmpt = false;
