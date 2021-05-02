@@ -1,85 +1,85 @@
+
 <div dir="rtl" class="container">
 
-    <h2>הוסף שירות חיצוני למעקב</h2>
+    <h2></h2>
     <form [formGroup]="addOutservice" (ngSubmit)="addOutServiceToDB()">
-        
-        <div class="form-group">
-            <label>סוג שירות</label>
-            <select class="form-control" placeholder="סוג שירות" formControlName="type" required>
-                <option *ngFor="let serviceType of serviceTypes" [value]="serviceType.name">{{serviceType.name}}</option>
-            </select>
-        </div>
 
-        <div class="form-group">
-            <label>תאריך פתיחת הזמנה</label>
-            <input type="date" class="form-control" placeholder="תאריך פתיחת הזמנה" formControlName="openedAt" required>
-        </div>
+        <h4>פרטים כלליים</h4>
+
+        <label>סוג שירות</label>
+        <select class="form-control" placeholder="סוג שירות" formControlName="type" required>
+            <option *ngFor="let serviceType of serviceTypes" [value]="serviceType.name">{{serviceType.name}}
+            </option>
+        </select>
+
+        <label>תאריך פתיחת הזמנה</label>
+        <input type="date" class="form-control" placeholder="תאריך פתיחת הזמנה" formControlName="openedAt"
+            required>
+        <label>תאריך ביצוע</label>
+        <input type="date" class="form-control" placeholder="תאריך ביצוע" formControlName="date" required>
 
 
-        <div class="form-group">
-            <label>מספק השירות</label>
-            <select class="form-control" placeholder="מספק השירות" formControlName="supplierName" name="supplierName" (change)="fillSupplierDetails($event)" required>
-                <option *ngFor="let supplier of suppliers" [value]="supplier.suplierNumber">{{supplier.suplierName}}</option>
-            </select>
-            <label>מייל</label>
-            <input class="form-control" type="text" formControlName="email" name="email" required>
-            <label>טלפון</label>
-            <input class="form-control" type="text" formControlName="phoneNum" name="phoneNum" required>
-            <label>טלפון נוסף</label>
-            <input class="form-control" type="text" formControlName="cellularNum" name="cellularNum">
-            <label>שם איש קשר</label>
-            <input class="form-control" type="text" formControlName="supplierContact" name="supplierContact" required>
-            <label>פקס</label>
-            <input class="form-control" type="text" formControlName="faxNum" name="faxNum">
-            <label>רחוב</label>
-            <input class="form-control" type="text" formControlName="address" name="address">
-            <label>עיר</label>
-            <input class="form-control" type="text" formControlName="city" name="city">
-            <label>ארץ</label>
-            <input class="form-control" type="text" formControlName="country" name="country">
-         </div>
-        <!-- <div class="form-group">
-            <label>מספק השירות</label>
-            <select class="form-control" placeholder="מספק השירות" formControlName="supplierName" (change)="fillSupplierDetails($event)" required>
-                <option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.suplierName}}</option>
-            </select>
-            <label>מייל</label>
-            <input type="text" formControlName="supplierMail">
-            <label>טלפון</label>
-            <input type="text" formControlName="supplierPhone">
-            <label>איש קשר</label>
-            <input type="text" formControlName="supplierContact">
-        </div> -->
+        <div class="d-flex flex-row justify-content-between">
 
-        <!-- <div class="form-group">
-            <h4 class="click hover-black" (click)="newSup = !newSup">ספק חדש</h4>
-            <div *ngIf="newSup">
-                <label>שם ספק</label>
-                <input type="text">
-                <button>הוסף ספק</button>
+         
+
+            <div class="form-group mt-4">
+                <h4>מספק השירות</h4>
+                <label>ספק</label>
+                <select class="form-control" placeholder="מספק השירות" formControlName="supplierName"
+                    name="supplierName" (change)="fillSupplierDetails($event)" required>
+                    <option *ngFor="let supplier of suppliers" [value]="supplier.suplierNumber">{{supplier.suplierName}}
+                    </option>
+                </select>
+                <label>מייל</label>
+                <input class="form-control" type="text" formControlName="email" name="email" required>
+                <label>טלפון</label>
+                <input class="form-control" type="text" formControlName="phoneNum" name="phoneNum" required>
+                <label>טלפון נוסף</label>
+                <input class="form-control" type="text" formControlName="cellularNum" name="cellularNum">
+                <label>שם איש קשר</label>
+                <input class="form-control" type="text" formControlName="contactName" name="supplierContact"
+                    required>
+                <label>פקס</label>
+                <input class="form-control" type="text" formControlName="faxNum" name="faxNum">
+                <label>רחוב</label>
+                <input class="form-control" type="text" formControlName="address" name="address">
+                <label>עיר</label>
+                <input class="form-control" type="text" formControlName="city" name="city">
+                <label>ארץ</label>
+                <input class="form-control" type="text" formControlName="country" name="country">
             </div>
-        </div> -->
 
-        
-        <div class="form-group">
-            <label>תאריך ביצוע</label>
-            <input type="date" class="form-control" placeholder="תאריך ביצוע" formControlName="date" required>
+            <div class="form-group mt-4">
+              
+               
+                <div class="form-group">
+                    <label>מקים ההזמנה</label>
+                    <input type="text" disabled class="form-control" formControlName="userName" required>
+                    <label>כתובת מייל</label>
+                    <input type="text" class="form-control" formControlName="userEmail" required>
+                </div>
+
+                <div class="form-group" [ngbTooltip]="addOutserviceErrors" placement="bottom">
+                    <button  type="submit" class="btn btn-primary" [disabled]="addOutservice.invalid || sendingForm"
+                        [style.cursor]="addOutservice.invalid || sendingForm ? 'not-allowed' : 'pointer'"> 
+                        הוסף שירות
+                    </button>
+                </div>
+            </div>
+
+
         </div>
 
-        <div class="form-group">
-            <label>מקים ההזמנה</label>
-            <input type="text" disabled class="form-control" formControlName="userName" required>
-            <label>כתובת מייל</label>
-            <input type="text" class="form-control" formControlName="userEmail" required>
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary" 
-                [disabled]="addOutservice.invalid" 
-                [style.cursor]="addOutservice.invalid ? 'not-allowed' : 'pointer'">
-                הוסף שירות
-            </button>
-        </div>
-        
     </form>
 </div>
+
+<ng-template  #addOutserviceErrors>
+    <div *ngIf="addOutservice.invalid" class="bg-danger">
+      <div class="d-flex flex-column">
+        <div *ngFor="let control of addOutservice.controls | keyvalue">
+          <h4 *ngIf="control.value.status == 'INVALID'">Please fill {{control.key}}</h4>
+        </div>
+      </div>
+    </div>
+  </ng-template>

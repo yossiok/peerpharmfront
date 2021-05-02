@@ -3,9 +3,9 @@
     <div class="col-4 fixNoaStupidStuff"></div>
     <div class="col-4 fixNoaStupidStuff">
       <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Filling Schedule</h1>
-        <h2>
-          {{today | date: 'd/M/yy'}} <span *ngIf="time">{{time}}</span>
-        </h2> 
+      <h2>
+        {{today | date: 'd/M/yy'}} <span *ngIf="time">{{time}}</span>
+      </h2>
     </div>
     <div class="col-4 fixNoaStupidStuff"></div>
   </div>
@@ -15,8 +15,7 @@
       <input class="form-control" type="date" #date [(ngModel)]="today" (change)="dateChanged(date.value)" />
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-info form-control border border-dark" 
-        (click)="filterSchedule()">Filter</button>
+      <button class="btn btn-info form-control border border-dark" (click)="filterSchedule()">Filter</button>
     </div>
     <div class="col-9 fixNoaStupidStuff"></div>
   </div>
@@ -35,7 +34,7 @@
     </div>
     <div class="col-2 fixNoaStupidStuff">
       <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-      (click)="exportAsXLSX()">
+        (click)="exportAsXLSX()">
     </div>
 
   </div>
@@ -46,46 +45,54 @@
     </div>
     <div class="col-1 fixNoaStupidStuff">
 
-      <div class="rounded" style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;basic&quot;, this)" [ngStyle]="{ 'background-color': buttonColor }">
+      <div class="rounded" style="color:black;box-shadow: inset 0px 0px 4px 1px"
+        (click)="setType(&quot;basic&quot;, this)" [ngStyle]="{ 'background-color': buttonColor }">
         General
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;tube&quot;, this)" [ngStyle]="{ 'background-color': buttonColor2 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;tube&quot;, this)"
+        [ngStyle]="{ 'background-color': buttonColor2 }">
         Tubes
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;mkp&quot;, this)" [ngStyle]="{ 'background-color': buttonColor3 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;mkp&quot;, this)"
+        [ngStyle]="{ 'background-color': buttonColor3 }">
         Make Up
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;sachet&quot;, this)" [ngStyle]="{ 'background-color': buttonColor4 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;sachet&quot;, this)"
+        [ngStyle]="{ 'background-color': buttonColor4 }">
         Sachet
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
 
-      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;laser&quot;, this)" [ngStyle]="{ 'background-color': buttonColor5 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;laser&quot;, this)"
+        [ngStyle]="{ 'background-color': buttonColor5 }">
         Laser
       </div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;stickers&quot;, this)" [ngStyle]="{ 'background-color': buttonColor6 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;stickers&quot;, this)"
+        [ngStyle]="{ 'background-color': buttonColor6 }">
         Stickers
       </div>
 
     </div>
-  
+
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;unpacked&quot;, this)" [ngStyle]="{ 'background-color': buttonColor7 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;unpacked&quot;, this)"
+        [ngStyle]="{ 'background-color': buttonColor7 }">
         UnPacked
       </div>
 
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;mkp2&quot;, this)" [ngStyle]="{ 'background-color': buttonColor8 }">
+      <div style="color:black;box-shadow: inset 0px 0px 4px 1px" (click)="setType(&quot;mkp2&quot;, this)"
+        [ngStyle]="{ 'background-color': buttonColor8 }">
         Make Up2
       </div>
 
@@ -98,7 +105,8 @@
       <table class="table table-striped table-hover">
         <thead style="box-shadow: inset 0px 0px 4px 1px black;" class="bg-info text-white">
           <tr>
-            <th><img (click)="makeFillingReport()" style="width:50px;" src="../../../../assets/images/stockUpdate.png"></th>
+            <th><img (click)="makeFillingReport()" style="width:50px;" src="../../../../assets/images/stockUpdate.png">
+            </th>
             <th class="positionClass"><b>P</b></th>
             <th><b>Order</b></th>
             <th><b>Item</b></th>
@@ -111,7 +119,8 @@
             <th><b>Remarks</b></th>
             <th><b>Date</b></th>
             <th class="mkpClass printlessTd"><b>shift</b></th>
-            <th><input  class="mkpClassInput form-control" value="MKP" /></th>
+            <th><input class="mkpClassInput form-control" value="MKP" /></th>
+            <th></th>
             <th></th>
             <th></th>
             <th>
@@ -120,7 +129,7 @@
             </th>
           </tr>
         </thead>
-      
+
         <tr class="bg-white" id="inputTr" (click)="EditRowId = 0">
           <td></td>
           <td class="positionClass">
@@ -131,8 +140,8 @@
               (focusout)="setOrderDetails(orderN.value)" class="form-control" />
           </td>
           <td>
-            <input type="text" id="input_item" [(ngModel)]="scheduleLine.item" #itemN (focusout)="setItemDetails(itemN.value)"
-              class="form-control" />
+            <input type="text" id="input_item" [(ngModel)]="scheduleLine.item" #itemN
+              (focusout)="setItemDetails(itemN.value)" class="form-control" />
           </td>
           <td>
             <input type="text" id="input_itemImpRemark" class="form-control" [(ngModel)]="scheduleLine.itemImpRemark"
@@ -158,7 +167,8 @@
             <input type="date" id="input_Date" [(ngModel)]="scheduleLine.date" class="form-control" />
           </td>
           <td>
-            <textarea rows="1" cols="30" id="input_marks" [(ngModel)]="scheduleLine.marks" class="form-control"></textarea>
+            <textarea rows="1" cols="30" id="input_marks" [(ngModel)]="scheduleLine.marks"
+              class="form-control"></textarea>
           </td>
           <td class="printlessTd">
             <select class="form-control" class="selectShiftClass" id="select_shift" [(ngModel)]="scheduleLine.shift">
@@ -183,7 +193,7 @@
               (click)="writeScheduleData()">Add</button><br />
           </td>
         </tr>
-      
+
         <tbody id="table_body">
           <tr style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let line of scheduleData"
             [style.background-color]="line.color">
@@ -212,15 +222,16 @@
               <td *ngIf="line._id === EditRowId">
                 <input #item type="text" [value]="line.item" class="form-control" />
               </td>
-      
+
               <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)"
                 style="color:red ;  max-width: 12%; overflow-wrap: break-word;">
                 {{ line.itemImpRemark }}
               </td>
               <td *ngIf="line._id === EditRowId">
-                <input #item type="text" [value]="line.itemImpRemark" class="form-control" style="color:red ; " disabled />
+                <input #item type="text" [value]="line.itemImpRemark" class="form-control" style="color:red ; "
+                  disabled />
               </td>
-      
+
               <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
                 {{ line.costumer | slice: 0:30 }}
               </td>
@@ -261,15 +272,15 @@
               <td *ngIf="line._id === EditRowId">
                 <input #qty type="text" [value]="line.qty" class="form-control" />
               </td>
-      
-      
+
+
               <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
                 {{ line.marks }}
               </td>
               <td *ngIf="line._id === EditRowId">
                 <textarea rows="1" cols="30" #marks type="text" [value]="line.marks" class="form-control"></textarea>
               </td>
-      
+
               <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
                 {{ line.date | date: "dd/MM/yyyy" }}
               </td>
@@ -311,26 +322,23 @@
                 <i class="ti-trash text-danger m-r-10" (click)="deleteLine(line._id)"></i>&nbsp;
                 <!-- <i class="ti-check text-success m-r-10" (click)="setDone()"></i> -->
               </td>
-              
+
               <td *ngIf="line._id !== EditRowId">
                 {{line.whatIsMissing}}
               </td>
               <td *ngIf="line._id === EditRowId">
-                <select class="form-control" #whatIsMissing type="text" [value]="line.whatIsMissing" >
+                <select class="form-control" #whatIsMissing type="text" [value]="line.whatIsMissing">
                   <option selected="true" disabled="disabled">בחר חוסרים</option>
                   <option value="noStickers">חסר מדבקות</option>
                   <option value="noMaterial">חסר חומר</option>
                   <option value="noComponent">חסר קומפונטט</option>
                   <option value="noLacks">אין חוסרים</option>
-              </select>
-            </td>
+                </select>
+              </td>
+              <td><div *ngIf="line.batchSpecStatus == 1" class="qc-batch"><strong>Q.C BATCH</strong></div></td>
               <td>
-                <!-- <input
-                  type="checkbox"
-                  [(ngModel)]="line.isSelected"
-                  *ngIf="line._id !== EditRowId"
-                /> -->
-                <button *ngIf="line._id !== EditRowId" class="btn btn-info m-r-10 border border-dark" type="button" (click)="openPrintBarkod(content, line)">
+                <button *ngIf="line._id !== EditRowId" class="btn btn-info m-r-10 border border-dark" type="button"
+                  (click)="openPrintBarkod(content, line)">
                   Print Barcode
                 </button>
                 <i *ngIf="typeShown === 'mkp2'" (click)="markMkpDone(line._id)" class="fa fa-check"></i>
@@ -373,12 +381,7 @@
 
       <div class="form-group row">
         <label for="orderNumber">Order Number:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="orderN"
-          [value]="schedFillLine.orderN"
-        />
+        <input class="form-control" type="text" formControlName="orderN" [value]="schedFillLine.orderN" />
       </div>
 
       <div *ngIf="printItemBarcode == true" class="form-group row">
@@ -411,9 +414,8 @@
       </div>
       <div class="form-group row">
         <label>Barcode</label>
-        <input  class="form-control" type="text" formControlName="pcsCartonQuantity"
-          [value]="barcodeK" />
-      
+        <input class="form-control" type="text" formControlName="pcsCartonQuantity" [value]="barcodeK" />
+
       </div>
 
       <!-- <div class="form-group row">
@@ -507,7 +509,8 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button *ngIf="showPrintBtn == true" type="button" class="btn btn-outline-dark" printSectionId="print-section" ngxPrint (click)="c('Saved')">
+    <button *ngIf="showPrintBtn == true" type="button" class="btn btn-outline-dark" printSectionId="print-section"
+      ngxPrint (click)="c('Saved')">
       Print
     </button>
   </div>

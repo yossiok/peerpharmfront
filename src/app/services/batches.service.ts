@@ -93,7 +93,7 @@ export class BatchesService {
   }
 
   getSpecvalue(batchNum) {
-    let url = this.baseUrl + "batch/specvalue?batch="+batchNum;
+    let url = this.baseUrl + "batch/specvalue?batchNum="+batchNum;
     return this.http.get(url).pipe(map(res => res.json()))
   }
 

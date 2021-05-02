@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,13 +13,14 @@ interface supNameAndId {
 }
 
 @Component({
-  selector: 'app-new-out-service',
-  templateUrl: './new-out-service.component.html',
-  styleUrls: ['./new-out-service.component.scss']
+  selector: 'app-edit-out-service',
+  templateUrl: './edit-out-service.component.html',
+  styleUrls: ['./edit-out-service.component.scss']
 })
 
-export class NewOutServiceComponent implements OnInit {
+export class EditServiceComponent implements OnInit {
 
+  @Input() service: OutService;
   serviceTypes: ServiceType[]
   suppliers: supNameAndId[]
   sendingForm: boolean = false;
@@ -37,7 +38,6 @@ export class NewOutServiceComponent implements OnInit {
     address: new FormControl(''),
     city: new FormControl(''),
     country: new FormControl(''),
-    status: new FormControl('open'),
     date: new FormControl(null, Validators.required),
     userName: new FormControl(this.authService.loggedInUser.userName, Validators.required),
     userEmail: new FormControl(this.authService.loggedInUser.userEmail, Validators.required)
@@ -53,14 +53,8 @@ export class NewOutServiceComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.getAllServiceTypes()
-    this.getAllSuppliers()
-  }
-
-  getAllServiceTypes() {
-    this.outServiceService.getAllTypes().subscribe(types => {
-      this.serviceTypes = types
-    })
+    this.getAllSuppliers();
+    this.addOutservice.setValue(this.service)
   }
 
   getAllSuppliers() {
@@ -69,20 +63,12 @@ export class NewOutServiceComponent implements OnInit {
     })
   }
 
-  addOutServiceToDB() {
+  updateOutService() {
     this.sendingForm = true
     this.outServiceService.addService(<OutService>this.addOutservice.value).subscribe(response => {
       this.sendingForm = false;
       if (response.status == 1) this.toastr.success(response.msg)
       else this.toastr.error(response.msg)
-    })
-  }
-  
-  addServiceTypeToDB() {
-    this.sendingForm = true
-    this.outServiceService.addServiceType(<ServiceType>this.addServiceType.value).subscribe(addedType => {
-      this.sendingForm = false;
-      console.log('addedService: ', addedType)
     })
   }
 

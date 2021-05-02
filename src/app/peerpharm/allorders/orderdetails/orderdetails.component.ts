@@ -239,7 +239,7 @@ export class OrderdetailsComponent implements OnInit {
 
   exportAsXLSX(data) {
     let orderItemsToExcel = [...data]
-    orderItemsToExcel.map(orderItem=>{
+    orderItemsToExcel.map(orderItem => {
       orderItem.orderNumber = this.number
       delete orderItem._id
       delete orderItem.pallet2
@@ -1260,62 +1260,71 @@ export class OrderdetailsComponent implements OnInit {
 
   async setSchedule(item, type) {
 
-    console.log(item);
-    console.log(this.chosenType);
-    console.log(this.date.nativeElement.value + " , " + this.shift.nativeElement.value + " , " + this.marks.nativeElement.value);
-
+    // check date
     if (this.date.nativeElement.value != "") {
       var packageP = "";
       var impremark = "";
+
+      //check item
       if (item.itemNumber != "" && item.orderNumber && item.orderNumber != "") {
-        this.orderService.getCostumerByOrder(item.orderNumber).subscribe(async res => {
-          this.costumer = res.costumer
-          await this.itemSer.getItemData(item.itemNumber).subscribe(res => {
 
-            // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
-            if (res[0]._id) {
-              packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
-              impremark = res[0].impRemarks;
-            }
-            let scheduleLine = {
-              positionN: '',
-              orderN: item.orderNumber,
-              item: item.itemNumber,
-              costumer: this.costumer,
-              productName: item.discription,
-              batch: item.batch.trim(),
-              packageP: packageP,
-              qty: item.quantity,
-              qtyRdy: '',
-              date: this.date.nativeElement.value,
-              marks: this.marks.nativeElement.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
-              shift: this.shift.nativeElement.value,
-              mkp: this.chosenType,
-              status: 'open',
-              productionLine: '',
-              pLinePositionN: 999,
-              itemImpRemark: impremark,
-            }
-            if (scheduleLine.mkp == "sachet") scheduleLine.productionLine = "10";
-            if (scheduleLine.mkp == "mkp") scheduleLine.productionLine = "11";
-            if (scheduleLine.mkp == "tube") scheduleLine.productionLine = "12";
-            if (scheduleLine.mkp == "laser") scheduleLine.productionLine = "13";
-            if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
-            if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
+        //check batch specifications
+        this.batchService.getSpecvalue(item.batch).subscribe(res => {
+          let status = res.status;
+          if (status == 2 || status == 0) this.toastSrv.error('Batch Specifications Declined by Q.A')
+          else {
+             item.batchSpecStatus = status
+            // get customer + item data
+            this.orderService.getCostumerByOrder(item.orderNumber).subscribe(async res => {
+              this.costumer = res.costumer
+              await this.itemSer.getItemData(item.itemNumber).subscribe(res => {
+
+                // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
+                if (res[0]._id) {
+                  packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
+                  impremark = res[0].impRemarks;
+                }
+                let scheduleLine = {
+                  positionN: '',
+                  orderN: item.orderNumber,
+                  item: item.itemNumber,
+                  costumer: this.costumer,
+                  productName: item.discription,
+                  batch: item.batch.trim(),
+                  packageP: packageP,
+                  qty: item.quantity,
+                  qtyRdy: '',
+                  date: this.date.nativeElement.value,
+                  marks: this.marks.nativeElement.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
+                  shift: this.shift.nativeElement.value,
+                  mkp: this.chosenType,
+                  status: 'open',
+                  productionLine: '',
+                  pLinePositionN: 999,
+                  itemImpRemark: impremark,
+                  batchStatus: item.batchSpecStatus
+                }
+                if (scheduleLine.mkp == "sachet") scheduleLine.productionLine = "10";
+                if (scheduleLine.mkp == "mkp") scheduleLine.productionLine = "11";
+                if (scheduleLine.mkp == "tube") scheduleLine.productionLine = "12";
+                if (scheduleLine.mkp == "laser") scheduleLine.productionLine = "13";
+                if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
+                if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
 
 
-            this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
-            let dateSced = this.date.nativeElement.value;
-            dateSced = moment(dateSced).format("DD/MM/YYYY");
-            let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " + dateSced };
-            this.orderService.editItemOrder(orderObj).subscribe(res => {
-              console.log(res);
-              this.toastSrv.success(dateSced, "Schedule Saved");
-            });
-            console.log(scheduleLine);
-          });
+                this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
+                let dateSced = this.date.nativeElement.value;
+                dateSced = moment(dateSced).format("DD/MM/YYYY");
+                let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " + dateSced };
+                this.orderService.editItemOrder(orderObj).subscribe(res => {
+                  console.log(res);
+                  this.toastSrv.success(dateSced, "Schedule Saved");
+                });
+                console.log(scheduleLine);
+              });
+            })
+          }
         })
-
       } else {
         this.toastSrv.error("Item number missing");
       }

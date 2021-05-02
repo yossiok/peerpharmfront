@@ -1,11 +1,11 @@
 <div class="wrapper">
-    <div class="box" *ngFor="let service of services">
+    <div class="box click" (click)="openService(service)" *ngFor="let service of services">
         <div class="service-line">
-            <h3>Service Order No. {{service.serviceOrder}}</h3>
+            <h3>Service Order {{service.serviceOrder}}</h3>
         </div>
         <div class="service-line">
             <h4>Supplier:</h4>
-            {{service.supplierId}}
+            {{service.suplierName}}
         </div>
         <div class="service-line">
             <h4>Opened At:</h4>
@@ -21,7 +21,14 @@
         </div>
         <div class="service-line">
             <h4>Opened by:</h4>
-            {{service.userID}}
+            {{service.userName}}
         </div>
     </div>
+</div>
+
+
+<div *ngIf="orderDetailsModal" class="container fixed-top bg-white mx-auto my-auto text-center w-100 p-5 modal-inner">
+    <i class="fa fa-times float-right click h2 block" (click)="closeService()"></i>
+    <h1>Watch Service Details</h1>
+    <app-edit-out-service [service]="service"></app-edit-out-service>
 </div>

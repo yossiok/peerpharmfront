@@ -243,9 +243,8 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  dateChanged(date) {
+    dateChanged(date) {
     this.startTime()
-    console.log(date);
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
         if (sced.status == 'filled') sced.color = '#CE90FF';
@@ -260,13 +259,28 @@ export class ScheduleComponent implements OnInit {
           sced.color = 'grey'
         }
         sced.date3 = moment(sced.date).format('YYYY-MM-DD');
-
+     
         //let pipe = new DatePipe('en-US'); // Use your own locale
         //  sced.date3 = pipe.transform(sced.date, 'short');
       });
+
+      
+      
       this.scheduleData = res;
       this.scheduleDataCopy = res;
       this.selectedArr = []
+      
+      //get batch specifications status
+      this.scheduleData.map(sced=>{
+        if(sced.batch && sced.batch != "") {
+          this.batchService.getSpecvalue(sced.batch).subscribe(res=>{
+            if(res.status) sced.batchSpecStatus = res.status
+            else sced.status = -1
+          })
+
+        }
+      })
+      setTimeout(()=>this.scheduleDataCopy = this.scheduleDataCopy, 5000)
     });
   }
 

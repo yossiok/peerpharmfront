@@ -1,9 +1,20 @@
 export interface OutService {
     serviceOrder: number;
-    supplierId: string;
-    openedAt: Date;
-    status: string;
+    description: string;
     type: string;
+    openedAt: Date;
+    suplierNumber: number;
+    suplierName: string;
+    contactName: string;
+    email: string;
+    phoneNum: number;
+    cellularNum: number;
+    faxNum: number;
+    address: string;
+    city: string;
+    country: string;
+    status: string;
     date: Date;
-    userID: string;
+    userName: string;
+    userEmail: string;
 }

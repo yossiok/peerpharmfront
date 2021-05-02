@@ -147,6 +147,7 @@ import { UnfinishedProductsComponent } from './reports/unfinished-products/unfin
 import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.component';
 import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
 import { TicketFormComponent } from './ticket-form/ticket-form.component';
+import { EditServiceComponent } from './out-services/edit-service/edit-out-service.component';
 
 
 
@@ -301,7 +302,8 @@ import { TicketFormComponent } from './ticket-form/ticket-form.component';
     TicketFormComponent,
     PrintBarcodeComponent,
     OutServicesComponent,
-    NewOutServiceComponent
+    NewOutServiceComponent,
+    EditServiceComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   
