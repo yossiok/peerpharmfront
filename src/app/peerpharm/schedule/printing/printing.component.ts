@@ -94,25 +94,28 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
     }
   
     dateChanged(date){
-      // date=date.setHours(2,0,0,0);
       date=new Date(date)
-      date=moment(date).format("YYYY-MM-DD");
-      
-      this.scheduleService.getPrintScheduleByDate(date).subscribe(
-        res=>{
-          
-          // showing only for that date 
-          res.map(elem=>{
-            let pastDue=(moment(elem.date).format() < moment(this.today).format());
-            if(elem.status=="printed") {
-              elem.trColor=this.lineColorDone;
-            }else if (pastDue){
-              elem.trColor=this.lineColorPastDue;
-            }
-          });
-          this.scheduleData=res;
+      // date=date.setHours(2,0,0,0);
+      if(moment.isDate(date)) {
+
+        date=moment(date).format("YYYY-MM-DD");
+        
+        this.scheduleService.getPrintScheduleByDate(date).subscribe(
+          res=>{
+            
+            // showing only for that date 
+            res.map(elem=>{
+              let pastDue=(moment(elem.date).format() < moment(this.today).format());
+              if(elem.status=="printed") {
+                elem.trColor=this.lineColorDone;
+              }else if (pastDue){
+                elem.trColor=this.lineColorPastDue;
+              }
+            });
+            this.scheduleData=res;
+          })
         }
-      )
+        else this.toastSrv.error('Invalid Date!')
 
     }
     getAllSchedule(){
