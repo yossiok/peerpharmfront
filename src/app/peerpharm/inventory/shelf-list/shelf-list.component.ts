@@ -60,21 +60,16 @@ export class ShelfListComponent implements OnInit {
   getShelfsByWH(ev){
     ;
     let whareHouse = ev.target.value;
-    if(whareHouse == 'materials' || whareHouse == 'components'){
+    if(whareHouse == 'material' || whareHouse == 'component'){
       this.itemType = whareHouse
-      whareHouse = '5c1124ef2db99c4434914a0e'
+      whareHouse = 'Rosh HaAyin'
       
     }
-    this.inventorySrv.shelfListByWH(whareHouse).subscribe(data=>{
+    this.inventorySrv.shelfListByWH(whareHouse, this.itemType).subscribe(data=>{
     if(data){
-      ;
       data.sort((a,b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0));
-      if(this.itemType == 'components') data = data.filter(s=>s.itemType == 'component')
-      if(this.itemType == 'materials') data = data.filter(s=>s.itemType == 'material')
       this.allShelfs = data;
       this.allShelfsCopy = data;
-
-      
     }
     })
   }
@@ -120,7 +115,8 @@ export class ShelfListComponent implements OnInit {
       position:shelf.position,
       amountBefore:shelf.total,
       countDate:this.item.countDate,
-      countedAmount:this.item.countedAmount,
+      arrivalDate: shelf.arrivalDate,
+      countedAmount:shelf.countedAmount,
       signature:this.item.signature
     }
     if(confirm('האם לעדכן מדף ?')){
