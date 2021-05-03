@@ -1,73 +1,111 @@
 <div dir="rtl" class="container">
 
-    <h2></h2>
+
+
     <form [formGroup]="addOutservice" (ngSubmit)="updateOutService()">
 
 
-        <label>סטטוס</label>
-        <select class="form-control" placeholder="סוג שירות" formControlName="status" required>
-            <option value="open">open</option>
-            <option value="hold">hold</option>
-            <option value="done">done</option>
-            <option value="canceled">canceled</option>
-        </select>
 
+        <div class="buxa">
 
-        <label>סוג שירות</label>
-        <select class="form-control" placeholder="סוג שירות" formControlName="type" required>
-            <option *ngFor="let serviceType of serviceTypes" [value]="serviceType.name">{{serviceType.name}}
-            </option>
-        </select>
-
-        <label>תאריך ביצוע</label>
-        <input type="date" class="form-control" placeholder="תאריך ביצוע" formControlName="date" required>
-
-
-        <div class="d-flex flex-row justify-content-between">
-
-            <div class="form-group mt-4">
-                <h4>מספק השירות</h4>
-                <label>ספק</label>
-                <div>{{addOutservice.controls.suplierName.value}}</div>
-                <label>מייל</label>
-                <div>{{addOutservice.controls.email.value}}</div>
-                <label>טלפון</label>
-                <div>{{addOutservice.controls.phoneNum.value}}</div>
-                <label>טלפון נוסף</label>
-                <div>{{addOutservice.controls.cellularNum.value}}</div>
-                <label>איש קשר</label>
-                <div>{{addOutservice.controls.contactNamerName.value}}</div>
-                <label>פקס</label>
-                <div>{{addOutservice.controls.faxNum.value}}</div>
-                <label>כתובת</label>
-                <label>רחוב</label>
-                <div>{{addOutservice.controls.address.value}}</div>
-                <label>עיר</label>
-                <div>{{addOutservice.controls.city.value}}</div>
-                <label>ארץ</label>
-                <div>{{addOutservice.controls.country.value}}</div>
-            </div>
-
-            <div class="form-group mt-4">
-
-
-                <div class="form-group">
-                    <label>ארץ</label>
-                    <div>{{addOutservice.controls.userName.value}}</div>
-                    <label>ארץ</label>
-                    <div>{{addOutservice.controls.userEmail.value}}</div>
+            <i class="click fa fa-pencil-alt float-left h2" (click)="editDetails = !editDetails"></i>
+            <h2 class="text-center">פרטים כלליים</h2>
+            <div class="d-flex flex-row justify-content-between buxa">
+                <div>
+                    <h4>נפתח על ידי:</h4>
+                    <h5>{{addOutservice.value.userName}}</h5>
+                    <h5>{{addOutservice.value.userEmail}}</h5>
                 </div>
-
-                <div class="form-group" [ngbTooltip]="addOutserviceErrors" placement="bottom">
-                    <button type="submit" class="btn btn-primary" [disabled]="addOutservice.invalid || sendingForm"
-                        [style.cursor]="addOutservice.invalid || sendingForm ? 'not-allowed' : 'pointer'">
-                       עדכן פרטים
-                    </button>
-                </div>
+                <div>
+                    <h4>סטטוס:</h4>
+                    <h5 *ngIf="!editDetails">{{addOutservice.value.status}}</h5>
+                    <select *ngIf="editDetails" class="form-control" placeholder="סוג שירות" formControlName="status"
+                    required>
+                    <option value="open">open</option>
+                    <option value="hold">hold</option>
+                    <option value="done">done</option>
+                    <option value="canceled">canceled</option>
+                </select>
             </div>
-
-
+            <div>
+                <h4>סוג שירות:</h4>
+                <h5>{{addOutservice.value.type}}</h5>
+            </div>
+            <div>
+                <h4>תאריך ביצוע:</h4>
+                <h5 *ngIf="!editDetails">{{addOutservice.value.date}}</h5>
+                <input *ngIf="editDetails" type="date" class="form-control" placeholder="תאריך ביצוע"
+                formControlName="date" required>
+            </div>
         </div>
+        <div *ngIf="editDetails" class="form-group mt-4">
+            <div class="form-group" [ngbTooltip]="addOutserviceErrors" placement="bottom">
+                <button type="submit" class="btn btn-primary" [disabled]="addOutservice.invalid || sendingForm"
+                    [style.cursor]="addOutservice.invalid || sendingForm ? 'not-allowed' : 'pointer'">
+                    שמור
+                </button>
+            </div>
+        </div>
+    </div>
+        
+    <div class="buxa">
+
+        <i class="click fa fa-pencil-alt float-left h2" (click)="editSupplier = !editSupplier"></i>
+        <h2 class="text-center">מספק השירות</h2>
+        <div class="d-flex flex-row justify-content-between buxa">
+            <div>
+                <h4>ספק:</h4>
+                <h5 *ngIf="!editSupplier">{{addOutservice.value.suplierName}}</h5>
+                <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
+                formControlName="date" required>
+            </div>
+            <div>
+                <h4>איש קשר:</h4>
+                <h5 *ngIf="!editSupplier">{{addOutservice.value.contactName}}</h5>
+                <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
+                formControlName="date" required>
+            </div>
+            <div>
+                <h4>טלפון:</h4>
+                <h5 *ngIf="!editSupplier">{{addOutservice.value.phoneNum}}</h5>
+                <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
+                formControlName="date" required>
+            </div>
+            <div>
+                <h4>מייל:</h4>
+                <h5 *ngIf="!editSupplier">{{addOutservice.value.email}}</h5>
+                <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
+                formControlName="date" required>
+            </div>
+        </div>
+        <div class="d-flex flex-row justify-content-between buxa">
+            <div>
+                <h4>טלפון נוסף:</h4>
+                <h5 *ngIf="!editSupplier">{{addOutservice.controls.cellularNum}}</h5>
+                <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
+                formControlName="date" required>
+            </div>
+            <div>
+                <h4>פקס:</h4>
+                <h5>{{addOutservice.value.faxNum}}</h5>
+            </div>
+            <div>
+                <h4>כתובת:</h4> <br>
+                <h5>{{addOutservice.value.address}}</h5>
+                <h5>{{addOutservice.value.city}}</h5>
+                <h5>{{addOutservice.value.country}}</h5>
+            </div>
+        </div>
+        <div *ngIf="editSupplier" class="form-group mt-4">
+            <div class="form-group" [ngbTooltip]="addOutserviceErrors" placement="bottom">
+                <button type="submit" class="btn btn-primary" [disabled]="addOutservice.invalid || sendingForm"
+                    [style.cursor]="addOutservice.invalid || sendingForm ? 'not-allowed' : 'pointer'">
+                    שמור
+                </button>
+            </div>
+        </div>
+    </div>
+    
 
     </form>
 </div>

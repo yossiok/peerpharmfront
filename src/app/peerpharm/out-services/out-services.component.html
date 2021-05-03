@@ -29,6 +29,6 @@
 
 <div *ngIf="orderDetailsModal" class="container fixed-top bg-white mx-auto my-auto text-center w-100 p-5 modal-inner">
     <i class="fa fa-times float-right click h2 block" (click)="closeService()"></i>
-    <h1>Watch Service Details</h1>
+    <h1>Service {{service.serviceOrder}} Details</h1>
     <app-edit-out-service [service]="service"></app-edit-out-service>
 </div>

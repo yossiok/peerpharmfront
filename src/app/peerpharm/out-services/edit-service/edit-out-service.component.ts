@@ -24,6 +24,8 @@ export class EditServiceComponent implements OnInit {
   serviceTypes: ServiceType[]
   suppliers: supNameAndId[]
   sendingForm: boolean = false;
+  editDetails: boolean = false
+  editSupplier: boolean = false
 
   addOutservice: FormGroup = new FormGroup({
     type: new FormControl('', Validators.required),
@@ -40,7 +42,8 @@ export class EditServiceComponent implements OnInit {
     country: new FormControl(''),
     date: new FormControl(null, Validators.required),
     userName: new FormControl(this.authService.loggedInUser.userName, Validators.required),
-    userEmail: new FormControl(this.authService.loggedInUser.userEmail, Validators.required)
+    userEmail: new FormControl(this.authService.loggedInUser.userEmail, Validators.required),
+    status: new FormControl('', Validators.required)
   })
 
   addServiceType: FormGroup = new FormGroup({
@@ -53,8 +56,9 @@ export class EditServiceComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    debugger
     this.getAllSuppliers();
-    this.addOutservice.setValue(this.service)
+    this.addOutservice.patchValue(this.service)
   }
 
   getAllSuppliers() {
