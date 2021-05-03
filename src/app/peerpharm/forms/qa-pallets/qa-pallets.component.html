@@ -446,8 +446,6 @@
           </div>
           <div class="col-9"></div>
           <div class="col-1">
-            <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-            (click)="exportAsXLSX()">
           </div>
         </div>
 
@@ -462,7 +460,7 @@
                   <th>שם לקוח</th>
                   <th>מספר הזמנה</th>
                   <th>מספר לחשבונית</th>
-
+                  <th></th>
                   <th></th>
                 </tr>
               </thead>
@@ -487,6 +485,8 @@
                     class="fa fa-save text-info"></i>
                 </td>
                 <td><img style="width:25px" src="../../../../assets/images/pdf.png"></td>
+                <td>   <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+                  (click)="exportAsXLSX(packlist)"></td>
                 </tr>
 
 

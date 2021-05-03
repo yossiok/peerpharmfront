@@ -1,5 +1,5 @@
 
-<div class="container text-center shadow bg-white">
+<div class="text-center shadow bg-white w-75 mx-auto rounded p-5">
   <div class="row mt-4">
     <div class="col-12">
       <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Shelf List</h1>
@@ -56,7 +56,7 @@
             <th>Count Date</th>
             <th>Counted Amount</th>
             <th>Signature</th>
-            <!-- <th></th> -->
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -80,13 +80,14 @@
 
             <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
-              <input type="number" class="form-control" (change)="updateShelfAmount(shelf)" [(ngModel)]="shelf.countedAmount">
+              <input type="number" class="form-control"  [(ngModel)]="shelf.countedAmount">
             </td>
 
             <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
               <input type="text" class="form-control" [(ngModel)]="item.signature">
             </td>
+            <td><button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'" (click)="updateShelfAmount(shelf)" class="btn btn-danger">Update Amounts</button></td>
             
             <!-- <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position"><i class="fa fa-save" (click)="updateShelfAmount(shelf)"></i></td> -->

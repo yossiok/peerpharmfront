@@ -31,6 +31,7 @@ export class ShelfListComponent implements OnInit {
 
   @ViewChild('shelfPosition') shelfPosition: ElementRef;
   @ViewChild('shelfAmount') shelfAmount: ElementRef;
+  updatingAmount: boolean;
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -108,6 +109,7 @@ export class ShelfListComponent implements OnInit {
   }
 
   updateShelfAmount(shelf){
+    this.updatingAmount = true;
     this.item;
     ;
     let objToUpdate = {
@@ -121,6 +123,7 @@ export class ShelfListComponent implements OnInit {
     }
     if(confirm('האם לעדכן מדף ?')){
       this.inventorySrv.updateShelfAmount(objToUpdate).subscribe(data=>{
+        this.updatingAmount = false;
         if(data){
           ;
           let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);

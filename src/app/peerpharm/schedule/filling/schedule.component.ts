@@ -317,9 +317,22 @@ export class ScheduleComponent implements OnInit {
       res.map(sced => {
         Object.assign({ isSelected: false }, sced);
       });
+
+      
       this.scheduleData = res;
       this.scheduleDataCopy = res;
-      console.log(res);
+
+      //get batch specifications status
+      this.scheduleData.map(sced=>{
+       if(sced.batch && sced.batch != "") {
+         this.batchService.getSpecvalue(sced.batch).subscribe(res=>{
+           if(res.status) sced.batchSpecStatus = res.status
+           else sced.status = -1
+         })
+
+       }
+     })
+     setTimeout(()=>this.scheduleDataCopy = this.scheduleDataCopy, 5000)
     });
   }
 
