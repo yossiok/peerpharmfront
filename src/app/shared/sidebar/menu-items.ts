@@ -644,41 +644,41 @@ export const ROUTES: RouteInfo[] = [
         ]
       },
 
-      // {
-      //   path: '',
-      //   title: 'Services',
-      //   icon: 'fas fa-vials',
-      //   class: 'has-arrow',
-      //   extralink: false,
-      //   submenu: 
-      //   [
-      //     {
-      //       path: '/peerpharm/services/ordered',
-      //       title: 'Ordered Services',
-      //       icon: 'fas fa-list-ol',
-      //       class: '',
-      //       extralink: false,
-      //       submenu: []
-      //     },
-      //     {
-      //       path: '/peerpharm/services/new',
-      //       title: 'Add Service',
-      //       icon: 'fas fa-list-ol',
-      //       class: '',
-      //       extralink: false,
-      //       submenu: []
-      //     },
-      //     // {
-      //     //   path: '/peerpharm/services/types',
-      //     //   title: 'Service Types',
-      //     //   icon: 'fas fa-list-ol',
-      //     //   class: '',
-      //     //   extralink: false,
-      //     //   submenu: []
-      //     // }
+      {
+        path: '',
+        title: 'Services',
+        icon: 'fas fa-vials',
+        class: 'has-arrow',
+        extralink: false,
+        submenu: 
+        [
+          {
+            path: '/peerpharm/services/ordered',
+            title: 'Ordered Services',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/services/new',
+            title: 'Add Service',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          // {
+          //   path: '/peerpharm/services/types',
+          //   title: 'Service Types',
+          //   icon: 'fas fa-list-ol',
+          //   class: '',
+          //   extralink: false,
+          //   submenu: []
+          // }
 
-      //   ]
-      // },
+        ]
+      },
       {
         path: '',
         title: '',

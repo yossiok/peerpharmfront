@@ -18,8 +18,8 @@ import { ExcelService } from "src/app/services/excel.service";
 })
 export class ScheduleComponent implements OnInit {
 
-  fillingReport:boolean = false;
-  showPrintBtn:boolean = false;
+  fillingReport: boolean = false;
+  showPrintBtn: boolean = false;
   scheduleData: any[];
   scheduleDataCopy: any[];
   unPackedSchedules: any[];
@@ -43,12 +43,13 @@ export class ScheduleComponent implements OnInit {
   printBarkod: any;
   currentType: string = "";
   editRadioBtnType: string = "";
-  selectedArr:any[] = [];
-  printItemBarcode:boolean = true;
-  printCostumerBarcode:boolean = true;
-  printExpBarcode:boolean = true;
-  newBatchChange:boolean = false;
+  selectedArr: any[] = [];
+  printItemBarcode: boolean = true;
+  printCostumerBarcode: boolean = true;
+  printExpBarcode: boolean = true;
+  newBatchChange: boolean = false;
   time: any;
+  batchesSpecifications: any[]
 
   closeResult: string;
   public printScheduleFillingForm: FormGroup;
@@ -68,7 +69,8 @@ export class ScheduleComponent implements OnInit {
   @ViewChild('whatIsMissing') whatIsMissing: ElementRef;
   @ViewChild('mkpA') mkp: ElementRef;
   @ViewChild('id') id: ElementRef;
- 
+  @ViewChild('batchSpecStatus') batchSpecStatus: ElementRef;
+
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('', this.currentType);
@@ -92,7 +94,7 @@ export class ScheduleComponent implements OnInit {
     status: 'open',
     productionLine: '',
     pLinePositionN: 999,
-    itemImpRemark:'',
+    itemImpRemark: '',
   };
   typeShown: String = 'basic';
   constructor(
@@ -100,10 +102,10 @@ export class ScheduleComponent implements OnInit {
     private itemSer: ItemsService,
     private orderSer: OrdersService,
     private modalService: NgbModal,
-    private batchService:BatchesService,
-    private toastSrv:ToastrService,
-    private excelService:ExcelService
-  ) {}
+    private batchService: BatchesService,
+    private toastSrv: ToastrService,
+    private excelService: ExcelService
+  ) { }
 
   ngOnInit() {
     this.startTime()
@@ -135,7 +137,7 @@ export class ScheduleComponent implements OnInit {
     }
     return i;
   }
-  
+
   startTime() {
     var today = new Date();
     var h = today.getHours();
@@ -153,7 +155,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   exportAsXLSX(): void {
-    let tempArr = this.scheduleData.filter(s=>s.mkp == this.typeShown);
+    let tempArr = this.scheduleData.filter(s => s.mkp == this.typeShown);
 
     this.excelService.exportAsExcelFile(tempArr, 'data');
 
@@ -162,88 +164,88 @@ export class ScheduleComponent implements OnInit {
 
   writeScheduleData() {
     ;
-    if(this.scheduleLine.orderN!=''){
+    if (this.scheduleLine.orderN != '') {
 
-    console.log(this.scheduleLine);
-    if(this.scheduleLine.mkp == 'sachet'){
-      this.scheduleLine.productionLine = '10';
-    }else if (this.scheduleLine.mkp == 'mkp') {
-      this.scheduleLine.productionLine = '11';
-    } else if (this.scheduleLine.mkp == 'tube') {
-      this.scheduleLine.productionLine = '12';
-    
-    } else if (this.scheduleLine.mkp == 'laser') {
-      this.scheduleLine.productionLine = '13';
-    
-    } else if (this.scheduleLine.mkp == 'stickers') {
-      this.scheduleLine.productionLine = '14';
-    }
-      else if(this.scheduleLine.mkp == 'mkp2'){
-      this.scheduleLine.productionLine = '15'
-      }
-     else if (this.scheduleLine.mkp == 'basic'){
-      if(this.scheduleLine.positionN.startsWith('1')){
-        this.scheduleLine.productionLine = '1'
-      }
-      if(this.scheduleLine.positionN.startsWith('2')){
-        this.scheduleLine.productionLine = '2'
-      }
-      if(this.scheduleLine.positionN.startsWith('3')){
-        this.scheduleLine.productionLine = '3'
-      }
-      if(this.scheduleLine.positionN.startsWith('4')){
-        this.scheduleLine.productionLine = '4'
-      }
-      if(this.scheduleLine.positionN.startsWith('5')){
-        this.scheduleLine.productionLine = '5'
-      }
-      if(this.scheduleLine.positionN.startsWith('6')){
-        this.scheduleLine.productionLine = '6'
-      }
-      if(this.scheduleLine.positionN.startsWith('7')){
-        this.scheduleLine.productionLine = '7'
-      }
-      if(this.scheduleLine.positionN.startsWith('8')){
-        this.scheduleLine.productionLine = '8'
-      }
-      if(this.scheduleLine.positionN.startsWith('9')){
-        this.scheduleLine.productionLine = '9'
-      }
-    }
+      console.log(this.scheduleLine);
+      if (this.scheduleLine.mkp == 'sachet') {
+        this.scheduleLine.productionLine = '10';
+      } else if (this.scheduleLine.mkp == 'mkp') {
+        this.scheduleLine.productionLine = '11';
+      } else if (this.scheduleLine.mkp == 'tube') {
+        this.scheduleLine.productionLine = '12';
 
-    console.log(this.scheduleLine);
-    
-    this.scheduleService
-      .setNewProductionSchedule(this.scheduleLine)
-      .subscribe(res => {
-        this.scheduleData.push(res);
+      } else if (this.scheduleLine.mkp == 'laser') {
+        this.scheduleLine.productionLine = '13';
 
-        this.scheduleLine.scheduleId = '';
-        this.scheduleLine.scheduleId = '';
-        this.scheduleLine.positionN = '';
-        this.scheduleLine.orderN = '';
-        this.scheduleLine.item = '';
-        this.scheduleLine.costumer = '';
-        this.scheduleLine.productName = '';
-        this.scheduleLine.batch = '';
-        this.scheduleLine.packageP = '';
-        this.scheduleLine.qty = '';
-        this.scheduleLine.qtyRdy = '';
-        this.scheduleLine.date = '';
-        this.scheduleLine.marks = '';
-        this.scheduleLine.shift = '';
-        this.scheduleLine.mkp = '';
-        this.scheduleLine.status = 'open';
-        this.scheduleLine.productionLine = '';
-        this.scheduleLine.pLinePositionN = 999;
-        this.scheduleLine.itemImpRemark = '';
-      });
-    }else{
+      } else if (this.scheduleLine.mkp == 'stickers') {
+        this.scheduleLine.productionLine = '14';
+      }
+      else if (this.scheduleLine.mkp == 'mkp2') {
+        this.scheduleLine.productionLine = '15'
+      }
+      else if (this.scheduleLine.mkp == 'basic') {
+        if (this.scheduleLine.positionN.startsWith('1')) {
+          this.scheduleLine.productionLine = '1'
+        }
+        if (this.scheduleLine.positionN.startsWith('2')) {
+          this.scheduleLine.productionLine = '2'
+        }
+        if (this.scheduleLine.positionN.startsWith('3')) {
+          this.scheduleLine.productionLine = '3'
+        }
+        if (this.scheduleLine.positionN.startsWith('4')) {
+          this.scheduleLine.productionLine = '4'
+        }
+        if (this.scheduleLine.positionN.startsWith('5')) {
+          this.scheduleLine.productionLine = '5'
+        }
+        if (this.scheduleLine.positionN.startsWith('6')) {
+          this.scheduleLine.productionLine = '6'
+        }
+        if (this.scheduleLine.positionN.startsWith('7')) {
+          this.scheduleLine.productionLine = '7'
+        }
+        if (this.scheduleLine.positionN.startsWith('8')) {
+          this.scheduleLine.productionLine = '8'
+        }
+        if (this.scheduleLine.positionN.startsWith('9')) {
+          this.scheduleLine.productionLine = '9'
+        }
+      }
+
+      console.log(this.scheduleLine);
+
+      this.scheduleService
+        .setNewProductionSchedule(this.scheduleLine)
+        .subscribe(res => {
+          this.scheduleData.push(res);
+
+          this.scheduleLine.scheduleId = '';
+          this.scheduleLine.scheduleId = '';
+          this.scheduleLine.positionN = '';
+          this.scheduleLine.orderN = '';
+          this.scheduleLine.item = '';
+          this.scheduleLine.costumer = '';
+          this.scheduleLine.productName = '';
+          this.scheduleLine.batch = '';
+          this.scheduleLine.packageP = '';
+          this.scheduleLine.qty = '';
+          this.scheduleLine.qtyRdy = '';
+          this.scheduleLine.date = '';
+          this.scheduleLine.marks = '';
+          this.scheduleLine.shift = '';
+          this.scheduleLine.mkp = '';
+          this.scheduleLine.status = 'open';
+          this.scheduleLine.productionLine = '';
+          this.scheduleLine.pLinePositionN = 999;
+          this.scheduleLine.itemImpRemark = '';
+        });
+    } else {
       alert('מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.');
     }
   }
 
-    dateChanged(date) {
+  dateChanged(date) {
     this.startTime()
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
@@ -255,37 +257,43 @@ export class ScheduleComponent implements OnInit {
         if (sced.status == 'problem') sced.color = 'red';
         if (sced.status == 'open') sced.color = 'white';
         if (sced.cmptsStatus == null) sced.cmptsStatus = 'true';
-        if(sced.whatIsMissing == 'noStickers' || sced.whatIsMissing == 'noMaterial' || sced.whatIsMissing == 'noComponent'){
+        if (sced.whatIsMissing == 'noStickers' || sced.whatIsMissing == 'noMaterial' || sced.whatIsMissing == 'noComponent') {
           sced.color = 'grey'
         }
         sced.date3 = moment(sced.date).format('YYYY-MM-DD');
-     
+
         //let pipe = new DatePipe('en-US'); // Use your own locale
         //  sced.date3 = pipe.transform(sced.date, 'short');
       });
 
-      
-      
+
+
       this.scheduleData = res;
       this.scheduleDataCopy = res;
       this.selectedArr = []
-      
-      //get batch specifications status
-      this.scheduleData.map(sced=>{
-        if(sced.batch && sced.batch != "") {
-          this.batchService.getSpecvalue(sced.batch).subscribe(res=>{
-            if(res.status) sced.batchSpecStatus = res.status
-            else sced.status = -1
-          })
 
+      //get batch specifications status
+      this.scheduleData.map(sced => {
+        if (sced.batch && sced.batch != "") {
+          let batches = sced.batch.split('+')
+          if(batches.length > 1) {
+            debugger
+            sced.batchSpecStatus = 999
+          } 
+          else {
+            this.batchService.getSpecvalue(batches[0]).subscribe(res => {
+              if (res.status) sced.batchSpecStatus = res.status
+              else sced.batchSpecStatus = -1
+            })
+          }
         }
       })
-      setTimeout(()=>this.scheduleDataCopy = this.scheduleDataCopy, 5000)
+      setTimeout(() => this.scheduleDataCopy = this.scheduleDataCopy, 5000)
     });
   }
 
   getAllSchedule(today) {
-    
+
     this.scheduleService.getScheduleByDate(today).subscribe(res => {
       res.map(sced => {
         console.log(sced);
@@ -308,7 +316,7 @@ export class ScheduleComponent implements OnInit {
         if (sced.status === 'problem') {
           sced.color = 'red';
         }
-        if(sced.whatIsMissing == 'noStickers' || sced.whatIsMissing == 'noMaterial' || sced.whatIsMissing == 'noComponent'){
+        if (sced.whatIsMissing == 'noStickers' || sced.whatIsMissing == 'noMaterial' || sced.whatIsMissing == 'noComponent') {
           sced.color = 'grey'
         }
         sced.date2 = moment(sced.date).format('DD/MM/YY');
@@ -318,79 +326,98 @@ export class ScheduleComponent implements OnInit {
         Object.assign({ isSelected: false }, sced);
       });
 
-      
+
       this.scheduleData = res;
       this.scheduleDataCopy = res;
 
       //get batch specifications status
-      this.scheduleData.map(sced=>{
-       if(sced.batch && sced.batch != "") {
-         this.batchService.getSpecvalue(sced.batch).subscribe(res=>{
-           if(res.status) sced.batchSpecStatus = res.status
-           else sced.status = -1
-         })
-
-       }
-     })
-     setTimeout(()=>this.scheduleDataCopy = this.scheduleDataCopy, 5000)
+      this.scheduleData.map(sced => {
+        if (sced.batch && sced.batch != "") {
+          let batches = sced.batch.split('+')
+          if(batches.length > 1) {
+            debugger
+            sced.batchSpecStatus = 999
+          } 
+          else {
+            this.batchService.getSpecvalue(batches[0]).subscribe(res => {
+              if (res.status) sced.batchSpecStatus = res.status
+              else sced.batchSpecStatus = -1
+            })
+          }
+        }
+      })
+      setTimeout(() => this.scheduleDataCopy = this.scheduleDataCopy, 5000)
     });
   }
 
-  isSelected(ev,item){
-    
-    if(ev.target.checked == true) {
-    var isSelected = this.selectedArr
+  checkBatchesSpec(batches) {
+    this.batchesSpecifications = []
+    batches = batches.split('+')
+    batches.forEach(batch => {
+      this.batchService.getSpecvalue(batch).subscribe(res => {
 
-    this.itemSer.createFillingReport(item.item).subscribe(data=>{
-      ;
-      item.impRemarks = data[0].impRemarks
-      item.bottleNumber = data[0].bottleNumber
-      item.pumpNumber = data[0].pumpNumber
-      item.sealNumber = data[0].sealNumber
-      item.capNumber = data[0].capNumber
-      item.cartonNumber = data[0].cartonNumber
-      item.stickerNumber = data[0].stickerNumber
-      item.boxNumber = data[0].boxNumber
-      item.PcsCarton = data[0].PcsCarton
-      item.bottleImage = data[0].bottleImage
-      item.bottlePosition = data[0].bottlePosition
-      item.sealImage = data[0].sealImage
-      item.sealPosition = data[0].sealPosition
-      item.capPosition = data[0].capPosition
-      item.capImage = data[0].capImage
-      item.pumpImage = data[0].pumpImage
-      item.pumpPosition = data[0].pumpPosition
-      item.imgMain1 = data[0].imgMain1
-      item.imgMain2 = data[0].imgMain2
-      item.scheduleRemark = data[0].scheduleRemark
-      item.boxImage = data[0].boxImage
-      item.proRemarks = data[0].proRemarks
+        if (res.status) this.batchesSpecifications.push({ batch, batchSpec: res.status })
+        else this.batchesSpecifications.push({ batch, batchSpec: -1 })
+      })
     })
-
-    isSelected.push(item);
-    this.selectedArr = isSelected
-    }
-
-    if(ev.target.checked == false){
-      var isSelected = this.selectedArr
-      var tempArr = isSelected.filter(x=>x.item != item.item )
-      this.selectedArr = tempArr
-    }
-    
- 
+    this.modalService.open(this.batchSpecStatus)
   }
 
-  makeFillingReport(){
+  isSelected(ev, item) {
+
+    if (ev.target.checked == true) {
+      var isSelected = this.selectedArr
+
+      this.itemSer.createFillingReport(item.item).subscribe(data => {
+        ;
+        item.impRemarks = data[0].impRemarks
+        item.bottleNumber = data[0].bottleNumber
+        item.pumpNumber = data[0].pumpNumber
+        item.sealNumber = data[0].sealNumber
+        item.capNumber = data[0].capNumber
+        item.cartonNumber = data[0].cartonNumber
+        item.stickerNumber = data[0].stickerNumber
+        item.boxNumber = data[0].boxNumber
+        item.PcsCarton = data[0].PcsCarton
+        item.bottleImage = data[0].bottleImage
+        item.bottlePosition = data[0].bottlePosition
+        item.sealImage = data[0].sealImage
+        item.sealPosition = data[0].sealPosition
+        item.capPosition = data[0].capPosition
+        item.capImage = data[0].capImage
+        item.pumpImage = data[0].pumpImage
+        item.pumpPosition = data[0].pumpPosition
+        item.imgMain1 = data[0].imgMain1
+        item.imgMain2 = data[0].imgMain2
+        item.scheduleRemark = data[0].scheduleRemark
+        item.boxImage = data[0].boxImage
+        item.proRemarks = data[0].proRemarks
+      })
+
+      isSelected.push(item);
+      this.selectedArr = isSelected
+    }
+
+    if (ev.target.checked == false) {
+      var isSelected = this.selectedArr
+      var tempArr = isSelected.filter(x => x.item != item.item)
+      this.selectedArr = tempArr
+    }
+
+
+  }
+
+  makeFillingReport() {
     ;
 
     this.fillingReport = true;
     this.selectedArr;
 
-   
+
   }
 
   setType(type, elem) {
-    
+
     console.log('hi ' + type);
     console.log('hi ' + elem.style);
     switch (type) {
@@ -479,10 +506,10 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor5 = '#B8ECF1';
         this.buttonColor6 = '#B8ECF1';
         this.buttonColor7 = '#2962FF';
-        
-     
+
+
         this.scheduleData = this.unPackedSchedules
-       
+
         break;
     }
     this.typeShown = type;
@@ -493,60 +520,60 @@ export class ScheduleComponent implements OnInit {
     this.currentType = type;
   }
 
- 
-  getAllUnpackedSchedules(){
-    this.scheduleService.getUnpackedSchedules().subscribe(data=>{
-      
+
+  getAllUnpackedSchedules() {
+    this.scheduleService.getUnpackedSchedules().subscribe(data => {
+
       data.forEach(element => {
         element.mkp = 'unpacked'
       });
-    this.unPackedSchedules = data;
+      this.unPackedSchedules = data;
     })
   }
 
-  filterByOrder(ev){
+  filterByOrder(ev) {
     this.scheduleData = this.scheduleDataCopy
-  if(ev.target.value != ''){
-    this.scheduleData = this.scheduleData.filter(s=>s.orderN == ev.target.value)
-  } else {
-    this.scheduleData = this.scheduleDataCopy
-  }
-  }
-
-  filterByItem(ev){
-    this.scheduleData = this.scheduleDataCopy
-  if(ev.target.value != ''){
-    this.scheduleData = this.scheduleData.filter(s=>s.item == ev.target.value)
-  } else {
-    this.scheduleData = this.scheduleDataCopy
-  }
+    if (ev.target.value != '') {
+      this.scheduleData = this.scheduleData.filter(s => s.orderN == ev.target.value)
+    } else {
+      this.scheduleData = this.scheduleDataCopy
+    }
   }
 
-  filterByLine(ev){
+  filterByItem(ev) {
     this.scheduleData = this.scheduleDataCopy
-  if(ev.target.value != ''){
-    this.scheduleData = this.scheduleData.filter(s=>s.productionLine == ev.target.value)
-  } else {
-    this.scheduleData = this.scheduleDataCopy
+    if (ev.target.value != '') {
+      this.scheduleData = this.scheduleData.filter(s => s.item == ev.target.value)
+    } else {
+      this.scheduleData = this.scheduleDataCopy
+    }
   }
+
+  filterByLine(ev) {
+    this.scheduleData = this.scheduleDataCopy
+    if (ev.target.value != '') {
+      this.scheduleData = this.scheduleData.filter(s => s.productionLine == ev.target.value)
+    } else {
+      this.scheduleData = this.scheduleDataCopy
+    }
   }
 
   async updateSchedule() {
     ;
-    if(this.orderN.nativeElement.value!=''){
+    if (this.orderN.nativeElement.value != '') {
       this.EditRowId;
       this.scheduleData;
-      let scdLneInfo=
+      let scdLneInfo =
         await this.scheduleData.filter(
           sced => {
-            if(sced._id == this.EditRowId) {
-              
+            if (sced._id == this.EditRowId) {
+
               return sced;
-            } 
+            }
           });
-      let updateOrderItemDate= (scdLneInfo[0].date == this.date.nativeElement.value );
+      let updateOrderItemDate = (scdLneInfo[0].date == this.date.nativeElement.value);
       scdLneInfo[0].itemImpRemark
-      
+
       this.date.nativeElement.value
       this.whatIsMissing.nativeElement.value;
       console.log(this.date.nativeElement.value);
@@ -560,7 +587,7 @@ export class ScheduleComponent implements OnInit {
       console.log(this.shift.nativeElement.value);
       console.log(this.mkp.nativeElement.value);
       console.log(this.qty.nativeElement.value);
-  
+
       let scheduleToUpdate: any = {
         scheduleId: this.id.nativeElement.value,
         positionN: this.positionN.nativeElement.value,
@@ -577,7 +604,7 @@ export class ScheduleComponent implements OnInit {
         shift: this.shift.nativeElement.value,
         mkp: this.currentType,
         itemImpRemark: scdLneInfo[0].itemImpRemark,
-        whatIsMissing:this.whatIsMissing.nativeElement.value,
+        whatIsMissing: this.whatIsMissing.nativeElement.value,
       };
       console.log(scheduleToUpdate);
       this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
@@ -591,11 +618,11 @@ export class ScheduleComponent implements OnInit {
           )
         ] = scheduleToUpdate;
         this.editRadioBtnType = '';
-        if(updateOrderItemDate) {
+        if (updateOrderItemDate) {
           //update orderItemSchedule
         }
       });
-    }else{
+    } else {
       alert('מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.');
     }
 
@@ -604,9 +631,9 @@ export class ScheduleComponent implements OnInit {
   setItemDetails(itemNumber) {
     console.log(itemNumber);
     this.itemSer.getItemData(itemNumber).subscribe(res => {
-      console.log("getItemData: "+res[0]);
+      console.log("getItemData: " + res[0]);
       console.log(res[0]);
-      let impremark= res[0].impRemarks;
+      let impremark = res[0].impRemarks;
       let itemName =
         res[0].name + ' ' + res[0].subName + ' ' + res[0].discriptionK;
       let packageP =
@@ -636,7 +663,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   deleteLine(id) {
-    if(confirm('האם אתה בטוח שברצונך למחוק את השורה?')) {
+    if (confirm('האם אתה בטוח שברצונך למחוק את השורה?')) {
       this.scheduleService.deleteSchedule(id).subscribe(res => {
         this.scheduleData = this.scheduleData.filter(elem => elem._id != id);
       });
@@ -652,13 +679,13 @@ export class ScheduleComponent implements OnInit {
   handleChange(type) {
     this.currentType = type;
   }
-  setDone() {}
+  setDone() { }
 
   moveAllOpenScedToToday() {
-  ;
-    if(this.selectedArr.length > 0) {
-      this.scheduleService.moveToNextDay(this.selectedArr).subscribe(data=>{
-        if(data.msg == "success"){
+    ;
+    if (this.selectedArr.length > 0) {
+      this.scheduleService.moveToNextDay(this.selectedArr).subscribe(data => {
+        if (data.msg == "success") {
           this.toastSrv.success("פריטים נבחרים עברו 24 שעות קדימה")
           this.today = new Date();
           this.today = moment(this.today).format('YYYY-MM-DD');
@@ -672,7 +699,7 @@ export class ScheduleComponent implements OnInit {
         console.log(res);
       });
     }
-   
+
   }
 
   dismissInfo(id) {
@@ -681,11 +708,11 @@ export class ScheduleComponent implements OnInit {
     ].cmptsStatus = 'true';
   }
 
-  markMkpDone(id){
+  markMkpDone(id) {
     ;
-    this.scheduleService.setMpkDone(id).subscribe(data=>{
-      if(data){
-        let schedule = this.scheduleData.find(s=>s._id == id);
+    this.scheduleService.setMpkDone(id).subscribe(data => {
+      if (data) {
+        let schedule = this.scheduleData.find(s => s._id == id);
         schedule.status = data.status;
         schedule.color = 'Aquamarine'
       }
@@ -703,17 +730,17 @@ export class ScheduleComponent implements OnInit {
     setTimeout(() => {
       this.showPrintBtn = true;
     }, 3000);
-    this.itemSer.getItemData(this.schedFillLine.item).subscribe(data=>{
-    this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
-    this.barcodeK = data[0].barcodeK;
-    this.volumeK = data[0].volumeKey + ' ml';
-    this.netoW = data[0].netWeightK;
-    this.grossW = data[0].grossUnitWeightK;
-     
+    this.itemSer.getItemData(this.schedFillLine.item).subscribe(data => {
+      this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
+      this.barcodeK = data[0].barcodeK;
+      this.volumeK = data[0].volumeKey + ' ml';
+      this.netoW = data[0].netWeightK;
+      this.grossW = data[0].grossUnitWeightK;
+
     })
 
-    this.batchService.getBatchData(this.schedFillLine.batch).subscribe(data=>{
-      this.expireDate = data[0].expration.slice(1,11);
+    this.batchService.getBatchData(this.schedFillLine.batch).subscribe(data => {
+      this.expireDate = data[0].expration.slice(1, 11);
     })
     console.log(this.schedFillLine);
 
@@ -763,30 +790,30 @@ export class ScheduleComponent implements OnInit {
     this.printCostumerBarcode = true;
     this.printExpBarcode = true;
     this.printItemBarcode = true;
-   
+
 
     console.log(newPrintBarkod);
-   }
+  }
 
-   saveBatchNumber(){
+  saveBatchNumber() {
     this.newBatch = this.printScheduleFillingForm.value.batch
     this.newBatchChange = true;
-   }
-   savePcsCarton(){
-     ;
+  }
+  savePcsCarton() {
+    ;
     this.pcsCarton = this.printScheduleFillingForm.value.pcsCartonQuantity
-   }
+  }
 
 
 
 
 
-   addImpRemarkFromItemTree(){
-     this.scheduleService.addImpRemarkFromItemTree().subscribe(data=>{
+  addImpRemarkFromItemTree() {
+    this.scheduleService.addImpRemarkFromItemTree().subscribe(data => {
       console.log(data);
-      
-     });
-   }
+
+    });
+  }
 
 
 

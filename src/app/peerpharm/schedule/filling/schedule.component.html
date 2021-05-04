@@ -335,7 +335,14 @@
                   <option value="noLacks">אין חוסרים</option>
                 </select>
               </td>
-              <td><div *ngIf="line.batchSpecStatus == 1" class="qc-batch"><strong>Q.C BATCH</strong></div></td>
+              <td >
+                <div *ngIf="line.batchSpecStatus == 1" class="qc-batch">
+                  <strong>Q.C BATCH</strong>
+                </div>
+                <div (click)="checkBatchesSpec(line.batch)" *ngIf="line.batchSpecStatus == 999" class="qc-check">
+                  <strong>Check Batches!</strong>
+                </div>
+              </td>
               <td>
                 <button *ngIf="line._id !== EditRowId" class="btn btn-info m-r-10 border border-dark" type="button"
                   (click)="openPrintBarkod(content, line)">
@@ -638,3 +645,38 @@
     </div>
   </div>
 </div>
+
+
+
+<ng-template #batchSpecStatus let-c="close" let-d="dismiss">
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Batches Specification Status</h4>
+      <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+      <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+          <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <table>
+      <thead>
+        <th>Batch</th>
+        <th>Spec Status</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let line of batchesSpecifications">
+          <td>{{line.batch}}</td>
+          <td>{{line.batchSpec}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div >
+      <h4>Specification Status:</h4>
+      <br>
+      <h5>1 = Approved</h5><br>
+      <h5>0 = Not Approved</h5><br>
+      <h5>2 = On Hold</h5><br>
+      <h5>-1 = Not Checked</h5>
+  </div>
+</ng-template>

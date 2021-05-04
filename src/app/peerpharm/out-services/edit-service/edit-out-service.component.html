@@ -12,13 +12,13 @@
             <h2 class="text-center">פרטים כלליים</h2>
             <div class="d-flex flex-row justify-content-between buxa">
                 <div>
-                    <h4>נפתח על ידי:</h4>
-                    <h5>{{addOutservice.value.userName}}</h5>
-                    <h5>{{addOutservice.value.userEmail}}</h5>
+                    <h3>נפתח על ידי:</h3>
+                    <h4>{{addOutservice.value.userName}}</h4>
+                    <h4>{{addOutservice.value.userEmail}}</h4>
                 </div>
                 <div>
-                    <h4>סטטוס:</h4>
-                    <h5 *ngIf="!editDetails">{{addOutservice.value.status}}</h5>
+                    <h3>סטטוס:</h3>
+                    <h4 *ngIf="!editDetails">{{addOutservice.value.status}}</h4>
                     <select *ngIf="editDetails" class="form-control" placeholder="סוג שירות" formControlName="status"
                     required>
                     <option value="open">open</option>
@@ -27,13 +27,13 @@
                     <option value="canceled">canceled</option>
                 </select>
             </div>
+            <!-- <div>
+                <h3>סוג שירות:</h3>
+                <h4>{{addOutservice.value.type}}</h4>
+            </div> -->
             <div>
-                <h4>סוג שירות:</h4>
-                <h5>{{addOutservice.value.type}}</h5>
-            </div>
-            <div>
-                <h4>תאריך ביצוע:</h4>
-                <h5 *ngIf="!editDetails">{{addOutservice.value.date}}</h5>
+                <h3>תאריך ביצוע:</h3>
+                <h4 *ngIf="!editDetails">{{addOutservice.value.date | date: 'short'}}</h4>
                 <input *ngIf="editDetails" type="date" class="form-control" placeholder="תאריך ביצוע"
                 formControlName="date" required>
             </div>
@@ -54,46 +54,46 @@
         <h2 class="text-center">מספק השירות</h2>
         <div class="d-flex flex-row justify-content-between buxa">
             <div>
-                <h4>ספק:</h4>
-                <h5 *ngIf="!editSupplier">{{addOutservice.value.suplierName}}</h5>
+                <h3>ספק:</h3>
+                <h4 *ngIf="!editSupplier">{{addOutservice.value.suplierName}}</h4>
                 <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
                 formControlName="date" required>
             </div>
             <div>
-                <h4>איש קשר:</h4>
-                <h5 *ngIf="!editSupplier">{{addOutservice.value.contactName}}</h5>
+                <h3>איש קשר:</h3>
+                <h4 *ngIf="!editSupplier">{{addOutservice.value.contactName}}</h4>
                 <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
                 formControlName="date" required>
             </div>
             <div>
-                <h4>טלפון:</h4>
-                <h5 *ngIf="!editSupplier">{{addOutservice.value.phoneNum}}</h5>
+                <h3>טלפון:</h3>
+                <h4 *ngIf="!editSupplier">{{addOutservice.value.phoneNum}}</h4>
                 <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
                 formControlName="date" required>
             </div>
             <div>
-                <h4>מייל:</h4>
-                <h5 *ngIf="!editSupplier">{{addOutservice.value.email}}</h5>
+                <h3>מייל:</h3>
+                <h4 *ngIf="!editSupplier">{{addOutservice.value.email}}</h4>
                 <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
                 formControlName="date" required>
             </div>
         </div>
         <div class="d-flex flex-row justify-content-between buxa">
             <div>
-                <h4>טלפון נוסף:</h4>
-                <h5 *ngIf="!editSupplier">{{addOutservice.controls.cellularNum}}</h5>
+                <h3>טלפון נוסף:</h3>
+                <h4 *ngIf="!editSupplier">{{addOutservice.controls.cellularNum}}</h4>
                 <input *ngIf="editSupplier" type="date" class="form-control" placeholder="תאריך ביצוע"
                 formControlName="date" required>
             </div>
             <div>
-                <h4>פקס:</h4>
-                <h5>{{addOutservice.value.faxNum}}</h5>
+                <h3>פקס:</h3>
+                <h4>{{addOutservice.value.faxNum}}</h4>
             </div>
             <div>
-                <h4>כתובת:</h4> <br>
-                <h5>{{addOutservice.value.address}}</h5>
-                <h5>{{addOutservice.value.city}}</h5>
-                <h5>{{addOutservice.value.country}}</h5>
+                <h3>כתובת:</h3> <br>
+                <h4>{{addOutservice.value.address}}</h4>
+                <h4>{{addOutservice.value.city}}</h4>
+                <h4>{{addOutservice.value.country}}</h4>
             </div>
         </div>
         <div *ngIf="editSupplier" class="form-group mt-4">
@@ -114,7 +114,7 @@
     <div *ngIf="addOutservice.invalid" class="bg-danger">
         <div class="d-flex flex-column">
             <div *ngFor="let control of addOutservice.controls | keyvalue">
-                <h4 *ngIf="control.value.status == 'INVALID'">Please fill {{control.key}}</h4>
+                <h3 *ngIf="control.value.status == 'INVALID'">Please fill {{control.key}}</h3>
             </div>
         </div>
     </div>
