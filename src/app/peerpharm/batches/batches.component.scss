@@ -9,6 +9,15 @@ table{
   button, input {
     border-radius: 5px;
   }
+
+  #specSection {
+    height: 1000px;
+    overflow-y: scroll;
+  }
+
+  .click {
+    cursor: pointer
+  }
   
 th, td {
       border-bottom: 1px solid #ddd;

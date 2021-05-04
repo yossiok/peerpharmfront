@@ -356,8 +356,9 @@
 </ng-template>
 
 
-  <div id="specSection" *ngIf="specValuesModal == true" style="top:50px" class="container bg-white mx-auto text-center my-auto rouneded shadow-lg fixed-top">
+  <div id="specSection" *ngIf="specValuesModal == true" style="top:50px" class="container p-5 bg-white text-center my-auto rounded shadow-lg fixed-top">
 
+    <i (click)="specValuesModal = false" class="fa fa-times h2 float-right click"></i>
     <div class="row mt-3">
       <div class="col-12">
 
@@ -407,7 +408,7 @@
       </div>
       <div class="col-3"></div>
       <div class="col-1">
-        <i (click)="specValuesModal = false" class="fa fa-times text-info"></i>
+        
       </div>
     </div>
     <div class="row text-center">
@@ -510,7 +511,7 @@
             <button *ngIf="editValues == false && alowUserEditBatches == true" (click)="editValues = true"
               class="btn btn-info form-control">Edit</button>
             <button *ngIf="editValues == true && alowUserEditBatches == true" (click)="saveSpecValues(item.itemNumber)"
-              class="btn btn-info form-control">Save</button>
+              class="btn btn-info form-control" [disabled]="savingSpecValues" [style.cursor]="savingSpecValues ? 'progress' : 'pointer'">Save</button>
           </div>
         </div>
       </div>

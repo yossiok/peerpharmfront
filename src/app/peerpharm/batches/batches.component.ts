@@ -20,6 +20,7 @@ import { ItemsService } from 'src/app/services/items.service';
 })
 export class BatchesComponent implements OnInit {
   myRefresh: any = null;
+  savingSpecValues: boolean;
 
   constructor(private itemService: ItemsService, private modalService: NgbModal, private authService: AuthService, private batchService: BatchesService, private excelService: ExcelService, private toastSrv: ToastrService) { }
   // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
@@ -466,6 +467,7 @@ export class BatchesComponent implements OnInit {
   }
 
   saveSpecValues(itemNumber) {
+    this.savingSpecValues = true;
     switch (this.item.valueStatus) {
       case 'confirm':
         this.currBatch.specStatus = {color: 'green', status: 1}
@@ -517,6 +519,7 @@ export class BatchesComponent implements OnInit {
         }
 
       }
+      this.savingSpecValues = false;
     })
   }
 
