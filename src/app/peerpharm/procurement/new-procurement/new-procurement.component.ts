@@ -304,24 +304,20 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName);
-            this.itemForm.controls.coin.setValue(data[0].coin.toUpperCase())
+            this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'NIS')
             this.itemForm.controls.measurement.setValue(data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
-
+            
             //set price
-            var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            if (!supplier) {
-              this.toastr.info('הספק אינו ברשימת הספקים של הפריט')
-              for (let aSupplier of data[0].alternativeSuppliers) {
-                if(aSupplier.price) this.itemForm.controls.price.setValue(parseFloat(aSupplier.price))
-                if(aSupplier.coin) this.itemForm.controls.coin.setValue(parseFloat(aSupplier.coin))
-                break;
-              }
-            } 
-            else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
-            if(!this.itemForm.controls.price.value) {
-              this.itemForm.controls.price.setValue(parseFloat(data[0].price))
-              this.itemForm.controls.coin.setValue('NIS')
+            this.itemForm.controls.price.setValue(data[0].price)
+            if(!data[0].price || data[0].price == '') {
+              // search in suppliers
+              var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
+              if (!supplier) this.toastr.info('הספק אינו ברשימת הספקים של הפריט') 
+              else {
+                this.itemForm.controls.price.setValue(parseFloat(supplier.price))
+                this.itemForm.controls.coin.setValue(supplier.coin.toUpperCase())
+              } 
             }
 
             // display last quantities
@@ -338,24 +334,20 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         this.inventoryService.getCmptByitemNumber(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName)
+            this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'NIS')
             this.itemForm.controls.measurement.setValue(data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
-            this.itemForm.controls.coin.setValue(data[0].coin.toUpperCase())
 
-               //set price
-            var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-            if (!supplier) {
-              this.toastr.info('הספק אינו ברשימת הספקים של הפריט')
-              for (let aSupplier of data[0].alternativeSuppliers) {
-                if(aSupplier.price) this.itemForm.controls.price.setValue(parseFloat(aSupplier.price))
-                if(aSupplier.coin) this.itemForm.controls.coin.setValue(parseFloat(aSupplier.coin))
-                break;
-              }
-            } 
-            else this.itemForm.controls.price.setValue(parseFloat(supplier.price))
-            if(!this.itemForm.controls.price.value) {
-              this.itemForm.controls.price.setValue(parseFloat(data[0].price))
-              this.itemForm.controls.coin.setValue('NIS')
+            //set price
+            this.itemForm.controls.price.setValue(data[0].price)
+            if(!data[0].price || data[0].price == '') {
+              // search in suppliers
+              var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
+              if (!supplier) this.toastr.info('הספק אינו ברשימת הספקים של הפריט') 
+              else {
+                this.itemForm.controls.price.setValue(parseFloat(supplier.price))
+                this.itemForm.controls.coin.setValue(supplier.coin.toUpperCase())
+              } 
             }
 
             // display last quantities

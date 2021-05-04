@@ -312,7 +312,7 @@
 
       <div class="row">
         <div class="col-4">
-          <p>{{currentOrder.supplierName}} - {{currentOrder.supplierNumber}}</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{currentOrder.supplierName}} - {{currentOrder.supplierNumber}}</p>
         </div>
 
         <div class="col-4"></div>
@@ -322,7 +322,7 @@
 
       <div class="row">
         <div class="col-4">
-          <p>{{currentSupplier.address}}</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{currentSupplier.address}}</p>
         </div>
 
         <div class="col-4"></div>
@@ -332,7 +332,7 @@
 
       <div class="row">
         <div class="col-4">
-          <p *ngIf="currentSupplier.phoneNum">Tel:{{currentSupplier.phoneNum}}</p>
+          <p *ngIf="currentSupplier.phoneNum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tel:{{currentSupplier.phoneNum}}</p>
         </div>
 
         <div class="col-4"></div>
@@ -342,7 +342,7 @@
 
       <div class="row">
         <div class="col-4">
-          <p *ngIf="currentSupplier.faxNum">Fax:{{currentSupplier.faxNum}}</p>
+          <p *ngIf="currentSupplier.faxNum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fax:{{currentSupplier.faxNum}}</p>
         </div>
 
         <div class="col-4"></div>
@@ -352,7 +352,7 @@
 
 
 
-      <p>Order Details:</p>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Order Details:</p>
       <div class="container" id="material-body" class="modal-body">
         <table class="table table-striped">
           <thead>
