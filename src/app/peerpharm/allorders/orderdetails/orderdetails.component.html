@@ -668,7 +668,7 @@
           <tbody>
             <tr scope="row" *ngFor="let itemCmpts of orderItemsComponents; let i =index">
               <td scope="col">{{i+1}}</td><!--0-->
-              <td scope="col">{{number}}</td><!--1-->
+              <td scope="col">{{itemCmpts.orderNumber}}</td><!--1-->
               <td scope="col">{{itemCmpts.itemNumber}}</td><!--2-->
               <td scope="col">{{itemCmpts.itemName}}</td><!--3-->
               <td scope="col">{{itemCmpts.bottleNumber}}</td><!--4-->

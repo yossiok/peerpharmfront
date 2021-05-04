@@ -1817,6 +1817,7 @@ export class OrderdetailsComponent implements OnInit {
 
   //order explosion
   async openCmptDemandsModal() {
+    debugger
     this.orderExplodeLoader = true
     this.bottleList = [];
     this.capList = [];
@@ -1834,6 +1835,9 @@ export class OrderdetailsComponent implements OnInit {
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe(async res => {
         await res.forEach(async item => {
 
+          let orderItem = this.ordersItems.find(o=>o.itemNumber == item.itemNumber)
+          orderItem ? item.orderNumber = orderItem.orderNumber : item.orderNumber = ''
+          
           item.weight = this.ordersItems.find(i => i.itemNumber == item.itemNumber).netWeightGr
           //for each order-item-demand, get all internal items and their quantities 
           let i = this.ordersItems.filter(x => x.itemNumber == item.itemNumber)[0];
