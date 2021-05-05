@@ -82,10 +82,19 @@
     </td>
   </tr>
 
-  <tbody id="table_body">
+  <div *ngIf="fetchingSchedules" class="row">
+    <div class="col-4"></div>
+    <div class="col-4"></div>
+    <div class="col-4">
+      <div class="bigLoader mx-auto"></div>
+    </div>
+  </div>
+
+
+  <tbody id="table_body" *ngIf="!fetchingSchedules">
 
     <ng-container *ngFor="let line of scheduleData; let i = index">
-      <tr *ngIf="line.status != 'printed'" style="font-size: 12px;" style="text-align: center;"
+      <tr  style="font-size: 12px;" style="text-align: center;"
         [style.background-color]="line.trColor">
 
 

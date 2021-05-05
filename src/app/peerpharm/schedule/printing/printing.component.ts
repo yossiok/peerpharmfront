@@ -42,6 +42,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
     @ViewChild('mkp') mkp:ElementRef; 
     @ViewChild('id') id:ElementRef; 
     @ViewChild('itemImg') itemImg:ElementRef; 
+    fetchingSchedules: boolean;
     @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
       console.log(event);
       this.edit('');
@@ -119,27 +120,29 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
 
     }
     getAllSchedule(){
+      this.fetchingSchedules = true;
       this.date.nativeElement.value="";
-
+      
       this.scheduleService.getAllPrintSchedule().subscribe(res=>{
+        this.fetchingSchedules = false
         res.map(elem=>{
           console.log(elem);
           let pastDue=(moment(elem.date).format() < moment(this.today).format());
           if(elem.status=="printed") elem.trColor="Aquamarine";
           if(elem.status!="printed" && pastDue) elem.trColor="rgb(250, 148, 148)";            
         });
-       
+        
         this.scheduleData=res;
       });
     }
-
-  
-
+    
+    
+    
     getOpenAllSchedule(){
-      
+      this.fetchingSchedules = true;
       this.date.nativeElement.value="";
-
       this.scheduleService.getOpenPrintSchedule().subscribe(res=>{
+        this.fetchingSchedules = false;
         res.map(elem=>{
           let pastDue=(moment(elem.date).format() < moment(this.today).format());
           if(pastDue) elem.trColor="rgb(250, 148, 148)";            
