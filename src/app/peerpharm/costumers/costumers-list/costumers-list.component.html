@@ -11,7 +11,7 @@
     <div class="col-4"></div>
     <div class="col-1">
       <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-          (click)="exportAsXLSX(costumers)">
+          (click)="exportAsXLSX(costumers, 'לקוחות')">
     </div>
     <div class="col-2">
       <button class="form-control btn btn-info border border-dark" style='cursor: pointer;' (click)="showCustomerModal = true">New Costumer</button>
@@ -207,7 +207,10 @@
 
     <div class="container">
       <div class="row bg-info">
-        <div class="col-1"></div>
+        <div class="col-1">
+          <img src="../../../assets/images/excel.png" alt="excel export"
+          (click)="exportAsXLSX(customerOrders, 'הזמנות לקוח')" style="width: 35px; float: left; cursor: pointer;">
+        </div>
         <div class="col-10">
           <h2 class="text-white">הזמנות פתוחות</h2>
         </div>
@@ -248,7 +251,7 @@
       <div class="row bg-info">
         <div class="col-1">  
           <img src="../../../assets/images/excel.png" alt="excel export"
-          (click)="exportAsXLSX(customerItems)" style="width: 35px; float: left; cursor: pointer;">
+          (click)="exportAsXLSX(customerItems, 'מוצרים לקוח')" style="width: 35px; float: left; cursor: pointer;">
         </div>
         <div class="col-10">
           <h2 class="text-white">פריטים שנרכשו</h2>

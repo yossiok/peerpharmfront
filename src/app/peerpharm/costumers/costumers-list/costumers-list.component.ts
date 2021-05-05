@@ -149,7 +149,6 @@ export class CostumersListComponent implements OnInit {
   }
 
   exportAsXLSX(data, fileName) {
-    debugger
     this.excelService.exportAsExcelFile(data, fileName);
   }
 
