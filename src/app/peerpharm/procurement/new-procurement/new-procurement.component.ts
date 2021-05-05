@@ -96,7 +96,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   showPurchaseDetails: boolean = false;
   showItemDetails: boolean = false;
   itemIndex: number;
-  itemHistory: any;
   submittingCert: boolean;
   sendingPurchase: boolean;
 
@@ -182,11 +181,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     else console.log('')
     if (this.isEdit) {
-      if(!this.purchaseData.closeReason) this.purchaseData.closeReason = ''
-      if(!this.purchaseData.userEmail) this.purchaseData.userEmail = ''
-      if(!this.purchaseData.user) this.purchaseData.user = ''
-      if(!this.purchaseData.shippingPercentage) this.purchaseData.shippingPercentage = 0
-      if(!this.purchaseData.finalPurchasePrice) this.purchaseData.finalPurchasePrice = 0
+      if (!this.purchaseData.closeReason) this.purchaseData.closeReason = ''
+      if (!this.purchaseData.userEmail) this.purchaseData.userEmail = ''
+      if (!this.purchaseData.user) this.purchaseData.user = ''
+      if (!this.purchaseData.shippingPercentage) this.purchaseData.shippingPercentage = 0
+      if (!this.purchaseData.finalPurchasePrice) this.purchaseData.finalPurchasePrice = 0
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
       this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
     }
@@ -207,18 +206,18 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       }
       if (this.isEdit) {
         if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''
-        if(!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = ''
-        if(!changes.purchaseData.currentValue.userEmail) changes.purchaseData.currentValue.userEmail = ''
-        if(!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = ''
-        if(!changes.purchaseData.currentValue.shippingPercentage) changes.purchaseData.currentValue.shippingPercentage = 0
-        if(!changes.purchaseData.currentValue.finalPurchasePrice) changes.purchaseData.currentValue.finalPurchasePrice = 0
+        if (!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = ''
+        if (!changes.purchaseData.currentValue.userEmail) changes.purchaseData.currentValue.userEmail = ''
+        if (!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = ''
+        if (!changes.purchaseData.currentValue.shippingPercentage) changes.purchaseData.currentValue.shippingPercentage = 0
+        if (!changes.purchaseData.currentValue.finalPurchasePrice) changes.purchaseData.currentValue.finalPurchasePrice = 0
         this.newPurchase.setValue(changes.purchaseData.currentValue)
       }
     }
 
   }
 
- 
+
 
   formatDate(date) {
     var d = new Date(date),
@@ -307,26 +306,21 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'NIS')
             this.itemForm.controls.measurement.setValue(data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
-            
+
             //set price
             this.itemForm.controls.price.setValue(data[0].price)
-            if(!data[0].price || data[0].price == '') {
+            if (!data[0].price || data[0].price == '') {
               // search in suppliers
               var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-              if (!supplier) this.toastr.info('הספק אינו ברשימת הספקים של הפריט') 
+              if (!supplier) this.toastr.info('הספק אינו ברשימת הספקים של הפריט')
               else {
                 this.itemForm.controls.price.setValue(parseFloat(supplier.price))
                 this.itemForm.controls.coin.setValue(supplier.coin.toUpperCase())
-              } 
+              }
             }
 
-            // display last quantities
-            // console.log('1: ',this.itemForm.controls.historyAmounts.value)
-            // this.itemForm.controls.historyAmounts.setValue('ABCDEFG')
-            // console.log('2: ', this.itemForm.controls.historyAmounts.value)
-
           } else {
-            this.toastr.error(""+this.newPurchase.controls.orderType.value+'פריט לא קיים במערכת כ')
+            this.toastr.error("" + this.newPurchase.controls.orderType.value + 'פריט לא קיים במערכת כ')
           }
 
         })
@@ -340,23 +334,18 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
             //set price
             this.itemForm.controls.price.setValue(data[0].price)
-            if(!data[0].price || data[0].price == '') {
+            if (!data[0].price || data[0].price == '') {
               // search in suppliers
               var supplier = data[0].alternativeSuppliers.find(s => s.supplierName == this.newPurchase.controls.supplierName.value);
-              if (!supplier) this.toastr.info('הספק אינו ברשימת הספקים של הפריט') 
+              if (!supplier) this.toastr.info('הספק אינו ברשימת הספקים של הפריט')
               else {
                 this.itemForm.controls.price.setValue(parseFloat(supplier.price))
                 this.itemForm.controls.coin.setValue(supplier.coin.toUpperCase())
-              } 
+              }
             }
 
-            // display last quantities
-            // console.log('1: ',this.itemForm.controls.historyAmounts.value)
-            // this.itemForm.controls.historyAmounts.setValue(this.itemHistory)
-            // console.log('2: ', this.itemForm.controls.historyAmounts.value)
-
           } else {
-            this.toastr.error(""+this.newPurchase.controls.orderType.value+'פריט לא קיים במערכת כ')
+            this.toastr.error("" + this.newPurchase.controls.orderType.value + 'פריט לא קיים במערכת כ')
           }
         })
       }
@@ -367,23 +356,23 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     else this.toastr.warning('יש לרשום מספר פריט.')
   }
 
-  getLastOrdersForItem(componentN){
+  getLastOrdersForItem(componentN) {
     this.itemForm.controls.historyAmounts.setValue([])
-    this.procurementService.getLastOrdersForItem(componentN , 20).subscribe(orders=> {
-      debugger
-      if(orders && orders.length > 0) {
+    this.procurementService.getLastOrdersForItem(componentN, 100).subscribe(orders => {
+      if (orders && orders.length > 0) {
+        let currentYear = 0
+        let lastYear = 0
         for (let order of orders) {
-          this.itemForm.controls.historyAmounts.value.push({
-            quantity: order.quantity,
-            price: order.price,
-            measurement: order.measurement,
-            date: order.orderDate.slice(0,10)
-          })
-          // this.itemHistory += `order: ${order.number} | quantity: ${order.quantity} | price: ${order.price}</br>`
+          if (order.orderDate.slice(0, 4) == '2021') currentYear += Number(order.quantity)
+          else if (order.orderDate.slice(0, 4) == '2020') lastYear += Number(order.quantity)
         }
-      } 
+        this.itemForm.controls.historyAmounts.setValue([
+          { year: 2021, amount: currentYear },
+          { year: 2020, amount: lastYear }
+        ])
+      }
       else this.itemForm.controls.historyAmounts.setValue([])
-      })
+    })
   }
 
   addItemToPurchase() {
@@ -435,34 +424,35 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   selectItem(i, checked) {
     if (checked) {
-      this.selectedItems.push({...this.newPurchase.controls.stockitems.value[i]})
+      this.selectedItems.push({ ...this.newPurchase.controls.stockitems.value[i] })
       this.selectedItems[this.selectedItems.length - 1].quantity = 0
-    } 
-    else this.selectedItems.forEach( (item, index) => { 
+    }
+    else this.selectedItems.forEach((item, index) => {
       if (item.name == this.newPurchase.controls.stockitems.value[i].name) {
         this.selectedItems.splice(index, 1)
-      }})
+      }
+    })
   }
 
   // Invoices and Certificates
   checkCertValidation() {
     let bool = false;
-    if(this.deliveryCertificate.certificateNumber != null && this.deliveryCertificate.certificateNumber != '' && this.deliveryCertificate.certificateNumber != undefined) {
-      if(this.deliveryCertificate.deliveryArrivalDate != null && this.deliveryCertificate.deliveryArrivalDate != undefined) {
-        if(this.selectedItems.length > 0) {
+    if (this.deliveryCertificate.certificateNumber != null && this.deliveryCertificate.certificateNumber != '' && this.deliveryCertificate.certificateNumber != undefined) {
+      if (this.deliveryCertificate.deliveryArrivalDate != null && this.deliveryCertificate.deliveryArrivalDate != undefined) {
+        if (this.selectedItems.length > 0) {
           let allAmountsFilled = true;
           for (let item of this.selectedItems) {
             if (item.quantity <= 0) allAmountsFilled = false
           }
-          for(let cert of this.newPurchase.controls.deliveryCerts.value) {
-            if(cert.certificateNumber == this.deliveryCertificate.certificateNumber) {
+          for (let cert of this.newPurchase.controls.deliveryCerts.value) {
+            if (cert.certificateNumber == this.deliveryCertificate.certificateNumber) {
               allAmountsFilled = false
               this.toastr.error(`Certificate ${this.deliveryCertificate.certificateNumber} allready exist.`)
             }
           }
           bool = allAmountsFilled
-        } 
-      } 
+        }
+      }
     }
     this.certValid = bool;
     // if(bool) this.toastr.success('תעודה תקינה. ניתן לשמור.')
@@ -474,7 +464,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     // set purchase stockitems arrived amounts
     for (let arrivedItem of this.deliveryCertificate.stockitems) {
       let item = this.newPurchase.controls.stockitems.value.find(si => si.name == arrivedItem.name)
-      if(item.arrivedAmount) {
+      if (item.arrivedAmount) {
         item.arrivedAmount = Number(item.arrivedAmount) + Number(arrivedItem.quantity)
       }
       else item.arrivedAmount = Number(arrivedItem.quantity)
@@ -494,18 +484,18 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   deleteCert(i, cn) {
-    if(confirm(`Erase certificate ${cn}.`)) {
+    if (confirm(`Erase certificate ${cn}.`)) {
 
       this.newPurchase.controls.deliveryCerts.value.splice(i, 1)
       this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)
-      .subscribe(res => {
-        if (res) {
-          this.toastr.success(`Certificate no. ${cn} erased successfully.`)
-        }
-        else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
-        this.deliveryCertificate.userName = this.authService.loggedInUser.userName
-        this.modalService.dismissAll()
-      })
+        .subscribe(res => {
+          if (res) {
+            this.toastr.success(`Certificate no. ${cn} erased successfully.`)
+          }
+          else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
+          this.deliveryCertificate.userName = this.authService.loggedInUser.userName
+          this.modalService.dismissAll()
+        })
     }
   }
 
@@ -520,15 +510,15 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   // }
 
   checkItemAmount(i, itemNumber, amount, inputRef) {
-    if(amount <= 0) {
+    if (amount <= 0) {
       this.toastr.error('יש להזין כמות')
-    } 
+    }
     amount = amount.target.value
     for (let item of this.newPurchase.controls.stockitems.value) {
       if (item.number == itemNumber) {
         if (amount > item.quantity) {
           this.toastr.warning('שים לב! הכמות שהזנת גדולה מהכמות בהזמנה')
-        } 
+        }
         this.selectedItems[i].quantity = amount
       }
     }
@@ -564,14 +554,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     // sum order value
     this.newPurchase.controls.finalPurchasePrice.setValue(orderPrice)
     this.newPurchase.controls.sumShippingCost.setValue(shippingPrice - tax1 - tax2)
-    this.newPurchase.controls.shippingPercentage.setValue( Number(this.newPurchase.value.sumShippingCost) / Number(this.newPurchase.value.finalPurchasePrice))
+    this.newPurchase.controls.shippingPercentage.setValue(Number(this.newPurchase.value.sumShippingCost) / Number(this.newPurchase.value.finalPurchasePrice))
 
     // set shipping price for each item in purchase
     this.newPurchase.controls.stockitems.value.map(si => {
-      if(si.arrivedAmount) si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value 
+      if (si.arrivedAmount) si.shippingPrice = Number(si.price) * this.newPurchase.controls.shippingPercentage.value
     })
 
-    if(update) this.sendNewProc('update')
+    if (update) this.sendNewProc('update')
 
   }
 
@@ -619,18 +609,18 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   setPurchaseStatus(ev) {
     if (confirm('האם לשנות סטטוס הזמנה ?')) {
       // calculate final shipping price
-      if(ev.target.value == 'closed') {
-        try{
+      if (ev.target.value == 'closed') {
+        try {
           this.calculateShipping(this.newPurchase.controls.finalPurchasePrice.value, this.newPurchase.controls.sumShippingCost.value, 0, 0, false)
           this.setFinalStatus(ev)
         } catch {
           this.toastr.error('יש להזין נתוני העמסה')
         }
-      } 
+      }
       else this.setFinalStatus(ev)
     }
   }
-  
+
   setFinalStatus(ev) {
     this.newPurchase.controls.status.setValue(ev.target.value);
     this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
@@ -643,7 +633,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   open(modal) {
-    if(modal._def.references.recieveDeliveryCertificate && this.selectedItems.length == 0) {
+    if (modal._def.references.recieveDeliveryCertificate && this.selectedItems.length == 0) {
       this.toastr.error('Must choose at least one item.')
     }
     else {

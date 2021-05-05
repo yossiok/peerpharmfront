@@ -835,11 +835,11 @@
 
 </ng-template>
 
-<ng-template #lastorders>
-  <h4>Last Orders:</h4>
+<ng-template class="tooltip"  #lastorders>
+  <h3 class="head">Amounts by year:</h3>
   <div class="d-flex flex-column">
     <div *ngFor="let orderItem of itemForm.controls.historyAmounts.value">
-      <span>{{orderItem.date}}: {{ orderItem.quantity}} {{orderItem.measurement}} </span>
+      <span class="year">{{orderItem.year}}:</span> &nbsp;&nbsp; <span class="amount">{{ orderItem.amount}} {{itemForm.controls.measurement.value}} </span>
     </div>
   </div>
 </ng-template>

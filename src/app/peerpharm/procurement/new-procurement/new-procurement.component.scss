@@ -16,6 +16,25 @@ select:focus,input:focus,textarea:focus {
   background: rgb(228, 206, 238) !important
 }
 
+.head {
+  color: coral;
+}
+.year {
+  font-size: 25px;
+  color: aliceblue;
+  text-decoration: underline;
+}
+
+.tooltip{
+  width: 500px;
+}
+
+.amount {
+  font-size: 25px;
+  font-weight: bold;
+  color: chocolate;
+}
+
 .hover-red:hover {
   background-color: red;
   color: black;
