@@ -127,9 +127,23 @@ export class QaPalletsComponent implements OnInit {
   }
 
   exportAsXLSX(packlist){
+    // let customer = 
+    debugger
     let allLines = []
     packlist.pallets.map(pallet=>pallet.lines.map(line => allLines.push(line)))
-    this.excelService.exportAsExcelFile(allLines,`מוכנים לחשבונית ${new Date()}`);
+    for (let line of allLines) {
+      delete line._id
+      delete line.customerName
+      delete line.formDetailsId
+      delete line.isPersonalPackage
+      delete line.qaStatus
+      delete line.remarks
+      delete line.allUnits
+      delete line.allKartons
+      delete line.palletStatus
+      delete line.__v
+    }
+    this.excelService.exportAsExcelFile(allLines,`${packlist.costumerName} - ${new Date().toDateString()}`);
   }
 
   deleteNewPallete(palletNumber, customerName) {
