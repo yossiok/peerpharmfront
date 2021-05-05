@@ -19,6 +19,7 @@ export class CostumersListComponent implements OnInit {
   showCustomerModal:boolean = false;
   closeResult: string;
   costumers: any[];
+  costumersCopy: any[];
   customerOrders: any[];
   customerItems: any[]
   contacts: any[];
@@ -44,6 +45,7 @@ export class CostumersListComponent implements OnInit {
 
   fetchingCustomerItems: boolean;
   counter: number = 0;
+  countries: any[] = []
 
   constructor(private orderService:OrdersService,private excelService:ExcelService,private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
@@ -101,7 +103,15 @@ export class CostumersListComponent implements OnInit {
   }
 
   getCostumers() {
-    this.costumersService.getAllCostumers().subscribe(res => this.costumers = res);
+    let countries = []
+    this.costumersService.getAllCostumers().subscribe(res => {
+      this.costumers = res
+      this.costumersCopy = res
+      this.countries = this.costumers.map(costumer => {
+        if(!countries.includes(costumer.country)) countries.push(costumer.country)
+      }) 
+      this.countries = countries
+    });
   }
 
   saveCostumer() { 
@@ -149,7 +159,20 @@ export class CostumersListComponent implements OnInit {
   }
 
   exportAsXLSX(data, fileName) {
+    if (fileName == 'לקוחות') {
+      data.forEach(object => {
+        delete object.__v
+        delete object._id
+        delete object.contact
+        delete object.companyNumber
+        delete object.peerpharmAgent
+      })
+    }
     this.excelService.exportAsExcelFile(data, fileName);
+  }
+
+  filterCustomers(by, e){
+    this.costumers = this.costumersCopy.filter(costumer => costumer[by].includes(e.target.value)) 
   }
 
   checkIfExist(ev){
