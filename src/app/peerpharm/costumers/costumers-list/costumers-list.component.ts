@@ -12,12 +12,15 @@ import { OrdersService } from 'src/app/services/orders.service';
   styleUrls: ['./costumers-list.component.scss']
 })
 export class CostumersListComponent implements OnInit {
+  
+  @ViewChild("container")  container: ElementRef=null;
 
   addContactModal:boolean = false;
   showCustomerModal:boolean = false;
   closeResult: string;
   costumers: any[];
   customerOrders: any[];
+  customerItems: any[]
   contacts: any[];
   contact = {
     name: '',
@@ -39,9 +42,8 @@ export class CostumersListComponent implements OnInit {
     area:'',
   }
 
-
-
-  @ViewChild("container")  container: ElementRef=null;
+  fetchingCustomerItems: boolean;
+  counter: number = 0;
 
   constructor(private orderService:OrdersService,private excelService:ExcelService,private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
@@ -77,10 +79,10 @@ export class CostumersListComponent implements OnInit {
   }
 
   openDetails(i) { 
-    ;
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
     this.getOrderDetailsForCustomer(this.costumer.costumerName)
+    this.getAllCustomerOrderedItems(this.costumer.costumerName)
     this.showCustomerModal = true;
     // this.contact = this.costumers[i].contact[0];
  
@@ -129,6 +131,27 @@ export class CostumersListComponent implements OnInit {
       this.customerOrders = data;
     }
     })
+  }
+
+  getAllCustomerOrderedItems(costumer){
+    this.fetchingCustomerItems = true
+    this.orderService.getAllCustomerOrderedItems(costumer).subscribe(data => {
+      this.fetchingCustomerItems = false
+      this.customerItems = data
+    })
+  }
+
+  sortBy(array, by){
+    if(by.includes('Date')) {
+      this[array].map(element => {
+        element.formatedDate = new Date(element[by])
+        return element;
+      })
+      by = 'formatedDate'
+    }
+    if (this.counter % 2 == 0) this[array].sort((a, b) => (a[by]) - (b[by]))
+    else this[array].sort((a, b) => (b[by]) - (a[by]))
+    this.counter++
   }
 
   checkIfExist(ev){

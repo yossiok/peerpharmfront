@@ -53,9 +53,7 @@
 
 
 
-<div *ngIf="showCustomerModal == true" style="top:100px" class="text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-white border border-info">
-<mat-tab-group mat-align-tabs="center">
-  <mat-tab label="Customer Card">
+<div *ngIf="showCustomerModal == true" style="top:100px" class="customer p-5 text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-white border border-info">
     <div  class="container">
       <div class="row bg-info">
         <div class="col-1"></div>
@@ -206,53 +204,83 @@
       </div>
       
       </div>
-  </mat-tab>
 
-  <mat-tab label="Personal Details">
     <div class="container">
       <div class="row bg-info">
         <div class="col-1"></div>
         <div class="col-10">
-          <h2 class="text-white">פרטים אישיים</h2>
+          <h2 class="text-white">הזמנות פתוחות</h2>
         </div>
         <div class="col-1">
-          <i (click)="showCustomerModal = false" style="font-size: 23px;padding: 8px;" class="fa fa-times text-white"></i>
         </div>
       </div>
       
 
-      <div class="row mt-4">
+      <div dir="rtl" class="row mt-4">
         <div style="height:600px" class="col-12">
           <table class="table table-hover">
-            <thead class="bg-info text-white">
+            <thead class="bg-info text-white text-center">
               <tr>
-                <th>מספר הזמנה</th>
-                <th>מספר פריט</th>
-                <th>שם פריט</th>
-                <th>כמות</th>
-                <th>שלב</th>
-                <th>סטטוס</th>
+                <th class="click" (click)="sortBy('customerOrders', 'orderNumber')">מספר הזמנה</th>
+                <th class="click" (click)="sortBy('customerOrders', 'orderDate')">תאריך</th>
+                <th class="click" (click)="sortBy('customerOrders', 'itemNumber')">מספר פריט</th>
+                <th class="click" (click)="sortBy('customerOrders', 'itemName')">שם פריט</th>
+                <th class="click" (click)="sortBy('customerOrders', 'amount')">כמות</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let order of customerOrders">
                 <td>{{order.orderNumber}}</td>
+                <td>{{order.orderDate}}</td>
                 <td>{{order.itemNumber}}</td>
                 <td>{{order.itemName}}</td>
                 <td>{{order.amount}}</td>
-                <td>{{order.stage}}</td>
-                <td>{{order.status}}</td>
-               
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  </mat-tab>
 
-  <mat-tab label="Price List">Price List..</mat-tab>
-</mat-tab-group>
+
+    
+    <div class="container">
+      <div class="row bg-info">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <h2 class="text-white">פריטים שנרכשו</h2>
+        </div>
+        <div class="col-1">
+        </div>
+      </div>
+      
+      <!-- <button class="btn btn-primary" [disabled]="fetchingCustomerItems" [style.cursor]="fetchingCustomerItems ? 'not-allowed' : 'pointer'" (click)="getAllCustomerOrderedItems()">צפה</button>
+      <button class="btn btn-secondary" (click)="customerItems = []">נקה</button> -->
+
+      <div *ngIf="customerItems.length > 0" dir="rtl" class="row mt-4">
+        <div style="height:600px" class="col-12">
+          <table class="table table-hover">
+            <thead class="bg-info text-white text-center">
+              <tr>
+                <th class="click" (click)="sortBy('customerItems', 'itemNumber')">מספר פריט</th>
+                <th class="click" (click)="sortBy('customerItems', 'itemName')">שם פריט</th>
+                <th class="click" (click)="sortBy('customerItems', 'orderDate')">תאריך</th>
+                <th class="click" (click)="sortBy('customerItems', 'amount')">כמות</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of customerItems">
+                <td>{{item.itemNumber}}</td>
+                <td>{{item.itemName}}</td>
+                <td>{{item.orderDate}}</td>
+                <td>{{item.amount}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
 </div>
 
 
