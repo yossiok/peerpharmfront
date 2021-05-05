@@ -88,12 +88,6 @@ export class CostumersListComponent implements OnInit {
  
   }
 
-  exportAsXLSX(): void {
-
-        this.excelService.exportAsExcelFile(this.costumers, 'data');
-
-  }
-
  
 
   private getDismissReason(reason: any): string {
@@ -152,6 +146,11 @@ export class CostumersListComponent implements OnInit {
     if (this.counter % 2 == 0) this[array].sort((a, b) => (a[by]) - (b[by]))
     else this[array].sort((a, b) => (b[by]) - (a[by]))
     this.counter++
+  }
+
+  exportAsXLSX(data, fileName) {
+    debugger
+    this.excelService.exportAsExcelFile(data, fileName);
   }
 
   checkIfExist(ev){
