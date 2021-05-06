@@ -4,6 +4,7 @@ import { CostumersService } from '../../../services/costumers.service';
 import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from 'src/app/services/excel.service';
 import { OrdersService } from 'src/app/services/orders.service';
+import { UsersService } from 'src/app/services/users.service';
 
 
 @Component({
@@ -46,10 +47,28 @@ export class CostumersListComponent implements OnInit {
   fetchingCustomerItems: boolean;
   counter: number = 0;
   countries: any[] = []
+  agents: void[] = []
 
-  constructor(private orderService:OrdersService,private excelService:ExcelService,private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
+  constructor(
+    private orderService:OrdersService,
+    private excelService:ExcelService,
+    private modalService: NgbModal, 
+    private costumersService: CostumersService, 
+    private renderer: Renderer2, 
+    private userService: UsersService,
+    private toastSrv: ToastrService) { }
 
+  ngOnInit() {
+    this.getCostumers(); 
+    this.getAllUsers()
+
+  }
   
+  getAllUsers(){
+    this.userService.getAllUserNames().subscribe(res=>{
+      res.map(user=> this.agents.push(user.userName))
+    })
+  }
 
   open(content) {
     this.costumer = {
@@ -80,15 +99,7 @@ export class CostumersListComponent implements OnInit {
     });
   }
 
-  openDetails(i) { 
-    console.log(this.costumers[i]);
-    this.costumer = this.costumers[i];
-    this.getOrderDetailsForCustomer(this.costumer.costumerName)
-    this.getAllCustomerOrderedItems(this.costumer.costumerName)
-    this.showCustomerModal = true;
-    // this.contact = this.costumers[i].contact[0];
- 
-  }
+
 
  
 
@@ -127,6 +138,16 @@ export class CostumersListComponent implements OnInit {
       }
       else this.toastSrv.error("Failed" , res);
     })
+  }
+
+  openDetails(i) { 
+    console.log(this.costumers[i]);
+    this.costumer = this.costumers[i];
+    this.getOrderDetailsForCustomer(this.costumer.costumerName)
+    this.getAllCustomerOrderedItems(this.costumer.costumerName)
+    this.showCustomerModal = true;
+    // this.contact = this.costumers[i].contact[0];
+ 
   }
 
   getOrderDetailsForCustomer(customer){
@@ -225,8 +246,6 @@ export class CostumersListComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    this.getCostumers(); 
-  }
+ 
 
 }

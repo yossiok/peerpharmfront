@@ -10,9 +10,9 @@
       <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
         (click)="exportAsXLSX(costumers, 'לקוחות')">
     </div>
-    <div class="col-3">
+    <div class="col-1">
     </div>
-    <div class="col-4 d-flex flex-row justify-content-around p-2">
+    <div class="col-8 d-flex flex-row justify-content-around p-2">
       <div class="cool">
         <h4>Filter by:</h4>
       </div>
@@ -26,18 +26,30 @@
         <input type="text" placeholder="Customer Address" (keyup)="filterCustomers('invoice', $event)">
       </div>
       <div>
-        <select (change)="filterCustomers('country', $event)">
+        <select class="form-control" (change)="filterCustomers('country', $event)">
+          <option value="" selected="true">Country</option>
           <option *ngFor="let country of countries" [value]="country">{{country}}</option>
-          <!-- <option value="Israel"></option>
-          <option value="KOREA"></option>
-          <option value="Hong Kong"></option>
-          <option value="USA"></option>
-          <option value="India"></option>
-          <option value="USA"></option> -->
+        </select>
+      </div>
+      <div>
+        <select class="form-control" (change)="filterCustomers('peerpharmAgent', $event)">
+          <option value="" selected="true">Agent</option>
+          <option *ngFor="let agent of agents" [value]="agent">{{agent}}</option>
+        </select>
+      </div>
+      <div>
+        <select class="form-control" (change)="filterCustomers('area', $event)">
+          <option value="" selected="true">Area</option>
+          <option value="דרום">דרום</option>
+          <option value="ירושלים">ירושלים</option>
+          <option value="מרכז">מרכז</option>
+          <option value="השרון">השרון</option>
+          <option value="צפון מערבי">צפון מערבי</option>
+          <option value="צפון מזרחי">צפון מזרחי</option>
         </select>
       </div>
     </div>
-    <div class="col-3">
+    <div class="col-1">
 
     </div>
     <div class="col-1">
@@ -59,7 +71,9 @@
             <th>Name</th>
             <th>Brand</th>
             <th>Address</th>
-            <th></th>
+            <th>Area</th>
+            <th>Country</th>
+            <th>Agent</th>
           </tr>
         </thead>
         <tbody id="table_body">
@@ -70,7 +84,9 @@
             <td dir="rtl">{{costumer.costumerName}}</td>
             <td>{{costumer.brand}}</td>
             <td>{{costumer.invoice}}</td>
-            <td></td>
+            <td>{{costumer.area}}</td>
+            <td>{{costumer.country}}</td>
+            <td>{{costumer.peerpharmAgent}}</td>
           </tr>
         </tbody>
       </table>
@@ -92,6 +108,16 @@
         <i (click)="showCustomerModal = false" style="font-size: 23px;padding: 8px;" class="fa fa-times text-white"></i>
       </div>
     </div>
+
+      <div class="row mt-5">
+        <div class="col-1">
+        </div>
+        <div class="col-10">
+          <h3 class="text-info">פרטים כלליים</h3>
+        </div>
+        <div class="col-1">
+        </div>
+      </div>
 
     <div class="row mt-3">
       <div class="col-2"></div>
@@ -150,7 +176,9 @@
       <div class="col-3">
         <input class="form-control" [(ngModel)]="costumer.paymentTerms">
         <input class="form-control" [(ngModel)]="costumer.stickersCharge">
-        <input class="form-control" [(ngModel)]="costumer.peerpharmAgent">
+        <select class="form-control" [(ngModel)]="costumer.peerpharmAgent">
+          <option *ngFor="let agent of agents" [value]="agent">{{agent}}</option>
+        </select>
       </div>
 
       <div class="col-2">
@@ -182,6 +210,7 @@
         <label style="margin-bottom: 0;" class="form-control">Invoice Address</label>
         <label style="margin-bottom: 0;" class="form-control">Delivery Address</label>
         <label style="margin-bottom: 0;" class="form-control">Area</label>
+        <label style="margin-bottom: 0;" class="form-control">Country</label>
       </div>
       <div class="col-3">
         <input class="form-control" [(ngModel)]="costumer.invoice">
@@ -193,6 +222,9 @@
           <option value="צפון מערבי">צפון מערבי</option>
           <option value="צפון מזרחי">צפון מזרחי</option>
           <option value="ירושלים">ירושלים</option>
+        </select>
+        <select class="form-control" [(ngModel)]="costumer.country">
+          <option *ngFor="let country of countries" [value]="country">{{country}}</option>
         </select>
       </div>
 
@@ -228,21 +260,21 @@
     <div class="row mt-4">
       <div class="col-5"></div>
       <div class="col-2 p-2">
-        <button type="button" class="btn btn-info" (click)="saveCostumer()">Save</button>
+        <button type="button" class="btn btn-info" (click)="saveCostumer()">Save Details</button>
       </div>
       <div class="col-5"></div>
     </div>
 
   </div>
 
-  <div class="container">
-    <div class="row bg-info">
+  <div class="container mt-5">
+    <div class="row">
       <div class="col-1">
         <img src="../../../assets/images/excel.png" alt="excel export"
           (click)="exportAsXLSX(customerOrders, 'הזמנות לקוח')" style="width: 35px; float: left; cursor: pointer;">
       </div>
       <div class="col-10">
-        <h2 class="text-white">הזמנות פתוחות</h2>
+        <h3 class="text-info">הזמנות פתוחות</h3>
       </div>
       <div class="col-1">
       </div>
@@ -252,7 +284,7 @@
     <div dir="rtl" class="row mt-4">
       <div style="height:600px" class="col-12">
         <table class="table table-hover">
-          <thead class="bg-info text-white text-center">
+          <thead class="text-info text-center">
             <tr>
               <th class="click" (click)="sortBy('customerOrders', 'orderNumber')">מספר הזמנה</th>
               <th class="click" (click)="sortBy('customerOrders', 'orderDate')">תאריך</th>
@@ -278,13 +310,13 @@
 
 
   <div class="container">
-    <div class="row bg-info">
+    <div class="row">
       <div class="col-1">
         <img src="../../../assets/images/excel.png" alt="excel export"
           (click)="exportAsXLSX(customerItems, 'מוצרים לקוח')" style="width: 35px; float: left; cursor: pointer;">
       </div>
       <div class="col-10">
-        <h2 class="text-white">פריטים שנרכשו</h2>
+        <h3 class="text-info">פריטים שנרכשו</h3>
       </div>
       <div class="col-1">
       </div>
@@ -296,7 +328,7 @@
     <div *ngIf="customerItems.length > 0" dir="rtl" class="row mt-4">
       <div style="height:600px" class="col-12">
         <table class="table table-hover">
-          <thead class="bg-info text-white text-center">
+          <thead class="text-info text-center">
             <tr>
               <th class="click" (click)="sortBy('customerItems', 'itemNumber')">מספר פריט</th>
               <th class="click" (click)="sortBy('customerItems', 'itemName')">שם פריט</th>
