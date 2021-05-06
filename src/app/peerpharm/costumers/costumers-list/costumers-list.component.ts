@@ -47,7 +47,7 @@ export class CostumersListComponent implements OnInit {
   fetchingCustomerItems: boolean;
   counter: number = 0;
   countries: any[] = []
-  agents: void[] = []
+  agents: any[] = []
 
   constructor(
     private orderService:OrdersService,
@@ -193,7 +193,7 @@ export class CostumersListComponent implements OnInit {
   }
 
   filterCustomers(by, e){
-    this.costumers = this.costumersCopy.filter(costumer => costumer[by].includes(e.target.value)) 
+    this.costumers = this.costumersCopy.filter(costumer => costumer[by] && costumer[by].includes(e.target.value)) 
   }
 
   checkIfExist(ev){
