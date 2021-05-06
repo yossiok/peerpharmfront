@@ -4,6 +4,7 @@ import { CostumersService } from '../../../services/costumers.service';
 import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from 'src/app/services/excel.service';
 import { OrdersService } from 'src/app/services/orders.service';
+import { UsersService } from 'src/app/services/users.service';
 
 
 @Component({
@@ -12,12 +13,16 @@ import { OrdersService } from 'src/app/services/orders.service';
   styleUrls: ['./costumers-list.component.scss']
 })
 export class CostumersListComponent implements OnInit {
+  
+  @ViewChild("container")  container: ElementRef=null;
 
   addContactModal:boolean = false;
   showCustomerModal:boolean = false;
   closeResult: string;
   costumers: any[];
+  costumersCopy: any[];
   customerOrders: any[];
+  customerItems: any[]
   contacts: any[];
   contact = {
     name: '',
@@ -39,13 +44,31 @@ export class CostumersListComponent implements OnInit {
     area:'',
   }
 
+  fetchingCustomerItems: boolean;
+  counter: number = 0;
+  countries: any[] = []
+  agents: any[] = []
 
+  constructor(
+    private orderService:OrdersService,
+    private excelService:ExcelService,
+    private modalService: NgbModal, 
+    private costumersService: CostumersService, 
+    private renderer: Renderer2, 
+    private userService: UsersService,
+    private toastSrv: ToastrService) { }
 
-  @ViewChild("container")  container: ElementRef=null;
+  ngOnInit() {
+    this.getCostumers(); 
+    this.getAllUsers()
 
-  constructor(private orderService:OrdersService,private excelService:ExcelService,private modalService: NgbModal, private costumersService: CostumersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
-
+  }
   
+  getAllUsers(){
+    this.userService.getAllUserNames().subscribe(res=>{
+      res.map(user=> this.agents.push(user.userName))
+    })
+  }
 
   open(content) {
     this.costumer = {
@@ -76,21 +99,7 @@ export class CostumersListComponent implements OnInit {
     });
   }
 
-  openDetails(i) { 
-    ;
-    console.log(this.costumers[i]);
-    this.costumer = this.costumers[i];
-    this.getOrderDetailsForCustomer(this.costumer.costumerName)
-    this.showCustomerModal = true;
-    // this.contact = this.costumers[i].contact[0];
- 
-  }
 
-  exportAsXLSX(): void {
-
-        this.excelService.exportAsExcelFile(this.costumers, 'data');
-
-  }
 
  
 
@@ -105,7 +114,15 @@ export class CostumersListComponent implements OnInit {
   }
 
   getCostumers() {
-    this.costumersService.getAllCostumers().subscribe(res => this.costumers = res);
+    let countries = []
+    this.costumersService.getAllCostumers().subscribe(res => {
+      this.costumers = res
+      this.costumersCopy = res
+      this.countries = this.costumers.map(costumer => {
+        if(!countries.includes(costumer.country)) countries.push(costumer.country)
+      }) 
+      this.countries = countries
+    });
   }
 
   saveCostumer() { 
@@ -123,12 +140,60 @@ export class CostumersListComponent implements OnInit {
     })
   }
 
+  openDetails(i) { 
+    console.log(this.costumers[i]);
+    this.costumer = this.costumers[i];
+    this.getOrderDetailsForCustomer(this.costumer.costumerName)
+    this.getAllCustomerOrderedItems(this.costumer.costumerName)
+    this.showCustomerModal = true;
+    // this.contact = this.costumers[i].contact[0];
+ 
+  }
+
   getOrderDetailsForCustomer(customer){
     this.orderService.getOrderByCustomer(customer).subscribe(data=>{
     if(data){
       this.customerOrders = data;
     }
     })
+  }
+
+  getAllCustomerOrderedItems(costumer){
+    this.fetchingCustomerItems = true
+    this.orderService.getAllCustomerOrderedItems(costumer).subscribe(data => {
+      this.fetchingCustomerItems = false
+      this.customerItems = data
+    })
+  }
+
+  sortBy(array, by){
+    if(by.includes('Date')) {
+      this[array].map(element => {
+        element.formatedDate = new Date(element[by])
+        return element;
+      })
+      by = 'formatedDate'
+    }
+    if (this.counter % 2 == 0) this[array].sort((a, b) => (a[by]) - (b[by]))
+    else this[array].sort((a, b) => (b[by]) - (a[by]))
+    this.counter++
+  }
+
+  exportAsXLSX(data, fileName) {
+    if (fileName == 'לקוחות') {
+      data.forEach(object => {
+        delete object.__v
+        delete object._id
+        delete object.contact
+        delete object.companyNumber
+        delete object.peerpharmAgent
+      })
+    }
+    this.excelService.exportAsExcelFile(data, fileName);
+  }
+
+  filterCustomers(by, e){
+    this.costumers = this.costumersCopy.filter(costumer => costumer[by] && costumer[by].includes(e.target.value)) 
   }
 
   checkIfExist(ev){
@@ -181,8 +246,6 @@ export class CostumersListComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    this.getCostumers(); 
-  }
+ 
 
 }

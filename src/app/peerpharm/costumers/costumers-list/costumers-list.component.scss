@@ -70,3 +70,20 @@ h2.peerLoader {
 .peerLoader span:nth-child(9) {
   animation-delay:0.96s;
 }
+
+.customer {
+  height: 1000px;
+  overflow-y: scroll
+}
+
+.click {
+  cursor: pointer
+}
+
+.click:hover {
+  background-color: rgb(104, 145, 233);
+}
+
+.cool {
+  text-decoration: underline;
+}
