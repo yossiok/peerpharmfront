@@ -130,6 +130,7 @@ export class WharehouseComponent implements OnInit {
         }
       });
       this.whareHouses = displayAllowedWH;
+      debugger
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
 
@@ -149,9 +150,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   dirSet(action, direction) {
-
-    ;
-
+debugger
     if (direction != "production") this.multiInputLines = false;
     this.inventoryUpdateList = [] //reseting list before direction change
     this.multiLinesArr = []
@@ -322,7 +321,7 @@ export class WharehouseComponent implements OnInit {
   setWhareHouse(whname) {
     ;
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
-    this.curentWhareHouseId = this.whareHouses[i]._id;
+    this.curentWhareHouseId = this.whareHouses[i].name;
     this.curentWhareHouseName = this.whareHouses[i].name;
     // this.changeWh = false;
   }
@@ -364,7 +363,7 @@ export class WharehouseComponent implements OnInit {
 
   getItemWhShelfsList(itemNumber, shelfsDiv) {
     let a = this.inventoryService;
-    let b = this.curentWhareHouseId;
+    let b = this.curentWhareHouseName;
     return new Promise(function (resolve, reject) {
       a.getShelfListForItemInWhareHouse(itemNumber, b).subscribe(res => {
         if (res.length > 0) {
@@ -631,7 +630,7 @@ export class WharehouseComponent implements OnInit {
         await this.inventoryService.getCmptByNumber(itemLineToAdd.itemNumber, stockType).subscribe(async itemRes => {
           if (itemRes.length > 0) {
 
-            this.inventoryService.checkIfShelfExist(position, this.curentWhareHouseId).subscribe(async shelfRes => {
+            this.inventoryService.checkIfShelfExist(position, this.curentWhareHouseName).subscribe(async shelfRes => {
 
               if (shelfRes.ShelfId) {
 

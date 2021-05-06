@@ -40,7 +40,7 @@ import { MaterialArrivalComponent } from './inventory/material-arrival/material-
 import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
 import { WizardComponent } from './production/wizard/wizard.component';
 import { ScanProductComponent } from './production/scan-product/scan-product.component';
-import { SuppliersComponent } from './inventory/suppliers/suppliers.component';
+import { SuppliersComponent } from './suppliers/suppliers.component';
 import { ItemreportsComponent } from './items/itemreports/itemreports.component';
 import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
 import { HistorylogsComponent } from './reports/historylogs/historylogs.component';

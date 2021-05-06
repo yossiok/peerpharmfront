@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { CostumersService } from '../../../services/costumers.service';
+import { CostumersService } from '../../services/costumers.service';
 import { ToastrService } from 'ngx-toastr';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
