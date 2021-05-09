@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col-12">
-      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info p-2">Supplier Index</h1>
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-success p-2">Supplier Index</h1>
     </div>
   </div>
 
@@ -23,7 +23,10 @@
         <input type="text" placeholder="Supplier Number" (keyup)="filterSuppliers('suplierNumber', $event)" />
       </div>
       <div>
-        <input type="text" placeholder="Country" (keyup)="filterSuppliers('country', $event)" />
+        <select class="form-control" (change)="filterSuppliers('country', $event)">
+          <option value="" >Country</option>
+          <option *ngFor="let country of countries" [value]="country">{{country}}</option>
+        </select>
       </div>
       <div>
         <input type="text" placeholder="Item" (keyup)="filterSuppliersByItem($event)" />
@@ -33,14 +36,14 @@
       </div>
     </div>
     <div class="col-2">
-      <button class="form-control btn btn-info w-50" (click)="openData('Add Supplier')">New Supplier</button>
+      <button class="form-control btn btn-success w-50" (click)="openData('Add Supplier')">New Supplier</button>
     </div>
   </div>
 
   <div class="row mt-2">
     <div class="col-12">
-      <table *ngIf="tableType=='suppliers'" class='table table-hover table-striped'>
-        <thead class="bg-info text-center text-white">
+      <table class='table table-hover table-striped'>
+        <thead class="bg-success text-center text-white">
 
           <tr>
             <th>#</th>
@@ -75,9 +78,9 @@
 
 
 <div *ngIf="supplierModal == true"
-  class="p-5 text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-white border border-info modal-inner">
+  class="p-5 text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-white border border-success modal-inner">
 
-  <div class="row bg-info">
+  <div class="row bg-success">
     <div class="col-1"></div>
     <div class="col-10">
       <h2 class="text-white">כרטיס ספק</h2>
@@ -91,7 +94,7 @@
     <div class="col-1">
     </div>
     <div class="col-10">
-      <h3 class="text-info">פרטים כלליים</h3>
+      <h3 class="text-success">פרטים כלליים</h3>
     </div>
     <div class="col-1">
     </div>
@@ -101,22 +104,22 @@
 
   <div class='row mt-3'>
     <div class='col-2'>
-      <label class="form-control text-info">Number</label>
+      <label class="form-control text-success">Number</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Name</label>
+      <label class="form-control text-success">Name</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Address</label>
+      <label class="form-control text-success">Address</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">City</label>
+      <label class="form-control text-success">City</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Phone Number</label>
+      <label class="form-control text-success">Phone Number</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Cell Number</label>
+      <label class="form-control text-success">Cell Number</label>
     </div>
   </div>
   <div class="row mt-3">
@@ -141,21 +144,21 @@
   </div>
   <div class="row mt-2">
     <div class="col-2">
-      <label class="form-control text-info">Fax Number</label>
+      <label class="form-control text-success">Fax Number</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Country</label>
+      <label class="form-control text-success">Country</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Email</label>
+      <label class="form-control text-success">Email</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Contact</label>
+      <label class="form-control text-success">Contact</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-info">Currency</label>
+      <label class="form-control text-success">Currency</label>
     </div><div class="col-2">
-      <label class="form-control text-info">Import</label>
+      <label class="form-control text-success">Import</label>
     </div>
   </div>
   <div class="row mt-2">
@@ -195,7 +198,7 @@
 </div>
 <div class="row mt-3">
   <div class="col-12">
-    <button (click)="updateCurrSupplier()" [disabled]="updatingData" [style.cursor]="updatingData ? 'not-allowed' : 'pointer'" class="btn w-50 btn-info form-control">{{addEditText}}</button>
+    <button (click)="updateCurrSupplier()" [disabled]="updatingData" [style.cursor]="updatingData ? 'not-allowed' : 'pointer'" class="btn w-50 btn-success form-control">{{addEditText}}</button>
   </div>
 </div>
 
@@ -203,20 +206,20 @@
   <div class="col-4">
   </div>
   <div class="col-4">
-    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Items Purchased</h3>
+    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">Items Purchased</h3>
   </div>
 </div>
 
 <div class="row mt-4">
   <div class="col-12">
     <table class="table table-hover table-striped">
-      <thead class="bg-info text-white">
+      <thead class="bg-success text-white">
         <tr>
           <th class="click" (click)="sortBy('supItems', 'number')">מספר פריט</th>
           <th class="click" (click)="sortBy('supItems', 'name')">שם פריט</th>
-          <th class="click" (click)="sortBy('supItems', 'price')">מחיר</th>
-          <th class="click" (click)="sortBy('supItems', 'coin')">מטבע</th>
-          <th class="click" (click)="sortBy('supItems', 'quantity')">כמות</th>
+          <th class="click" (click)="sortBy('supItems', 'price')"><i class="fas fa-arrow-up"></i>מחיר<i class="fas fa-arrow-down"></i></th>
+          <th class="click" (click)="sortBy('supItems', 'coin')"><i class="fas fa-arrow-up"></i>מטבע<i class="fas fa-arrow-down"></i></th>
+          <th class="click" (click)="sortBy('supItems', 'quantity')"><i class="fas fa-arrow-up"></i>כמות<i class="fas fa-arrow-down"></i></th>
           <th class="click" (click)="sortBy('supItems', 'measurement')"></th>
         </tr>
       </thead>
@@ -239,20 +242,20 @@
   <div class="col-4">
   </div>
   <div class="col-4">
-    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Open Purchases</h3>
+    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">Open Purchases</h3>
   </div>
 </div>
 
 <div class="row mt-4">
   <div class="col-12">
     <table class="table table-hover table-striped">
-      <thead class="bg-info text-white">
+      <thead class="bg-success text-white">
         <tr>
-          <th class="click" (click)="sortBy('supPurchases', 'orderNumber')">מספר הזמנה</th>
-          <th class="click" (click)="sortBy('supPurchases', 'creationDate')">נפתחה ב..</th>
+          <th class="click" (click)="sortBy('supPurchases', 'orderNumber')"><i class="fas fa-arrow-up"></i>מספר הזמנה<i class="fas fa-arrow-down"></i></th>
+          <th class="click" (click)="sortBy('supPurchases', 'creationDate')"><i class="fas fa-arrow-up"></i>נפתחה ב..<i class="fas fa-arrow-down"></i></th>
           <th class="click" (click)="sortBy('supPurchases', 'user')">על ידי</th>
-          <th class="click" (click)="sortBy('supPurchases', 'arrivalDate')">תאריך הגעה</th>
-          <th>פריטים</th>
+          <th class="click" (click)="sortBy('supPurchases', 'arrivalDate')"><i class="fas fa-arrow-up"></i>תאריך הגעה<i class="fas fa-arrow-down"></i></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -261,8 +264,7 @@
           <td>{{order.creationDate | date: 'short'}}</td>
           <td>{{order.user}}</td>
           <td>{{order.arrivalDate | date: 'short'}}</td>
-          <td><button (click)="openItems(order.stockitems, order.orderNumber)" class="btn btn-secondary">לחץ כדי
-              לצפות</button> </td>
+          <td><button (click)="openItems(order.stockitems, order.orderNumber)" class="btn btn-secondary">פריטים</button> </td>
         </tr>
       </tbody>
     </table>

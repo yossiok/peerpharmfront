@@ -42,6 +42,7 @@ export class SuppliersComponent implements OnInit {
     this.container = this.content;
   }
   
+  countries: any = []
   closeResult: string;
   suppliersAlterArray: any[];
   suppliers: any[];
@@ -85,6 +86,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   getSuppliers() {
+    let countries = []
     this.supplierService.getAllSuppliers().subscribe(res => {
       this.suppliers = res
       this.suppliersCopy = res
@@ -93,6 +95,10 @@ export class SuppliersComponent implements OnInit {
         currentAlterSupp.push(supplier.alternativeSupplier);
       });
       this.suppliersAlterArray = currentAlterSupp;
+      this.countries = this.suppliers.map(supplier => {
+        if(!countries.includes(supplier.country)) countries.push(supplier.country)
+      }) 
+      this.countries = countries
     });
 
   }
