@@ -9,7 +9,7 @@
   <div class="row p-2 mt-2">
     <div class="col-1">
       <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-      (click)="exportAsXLSX(suppliers, 'ספקים')">
+        (click)="exportAsXLSX(suppliers, 'ספקים')">
     </div>
     <div class="col-1"></div>
     <div class="col-8 d-flex flex-row justify-content-around p-2">
@@ -17,10 +17,10 @@
         <h4>Filter by:</h4>
       </div>
       <div>
-        <input type="text" placeholder="Supplier Name" (keyup)="filterSuppliers('supplierName', $event)" />
+        <input type="text" placeholder="Supplier Name" (keyup)="filterSuppliers('suplierName', $event)" />
       </div>
       <div>
-        <input type="text" placeholder="Supplier Number" (keyup)="filterSuppliers('supplierNumber', $event)" />
+        <input type="text" placeholder="Supplier Number" (keyup)="filterSuppliers('suplierNumber', $event)" />
       </div>
       <div>
         <input type="text" placeholder="Country" (keyup)="filterSuppliers('country', $event)" />
@@ -93,50 +93,107 @@
 
 
 
-<div style="top:75px;" *ngIf="supplierModal == true"
-  class="container fixed-top mx-auto my-auto text-center bg-light rounded p-3 shadow border border-info modal-inner">
-  <div class="row mt-3">
-    <div class="col-4">
+<div *ngIf="supplierModal == true"
+  class="p-5 text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-white border border-info modal-inner">
 
+  <div class="row bg-info">
+    <div class="col-1"></div>
+    <div class="col-10">
+      <h2 class="text-white">כרטיס ספק</h2>
     </div>
-    <div class="col-4">
-      <h3 class="text-info">Supplier Details</h3>
-    </div>
-    <div class="col-4">
-      <i (click)="supplierModal = false" class="fa fa-times text-info" aria-hidden="true"></i>
+    <div class="col-1">
+      <i (click)="supplierModal = false" style="font-size: 23px;padding: 8px;" class="fa fa-times text-white"></i>
     </div>
   </div>
-  <div class='row mt-3'>
-    <div class="col-3">
-      <label class="form-control">Name</label>
-      <label class="form-control">Number</label>
-      <label class="form-control">Address</label>
-      <label class="form-control">City</label>
-      <label class="form-control">Phone Number</label>
-      <label class="form-control">Cell Number</label>
+
+  <div class="row mt-5">
+    <div class="col-1">
     </div>
-    <div class="col-3">
+    <div class="col-10">
+      <h3 class="text-info">פרטים כלליים</h3>
+    </div>
+    <div class="col-1">
+    </div>
+  </div>
+
+
+
+  <div class='row mt-3'>
+    <div class="col-2">
+      <label class="form-control text-info">Name</label>
+    </div>
+    <div class='col-2'>
+      <label class="form-control text-info">Number</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">Address</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">City</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">Phone Number</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">Cell Number</label>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-2">
+      <input type="text" class="form-control" disabled [(ngModel)]="currentSupplier.suplierNumber">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.suplierName">
-      <input type="text" class="form-control" [(ngModel)]="currentSupplier.suplierNumber">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.address">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.city">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.phoneNum">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.cellularNum">
     </div>
-    <div class="col-3">
-      <label class="form-control">Fax Number</label>
-      <label class="form-control">Country</label>
-      <label class="form-control">Email</label>
-      <label class="form-control">Contact</label>
-      <label class="form-control">Currency</label>
-      <label class="form-control">Import</label>
+  </div>
+  <div class="row mt-2">
+    <div class="col-2">
+      <label class="form-control text-info">Fax Number</label>
     </div>
-    <div class="col-3">
+    <div class="col-2">
+      <label class="form-control text-info">Country</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">Email</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">Contact</label>
+    </div>
+    <div class="col-2">
+      <label class="form-control text-info">Currency</label>
+    </div><div class="col-2">
+      <label class="form-control text-info">Import</label>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.faxNum">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.country">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.email">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.contactName">
+    </div>
+    <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.currency">
+    </div>
+    <div class="col-2">
       <select class="form-control" [(ngModel)]="currentSupplier.import">
         <option value=""></option>
         <option value="outOfIsrael">Out Of Israel</option>
@@ -145,100 +202,95 @@
     </div>
   </div>
 
-  <div class="row mt-2">
-    <div class="col-1"></div>
-    <div class="col-2">
-      <label class="form-control">Remarks</label>
-    </div>
-    <div class="col-8">
-      <input type="text" class="form-control" [(ngModel)]="currentSupplier.remarks">
-    </div>
-    <div class="col-1"></div>
+<div class="row mt-2">
+  <div class="col-1"></div>
+  <div class="col-2">
+    <label class="form-control">Remarks</label>
   </div>
-  <div class="row mt-3">
-    <div class="col-12">
-      <button (click)="updateCurrSupplier()" class="btn w-50 btn-info form-control">{{addEditText}}</button>
-    </div>
+  <div class="col-8">
+    <input type="text" class="form-control" [(ngModel)]="currentSupplier.remarks">
   </div>
-
-  <div class="row p-2 mt-2 text-center">
-    <div class="col-4">
-    </div>
-    <div class="col-4">
-      <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Items Purchased</h3>
-    </div>
+  <div class="col-1"></div>
+</div>
+<div class="row mt-3">
+  <div class="col-12">
+    <button (click)="updateCurrSupplier()" class="btn w-50 btn-info form-control">{{addEditText}}</button>
   </div>
+</div>
 
-  <div class="row mt-4">
-    <div style="height:320px;overflow: scroll;" class="col-12">
-      <table style="height:320px;overflow: scroll;" class="table table-hover table-striped">
-        <thead class="bg-info text-white">
-          <tr>
-            <th>מספר פריט</th>
-            <th>שם פריט</th>
-            <th>מחיר</th>
-            <th></th>
-            <th>כמות</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody style="height:320px;overflow: scroll;">
-
-          <tr *ngFor="let item of supItems">
-            <td (click)="showAllPurchases(item.itemNumber)" style="text-decoration: underline;cursor: pointer;">
-              {{item.number}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.price}}</td>
-            <td>{{item.coin}}</td>
-            <td>{{item.quantity}}</td>
-            <td>{{item.measurement}}</td>
-          </tr>
-
-        </tbody>
-      </table>
-    </div>
+<div class="row p-2 mt-2 text-center">
+  <div class="col-4">
   </div>
-
-  <div class="row p-2 mt-2 text-center">
-    <div class="col-4">
-    </div>
-    <div class="col-4">
-      <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Open Purchases</h3>
-    </div>
+  <div class="col-4">
+    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Items Purchased</h3>
   </div>
+</div>
 
-  <div class="row mt-4">
-    <div style="height:320px;overflow: scroll;" class="col-12">
-      <table style="height:320px;overflow: scroll;" class="table table-hover table-striped">
-        <thead class="bg-info text-white">
-          <tr>
-            <th>מספר הזמנה</th>
-            <th>תאריך הגעה</th>
-            <th>פריטים</th>
-            <th>מחיר כולל</th>
-            <th>מזמין</th>
-            <th>כמות</th>
-            <th>מחיר העמסה</th>
-          </tr>
-        </thead>
-        <tbody style="height:320px;overflow: scroll;">
-
-          <tr *ngFor="let order of supPurchases">
-            <td (click)="showAllPurchases(item.itemNumber)" style="text-decoration: underline;cursor: pointer;">
-              {{order.orderNumber}}</td>
-            <td>{{order.arrivalDate}}</td>
-            <td><button (click)="openItems(order.stockitems, order.orderNumber)" class="btn btn-info">לחץ כדי
-                לצפות</button> </td>
-            <td>{{item.coin}}</td>
-            <td>{{item.quantity}}</td>
-            <td>{{item.measurement}}</td>
-          </tr>
-
-        </tbody>
-      </table>
-    </div>
+<div class="row mt-4">
+  <div class="col-12">
+    <table class="table table-hover table-striped">
+      <thead class="bg-info text-white">
+        <tr>
+          <th>מספר פריט</th>
+          <th>שם פריט</th>
+          <th>מחיר</th>
+          <th></th>
+          <th>כמות</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of supItems">
+          <td (click)="showAllPurchases(item.itemNumber)" style="text-decoration: underline;cursor: pointer;">
+            {{item.number}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.price}}</td>
+          <td>{{item.coin}}</td>
+          <td>{{item.quantity}}</td>
+          <td>{{item.measurement}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>
 
+<div class="row p-2 mt-2 text-center">
+  <div class="col-4">
+  </div>
+  <div class="col-4">
+    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Open Purchases</h3>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-12">
+    <table class="table table-hover table-striped">
+      <thead class="bg-info text-white">
+        <tr>
+          <th>מספר הזמנה</th>
+          <th>תאריך הגעה</th>
+          <th>פריטים</th>
+          <th>מחיר כולל</th>
+          <th>מזמין</th>
+          <th>כמות</th>
+          <th>מחיר העמסה</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of supPurchases">
+          <td (click)="showAllPurchases(item.itemNumber)">
+            {{order.orderNumber}}</td>
+          <td>{{order.arrivalDate}}</td>
+          <td><button (click)="openItems(order.stockitems, order.orderNumber)" class="btn btn-info">לחץ כדי
+              לצפות</button> </td>
+          <td>{{item.coin}}</td>
+          <td>{{item.quantity}}</td>
+          <td>{{item.measurement}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 </div>
 

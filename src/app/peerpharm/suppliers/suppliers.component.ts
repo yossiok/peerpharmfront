@@ -130,6 +130,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   filterSuppliers(by, e) {
+    debugger
     this.suppliers = this.suppliersCopy.filter(supplier => supplier[by] && supplier[by].includes(e.target.value))
   }
 
