@@ -162,3 +162,12 @@ label {
   .cool {
     text-decoration: underline;
   }
+
+  
+.click {
+  cursor: pointer
+}
+
+.click:hover {
+  background-color: rgb(104, 145, 233);
+}

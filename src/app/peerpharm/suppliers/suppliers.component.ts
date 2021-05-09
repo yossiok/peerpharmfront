@@ -38,11 +38,10 @@ const defaultSupplier = {
 export class SuppliersComponent implements OnInit {
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
-  addEditText: string;
   @ViewChild('container') set content(content: ElementRef) {
     this.container = this.content;
   }
-
+  
   closeResult: string;
   suppliersAlterArray: any[];
   suppliers: any[];
@@ -64,6 +63,9 @@ export class SuppliersComponent implements OnInit {
   showPurchaseItems: boolean;
   purchaseStockitems: any[] = []
   purchaseNumber: any;
+  addEditText: string;
+  counter: number = 0;
+  updatingData: boolean = false;
 
   constructor(private inventoryService: InventoryService, private route: ActivatedRoute, private excelService: ExcelService, private procurementService: Procurementservice, private modalService: NgbModal, private supplierService: SuppliersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
 
@@ -107,6 +109,7 @@ export class SuppliersComponent implements OnInit {
   // }
 
   getAllPurchasesFromSup() {
+    
     this.procurementService.getAllOrdersFromSupplier(this.currentSupplier.suplierNumber).subscribe(data => {
       this.supPurchases = data.filter(purchase => purchase.status == 'open')
       for (let order of data) {
@@ -130,7 +133,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   filterSuppliers(by, e) {
-    debugger
+    
     this.suppliers = this.suppliersCopy.filter(supplier => supplier[by] && supplier[by].includes(e.target.value))
   }
 
@@ -140,6 +143,19 @@ export class SuppliersComponent implements OnInit {
 
   filterSuppliersByOpenOrders() {
 
+  }
+
+  sortBy(array, by){
+    if(by.includes('Date')) {
+      this[array].map(element => {
+        element.formatedDate = new Date(element[by])
+        return element;
+      })
+      by = 'formatedDate'
+    }
+    if (this.counter % 2 == 0) this[array].sort((a, b) => (a[by]) - (b[by]))
+    else this[array].sort((a, b) => (b[by]) - (a[by]))
+    this.counter++
   }
 
   setType(type) {
@@ -202,8 +218,10 @@ export class SuppliersComponent implements OnInit {
   }
 
   updateCurrSupplier() {
+    this.updatingData = true;
     if(this.addEditText == 'Update Supplier') {
       this.supplierService.updateCurrSupplier(this.currentSupplier).subscribe(data => {
+        this.updatingData = false;
         if (data) {
           this.toastSrv.success('ספק עודכן בהצלחה !');
           this.supplierModal = false;
@@ -213,6 +231,7 @@ export class SuppliersComponent implements OnInit {
     }
     else if(this.addEditText == 'Add Supplier'){
       this.supplierService.addorUpdateSupplier(this.currentSupplier).subscribe(res => {
+        this.updatingData = false;
         if(res.msg == 'Supplier Number Allready Exist') this.toastSrv.error(res.msg)
         else this.toastSrv.success(res.msg)
       })
@@ -228,6 +247,10 @@ export class SuppliersComponent implements OnInit {
       data.forEach(object => {
         delete object.__v
         delete object._id
+        delete object.priceList
+        delete object.priceList
+        delete object.priceList
+        delete object.priceList
       })
     }
     this.excelService.exportAsExcelFile(data, fileName);
