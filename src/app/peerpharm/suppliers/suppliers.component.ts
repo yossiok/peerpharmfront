@@ -103,19 +103,7 @@ export class SuppliersComponent implements OnInit {
 
   }
 
-  // getSuppliersOrderedItems() {
-  //   this.procurementService.getProcurementOrderItem().subscribe(res => {
-  //     this.suppliersOrderItems = res
-  //     this.suppliersOrderItemsCopy = res
-  //     if(res.length == res.length) {
-  //       this.hasMoreItemsToload == false;
-  //     }
-  //     console.log(this.suppliersOrderItems)
-  //   });
-  // }
-
   getAllPurchasesFromSup() {
-    
     this.procurementService.getAllOrdersFromSupplier(this.currentSupplier.suplierNumber).subscribe(data => {
       this.supPurchases = data.filter(purchase => purchase.status == 'open')
       for (let order of data) {
@@ -127,8 +115,6 @@ export class SuppliersComponent implements OnInit {
           })
         }
       }
-      console.log(data)
-      console.log('items: ', this.supItems)
     })
   }
 
@@ -139,7 +125,6 @@ export class SuppliersComponent implements OnInit {
   }
 
   filterSuppliers(by, e) {
-    
     this.suppliers = this.suppliersCopy.filter(supplier => supplier[by] && supplier[by].includes(e.target.value))
   }
 
@@ -249,14 +234,20 @@ export class SuppliersComponent implements OnInit {
 
 
   exportAsXLSX(data, fileName) {
-    if (fileName == fileName) {
+    if(fileName == 'הזמנות פתוחות') {
+      data.map(object => ({
+        orderNumber: object.orderNumber,
+        arrivalDate: object.arrivalDate,
+        creationDate: object.creationDate,
+        user: object.user
+      }))
+    }
+    if (fileName == 'פריטים ספק') {
       data.forEach(object => {
-        delete object.__v
-        delete object._id
-        delete object.priceList
-        delete object.priceList
-        delete object.priceList
-        delete object.priceList
+        delete object.threatment
+        delete object.color
+        delete object.supplierAmount
+        delete object.recommendationNumber
       })
     }
     this.excelService.exportAsExcelFile(data, fileName);

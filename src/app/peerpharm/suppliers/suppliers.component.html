@@ -28,12 +28,12 @@
           <option *ngFor="let country of countries" [value]="country">{{country}}</option>
         </select>
       </div>
-      <div>
+      <!-- <div>
         <input type="text" placeholder="Item" (keyup)="filterSuppliersByItem($event)" />
       </div>
       <div>
         <button type="text" placeholder="Open Orders" (click)="filterSuppliersByOpenOrders()">open orders</button>
-      </div>
+      </div> -->
     </div>
     <div class="col-2">
       <button class="form-control btn btn-success w-50" (click)="openData('Add Supplier')">New Supplier</button>
@@ -203,24 +203,27 @@
 </div>
 
 <div class="row p-2 mt-2 text-center">
+    <div class="col-1">
+      <img src="../../../assets/images/excel.png" alt="excel export"
+        (click)="exportAsXLSX(supItems, 'פריטים ספק')" style="width: 35px; float: left; cursor: pointer;">
+    </div>
+    <div class="col-3"></div>
   <div class="col-4">
-  </div>
-  <div class="col-4">
-    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">Items Purchased</h3>
+    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">פריטים שנרכשו מהספק</h3>
   </div>
 </div>
 
-<div class="row mt-4">
+<div dir="rtl" class="row mt-4">
   <div class="col-12">
     <table class="table table-hover table-striped">
       <thead class="bg-success text-white">
         <tr>
-          <th class="click" (click)="sortBy('supItems', 'number')">מספר פריט</th>
-          <th class="click" (click)="sortBy('supItems', 'name')">שם פריט</th>
-          <th class="click" (click)="sortBy('supItems', 'price')"><i class="fas fa-arrow-up"></i>מחיר<i class="fas fa-arrow-down"></i></th>
-          <th class="click" (click)="sortBy('supItems', 'coin')"><i class="fas fa-arrow-up"></i>מטבע<i class="fas fa-arrow-down"></i></th>
-          <th class="click" (click)="sortBy('supItems', 'quantity')"><i class="fas fa-arrow-up"></i>כמות<i class="fas fa-arrow-down"></i></th>
-          <th class="click" (click)="sortBy('supItems', 'measurement')"></th>
+          <th>מספר פריט</th>
+          <th>שם פריט</th>
+          <th class="click text-center" (click)="sortBy('supItems', 'price')"><i class="fas fa-arrow-up"></i>&nbsp;מחיר&nbsp;<i class="fas fa-arrow-down"></i></th>
+          <th class="click text-center" (click)="sortBy('supItems', 'coin')"><i class="fas fa-arrow-up"></i>&nbsp;מטבע&nbsp;<i class="fas fa-arrow-down"></i></th>
+          <th class="click text-center" (click)="sortBy('supItems', 'quantity')"><i class="fas fa-arrow-up"></i>&nbsp;כמות&nbsp;<i class="fas fa-arrow-down"></i></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -239,22 +242,28 @@
 </div>
 
 <div class="row p-2 mt-2 text-center">
+  <div class="col-1">
+    <div class="col-1">
+      <img src="../../../assets/images/excel.png" alt="excel export"
+        (click)="exportAsXLSX(supPurchases, 'הזמנות פתוחות')" style="width: 35px; float: left; cursor: pointer;">
+    </div>
+  </div>
   <div class="col-4">
   </div>
   <div class="col-4">
-    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">Open Purchases</h3>
+    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">הזמנות פתוחות</h3>
   </div>
 </div>
 
-<div class="row mt-4">
+<div dir="rtl" class="row mt-4">
   <div class="col-12">
     <table class="table table-hover table-striped">
       <thead class="bg-success text-white">
         <tr>
-          <th class="click" (click)="sortBy('supPurchases', 'orderNumber')"><i class="fas fa-arrow-up"></i>מספר הזמנה<i class="fas fa-arrow-down"></i></th>
-          <th class="click" (click)="sortBy('supPurchases', 'creationDate')"><i class="fas fa-arrow-up"></i>נפתחה ב..<i class="fas fa-arrow-down"></i></th>
-          <th class="click" (click)="sortBy('supPurchases', 'user')">על ידי</th>
-          <th class="click" (click)="sortBy('supPurchases', 'arrivalDate')"><i class="fas fa-arrow-up"></i>תאריך הגעה<i class="fas fa-arrow-down"></i></th>
+          <th class="click" (click)="sortBy('supPurchases', 'orderNumber')"><i class="fas fa-arrow-up"></i>&nbsp;מספר הזמנה&nbsp;<i class="fas fa-arrow-down"></i></th>
+          <th class="click" (click)="sortBy('supPurchases', 'creationDate')"><i class="fas fa-arrow-up"></i>&nbsp;נפתחה ב..&nbsp;<i class="fas fa-arrow-down"></i></th>
+          <th>על ידי</th>
+          <th class="click" (click)="sortBy('supPurchases', 'arrivalDate')"><i class="fas fa-arrow-up"></i>&nbsp;תאריך הגעה&nbsp;<i class="fas fa-arrow-down"></i></th>
           <th></th>
         </tr>
       </thead>
@@ -277,7 +286,9 @@
 <div *ngIf="showPurchaseItems == true" style="top: 200px"
   class="container rounded fixed-top shadow-lg bg-secondary text-white text-center p-3">
   <div class="row">
-    <div class="col-1"></div>
+    <div class="col-1">
+      
+    </div>
 
     <div class="col-10">
       <h2 class="text-white">Purchase {{purchaseNumber}} Items</h2>
