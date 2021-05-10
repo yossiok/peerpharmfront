@@ -38,6 +38,7 @@ const defaultSupplier = {
 export class SuppliersComponent implements OnInit {
   @ViewChild('fromDateStr') fromDateStr: ElementRef;
   @ViewChild('toDateStr') toDateStr: ElementRef;
+  itemNumber: any;
   @ViewChild('container') set content(content: ElementRef) {
     this.container = this.content;
   }
@@ -200,7 +201,8 @@ export class SuppliersComponent implements OnInit {
   }
 
   showAllPurchases(itemNumber) {
-    this.procurementService.getAllItemPurchases(itemNumber).subscribe(data => {
+    this.itemNumber = itemNumber
+    this.procurementService.getLastOrdersForItem(itemNumber, 10).subscribe(data => {
       if (data) {
         this.itemPurchases = data;
         this.showItemPurchases = true;
