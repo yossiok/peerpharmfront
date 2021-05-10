@@ -131,7 +131,7 @@ export class WharehouseComponent implements OnInit {
       });
       this.whareHouses = displayAllowedWH;
       debugger
-      this.curentWhareHouseId = displayAllowedWH[0].name;
+      this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
 
       if (this.authService.loggedInUser.authorization) {
@@ -321,7 +321,7 @@ debugger
   setWhareHouse(whname) {
     ;
     let i = this.whareHouses.findIndex(wh => wh.name == whname);
-    this.curentWhareHouseId = this.whareHouses[i].name;
+    this.curentWhareHouseId = this.whareHouses[i]._id;
     this.curentWhareHouseName = this.whareHouses[i].name;
     // this.changeWh = false;
   }
@@ -393,7 +393,7 @@ debugger
   async searchItemShelfs(ev) {
     ;
     if (!this.multiInputLines && ev != "") {
-      await this.inventoryService.getShelfListForItemInWhareHouse(ev.target.value, this.curentWhareHouseId).subscribe(async res => {
+      await this.inventoryService.getShelfListForItemInWhareHouse(ev.target.value, this.curentWhareHouseName).subscribe(async res => {
         if (res.length > 0) {
           this.currItemShelfs = res;
 
@@ -411,7 +411,7 @@ debugger
     else if (this.multiInputLines) {
       this.multiLinesArr.forEach(async element => {
         element.currItemShelfs = [];
-        await this.inventoryService.getShelfListForItemInWhareHouse(element.itemNumber, this.curentWhareHouseId).subscribe(async res => {
+        await this.inventoryService.getShelfListForItemInWhareHouse(element.itemNumber, this.curentWhareHouseName).subscribe(async res => {
           if (res.length > 0) {
             element.currItemShelfs = res;
           } else {
@@ -630,7 +630,7 @@ debugger
         await this.inventoryService.getCmptByNumber(itemLineToAdd.itemNumber, stockType).subscribe(async itemRes => {
           if (itemRes.length > 0) {
 
-            this.inventoryService.checkIfShelfExist(position, this.curentWhareHouseName).subscribe(async shelfRes => {
+            this.inventoryService.checkIfShelfExist(position, this.curentWhareHouseId).subscribe(async shelfRes => {
 
               if (shelfRes.ShelfId) {
 
