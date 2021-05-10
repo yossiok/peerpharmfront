@@ -1360,7 +1360,7 @@
                 (change)="searchItemShelfs()">
                 <option value="" selected>בחר מחסן</option>
                 <ng-container *ngFor="let wh of whareHouses;">
-                  <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh.name">{{wh.name}}</option>
+                  <option *ngIf="wh.name!='Rosh HaAyin' && wh.name!='Kasem'" [value]="wh._id">{{wh.name}}</option>
                 </ng-container>
               </select>
 
@@ -1368,7 +1368,7 @@
                 [(ngModel)]="newItemShelfWH" (change)="searchItemShelfs()">
                 <option value="" selected>בחר מחסן</option>
                 <ng-container *ngFor="let wh of whareHouses;">
-                  <option *ngIf="wh.name!='Rosh HaAyin products'" [value]="wh.name">{{wh.name}}</option>
+                  <option *ngIf="wh.name!='Rosh HaAyin products'" [value]="wh._id">{{wh.name}}</option>
                 </ng-container>
               </select>
             </div>
