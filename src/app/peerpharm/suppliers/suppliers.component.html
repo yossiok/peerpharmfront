@@ -80,21 +80,22 @@
 <div *ngIf="supplierModal == true"
   class="p-5 text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-white border border-success modal-inner">
 
-  <div class="row bg-success">
+  <div class="row bg-white">
     <div class="col-1"></div>
     <div class="col-10">
-      <h2 class="text-white">כרטיס ספק</h2>
+      <h2 class="text-success">{{currentSupplier.suplierName}}</h2>
     </div>
     <div class="col-1">
-      <i (click)="supplierModal = false" style="font-size: 23px;padding: 8px;" class="fa fa-times text-white"></i>
+      <i (click)="supplierModal = false" style="font-size: 23px;padding: 8px;" class="click fa fa-times text-success"></i>
     </div>
   </div>
 
-  <div class="row mt-5">
+  <div  class="row mt-5">
     <div class="col-1">
     </div>
     <div class="col-10">
-      <h3 class="text-success">פרטים כלליים</h3>
+      <h3 *ngIf="addEditText != 'Add Supplier'" class="text-success">פרטים כלליים</h3>
+      <h3 *ngIf="addEditText == 'Add Supplier'" class="text-success">ספק חדש</h3>
     </div>
     <div class="col-1">
     </div>
@@ -202,18 +203,18 @@
   </div>
 </div>
 
-<div class="row p-2 mt-2 text-center">
+<div *ngIf="addEditText != 'Add Supplier'" (click)="showItemsFromSup = !showItemsFromSup" class="click row p-2 mt-4 text-center">
     <div class="col-1">
       <img src="../../../assets/images/excel.png" alt="excel export"
         (click)="exportAsXLSX(supItems, 'פריטים ספק')" style="width: 35px; float: left; cursor: pointer;">
     </div>
-    <div class="col-3"></div>
-  <div class="col-4">
-    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">פריטים שנרכשו מהספק</h3>
+    <div class="col-2"></div>
+  <div class="col-6">
+    <h2 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">פריטים שנרכשו מהספק</h2>
   </div>
 </div>
 
-<div dir="rtl" class="row mt-4">
+<div *ngIf="showItemsFromSup" dir="rtl" class="row mt-4">
   <div class="col-12">
     <table class="table table-hover table-striped">
       <thead class="bg-success text-white">
@@ -242,21 +243,19 @@
   </div>
 </div>
 
-<div class="row p-2 mt-2 text-center">
-  <div class="col-1">
+<div *ngIf="addEditText != 'Add Supplier'" (click)="showSupOpenOrders = !showSupOpenOrders" class="click row p-2 mt-4 text-center">
     <div class="col-1">
       <img src="../../../assets/images/excel.png" alt="excel export"
         (click)="exportAsXLSX(supPurchases, 'הזמנות פתוחות')" style="width: 35px; float: left; cursor: pointer;">
     </div>
+  <div class="col-2">
   </div>
-  <div class="col-4">
-  </div>
-  <div class="col-4">
-    <h3 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">הזמנות פתוחות</h3>
+  <div class="col-6">
+    <h2 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">הזמנות פתוחות</h2>
   </div>
 </div>
 
-<div dir="rtl" class="row mt-4">
+<div *ngIf="showSupOpenOrders" dir="rtl" class="row mt-4">
   <div class="col-12">
     <table class="table table-hover table-striped">
       <thead class="bg-success text-white">

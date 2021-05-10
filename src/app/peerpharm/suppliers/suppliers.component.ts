@@ -192,6 +192,9 @@ export class SuppliersComponent implements OnInit {
   }
 
   openData(addEdit: string, index?) {
+    this.currentSupplier = {...defaultSupplier}
+    this.supItems = []
+    this.supPurchases = []
     this.addEditText = addEdit
     if(index) {
       this.currentSupplier = this.suppliers[index]
