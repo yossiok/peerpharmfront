@@ -41,6 +41,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   @ViewChild('editQuantity') editQuantity: ElementRef;
   @ViewChild('editPrice') editPrice: ElementRef;
   @ViewChild('sumShipping') sumShipping: ElementRef;
+  @ViewChild('cb') checkItem: ElementRef;
 
   openOrdersModal: boolean = false;
   shippingInvoiceDetails: boolean = false;
@@ -479,12 +480,22 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
         this.deliveryCertificate.userName = this.authService.loggedInUser.userName
         this.submittingCert = false
+        this.selectedItems = []
+        this.checkItem.nativeElement.checked = false
         this.modalService.dismissAll()
       })
   }
 
   deleteCert(i, cn) {
     if (confirm(`Erase certificate ${cn}.`)) {
+      let cert = this.newPurchase.controls.deliveryCerts.value.find(cert => cert.certificateNumber == cn)
+
+      for (let arrivedItem of cert.stockitems) {
+        let item = this.newPurchase.controls.stockitems.value.find(si => si.name == arrivedItem.name)
+        if (item.arrivedAmount) {
+          item.arrivedAmount = Number(item.arrivedAmount) - Number(arrivedItem.quantity)
+        }
+      }
 
       this.newPurchase.controls.deliveryCerts.value.splice(i, 1)
       this.procurementService.updatePurchaseOrder(this.newPurchase.value as PurchaseData)

@@ -131,7 +131,7 @@ export class WharehouseComponent implements OnInit {
       });
       this.whareHouses = displayAllowedWH;
       debugger
-      this.curentWhareHouseId = displayAllowedWH[0]._id;
+      this.curentWhareHouseId = displayAllowedWH[0].name;
       this.curentWhareHouseName = displayAllowedWH[0].name;
 
       if (this.authService.loggedInUser.authorization) {

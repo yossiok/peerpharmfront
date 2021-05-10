@@ -393,16 +393,6 @@ export class OrderdetailsComponent implements OnInit {
 
 
 
-    // for (let i = 0; i < allForms.length; i++) {
-    //   for (let j = 0; j < orderItems.length; j++) {
-    //    if(allForms[i].itemN == orderItems[j].itemNumber) {
-    //      orderItems[j].totalUnits = allForms[i].totalUnits
-    //    }
-
-    //   }
-
-    // }
-
 
 
     this.ordersItems = orderItems
@@ -526,64 +516,8 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
-  // not used in html 
-
-  //   saveItemRemarks(id){
-
-  //     this.componentRemarks.nativeElement.value;
-  //     var obj = {
-  //       componentRemarks:this.componentRemarks.nativeElement.value,
-  //       packageRemarks:this.packageRemarks.nativeElement.value,
-  //       stickerRemarks:this.stickerRemarks.nativeElement.value,
-  //       cartonRemarks:this.cartonRemarks.nativeElement.value,
-  //       orderItemId:id
-  //     }
-  //     this.orderService.saveOrderItemRemarks(obj).subscribe(data=>{
-
-  // if(data){
-  //   for (let i = 0; i < this.productionRequirements.length; i++) {
-  //   if(this.productionRequirements[i]._id == data._id){
-  //     this.productionRequirements[i].componentRemarks = data.componentRemarks
-  //     this.productionRequirements[i].packageRemarks = data.packageRemarks
-  //     this.productionRequirements[i].stickerRemarks = data.stickerRemarks
-  //     this.productionRequirements[i].cartonRemarks = data.cartonRemarks
-  //     this.edit('');
-  //     this.toastSrv.success("עודכן בהצלחה !")
-  //   }
-
-  //   }
-  // }
-  //     })
-  //   }
 
 
-  // check with Akiva if still necessery , in html it's Production Requirements
-  getItemDetails(itemNumber) {
-    this.itemSer.getItemData(itemNumber).subscribe(data => {
-
-      this.prodRequirement = data;
-
-    })
-  }
-
-  // openComponentsStatus(components, itemNumber, itemQuantity, orderNumber) {
-  //   this.itemSer.getComponentsAmountByCmptNumber(itemNumber, itemQuantity).subscribe(data => {
-
-  //     data;
-
-  //     this.itemDetails = data;
-
-  //   });
-
-
-
-  //   this.modalService.open(components, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-  //     this.closeResult = `Closed with: ${result}`;
-  //   }, (reason) => {
-  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //   });
-
-  // }
 
   isSelected(ev, item) {
     if (ev.target.checked == true) {
@@ -601,20 +535,6 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
-  // getAllOrdersItems() { 
-  //   
-  //   this.orderService.getOpenOrdersItems().subscribe(data=>{
-  //     this.orderItemsStock = data;
-
-
-  //   })
-  // }
-
-  // getAllItems() { 
-  //   this.itemSer.getAllItems().subscribe(data=>{
-  //     this.allItems = data;
-  //   })
-  // }
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -626,13 +546,6 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
-  // saveProductDoc() {
-
-  //   this.orderService.addNewProductDoc(this.documentationBeforeSend).subscribe(data => {
-  //     console.log(data);
-
-  //   })
-  // }
 
   addItemOrder() {
 
@@ -785,64 +698,6 @@ export class OrderdetailsComponent implements OnInit {
   }
 
 
-
-  // changeReqStatus(ev, id, type) {
-
-  //   var status = ev.target.value
-  //   switch (type) {
-  //     case 'component':
-  //       this.orderService.changeReqStatus(status, id,type).subscribe(data => {
-  //         if (data) {
-  //           for (let i = 0; i < this.productionRequirements.length; i++) {
-  //             if (this.productionRequirements[i]._id == data._id) {
-  //               this.productionRequirements[i].componentStatus = data.componentStatus
-
-  //             }
-
-  //           }
-  //         }
-  //       })
-  //       break;
-  //     case 'package':
-  //       this.orderService.changeReqStatus(status, id,type).subscribe(data => {
-  //         if (data) {
-  //           for (let i = 0; i < this.productionRequirements.length; i++) {
-  //             if (this.productionRequirements[i]._id == data._id) {
-  //               this.productionRequirements[i].packageStatus = data.packageStatus
-
-  //             }
-
-  //           }
-  //         }
-  //       })
-  //       break;
-  //     case 'carton':
-  //       this.orderService.changeReqStatus(status, id,type).subscribe(data => {
-  //         if (data) {
-  //           for (let i = 0; i < this.productionRequirements.length; i++) {
-  //             if (this.productionRequirements[i]._id == data._id) {
-  //               this.productionRequirements[i].cartonStatus = data.cartonStatus
-  //             }
-
-  //           }
-  //         }
-  //       })
-  //       break;
-  //     case 'sticker':
-  //       this.orderService.changeReqStatus(status, id,type).subscribe(data => {
-  //         if (data) {
-  //           for (let i = 0; i < this.productionRequirements.length; i++) {
-  //             if (this.productionRequirements[i]._id == data._id) {
-  //               this.productionRequirements[i].stickerStatus = data.stickerStatus
-  //             }
-
-  //           }
-  //         }
-  //       })
-  //       break;
-  //   }
-
-  //   }
 
   loadMaterialsForFormule() {
     this.selectedArr
@@ -1030,22 +885,6 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
-  // OrderCompileData(orderNumber){
-  //   this.orderService.getOrderCompileData(orderNumber).subscribe(itemPackingList => {
-  //     // this. = components;
-  //     this.ordersItems.map(item=>{
-  //       item.compiled=[] ;
-
-  //       itemPackingList.map(packedItemData=> {
-  //         if(packedItemData._id==item.itemNumber){
-  //           item.compiled.push(packedItemData);
-  //         }
-  //       });
-  //     });
-  //     console.log(this.ordersItems);
-  //   });
-  // }
-  //not in use at this moments
   getComponents(orderNumber): void {
     this.orderService.getComponentsSum(orderNumber).subscribe(components => {
       this.components = components;
@@ -1551,19 +1390,6 @@ export class OrderdetailsComponent implements OnInit {
   }
 
 
-
-  // changeText(ev)
-  // {
-  //   let word= ev.target.value;
-  //   if(word=="")
-  //   {
-  //     this.ordersItems=this.ordersItemsCopy.slice();
-  //   }
-  //   else
-  //   {
-  //     this.ordersItems= this.ordersItems.filter(x=>x.itemFullName.toLowerCase().includes(word.toLowerCase()));
-  //   }
-  // }
   changeText(ev) {
     let word = ev.target.value;
     let wordsArr = word.split(" ");
@@ -1589,67 +1415,6 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
-  // לא בשימוש
-  // async openPackingModal(itemNumber, orderNumber, index) {
-  //   this.packingItemN = itemNumber;
-  //   this.packingOrderN = orderNumber;
-  //   this.palletsData = [];
-
-  //   await this.orderService.getItemPackingList(itemNumber, this.packingOrderN).subscribe(async itemPackingList => {
-  //     this.itemPackingList = itemPackingList;
-
-  //   });
-
-
-  //   await this.orderService.getOrderPackingList(this.number).subscribe(async orderPackingList => {
-
-  //     for (let i = 0; i < orderPackingList.length; i++) {
-  //     orderPackingList[i].totalAmount = orderPackingList[i].pcsCtn*orderPackingList[i].ctnPallet
-
-  //     }
-  //     this.orderPackingList = orderPackingList;
-
-  //     await this.orderPackingList.forEach(item => {
-  //       let obj = { palletId: item.palletId, palletNumber: item.palletNumber, palletWeight: item.palletWeight, palletMesures: item.palletMesures }
-  //       let palletId = item.palletId;
-  //       if (!this.orderPalletsNumArr.includes(palletId)) {
-  //         this.orderPalletsNumArr.push(palletId);
-  //         this.orderPalletsArr.push(obj);
-  //       }
-  //     });
-
-  //     await this.ordersItems.forEach(async (orderItem, key) => {
-  //       let packedQnt = 0;
-  //       let packedItemsOnPallet = 0;
-  //       await this.orderPackingList.filter(packedItem => {
-  //         if (orderItem.itemNumber == packedItem.itemNumber) {
-
-  //           packedItemsOnPallet = packedItem.pcsCtn * packedItem.ctnPallet;
-  //           packedQnt = packedQnt + packedItemsOnPallet
-  //           packedItem.totalPackedQnt = packedQnt;
-
-  //           if (orderItem.quantity == packedItem.totalPackedQnt) {
-  //             packedItem.lineColor = "rgb(204, 255, 204)";
-  //           } else {
-  //             packedItem.lineColor = "rgb(255, 255, 204)";
-  //           }
-  //         }
-  //       });
-  //     });
-
-
-  //   });
-  //   this.openOrderPackingModalHeader = "אריזת הזמנה מספר  " + this.packingOrderN;
-  //   this.openItemPackingModalHeader = "אריזת פריט מספר  " + this.packingItemN;
-  //   this.packingModal = true;
-
-
-  // }
-
-
-  // checkboxAllOrders(ev){
-  //   this.ordersItems.filter(e => e.isSelected = ev.target.checked)
-  // }
 
 
   returnStageColor(stage) {
@@ -1672,15 +1437,6 @@ export class OrderdetailsComponent implements OnInit {
 
 
 
-  // getOrderItemsFromArray(){
-  //   this.orderService.getOrderItemsFromArray().subscribe(data=>{
-  //       this.excelService.exportAsExcelFile(data.docs, 'OrderItems');
-  //       this.excelService.exportAsExcelFile(data.noResult, 'NoOrderItems');
-  //   });
-  // }
-
-
-
   getUserInfo() {
 
     this.userName = this.authService.loggedInUser.userName
@@ -1688,19 +1444,6 @@ export class OrderdetailsComponent implements OnInit {
     this.authService.userEventEmitter.subscribe(user => {
 
       this.user = user;
-
-      // this.user=user.loggedInUser;
-      // if (!this.authService.loggedInUser) {
-      //   this.authService.userEventEmitter.subscribe(user => {
-      //     if (user.userName) {
-      //       this.user = user;
-
-      //     }
-      //   });
-      // }
-      // else {
-      //   this.user = this.authService.loggedInUser;
-      // }
       if (this.user.authorization) {
 
         if (this.authService.loggedInUser.authorization.includes("showFormule")) {
@@ -1794,15 +1537,6 @@ export class OrderdetailsComponent implements OnInit {
 
 
 
-    //remove from old phase
-    // let itemToaddToNewPhase=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.find(a=>a.itemNumber==droppedItemNum);
-    // this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.filter(a=>a.itemNumber!=droppedItemNum);
-
-
-    // //find update to phase:
-    // let droppedIndex= this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.findIndex(a=>a.itemNumber==droppedIntoItemNum);
-    // this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.splice( droppedIndex, 0, itemToaddToNewPhase );
-
 
 
     setTimeout(() => {
@@ -1817,7 +1551,6 @@ export class OrderdetailsComponent implements OnInit {
 
   //order explosion
   async openCmptDemandsModal() {
-    debugger
     this.orderExplodeLoader = true
     this.bottleList = [];
     this.capList = [];
