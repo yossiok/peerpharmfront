@@ -47,7 +47,6 @@ export class SuppliersService {
 
   
   addorUpdateSupplier(supplierObj){
-    
     let url = this.baseUrl + "supplier/add";
     return this.http.post(url, JSON.stringify(supplierObj), this.options).pipe(map(res => res.json()))
   }

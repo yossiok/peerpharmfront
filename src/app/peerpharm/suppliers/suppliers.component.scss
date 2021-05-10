@@ -1,7 +1,7 @@
 
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color: #2962FF  ;
+  background-color: #46854e  ;
   color:white;
 }
 
@@ -153,3 +153,22 @@ label {
   .peerLoader span:nth-child(9) {
     animation-delay:0.96s;
   }
+
+  .modal-inner {
+    height: 900px;
+    overflow-y: scroll;
+  }
+
+  .cool {
+    text-decoration: underline;
+  }
+
+  
+.click {
+  cursor: pointer
+}
+
+.click:hover {
+  background-color: rgb(165, 235, 132);
+  color: black
+}

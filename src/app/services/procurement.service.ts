@@ -327,6 +327,11 @@ export class Procurementservice {
     return this.http.get(url).pipe( map(reponse => reponse.json()));
   }
 
+  getAllOrdersFromSupplier(supplierID){
+    let url = this.baseUrl + 'procurementOrderController/getAllOrdersFromSupplier?supplierID='+supplierID;
+    return this.http.get(url).pipe( map(reponse => reponse.json()));
+  }
+
 
   
 
