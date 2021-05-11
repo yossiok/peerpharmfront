@@ -729,7 +729,7 @@ export class ScheduleComponent implements OnInit {
     this.newBatchChange = false;
     setTimeout(() => {
       this.showPrintBtn = true;
-    }, 3000);
+    }, 5000);
     this.itemSer.getItemData(this.schedFillLine.item).subscribe(data => {
       this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
       this.barcodeK = data[0].barcodeK;
@@ -786,13 +786,10 @@ export class ScheduleComponent implements OnInit {
 
   onSubmit(): void {
     const newPrintBarkod = this.printScheduleFillingForm.value;
-    ;
     this.printCostumerBarcode = true;
     this.printExpBarcode = true;
     this.printItemBarcode = true;
-
-
-    console.log(newPrintBarkod);
+    this.printScheduleFillingForm.reset()
   }
 
   saveBatchNumber() {

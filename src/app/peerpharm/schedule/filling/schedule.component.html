@@ -374,17 +374,9 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div *ngIf="!showPrintBtn" class="smallLoader p-5"></div>
+  <div *ngIf="showPrintBtn" class="modal-body">
     <form class="form" [formGroup]="printScheduleFillingForm" (submit)="onSubmit()">
-      <!--    <div class="form-group row">
-        <label for="positionNumber">Position Number:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="position"
-          [value]="schedFillLine.positionN"
-        />
-      </div> -->
 
       <div class="form-group row">
         <label for="orderNumber">Order Number:</label>
@@ -402,6 +394,7 @@
         <input class="form-control" type="text" formControlName="packageP" [value]="schedFillLine.costumer" />
         <button (click)="printCostumerBarcode = false" class="btn-success">Remove</button>
       </div>
+
       <div *ngIf="printExpBarcode == true" class="form-group row">
         <label>Exp</label>
         <input class="form-control" type="text" formControlName="packageP" [value]="expireDate" />
@@ -413,110 +406,23 @@
         <input class="form-control" type="text" formControlName="batch" [value]="schedFillLine.batch" />
         <button class="btn-success" (click)="saveBatchNumber()">Save</button>
       </div>
+
       <div class="form-group row">
         <label>Pcs Carton</label>
         <input #pcsCartonQuantity class="form-control" type="text" formControlName="pcsCartonQuantity"
           [value]="pcsCarton" />
         <button class="btn-success" (click)="savePcsCarton()">Save</button>
       </div>
+
       <div class="form-group row">
         <label>Barcode</label>
         <input class="form-control" type="text" formControlName="pcsCartonQuantity" [value]="barcodeK" />
-
       </div>
-
-      <!-- <div class="form-group row">
-        <label for="customerNumber">Customer Number:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="costumer"
-          [value]="schedFillLine.costumer"
-        />
-      </div>
-
-      <div class="form-group row">
-        <label for="productNumber">Product Name:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="productName"
-          [value]="schedFillLine.productName"
-        />
-      </div>
-
-      <div class="form-group row">
-        <label for="batchNumber">Batch Number:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="batch"
-          [value]="schedFillLine.batch"
-        />
-      </div>
-
-      <div class="form-group row">
-        <label for="packagNumber">Package Number:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="packageP"
-          [value]="schedFillLine.packageP"
-        />
-      </div>
-
-     <div class="form-group row">
-        <label for="quantity">Quantity:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="qty"
-          [value]="schedFillLine.qty"
-        />
-      </div>
-
-       <div class="form-group row">
-        <label for="quantity">Date:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="date"
-          [value]="schedFillLine.date"
-        />
-      </div>
-      <div class="form-group row">
-        <label for="remarks">Remarks:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="marks"
-          [value]="schedFillLine.marks"
-        />
-      </div>
-
-      <div class="form-group row">
-        <label for="shift">Shift:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="shift"
-          [value]="schedFillLine.shift"
-        />
-      </div>
-
-      <div class="form-group row">
-        <label for="MKP">MKP:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="mkp"
-          [value]="schedFillLine.mkp"
-        />
-      </div>  -->
     </form>
   </div>
-  <div class="modal-footer">
-    <button *ngIf="showPrintBtn == true" type="button" class="btn btn-outline-dark" printSectionId="print-section"
+
+  <div *ngIf="showPrintBtn" class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" printSectionId="print-section"
       ngxPrint (click)="c('Saved')">
       Print
     </button>
