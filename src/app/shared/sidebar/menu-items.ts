@@ -201,7 +201,8 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
-      }
+      },
+ 
 
 
     ]
@@ -679,6 +680,7 @@ export const ROUTES: RouteInfo[] = [
 
         ]
       },
+      
       {
         path: '',
         title: 'Pricing',
@@ -688,22 +690,29 @@ export const ROUTES: RouteInfo[] = [
         submenu: 
         [
           {
-            path: '/peerpharm/pricing',
-            title: 'Pricing',
+            path: '/peerpharm/pricing/new',
+            title: 'New',
             icon: 'fas fa-list-ol',
             class: '',
             extralink: false,
             submenu: []
           },
-          // {
-          //   path: '/peerpharm/services/types',
-          //   title: 'Service Types',
-          //   icon: 'fas fa-list-ol',
-          //   class: '',
-          //   extralink: false,
-          //   submenu: []
-          // }
-
+          {
+            path: '/peerpharm/pricing/existing',
+            title: 'Product',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/pricing/index',
+            title: 'Index',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
         ]
       },
       {

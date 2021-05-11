@@ -45,7 +45,9 @@ import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component'; 
 import { OutServicesComponent} from './out-services/out-services.component'
-import { PricesComponent } from './prices/prices.component';
+import { PricesComponent } from './prices/Existing/prices.component';
+import { AllPricingComponent } from './prices/all-pricing/all-pricing.component';
+
 
 
 import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
@@ -150,6 +152,7 @@ import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.
 import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
 import { TicketFormComponent } from './ticket-form/ticket-form.component';
 import { EditServiceComponent } from './out-services/edit-service/edit-out-service.component';
+import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
 
 
 
@@ -292,7 +295,9 @@ import { EditServiceComponent } from './out-services/edit-service/edit-out-servi
     OutServicesComponent,
     NewOutServiceComponent,
     EditServiceComponent,
-    PricesComponent
+    PricesComponent,
+    AllPricingComponent,
+    NewPricingComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   
