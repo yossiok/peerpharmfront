@@ -393,7 +393,7 @@ debugger
   async searchItemShelfs(ev) {
     ;
     if (!this.multiInputLines && ev != "") {
-      await this.inventoryService.getShelfListForItemInWhareHouse(ev.target.value, this.curentWhareHouseName).subscribe(async res => {
+      await this.inventoryService.getShelfListForItemInWhareHouse(ev.target.value, this.curentWhareHouseId).subscribe(async res => {
         if (res.length > 0) {
           this.currItemShelfs = res;
 
@@ -411,7 +411,7 @@ debugger
     else if (this.multiInputLines) {
       this.multiLinesArr.forEach(async element => {
         element.currItemShelfs = [];
-        await this.inventoryService.getShelfListForItemInWhareHouse(element.itemNumber, this.curentWhareHouseName).subscribe(async res => {
+        await this.inventoryService.getShelfListForItemInWhareHouse(element.itemNumber, this.curentWhareHouseId).subscribe(async res => {
           if (res.length > 0) {
             element.currItemShelfs = res;
           } else {
