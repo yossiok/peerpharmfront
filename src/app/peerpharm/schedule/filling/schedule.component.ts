@@ -32,6 +32,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor6: string = "#B8ECF1";
   buttonColor7: string = "#B8ECF1";
   buttonColor8: string = "#B8ECF1";
+  buttonColor9: string = "#B8ECF1";
   today: any;
   pcsCarton: any;
   barcodeK: any;
@@ -417,7 +418,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   setType(type, elem) {
-
+    debugger;
     console.log('hi ' + type);
     console.log('hi ' + elem.style);
     switch (type) {
@@ -430,6 +431,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor6 = '#B8ECF1';
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'tube':
@@ -441,6 +443,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor6 = '#B8ECF1';
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'mkp':
@@ -452,6 +455,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor6 = '#B8ECF1';
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'sachet':
@@ -463,6 +467,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor6 = '#B8ECF1';
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'laser':
@@ -474,6 +479,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor6 = '#B8ECF1';
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'stickers':
@@ -485,6 +491,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor6 = '#2962FF';
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'mkp2':
@@ -496,6 +503,19 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor6 = '#B8ECF1';
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#2962FF';
+        this.buttonColor9 = '#B8ECF1';
+        this.scheduleData = this.scheduleDataCopy
+        break;
+      case 'packaging':
+        this.buttonColor = '#B8ECF1';
+        this.buttonColor2 = '#B8ECF1';
+        this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = '#B8ECF1';
+        this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#2962FF';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'unpacked':
