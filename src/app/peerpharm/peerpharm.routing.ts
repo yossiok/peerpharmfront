@@ -72,6 +72,7 @@ import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.
 import { OutServicesComponent } from './out-services/out-services.component';
 import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
 import { TicketFormComponent } from './ticket-form/ticket-form.component';
+import { PricesComponent } from './prices/prices.component';
 
 
 
@@ -642,6 +643,14 @@ export const PeerPharmRputs: Routes = [
       title: 'Add Service'
     },
     component: NewOutServiceComponent
+  },
+  {
+    path: 'pricing',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Add Service'
+    },
+    component: PricesComponent
   },
 
 ];

@@ -45,6 +45,8 @@ import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component'; 
 import { OutServicesComponent} from './out-services/out-services.component'
+import { PricesComponent } from './prices/prices.component';
+
 
 import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
@@ -185,20 +187,6 @@ import { EditServiceComponent } from './out-services/edit-service/edit-out-servi
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
-  /*  MatDialogModule,
-    MatGridListModule,
-    MatMenuModule,
-    MatButtonModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatCardModule,MatAutocompleteModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatTabsModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,*/
     MatSelectModule,
     DndModule.forRoot(),
     DatepickerModule,
@@ -303,7 +291,8 @@ import { EditServiceComponent } from './out-services/edit-service/edit-out-servi
     PrintBarcodeComponent,
     OutServicesComponent,
     NewOutServiceComponent,
-    EditServiceComponent
+    EditServiceComponent,
+    PricesComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   
