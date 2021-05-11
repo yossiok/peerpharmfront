@@ -99,6 +99,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   itemIndex: number;
   submittingCert: boolean;
   sendingPurchase: boolean;
+  lastSupplier: string;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -359,17 +360,19 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   getLastOrdersForItem(componentN) {
     this.itemForm.controls.historyAmounts.setValue([])
+    this.lastSupplier = ''
     this.procurementService.getLastOrdersForItem(componentN, 100).subscribe(orders => {
       if (orders && orders.length > 0) {
         let currentYear = 0
         let lastYear = 0
         for (let order of orders) {
+          if (this.lastSupplier == '') this.lastSupplier = order.supplierName 
           if (order.orderDate.slice(0, 4) == '2021') currentYear += Number(order.quantity)
           else if (order.orderDate.slice(0, 4) == '2020') lastYear += Number(order.quantity)
         }
         this.itemForm.controls.historyAmounts.setValue([
           { year: 2021, amount: currentYear },
-          { year: 2020, amount: lastYear }
+          { year: 2020, amount: lastYear },
         ])
       }
       else this.itemForm.controls.historyAmounts.setValue([])
