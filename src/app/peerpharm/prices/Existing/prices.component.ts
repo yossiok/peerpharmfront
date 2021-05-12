@@ -14,8 +14,8 @@ export class PricesComponent implements OnInit {
   item: any;
   itemComponents: any[];
   totalItemPrice: number = 0;
-  productPriceModal: boolean;
   totalShippingPrice: number = 0;
+  calculating: boolean = false;
 
   constructor(
     private itemService: ItemsService,
@@ -28,6 +28,7 @@ export class PricesComponent implements OnInit {
   }
 
   getItemData(itemNumber) {
+    this.calculating = true;
     this.itemService.getItemData(itemNumber.value).subscribe(data => {
       if(data.length == 0) this.toastr.error('Item Not Found.')
       else this.item = data[0]
@@ -41,7 +42,6 @@ export class PricesComponent implements OnInit {
     this.totalItemPrice = 0
     if (this.item.bottleNumber != '' && this.item.bottleNumber != '---') {
       this.invtSer.getCmptByitemNumber(this.item.bottleNumber).subscribe(data => {
-
         if (data) {
           this.itemComponents.push(this.createPriceObj(data))
         }
@@ -74,13 +74,10 @@ export class PricesComponent implements OnInit {
     }
     if (this.item.cartonNumber != '' && this.item.cartonNumber != '---') {
       this.invtSer.getCmptByitemNumber(this.item.cartonNumber).subscribe(data => {
+        this.calculating = false;
         this.itemComponents.push(this.createPriceObj(data))
       })
     }
-
-    this.productPriceModal = true;
-
-
   }
 
   

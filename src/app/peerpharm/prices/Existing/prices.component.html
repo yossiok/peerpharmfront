@@ -1,55 +1,54 @@
-<div class="d-flex flex-row justify-content-between">
+<!-- <div class="d-flex flex-row justify-content-between"> -->
 
-    <div class="container">
+<div class="container">
 
-        <div class="row mt-5" (click)="showExistingProduct = !showExistingProduct">
-            <div class="col-4"></div>
-            <div class="col-4 p-2">
-                <h2 class="click text-center">Existing Product</h2>
-            </div>
-            <div class="col-4"></div>
+    <div class="row mt-5">
+        <div class="col-4"></div>
+        <div class="col-4 p-2">
+            <h2 class="text-center">Existing Product</h2>
         </div>
-
-        <div *ngIf="showExistingProduct" class="container mt-5">
-            <div class="row mt-5">
-                <input type="number" #productNumber>
-                <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Pricing</button>
-            </div>
-            <div *ngIf="productPriceModal" class="container mt-5">
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <table class="table table-hover">
-                            <thead class="text-center">
-                                <tr>
-                                    <th>Component</th>
-                                    <th></th>
-                                    <th>Price</th>
-                                    <th>Shipping</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let component of itemComponents">
-                                    <td>{{component.componentN}}</td>
-                                    <td>{{component.componentName}}</td>
-                                    <td>{{component.price}}</td>
-                                    <td>{{component.shippingPrice}}</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>{{totalItemPrice}}</td>
-                                    <td>{{totalShippingPrice}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <div class="col-4"></div>
     </div>
 
-    <div class="container">
+    <div class="container mt-5">
+        <div class="row mt-5">
+            <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
+            <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Price</button>
+        </div>
+        <div class="bigLoader" *ngIf="calculating"></div>
+        <div *ngIf="!calculating" class="container mt-5">
+            <div class="row mt-4">
+                <table class="bg-warning text-dark">
+                    <thead class="text-center">
+                        <tr>
+                            <th>Component</th>
+                            <th></th>
+                            <th>Price</th>
+                            <th>Shipping</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table table-bordered">
+                        <tr *ngFor="let component of itemComponents">
+                            <td>{{component.componentNumber}}</td>
+                            <td>{{component.componentName}}</td>
+                            <td>{{component.price}}</td>
+                            <td>{{component.shippingPrice}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>{{totalItemPrice}}</td>
+                            <td>{{totalShippingPrice}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- <div class="container">
 
         <div class="row mt-5" (click)="showNewPricing = !showNewPricing">
             <div class="col-4"></div>
@@ -63,6 +62,6 @@
             <p>New Pricing</p>
         </div>
 
-    </div>
+    </div> -->
 
-</div>
+<!-- </div> -->
