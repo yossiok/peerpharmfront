@@ -377,7 +377,7 @@
               <div class="col-sm-4">
                 <label>מספר הזמנת רכש</label>
                 <select placeholder="Purchase Order Number" class="form-control is-valid" formControlName="cmxOrderN" name='cmxOrderN'>
-                  <option value="0">לא קיים</option>
+                  <option value="999">אחר</option>
                   <option *ngFor="let order of lastOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
                 </select>
                 <!-- <input type="text" (change)="checkIfIOrderExist($event)" class="form-control is-valid"

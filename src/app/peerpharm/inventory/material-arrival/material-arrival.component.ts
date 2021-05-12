@@ -161,7 +161,7 @@ export class MaterialArrivalComponent implements OnInit {
       totalQnt: [null, Validators.required],
       mesureType: ['kg', Validators.required],
       remarks: ["",],
-      cmxOrderN: [null, Validators.required],
+      cmxOrderN: [null],
       packageType: ["", Validators.required], //select 
       packageQnt: [1, Validators.min(1)],
       unitsInPack: [null, Validators.min(1)],
