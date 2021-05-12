@@ -1,1 +1,70 @@
-<p>all-pricing works!</p>
+<div class="wrapper">
+    <div class="box click" (click)="openBidding(bidding)" *ngFor="let bidding of biddings">
+        <div class="bidding-line">
+            <h3>For: {{bidding.customer}}</h3>
+        </div>
+        <div class="bidding-line">
+            <h4>Product:</h4>
+            <h4>{{bidding.productNumber}}</h4>
+            <h4>{{bidding.productName}}</h4>
+        </div>
+        <div class="bidding-line">
+            <h4>Total Price: {{bidding.productPrice}}</h4>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="showBiddingDetails" class="container fixed-top bg-warning mx-auto my-auto text-center w-100 p-5 modal-inner">
+    <i class="fa fa-times float-right click h2 block" (click)="closeBidding()"></i>
+    <h1>For: {{chosenBidding.customer.costumerName}}</h1>
+    <h2>Product {{chosenBidding.productNumber}} - {{chosenBidding.productName}}</h2>
+
+
+    <div class="row mt-4">
+        <div class="col-1">
+            <img src="../../../assets/images/excel.png" alt="excel export"
+                
+                style="width: 35px; float: left; cursor: pointer;">
+        </div>
+        <div class="col-10">
+            <h2 class="text-info">Bidding Details</h2>
+        </div>
+        <div class="col-1">
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <div class="row mt-4">
+            <div class="col-12">
+                <table class="table table-hover">
+                    <thead class="text-center">
+                        <tr>
+                            <th>Component</th>
+                            <th></th>
+                            <th>Price</th>
+                            <th>Shipping</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let component of chosenBidding.itemComponents">
+                            <td>{{component.componentN}}</td>
+                            <td>{{component.componentName}}</td>
+                            <td>{{component.price}}</td>
+                            <td>{{component.shippingPrice}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>{{chosenBidding.productPrice}}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>

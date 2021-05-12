@@ -3,7 +3,7 @@
     <div class="row mt-5" >
         <div class="col-4"></div>
         <div class="col-4 p-2">
-            <h2 class="click text-center">New Pricing</h2>
+            <h2 class="click text-center">New Bidding</h2>
         </div>
         <div class="col-4"></div>
     </div>
@@ -53,7 +53,7 @@
 
     <div class="container mt-5">
         <div class="row mt-2">
-            <button class="click btn btn-warning" (click)="showPricingDetails = !shaowPricingDetails">Create New Pricing</button>
+            <button class="click btn btn-warning" (click)="showPricingDetails = !shaowPricingDetails">Create New Bidding</button>
         </div>
         <div *ngIf="showPricingDetails" class="container mt-5 p-5">
             <form [formGroup]="newPricingForm" (ngSubmit)="savePricing()">
@@ -62,7 +62,7 @@
                     <select class="form-control" formControlName="customer">
                         <option value="">Customer</option>
                         <option value="0">No Customer</option>
-                        <option *ngFor="let customer of customers" [value]="customer.costumerId">{{customer.costumerName}}</option>
+                        <option *ngFor="let customer of customers" [value]="customer">{{customer.costumerName}}</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -74,7 +74,7 @@
                     <input class="form-control" type="text" formControlName="productName">
                 </div>
                 <div class="form-group">
-                    <button class="click btn text-warning">Save</button>
+                    <button type="submit" class="click btn text-warning">Save</button>
                 </div>
             </form>
         </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { PricingService } from 'src/app/services/pricing.service';
@@ -20,14 +21,15 @@ export class NewPricingComponent implements OnInit {
     productPrice: new FormControl('', Validators.required),
     productName: new FormControl('', Validators.required),
     productNumber: new FormControl('', Validators.required),
-    customer: new FormControl(''),
-    itemComponents: new FormControl('')
+    customer: new FormControl({}),
+    itemComponents: new FormControl([]),
   })
 
   constructor(
     private invtSer: InventoryService,
     private pricingService: PricingService,
-    private costumerService: CostumersService
+    private costumerService: CostumersService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +37,6 @@ export class NewPricingComponent implements OnInit {
   }
 
   getCustomers() {
-    debugger
     this.costumerService.getAllCostumers().subscribe(customers => {
       this.customers = customers
     })
@@ -62,8 +63,6 @@ export class NewPricingComponent implements OnInit {
 
   }
 
-
-
   createPriceObj(data) {
 
     let componentPricing = {
@@ -72,7 +71,6 @@ export class NewPricingComponent implements OnInit {
       componentNumber: data[0].componentN,
       componentName: data[0].componentName,
     }
-
 
     if (data[0].price) componentPricing.price = data[0].price
     else {
@@ -97,7 +95,6 @@ export class NewPricingComponent implements OnInit {
         this.totalShippingPrice = this.totalShippingPrice + Number(componentPricing.shippingPrice)
       }
     }
-
     return componentPricing
   }
 
@@ -105,7 +102,8 @@ export class NewPricingComponent implements OnInit {
     this.newPricingForm.controls.itemComponents.setValue(this.itemComponents)
     this.newPricingForm.controls.productPrice.setValue(this.totalItemPrice + this.totalShippingPrice)
     this.pricingService.addPricing(this.newPricingForm.value).subscribe(res => {
-      console.log(res)
+      if(res.msg == 1) this.toastr.success('New Bidding Saved.')
+      else this.toastr.error('Something gone bad.')
     })
   }
 
