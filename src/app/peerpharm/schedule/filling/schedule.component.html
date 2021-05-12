@@ -352,7 +352,7 @@
               </td>
               <td>
                 <button *ngIf="line._id !== EditRowId" class="btn btn-info m-r-10 border border-dark" type="button"
-                  (click)="openPrintBarkod(content, line)">
+                  (click)="openPrintBarkod(content, line)" [disabled]="openingPrintModal" [style.cursor]="openingPrintModal ? 'not-allowed' : 'pointer'">
                   Print Barcode
                 </button>
                 <i *ngIf="typeShown === 'mkp2'" (click)="markMkpDone(line._id)" class="fa fa-check"></i>
@@ -387,43 +387,40 @@
 
       <div class="form-group row">
         <label for="orderNumber">Order Number:</label>
-        <input class="form-control" type="text" formControlName="orderN" [value]="schedFillLine.orderN" />
+        <input class="form-control" type="text" formControlName="orderN"/>
       </div>
 
       <div *ngIf="printItemBarcode == true" class="form-group row">
         <label for="itemNumber">Item Number:</label>
-        <input class="form-control" type="text" formControlName="item" disabled [value]="schedFillLine.item" />
+        <input class="form-control" type="text" formControlName="item" disabled/>
         <button (click)="printItemBarcode = false" class="btn-success">Remove</button>
       </div>
 
       <div *ngIf="printCostumerBarcode == true" class="form-group row">
         <label>Costumer</label>
-        <input class="form-control" type="text" formControlName="packageP" [value]="schedFillLine.costumer" />
+        <input class="form-control" type="text" formControlName="costumer"  />
         <button (click)="printCostumerBarcode = false" class="btn-success">Remove</button>
       </div>
 
       <div *ngIf="printExpBarcode == true" class="form-group row">
         <label>Exp</label>
-        <input class="form-control" type="text" formControlName="packageP" [value]="expireDate" />
+        <input class="form-control" type="text" formControlName="packageP" />
         <button (click)="printExpBarcode = false" class="btn-success">Remove</button>
       </div>
 
       <div class="form-group row">
         <label for="batchNumber">Batch Number</label>
-        <input class="form-control" type="text" formControlName="batch" [value]="schedFillLine.batch" />
-        <button class="btn-success" (click)="saveBatchNumber()">Save</button>
+        <input class="form-control" type="text" formControlName="batch" />
       </div>
 
       <div class="form-group row">
         <label>Pcs Carton</label>
-        <input #pcsCartonQuantity class="form-control" type="text" formControlName="pcsCartonQuantity"
-          [value]="pcsCarton" />
-        <button class="btn-success" (click)="savePcsCarton()">Save</button>
+        <input #pcsCartonQuantity class="form-control" type="text" formControlName="pcsCartonQuantity"/>
       </div>
 
       <div class="form-group row">
         <label>Barcode</label>
-        <input class="form-control" type="text" formControlName="pcsCartonQuantity" [value]="barcodeK" />
+        <input class="form-control" type="text" formControlName="barcodeK"/>
       </div>
     </form>
   </div>
@@ -443,22 +440,22 @@
 
     <tr>
       <td>
-        {{schedFillLine.productName}}
+        {{printScheduleFillingForm.value.productName}}
       </td>
     </tr>
     <tr *ngIf="printItemBarcode == true">
       <td>
-        Item Number: {{schedFillLine.item}}
+        Item Number: {{printScheduleFillingForm.value.item}}
       </td>
     </tr>
     <tr>
       <td>
-        {{volumeK}} {{pcsCarton}}
+        {{printScheduleFillingForm.value.volumeK}} {{printScheduleFillingForm.value.pcsCarton}}
       </td>
     </tr>
     <tr>
       <td *ngIf="newBatchChange == false">
-        {{schedFillLine.batch}} <label *ngIf="printExpBarcode == true">Exp: {{expireDate}}</label>
+        {{printScheduleFillingForm.value.batch}} <label *ngIf="printExpBarcode == true">Exp: {{printScheduleFillingForm.value.packageP}}</label>
       </td>
       <td *ngIf="newBatchChange == true">
         {{newBatch}} <label *ngIf="printExpBarcode == true">Exp: {{expireDate}}</label>
@@ -466,12 +463,12 @@
     </tr>
     <tr>
       <td>
-        <ngx-barcode [bc-value]="barcodeK" [bc-display-value]="true"></ngx-barcode>
+        <ngx-barcode [bc-value]="printScheduleFillingForm.value.barcodeK" [bc-display-value]="true"></ngx-barcode>
       </td>
     </tr>
     <tr *ngIf="printCostumerBarcode == true">
       <td>
-        {{schedFillLine.costumer}}
+        {{printScheduleFillingForm.value.costumer}}
       </td>
     </tr>
   </table>

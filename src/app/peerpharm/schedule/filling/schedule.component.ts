@@ -71,6 +71,7 @@ export class ScheduleComponent implements OnInit {
   @ViewChild('mkpA') mkp: ElementRef;
   @ViewChild('id') id: ElementRef;
   @ViewChild('batchSpecStatus') batchSpecStatus: ElementRef;
+  openingPrintModal: boolean;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -128,7 +129,8 @@ export class ScheduleComponent implements OnInit {
       marks: new FormControl('', [Validators.required]),
       shift: new FormControl('', [Validators.required]),
       mkp: new FormControl('', [Validators.required]),
-      pcsCartonQuantity: new FormControl('', [Validators.required])
+      pcsCartonQuantity: new FormControl('', [Validators.required]),
+      barcodeK: new FormControl('', [Validators.required])
     });
   }
 
@@ -744,54 +746,61 @@ export class ScheduleComponent implements OnInit {
   // Modal Functions
   openPrintBarkod(content, line) {
     this.showPrintBtn = false;
-    this.schedFillLine = line;
+    this.openingPrintModal = true;
+    // this.schedFillLine = line;
     ;
     this.newBatchChange = false;
-    setTimeout(() => {
-      this.showPrintBtn = true;
-    }, 5000);
-    this.itemSer.getItemData(this.schedFillLine.item).subscribe(data => {
-      this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
-      this.barcodeK = data[0].barcodeK;
-      this.volumeK = data[0].volumeKey + ' ml';
-      this.netoW = data[0].netWeightK;
-      this.grossW = data[0].grossUnitWeightK;
+    // setTimeout(() => {
+     
+    // }, 5000);
+    this.itemSer.getItemData(line.item).subscribe(data => {
+      line.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
+      line.barcodeK = data[0].barcodeK;
+      line.volumeK = data[0].volumeKey + ' ml';
+      line.netoW = data[0].netWeightK;
+      line.grossW = data[0].grossUnitWeightK;
 
-    })
+      this.batchService.getBatchData(line.batch).subscribe(data => {
+        if(data.length > 0) line.packageP = data[0].expration.slice(0, 11);
+        
+        this.printScheduleFillingForm.patchValue(line)
 
-    this.batchService.getBatchData(this.schedFillLine.batch).subscribe(data => {
-      this.expireDate = data[0].expration.slice(1, 11);
-    })
-    console.log(this.schedFillLine);
-
-    this.printScheduleFillingForm.value.position = this.schedFillLine.positionN;
-    this.printScheduleFillingForm.value.orderN = this.schedFillLine.orderN;
-    this.printScheduleFillingForm.value.item = this.schedFillLine.item;
-    this.printScheduleFillingForm.value.costumer = this.schedFillLine.costumer;
-    this.printScheduleFillingForm.value.productName = this.schedFillLine.productName;
-    this.printScheduleFillingForm.value.batch = this.schedFillLine.batch;
-    this.printScheduleFillingForm.value.packageP = this.schedFillLine.packageP;
-    this.printScheduleFillingForm.value.qty = this.schedFillLine.qtyProduced;
-    this.printScheduleFillingForm.value.date = this.schedFillLine.date;
-    this.printScheduleFillingForm.value.marks = this.schedFillLine.marks;
-    this.printScheduleFillingForm.value.shift = this.schedFillLine.shift;
-    this.printScheduleFillingForm.value.mkp = this.schedFillLine.mkp;
-
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
-      .result.then(
-        result => {
-          if (result === 'Saved') {
-            console.log(result);
-            this.onSubmit();
+        this.modalService
+        .open(content, { ariaLabelledBy: 'modal-basic-title' })
+        .result.then(
+          result => {
+            if (result === 'Saved') {
+              console.log(result);
+              this.onSubmit();
+            }
+            this.closeResult = `Closed with: ${result}`;
+            console.log(this.closeResult);
+          },
+          reason => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
           }
-          this.closeResult = `Closed with: ${result}`;
-          console.log(this.closeResult);
-        },
-        reason => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
+        );
+        this.showPrintBtn = true;
+        this.openingPrintModal = false;
+      })
+
+    })
+
+  
+
+    // this.printScheduleFillingForm.value.orderN = this.schedFillLine.orderN;
+    // this.printScheduleFillingForm.value.item = this.schedFillLine.item;
+    // this.printScheduleFillingForm.value.costumer = this.schedFillLine.costumer;
+    // this.printScheduleFillingForm.value.productName = this.schedFillLine.productName;
+    // this.printScheduleFillingForm.value.batch = this.schedFillLine.batch;
+    // this.printScheduleFillingForm.value.packageP = this.schedFillLine.packageP;
+    // this.printScheduleFillingForm.value.qty = this.schedFillLine.qtyProduced;
+    // this.printScheduleFillingForm.value.date = this.schedFillLine.date;
+    // this.printScheduleFillingForm.value.marks = this.schedFillLine.marks;
+    // this.printScheduleFillingForm.value.shift = this.schedFillLine.shift;
+    // this.printScheduleFillingForm.value.mkp = this.schedFillLine.mkp;
+
+
   }
 
   private getDismissReason(reason: any): string {
