@@ -404,7 +404,7 @@
 
       <div *ngIf="printExpBarcode == true" class="form-group row">
         <label>Exp</label>
-        <input class="form-control" type="text" formControlName="packageP" />
+        <input class="form-control" type="text" formControlName="exp" />
         <button (click)="printExpBarcode = false" class="btn-success">Remove</button>
       </div>
 
@@ -426,7 +426,7 @@
   </div>
 
   <div *ngIf="showPrintBtn" class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" printSectionId="print-section"
+    <button type="button" class="btn btn-success" printSectionId="print-section"
       ngxPrint (click)="c('Saved')">
       Print
     </button>
@@ -455,7 +455,7 @@
     </tr>
     <tr>
       <td *ngIf="newBatchChange == false">
-        {{printScheduleFillingForm.value.batch}} <label *ngIf="printExpBarcode == true">Exp: {{printScheduleFillingForm.value.packageP}}</label>
+        {{printScheduleFillingForm.value.batch}} <label *ngIf="printExpBarcode == true">Exp: {{printScheduleFillingForm.value.exp}}</label>
       </td>
       <td *ngIf="newBatchChange == true">
         {{newBatch}} <label *ngIf="printExpBarcode == true">Exp: {{expireDate}}</label>

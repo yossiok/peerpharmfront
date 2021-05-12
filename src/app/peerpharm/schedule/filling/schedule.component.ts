@@ -124,6 +124,7 @@ export class ScheduleComponent implements OnInit {
       productName: new FormControl('', [Validators.required]),
       batch: new FormControl('', [Validators.required]),
       packageP: new FormControl('', [Validators.required]),
+      exp: new FormControl('', [Validators.required]),
       qty: new FormControl('', [Validators.required]),
       date: new FormControl('', [Validators.required]),
       marks: new FormControl('', [Validators.required]),
@@ -747,12 +748,7 @@ export class ScheduleComponent implements OnInit {
   openPrintBarkod(content, line) {
     this.showPrintBtn = false;
     this.openingPrintModal = true;
-    // this.schedFillLine = line;
-    ;
     this.newBatchChange = false;
-    // setTimeout(() => {
-     
-    // }, 5000);
     this.itemSer.getItemData(line.item).subscribe(data => {
       line.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
       line.barcodeK = data[0].barcodeK;
@@ -761,7 +757,7 @@ export class ScheduleComponent implements OnInit {
       line.grossW = data[0].grossUnitWeightK;
 
       this.batchService.getBatchData(line.batch).subscribe(data => {
-        if(data.length > 0) line.packageP = data[0].expration.slice(0, 11);
+        if(data.length > 0 && data[0].expration) line.exp = data[0].expration.slice(0, 11);
         
         this.printScheduleFillingForm.patchValue(line)
 
