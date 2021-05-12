@@ -129,7 +129,8 @@ export class ScheduleComponent implements OnInit {
       marks: new FormControl('', [Validators.required]),
       shift: new FormControl('', [Validators.required]),
       mkp: new FormControl('', [Validators.required]),
-      pcsCartonQuantity: new FormControl('', [Validators.required]),
+      pcsCarton: new FormControl('', [Validators.required]),
+      volumeK: new FormControl('', [Validators.required]),
       barcodeK: new FormControl('', [Validators.required])
     });
   }
@@ -367,7 +368,6 @@ export class ScheduleComponent implements OnInit {
   }
 
   isSelected(ev, item) {
-
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr
 
