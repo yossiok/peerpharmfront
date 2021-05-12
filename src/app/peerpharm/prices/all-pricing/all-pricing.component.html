@@ -17,7 +17,7 @@
 
 <div *ngIf="showBiddingDetails" class="container fixed-top bg-warning mx-auto my-auto text-center w-100 p-5 modal-inner">
     <i class="fa fa-times float-right click h2 block" (click)="closeBidding()"></i>
-    <h1>For: {{chosenBidding.customer.costumerName}}</h1>
+    <h1>For: {{chosenBidding.customer}}</h1>
     <h2>Product {{chosenBidding.productNumber}} - {{chosenBidding.productName}}</h2>
 
 
@@ -49,7 +49,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let component of chosenBidding.itemComponents">
-                            <td>{{component.componentN}}</td>
+                            <td>{{component.componentNumber}}</td>
                             <td>{{component.componentName}}</td>
                             <td>{{component.price}}</td>
                             <td>{{component.shippingPrice}}</td>

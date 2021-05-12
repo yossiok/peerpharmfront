@@ -16,12 +16,14 @@ export class NewPricingComponent implements OnInit {
   totalItemPrice: number = 0;
   totalShippingPrice: number = 0;
   customers: any[] = []
+  showPricingDetails: boolean = false;
+  loading: boolean = false;
 
   newPricingForm: FormGroup = new FormGroup({
     productPrice: new FormControl('', Validators.required),
     productName: new FormControl('', Validators.required),
     productNumber: new FormControl('', Validators.required),
-    customer: new FormControl({}),
+    customer: new FormControl(''),
     itemComponents: new FormControl([]),
   })
 
@@ -99,9 +101,12 @@ export class NewPricingComponent implements OnInit {
   }
 
   savePricing() {
+    this.loading = true
     this.newPricingForm.controls.itemComponents.setValue(this.itemComponents)
     this.newPricingForm.controls.productPrice.setValue(this.totalItemPrice + this.totalShippingPrice)
     this.pricingService.addPricing(this.newPricingForm.value).subscribe(res => {
+      this.loading = false;
+      this.showPricingDetails = false
       if(res.msg == 1) this.toastr.success('New Bidding Saved.')
       else this.toastr.error('Something gone bad.')
     })

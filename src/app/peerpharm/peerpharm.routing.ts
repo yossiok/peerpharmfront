@@ -650,7 +650,7 @@ export const PeerPharmRputs: Routes = [
     path: 'pricing/new',
     canActivate: [ScreenGuard],
     data: {
-      title: 'Pricing'
+      title: 'New Bidding'
     },
     component: NewPricingComponent
   },
@@ -658,7 +658,7 @@ export const PeerPharmRputs: Routes = [
     path: 'pricing/existing',
     canActivate: [ScreenGuard],
     data: {
-      title: 'Pricing'
+      title: 'Product Pricing'
     },
     component: PricesComponent
   },
@@ -666,7 +666,7 @@ export const PeerPharmRputs: Routes = [
     path: 'pricing/index',
     canActivate: [ScreenGuard],
     data: {
-      title: 'Pricing'
+      title: 'Bidding Index'
     },
     component: AllPricingComponent
   },

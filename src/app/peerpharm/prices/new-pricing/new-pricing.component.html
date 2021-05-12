@@ -61,8 +61,8 @@
                     <label>Customer</label>
                     <select class="form-control" formControlName="customer">
                         <option value="">Customer</option>
-                        <option value="0">No Customer</option>
-                        <option *ngFor="let customer of customers" [value]="customer">{{customer.costumerName}}</option>
+                        <option value="No Customer">No Customer</option>
+                        <option *ngFor="let customer of customers" [value]="customer.costumerName">{{customer.costumerName}}</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -74,7 +74,7 @@
                     <input class="form-control" type="text" formControlName="productName">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="click btn text-warning">Save</button>
+                    <button type="submit" class="click btn text-warning" [disabled]="loading" [style.cursor]="loading ? 'not-allowed' : 'pointer'">Save</button>
                 </div>
             </form>
         </div>
