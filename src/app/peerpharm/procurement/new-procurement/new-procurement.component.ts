@@ -13,6 +13,7 @@ import { DeliveryCertificate } from '../procumentOrders/DeliveryCert';
 import { InvoiceData } from './InvoiceData';
 import { StockItem } from './StockItem';
 import { Currencies } from '../Currencies';
+import { UsersService } from 'src/app/services/users.service';
 
 
 @Component({
@@ -63,9 +64,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   userEmail: any;
   editItem: boolean = false;
 
+  allowedUsers = ['Shai','sima','martha','haviv', 'SHARK']
+
   newPurchase: FormGroup;
   // deliveryCertificateForm: FormGroup;
   itemForm: FormGroup;
+  userName: string;
 
   // Items to select for invoice / deliveryCert
   selectedItems: StockItem[] = []
@@ -105,7 +109,17 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     console.log(event);
   }
 
-  constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private toastr: ToastrService, private procurementService: Procurementservice, private authService: AuthService, private inventoryService: InventoryService, private supplierService: SuppliersService, public formBuilder: FormBuilder,) {
+  constructor(
+    private fb: FormBuilder, 
+    private modalService: NgbModal,
+     private route: ActivatedRoute, 
+     private toastr: ToastrService, 
+     private procurementService: Procurementservice, 
+     private authService: AuthService, 
+     private inventoryService: InventoryService, 
+     private supplierService: SuppliersService, 
+     public formBuilder: FormBuilder,
+     ) {
     this.newPurchase = fb.group({
       _id: [''],
       supplierName: ["", Validators.required],
@@ -156,6 +170,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.getUserInfo()
     if (this.requestToPurchase) {
       this.newPurchase.patchValue({
         _id: '',
@@ -219,7 +234,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   }
 
-
+  getUserInfo(){
+    this.userName = this.authService.loggedInUser.userName
+  }
 
   formatDate(date) {
     var d = new Date(date),

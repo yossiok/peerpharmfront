@@ -32,6 +32,7 @@ export class ShelfListComponent implements OnInit {
   @ViewChild('shelfPosition') shelfPosition: ElementRef;
   @ViewChild('shelfAmount') shelfAmount: ElementRef;
   updatingAmount: boolean;
+  fetchingShelfs: boolean;
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -59,24 +60,42 @@ export class ShelfListComponent implements OnInit {
     }
   
   getShelfsByWH(ev){
-    ;
+    this.fetchingShelfs = true;
     let whareHouse = ev.target.value;
+    switch(whareHouse) {
+      case 'material':
+        this.itemType = whareHouse
+        whareHouse = 'Rosh HaAyin'
+        break
+      case 'component':
+        this.itemType = whareHouse
+        whareHouse = 'Rosh HaAyin'
+        break
+      case 'Rosh HaAyin products':
+        this.itemType = 'product'
+        break
+      case 'NEW KASEM':
+        this.itemType = 'component'
+        break
+      case 'kasem':
+        this.itemType = 'component'
+    }
     if(whareHouse == 'material' || whareHouse == 'component'){
       this.itemType = whareHouse
       whareHouse = 'Rosh HaAyin'
-      
     }
     this.inventorySrv.shelfListByWH(whareHouse, this.itemType).subscribe(data=>{
+      this.fetchingShelfs = false
     if(data){
       data.sort((a,b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0));
       this.allShelfs = data;
       this.allShelfsCopy = data;
     }
+    else this.toastSrv.error('No Shelfs in Wharehouse')
     })
   }
 
   filterByShelf(ev){
-    ;
     this.allShelfs = this.allShelfsCopy
     let position = ev.target.value;
 
