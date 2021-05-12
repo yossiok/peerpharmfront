@@ -1,0 +1,25 @@
+.click {
+    cursor: pointer;
+    border-radius: 5px
+}
+
+.click:hover {
+    background-color: chocolate;
+    color: aliceblue;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px 100px;
+    grid-gap: 285px;
+    color: rgb(177, 170, 80);
+  }
+  
+  .box {
+    background-color: rgb(240, 187, 13);
+    color: rgb(26, 2, 2);
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 150%;
+    width: 291%;
+  }

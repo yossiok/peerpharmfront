@@ -72,6 +72,9 @@ import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.
 import { OutServicesComponent } from './out-services/out-services.component';
 import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
 import { TicketFormComponent } from './ticket-form/ticket-form.component';
+import { PricesComponent } from './prices/Existing/prices.component';
+import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
+import { AllPricingComponent } from './prices/all-pricing/all-pricing.component';
 
 
 
@@ -643,6 +646,32 @@ export const PeerPharmRputs: Routes = [
     },
     component: NewOutServiceComponent
   },
+  {
+    path: 'pricing/new',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'New Bidding'
+    },
+    component: NewPricingComponent
+  },
+  {
+    path: 'pricing/existing',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Product Pricing'
+    },
+    component: PricesComponent
+  },
+  {
+    path: 'pricing/index',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Bidding Index'
+    },
+    component: AllPricingComponent
+  },
+  
+
 
 ];
 

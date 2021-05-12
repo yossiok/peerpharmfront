@@ -45,6 +45,10 @@ import { FormslistComponent } from './forms/formslist/formslist.component';
 import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
 import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component'; 
 import { OutServicesComponent} from './out-services/out-services.component'
+import { PricesComponent } from './prices/Existing/prices.component';
+import { AllPricingComponent } from './prices/all-pricing/all-pricing.component';
+
+
 
 import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
@@ -148,6 +152,7 @@ import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.
 import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
 import { TicketFormComponent } from './ticket-form/ticket-form.component';
 import { EditServiceComponent } from './out-services/edit-service/edit-out-service.component';
+import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
 
 
 
@@ -185,20 +190,6 @@ import { EditServiceComponent } from './out-services/edit-service/edit-out-servi
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
-  /*  MatDialogModule,
-    MatGridListModule,
-    MatMenuModule,
-    MatButtonModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatCardModule,MatAutocompleteModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatTabsModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,*/
     MatSelectModule,
     DndModule.forRoot(),
     DatepickerModule,
@@ -303,7 +294,10 @@ import { EditServiceComponent } from './out-services/edit-service/edit-out-servi
     PrintBarcodeComponent,
     OutServicesComponent,
     NewOutServiceComponent,
-    EditServiceComponent
+    EditServiceComponent,
+    PricesComponent,
+    AllPricingComponent,
+    NewPricingComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   

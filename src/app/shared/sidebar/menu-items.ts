@@ -201,7 +201,8 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
-      }
+      },
+ 
 
 
     ]
@@ -677,6 +678,41 @@ export const ROUTES: RouteInfo[] = [
           //   submenu: []
           // }
 
+        ]
+      },
+      
+      {
+        path: '',
+        title: 'Finance',
+        icon: 'fas fa-dollar-sign',
+        class: 'has-arrow',
+        extralink: false,
+        submenu: 
+        [
+          {
+            path: '/peerpharm/pricing/new',
+            title: 'New Bidding',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/pricing/existing',
+            title: 'Product Price',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
+          {
+            path: '/peerpharm/pricing/index',
+            title: 'Bidding Index',
+            icon: 'fas fa-list-ol',
+            class: '',
+            extralink: false,
+            submenu: []
+          },
         ]
       },
       {

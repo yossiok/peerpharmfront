@@ -84,9 +84,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BreadcrumbComponent,
     SidebarComponent ,
     LoginComponent, 
-
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe,    ConfirmModalComponent,AlertModalComponent
-
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe, ConfirmModalComponent, AlertModalComponent
   ],
   entryComponents:[ConfirmModalComponent],
   imports: [

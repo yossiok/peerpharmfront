@@ -1,0 +1,83 @@
+<div class="container">
+
+    <div class="row mt-5" >
+        <div class="col-4"></div>
+        <div class="col-4 p-2">
+            <h2 class="click text-center">New Bidding</h2>
+        </div>
+        <div class="col-4"></div>
+    </div>
+
+        <div  class="container mt-5">
+            <div  class="container mt-5">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <table class="table table-bordered">
+                            <thead class="bg-warning text-dark h3">
+                                <tr>
+                                    <th>Component</th>
+                                    <th></th>
+                                    <th>Price</th>
+                                    <th>Shipping</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-warning text-dark">
+                                <tr *ngFor="let component of itemComponents">
+                                    <td>{{component.componentNumber}}</td>
+                                    <td>{{component.componentName}}</td>
+                                    <td>{{component.price}}</td>
+                                    <td>{{component.shippingPrice}}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="number" (change)="calculateProductPricing($event)">
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                <td></td>
+                                <td></td>
+                                <td>Total Price: {{totalItemPrice}}</td>
+                                <td>Total Shipping: {{totalShippingPrice}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- <button (click)="calculateProductPricing()">Calculate Product Pricing</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row mt-2">
+            <button class="click btn btn-warning" (click)="showPricingDetails = !shaowPricingDetails">Create New Bidding</button>
+        </div>
+        <div *ngIf="showPricingDetails" class="container mt-5 p-5">
+            <form [formGroup]="newPricingForm" (ngSubmit)="savePricing()">
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select class="form-control" formControlName="customer">
+                        <option value="">Customer</option>
+                        <option value="No Customer">No Customer</option>
+                        <option *ngFor="let customer of customers" [value]="customer.costumerName">{{customer.costumerName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Product Number</label>
+                    <input class="form-control" type="number" formControlName="productNumber">
+                </div>
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input class="form-control" type="text" formControlName="productName">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="click btn text-warning" [disabled]="loading" [style.cursor]="loading ? 'not-allowed' : 'pointer'">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</div>
