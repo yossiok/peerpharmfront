@@ -12,11 +12,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class NewBatchComponent implements OnInit {
 
+  @ViewChild('printBtn') printBtn: ElementRef;
   allStickers: any[] = [];
   batchDefaultNumber: string = '21pp';
   lastBatch: any;
   today: Date = new Date();
-  @ViewChild('printBtn') printBtn: ElementRef;
+  disableButton: boolean;
 
   newBatchForm: FormGroup = new FormGroup({
     order: new FormControl('', Validators.required),
@@ -109,6 +110,8 @@ export class NewBatchComponent implements OnInit {
       // add batch AND REDUCE AMOUNTS
       else {
         if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")){
+          this.disableButton = true
+          this.toastSrv.info("Adding Batch. Please wait...")
           this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
             if (data) {
               this.printBtn.nativeElement.click();
@@ -118,6 +121,7 @@ export class NewBatchComponent implements OnInit {
               this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
               this.allStickers = [];
               this.getLastBatch();
+              this.disableButton = false
             }
           })
         }
@@ -126,11 +130,8 @@ export class NewBatchComponent implements OnInit {
   }
 
   reduceMaterialAmounts(formuleNumber, weightKG) {
-    // if(confirm('חומרי גלם הולכים לרדת מהמלאי. האם אתה בטוח שברצונך להמשיך?')) {
       this.inventorySrv.reduceMaterialAmounts(formuleNumber, weightKG, true).subscribe(data => {
-        // console.log(data.updatedShells)
       })
-    // }
   }
 
 

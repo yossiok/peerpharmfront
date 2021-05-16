@@ -54,7 +54,9 @@
         <div class="row mt-4">
           <div class="col-4"></div>
           <div class="col-4">
-            <button type="submit" class="btn btn-danger form-control">Add Batch</button>
+            <button type="submit" class="btn btn-danger form-control"
+            [disabled]="disableButton" [style.cursor]="disableButton ? 'not-allowed' : 'pointer'">Add Batch
+          </button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -63,7 +65,8 @@
         <div class="row mt-4">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="addNewBatch(true)" class="btn btn-success form-control">Print Sticker</button>
+            <button (click)="addNewBatch(true)" class="btn btn-success form-control">Print Sticker
+            </button>
           </div>
           <div class="col-4"></div>
         </div>
