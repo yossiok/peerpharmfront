@@ -592,7 +592,7 @@ export const PeerPharmRputs: Routes = [
     path: 'procurement/procurementOrders',
     canActivate: [ScreenGuard],
     data: {
-      title: 'Procurement Orders'
+      title: 'Purchase Orders'
     },
     component: ProcurementOrdersComponent
   },

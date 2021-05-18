@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 import { TicketsService } from 'src/app/services/tickets.service';
 import { UsersService } from 'src/app/services/users.service';
 
@@ -15,13 +16,14 @@ export class TicketFormComponent implements OnInit {
     private ticketsService: TicketsService,
     private toastSrv: ToastrService,
     private fb: FormBuilder,
-    private userService: UsersService
+    private userService: UsersService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     // TICKET FORM INIT \\
     this.ticketForm = this.fb.group({
-      username: ['', Validators.required],
+      username: [this.authService.loggedInUser.userName, Validators.required],
       ticketTitle: ['', Validators.required],
       screen: ['', Validators.required],
       severity: ['', Validators.required],
