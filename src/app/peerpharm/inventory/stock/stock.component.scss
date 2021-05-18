@@ -18,6 +18,18 @@ button, input {
   margin-left: 338px;
 }
 
+.fa-times {
+  font-size: 50px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.fa-times:hover {
+  background-color: aquamarine;
+  color: black;
+}
+
 .small{
   width: 30px;
   cursor: pointer;
@@ -288,7 +300,14 @@ label {
 }
 
 .close {
-  font-size: 2.3125rem;
+  font-size: 50px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.close:hover {
+  background-color: aquamarine;
+  color: black;
 }
 
 .click {

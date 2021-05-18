@@ -1365,7 +1365,6 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
-    this.getLastOrdersItem(10, 'component')
     this.sixMonth = 0;
     this.switchModalView(cmptNumber)
     this.showItemDetails = true;
@@ -1374,6 +1373,7 @@ export class StockComponent implements OnInit {
     this.openModalHeader = "פריט במלאי  " + cmptNumber;
     this.openModal = true;
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    this.getLastOrdersItem(10, 'component')
     // this.resCmpt.finalPrice = this.resCmpt.shippingPrice ? Number(this.resCmpt.price) + Number(this.resCmpt.shippingPrice) : this.resCmpt.price
     // this.loadComponentItems();
     ;
@@ -1444,9 +1444,8 @@ export class StockComponent implements OnInit {
 
   async openDataMaterial(materNum) {
 
-    this.getLastOrdersItem(10, 'material')  
     this.materialArrivals = []
-
+    
     this.materialArrivals = []
     this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data => {
       if (data) {
@@ -1458,22 +1457,23 @@ export class StockComponent implements OnInit {
           if (data[i].arrivalDate >= dateFrom.toISOString() && data[i].arrivalDate <= dateTo.toISOString()) {
             totalQnt += data[i].totalQnt
           }
-
+          
         }
         if (totalQnt + data[0].mesureType != null || totalQnt + data[0].mesureType != undefined) {
           this.totalQuantity = totalQnt + data[0].mesureType
         }
         this.materialArrivals = data;
       }
-
+      
     })
-
+    
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + materNum;
     this.openModal = true;
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
+    this.getLastOrdersItem(10, 'material')  
     // this.resMaterial.finalPrice = this.resMaterial.shippingPrice ? Number(this.resMaterial.price) + Number(this.resMaterial.shippingPrice) : this.resMaterial.price
 
     this.linkDownload = "http://peerpharmsystem.com/material/getpdf?_id=" + this.resMaterial._id;

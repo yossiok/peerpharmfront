@@ -941,11 +941,15 @@
                     <tr>
                       <th>#</th>
                       <th>Order Number</th>
+                      <th>Supplier</th>
+                      <th>Status</th> 
+                      <th>Order Date</th>
+                      <th>Arrival Date</th>
+                      <th>Arrived Amount</th>
+                      <th></th>
+                      <th>Ordered Amount</th>
                       <th>Item Price (Foreign)</th>
                       <th>Item Price (NIS)</th>
-                      <th>Supplier</th>
-                      <th>Amount</th>
-                      <th>Order Date</th> 
                     </tr>
                   </thead>
                   <tbody>
@@ -953,12 +957,15 @@
                       <tr>
                         <td>{{i+1}}</td>
                         <td>{{lastorderitem.orderNumber}}</td>
+                        <td>{{lastorderitem.supplierName}}</td>
+                        <td>{{lastorderitem.status}}</td>
+                        <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
+                        <td><span *ngIf="lastorderitem.arrivalDate">{{lastorderitem.arrivalDate | date: 'dd/MM/yyyy'}}</span></td>
+                        <td>{{lastorderitem.arrivedAmount}}</td>
+                        <td>/</td> 
+                        <td>{{lastorderitem.quantity}}</td> 
                         <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
                         <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
-                        <td>{{lastorderitem.supplierName}}</td>
-                        <td>{{lastorderitem.quantity}}</td> 
-                        <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
-                         
                       </tr>
                     </ng-container>
                   </tbody>
@@ -2122,11 +2129,15 @@
                   <tr>
                     <th>#</th>
                     <th>Order Number</th>
+                    <th>Supplier</th>
+                    <th>Status</th> 
+                    <th>Order Date</th>
+                    <th>Arrival Date</th>
+                    <th>Arrived Amount</th>
+                    <th></th>
+                    <th>Ordered Amount</th>
                     <th>Item Price (Foreign)</th>
                     <th>Item Price (NIS)</th>
-                    <th>Supplier</th>
-                    <th>Amount</th>
-                    <th>Order Date</th> 
                   </tr>
                 </thead>
                 <tbody>
@@ -2134,12 +2145,15 @@
                     <tr>
                       <td>{{i+1}}</td>
                       <td>{{lastorderitem.orderNumber}}</td>
-                      <td>{{lastorderitem.price | currency:lastorderitem.coin}}</td>
-                      <td>{{lastorderitem.localPrice | currency:'NIS'}}</td>
                       <td>{{lastorderitem.supplierName}}</td>
-                      <td>{{lastorderitem.quantity}}</td> 
+                      <td>{{lastorderitem.status}}</td>
                       <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
-                       
+                      <td><span *ngIf="lastorderitem.arrivalDate">{{lastorderitem.arrivalDate | date: 'dd/MM/yyyy'}}</span></td>
+                      <td>{{lastorderitem.arrivedAmount}}</td>
+                      <td>/</td> 
+                      <td>{{lastorderitem.quantity}}</td> 
+                      <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
+                      <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
                     </tr>
                   </ng-container>
                 </tbody>
