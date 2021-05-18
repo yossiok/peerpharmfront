@@ -53,7 +53,7 @@
 
     <div class="container mt-5">
         <div class="row mt-2">
-            <button class="click btn btn-warning" (click)="showPricingDetails = !shaowPricingDetails">Create New Bidding</button>
+            <button class="click btn btn-warning" (click)="showPricingDetails = !showPricingDetails">Create New Bidding</button>
         </div>
         <div *ngIf="showPricingDetails" class="container mt-5 p-5">
             <form [formGroup]="newPricingForm" (ngSubmit)="savePricing()">
