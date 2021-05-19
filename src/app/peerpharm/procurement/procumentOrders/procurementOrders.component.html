@@ -101,6 +101,14 @@
                 <option value='sachet'>סאשט</option>
               </select>
             </div>
+            <div class="col-2">
+              חפש לפי סוג פריט <select (change)="filterByItemType($event)" class="form-control rounded-pill">
+                <option selected="true" disabled="disabled">בחר סוג</option>
+                <option value="all">הכל</option>
+                <option value='material'>חומרי גלם</option>
+                <option value='component'>קומפוננטים</option>
+              </select>
+            </div>
             <!-- <div class="col-1">
               טען את כל הפריטים
               <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
@@ -113,7 +121,7 @@
                 style="background: none;border:none" printSectionId="print-section" ngxPrint><img
                   src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
             </div>
-            <div class="col-3"></div>
+            <div class="col-1"></div>
             <div class="col-1">
               From: <input class="form-control rounded-pill" (change)="dateChange()" #fromDateStr type="date">
             </div>
@@ -509,7 +517,7 @@
     </div>
     <div class="col-3"></div>
     <div class="col-1">
-      <button (click)="moveToNewPurchase()" class="btn btn-success form-control rounded-pill">Order</button>
+      <button (click)="moveToNewPurchase()" class="btn btn-primary form-control rounded-pill">Order</button>
     </div>
     <div class="col-1"></div>
     <!-- <div class="col-3">

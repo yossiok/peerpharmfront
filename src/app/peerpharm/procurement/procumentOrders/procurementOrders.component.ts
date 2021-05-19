@@ -361,6 +361,13 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
+  filterByItemType(ev) {
+    var type = ev.target.value;
+    if (type == 'all') this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
+    else this.procurementData = this.procurementDataCopy.filter(order => order.orderType == type)
+
+  }
+
 
   filterByStatus(ev) {
     if (ev.target.value != "") {
