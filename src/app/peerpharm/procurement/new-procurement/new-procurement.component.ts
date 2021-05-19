@@ -323,7 +323,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName);
             this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'NIS')
-            this.itemForm.controls.measurement.setValue(data[0].measurement)
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure ? data[0].unitOfMeasure : data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
 
             //set price
@@ -348,7 +348,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName)
             this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'NIS')
-            this.itemForm.controls.measurement.setValue(data[0].measurement)
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure ? data[0].unitOfMeasure : data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
 
             //set price

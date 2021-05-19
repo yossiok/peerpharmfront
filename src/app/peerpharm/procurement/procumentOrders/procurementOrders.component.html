@@ -517,8 +517,11 @@
   </div> -->
   </div>
 
-  <div *ngIf="!purchaseRecommendations || purchaseRecommendations.length == 0" class="smallLoader ml-5"></div>
-  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0" class="requests row mt-1">
+  <div *ngIf="loadingRecommendations">
+    <div *ngIf="loadingRecommendations" class="smallLoader ml-5"></div>
+    <h3 class="bg-warning text-primary rounded-pill w-25 p-10 mx-auto">Please be patient. It might take a while...</h3>
+  </div>
+  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0 && !loadingRecommendations" class="requests row mt-1">
     <div class="col-12">
       <table class="table table-striped">
         <thead class="bg-warning text-white">

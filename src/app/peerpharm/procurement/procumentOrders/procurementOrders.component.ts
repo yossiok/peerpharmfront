@@ -108,6 +108,7 @@ export class ProcurementOrdersComponent implements OnInit {
   usdSymbol: string = '$'
   eurSymbol: string = '\u20AC'
   gbpSymbol: string = '\u00A3'
+  loadingRecommendations: boolean;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -265,14 +266,18 @@ export class ProcurementOrdersComponent implements OnInit {
     let result = confirm('are you sure you want to create a new order?');
     if (result) {
       this.purchaseRecommendationsModal = false;
-      this.requestToPurchase = { stockitems: this.checkedRecommendations }
+      this.requestToPurchase = { 
+        type: this.checkedRecommendations[0].type,
+        supplierName: this.checkedRecommendations[0].lastorder.supplierName,
+        supplierNumber: this.checkedRecommendations[0].lastorder.supplierNumber,
+        stockitems: this.checkedRecommendations 
+      }
       this.orderDetailsModal = true;
     }
 
   }
 
   checkRecommendedOrderedItems() {
-    debugger
     if (this.checkedRecommendations && this.checkedRecommendations.length > 0) {
       for (let item of this.checkedRecommendations) {
         this.procurementservice.checkRecommendationItemAsOrdered(item.number, item.recommendationnum).subscribe(updatedRecommend => {
@@ -577,16 +582,18 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   getAllPurchaseRecommends() {
+
+    this.loadingRecommendations = true;
+    
     this.procurementservice.getAllPurchaseRecommends().subscribe(data => {
+      this.loadingRecommendations = false;
 
       console.log(data);
-      //let cleandOrdersWithNoData= data.filter(x=>x.stockitems.length>0);
-
-
 
       this.purchaseRecommendations = data;
       this.purchaseRecommendations.forEach(pr => {
         pr.stockitems.forEach(si => {
+          si.type = pr.type
           if (si.lastorder) {
             si.tooltip = `supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
             price:${si.lastorder.price} | price:  ${si.lastorder.price}| coin: ${si.lastorder.coin} | quantity: ${si.lastorder.quantity}
