@@ -314,11 +314,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of purchaseStockitems">
-            <td>{{item.number}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.quantity}}</td>
+            <td>{{item.number}} {{item.itemNumber}}</td>
+            <td>{{item.name}} {{item.itemName}}</td>
+            <td>{{item.quantity}} {{item.supplierAmount}}</td>
             <td>{{item.measurement}}</td>
-            <td>{{item.price}}</td>
+            <td>{{item.price}} {{item.supplierPrice}}</td>
             <td>{{item.coin}}</td>
             <td>{{item.arrivedAmount}}</td>
           </tr>
