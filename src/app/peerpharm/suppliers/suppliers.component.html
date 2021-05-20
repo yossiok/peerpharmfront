@@ -230,12 +230,12 @@
       <tbody>
         <tr *ngFor="let item of supItems">
           <td (click)="showAllPurchases(item.number)" style="text-decoration: underline;cursor: pointer;">
-            {{item.number}}
+            {{item.number}} {{item.itemNumber}}
           </td>
-          <td>{{item.name}}</td>
-          <td>{{item.price}}</td>
+          <td>{{item.name}} {{item.itemName}}</td>
+          <td>{{item.price}} {{item.supplierPrice}}</td>
           <td>{{item.coin}}</td>
-          <td>{{item.quantity}}</td>
+          <td>{{item.quantity}} {{item.supplierAmount}}</td>
           <td>{{item.measurement}}</td>
         </tr>
       </tbody>
