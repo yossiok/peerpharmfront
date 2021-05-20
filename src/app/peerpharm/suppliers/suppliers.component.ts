@@ -105,6 +105,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   getAllPurchasesFromSup() {
+    debugger;
     this.procurementService.getAllOrdersFromSupplier(this.currentSupplier.suplierNumber).subscribe(data => {
       this.supPurchases = data.filter(purchase => purchase.status == 'open')
       for (let order of data) {
@@ -192,6 +193,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   openData(addEdit: string, index?) {
+ 
     this.currentSupplier = {...defaultSupplier}
     this.supItems = []
     this.supPurchases = []
