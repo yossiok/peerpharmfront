@@ -46,8 +46,7 @@
           <div class="col-2">
             <select *ngIf="allowedUsers.includes(userName)" [disabled]="disabled" (change)="setPurchaseStatus($event)" class="form-control rounded-pill">
               <option selected="true" disabled="disabled">Choose Status</option>
-              <option value="sentToSupplier">נשלח לספק</option>
-              <option value="supplierGotOrder">לקוח קיבל הזמנה</option>
+              <option value="approvedBySupplier">אושר על ידי ספק</option>
               <option value="closed">סגירת הזמנה</option>
             </select>
           </div>

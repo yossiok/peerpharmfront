@@ -64,7 +64,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   userEmail: any;
   editItem: boolean = false;
 
-  allowedUsers = ['Shai','sima','martha','haviv', 'SHARK']
+  allowedUsers = ['Shai','sima','martha','haviv', 'SHARK', 'shmuel', 'evgeny', 'Anna']
 
   newPurchase: FormGroup;
   // deliveryCertificateForm: FormGroup;
@@ -165,7 +165,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       itemPrice: [''],
       supplierItemNum: [''],
       supplierAmount: [0],
-      historyAmounts: [['']]
+      historyAmounts: [['']],
+      componentType:['']
     })
   }
 
@@ -350,6 +351,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'NIS')
             this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure ? data[0].unitOfMeasure : data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
+            this.itemForm.controls.componentType.setValue(data[0].componentType)
 
             //set price
             this.itemForm.controls.price.setValue(data[0].price)

@@ -368,28 +368,35 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
-
   filterByStatus(ev) {
-    if (ev.target.value != "") {
-      var status = ev.target.value;
-      this.filterStatus = ev.target.value;
-      if (status == 'ongoing') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
-      } else if (status == 'material') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'material')
-      } else if (status == 'component') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'component')
-      } else if (status == 'allOrders') {
-        this.procurementData = this.procurementDataCopy
-      } else if (status == 'open') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
-      } else if (status == 'closed') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
-      } else if (status == 'canceled') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'canceled')
-      }
-    }
+    var status = ev.target.value;
+    if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
+    else  this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
+
   }
+
+
+  // filterByStatus(ev) {
+  //   if (ev.target.value != "") {
+  //     var status = ev.target.value;
+  //     this.filterStatus = ev.target.value;
+  //     if (status == 'ongoing') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
+  //     } else if (status == 'material') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'material')
+  //     } else if (status == 'component') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'component')
+  //     } else if (status == 'allOrders') {
+  //       this.procurementData = this.procurementDataCopy
+  //     } else if (status == 'open') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
+  //     } else if (status == 'closed') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
+  //     } else if (status == 'canceled') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'canceled')
+  //     }
+  //   }
+  // }
 
 
   editRemarks(orderNumber) {
