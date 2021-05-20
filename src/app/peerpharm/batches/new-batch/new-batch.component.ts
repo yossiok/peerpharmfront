@@ -92,8 +92,8 @@ export class NewBatchComponent implements OnInit {
     if (this.newBatchForm.controls.item.value == '' || this.newBatchForm.controls.batchNumber.value.length < 5) {
       this.toastSrv.error('You must fill all the fields')
     } else {
-      // just print stickers
       if(justStickers) {
+        // just print stickers
         if (confirm("בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?")){
           this.batchService.addBatch({}).subscribe(data => {
             if (data) {
