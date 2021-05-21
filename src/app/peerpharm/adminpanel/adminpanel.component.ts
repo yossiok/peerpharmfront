@@ -43,19 +43,17 @@ export class AdminpanelComponent implements OnInit {
     await this.whareHouses
     this.userService.getAllUsers().subscribe(users => {
       // FAILED: trying to get wharehouses names but names doesnt match IDs.... ????
-      // users.map(user=> {
-      //   if(user.allowedWH.length > 0) {
-      //     for(let i = 0; i< user.allowedWH.length; i++) {
-      //       for(let whareHouseObj of this.whareHouses) {
-      //         if (whareHouseObj._id == user.allowedWH[i]) {
-      //           user.allowedWH[i] = whareHouseObj.name
-      //           return user
-      //         } 
-      //       }
-      //     }
-      //   } 
-      //   else return user
-      // } )
+      users.forEach(user=> {
+        if(user.allowedWH.length > 0) {
+          for(let i = 0; i< user.allowedWH.length; i++) {
+            for(let whareHouseObj of this.whareHouses) {
+              if (whareHouseObj._id == user.allowedWH[i]) {
+                user.allowedWH[i] = whareHouseObj.name
+              } 
+            }
+          }
+        } 
+      } )
       this.users = users;
     })
   }
