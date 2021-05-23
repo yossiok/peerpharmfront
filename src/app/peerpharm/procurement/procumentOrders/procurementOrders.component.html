@@ -34,7 +34,9 @@
           </span>
         </div>
 
-        <div *ngIf="!fetchingOrders" class="search-container">
+        <div 
+        *ngIf="!fetchingOrders" 
+        class="search-container">
           <div class="row mt-4">
             <div class="col-3">
               <input type="text " class="form-control rounded" placeholder="Search By Order Number"
@@ -111,14 +113,19 @@
               <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
             </div> -->
 
-            <div class="col-2">
-              <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+            <div class="col-2 border">
+              <p class="text-primary h3">Orders</p>
+              <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
                 (click)="exportAsXLSX('purchaseData')">
               <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
                 style="background: none;border:none" printSectionId="print-section" ngxPrint><img
                   src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
             </div>
-            <div class="col-1"></div>
+            <div class="col-1 border">
+              <p class="text-primary h3 ">Items</p>
+              <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('purchaseItems')">
+            </div>
             <div class="col-1">
               From: <input class="form-control rounded-pill" (change)="dateChange()" #fromDateStr type="date">
             </div>

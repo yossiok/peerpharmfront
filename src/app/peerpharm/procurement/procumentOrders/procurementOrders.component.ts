@@ -702,7 +702,19 @@ export class ProcurementOrdersComponent implements OnInit {
 
     switch (expression) {
       case 'purchaseData':
-        this.excelService.exportAsExcelFile(this.procurementData, 'data');
+        debugger
+        let exelData = [...this.procurementData]
+        exelData.map(purchase => {
+          delete purchase.billNumber
+          delete purchase._id
+          delete purchase.deliveryCerts
+          delete purchase.outOfCountry
+          delete purchase.closeReason
+          delete purchase.recommendId
+          if(purchase.creationDate) purchase.creationDate = purchase.creationDate.slice(0,10)
+          if(purchase.arrivalDate) purchase.arrivalDate = purchase.arrivalDate.slice(0,10)
+        })
+        this.excelService.exportAsExcelFile(exelData, 'purchase orders');
         break;
       case 'purchaseRecommendations':
         this.excelService.exportAsExcelFile(this.purchaseRecommendations, 'data');
@@ -713,6 +725,31 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'billsToCheck':
         this.excelService.exportAsExcelFile(this.certificate, 'data');
         break;
+        case 'purchaseItems':
+          let allItems = [];
+          for(let purchaseOrder of this.procurementData){
+            purchaseOrder.stockitems.map(item=>{
+              allItems.push({
+                orderNumber: purchaseOrder.orderNumber,
+                itemNumber: item.number,
+                itemName: item.name,
+                componentType: item.componentType,
+                orderedAmount: item.quantity,
+                arrivedAmount:item.arrivedAmount,
+                measurement: item.measurement,
+                itemPrice: item.price,
+                totalPriceNIS: item.localTotal,
+                coin: item.coin,
+                supplierItemNum: item.supplierItemNum,
+                shippingPrice: item.shippingPrice,
+                remarks: item.remarks
+
+
+              })
+            })
+          }
+          this.excelService.exportAsExcelFile(allItems, 'purchase items');
+          break;
       default:
 
     }
