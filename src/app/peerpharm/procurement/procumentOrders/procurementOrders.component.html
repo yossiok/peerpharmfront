@@ -155,8 +155,8 @@
                 </tr>
               </thead>
               <tbody id="table_body">
-                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"
-                  *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
+                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"  *ngFor="let line of procurementData; let i = index" 
+                  [style.background]="line.status == 'waitingForApproval' ? 'orange' : ''">
                   <td>{{i+1}}</td>
                   <td class="click" (click)="viewOrderDetails(i)" style="cursor: pointer;"><span
                       style="color:blue;">{{line.orderNumber}}</span>

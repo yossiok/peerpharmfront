@@ -347,18 +347,23 @@
         <div class="row">
           <div class="col form-group">
             <span class="red float-left h4">*</span>
+            <label>Component Type</label>
             <select formControlName="orderType" type="text" class="form-control" placeholder="Order Type">
-              <option selected="true" disabled="disabled">Choose Type</option>
               <option value="component">Component</option>
               <option value="material">Material</option>
             </select>
           </div>
           <div class="col form-group">
             <span class="red float-left h4">*</span>
-            <input formControlName="creationDate" type="date" class="form-control" placeholder="Order Date">
+            <label>Status</label>
+            <select formControlName="status" class="form-control">
+              <option value="open" selected="true">open</option>
+              <option value="waitingForApproval">ממתין לאישור</option>
+            </select>
           </div>
-          <div *ngIf="false">
-            <input formControlName="arrivalDate" type="date">
+          <div class="col form-group">
+            <label>Arrival Date</label>
+            <input formControlName="arrivalDate" class="form-control" type="date">
           </div>
         </div>
 
