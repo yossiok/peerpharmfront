@@ -268,6 +268,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    debugger
     // this.getAllFormsDetails()
     this.getUserInfo();
     this.orderService.openOrdersValidate.subscribe(res => {
@@ -279,6 +280,7 @@ export class OrderdetailsComponent implements OnInit {
         // Getting All OrderItems!
         this.showingAllOrders = true;
         this.loadData = true;
+        debugger
         this.orderService.getOpenOrdersItems().subscribe(async orders => {
           this.loadData = false;
           this.multi = true;

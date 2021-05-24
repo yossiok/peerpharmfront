@@ -146,7 +146,15 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
-      }
+      },
+      {
+        path: '/peerpharm/formules/weight-production',
+        title: 'Weight Production',
+        icon: 'fas fa-list-ol',
+        class: '',
+        extralink: false,
+        submenu: []
+      },
     ]
   },
 
@@ -418,14 +426,6 @@ export const ROUTES: RouteInfo[] = [
       {
         path: '/peerpharm/production/formule-production/formule-production',
         title: 'Formule Production',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/peerpharm/production/weight-production/weight-production',
-        title: 'Weight Production',
         icon: 'fas fa-list-ol',
         class: '',
         extralink: false,
