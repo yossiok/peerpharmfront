@@ -120,7 +120,7 @@ export class NewBatchComponent implements OnInit {
             if (data) {
               this.printBtn.nativeElement.click();
               this.toastSrv.success('באטצ נוסף בהצלחה !')
-              this.reduceMaterialAmounts(this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value)
+              this.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value,this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value)
               this.newBatchForm.reset()
               this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
               this.allStickers = [];
@@ -133,8 +133,8 @@ export class NewBatchComponent implements OnInit {
     }
   }
 
-  reduceMaterialAmounts(formuleNumber, weightKG) {
-      this.inventorySrv.reduceMaterialAmounts(formuleNumber, weightKG, true).subscribe(data => {
+  reduceMaterialAmounts(batchNumber,formuleNumber, weightKG) {
+      this.inventorySrv.reduceMaterialAmounts(batchNumber,formuleNumber, weightKG, true).subscribe(data => {
       })
   }
 
