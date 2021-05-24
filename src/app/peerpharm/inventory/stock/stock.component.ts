@@ -51,6 +51,7 @@ export class StockComponent implements OnInit {
   itemsMovementModal: boolean = false;
   invRequestsModal: boolean = false;
   newPurchaseRecommendModal: boolean = false;
+  lastYearOutAmount: number = 0;
   itemMovements: any = [];
   materialPurchases: any[]
   stockItemPurchases: any[]
@@ -2308,24 +2309,37 @@ export class StockComponent implements OnInit {
 
   switchModalView(componentN) {
 
+    let sumOutMovements = 0
     this.loadingMovements = true;
 
+    var beforeOneYear = new Date();
+    beforeOneYear.setFullYear(beforeOneYear.getFullYear() - 1);
+    debugger;
     if (componentN == '' || componentN == undefined) {
       componentN = this.resCmpt.componentN
     }
     this.inventoryService.getItemMovements(componentN).subscribe(data => {
       if (data) {
-
+        debugger;
         //  for (let i = 0; i < data.length; i++) {
         //    if(data[i].movementType != 'in'){
         //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
         //    }
         //  }
-        data.forEach(component => {
+       data.forEach(component => {
           if (component.movementType) {
             component.originShelfQntBefore = component.originShelfQntBefore - Math.abs(component.amount)
           }
+          if(component.movementType == 'out'){
+            if(component.movementDate > beforeOneYear.toISOString()){
+              sumOutMovements += component.amount
+            }
+          }
         });
+
+        
+        
+        this.lastYearOutAmount = sumOutMovements
         this.itemMovements = data;
         this.loadingMovements = false;
       }

@@ -879,6 +879,7 @@
         </mat-tab>
         <mat-tab label="Item Movements">
           <div class="container modal-inner">
+
             <div class="row fixNoaStupidStuff text-center p-2">
               <div class="col-1 fixNoaStupidStuff">
                 <img class="w-50 h-100" (click)="switchModalView(resCmpt.componentN)"
@@ -892,6 +893,18 @@
                   (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
               </div>
             </div>
+
+            <div class="row fixNoaStupidStuff text-center">
+              <div class="col-4"></div>
+              <div class="col-2">
+                <label class="form-control"><b>{{lastYearOutAmount}}</b></label>
+              </div>
+              <div class="col-2">
+                <label class="form-control">הוצאות שנה אחרונה</label>
+              </div>
+              <div class="col-4"></div>
+            </div>
+
             <div class="row fixNoaStupidStuff text-center p-2">
               <div class="col-12 fixNoaStupidStuff">
                 <div style="overflow:scroll;height:500px;width:100%">
