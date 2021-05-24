@@ -12,7 +12,7 @@
         </div>
         <div class="row mt-4">
           <div class="col-3">
-            <button (click)="orderDetailsModal = true" class="btn btn-warning rounded-pill">New Purchase - F2</button>
+            <button *ngIf="newPurchaseAllowed" (click)="orderDetailsModal = true" class="btn btn-warning rounded-pill">New Purchase - F2</button>
           </div>
           <div class="col-2"></div>
           <div class="col-2">

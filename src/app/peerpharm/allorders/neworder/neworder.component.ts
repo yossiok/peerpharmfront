@@ -50,6 +50,7 @@ export class NeworderComponent implements OnInit {
   titleAlert: string = "This field is required";
   materialsNotEnoughAmount: [];
   waitForAmounts: boolean = false;
+  newOrderAllowed: boolean = false;
 
   constructor(
     private modalService: NgbModal,
@@ -103,6 +104,9 @@ export class NeworderComponent implements OnInit {
   */
     this.getCostumers();
     if (this.authService.loggedInUser) {
+      if(this.authService.loggedInUser.authorization.includes("newOrder")){
+        this.newOrderAllowed = true
+      }
       this.user = this.authService.loggedInUser.firstName;
       this.orderForm.controls.user.setValue(this.user);
     } else {

@@ -63,8 +63,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   itemExistInOrders: any[];
   userEmail: any;
   editItem: boolean = false;
-
-  allowedUsers = ['Shai','sima','martha','haviv', 'SHARK', 'shmuel', 'evgeny', 'Anna']
+  newPurchaseAllowed: boolean = false;
+  editPurchaseAllowed: boolean = false;
 
   newPurchase: FormGroup;
   // deliveryCertificateForm: FormGroup;
@@ -237,6 +237,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   getUserInfo(){
     this.userName = this.authService.loggedInUser.userName
+    if(this.authService.loggedInUser.authorization.includes("newPurchase")) {
+      this.newPurchaseAllowed = true;
+    }
+    if(this.authService.loggedInUser.authorization.includes("editPurchase")) {
+      this.editPurchaseAllowed = true
+    }
   }
 
   formatDate(date) {

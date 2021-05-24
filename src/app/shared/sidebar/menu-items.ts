@@ -391,22 +391,22 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      {
-        path: '/peerpharm/production/productionHall',
-        title: 'Production Hall',
-        icon: 'fas fa-tree',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/peerpharm/production/scanMaterial',
-        title: 'Scan Barcode',
-        icon: 'fas fa-i-cursor',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/production/productionHall',
+      //   title: 'Production Hall',
+      //   icon: 'fas fa-tree',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      // {
+      //   path: '/peerpharm/production/scanMaterial',
+      //   title: 'Scan Barcode',
+      //   icon: 'fas fa-i-cursor',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
       {
         path: '/peerpharm/production/printBarcode',
         title: 'Print Barcode',
@@ -423,22 +423,22 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      {
-        path: '/peerpharm/production/formule-production/formule-production',
-        title: 'Formule Production',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-      {
-        path: '/peerpharm/production/materials',
-        title: 'Ready Materials',
-        icon: 'fas fa-list-ol',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/production/formule-production/formule-production',
+      //   title: 'Formule Production',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
+      // {
+      //   path: '/peerpharm/production/materials',
+      //   title: 'Ready Materials',
+      //   icon: 'fas fa-list-ol',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
 
     ]
   },

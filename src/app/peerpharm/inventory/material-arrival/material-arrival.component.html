@@ -272,7 +272,7 @@
               </span>
             </div>
 
-            <div class="divStyle">
+            <div class="divStyle" *ngIf="materialStockAllowed">
               <button class="brn btn-success mr-1" (click)="saveMaterialRequirementsForm()">אישור</button>
               <button class="brn btn-danger" (click)="resetMaterialRequirementsForm()">אפס טופס</button>
             </div>

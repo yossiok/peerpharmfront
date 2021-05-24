@@ -87,6 +87,7 @@ export class ProcurementOrdersComponent implements OnInit {
   newRecommend: any;
   isEdit: boolean = false;
   fetchingOrders: boolean = true;
+  newPurchaseAllowed: boolean = false;
   currencies: Currencies
   EditRowId: any = "";
   newItem = {
@@ -149,6 +150,9 @@ export class ProcurementOrdersComponent implements OnInit {
     this.getAllPurchaseRecommends();
     this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
+    if(this.authService.loggedInUser.authorization.includes("newPurchase")) {
+      this.newPurchaseAllowed = true
+    }
     this.inventoryService.newRecommendEmitter.subscribe(data => {
       console.log(data)
       this.purchaseRecommendations.push(data)

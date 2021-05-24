@@ -87,6 +87,7 @@ export class OrderdetailsComponent implements OnInit {
   statusColor: String;
   closeResult: string;
   printingStatus: boolean = false;
+  setScheduleAllowed: boolean = false;
   plateImg = "";
 
 
@@ -1465,6 +1466,9 @@ export class OrderdetailsComponent implements OnInit {
 
         if (this.authService.loggedInUser.authorization.includes("showFormule")) {
           this.openFormule = true;
+        }
+        if (this.authService.loggedInUser.authorization.includes("setSchedule")) {
+          this.setScheduleAllowed = true;
         }
       }
 

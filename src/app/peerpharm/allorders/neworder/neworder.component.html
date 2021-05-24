@@ -69,7 +69,7 @@
                         <input type="text" class="form-control is-valid" placeholder="user name" formControlName="user"
                                required disabled>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" *ngIf="newOrderAllowed">
                         <div class="form-group m-b-0 text-right">
                             <button style="box-shadow: 2px 2px 2px black;" type="submit"
                                     class="btn btn-info waves-effect waves-light">Save</button>
