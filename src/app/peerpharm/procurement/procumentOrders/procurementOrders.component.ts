@@ -716,10 +716,27 @@ export class ProcurementOrdersComponent implements OnInit {
           delete purchase.outOfCountry
           delete purchase.closeReason
           delete purchase.recommendId
+          delete purchase.stockitems
+          delete purchase.paymentStatus
           if(purchase.creationDate) purchase.creationDate = purchase.creationDate.slice(0,10)
           if(purchase.arrivalDate) purchase.arrivalDate = purchase.arrivalDate.slice(0,10)
         })
-        this.excelService.exportAsExcelFile(exelData, 'purchase orders');
+        this.excelService.exportAsExcelFile(exelData, 'purchase orders', [
+          'orderNumber', 
+          'supplierNumber', 
+          'supplierName', 
+          'supplierEmail', 
+          'status', 
+          'orderType', 
+          'creationDate', 
+          'arrivalDate', 
+          'sumShippingCost', 
+          'shippingPercentage', 
+          'finalPurchasePrice', 
+          'user', 
+          'userEmail', 
+          'remarks'
+        ]);
         break;
       case 'purchaseRecommendations':
         this.excelService.exportAsExcelFile(this.purchaseRecommendations, 'data');
@@ -733,7 +750,7 @@ export class ProcurementOrdersComponent implements OnInit {
         case 'purchaseItems':
           let allItems = [];
           for(let purchaseOrder of this.procurementData){
-            purchaseOrder.stockitems.map(item=>{
+            if(purchaseOrder.stockitems) purchaseOrder.stockitems.map(item=>{
               allItems.push({
                 orderNumber: purchaseOrder.orderNumber,
                 orderStatus: purchaseOrder.status,

@@ -109,7 +109,7 @@ export class QaPalletsComponent implements OnInit {
     this.getUser();
   }
   getUser() {
-    if (this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'effi') {
+    if (this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'efi') {
       this.deleteLine = true
     }
   }

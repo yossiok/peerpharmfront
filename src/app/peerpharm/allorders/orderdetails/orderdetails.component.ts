@@ -241,16 +241,16 @@ export class OrderdetailsComponent implements OnInit {
   exportAsXLSX(data) {
     let orderItemsExplosion = [...data]
 
-    const sortOrder = {
-      'orderNumber': 1, 'itemNumber': 2, 'itemName': 3,
-      'bottleNumber': 4, 'bottleAmount': 5, 'capNumber': 6,
-      'capAmount': 7, 'pumpNumber': 8, 'pumpAmount': 9,
-      'sealNumber': 10, 'sealAmount':11, 'boxNumber': 12,
-      'cartonNumber': 13, 'cartonAmount': 14, 'PcsCarton': 15,
-      'GT': 16, 'quantity': 17, 'weight': 18,
-      'prodWeight': 19, 'stickerNumber': 20, 'stickerAmount': 21,
-      'pallet': 22, 'currStock': 23
-    }
+    const sortOrder = [
+      'orderNumber', 'itemNumber', 'itemName',
+      'bottleNumber', 'bottleAmount', 'capNumber',
+      'capAmount', 'pumpNumber', 'pumpAmount',
+      'sealNumber', 'sealAmount', 'boxNumber', 'boxAmount',
+      'cartonNumber', 'cartonAmount', 'PcsCarton',
+      'GT', 'quantity', 'weight',
+      'prodWeight', 'stickerNumber', 'stickerAmount',
+      'pallet', 'currStock'
+    ]
 
     orderItemsExplosion.map(orderItem => {
       orderItem.orderNumber = this.number
@@ -265,7 +265,7 @@ export class OrderdetailsComponent implements OnInit {
 
     let orderItemsExplosionToExcel = orderItemsExplosion.map(o => Object.assign({}, ...Object.keys(o).sort((a, b) => sortOrder[a] - sortOrder[b]).map(x => { return { [x]: o[x]}})))
 
-    this.excelService.exportAsExcelFile(orderItemsExplosionToExcel, 'Order ' + this.number + ' Explode');
+    this.excelService.exportAsExcelFile(orderItemsExplosionToExcel, 'Order ' + this.number + ' Explode', sortOrder);
   }
 
   async ngOnInit() {
