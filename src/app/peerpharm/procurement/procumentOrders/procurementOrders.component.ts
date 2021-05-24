@@ -24,7 +24,6 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild('orderAmount') orderAmount: ElementRef;
   @ViewChild('orderCoin') orderCoin: ElementRef;
   @ViewChild('referenceNumber') referenceNumber: ElementRef;
-  @ViewChild('arrivalDate') arrivalDate: ElementRef;
   @ViewChild('recommendRemarks') recommendRemarks: ElementRef;
   @ViewChild('supplierPrice') supplierPrice: ElementRef;
   @ViewChild('expectedDate') expectedDate: ElementRef;
@@ -110,6 +109,7 @@ export class ProcurementOrdersComponent implements OnInit {
   eurSymbol: string = '\u20AC'
   gbpSymbol: string = '\u00A3'
   loadingRecommendations: boolean;
+  arrivalDate: any;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -573,6 +573,7 @@ export class ProcurementOrdersComponent implements OnInit {
     }
 
     this.orderDate = line.creationDate.slice(0, 10)
+    this.arrivalDate = line.arrivalDate.slice(0, 10)
     this.printBill = true;
   }
 
@@ -735,6 +736,7 @@ export class ProcurementOrdersComponent implements OnInit {
             purchaseOrder.stockitems.map(item=>{
               allItems.push({
                 orderNumber: purchaseOrder.orderNumber,
+                orderStatus: purchaseOrder.status,
                 itemNumber: item.number,
                 itemName: item.name,
                 componentType: item.componentType,

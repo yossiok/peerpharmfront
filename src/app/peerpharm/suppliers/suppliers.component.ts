@@ -198,7 +198,7 @@ export class SuppliersComponent implements OnInit {
     this.supItems = []
     this.supPurchases = []
     this.addEditText = addEdit
-    if(index) {
+    if(index >= 0) {
       this.currentSupplier = this.suppliers[index]
       this.getAllPurchasesFromSup()
     }

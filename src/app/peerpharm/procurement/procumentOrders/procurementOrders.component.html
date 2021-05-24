@@ -282,7 +282,7 @@
 
 
 
-<div *ngIf="printBill==true" id="myModal3" class="modal3 position-fixed"
+<div *ngIf="printBill==true" id="myModal3" class="modal3 position-fixed modal-inner"
   style='border:1px; border-radius:5px;z-index: 1; left:300px;top:160px;font-size:20px;'>
   <div id="billing-section">
     <div class="modal-content" id='modelC'>
@@ -315,6 +315,7 @@
             printSectionId="billing-section"
             [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
           <p style="margin-left:300px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
+          <p style="margin-left:300px;">Arrival Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
         </div>
 
         <div class="col-4">

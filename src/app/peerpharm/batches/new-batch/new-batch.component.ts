@@ -4,6 +4,7 @@ import { ItemsService } from 'src/app/services/items.service';
 import { BatchesService } from 'src/app/services/batches.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-new-batch',
@@ -18,6 +19,7 @@ export class NewBatchComponent implements OnInit {
   lastBatch: any;
   today: Date = new Date();
   disableButton: boolean;
+  newBatchAllowed: boolean = false;
 
   newBatchForm: FormGroup = new FormGroup({
     order: new FormControl('', Validators.required),
@@ -37,10 +39,12 @@ export class NewBatchComponent implements OnInit {
     private inventorySrv: InventoryService, 
     private toastSrv: ToastrService, 
     private itemSrv: ItemsService, 
-    private batchService: BatchesService) { }
+    private batchService: BatchesService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.getLastBatch();
+    this.newBatchAllowed = this.authService.loggedInUser.authorization.includes("newBatch") ? true : false
   }
 
   getLastBatch() {

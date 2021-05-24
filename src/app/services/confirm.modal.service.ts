@@ -1,4 +1,4 @@
-import { Component, Injectable, Directive, TemplateRef, EventEmitter } from '@angular/core';
+import { Component, Injectable, Directive, TemplateRef, EventEmitter, HostListener } from '@angular/core';
 import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './auth.service';
 
@@ -83,7 +83,7 @@ export class ConfirmService {
    <input [(ngModel)]="onetime" />
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="yes()">Yes</button>
+    <button type="submit" class="btn btn-danger" (click)="yes()">Yes</button>
     <button type="button" class="btn btn-secondary" (click)="no()">No</button>
   </div>`
 })
@@ -91,6 +91,12 @@ export class ConfirmModalComponent {
 
   options: ConfirmOptions;
   onetime:string="";
+
+  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+     this.yes()
+    }
+  }
 
   constructor(private state: ConfirmState, private confService:ConfirmService, private authService:AuthService) {
     this.options = state.options;
