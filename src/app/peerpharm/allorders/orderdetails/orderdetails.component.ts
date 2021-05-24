@@ -1458,6 +1458,9 @@ export class OrderdetailsComponent implements OnInit {
   getUserInfo() {
 
     this.userName = this.authService.loggedInUser.userName
+    if (this.authService.loggedInUser.authorization.includes("setSchedule")) {
+      this.setScheduleAllowed = true;
+    }
 
     this.authService.userEventEmitter.subscribe(user => {
 
@@ -1467,9 +1470,7 @@ export class OrderdetailsComponent implements OnInit {
         if (this.authService.loggedInUser.authorization.includes("showFormule")) {
           this.openFormule = true;
         }
-        if (this.authService.loggedInUser.authorization.includes("setSchedule")) {
-          this.setScheduleAllowed = true;
-        }
+   
       }
 
     });
