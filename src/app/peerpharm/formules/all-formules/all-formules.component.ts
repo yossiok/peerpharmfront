@@ -519,6 +519,11 @@ export class AllFormulesComponent implements OnInit {
 
   }
 
+  filterByFormule($event) {
+    debugger
+    this.allFormules = this.allFormulesCopy.filter(formule => formule.formuleNumber.toLowerCase().includes($event.target.value))
+  }
+
 
   getFormulePrice(formule) {
     ;

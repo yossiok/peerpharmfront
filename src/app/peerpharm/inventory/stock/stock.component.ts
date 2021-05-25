@@ -1864,7 +1864,10 @@ export class StockComponent implements OnInit {
   }
 
   async getUser() {
-    ;
+    debugger
+      if (this.authService.loggedInUser.authorization.includes("updateStock")) {
+        this.allowUserEditItem = true;
+      }
 
     if (this.authService.loggedInUser.userName == 'SHARK' || this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'martha') {
       this.showDeleteBtn = true
@@ -1883,11 +1886,6 @@ export class StockComponent implements OnInit {
       // else {
       //   this.user = this.authService.loggedInUser;
       // }
-      if (this.user.authorization) {
-        if (this.authService.loggedInUser.authorization.includes("updateStock")) {
-          this.allowUserEditItem = true;
-        }
-      }
 
     });
 

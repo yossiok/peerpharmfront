@@ -594,6 +594,7 @@ debugger
 
   async checkLineValidation(itemLine, index, ev: any, lineqnt) {
     let stockType;
+    debugger
     if (
       this.curentWhareHouseName == "Rosh HaAyin" ||
       this.curentWhareHouseName == "Kasem" ||
