@@ -381,12 +381,12 @@ export const PeerPharmRputs: Routes = [
     component: FormuleProductionComponent
   },
   {
-    path: 'production/weight-production/weight-production',
-    canActivate: [ScreenGuard],
+    path: 'formules/weight-production',
     data: {
       title: 'Weight Production'
     },
-    component: WeightProductionComponent
+    component: WeightProductionComponent,
+    canActivate: [TwoFactor],
   },
   {
     path: 'production/scanMaterial',
@@ -592,7 +592,7 @@ export const PeerPharmRputs: Routes = [
     path: 'procurement/procurementOrders',
     canActivate: [ScreenGuard],
     data: {
-      title: 'Procurement Orders'
+      title: 'Purchase Orders'
     },
     component: ProcurementOrdersComponent
   },

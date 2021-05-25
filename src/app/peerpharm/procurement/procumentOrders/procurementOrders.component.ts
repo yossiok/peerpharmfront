@@ -24,7 +24,6 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild('orderAmount') orderAmount: ElementRef;
   @ViewChild('orderCoin') orderCoin: ElementRef;
   @ViewChild('referenceNumber') referenceNumber: ElementRef;
-  @ViewChild('arrivalDate') arrivalDate: ElementRef;
   @ViewChild('recommendRemarks') recommendRemarks: ElementRef;
   @ViewChild('supplierPrice') supplierPrice: ElementRef;
   @ViewChild('expectedDate') expectedDate: ElementRef;
@@ -87,6 +86,7 @@ export class ProcurementOrdersComponent implements OnInit {
   newRecommend: any;
   isEdit: boolean = false;
   fetchingOrders: boolean = true;
+  newPurchaseAllowed: boolean = false;
   currencies: Currencies
   EditRowId: any = "";
   newItem = {
@@ -108,6 +108,8 @@ export class ProcurementOrdersComponent implements OnInit {
   usdSymbol: string = '$'
   eurSymbol: string = '\u20AC'
   gbpSymbol: string = '\u00A3'
+  loadingRecommendations: boolean;
+  arrivalDate: any;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -148,6 +150,9 @@ export class ProcurementOrdersComponent implements OnInit {
     this.getAllPurchaseRecommends();
     this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
+    if(this.authService.loggedInUser.authorization.includes("newPurchase")) {
+      this.newPurchaseAllowed = true
+    }
     this.inventoryService.newRecommendEmitter.subscribe(data => {
       console.log(data)
       this.purchaseRecommendations.push(data)
@@ -265,14 +270,18 @@ export class ProcurementOrdersComponent implements OnInit {
     let result = confirm('are you sure you want to create a new order?');
     if (result) {
       this.purchaseRecommendationsModal = false;
-      this.requestToPurchase = { stockitems: this.checkedRecommendations }
+      this.requestToPurchase = { 
+        type: this.checkedRecommendations[0].type,
+        supplierName: this.checkedRecommendations[0].lastorder.supplierName,
+        supplierNumber: this.checkedRecommendations[0].lastorder.supplierNumber,
+        stockitems: this.checkedRecommendations 
+      }
       this.orderDetailsModal = true;
     }
 
   }
 
   checkRecommendedOrderedItems() {
-    debugger
     if (this.checkedRecommendations && this.checkedRecommendations.length > 0) {
       for (let item of this.checkedRecommendations) {
         this.procurementservice.checkRecommendationItemAsOrdered(item.number, item.recommendationnum).subscribe(updatedRecommend => {
@@ -356,28 +365,42 @@ export class ProcurementOrdersComponent implements OnInit {
 
   }
 
+  filterByItemType(ev) {
+    var type = ev.target.value;
+    if (type == 'all') this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
+    else this.procurementData = this.procurementDataCopy.filter(order => order.orderType == type)
+
+  }
 
   filterByStatus(ev) {
-    if (ev.target.value != "") {
-      var status = ev.target.value;
-      this.filterStatus = ev.target.value;
-      if (status == 'ongoing') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
-      } else if (status == 'material') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'material')
-      } else if (status == 'component') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'component')
-      } else if (status == 'allOrders') {
-        this.procurementData = this.procurementDataCopy
-      } else if (status == 'open') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
-      } else if (status == 'closed') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
-      } else if (status == 'canceled') {
-        this.procurementData = this.procurementDataCopy.filter(p => p.status == 'canceled')
-      }
-    }
+    var status = ev.target.value;
+    if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
+    else  this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
+
   }
+
+
+  // filterByStatus(ev) {
+  //   if (ev.target.value != "") {
+  //     var status = ev.target.value;
+  //     this.filterStatus = ev.target.value;
+  //     if (status == 'ongoing') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
+  //     } else if (status == 'material') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'material')
+  //     } else if (status == 'component') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'component')
+  //     } else if (status == 'allOrders') {
+  //       this.procurementData = this.procurementDataCopy
+  //     } else if (status == 'open') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
+  //     } else if (status == 'closed') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
+  //     } else if (status == 'canceled') {
+  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'canceled')
+  //     }
+  //   }
+  // }
 
 
   editRemarks(orderNumber) {
@@ -550,6 +573,7 @@ export class ProcurementOrdersComponent implements OnInit {
     }
 
     this.orderDate = line.creationDate.slice(0, 10)
+    this.arrivalDate = line.arrivalDate.slice(0, 10)
     this.printBill = true;
   }
 
@@ -577,16 +601,18 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
   getAllPurchaseRecommends() {
+
+    this.loadingRecommendations = true;
+    
     this.procurementservice.getAllPurchaseRecommends().subscribe(data => {
+      this.loadingRecommendations = false;
 
       console.log(data);
-      //let cleandOrdersWithNoData= data.filter(x=>x.stockitems.length>0);
-
-
 
       this.purchaseRecommendations = data;
       this.purchaseRecommendations.forEach(pr => {
         pr.stockitems.forEach(si => {
+          si.type = pr.type
           if (si.lastorder) {
             si.tooltip = `supplier name: ${si.lastorder.supplierName} | order number: ${si.lastorder.orderNumber}|
             price:${si.lastorder.price} | price:  ${si.lastorder.price}| coin: ${si.lastorder.coin} | quantity: ${si.lastorder.quantity}
@@ -681,7 +707,36 @@ export class ProcurementOrdersComponent implements OnInit {
 
     switch (expression) {
       case 'purchaseData':
-        this.excelService.exportAsExcelFile(this.procurementData, 'data');
+        debugger
+        let exelData = [...this.procurementData]
+        exelData.map(purchase => {
+          delete purchase.billNumber
+          delete purchase._id
+          delete purchase.deliveryCerts
+          delete purchase.outOfCountry
+          delete purchase.closeReason
+          delete purchase.recommendId
+          delete purchase.stockitems
+          delete purchase.paymentStatus
+          if(purchase.creationDate) purchase.creationDate = purchase.creationDate.slice(0,10)
+          if(purchase.arrivalDate) purchase.arrivalDate = purchase.arrivalDate.slice(0,10)
+        })
+        this.excelService.exportAsExcelFile(exelData, 'purchase orders', [
+          'orderNumber', 
+          'supplierNumber', 
+          'supplierName', 
+          'supplierEmail', 
+          'status', 
+          'orderType', 
+          'creationDate', 
+          'arrivalDate', 
+          'sumShippingCost', 
+          'shippingPercentage', 
+          'finalPurchasePrice', 
+          'user', 
+          'userEmail', 
+          'remarks'
+        ]);
         break;
       case 'purchaseRecommendations':
         this.excelService.exportAsExcelFile(this.purchaseRecommendations, 'data');
@@ -692,6 +747,32 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'billsToCheck':
         this.excelService.exportAsExcelFile(this.certificate, 'data');
         break;
+        case 'purchaseItems':
+          let allItems = [];
+          for(let purchaseOrder of this.procurementData){
+            if(purchaseOrder.stockitems) purchaseOrder.stockitems.map(item=>{
+              allItems.push({
+                orderNumber: purchaseOrder.orderNumber,
+                orderStatus: purchaseOrder.status,
+                itemNumber: item.number,
+                itemName: item.name,
+                componentType: item.componentType,
+                orderedAmount: item.quantity,
+                arrivedAmount:item.arrivedAmount,
+                measurement: item.measurement,
+                itemPrice: item.price,
+                totalPriceNIS: item.localTotal,
+                coin: item.coin,
+                supplierItemNum: item.supplierItemNum,
+                shippingPrice: item.shippingPrice,
+                remarks: item.remarks
+
+
+              })
+            })
+          }
+          this.excelService.exportAsExcelFile(allItems, 'purchase items');
+          break;
       default:
 
     }

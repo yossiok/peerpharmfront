@@ -259,9 +259,9 @@ export class InventoryService {
     return this.http.post(url, JSON.stringify({materialNum, shelf, amount}), this.options).pipe(map(res => res.json()))
   }
 
-  reduceMaterialAmounts(formuleNumber, weightKG, reduce): Observable<any> {
+  reduceMaterialAmounts(batchNumber,formuleNumber, weightKG, reduce): Observable<any> {
     let url = this.baseUrl + "material/reduceMaterialAmounts";
-    return this.http.post(url, JSON.stringify({ formuleNumber: formuleNumber, weightKG: weightKG, reduce: reduce }), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({batchNumber:batchNumber, formuleNumber: formuleNumber, weightKG: weightKG, reduce: reduce }), this.options).pipe(map(res => res.json()))
   }
 
   recieveNewComponents(allArrivals): Observable<any> {

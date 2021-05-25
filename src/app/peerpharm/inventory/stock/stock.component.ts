@@ -51,6 +51,7 @@ export class StockComponent implements OnInit {
   itemsMovementModal: boolean = false;
   invRequestsModal: boolean = false;
   newPurchaseRecommendModal: boolean = false;
+  lastYearOutAmount: number = 0;
   itemMovements: any = [];
   materialPurchases: any[]
   stockItemPurchases: any[]
@@ -1365,7 +1366,6 @@ export class StockComponent implements OnInit {
 
 
   async openData(cmptNumber) {
-    this.getLastOrdersItem(10, 'component')
     this.sixMonth = 0;
     this.switchModalView(cmptNumber)
     this.showItemDetails = true;
@@ -1374,6 +1374,7 @@ export class StockComponent implements OnInit {
     this.openModalHeader = "פריט במלאי  " + cmptNumber;
     this.openModal = true;
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    this.getLastOrdersItem(10, 'component')
     // this.resCmpt.finalPrice = this.resCmpt.shippingPrice ? Number(this.resCmpt.price) + Number(this.resCmpt.shippingPrice) : this.resCmpt.price
     // this.loadComponentItems();
     ;
@@ -1444,9 +1445,8 @@ export class StockComponent implements OnInit {
 
   async openDataMaterial(materNum) {
 
-    this.getLastOrdersItem(10, 'material')  
     this.materialArrivals = []
-
+    
     this.materialArrivals = []
     this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data => {
       if (data) {
@@ -1458,22 +1458,23 @@ export class StockComponent implements OnInit {
           if (data[i].arrivalDate >= dateFrom.toISOString() && data[i].arrivalDate <= dateTo.toISOString()) {
             totalQnt += data[i].totalQnt
           }
-
+          
         }
         if (totalQnt + data[0].mesureType != null || totalQnt + data[0].mesureType != undefined) {
           this.totalQuantity = totalQnt + data[0].mesureType
         }
         this.materialArrivals = data;
       }
-
+      
     })
-
+    
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + materNum;
     this.openModal = true;
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
+    this.getLastOrdersItem(10, 'material')  
     // this.resMaterial.finalPrice = this.resMaterial.shippingPrice ? Number(this.resMaterial.price) + Number(this.resMaterial.shippingPrice) : this.resMaterial.price
 
     this.linkDownload = "http://peerpharmsystem.com/material/getpdf?_id=" + this.resMaterial._id;
@@ -2308,24 +2309,37 @@ export class StockComponent implements OnInit {
 
   switchModalView(componentN) {
 
+    let sumOutMovements = 0
     this.loadingMovements = true;
 
+    var beforeOneYear = new Date();
+    beforeOneYear.setFullYear(beforeOneYear.getFullYear() - 1);
+    debugger;
     if (componentN == '' || componentN == undefined) {
       componentN = this.resCmpt.componentN
     }
     this.inventoryService.getItemMovements(componentN).subscribe(data => {
       if (data) {
-
+        debugger;
         //  for (let i = 0; i < data.length; i++) {
         //    if(data[i].movementType != 'in'){
         //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
         //    }
         //  }
-        data.forEach(component => {
+       data.forEach(component => {
           if (component.movementType) {
             component.originShelfQntBefore = component.originShelfQntBefore - Math.abs(component.amount)
           }
+          if(component.movementType == 'out'){
+            if(component.movementDate > beforeOneYear.toISOString()){
+              sumOutMovements += component.amount
+            }
+          }
         });
+
+        
+        
+        this.lastYearOutAmount = sumOutMovements
         this.itemMovements = data;
         this.loadingMovements = false;
       }

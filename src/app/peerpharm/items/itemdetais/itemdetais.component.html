@@ -60,6 +60,9 @@
                 <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Description' | translate }}</label>
             </div>
             <div style="margin:3px;">
+                <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Group' | translate }}</label>
+            </div>
+            <div style="margin:3px;">
                 <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Customer' | translate }}</label>
             </div>
             <div style="margin:3px;">
@@ -109,6 +112,16 @@
             <div>
                 <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.discriptionK
                     id="id_discrip" style="width:480px">
+            </div>
+            <div>
+                <select [ngClass]="itemBackgroundByStatus()" [(ngModel)]=itemShown.group
+                    id="id_type" style="width:480px">
+                    <option value="תמרוק בארץ">תמרוק בארץ</option>
+                    <option value='אמ"ר'>א.מ.ר</option>
+                    <option value="OTC">OTC</option>
+                    <option value='תמרוק בחו"ל'>תמרוק בחו"ל</option>
+                    <option value='אחר'>אחר</option>
+                </select>
             </div>
             <div>
                 <input list="customers" [ngClass]="itemBackgroundByStatus()" type="text"

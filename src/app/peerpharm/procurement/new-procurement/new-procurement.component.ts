@@ -63,8 +63,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   itemExistInOrders: any[];
   userEmail: any;
   editItem: boolean = false;
-
-  allowedUsers = ['Shai','sima','martha','haviv', 'SHARK']
+  newPurchaseAllowed: boolean = false;
+  editPurchaseAllowed: boolean = false;
 
   newPurchase: FormGroup;
   // deliveryCertificateForm: FormGroup;
@@ -126,7 +126,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierNumber: ["", Validators.required],
       supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }, Validators.required],
+      arrivalDate: [{ value: this.formatDate(new Date(1001, 0, 1)), disabled: this.disabled && this.isEdit }, Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: [''],
       userEmail: [''],
@@ -165,7 +165,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       itemPrice: [''],
       supplierItemNum: [''],
       supplierAmount: [0],
-      historyAmounts: [['']]
+      historyAmounts: [['']],
+      componentType:['']
     })
   }
 
@@ -236,6 +237,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   getUserInfo(){
     this.userName = this.authService.loggedInUser.userName
+    if(this.authService.loggedInUser.authorization.includes("newPurchase")) {
+      this.newPurchaseAllowed = true;
+    }
+    if(this.authService.loggedInUser.authorization.includes("editPurchase")) {
+      this.editPurchaseAllowed = true
+    }
   }
 
   formatDate(date) {
@@ -323,7 +330,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName);
             this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'NIS')
-            this.itemForm.controls.measurement.setValue(data[0].measurement)
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure ? data[0].unitOfMeasure : data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
 
             //set price
@@ -348,8 +355,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           if (data[0]) {
             this.itemForm.controls.name.setValue(data[0].componentName)
             this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'NIS')
-            this.itemForm.controls.measurement.setValue(data[0].measurement)
+            this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure ? data[0].unitOfMeasure : data[0].measurement)
             this.itemForm.controls.supplierItemNum.setValue(data[0].componentNs)
+            this.itemForm.controls.componentType.setValue(data[0].componentType)
 
             //set price
             this.itemForm.controls.price.setValue(data[0].price)

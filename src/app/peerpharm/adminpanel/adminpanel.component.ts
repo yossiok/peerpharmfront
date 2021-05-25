@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { PeerPharmRputs } from '../peerpharm.routing';
 import { UsersService } from 'src/app/services/users.service';
 import { ToastrService } from 'ngx-toastr';
+import { InventoryService } from 'src/app/services/inventory.service';
 
 
 @Component({
@@ -12,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 export class AdminpanelComponent implements OnInit {
   routes: any[];
   users: any[];
+  screens: any[];
+  whareHouses: any[];
   EditRowId:any;
 
 
@@ -21,20 +24,43 @@ export class AdminpanelComponent implements OnInit {
     this.edit('');
   }
 
-  constructor(private toastService: ToastrService, private userService: UsersService) { }
+  constructor(private toastService: ToastrService, 
+    private inventoryService: InventoryService,
+    private userService: UsersService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.getAllWhareHouses()
     this.userService.getAllScreens().subscribe(data=>
       {
+        debugger
         this.routes = [...data]; 
       });
       this.getAllUsers();
 
   }
 
-  getAllUsers() {
+  async getAllUsers() {
+    await this.whareHouses
     this.userService.getAllUsers().subscribe(users => {
+      // FAILED: trying to get wharehouses names but names doesnt match IDs.... ????
+      users.forEach(user=> {
+        if(user.allowedWH.length > 0) {
+          for(let i = 0; i< user.allowedWH.length; i++) {
+            for(let whareHouseObj of this.whareHouses) {
+              if (whareHouseObj._id == user.allowedWH[i]) {
+                user.allowedWH[i] = whareHouseObj.name
+              } 
+            }
+          }
+        } 
+      } )
       this.users = users;
+    })
+  }
+
+  getAllWhareHouses(){
+    this.inventoryService.getWhareHousesList().subscribe(whareHouses => {
+      this.whareHouses = whareHouses
     })
   }
 

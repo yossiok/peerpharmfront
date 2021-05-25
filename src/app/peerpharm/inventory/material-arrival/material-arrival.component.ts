@@ -75,6 +75,7 @@ export class MaterialArrivalComponent implements OnInit {
   currentComaxOrder: any[];
   comaxOrderExist: Boolean = false;
   editWharehouses: Boolean = false;
+  materialStockAllowed: boolean = false;
   openOrders: Array<any>;
 
   supplierModal: Boolean = false;
@@ -161,7 +162,7 @@ export class MaterialArrivalComponent implements OnInit {
       totalQnt: [null, Validators.required],
       mesureType: ['kg', Validators.required],
       remarks: ["",],
-      cmxOrderN: [null, Validators.required],
+      cmxOrderN: [null],
       packageType: ["", Validators.required], //select 
       packageQnt: [1, Validators.min(1)],
       unitsInPack: [null, Validators.min(1)],
@@ -218,6 +219,8 @@ export class MaterialArrivalComponent implements OnInit {
       this.user = this.authService.loggedInUser.firstName + " " + this.authService.loggedInUser.lastName;
       this.newMaterialArrival.controls.user.setValue(this.user)
     });
+
+    if(this.authService.loggedInUser.authorization.includes("materialStock") || this.authService.loggedInUser.authorization.includes("stockAdmin")) this.materialStockAllowed = true
     this.invtSer.getAllSuppliers().subscribe(data => {
       this.suppliers = data;
       this.suppliersList = data;

@@ -12,7 +12,7 @@
         </div>
         <div class="row mt-4">
           <div class="col-3">
-            <button (click)="orderDetailsModal = true" class="btn btn-warning rounded-pill">New Purchase - F2</button>
+            <button *ngIf="newPurchaseAllowed" (click)="orderDetailsModal = true" class="btn btn-warning rounded-pill">New Purchase - F2</button>
           </div>
           <div class="col-2"></div>
           <div class="col-2">
@@ -34,7 +34,9 @@
           </span>
         </div>
 
-        <div *ngIf="!fetchingOrders" class="search-container">
+        <div 
+        *ngIf="!fetchingOrders" 
+        class="search-container">
           <div class="row mt-4">
             <div class="col-3">
               <input type="text " class="form-control rounded" placeholder="Search By Order Number"
@@ -67,10 +69,7 @@
                 <option value="allOrders">כל ההזמנות</option>
                 <option value="open">פתוחות</option>
                 <option value="closed">סגורות</option>
-                <option value="ongoing">בטיפול</option>
-                <option value="canceled">בוטלו</option>
-                <option value="material">חומרי גלם</option>
-                <option value="component">קומפוננטים</option>
+                <option value="approvedBySupplier">מאושרות</option>
               </select>
             </div>
             <div class="col-2">
@@ -101,19 +100,32 @@
                 <option value='sachet'>סאשט</option>
               </select>
             </div>
+            <div class="col-2">
+              חפש לפי סוג פריט <select (change)="filterByItemType($event)" class="form-control rounded-pill">
+                <option selected="true" disabled="disabled">בחר סוג</option>
+                <option value="all">הכל</option>
+                <option value='material'>חומרי גלם</option>
+                <option value='component'>קומפוננטים</option>
+              </select>
+            </div>
             <!-- <div class="col-1">
               טען את כל הפריטים
               <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
             </div> -->
 
-            <div class="col-2">
-              <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+            <div class="col-2 border">
+              <p class="text-primary h3">Orders</p>
+              <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
                 (click)="exportAsXLSX('purchaseData')">
               <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
                 style="background: none;border:none" printSectionId="print-section" ngxPrint><img
                   src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
             </div>
-            <div class="col-3"></div>
+            <div class="col-1 border">
+              <p class="text-primary h3 ">Items</p>
+              <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
+              (click)="exportAsXLSX('purchaseItems')">
+            </div>
             <div class="col-1">
               From: <input class="form-control rounded-pill" (change)="dateChange()" #fromDateStr type="date">
             </div>
@@ -143,8 +155,8 @@
                 </tr>
               </thead>
               <tbody id="table_body">
-                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"
-                  *ngFor="let line of procurementData; let i = index" [style.background-color]="line.color">
+                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"  *ngFor="let line of procurementData; let i = index" 
+                  [style.background]="line.status == 'waitingForApproval' ? 'orange' : ''">
                   <td>{{i+1}}</td>
                   <td class="click" (click)="viewOrderDetails(i)" style="cursor: pointer;"><span
                       style="color:blue;">{{line.orderNumber}}</span>
@@ -270,7 +282,7 @@
 
 
 
-<div *ngIf="printBill==true" id="myModal3" class="modal3 position-fixed"
+<div *ngIf="printBill==true" id="myModal3" class="modal3 position-fixed modal-inner"
   style='border:1px; border-radius:5px;z-index: 1; left:300px;top:160px;font-size:20px;'>
   <div id="billing-section">
     <div class="modal-content" id='modelC'>
@@ -303,6 +315,7 @@
             printSectionId="billing-section"
             [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
           <p style="margin-left:300px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
+          <p style="margin-left:300px;">Arrival Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
         </div>
 
         <div class="col-4">
@@ -509,7 +522,7 @@
     </div>
     <div class="col-3"></div>
     <div class="col-1">
-      <button (click)="moveToNewPurchase()" class="btn btn-success form-control rounded-pill">Order</button>
+      <button (click)="moveToNewPurchase()" class="btn btn-primary form-control rounded-pill">Order</button>
     </div>
     <div class="col-1"></div>
     <!-- <div class="col-3">
@@ -517,8 +530,11 @@
   </div> -->
   </div>
 
-  <div *ngIf="!purchaseRecommendations || purchaseRecommendations.length == 0" class="smallLoader ml-5"></div>
-  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0" class="requests row mt-1">
+  <div *ngIf="loadingRecommendations">
+    <div *ngIf="loadingRecommendations" class="smallLoader ml-5"></div>
+    <h3 class="bg-warning text-primary rounded-pill w-25 p-10 mx-auto">Please be patient. It might take a while...</h3>
+  </div>
+  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0 && !loadingRecommendations" class="requests row mt-1">
     <div class="col-12">
       <table class="table table-striped">
         <thead class="bg-warning text-white">

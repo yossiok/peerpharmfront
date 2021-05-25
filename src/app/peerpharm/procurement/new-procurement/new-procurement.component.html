@@ -28,7 +28,7 @@
             <button class="btn btn-warning rounded-pill" (click)="open(sumShipping)">הזן נתוני העמסה</button>
           </div>
           <div class="col-2">
-            <button (click)="disabled = false" class="btn btn-warning rounded-pill form-control">Edit
+            <button *ngIf="editPurchaseAllowed" (click)="disabled = false" class="btn btn-warning rounded-pill form-control">Edit
               Purchase</button>
           </div>
           <div class="col-1">
@@ -44,10 +44,9 @@
           <div class="col-5">
           </div>
           <div class="col-2">
-            <select *ngIf="allowedUsers.includes(userName)" [disabled]="disabled" (change)="setPurchaseStatus($event)" class="form-control rounded-pill">
+            <select *ngIf="editPurchaseAllowed" [disabled]="disabled" (change)="setPurchaseStatus($event)" class="form-control rounded-pill">
               <option selected="true" disabled="disabled">Choose Status</option>
-              <option value="sentToSupplier">נשלח לספק</option>
-              <option value="supplierGotOrder">לקוח קיבל הזמנה</option>
+              <option value="approvedBySupplier">אושר על ידי ספק</option>
               <option value="closed">סגירת הזמנה</option>
             </select>
           </div>
@@ -348,18 +347,23 @@
         <div class="row">
           <div class="col form-group">
             <span class="red float-left h4">*</span>
+            <label>Component Type</label>
             <select formControlName="orderType" type="text" class="form-control" placeholder="Order Type">
-              <option selected="true" disabled="disabled">Choose Type</option>
               <option value="component">Component</option>
               <option value="material">Material</option>
             </select>
           </div>
           <div class="col form-group">
             <span class="red float-left h4">*</span>
-            <input formControlName="creationDate" type="date" class="form-control" placeholder="Order Date">
+            <label>Status</label>
+            <select formControlName="status" class="form-control">
+              <option value="open" selected="true">open</option>
+              <option value="waitingForApproval">ממתין לאישור</option>
+            </select>
           </div>
-          <div *ngIf="false">
-            <input formControlName="arrivalDate" type="date">
+          <div class="col form-group">
+            <label>Arrival Date</label>
+            <input formControlName="arrivalDate" class="form-control" type="date">
           </div>
         </div>
 
@@ -439,7 +443,7 @@
 
               <div class="col-sm-12 col-md-4 form-group">
                 <!--  Activate when all measurements are updated  <input disabled formControlName="measurement" class="form-control custom-select" required> -->
-                <select formControlName="measurement" class="form-control custom-select" required>
+                <select formControlName="measurement" class="form-control" required>
                   <option value="">Measurement</option>
                   <option value="kilogram">kilogram</option>
                   <option value="liter">liter</option>
@@ -452,12 +456,12 @@
                 </select>
               </div>
               <div class="col-sm-12 col-md-4 form-group">
-                <select formControlName="coin" class="form-control custom-select" required>
+                <select formControlName="coin" class="form-control" required>
                   <option value="" disabled>Coin</option>
                   <option value="NIS">NIS</option>
-                  <option value="usd">USD</option>
-                  <option value="eur">EUR</option>
-                  <option value="gbp">GBP</option>
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
                 </select>
               </div>
 
@@ -537,7 +541,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add')" [disabled]="!newPurchase.valid || sendingPurchase" 
+            <button (click)="sendNewProc('add')" [disabled]="!newPurchase.valid || sendingPurchase" *ngIf="newPurchaseAllowed"
               [style.cursor]="sendingPurchase || !newPurchase.valid ? 'not-allowed' : 'pointer'" class="btn btn-primary form-control" 
              
               [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
