@@ -42,10 +42,16 @@ export class AppComponent implements OnInit {
     // INIT ALERT SERVICE \\
     this.socket = io(`http://18.221.58.99:8200`);
     this.socket.on("connect", () => {
+
       //console.log('socket connected');
       this.socket.on('alert service', (title, body) => {
+       
         let titleObj = JSON.parse(title);
 
+        if(titleObj.title=="autoreload")
+        {
+          location.reload();
+        }
         if (this.currentMsgIndex < titleObj.index) {
           if (titleObj.users == "all") {
             debugger;
