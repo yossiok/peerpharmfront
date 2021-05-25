@@ -22,9 +22,11 @@
     <label class="form-control">Search Material</label>
   </div>
   <div class="col-1">
-    <input class="form-control" (change)="filterByMaterial($event)">
+    <input class="form-control" #material >
   </div>
-  <div class="col-2"></div>
+  <div class="col-2">
+    <button class="btn btn-primary" (click)="filterByMaterial(material.value)">Filter</button>
+  </div>
   <div class="col-2"></div>
   <div class="col-2"></div>
   <div class="col-2"></div>
@@ -32,12 +34,15 @@
   <div class="col-1"><button (click)="getMaterialsForFormules()" class="btn btn-info form-control">כתב כמויות</button></div>
 </div>
 
-<table class="table table-fixed">
+<div class="bigLoader" *ngIf="loading"></div>
+
+<table *ngIf="!loading" class="table table-fixed">
   <thead class="tableHeader">
     <tr>
       <td>#</td>
       <td></td>
-      <td>Number</td>
+      <td>Formule Number</td>
+      <td>Materials</td>
       <td>Remarks</td>
       <td>Name</td>
       <td>PH</td>
@@ -54,8 +59,9 @@
     </tr>
   </thead>
   <ng-container>
+    <!-- [ngClass]="{ firstApproval: formule.approval == 1 , secondApproval: formule.approval == 2 }" -->
     <tr
-      [ngClass]="{ firstApproval: formule.approval == 1 , secondApproval: formule.approval == 2 }"
+      [style.background]="formule.approval && formule.approval == 1 ? 'lightgreen' : ''"
       style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
       *ngFor="let formule of allFormules; let i = index"
     >
@@ -67,6 +73,13 @@
         (click)="open(formule.formuleNumber)"
       >
         {{ formule.formuleNumber }}
+      </td>
+      <td>
+        <span *ngFor="let phase of formule.phases">
+          <span *ngFor="let item of phase.items">
+            {{item.itemNumber}},
+          </span>
+        </span>
       </td>
       <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
         <input #formuleNumber type="text" [value]="formule.formuleNumber" />
@@ -112,7 +125,7 @@
       <td>
         <i
           style="cursor: pointer;"
-          (click)="approveFormule(formule._id, formule.formuleNumber)"
+          (click)="approveFormule(formule)"
           class="fa fa-check"
           aria-hidden="true"
         ></i>
@@ -165,7 +178,7 @@
     <div>
       <h4 id="modal-basic-title">Formule Information</h4>
       <h4>Formule Number: {{ currentFormuleNumber }}</h4>
-      <i style="float:right;padding:5px" (click)="openFormuleModal = false" class="fa fa-times"></i>
+      <i style="float:right;padding:5px" (click)="openFormuleModal = false" class="fa fa-times h1 click"></i>
       <h4 [ngClass]="percentageCheck(currFormulePercentage)">Percentage: {{currFormulePercentage}}</h4>
       
     </div>

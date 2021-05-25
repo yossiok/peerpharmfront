@@ -128,30 +128,31 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('phaseRemarksUpdate') phaseRemarksUpdate: ElementRef;
   @ViewChild('percentageUpdate') percentageUpdate: ElementRef;
   @ViewChild('itemRemarksUpdate') itemRemarksUpdate: ElementRef;
+  loading: boolean;
 
 
 
 
   constructor(
-    private invtSer: InventoryService, 
-    private formuleService: FormulesService, 
-    private toastSrv: ToastrService, 
-    private modalService: NgbModal, 
+    private invtSer: InventoryService,
+    private formuleService: FormulesService,
+    private toastSrv: ToastrService,
+    private modalService: NgbModal,
     private authService: AuthService,
     private procServ: Procurementservice
-    ) {
+  ) {
     ;
-    this.formuleService.newFormuleAdded.subscribe(data=>{
-      if(data){
+    this.formuleService.newFormuleAdded.subscribe(data => {
+      if (data) {
         this.allFormules.push(data)
       }
     })
-   }
+  }
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.edit('','');
+    this.edit('', '');
     this.editPhases('')
 
   }
@@ -161,7 +162,7 @@ export class AllFormulesComponent implements OnInit {
     this.getAllMaterials();
     this.getAllParentsFormules();
     this.getCurrencies()
-  
+
     this.today = new Date()
     this.user = this.authService.loggedInUser.userName;
   }
@@ -183,7 +184,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   getCurrencies() {
-    this.procServ.getCurrencies().subscribe(currencies=>{
+    this.procServ.getCurrencies().subscribe(currencies => {
       this.currencies = currencies
     })
   }
@@ -232,7 +233,7 @@ export class AllFormulesComponent implements OnInit {
     })
   }
 
-  edit(id,phaseName) {
+  edit(id, phaseName) {
 
     if (id != '') {
       this.EditRowId = id;
@@ -244,25 +245,27 @@ export class AllFormulesComponent implements OnInit {
     // }
   }
 
-  
-  approveFormule(id, formuleNumber) {
+
+  approveFormule(formule) {
     ;
     this.user = this.authService.loggedInUser.userName;
-    if (this.user == "martha" || this.user == "akiva" || this.user == "sima") {
-      if (confirm("האם לאשר פורמולה מספר: " + formuleNumber)) {
-        this.formuleService.approveFormule(id).subscribe(data => {
-          ;
-          if (data) {
-            this.toastSrv.success("פורמולה אושרה בהצלחה !")
-          }
-        })
+    if (this.user == "martha" || this.user == "sima") {
+      if (confirm("האם לאשר פורמולה מספר: " + formule.formuleNumber)) {
+        if (prompt("הזיני סיסמא") == 'martha@2021') {
+          this.formuleService.approveFormule(formule._id).subscribe(data => {
+            if (data) {
+              this.toastSrv.success("פורמולה אושרה בהצלחה !")
+              formule.approval = 1
+            }
+          })
+        }
+        else this.toastSrv.error('סיסמא שגויה')
       }
-
     } else {
       this.toastSrv.error("רק משתמש מורשה רשאי לעדכן זאת")
     }
-
   }
+
   editPhases(id) {
 
     this.EditRowId = id;
@@ -325,9 +328,9 @@ export class AllFormulesComponent implements OnInit {
 
   }
 
-  copyFormule(formule){
-    this.formuleService.copyFormule(formule).subscribe(data=>{
-      if(data){
+  copyFormule(formule) {
+    this.formuleService.copyFormule(formule).subscribe(data => {
+      if (data) {
         this.allFormules.push(data);
         this.toastSrv.success('פורמולה הועתקה בהצלחה !')
       }
@@ -336,7 +339,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   isSelected(ev, item) {
-    
+
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr
       isSelected.push({ ...item });
@@ -354,29 +357,29 @@ export class AllFormulesComponent implements OnInit {
 
   saveEdit(currdoc) {
 
-  ;
+    ;
 
     if (this.formuleName.nativeElement.value != "") {
-      
-      if(this.authService.loggedInUser.userName){
+
+      if (this.authService.loggedInUser.userName) {
         currdoc.lastUpdateUser = this.authService.loggedInUser.userName
       }
-      if(this.formuleName.nativeElement.value){
+      if (this.formuleName.nativeElement.value) {
         currdoc.formuleName = this.formuleName.nativeElement.value.trim();
       }
-      if(this.formuleNumber.nativeElement.value){
+      if (this.formuleNumber.nativeElement.value) {
         currdoc.formuleNumber = this.formuleNumber.nativeElement.value.trim();
       }
-      if(this.formulePhFrom.nativeElement.value){
+      if (this.formulePhFrom.nativeElement.value) {
         currdoc.phFrom = this.formulePhFrom.nativeElement.value.trim();
       }
-      if(this.formulePhTo.nativeElement.value){
+      if (this.formulePhTo.nativeElement.value) {
         currdoc.phTo = this.formulePhTo.nativeElement.value.trim();
       }
       // if(this.formuleClient.nativeElement.value != undefined){
       //   currdoc.client = this.formuleClient.nativeElement.value.trim();
       // }
-      if(this.formuleLastUpdate.nativeElement.value){
+      if (this.formuleLastUpdate.nativeElement.value) {
         currdoc.lastUpdate = this.formatDate(new Date())
       }
       // if(this.formuleParent.nativeElement.value){
@@ -385,7 +388,7 @@ export class AllFormulesComponent implements OnInit {
       // if(this.formuleCategory.nativeElement.value){
       //   currdoc.parentName = this.formuleCategory.nativeElement.value.trim();
       // }
-      if(this.formuleImpRemarks.nativeElement.value != null){
+      if (this.formuleImpRemarks.nativeElement.value != null) {
         currdoc.impRemarks = this.formuleImpRemarks.nativeElement.value.trim();
       }
 
@@ -453,11 +456,11 @@ export class AllFormulesComponent implements OnInit {
     })
   }
 
-  getMaterialsForFormules(){
+  getMaterialsForFormules() {
     ;
     this.selectedArr.forEach(item => {
-    item.quantity = this.quantityCheck
-    this.formuleImpRemarks = item.impRemarks
+      item.quantity = this.quantityCheck
+      this.formuleImpRemarks = item.impRemarks
     });
     this.invtSer.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
       this.materialsForFormules = materials;
@@ -465,7 +468,7 @@ export class AllFormulesComponent implements OnInit {
     })
   }
 
-  
+
   formatDate(date) {
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
@@ -480,7 +483,7 @@ export class AllFormulesComponent implements OnInit {
     return [year, month, day].join('-');
   }
 
- 
+
 
   formatNumber(number) {
     number = number.toFixed(4) + '';
@@ -494,29 +497,26 @@ export class AllFormulesComponent implements OnInit {
     return x1 + x2;
   }
 
-  filterByMaterial(ev){
-    ;
-    var materialNumber = ev.target.value;
+  filterByMaterial(materialNumber) {
+    this.loading = true
     var tempArr = []
-    if(materialNumber != ""){
-      
-      for (let i = 0; i < this.allFormules.length; i++) {
-        for (let j = 0; j < this.allFormules[i].phases.length; j++) {
-          for (let k = 0; k < this.allFormules[i].phases[j].items.length; k++) {
-            if(this.allFormules[i].phases[j].items[k].itemNumber == materialNumber){
-            tempArr.push(this.allFormules[i])
+    if (materialNumber != "") {
+
+      for (let i = 0; i < this.allFormulesCopy.length; i++) {
+        for (let j = 0; j < this.allFormulesCopy[i].phases.length; j++) {
+          for (let k = 0; k < this.allFormulesCopy[i].phases[j].items.length; k++) {
+            if (this.allFormulesCopy[i].phases[j].items[k].itemNumber == materialNumber) {
+              tempArr.push(this.allFormulesCopy[i])
             }
-            
           }
-          
         }
-          
-        }
-        this.allFormules = tempArr
+      }
+      this.allFormules = tempArr
     } else {
       this.allFormules = this.allFormulesCopy
     }
-   
+    this.loading = false;
+
   }
 
 
@@ -530,32 +530,32 @@ export class AllFormulesComponent implements OnInit {
       if (data) {
         this.spinnerLoader = false;
         data.forEach(material => {
-          if(material.price == null || material.price == undefined) {
+          if (material.price == null || material.price == undefined) {
             material.price = 'צריך לעדכן מחיר ספק'
           } else {
-            if(material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה'){
+            if (material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה') {
               material.price = this.formatNumber(material.price)
             }
-           
+
           }
 
           // if (material.coin == 'eur' || material.coin == 'euro') {
           //   if(material.price != 'צריך לעדכן מחיר ספק'){
           //     material.price = this.formatNumber(material.price * this.currencies[0].EUR)
           //   }
-           
+
           // }
           // if (material.coin == 'usd') {
           //   if(material.price != 'צריך לעדכן מחיר ספק'){
           //     material.price = this.formatNumber(material.price * this.currencies[0].USD)
           //   }
-            
+
           // }
           // if (material.coin == 'gbp') {
           //   if(material.price != 'צריך לעדכן מחיר ספק'){
           //     material.price = this.formatNumber(material.price * this.currencies[0].GBP)
           //   }
-            
+
           // }
           if (material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה') {
             count += Number(material.price)
@@ -595,19 +595,19 @@ export class AllFormulesComponent implements OnInit {
 
   }
 
-  openUpdateTempPriceModal(material){
-  
+  openUpdateTempPriceModal(material) {
+
     this.updatePriceModal = true
     this.currMaterial = material
   }
 
-  updateTempPrice(){
+  updateTempPrice() {
     ;
     this.currMaterial
 
-    let material = this.formuleMaterialPrices.find(m=>m.itemNumber == this.currMaterial.itemNumber);
-    material.price = Number(this.newTempPrice) * Number(material.percentage)/100
-    this.sumFormulePrice = this.sumFormulePrice+material.price
+    let material = this.formuleMaterialPrices.find(m => m.itemNumber == this.currMaterial.itemNumber);
+    material.price = Number(this.newTempPrice) * Number(material.percentage) / 100
+    this.sumFormulePrice = this.sumFormulePrice + material.price
     this.updatePriceModal = false;
   }
 
@@ -714,7 +714,7 @@ export class AllFormulesComponent implements OnInit {
 
     var material = this.materials.find(m => m.componentName.includes(materialName))
     this.newItem.itemNumber = material.componentN
-    ;
+      ;
 
 
   }
@@ -736,8 +736,8 @@ export class AllFormulesComponent implements OnInit {
     }
   }
 
-  percentageCheck(percentage){
-    if(percentage != 100){
+  percentageCheck(percentage) {
+    if (percentage != 100) {
       return 'redPercentage'
     } else {
       return 'greenPercentage'
@@ -752,12 +752,12 @@ export class AllFormulesComponent implements OnInit {
     this.loadData(formuleNum)
   }
 
-  saveFormuleFormation(){
+  saveFormuleFormation() {
     this.draggable = false;
     this.updateFormule;
     ;
-    this.formuleService.updateFormuleFormation(this.updateFormule).subscribe(data=>{
-      if(data){
+    this.formuleService.updateFormuleFormation(this.updateFormule).subscribe(data => {
+      if (data) {
         this.toastSrv.success('פורמולה עודכנה בהצלחה !')
       }
 
@@ -798,7 +798,7 @@ export class AllFormulesComponent implements OnInit {
               item.remarks = this.itemRemarksUpdate.nativeElement.value
               item.percentage = Number(this.percentageUpdate.nativeElement.value)
               this.toastSrv.success('עודכן בהצלחה !')
-              this.edit('','')
+              this.edit('', '')
             } else {
 
             }
@@ -856,33 +856,33 @@ export class AllFormulesComponent implements OnInit {
     this.updateFormule = formuleToUpdate
   }
 
-  deleteItemFromFormule(itemNumber, ii, jj){
+  deleteItemFromFormule(itemNumber, ii, jj) {
     ;
     let formuleNumber = this.currentFormuleNumber;
-    
-    let formule = this.allFormules.find(f=>f.formuleNumber == formuleNumber);
+
+    let formule = this.allFormules.find(f => f.formuleNumber == formuleNumber);
     let phases = formule.phases;
     for (let i = 0; i < phases.length; i++) {
       for (let j = 0; j < phases[i].items.length; j++) {
         if (phases[i].items[j].itemNumber == itemNumber && i == ii && j == jj) {
-          phases[i].items.splice(j,1)
+          phases[i].items.splice(j, 1)
         }
       }
-      
+
     }
   }
 
   deleteFormule(id) {
     ;
-    if(confirm('האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?')){
+    if (confirm('האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?')) {
       this.formuleService.deleteFormuleById({ id }).subscribe(data => {
-       if(data){
-         this.allFormules = this.allFormules.filter(f=>f._id != data._id)
-         this.toastSrv.success('פורמולה נמחקה בהצלחה !')
-       }
+        if (data) {
+          this.allFormules = this.allFormules.filter(f => f._id != data._id)
+          this.toastSrv.success('פורמולה נמחקה בהצלחה !')
+        }
       })
     }
-   
+
   }
   deletePhase(phaseId) {
 
@@ -1018,66 +1018,61 @@ export class AllFormulesComponent implements OnInit {
 
   /****************DRAG DROP FUNCS************/
   startItemDrag(ev) {
- 
-    ev.dataTransfer.setData('Text/html', ev.target.dataset.phase+";"+ev.target.dataset.itemnumber);
+
+    ev.dataTransfer.setData('Text/html', ev.target.dataset.phase + ";" + ev.target.dataset.itemnumber);
     console.log('dragging');
   }
 
-  startShakeDragOver(ev)
-  {
+  startShakeDragOver(ev) {
     ev.preventDefault();
- 
+
     ev.target.classList.add("shakeme");
   }
-  stopItemDrag(ev)
-  {
-   
+  stopItemDrag(ev) {
+
     ev.target.classList.remove("shakeme");
     ev.target.parentElement.classList.remove("shakeme");
     this.stopAllShakes();
-  
+
   }
-  stopAllShakes()
-  {
-    let allShakes= document.getElementsByClassName("shakeme");
-    let allShakeslength= allShakes.length
-    for (let i = 0; i <allShakeslength; i++) {
-      if( allShakes[i])
-      allShakes[i].classList.remove("shakeme"); 
+  stopAllShakes() {
+    let allShakes = document.getElementsByClassName("shakeme");
+    let allShakeslength = allShakes.length
+    for (let i = 0; i < allShakeslength; i++) {
+      if (allShakes[i])
+        allShakes[i].classList.remove("shakeme");
     }
 
   }
 
-  getDroppedElemnt(ev)
-  {
+  getDroppedElemnt(ev) {
     ;
     this.stopAllShakes();
     this.stopAllShakes();
-  
+
     //ev.target.parentElement.data.id
     var data = ev.dataTransfer.getData("text/html");
-    let dataArr=data.split(";");
-    let droppedPhase=dataArr[0];
-    let droppedItemNum= dataArr[1];
+    let dataArr = data.split(";");
+    let droppedPhase = dataArr[0];
+    let droppedItemNum = dataArr[1];
 
-    let droppedIntoPhase=ev.target.parentElement.dataset.phase;
-    let droppedIntoItemNum=ev.target.parentElement.dataset.itemnumber;
+    let droppedIntoPhase = ev.target.parentElement.dataset.phase;
+    let droppedIntoItemNum = ev.target.parentElement.dataset.itemnumber;
     //remove from old phase
-    let itemToaddToNewPhase=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.find(a=>a.itemNumber==droppedItemNum);
-    this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items=  this.updateFormule.phases.find(x=>x.phaseName==droppedPhase).items.filter(a=>a.itemNumber!=droppedItemNum);
- 
+    let itemToaddToNewPhase = this.updateFormule.phases.find(x => x.phaseName == droppedPhase).items.find(a => a.itemNumber == droppedItemNum);
+    this.updateFormule.phases.find(x => x.phaseName == droppedPhase).items = this.updateFormule.phases.find(x => x.phaseName == droppedPhase).items.filter(a => a.itemNumber != droppedItemNum);
+
 
     //find update to phase:
-    let droppedIndex= this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.findIndex(a=>a.itemNumber==droppedIntoItemNum);
-    this.updateFormule.phases.find(x=>x.phaseName==droppedIntoPhase).items.splice( droppedIndex, 0, itemToaddToNewPhase );
- 
+    let droppedIndex = this.updateFormule.phases.find(x => x.phaseName == droppedIntoPhase).items.findIndex(a => a.itemNumber == droppedIntoItemNum);
+    this.updateFormule.phases.find(x => x.phaseName == droppedIntoPhase).items.splice(droppedIndex, 0, itemToaddToNewPhase);
+
     ;
 
-    setTimeout(()=>
-    {
-  this.stopAllShakes();
-    },500);
-  
+    setTimeout(() => {
+      this.stopAllShakes();
+    }, 500);
+
   }
 
 }

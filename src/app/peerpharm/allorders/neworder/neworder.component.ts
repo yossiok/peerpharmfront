@@ -169,7 +169,7 @@ export class NeworderComponent implements OnInit {
       let formule = this.orderItemForm.controls["itemN"].value;
       //check amounts
       this.inventoryService
-        .reduceMaterialAmounts(formule, weightKG, false)
+        .reduceMaterialAmounts('0',formule, weightKG, false)
         .subscribe((response) => {
           this.materialsNotEnoughAmount = response.materials;
           if (response.materials.length > 0) {

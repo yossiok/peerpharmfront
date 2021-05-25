@@ -126,24 +126,36 @@ export class QaPalletsComponent implements OnInit {
 
   }
 
-  exportAsXLSX(packlist){
-    // let customer = 
-    debugger
+  exportAsXLSX(packList){
+debugger
+    const sortOrder = [
+      'itemNumber', 'itemName', 'orderNumber', 'batchNumber', 'fullKartons', 'unitsInKarton',
+      'unitsQuantityPartKarton', 'palletWeight', 'palletSize', 'unitsToCombine',    
+    ]
+
     let allLines = []
-    packlist.pallets.map(pallet=>pallet.lines.map(line => allLines.push(line)))
-    for (let line of allLines) {
-      delete line._id
-      delete line.customerName
-      delete line.formDetailsId
-      delete line.isPersonalPackage
-      delete line.qaStatus
-      delete line.remarks
-      delete line.allUnits
-      delete line.allKartons
-      delete line.palletStatus
-      delete line.__v
+    for (let pallet of packList.pallets) {
+      for (let line of pallet.lines) {
+        allLines.push({
+          palletNumber: pallet.palletNumber,
+          itemNumber: line.itemNumber,
+          itemName: line.itemName,
+          orderNumber: line.orderNumber,
+          batchNumber: line.batchNumber,
+          fullKartons: line.fullKartons,
+          unitsInKarton: line.unitsInKarton,
+          unitsQuantityPartKarton: line.unitsQuantityPartKarton,
+          palletWeight: pallet.palletWeight,
+          palletSize: pallet.palletSize,
+          kartonQuantity: line.kartonQuantity,
+          lastFloorQuantity: line.lastFloorQuantity,
+          orderAmount: line.orderAmount,
+          unitsToCombine: line.unitsToCombine
+        })
+      }
     }
-    this.excelService.exportAsExcelFile(allLines,`${packlist.costumerName} - ${new Date().toDateString()}`);
+   
+    this.excelService.exportAsExcelFile(allLines,`${packList.costumerName} - ${new Date().toDateString()}`, sortOrder);
   }
 
   deleteNewPallete(palletNumber, customerName) {
