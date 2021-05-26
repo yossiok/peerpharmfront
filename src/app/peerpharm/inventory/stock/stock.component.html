@@ -1972,7 +1972,13 @@
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                       {{supplier.coin}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.coin" class="form-control" #coin>
+                      <select [value]="supplier.coin" #coin>
+                        <option value="NIS">NIS</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                      </select>
+                      <!-- <input type="text" > -->
                     </td>
 
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
