@@ -11,6 +11,10 @@ button, input {
   justify-content: center;
 }
 
+.read-only {
+  pointer-events: none;
+}
+
 .search {
   background: #c5c2b7;
   width: 61%;

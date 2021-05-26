@@ -10,6 +10,7 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { BatchesService } from "src/app/services/batches.service";
 import { ExcelService } from "src/app/services/excel.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-schedule",
@@ -106,7 +107,8 @@ export class ScheduleComponent implements OnInit {
     private modalService: NgbModal,
     private batchService: BatchesService,
     private toastSrv: ToastrService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -134,6 +136,10 @@ export class ScheduleComponent implements OnInit {
       volumeK: new FormControl('', [Validators.required]),
       barcodeK: new FormControl('', [Validators.required])
     });
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
   }
 
   checkTime(i) {

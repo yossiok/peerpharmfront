@@ -2,6 +2,10 @@ button, input {
   border-radius: 5px;
 }
 
+.read-only {
+  pointer-events: none;
+}
+
 .batchTh {
     font-size: 16px;
     color:white;

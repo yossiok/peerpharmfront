@@ -5,29 +5,6 @@
     </div>
   </div>
 
- 
-
-
-  <!-- <div *ngIf="!hasMoreItemsToload" class="row mt-4">
-    <div class="col-1"></div>
-    <div class="col-2">
-      <label class="form-control text-info"></label>
-    </div>
-    <div class="col-2">
-      <label class="form-control text-info"></label>
-    </div>
-    <div class="col-2">
-      <label class="form-control text-info"></label>
-    </div>
-    <div class="col-2">
-      <label class="form-control text-info"></label>
-    </div>
-    <div class="col-2">
-      <label class="form-control text-info"></label>
-    </div>
-    <div class="col-1"></div>
-  </div> -->
-
   <div *ngIf="!hasMoreItemsToload" class="row">
     <div class="col-2">
       <input (change)="filterByNumber($event)" type="text" class="form-control" placeholder="Search By Number">
@@ -69,7 +46,7 @@
     <div class="col-12">
 
       <span class="text-danger h5"><b>Showing {{ items.length }} Items</b></span>
-      <div class="col-1">
+      <div [class.read-only]="checkPermission()" class="col-1">
         <button style="float: right; background: none;" (click)="getCurrListToExcel()" data-toggle="tooltip"
           title="get cuurent item list">
           <label style="float: right; line-height: 30px; margin-left: 5px"><b>Export List</b></label>
@@ -98,7 +75,7 @@
           </tr>
         </thead>
         <tbody id="table_body">
-          <tr style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
+          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
             *ngFor="let item of items; let i = index">
             <td style="color:black">{{ i + 1 }}</td>
             <td style="color:black">

@@ -21,6 +21,11 @@ div {
 div::selection {
   background-color: blue;
 }
+
+.read-only {
+  pointer-events: none;
+}
+
 .btnImg {
   width: 30px;
   cursor: pointer;

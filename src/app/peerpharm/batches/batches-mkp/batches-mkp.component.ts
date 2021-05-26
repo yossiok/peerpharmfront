@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { BatchesService } from 'src/app/services/batches.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-batches-mkp',
@@ -40,10 +41,18 @@ export class BatchesMkpComponent implements OnInit {
     type:''
   }
 
-  constructor(private toastSr:ToastrService,private itemService:ItemsService,private batchService:BatchesService) { }
+  constructor(
+    private toastSr:ToastrService,
+    private itemService:ItemsService,
+    private batchService:BatchesService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.getAllMkpBatches();
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
   }
 
 

@@ -14,6 +14,10 @@ button, input {
     display: block;
 }
 
+.read-only {
+  pointer-events: none;
+}
+
 .table-fixed th{
     width:10%;
     display: inline-block;

@@ -31,6 +31,11 @@ th, td {
     
     
     }
+
+    .read-only {
+      pointer-events: none;
+    }
+    
   .table-fixed tbody {
     margin-top:30px;
     height: 645px;

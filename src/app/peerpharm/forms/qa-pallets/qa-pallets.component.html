@@ -1,11 +1,11 @@
-<nav ngbNav #nav="ngbNav" class="nav-tabs">
+<nav  ngbNav #nav="ngbNav" class="nav-tabs">
   <ng-container ngbNavItem>
     <a ngbNavLink>רשימת פריטים</a>
-    <ng-template ngbNavContent>
+    <ng-template  ngbNavContent>
 
       <div class="container bg-white text-center">
 
-        <button style="position: fixed;bottom:1px;right:1px;width:70px" (click)="combineModal = true"
+        <button [class.read-only]="checkPermission()" style="position: fixed;bottom:1px;right:1px;width:70px" (click)="combineModal = true"
           class="btn btn-info">+משטח</button>
         <div class="row">
           <div class="col-12 mt-3">
@@ -77,7 +77,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pallet of allQaPallets;let i = index">
+                <tr [class.read-only]="checkPermission()" *ngFor="let pallet of allQaPallets;let i = index">
                   <td>{{i+1}}</td>
                   <td><input style="width:30px !important" class="form-control" (change)="isSelected($event,pallet)"
                       type="checkbox"></td>
@@ -178,7 +178,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pallet of allClosedPallets;let i = index">
+                <tr [class.read-only]="checkPermission()" *ngFor="let pallet of allClosedPallets;let i = index">
                   <td>{{i+1}}</td>
                   <td>{{pallet.palletNumber}}</td>
                   <td><label (click)="choosePalletToAdd(pallet)"
@@ -239,7 +239,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let pallet of allClosedPallets;let i = index">
+                <tr [class.read-only]="checkPermission()" *ngFor="let pallet of allClosedPallets;let i = index">
                   <td>{{i+1}}</td>
                   <td><input class="form-control" (change)="selectedForPL($event,pallet)" type="checkbox"></td>
                   <td (click)="viewItemsInPallet(pallet)"
@@ -386,7 +386,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let packlist of allPackedLists;let i = index">
+                <tr [class.read-only]="checkPermission()" *ngFor="let packlist of allPackedLists;let i = index">
                   <td>{{i+1}}</td>
                   <td>{{packlist.packListNumber}}</td>
                   <td><label>{{packlist.costumerName}}</label></td>
@@ -407,7 +407,7 @@
           </div>
         </div>
 
-        <div class="row text-center mt-3">
+        <div [class.read-only]="checkPermission()" class="row text-center mt-3">
           <div class="col-3"></div>
           <div class="col-3">
             <input [(ngModel)]="customerForPL" list="customers" class="form-control">
@@ -466,7 +466,7 @@
               </thead>
               <tbody>
 
-                <tr *ngFor="let packlist of allReadyPackedLists;let i = index">
+                <tr [class.read-only]="checkPermission()" *ngFor="let packlist of allReadyPackedLists;let i = index">
                   <td>{{i+1}}</td>
                   <td><label (click)="openProductForm(packlist,'HE')"
                       style="color:blue;text-decoration: underline;cursor: pointer;">{{packlist.costumerName}}</label>
@@ -536,7 +536,7 @@
               </thead>
               <tbody>
 
-                <tr *ngFor="let packlist of readyBills;let i = index">
+                <tr [class.read-only]="checkPermission()" *ngFor="let packlist of readyBills;let i = index">
                   <td>{{i+1}}</td>
                   <td>{{packlist.packListNumber}}</td>
                   <td><label (click)="openProductForm(packlist,'HE')"

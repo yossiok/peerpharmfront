@@ -8,6 +8,7 @@ import { ItemsService } from "./../../../services/items.service";
 import { BatchesService } from "./../../../services/batches.service";
 import { ToastrService } from "ngx-toastr";
 import { BarcodePrintService } from "./../../../services/barcodePrint.service";
+import { AuthService } from "src/app/services/auth.service";
 
 
 @Component({
@@ -88,7 +89,8 @@ export class BarcodePrintComponent implements OnInit {
     private batchesService: BatchesService,
     private modalService: NgbModal,
     private toastSrv: ToastrService,
-    private barcodePrintService: BarcodePrintService
+    private barcodePrintService: BarcodePrintService,
+    private authService: AuthService 
     
   ) { }
 
@@ -99,6 +101,10 @@ export class BarcodePrintComponent implements OnInit {
     this.initAddScheduleForm();
     this.getAllSchedule();
    
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
   }
 
   initAddScheduleForm() {

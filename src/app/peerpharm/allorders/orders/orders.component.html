@@ -61,10 +61,10 @@
     
   </div>
 
-  <div class="row mt-4">
+  <div  class="row mt-4">
     <table class='table table-hover table-fixed'>
       <thead class='bg-info text-white'>
-        <tr style="box-shadow: inset 0px 0px 4px 1px black;">
+        <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;">
           <th style="width:3%;"></th>
           <th style="width:3%;">
             <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">
@@ -105,7 +105,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr  style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')">
+        <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')">
           <!-- <tr *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')" > -->
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:3%;" (click)="edit('')">

@@ -48,7 +48,7 @@
 
     </thead>
 
-    <tr id='inputTr' (click)="EditRowId=''">
+    <tr [class.read-only]="checkPermission()" id='inputTr' (click)="EditRowId=''">
       <td></td>
       <td><input class="form-control" [(ngModel)]="scheduleLine.orderN" style='width:50px' onfocusout="setCostumer()">
       </td>
@@ -99,7 +99,7 @@
 
     <tbody id="table_body" *ngIf="!fetchingSchedules">
 
-      <ng-container *ngFor="let line of scheduleData; let i = index">
+      <ng-container [class.read-only]="checkPermission()" *ngFor="let line of scheduleData; let i = index">
         <tr style="font-size: 12px;" style="text-align: center;" [style.background-color]="line.trColor">
           <td *ngIf="line._id!==editPosId" (click)="editPosition(line._id)">{{line.position}}</td>
           <td *ngIf="line._id===editPosId"><input class="form-control" (change)="updateLinePosition(line._id)"

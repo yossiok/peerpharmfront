@@ -8,6 +8,10 @@
     font-weight: bold;
 }
 
+.read-only {
+    pointer-events: none;
+}
+
 .tr { 
     border: 1px solid black;
 }

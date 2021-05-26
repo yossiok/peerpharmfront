@@ -5,6 +5,10 @@
   color:white;
 }
 
+.read-only {
+  pointer-events: none;
+}
+
 label {
   margin-bottom: 0;
 }

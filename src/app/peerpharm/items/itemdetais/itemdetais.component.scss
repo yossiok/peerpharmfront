@@ -13,6 +13,10 @@
     padding-left: 4px;
 }
 
+.read-only {
+    pointer-events: none;
+  }
+
 img{
     max-width: 180px;
 }

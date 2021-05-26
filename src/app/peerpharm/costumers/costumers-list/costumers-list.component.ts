@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from 'src/app/services/excel.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { UsersService } from 'src/app/services/users.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -55,6 +56,7 @@ export class CostumersListComponent implements OnInit {
     private modalService: NgbModal, 
     private costumersService: CostumersService, 
     private renderer: Renderer2, 
+    private authService: AuthService,
     private userService: UsersService,
     private toastSrv: ToastrService) { }
 
@@ -62,6 +64,10 @@ export class CostumersListComponent implements OnInit {
     this.getCostumers(); 
     this.getAllUsers()
 
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
   }
   
   getAllUsers(){

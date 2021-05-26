@@ -12,6 +12,10 @@ button, input {
     right: 0px !important
 }
 
+.read-only {
+  pointer-events: none;
+}
+
 .table-fixed thead {
     width: 100%;
     display: block;

@@ -108,6 +108,11 @@ export class QaPalletsComponent implements OnInit {
     // this.getAllProducts();
     this.getUser();
   }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
+  }
+  
   getUser() {
     if (this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'efi') {
       this.deleteLine = true

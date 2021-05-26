@@ -7,6 +7,7 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ActivatedRoute } from '@angular/router';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 const defaultSupplier = {
   suplierNumber: '',
@@ -69,12 +70,21 @@ export class SuppliersComponent implements OnInit {
   counter: number = 0;
   updatingData: boolean = false;
 
-  constructor(private inventoryService: InventoryService, private route: ActivatedRoute, private excelService: ExcelService, private procurementService: Procurementservice, private modalService: NgbModal, private supplierService: SuppliersService, private renderer: Renderer2, private toastSrv: ToastrService) { }
+  constructor(
+    private excelService: ExcelService, 
+    private procurementService: Procurementservice, 
+    private supplierService: SuppliersService, 
+    private toastSrv: ToastrService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.getSuppliers();
     this.getAlternativeSuppliers();
     // this.getSuppliersOrderedItems();
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
   }
 
 

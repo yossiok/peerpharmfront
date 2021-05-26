@@ -530,7 +530,7 @@ debugger
     ;
     let sendConfirm = confirm("עדכון שינויים במלאי");
     if (sendConfirm && this.inventoryUpdateList.length > 0) {
-
+debugger
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList, this.inventoryUpdateList[0].itemType).subscribe(async res => {
         // res = [itemNumber,itemNumber,itemNumber...]
         if (res == "all updated" || (res.msg && res.msg == "all updated")) {
@@ -729,10 +729,10 @@ debugger
           actionType: this.dir,
           WH_originId: this.curentWhareHouseId,
           WH_originName: this.curentWhareHouseName,
-          shell_id_in_whareHouse_Dest: '',
-          shell_position_in_whareHouse_Dest: '',
-          WH_destId: this.curentWhareHouseId,
-          WH_destName: this.curentWhareHouseName,
+          shell_id_in_whareHouse_Dest: this.dir == 'production' ?  '5eeb38b616fd280900c4e922' : '',
+          shell_position_in_whareHouse_Dest: this.dir == 'production' ?  'FLOOR' : '',
+          WH_destId: this.dir == 'production' ? '5e9c132ce6f70d12984343d0' : this.curentWhareHouseId,
+          WH_destName: this.dir == 'production' ? 'Filling' : this.curentWhareHouseName,
           originShelfQntBefore: originShelfQntBefore,
           destShelfQntBefore: originShelfQntBefore,
           userName: this.authService.loggedInUser.firstName + " " + this.authService.loggedInUser.lastName,

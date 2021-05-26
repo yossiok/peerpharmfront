@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { ChatService } from 'src/app/shared/chat.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 
@@ -15,7 +16,13 @@ import { ChatService } from 'src/app/shared/chat.service';
 })
 export class AllordersComponent implements OnInit {
 
-  constructor(private ordersService: OrdersService, private router: Router, private toastSrv: ToastrService, private chat: ChatService) { }
+  constructor(
+    private ordersService: OrdersService,
+    private router: Router, private toastSrv: ToastrService,
+    private chat: ChatService,
+    private authService: AuthService) { }
+
+
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
@@ -55,12 +62,16 @@ export class AllordersComponent implements OnInit {
     this.chat.joinroom("orders");
     this.chat.messages.subscribe(data => {
       console.log(data);
- 
+
       if (data.msg == "order_refresh" && data.to == "allusers") {
-     this.getAllOrders();
-      } 
+        this.getAllOrders();
+      }
     })
-   
+
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
   }
 
 
@@ -90,7 +101,7 @@ export class AllordersComponent implements OnInit {
 
 
   saveEdit(a, orderId) {
-   
+
     let orderToUpdate = {};
     // a - is if the request is to set order - ready
     if (!a) {
@@ -190,7 +201,7 @@ export class AllordersComponent implements OnInit {
 
       let urlPrefixIndex = window.location.href.indexOf("#");
       let urlPrefix = window.location.href.substring(0, urlPrefixIndex)
-    
+
       window.open(urlPrefix + "#/peerpharm/allorders/orderitems/" + tempArrStr);
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
     } else {

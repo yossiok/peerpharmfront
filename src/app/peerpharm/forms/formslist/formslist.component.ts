@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsService } from '../../../services/forms.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-formslist',
@@ -14,11 +15,15 @@ export class FormslistComponent implements OnInit {
   sortByFillingDate: Boolean = false;
   showLoader: Boolean = true;
   year: string = '2021'
-  constructor(private formsService: FormsService, private excelService: ExcelService) { }
+  constructor(private formsService: FormsService, private excelService: ExcelService, private authService: AuthService) { }
 
   ngOnInit() {
     this.getForms();
     this.startInterval();
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
   }
 
   getForms() {

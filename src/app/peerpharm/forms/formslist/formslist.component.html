@@ -98,7 +98,7 @@
         <tbody>
 
 
-          <tr *ngFor="let form of forms; let i = index">
+          <tr [class.read-only]="checkPermission()" *ngFor="let form of forms; let i = index">
             <td>
               <a target="_blank" routerLink="/peerpharm/forms/formDetails/{{ form._id }}">
                 {{ i }}

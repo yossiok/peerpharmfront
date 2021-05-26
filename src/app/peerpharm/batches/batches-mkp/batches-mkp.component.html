@@ -34,7 +34,7 @@
   </thead>
 
   <tbody>
-    <tr *ngFor="let batch of mkpBatches;let i=index">
+    <tr [class.read-only]="checkPermission()" *ngFor="let batch of mkpBatches;let i=index">
       <td>{{i+1}}</td>
       <td>{{batch.batchNumber}}</td>
       <td>{{batch.produced}}</td>
@@ -51,7 +51,7 @@
   </tbody>
 </table>
 
-<div  class="clearfix" id="print-section" style="visibility: hidden">
+<div [class.read-only]="checkPermission()" class="clearfix" id="print-section" style="visibility: hidden">
   <div style="max-height: 600px;" *ngFor="let sticker of allStickers;let i=index">
 
 <div dir="rtl" class="container-fluid" style="width:370px;font-family: Arial;font-size: 24px;margin-bottom: 20px;">

@@ -448,6 +448,18 @@ export class ItemdetaisComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    this.getAllCostumers()
+    this.getUserInfo();
+    this.getItemData();
+    //  this.showGoddetData();
+    setTimeout(() => this.itemNum.nativeElement.focus(), 300);
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
+  }
+
   showGoddet() {
     // this.container.nativeElement.removeChild();
 
@@ -983,13 +995,8 @@ export class ItemdetaisComponent implements OnInit {
       }
     }
   }
-  ngOnInit() {
-    this.getAllCostumers()
-    this.getUserInfo();
-    this.getItemData();
-    //  this.showGoddetData();
-    setTimeout(() => this.itemNum.nativeElement.focus(), 300);
-  }
+
+
 
 
   jumpingRemark() {

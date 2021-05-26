@@ -412,6 +412,11 @@ export class StockComponent implements OnInit {
   @Output() sendDataToExpectedArrivalsModal = new EventEmitter();
   @Input() expectedArrivalItemData: any;
 
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
+  }
+  
   //expected Arrivals modal
   getNewExpectedArrivalsData(outputeEvent) {
     console.log('getting new updated expected arrivals data')

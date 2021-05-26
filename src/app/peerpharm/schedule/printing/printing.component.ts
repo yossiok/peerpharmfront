@@ -6,6 +6,7 @@ import { DatepickerComponent } from 'angular2-material-datepicker';
 import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
 import { ArrayServiceService } from 'src/app/utils/array-service.service';
+import { AuthService } from 'src/app/services/auth.service';
   
   @Component({
     selector: 'app-schedule',
@@ -76,7 +77,12 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
     typeShown:String="basic";
     currModalImgArr:Array<any>;
     openImgModal:Boolean= false;
-    constructor(private arrayService:ArrayServiceService,private scheduleService:ScheduleService , private toastSrv: ToastrService , private itemsService: ItemsService) { }
+    constructor(
+      private arrayService:ArrayServiceService,
+      private scheduleService:ScheduleService , 
+      private toastSrv: ToastrService,
+      private itemsService: ItemsService,
+      private authService: AuthService) { }
   
  
 
@@ -86,6 +92,10 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
       this.scheduleLine.date=this.today;
       this.dateChanged(this.today);
       // this.getAllSchedule();
+    }
+
+    checkPermission() {
+      return this.authService.loggedInUser.screenPermission == '5'
     }
   
     writeScheduleData(){

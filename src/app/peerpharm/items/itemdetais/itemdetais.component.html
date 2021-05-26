@@ -2,7 +2,7 @@
     <div class="bigLoader"></div>
 </div>
 
-<div *ngIf="!loadingItem" class="container-fluid">
+<div [class.read-only]="checkPermission()" *ngIf="!loadingItem" class="container-fluid">
     <div style="height:20px" class="row"></div>
     <div class="row">
         <div class="col-4"></div>

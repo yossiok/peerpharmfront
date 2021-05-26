@@ -202,7 +202,7 @@
         </tr>
 
         <tbody id="table_body">
-          <tr style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let line of scheduleData"
+          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let line of scheduleData"
             [style.background-color]="line.color">
             <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
               <td><input class="form-control" type="checkbox" (change)="isSelected($event,line)"></td>

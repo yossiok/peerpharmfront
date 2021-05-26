@@ -22,7 +22,14 @@ export class BatchesComponent implements OnInit {
   myRefresh: any = null;
   savingSpecValues: boolean;
 
-  constructor(private itemService: ItemsService, private modalService: NgbModal, private authService: AuthService, private batchService: BatchesService, private excelService: ExcelService, private toastSrv: ToastrService) { }
+  constructor(
+    private itemService: ItemsService, 
+    private modalService: NgbModal, 
+    private authService: AuthService, 
+    private batchService: BatchesService, 
+    private excelService: ExcelService, 
+    private toastSrv: ToastrService
+  ) { }
   // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
   batches: Array<any>;
   mkpBatches: Array<any>;
@@ -108,6 +115,10 @@ export class BatchesComponent implements OnInit {
     this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
     this.getUserInfo();
+  }
+
+  checkPermission() {
+    return this.authService.loggedInUser.screenPermission == '5'
   }
 
   printSpecValues(){

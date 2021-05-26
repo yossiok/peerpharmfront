@@ -27,7 +27,7 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
         </th>
       </tr>
     </thead>
-    <tr>
+    <tr [class.read-only]="checkPermission()">
       <td class="positionClass">
         <input
           type="text"
@@ -145,7 +145,7 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
       </td>
     </tr>
     <tbody id="table_body">
-      <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of scheduleData">
+      <tr [class.read-only]="checkPermission()" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;" *ngFor="let line of scheduleData">
         <td class="positionClass">{{ line.positionN }}</td>
         <td>
           <a

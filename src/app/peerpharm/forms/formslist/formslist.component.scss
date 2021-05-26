@@ -2,6 +2,11 @@
     background-color: lightgreen;
 }
 
+.read-only {
+  pointer-events: none;
+}
+
+
 h2.peerLoader {
     text-align: center;
     text-transform: uppercase;

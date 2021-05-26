@@ -23,6 +23,10 @@ div {
   border-top-right-radius: 4px;
 }
 
+.read-only {
+  pointer-events: none;
+}
+
 .qc-batch{
   background-color: greenyellow;
     padding: 30px;

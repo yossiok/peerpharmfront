@@ -21,7 +21,7 @@
 
     </div>
     <div class="col-1"></div>
-    <div class="col-3">
+    <div [class.read-only]="checkPermission()" class="col-3">
       <input class="form-control" type="text" [(ngModel)]="lastBatchToExport" placeholder="Enter batch number">
       <button class="btn" (click)="filterBatchesBiggerThenBatchN()" class="btn" style="background: none;"
         data-toggle="tooltip" title="get excel of all batches produced sience the entered batch number">
@@ -109,7 +109,7 @@
 
           </tr>
         </thead>
-        <tr style="margin-top: 30px;margin-left:20px;">
+        <tr [class.read-only]="checkPermission()" style="margin-top: 30px;margin-left:20px;">
           <input [(ngModel)]="batch.batchNumber" class="addBatchInput" placeholder="Batch Number" type="text">
           <input [(ngModel)]="batch.produced" class="addBatchInput" placeholder="Production Date" type="text">
           <input [(ngModel)]="batch.itemName" style="width:230px;" placeholder="Item Name" class="addBatchInput"
@@ -124,7 +124,7 @@
             class="addBtn btn btn-info" (click)="addBatch()">Add</button><br />
         </tr>
         <ng-container>
-          <tr style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
+          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
             *ngFor="let batch of batches; let i = index" [style.background-color]="batch.color">
             <td style="width:3%;">{{i+1}}</td>
         
@@ -216,7 +216,7 @@
 
           </tr>
         </thead>
-        <tr style="margin-top: 30px;margin-left:20px;">
+        <tr [class.read-only]="checkPermission()" style="margin-top: 30px;margin-left:20px;">
           <input [(ngModel)]="batch.batchNumber" class="addBatchInput" placeholder="Batch Number" type="text">
           <input [(ngModel)]="batch.produced" class="addBatchInput" placeholder="Production Date" type="text">
           <input [(ngModel)]="batch.itemName" style="width:230px;" placeholder="Item Name" class="addBatchInput"
@@ -231,7 +231,7 @@
             class="addBtn btn btn-info" (click)="addBatch()">Add</button><br />
         </tr>
         <ng-container>
-          <tr style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
+          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
             *ngFor="let batch of mkpBatches; let i = index" [style.background-color]="batch.color">
             <td style="width:3%;">{{i+1}}</td>
         
@@ -309,7 +309,7 @@
 
 
 <ng-template #printBatch let-modal>
-  <div class="modal-content">
+  <div [class.read-only]="checkPermission()" class="modal-content">
 
     <div id="print-section" class="modal-body">
       <table>

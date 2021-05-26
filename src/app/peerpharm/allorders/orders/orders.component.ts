@@ -7,6 +7,7 @@ import { IfStmt } from '@angular/compiler';
 import { ToastrService } from 'ngx-toastr';
 import { log } from 'util';
 import { ChatService } from 'src/app/shared/chat.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 
@@ -69,10 +70,20 @@ export class OrdersComponent implements OnInit {
     private chat: ChatService,
     private ordersService: OrdersService,
     private router: Router,
-    private toastSrv: ToastrService
+    private toastSrv: ToastrService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
+    debugger
+    if(this.authService.loggedInUser.screenPermission == '5') {
+      // document.getElementById
+      var allDivs = document.getElementsByClassName("container-fluid text-center bg-white")
+      // for(let i = 0; i < allDivs.length; i++) {
+      //   allDivs[i].style.pointerEvents = "none"
+      // }
+      // map(elem => elem.style.pointerEvents = "none");
+    }
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getOrders();
@@ -84,6 +95,10 @@ export class OrdersComponent implements OnInit {
         this.getOrders();
       }
     })
+  }
+
+  checkPermission() {
+    if(this.authService.loggedInUser.screenPermission == '5') return true
   }
 
   checkfunc() {
