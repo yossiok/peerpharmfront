@@ -7,7 +7,7 @@
   </div>
 
   <div class="row p-2 mt-2">
-    <div class="col-1">
+    <div [class.read-only]="checkPermission()" class="col-1">
       <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
         (click)="exportAsXLSX(suppliers, 'ספקים')">
     </div>

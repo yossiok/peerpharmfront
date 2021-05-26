@@ -52,7 +52,7 @@
     <div class="col-1">
 
     </div>
-    <div class="col-1">
+    <div [class.read-only]="checkPermission()" class="col-1">
       <button class="form-control btn btn-info border border-dark click" (click)="showCustomerModal = true">New
         Costumer</button>
     </div>

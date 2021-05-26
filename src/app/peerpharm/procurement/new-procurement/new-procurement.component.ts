@@ -34,7 +34,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   @ViewChild('coin') coin: ElementRef;
   @ViewChild('measurement') measurement: ElementRef;
   @ViewChild('supplierPrice') supplierPrice: ElementRef;
-  @ViewChild('supplierAmount') supplierAmount: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
   @ViewChild('updateItemAmount') updateItemAmount: ElementRef;
   @ViewChild('updateItemPrice') updateItemPrice: ElementRef;
@@ -164,7 +163,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       remarks: [''],
       itemPrice: [''],
       supplierItemNum: [''],
-      supplierAmount: [0],
       historyAmounts: [['']],
       componentType:['']
     })
@@ -714,152 +712,3 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
 
-
-
-  // fillPurchaseDetails(recommendation) {
-  //   this.itemForm.value.controls.number = recommendation.componentNumber;
-  //   this.newPurchase.controls.orderType.setValue(recommendation.type);
-  //   this.itemForm.value.controls.quantity = recommendation.amount
-  //   this.newProcurement.recommendId = recommendation._id
-  //   this.findStockItemByNumber();
-  // }
-
-      // this.procurementService.getPurchaseOrderByItem(this.newItem.itemNumber).subscribe(data => {
-      //   ;
-      //   let items = data[0].items;
-
-      //   if (items.length > 0) {
-      //     items.forEach(item => {
-      //       if (item.arrivedAmount != undefined) {
-      //         if (item.arrivedAmount <= item.supplierAmount) {
-      //           this.existOpenOrderAlert = true;
-      //           this.openOrdersModal = true;
-      //           if (this.newItem.supplierPrice == 0 || isNaN(this.newItem.supplierPrice)) {
-      //             this.newItem.supplierPrice = Number(data[0].price)
-      //           }
-      //         }
-      //       } else {
-      //         this.openOrdersModal = true;
-      //       }
-
-      //       if (item.status == 'supplierGotOrder' || item.status == 'sentToSupplier') {
-      //         item.status = 'open'
-      //       }
-      //     });
-      //   }
-      //   else {
-      //     this.itemExistInOrders = [];
-      //     this.openOrdersModal = false;
-      //   }
-
-      //   this.itemExistInOrders = data.filter(p => p.status != 'closed');
-
-      // })
-
-
-
-
-
-
-
-
-
-    // addToSupplierPriceList() {
-    //   ;
-    //   if (confirm('האם להוסיף למחירון ספק ?')) {
-    //     var obj = {
-    //       itemName: this.newItem.itemName,
-    //       itemNumber: this.newItem.itemNumber,
-    //       supplierPrice: this.newItem.supplierPrice,
-    //       supplierNumber: this.newProcurement.supplierNumber
-    //     }
-
-    //     this.supplierToUpdate = obj;
-
-    //     this.supplierService.addToSupplierPriceList(obj).subscribe(data => {
-    //       if (data.itemNumber) {
-    //         this.currItemForPL = data;
-    //         this.showUpdatePLModal = true
-    //       } else {
-    //         this.toastr.success('פריט הוסף למחירון ספק בהצלחה !')
-    //       }
-    //     })
-    //   }
-
-    // }
-
-
-    // addItemToProcurement() {
-      //   ;
-      //   var newItem = {
-        //     coin: this.coin.nativeElement.value,
-        //     itemName: this.itemName.nativeElement.value,
-        //     itemNumber: this.itemNumber.nativeElement.value,
-        //     measurement: this.measurement.nativeElement.value,
-        //     supplierAmount: this.supplierAmount.nativeElement.value,
-        //     supplierPrice: this.supplierPrice.nativeElement.value,
-        //     itemPrice: Number(this.supplierPrice.nativeElement.value) * Number(this.supplierAmount.nativeElement.value),
-        //     itemRemarks: this.itemRemarks.nativeElement.value,
-        //     componentNs: this.newItem.componentNs,
-        //     componentType: this.newItem.componentType
-        //   }
-
-        //   if (newItem.itemName) {
-  //     newItem.itemName.trim()
-  //   }
-  //   if (newItem.itemNumber) {
-  //     newItem.itemNumber.trim()
-  //   }
-  //   if (newItem.componentNs) {
-  //     newItem.componentNs.trim()
-  //   }
-
-
-
-  //   if (this.itemName.nativeElement.value == "" || this.itemNumber.nativeElement.value == "" || this.measurement.nativeElement.value == "" || this.supplierAmount.nativeElement.value == "") {
-  //     this.toastr.error('שים לב , לא כל הפרטים מלאים.')
-  //   } else {
-  //     if (this.newProcurement.orderType == 'material') {
-  //       if (this.allMaterials != undefined) {
-  //         var material = this.allMaterials.find(m => m.componentN == newItem.itemNumber);
-  //       }
-
-  //       ;
-  //       if (material) {
-  //         if (material.permissionDangerMaterials == true || material.permissionDangerMaterials == 'true') {
-  //           if (confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + material.allowQtyInStock)) {
-  //             this.pushAndResetItem(newItem)
-  //           }
-  //         } else {
-  //           this.pushAndResetItem(newItem)
-  //         }
-  //       }
-  //       else {
-  //         this.pushAndResetItem(newItem)
-
-  //       }
-  //     } else {
-  //       this.pushAndResetItem(newItem)
-
-  //     }
-
-
-
-
-  //   }
-  // }
-
-  // pushAndResetItem(newItem) {
-  //   this.newProcurement.item.push(newItem);
-
-  //   this.newItem.coin = "";
-  //   this.newItem.itemName = "";
-  //   this.newItem.itemNumber = "";
-  //   this.newItem.measurement = "";
-  //   this.newItem.supplierAmount = "";
-  //   this.newItem.itemRemarks = '';
-  //   this.newItem.supplierPrice = 0;
-  //   this.itemExistInOrders = [];
-  //   this.openOrdersModal = false;
-  //   this.toastr.success("פריט התווסף בהצלחה!")
-  // }

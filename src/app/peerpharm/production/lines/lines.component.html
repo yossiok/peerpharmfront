@@ -1,24 +1,20 @@
-<div [class.read-only]="checkPermission()">
+<p>
+  Enter New Production Line
+</p>
 
-  
-  <p>
-    Enter New Production Line
-  </p>
-  
-  <form></form>
+<form></form>
   Line Number <input [(ngModel)]="lineObj.number" >
   Discription <input [(ngModel)]="lineObj.discription" >
   Type <input [(ngModel)]="lineObj.type" >
   Location <input [(ngModel)]="lineObj.location" >
   Image <input  type='file'>
   <button (click)='addLine()'>Add/Change</button>
-  <br><br>
-  
+<br><br>
+
   <ul>
     <li *ngFor="let line of pLines">
-      {{line.number}}, {{line.discription}}, {{line.type}} ,  {{line.location}}
+        {{line.number}}, {{line.discription}}, {{line.type}} ,  {{line.location}}
     </li>
   </ul>
-  
-  
-</div>
+
+ 

@@ -99,8 +99,8 @@
 
     <tbody id="table_body" *ngIf="!fetchingSchedules">
 
-      <ng-container [class.read-only]="checkPermission()" *ngFor="let line of scheduleData; let i = index">
-        <tr style="font-size: 12px;" style="text-align: center;" [style.background-color]="line.trColor">
+      <ng-container *ngFor="let line of scheduleData; let i = index">
+        <tr [class.read-only]="checkPermission()" style="font-size: 12px;" style="text-align: center;" [style.background-color]="line.trColor">
           <td *ngIf="line._id!==editPosId" (click)="editPosition(line._id)">{{line.position}}</td>
           <td *ngIf="line._id===editPosId"><input class="form-control" (change)="updateLinePosition(line._id)"
               #scheduleP type="number" [value]="line.position" style='width:70px'>

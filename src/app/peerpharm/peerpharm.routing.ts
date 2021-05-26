@@ -438,7 +438,7 @@ export const PeerPharmRputs: Routes = [
   },
   {
     path: 'batches/newBatch',
-
+    canActivate: [ScreenGuard],
     data: {
       title: 'New Batch'
     },

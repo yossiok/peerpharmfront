@@ -1317,12 +1317,12 @@ export class StockComponent implements OnInit {
     let query = this.filterParams.value
     query.itemType = this.stockType
     this.inventoryService.getFilteredComponents(query).subscribe(filteredComponents => {
-      console.log('items: ',filteredComponents)
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
       this.smallLoader = false
       if (this.components.length > 0) {
         this.getAmountsFromShelfs();
+        this.components.map(c=>this.getItemPurchases(c))
       } else {
         this.toastSrv.error('Item does not exist')
       }

@@ -137,7 +137,7 @@
           </tr>
         </thead>
 
-        <tr class="bg-white" id="inputTr" (click)="EditRowId = 0">
+        <tr [class.read-only]="checkPermission()" class="bg-white" id="inputTr" (click)="EditRowId = 0">
           <td></td>
           <td class="positionClass">
             <input type="text" id="input_position" [(ngModel)]="scheduleLine.positionN" class="form-control" />
