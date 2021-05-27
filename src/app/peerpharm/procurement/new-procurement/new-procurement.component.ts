@@ -40,6 +40,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   @ViewChild('editQuantity') editQuantity: ElementRef;
   @ViewChild('editPrice') editPrice: ElementRef;
+  @ViewChild('editArrival') editArrival: ElementRef;
   @ViewChild('sumShipping') sumShipping: ElementRef;
   @ViewChild('cb') checkItem: ElementRef;
 
@@ -125,7 +126,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierNumber: ["", Validators.required],
       supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [{ value: this.formatDate(new Date(2000, 0, 1)), disabled: this.disabled && this.isEdit }, Validators.required],
+      arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }, Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: [''],
       userEmail: [''],
@@ -423,6 +424,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   saveStockItem(index) {
     let stockitem = this.newPurchase.controls.stockitems.value[index];
     stockitem.price = this.editPrice.nativeElement.value;
+    stockitem.itemArrival = this.editArrival.nativeElement.value;
     stockitem.quantity = this.editQuantity.nativeElement.value;
     this.toastr.success('פריט עודכן בהצלחה')
     this.editStockItem('')

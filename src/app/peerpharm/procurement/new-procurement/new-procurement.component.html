@@ -103,7 +103,7 @@
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity"
-                      [style.width]="'77px'" class="form-control">
+                      [style.width]="'77px'" >
                   </td>
 
                   <td *ngIf="!editItem"><span *ngIf="stockitem.arrivedAmount">{{stockitem.arrivedAmount}}</span></td>
@@ -113,7 +113,7 @@
                   <td *ngIf="!editItem">{{stockitem.measurement}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
-                      [style.width]="'50px'">
+                      [style.width]="'70px'">
                       <option value="">Measurement</option>
                     <option value="kilogram">kilogram</option>
                     <option value="liter">liter</option>
@@ -129,7 +129,7 @@
                   <td *ngIf="!editItem">{{stockitem.price}} {{stockitem.coin}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
-                      [style.width]="'77px'" class="form-control">
+                      [style.width]="'77px'" >
                   </td>
 
                   <td *ngIf="!editItem">{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
@@ -144,16 +144,16 @@
                     </select>
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.itemArrival}}</td>
+                  <td *ngIf="!editItem">{{stockitem.itemArrival | date: 'dd/MM/yy'}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.itemArrival"
-                      [style.width]="'80px'">
+                      [style.width]="'120px'">
                   </td>
 
                   <td *ngIf="!editItem">{{stockitem.remarks}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <textarea [(ngModel)]="stockitem.remarks" [ngModelOptions]="{standalone: true}" type="number"
-                      class="form-control" [style.width]="'100px'" placeholder="Item Remarks"></textarea>
+                       [style.width]="'100px'" placeholder="Item Remarks"></textarea>
                   </td>
 
                   <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)"
@@ -257,7 +257,7 @@
               <div class="col-6 d-flex flex-row">
                 <div class="col-6 ml-10">
                   <label>Item Arrival Date</label>
-                  <input formControlName="itemArrival" type="date" placeholder="Item Arrival">
+                  <input formControlName="itemArrival" class="form-control" type="date" placeholder="Item Arrival">
                 </div>
               </div>
             </div>
@@ -349,7 +349,7 @@
           </div>
           <div class="col form-group">
             <label>Arrival Date</label>
-            <input formControlName="itemArrival"  type="date">
+            <input formControlName="itemArrival" class="form-control" type="date">
           </div>
         </div>
 
@@ -464,7 +464,7 @@
               <div class="col-6 d-flex flex-row">
                 <div class="col-6 ml-10">
                   <label>Item Arrival Date</label>
-                  <input formControlName="arrivalDate" type="date" class="form-control" placeholder="Item Arrival">
+                  <input formControlName="itemArrival" type="date" class="form-control" placeholder="Item Arrival">
                 </div>
               </div>
             </div>
@@ -518,14 +518,17 @@
                   <td>{{stockitem.measurement}}</td>
                   <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>
                   <td *ngIf="EditRowId == stockitem.number">
-                    <input #editQuantity class="form-control rounded-pill" [value]="stockitem.quantity" type="number">
+                    <input #editQuantity [value]="stockitem.quantity" type="number">
                   </td>
 
                   <td *ngIf="EditRowId == ''">{{stockitem.price}} {{stockitem.coin}}</td>
                   <td *ngIf="EditRowId == stockitem.number">
-                    <input #editPrice class="form-control rounded-pill" [value]="stockitem.price" type="number">
+                    <input #editPrice [value]="stockitem.price" type="number">
                   </td>
-                  <td>{{stockitem.itemArrival}}</td>
+                  <td *ngIf="EditRowId == ''">{{stockitem.itemArrival}}</td>
+                  <td *ngIf="EditRowId == stockitem.number">
+                    <input #editArrival type="date" [value]="stockitem.itemArrival" >
+                  </td>
 
                   <i *ngIf="EditRowId == ''" (click)="editStockItem(stockitem.number)"
                     class="click fa fa-pencil-alt text-primary"></i>
@@ -544,7 +547,7 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add')" [disabled]="!newPurchase.valid || sendingPurchase"
+            <button (click)="sendNewProc('add')" [disabled]="EditRowId != '' || !newPurchase.valid || sendingPurchase"
               *ngIf="newPurchaseAllowed"
               [style.cursor]="sendingPurchase || !newPurchase.valid ? 'not-allowed' : 'pointer'"
               class="btn btn-primary form-control" [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
