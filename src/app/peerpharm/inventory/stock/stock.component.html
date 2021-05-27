@@ -780,11 +780,32 @@
                   <tbody>
 
                     <tr *ngFor="let supplier of resCmpt.alternativeSuppliers;let i = index">
+
                       <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                         {{supplier.supplierName}}</td>
                       <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
+  
+                        <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
+                        <datalist id="suppliers">
+                          <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+                            {{supplier.suplierName}}</option>
+                        </datalist>
                       </td>
+
+                      <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.supplierName}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
+                      </td> -->
+
+
+
+
+
+
+
+
+
 
                       <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                         {{supplier.manufacturer}}</td>
@@ -1933,6 +1954,7 @@
                 <tbody>
 
                   <tr *ngFor="let supplier of resMaterial.alternativeSuppliers;let i = index">
+
                     <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                       {{supplier.supplierName}}</td>
                     <td *ngIf="EditRowId == supplier.supplierName">

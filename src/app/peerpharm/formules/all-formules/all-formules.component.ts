@@ -521,7 +521,16 @@ export class AllFormulesComponent implements OnInit {
 
   filterByFormule($event) {
     debugger
-    this.allFormules = this.allFormulesCopy.filter(formule => formule.formuleNumber.toLowerCase().includes($event.target.value))
+    let formuleN = $event.target.value
+    this.allFormules = formuleN == "" ? this.allFormulesCopy : this.allFormulesCopy
+      .filter(formule => formule.formuleNumber.toLowerCase().includes(formuleN))
+      .sort((a,b) => a.formuleNumber.length - b.formuleNumber.length)
+  }
+
+  filterByName($event) {
+    let formuleName = $event.target.value
+    this.allFormules = formuleName == "" ? this.allFormulesCopy : this.allFormulesCopy
+      .filter(formule => formule.formuleName.toLowerCase().includes(formuleName))
   }
 
 

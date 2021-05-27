@@ -24,7 +24,9 @@
   <div class="col-1">
     <input class="form-control" placeholder="Formule Number" (keyup)="filterByFormule($event)" >
   </div>
-  <div class="col-1"></div>
+  <div class="col-1">
+    <input class="form-control" placeholder="Formule Name" (keyup)="filterByName($event)" >
+  </div>
   <div class="col-1">
     <label>Search Material:</label>
   </div>
@@ -36,8 +38,12 @@
   </div>
   <div class="col-2">
   </div>
-  <div class="col-1"><input [(ngModel)]="quantityCheck" type="number" class="form-control" placeholder="Amount"></div>
-  <div class="col-1"><button (click)="getMaterialsForFormules()" class="btn btn-info form-control">כתב כמויות</button></div>
+  <div class="col-1">
+    <!-- <input [(ngModel)]="quantityCheck" type="number" class="form-control" placeholder="Amount"> -->
+  </div>
+  <div class="col-1">
+    <!-- <button (click)="getMaterialsForFormules()" class="btn btn-info form-control">כתב כמויות</button> -->
+  </div>
 </div>
 
 <div class="bigLoader" *ngIf="loading"></div>
@@ -46,11 +52,11 @@
   <thead class="tableHeader">
     <tr>
       <td>#</td>
-      <td></td>
+      <!-- <td></td> -->
       <td>Formule Number</td>
-      <td>Materials</td>
-      <td>Remarks</td>
       <td>Name</td>
+      <td>Remarks</td>
+      <td>Materials</td>
       <td>PH</td>
       <!-- <td>Formule Category</td> -->
       <td>Date Created</td>
@@ -72,7 +78,7 @@
       *ngFor="let formule of allFormules; let i = index"
     >
       <td>{{ i + 1 }}</td>
-      <td><input type="checkbox" (change)="isSelected($event,formule)"></td>
+      <!-- <td><input type="checkbox" (change)="isSelected($event,formule)"></td> -->
       <td
         *ngIf="formule._id != EditRowId"
         class="openUpdateModal"
@@ -80,29 +86,29 @@
       >
         {{ formule.formuleNumber }}
       </td>
-      <td>
-        <span *ngFor="let phase of formule.phases">
-          <span *ngFor="let item of phase.items">
-            {{item.itemNumber}},
-          </span>
-        </span>
-      </td>
       <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
         <input #formuleNumber type="text" [value]="formule.formuleNumber" />
       </td>
-
+      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+        {{ formule.formuleName }}
+      </td>
+      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+        <input #formuleName type="text" [value]="formule.formuleName" />
+      </td>
+      
       <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
         {{ formule.impRemarks }}
       </td>
       <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
         <textarea #formuleImpRemarks type="text" [value]="formule.impRemarks"></textarea>
       </td>
-
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
-        {{ formule.formuleName }}
-      </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
-        <input #formuleName type="text" [value]="formule.formuleName" />
+      
+      <td>
+        <span *ngFor="let phase of formule.phases">
+          <span *ngFor="let item of phase.items">
+            {{item.itemNumber}},
+          </span>
+        </span>
       </td>
       <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
         {{ formule.phFrom }} {{ formule.phTo }}

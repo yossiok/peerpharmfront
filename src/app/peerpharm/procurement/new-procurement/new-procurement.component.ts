@@ -162,7 +162,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       color: [''],
       remarks: [''],
       itemPrice: [''],
-      itemArrival: [this.newPurchase.get('arrivalDate').value],
+      itemArrival: [''],
       supplierItemNum: [''],
       historyAmounts: [['']],
       componentType:['']
@@ -171,6 +171,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getUserInfo()
+    debugger
+    if(this.purchaseData) this.itemForm.controls.itemArrival.setValue(this.purchaseData.arrivalDate)
     if (this.requestToPurchase) {
       this.newPurchase.patchValue({
         _id: '',
