@@ -125,7 +125,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierNumber: ["", Validators.required],
       supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [{ value: this.formatDate(new Date(1001, 0, 1)), disabled: this.disabled && this.isEdit }, Validators.required],
+      arrivalDate: [{ value: this.formatDate(new Date(2000, 0, 1)), disabled: this.disabled && this.isEdit }, Validators.required],
       stockitems: [[], Validators.required],
       orderNumber: [''],
       userEmail: [''],
@@ -162,6 +162,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       color: [''],
       remarks: [''],
       itemPrice: [''],
+      itemArrival: [this.newPurchase.get('arrivalDate').value],
       supplierItemNum: [''],
       historyAmounts: [['']],
       componentType:['']

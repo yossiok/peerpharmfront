@@ -12,7 +12,16 @@ select:focus,input:focus,textarea:focus {
   
 }
 
-.container {
+.fa-times {
+  font-size: 50px;
+}
+
+.fa-times:hover {
+  background: purple;
+  color: white;
+}
+
+.container1 {
   background: rgb(228, 206, 238) !important
 }
 

@@ -1,5 +1,5 @@
 <!--UPDATE-->
-<div *ngIf="purchaseData" style="border-radius: 15px;" class="container bg-white border shadow-lg text-center p-3">
+<div *ngIf="purchaseData" style="border-radius: 15px;" class="container1 bg-white border shadow-lg text-center p-3">
   <div class="row">
     <div class="col-12 p-3">
       <form [formGroup]="newPurchase">
@@ -28,7 +28,8 @@
             <button class="btn btn-warning rounded-pill" (click)="open(sumShipping)">הזן נתוני העמסה</button>
           </div>
           <div class="col-2">
-            <button *ngIf="editPurchaseAllowed" (click)="disabled = false" class="btn btn-warning rounded-pill form-control">Edit
+            <button *ngIf="editPurchaseAllowed" (click)="disabled = false"
+              class="btn btn-warning rounded-pill form-control">Edit
               Purchase</button>
           </div>
           <div class="col-1">
@@ -44,7 +45,8 @@
           <div class="col-5">
           </div>
           <div class="col-2">
-            <select *ngIf="editPurchaseAllowed" [disabled]="disabled" (change)="setPurchaseStatus($event)" class="form-control rounded-pill">
+            <select *ngIf="editPurchaseAllowed" [disabled]="disabled" (change)="setPurchaseStatus($event)"
+              class="form-control rounded-pill">
               <option selected="true" disabled="disabled">Choose Status</option>
               <option value="approvedBySupplier">אושר על ידי ספק</option>
               <option value="closed">סגירת הזמנה</option>
@@ -76,6 +78,7 @@
                   <th>Price</th>
                   <th *ngIf="!editItem">shipping</th>
                   <th *ngIf="editItem">Coin</th>
+                  <th>Arrival Date</th>
                   <th>Remarks</th>
                 </tr>
               </thead>
@@ -107,19 +110,30 @@
 
                   <td *ngIf="!editItem">{{stockitem.measurement}}</td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
-                    [style.width]="'50px'" class="form-control">
+                    <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
+                      [style.width]="'50px'">
+                      <option value="">Measurement</option>
+                    <option value="kilogram">kilogram</option>
+                    <option value="liter">liter</option>
+                    <option value="meter">meter</option>
+                    <option value="ml">ml</option>
+                    <option value="unit">Unit</option>
+                    <option value="ton">טון</option>
+                    <option value="unit">יחידה</option>
+                    <option value="box">קופסא</option>
+                    </select>
                   </td>
 
                   <td *ngIf="!editItem">{{stockitem.price}} {{stockitem.coin}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
-                    [style.width]="'77px'" class="form-control">
+                      [style.width]="'77px'" class="form-control">
                   </td>
 
                   <td *ngIf="!editItem">{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" [style.width]="'77px'" class="form-control custom-select" required>
+                    <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" [style.width]="'77px'"
+                       required>
                       <option value="" disabled>Coin</option>
                       <option value="NIS">NIS</option>
                       <option value="usd">USD</option>
@@ -128,10 +142,16 @@
                     </select>
                   </td>
 
+                  <td *ngIf="!editItem">{{stockitem.itemArrival}}</td>
+                  <td *ngIf="editItem && itemIndex == i">
+                    <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.itemArrival"
+                      [style.width]="'80px'">
+                  </td>
+
                   <td *ngIf="!editItem">{{stockitem.remarks}}</td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <textarea [(ngModel)]="stockitem.remarks" [ngModelOptions]="{standalone: true}" type="number" class="form-control"
-                    [style.width]="'100px'" placeholder="Item Remarks"></textarea>
+                    <textarea [(ngModel)]="stockitem.remarks" [ngModelOptions]="{standalone: true}" type="number"
+                      class="form-control" [style.width]="'100px'" placeholder="Item Remarks"></textarea>
                   </td>
 
                   <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)"
@@ -171,64 +191,91 @@
           </div>
         </div>
         <form [formGroup]="itemForm" (ngSubmit)="addItemToPurchase()">
-          <div *ngIf="showItemDetails" class="row mt-3">
-            <div class="col-sm-12 col-md-4 form-group">
-              <label for="">Item</label>
-              <span class="red float-left h4">*</span>
-              <input [disabled]="disabled" (blur)="findStockItemByNumber()" formControlName="number" type="text"
-                class="form-control" placeholder="Item Number">
-            </div>
-            <div class="col-sm-12 col-md-4 form-group">
-              <label for="">Quantity</label>
-              <span class="red float-left h4">*</span>
-              <input [disabled]="disabled" placement="bottom" [ngbTooltip]="lastorders" formControlName="quantity" 
-                type="number" class="form-control" placeholder="Quantity">
-            </div>
-            <div class="col-sm-12 col-md-4 form-group">
-              <label for="">Price</label>
-              <input [disabled]="disabled" formControlName="price" type="number" step="any" class="form-control"
-                placeholder="Price">
-            </div>
-            <div class="col-sm-12 col-md-4 form-group">
-              <input [disabled]="disabled" formControlName="name" type="text" class="form-control"
-                placeholder="Item Name">
-            </div>
-            <div class="col-sm-12 col-md-4 form-group">
-              <!-- Activate when all measurements are updated <input type="text" disabled formControlName="measurement" class="form-control"> -->
-              <select [disabled]="disabled" formControlName="measurement" class="form-control">
-                <option selected value="kilogram">kilogram</option>
-                <option value="liter">liter</option>
-                <option value="meter">meter</option>
-                <option value="ml">ml</option>
-                <option value="unit">Unit</option>
-                <option value="ton">טון</option>
-                <option value="unit">יחידה</option>
-                <option value="box">קופסא</option>
-              </select>
-            </div>
-            <div class="col-sm-12 col-md-4 form-group">
-              <!-- <label>Coin</label> -->
-              <select [disabled]="disabled" formControlName="coin" class="form-control" required>
-                <option disabled value="">Coin</option>
-                <option value="NIS">NIS</option>
-                <option value="EUR">EUR</option>
-                <option value="USD">USD</option>
-                <option value="GBP">GBP</option>
-              </select>
+          <div *ngIf="showItemDetails">
+            
+            <div class="row mt-3">
+              <div class="col">
+                <h5 class="text-secondary">Item Details</h5>
+              </div>
             </div>
 
-          </div>
+            <div class="row mt-4">
+              <div class="col-6 d-flex flex-row">
+                <div class="col-6">
+                  <label>Item Number</label>
+                  <span class="red float-left h4">*</span>
+                  <input (blur)="findStockItemByNumber()" formControlName="number" type="text" class="form-control"
+                    placeholder="Item Number" required>
+                </div>
+                <div class="col-6">
+                  <label>Item Name</label>
+                  <input formControlName="name" type="text" class="form-control" placeholder="Item Name" required>
+                </div>
+              </div>
+              <div class="col-6 d-flex flex-row">
+                <div class="col-6">
+                  <label>Quantity</label>
+                  <input placement="bottom" [ngbTooltip]="lastorders" formControlName="quantity" type="number"
+                    class="form-control" placeholder="Quantity" required>
+                </div>
+                <div class="col-6">
+                  <label>Measurement</label>
+                  <select formControlName="measurement" class="form-control" required>
+                    <option value="">Measurement</option>
+                    <option value="kilogram">kilogram</option>
+                    <option value="liter">liter</option>
+                    <option value="meter">meter</option>
+                    <option value="ml">ml</option>
+                    <option value="unit">Unit</option>
+                    <option value="ton">טון</option>
+                    <option value="unit">יחידה</option>
+                    <option value="box">קופסא</option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-          <div *ngIf="showItemDetails" class="row mt-1">
-            <div class="col-5"></div>
-            <div class="col-2" [ngbTooltip]="itemFormErrors" placement="bottom">
-              <button type="submit" [disabled]="itemForm.invalid"
+            <div class="row mt-4">
+              <div class="col-6 d-flex flex-row">
+                <div class="col-6">
+                  <label>Price</label>
+                  <input formControlName="price" type="number" class="form-control" placeholder="Price">
+                </div>
+                <div class="col-6">
+                  <label>Coin</label>
+                  <select formControlName="coin" class="form-control" required>
+                    <option value="" disabled>Coin</option>
+                    <option value="NIS">NIS</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-6 d-flex flex-row">
+                <div class="col-6 ml-10">
+                  <label>Item Arrival Date</label>
+                  <input formControlName="itemArrival" type="date" class="form-control" placeholder="Item Arrival">
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="showItemDetails" class="row mt-4">
+              <textarea formControlName="remarks" type="number" class="form-control"
+                placeholder="Item Remarks"></textarea>
+            </div>
+            
+            <div class="row mt-1">
+              <div class="col-5"></div>
+              <div class="col-2" [ngbTooltip]="itemFormErrors" placement="bottom">
+                <button type="submit" [disabled]="itemForm.invalid"
                 [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
                 <i class="fa fa-plus"></i>
               </button>
             </div>
             <div class="col-5"></div>
           </div>
+        </div>
         </form>
 
         <hr class="text-muted">
@@ -309,7 +356,8 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('update')" [disabled]="disabled || sendingPurchase" [style.cursor]="sendingPurchase ? 'not-allowed' : 'pointer'" class="btn btn-primary form-control"
+            <button (click)="sendNewProc('update')" [disabled]="disabled || sendingPurchase"
+              [style.cursor]="sendingPurchase ? 'not-allowed' : 'pointer'" class="btn btn-primary form-control"
               [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>
@@ -321,7 +369,7 @@
 
 <!----------------------------------------------------------------------------------------------------------------------->
 <!--ADD-->
-<div *ngIf="!purchaseData" style="border-radius: 15px;" class="container bg-white border shadow-lg text-center p-2 m-2">
+<div *ngIf="!purchaseData" style="border-radius: 15px;" class="container1 bg-white border shadow-lg text-center p-2 m-2">
   <div class="row">
     <div class="col-12 p-3">
       <form [formGroup]="newPurchase">
@@ -363,7 +411,7 @@
           </div>
           <div class="col form-group">
             <label>Arrival Date</label>
-            <input formControlName="arrivalDate" class="form-control" type="date">
+            <input formControlName="itemArrival" class="form-control" type="date">
           </div>
         </div>
 
@@ -411,64 +459,79 @@
             </button>
           </div>
         </div>
+
         <form [formGroup]="itemForm" (ngSubmit)="addItemToPurchase()">
+
           <div *ngIf="showItemDetails">
+            
             <div class="row mt-3">
               <div class="col">
                 <h5 class="text-secondary">Item Details</h5>
               </div>
             </div>
+
             <div class="row mt-4">
-              <div class="col-sm-12 col-md-4 form-group">
-                <label>Item</label>
-                <span class="red float-left h4">*</span>
-                <input (blur)="findStockItemByNumber()" formControlName="number" type="text" class="form-control"
-                  placeholder="Item Number" required>
+              <div class="col-6 d-flex flex-row">
+                <div class="col-6">
+                  <label>Item Number</label>
+                  <span class="red float-left h4">*</span>
+                  <input (blur)="findStockItemByNumber()" formControlName="number" type="text" class="form-control"
+                    placeholder="Item Number" required>
+                </div>
+                <div class="col-6">
+                  <label>Item Name</label>
+                  <input formControlName="name" type="text" class="form-control" placeholder="Item Name" required>
+                </div>
               </div>
-
-              <div class="col-sm-12 col-md-4 form-group">
-                <label>Quantity</label>
-                <span class="red float-left h4">*</span>
-                <input placement="bottom" [ngbTooltip]="lastorders" formControlName="quantity" type="number" class="form-control" placeholder="Quantity" required>
+              <div class="col-6 d-flex flex-row">
+                <div class="col-6">
+                  <label>Quantity</label>
+                  <input placement="bottom" [ngbTooltip]="lastorders" formControlName="quantity" type="number"
+                    class="form-control" placeholder="Quantity" required>
+                </div>
+                <div class="col-6">
+                  <label>Measurement</label>
+                  <select formControlName="measurement" class="form-control" required>
+                    <option value="">Measurement</option>
+                    <option value="kilogram">kilogram</option>
+                    <option value="liter">liter</option>
+                    <option value="meter">meter</option>
+                    <option value="ml">ml</option>
+                    <option value="unit">Unit</option>
+                    <option value="ton">טון</option>
+                    <option value="unit">יחידה</option>
+                    <option value="box">קופסא</option>
+                  </select>
+                </div>
               </div>
-
-              <div class="col-sm-12 col-md-4 form-group">
-                <label>Price</label>
-                <input formControlName="price" type="number" class="form-control" placeholder="Price">
-              </div>
-
-              <div class="col-sm-12 col-md-4 form-group">
-                <input formControlName="name" type="text" class="form-control" placeholder="Item Name" required>
-              </div>
-
-              <div class="col-sm-12 col-md-4 form-group">
-                <!--  Activate when all measurements are updated  <input disabled formControlName="measurement" class="form-control custom-select" required> -->
-                <select formControlName="measurement" class="form-control" required>
-                  <option value="">Measurement</option>
-                  <option value="kilogram">kilogram</option>
-                  <option value="liter">liter</option>
-                  <option value="meter">meter</option>
-                  <option value="ml">ml</option>
-                  <option value="unit">Unit</option>
-                  <option value="ton">טון</option>
-                  <option value="unit">יחידה</option>
-                  <option value="box">קופסא</option>
-                </select>
-              </div>
-              <div class="col-sm-12 col-md-4 form-group">
-                <select formControlName="coin" class="form-control" required>
-                  <option value="" disabled>Coin</option>
-                  <option value="NIS">NIS</option>
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                  <option value="GBP">GBP</option>
-                </select>
-              </div>
-
-
             </div>
 
-            <div *ngIf="showItemDetails" class="row mt-1">
+            <div class="row mt-4">
+              <div class="col-6 d-flex flex-row">
+                <div class="col-6">
+                  <label>Price</label>
+                  <input formControlName="price" type="number" class="form-control" placeholder="Price">
+                </div>
+                <div class="col-6">
+                  <label>Coin</label>
+                  <select formControlName="coin" class="form-control" required>
+                    <option value="" disabled>Coin</option>
+                    <option value="NIS">NIS</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-6 d-flex flex-row">
+                <div class="col-6 ml-10">
+                  <label>Item Arrival Date</label>
+                  <input formControlName="arrivalDate" type="date" class="form-control" placeholder="Item Arrival">
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="showItemDetails" class="row mt-4">
               <textarea formControlName="remarks" type="number" class="form-control"
                 placeholder="Item Remarks"></textarea>
             </div>
@@ -476,7 +539,7 @@
             <div *ngIf="showItemDetails" class="row mt-1">
               <div class="col-5"></div>
               <div [ngbTooltip]="itemFormErrors" placement="bottom" class="col-2">
-                <button type="button" (click)="addItemToPurchase()" [disabled]="itemForm.invalid" 
+                <button type="button" (click)="addItemToPurchase()" [disabled]="itemForm.invalid"
                   [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
                   <i class="fa fa-plus"></i>
                 </button>
@@ -505,6 +568,7 @@
                   <th>Measurement</th>
                   <th>Quantity</th>
                   <th>Price</th>
+                  <th>Arrival Date</th>
                   <th>-</th>
                   <th>-</th>
                 </tr>
@@ -523,6 +587,7 @@
                   <td *ngIf="EditRowId == stockitem.number">
                     <input #editPrice class="form-control rounded-pill" [value]="stockitem.price" type="number">
                   </td>
+                  <td>{{stockitem.itemArrival}}</td>
 
                   <i *ngIf="EditRowId == ''" (click)="editStockItem(stockitem.number)"
                     class="click fa fa-pencil-alt text-primary"></i>
@@ -541,10 +606,10 @@
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add')" [disabled]="!newPurchase.valid || sendingPurchase" *ngIf="newPurchaseAllowed"
-              [style.cursor]="sendingPurchase || !newPurchase.valid ? 'not-allowed' : 'pointer'" class="btn btn-primary form-control" 
-             
-              [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
+            <button (click)="sendNewProc('add')" [disabled]="!newPurchase.valid || sendingPurchase"
+              *ngIf="newPurchaseAllowed"
+              [style.cursor]="sendingPurchase || !newPurchase.valid ? 'not-allowed' : 'pointer'"
+              class="btn btn-primary form-control" [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -608,8 +673,9 @@
           <input [(ngModel)]="deliveryCertificate.remarks" type="text" class="form-control" placeholder="הערות">
         </div>
         <br>
-        <button *ngIf="!submittingCert" (click)="saveCertificate()" [style.cursor]="certValid ? 'pointer' : 'not-allowed'"
-          [disabled]="!certValid" class="btn btn-primary form-control">
+        <button *ngIf="!submittingCert" (click)="saveCertificate()"
+          [style.cursor]="certValid ? 'pointer' : 'not-allowed'" [disabled]="!certValid"
+          class="btn btn-primary form-control">
           הוסף את התעודה להזמנה מס' {{purchaseData.orderNumber}}
         </button>
         <div class="smallLoader" *ngIf="submittingCert"></div>
@@ -808,20 +874,21 @@
 
 </ng-template>
 
-<ng-template class="tooltip"  #lastorders>
+<ng-template class="tooltip" #lastorders>
   <h3 class="head">Amounts by year:</h3>
   <div class="d-flex flex-column">
     <div *ngFor="let orderItem of itemForm.controls.historyAmounts.value">
-      <span class="year">{{orderItem.year}}:</span> &nbsp;&nbsp; <span class="amount">{{ orderItem.amount}} {{itemForm.controls.measurement.value}} </span>
+      <span class="year">{{orderItem.year}}:</span> &nbsp;&nbsp; <span class="amount">{{ orderItem.amount}}
+        {{itemForm.controls.measurement.value}} </span>
     </div>
   </div>
   <h3 class="head">Last supplier:</h3>
   <div class="">
-      <span class="year">{{lastSupplier}} </span>
+    <span class="year">{{lastSupplier}} </span>
   </div>
 </ng-template>
 
-<ng-template  #itemFormErrors>
+<ng-template #itemFormErrors>
   <div *ngIf="itemForm.invalid" class="bg-danger">
     <div class="d-flex flex-column">
       <div *ngFor="let control of itemForm.controls | keyvalue">
