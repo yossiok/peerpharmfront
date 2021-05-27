@@ -44,10 +44,10 @@
     </select>
   </div>
   <div class="col-1">
-    <!-- <input [(ngModel)]="quantityCheck" type="number" class="form-control" placeholder="Amount"> -->
+    <input [(ngModel)]="quantityCheck" type="number" class="form-control" placeholder="Amount">
   </div>
   <div class="col-1">
-    <!-- <button (click)="getMaterialsForFormules()" class="btn btn-info form-control">כתב כמויות</button> -->
+    <button (click)="getMaterialsForFormules()" class="btn btn-info form-control">כתב כמויות</button>
   </div>
 </div>
 
@@ -57,7 +57,7 @@
   <thead class="tableHeader">
     <tr>
       <td>#</td>
-      <!-- <td></td> -->
+      <td></td>
       <td>Formule Number</td>
       <td>Name</td>
       <td>Remarks</td>
@@ -83,7 +83,7 @@
       *ngFor="let formule of allFormules; let i = index"
     >
       <td>{{ i + 1 }}</td>
-      <!-- <td><input type="checkbox" (change)="isSelected($event,formule)"></td> -->
+      <td><input type="checkbox" (change)="isSelected($event,formule)"></td>
       <td
         *ngIf="formule._id != EditRowId"
         class="openUpdateModal"
