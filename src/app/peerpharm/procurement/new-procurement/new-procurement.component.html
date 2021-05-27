@@ -12,7 +12,13 @@
             <h4 class="p-2">{{purchaseData.supplierEmail}}</h4>
           </div>
           <div class="col-3">
-            <h4>{{purchaseData.creationDate | date:'dd/MM/yy'}} &nbsp;&nbsp; <i class="fas fa-arrow-right"></i>&nbsp;&nbsp;{{purchaseData.arrivalDate | date:'dd/MM/yy'}}</h4>
+            <h4>{{purchaseData.creationDate | date:'dd/MM/yy'}} &nbsp;&nbsp; 
+              <i class="fas fa-arrow-right"></i>&nbsp;&nbsp;
+              <span class="click" (click)="editArrivalDateForPurchase = !editArrivalDateForPurchase">{{purchaseData.arrivalDate | date:'dd/MM/yy'}}</span>
+            </h4>
+            <h4 *ngIf="editArrivalDateForPurchase">
+              <input type="date" formControlName="arrivalDate">
+            </h4>
           </div>
         </div>
         <div class="row"></div>
@@ -36,7 +42,7 @@
           </div>
           <div class="col-1">
             <i (click)="closeOrderModal.emit(false); selectedItems = []"
-              class="big click fa fa-times text-primary h1 close"></i>
+              class="click fa fa-times text-primary h2 close"></i>
           </div>
         </div>
         <div class="row mt-2">

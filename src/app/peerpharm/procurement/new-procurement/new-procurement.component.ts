@@ -70,6 +70,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   // deliveryCertificateForm: FormGroup;
   itemForm: FormGroup;
   userName: string;
+  editArrivalDateForPurchase: boolean = false;
 
   // Items to select for invoice / deliveryCert
   selectedItems: StockItem[] = []
