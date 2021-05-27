@@ -40,7 +40,7 @@ export class StockComponent implements OnInit {
 
   itemmoveBtnTitle: string = "Item Movements";
   loadingMovements: boolean = false;
-  currShelf:any;
+  currShelf: any;
   showItemDetails: boolean = true;
   showLoader: boolean = false;
   smallLoader: boolean = false;
@@ -120,8 +120,8 @@ export class StockComponent implements OnInit {
     customerName: '',
     allUnits: '',
     shelf: '',
-    shelfId:'',
-    shelfAmount:'',
+    shelfId: '',
+    shelfAmount: '',
     qaStatus: 'מוכן לשליחה',
     itemNumber: '',
     palletStatus: 'open',
@@ -166,7 +166,7 @@ export class StockComponent implements OnInit {
   EditRowId: any = "";
   orderItems: any;
   procurementInputEvent: any;
-  newPurchaseRecommendation:FormGroup;
+  newPurchaseRecommendation: FormGroup;
   stockType: String = "component";
   newItem: String = '';
   newItemBtn: String = 'new';
@@ -319,16 +319,16 @@ export class StockComponent implements OnInit {
   }
   itemExpectedArrivals: any;
   closeResult: string;
-  filterParams:FormGroup;
- 
+  filterParams: FormGroup;
+
   recommendStockItem = {
-    name:'',
-    number:'',
-    quantity:'',
-    threatment:'',
-    measurement:''
+    name: '',
+    number: '',
+    quantity: '',
+    threatment: '',
+    measurement: ''
   }
-  lastOrdersOfItem=[];
+  lastOrdersOfItem = [];
   fetchingOrders: boolean = false
   currencies: Currencies
   callingForCmptAmounts: boolean = false;
@@ -388,25 +388,25 @@ export class StockComponent implements OnInit {
     private fb: FormBuilder,) {
 
 
-      this.filterParams = fb.group({
-        componentN: new FormControl('',Validators.pattern('^[a-zA-Z]+$')),
-        componentName: new FormControl('',Validators.pattern('^[a-zA-Z]+$')),
-        componentType: new FormControl(''),
-        componentCategory: new FormControl(''),
-      }) 
+    this.filterParams = fb.group({
+      componentN: new FormControl('', Validators.pattern('^[a-zA-Z]+$')),
+      componentName: new FormControl('', Validators.pattern('^[a-zA-Z]+$')),
+      componentType: new FormControl(''),
+      componentCategory: new FormControl(''),
+    })
 
-      this.newPurchaseRecommendation = fb.group({
-        recommendNumber: new FormControl(''),
-        remarks: new FormControl(''),
-        date: new FormControl(this.formatDate(new Date()),Validators.required),
-        user: new FormControl(''),
-        mail: new FormControl('', Validators.required),
-        type: new FormControl('',Validators.required),
-        status: new FormControl('open'),
-        stockitems: new FormControl([]),
+    this.newPurchaseRecommendation = fb.group({
+      recommendNumber: new FormControl(''),
+      remarks: new FormControl(''),
+      date: new FormControl(this.formatDate(new Date()), Validators.required),
+      user: new FormControl(''),
+      mail: new FormControl('', Validators.required),
+      type: new FormControl('', Validators.required),
+      status: new FormControl('open'),
+      stockitems: new FormControl([]),
 
-      }) 
-    
+    })
+
 
   }
   @Output() sendDataToExpectedArrivalsModal = new EventEmitter();
@@ -416,7 +416,7 @@ export class StockComponent implements OnInit {
   checkPermission() {
     return this.authService.loggedInUser.screenPermission == '5'
   }
-  
+
   //expected Arrivals modal
   getNewExpectedArrivalsData(outputeEvent) {
     console.log('getting new updated expected arrivals data')
@@ -454,9 +454,9 @@ export class StockComponent implements OnInit {
     }
   }
 
-  fillSupplierInRec(ev){
-  let supplier = this.allSuppliers.find(s=>s.suplierNumber == ev.target.value);
-  this.newPurchaseRecommendation.controls.supplierName.setValue(supplier.suplierName)
+  fillSupplierInRec(ev) {
+    let supplier = this.allSuppliers.find(s => s.suplierNumber == ev.target.value);
+    this.newPurchaseRecommendation.controls.supplierName.setValue(supplier.suplierName)
   }
 
   fillSupplierDetails() {
@@ -472,11 +472,11 @@ export class StockComponent implements OnInit {
   }
 
 
-  addStockItemToRecommend(){
-    if(this.recommendStockItem.quantity =='' || this.recommendStockItem.name =='' || this.recommendStockItem.number =='' || this.recommendStockItem.measurement == ''){
+  addStockItemToRecommend() {
+    if (this.recommendStockItem.quantity == '' || this.recommendStockItem.name == '' || this.recommendStockItem.number == '' || this.recommendStockItem.measurement == '') {
       this.toastSrv.error('אנא מלא את כל הפרטים של הפריט')
     } else {
-      let objToPush = {...this.recommendStockItem}
+      let objToPush = { ...this.recommendStockItem }
       this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
       this.toastSrv.success('פריט נוסף בהצלחה !');
       this.recommendStockItem.quantity = '';
@@ -485,7 +485,7 @@ export class StockComponent implements OnInit {
       this.recommendStockItem.measurement = '';
       this.itemAmountsData = []
     }
-   
+
   }
 
 
@@ -543,7 +543,7 @@ export class StockComponent implements OnInit {
     this.getAllCustomers();
     await this.getUserAllowedWH();
     if (this.route.queryParams) {
-      if(this.route.snapshot.queryParams.componentN) this.filterByComponentN(this.route.snapshot.queryParams.componentN)
+      if (this.route.snapshot.queryParams.componentN) this.filterByComponentN(this.route.snapshot.queryParams.componentN)
     }
     this.getColor(new Date);
     this.numberSearchInput.nativeElement.focus()
@@ -624,26 +624,26 @@ export class StockComponent implements OnInit {
       if (that.stockType == 'component') {
 
         for (let i = 0; i < that.components.length; i++) {
-          
-            line = {
-              'מספר פריט': that.components[i].componentN,
-              'מק"ט פריט אצל הספק': that.components[i].componentNs,
-              'שם הפריט': that.components[i].componentName,
-              'סוג פריט': that.components[i].componentType,
-              'כמות': that.components[i].amount,
-              'כמות מוקצת': that.components[i].alloAmount,
-              '1מחיר':that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].price : '',
-              'מטבע1': that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].coin : '',
-              'מחיר2':that.components[i].alternativeSuppliers[1] ? that.components[i].alternativeSuppliers[1].price  : '',
-              'מטבע2': that.components[i].alternativeSuppliers[1] ?  that.components[i].alternativeSuppliers[1].coin : '',
-              'מחיר3':that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].price  : '',
-              'מטבע3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].coin : '',
-              'קישור לתמונה': that.components[i].img
-  
-            }
-            arr.push(line)
-        
-         
+
+          line = {
+            'מספר פריט': that.components[i].componentN,
+            'מק"ט פריט אצל הספק': that.components[i].componentNs,
+            'שם הפריט': that.components[i].componentName,
+            'סוג פריט': that.components[i].componentType,
+            'כמות': that.components[i].amount,
+            'כמות מוקצת': that.components[i].alloAmount,
+            '1מחיר': that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].price : '',
+            'מטבע1': that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].coin : '',
+            'מחיר2': that.components[i].alternativeSuppliers[1] ? that.components[i].alternativeSuppliers[1].price : '',
+            'מטבע2': that.components[i].alternativeSuppliers[1] ? that.components[i].alternativeSuppliers[1].coin : '',
+            'מחיר3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].price : '',
+            'מטבע3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].coin : '',
+            'קישור לתמונה': that.components[i].img
+
+          }
+          arr.push(line)
+
+
         }
         resolve(arr);
       } else if (that.stockType == 'product') {
@@ -660,76 +660,101 @@ export class StockComponent implements OnInit {
       } else if (that.stockType == 'material') {
         for (let i = 0; i < that.components.length; i++) {
 
-            line = {
-              'מספר פריט': that.components[i].componentN,
-              'שם החו"ג': that.components[i].componentName,
-              'כמות ': that.components[i].amount,
-              '1מחיר':that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].price : '',
-              'מטבע1': that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].coin : '',
-              'מחיר2':that.components[i].alternativeSuppliers[1] ? that.components[i].alternativeSuppliers[1].price  : '',
-              'מטבע2': that.components[i].alternativeSuppliers[1] ?  that.components[i].alternativeSuppliers[1].coin : '',
-              'מחיר3':that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].price  : '',
-              'מטבע3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].coin : '',
-            }
-            arr.push(line)
-          
+          line = {
+            'מספר פריט': that.components[i].componentN,
+            'שם החו"ג': that.components[i].componentName,
+            'כמות ': that.components[i].amount,
+            '1מחיר': that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].price : '',
+            'מטבע1': that.components[i].alternativeSuppliers[0] ? that.components[i].alternativeSuppliers[0].coin : '',
+            'מחיר2': that.components[i].alternativeSuppliers[1] ? that.components[i].alternativeSuppliers[1].price : '',
+            'מטבע2': that.components[i].alternativeSuppliers[1] ? that.components[i].alternativeSuppliers[1].coin : '',
+            'מחיר3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].price : '',
+            'מטבע3': that.components[i].alternativeSuppliers[2] ? that.components[i].alternativeSuppliers[2].coin : '',
+          }
+          arr.push(line)
+
         }
         resolve(arr);
       }
     });
   }
 
-  updateSupplierDetails() {
-
-    ;
-
-    var obj = {
-      id: this.resMaterial._id,
-      supplierName: this.supplierName.nativeElement.value,
-      price: this.price.nativeElement.value,
-      coin: this.coin.nativeElement.value,
-      // coinLoading: this.coinLoading.nativeElement.value,
-      priceLoading: this.priceLoading.nativeElement.value,
-      manufacturer: this.manufacturer.nativeElement.value,
-      alternativeMaterial: this.alternativeMaterial.nativeElement.value,
-      alterName: this.alterName.nativeElement.value,
-      packageWeight: this.packageWeight.nativeElement.value,
-      country: '',
-      expectedArrival: ''
+  updateSupplierDetails(component?) {
+    debugger
+    var obj;
+    if (component) {
+      obj = {
+        id: this.resCmpt._id,
+        supplierName: this.supplierName.nativeElement.value,
+        price: this.price.nativeElement.value,
+        coin: this.coin.nativeElement.value,
+        // coinLoading: this.coinLoading.nativeElement.value,
+        priceLoading: this.priceLoading.nativeElement.value,
+        manufacturer: this.manufacturer.nativeElement.value,
+        alterName: this.alterName.nativeElement.value,
+        packageWeight: this.packageWeight.nativeElement.value,
+        country: '',
+        expectedArrival: ''
+      }
     }
-    if (this.resMaterial._id != undefined) {
-      obj.country = this.country.nativeElement.value;
-      obj.expectedArrival = this.expectedArrival.nativeElement.value;
+    else {
+      obj = {
+        id: this.resMaterial._id,
+        supplierName: this.supplierName.nativeElement.value,
+        price: this.price.nativeElement.value,
+        coin: this.coin.nativeElement.value,
+        // coinLoading: this.coinLoading.nativeElement.value,
+        priceLoading: this.priceLoading.nativeElement.value,
+        manufacturer: this.manufacturer.nativeElement.value,
+        alternativeMaterial: this.alternativeMaterial.nativeElement.value,
+        alterName: this.alterName.nativeElement.value,
+        packageWeight: this.packageWeight.nativeElement.value,
+        country: '',
+        expectedArrival: ''
+      }
+    }
+
+    if (component) {
+      if (this.resCmpt._id != undefined) {
+        obj.country = this.country ? this.country.nativeElement.value : '';
+        obj.expectedArrival = this.expectedArrival ? this.expectedArrival.nativeElement.value: '';
+      }
+    }
+
+    else {
+      if (this.resMaterial._id != undefined) {
+        obj.country = this.country ? this.country.nativeElement.value : '';
+        obj.expectedArrival = this.expectedArrival ? this.expectedArrival.nativeElement.value: '';
+      }
     }
 
     if (obj.id == undefined || obj.id == null || obj.id == '') {
       obj.id = this.resCmpt._id
     }
+
     this.inventoryService.updateSupplier(obj).subscribe(data => {
-
       if (data) {
+        var supplier;
         var updatedSupplier = data.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
-        var supplier = this.resMaterial.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
-        if (supplier == undefined || supplier == null) {
-          var supplier = this.resCmpt.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
+        if(component) supplier = this.resCmpt.alternativeSuppliers.find(s => s.supplierName == obj.supplierName); 
+        else supplier = this.resMaterial.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
+        if(!supplier) this.toastSrv.error("Can't change supplier name. Please delete supplier and add new.")
+        else {
+          supplier.supplierName = updatedSupplier.supplierName
+          supplier.price = updatedSupplier.price
+          supplier.coin = updatedSupplier.coin
+          supplier.priceLoading = updatedSupplier.priceLoading
+          supplier.country = updatedSupplier.country
+          supplier.expectedArrival = updatedSupplier.expectedArrival
+          supplier.manufacturer = updatedSupplier.manufacturer
+          supplier.alternativeMaterial = updatedSupplier.alternativeMaterial
+          supplier.alterName = updatedSupplier.alterName
+          supplier.packageWeight = updatedSupplier.packageWeight
+          this.updateSupplier = false;
+          this.editSuppliers('')
+          this.toastSrv.success('ספק עודכן בהצלחה !')
         }
-        supplier.supplierName = updatedSupplier.supplierName
-        supplier.price = updatedSupplier.price
-        supplier.coin = updatedSupplier.coin
-        // supplier.coinLoading = updatedSupplier.coinLoading
-        supplier.priceLoading = updatedSupplier.priceLoading
-        supplier.country = updatedSupplier.country
-        supplier.expectedArrival = updatedSupplier.expectedArrival
-        supplier.manufacturer = updatedSupplier.manufacturer
-        supplier.alternativeMaterial = updatedSupplier.alternativeMaterial
-        supplier.alterName = updatedSupplier.alterName
-        supplier.packageWeight = updatedSupplier.packageWeight
-        this.updateSupplier = false;
-        this.editSuppliers('')
-        this.toastSrv.success('ספק עודכן בהצלחה !')
-
       }
-
     })
   }
 
@@ -801,22 +826,22 @@ export class StockComponent implements OnInit {
   }
 
 
-  getStockItemByNumber(ev){
-    if(ev.target.value != ''){
+  getStockItemByNumber(ev) {
+    if (ev.target.value != '') {
       //get existing amounts of and locations on shelfs
-      this.inventoryService.getAmountOnShelfs(ev.target.value).subscribe(async res => { 
+      this.inventoryService.getAmountOnShelfs(ev.target.value).subscribe(async res => {
         this.itemAmountsData = res.data;
-        this.itemAmountsWh = res.whList; 
-      }); 
+        this.itemAmountsWh = res.whList;
+      });
 
-      this.inventoryService.getCmptByitemNumber(ev.target.value).subscribe(data=>{
-      if(data){
-        this.recommendStockItem.name = data[0].componentName
-        if(data[0].itemType = 'material'){
-          if(data[0].threatment) this.recommendStockItem.threatment = data[0].threatment
+      this.inventoryService.getCmptByitemNumber(ev.target.value).subscribe(data => {
+        if (data) {
+          this.recommendStockItem.name = data[0].componentName
+          if (data[0].itemType = 'material') {
+            if (data[0].threatment) this.recommendStockItem.threatment = data[0].threatment
 
+          }
         }
-      }
       })
     }
   }
@@ -824,7 +849,7 @@ export class StockComponent implements OnInit {
 
   sendRecommandation() {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(re.test(String(this.newPurchaseRecommendation.controls.mail.value).toLowerCase())) {
+    if (re.test(String(this.newPurchaseRecommendation.controls.mail.value).toLowerCase())) {
       this.newPurchaseRecommendation.controls.user.setValue(this.authService.loggedInUser.userName);
       this.inventoryService.addNewRecommendation(this.newPurchaseRecommendation.value).subscribe(data => {
         // this.inventoryService.onNewRecommend(this.recommandPurchase);
@@ -833,7 +858,7 @@ export class StockComponent implements OnInit {
           this.newPurchaseRecommendModal = false;
           this.newPurchaseRecommendation.reset();
           this.newPurchaseRecommendation.controls.stockitems.setValue([])
-          alert('מספר הבקשה: '+ data.recommendNumber);
+          alert('מספר הבקשה: ' + data.recommendNumber);
         }
       })
     }
@@ -891,9 +916,8 @@ export class StockComponent implements OnInit {
         let matchedComponent = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
         if (this.componentsAmount.find(elem => elem._id == cmpt.componentN)) {
           cmpt.amount = matchedComponent.total;
-          if(cmpt.itemType!="material")
-          {
-            cmpt.amount= Math.round(cmpt.amount);
+          if (cmpt.itemType != "material") {
+            cmpt.amount = Math.round(cmpt.amount);
           }
         }
         if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
@@ -942,27 +966,27 @@ export class StockComponent implements OnInit {
   }
 
   createNewQAPallet() {
-    
-    let amountToReduce = this.newQApallet.floorNumber*this.newQApallet.kartonQuantity*this.newQApallet.unitsInKarton;
-    if(this.newQApallet.lastFloorQuantity > 0){
-      amountToReduce = amountToReduce+(this.newQApallet.lastFloorQuantity*this.newQApallet.unitsInKarton);
+
+    let amountToReduce = this.newQApallet.floorNumber * this.newQApallet.kartonQuantity * this.newQApallet.unitsInKarton;
+    if (this.newQApallet.lastFloorQuantity > 0) {
+      amountToReduce = amountToReduce + (this.newQApallet.lastFloorQuantity * this.newQApallet.unitsInKarton);
     }
-    if(this.newQApallet.unitsQuantityPartKarton > 0){
+    if (this.newQApallet.unitsQuantityPartKarton > 0) {
       amountToReduce = amountToReduce + this.newQApallet.unitsQuantityPartKarton
     }
-    if(this.newQApallet.shelfAmount < amountToReduce){
+    if (this.newQApallet.shelfAmount < amountToReduce) {
       this.toastSrv.error('שים לב , כמות מדף קטנה מהכמות שאתה מבקש למשוך')
     } else {
       this.newQApallet.itemNumber = this.resCmpt.componentN
       this.formService.createNewQaPallet(this.newQApallet).subscribe(data => {
-      if(data){
-        this.toastSrv.success('הועבר לרשימת פריטים בהצלחה !')
-        this.currShelf.amount -= amountToReduce
-        this.getAmountsFromShelfs();
-      }
+        if (data) {
+          this.toastSrv.success('הועבר לרשימת פריטים בהצלחה !')
+          this.currShelf.amount -= amountToReduce
+          this.getAmountsFromShelfs();
+        }
       })
     }
-   
+
   }
 
   getAllCmptTypesAndCategories() {
@@ -1290,29 +1314,29 @@ export class StockComponent implements OnInit {
   getLastOrdersItem(numOfOrders, type) {
     this.fetchingOrders = true;
     let componentN;
-    switch(type) {
+    switch (type) {
       case 'material': componentN = this.resMaterial.componentN
-      break;
+        break;
       case 'component': componentN = this.resCmpt.componentN
     }
-    this.procuretServ.getLastOrdersForItem(componentN , numOfOrders).subscribe(orders=> {
+    this.procuretServ.getLastOrdersForItem(componentN, numOfOrders).subscribe(orders => {
       this.fetchingOrders = false;
-      if(orders && orders.length > 0) {
+      if (orders && orders.length > 0) {
         orders.map(order => {
-          if(order.coin) order.coin = order.coin.toUpperCase()
-          if(order.price) order.localPrice = order.price * this.currencies[order.coin]
+          if (order.coin) order.coin = order.coin.toUpperCase()
+          if (order.price) order.localPrice = order.price * this.currencies[order.coin]
           return order
         })
         this.lastOrdersOfItem = orders;
-      } 
+      }
       else this.lastOrdersOfItem = [
-        {orderNumber: 'Sorry.', price: 'There', coin: 'are no', supplierName: 'orders', quantity: 'for this', date: 'item.'}
+        { orderNumber: 'Sorry.', price: 'There', coin: 'are no', supplierName: 'orders', quantity: 'for this', date: 'item.' }
       ]
-      })
+    })
   }
 
   filterComponents() {
-   console.log('filter parameters: ',this.filterParams.value)
+    console.log('filter parameters: ', this.filterParams.value)
     this.smallLoader = true;
     let query = this.filterParams.value
     query.itemType = this.stockType
@@ -1322,7 +1346,7 @@ export class StockComponent implements OnInit {
       this.smallLoader = false
       if (this.components.length > 0) {
         this.getAmountsFromShelfs();
-        this.components.map(c=>this.getItemPurchases(c))
+        this.components.map(c => this.getItemPurchases(c))
       } else {
         this.toastSrv.error('Item does not exist')
       }
@@ -1380,9 +1404,9 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.getLastOrdersItem(10, 'component')
-    // this.resCmpt.finalPrice = this.resCmpt.shippingPrice ? Number(this.resCmpt.price) + Number(this.resCmpt.shippingPrice) : this.resCmpt.price
-    // this.loadComponentItems();
-    ;
+      // this.resCmpt.finalPrice = this.resCmpt.shippingPrice ? Number(this.resCmpt.price) + Number(this.resCmpt.shippingPrice) : this.resCmpt.price
+      // this.loadComponentItems();
+      ;
     if (this.resCmpt.jumpRemark == "" || this.resCmpt.jumpRemark == undefined) {
       console.log("ok")
     } else {
@@ -1451,7 +1475,7 @@ export class StockComponent implements OnInit {
   async openDataMaterial(materNum) {
 
     this.materialArrivals = []
-    
+
     this.materialArrivals = []
     this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data => {
       if (data) {
@@ -1463,23 +1487,23 @@ export class StockComponent implements OnInit {
           if (data[i].arrivalDate >= dateFrom.toISOString() && data[i].arrivalDate <= dateTo.toISOString()) {
             totalQnt += data[i].totalQnt
           }
-          
+
         }
         if (totalQnt + data[0].mesureType != null || totalQnt + data[0].mesureType != undefined) {
           this.totalQuantity = totalQnt + data[0].mesureType
         }
         this.materialArrivals = data;
       }
-      
+
     })
-    
+
     this.showItemDetails = true;
     this.itemmoveBtnTitle = "Item movements";
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + materNum;
     this.openModal = true;
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
-    this.getLastOrdersItem(10, 'material')  
+    this.getLastOrdersItem(10, 'material')
     // this.resMaterial.finalPrice = this.resMaterial.shippingPrice ? Number(this.resMaterial.price) + Number(this.resMaterial.shippingPrice) : this.resMaterial.price
 
     this.linkDownload = "http://peerpharmsystem.com/material/getpdf?_id=" + this.resMaterial._id;
@@ -1862,17 +1886,17 @@ export class StockComponent implements OnInit {
 
   getProductsWithItem() {
     this.gettingProducts = true;
-    this.inventoryService.getAllProductsWithItem(this.resCmpt.componentN).subscribe(response=>{
+    this.inventoryService.getAllProductsWithItem(this.resCmpt.componentN).subscribe(response => {
       this.gettingProducts = false;
-      if(response.allProductsWithItem) this.resCmpt.connectedProducts = response.allProductsWithItem
+      if (response.allProductsWithItem) this.resCmpt.connectedProducts = response.allProductsWithItem
     })
   }
 
   async getUser() {
     debugger
-      if (this.authService.loggedInUser.authorization.includes("updateStock")) {
-        this.allowUserEditItem = true;
-      }
+    if (this.authService.loggedInUser.authorization.includes("updateStock")) {
+      this.allowUserEditItem = true;
+    }
 
     if (this.authService.loggedInUser.userName == 'SHARK' || this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'martha') {
       this.showDeleteBtn = true
@@ -2329,19 +2353,19 @@ export class StockComponent implements OnInit {
         //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
         //    }
         //  }
-       data.forEach(component => {
+        data.forEach(component => {
           if (component.movementType) {
             component.originShelfQntBefore = component.originShelfQntBefore - Math.abs(component.amount)
           }
-          if(component.movementType == 'out'){
-            if(component.movementDate > beforeOneYear.toISOString()){
+          if (component.movementType == 'out') {
+            if (component.movementDate > beforeOneYear.toISOString()) {
               sumOutMovements += component.amount
             }
           }
         });
 
-        
-        
+
+
         this.lastYearOutAmount = sumOutMovements
         this.itemMovements = data;
         this.loadingMovements = false;

@@ -37,6 +37,11 @@
     <button class="btn btn-primary" (click)="filterByMaterial(material.value)">Search Material</button>
   </div>
   <div class="col-2">
+    <select class="form-control" (change)="filterApproved($event)">
+      <option value="all">All Formules</option>
+      <option value="approved">Approved</option>
+      <option value="notApproved">Not Approved</option>
+    </select>
   </div>
   <div class="col-1">
     <!-- <input [(ngModel)]="quantityCheck" type="number" class="form-control" placeholder="Amount"> -->

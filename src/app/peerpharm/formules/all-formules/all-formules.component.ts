@@ -533,6 +533,22 @@ export class AllFormulesComponent implements OnInit {
       .filter(formule => formule.formuleName.toLowerCase().includes(formuleName))
   }
 
+  filterApproved(e){
+    let filterV = e.target.value
+    switch (filterV) {
+      case "all":
+        this.allFormules = this.allFormulesCopy
+        break;
+      case "approved":
+        this.allFormules = this.allFormulesCopy.filter(f=>f.approval == 1)
+        break;
+      case "notApproved":
+        this.allFormules = this.allFormulesCopy.filter(f=>f.approval != 1 || !f.approval)
+        break;
+    }
+    
+  }
+
 
   getFormulePrice(formule) {
     ;
