@@ -47,8 +47,8 @@ export class ScheduleService {
     
     return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()))
   }
-  setMpkDone(scheduleId): Observable<any> {
-    let url = this.baseUrl + "mkpSchedule/setMpkDone";
+  markScheduleDone(scheduleId): Observable<any> {
+    let url = this.baseUrl + "mkpSchedule/setScheduleDone";
     
     return this.http.post(url, JSON.stringify({scheduleId}), this.options).pipe(map(res => res.json()))
   }
