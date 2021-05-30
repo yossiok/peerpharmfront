@@ -737,9 +737,9 @@ export class ScheduleComponent implements OnInit {
     ].cmptsStatus = 'true';
   }
 
-  markMkpDone(id) {
-    ;
-    this.scheduleService.setMpkDone(id).subscribe(data => {
+  markScheduleDone(id) {
+    
+    this.scheduleService.markScheduleDone(id).subscribe(data => {
       if (data) {
         let schedule = this.scheduleData.find(s => s._id == id);
         schedule.status = data.status;

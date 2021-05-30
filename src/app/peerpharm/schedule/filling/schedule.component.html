@@ -355,7 +355,7 @@
                   (click)="openPrintBarkod(content, line)" [disabled]="openingPrintModal" [style.cursor]="openingPrintModal ? 'not-allowed' : 'pointer'">
                   Print Barcode
                 </button>
-                <i *ngIf="typeShown === 'mkp2'" (click)="markMkpDone(line._id)" class="fa fa-check"></i>
+                <i *ngIf="typeShown === 'mkp2' || typeShown ==='packaging' || typeShown ==='unpacked' " (click)="markScheduleDone(line._id)" class="fa fa-check"></i>
               </td>
               <td *ngIf="line._id === EditRowId">
                 <i class="ti-save text-info m-r-10" (click)="updateSchedule()"></i>
