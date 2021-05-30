@@ -99,19 +99,16 @@ export class NewBatchComponent implements OnInit {
       if(justStickers) {
         // just print stickers
         if (confirm("בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?")){
-          this.batchService.addBatch({}).subscribe(data => {
-            if (data) {
-              this.printBtn.nativeElement.click();
-              this.newBatchForm.reset()
-              this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-              this.allStickers = [];
-              this.getLastBatch();
-            }
-          })
+              setTimeout(()=>{
+                this.printBtn.nativeElement.click();
+                this.newBatchForm.reset()
+                this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                this.allStickers = [];
+              },2000)
         }
     
       }
-      // add batch AND REDUCE AMOUNTS
+      // add batch AND REDUCE AMOUNTS!!!
       else {
         if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")){
           this.disableButton = true
