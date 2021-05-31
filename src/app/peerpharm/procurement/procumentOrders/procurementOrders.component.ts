@@ -111,8 +111,8 @@ export class ProcurementOrdersComponent implements OnInit {
   gbpSymbol: string = '\u00A3'
   loadingRecommendations: boolean;
   arrivalDate: any;
-  // users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
-  users: any;
+  users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
+
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
