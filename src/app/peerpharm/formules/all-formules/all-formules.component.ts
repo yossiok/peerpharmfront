@@ -115,6 +115,7 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('formuleNumber') formuleNumber: ElementRef;
   @ViewChild('formuleImpRemarks') formuleImpRemarks: ElementRef;
   @ViewChild('formuleName') formuleName: ElementRef;
+  @ViewChild('formuleCategory') formuleCategory: ElementRef;
   @ViewChild('formulePhFrom') formulePhFrom: ElementRef;
   @ViewChild('formulePhTo') formulePhTo: ElementRef;
   @ViewChild('formuleClient') formuleClient: ElementRef;
@@ -385,9 +386,9 @@ export class AllFormulesComponent implements OnInit {
       // if(this.formuleParent.nativeElement.value){
       //   currdoc.parent = this.formuleParent.nativeElement.value.trim();
       // }
-      // if(this.formuleCategory.nativeElement.value){
-      //   currdoc.parentName = this.formuleCategory.nativeElement.value.trim();
-      // }
+      if(this.formuleCategory.nativeElement.value){
+        currdoc.formuleCategory = this.formuleCategory.nativeElement.value.trim();
+      }
       if (this.formuleImpRemarks.nativeElement.value != null) {
         currdoc.impRemarks = this.formuleImpRemarks.nativeElement.value.trim();
       }

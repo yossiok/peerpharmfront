@@ -104,6 +104,29 @@ export class WeightProductionComponent implements OnInit {
     };
   }
 
+  formuleOneCalculate(data){
+    
+    data.phases.forEach(phase => {
+      phase.items.forEach(item => {
+        item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
+      });
+    });
+
+    return data
+  }
+
+  formuleTwoCalculate(data){
+    
+    data.phases.forEach(phase => {
+      phase.items.forEach(item => {
+        item.kgProd = Number(this.formuleWeight2) * (Number(item.percentage) / 100)
+      });
+    });
+
+    return data
+
+  }
+
   getFormuleByNumber() {
 
     if (this.formuleNumber != '' && this.formuleWeight != '') {
@@ -114,31 +137,16 @@ export class WeightProductionComponent implements OnInit {
       //splitted formule
       if(this.formuleWeight2 && this.formuleWeight2 != '') {
         this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
-          //let data2 = Object.create(data);
-          // let data2 = { phases: [] };
-          var data2 = {...data}
+  
+          let copyData = JSON.parse(JSON.stringify(data))
+          let copyData2 = JSON.parse(JSON.stringify(data))
+  
+          let formule1 = this.formuleOneCalculate(copyData);
+          let formule2 = this.formuleTwoCalculate(copyData2);
 
-          // data.phases.forEach(phase => {
-          //   data2.phases.push({...phase})
-          // })
+          this.currentFormule = formule1
+          this.currentFormule2 = formule2
 
-          // let data2 = {...data}
-          // let data2 = Object.assign({}, data)
-          data.phases.forEach(phase => {
-            phase.items.forEach(item => {
-              item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
-            });
-          });
-
-          this.currentFormule = data;
-
-          data2.phases.forEach(phase => {
-            phase.items.forEach(item => {
-              item.kgProd = Number(this.formuleWeight2) * (Number(item.percentage) / 100)
-            });
-          });
-          this.currentFormule2 = data2;
-          
         })
       }
 

@@ -61,6 +61,7 @@
       <td>Formule Number</td>
       <td>Name</td>
       <td>Remarks</td>
+      <td>Category</td>
       <td>Materials</td>
       <td>PH</td>
       <!-- <td>Formule Category</td> -->
@@ -107,7 +108,13 @@
       <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
         <textarea #formuleImpRemarks type="text" [value]="formule.impRemarks"></textarea>
       </td>
-      
+
+      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+        {{ formule.formuleCategory }}
+      </td>
+      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+        <input #formuleCategory type="text" [value]="formule.formuleCategory" />
+      </td>
       <td>
         <span *ngFor="let phase of formule.phases">
           <span *ngFor="let item of phase.items">
