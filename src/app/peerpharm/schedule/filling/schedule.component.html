@@ -321,6 +321,8 @@
                   (change)="handleChange('stickers')" />Stickers<br />
                 <input type="radio" name="typeEdit" #mkpA value="mkp2" [checked]="line.mkp === 'mkp2'"
                   (change)="handleChange('mkp2')" />Mkp2<br />
+                <input type="radio" name="typeEdit" #mkpA value="unpacked" [checked]="line.mkp === 'unpacked'"
+                  (change)="handleChange('unpacked')" />Unpacked<br />
               </td>
               <td *ngIf="line._id !== EditRowId">
                 <img src="assets/images/an.png" *ngIf="

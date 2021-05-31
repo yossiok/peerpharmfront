@@ -114,7 +114,7 @@ export class NewBatchComponent implements OnInit {
           this.disableButton = true
           this.toastSrv.info("Adding Batch. Please wait...")
           this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
-            if (data) {
+            if (data.msg = 'succsess') {
               this.printBtn.nativeElement.click();
               this.toastSrv.success('באטצ נוסף בהצלחה !')
               this.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value,this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value)

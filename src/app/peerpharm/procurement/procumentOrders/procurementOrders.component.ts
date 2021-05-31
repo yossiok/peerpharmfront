@@ -381,13 +381,15 @@ export class ProcurementOrdersComponent implements OnInit {
 
   filterByStatus(ev) {
     var status = ev.target.value;
-    if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
-    else  this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
+    if(status == 'open') this.procurementData = this.procurementDataCopy.filter(p => p.status == status || p.status == 'supplied')
+    else if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
+    else this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
 
   }
 
   filterByUserName(ev){
     var userName = ev.target.value;
+    if(userName == 'all') this.procurementData = this.procurementDataCopy
     this.procurementData = this.procurementDataCopy.filter(p => p.user == userName)
   }
 
@@ -414,6 +416,25 @@ export class ProcurementOrdersComponent implements OnInit {
   //   }
   // }
 
+  hebStat(engStat) {
+    switch (engStat) {
+      case 'approvedBySupplier': return 'approved'
+      case 'waitingForApproval': return 'waiting approval'
+      case 'open': return 'open'
+      case 'closed': return 'closed'
+      case 'supplied': return 'supplied'
+    }
+  }
+
+  setStatusColor(status) {
+    switch(status) {
+      case 'open': return ''
+      case 'closed': return 'brown'
+      case 'waitingForApproval': return 'orange'
+      case 'approvedBySupplier': return 'lightgreen'
+      // case 'supplied': return 'lightgreen'
+    }
+  }
 
   editRemarks(orderNumber) {
     ;

@@ -281,7 +281,6 @@ export class OrderdetailsComponent implements OnInit {
         // Getting All OrderItems!
         this.showingAllOrders = true;
         this.loadData = true;
-        debugger
         this.orderService.getOpenOrdersItems().subscribe(async orders => {
           this.loadData = false;
           this.multi = true;
@@ -1598,6 +1597,12 @@ export class OrderdetailsComponent implements OnInit {
           let i = this.ordersItems.filter(x => x.itemNumber == item.itemNumber)[0];
           item.quantity = parseInt(i.quantity);
           item.itemName = i.discription;
+
+          this.inventoryService.getComponentAmount(item.itemNumber).subscribe(data=>{
+            let i = 0;
+            data.map(chunk => i += chunk.amount)
+            item.currStock = i
+          })
 
           if (item.bottleNumber != '' && item.bottleNumber != '---') {
 

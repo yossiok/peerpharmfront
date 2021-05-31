@@ -236,6 +236,7 @@
               placeholder="Item Number"
               (change)="fillMaterialName($event)"
               type="text"
+              required
             />
           </td>
           <td style="width: 10%;">
@@ -302,11 +303,11 @@
                   <tr [draggable] = draggable *ngFor="let item of phase.items; let i = index"  style="cursor: move; border:10px solid #f0f0f0" (dragstart)="startItemDrag($event)"  (dragleave)="stopItemDrag($event)" 
                    [attr.data-phase]="phase.phaseName"  [attr.data-itemnumber]="item.itemNumber">
                     <td style="width: 10%;">{{ phase.phaseName }}</td>
-                    <td *ngIf="item.itemNumber !== EditRowId">
+                    <td *ngIf="item.itemNumber && item.itemNumber !== EditRowId">
                       {{ phase.remarks }}
                     </td>
                     <td style="width: 10%;"
-                      *ngIf="item.itemNumber === EditRowId && phase.phaseName == EditPhase"
+                      *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase"
                       (click)="edit(item.itemNumber,phase.phaseName)"
                     >
                       <textarea
@@ -325,13 +326,13 @@
                     <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;">{{ item.itemNumber }}</td>
                     <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;">{{ item.itemName }}</td>
                     <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;"
-                      *ngIf="item.itemNumber !== EditRowId"
+                      *ngIf="item.itemNumber && item.itemNumber !== EditRowId"
                       (click)="edit(item.itemNumber,phase.phaseName)"
                     >
                       {{ item.percentage }}
                     </td>
                     <td style="width: 10%;"
-                      *ngIf="item.itemNumber === EditRowId && phase.phaseName == EditPhase"
+                      *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase"
                      
                     >
                       <input
@@ -341,14 +342,14 @@
                       />
                     </td>
                     <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"  style="width: 10%;"
-                      *ngIf="item.itemNumber !== EditRowId"
+                      *ngIf="item.itemNumber && item.itemNumber !== EditRowId"
                       (click)="edit(item.itemNumber,phase.phaseName)"
                     >
                       {{ item.remarks }}
                     </td>
                   
                     <td style="width: 10%;"
-                      *ngIf="item.itemNumber === EditRowId && phase.phaseName == EditPhase"
+                      *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase"
                       
                     >
                       <input
@@ -357,7 +358,7 @@
                         type="text"
                       />
                     </td>
-                    <td *ngIf="item.itemNumber === EditRowId">
+                    <td *ngIf="item.itemNumber && item.itemNumber === EditRowId">
                       <i
                         class="ti-save"
                         (click)="
@@ -370,7 +371,7 @@
                         "
                       ></i>
                     </td>
-                    <td *ngIf="item.itemNumber != EditRowId"><img style="width:30px;" (click)="deleteItemFromFormule(item.itemNumber, j, i)" src="../../../../assets/images/deleteBtn.png"></td>
+                    <td *ngIf="item.itemNumber && item.itemNumber != EditRowId"><img style="width:30px;" (click)="deleteItemFromFormule(item.itemNumber, j, i)" src="../../../../assets/images/deleteBtn.png"></td>
                   </tr>
 
                 </table>

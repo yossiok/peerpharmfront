@@ -66,11 +66,12 @@
             <div class="col-1">
               חפש לפי סטטוס <select (change)="filterByStatus($event)" class="form-control rounded-pill">
                 <option selected="true" disabled="disabled">בחר סטטוס</option>
-                <option value="allOrders">כל ההזמנות</option>
-                <option value="open">פתוחות</option>
-                <option value="closed">סגורות</option>
-                <option value="waitingForApproval">ממתינות לאישור</option>
-                <option value="approvedBySupplier">מאושרות</option>
+                <option value="allOrders">all</option>
+                <option value="open">open</option>
+                <option value="closed">closed</option>
+                <!-- <option value="supplied">supplied</option> -->
+                <option value="waitingForApproval">waiting approval</option>
+                <option value="approvedBySupplier">approved</option>
               </select>
             </div>
             <div class="col-2">
@@ -112,6 +113,7 @@
             <div class="col-1">
               חפש לפי שם משתמש <select (change)="filterByUserName($event)" class="form-control rounded-pill">
                 <option selected="true" disabled="disabled">בחר משתמש</option>
+                <option selected="true" [value]="all" >All</option>
                 <option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</option>
               </select>
             </div>
@@ -162,8 +164,7 @@
                 </tr>
               </thead>
               <tbody id="table_body">
-                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"  *ngFor="let line of procurementData; let i = index" 
-                  [style.background]="line.status == 'waitingForApproval' ? 'orange' : ''">
+                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"  *ngFor="let line of procurementData; let i = index">
                   <td>{{i+1}}</td>
                   <td class="click" (click)="viewOrderDetails(i)" style="cursor: pointer;"><span
                       style="color:blue;">{{line.orderNumber}}</span>
@@ -181,7 +182,7 @@
                   <td *ngIf="EditRowId == line.orderNumber">
                     <textarea [value]="line.remarks" #purchaseRemarks></textarea>
                   </td>
-                  <td><label class="form-control">{{line.status}}</label></td>
+                  <td [style.background]="setStatusColor(line.status)"><label>{{hebStat(line.status)}}</label></td>
                   <td><button class="btn btn-primary" (click)="printOrder(line)">Print</button></td>
                   <td>{{line.user}}</td>
                 </tr>
