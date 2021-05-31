@@ -122,7 +122,6 @@ export class QaPalletsComponent implements OnInit {
   deleteQAPallet(id) {
     if (confirm('האם לסגור משטח זה ?')) {
       this.formService.deletePalletById(id).subscribe(data => {
-        ;
         if (data) {
           this.allQaPallets = this.allQaPallets.filter(p => p._id != data._id)
         }
@@ -134,7 +133,7 @@ export class QaPalletsComponent implements OnInit {
   exportAsXLSX(packList){
 debugger
     const sortOrder = [
-      'itemNumber', 'itemName', 'orderNumber', 'batchNumber', 'fullKartons', 'unitsInKarton',
+      'itemNumber', 'itemName', 'orderNumber', 'orderAmount', 'batchNumber', 'fullKartons', 'unitsInKarton',
       'unitsQuantityPartKarton', 'palletWeight', 'palletSize', 'unitsToCombine',    
     ]
 
@@ -146,6 +145,7 @@ debugger
           itemNumber: line.itemNumber,
           itemName: line.itemName,
           orderNumber: line.orderNumber,
+          orderAmount: line.orderAmount,
           batchNumber: line.batchNumber,
           fullKartons: line.fullKartons,
           unitsInKarton: line.unitsInKarton,
@@ -154,7 +154,6 @@ debugger
           palletSize: pallet.palletSize,
           kartonQuantity: line.kartonQuantity,
           lastFloorQuantity: line.lastFloorQuantity,
-          orderAmount: line.orderAmount,
           unitsToCombine: line.unitsToCombine
         })
       }
@@ -728,7 +727,6 @@ debugger
   }
 
   openProductForm(packlist, language) {
-    ;
     this.currPLNumber = packlist.packListNumber
     this.selectedArr = packlist.pallets
 

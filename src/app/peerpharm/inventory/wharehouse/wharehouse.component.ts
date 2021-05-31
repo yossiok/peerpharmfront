@@ -752,6 +752,9 @@ debugger
           obj.shell_position_in_whareHouse_Dest = itemLine.destShelf.toUpperCase();
         }
 
+        //נסיון
+        // if(this.dir == "production") obj.actionType = "shelfChange"
+
         this.inventoryUpdateList.push(obj);
 
         if (this.dir == 'production' || this.dir == 'out' || this.dir == 'in') {

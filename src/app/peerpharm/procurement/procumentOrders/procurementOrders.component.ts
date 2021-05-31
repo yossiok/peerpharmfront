@@ -10,6 +10,7 @@ import { ArrayServiceService } from 'src/app/utils/array-service.service';
 import { PurchaseData } from './PurchaseData';
 import { ActivatedRoute } from '@angular/router';
 import { Currencies } from '../Currencies';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -110,6 +111,7 @@ export class ProcurementOrdersComponent implements OnInit {
   gbpSymbol: string = '\u00A3'
   loadingRecommendations: boolean;
   arrivalDate: any;
+  users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -142,10 +144,11 @@ export class ProcurementOrdersComponent implements OnInit {
   constructor(
     private toastr: ToastrService, private procurementservice: Procurementservice, private excelService: ExcelService, private supplierService: SuppliersService,
     private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService, private route: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal, private userService: UsersService
   ) { }
 
   ngOnInit() {
+    this.getAllUsers()
     this.getCurrencies()
     this.getAllPurchaseRecommends();
     this.getAllSuppliers();
@@ -158,6 +161,10 @@ export class ProcurementOrdersComponent implements OnInit {
       this.purchaseRecommendations.push(data)
     })
     this.getAllProcurementOrders();
+  }
+
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe(users => this.users = users)
   }
 
   getCurrencies(): void {
@@ -377,6 +384,11 @@ export class ProcurementOrdersComponent implements OnInit {
     if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
     else  this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
 
+  }
+
+  filterByUserName(ev){
+    var userName = ev.target.value;
+    this.procurementData = this.procurementDataCopy.filter(p => p.user == userName)
   }
 
 

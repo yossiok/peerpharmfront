@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
     let loginfrm = { username: this.username, password: this.password };
     this.auth.login(loginfrm).subscribe((resp) => {
       if (resp) {
-        ;
         if (this.redirectUrl && this.redirectUrl != "") {
           
           this.router.navigate([this.redirectUrl]);

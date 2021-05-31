@@ -604,6 +604,7 @@
             <th style="width:10px" scope="col">פריט</th>
             <th style="width:100px" scope="col">שם פריט</th>
             <th style="width:10px" scope="col">הזמנה</th>
+            <th style="width:10px" scope="col">כמות שהוזמנה</th>
             <th style="width:80px" scope="col">אצווה</th>
             <!-- <th scope="col">Batch</th> -->
             <th style="width:10px" scope="col">מספר קרטונים</th>
@@ -624,6 +625,7 @@
                 {{line.itemNumber}}</td>
               <td>{{line.itemName}}</td>
               <td>{{line.orderNumber}}</td>
+              <td>{{line.orderAmount}}</td>
               <td>{{line.batchNumber}}</td>
               <!-- <td></td> -->
               <td>{{line.fullKartons}}</td>
@@ -674,6 +676,8 @@
             <td style="border:none">QA Signature:_______</td>
             <td style="border:none;width:400px"></td>
             <td style="border:none">Supply Manager:_______</td>
+            <td style="border:none;width:400px"></td>
+            <td style="border:none">Pallets to Charge:_______</td>
           </tr>
         </tbody>
       </table>
@@ -729,6 +733,7 @@
             <th style="width:100px" scope="col">Item Name</th>
 
             <th style="width:10px" scope="col">Order</th>
+            <th style="width:10px" scope="col">Order Amount</th>
             <th style="width:80px" scope="col">Batch</th>
             <th style="width:10px" scope="col">Num' of Cartons</th>
             <th style="width:10px" scope="col">Qty in Carton</th>
@@ -749,6 +754,7 @@
               <td>{{line.itemName}}</td>
               <!-- <td></td> -->
               <td>{{line.orderNumber}}</td>
+              <td>{{line.orderAmount}}</td>
               <td>{{line.batchNumber}}</td>
               <td>{{line.fullKartons}}</td>
               <td>{{line.unitsInKarton}}</td>
@@ -789,6 +795,8 @@
             <td style="border:none">QA Signature:_______</td>
             <td style="border:none;width:400px"></td>
             <td style="border:none">Supply Manager:_______</td>
+            <td style="border:none;width:400px"></td>
+            <td style="border:none">Pallets to Charge:_______</td>
           </tr>
         </tbody>
       </table>

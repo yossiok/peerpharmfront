@@ -19,5 +19,6 @@ export class UserInfo
     formsdisable: boolean;
     authorization:string[];
     screenPermission:string;
+    passExp:Date;
 
 }

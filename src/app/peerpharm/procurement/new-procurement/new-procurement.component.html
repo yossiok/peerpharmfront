@@ -57,7 +57,9 @@
               class="form-control rounded-pill">
               <option selected="true" disabled="disabled">Choose Status</option>
               <option value="approvedBySupplier">אושר על ידי ספק</option>
-              <option value="closed">סגירת הזמנה</option>
+              <option value="waitingForApproval">ממתין לאישור</option>
+              <option value="open">פתוח</option>
+              <option [style.background]="'red'" value="closed">סגירת הזמנה</option>
             </select>
           </div>
           <div class="col-1"></div>
@@ -127,7 +129,6 @@
                     <option value="ml">ml</option>
                     <option value="unit">Unit</option>
                     <option value="ton">טון</option>
-                    <option value="unit">יחידה</option>
                     <option value="box">קופסא</option>
                     </select>
                   </td>

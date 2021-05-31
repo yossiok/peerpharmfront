@@ -63,12 +63,13 @@
 
 
           <div class="row mt-4">
-            <div class="col-2">
+            <div class="col-1">
               חפש לפי סטטוס <select (change)="filterByStatus($event)" class="form-control rounded-pill">
                 <option selected="true" disabled="disabled">בחר סטטוס</option>
                 <option value="allOrders">כל ההזמנות</option>
                 <option value="open">פתוחות</option>
                 <option value="closed">סגורות</option>
+                <option value="waitingForApproval">ממתינות לאישור</option>
                 <option value="approvedBySupplier">מאושרות</option>
               </select>
             </div>
@@ -106,6 +107,12 @@
                 <option value="all">הכל</option>
                 <option value='material'>חומרי גלם</option>
                 <option value='component'>קומפוננטים</option>
+              </select>
+            </div>
+            <div class="col-1">
+              חפש לפי שם משתמש <select (change)="filterByUserName($event)" class="form-control rounded-pill">
+                <option selected="true" disabled="disabled">בחר משתמש</option>
+                <option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</option>
               </select>
             </div>
             <!-- <div class="col-1">
