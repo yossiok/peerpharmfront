@@ -323,6 +323,8 @@
                   (change)="handleChange('mkp2')" />Mkp2<br />
                 <input type="radio" name="typeEdit" #mkpA value="unpacked" [checked]="line.mkp === 'unpacked'"
                   (change)="handleChange('unpacked')" />Unpacked<br />
+                <input type="radio" name="typeEdit" #mkpA value="packaging" [checked]="line.mkp === 'packaging'"
+                  (change)="handleChange('packaging')" />Packaging<br />
               </td>
               <td *ngIf="line._id !== EditRowId">
                 <img src="assets/images/an.png" *ngIf="

@@ -115,11 +115,12 @@ export class WeightProductionComponent implements OnInit {
       if(this.formuleWeight2 && this.formuleWeight2 != '') {
         this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
           //let data2 = Object.create(data);
-          let data2 = { phases: [] };
+          // let data2 = { phases: [] };
+          var data2 = {...data}
 
-          data.phases.forEach(phase => {
-            data2.phases.push({...phase})
-          })
+          // data.phases.forEach(phase => {
+          //   data2.phases.push({...phase})
+          // })
 
           // let data2 = {...data}
           // let data2 = Object.assign({}, data)
@@ -128,7 +129,9 @@ export class WeightProductionComponent implements OnInit {
               item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
             });
           });
+
           this.currentFormule = data;
+
           data2.phases.forEach(phase => {
             phase.items.forEach(item => {
               item.kgProd = Number(this.formuleWeight2) * (Number(item.percentage) / 100)
