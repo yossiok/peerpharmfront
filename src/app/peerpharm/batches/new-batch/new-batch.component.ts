@@ -114,19 +114,19 @@ export class NewBatchComponent implements OnInit {
 
           this.disableButton = true
           this.toastSrv.info("Adding Batch. Please wait...")
-          
+          let con = true
           // reduce materials from itemShells
           this.inventorySrv.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value,this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value, true).subscribe(data => {
+            this.disableButton = false
             if(data == 'Formule Not Found') {
               this.toastSrv.error(data)
+              con = confirm("כמויות לא ירדו מהמלאי. אנא דווח. להוסיף באטצ' בכל זאת?") 
               this.disableButton = false
             } 
-            else if(data.materials && data.updatedShells) {
-              this.toastSrv.success('Amounts reduced. Shelfs updated.')
-
+            if(data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')
+            if(con) {
               // add batch to batches list
               this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
-                this.disableButton = false
                 if (data.msg = 'succsess') {
                   this.printBtn.nativeElement.click();
                   this.toastSrv.success('באטצ נוסף בהצלחה !')
