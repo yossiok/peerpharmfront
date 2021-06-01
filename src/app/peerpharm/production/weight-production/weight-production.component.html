@@ -7,32 +7,43 @@
     </div>
     <div class="col-3"></div>
   </div>
-
-  <div class="row mt-5">
-    <div class="col-5"></div>
-    <div class="col-2">
-      <input id="formuleNumber" #formuleNumberElement [(ngModel)]="formuleNumber" placeholder="Formule Number"
-        class="form-control rounded-pill">
-    </div>
-    <div class="col-5"></div>
-  </div>
   
   <div class="row mt-5">
+    <div class="col-2"></div>
+    <div class="col-4">
+      <button class="btn btn-warning rounded-pill" (click)="addBatch()">
+        Add Batch With Same Formule</button>
+      </div>
+      <div class="col-2">
+        <button class="btn btn-secondary rounded-pill" (click)="resetBatches()">Reset Batches</button>
+      </div>
+      <div class="col-4"></div>
+    </div>
+    
+      <div class="row mt-5">
+        <div class="col-5"></div>
+        <div class="col-2">
+          <input id="formuleNumber" #formuleNumberElement [(ngModel)]="formuleNumber" placeholder="Formule Number"
+            class="form-control rounded-pill">
+        </div>
+        <div class="col-5"></div>
+      </div>
+  
+  <div *ngFor="let batch of batches" class="row mt-5">
     <div class="col-4"></div>
     <div class="col-2">
-      <input [(ngModel)]="formuleOrder" placeholder="Order Number" class="form-control rounded-pill">
+      <input [(ngModel)]="batch.orderNum" placeholder="Order Number" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input [(ngModel)]="formuleWeight" placeholder="Weight" class="form-control rounded-pill">
+      <input [(ngModel)]="batch.weight" placeholder="Weight" class="form-control rounded-pill">
+    </div>
+    <div class="col-2">
+      <input [(ngModel)]="batch.item" placeholder="Item Number" class="form-control rounded-pill">
     </div>
   </div>
 
-  <div class="row mt-2">
-    <button class="btn btn-warning rounded-pill mx-auto" (click)="isSplitted = !isSplitted">
-      {{isSplitted ? 'Hide' : 'Split'}}</button>
-  </div>
 
-  <div *ngIf="isSplitted" class="row mt-2">
+  <!-- <div  class="row mt-2">
     <div class="col-4"></div>
     <div class="col-2">
       <input [(ngModel)]="formuleOrder2" placeholder="Order Number" class="form-control rounded-pill">
@@ -40,7 +51,7 @@
     <div class="col-2">
       <input [(ngModel)]="formuleWeight2" placeholder="Weight" class="form-control rounded-pill">
     </div>
-  </div>
+  </div> -->
 
   <hr>
 

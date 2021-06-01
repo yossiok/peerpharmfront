@@ -23,17 +23,26 @@ export class WeightProductionComponent implements OnInit {
   printStickerBtn: Boolean = false;
   currentFormule: any;
   currentFormule2: any;
+  currentFormule3: any;
+  currentFormule4: any;
   kgToRemove: any;
   formuleNumber: any;
   formuleUnitWeight:any;
   formuleWeight: any;
   formuleWeight2: any;
+  formuleWeight3: any;
+  formuleWeight4: any;
   formuleOrder: any;
   formuleOrder2: any;
   shelfNumber: any;
   shelfPosition
   earlierExpiries: any = []
-  isSplitted: boolean = false;
+  numOfBatches: number = 1;
+  batches:any[] = [{
+    orderNum: '',
+    weight: 0,
+    item: ''
+  }]
 
 
   barcode = {
@@ -104,52 +113,35 @@ export class WeightProductionComponent implements OnInit {
     };
   }
 
-  formuleOneCalculate(data){
-    
-    data.phases.forEach(phase => {
-      phase.items.forEach(item => {
-        item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
-      });
-    });
-
-    return data
-  }
-
-  formuleTwoCalculate(data){
-    
-    data.phases.forEach(phase => {
-      phase.items.forEach(item => {
-        item.kgProd = Number(this.formuleWeight2) * (Number(item.percentage) / 100)
-      });
-    });
-
-    return data
-
-  }
-
+  
+  
   getFormuleByNumber() {
-
+    
     if (this.formuleNumber != '' && this.formuleWeight != '') {
-
+      
       //get formule weight per unit
       this.itemService.getItemData(this.formuleNumber).subscribe(data=>this.formuleUnitWeight = data[0].netWeightK)
-
+      
       //splitted formule
       if(this.formuleWeight2 && this.formuleWeight2 != '') {
         this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
-  
-          let copyData = JSON.parse(JSON.stringify(data))
-          let copyData2 = JSON.parse(JSON.stringify(data))
-  
-          let formule1 = this.formuleOneCalculate(copyData);
-          let formule2 = this.formuleTwoCalculate(copyData2);
 
-          this.currentFormule = formule1
-          this.currentFormule2 = formule2
-
+          for (let batch of this.batches) {
+            let copyData = JSON.parse(JSON.stringify(data))
+            batch.formule = this.formuleCalculate(copyData, this.formuleWeight);
+          }
+          
+          // let copyData2 = JSON.parse(JSON.stringify(data))
+          // let copyData3 = JSON.parse(JSON.stringify(data))
+          // let copyData4 = JSON.parse(JSON.stringify(data))
+          
+          // this.currentFormule2 = this.formuleCalculate(copyData2, this.formuleWeight2);
+          // this.currentFormule3 = this.formuleCalculate(copyData3, this.formuleWeight3);
+          // this.currentFormule4 = this.formuleCalculate(copyData4, this.formuleWeight4);
+          
         })
       }
-
+      
       //not splitted
       else {
         this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
@@ -165,16 +157,43 @@ export class WeightProductionComponent implements OnInit {
     } else {
       this.toastSrv.error('Please fill all fields')
     }
-
+    
   }
 
 
+  addBatch() {
+    this.batches.push({
+      orderNum: '',
+      weight: 0,
+      item: ''
+    })
+  }
+
+  resetBatches(){
+    this.batches = [{ 
+        orderNum: '',
+        weight: 0,
+        item: ''
+      }]
+  }
+  
+  formuleCalculate(data, weight){
+    
+    data.phases.forEach(phase => {
+      phase.items.forEach(item => {
+        item.kgProd = Number(weight) * (Number(item.percentage) / 100)
+      });
+    });
+
+    return data
+  }
+  
   printFormule() {
     this.printFormuleBtn.nativeElement.click();
     this.finishWeight();
     document.getElementById("formuleNumber").focus();
   }
-
+  
   reduceAmountFromShelf(material) {
     if (confirm('האם להוריד כמות ממדף זה ?')) {
       material.amount = material.amount - this.kgToRemove;

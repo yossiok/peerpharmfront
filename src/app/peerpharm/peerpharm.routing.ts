@@ -330,7 +330,7 @@ export const PeerPharmRputs: Routes = [
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    // canActivate: [TwoFactor]
+    canActivate: [TwoFactor]
   },
   {
     path: 'production/lines',
@@ -386,7 +386,7 @@ export const PeerPharmRputs: Routes = [
       title: 'Weight Production'
     },
     component: WeightProductionComponent,
-    // canActivate: [TwoFactor],
+    canActivate: [TwoFactor],
   },
   {
     path: 'production/scanMaterial',
