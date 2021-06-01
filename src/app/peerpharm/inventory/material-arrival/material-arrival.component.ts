@@ -651,63 +651,67 @@ export class MaterialArrivalComponent implements OnInit {
     formToSend.lastUpdate = new Date();
     formToSend.lastUpdateUser = this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe(res => {
-      if (res) {
-        // certificate - general
-        if (this.materialArrivalCertif.materialArrivalLines.length == 0) { // new certif
-          this.materialArrivalCertif.supplierCertifNumber = res.saved.deliveryNoteNumber
-          this.materialArrivalCertif.supplierName = res.saved.supplierName
-          this.materialArrivalCertif.supplierOrderNumber = res.saved.supplierOrderNumber
+        this.submittingForm = false
+        if(res == -1) {
+          this.toastSrv.error('Shelf Position Doesnt Match Wharehouse!!!')
+          this.toastSrv.error('Material Arrival NOt Saved!')
+        } 
+        else if (res.msg == 'no material with number') {
+          this.toastSrv.error("Item number wrong")
+        } 
+        else {
+
+          // certificate - general
+          if (this.materialArrivalCertif.materialArrivalLines.length == 0) { // new certif
+            this.materialArrivalCertif.supplierCertifNumber = res.saved.deliveryNoteNumber
+            this.materialArrivalCertif.supplierName = res.saved.supplierName
+            this.materialArrivalCertif.supplierOrderNumber = res.saved.supplierOrderNumber
+          }
+          
+          //certificate - line
+          this.materialArrivalLine.itemInternalNumber = res.saved.internalNumber
+          this.materialArrivalLine.itemSupplierNumber = res.saved.supplierNumber
+          this.materialArrivalLine.itemName = res.saved.materialName
+          this.materialArrivalLine.purchaseOrderNumber = res.saved.cmxOrderN
+          this.materialArrivalLine.wareHouse = res.saved.warehouse
+          this.materialArrivalLine.position = res.saved.position
+          this.materialArrivalLine.amount = Number(res.saved.totalQnt)
+          this.materialArrivalLine.unitsAmount = Number(res.saved.packageQnt)
+          this.materialArrivalLine.remarks = res.saved.remarks
+          
+          this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
+          this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
+          this.materialArrivalCertif.sumUnits += this.materialArrivalLine.unitsAmount
+          
+          
+          
+          this.materialArrivalLine = {...defaultLine}
+          // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
+          
+          this.toastSrv.success("New material arrival saved!");
+          this.requiresFromFull = !this.requiresFromFull
+          
+          this.bcValue = [res.saved.reqNum];
+          this.materialNum = res.saved.internalNumber;
+          this.materialName = res.saved.materialName;
+          this.lotNumber = res.saved.lotNumber;
+          this.productionDate = res.saved.productionDate;
+          this.arrivalDate = res.saved.arrivalDate;
+          this.expiryDate = res.saved.expiryDate;
+          
+          this.smallText = (this.materialName.length > 80) ? true : false;
+          
+          this.printBarcode(res.saved._id, res.internalNumber);// we might need to change the value to numbers
+          this.toastSrv.success("New material arrival saved!");
+          this.resetForm();
+          this.analysisFlag.nativeElement.checked = false;
+          //print barcode;
         }
-        
-        //certificate - line
-        this.materialArrivalLine.itemInternalNumber = res.saved.internalNumber
-        this.materialArrivalLine.itemSupplierNumber = res.saved.supplierNumber
-        this.materialArrivalLine.itemName = res.saved.materialName
-        this.materialArrivalLine.purchaseOrderNumber = res.saved.cmxOrderN
-        this.materialArrivalLine.wareHouse = res.saved.warehouse
-        this.materialArrivalLine.position = res.saved.position
-        this.materialArrivalLine.amount = Number(res.saved.totalQnt)
-        this.materialArrivalLine.unitsAmount = Number(res.saved.packageQnt)
-        this.materialArrivalLine.remarks = res.saved.remarks
-
-        this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
-        this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
-        this.materialArrivalCertif.sumUnits += this.materialArrivalLine.unitsAmount
-
-
-
-        this.materialArrivalLine = {...defaultLine}
-        // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
-
-        this.toastSrv.success("New material arrival saved!");
-        this.requiresFromFull = !this.requiresFromFull
-
-        this.bcValue = [res.saved.reqNum];
-        this.materialNum = res.saved.internalNumber;
-        this.materialName = res.saved.materialName;
-        this.lotNumber = res.saved.lotNumber;
-        this.productionDate = res.saved.productionDate;
-        this.arrivalDate = res.saved.arrivalDate;
-        this.expiryDate = res.saved.expiryDate;
-
-        this.smallText = (this.materialName.length > 80) ? true : false;
-
-        this.printBarcode(res.saved._id, res.internalNumber);// we might need to change the value to numbers
-        this.toastSrv.success("New material arrival saved!");
-        this.resetForm();
-        this.analysisFlag.nativeElement.checked = false;
-        //print barcode;
-      } else if (res.msg == 'no material with number') {
-        this.toastSrv.error("Item number wrong")
-      } else {
-        this.toastSrv.error("Something went wrong, saving faild")
-      }
-      this.submittingForm = false
-    });
-
-  }
-
-  saveCertif() {
+      });
+      
+    }
+    
+    saveCertif() {
     this.invtSer.arrivalsCertificate(this.materialArrivalCertif).subscribe(response=>{
       if(response.materialArrivalCertifToSave) {
         this.materialArrivalCertif.certifNumber = response.materialArrivalCertifToSave.certNum

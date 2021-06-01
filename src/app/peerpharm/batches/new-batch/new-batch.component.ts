@@ -111,29 +111,47 @@ export class NewBatchComponent implements OnInit {
       // add batch AND REDUCE AMOUNTS!!!
       else {
         if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")){
+
           this.disableButton = true
           this.toastSrv.info("Adding Batch. Please wait...")
-          this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
-            if (data.msg = 'succsess') {
-              this.printBtn.nativeElement.click();
-              this.toastSrv.success('באטצ נוסף בהצלחה !')
-              this.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value,this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value)
-              this.newBatchForm.reset()
-              this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-              this.allStickers = [];
-              this.getLastBatch();
+          
+          // reduce materials from itemShells
+          this.inventorySrv.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value,this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value, true).subscribe(data => {
+            if(data == 'Formule Not Found') {
+              this.toastSrv.error(data)
               this.disableButton = false
-            }
+            } 
+            else if(data.materials && data.updatedShells) {
+              this.toastSrv.success('Amounts reduced. Shelfs updated.')
+
+              // add batch to batches list
+              this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
+                this.disableButton = false
+                if (data.msg = 'succsess') {
+                  this.printBtn.nativeElement.click();
+                  this.toastSrv.success('באטצ נוסף בהצלחה !')
+                  this.newBatchForm.reset()
+                  this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                  this.allStickers = [];
+                  this.getLastBatch();
+                }
+                else this.toastSrv.error('Something went wrong.')
+              })
+            } 
           })
         }
       }
     }
   }
 
-  reduceMaterialAmounts(batchNumber,formuleNumber, weightKG) {
-      this.inventorySrv.reduceMaterialAmounts(batchNumber,formuleNumber, weightKG, true).subscribe(data => {
-      })
-  }
+
+  //not needed anymore
+  // reduceMaterialAmounts(batchNumber,formuleNumber, weightKG) {
+  //     this.inventorySrv.reduceMaterialAmounts(batchNumber,formuleNumber, weightKG, true).subscribe(data => {
+  //       if(data == 'Formule Not Found') this.toastSrv.error(data)
+  //       else if(data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')
+  //     })
+  // }
 
 
 }
