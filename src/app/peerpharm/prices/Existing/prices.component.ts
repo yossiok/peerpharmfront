@@ -15,11 +15,12 @@ export class PricesComponent implements OnInit {
   @ViewChild('productNumber') productNumber: ElementRef
   item: any;
   itemComponents: any[];
-  customersForItem: any[];
+  customersForItem: any[] = []
   selectedComponent: any;
   totalItemPrice: number = 0;
   totalShippingPrice: number = 0;
   calculating: boolean = false;
+  loadingCustomers: boolean = false;
   showOrders: boolean;
   showSuppliers: boolean;
   showCustomers: boolean;
@@ -65,6 +66,7 @@ export class PricesComponent implements OnInit {
       this.calculateProductPricing()
       setTimeout(()=> {
         this.getSuppliersForComponents()
+        this.loadingCustomers = true
         this.getCustomersForItem(this.item.itemNumber)
         this.calculating = false;
       }, 2000)
@@ -115,7 +117,6 @@ export class PricesComponent implements OnInit {
   }
 
   getSuppliersForComponents() {
-    // this.itemComponents = []
     this.itemComponents.map(component => {
       this.procuremetnService.getLastOrdersForItem(component.componentNumber, 20).subscribe(data=>{
         component.lastOrders = data
@@ -126,10 +127,11 @@ export class PricesComponent implements OnInit {
   }
 
   getCustomersForItem(itemNumber){
-    debugger
     this.costumerService.getAllCustomersOfItem(itemNumber).subscribe(data => {
-      debugger
-      this.customersForItem = data
+      data.forEach(customer => {
+        if(customer) this.customersForItem.push(customer)
+      })
+      this.loadingCustomers = false
     })
   }
   

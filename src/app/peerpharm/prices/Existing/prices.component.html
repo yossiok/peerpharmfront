@@ -22,7 +22,7 @@
             </div>
             <div class="row mt-2">
                 <div class="col-4">
-                    <table class="bg-warning text-dark">
+                    <table *ngIf="item" class="bg-warning text-dark">
                         <thead class="text-center">
                             <tr>
                                 <th>Component</th>
@@ -34,7 +34,7 @@
                         </thead>
                         <tbody class="table table-bordered">
                             <tr *ngFor="let component of itemComponents">
-                                <td (click)="changeView(component, 'orders')">{{component.componentNumber}}</td>
+                                <td class="click" (click)="changeView(component, 'orders')">{{component.componentNumber}}</td>
                                 <td>{{component.componentName}}</td>
                                 <td>{{component.price}}</td>
                                 <td>{{component.shippingPrice}}</td>
@@ -55,6 +55,7 @@
                 </div>
                 <div class="col-4" *ngIf="selectedComponent && showOrders">
                     <h3>Purchases for item {{selectedComponent.componentNumber}}</h3>
+                    <button (click)="this.selectedStatus = this.selectedStatus == 'open' ? 'close' : 'open'">{{selectedStatus == 'open' ? 'close' : 'open'}}</button>
                     <table class="bg-warning text-dark">
                         <thead class="text-center">
                             <tr>
@@ -67,58 +68,30 @@
                             </tr>
                         </thead>
                         <tbody class="table table-bordered">
-                            <tr *ngFor="let order of selectedComponent.lastOrders">
-                                <td>{{order.orderNumber}}</td>
-                                <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
-                                <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
-                                <td>{{order.quantity}}</td>
-                                <td>{{order.price}}</td>
-                                <td>{{order.coin}}</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>{{totalItemPrice}}</td>
-                                <td>{{totalShippingPrice}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-4" *ngIf="selectedComponent && showCustomers">
-                    <h3>Purchases for item {{selectedComponent.componentNumber}}</h3>
-                    <table class="bg-warning text-dark">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Order Number</th>
-                                <th>Created at..</th>
-                                <th>Arrival Date</th>
-                                <th>quantity Ordered</th>
-                                <th>Price</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="table table-bordered">
-                            <tr *ngFor="let order of selectedComponent.lastOrders">
-                                <td>{{order.orderNumber | date:'dd/MM/yy'}}</td>
-                                <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
-                                <td>{{order.arrivalDate}}</td>
-                                <td>{{order.quantity}}</td>
-                                <td>{{order.price}}</td>
-                                <td>{{order.coin}}</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>{{totalItemPrice}}</td>
-                                <td>{{totalShippingPrice}}</td>
-                            </tr>
+                            <ng-container *ngFor="let order of selectedComponent.lastOrders">
+                                <tr *ngIf="selectedStatus == order.status">
+                                    <td>{{order.orderNumber}}</td>
+                                    <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
+                                    <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
+                                    <td>{{order.quantity}}</td>
+                                    <td>{{order.price}}</td>
+                                    <td>{{order.coin}}</td>
+                                </tr>
+                            </ng-container>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="row mt-4">
-                <table class="bg-white text-dark">
+            <div *ngIf="item">
+                <div class="row mt-4">
+                    <h3>Customers Purchasing Item {{item.itemNumber}}</h3>
+                </div>
+                <div class="bg-warning" *ngIf="loadingCustomers">
+                    <h4>Loading Customers For Item</h4>
+                    <div class="smallLoader"></div>
+                </div>
+                <table *ngIf="!loadingCustomers" class="bg-warning text-dark">
                     <thead class="text-center">
                         <tr>
                             <th>Customer</th>
