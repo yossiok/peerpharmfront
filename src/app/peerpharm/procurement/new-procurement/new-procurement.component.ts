@@ -619,6 +619,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
             this.sendingPurchase = false;
             if (data) {
+              if(data.message) this.toastr.warning(data.message+". Order Saved")
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.newPurchase.reset();
               this.newProcurementSaved.emit(true)

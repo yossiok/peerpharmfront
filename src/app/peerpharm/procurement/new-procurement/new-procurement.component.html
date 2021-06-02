@@ -14,7 +14,8 @@
           <div class="col-3">
             <h4>{{purchaseData.creationDate | date:'dd/MM/yy'}} &nbsp;&nbsp; 
               <i class="fas fa-arrow-right"></i>&nbsp;&nbsp;
-              <span class="click" (click)="editArrivalDateForPurchase = !editArrivalDateForPurchase">{{purchaseData.arrivalDate | date:'dd/MM/yy'}}</span>
+              <span *ngIf="purchaseData.arrivalDate" class="click" (click)="editArrivalDateForPurchase = !editArrivalDateForPurchase">{{purchaseData.arrivalDate | date:'dd/MM/yy'}}</span>
+              <span *ngIf="!purchaseData.arrivalDate" class="click" (click)="editArrivalDateForPurchase = !editArrivalDateForPurchase"><button class="btn btn-primary">Set Arrival Date</button></span>
             </h4>
             <h4 *ngIf="editArrivalDateForPurchase">
               <input type="date" formControlName="arrivalDate">
