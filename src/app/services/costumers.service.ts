@@ -45,4 +45,9 @@ export class CostumersService {
     let url = this.baseUrl + "costumers/add";
     return this.http.post(url, JSON.stringify(CostumerObj), this.options).pipe(map(res => res.json()))
   }
+
+  getAllCustomersOfItem(itemNumber) {
+    let url = this.baseUrl + "costumers/costumersForItem?item="+itemNumber;
+    return this.http.get(url).pipe(map(res => res.json()))
+  }
 }

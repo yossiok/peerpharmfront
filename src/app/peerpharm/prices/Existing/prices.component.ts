@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CostumersService } from 'src/app/services/costumers.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
+import { Procurementservice } from 'src/app/services/procurement.service';
 
 @Component({
   selector: 'app-prices',
@@ -13,26 +15,59 @@ export class PricesComponent implements OnInit {
   @ViewChild('productNumber') productNumber: ElementRef
   item: any;
   itemComponents: any[];
+  customersForItem: any[];
+  selectedComponent: any;
   totalItemPrice: number = 0;
   totalShippingPrice: number = 0;
   calculating: boolean = false;
+  showOrders: boolean;
+  showSuppliers: boolean;
+  showCustomers: boolean;
 
   constructor(
     private itemService: ItemsService,
     private toastr: ToastrService,
-    private invtSer: InventoryService
+    private invtSer: InventoryService,
+    private procuremetnService: Procurementservice,
+    private costumerService: CostumersService
   ) { }
 
   ngOnInit(): void {
     this.productNumber.nativeElement.focus()
   }
 
-  getItemData(itemNumber) {
+  changeView(component, view) {
+    this.selectedComponent = component
+    switch (view) {
+      case 'orders':
+        this. showOrders = true
+        this. showSuppliers = false
+        this. showCustomers = false
+        break
+      case 'customers':
+        this. showOrders = false
+        this. showSuppliers = false
+        this. showCustomers = true
+        break
+      case 'suppliers':
+        this. showOrders = false
+        this. showSuppliers = true
+        this. showCustomers = false
+        break
+    }
+  }
+
+  async getItemData(itemNumber) {
     this.calculating = true;
     this.itemService.getItemData(itemNumber.value).subscribe(data => {
       if(data.length == 0) this.toastr.error('Item Not Found.')
       else this.item = data[0]
       this.calculateProductPricing()
+      setTimeout(()=> {
+        this.getSuppliersForComponents()
+        this.getCustomersForItem(this.item.itemNumber)
+        this.calculating = false;
+      }, 2000)
     })
   }
 
@@ -74,12 +109,29 @@ export class PricesComponent implements OnInit {
     }
     if (this.item.cartonNumber != '' && this.item.cartonNumber != '---') {
       this.invtSer.getCmptByitemNumber(this.item.cartonNumber).subscribe(data => {
-        this.calculating = false;
         this.itemComponents.push(this.createPriceObj(data))
       })
     }
   }
 
+  getSuppliersForComponents() {
+    // this.itemComponents = []
+    this.itemComponents.map(component => {
+      this.procuremetnService.getLastOrdersForItem(component.componentNumber, 20).subscribe(data=>{
+        component.lastOrders = data
+        return component
+      })
+    })
+    
+  }
+
+  getCustomersForItem(itemNumber){
+    debugger
+    this.costumerService.getAllCustomersOfItem(itemNumber).subscribe(data => {
+      debugger
+      this.customersForItem = data
+    })
+  }
   
   createPriceObj(data) {
 
