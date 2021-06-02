@@ -909,12 +909,13 @@ export class StockComponent implements OnInit {
 
 
 
-  getAmountsFromShelfs() {
-    this.inventoryService.getComponentsAmounts().subscribe(res => {
+  getAmountsFromShelfs(componentN?) {
+    this.inventoryService.getComponentsAmounts(componentN).subscribe(res => {
+      debugger
       this.componentsAmount = res;
       this.components.forEach(cmpt => {
         let matchedComponent = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
-        if (this.componentsAmount.find(elem => elem._id == cmpt.componentN)) {
+        if (matchedComponent) {
           cmpt.amount = matchedComponent.total;
           if (cmpt.itemType != "material") {
             cmpt.amount = Math.round(cmpt.amount);
@@ -1345,7 +1346,10 @@ export class StockComponent implements OnInit {
       this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
       this.smallLoader = false
       if (this.components.length > 0) {
-        this.getAmountsFromShelfs();
+        this.components.forEach(component => {
+          this.getAmountsFromShelfs(component.componentN);
+
+        })
         this.components.map(c => this.getItemPurchases(c))
       } else {
         this.toastSrv.error('Item does not exist')
@@ -2335,6 +2339,7 @@ export class StockComponent implements OnInit {
   }
 
   switchModalView(componentN) {
+
 
     let sumOutMovements = 0
     this.loadingMovements = true;

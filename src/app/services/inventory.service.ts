@@ -286,8 +286,8 @@ export class InventoryService {
 
   }
 
-  getComponentsAmounts(): Observable<any> {
-    let url = this.baseUrl + "itemShell?amounts=yes";
+  getComponentsAmounts(itemNumber?): Observable<any> {
+    let url = this.baseUrl + "itemShell?amounts=yes&itemNumber="+itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getComponentAmount(componentN): Observable<any> {
