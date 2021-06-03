@@ -106,7 +106,7 @@
                 <div class="col-1">
                   חפש לפי שם משתמש <select (change)="filterPurchaseOrders()" formControlName="userName" class="form-control rounded-pill">
                     <option selected="true" disabled="disabled">בחר משתמש</option>
-                    <option selected="true" [value]="all" >All</option>
+                    <option selected="true" value="all" >All</option>
                     <option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</option>
                   </select>
                 </div>

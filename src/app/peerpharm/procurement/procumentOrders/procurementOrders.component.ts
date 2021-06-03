@@ -403,7 +403,7 @@ export class ProcurementOrdersComponent implements OnInit {
     }
     if (userName != "") {
       if (userName == 'all') this.procurementData = this.procurementData
-      this.procurementData = this.procurementData.filter(p => p.user == userName)
+      else this.procurementData = this.procurementData.filter(p => p.user == userName)
     }
 
   }
