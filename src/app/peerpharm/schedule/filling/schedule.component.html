@@ -362,7 +362,7 @@
                 <i *ngIf="typeShown === 'mkp2' || typeShown ==='packaging' || typeShown ==='unpacked' " (click)="markScheduleDone(line._id)" class="fa fa-check"></i>
               </td>
               <td *ngIf="line._id === EditRowId">
-                <i class="ti-save text-info m-r-10" (click)="updateSchedule()"></i>
+                <i class="ti-save text-info m-r-10 click" (click)="updateSchedule()"></i>
               </td>
             </ng-container>
           </tr>

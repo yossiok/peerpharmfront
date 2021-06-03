@@ -27,6 +27,14 @@ div {
   pointer-events: none;
 }
 
+.click {
+  cursor: pointer;
+}
+
+.click:hover {
+  background: chartreuse;
+}
+
 .qc-batch{
   background-color: greenyellow;
     padding: 30px;

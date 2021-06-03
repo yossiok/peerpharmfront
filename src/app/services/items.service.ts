@@ -109,6 +109,10 @@ export class ItemsService {
     return this.http.post(url, JSON.stringify(itemShell), this.options).pipe(map(res => res.json()))
   }
 
+  getAllItemNames(){
+    let url = this.baseUrl + "item/allItemNames";
+    return this.http.get(url).pipe(map(res => res.json()))
+  }
 
 
   newFloor(newFloor) {

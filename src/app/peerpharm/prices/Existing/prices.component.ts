@@ -13,6 +13,7 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 export class PricesComponent implements OnInit {
 
   @ViewChild('productNumber') productNumber: ElementRef
+
   item: any;
   itemComponents: any[];
   customersForItem: any[] = []
@@ -24,6 +25,9 @@ export class PricesComponent implements OnInit {
   showOrders: boolean;
   showSuppliers: boolean;
   showCustomers: boolean;
+  selectedStatus: string = 'open'
+  allItemNames: any[];
+  currentNames:any[] = [];
 
   constructor(
     private itemService: ItemsService,
@@ -34,7 +38,16 @@ export class PricesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.productNumber.nativeElement.focus()
+    setTimeout(()=> this.productNumber.nativeElement.focus(), 1000)
+    this.getAllItemNames()
+  }
+
+  findByName(e) {
+    console.log(e)
+    this.currentNames = []
+    if(e.length > 3) {
+      this.currentNames = this.allItemNames.filter(nameObj => nameObj.name.toLowerCase().includes(e.toLowerCase()))
+    }
   }
 
   changeView(component, view) {
@@ -56,6 +69,12 @@ export class PricesComponent implements OnInit {
         this. showCustomers = false
         break
     }
+  }
+
+  getAllItemNames() {
+    this.itemService.getAllItemNames().subscribe(data => {
+      this.allItemNames = data
+    })
   }
 
   async getItemData(itemNumber) {

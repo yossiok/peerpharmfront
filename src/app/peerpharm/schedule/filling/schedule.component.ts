@@ -310,7 +310,7 @@ export class ScheduleComponent implements OnInit {
         console.log(sced);
         sced.color = 'white';
         if (sced.status === 'filled') {
-          sced.color = '#CE90FF';
+          sced.color = '#CE90FF'; //purple
         }
         if (sced.status === 'beingFilled') {
           sced.color = 'yellow';
@@ -322,7 +322,7 @@ export class ScheduleComponent implements OnInit {
           sced.color = 'Aquamarine';
         }
         if (sced.status === 'partialDone') {
-          sced.color = '#ff7272';
+          sced.color = '#ff7272'; //light red
         }
         if (sced.status === 'problem') {
           sced.color = 'red';
@@ -337,7 +337,6 @@ export class ScheduleComponent implements OnInit {
         Object.assign({ isSelected: false }, sced);
       });
 
-
       this.scheduleData = res;
       this.scheduleDataCopy = res;
 
@@ -346,7 +345,6 @@ export class ScheduleComponent implements OnInit {
         if (sced.batch && sced.batch != "") {
           let batches = sced.batch.split('+')
           if(batches.length > 1) {
-            debugger
             sced.batchSpecStatus = 999
           } 
           else {
@@ -427,9 +425,6 @@ export class ScheduleComponent implements OnInit {
   }
 
   setType(type, elem) {
-    debugger;
-    console.log('hi ' + type);
-    console.log('hi ' + elem.style);
     switch (type) {
       case 'basic':
         this.buttonColor = '#2962FF';
@@ -503,6 +498,26 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor9 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
+        case 'unpacked':
+          this.buttonColor = '#B8ECF1';
+          this.buttonColor2 = '#B8ECF1';
+          this.buttonColor3 = '#B8ECF1';
+          this.buttonColor4 = '#B8ECF1';
+          this.buttonColor5 = '#B8ECF1';
+          this.buttonColor6 = '#B8ECF1';
+          this.buttonColor7 = '#2962FF';
+          this.buttonColor8 = '#B8ECF1';
+          this.buttonColor9 = '#B8ECF1';
+          // this.scheduleData = this.scheduleDataCopy
+          // break;
+          this.scheduleData = this.unPackedSchedules
+          this.scheduleData.map(line => {
+            line.date2 = moment(line.date).format('DD/MM/YY');
+            line.date3 = moment(line.date).format('YYYY-MM-DD')
+            return line
+          })
+
+          break;
       case 'mkp2':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = '#B8ECF1';
@@ -526,19 +541,6 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#2962FF';
         this.scheduleData = this.scheduleDataCopy
-        break;
-      case 'unpacked':
-        this.buttonColor = '#B8ECF1';
-        this.buttonColor2 = '#B8ECF1';
-        this.buttonColor3 = '#B8ECF1';
-        this.buttonColor4 = '#B8ECF1';
-        this.buttonColor5 = '#B8ECF1';
-        this.buttonColor6 = '#B8ECF1';
-        this.buttonColor7 = '#2962FF';
-
-
-        this.scheduleData = this.unPackedSchedules
-
         break;
     }
     this.typeShown = type;
@@ -588,34 +590,11 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule() {
-    ;
     if (this.orderN.nativeElement.value != '') {
-      this.EditRowId;
-      this.scheduleData;
-      let scdLneInfo =
-        await this.scheduleData.filter(
-          sced => {
-            if (sced._id == this.EditRowId) {
 
-              return sced;
-            }
-          });
+      let scdLneInfo = await this.scheduleData.filter(sced => sced._id == this.EditRowId);
+
       let updateOrderItemDate = (scdLneInfo[0].date == this.date.nativeElement.value);
-      scdLneInfo[0].itemImpRemark
-
-      this.date.nativeElement.value
-      this.whatIsMissing.nativeElement.value;
-      console.log(this.date.nativeElement.value);
-      console.log(this.orderN.nativeElement.value);
-      console.log(this.item.nativeElement.value);
-      console.log(this.positionN.nativeElement.value);
-      console.log(this.costumer.nativeElement.value);
-      console.log(this.batch.nativeElement.value);
-      console.log(this.packageP.nativeElement.value);
-      console.log(this.marks.nativeElement.value);
-      console.log(this.shift.nativeElement.value);
-      console.log(this.mkp.nativeElement.value);
-      console.log(this.qty.nativeElement.value);
 
       let scheduleToUpdate: any = {
         scheduleId: this.id.nativeElement.value,
@@ -635,7 +614,12 @@ export class ScheduleComponent implements OnInit {
         itemImpRemark: scdLneInfo[0].itemImpRemark,
         whatIsMissing: this.whatIsMissing.nativeElement.value,
       };
-      console.log(scheduleToUpdate);
+
+      if(this.typeShown == 'unpacked') {
+        scheduleToUpdate.status = ''
+        scdLneInfo[0].status = ''
+      } 
+
       this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
         this.EditRowId = 0;
         scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(

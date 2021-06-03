@@ -12,6 +12,21 @@
 
     <div class="container mt-5">
         <div class="row mt-5">
+            <!-- <div class="d-flex flex-column">
+                <div>
+                    <input type="text" (change)="productNumber.value = $event" placeholder="Product Name" #productName>
+                    &nbsp;&nbsp;
+                    <button (click)="findByName(productName.value)">find</button>
+                </div>
+                <div>
+                    <ul *ngIf="currentNames" class="list-group">
+                        <li class="list-group-item" *ngFor="let itemNameObj of currentNames"
+                            (click)="productNumber.value = itemNameObj.itemNumber">
+                            {{itemNameObj.name}} {{itemNameObj.subName}} {{itemNameObj.discriptionK}}
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
             <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
             <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Price</button>
         </div>
@@ -34,7 +49,8 @@
                         </thead>
                         <tbody class="table table-bordered">
                             <tr *ngFor="let component of itemComponents">
-                                <td class="click" (click)="changeView(component, 'orders')">{{component.componentNumber}}</td>
+                                <td class="click" (click)="changeView(component, 'orders')">
+                                    {{component.componentNumber}}</td>
                                 <td>{{component.componentName}}</td>
                                 <td>{{component.price}}</td>
                                 <td>{{component.shippingPrice}}</td>
@@ -55,11 +71,14 @@
                 </div>
                 <div class="col-4" *ngIf="selectedComponent && showOrders">
                     <h3>Purchases for item {{selectedComponent.componentNumber}}</h3>
-                    <button (click)="this.selectedStatus = this.selectedStatus == 'open' ? 'close' : 'open'">{{selectedStatus == 'open' ? 'close' : 'open'}}</button>
+                    <button (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
+                        Status</button>
+                    <span class="bg-dark text-warning ml-5 p-2">Status = {{selectedStatus}}</span>
                     <table class="bg-warning text-dark">
                         <thead class="text-center">
                             <tr>
                                 <th>Order Number</th>
+                                <th>Status</th>
                                 <th>Created at..</th>
                                 <th>Arrival Date</th>
                                 <th>quantity Ordered</th>
@@ -69,8 +88,10 @@
                         </thead>
                         <tbody class="table table-bordered">
                             <ng-container *ngFor="let order of selectedComponent.lastOrders">
-                                <tr *ngIf="selectedStatus == order.status">
+                                <tr
+                                    *ngIf="(order.status != 'closed' && selectedStatus != 'closed') || (order.status == 'closed' && selectedStatus == 'closed')">
                                     <td>{{order.orderNumber}}</td>
+                                    <td>{{order.status}}</td>
                                     <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
                                     <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
                                     <td>{{order.quantity}}</td>
@@ -104,7 +125,7 @@
                             <td>{{customer.costumerName}}</td>
                         </tr>
                     </tbody>
-                </table>          
+                </table>
             </div>
         </div>
     </div>
