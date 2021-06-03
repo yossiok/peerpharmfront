@@ -219,12 +219,13 @@
                   <img src="../../../../assets/images/refreshData.png" class="float-right small" alt="get user name"
                     (click)="getItemPurchases(component)">
                   <span *ngIf="component.purchaseOrders.length == 0">אין הזמנות פתוחות לפריט</span>
-                  <table *ngIf="component.purchaseOrders.length > 0" style="zoom:0.7" class="table table-sm">
-                    <thead style="background: rgb(235, 190, 108);" class="text-white">
+                  <table *ngIf="component.purchaseOrders.length > 0" style="zoom:0.7">
+                    <thead class="text-white">
                       <tr>
-                        <th>Ordered</th>
-                        <th>Amount</th>
-                        <th>Arrival Date</th>
+                        <th class="text-white">Order Number</th>
+                        <th class="text-white">Order Date</th>
+                        <th class="text-white">Amount</th>
+                        <th class="text-white">Arrival Date</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -232,6 +233,7 @@
                       <ng-container *ngFor="let purchase of component.purchaseOrders">
                         <ng-container *ngFor="let item of purchase.stockitems">
                           <tr *ngIf="item.number == component.componentN">
+                            <td>{{purchase.orderNumber}}</td>
                             <td>{{purchase.creationDate | date: 'dd/MM/yyyy'}}</td>
                             <td>{{item.quantity}}</td>
                             <td>{{purchase.arrivalDate | date: 'dd/MM/yyyy'}}</td>
@@ -524,6 +526,12 @@
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumStock">
+              </div>
+              <div class="col-2 fixNoaStupidStuff">
+                <label class="form-control">כמות מינימלית להזמנה</label>
+              </div>
+              <div class="col-2 fixNoaStupidStuff">
+                <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumPurchaseAmount">
               </div>
             </div>
 

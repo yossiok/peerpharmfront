@@ -137,29 +137,38 @@ export class WeightProductionComponent implements OnInit {
       //splitted formule
       if(this.formuleWeight2 && this.formuleWeight2 != '') {
         this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
-  
-          let copyData = JSON.parse(JSON.stringify(data))
-          let copyData2 = JSON.parse(JSON.stringify(data))
-  
-          let formule1 = this.formuleOneCalculate(copyData);
-          let formule2 = this.formuleTwoCalculate(copyData2);
 
-          this.currentFormule = formule1
-          this.currentFormule2 = formule2
-
+          if(data == null) this.toastSrv.error('Formule Not Found!')
+          
+          else {
+            
+            let copyData = JSON.parse(JSON.stringify(data))
+            let copyData2 = JSON.parse(JSON.stringify(data))
+            
+            let formule1 = this.formuleOneCalculate(copyData);
+            let formule2 = this.formuleTwoCalculate(copyData2);
+            
+            this.currentFormule = formule1
+            this.currentFormule2 = formule2
+          }
+          
         })
       }
-
+      
       //not splitted
       else {
         this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
-          data.phases.forEach(phase => {
-            phase.items.forEach(item => {
-              item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
+          if(data == null) this.toastSrv.error('Formule Not Found!')
+          else {
+
+            data.phases.forEach(phase => {
+              phase.items.forEach(item => {
+                item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
+              });
             });
-          });
-          this.currentFormule = data;
-          
+            this.currentFormule = data;
+            
+          }
         })
       }
     } else {

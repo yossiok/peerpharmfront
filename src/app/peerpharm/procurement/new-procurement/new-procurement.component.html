@@ -57,11 +57,11 @@
             <select *ngIf="editPurchaseAllowed" [disabled]="disabled" (change)="setPurchaseStatus($event)"
               class="form-control rounded-pill">
               <option selected="true" disabled="disabled">Choose Status</option>
-              <option value="approvedBySupplier">אושר על ידי ספק</option>
-              <option value="waitingForApproval">ממתין לאישור</option>
-              <option value="open">פתוח</option>
-              <option value="supplied">סופקה</option>
-              <option [style.background]="'red'" value="closed">סגירת הזמנה</option>
+              <option value="approvedBySupplier">approved</option>
+              <option value="waitingForApproval">waiting approval</option>
+              <option value="open">open</option>
+              <option value="supplied">delivered</option>
+              <option [style.background]="'red'" value="closed">Close Order</option>
             </select>
           </div>
           <div class="col-1"></div>
@@ -348,14 +348,14 @@
               <option value="material">Material</option>
             </select>
           </div>
-          <div class="col form-group">
+          <!-- <div class="col form-group">
             <span class="red float-left h4">*</span>
             <label>Status</label>
             <select formControlName="status" class="form-control">
               <option value="open" selected="true">open</option>
               <option value="waitingForApproval">ממתין לאישור</option>
             </select>
-          </div>
+          </div> -->
           <div class="col form-group">
             <label>Arrival Date</label>
             <input formControlName="itemArrival" class="form-control" type="date">

@@ -11,6 +11,7 @@ import { PurchaseData } from './PurchaseData';
 import { ActivatedRoute } from '@angular/router';
 import { Currencies } from '../Currencies';
 import { UsersService } from 'src/app/services/users.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-procurement-orders',
@@ -90,6 +91,15 @@ export class ProcurementOrdersComponent implements OnInit {
   newPurchaseAllowed: boolean = false;
   currencies: Currencies
   EditRowId: any = "";
+  totalPriceNis: number = 0
+  printSum: boolean = false
+  nisSymbol: string = '\u20AA'
+  usdSymbol: string = '$'
+  eurSymbol: string = '\u20AC'
+  gbpSymbol: string = '\u00A3'
+  loadingRecommendations: boolean;
+  arrivalDate: any;
+  users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
   newItem = {
     itemNumber: '',
     itemName: '',
@@ -103,15 +113,13 @@ export class ProcurementOrdersComponent implements OnInit {
     itemPrice: 0,
     remarks: ''
   }
-  totalPriceNis: number = 0
-  printSum: boolean = false
-  nisSymbol: string = '\u20AA'
-  usdSymbol: string = '$'
-  eurSymbol: string = '\u20AC'
-  gbpSymbol: string = '\u00A3'
-  loadingRecommendations: boolean;
-  arrivalDate: any;
-  users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
+
+  filterForm: FormGroup = new FormGroup({
+    status: new FormControl(''),
+    category: new FormControl(''),
+    itemType: new FormControl(''),
+    userName: new FormControl(''),
+  })
 
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -154,7 +162,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.getAllPurchaseRecommends();
     this.getAllSuppliers();
     this.user = this.authService.loggedInUser.firstName;
-    if(this.authService.loggedInUser.authorization.includes("newPurchase")) {
+    if (this.authService.loggedInUser.authorization.includes("newPurchase")) {
       this.newPurchaseAllowed = true
     }
     this.inventoryService.newRecommendEmitter.subscribe(data => {
@@ -165,7 +173,11 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.userService.getAllUsers().subscribe(users => this.users = users)
+    this.userService.getAllUsers().subscribe(users => this.users = users
+      .sort((a, b) => {
+        if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1
+        else return -1
+      }))
   }
 
   getCurrencies(): void {
@@ -278,11 +290,11 @@ export class ProcurementOrdersComponent implements OnInit {
     let result = confirm('are you sure you want to create a new order?');
     if (result) {
       this.purchaseRecommendationsModal = false;
-      this.requestToPurchase = { 
+      this.requestToPurchase = {
         type: this.checkedRecommendations[0].type,
         supplierName: this.checkedRecommendations[0].lastorder.supplierName,
         supplierNumber: this.checkedRecommendations[0].lastorder.supplierNumber,
-        stockitems: this.checkedRecommendations 
+        stockitems: this.checkedRecommendations
       }
       this.orderDetailsModal = true;
     }
@@ -363,6 +375,46 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
 
+
+  filterPurchaseOrders() {
+
+    this.procurementData = this.procurementDataCopy
+
+    var status = this.filterForm.value.status;
+    var category = this.filterForm.value.category;
+    var type = this.filterForm.value.itemType;
+    var userName = this.filterForm.value.userName;
+
+    if (status != "") {
+      if (status == 'open') this.procurementData = this.procurementData.filter(p => p.status == status || p.status == 'supplied')
+      else if (status != 'allOrders') this.procurementData = this.procurementData.filter(p => p.status == status)
+      else this.procurementData = this.procurementData.filter(purchase => purchase.status != 'canceled');
+    }
+
+    if (category != "") {
+      this.procurementData = this.procurementData.filter(order => {
+        for (let item of order.stockitems) {
+          if (item.componentType == category) return true
+        }
+      })
+    }
+    if (type != "") {
+      this.procurementData = this.procurementData.filter(order => order.orderType == type)
+    }
+    if (userName != "") {
+      if (userName == 'all') this.procurementData = this.procurementData
+      this.procurementData = this.procurementData.filter(p => p.user == userName)
+    }
+
+  }
+
+  resetFilters(){
+    this.procurementData = this.procurementDataCopy
+    this.filterForm.reset()
+  }
+
+
+
   filterByCategory(ev) {
     var category = ev.target.value;
     this.procurementData = this.procurementDataCopy.filter(order => {
@@ -382,40 +434,20 @@ export class ProcurementOrdersComponent implements OnInit {
 
   filterByStatus(ev) {
     var status = ev.target.value;
-    if(status == 'open') this.procurementData = this.procurementDataCopy.filter(p => p.status == status || p.status == 'supplied')
+    if (status == 'open') this.procurementData = this.procurementDataCopy.filter(p => p.status == status || p.status == 'supplied')
     else if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
     else this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
 
   }
 
-  filterByUserName(ev){
+  filterByUserName(ev) {
     var userName = ev.target.value;
-    if(userName == 'all') this.procurementData = this.procurementDataCopy
+    if (userName == 'all') this.procurementData = this.procurementDataCopy
     this.procurementData = this.procurementDataCopy.filter(p => p.user == userName)
   }
 
 
-  // filterByStatus(ev) {
-  //   if (ev.target.value != "") {
-  //     var status = ev.target.value;
-  //     this.filterStatus = ev.target.value;
-  //     if (status == 'ongoing') {
-  //       this.procurementData = this.procurementDataCopy.filter(p => p.status != 'closed' && p.status != 'open' && p.status != 'canceled' && p.status != 'הזמנה פתוחה')
-  //     } else if (status == 'material') {
-  //       this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'material')
-  //     } else if (status == 'component') {
-  //       this.procurementData = this.procurementDataCopy.filter(p => p.orderType == 'component')
-  //     } else if (status == 'allOrders') {
-  //       this.procurementData = this.procurementDataCopy
-  //     } else if (status == 'open') {
-  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
-  //     } else if (status == 'closed') {
-  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'closed')
-  //     } else if (status == 'canceled') {
-  //       this.procurementData = this.procurementDataCopy.filter(p => p.status == 'canceled')
-  //     }
-  //   }
-  // }
+
 
   hebStat(engStat) {
     switch (engStat) {
@@ -423,17 +455,17 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'waitingForApproval': return 'waiting approval'
       case 'open': return 'open'
       case 'closed': return 'closed'
-      case 'supplied': return 'supplied'
+      case 'supplied': return 'delivered'
     }
   }
 
   setStatusColor(status) {
-    switch(status) {
+    switch (status) {
       case 'open': return ''
       case 'closed': return 'brown'
       case 'waitingForApproval': return 'orange'
       case 'approvedBySupplier': return 'lightgreen'
-      // case 'supplied': return 'lightgreen'
+      case 'supplied': return '#09d5e8'
     }
   }
 
@@ -557,22 +589,22 @@ export class ProcurementOrdersComponent implements OnInit {
     this.totalPrice = 0
     this.printSum = false
     for (let i = 0; i < this.currentItems.length; i++) {
-      if(i==0) {
+      if (i == 0) {
         coin = this.currentItems[i].coin
-        if(this.currentItems.length == 1) this.printSum = true
-      } 
+        if (this.currentItems.length == 1) this.printSum = true
+      }
       else {
         if (this.currentItems[i].coin == coin) this.printSum = true
         else this.printSum = false
       }
-      this.currentItems[i].coin = this.currentItems[i].coin.toUpperCase() 
+      this.currentItems[i].coin = this.currentItems[i].coin.toUpperCase()
       this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
-      this.currentItems[i].localTotal =this.currentItems[i].itemPrice * this.currencies[this.currentItems[i].coin.toUpperCase()] 
+      this.currentItems[i].localTotal = this.currentItems[i].itemPrice * this.currencies[this.currentItems[i].coin.toUpperCase()]
       this.totalAmount = this.totalAmount + Number(this.currentItems[i].quantity)
       this.totalPriceNis = this.totalPriceNis + Number(this.currentItems[i].localTotal)
       this.totalPrice = this.totalPrice + Number(this.currentItems[i].itemPrice)
 
-      
+
       if (line.orderType == 'component') {
         this.showImage = true;
         this.inventoryService.getCmptByNumber(this.currentItems[i].number, 'component').subscribe(data => {
@@ -591,7 +623,7 @@ export class ProcurementOrdersComponent implements OnInit {
     var numFour = this.formatNumber(combined)
     this.totalPriceWithTaxes = numFour
 
-    if(this.printSum) {
+    if (this.printSum) {
       if (coin == 'nis' || coin == 'NIS') {
         this.currCoin = this.nisSymbol
       }
@@ -637,7 +669,7 @@ export class ProcurementOrdersComponent implements OnInit {
   getAllPurchaseRecommends() {
 
     this.loadingRecommendations = true;
-    
+
     this.procurementservice.getAllPurchaseRecommends().subscribe(data => {
       this.loadingRecommendations = false;
 
@@ -752,23 +784,23 @@ export class ProcurementOrdersComponent implements OnInit {
           delete purchase.recommendId
           delete purchase.stockitems
           delete purchase.paymentStatus
-          if(purchase.creationDate) purchase.creationDate = purchase.creationDate.slice(0,10)
-          if(purchase.arrivalDate) purchase.arrivalDate = purchase.arrivalDate.slice(0,10)
+          if (purchase.creationDate) purchase.creationDate = purchase.creationDate.slice(0, 10)
+          if (purchase.arrivalDate) purchase.arrivalDate = purchase.arrivalDate.slice(0, 10)
         })
         this.excelService.exportAsExcelFile(exelData, 'purchase orders', [
-          'orderNumber', 
-          'supplierNumber', 
-          'supplierName', 
-          'supplierEmail', 
-          'status', 
-          'orderType', 
-          'creationDate', 
-          'arrivalDate', 
-          'sumShippingCost', 
-          'shippingPercentage', 
-          'finalPurchasePrice', 
-          'user', 
-          'userEmail', 
+          'orderNumber',
+          'supplierNumber',
+          'supplierName',
+          'supplierEmail',
+          'status',
+          'orderType',
+          'creationDate',
+          'arrivalDate',
+          'sumShippingCost',
+          'shippingPercentage',
+          'finalPurchasePrice',
+          'user',
+          'userEmail',
           'remarks'
         ]);
         break;
@@ -781,32 +813,32 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'billsToCheck':
         this.excelService.exportAsExcelFile(this.certificate, 'data');
         break;
-        case 'purchaseItems':
-          let allItems = [];
-          for(let purchaseOrder of this.procurementData){
-            if(purchaseOrder.stockitems) purchaseOrder.stockitems.map(item=>{
-              allItems.push({
-                orderNumber: purchaseOrder.orderNumber,
-                orderStatus: purchaseOrder.status,
-                itemNumber: item.number,
-                itemName: item.name,
-                componentType: item.componentType,
-                orderedAmount: item.quantity,
-                arrivedAmount:item.arrivedAmount,
-                measurement: item.measurement,
-                itemPrice: item.price,
-                totalPriceNIS: item.localTotal,
-                coin: item.coin,
-                supplierItemNum: item.supplierItemNum,
-                shippingPrice: item.shippingPrice,
-                remarks: item.remarks
+      case 'purchaseItems':
+        let allItems = [];
+        for (let purchaseOrder of this.procurementData) {
+          if (purchaseOrder.stockitems) purchaseOrder.stockitems.map(item => {
+            allItems.push({
+              orderNumber: purchaseOrder.orderNumber,
+              orderStatus: purchaseOrder.status,
+              itemNumber: item.number,
+              itemName: item.name,
+              componentType: item.componentType,
+              orderedAmount: item.quantity,
+              arrivedAmount: item.arrivedAmount,
+              measurement: item.measurement,
+              itemPrice: item.price,
+              totalPriceNIS: item.localTotal,
+              coin: item.coin,
+              supplierItemNum: item.supplierItemNum,
+              shippingPrice: item.shippingPrice,
+              remarks: item.remarks
 
 
-              })
             })
-          }
-          this.excelService.exportAsExcelFile(allItems, 'purchase items');
-          break;
+          })
+        }
+        this.excelService.exportAsExcelFile(allItems, 'purchase items');
+        break;
       default:
 
     }

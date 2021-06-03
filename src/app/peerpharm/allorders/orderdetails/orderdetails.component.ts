@@ -1385,6 +1385,9 @@ export class OrderdetailsComponent implements OnInit {
 
   setToPrintDetails(content, item, cmpt) {
 
+    // check tommy 3/6/21
+    this.number = item.orderNumber
+
     this.itemSer.getPlateImg(item.itemNumber).subscribe(data => {
 
       this.plateImg = data.palletImg;
