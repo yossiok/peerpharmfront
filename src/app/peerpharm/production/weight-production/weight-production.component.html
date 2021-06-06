@@ -2,8 +2,8 @@
 
   <div class="row mt-1">
     <div class="col-3"></div>
-    <div class="col-6 bg-white">
-      <h2 class="text-info">Formule Weight</h2>
+    <div class="col-6 bg-info rounded-pill">
+      <h2 class="text-white">Formule Weight</h2>
     </div>
     <div class="col-3"></div>
   </div>
@@ -11,17 +11,14 @@
   <div class="row mt-5">
     <div class="col-5"></div>
     <div class="col-2">
-      <!-- <input id="formuleNumber" [(ngModel)]="formuleNumber" placeholder="Formule Number"
-        class="form-control rounded-pill"> -->
+      <input id="formuleNumber" #formuleNumberElement [(ngModel)]="formuleNumber" placeholder="Formule Number"
+        class="form-control rounded-pill">
     </div>
     <div class="col-5"></div>
   </div>
-
+  
   <div class="row mt-5">
-    <div class="col-4">
-      <input id="formuleNumber" [(ngModel)]="formuleNumber" placeholder="Formule Number"
-        class="form-control rounded-pill">
-    </div>
+    <div class="col-4"></div>
     <div class="col-2">
       <input [(ngModel)]="formuleOrder" placeholder="Order Number" class="form-control rounded-pill">
     </div>
@@ -31,15 +28,12 @@
   </div>
 
   <div class="row mt-2">
-    <button class="btn btn-warning rounded-pill mx-auto" (click)="addFormule()">
+    <button class="btn btn-warning rounded-pill mx-auto" (click)="isSplitted = !isSplitted">
       {{isSplitted ? 'Hide' : 'Split'}}</button>
   </div>
 
   <div *ngIf="isSplitted" class="row mt-2">
-    <div class="col-4">
-      <input id="formuleNumber2" [(ngModel)]="formuleNumber2" placeholder="Formule Number"
-        class="form-control rounded-pill">
-    </div>
+    <div class="col-4"></div>
     <div class="col-2">
       <input [(ngModel)]="formuleOrder2" placeholder="Order Number" class="form-control rounded-pill">
     </div>
@@ -47,32 +41,6 @@
       <input [(ngModel)]="formuleWeight2" placeholder="Weight" class="form-control rounded-pill">
     </div>
   </div>
-
-  <!-- <div *ngIf="isSplitted" class="row mt-2">
-    <div class="col-4">
-      <input id="formuleNumber2" [(ngModel)]="formuleNumber3" placeholder="Formule Number"
-        class="form-control rounded-pill">
-    </div>
-    <div class="col-2">
-      <input [(ngModel)]="formuleOrder3" placeholder="Order Number" class="form-control rounded-pill">
-    </div>
-    <div class="col-2">
-      <input [(ngModel)]="formuleWeight3" placeholder="Weight" class="form-control rounded-pill">
-    </div>
-  </div>
-
-  <div *ngIf="isSplitted" class="row mt-2">
-    <div class="col-4">
-      <input id="formuleNumber2" [(ngModel)]="formuleNumber4" placeholder="Formule Number"
-        class="form-control rounded-pill">
-    </div>
-    <div class="col-2">
-      <input [(ngModel)]="formuleOrder4" placeholder="Order Number" class="form-control rounded-pill">
-    </div>
-    <div class="col-2">
-      <input [(ngModel)]="formuleWeight4" placeholder="Weight" class="form-control rounded-pill">
-    </div>
-  </div> -->
 
   <hr>
 
@@ -114,7 +82,7 @@
       <h4 class="text-info">Weight per Unit: <span style="color:black">{{formuleUnitWeight}}</span></h4>
     </div>
   </div>
-
+  
   <div class="row mt-3">
     <div [class]="isSplitted ? 'col-6' : 'col-12'">
       <h4 class="text-info">Order Number: <span style="color:black">{{formuleOrder}}</span></h4>
@@ -129,38 +97,38 @@
             <th scope="col">KG</th>
             <th scope="col">Lot</th>
             <th>Done?</th>
-
+            
           </tr>
         </thead>
-
+        
         <tbody>
           <ng-container *ngFor="let phase of currentFormule.phases">
-
+            
             <tr *ngFor="let item of phase.items; let i = index">
-
+              
               <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{
                 phase.phaseName }}</td>
-              <td style="padding:5px">{{ item.itemNumber }}</td>
-              <td style="padding:5px">{{ item.itemName }}</td>
-              <td style="padding:5px">{{ item.percentage }}%</td>
-              <td style="padding:5px">{{ item.kgProd | number }}</td>
-              <td *ngIf="item.check != true" style="padding:5px"><input
+                <td style="padding:5px">{{ item.itemNumber }}</td>
+                <td style="padding:5px">{{ item.itemName }}</td>
+                <td style="padding:5px">{{ item.percentage }}%</td>
+                <td style="padding:5px">{{ item.kgProd | number }}</td>
+                <td *ngIf="item.check != true" style="padding:5px"><input
                   (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)"
                   class="form-control rounded-pill"></td>
-              <!-- <td *ngIf="item.check != true" style="padding:5px"><button (click)="searchForShelf(item.itemNumber, item.kgProd)" class="btn btn-primary">Choose Shelf</button></td> -->
-              <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i></td>
-
-
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
-    <div *ngIf="isSplitted" class="col-6">
-      <h4 class="text-info">Weight: <span style="color:black">{{formuleWeight2}}</span></h4>
-      <h4 class="text-info">Order Number: <span style="color:black">{{formuleOrder2}}</span></h4>
-      <table class="table table-hover">
-        <thead class="bg-info text-white">
+                  <!-- <td *ngIf="item.check != true" style="padding:5px"><button (click)="searchForShelf(item.itemNumber, item.kgProd)" class="btn btn-primary">Choose Shelf</button></td> -->
+                  <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i></td>
+                  
+                  
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="isSplitted" class="col-6">
+          <h4 class="text-info">Weight: <span style="color:black">{{formuleWeight2}}</span></h4>
+          <h4 class="text-info">Order Number: <span style="color:black">{{formuleOrder2}}</span></h4>
+          <table class="table table-hover">
+            <thead class="bg-info text-white">
           <tr>
             <th scope="col">Phase</th>
             <th scope="col">Item</th>
@@ -169,10 +137,10 @@
             <th scope="col">KG</th>
             <th scope="col">Lot</th>
             <th>Done?</th>
-
+            
           </tr>
         </thead>
-
+        
         <tbody>
           <ng-container *ngFor="let phase of currentFormule2.phases">
 
