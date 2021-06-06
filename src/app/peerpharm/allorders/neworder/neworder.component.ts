@@ -237,6 +237,12 @@ export class NeworderComponent implements OnInit {
             this.itemName = "";
             this.netWeightK = 0;
             this.toastSrv.success("item " + res.itemNumber + " added");
+
+            // IMPORTANT WARNING FOR DANGEROUS MATERIALS!!!
+            // if(post.itemN == '15341' || post.itemN == '13629' || post.itemN == '10627') {
+            //   this.toastSrv.error(`PAY ATTENTION! material ${post.itemN} should be treated carefully!!`)
+              // TODO: add notification to shmuel / martha
+            // }
           } else {
             this.toastSrv.error("Adding item faild");
           }

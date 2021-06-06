@@ -8,12 +8,14 @@
         <div class="col-4"></div>
         <div class="col-4">
             <h1 [ngClass]="checkItemStatus()" class="itemHeadline">{{editOrAdd}} Item</h1>
-            <div *ngIf="remarksAlert==true" class="alert">
+            <div *ngIf="remarksAlert" class="alert">
                 <span dir="rtl" class="closebtn" (click)="jumpingRemark()">&times;</span>
+                <i class="fa fa-times" (click)="remarksAlert = !remarksAlert"></i>
                 <strong>הערה חשובה:</strong> {{this.itemShown.proRemarks}}
             </div>
-            <div *ngIf="notActiveAlert==true" class="alert">
+            <div *ngIf="notActiveAlert" class="alert">
                 <span dir="rtl" class="closebtn" (click)="notActive()">&times;</span>
+                <i class="fa fa-times" (click)="notActiveAlert = !notActiveAlert"></i>
                 <strong>שים לב פריט זה אינו פעיל !!</strong>
             </div>
 

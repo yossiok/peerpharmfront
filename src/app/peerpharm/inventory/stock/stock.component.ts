@@ -2220,8 +2220,6 @@ export class StockComponent implements OnInit {
   }
 
   procurementRecommendations(filterType) {
-
-
     if (filterType == "minimumStock") {
       if (this.stockType != "product") {
         let recommendList = this.components.filter(cmpt => cmpt.minimumStock >= cmpt.amount);
