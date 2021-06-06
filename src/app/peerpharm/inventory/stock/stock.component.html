@@ -773,6 +773,7 @@
                 <table class="table table-striped table-hover">
                   <thead class="bg-success text-white">
                     <tr>
+                      <th></th>
                       <th>ספק</th>
                       <th>יצרן</th>
                       <th>שם פריט</th>
@@ -787,86 +788,82 @@
                   </thead>
                   <tbody>
 
-                    <tr *ngFor="let supplier of resCmpt.alternativeSuppliers;let i = index">
+                    <ng-container *ngFor="let supplier of resCmpt.alternativeSuppliers;let i = index">
 
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.supplierName}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
+                      <tr [ngClass]="mainSupplier(supplier.isMain)" >
+
+                        <td><button (click)="makeAsMainSupplier(i)" class="btn btn-success">ספק ראשי</button></td>
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.supplierName}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+    
+                          <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
+                          <datalist id="suppliers">
+                            <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+                              {{supplier.suplierName}}</option>
+                          </datalist>
+                        </td>
   
-                        <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
-                        <datalist id="suppliers">
-                          <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-                            {{supplier.suplierName}}</option>
-                        </datalist>
-                      </td>
+                        <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.supplierName}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
+                        </td> -->
+  
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.manufacturer}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.manufacturer" class="form-control" #manufacturer>
+                        </td>
+  
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.alterName}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.alterName" class="form-control" #alterName>
+                        </td>
+  
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.alternativeMaterial}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.alternativeMaterial" class="form-control"
+                            #alternativeMaterial>
+                        </td>
+  
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.price}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.price" class="form-control" #price>
+                        </td>
+  
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.coin}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.coin" class="form-control" #coin>
+                        </td>
+  
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.packageWeight}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.packageWeight" class="form-control" #packageWeight>
+                        </td>
+  
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          {{supplier.priceLoading}}</td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.priceLoading" class="form-control" #priceLoading>
+                        </td>
+  
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                          <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'NIS'}}</span>
+                        </td>
+                        <td *ngIf="EditRowId == supplier.supplierName">
+                          <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
+                        </td>
+                        <td><i (click)="deleteSupplier(i,resCmpt.componentN)" class="fa fa-times text-danger"></i></td>
+                      </tr>
 
-                      <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.supplierName}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
-                      </td> -->
-
-
-
-
-
-
-
-
-
-
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.manufacturer}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.manufacturer" class="form-control" #manufacturer>
-                      </td>
-
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.alterName}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.alterName" class="form-control" #alterName>
-                      </td>
-
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.alternativeMaterial}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.alternativeMaterial" class="form-control"
-                          #alternativeMaterial>
-                      </td>
-
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.price}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.price" class="form-control" #price>
-                      </td>
-
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.coin}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.coin" class="form-control" #coin>
-                      </td>
-
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.packageWeight}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.packageWeight" class="form-control" #packageWeight>
-                      </td>
-
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        {{supplier.priceLoading}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.priceLoading" class="form-control" #priceLoading>
-                      </td>
-
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                        <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'NIS'}}</span>
-                      </td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
-                      </td>
-                      <td><i (click)="deleteSupplier(i,resCmpt.componentN)" class="fa fa-times text-danger"></i></td>
-                    </tr>
-
+                    </ng-container>
+ 
                   </tbody>
                 </table>
               </div>
@@ -1945,6 +1942,7 @@
               <table class="table table-striped table-hover">
                 <thead class="bg-success text-white">
                   <tr>
+                    <th></th>
                     <th>ספק</th>
                     <th>יצרן</th>
                     <th>שם פריט ספק</th>
@@ -1960,89 +1958,95 @@
                   </tr>
                 </thead>
                 <tbody>
+                  
+                  <ng-container *ngFor="let supplier of resMaterial.alternativeSuppliers;let i = index">
 
-                  <tr *ngFor="let supplier of resMaterial.alternativeSuppliers;let i = index">
+                    <tr [ngClass]="mainSupplier(supplier.isMain)" >
 
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.supplierName}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
+                      <td><button (click)="makeAsMainSupplier(i)" class="btn btn-success">ספק ראשי</button></td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.supplierName}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+  
+                        <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
+                        <datalist id="suppliers">
+                          <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+                            {{supplier.suplierName}}</option>
+                        </datalist>
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.manufacturer}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.manufacturer" class="form-control" #manufacturer>
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.alterName}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.alterName" class="form-control" #alterName>
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.alternativeMaterial}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.alternativeMaterial" class="form-control"
+                          #alternativeMaterial>
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.price}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.price" class="form-control" #price>
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.coin}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <select [value]="supplier.coin" #coin>
+                          <option value="NIS">NIS</option>
+                          <option value="USD">USD</option>
+                          <option value="EUR">EUR</option>
+                          <option value="GBP">GBP</option>
+                        </select>
+                        <!-- <input type="text" > -->
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.packageWeight}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.packageWeight" class="form-control" #packageWeight>
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.country}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.country" class="form-control" #country>
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.expectedArrival}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.expectedArrival" class="form-control" #expectedArrival>
+                      </td>
+  
+                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.shippingPrice | currency: 'NIS'}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="number" [value]="supplier.shippingPrice" class="form-control" #priceLoading>
+                      </td>
+  
+                      <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        {{supplier.coinLoading}}</td>
+                      <td *ngIf="EditRowId == supplier.supplierName">
+                        <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
+                      </td> -->
+                      <td><i (click)="deleteSupplier(i,resMaterial.componentN)" class="fa fa-times text-danger"></i></td>
+  
+                    </tr>
 
-                      <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
-                      <datalist id="suppliers">
-                        <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-                          {{supplier.suplierName}}</option>
-                      </datalist>
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.manufacturer}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.manufacturer" class="form-control" #manufacturer>
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.alterName}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.alterName" class="form-control" #alterName>
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.alternativeMaterial}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.alternativeMaterial" class="form-control"
-                        #alternativeMaterial>
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.price}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.price" class="form-control" #price>
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.coin}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <select [value]="supplier.coin" #coin>
-                        <option value="NIS">NIS</option>
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                      </select>
-                      <!-- <input type="text" > -->
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.packageWeight}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.packageWeight" class="form-control" #packageWeight>
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.country}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.country" class="form-control" #country>
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.expectedArrival}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.expectedArrival" class="form-control" #expectedArrival>
-                    </td>
-
-                    <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.shippingPrice | currency: 'NIS'}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="number" [value]="supplier.shippingPrice" class="form-control" #priceLoading>
-                    </td>
-
-                    <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                      {{supplier.coinLoading}}</td>
-                    <td *ngIf="EditRowId == supplier.supplierName">
-                      <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
-                    </td> -->
-                    <td><i (click)="deleteSupplier(i,resMaterial.componentN)" class="fa fa-times text-danger"></i></td>
-
-                  </tr>
+                  </ng-container>
 
                 </tbody>
               </table>
@@ -2054,7 +2058,7 @@
 
             </div>
             <div class="col-2 fixNoaStupidStuff">
-              <button (click)="updateSupplierDetails()" class="btn btn-success form-control">שמור</button>
+              <button (click)="updateSupplierDetails(true)" class="btn btn-success form-control">שמור</button>
             </div>
             <div class="col-5 fixNoaStupidStuff">
 

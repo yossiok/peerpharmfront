@@ -510,12 +510,23 @@ export class ScheduleComponent implements OnInit {
           this.buttonColor9 = '#B8ECF1';
           // this.scheduleData = this.scheduleDataCopy
           // break;
+          debugger;
           this.scheduleData = this.unPackedSchedules
           this.scheduleData.map(line => {
             line.date2 = moment(line.date).format('DD/MM/YY');
             line.date3 = moment(line.date).format('YYYY-MM-DD')
             return line
           })
+          // this.scheduleData.sort(function(o1,o2){
+          //   return o1.date ? -1 : o2.date ? 1 : 0;
+          // });
+
+          this.scheduleData.sort(function(a,b){
+
+            let value = Number(new Date(a.date)) - Number(new Date(b.date))
+            return value
+            
+          });
 
           break;
       case 'mkp2':

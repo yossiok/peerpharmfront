@@ -491,38 +491,51 @@ export class StockComponent implements OnInit {
 
   addSupplierToMaterial() {
 
-    this.resMaterial.alternativeSuppliers.push(this.supplier)
-    this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
-    this.supplier = {
-      supplierName: '',
-      price: "",
-      coin: "",
-      coinLoading: "",
-      priceLoading: "",
-      manufacturer: "",
-      alternativeMaterial: "",
-      alterName: "",
-      subGroup: "",
-      packageWeight: "",
-      expectedArrival: "",
-      country: "",
+    if(this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == ''){
+      this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
+    } else {
+
+      this.resMaterial.alternativeSuppliers.push(this.supplier)
+    
+      this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+      this.supplier = {
+        supplierName: '',
+        price: "",
+        coin: "",
+        coinLoading: "",
+        priceLoading: "",
+        manufacturer: "",
+        alternativeMaterial: "",
+        alterName: "",
+        subGroup: "",
+        packageWeight: "",
+        expectedArrival: "",
+        country: "",
+      }
     }
+ 
   }
   addSupplierToComponent() {
 
-    this.resCmpt.alternativeSuppliers.push(this.supplier)
-    this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
-    this.supplier = {
-      supplierName: '',
-      price: "",
-      coin: "",
-      coinLoading: "",
-      priceLoading: "",
-      manufacturer: "",
-      alternativeMaterial: "",
-      alterName: "",
-      subGroup: "",
-      packageWeight: "",
+    if(this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == ''){
+      this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
+    } else {
+
+      this.resCmpt.alternativeSuppliers.push(this.supplier)
+      this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+      this.supplier = {
+        supplierName: '',
+        price: "",
+        coin: "",
+        coinLoading: "",
+        priceLoading: "",
+        manufacturer: "",
+        alternativeMaterial: "",
+        alterName: "",
+        subGroup: "",
+        packageWeight: "",
+      }
+
     }
   }
   // getProcurementData(){
@@ -911,7 +924,7 @@ export class StockComponent implements OnInit {
 
   getAmountsFromShelfs(componentN?) {
     this.inventoryService.getComponentsAmounts(componentN).subscribe(res => {
-      debugger
+    
       this.componentsAmount = res;
       this.components.forEach(cmpt => {
         let matchedComponent = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
@@ -1091,7 +1104,7 @@ export class StockComponent implements OnInit {
 
   async updateItemStock(direction) {
     //check enough amount for "out"
-    debugger;
+  
     this.newItemShelfPosition = this.newItemShelfPosition.toUpperCase().trim();
     var shelfExsit = false;
     let itemShelfCurrAmounts = []
@@ -1369,7 +1382,7 @@ export class StockComponent implements OnInit {
   searchItemShelfs() {
     ;
     if (this.newItemShelfWH != '') {
-      debugger;
+    
       this.inventoryService.getShelfListForItemInWhareHouse(this.resCmpt.componentN, this.newItemShelfWH).subscribe(async res => {
         if (res.length > 0) {
           this.currItemShelfs = res;
@@ -1407,6 +1420,11 @@ export class StockComponent implements OnInit {
     this.openModalHeader = "פריט במלאי  " + cmptNumber;
     this.openModal = true;
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    let mainSupplier = this.resCmpt.alternativeSuppliers.find(s=>s.isMain == true);
+    if(mainSupplier){
+      this.resCmpt.suplierN = mainSupplier.supplierName
+      this.resCmpt.price = mainSupplier.price + mainSupplier.coin;
+    }
     this.getLastOrdersItem(10, 'component')
       // this.resCmpt.finalPrice = this.resCmpt.shippingPrice ? Number(this.resCmpt.price) + Number(this.resCmpt.shippingPrice) : this.resCmpt.price
       // this.loadComponentItems();
@@ -1479,8 +1497,6 @@ export class StockComponent implements OnInit {
   async openDataMaterial(materNum) {
 
     this.materialArrivals = []
-
-    this.materialArrivals = []
     this.inventoryService.getMaterialArrivalByNumber(materNum).subscribe(data => {
       if (data) {
         this.materialArrivals = []
@@ -1506,7 +1522,13 @@ export class StockComponent implements OnInit {
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + materNum;
     this.openModal = true;
+  
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
+    let mainSupplier = this.resMaterial.alternativeSuppliers.find(s=>s.isMain == true);
+    if(mainSupplier){
+      this.resMaterial.suplierN = mainSupplier.supplierName
+      this.resMaterial.price = mainSupplier.price + mainSupplier.coin;
+    }
     this.getLastOrdersItem(10, 'material')
     // this.resMaterial.finalPrice = this.resMaterial.shippingPrice ? Number(this.resMaterial.price) + Number(this.resMaterial.shippingPrice) : this.resMaterial.price
 
@@ -1897,7 +1919,7 @@ export class StockComponent implements OnInit {
   }
 
   async getUser() {
-    debugger
+   
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
     }
@@ -2236,7 +2258,7 @@ export class StockComponent implements OnInit {
   }
 
   filterMaterialsTable() {
-    debugger;
+ 
     let tempArr = [...this.componentsUnFiltered]
     let type = this.materialFilterType;
     let value = this.materialFilterValue;
@@ -2338,6 +2360,40 @@ export class StockComponent implements OnInit {
   showDialog() {
   }
 
+  makeAsMainSupplier(index){
+    debugger;
+    let id;
+    if(this.stockType == 'component') id = this.resCmpt._id;
+    if(this.stockType == 'material') id = this.resMaterial._id;
+
+
+    this.inventoryService.setAsMainSupplier(index,id).subscribe(data => {
+      
+      if(data){
+
+        if(this.stockType == 'component') this.resCmpt.alternativeSuppliers = data.alternativeSuppliers;
+        if(this.stockType == 'material') this.resMaterial.alternativeSuppliers = data.alternativeSuppliers;
+        
+        this.toastSrv.success('ספק ראשי עודכן בהצלחה!')
+
+      }
+
+    })
+
+
+
+  }
+
+  mainSupplier(isMain){
+
+    if(isMain){
+      return 'lightgreen'
+    } else {
+      return ''
+    }
+
+  }
+
   switchModalView(componentN) {
 
 
@@ -2346,13 +2402,13 @@ export class StockComponent implements OnInit {
 
     var beforeOneYear = new Date();
     beforeOneYear.setFullYear(beforeOneYear.getFullYear() - 1);
-    debugger;
+
     if (componentN == '' || componentN == undefined) {
       componentN = this.resCmpt.componentN
     }
     this.inventoryService.getItemMovements(componentN).subscribe(data => {
       if (data) {
-        debugger;
+     
         //  for (let i = 0; i < data.length; i++) {
         //    if(data[i].movementType != 'in'){
         //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
