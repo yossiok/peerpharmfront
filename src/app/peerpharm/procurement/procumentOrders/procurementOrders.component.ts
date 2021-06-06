@@ -639,7 +639,7 @@ export class ProcurementOrdersComponent implements OnInit {
     }
 
     this.orderDate = line.creationDate.slice(0, 10)
-    this.arrivalDate = line.arrivalDate.slice(0, 10)
+    this.arrivalDate = line.arrivalDate ? line.arrivalDate.slice(0, 10) : null
     this.printBill = true;
   }
 
