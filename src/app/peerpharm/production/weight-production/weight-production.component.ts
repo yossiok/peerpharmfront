@@ -5,6 +5,15 @@ import { FormulesService } from 'src/app/services/formules.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemsService } from 'src/app/services/items.service';
 
+interface FormuleWeight {
+  formuleNumber: any;
+  formuleWeight: any;
+  formuleOrder: any;
+  formuleUnitWeight: any;
+  data: any;
+
+}
+
 @Component({
   selector: 'app-weight-production',
   templateUrl: './weight-production.component.html',
@@ -17,32 +26,32 @@ export class WeightProductionComponent implements OnInit {
   @ViewChild('reduceMaterialAmount') reduceMaterialAmount: ElementRef;
   @ViewChild('formuleNumberElement') formuleNumberElement: ElementRef;
 
+  // currentFormule: any;
+  // currentFormule2: any;
+  // formuleNumber: any;
+  // formuleNumber2: any;
+  // formuleUnitWeight:any;
+  // formuleUnitWeight2:any;
+  // formuleWeight: any;
+  // formuleWeight2: any;
+  // formuleOrder: any;
+  // formuleOrder2: any;
+  formules: FormuleWeight[] = [{
+     formuleNumber: '',
+     formuleWeight: 0,
+     formuleUnitWeight: 0,
+     formuleOrder: '',
+     data: {}
+    }];
   allMaterialArrivals: any[];
   materialShelfs: any[] = []
   materialArrivals: Boolean = false;
   printStickerBtn: Boolean = false;
-  currentFormule: any;
-  currentFormule2: any;
-  currentFormule3: any;
-  currentFormule4: any;
   kgToRemove: any;
-  formuleNumber: any;
-  formuleUnitWeight:any;
-  formuleWeight: any;
-  formuleWeight2: any;
-  formuleWeight3: any;
-  formuleWeight4: any;
-  formuleOrder: any;
-  formuleOrder2: any;
   shelfNumber: any;
   shelfPosition
   earlierExpiries: any = []
-  numOfBatches: number = 1;
-  batches:any[] = [{
-    orderNum: '',
-    weight: 0,
-    item: ''
-  }]
+  isSplitted: boolean = false;
 
 
   barcode = {
@@ -63,7 +72,7 @@ export class WeightProductionComponent implements OnInit {
     private itemService: ItemsService) { }
 
   ngOnInit() {
-    this.formuleNumberElement.nativeElement.focus()
+    // this.formuleNumberElement.nativeElement.focus()
   }
 
 
@@ -113,113 +122,116 @@ export class WeightProductionComponent implements OnInit {
     };
   }
 
-  
-  
-  getFormuleByNumber() {
-    
-    if (this.formuleNumber != '' && this.formuleWeight != '') {
-      
-      //get formule weight per unit
-      this.itemService.getItemData(this.formuleNumber).subscribe(data=>this.formuleUnitWeight = data[0].netWeightK)
-      
-      //splitted formule
-      if(this.formuleWeight2 && this.formuleWeight2 != '') {
-        this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
+  formuleCalculate(data, formuleWeight) {
 
-          for (let batch of this.batches) {
-            let copyData = JSON.parse(JSON.stringify(data))
-            batch.formule = this.formuleCalculate(copyData, this.formuleWeight);
-          }
-          
-          // let copyData2 = JSON.parse(JSON.stringify(data))
-          // let copyData3 = JSON.parse(JSON.stringify(data))
-          // let copyData4 = JSON.parse(JSON.stringify(data))
-          
-          // this.currentFormule2 = this.formuleCalculate(copyData2, this.formuleWeight2);
-          // this.currentFormule3 = this.formuleCalculate(copyData3, this.formuleWeight3);
-          // this.currentFormule4 = this.formuleCalculate(copyData4, this.formuleWeight4);
-          
-        })
-      }
-      
-      //not splitted
-      else {
-        this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
-          data.phases.forEach(phase => {
-            phase.items.forEach(item => {
-              item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
-            });
-          });
-          this.currentFormule = data;
-          
-        })
-      }
-    } else {
-      this.toastSrv.error('Please fill all fields')
-    }
-    
-  }
-
-
-  addBatch() {
-    this.batches.push({
-      orderNum: '',
-      weight: 0,
-      item: ''
-    })
-  }
-
-  resetBatches(){
-    this.batches = [{ 
-        orderNum: '',
-        weight: 0,
-        item: ''
-      }]
-  }
-  
-  formuleCalculate(data, weight){
-    
     data.phases.forEach(phase => {
       phase.items.forEach(item => {
-        item.kgProd = Number(weight) * (Number(item.percentage) / 100)
+        item.kgProd = Number(formuleWeight) * (Number(item.percentage) / 100)
       });
     });
 
     return data
   }
-  
+
+  // formuleTwoCalculate(data) {
+
+  //   data.phases.forEach(phase => {
+  //     phase.items.forEach(item => {
+  //       item.kgProd = Number(this.formuleWeight2) * (Number(item.percentage) / 100)
+  //     });
+  //   });
+
+  //   return data
+
+  // }
+
+  addFormule() {
+    this.formules.push({
+      formuleNumber: '',
+      formuleUnitWeight: 0,
+      formuleOrder: '',
+      formuleWeight: 0,
+      data: {}
+    })
+  }
+
+  getFormuleByNumber() {
+
+
+    for (let formule of this.formules) {
+
+      if (formule.formuleNumber != '' && formule.formuleWeight != '') {
+
+        //get formule weight per unit
+        this.itemService.getItemData(formule.formuleNumber).subscribe(data => formule.formuleUnitWeight = data[0].netWeightK)
+
+        this.formuleSrv.getFormuleByNumber(formule.formuleNumber).subscribe(data => {
+
+          if (data == null) {
+            this.toastSrv.error(`Formule Number ${formule.formuleNumber} Not Found!`)
+            return
+          }
+
+          else {
+            formule.data = this.formuleCalculate(data, formule.formuleWeight);
+          }
+
+        })
+        // }
+
+        //not splitted
+        // else {
+        //   this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
+        //     if(data == null) this.toastSrv.error('Formule Not Found!')
+        //     else {
+
+        //       data.phases.forEach(phase => {
+        //         phase.items.forEach(item => {
+        //           item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
+        //         });
+        //       });
+        //       this.currentFormule = data;
+
+        //     }
+        //   })
+        // }
+      } else {
+        this.toastSrv.error('Please fill all fields')
+      }
+
+    }
+  }
+
+
   printFormule() {
     this.printFormuleBtn.nativeElement.click();
     this.finishWeight();
     document.getElementById("formuleNumber").focus();
   }
-  
-  reduceAmountFromShelf(material) {
-    if (confirm('האם להוריד כמות ממדף זה ?')) {
-      material.amount = material.amount - this.kgToRemove;
 
-      this.inventorySrv.reduceMaterialAmountFromShelf(this.materialNumber, this.shelfPosition, this.kgToRemove).subscribe(response => {
+  // reduceAmountFromShelf(material) {
+  //   if (confirm('האם להוריד כמות ממדף זה ?')) {
+  //     material.amount = material.amount - this.kgToRemove;
 
-        if (response) {
-          this.currentFormule.phases.forEach(phase => {
-            phase.items.forEach(item => {
-              if (item.itemNumber == response.updatedMaterial.item) {
-                item.check = true
-              }
-            });
-          });
-          this.toastSrv.success(`${this.kgToRemove} kg reduced from shelf ${this.shelfPosition} for material ${this.materialNumber} - ${this.materialName}`)
-          this.materialShelfs = []
-        }
-      })
-    }
-  }
+  //     this.inventorySrv.reduceMaterialAmountFromShelf(this.materialNumber, this.shelfPosition, this.kgToRemove).subscribe(response => {
+
+  //       if (response) {
+  //         this.currentFormule.phases.forEach(phase => {
+  //           phase.items.forEach(item => {
+  //             if (item.itemNumber == response.updatedMaterial.item) {
+  //               item.check = true
+  //             }
+  //           });
+  //         });
+  //         this.toastSrv.success(`${this.kgToRemove} kg reduced from shelf ${this.shelfPosition} for material ${this.materialNumber} - ${this.materialName}`)
+  //         this.materialShelfs = []
+  //       }
+  //     })
+  //   }
+  // }
 
   finishWeight() {
-    this.currentFormule = {}
-    this.formuleNumber = ''
-    this.formuleOrder = ''
-    this.formuleWeight = ''
+    this.formules = []
   }
 
 
