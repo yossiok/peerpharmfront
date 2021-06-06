@@ -101,7 +101,7 @@
 
 </div>
 
-<div id="formuleSection" *ngIf="formules.length > 0 && !finalFormule" class="container mt-2 bg-white text-center p-2 rounded shadow">
+<div id="formuleSection" *ngIf="formules.length > 0 && !finalFormule" class=" mt-2 text-center p-2 rounded shadow">
 
   
   <div class="row mt-3 d-flex flex-row">
@@ -120,8 +120,6 @@
             <th scope="col">Raw Material Name</th>
             <th scope="col">Percentage</th>
             <th scope="col">KG</th>
-            <th scope="col">Lot</th>
-            <th>Done?</th>
 
           </tr>
         </thead>
@@ -137,11 +135,11 @@
               <td style="padding:5px">{{ item.itemName }}</td>
               <td style="padding:5px">{{ item.percentage }}%</td>
               <td style="padding:5px">{{ item.kgProd | number }}</td>
-              <td *ngIf="item.check != true" style="padding:5px"><input
+              <!-- <td *ngIf="item.check != true" style="padding:5px"><input
                   (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)"
                   class="form-control rounded-pill"></td>
-              <!-- <td *ngIf="item.check != true" style="padding:5px"><button (click)="searchForShelf(item.itemNumber, item.kgProd)" class="btn btn-primary">Choose Shelf</button></td> -->
-              <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i></td>
+              <td *ngIf="item.check != true" style="padding:5px"><button (click)="searchForShelf(item.itemNumber, item.kgProd)" class="btn btn-primary">Choose Shelf</button></td>
+              <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i></td> -->
 
 
             </tr>
