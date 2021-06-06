@@ -36,6 +36,7 @@ export class WeightProductionComponent implements OnInit {
   // formuleWeight2: any;
   // formuleOrder: any;
   // formuleOrder2: any;
+  // isSplitted: boolean = false;
   formules: FormuleWeight[] = [{
      formuleNumber: '',
      formuleWeight: 0,
@@ -43,6 +44,7 @@ export class WeightProductionComponent implements OnInit {
      formuleOrder: '',
      data: {}
     }];
+  finalFormule: FormuleWeight;
   allMaterialArrivals: any[];
   materialShelfs: any[] = []
   materialArrivals: Boolean = false;
@@ -51,7 +53,6 @@ export class WeightProductionComponent implements OnInit {
   shelfNumber: any;
   shelfPosition
   earlierExpiries: any = []
-  isSplitted: boolean = false;
 
 
   barcode = {
@@ -155,7 +156,7 @@ export class WeightProductionComponent implements OnInit {
     })
   }
 
-  getFormuleByNumber() {
+  calculateFormules() {
 
 
     for (let formule of this.formules) {
