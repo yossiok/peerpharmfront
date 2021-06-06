@@ -526,12 +526,9 @@ debugger
 
   async sendList() {
 
-    let ObjToUpdate;
-    debugger
     let sendConfirm = confirm("עדכון שינויים במלאי");
     if (sendConfirm && this.inventoryUpdateList.length > 0) {
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList, this.inventoryUpdateList[0].itemType, this.dir).subscribe(async res => {
-        // res = [itemNumber,itemNumber,itemNumber...]
         if (res == "all updated" || (res.msg && res.msg == "all updated")) {
           if (res.reception) this.certificateReception = res.reception
           this.toastSrv.success("שינויים בוצעו בהצלחה");
