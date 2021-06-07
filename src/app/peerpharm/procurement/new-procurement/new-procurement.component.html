@@ -88,6 +88,7 @@
                   <th></th>
                   <th>Item</th>
                   <th>Item Name</th>
+                  <th>Destination</th>
                   <th>Quantity</th>
                   <th>Arrived</th>
                   <th>Measurement</th>
@@ -113,6 +114,11 @@
 
                   <td *ngIf="!editItem">{{stockitem.name}}</td>
                   <td *ngIf="editItem && itemIndex == i">{{stockitem.name}}</td>
+                  
+                  <td *ngIf="!editItem && stockitem.isStock">Stock</td>
+                  <td *ngIf="!editItem && !stockitem.isStock">{{stockitem.customerOrder}}</td>
+                  <td *ngIf="editItem && itemIndex == i && stockitem.isStock">Stock</td>
+                  <td *ngIf="editItem && itemIndex == i && !stockitem.isStock">{{stockitem.customerOrder}}</td>
 
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem && itemIndex == i">
@@ -272,14 +278,16 @@
                   <label>Item Arrival Date</label>
                   <input formControlName="itemArrival" class="form-control" type="date" placeholder="Item Arrival">
                 </div>
-                <!-- <div class="col-6 ml-10">
-                  <label>Order Number</label>
-                  <input formControlName="orderNumber" class="form-control" type="radio" placeholder="Item Arrival">
-                  <input type="radio" id="male" formControlName="orderNumber" value="number">
-                  <label for="male">Male</label><br>
-                  <input type="radio" id="female" formControlName="orderNumber" value="stock">
-                  <label for="female">Female</label><br>
-                </div> -->
+                <div class="col-6 ml-10">
+                  <label>Destination</label>
+                  <div class="d-flex flex-row">
+                    <input type="radio" formControlName="isStock" [value]="true">
+                    <label>Stock</label><br>
+                    <input type="radio" formControlName="isStock" [value]="false">
+                    <label>Customer Order</label><br>
+                  </div>
+                  <input formControlName="customerOrder" placeholder="Order Number" maxlength="4" *ngIf="!itemForm.get('isStock').value" type="number">
+                </div>
               </div>
             </div>
 
@@ -488,6 +496,16 @@
                   <label>Item Arrival Date</label>
                   <input formControlName="itemArrival" type="date" class="form-control" placeholder="Item Arrival">
                 </div>
+                <div class="col-6 ml-10">
+                  <label>Destination</label>
+                  <div class="d-flex flex-row">
+                    <input type="radio" formControlName="isStock" [value]="true">
+                    <label>Stock</label><br>
+                    <input type="radio" formControlName="isStock" [value]="false">
+                    <label>Customer Order</label><br>
+                  </div>
+                  <input formControlName="customerOrder" placeholder="Order Number" maxlength="4" *ngIf="!itemForm.get('isStock').value" type="number">
+                </div>
               </div>
             </div>
 
@@ -525,6 +543,7 @@
                 <tr>
                   <th>Item</th>
                   <th>Item Name</th>
+                  <th>Destination</th>
                   <th>Measurement</th>
                   <th>Quantity</th>
                   <th>Price</th>
@@ -535,8 +554,14 @@
               </thead>
               <tbody>
                 <tr *ngFor="let stockitem of this.newPurchase.controls.stockitems.value;let i = index">
+                 
                   <td>{{stockitem.number}}</td>
+                 
                   <td>{{stockitem.name}}</td>
+
+                  <th *ngIf="stockitem.isStock">Stock</th>
+                  <th *ngIf="!stockitem.isStock">Order {{stockitem.customerOrder}}</th>
+                 
                   <td>{{stockitem.measurement}}</td>
                   <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>
                   <td *ngIf="EditRowId == stockitem.number">
