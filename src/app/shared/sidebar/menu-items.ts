@@ -544,6 +544,24 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '',
+    title: 'Item Index',
+    icon: 'fas fa-book',
+    class: 'has-arrow',
+    extralink: false,
+    submenu:
+      [
+        {
+          path: '/peerpharm/itemindex',
+          title: 'Item Index',
+          icon: 'fas fa-list-ol',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+      ]
+  },
+  {
+    path: '',
     title: '',
     icon: 'fas fa-bug',
     class: 'has-arrow',
