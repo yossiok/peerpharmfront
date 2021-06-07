@@ -167,7 +167,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       itemArrival: [''],
       supplierItemNum: [''],
       historyAmounts: [['']],
-      componentType:['']
+      componentType:[''],
+      // orderNumber: ['']
     })
   }
 
