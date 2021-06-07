@@ -27,7 +27,7 @@ export class PricesComponent implements OnInit {
   showCustomers: boolean;
   selectedStatus: string = 'open'
   allItemNames: any[];
-  currentNames:any[] = [];
+  currentNames: any[] = [];
 
   constructor(
     private itemService: ItemsService,
@@ -38,14 +38,14 @@ export class PricesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    setTimeout(()=> this.productNumber.nativeElement.focus(), 1000)
+    setTimeout(() => this.productNumber.nativeElement.focus(), 1000)
     this.getAllItemNames()
   }
 
   findByName(e) {
     console.log(e)
     this.currentNames = []
-    if(e.length > 3) {
+    if (e.length > 3) {
       this.currentNames = this.allItemNames.filter(nameObj => nameObj.name.toLowerCase().includes(e.toLowerCase()))
     }
   }
@@ -54,19 +54,19 @@ export class PricesComponent implements OnInit {
     this.selectedComponent = component
     switch (view) {
       case 'orders':
-        this. showOrders = true
-        this. showSuppliers = false
-        this. showCustomers = false
+        this.showOrders = true
+        this.showSuppliers = false
+        this.showCustomers = false
         break
       case 'customers':
-        this. showOrders = false
-        this. showSuppliers = false
-        this. showCustomers = true
+        this.showOrders = false
+        this.showSuppliers = false
+        this.showCustomers = true
         break
       case 'suppliers':
-        this. showOrders = false
-        this. showSuppliers = true
-        this. showCustomers = false
+        this.showOrders = false
+        this.showSuppliers = true
+        this.showCustomers = false
         break
     }
   }
@@ -77,23 +77,29 @@ export class PricesComponent implements OnInit {
     })
   }
 
-  async getItemData(itemNumber) {
+  getItemData(itemNumber) {
     this.calculating = true;
     this.itemService.getItemData(itemNumber.value).subscribe(data => {
-      if(data.length == 0) this.toastr.error('Item Not Found.')
-      else this.item = data[0]
-      this.calculateProductPricing()
-      setTimeout(()=> {
-        this.getSuppliersForComponents()
-        this.loadingCustomers = true
-        this.getCustomersForItem(this.item.itemNumber)
+      if (data.length == 0) {
+        this.toastr.error('Item Not Found.')
         this.calculating = false;
-      }, 2000)
+      }
+      else {
+        this.item = data[0]
+        this.calculateProductPricing()
+        setTimeout(() => {
+          this.getSuppliersForComponents()
+          this.loadingCustomers = true
+          this.getCustomersForItem(this.item.itemNumber)
+          this.calculating = false;
+        }, 2000)
+      }
     })
   }
 
-  
+
   calculateProductPricing() {
+
     this.itemComponents = []
     this.totalItemPrice = 0
     if (this.item.bottleNumber != '' && this.item.bottleNumber != '---') {
@@ -137,23 +143,23 @@ export class PricesComponent implements OnInit {
 
   getSuppliersForComponents() {
     this.itemComponents.map(component => {
-      this.procuremetnService.getLastOrdersForItem(component.componentNumber, 20).subscribe(data=>{
+      this.procuremetnService.getLastOrdersForItem(component.componentNumber, 20).subscribe(data => {
         component.lastOrders = data
         return component
       })
     })
-    
+
   }
 
-  getCustomersForItem(itemNumber){
+  getCustomersForItem(itemNumber) {
     this.costumerService.getAllCustomersOfItem(itemNumber).subscribe(data => {
       data.forEach(customer => {
-        if(customer) this.customersForItem.push(customer)
+        if (customer) this.customersForItem.push(customer)
       })
       this.loadingCustomers = false
     })
   }
-  
+
   createPriceObj(data) {
 
     let componentPricing = {
@@ -161,13 +167,14 @@ export class PricesComponent implements OnInit {
       shippingPrice: '',
       componentNumber: data[0].componentN,
       componentName: data[0].componentName,
+      imgUrl: ''
     }
 
 
-    if(data[0].price) componentPricing.price = data[0].price
+    if (data[0].price) componentPricing.price = data[0].price
     else {
       let suppliers = data[0].alternativeSuppliers;
-      if(!suppliers) componentPricing.price = 'Update Price'
+      if (!suppliers) componentPricing.price = 'Update Price'
       for (let i = 0; i < suppliers.length; i++) {
         if (suppliers[i].price != '' && suppliers[i].price != null && suppliers[i].price != undefined) {
           componentPricing.price = suppliers[0].price
@@ -187,6 +194,9 @@ export class PricesComponent implements OnInit {
         this.totalShippingPrice = this.totalShippingPrice + Number(componentPricing.shippingPrice)
       }
     }
+
+    debugger
+    componentPricing.imgUrl = data[0].img
 
     return componentPricing
   }

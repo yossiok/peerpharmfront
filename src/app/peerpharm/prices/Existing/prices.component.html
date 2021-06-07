@@ -30,7 +30,10 @@
             <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
             <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Price</button>
         </div>
-        <div class="bigLoader" *ngIf="calculating"></div>
+        <div *ngIf="calculating" class="row mt-2">
+            <h3>Please be patient.</h3>
+            <div class="bigLoader"></div>
+        </div>
         <div *ngIf="!calculating" class="container mt-5">
             <div class="row mt-4">
                 <h2>{{item.name}} {{item.subName}} {{item.discriptionK}}</h2>
@@ -74,6 +77,7 @@
                     <button (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
                         Status</button>
                     <span class="bg-dark text-warning ml-5 p-2">Status = {{selectedStatus}}</span>
+                    <img class="image" [src]="selectedComponent.imgUrl" alt="Component image missing..">
                     <table class="bg-warning text-dark">
                         <thead class="text-center">
                             <tr>

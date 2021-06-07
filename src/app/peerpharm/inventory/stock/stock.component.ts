@@ -2027,7 +2027,6 @@ export class StockComponent implements OnInit {
     await this.inventoryService.getAmountOnShelfs(cmptN).subscribe(async res => {
       this.callingForCmptAmounts = false;
 
-
       this.itemAmountsData = res.data;
       this.itemAmountsWh = res.whList;
       this.currItemShelfs = [];
