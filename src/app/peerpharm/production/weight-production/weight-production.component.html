@@ -73,10 +73,12 @@
         <div *ngIf="formules.length > 1">
           <button class="btn btn-success" (click)="chooseFormule(formule)">Choose this formule</button>
         </div>
-        <span>
-          Formule Number: <span class="header-detail ml-2">{{formule.data.formuleNumber}}</span>
-        </span>
-        Formule Name: <span class="header-detail">{{formule.data.formuleName}}</span>
+        <h5>
+          Formule <span class="header-detail ml-2">{{formule.data.formuleNumber}}</span>
+        </h5>
+        <h5>
+          <span class="header-detail">{{formule.data.formuleName}}</span>
+        </h5>
         <span>
           Order Number: <span class="header-detail">{{formule.formuleOrder}}</span>
         </span>
