@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormulesService } from 'src/app/services/formules.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemsService } from 'src/app/services/items.service';
+import * as _ from 'lodash'
 
 interface FormuleWeight {
   formuleNumber: any;
@@ -64,6 +65,8 @@ export class WeightProductionComponent implements OnInit {
   }
   materialName: any;
   materialNumber: any;
+  showHeader: boolean = false;
+  edit: boolean = false;
 
   constructor(
     private formuleSrv: FormulesService,
@@ -74,6 +77,16 @@ export class WeightProductionComponent implements OnInit {
 
   ngOnInit() {
     // this.formuleNumberElement.nativeElement.focus()
+  }
+
+  addFormule() {
+    this.formules.push({
+      formuleNumber: '',
+      formuleUnitWeight: 0,
+      formuleOrder: '',
+      formuleWeight: 0,
+      data: {}
+    })
   }
 
 
@@ -123,85 +136,77 @@ export class WeightProductionComponent implements OnInit {
     };
   }
 
-  formuleCalculate(data, formuleWeight) {
+  newProcess() {
+    debugger
+    this.showHeader = !this.showHeader
+    this.formules = []
+    this.finalFormule = {
+      formuleNumber: '',
+      formuleWeight: 0,
+      formuleUnitWeight: 0,
+      formuleOrder: '',
+      data: {}
+    }
+  }
+  
+  startWeight() {
 
+    this.showHeader = !this.showHeader
+    for (let formule of this.formules) {
+      if (formule.formuleNumber != '' && formule.formuleWeight != '') {
+
+        //get formule weight per unit
+        this.itemService.getItemData(formule.formuleNumber).subscribe(data => formule.formuleUnitWeight = data[0].netWeightK)
+        this.formuleSrv.getFormuleByNumber(formule.formuleNumber).subscribe(data => {
+          if (data == null) {
+            this.toastSrv.error(`Formule Number ${formule.formuleNumber} Not Found!`)
+            return
+          }
+          else {
+            formule.data = this.formuleCalculate(data, formule.formuleWeight);
+          }
+        })
+      } else {
+        this.toastSrv.error('Please fill all fields')
+      }
+    }
+  }
+
+  formuleCalculate(data, formuleWeight) {
     data.phases.forEach(phase => {
       phase.items.forEach(item => {
         item.kgProd = Number(formuleWeight) * (Number(item.percentage) / 100)
       });
     });
-
     return data
   }
 
-  // formuleTwoCalculate(data) {
-
-  //   data.phases.forEach(phase => {
-  //     phase.items.forEach(item => {
-  //       item.kgProd = Number(this.formuleWeight2) * (Number(item.percentage) / 100)
-  //     });
-  //   });
-
-  //   return data
-
-  // }
-
-  addFormule() {
-    this.formules.push({
-      formuleNumber: '',
-      formuleUnitWeight: 0,
-      formuleOrder: '',
-      formuleWeight: 0,
-      data: {}
-    })
-  }
-
-  calculateFormules() {
 
 
-    for (let formule of this.formules) {
-
-      if (formule.formuleNumber != '' && formule.formuleWeight != '') {
-
-        //get formule weight per unit
-        this.itemService.getItemData(formule.formuleNumber).subscribe(data => formule.formuleUnitWeight = data[0].netWeightK)
-
-        this.formuleSrv.getFormuleByNumber(formule.formuleNumber).subscribe(data => {
-
-          if (data == null) {
-            this.toastSrv.error(`Formule Number ${formule.formuleNumber} Not Found!`)
-            return
-          }
-
-          else {
-            formule.data = this.formuleCalculate(data, formule.formuleWeight);
-          }
-
-        })
-        // }
-
-        //not splitted
-        // else {
-        //   this.formuleSrv.getFormuleByNumber(this.formuleNumber).subscribe(data => {
-        //     if(data == null) this.toastSrv.error('Formule Not Found!')
-        //     else {
-
-        //       data.phases.forEach(phase => {
-        //         phase.items.forEach(item => {
-        //           item.kgProd = Number(this.formuleWeight) * (Number(item.percentage) / 100)
-        //         });
-        //       });
-        //       this.currentFormule = data;
-
-        //     }
-        //   })
-        // }
-      } else {
-        this.toastSrv.error('Please fill all fields')
+  compareFormules() {
+    for(let i = 0; i < this.formules.length-1; i++) {
+      if(_.isEqual(this.formules[i].data.phases, this.formules[i+1].data.phases)) {
+        // console.log(_.differenceWith(this.formules[i].data, this.formules[i+1].data, _.isEqual))
+        this.finalFormule = this.formules[i]
       }
-
+      else {
+        for(let j = 0; j < this.formules[i].data.phases.length; j++) {
+          for (let k = 0; k < this.formules[i].data.phases[j].items.length; k++) {
+            if(this.formules[i].data.phases[j].items[k].percentage != this.formules[i+1].data.phases[j].items[k].percentage) {
+              this.formules[i].data.phases[j].items[k].color = 'orange'
+              this.formules[i+1].data.phases[j].items[k].color = 'orange'
+            }
+          }
+        }
+      }
     }
   }
+
+  chooseFormule(formule) {
+    debugger
+    this.finalFormule = {...formule}
+  }
+
 
 
   printFormule() {
