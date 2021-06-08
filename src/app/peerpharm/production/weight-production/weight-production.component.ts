@@ -12,6 +12,7 @@ interface FormuleWeight {
   formuleOrder: any;
   formuleUnitWeight: any;
   data: any;
+  exist: boolean
 
 }
 
@@ -43,8 +44,10 @@ export class WeightProductionComponent implements OnInit {
      formuleWeight: 0,
      formuleUnitWeight: 0,
      formuleOrder: '',
-     data: {}
+     data: {},
+     exist: true
     }];
+
   finalFormule: FormuleWeight;
   finalWeight: number = 0;
   allMaterialArrivals: any[];
@@ -87,7 +90,8 @@ export class WeightProductionComponent implements OnInit {
       formuleUnitWeight: 0,
       formuleOrder: '',
       formuleWeight: 0,
-      data: {}
+      data: {},
+      exist: true
     })
   }
 
@@ -148,6 +152,18 @@ export class WeightProductionComponent implements OnInit {
     this.addFormule()
     this.finalFormule = null
     this.finalWeight = 0
+  }
+
+  checkFormule(formule) {
+    this.formuleSrv.getFormuleByNumber(formule.formuleNumber).subscribe(data => {
+      if (data == null) {
+        this.toastSrv.error(`Formule Number ${formule.formuleNumber} Not Found!`)
+        formule.exist = false
+      }
+      else {
+        formule.exist = true
+      }
+    })
   }
   
   startWeight() {
