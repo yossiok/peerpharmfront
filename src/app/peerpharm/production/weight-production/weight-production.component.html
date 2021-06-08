@@ -22,17 +22,17 @@
 
   <div class="row mt-5" *ngFor="let formule of formules; let i = index">
     <div class="col-2">
-      <input id="formuleNumber" [(ngModel)]="formule.formuleNumber" placeholder="Formule Number"
+      <input id="formuleNumber" [(ngModel)]="formule.formuleNumber" (change)="checkFormule(formule)" placeholder="Formule Number"
         class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input [(ngModel)]="formule.formuleOrder" placeholder="Order Number" class="form-control rounded-pill">
+      <input [(ngModel)]="formule.formuleOrder" [disabled]="!formule.exist" placeholder="Order Number" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input [(ngModel)]="formule.formuleWeight" placeholder="Weight" class="form-control rounded-pill">
+      <input [(ngModel)]="formule.formuleWeight" [disabled]="!formule.exist" placeholder="Weight" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <button class="btn btn-warning rounded-pill mx-auto" (click)="addFormule()">
+      <button [disabled]="!formule.exist" class="btn btn-warning rounded-pill mx-auto" (click)="addFormule()">
         Add Process</button>
     </div>
     <div *ngIf="i != 0" class="col-2">
