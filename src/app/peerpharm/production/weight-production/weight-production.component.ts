@@ -66,7 +66,7 @@ export class WeightProductionComponent implements OnInit {
   }
   materialName: any;
   materialNumber: any;
-  showHeader: boolean = false;
+  showHeader: boolean = true;
   edit: boolean = false;
 
   constructor(
@@ -78,6 +78,7 @@ export class WeightProductionComponent implements OnInit {
 
   ngOnInit() {
     // this.formuleNumberElement.nativeElement.focus()
+    document.getElementById("formuleNumber").focus();
   }
 
   addFormule() {
@@ -88,6 +89,10 @@ export class WeightProductionComponent implements OnInit {
       formuleWeight: 0,
       data: {}
     })
+  }
+
+  eraseLast() {
+    this.formules.pop()
   }
 
 
@@ -138,16 +143,11 @@ export class WeightProductionComponent implements OnInit {
   }
 
   newProcess() {
-    debugger
     this.showHeader = !this.showHeader
     this.formules = []
-    this.finalFormule = {
-      formuleNumber: '',
-      formuleWeight: 0,
-      formuleUnitWeight: 0,
-      formuleOrder: '',
-      data: {}
-    }
+    this.addFormule()
+    this.finalFormule = null
+    this.finalWeight = 0
   }
   
   startWeight() {
@@ -213,7 +213,6 @@ export class WeightProductionComponent implements OnInit {
 
   printFormule() {
     this.printFormuleBtn.nativeElement.click();
-    this.finishWeight();
     document.getElementById("formuleNumber").focus();
   }
 
@@ -238,9 +237,7 @@ export class WeightProductionComponent implements OnInit {
   //   }
   // }
 
-  finishWeight() {
-    this.formules = []
-  }
+
 
 
 

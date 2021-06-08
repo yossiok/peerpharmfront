@@ -1,30 +1,27 @@
 <div class="row">
-  <div class="col-2 mt-10 d-flex flex-column justify-content-between">
-    <button class="btn btn-primary" (click)="showHeader = !showHeader">New Process</button>
-  </div>
-  <div class="col-3"></div>
   <div class="col-2">
-    <button (click)="printFormule()" class="btn btn-success form-control rounded-pill">Print</button>
+    <button class="btn btn-primary rounded-pill" (click)="newProcess()">New Process</button>
+  </div>
+  <div class="col-3">
+    <button class="btn btn-secondary rounded-pill" (click)="compareFormules()">Compare Formules</button>
+  </div>
+  <div class="col-2">
+    <button (click)="printFormule()" [disabled]="!finalFormule" [style.cursor]="finalFormule ? 'pointer' : 'not-allowed'" 
+        class="btn btn-success form-control rounded-pill">Print</button>
     <button #printFormuleBtn [printStyle]="{td : {'border-top': 'solid 1px'}, th : {'border': 'solid 1px'}}"
     printSectionId="formuleSection" ngxPrint style="display: none;"></button>
   </div>
   <div class="col-3"></div>
-  <button class="btn btn-primary" (click)="edit = !edit">Edit Percentage</button>
+  <button class="btn btn-primary rounded-pill" (click)="edit = !edit">Edit Percentage</button>
 </div>
-<div class="row mt-2">
-  <div class="col-2 mt-10 d-flex flex-column justify-content-between">
-    <button class="btn btn-secondary" (click)="compareFormules()">Compare Formules</button>
-  </div>
-</div>
+<div class="row mt-4"></div>
 
 
 
 <div *ngIf="showHeader" class="container bg-white text-center p-4 rounded shadow">
 
-
-
   <div class="row mt-5" *ngFor="let formule of formules; let i = index">
-    <div class="col-4">
+    <div class="col-2">
       <input id="formuleNumber" [(ngModel)]="formule.formuleNumber" placeholder="Formule Number"
         class="form-control rounded-pill">
     </div>
@@ -35,8 +32,12 @@
       <input [(ngModel)]="formule.formuleWeight" placeholder="Weight" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <button *ngIf="i == 0" class="btn btn-warning rounded-pill mx-auto" (click)="addFormule()">
+      <button class="btn btn-warning rounded-pill mx-auto" (click)="addFormule()">
         Add Process</button>
+    </div>
+    <div *ngIf="i != 0" class="col-2">
+      <button class="btn btn-danger rounded-pill mx-auto" (click)="eraseLast()">
+        X</button>
     </div>
   </div>
 
@@ -48,11 +49,11 @@
 
   <div class="row mt-3">
     <div class="col-2"></div>
-    <div class="col-4">
+    <div class="col-2"></div>
+    <div class="col-2">
       <button (click)="startWeight()" class="btn btn-info form-control rounded-pill">Start</button>
     </div>
     <div class="col-4">
-   
     </div>
     <div class="col-2"></div>
   </div>
@@ -71,8 +72,8 @@
   <div class="row mt-3 d-flex flex-row">
     <div *ngFor="let formule of formules" class="col-3">
       <div>
-        <div *ngIf="formules.length > 1">
-          <button class="btn btn-success" (click)="chooseFormule(formule)">Choose this formule</button>
+        <div>
+          <button class="btn btn-success" (click)="chooseFormule(formule)"><i class="fa fa-check" aria-hidden="true"></i></button>
         </div>
         <h5>
           Formule <span class="header-detail ml-2">{{formule.data.formuleNumber}}</span>
