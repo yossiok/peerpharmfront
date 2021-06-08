@@ -46,6 +46,7 @@ export class WeightProductionComponent implements OnInit {
      data: {}
     }];
   finalFormule: FormuleWeight;
+  finalWeight: number = 0;
   allMaterialArrivals: any[];
   materialShelfs: any[] = []
   materialArrivals: Boolean = false;
@@ -164,6 +165,7 @@ export class WeightProductionComponent implements OnInit {
           }
           else {
             formule.data = this.formuleCalculate(data, formule.formuleWeight);
+            this.finalWeight += Number(formule.formuleWeight)
           }
         })
       } else {
@@ -203,8 +205,8 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
-    debugger
     this.finalFormule = {...formule}
+    this.finalFormule.data = this.formuleCalculate(this.finalFormule.data, this.finalWeight)
   }
 
 
