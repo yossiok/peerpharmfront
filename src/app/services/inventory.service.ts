@@ -312,11 +312,21 @@ export class InventoryService {
   //   let url = this.baseUrl + "itemShell/updateMulti";
   //   return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
   // }
-  updateInventoryChangesTest(qtyObj, stockType) {
-    var dataTosend = { dataArr: qtyObj };
-    let url = this.baseUrl + "itemShell/updateMultiFinal?stockType=" + stockType;
-    return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
+  updateInventoryChangesTest(qtyObj, itemType, dir?) {
+    if(dir && dir == 'production') {
+      let url = this.baseUrl + "itemShell/letsJustGiveWierdNamesToFunctions?stockType=" + itemType;
+      return this.http.post(url, JSON.stringify(qtyObj), this.options).pipe(map(res => res.json()))
+
+    }
+
+    else {
+      var dataTosend = { dataArr: qtyObj };
+      let url = this.baseUrl + "itemShell/updateMultiFinal?stockType=" + itemType;
+      return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
+    }
   }
+
+
   deleteZeroStockAmounts(): Observable<any> {
     let url = this.baseUrl + "itemShell/removeZerosStock"
     return this.http.get(url).pipe(map(reponse => reponse.json()));
