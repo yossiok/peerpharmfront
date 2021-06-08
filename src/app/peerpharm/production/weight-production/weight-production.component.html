@@ -2,10 +2,13 @@
   <div class="col-2 mt-10 d-flex flex-column justify-content-between">
     <button class="btn btn-primary" (click)="showHeader = !showHeader">New Process</button>
   </div>
-  <div class="col-6"></div>
+  <div class="col-3"></div>
   <div class="col-2">
-
+    <button (click)="printFormule()" class="btn btn-success form-control rounded-pill">Print</button>
+    <button #printFormuleBtn [printStyle]="{td : {'border-top': 'solid 1px'}, th : {'border': 'solid 1px'}}"
+    printSectionId="formuleSection" ngxPrint style="display: none;"></button>
   </div>
+  <div class="col-3"></div>
   <button class="btn btn-primary" (click)="edit = !edit">Edit Percentage</button>
 </div>
 <div class="row mt-2">
@@ -49,9 +52,7 @@
       <button (click)="startWeight()" class="btn btn-info form-control rounded-pill">Start</button>
     </div>
     <div class="col-4">
-      <button (click)="printFormule()" class="btn btn-success form-control rounded-pill">Print</button>
-      <button #printFormuleBtn [printStyle]="{td : {'border-top': 'solid 1px'}, th : {'border': 'solid 1px'}}"
-        printSectionId="formuleSection" ngxPrint style="display: none;"></button>
+   
     </div>
     <div class="col-2"></div>
   </div>
@@ -66,7 +67,7 @@
 
 </div>
 
-<div id="formuleSection" *ngIf="formules.length > 0 && !finalFormule" class=" mt-2 text-center p-2 rounded shadow">
+<div  *ngIf="formules.length > 0 && !finalFormule" class=" mt-2 text-center p-2 rounded shadow">
   <div class="row mt-3 d-flex flex-row">
     <div *ngFor="let formule of formules" class="col-3">
       <div>
@@ -129,7 +130,7 @@
 </div>
 
 
-<div class="row mt-3 d-flex flex-row" *ngIf="finalFormule">
+<div id="formuleSection" class="row mt-3 d-flex flex-row" *ngIf="finalFormule">
   <div>
     <!-- 
     <h4 class="text-info">Formule Number: <span style="color:black">{{finalFormule.data.formuleNumber}}</span> </h4>
