@@ -99,6 +99,7 @@ export class ProcurementOrdersComponent implements OnInit {
   gbpSymbol: string = '\u00A3'
   loadingRecommendations: boolean;
   arrivalDate: any;
+  destinationLine: any;
   // users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
   users:any;
   newItem = {
@@ -173,31 +174,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.getAllProcurementOrders();
   }
 
-  getAllUsers() {
-    this.userService.getAllUsers().subscribe(users => this.users = users
-      .sort((a, b) => {
-        if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1
-        else return -1
-      }))
-  }
-
-  getCurrencies(): void {
-    this.procurementservice.getCurrencies().subscribe(currencies => {
-      delete currencies[0]._id
-      this.currencies = currencies[0]
-    })
-  }
-
-  setCurrencies() {
-    this.procurementservice.setCurrencies(this.currencies).subscribe(res => {
-      if (res.error) this.toastr.error(res.error)
-      else {
-        delete res._id
-        this.toastr.info(`שערים שנשמרו: ${JSON.stringify(res)}`)
-      }
-    })
-  }
-
+  
   getAllProcurementOrders() {
     this.orderDetailsModal = false;
     this.fetchingOrders = true;
@@ -245,6 +222,33 @@ export class ProcurementOrdersComponent implements OnInit {
       });
 
     });
+  }
+
+
+
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe(users => this.users = users
+      .sort((a, b) => {
+        if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1
+        else return -1
+      }))
+  }
+
+  getCurrencies(): void {
+    this.procurementservice.getCurrencies().subscribe(currencies => {
+      delete currencies[0]._id
+      this.currencies = currencies[0]
+    })
+  }
+
+  setCurrencies() {
+    this.procurementservice.setCurrencies(this.currencies).subscribe(res => {
+      if (res.error) this.toastr.error(res.error)
+      else {
+        delete res._id
+        this.toastr.info(`שערים שנשמרו: ${JSON.stringify(res)}`)
+      }
+    })
   }
 
   closePurchaseRequestsModal() {

@@ -169,13 +169,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       historyAmounts: [['']],
       componentType:[''],
       isStock: [true],
-      customerOrder: [0]
+      customerOrders: [[]]
     })
   }
 
   ngOnInit() {
     this.getUserInfo()
-    debugger
     if(this.purchaseData) this.itemForm.controls.itemArrival.setValue(this.purchaseData.arrivalDate)
     if (this.requestToPurchase) {
       this.newPurchase.patchValue({
@@ -414,6 +413,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.newPurchase.controls.stockitems.setValue(this.stockItems)
     this.resetStockItem();
     this.toastr.success('Item Added Successfully')
+  }
+
+  addCusomerOrderNumberToItem(e, i) {
+    debugger
+    this.itemForm.controls.customerOrders.value.push(e.value)
+    e.value = ''
   }
 
   editStockItem(number) {

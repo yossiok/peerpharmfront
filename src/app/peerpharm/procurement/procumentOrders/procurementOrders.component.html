@@ -155,6 +155,7 @@
                   <th><b>Supplier Number</b></th>
                   <th><b>Creation Date</b></th>
                   <th><b>Arrival Date</b></th>
+                  <th><b>Destination</b></th>
                   <th><b>Remarks</b></th>
                   <th><b>Status</b></th>
                   <th></th>
@@ -174,6 +175,9 @@
                     {{ line.arrivalDate | date: 'dd/MM/yyyy' }}</td>
                   <td *ngIf="EditRowId == line.orderNumber">
                     <input (change)="updateArrivalDate($event,line.orderNumber)" type="date" class="form-control">
+                  </td>
+                  <td (mouseover)="destinationLine = line" class="click hover-light" >
+                    <i placement="top" [ngbTooltip]="purchaseDestination" class="fas fa-info h2 text-primary"></i>
                   </td>
                   <td *ngIf="EditRowId != line.orderNumber">{{line.remarks}}
                   </td>
@@ -764,5 +768,20 @@
       <input class="form-control" type="number" [(ngModel)]="currencies.GBP">
     </div>
     <button (click)="setCurrencies(); modal.dismiss('Cross click')">שמור שינויים</button>
+  </div>
+</ng-template>
+
+<ng-template class="tooltip" #purchaseDestination>
+  <h3>Items Destination:</h3>
+  <div class="d-flex flex-column">
+    <ng-container *ngFor="let item of destinationLine.stockitems">
+      <div class="mt-2 p-2" *ngIf="item.isStock || item.customerOrders">
+        <strong> item {{item.number}} - </strong>
+        <span *ngIf="item.isStock">Stock</span>
+        <span *ngIf="item.customerOrders && item.customerOrders.length > 0">
+          Orders: <span *ngFor="let orderNumber of item.customerOrders">{{orderNumber}},&nbsp;</span>
+        </span>
+      </div>
+    </ng-container>
   </div>
 </ng-template>

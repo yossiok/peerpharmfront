@@ -116,9 +116,11 @@
                   <td *ngIf="editItem && itemIndex == i">{{stockitem.name}}</td>
                   
                   <td *ngIf="!editItem && stockitem.isStock">Stock</td>
-                  <td *ngIf="!editItem && !stockitem.isStock">{{stockitem.customerOrder}}</td>
+                  <td *ngIf="!editItem && !stockitem.isStock">
+                    Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
+                  </td>
                   <td *ngIf="editItem && itemIndex == i && stockitem.isStock">Stock</td>
-                  <td *ngIf="editItem && itemIndex == i && !stockitem.isStock">{{stockitem.customerOrder}}</td>
+                  <td *ngIf="editItem && itemIndex == i && !stockitem.isStock">{{stockitem.customerOrders}}</td>
 
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem && itemIndex == i">
@@ -286,7 +288,11 @@
                     <input type="radio" formControlName="isStock" [value]="false">
                     <label>Customer Order</label><br>
                   </div>
-                  <input formControlName="customerOrder" placeholder="Order Number" maxlength="4" *ngIf="!itemForm.get('isStock').value" type="number">
+                  <div *ngIf="!itemForm.get('isStock').value">
+                      <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber>
+                      <button type="button" (click)="addCusomerOrderNumberToItem(customerOrderNumber)"><i class="fas fa-plus"></i></button>
+                      Orders: <span *ngFor="let order of itemForm.get('customerOrders').value">{{order}},&nbsp;</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -504,7 +510,11 @@
                     <input type="radio" formControlName="isStock" [value]="false">
                     <label>Customer Order</label><br>
                   </div>
-                  <input formControlName="customerOrder" placeholder="Order Number" maxlength="4" *ngIf="!itemForm.get('isStock').value" type="number">
+                  <div *ngIf="!itemForm.get('isStock').value">
+                    <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber>
+                    <button type="button" (click)="addCusomerOrderNumberToItem(customerOrderNumber)"><i class="fas fa-plus"></i></button>
+                    Orders: <span *ngFor="let order of itemForm.get('customerOrders').value">{{order}},&nbsp;</span>
+                </div>
                 </div>
               </div>
             </div>
@@ -560,7 +570,9 @@
                   <td>{{stockitem.name}}</td>
 
                   <th *ngIf="stockitem.isStock">Stock</th>
-                  <th *ngIf="!stockitem.isStock">Order {{stockitem.customerOrder}}</th>
+                  <th *ngIf="!stockitem.isStock">
+                    Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
+                  </th>
                  
                   <td>{{stockitem.measurement}}</td>
                   <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>
