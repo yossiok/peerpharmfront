@@ -505,11 +505,10 @@ export class ScheduleComponent implements OnInit {
           this.buttonColor4 = '#B8ECF1';
           this.buttonColor5 = '#B8ECF1';
           this.buttonColor6 = '#B8ECF1';
-          this.buttonColor7 = '#2962FF';
+          this.buttonColor7 = 'yellow';
           this.buttonColor8 = '#B8ECF1';
           this.buttonColor9 = '#B8ECF1';
-          // this.scheduleData = this.scheduleDataCopy
-          // break;
+
           debugger;
           this.scheduleData = this.unPackedSchedules
           this.scheduleData.map(line => {
@@ -521,12 +520,12 @@ export class ScheduleComponent implements OnInit {
           //   return o1.date ? -1 : o2.date ? 1 : 0;
           // });
 
-          this.scheduleData.sort(function(a,b){
+          // this.scheduleData.sort(function(a,b){
 
-            let value = Number(new Date(a.date)) - Number(new Date(b.date))
-            return value
-            
-          });
+          //   let value = Number(new Date(a.date)) - Number(new Date(b.date))
+          //   return value
+
+          // });
 
           break;
       case 'mkp2':
@@ -558,18 +557,22 @@ export class ScheduleComponent implements OnInit {
   }
 
   edit(id, type) {
-    this.EditRowId = id;
-    this.currentType = type;
+    if(this.typeShown == 'unpacked') {
+      this.currentType = type;
+    } else {
+      this.EditRowId = id;
+      this.currentType = type;
+    }
   }
 
 
   getAllUnpackedSchedules() {
-    this.scheduleService.getUnpackedSchedules().subscribe(data => {
-
-      data.forEach(element => {
+    this.scheduleService.getUnpackedSchedules().subscribe(async data  => {
+      debugger;
+      await data.forEach(element => {
         element.mkp = 'unpacked'
       });
-      this.unPackedSchedules = data;
+      this.unPackedSchedules = data
     })
   }
 
