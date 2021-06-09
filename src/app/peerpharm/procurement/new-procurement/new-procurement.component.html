@@ -177,14 +177,14 @@
                       [style.width]="'100px'" placeholder="Item Remarks"></textarea>
                   </td>
 
-                  <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)"
+                  <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)" placement="top" ngbTooltip="Edit Item"
                       class="click fa fa-pencil-alt text-primary"></i></td>
-                  <td><i *ngIf="!disabled  && editItem && itemIndex == i" (click)="openToEdit(i)"
+                  <td><i *ngIf="!disabled  && editItem && itemIndex == i" placement="top" ngbTooltip="Edit Item" (click)="openToEdit(i)"
                       class="click fa fa-pencil-alt text-primary"></i></td>
 
                   <!-- <td *ngIf="!disabled && !editItem"><i (click)="editItem = !editItem"
                       class="click fa fa-times text-primary"></i></td> -->
-                  <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="editItem = !editItem"
+                  <td><i *ngIf="!disabled && editItem && itemIndex == i" placement="top" ngbTooltip="Exit Edit" (click)="editItem = !editItem"
                       class="click fa fa-times text-primary"></i></td>
 
                   <!-- <td *ngIf="!disabled && !editItem"><i (click)="updateItems(stockitem)"
@@ -192,9 +192,9 @@
                   <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="updateItems(stockitem)"
                       class="click fa fa-save text-primary h4"></i></td>
 
-                  <td *ngIf="!disabled && !editItem"><i (click)="removeStockitemFromPurchase(i)"
+                  <td *ngIf="!disabled && !editItem"><i placement="top" ngbTooltip="Remove Item From Purchase" (click)="removeStockitemFromPurchase(i)"
                       class="click fa fa-times text-danger"></i></td>
-                  <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="removeStockitemFromPurchase(i)"
+                  <td><i *ngIf="!disabled && editItem && itemIndex == i" placement="top" ngbTooltip="Remove Item From Purchase" (click)="removeStockitemFromPurchase(i)"
                       class="click fa fa-times text-danger"></i></td>
 
                 </tr>
