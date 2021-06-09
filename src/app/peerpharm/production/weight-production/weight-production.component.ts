@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormulesService } from 'src/app/services/formules.service';
@@ -40,13 +40,13 @@ export class WeightProductionComponent implements OnInit {
   // formuleOrder2: any;
   // isSplitted: boolean = false;
   formules: FormuleWeight[] = [{
-     formuleNumber: '',
-     formuleWeight: 0,
-     formuleUnitWeight: 0,
-     formuleOrder: '',
-     data: {},
-     exist: true
-    }];
+    formuleNumber: '',
+    formuleWeight: 0,
+    formuleUnitWeight: 0,
+    formuleOrder: '',
+    data: {},
+    exist: true
+  }];
 
   finalFormule: FormuleWeight;
   finalWeight: number = 0;
@@ -72,6 +72,13 @@ export class WeightProductionComponent implements OnInit {
   showHeader: boolean = true;
   edit: boolean = false;
 
+  @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
+
+    if (this.formules.length == 1 && this.formules[0].data.phases && event.key === 'Enter') {
+      this.chooseFormule(this.formules[0])
+    }
+  }
+
   constructor(
     private formuleSrv: FormulesService,
     private inventorySrv: InventoryService,
@@ -79,10 +86,7 @@ export class WeightProductionComponent implements OnInit {
     private modalService: NgbModal,
     private itemService: ItemsService) { }
 
-  ngOnInit() {
-    // this.formuleNumberElement.nativeElement.focus()
-    document.getElementById("formuleNumber").focus();
-  }
+  ngOnInit() { }
 
   addFormule() {
     this.formules.push({
@@ -165,7 +169,7 @@ export class WeightProductionComponent implements OnInit {
       }
     })
   }
-  
+
   startWeight() {
 
     this.showHeader = !this.showHeader
@@ -202,17 +206,17 @@ export class WeightProductionComponent implements OnInit {
 
 
   compareFormules() {
-    for(let i = 0; i < this.formules.length-1; i++) {
-      if(_.isEqual(this.formules[i].data.phases, this.formules[i+1].data.phases)) {
+    for (let i = 0; i < this.formules.length - 1; i++) {
+      if (_.isEqual(this.formules[i].data.phases, this.formules[i + 1].data.phases)) {
         // console.log(_.differenceWith(this.formules[i].data, this.formules[i+1].data, _.isEqual))
         this.finalFormule = this.formules[i]
       }
       else {
-        for(let j = 0; j < this.formules[i].data.phases.length; j++) {
+        for (let j = 0; j < this.formules[i].data.phases.length; j++) {
           for (let k = 0; k < this.formules[i].data.phases[j].items.length; k++) {
-            if(this.formules[i].data.phases[j].items[k].percentage != this.formules[i+1].data.phases[j].items[k].percentage) {
+            if (this.formules[i].data.phases[j].items[k].percentage != this.formules[i + 1].data.phases[j].items[k].percentage) {
               this.formules[i].data.phases[j].items[k].color = 'orange'
-              this.formules[i+1].data.phases[j].items[k].color = 'orange'
+              this.formules[i + 1].data.phases[j].items[k].color = 'orange'
             }
           }
         }
@@ -221,7 +225,7 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
-    this.finalFormule = {...formule}
+    this.finalFormule = { ...formule }
     this.finalFormule.data = this.formuleCalculate(this.finalFormule.data, this.finalWeight)
   }
 
