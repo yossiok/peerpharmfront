@@ -100,6 +100,7 @@ export class ProcurementOrdersComponent implements OnInit {
   loadingRecommendations: boolean;
   arrivalDate: any;
   destinationLine: any;
+  chooseMultipleSuppliers: boolean = false;
   // users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
   users:any;
   newItem = {
@@ -117,10 +118,16 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   filterForm: FormGroup = new FormGroup({
-    status: new FormControl(''),
-    category: new FormControl(''),
-    itemType: new FormControl(''),
-    userName: new FormControl(''),
+    status: new FormControl(null),
+    category: new FormControl(null),
+    itemType: new FormControl(null),
+    userName: new FormControl(null),
+    dateFrom: new FormControl(null),
+    dateTo: new FormControl(null),
+    orderNumber: new FormControl(null),
+    supplier: new FormControl(null),
+    supplier2: new FormControl(null),
+    itemNumber: new FormControl(null),
   })
 
 
@@ -385,32 +392,79 @@ export class ProcurementOrdersComponent implements OnInit {
 
     this.procurementData = this.procurementDataCopy
 
-    var status = this.filterForm.value.status;
-    var category = this.filterForm.value.category;
-    var type = this.filterForm.value.itemType;
-    var userName = this.filterForm.value.userName;
+    let status = this.filterForm.value.status;
+    let category = this.filterForm.value.category;
+    let type = this.filterForm.value.itemType;
+    let userName = this.filterForm.value.userName;
+    let dateFrom = this.filterForm.value.dateFrom
+    let dateTo = this.filterForm.value.dateTo
+    let orderNumber = this.filterForm.value.orderNumber
+    let itemNumber = this.filterForm.value.itemNumber
+    let supplier = this.filterForm.value.supplier
+    
 
-    if (status != "") {
+    if (status) {
       if (status == 'open') this.procurementData = this.procurementData.filter(p => p.status == status || p.status == 'supplied')
       else if (status != 'allOrders') this.procurementData = this.procurementData.filter(p => p.status == status)
       else this.procurementData = this.procurementData.filter(purchase => purchase.status != 'canceled');
     }
 
-    if (category != "") {
+    if (category) {
       this.procurementData = this.procurementData.filter(order => {
         for (let item of order.stockitems) {
           if (item.componentType == category) return true
         }
       })
     }
-    if (type != "") {
+
+    if (type) {
       this.procurementData = this.procurementData.filter(order => order.orderType == type)
     }
-    if (userName != "") {
+
+    if (userName) {
       if (userName == 'all') this.procurementData = this.procurementData
       else this.procurementData = this.procurementData.filter(p => p.user == userName)
     }
 
+    if(dateFrom) {
+      this.procurementData = this.procurementData.filter(purchOrder => purchOrder.creationDate > dateFrom)
+    }
+
+    if(dateTo) {
+      this.procurementData = this.procurementData.filter(purchOrder => purchOrder.creationDate < dateTo)
+    }
+    
+    if(orderNumber) {
+      this.procurementData = this.procurementData.filter(purchOrder => purchOrder.orderNumber.toString().includes(orderNumber))
+    }
+
+    if(supplier) {
+      this.procurementData = this.procurementData.filter(purchOrder => purchOrder.supplierName.toLowerCase().includes(supplier))
+    }
+
+
+    if(itemNumber) {
+      this.procurementData = this.procurementData.filter(purchase => {
+        if (purchase.stockitems.length == 0 && itemNumber == "") return true
+        for (let item of purchase.stockitems) {
+          if (item.number && item.number.includes(itemNumber)) {
+            return true
+          }
+        }
+      })
+    }
+
+  }
+
+  filterMultipleSuppliers() {
+
+    let supplier = this.filterForm.value.supplier
+    let supplier2 = this.filterForm.value.supplier2
+    
+    if(supplier2 && supplier) {
+      this.procurementData = this.procurementDataCopy
+      .filter(purchOrder => purchOrder.supplierName.toLowerCase().includes(supplier) || purchOrder.supplierName.toLowerCase().includes(supplier2))
+    }
   }
 
   resetFilters(){
@@ -853,6 +907,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   getAllSuppliers() {
     this.supplierService.getSuppliersDiffCollection().subscribe(data => {
+      debugger
       this.allSuppliers = data;
     })
   }

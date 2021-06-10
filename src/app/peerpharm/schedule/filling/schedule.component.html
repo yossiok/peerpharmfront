@@ -10,6 +10,49 @@
     <div class="col-4 fixNoaStupidStuff"></div>
   </div>
 
+  <div class="row fixNoaStupidStuff">
+    <div class="col-3"></div>
+    <div class="col-1 font-weight-bold">Color index:</div>
+    <div class="col-1">
+      <div [style.background]="'yellow'" class="color-index pt-2">
+        <span class="mt-4 font-weight-bold">Being Filled</span>
+      </div>
+    </div>
+    <div class="col-1">
+      <div [style.background]="'#CE90FF'" class="color-index pt-2">
+        <span class="mt-4 font-weight-bold">Filled</span>
+      </div>
+    </div>
+    <div class="col-1">
+      <div [style.background]="'rgb(255, 114, 114)'" class="color-indexpt-2">
+        <span class="mt-4 font-weight-bold">Partial Done</span>
+      </div>
+    </div>
+    <div class="col-1">
+      <div [style.background]="'Aquamarine'" class="color-index pt-2">
+        <span class="mt-4 font-weight-bold">Done</span>
+      </div>
+    </div>
+    <!-- <div class="col-1">
+      <div [style.background]="'orange'" class="color-index pt-2">
+        <span class="mt-4 font-weight-bold">Filled and Packed</span>
+      </div>
+    </div>
+    <div class="col-1">
+      <div [style.background]="'grey'" class="color-index pt-2">
+        <span class="mt-4 font-weight-bold text-white">Missing Ingredients</span>
+      </div>
+    </div> -->
+    <div class="col-1">
+      <!-- <div [style.background]="'red'" class="color-index pt-2">
+        <span class="mt-4 font-weight-bold"></span>
+      </div> -->
+    </div>
+    <div class="col-2"></div>
+  </div>
+
+  <br>
+
   <div class="row mt-4 fixNoaStupidStuff">
     <div class="col-2 fixNoaStupidStuff">
       <input class="form-control" type="date" #date [(ngModel)]="today" (change)="dateChanged(date.value)" />

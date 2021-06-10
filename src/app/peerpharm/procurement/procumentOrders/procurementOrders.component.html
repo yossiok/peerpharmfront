@@ -12,15 +12,18 @@
         </div>
         <div class="row mt-4">
           <div class="col-3">
-            <button *ngIf="newPurchaseAllowed" (click)="orderDetailsModal = true" class="btn btn-warning rounded-pill">New Purchase - F2</button>
+            <button *ngIf="newPurchaseAllowed" (click)="orderDetailsModal = true"
+              class="btn btn-warning rounded-pill">New Purchase - F2</button>
           </div>
           <div class="col-2"></div>
           <div class="col-2">
-            <button class="btn btn-warning rounded-pill" (click)="open(updateCurrencies)">Update Currencies - F8</button>
+            <button class="btn btn-warning rounded-pill" (click)="open(updateCurrencies)">Update Currencies -
+              F8</button>
           </div>
           <div class="col-2"></div>
           <div class="col-3">
-            <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning rounded-pill">Purchase Requests -
+            <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning rounded-pill">Purchase Requests
+              -
               F4</button>
           </div>
         </div>
@@ -34,120 +37,150 @@
           </span>
         </div>
 
-        <div 
+        <div class="search-container"
         *ngIf="!fetchingOrders" 
-        class="search-container">
-        <form [formGroup]="filterForm">
+        >
+          <form [formGroup]="filterForm">
 
-          <div class="row mt-4">
-            <div class="col-3">
-              <input type="text " class="form-control rounded"  placeholder="Search By Order Number"
-              (keyup)="searchNumber($event)" />
-            </div>
-            <div class="col-3">
-              <input type="text" class="form-control rounded" list="suppliers" placeholder="Search By Supplier Name"
-              (keyup)="searchBySupplier($event)" />
-            </div>
-            <div class="col-3"><input type="text" class="form-control rounded"  placeholder="Search By Item Number"
-              (keyup)="searchByItem($event)" /></div>
-              <div class="col-3"><input type="text" class="form-control rounded"
-                placeholder="Search By Certificate Number" (keyup)="searchByCertNum($event)" /></div>
+            <div class="row mt-4">
+              <div class="col-2">
+                <input type="text" formControlName="orderNumber" class="form-control rounded"
+                  placeholder="Search By Order Number" (keyup)="filterPurchaseOrders()" />
               </div>
-              
-              <div class="row mt-4">
-                <div class="col-1">
-                  חפש לפי סטטוס <select (change)="filterPurchaseOrders()" formControlName="status" class="form-control rounded-pill">
-                    <option selected="true" disabled="disabled">בחר סטטוס</option>
-                    <option value="allOrders">all</option>
-                    <option value="open">open</option>
-                    <option value="closed">closed</option>
-                    <!-- <option value="supplied">supplied</option> -->
-                    <option value="waitingForApproval">waiting approval</option>
-                    <option value="approvedBySupplier">approved</option>
-                    <option value="supplied">delivered</option>
-                  </select>
+              <div class="col-2">
+                <div>
+                  <input type="text" class="form-control rounded" formControlName="supplier"
+                    [placeholder]="chooseMultipleSuppliers ? 'Supplier 1' : 'Supplier'" (keyup)="chooseMultipleSuppliers ? null : filterPurchaseOrders()" />
                 </div>
-                <div class="col-2">
-                  חפש לפי קטגוריה <select (change)="filterPurchaseOrders()" formControlName="category" class="form-control rounded-pill">
-                    <option selected="true" disabled="disabled">בחר קטגוריה</option>
-                    <option value='bottle_Glass'>בקבוק זכוכית</option>
-                    <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-                    <option value='jar_Glass'>צנצנת זכוכית</option>
-                    <option value='jar_Plastic'>צנצנת פלסטיק</option>
-                    <option value='cap'>פקק</option>
-                    <option value='cover'>מכסה</option>
-                    <option value='pump'>משאבה</option>
-                    <option value='cosmetic_pump'>משאבה קוסמטית</option>
-                    <option value='over_cap'>מכסה עילי</option>
-                    <option value='tube'>שפורפרת</option>
-                    <option value='colons'>קולונים</option>
-                    <option value='hair_life'>היירלייפ</option>
-                    <option value='compacts'>קומפקטים</option>
-                    <option value='personal_package'>אריזות אישיות</option>
-                    <option value='master_carton'>קרטוני מאסטר</option>
-                    <option value='newsletter'>עלון לצרכן</option>
-                    <option value='irosol_valve'>אירוסול- שסתום</option>
-                    <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                    <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-                    <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                    <option value='cellophane'>צלופן</option>
-                    <option value='sticker'>מדבקה</option>
-                    <option value='sachet'>סאשט</option>
-                  </select>
+                <div *ngIf="chooseMultipleSuppliers">
+                  <p class="text-danger">Note: Other filters won't work with multiple suppliers search</p>
+                  <input type="text" class="form-control rounded" formControlName="supplier2"
+                    placeholder="Supplier 2" />
+                    <button class="row mt-2" (click)="filterMultipleSuppliers()">Filter Multiple Suppliers</button>
                 </div>
-                <div class="col-2">
-                  חפש לפי סוג פריט <select (change)="filterPurchaseOrders()" formControlName="itemType" class="form-control rounded-pill">
-                    <option selected="true" disabled="disabled">בחר סוג</option>
-                    <option value="all">הכל</option>
-                    <option value='material'>חומרי גלם</option>
-                    <option value='component'>קומפוננטים</option>
-                  </select>
-                </div>
-                <div class="col-1">
-                  חפש לפי שם משתמש <select (change)="filterPurchaseOrders()" formControlName="userName" class="form-control rounded-pill">
-                    <option selected="true" disabled="disabled">בחר משתמש</option>
-                    <option selected="true" value="all" >All</option>
-                    <option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</option>
-                  </select>
-                </div>
-                <!-- <div class="col-1">
+              </div>
+              <div class="col-1">
+                <input type="checkbox" (change)="chooseMultipleSuppliers = !chooseMultipleSuppliers"> <span>Search Multiple Suppliers</span>
+              </div>
+              <div class="col-2"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
+                  (keyup)="searchByItem($event)" />
+              </div>
+              <div class="col-2"><input type="text" class="form-control rounded"
+                  placeholder="Search By Certificate Number" (keyup)="searchByCertNum($event)" />
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-1">
+                חפש לפי סטטוס <select (change)="filterPurchaseOrders()" formControlName="status"
+                  class="form-control rounded-pill">
+                  <option selected="true" disabled="disabled">בחר סטטוס</option>
+                  <option value="allOrders">all</option>
+                  <option value="open">open</option>
+                  <option value="closed">closed</option>
+                  <!-- <option value="supplied">supplied</option> -->
+                  <option value="waitingForApproval">waiting approval</option>
+                  <option value="approvedBySupplier">approved</option>
+                  <option value="supplied">delivered</option>
+                </select>
+              </div>
+              <div class="col-2">
+                חפש לפי קטגוריה <select (change)="filterPurchaseOrders()" formControlName="category"
+                  class="form-control rounded-pill">
+                  <option selected="true" disabled="disabled">בחר קטגוריה</option>
+                  <option [value]="null">הכל</option>
+                  <option value='bottle_Glass'>בקבוק זכוכית</option>
+                  <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+                  <option value='jar_Glass'>צנצנת זכוכית</option>
+                  <option value='jar_Plastic'>צנצנת פלסטיק</option>
+                  <option value='cap'>פקק</option>
+                  <option value='cover'>מכסה</option>
+                  <option value='pump'>משאבה</option>
+                  <option value='cosmetic_pump'>משאבה קוסמטית</option>
+                  <option value='over_cap'>מכסה עילי</option>
+                  <option value='tube'>שפורפרת</option>
+                  <option value='colons'>קולונים</option>
+                  <option value='hair_life'>היירלייפ</option>
+                  <option value='compacts'>קומפקטים</option>
+                  <option value='personal_package'>אריזות אישיות</option>
+                  <option value='master_carton'>קרטוני מאסטר</option>
+                  <option value='newsletter'>עלון לצרכן</option>
+                  <option value='irosol_valve'>אירוסול- שסתום</option>
+                  <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                  <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+                  <option value='irosol_bottle'>איירוסול- בקבוק</option>
+                  <option value='cellophane'>צלופן</option>
+                  <option value='sticker'>מדבקה</option>
+                  <option value='sachet'>סאשט</option>
+                </select>
+              </div>
+              <div class="col-2">
+                חפש לפי סוג פריט <select (change)="filterPurchaseOrders()" formControlName="itemType"
+                  class="form-control rounded-pill">
+                  <option selected="true" disabled="disabled">בחר סוג</option>
+                  <option value="all">הכל</option>
+                  <option value='material'>חומרי גלם</option>
+                  <option value='component'>קומפוננטים</option>
+                </select>
+              </div>
+              <div class="col-1">
+                חפש לפי שם משתמש <select (change)="filterPurchaseOrders()" formControlName="userName"
+                  class="form-control rounded-pill">
+                  <option selected="true" disabled="disabled">בחר משתמש</option>
+                  <option selected="true" value="all">All</option>
+                  <option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</option>
+                </select>
+              </div>
+              <!-- <div class="col-1">
                   טען את כל הפריטים
                   <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
                 </div> -->
 
-                <div class="col-2">
-                  <button (click)="resetFilters()" class="btn btn-secondary">Reset All Filters</button>
-                </div>
-                
-                <div class="col-2 border">
-                  <p class="text-primary h3">Orders</p>
-                  <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
+              <div class="col-2">
+                <button (click)="resetFilters()" class="btn btn-secondary">Reset All Filters</button>
+              </div>
+
+              <div class="col-2 border">
+                <p class="text-primary h3">Orders</p>
+                <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
                   (click)="exportAsXLSX('purchaseData')">
-                  <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
+                <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
                   style="background: none;border:none" printSectionId="print-section" ngxPrint><img
-                  src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
-                </div>
-                <div class="col-1 border">
-                  <p class="text-primary h3 ">Items</p>
-                  <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
+                    src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+              </div>
+              <div class="col-1 border">
+                <p class="text-primary h3 ">Items</p>
+                <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
                   (click)="exportAsXLSX('purchaseItems')">
-                </div>
-                <!-- <div class="col-1">
+              </div>
+              <!-- <div class="col-1">
                   Creation Date: <input class="form-control rounded-pill" formControlName="creationDate" (change)="dateChange()" #fromDateStr type="date">
                 </div>
                 <div class="col-1">
                   Arrival Date: <input class="form-control rounded-pill" formControlName="arrivalDate" (change)="dateChange()" #toDateStr type="date">
                 </div> -->
-              </div>
-            </form>
             </div>
-            
-            
-            
-            <div id="print-section" class="row mt-4">
-              <div class="col-12">
-                <table class="table table-hover text-center">
-                  <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-primary text-white">
+            <div class="row mt-4">
+              <div class="col-2">
+                <label for="">From</label>
+                <input type="date" class="form-control" formControlName="dateFrom" placeholder="From"
+                  (change)="filterPurchaseOrders()" />
+              </div>
+              <div class="col-2">
+                <label for="">To</label>
+                <input type="date" class="form-control" formControlName="dateTo" placeholder="To"
+                  (change)="filterPurchaseOrders()" />
+              </div>
+            </div>
+          </form>
+        </div>
+
+
+
+        <div id="print-section" class="row mt-4">
+          <div class="col-12">
+            <table class="table table-hover text-center">
+              <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-primary text-white">
                 <tr>
                   <th><b>#</b></th>
                   <th><b>Purchase Number</b></th>
@@ -155,7 +188,7 @@
                   <th><b>Supplier Number</b></th>
                   <th><b>Creation Date</b></th>
                   <th><b>Arrival Date</b></th>
-                  <th><b>Destination</b></th>
+                  <th><b>Customer Order</b></th>
                   <th><b>Remarks</b></th>
                   <th><b>Status</b></th>
                   <th></th>
@@ -163,7 +196,8 @@
                 </tr>
               </thead>
               <tbody id="table_body">
-                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"  *ngFor="let line of procurementData; let i = index">
+                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"
+                  *ngFor="let line of procurementData; let i = index">
                   <td>{{i+1}}</td>
                   <td class="click" (click)="viewOrderDetails(i)" style="cursor: pointer;"><span
                       style="color:blue;">{{line.orderNumber}}</span>
@@ -176,15 +210,25 @@
                   <td *ngIf="EditRowId == line.orderNumber">
                     <input (change)="updateArrivalDate($event,line.orderNumber)" type="date" class="form-control">
                   </td>
-                  <td (mouseover)="destinationLine = line" class="click hover-light" >
-                    <i placement="top" [ngbTooltip]="purchaseDestination" class="fas fa-info h2 text-primary"></i>
+                  <td>
+                    <!-- <span *ngIf="line.stockitems[0].isStock">Stock</span>
+                    <span *ngIf="line.stockitems[0].cusomerOrders" placement="top" [ngbTooltip]="purchaseDestination">{{line.stockitems[0].cusomerOrders[0]}}</span> -->
+                    <ng-container *ngFor="let item of line.stockitems; let i = index">
+                      <select class="custom-select" *ngIf="i == 0 && (item.isStock || item.customerOrders)">
+                        <option *ngIf="item.isStock">Stock</option>
+                        <ng-container *ngIf="item.customerOrders && item.customerOrders.length > 0">
+                          <option *ngFor="let orderNumber of item.customerOrders">{{orderNumber}}</option>
+                        </ng-container>
+                      </select>
+                    </ng-container>
                   </td>
                   <td *ngIf="EditRowId != line.orderNumber">{{line.remarks}}
                   </td>
                   <td *ngIf="EditRowId == line.orderNumber">
                     <textarea [value]="line.remarks" #purchaseRemarks></textarea>
                   </td>
-                  <td [style.background]="setStatusColor(line.status)" [style.color]="line.status == 'closed' ? 'white' : ''"><label>{{hebStat(line.status)}}</label></td>
+                  <td [style.background]="setStatusColor(line.status)"
+                    [style.color]="line.status == 'closed' ? 'white' : ''"><label>{{hebStat(line.status)}}</label></td>
                   <td><button class="btn btn-primary" (click)="printOrder(line)">Print</button></td>
                   <td>{{line.user}}</td>
                 </tr>
@@ -484,12 +528,8 @@
 </div>
 
 <div *ngIf="orderDetailsModal==true" class="fixed-top text-center p-3 modal-inner">
-  <app-new-procurement
-    [requestToPurchase]="requestToPurchase" 
-    [isEdit]="isEdit" 
-    [currencies]="currencies"
-    [purchaseData]="purchaseData"
-    (newProcurementSaved)="newProcurementSaved($event)"
+  <app-new-procurement [requestToPurchase]="requestToPurchase" [isEdit]="isEdit" [currencies]="currencies"
+    [purchaseData]="purchaseData" (newProcurementSaved)="newProcurementSaved($event)"
     (closeOrderModal)='closeOrderModal($event)'>
   </app-new-procurement>
 </div>
@@ -544,7 +584,8 @@
     <div *ngIf="loadingRecommendations" class="smallLoader ml-5"></div>
     <h3 class="bg-warning text-primary rounded-pill w-25 p-10 mx-auto">Please be patient. It might take a while...</h3>
   </div>
-  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0 && !loadingRecommendations" class="requests row mt-1">
+  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0 && !loadingRecommendations"
+    class="requests row mt-1">
     <div class="col-12">
       <table class="table table-striped">
         <thead class="bg-warning text-white">
@@ -579,15 +620,15 @@
                   <tbody>
                     <tr *ngFor="let stockitem of purchaseRecommendation.stockitems">
                       <td><input type="checkbox" title={{purchaseRecommendation.recommendNumber}}
-                        (change)="isSelected($event,stockitem)">
+                          (change)="isSelected($event,stockitem)">
                       </td>
                       <td>
                         {{stockitem.number}}
                       </td>
                       <td [style.background]="stockitem.color">
                         {{stockitem.name}} <a *ngIf="stockitem.lastorder" target="_blank"
-                        href="/#/peerpharm/procurement/procurementOrders?orderNumber={{stockitem.lastorder.orderNumber}}">
-                        <i class="fas fa-info" placement="bottom" ngbTooltip={{stockitem.tooltip}}></i></a>
+                          href="/#/peerpharm/procurement/procurementOrders?orderNumber={{stockitem.lastorder.orderNumber}}">
+                          <i class="fas fa-info" placement="bottom" ngbTooltip={{stockitem.tooltip}}></i></a>
                       </td>
                       <td>
                         {{stockitem.quantity}}
@@ -601,8 +642,7 @@
               </td>
               <td>{{purchaseRecommendation.remarks}}</td>
               <td>
-                <button
-                  (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)"
+                <button (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)"
                   class="btn btn-danger form-control rounded-pill">Delete Request
                 </button>
               </td>
@@ -776,10 +816,9 @@
   <div class="d-flex flex-column">
     <ng-container *ngFor="let item of destinationLine.stockitems">
       <div class="mt-2 p-2" *ngIf="item.isStock || item.customerOrders">
-        <strong> item {{item.number}} - </strong>
         <span *ngIf="item.isStock">Stock</span>
         <span *ngIf="item.customerOrders && item.customerOrders.length > 0">
-          Orders: <span *ngFor="let orderNumber of item.customerOrders">{{orderNumber}},&nbsp;</span>
+          <span *ngFor="let orderNumber of item.customerOrders">{{orderNumber}}</span><br>
         </span>
       </div>
     </ng-container>
