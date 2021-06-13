@@ -105,6 +105,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   submittingCert: boolean;
   sendingPurchase: boolean;
   lastSupplier: string;
+  wow: boolean = false;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -452,9 +453,22 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   updateItems(stockItem) {
+    console.log(this.newPurchase.value)
     this.itemIndex = -1
     this.toastr.warning("שמור את ההזמנה על מנת לשמור את שינויים")
     this.editItem = false;
+  }
+
+  changeOrder(i, order, j) {
+    this.newPurchase.value.stockitems[i].customerOrders[j] = order
+  }
+
+  deleteCusomerOrderNumber(i,j){
+    this.newPurchase.value.stockitems[i].customerOrders.splice(j,1)
+  }
+
+  addOrderToPurchase(i, e) {
+    this.newPurchase.value.stockitems[i].customerOrders.push(e.target.value)
   }
 
 

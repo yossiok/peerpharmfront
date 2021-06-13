@@ -88,7 +88,7 @@
                   <th></th>
                   <th>Item</th>
                   <th>Item Name</th>
-                  <th>Destination</th>
+                  <th>Customer Order</th>
                   <th>Quantity</th>
                   <th>Arrived</th>
                   <th>Measurement</th>
@@ -120,7 +120,16 @@
                     Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
                   </td>
                   <td *ngIf="editItem && itemIndex == i && stockitem.isStock">Stock</td>
-                  <td *ngIf="editItem && itemIndex == i && !stockitem.isStock">{{stockitem.customerOrders}}</td>
+                  <td *ngIf="editItem && itemIndex == i && !stockitem.isStock">
+                    <ng-container *ngFor="let order of stockitem.customerOrders; let j = index">
+                      <input  type="text" (change)="changeOrder(i, order, j)" [ngModelOptions]="{standalone: true}" [(ngModel)]="order"
+                      [style.width]="'77px'">
+                      <button placement="bottom" ngbTooltip="Delete this order" (click)="deleteCusomerOrderNumber(i,j)">X</button>
+                    </ng-container>
+                    <br>
+                    <button placement="bottom" ngbTooltip="Add customer order" (click)="wow = true">+</button>
+                    <input *ngIf="wow" type="text" (change)="addOrderToPurchase(i, $event)">
+                  </td>
 
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem && itemIndex == i">
