@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 
-export interface Response { 
+export interface Response {
   message: string
 }
 
@@ -21,7 +21,7 @@ export class ItemsService {
   private baseUrl = '/';
 
 
- 
+
 
   setNewProductionSchedule(schedule): Observable<any> {
     let url = this.baseUrl + "schedule/addSchedule";
@@ -37,16 +37,16 @@ export class ItemsService {
 
   getAllItems() {
     let url = this.baseUrl + "item";
-    return this.http.get(url).pipe(map(reponse => reponse.json())); 
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  
+
   getAllItemsTwo() {
     let url = this.baseUrl + "item/getAllItems";
-    return this.http.get(url).pipe(map(reponse => reponse.json())); 
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getItemsByStatus(itemStatus) {
-    let url = this.baseUrl + "item?itemStatus="+ itemStatus;
-    return this.http.get(url).pipe(map(reponse => reponse.json())); 
+    let url = this.baseUrl + "item?itemStatus=" + itemStatus;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   getItemData(itemNumber) {
@@ -62,7 +62,7 @@ export class ItemsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   createFillingReport(itemN) {
-    let url = this.baseUrl + "item?createFillingReport="+itemN;
+    let url = this.baseUrl + "item?createFillingReport=" + itemN;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -71,23 +71,28 @@ export class ItemsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getItemDetails(itemNumber) {
-    let url = this.baseUrl + "item?itemDetails="+itemNumber;
+    let url = this.baseUrl + "item?itemDetails=" + itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getShellDetailsByNumber(itemNumber) {
-    let url = this.baseUrl + "item?itemInShell="+itemNumber;
+    let url = this.baseUrl + "item?itemInShell=" + itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   getShelfDetailByShelf(shelfNumber) {
-    let url = this.baseUrl + "item?itemByShelfNumber="+shelfNumber;
+    let url = this.baseUrl + "item?itemByShelfNumber=" + shelfNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
   shelfDetailsByNumber(shelfNumber) {
-    let url = this.baseUrl + "item?shelfDetailsByNumber="+shelfNumber;
+    let url = this.baseUrl + "item?shelfDetailsByNumber=" + shelfNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  getComponentsAmountByCmptNumber(componentNumber,itemQuantity): Observable<any> {
-    let url = this.baseUrl + "item?itemNumberToCheck="+componentNumber + '&itemQuantity='+itemQuantity;
+  getComponentsAmountByCmptNumber(componentNumber, itemQuantity): Observable<any> {
+    let url = this.baseUrl + "item?itemNumberToCheck=" + componentNumber + '&itemQuantity=' + itemQuantity;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getComponentsForItem(itemNumber) {
+    let url = this.baseUrl + "item/componentsForItem?itemNumber=" + itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -109,18 +114,18 @@ export class ItemsService {
     return this.http.post(url, JSON.stringify(itemShell), this.options).pipe(map(res => res.json()))
   }
 
-  getAllItemNames(){
+  getAllItemNames() {
     let url = this.baseUrl + "item/allItemNames";
     return this.http.get(url).pipe(map(res => res.json()))
   }
 
 
   newFloor(newFloor) {
-    
+
     let url = this.baseUrl + "item/newFloorItem";
     return this.http.post(url, JSON.stringify(newFloor), this.options).pipe(map(res => res.json()))
   }
- 
+
   updateLicenseLimition(itemDocObj) {
     let url = this.baseUrl + "item/updateDocs?updateLicenseLimition=yes";
     return this.http.post(url, JSON.stringify(itemDocObj), this.options).pipe(map(res => res.json()))
@@ -142,7 +147,7 @@ export class ItemsService {
     return this.http.post(url, JSON.stringify(specSettings), this.options).pipe(map(res => res.json()))
   }
   sendExcel(excel) {
-    
+
     let url = this.baseUrl + "item/excelToData";
     return this.http.post(url, JSON.stringify(excel), this.options).pipe(map(res => res.json()))
   }
@@ -151,18 +156,18 @@ export class ItemsService {
 
 
 
-  startNewItemObservable() { 
+  startNewItemObservable() {
     let itemResultObservable: Observable<any[]> = new Observable(observer => {
-      let self=this;
+      let self = this;
       let skip = 0;
       let limit = 500;
       startNewCall(skip, limit);
       function startNewCall(skip, limit) {
-        let url="/item?skip=" + skip + "&limit=" + limit; 
-        console.log("new call=> "+url);
-        self.http.get(url).subscribe(response => { 
+        let url = "/item?skip=" + skip + "&limit=" + limit;
+        console.log("new call=> " + url);
+        self.http.get(url).subscribe(response => {
           let items = <any[]>response.json();
-          skip = skip + 500;   
+          skip = skip + 500;
           if (items.length > 0) {
             console.log("got items bigger than 0");
             observer.next(items);
@@ -180,7 +185,7 @@ export class ItemsService {
     return itemResultObservable;
   }
 
-  
+
   getItemsWithoutBoxOrStickerFields() {
     let url = this.baseUrl + "item/reports?noBox=yes&noSticker=yes";
     return this.http.get(url).pipe(map(reponse => reponse.json()));

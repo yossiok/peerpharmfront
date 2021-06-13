@@ -1,5 +1,9 @@
 <!-- <div class="d-flex flex-row justify-content-between"> -->
 
+<div *ngIf="item" class="col-2">
+    <img class="image" [src]="item.imgMain1" alt="Update Item Image">
+</div>
+
 <div class="container">
 
     <div class="row mt-5">
@@ -39,6 +43,8 @@
                 <h2>{{item.name}} {{item.subName}} {{item.discriptionK}}</h2>
             </div>
             <div class="row mt-2">
+
+
                 <div class="col-4">
                     <table *ngIf="item" class="bg-warning text-dark">
                         <thead class="text-center">
@@ -60,8 +66,14 @@
                                 <td (click)="changeView(component, 'suppliers')">
                                     {{component.lastOrders[0].supplierName}}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="allowed">
+                                <td>FormulePrice:</td>
                                 <td></td>
+                                <td>{{item.formulePrice}}</td>
+                                <td></td>
+                            </tr>
+                            <tr *ngIf="allowed">
+                                <td>Total Item Price:</td>
                                 <td></td>
                                 <td>{{totalItemPrice}}</td>
                                 <td>{{totalShippingPrice}}</td>
@@ -69,9 +81,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-4">
 
-                </div>
+                <div class="col-4"></div>
+
                 <div class="col-4" *ngIf="selectedComponent && showOrders">
                     <h3>Purchases for item {{selectedComponent.componentNumber}}</h3>
                     <button (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
