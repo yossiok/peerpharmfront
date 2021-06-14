@@ -347,7 +347,6 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   async newProcurementSaved(e) {
-    debugger
     this.showLoader = e;
     await this.checkRecommendedOrderedItems();
     this.getAllProcurementOrders();
@@ -832,7 +831,6 @@ export class ProcurementOrdersComponent implements OnInit {
 
     switch (expression) {
       case 'purchaseData':
-        debugger
         let exelData = [...this.procurementData]
         exelData.map(purchase => {
           delete purchase.billNumber
@@ -907,7 +905,6 @@ export class ProcurementOrdersComponent implements OnInit {
 
   getAllSuppliers() {
     this.supplierService.getSuppliersDiffCollection().subscribe(data => {
-      debugger
       this.allSuppliers = data;
     })
   }

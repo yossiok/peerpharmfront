@@ -37,9 +37,7 @@
           </span>
         </div>
 
-        <div class="search-container"
-        *ngIf="!fetchingOrders" 
-        >
+        <div class="search-container" *ngIf="!fetchingOrders">
           <form [formGroup]="filterForm">
 
             <div class="row mt-4">
@@ -50,17 +48,19 @@
               <div class="col-2">
                 <div>
                   <input type="text" class="form-control rounded" formControlName="supplier"
-                    [placeholder]="chooseMultipleSuppliers ? 'Supplier 1' : 'Supplier'" (keyup)="chooseMultipleSuppliers ? null : filterPurchaseOrders()" />
+                    [placeholder]="chooseMultipleSuppliers ? 'Supplier 1' : 'Supplier'"
+                    (keyup)="chooseMultipleSuppliers ? null : filterPurchaseOrders()" />
                 </div>
                 <div *ngIf="chooseMultipleSuppliers">
                   <p class="text-danger">Note: Other filters won't work with multiple suppliers search</p>
                   <input type="text" class="form-control rounded" formControlName="supplier2"
                     placeholder="Supplier 2" />
-                    <button class="row mt-2" (click)="filterMultipleSuppliers()">Filter Multiple Suppliers</button>
+                  <button class="row mt-2" (click)="filterMultipleSuppliers()">Filter Multiple Suppliers</button>
                 </div>
               </div>
               <div class="col-1">
-                <input type="checkbox" (change)="chooseMultipleSuppliers = !chooseMultipleSuppliers"> <span>Search Multiple Suppliers</span>
+                <input type="checkbox" (change)="chooseMultipleSuppliers = !chooseMultipleSuppliers"> <span>Search
+                  Multiple Suppliers</span>
               </div>
               <div class="col-2"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
                   (keyup)="searchByItem($event)" />
@@ -186,6 +186,7 @@
                   <th><b>Purchase Number</b></th>
                   <th><b>Supplier Name</b></th>
                   <th><b>Supplier Number</b></th>
+                  <th><b>Supplier Country</b></th>
                   <th><b>Creation Date</b></th>
                   <th><b>Arrival Date</b></th>
                   <th><b>Customer Order</b></th>
@@ -204,6 +205,7 @@
                   </td>
                   <td>{{ line.supplierName }}</td>
                   <td>{{ line.supplierNumber }}</td>
+                  <td>{{ line.supplierCountry }}</td>
                   <td>{{ line.creationDate | date: 'dd/MM/yyyy' }}</td>
                   <td *ngIf="EditRowId != line.orderNumber">
                     {{ line.arrivalDate | date: 'dd/MM/yyyy' }}</td>
@@ -212,15 +214,15 @@
                   </td>
                   <td>
                     <!-- <span *ngIf="line.stockitems[0].isStock">Stock</span>
-                    <span *ngIf="line.stockitems[0].cusomerOrders" placement="top" [ngbTooltip]="purchaseDestination">{{line.stockitems[0].cusomerOrders[0]}}</span> -->
-                    <ng-container *ngFor="let item of line.stockitems; let i = index">
-                      <select class="custom-select" *ngIf="i == 0 && (item.isStock || item.customerOrders)">
+                    <span *ngIf="line.stockitems[0].cusomerOrders" (mouseup)="this.modalService.dismissAll()" (mousedown)="this.modalService.open(purchaseDestination)">{{line.stockitems[0].cusomerOrders[0]}}</span> -->
+                    <select class="custom-select">
+                      <ng-container *ngFor="let item of line.stockitems; let i = index">
                         <option *ngIf="item.isStock">Stock</option>
                         <ng-container *ngIf="item.customerOrders && item.customerOrders.length > 0">
                           <option *ngFor="let orderNumber of item.customerOrders">{{orderNumber}}</option>
                         </ng-container>
-                      </select>
-                    </ng-container>
+                      </ng-container>
+                    </select>
                   </td>
                   <td *ngIf="EditRowId != line.orderNumber">{{line.remarks}}
                   </td>

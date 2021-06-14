@@ -1,22 +1,22 @@
-<!-- <div class="d-flex flex-row justify-content-between"> -->
+<div class="d-flex flex-row justify-content-center">
 
-<div *ngIf="item" class="col-2">
-    <img class="image" [src]="item.imgMain1" alt="Update Item Image">
-</div>
-
-<div class="container">
-
-    <div class="row mt-5">
-        <div class="col-4"></div>
-        <div class="col-4 p-2">
-            <h2 class="text-center">Existing Product</h2>
-        </div>
-        <div class="col-4"></div>
+    <div class="mt-8 mr-5">
+        <img *ngIf="item" class="image1" [src]="item.imgMain1" alt="Update Item Image">
     </div>
 
-    <div class="container mt-5">
+    <div>
+
         <div class="row mt-5">
-            <!-- <div class="d-flex flex-column">
+            <div class="col-4"></div>
+            <div class="col-4 p-2">
+                <h2 class="text-center">Existing Product</h2>
+            </div>
+            <div class="col-4"></div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row mt-5">
+                <!-- <div class="d-flex flex-column">
                 <div>
                     <input type="text" (change)="productNumber.value = $event" placeholder="Product Name" #productName>
                     &nbsp;&nbsp;
@@ -31,119 +31,131 @@
                     </ul>
                 </div>
             </div> -->
-            <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
-            <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Price</button>
-        </div>
-        <div *ngIf="calculating" class="row mt-2">
-            <h3>Please be patient.</h3>
-            <div class="bigLoader"></div>
-        </div>
-        <div *ngIf="!calculating" class="container mt-5">
-            <div class="row mt-4">
-                <h2>{{item.name}} {{item.subName}} {{item.discriptionK}}</h2>
+                <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
+                <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Price</button>
             </div>
-            <div class="row mt-2">
-
-
-                <div class="col-4">
-                    <table *ngIf="item" class="bg-warning text-dark">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Component</th>
-                                <th></th>
-                                <th>Price</th>
-                                <th>Shipping</th>
-                                <th>Last Supplier</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table table-bordered">
-                            <tr *ngFor="let component of itemComponents">
-                                <td class="click" (click)="changeView(component, 'orders')">
-                                    {{component.componentNumber}}</td>
-                                <td>{{component.componentName}}</td>
-                                <td>{{component.price}}</td>
-                                <td>{{component.shippingPrice}}</td>
-                                <td (click)="changeView(component, 'suppliers')">
-                                    {{component.lastOrders[0].supplierName}}</td>
-                            </tr>
-                            <tr *ngIf="allowed">
-                                <td>FormulePrice:</td>
-                                <td></td>
-                                <td>{{item.formulePrice}}</td>
-                                <td></td>
-                            </tr>
-                            <tr *ngIf="allowed">
-                                <td>Total Item Price:</td>
-                                <td></td>
-                                <td>{{totalItemPrice}}</td>
-                                <td>{{totalShippingPrice}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="col-4"></div>
-
-                <div class="col-4" *ngIf="selectedComponent && showOrders">
-                    <h3>Purchases for item {{selectedComponent.componentNumber}}</h3>
-                    <button (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
-                        Status</button>
-                    <span class="bg-dark text-warning ml-5 p-2">Status = {{selectedStatus}}</span>
-                    <img class="image" [src]="selectedComponent.imgUrl" alt="Component image missing..">
-                    <table class="bg-warning text-dark">
-                        <thead class="text-center">
-                            <tr>
-                                <th>Order Number</th>
-                                <th>Status</th>
-                                <th>Created at..</th>
-                                <th>Arrival Date</th>
-                                <th>quantity Ordered</th>
-                                <th>Price</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="table table-bordered">
-                            <ng-container *ngFor="let order of selectedComponent.lastOrders">
-                                <tr
-                                    *ngIf="(order.status != 'closed' && selectedStatus != 'closed') || (order.status == 'closed' && selectedStatus == 'closed')">
-                                    <td>{{order.orderNumber}}</td>
-                                    <td>{{order.status}}</td>
-                                    <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
-                                    <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
-                                    <td>{{order.quantity}}</td>
-                                    <td>{{order.price}}</td>
-                                    <td>{{order.coin}}</td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
+            <div *ngIf="calculating" class="row mt-2">
+                <h3>Please be patient.</h3>
+                <div class="bigLoader"></div>
             </div>
-
-            <div *ngIf="item">
+            <div *ngIf="!calculating" class="container mt-5">
                 <div class="row mt-4">
-                    <h3>Customers Purchasing Item {{item.itemNumber}}</h3>
+                    <h2>{{item.name}} {{item.subName}} {{item.discriptionK}}</h2>
                 </div>
-                <div class="bg-warning" *ngIf="loadingCustomers">
-                    <h4>Loading Customers For Item</h4>
-                    <div class="smallLoader"></div>
+                <div class="row mt-2">
+
+
+                    <div class="col-4">
+                        <table *ngIf="item" class="bg-warning text-dark">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Component</th>
+                                    <th></th>
+                                    <th>Price</th>
+                                    <th>Shipping</th>
+                                    <th>Last Supplier</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table table-bordered">
+                                <tr *ngFor="let component of itemComponents">
+                                    <td class="click" (click)="changeView(component, 'orders')">
+                                        {{component.componentNumber}}</td>
+                                    <td>{{component.componentName}}</td>
+                                    <td>{{component.price}}</td>
+                                    <td>{{component.shippingPrice}}</td>
+                                    <td (click)="changeView(component, 'suppliers')">
+                                        {{component.lastOrders[0].supplierName}}</td>
+                                </tr>
+                                <tr *ngIf="allowed">
+                                    <td>FormulePrice:</td>
+                                    <td></td>
+                                    <td>{{item.formulePrice}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr *ngIf="allowed">
+                                    <td>Total Item Price:</td>
+                                    <td></td>
+                                    <td>{{totalItemPrice}}</td>
+                                    <td>{{totalShippingPrice}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-4"></div>
+
+                    <div class="col-4" *ngIf="selectedComponent && showOrders">
+                        <h3>Purchases for item {{selectedComponent.componentNumber}}</h3>
+                        <button class="btn btn-warning" (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
+                            Status</button>
+                        <span class="bg-dark text-warning ml-5 p-2">Status = {{selectedStatus}}</span>
+                        <img class="image m-2" [src]="selectedComponent.imgUrl" alt="Component image missing..">
+                        <table class="bg-warning text-dark">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Order Number</th>
+                                    <th>Status</th>
+                                    <th>Created at..</th>
+                                    <th>Arrival Date</th>
+                                    <th>quantity Ordered</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table table-bordered">
+                                <ng-container *ngFor="let order of selectedComponent.lastOrders">
+                                    <tr
+                                        *ngIf="(order.status != 'closed' && selectedStatus != 'closed') || (order.status == 'closed' && selectedStatus == 'closed')">
+                                        <td>{{order.orderNumber}}</td>
+                                        <td>{{order.status}}</td>
+                                        <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
+                                        <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
+                                        <td>{{order.quantity}}</td>
+                                        <td>{{order.price}}</td>
+                                        <td>{{order.coin}}</td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <table *ngIf="!loadingCustomers" class="bg-warning text-dark">
-                    <thead class="text-center">
-                        <tr>
-                            <th>Customer</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody class="table table-bordered">
-                        <tr *ngFor="let customer of customersForItem">
-                            <td>{{customer.costumerId}}</td>
-                            <td>{{customer.costumerName}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div *ngIf="item">
+                    <div class="row mt-4">
+                        <h3>Customers Purchasing Item {{item.itemNumber}}</h3>
+                    </div>
+                    <div class="bg-warning" *ngIf="loadingCustomers">
+                        <h4>Loading Customers For Item</h4>
+                        <div class="smallLoader"></div>
+                    </div>
+                    <table *ngIf="!loadingCustomers" class="bg-warning text-dark">
+                        <thead class="text-center">
+                            <tr>
+                                <th>Customer</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table table-bordered">
+                            <tr *ngFor="let customer of customersForItem">
+                                <td>{{customer.costumerId}}</td>
+                                <td>{{customer.costumerName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+    </div>
+
+    <div class="float-left small p-5 mr-5">
+        <h3>Important Remarks:</h3>
+        <h4 class="bg-danger text-white p-5">
+           1. {{item.proRemarks}}
+        </h4>
+        <h4 class="bg-white text-danger p-5">
+           2. {{item.impRemarks}}
+        </h4>
     </div>
 
 </div>

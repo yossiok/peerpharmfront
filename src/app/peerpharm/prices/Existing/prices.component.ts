@@ -106,8 +106,9 @@ export class PricesComponent implements OnInit {
             this.getSuppliersForComponents()
             this.loadingCustomers = true
             this.getCustomersForItem(this.item.itemNumber)
-            this.calculating = false;
+            
           }, 2000)
+          setTimeout(()=>this.calculating = false, 10000)
         })
 
       }

@@ -126,6 +126,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       _id: [''],
       supplierName: ["", Validators.required],
       supplierNumber: ["", Validators.required],
+      supplierCountry: [""],
       supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
       arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }, Validators.required],
@@ -207,6 +208,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (!this.purchaseData.closeReason) this.purchaseData.closeReason = ''
       if (!this.purchaseData.userEmail) this.purchaseData.userEmail = ''
       if (!this.purchaseData.user) this.purchaseData.user = ''
+      if (!this.purchaseData.supplierCountry) this.purchaseData.supplierCountry = ''
       if (!this.purchaseData.shippingPercentage) this.purchaseData.shippingPercentage = 0
       if (!this.purchaseData.finalPurchasePrice) this.purchaseData.finalPurchasePrice = 0
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
@@ -231,6 +233,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = ''
         if (!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = ''
         if (!changes.purchaseData.currentValue.userEmail) changes.purchaseData.currentValue.userEmail = ''
+        if (!changes.purchaseData.currentValue.supplierCountry) changes.purchaseData.currentValue.supplierCountry = ''
         if (!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = ''
         if (!changes.purchaseData.currentValue.shippingPercentage) changes.purchaseData.currentValue.shippingPercentage = 0
         if (!changes.purchaseData.currentValue.finalPurchasePrice) changes.purchaseData.currentValue.finalPurchasePrice = 0
@@ -303,6 +306,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.newPurchase.controls.supplierNumber.setValue(this.currSupplier.suplierNumber)
     if (this.currSupplier.email) {
       this.newPurchase.controls.supplierEmail.setValue(this.currSupplier.email)
+    }
+    if (this.currSupplier.country) {
+      this.newPurchase.controls.supplierCountry.setValue(this.currSupplier.country)
     }
   }
 

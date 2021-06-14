@@ -412,7 +412,7 @@
         </div>
 
         <div class="row mt-2">
-          <div class="col-sm-12 col-md-4 form-group">
+          <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4">*</span>
             <input formControlName="supplierName" name="supplierName" (change)="fillSupplierDetails($event)"
               list="suppliers" type="text" class="form-control" placeholder="Supplier Name" required>
@@ -421,15 +421,20 @@
               </option>
             </datalist>
           </div>
-          <div class="col-sm-12 col-md-4 form-group">
+          <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4">*</span>
             <input formControlName="supplierNumber" type="text" class="form-control" placeholder="Supplier Number"
               required>
           </div>
-          <div class="col-sm-12 col-md-4 form-group">
+          <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4"> &nbsp;</span>
             <input (change)="updateSupplierEmail($event)" formControlName="supplierEmail" type="text"
               class="form-control" placeholder="Supplier Email">
+          </div>
+          <div class="col-sm-12 col-md-3 form-group">
+            <span class="red float-left h4"> &nbsp;</span>
+            <input disabled formControlName="supplierCountry" type="text"
+              class="form-control" placeholder="Supplier Country">
           </div>
 
         </div>
