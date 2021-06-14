@@ -2,90 +2,104 @@
 
 <!--Item Movements-->
 <div class="row mt-4">
-    <h3>Item Movements</h3>
+  <h3>Item Movements</h3>
+</div>
+<form [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
+  <div class="row border border-secondary rounded p-2 form-group">
+    <div class="col-1">
+      item type
+      <select formControlName="itemType" class="form-control">
+        <option value="all">all</option>
+        <option value="component">component</option>
+        <option value="material">material</option>
+        <option value="product">product</option>
+      </select>
+    </div>
+    <div class="col-1">
+      component type
+      <select formControlName="componentType" class="form-control">
+        <option value="skip">Filter by Items</option>
+        <option value='bottle_Glass'>בקבוק זכוכית</option>
+        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+        <option value='jar_Glass'>צנצנת זכוכית</option>
+        <option value='jar_Plastic'>צנצנת פלסטיק</option>
+        <option value='cap'>פקק</option>
+        <option value='cover'>מכסה</option>
+        <option value='pump'>משאבה</option>
+        <option value='cosmetic_pump'>משאבה קוסמטית</option>
+        <option value='over_cap'>מכסה עילי</option>
+        <option value='tube'>שפורפרת</option>
+        <option value='colons'>קולונים</option>
+        <option value='hair_life'>היירלייפ</option>
+        <option value='compacts'>קומפקטים</option>
+        <option value='personal_package'>אריזות אישיות</option>
+        <option value='master_carton'>קרטוני מאסטר</option>
+        <option value='newsletter'>עלון לצרכן</option>
+        <option value='irosol_valve'>אירוסול- שסתום</option>
+        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+        <option value='cellophane'>צלופן</option>
+        <option value='sticker'>מדבקה</option>
+        <option value='sachet'>סאשט</option>
+      </select>
+    </div>
+    <div *ngIf="itemMovementForm.value.componentType == 'skip'" class="col-1">
+      item numbers
+      <ng-container *ngFor="let item of itemMovementForm.value.itemNumbers; let i = index">
+        <input (change)="setItemNumber(i, $event)" [value]="itemMovementForm.value.itemNumbers[i]" class="form-control" type="text">
+        <button type="button" (click)="itemMovementForm.value.itemNumbers.push('')">+</button>
+        <button *ngIf="i > 0" type="button" (click)="itemMovementForm.value.itemNumbers.pop()">-</button>
+      </ng-container>
+    </div>
+ 
+    <div class="col-1">
+      <label> item movements:</label>
+    </div>
+    <div class="col-1">
+      <p>from</p>
+      <input formControlName="fromDate" class="form-control" type="date">
+    </div>
+    <div class="col-1">
+      <p>to</p>
+      <input formControlName="toDate" class="form-control" type="date">
+    </div>
+    <div class="col-1">
+      movement type
+      <select formControlName="movementType" class="form-control">
+        <option value="all">all</option>
+        <option value="in">in</option>
+        <option value="out">out</option>
+        <option value="production">production</option>
+        <option value="shelfChange">Shelf Change</option>
+      </select>
+    </div>
+    <!-- <div class="col-1">
+      price
+      <input formControlName="price" class="form-control" type="number">
+      <select formControlName="priceDir" class="form-control">
+        <option value="higherThan">Higher than</option>
+        <option value="lowerThan">Lower than</option>
+      </select>
+    </div> -->
+    <div class="col-1">
+      amounts
+      <input formControlName="amount" class="form-control" type="number">
+      <select formControlName="amountDir" class="form-control">
+        <option value="higherThan">Higher than</option>
+        <option value="lowerThan">Lower than</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <button type="submit" class="btn btn-primary">Go.</button>
+    </div>
+  </div>
+</form>
+
+<div class="row mt-2">
 </div>
 
-    <div class="row mt-4">
-        <div class="col-2">
-            item type
-            <select>
-                <option value="all"></option>
-                <option value="component"></option>
-                <option value="material"></option>
-                <option value="product"></option>
-            </select>
-        </div>
-        <div class="col-2">
-            item
-            <input type="text">
-        </div>
-        <div class="col-2">
-            component type
-            <select>
-                <option selected="true" disabled="disabled">בחר קטגוריה</option>
-                <option value='bottle_Glass'>בקבוק זכוכית</option>
-                <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-                <option value='jar_Glass'>צנצנת זכוכית</option>
-                <option value='jar_Plastic'>צנצנת פלסטיק</option>
-                <option value='cap'>פקק</option>
-                <option value='cover'>מכסה</option>
-                <option value='pump'>משאבה</option>
-                <option value='cosmetic_pump'>משאבה קוסמטית</option>
-                <option value='over_cap'>מכסה עילי</option>
-                <option value='tube'>שפורפרת</option>
-                <option value='colons'>קולונים</option>
-                <option value='hair_life'>היירלייפ</option>
-                <option value='compacts'>קומפקטים</option>
-                <option value='personal_package'>אריזות אישיות</option>
-                <option value='master_carton'>קרטוני מאסטר</option>
-                <option value='newsletter'>עלון לצרכן</option>
-                <option value='irosol_valve'>אירוסול- שסתום</option>
-                <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-                <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                <option value='cellophane'>צלופן</option>
-                <option value='sticker'>מדבקה</option>
-                <option value='sachet'>סאשט</option>
-            </select>
-        </div>
-        <div class="col-2">
-            <p> item movements</p>
-            <p>from</p>
-            <input type="date">
-            <p>to</p>
-            <input type="date">
-        </div>
-        <div class="col-2">
-            movement type
-            <select>
-                <option value="in">in</option>
-                <option value="out">out</option>
-                <option value="prod">production</option>
-            </select>
-        </div>
-        <div class="col-2">
-            price
-            <input type="number">
-            <select>
-                <option value="high">Higher than</option>
-                <option value="low">Lower than</option>
-            </select>
-        </div>
-        <div class="col-2">
-            amounts
-            <input type="number">
-            <select>
-                <option value="high">Higher than</option>
-                <option value="low">Lower than</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <button class="btn">Go.</button>
-    </div>
-
-    <div class="row mt-4">
+<!-- <div class="row mt-4">
         <table class="table table-hover">
             <thead class="text-info text-center">
                 <tr>
@@ -110,7 +124,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div> -->
 
 
 
@@ -121,21 +135,21 @@
 <!--Item Details-->
 
 <div class="row mt-4">
-    <h3>Item Details</h3>
+  <h3>Item Details</h3>
 </div>
 
 <div class="row mt-2">
-    item type
-    <select>
-        <option value="component">component</option>
-        <option value="material">material</option>
-        <option value="product">product</option>
-    </select>
-    item number
-    <input type="text">
-    <button class="btn">Go.</button>
+  item type
+  <select>
+    <option value="component">component</option>
+    <option value="material">material</option>
+    <option value="product">product</option>
+  </select>
+  item number
+  <input type="text">
+  <button class="btn">Go.</button>
 </div>
-
+<!-- 
 <div class="row mt-2">
 
 
@@ -144,7 +158,7 @@
           <div class="container modal-inner">
             <div class="row text-center">
               <div class="col-4 text-right">
-                <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
+                <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
               </div>
               <div class="col-4 ">
                 <h2 class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
@@ -185,7 +199,7 @@
                 <label class="form-control">שם קומקס</label>
                 <label class="form-control">פריט חלופי</label>
                 <label class="form-control">מחיר אחרון (שקלים)</label>
-                <!-- <label class="form-control">מחיר העמסה (שקלים)</label> -->
+                <label class="form-control">מחיר העמסה (שקלים)</label>
               </div>
               <div class="col-2">
                 <input (change)="checkIfItemExist($event)" class="form-control" type='text'
@@ -194,8 +208,8 @@
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
                 <input class="form-control" type="number" [(ngModel)]="resCmpt.finalPrice" maxlength="6" max="6">
-                <!-- <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
-                <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice"> -->
+                <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
+                <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice">
 
               </div>
               <div class="col-2">
@@ -248,7 +262,7 @@
                 <label class="form-control">יח' מידה</label>
                 <label class="form-control">כמות מל'</label>
                 <label class="form-control">על חשבון</label>
-                <!-- <label class="form-control">רשימת לקוחות</label> -->
+                <label class="form-control">רשימת לקוחות</label>
               </div>
               <div class="col-2">
                 <select class="form-control" [(ngModel)]="resCmpt.componentType">
@@ -281,7 +295,7 @@
                 </select>
 
                 <select class="form-control" [(ngModel)]="resCmpt.componentCategory">
-                  <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
+                  <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')">
                   <option value=""></option>
                   <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
                 </select>
@@ -321,9 +335,9 @@
                   <option value="peerpharm">פארפארם</option>
                   <option value="customers">לקוח/לקוחות</option>
                 </select><i (click)="customersModal = true" class="form-control fa fa-plus text-success "></i>
-                <!-- <select class="form-control">
+                <select class="form-control">
                         <option *ngFor="let customer of resCmpt.payingCustomersList" value="customer">{{customer}}</option>
-                  </select> -->
+                  </select>
               </div>
               <div class="col-2">
                 <label class="form-control">הערה</label>
@@ -380,7 +394,7 @@
 
             <div style="padding: 0rem;" class="row text-center">
               <div class="col-1 text-right">
-                <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
+                <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button>
               </div>
               <div class="col-10">
                 <h4 class="text-success">ספקים</h4>
@@ -495,11 +509,11 @@
                           </datalist>
                         </td>
   
-                        <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                           {{supplier.supplierName}}</td>
                         <td *ngIf="EditRowId == supplier.supplierName">
                           <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
-                        </td> -->
+                        </td>
   
                         <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
                           {{supplier.manufacturer}}</td>
@@ -716,4 +730,4 @@
 
 
 
-</div>
+</div> -->

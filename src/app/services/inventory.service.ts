@@ -366,6 +366,11 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getComplexItemMovements(itemForm: Object) {
+    let url = this.baseUrl + "itemmovement/complexMovements";
+    return this.http.post(url, JSON.stringify(itemForm), this.options).pipe(map(res => res.json()));
+  }
+
   updateMaterial(objToUpdate) {
 
     let url = this.baseUrl + "material/update";
