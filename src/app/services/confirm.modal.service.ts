@@ -1,4 +1,4 @@
-import { Component, Injectable, Directive, TemplateRef, EventEmitter, HostListener } from '@angular/core';
+import { Component, Injectable, Directive, TemplateRef, EventEmitter, HostListener, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './auth.service';
 
@@ -80,17 +80,18 @@ export class ConfirmService {
     <h4  class="modal-title"></h4>
   </div>
   <div class="modal-body">
-   <input [(ngModel)]="onetime" />
+   <input #key [(ngModel)]="onetime" />
   </div>
   <div class="modal-footer">
     <button type="submit" class="btn btn-danger" (click)="yes()">Yes</button>
     <button type="button" class="btn btn-secondary" (click)="no()">No</button>
   </div>`
 })
-export class ConfirmModalComponent {
+export class ConfirmModalComponent implements OnInit {
 
   options: ConfirmOptions;
   onetime:string="";
+  @ViewChild('key') key: ElementRef
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
@@ -102,6 +103,11 @@ export class ConfirmModalComponent {
     this.options = state.options;
 
   }
+
+  ngOnInit(){
+    setTimeout(()=>this.key.nativeElement.focus(),500)
+  }
+
 
   yes() {
 this.authService.loginWith2WayKey(this.onetime).subscribe(data=>

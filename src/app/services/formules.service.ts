@@ -137,6 +137,12 @@ export class FormulesService {
     let url = this.baseUrl + "formules?getFormulePrice="+formuleId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getFormulePriceByNumber(formuleNumber) {
+    let url = this.baseUrl + "formules/PriceByNumber?formuleNumber="+formuleNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getCurrencyUSDRates(){
     let url = 'https://v6.exchangerate-api.com/v6/b2e6eed7c40f8ad1bacd456b/latest/USD'
 

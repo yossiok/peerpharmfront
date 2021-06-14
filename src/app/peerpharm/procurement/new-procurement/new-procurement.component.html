@@ -88,7 +88,7 @@
                   <th></th>
                   <th>Item</th>
                   <th>Item Name</th>
-                  <th>Destination</th>
+                  <th>Customer Order</th>
                   <th>Quantity</th>
                   <th>Arrived</th>
                   <th>Measurement</th>
@@ -116,9 +116,20 @@
                   <td *ngIf="editItem && itemIndex == i">{{stockitem.name}}</td>
                   
                   <td *ngIf="!editItem && stockitem.isStock">Stock</td>
-                  <td *ngIf="!editItem && !stockitem.isStock">{{stockitem.customerOrder}}</td>
+                  <td *ngIf="!editItem && !stockitem.isStock">
+                    Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
+                  </td>
                   <td *ngIf="editItem && itemIndex == i && stockitem.isStock">Stock</td>
-                  <td *ngIf="editItem && itemIndex == i && !stockitem.isStock">{{stockitem.customerOrder}}</td>
+                  <td *ngIf="editItem && itemIndex == i && !stockitem.isStock">
+                    <ng-container *ngFor="let order of stockitem.customerOrders; let j = index">
+                      <input  type="text" (change)="changeOrder(i, order, j)" [ngModelOptions]="{standalone: true}" [(ngModel)]="order"
+                      [style.width]="'77px'">
+                      <button placement="bottom" ngbTooltip="Delete this order" (click)="deleteCusomerOrderNumber(i,j)">X</button>
+                    </ng-container>
+                    <br>
+                    <button placement="bottom" ngbTooltip="Add customer order" (click)="wow = true">+</button>
+                    <input *ngIf="wow" type="text" (change)="addOrderToPurchase(i, $event)">
+                  </td>
 
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem && itemIndex == i">
@@ -175,14 +186,14 @@
                       [style.width]="'100px'" placeholder="Item Remarks"></textarea>
                   </td>
 
-                  <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)"
+                  <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)" placement="top" ngbTooltip="Edit Item"
                       class="click fa fa-pencil-alt text-primary"></i></td>
-                  <td><i *ngIf="!disabled  && editItem && itemIndex == i" (click)="openToEdit(i)"
+                  <td><i *ngIf="!disabled  && editItem && itemIndex == i" placement="top" ngbTooltip="Edit Item" (click)="openToEdit(i)"
                       class="click fa fa-pencil-alt text-primary"></i></td>
 
                   <!-- <td *ngIf="!disabled && !editItem"><i (click)="editItem = !editItem"
                       class="click fa fa-times text-primary"></i></td> -->
-                  <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="editItem = !editItem"
+                  <td><i *ngIf="!disabled && editItem && itemIndex == i" placement="top" ngbTooltip="Exit Edit" (click)="editItem = !editItem"
                       class="click fa fa-times text-primary"></i></td>
 
                   <!-- <td *ngIf="!disabled && !editItem"><i (click)="updateItems(stockitem)"
@@ -190,9 +201,9 @@
                   <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="updateItems(stockitem)"
                       class="click fa fa-save text-primary h4"></i></td>
 
-                  <td *ngIf="!disabled && !editItem"><i (click)="removeStockitemFromPurchase(i)"
+                  <td *ngIf="!disabled && !editItem"><i placement="top" ngbTooltip="Remove Item From Purchase" (click)="removeStockitemFromPurchase(i)"
                       class="click fa fa-times text-danger"></i></td>
-                  <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="removeStockitemFromPurchase(i)"
+                  <td><i *ngIf="!disabled && editItem && itemIndex == i" placement="top" ngbTooltip="Remove Item From Purchase" (click)="removeStockitemFromPurchase(i)"
                       class="click fa fa-times text-danger"></i></td>
 
                 </tr>
@@ -286,7 +297,11 @@
                     <input type="radio" formControlName="isStock" [value]="false">
                     <label>Customer Order</label><br>
                   </div>
-                  <input formControlName="customerOrder" placeholder="Order Number" maxlength="4" *ngIf="!itemForm.get('isStock').value" type="number">
+                  <div *ngIf="!itemForm.get('isStock').value">
+                      <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber>
+                      <button type="button" (click)="addCusomerOrderNumberToItem(customerOrderNumber)"><i class="fas fa-plus"></i></button>
+                      Orders: <span *ngFor="let order of itemForm.get('customerOrders').value">{{order}},&nbsp;</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -397,7 +412,7 @@
         </div>
 
         <div class="row mt-2">
-          <div class="col-sm-12 col-md-4 form-group">
+          <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4">*</span>
             <input formControlName="supplierName" name="supplierName" (change)="fillSupplierDetails($event)"
               list="suppliers" type="text" class="form-control" placeholder="Supplier Name" required>
@@ -406,15 +421,20 @@
               </option>
             </datalist>
           </div>
-          <div class="col-sm-12 col-md-4 form-group">
+          <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4">*</span>
             <input formControlName="supplierNumber" type="text" class="form-control" placeholder="Supplier Number"
               required>
           </div>
-          <div class="col-sm-12 col-md-4 form-group">
+          <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4"> &nbsp;</span>
             <input (change)="updateSupplierEmail($event)" formControlName="supplierEmail" type="text"
               class="form-control" placeholder="Supplier Email">
+          </div>
+          <div class="col-sm-12 col-md-3 form-group">
+            <span class="red float-left h4"> &nbsp;</span>
+            <input disabled formControlName="supplierCountry" type="text"
+              class="form-control" placeholder="Supplier Country">
           </div>
 
         </div>
@@ -504,7 +524,11 @@
                     <input type="radio" formControlName="isStock" [value]="false">
                     <label>Customer Order</label><br>
                   </div>
-                  <input formControlName="customerOrder" placeholder="Order Number" maxlength="4" *ngIf="!itemForm.get('isStock').value" type="number">
+                  <div *ngIf="!itemForm.get('isStock').value">
+                    <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber>
+                    <button type="button" (click)="addCusomerOrderNumberToItem(customerOrderNumber)"><i class="fas fa-plus"></i></button>
+                    Orders: <span *ngFor="let order of itemForm.get('customerOrders').value">{{order}},&nbsp;</span>
+                </div>
                 </div>
               </div>
             </div>
@@ -560,7 +584,9 @@
                   <td>{{stockitem.name}}</td>
 
                   <th *ngIf="stockitem.isStock">Stock</th>
-                  <th *ngIf="!stockitem.isStock">Order {{stockitem.customerOrder}}</th>
+                  <th *ngIf="!stockitem.isStock">
+                    Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
+                  </th>
                  
                   <td>{{stockitem.measurement}}</td>
                   <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>

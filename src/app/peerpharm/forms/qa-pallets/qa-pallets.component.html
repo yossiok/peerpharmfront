@@ -382,6 +382,7 @@
                   <!-- <th>מספר לקוח</th>
                   <th>נשלח לחשבונית</th> -->
                   <th></th>
+                  <!-- <th></th> -->
                   <th *ngIf="deleteLine"></th>
                 </tr>
               </thead>
@@ -397,6 +398,7 @@
                   <!-- <td>{{packlist.costumerNumber}}</td>
                   <td [ngClass]="checkTrueOrFalse(packlist)">{{packlist.readyForBill}}</td> -->
                   <td><button class="btn btn-info" (click)="sendForBill(packlist)">שלח לחשבונית</button></td>
+                  <!-- <td><button class="btn btn-secondary" (click)="findLostPallets(packlist)">מצא משטחים אבודים</button></td> -->
                   <td *ngIf="deleteLine"><i (click)="cancelPackList(packlist._id)" class="fa fa-times text-danger"></i>
                   </td>
                 </tr>
