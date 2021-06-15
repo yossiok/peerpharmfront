@@ -1,11 +1,9 @@
-<p>item-index works!</p>
-
 <!--Item Movements-->
-<div class="row mt-4">
-  <h3>Item Movements</h3>
+<div class="row mt-4 text-center">
+  <h3 class="text-center mx-auto">Item Movements</h3>
 </div>
 <form [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
-  <div class="row border border-secondary rounded p-2 form-group">
+  <div class="row border border-secondary rounded p-4 w-75 form-group mx-auto">
     <div class="col-1">
       item type
       <select formControlName="itemType" class="form-control">
@@ -15,7 +13,7 @@
         <option value="product">product</option>
       </select>
     </div>
-    <div class="col-1">
+    <div *ngIf="itemMovementForm.value.itemType == 'component'" class="col-1">
       component type
       <select formControlName="componentType" class="form-control">
         <option value="skip">Filter by Items</option>
@@ -44,18 +42,16 @@
         <option value='sachet'>סאשט</option>
       </select>
     </div>
-    <div *ngIf="itemMovementForm.value.componentType == 'skip'" class="col-1">
+    <div class="col-1">
       item numbers
       <ng-container *ngFor="let item of itemMovementForm.value.itemNumbers; let i = index">
-        <input (change)="setItemNumber(i, $event)" [value]="itemMovementForm.value.itemNumbers[i]" class="form-control" type="text">
+        <input (change)="setItemNumber(i, $event)" [value]="itemMovementForm.value.itemNumbers[i]" class="form-control"
+          type="text">
         <button type="button" (click)="itemMovementForm.value.itemNumbers.push('')">+</button>
         <button *ngIf="i > 0" type="button" (click)="itemMovementForm.value.itemNumbers.pop()">-</button>
       </ng-container>
     </div>
- 
-    <div class="col-1">
-      <label> item movements:</label>
-    </div>
+
     <div class="col-1">
       <p>from</p>
       <input formControlName="fromDate" class="form-control" type="date">
@@ -90,8 +86,11 @@
         <option value="lowerThan">Lower than</option>
       </select>
     </div>
-    <div class="col-2">
+    <div class="col-1">
       <button type="submit" class="btn btn-primary">Go.</button>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-secondary" (click)="itemMovementForm.reset()">Clear</button>
     </div>
   </div>
 </form>
@@ -99,32 +98,42 @@
 <div class="row mt-2">
 </div>
 
-<!-- <div class="row mt-4">
-        <table class="table table-hover">
-            <thead class="text-info text-center">
-                <tr>
-                    <th class="click" (click)="sortBy('customerOrders', 'orderNumber')"><i
-                            class="fas fa-arrow-up"></i><br>מספר הזמנה<br><i class="fas fa-arrow-down"></i></th>
-                    <th class="click" (click)="sortBy('customerOrders', 'orderDate')"><i
-                            class="fas fa-arrow-up"></i><br>תאריך<br><i class="fas fa-arrow-down"></i></th>
-                    <th class="click" (click)="sortBy('customerOrders', 'itemNumber')"><i
-                            class="fas fa-arrow-up"></i><br>מספר פריט<br><i class="fas fa-arrow-down"></i></th>
-                    <th class="click" (click)="sortBy('customerOrders', 'itemName')">שם פריט</th>
-                    <th class="click" (click)="sortBy('customerOrders', 'amount')"><i
-                            class="fas fa-arrow-up"></i><br>כמות<br><i class="fas fa-arrow-down"></i></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let movement of itemMovements">
-                    <td>{{order.orderNumber}}</td>
-                    <td>{{order.orderDate}}</td>
-                    <td>{{order.itemNumber}}</td>
-                    <td>{{order.itemName}}</td>
-                    <td>{{order.amount}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div> -->
+<div class="row mt-4 w-75 mx-auto">
+  <table class="table table-hover">
+    <thead class="text-info text-center">
+      <tr>
+        <th class="click" (click)="sortBy('customerOrders', 'orderNumber')">
+          Date
+        </th>
+        <th class="click" (click)="sortBy('customerOrders', 'orderDate')">
+          movement type
+        </th>
+        <th class="click" (click)="sortBy('customerOrders', 'itemNumber')">
+          item
+        </th>
+        <th class="click" (click)="sortBy('customerOrders', 'itemName')">
+          whare house
+        </th>
+        <th class="click" (click)="sortBy('customerOrders', 'amount')">
+          amount
+        </th>
+        <th class="click" (click)="sortBy('customerOrders', 'amount')">
+          user
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let movement of itemMovements">
+        <td class="text-center">{{movement.movementDate | date: 'dd/MM/yy'}}</td>
+        <td class="text-center">{{movement.movementType}}</td>
+        <td class="text-center">{{movement.item}}</td>
+        <td class="text-center">{{movement.WH_originName}}</td>
+        <td class="text-center">{{movement.amount}}</td>
+        <td class="text-center">{{movement.userName}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
 
@@ -134,7 +143,7 @@
 
 <!--Item Details-->
 
-<div class="row mt-4">
+<!-- <div class="row mt-4">
   <h3>Item Details</h3>
 </div>
 
@@ -148,7 +157,11 @@
   item number
   <input type="text">
   <button class="btn">Go.</button>
-</div>
+</div> -->
+
+
+
+
 <!-- 
 <div class="row mt-2">
 

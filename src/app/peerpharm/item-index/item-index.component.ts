@@ -9,6 +9,8 @@ import { InventoryService } from 'src/app/services/inventory.service';
 })
 export class ItemIndexComponent implements OnInit {
 
+  itemMovements: any[];
+
   itemMovementForm: FormGroup = new FormGroup({
     itemType: new FormControl('all', Validators.required),
     itemNumbers: new FormControl([''], Validators.required),
@@ -37,6 +39,7 @@ export class ItemIndexComponent implements OnInit {
   fetchMovements() {
     this.inventoryService.getComplexItemMovements(this.itemMovementForm.value).subscribe(data => {
       console.log(data)
+      this.itemMovements = data
     })
   }
 
