@@ -139,7 +139,12 @@ export class ScheduleComponent implements OnInit {
   }
 
   checkPermission() {
-    return this.authService.loggedInUser.screenPermission == '5'
+    if (this.authService.loggedInUser.screenPermission != '2') {
+      if(this.authService.loggedInUser.screenPermission != '1') {
+        return true
+      }
+    } 
+    return false
   }
 
   checkTime(i) {

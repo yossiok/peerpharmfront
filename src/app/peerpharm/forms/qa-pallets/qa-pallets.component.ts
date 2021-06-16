@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-qa-pallets',
@@ -16,6 +17,8 @@ import { ExcelService } from 'src/app/services/excel.service';
   styleUrls: ['./qa-pallets.component.scss']
 })
 export class QaPalletsComponent implements OnInit {
+
+  @ViewChild('lostPalletsModal') lostPalletsModal: ElementRef
 
   EditRow: any;
   EditRowTwo: any;
@@ -84,11 +87,17 @@ export class QaPalletsComponent implements OnInit {
   @ViewChild('billNumberToUpdate') billNumberToUpdate: ElementRef;
   @ViewChild('newPalletWeight') newPalletWeight: ElementRef;
   @ViewChild('newPalletSize') newPalletSize: ElementRef;
+  lostPallets: any [];
+  showLostPallets: boolean;
+  tempPackListNumber: any;
 
 
 
 
-  constructor(private excelService: ExcelService,private itemService: ItemsService, private inventorySrv: InventoryService, private authService: AuthService, private orderService: OrdersService, private toastr: ToastrService, private customerService: CostumersService, private formService: FormsService) { }
+  constructor(private excelService: ExcelService,private itemService: ItemsService, private inventorySrv: InventoryService, 
+    private authService: AuthService, private orderService: OrdersService, private toastr: ToastrService, 
+    private customerService: CostumersService, private formService: FormsService,
+    private modalService: NgbModal) { }
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -131,7 +140,6 @@ export class QaPalletsComponent implements OnInit {
   }
 
   exportAsXLSX(packList){
-debugger
     const sortOrder = [
       'itemNumber', 'itemName', 'orderNumber', 'orderAmount', 'batchNumber', 'fullKartons', 'unitsInKarton',
       'unitsQuantityPartKarton', 'palletWeight', 'palletSize', 'unitsToCombine',    
@@ -260,7 +268,21 @@ debugger
   }
 
 
+  findLostPallets(packList) {
+    this.tempPackListNumber = packList.packListNumber
+    this.formService.findLostPallets(packList).subscribe(lostPallets => {
+      console.log(lostPallets)
+      this.lostPallets = lostPallets
+      this.showLostPallets = true;
+    })
+  }
 
+  matchPalletToPacklist(palletNumber) {
+    this.formService.matchPalletToPackList(palletNumber, this.tempPackListNumber).subscribe(message => {
+      message.msg == 'success' ? this.toastr.success(message.msg) : this.toastr.error(message.msg)
+      this.showLostPallets = false
+    })
+  }
 
 
   addPalletToCostumer(pallet) {
@@ -648,21 +670,25 @@ debugger
 
     ;
     this.pallet.customer = this.selectedArr[0].customerName
-    this.pallet.status = 'closedPallet'
-    this.pallet.plStatus = 'occupied'
-    this.pallet.lines = this.selectedArr
-    this.formService.createNewPallet(this.pallet).subscribe(data => {
-      if (data) {
-        this.toastr.success('משטח הוקם בהצלחה !')
-        this.pallet.palletSize = ''
-        this.pallet.palletWeight = ''
-        this.getAllClosedPallets()
-        this.getAllqaPallets();
-        this.getAllPackedLists();
-        this.selectedArr = [];
-      }
-    })
+    if(!this.pallet.customer) this.toastr.error('Customer name Wrong!')
+    else {
 
+      this.pallet.status = 'closedPallet'
+      this.pallet.plStatus = 'occupied'
+      this.pallet.lines = this.selectedArr
+      this.formService.createNewPallet(this.pallet).subscribe(data => {
+        if (data) {
+          this.toastr.success('משטח הוקם בהצלחה !')
+          this.pallet.palletSize = ''
+          this.pallet.palletWeight = ''
+          this.getAllClosedPallets()
+          this.getAllqaPallets();
+          this.getAllPackedLists();
+          this.selectedArr = [];
+        }
+      })
+      
+    }
 
   }
 

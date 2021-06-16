@@ -215,11 +215,15 @@
                   <td>
                     <!-- <span *ngIf="line.stockitems[0].isStock">Stock</span>
                     <span *ngIf="line.stockitems[0].cusomerOrders" (mouseup)="this.modalService.dismissAll()" (mousedown)="this.modalService.open(purchaseDestination)">{{line.stockitems[0].cusomerOrders[0]}}</span> -->
-                    <select class="custom-select">
-                      <ng-container *ngFor="let item of line.stockitems; let i = index">
-                        <option *ngIf="item.isStock">Stock</option>
+                    <select [ngClass]="line.stockitems.length > 1 ? 'form-control' : 'custom-select'">
+                      <ng-container *ngFor="let item of line.stockitems; let j = index">
+                        <option *ngIf="item.isStock">
+                          Stock
+                        </option>
                         <ng-container *ngIf="item.customerOrders && item.customerOrders.length > 0">
-                          <option *ngFor="let orderNumber of item.customerOrders">{{orderNumber}}</option>
+                          <option *ngFor="let orderNumber of item.customerOrders">
+                            {{orderNumber}}
+                          </option>
                         </ng-container>
                       </ng-container>
                     </select>
@@ -375,7 +379,6 @@
         </div>
 
         <div class="col-4">
-
         </div>
       </div>
 
@@ -386,7 +389,9 @@
 
         <div class="col-4"></div>
 
-        <div class="col-4"></div>
+        <div class="col-4">
+          Contact: {{currentOrder.user}}
+        </div>
       </div>
 
       <div class="row">
