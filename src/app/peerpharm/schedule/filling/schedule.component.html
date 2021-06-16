@@ -185,7 +185,7 @@
           </tr>
         </thead>
 
-        <tr [class.read-only]="checkPermission()" class="bg-white" id="inputTr" (click)="EditRowId = 0">
+        <tr  class="bg-white" id="inputTr" (click)="EditRowId = 0">
           <td></td>
           <td class="positionClass">
             <input type="text" id="input_position" [(ngModel)]="scheduleLine.positionN" class="form-control" />
@@ -244,13 +244,13 @@
           </td>
           <td class="printlessTd"></td>
           <td class="printlessTd">
-            <button class="btn btn-info form-control border border-dark "
+            <button [class.read-only]="checkPermission()" class="btn btn-info form-control border border-dark "
               (click)="writeScheduleData()">Add</button><br />
           </td>
         </tr>
 
         <tbody id="table_body">
-          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let line of scheduleData"
+          <tr  style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let line of scheduleData"
             [style.background-color]="line.color">
             <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
               <td><input class="form-control" type="checkbox" (change)="isSelected($event,line)"></td>
@@ -374,11 +374,11 @@
                 <input type="radio" name="typeEdit" #mkpA value="packaging" [checked]="line.mkp === 'packaging'"
                   (change)="handleChange('packaging')" />Packaging<br />
               </td>
-              <td *ngIf="line._id !== EditRowId">
+              <td [class.read-only]="checkPermission()" *ngIf="line._id !== EditRowId">
                 <img src="assets/images/an.png" *ngIf="
                     line.cmptsStatus != null && line.cmptsStatus.includes('false')
                   " (click)="dismissInfo(line._id)" style="width: 20px;" />
-                <i class="ti-trash text-danger m-r-10" (click)="deleteLine(line._id)"></i>&nbsp;
+                <i class="ti-trash text-danger m-r-10" [class.read-only]="checkPermission()" (click)="deleteLine(line._id)"></i>&nbsp;
                 <!-- <i class="ti-check text-success m-r-10" (click)="setDone()"></i> -->
               </td>
 
@@ -407,10 +407,10 @@
                   (click)="openPrintBarkod(content, line)" [disabled]="openingPrintModal" [style.cursor]="openingPrintModal ? 'not-allowed' : 'pointer'">
                   Print Barcode
                 </button>
-                <i *ngIf="typeShown === 'mkp2' || typeShown ==='packaging' || typeShown ==='unpacked' " (click)="markScheduleDone(line._id)" class="fa fa-check"></i>
+                <i *ngIf="typeShown === 'mkp2' || typeShown ==='packaging' || typeShown ==='unpacked' " [class.read-only]="checkPermission()" (click)="markScheduleDone(line._id)" class="fa fa-check"></i>
               </td>
               <td *ngIf="line._id === EditRowId">
-                <i class="ti-save text-info m-r-10 click" (click)="updateSchedule()"></i>
+                <i class="ti-save text-info m-r-10 click" [class.read-only]="checkPermission()" (click)="updateSchedule()"></i>
               </td>
             </ng-container>
           </tr>

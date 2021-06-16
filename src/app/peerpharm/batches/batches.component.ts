@@ -402,46 +402,29 @@ export class BatchesComponent implements OnInit {
     this.excelService.exportAsExcelFile(data, 'batches');
   }
 
-  changeText(ev, filterBy) {
-    if (filterBy == 'itemName') {
-      let word = ev.target.value;
-      let wordsArr = word.split(" ");
-      wordsArr = wordsArr.filter(x => x != "");
-      if (wordsArr.length > 0) {
-        let tempArr = [];
-        this.batchesCopy.filter(b => {
-          var check = false;
-          var matchAllArr = 0;
-          wordsArr.forEach(w => {
-            if (b.itemName.toLowerCase().includes(w.toLowerCase())) {
-              matchAllArr++
-            }
-            (matchAllArr == wordsArr.length) ? check = true : check = false;
-          });
+  filterBatches(ev, filterBy) {
 
-          if (!tempArr.includes(b) && check) tempArr.push(b);
-        });
-        this.batches = tempArr;
-      } else {
-        this.batches = this.batchesCopy.slice();
-      }
-    } else if (filterBy == 'batchNumber') {
-      let bNum = ev.target.value;
-      if (bNum != '') {
-        let tempArr = [];
-        this.batchesCopy.filter(b => {
-          var check = false;
-          var matchAllArr = 0;
-          if (b.batchNumber.includes(bNum.toLowerCase())) {
-            tempArr.push(b);
-          }
-        });
-        this.batches = tempArr;
-      } else {
-        this.batches = this.batchesCopy.slice();
-      }
+    if (filterBy == 'itemName') {
+      let name = ev.target.value
+      this.batches = this.batchesCopy.filter(batch => batch.itemName.toLowerCase().includes(name.toLowerCase()))
     }
 
+    if (filterBy == 'itemNumber') {
+      let number = ev.target.value
+      this.batches = this.batchesCopy.filter(batch => batch.item == number)
+    }
+
+    if (filterBy == 'batchNumber') {
+      let number = ev.target.value
+      this.batches = this.batchesCopy.filter(batch => batch.batchNumber.toLowerCase().includes(number.toLowerCase()))
+    }
+
+    ev.target.value = ''
+
+  }
+
+  resetFilters(){
+    this.batches = this.batchesCopy
   }
 
   deleteBatch(batch) {

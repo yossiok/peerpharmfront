@@ -1168,13 +1168,17 @@ export class OrderdetailsComponent implements OnInit {
                 if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
 
 
-                this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => console.log(res));
+                this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
+                  console.log(res)
+                  if(res.msg == 'Failed') this.toastSrv.error('Schedule not saved! Please check all fields.')
+                  else this.toastSrv.success('Schedule Saved.')
+                });
                 let dateSced = this.date.nativeElement.value;
                 dateSced = moment(dateSced).format("DD/MM/YYYY");
                 let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " + dateSced };
                 this.orderService.editItemOrder(orderObj).subscribe(res => {
                   console.log(res);
-                  this.toastSrv.success(dateSced, "Schedule Saved");
+                  this.toastSrv.success(dateSced, "Order Item Updated.");
                 });
                 console.log(scheduleLine);
               });

@@ -517,7 +517,7 @@
                   <input formControlName="itemArrival" type="date" class="form-control" placeholder="Item Arrival">
                 </div>
                 <div class="col-6 ml-10">
-                  <label>Destination</label>
+                  <label>Customer Order</label>
                   <div class="d-flex flex-row">
                     <input type="radio" formControlName="isStock" [value]="true">
                     <label>Stock</label><br>
@@ -567,7 +567,7 @@
                 <tr>
                   <th>Item</th>
                   <th>Item Name</th>
-                  <th>Destination</th>
+                  <th>Customer Order</th>
                   <th>Measurement</th>
                   <th>Quantity</th>
                   <th>Price</th>
@@ -583,10 +583,26 @@
                  
                   <td>{{stockitem.name}}</td>
 
-                  <th *ngIf="stockitem.isStock">Stock</th>
+                  <!-- <th *ngIf="stockitem.isStock">Stock</th>
                   <th *ngIf="!stockitem.isStock">
                     Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
-                  </th>
+                  </th> -->
+
+                  <td *ngIf="!editItem && stockitem.isStock">Stock</td>
+                  <td *ngIf="!editItem && !stockitem.isStock">
+                    Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
+                  </td>
+                  <td *ngIf="editItem && itemIndex == i && stockitem.isStock">Stock</td>
+                  <td *ngIf="editItem && itemIndex == i && !stockitem.isStock">
+                    <ng-container *ngFor="let order of stockitem.customerOrders; let j = index">
+                      <input  type="text" (change)="changeOrder(i, order, j)" [ngModelOptions]="{standalone: true}" [(ngModel)]="order"
+                      [style.width]="'77px'">
+                      <button placement="bottom" ngbTooltip="Delete this order" (click)="deleteCusomerOrderNumber(i,j)">X</button>
+                    </ng-container>
+                    <br>
+                    <button placement="bottom" ngbTooltip="Add customer order" (click)="wow = true">+</button>
+                    <input *ngIf="wow" type="text" (change)="addOrderToPurchase(i, $event)">
+                  </td>
                  
                   <td>{{stockitem.measurement}}</td>
                   <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>
