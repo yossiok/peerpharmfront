@@ -596,7 +596,8 @@ debugger
       this.curentWhareHouseName == "Kasem" ||
       this.curentWhareHouseName == "Filling" ||
       this.curentWhareHouseName == "Stickers" ||
-      this.curentWhareHouseName == "NEW KASEM"
+      this.curentWhareHouseName == "NEW KASEM" ||
+      this.curentWhareHouseName == 'Labels'
     ) {
       stockType = "component";
     }

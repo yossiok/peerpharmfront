@@ -35,7 +35,7 @@
                 <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Price</button>
             </div>
             <div *ngIf="calculating" class="row mt-2">
-                <h3>Please be patient.</h3>
+                <h3>{{waitingText}}</h3>
                 <div class="bigLoader"></div>
             </div>
             <div *ngIf="!calculating" class="container mt-5">
@@ -58,13 +58,12 @@
                             </thead>
                             <tbody class="table table-bordered">
                                 <tr *ngFor="let component of itemComponents">
-                                    <td class="click" (click)="changeView(component, 'orders')">
+                                    <td class="click" (click)="changeView(component)">
                                         {{component.componentNumber}}</td>
                                     <td>{{component.componentName}}</td>
-                                    <td>{{component.price}}</td>
+                                    <td>{{component.price}} <span *ngIf="component.price == NaN">Update Price</span></td>
                                     <td>{{component.shippingPrice}}</td>
-                                    <td (click)="changeView(component, 'suppliers')">
-                                        {{component.lastOrders[0].supplierName}}</td>
+                                    <td><span *ngIf="component.lastOrders && component.lastOrders[0]">{{component.lastOrders[0].supplierName}}</span></td>
                                 </tr>
                                 <tr *ngIf="allowed">
                                     <td>FormulePrice:</td>
