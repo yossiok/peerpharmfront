@@ -56,17 +56,20 @@ export class PricesComponent implements OnInit {
 
   // Get item data for item 
   getItemData(itemNumber) {
-    this.calculating = true;
-    this.itemService.getItemData(itemNumber.value).subscribe(data => {
-      if (data.length == 0) {
-        this.toastr.error('Item Not Found.')
-        this.calculating = false;
-      }
-      else {
-        this.item = data[0]
-        this.getItemComponents()
-      }
-    })
+    if(itemNumber == 0 || itemNumber.value == '' || !itemNumber) this.toastr.error('Enter a valid product number')
+    else {
+      this.calculating = true;
+      this.itemService.getItemData(itemNumber.value).subscribe(data => {
+        if (data.length == 0) {
+          this.toastr.error('Item Not Found.')
+          this.calculating = false;
+        }
+        else {
+          this.item = data[0]
+          this.getItemComponents()
+        }
+      })
+    }
   }
 
   // Get all item's components

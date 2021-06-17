@@ -1,36 +1,18 @@
 <div class="d-flex flex-row justify-content-center">
 
     <div class="mt-8 mr-5">
-        <img *ngIf="item" class="image1" [src]="item.imgMain1" alt="Update Item Image">
+        <img *ngIf="item" class="image1" [src]="item.imgMain1" alt="Image 1 Missing">
+    </div>
+    <div *ngIf="item.imgMain2" class="mt-8 mr-5">
+        <img *ngIf="item" class="image1" [src]="item.imgMain2" alt="Image 2 Missing">
     </div>
 
     <div>
 
-        <!-- <div class="row mt-5">
-            <div class="col-4"></div>
-            <div class="col-4 p-2">
-                <h2 class="text-center">Existing Product</h2>
-            </div>
-            <div class="col-4"></div>
-        </div> -->
+
 
         <div class="container mt-5">
             <div class="row mt-5">
-                <!-- <div class="d-flex flex-column">
-                <div>
-                    <input type="text" (change)="productNumber.value = $event" placeholder="Product Name" #productName>
-                    &nbsp;&nbsp;
-                    <button (click)="findByName(productName.value)">find</button>
-                </div>
-                <div>
-                    <ul *ngIf="currentNames" class="list-group">
-                        <li class="list-group-item" *ngFor="let itemNameObj of currentNames"
-                            (click)="productNumber.value = itemNameObj.itemNumber">
-                            {{itemNameObj.name}} {{itemNameObj.subName}} {{itemNameObj.discriptionK}}
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
                 <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
                 <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Price</button>
             </div>
@@ -61,9 +43,12 @@
                                     <td class="click" (click)="changeView(component)">
                                         {{component.componentNumber}}</td>
                                     <td>{{component.componentName}}</td>
-                                    <td>{{component.price}} <span *ngIf="component.price == NaN">Update Price</span></td>
+                                    <td>{{component.price}} <span *ngIf="component.price == NaN">Update Price</span>
+                                    </td>
                                     <td>{{component.shippingPrice}}</td>
-                                    <td><span *ngIf="component.lastOrders && component.lastOrders[0]">{{component.lastOrders[0].supplierName}}</span></td>
+                                    <td><span
+                                            *ngIf="component.lastOrders && component.lastOrders[0]">{{component.lastOrders[0].supplierName}}</span>
+                                    </td>
                                 </tr>
                                 <tr *ngIf="allowed">
                                     <td>FormulePrice:</td>
@@ -81,14 +66,16 @@
                         </table>
                     </div>
 
-                    <div class="col-4"></div>
+                    <div class="col-3"></div>
 
                     <div class="col-4" *ngIf="selectedComponent && showOrders">
+                        <button class="btn bg-danger text-white" (click)="showOrders = false">Show Remarks</button>
                         <h3>Purchases for item {{selectedComponent.componentNumber}}</h3>
-                        <button class="btn btn-warning" (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
+                        <button class="btn btn-warning"
+                            (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
                             Status</button>
-                        <span class="bg-dark text-warning ml-5 p-2">Status = {{selectedStatus}}</span>
                         <img class="image m-2" [src]="selectedComponent.imgUrl" alt="Component image missing..">
+                        <h5 class="bg-dark text-warning p-2">Status = {{selectedStatus}}</h5>
                         <table class="bg-warning text-dark">
                             <thead class="text-center">
                                 <tr>
@@ -117,6 +104,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="col-1"></div>
                 </div>
 
                 <div *ngIf="item">
@@ -147,13 +135,13 @@
 
     </div>
 
-    <div class="float-left small p-5 mr-5">
+    <div *ngIf="!showOrders" class="float-left small p-5 mr-5">
         <h3>Important Remarks:</h3>
         <h4 class="bg-danger text-white p-5">
-           1. {{item.proRemarks}}
+            1. {{item.proRemarks}}
         </h4>
         <h4 class="bg-white text-danger p-5">
-           2. {{item.impRemarks}}
+            2. {{item.impRemarks}}
         </h4>
     </div>
 

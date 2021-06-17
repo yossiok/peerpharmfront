@@ -424,6 +424,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   addCusomerOrderNumberToItem(e, i) {
     debugger
+    if(!this.itemForm.controls.customerOrders.value) this.itemForm.controls.customerOrders.setValue([])
     this.itemForm.controls.customerOrders.value.push(e.value)
     e.value = ''
   }
@@ -466,6 +467,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   changeOrder(i, order, j) {
+    this.newPurchase.value.stockitems[i].isStock = false
     this.newPurchase.value.stockitems[i].customerOrders[j] = order
   }
 

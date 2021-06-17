@@ -1136,6 +1136,7 @@ export class OrderdetailsComponent implements OnInit {
               await this.itemSer.getItemData(item.itemNumber).subscribe(res => {
 
                 // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
+                debugger
                 if (res[0]._id) {
                   packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
                   impremark = res[0].impRemarks;
