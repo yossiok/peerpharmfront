@@ -57,7 +57,7 @@
   <thead class="tableHeader">
     <tr>
       <td>#</td>
-      <td></td>
+      <td>כתב כמויות</td>
       <td>Formule Number</td>
       <td>Name</td>
       <td>Remarks</td>
@@ -71,7 +71,7 @@
       <td>
         <img style="width: 30px;" src="../../../../assets/images/print.png" />
       </td>
-      <td>&#8362;</td>
+      <td>&#8362;<br>Pricing</td>
       <td></td>
       <td></td>
     </tr>
@@ -202,7 +202,7 @@
     <div>
       <h4 id="modal-basic-title">Formule Information</h4>
       <h4>Formule Number: {{ currentFormuleNumber }}</h4>
-      <i style="float:right;padding:5px" (click)="openFormuleModal = false" class="fa fa-times h1 click"></i>
+      <i style="float:right;padding:5px" (click)="openFormuleModal = false" class="fa fa-times h1 click click-black"></i>
       <h4 [ngClass]="percentageCheck(currFormulePercentage)">Percentage: {{currFormulePercentage}}</h4>
       
     </div>
@@ -857,13 +857,15 @@
           td: { border: 'solid 1px', 'font-size': '20px' }
         }"
         ngxPrint
-      >
+        >
         Formule Number: {{ currentFormule.formuleNumber }}
       </button>
     </div>
-    <div class="col-4">
+    <div class="col-3">
       Date: {{ today | date: "dd/MM/yyyy" }}
-      <i (click)="formulePriceModal = false" class="fa fa-times text-info"></i>
+    </div>
+    <div class="col-1">
+      <i (click)="formulePriceModal = false" class="click click-info h2 p-2 rounded fa fa-times text-info"></i>
     </div>
   </div>
 
