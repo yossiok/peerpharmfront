@@ -424,6 +424,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   addCusomerOrderNumberToItem(e, i) {
     debugger
+    if(!this.itemForm.controls.customerOrders.value) this.itemForm.controls.customerOrders.setValue([])
     this.itemForm.controls.customerOrders.value.push(e.value)
     e.value = ''
   }
@@ -466,6 +467,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   changeOrder(i, order, j) {
+    this.newPurchase.value.stockitems[i].isStock = false
     this.newPurchase.value.stockitems[i].customerOrders[j] = order
   }
 
@@ -643,6 +645,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if (confirm("האם להקים הזמנה זו ?")) {
           this.newPurchase.controls['user'].setValue(this.authService.loggedInUser.userName)
           this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
+
+          // set order arrival date as the latest item arrival date
+          let latestArrivalItem = this.newPurchase.value.stockitems.reduce((latestItem, item)=> {
+            return item.itemArrival > latestItem.itemArrival ? item : latestItem
+          }, this.newPurchase.value.stockitems[0])
+          this.newPurchase.controls.arrivalDate.setValue(latestArrivalItem.itemArrival)
+
           this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
             this.sendingPurchase = false;
             if (data) {
@@ -663,6 +672,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     if (action == 'update') {
       if (confirm('האם לעדכן הזמנה זו ?')) {
+        
+        // set order arrival date as the latest item arrival date
+        let latestArrivalItem = this.newPurchase.value.stockitems.reduce((latestItem, item)=> {
+          return item.itemArrival > latestItem.itemArrival ? item : latestItem
+        }, this.newPurchase.value.stockitems[0])
+        this.newPurchase.controls.arrivalDate.setValue(latestArrivalItem.itemArrival)
+        
         this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data => {
           this.sendingPurchase = false;
           if (data) {

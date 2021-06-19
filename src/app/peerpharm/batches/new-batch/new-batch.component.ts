@@ -120,7 +120,7 @@ export class NewBatchComponent implements OnInit {
             this.disableButton = false
             if(data == 'Formule Not Found') {
               this.toastSrv.error(data)
-              con = confirm("כמויות לא ירדו מהמלאי. אנא דווח. להוסיף באטצ' בכל זאת?") 
+              con = confirm("פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?") 
               this.disableButton = false
             } 
             if(data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')

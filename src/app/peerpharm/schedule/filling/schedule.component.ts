@@ -139,7 +139,14 @@ export class ScheduleComponent implements OnInit {
   }
 
   checkPermission() {
-    return this.authService.loggedInUser.screenPermission == '5'
+    if (this.authService.loggedInUser.screenPermission != '3') {
+      if (this.authService.loggedInUser.screenPermission != '2') {
+        if (this.authService.loggedInUser.screenPermission != '1') {
+          return true // No permission
+        }
+      }
+    }
+    return false // Permission granted
   }
 
   checkTime(i) {
@@ -229,27 +236,31 @@ export class ScheduleComponent implements OnInit {
       this.scheduleService
         .setNewProductionSchedule(this.scheduleLine)
         .subscribe(res => {
-          this.scheduleData.push(res);
+          if (res.msg == 'Failed') this.toastSrv.error('Schedule not Saved! Please check all fields')
+          else {
 
-          this.scheduleLine.scheduleId = '';
-          this.scheduleLine.scheduleId = '';
-          this.scheduleLine.positionN = '';
-          this.scheduleLine.orderN = '';
-          this.scheduleLine.item = '';
-          this.scheduleLine.costumer = '';
-          this.scheduleLine.productName = '';
-          this.scheduleLine.batch = '';
-          this.scheduleLine.packageP = '';
-          this.scheduleLine.qty = '';
-          this.scheduleLine.qtyRdy = '';
-          this.scheduleLine.date = '';
-          this.scheduleLine.marks = '';
-          this.scheduleLine.shift = '';
-          this.scheduleLine.mkp = '';
-          this.scheduleLine.status = 'open';
-          this.scheduleLine.productionLine = '';
-          this.scheduleLine.pLinePositionN = 999;
-          this.scheduleLine.itemImpRemark = '';
+            this.scheduleData.push(res);
+
+            this.scheduleLine.scheduleId = '';
+            this.scheduleLine.scheduleId = '';
+            this.scheduleLine.positionN = '';
+            this.scheduleLine.orderN = '';
+            this.scheduleLine.item = '';
+            this.scheduleLine.costumer = '';
+            this.scheduleLine.productName = '';
+            this.scheduleLine.batch = '';
+            this.scheduleLine.packageP = '';
+            this.scheduleLine.qty = '';
+            this.scheduleLine.qtyRdy = '';
+            this.scheduleLine.date = '';
+            this.scheduleLine.marks = '';
+            this.scheduleLine.shift = '';
+            this.scheduleLine.mkp = '';
+            this.scheduleLine.status = 'open';
+            this.scheduleLine.productionLine = '';
+            this.scheduleLine.pLinePositionN = 999;
+            this.scheduleLine.itemImpRemark = '';
+          }
         });
     } else {
       alert('מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.');
@@ -287,10 +298,10 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.map(sced => {
         if (sced.batch && sced.batch != "") {
           let batches = sced.batch.split('+')
-          if(batches.length > 1) {
+          if (batches.length > 1) {
             debugger
             sced.batchSpecStatus = 999
-          } 
+          }
           else {
             this.batchService.getSpecvalue(batches[0]).subscribe(res => {
               if (res.status) sced.batchSpecStatus = res.status
@@ -344,9 +355,9 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.map(sced => {
         if (sced.batch && sced.batch != "") {
           let batches = sced.batch.split('+')
-          if(batches.length > 1) {
+          if (batches.length > 1) {
             sced.batchSpecStatus = 999
-          } 
+          }
           else {
             this.batchService.getSpecvalue(batches[0]).subscribe(res => {
               if (res.status) sced.batchSpecStatus = res.status
@@ -498,36 +509,36 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor9 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
-        case 'unpacked':
-          this.buttonColor = '#B8ECF1';
-          this.buttonColor2 = '#B8ECF1';
-          this.buttonColor3 = '#B8ECF1';
-          this.buttonColor4 = '#B8ECF1';
-          this.buttonColor5 = '#B8ECF1';
-          this.buttonColor6 = '#B8ECF1';
-          this.buttonColor7 = 'yellow';
-          this.buttonColor8 = '#B8ECF1';
-          this.buttonColor9 = '#B8ECF1';
+      case 'unpacked':
+        this.buttonColor = '#B8ECF1';
+        this.buttonColor2 = '#B8ECF1';
+        this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = 'yellow';
+        this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
 
-          debugger;
-          this.scheduleData = this.unPackedSchedules
-          this.scheduleData.map(line => {
-            line.date2 = moment(line.date).format('DD/MM/YY');
-            line.date3 = moment(line.date).format('YYYY-MM-DD')
-            return line
-          })
-          // this.scheduleData.sort(function(o1,o2){
-          //   return o1.date ? -1 : o2.date ? 1 : 0;
-          // });
+        debugger;
+        this.scheduleData = this.unPackedSchedules
+        this.scheduleData.map(line => {
+          line.date2 = moment(line.date).format('DD/MM/YY');
+          line.date3 = moment(line.date).format('YYYY-MM-DD')
+          return line
+        })
+        // this.scheduleData.sort(function(o1,o2){
+        //   return o1.date ? -1 : o2.date ? 1 : 0;
+        // });
 
-          // this.scheduleData.sort(function(a,b){
+        // this.scheduleData.sort(function(a,b){
 
-          //   let value = Number(new Date(a.date)) - Number(new Date(b.date))
-          //   return value
+        //   let value = Number(new Date(a.date)) - Number(new Date(b.date))
+        //   return value
 
-          // });
+        // });
 
-          break;
+        break;
       case 'mkp2':
         this.buttonColor = '#B8ECF1';
         this.buttonColor2 = '#B8ECF1';
@@ -557,7 +568,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   edit(id, type) {
-    if(this.typeShown == 'unpacked') {
+    if (this.typeShown == 'unpacked') {
       this.currentType = type;
     } else {
       this.EditRowId = id;
@@ -567,7 +578,7 @@ export class ScheduleComponent implements OnInit {
 
 
   getAllUnpackedSchedules() {
-    this.scheduleService.getUnpackedSchedules().subscribe(async data  => {
+    this.scheduleService.getUnpackedSchedules().subscribe(async data => {
       debugger;
       await data.forEach(element => {
         element.mkp = 'unpacked'
@@ -629,10 +640,10 @@ export class ScheduleComponent implements OnInit {
         whatIsMissing: this.whatIsMissing.nativeElement.value,
       };
 
-      if(this.typeShown == 'unpacked') {
+      if (this.typeShown == 'unpacked') {
         scheduleToUpdate.status = ''
         scdLneInfo[0].status = ''
-      } 
+      }
 
       this.scheduleService.editSchedule(scheduleToUpdate).subscribe(res => {
         this.EditRowId = 0;
@@ -736,7 +747,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   markScheduleDone(id) {
-    
+
     this.scheduleService.markScheduleDone(id).subscribe(data => {
       if (data) {
         let schedule = this.scheduleData.find(s => s._id == id);
@@ -761,32 +772,32 @@ export class ScheduleComponent implements OnInit {
       line.grossW = data[0].grossUnitWeightK;
 
       this.batchService.getBatchData(line.batch).subscribe(data => {
-        if(data.length > 0 && data[0].expration) line.exp = data[0].expration.slice(0, 11);
-        
+        if (data.length > 0 && data[0].expration) line.exp = data[0].expration.slice(0, 11);
+
         this.printScheduleFillingForm.patchValue(line)
 
         this.modalService
-        .open(content, { ariaLabelledBy: 'modal-basic-title' })
-        .result.then(
-          result => {
-            if (result === 'Saved') {
-              console.log(result);
-              this.onSubmit();
+          .open(content, { ariaLabelledBy: 'modal-basic-title' })
+          .result.then(
+            result => {
+              if (result === 'Saved') {
+                console.log(result);
+                this.onSubmit();
+              }
+              this.closeResult = `Closed with: ${result}`;
+              console.log(this.closeResult);
+            },
+            reason => {
+              this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
             }
-            this.closeResult = `Closed with: ${result}`;
-            console.log(this.closeResult);
-          },
-          reason => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          }
-        );
+          );
         this.showPrintBtn = true;
         this.openingPrintModal = false;
       })
 
     })
 
-  
+
 
     // this.printScheduleFillingForm.value.orderN = this.schedFillLine.orderN;
     // this.printScheduleFillingForm.value.item = this.schedFillLine.item;

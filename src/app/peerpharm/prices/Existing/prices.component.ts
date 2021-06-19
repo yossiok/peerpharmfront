@@ -31,6 +31,8 @@ export class PricesComponent implements OnInit {
   allItemNames: any[];
   currentNames: any[] = [];
   allowed: boolean = false;
+  allComponents: any;
+  waitingText: string = "Getting item data..."
 
   constructor(
     private itemService: ItemsService,
@@ -42,140 +44,154 @@ export class PricesComponent implements OnInit {
     private formuleService: FormulesService
   ) { }
 
+
+  // GOOD LUCK!
+
   ngOnInit(): void {
     setTimeout(() => this.productNumber.nativeElement.focus(), 1000)
-    // this.getAllItemNames()
     this.allowed = this.authService.loggedInUser.authorization.includes("formulePrice")
-    // let interval = setInterval(() => {
-    //   if (this.item && this.item.formulePrice && !isNaN(this.item.formulePrice)) {
-    //     this.totalItemPrice += this.item.formulePrice
-    //     clearInterval(interval)
-    //   }
-    // }, 3000)
   }
 
-  findByName(e) {
-    console.log(e)
-    this.currentNames = []
-    if (e.length > 3) {
-      this.currentNames = this.allItemNames.filter(nameObj => nameObj.name.toLowerCase().includes(e.toLowerCase()))
-    }
-  }
 
-  changeView(component, view) {
-    this.selectedComponent = component
-    switch (view) {
-      case 'orders':
-        this.showOrders = true
-        this.showSuppliers = false
-        this.showCustomers = false
-        break
-      case 'customers':
-        this.showOrders = false
-        this.showSuppliers = false
-        this.showCustomers = true
-        break
-      case 'suppliers':
-        this.showOrders = false
-        this.showSuppliers = true
-        this.showCustomers = false
-        break
-    }
-  }
 
-  getAllItemNames() {
-    this.itemService.getAllItemNames().subscribe(data => {
-      this.allItemNames = data
-    })
-  }
-
+  // Get item data for item 
   getItemData(itemNumber) {
-    this.calculating = true;
-    this.itemService.getItemData(itemNumber.value).subscribe(data => {
-      if (data.length == 0) {
-        this.toastr.error('Item Not Found.')
-        this.calculating = false;
-      }
-      else {
-        this.item = data[0]
-        this.formuleService.getFormulePriceByNumber(this.item.itemNumber).subscribe(response => {
-          if (response.msg) this.toastr.error(response.msg)
-          this.item.formulePrice = response.formulePrice ? response.formulePrice : null
-          this.calculateProductPricing()
-          setTimeout(() => {
-            this.getSuppliersForComponents()
-            this.loadingCustomers = true
-            this.getCustomersForItem(this.item.itemNumber)
-            
-          }, 2000)
-          setTimeout(()=>this.calculating = false, 10000)
-        })
+    if(itemNumber == 0 || itemNumber.value == '' || !itemNumber) this.toastr.error('Enter a valid product number')
+    else {
+      this.calculating = true;
+      this.itemService.getItemData(itemNumber.value).subscribe(data => {
+        if (data.length == 0) {
+          this.toastr.error('Item Not Found.')
+          this.calculating = false;
+        }
+        else {
+          this.item = data[0]
+          this.getItemComponents()
+        }
+      })
+    }
+  }
 
-      }
+  // Get all item's components
+  getItemComponents() {
+    this.waitingText = "Getting components data..."
+    this.itemService.getComponentsForItem(this.item.itemNumber).subscribe(allComponents => {
+      this.allComponents = allComponents
+      this.waitingText = "Getting components purchase data..."
+      this.waitingText = "Getting Formule data..."
+      this.getFormulePrice().then(formulePrice=> {
+        this.waitingText = "Calculating product price..."
+        this.calculateProductPricing().then(result => {
+          this.totalItemPrice = this.item.formulePrice ? (result.itemPrice + this.item.formulePrice) : result.itemPrice
+          this.totalShippingPrice = result.shippingPrice
+          this.calculating = false
+          this.loadingCustomers = true
+          this.getCustomersForItem(this.item.itemNumber)
+          this.getSuppliersForComponents()
+        })
+      })
     })
   }
 
-
-  calculateProductPricing() {
-      this.itemComponents = []
-      this.totalItemPrice = 0
-      this.itemService.getComponentsForItem(this.item.itemNumber).subscribe(allComponents => {
-        for(let component of allComponents) {
-          this.itemComponents.push(this.createComponentPrice(component))
-        }
-        if (this.item.formulePrice) this.totalItemPrice += this.item.formulePrice
+  // Get formule price for item
+  async getFormulePrice() {
+    return new Promise((resolve, reject) => {
+      this.formuleService.getFormulePriceByNumber(this.item.itemNumber).subscribe(response => {
+        if (response.msg) this.toastr.error(response.msg)
+        this.item.formulePrice = response.formulePrice ? response.formulePrice * (this.item.netWeightK / 1000) : null
+        resolve(this.item.formulePrice)
       })
+    })
+  }
+  
+  
+  // Calculate product price by components 
+  async calculateProductPricing() {
 
-      this.productNumber.nativeElement.focus()
+    return new Promise<any>((resolve, reject) => {
+      try {
+        let itemPrice = 0
+        let shippingPrice = 0
+        this.itemComponents = []
+        this.totalItemPrice = 0
+
+        // For each component, create a componentPricing object
+        this.createComponentsPrice(this.allComponents).then(itemComponents => {
+          this.itemComponents = itemComponents
+
+          // Calculate total item price
+          for (let component of this.itemComponents) {
+            if (typeof (component.price) == typeof (0)) itemPrice += Number(component.price)
+            if (typeof (Number(component.shippingPrice)) == typeof (0)) {
+              if (!isNaN(Number(component.shippingPrice))) {
+                shippingPrice += Number(component.shippingPrice)
+              }
+            }
+          }
+          resolve({ itemPrice, shippingPrice })
+        })
+      }
+      catch (e) { reject(e) }
+    })
+
   }
 
-  createComponentPrice(component) {
+  // this.productNumber.nativeElement.focus()
 
+  createComponentsPrice(components) {
+
+    return new Promise<any>((resolve, reject) => {
+      let itemComponents = []
+      for (let component of components) {
         let componentPricing = {
-          price: '',
+          price: 0,
           shippingPrice: '',
           componentNumber: component.componentN,
           componentName: component.componentName,
           imgUrl: ''
         }
 
-        if (component.price) componentPricing.price = component.price
+        //Calculate component pricing
+        if (component.price) componentPricing.price = Number(component.price)
         else {
           let suppliers = component.alternativeSuppliers;
-          if (!suppliers || suppliers.length == 0) componentPricing.price = 'Update Price'
+          if (!suppliers || suppliers.length == 0) componentPricing.price = NaN
           for (let i = 0; i < suppliers.length; i++) {
             if (suppliers[i].price != '' && suppliers[i].price != null && suppliers[i].price != undefined) {
-              componentPricing.price = suppliers[0].price
+              componentPricing.price = Number(suppliers[0].price)
               i = suppliers.length
             } else {
-              componentPricing.price = 'Update Price'
+              componentPricing.price = NaN
             }
           }
         }
 
+        if (component.componentType == "master_carton") componentPricing.price = componentPricing.price / Number(this.item.PcsCarton)
         componentPricing.shippingPrice = component.shippingPrice ? component.shippingPrice : 'No shipping Price'
-
-        if (typeof (componentPricing.price) == typeof (0)) this.totalItemPrice = this.totalItemPrice + Number(componentPricing.price)
-
-        if (typeof (Number(componentPricing.shippingPrice)) == typeof (0)) {
-          if (!isNaN(Number(componentPricing.shippingPrice))) {
-            this.totalShippingPrice = this.totalShippingPrice + Number(componentPricing.shippingPrice)
-          }
-        }
-
         componentPricing.imgUrl = component.img
 
-        return componentPricing
+        itemComponents.push(componentPricing)
+
+      }
+      resolve(itemComponents)
+
+    })
+
   }
 
-  getSuppliersForComponents() {
-    this.itemComponents.map(component => {
+  changeView(component) {
+    this.selectedComponent = component
+    this.showOrders = true
+  }
+
+  async getSuppliersForComponents() {
+    await this.itemComponents.map(component => {
       this.procuremetnService.getLastOrdersForItem(component.componentNumber, 20).subscribe(data => {
         component.lastOrders = data
         return component
       })
     })
-
+    this.calculating = false
   }
 
   getCustomersForItem(itemNumber) {
@@ -191,3 +207,21 @@ export class PricesComponent implements OnInit {
 
 
 }
+
+
+
+  // findByName(e) {
+  //   console.log(e)
+  //   this.currentNames = []
+  //   if (e.length > 3) {
+  //     this.currentNames = this.allItemNames.filter(nameObj => nameObj.name.toLowerCase().includes(e.toLowerCase()))
+  //   }
+  // }
+
+
+
+  // getAllItemNames() {
+    //   this.itemService.getAllItemNames().subscribe(data => {
+      //     this.allItemNames = data
+      //   })
+      // }

@@ -130,6 +130,7 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('percentageUpdate') percentageUpdate: ElementRef;
   @ViewChild('itemRemarksUpdate') itemRemarksUpdate: ElementRef;
   loading: boolean;
+  password: string = 'martha@2021'
 
 
 
@@ -252,7 +253,7 @@ export class AllFormulesComponent implements OnInit {
     this.user = this.authService.loggedInUser.userName;
     if (this.user == "martha" || this.user == "sima") {
       if (confirm("האם לאשר פורמולה מספר: " + formule.formuleNumber)) {
-        if (prompt("הזיני סיסמא") == 'martha@2021') {
+        if (prompt("הזיני סיסמא") == this.password) {
           this.formuleService.approveFormule(formule._id).subscribe(data => {
             if (data) {
               this.toastSrv.success("פורמולה אושרה בהצלחה !")
@@ -386,7 +387,7 @@ export class AllFormulesComponent implements OnInit {
       // if(this.formuleParent.nativeElement.value){
       //   currdoc.parent = this.formuleParent.nativeElement.value.trim();
       // }
-      if(this.formuleCategory.nativeElement.value){
+      if (this.formuleCategory.nativeElement.value) {
         currdoc.formuleCategory = this.formuleCategory.nativeElement.value.trim();
       }
       if (this.formuleImpRemarks.nativeElement.value != null) {
@@ -525,7 +526,7 @@ export class AllFormulesComponent implements OnInit {
     let formuleN = $event.target.value
     this.allFormules = formuleN == "" ? this.allFormulesCopy : this.allFormulesCopy
       .filter(formule => formule.formuleNumber.toLowerCase().includes(formuleN))
-      .sort((a,b) => a.formuleNumber.length - b.formuleNumber.length)
+      .sort((a, b) => a.formuleNumber.length - b.formuleNumber.length)
   }
 
   filterByName($event) {
@@ -534,20 +535,20 @@ export class AllFormulesComponent implements OnInit {
       .filter(formule => formule.formuleName.toLowerCase().includes(formuleName))
   }
 
-  filterApproved(e){
+  filterApproved(e) {
     let filterV = e.target.value
     switch (filterV) {
       case "all":
         this.allFormules = this.allFormulesCopy
         break;
       case "approved":
-        this.allFormules = this.allFormulesCopy.filter(f=>f.approval == 1)
+        this.allFormules = this.allFormulesCopy.filter(f => f.approval == 1)
         break;
       case "notApproved":
-        this.allFormules = this.allFormulesCopy.filter(f=>f.approval != 1 || !f.approval)
+        this.allFormules = this.allFormulesCopy.filter(f => f.approval != 1 || !f.approval)
         break;
     }
-    
+
   }
 
 
@@ -904,60 +905,49 @@ export class AllFormulesComponent implements OnInit {
   }
 
   deleteFormule(id) {
-    ;
     if (confirm('האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?')) {
-      this.formuleService.deleteFormuleById({ id }).subscribe(data => {
-        if (data) {
-          this.allFormules = this.allFormules.filter(f => f._id != data._id)
-          this.toastSrv.success('פורמולה נמחקה בהצלחה !')
-        }
+      if (prompt("הזיני סיסמא") == this.password) {
+        this.formuleService.deleteFormuleById({ id }).subscribe(data => {
+          if (data) {
+            this.allFormules = this.allFormules.filter(f => f._id != data._id)
+            this.toastSrv.success('פורמולה נמחקה בהצלחה !')
+          }
+        })
+      }
+    }
+  }
+
+  deletePhase(phaseId) {
+    if (confirm('למחוק פאזה?')) {
+      var formuleId = this.updateFormule._id
+      var phaseToDelete = {
+        phaseId: phaseId,
+        formuleId: formuleId
+      }
+      this.formuleService.deletePhaseById(phaseToDelete).subscribe(data => {
+        this.updateFormule.phases = data.phases;
       })
     }
-
-  }
-  deletePhase(phaseId) {
-
-    var formuleId = this.updateFormule._id
-
-    var phaseToDelete = {
-      phaseId: phaseId,
-      formuleId: formuleId
-    }
-    this.formuleService.deletePhaseById(phaseToDelete).subscribe(data => {
-
-      this.updateFormule.phases = data.phases;
-
-    })
   }
 
   deleteItem(itemNumber, index, phaseId) {
-
-    var formuleId = this.updateFormule._id
-    var itemToDelete = {
-      index: index,
-      itemNumber: itemNumber,
-      phaseId: phaseId,
-      formuleId: formuleId
+    if (confirm('למחוק חומר ' + itemNumber + '?')) {
+      var formuleId = this.updateFormule._id
+      var itemToDelete = {
+        index: index,
+        itemNumber: itemNumber,
+        phaseId: phaseId,
+        formuleId: formuleId
+      }
+      this.formuleService.deleteItemById(itemToDelete).subscribe(data => {
+        var phase = data.phases.filter(phase => phase._id == phaseId)
+        this.updateItems = phase[0].items
+      })
     }
-    this.formuleService.deleteItemById(itemToDelete).subscribe(data => {
-
-
-      var phase = data.phases.filter(phase => phase._id == phaseId)
-
-      this.updateItems = phase[0].items
-
-
-
-    })
-
   }
 
 
   openItem(itemData, phaseNumber) {
-
-
-    ;
-
     this.modalService.open(itemData, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -967,17 +957,14 @@ export class AllFormulesComponent implements OnInit {
   }
 
   loadItemData(phaseNumber) {
-
     let details = this.updateFormule.phases.find(phase => phase.phaseNumber == phaseNumber)
     this.updateItems = details.items;
     this.updateItems.phaseId = details._id
     this.updateFormule.currentPhase = phaseNumber
-
   }
 
 
   private getDismissReason(reason: any): string {
-
     if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
@@ -988,7 +975,6 @@ export class AllFormulesComponent implements OnInit {
 
 
   fillTheMaterialNumber(ev) {
-
     let componentName = ev.target.value;
     let details = this.materials.filter(x => x.componentName == componentName)
     this.addItem.itemNumber = details[0].componentN

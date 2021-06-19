@@ -38,9 +38,14 @@
       cursor: pointer;
   }
 
-  .click:hover {
+  .click-info:hover {
+    color: white !important;
+    background: #007bff;
+  }
+
+  .click-black:hover {
     background: black;
-    color: white
+    color: white !important
   }
 
     .modal-body { 
