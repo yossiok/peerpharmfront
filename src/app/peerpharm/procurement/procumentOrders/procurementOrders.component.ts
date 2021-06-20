@@ -361,29 +361,29 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
 
-  filterRecByType(ev) {
-    let type = ev.target.value;
-    switch (type) {
-      case 'all':
-        this.purchaseRecommendations = this.purchaseRecommendationsCopy
-        break;
-      case 'components':
-        this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.type == 'component')
-        break;
-      case 'materials':
-        this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.type == 'material')
-        break;
-    }
-  }
+  // filterRecByType(ev) {
+  //   let type = ev.target.value;
+  //   switch (type) {
+  //     case 'all':
+  //       this.purchaseRecommendations = this.purchaseRecommendationsCopy
+  //       break;
+  //     case 'components':
+  //       this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.type == 'component')
+  //       break;
+  //     case 'materials':
+  //       this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.type == 'material')
+  //       break;
+  //   }
+  // }
 
-  filterRecByNumber(ev) {
-    let number = ev.target.value
-    if (number != '') {
-      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.componentNumber == number)
-    } else {
-      this.purchaseRecommendations = this.purchaseRecommendationsCopy;
-    }
-  }
+  // filterRecByNumber(ev) {
+  //   let number = ev.target.value
+  //   if (number != '') {
+  //     this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(p => p.componentNumber == number)
+  //   } else {
+  //     this.purchaseRecommendations = this.purchaseRecommendationsCopy;
+  //   }
+  // }
 
 
 
@@ -473,36 +473,36 @@ export class ProcurementOrdersComponent implements OnInit {
 
 
 
-  filterByCategory(ev) {
-    var category = ev.target.value;
-    this.procurementData = this.procurementDataCopy.filter(order => {
-      for (let item of order.stockitems) {
-        if (item.componentType == category) return true
-      }
-    })
+  // filterByCategory(ev) {
+  //   var category = ev.target.value;
+  //   this.procurementData = this.procurementDataCopy.filter(order => {
+  //     for (let item of order.stockitems) {
+  //       if (item.componentType == category) return true
+  //     }
+  //   })
 
-  }
+  // }
 
-  filterByItemType(ev) {
-    var type = ev.target.value;
-    if (type == 'all') this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
-    else this.procurementData = this.procurementDataCopy.filter(order => order.orderType == type)
+  // filterByItemType(ev) {
+  //   var type = ev.target.value;
+  //   if (type == 'all') this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
+  //   else this.procurementData = this.procurementDataCopy.filter(order => order.orderType == type)
 
-  }
+  // }
 
-  filterByStatus(ev) {
-    var status = ev.target.value;
-    if (status == 'open') this.procurementData = this.procurementDataCopy.filter(p => p.status == status || p.status == 'supplied')
-    else if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
-    else this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
+  // filterByStatus(ev) {
+  //   var status = ev.target.value;
+  //   if (status == 'open') this.procurementData = this.procurementDataCopy.filter(p => p.status == status || p.status == 'supplied')
+  //   else if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
+  //   else this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
 
-  }
+  // }
 
-  filterByUserName(ev) {
-    var userName = ev.target.value;
-    if (userName == 'all') this.procurementData = this.procurementDataCopy
-    this.procurementData = this.procurementDataCopy.filter(p => p.user == userName)
-  }
+  // filterByUserName(ev) {
+  //   var userName = ev.target.value;
+  //   if (userName == 'all') this.procurementData = this.procurementDataCopy
+  //   this.procurementData = this.procurementDataCopy.filter(p => p.user == userName)
+  // }
 
 
 

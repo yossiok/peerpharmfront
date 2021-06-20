@@ -685,7 +685,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.toastr.success('הזמנה עודכנה בהצלחה !')
             this.closeOrderModal.emit(false)
             this.newProcurementSaved.emit(true)
-            location.reload()
+            // location.reload()
           }
           else this.toastr.error('משהו השתבש...')
         })
