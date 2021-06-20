@@ -299,6 +299,11 @@ export class OrdersService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getAllOrdersForComponent(componentN): Observable<any> {
+    let url = this.baseUrl + 'orderitem/ordersForComponent?componentN=' + componentN;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 
   getOrderItemsFromArray(): Observable<any> {
     let url = this.baseUrl + 'orderitem/getOrderItemsFromArray';

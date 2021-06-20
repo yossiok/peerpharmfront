@@ -100,7 +100,16 @@ export class OrdersComponent implements OnInit {
   }
 
   exportAsXLSX() {
-    this.excelService.exportAsExcelFile(this.orders, 'data');
+    let ordersToReport = this.orders.map(order => {
+      delete order._id
+      delete order.__v
+      delete order.color
+      delete order.stageColor
+      delete order.onHoldDate
+      delete order.status
+      return order
+    })
+    this.excelService.exportAsExcelFile(ordersToReport, 'data');
   }
 
   checkPermission() {
