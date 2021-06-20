@@ -57,7 +57,10 @@
       <button (click)="loadOrdersItems()" class='btn btn-info form-control'> Show Items </button>
     </div>
     <div class="col-2"></div>
-    <div class="col-1"></div>
+    <div class="col-1">
+      <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
+                  (click)="exportAsXLSX('purchaseData')">
+    </div>
     
   </div>
 

@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { log } from 'util';
 import { ChatService } from 'src/app/shared/chat.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ExcelService } from 'src/app/services/excel.service';
 
 
 
@@ -71,7 +72,8 @@ export class OrdersComponent implements OnInit {
     private ordersService: OrdersService,
     private router: Router,
     private toastSrv: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private excelService:ExcelService
   ) { }
 
   ngOnInit() {
@@ -95,6 +97,10 @@ export class OrdersComponent implements OnInit {
         this.getOrders();
       }
     })
+  }
+
+  exportAsXLSX() {
+    this.excelService.exportAsExcelFile(this.orders, 'data');
   }
 
   checkPermission() {

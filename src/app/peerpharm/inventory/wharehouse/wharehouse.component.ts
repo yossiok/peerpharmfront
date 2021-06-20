@@ -524,10 +524,28 @@ debugger
     if (cleanConfirm) this.inventoryUpdateList = [];
   }
 
+  updateFivePercentToStickers(inventoryUpdateList){
+
+    inventoryUpdateList.forEach(element => {
+      if(element.componentType = 'sticker'){
+        element.amount += 5/100* element.amount
+      }
+    });
+
+    return inventoryUpdateList
+
+  }
+
   async sendList() {
+
+    let fixedArr;
 
     let sendConfirm = confirm("עדכון שינויים במלאי");
     if (sendConfirm && this.inventoryUpdateList.length > 0) {
+      debugger;
+      fixedArr = await this.updateFivePercentToStickers(this.inventoryUpdateList);
+      this.inventoryUpdateList = fixedArr;
+
       await this.inventoryService.updateInventoryChangesTest(this.inventoryUpdateList, this.inventoryUpdateList[0].itemType, this.dir).subscribe(async res => {
         if (res == "all updated" || (res.msg && res.msg == "all updated")) {
           if (res.reception) this.certificateReception = res.reception
@@ -699,7 +717,7 @@ debugger
 
 
   addObjToList(itemLine, itemRes, shelfRes, originShelfQntBefore, destShelfQntBefore) {
-
+    debugger;
     if (!(this.inventoryUpdateList.length == 1 && this.dir == "shelfChange")) {
 
       let itemNumExistInList = false;
@@ -720,6 +738,7 @@ debugger
           expirationDate: null, // for products stock
           productionDate: null, // for products stock
           barcode: "",
+          componentType:itemRes.componentType,
           itemType: itemRes.itemType,
           relatedOrderNum: itemLine.relatedOrder,
           deliveryNoteNum: itemLine.deliveryNote,
