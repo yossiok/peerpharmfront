@@ -195,6 +195,7 @@
           <th scope="col">Raw Material Name</th>
           <th scope="col">Percentage</th>
           <th scope="col">KG</th>
+          <th scope="col">Remarks</th>
           <th scope="col">Lot</th>
           <th>Done?</th>
 
@@ -212,6 +213,7 @@
             <td style="padding:5px">{{ item.itemName }}</td>
             <td style="padding:5px">{{ item.percentage }}%</td>
             <td style="padding:5px">{{ item.kgProd | number }}</td>
+            <td>{{item.remarks}}</td>
             <td *ngIf="item.check != true" style="padding:5px"><input
                 (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)"
                 class="form-control rounded-pill"></td>

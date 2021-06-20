@@ -527,7 +527,7 @@ debugger
   updateFivePercentToStickers(inventoryUpdateList){
 
     inventoryUpdateList.forEach(element => {
-      if(element.componentType = 'sticker'){
+      if(element.componentType == 'sticker' && this.dir == 'out'){
         element.amount += 5/100* element.amount
       }
     });
@@ -542,7 +542,6 @@ debugger
 
     let sendConfirm = confirm("עדכון שינויים במלאי");
     if (sendConfirm && this.inventoryUpdateList.length > 0) {
-      debugger;
       fixedArr = await this.updateFivePercentToStickers(this.inventoryUpdateList);
       this.inventoryUpdateList = fixedArr;
 
