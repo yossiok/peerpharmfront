@@ -603,6 +603,43 @@ export class StockComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.itemShell, 'itemShell');
   }
 
+  excelForItem(){
+    console.log(this.components)
+    let sortOrder = [
+      'componentN', 'componentName', 'componentType',
+      'actualMlCapacity', 'amount', 'allAllocatedOrders', 'purchaseOrders',
+      'minimumStock', 'suplierN', 'suplierName'
+    ]
+    let componensExcel = this.components.map(component => {
+      delete component.allAllocatedOrders
+      delete component.alternativeSuppliers
+      delete component.comaxName
+      delete component.componentNs
+      delete component.composition
+      delete component.frameQuantity
+      delete component.img
+      delete component.importFrom
+      delete component.itemType
+      delete component.lastModified
+      delete component.mixedMaterial
+      delete component.needPrint
+      delete component.packageType
+      delete component.productAllocation
+      delete component.componentCategory
+      delete component.purchaseRecommendations
+      delete component.packageWeight
+      delete component.payingCustomersList
+      delete component.procurementArr
+      delete component.price
+      delete component.remarks
+      delete component.showPurch
+      delete component.__v
+      delete component._id
+      return component
+    })
+    this.excelService.exportAsExcelFile(componensExcel, 'Item Order Report', sortOrder);
+  }
+
   exportCurrTable() {
     this.loadingExcel = true;
     this.makeFileForExcelDownload().then((data: any[]) => {

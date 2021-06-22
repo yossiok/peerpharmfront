@@ -407,6 +407,11 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getItemByNumber(number) {
+    let url = this.baseUrl + "component/itemByNumber?itemNumber=" + number;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 
 
 
