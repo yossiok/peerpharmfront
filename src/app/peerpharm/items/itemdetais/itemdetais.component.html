@@ -1861,7 +1861,7 @@
                                             <tr>
                                                 <td *ngIf="editSpecTable==false">{{itemShown.textureRemarks}}</td>
                                                 <td *ngIf="editSpecTable==true"><input
-                                                        [ngModel]="itemShown.textureRemarks" class="form-control"
+                                                        [(ngModel)]="itemShown.textureRemarks" class="form-control"
                                                         type="text"></td>
                                                 <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.textureSpec}}
                                                 </td>
@@ -1955,7 +1955,7 @@
                 src="/assets/images/ordered.png">
             <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX()"
                 style="width: 50px;margin:5px;cursor: pointer;">
-            <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;"
+            <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;"צפש
                 src="../../../../assets/images/price.png">
             <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
         </div>
