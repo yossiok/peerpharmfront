@@ -186,6 +186,7 @@ export class OrderdetailsComponent implements OnInit {
   orderPackingList: Array<any> = [];
   orderItemsComponents: Array<any> = [];
   orderItemsStock;
+  productionApproved: boolean = false
 
   // for order explosion
   bottleList: Array<any> = [];
@@ -219,10 +220,13 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('stickerRemarks') stickerRemarks: ElementRef;
   @ViewChild('cartonRemarks') cartonRemarks: ElementRef;
   @ViewChild('packageRemarks') packageRemarks: ElementRef;
+  @ViewChild('itemProdStatus') itemProdStatus: ElementRef;
 
   @ViewChild('date') date: ElementRef;
   @ViewChild('shift') shift: ElementRef;
   @ViewChild('marks') marks: ElementRef;
+  productionItemStatus: any;
+  productionItemStatusIndex: any;
   // @ViewChild('type') type:ElementRef;
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -269,8 +273,8 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    debugger
-    // this.getAllFormsDetails()
+
+    this.productionApproved = this.authService.loggedInUser.authorization.includes("production")
     this.getUserInfo();
     this.orderService.openOrdersValidate.subscribe(res => {
       this.number = this.route.snapshot.paramMap.get('id');
@@ -531,6 +535,19 @@ export class OrderdetailsComponent implements OnInit {
     } else {
       this.expandTr = false;
     }
+  }
+
+  openItemStatus(orderItem, content) {
+    this.productionItemStatus = orderItem
+    this.modalService.open(content)
+    // this.productionItemStatusIndex = index
+  }
+
+  setOrderItemStatus(){
+    this.orderService.setProductionStatus(this.productionItemStatus).subscribe(response=>{
+      console.log(response)
+      // this.ordersItems[this.productionItemStatusIndex] = {...this.productionItemStatus}
+    })
   }
 
 

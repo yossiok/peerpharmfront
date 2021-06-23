@@ -309,4 +309,10 @@ export class OrdersService {
     let url = this.baseUrl + 'orderitem/getOrderItemsFromArray';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  setProductionStatus(productionItemStatus): Observable<any> {
+    let url = this.baseUrl + "orderitem/setOrderItemProdStatus";
+    return this.http.post(url, JSON.stringify(productionItemStatus), this.options).pipe(map(res => res.json()))
+  }
+
 }

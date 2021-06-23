@@ -82,6 +82,9 @@ export class NeworderComponent implements OnInit {
       quantity: [null, Validators.required],
       qtyKg: [null, Validators.nullValidator],
       remarks: [null, Validators.nullValidator],
+      hasLicense: [false, Validators.required],
+      exploded: [false, Validators.required],
+      productionApproved: [false, Validators.required],
     });
   }
 
@@ -217,6 +220,9 @@ export class NeworderComponent implements OnInit {
           netWeightGr: post.netWeightK,
           quantity: post.quantity,
           qtyKg: post.qtyKg,
+          hasLicense: post.hasLicense,
+          exploded: post.exploded,
+          productionApproved: post.productionApproved,
           shippingMethod: this.shippingMethod,
           batch: "",
           price: "",
@@ -228,6 +234,9 @@ export class NeworderComponent implements OnInit {
         };
         console.log(newOrderItemObj);
         this.orderItemForm.reset();
+        this.orderItemForm.controls.hasLicense.setValue(false)
+        this.orderItemForm.controls.exploded.setValue(false)
+        this.orderItemForm.controls.productionApproved.setValue(false)
         this.orderSer.addNewOrderItem(newOrderItemObj).subscribe((res) => {
           if (res.msg == "notActive") {
             this.toastSrv.error("שים לב פריט זה אינו פעיל");
@@ -272,11 +281,13 @@ export class NeworderComponent implements OnInit {
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK
         );
         this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
-        //   this.itemName = res[0].name + " " + res[0].subName + " " + res[0].discriptionK;
-        //   this.netWeightK = res[0].netWeightK;
-        this.orderSer
-          .getAllOpenOrderItemsByItemNumber(itemNumber)
-          .subscribe((data) => {
+       debugger
+        //check license
+        if(res[0].licsensNumber != "") {
+          if(new Date(res[0].licsensDate) > new Date())  this.orderItemForm.controls.hasLicense.setValue(true);
+        }
+        
+        this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe((data) => {
             if (data.length > 0) {
               this.existOrderItem = data;
             } else {

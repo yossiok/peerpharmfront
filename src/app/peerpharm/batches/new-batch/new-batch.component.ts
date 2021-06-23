@@ -98,6 +98,7 @@ export class NewBatchComponent implements OnInit {
     } else {
       if(justStickers) {
         // just print stickers
+        //TODO: CHECK IF BATCH EXIST!!!
         if (confirm("בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?")){
               setTimeout(()=>{
                 this.printBtn.nativeElement.click();
