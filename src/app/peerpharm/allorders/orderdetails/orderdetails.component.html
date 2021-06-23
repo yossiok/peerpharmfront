@@ -93,7 +93,7 @@
         <!-- <th class='printTd header'>Weight</th> -->
         <th class="header">Remarks </th>
         <th class='printTd header'>Status</th>
-        <th class='printTd header'>Production Status</th>
+        <th *ngIf="productionApproved" class='printTd header'>Production Status</th>
         <!-- <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th> -->
         <th class='printTd header'>Billing</th>
         <th class="header">C & F</th>
@@ -203,7 +203,7 @@
           </td>
           <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
           <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
-          <td><button [disabled]="!productionApproved" [style.cursor]="productionApproved ? 'pointer' : 'not-allowed'" class="btn btn-info" (click)="openItemStatus(item, itemProdStatus)">Set Production Status</button></td>
+          <td *ngIf="productionApproved"><button class="btn btn-info" (click)="openItemStatus(item, itemProdStatus)">Set Production Status</button></td>
           <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px" src="../../../../assets/images/invoice.png"></label></td>
           <!-- <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
           <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd'
@@ -288,7 +288,7 @@
                   <input type="radio" name="type" #type value='mkp2' [(ngModel)]="chosenType">Mkp2<br>
                   <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br>
                 </td>
-                <td><button *ngIf="setScheduleAllowed && item.productionApproved" (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
+                <td><button [disabled]="!setScheduleAllowed  || !item.productionApproved" [style.cursor]="item.productionApproved ? setScheduleAllowed ? 'pointer' : 'not-allowed' : 'not-allowed'" (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
               </tr>
               <tr>
                 <td></td>
