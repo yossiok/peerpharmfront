@@ -91,12 +91,13 @@
   <div *ngIf="!hasMoreItemsToload" class="row mt-4">
     <div class="col-2">
       <label>Batch Number:</label>
-      <input placeholder="Search batch by batch number" (change)="filterBatches($event,'batchNumber')" class="form-control">
+      <input placeholder="Search batch by batch number" (change)="filterBatches($event,'batchNumber')"
+        class="form-control">
     </div>
     <div class="col-2">
       <label>Item Number:</label>
       <input placeholder="Search batch by item number" (change)="filterBatches($event,'itemNumber')"
-      class="form-control">
+        class="form-control">
     </div>
     <div class="col-2">
       <label>Item Name:</label>
@@ -197,9 +198,9 @@
               <input class="editInput" #batchOrder type='text' [value]="batch.order" style='width:100px'>
             </td>
 
-          
-            <td *ngIf="batch._id!==EditRowId"><button
-                (click)="openPrint(printBatch,batch.batchNumber)" class="btn btn-info">Print</button>
+
+            <td *ngIf="batch._id!==EditRowId"><button (click)="openPrint(printBatch,batch.batchNumber)"
+                class="btn btn-info">Print</button>
               <button [style.background-color]="batch.specStatus ? batch.specStatus.color : '#2962FF'"
                 (click)="openTableValues(batch.item,batch.batchNumber)" class="btn btn-info">Spec Values</button>
             </td>
@@ -490,27 +491,37 @@
                 <td class="bg-light">
                   <table>
                     <tbody>
+
                       <tr style="padding: 0rem !important">
                         <td style="padding: 0rem !important">צמיגות</td>
                         <td style="padding: 0rem !important">(mPa*5)</td>
                       </tr>
+
                       <tr style="padding: 0rem !important">
                         <td style="padding: 0rem !important">סוג מכשיר</td>
-                        <td *ngIf="editValues==false">{{item.modelType}}</td>
+                        <td>{{item.modelType}}</td>
                       </tr>
+
                       <tr style="padding: 0rem !important">
                         <td style="padding: 0rem !important">מס ספינדלר</td>
-                        <td *ngIf="editValues==false">{{item.spinFieldNum}}</td>
+                        <td>{{item.spinFieldNum}}</td>
                       </tr>
+
                       <tr style="padding: 0rem !important">
                         <td style="padding: 0rem !important;font-size: 11px;">מהירות סיבוב</td>
-                        <td *ngIf="editValues==false">{{item.spinSpeed}}</td>
-
+                        <td>{{item.spinSpeed}}</td>
                       </tr>
+
+                      <tr style="padding: 0rem !important">
+                        <td style="padding: 0rem !important">%</td>
+                        <td>{{item.percentageResult}}</td>
+                      </tr>
+
                       <tr style="padding: 0rem !important">
                         <td style="padding: 0rem !important">טמפ' בדיקה</td>
-                        <td *ngIf="editValues==false">{{item.testTemp}}</td>
+                        <td>{{item.testTemp}}</td>
                       </tr>
+                      
                     </tbody>
                   </table>
                 </td>
