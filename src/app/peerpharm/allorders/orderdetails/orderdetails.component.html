@@ -975,7 +975,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
         </div>
         <div class="m-5">
           <h4>Ready for Production?</h4><br>
-          <input class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.productionApproved">
+          <input [disabled]="!productionItemStatus.exploded || !productionItemStatus.hasLicense" class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.productionApproved">
         </div>
         <div class="m-5">
           <button (click)="setOrderItemStatus()">Set Status!</button>
