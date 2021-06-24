@@ -12,9 +12,10 @@
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
     <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7
+      <button *ngIf="amountsDone" class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7
         - בדוק המלצה
         לרכש</button>
+        <div *ngIf="!amountsDone" class="smallLoader"></div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-warning form-control rounded-pill" (click)="newPurchaseRecommendModal = true">F10
@@ -142,8 +143,11 @@
     <div class="col-4"></div>
   </div>
 
-  <div style="margin-right:auto !important" *ngIf="smallLoader == true"
+  <div *ngIf="smallLoader == true">
+    <h2>{{loadingText}}</h2>
+    <div style="margin-right:auto !important" 
     class="smallLoader fixNoaStupidStuff mx-auto my-auto"></div>
+  </div>
   <div style="width:100%;">
 
 
@@ -172,7 +176,7 @@
       </div>
 
       <!-- TABLE START -->
-      <div *ngIf="stockType=='component'" class="tableFixHead">
+      <div *ngIf="stockType=='component' && !smallLoader" class="tableFixHead">
         <table class='table stockTable table-fixed text-center' *ngIf="stockType=='component'">
           <thead class="text-white bg-info">
             <tr style="text-align: center;">
@@ -267,7 +271,7 @@
         (outPutItemsExpectedData)="getNewExpectedArrivalsData($event)"></app-expected-arrivals>
 
 
-      <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product'">
+      <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product' && !smallLoader">
         <thead class='text-white bg-success'>
           <tr>
 
@@ -339,7 +343,7 @@
     <!-- TABLE END -->
 
 
-    <table class='table stockTable table-fixed' *ngIf="stockType=='material'">
+    <table class='table stockTable table-fixed' *ngIf="stockType=='material' && !smallLoader">
       <thead class='bg-warning text-white'>
         <tr style="text-align: center">
 
@@ -2660,12 +2664,16 @@
       </div>
       <div style="height: auto !important;width:800px !important;overflow:scroll" class="container" id="material-body"
         class="modal-body">
-        <table style="background:white;" class="table table-hover">
+        <div class="smallLoader" *ngIf="alloAmountsLoading"></div>
+        <table *ngIf="!alloAmountsLoading" style="background:white;" class="table table-hover">
           <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Orders</th>
               <th scope="col">Allocated Amount</th>
+              <th scope="col">Order Date</th>
+              <th scope="col">Delivery Date</th>
+              <th scope="col">Customer</th>
             </tr>
           </thead>
           <tbody>
@@ -2673,6 +2681,9 @@
               <td>{{i+1}}</td>
               <td>{{order.orderNumber}}</td>
               <td>{{order.allocatedAmount}}</td>
+              <td>{{order.orderDate}}</td>
+              <td>{{order.deliveryDate}}</td>
+              <td>{{order.costumer}}</td>
             </tr>
           </tbody>
         </table>

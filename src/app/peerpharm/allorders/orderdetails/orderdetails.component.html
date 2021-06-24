@@ -10,12 +10,13 @@
 <div class='orderHeader' *ngIf="!showingAllOrders">
   <span class='spanTitle'>Order: </span><span class="orderSpanDetails">{{number}} </span><i
     class="ti-check text-success m-r-10" (click)="closeOrder()" style="cursor: pointer;"></i>
-    <span class="spanTitle">Total Items: {{totalOrderQty}}</span>
+  <span class="spanTitle">Total Items: {{totalOrderQty}}</span>
   <span class='spanTitle'> Order Date:</span><span class="orderSpanDetails"> {{orderDate}} </span><span
     class='spanTitle'> Delivery Date: </span><span class="orderSpanDetails">{{deliveryDate}}</span>
   <span class='spanTitle'> Costumer :</span><span class="orderSpanDetails"> {{costumer}} </span><span class='spanTitle'>
     Costumer Number:</span><span class="orderSpanDetails"> {{costumerInternalId}} </span>
-    <span class='spanTitle'> Costumer <strong>Order</strong> Number :</span><span class="orderSpanDetails"> {{customerOrderNum}} </span>
+  <span class='spanTitle'> Costumer <strong>Order</strong> Number :</span><span class="orderSpanDetails">
+    {{customerOrderNum}} </span>
   <span class='spanTitle'> Remarks:</span>
   <span class="orderSpanDetails">{{remarks}}</span>
   <ng-container *ngIf="(multi && !showingAllOrders) ||(!multi && !showingAllOrders)">
@@ -74,147 +75,156 @@
 <div *ngIf="orderExplodeLoader" class="loading">Loading&#8230;</div>
 
 <!-- <mat-tab-group> -->
-  <!-- <mat-tab label="Order Items">  -->
-    <table style="border: 1px solid black;" class='table' *ngIf="loadData==false">
-    <thead class='bg-info tableHeader text-white' (click)="edit('')">
-      <tr>
-        <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()" src="../../../assets/images/excel.png"/></button></th>
-        <th></th>
-        <th *ngIf="openFormule"></th>
-        <th></th>
-        <th *ngIf="showingAllOrders || multi">Order Number</th>
-        <th style="width:200px;" class="header">Item Number </th>
-        <th class="header">Item Important Remark</th>
-        <th class="header">Description </th>
-        <th class="header">Barcode </th>
-        <th class="header">neto Weight(Gr) </th>
-        <th class="header">Quantity </th>
-        <th class="header">Printing/Filling </th>
-        <!-- <th class='printTd header'>Weight</th> -->
-        <th class="header">Remarks </th>
-        <th class='printTd header'>Status</th>
-        <th *ngIf="productionApproved" class='printTd header'>Production Status</th>
-        <!-- <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th> -->
-        <th class='printTd header'>Billing</th>
-        <th class="header">C & F</th>
-        <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
-        <th><button *ngIf="userName == 'akiva' || userName == 'sima' || userName == 'martha'" style="color:black;" class="btn btn-success" (click)="loadMaterialsForFormule()">Formule</button></th>
-        
-        <th>
-          <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg" (click)="openCmptDemandsModal()">
-        </th>
-      
-      </tr>
-    </thead>
-  
-    <tbody>
-  
-      <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
-        <td></td>
-        <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
-        <td></td>
-        <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
-            class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
-            (focusout)="searchItem(orderNumber.value)"></td>
-        <td><input style="box-shadow:1px 1px 2px black;" class="form-control form-control-sm" placeholder="Item Number"
-            [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
-        <td><input style="box-shadow:1px 1px 2px black; color: red;" class="form-control form-control-sm"
-            placeholder="Item Important Remark" [(ngModel)]="itemData.itemImpRemark" disabled>
-          <!-- <img src="../../../../assets/images/alert3.gif" width="30px" alt="see important remarks from item tree"> -->
+<!-- <mat-tab label="Order Items">  -->
+<table style="border: 1px solid black;" class='table' *ngIf="loadData==false">
+  <thead class='bg-info tableHeader text-white' (click)="edit('')">
+    <tr>
+      <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()"
+            src="../../../assets/images/excel.png" /></button></th>
+      <th></th>
+      <th *ngIf="openFormule"></th>
+      <th></th>
+      <th *ngIf="showingAllOrders || multi">Order Number</th>
+      <th style="width:200px;" class="header">Item Number </th>
+      <th class="header">Item Important Remark</th>
+      <th class="header">Description </th>
+      <th class="header">Barcode </th>
+      <th class="header">neto Weight(Gr) </th>
+      <th class="header">Quantity </th>
+      <th class="header">Printing/Filling </th>
+      <!-- <th class='printTd header'>Weight</th> -->
+      <th class="header">Remarks </th>
+      <th class='printTd header'>Status</th>
+      <th *ngIf="productionApproved" class='printTd header'>Production Status</th>
+      <!-- <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th> -->
+      <th class='printTd header'>Billing</th>
+      <th class="header">C & F</th>
+      <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
+      <th><button *ngIf="userName == 'akiva' || userName == 'sima' || userName == 'martha'" style="color:black;"
+          class="btn btn-success" (click)="loadMaterialsForFormule()">Formule</button></th>
+
+      <th>
+        <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg" (click)="openCmptDemandsModal()">
+      </th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
+      <td></td>
+      <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
+      <td></td>
+      <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
+          class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
+          (focusout)="searchItem(orderNumber.value)"></td>
+      <td><input style="box-shadow:1px 1px 2px black;" class="form-control form-control-sm" placeholder="Item Number"
+          [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
+      <td><input style="box-shadow:1px 1px 2px black; color: red;" class="form-control form-control-sm"
+          placeholder="Item Important Remark" [(ngModel)]="itemData.itemImpRemark" disabled>
+        <!-- <img src="../../../../assets/images/alert3.gif" width="30px" alt="see important remarks from item tree"> -->
+      </td>
+      <td><input style="box-shadow:1px 1px 2px black; width:350px;" class="form-control form-control-sm"
+          placeholder="Description" [(ngModel)]="itemData.discription"></td>
+      <td></td>
+      <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="neto Weight(Gr)"
+          [(ngModel)]="itemData.netWeightGr"></td>
+      <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Quantity"
+          [(ngModel)]="itemData.quantity"></td>
+      <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Weight"
+          [(ngModel)]="itemData.qtyKg"></td>
+      <td><textarea style="box-shadow:1px 1px 2px black;width:185px" class="form-control form-control-sm"
+          placeholder="Remarks" [(ngModel)]="itemData.itemRemarks"></textarea></td>
+
+      <td></td>
+      <td *ngIf="!multi"></td>
+      <td><button style="box-shadow: 1px 1px 2px black;" (click)="addItemOrder()" class='btn btn-success'>Add</button>
+      </td>
+
+
+    </tr>
+
+    <tr>
+    </tr>
+
+    <ng-container *ngFor="let item of ordersItems; let i = index">
+      <!-- <tr [style.background-color]="item.color"  (click)="edit(item._id)" (blur)="edit('')"> -->
+      <tr style="border: 2px solid black; box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
+        [style.background-color]="item.color">
+
+
+        <td *ngIf="item._id===EditRowId">
+          <input #id type='hidden' [value]="item._id" style='width:370px'>
+          <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}
         </td>
-        <td><input style="box-shadow:1px 1px 2px black; width:350px;" class="form-control form-control-sm"
-            placeholder="Description" [(ngModel)]="itemData.discription"></td>
-            <td></td>
-        <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="neto Weight(Gr)"
-            [(ngModel)]="itemData.netWeightGr"></td>
-        <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Quantity"
-            [(ngModel)]="itemData.quantity"></td>
-        <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Weight"
-            [(ngModel)]="itemData.qtyKg"></td>
-        <td><textarea style="box-shadow:1px 1px 2px black;width:185px" class="form-control form-control-sm" placeholder="Remarks"
-            [(ngModel)]="itemData.itemRemarks"></textarea></td>
-        
-        <td></td>
-        <td *ngIf="!multi"></td>
-        <td><button style="box-shadow: 1px 1px 2px black;" (click)="addItemOrder()" class='btn btn-success'>Add</button>
+        <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
+        <td><input type="checkbox" (change)="isSelected($event,item)"></td>
+        <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
+
+        <td *ngIf="multi==true">{{item.orderNumber}}</td>
+
+        <!-- <td *ngIf="openFormule"><button  (click)="showFormule(item,item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td> -->
+        <td><button style="border-radius: 30px;"
+            [ngClass]="{'lightgreen': item.formuleExist == true,'lightred':item.formuleExist != true}">F</button></td>
+        <td *ngIf="item.licsensNumber!=''">
+          <button class='expendBtn' [style.background-color]="item.colorBtn"
+            (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
+          <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+            {{item.itemNumber}}
+          </a>
         </td>
-     
-  
-      </tr>
-  
-      <tr>
-      </tr>
-  
-      <ng-container *ngFor="let item of ordersItems; let i = index">
-        <!-- <tr [style.background-color]="item.color"  (click)="edit(item._id)" (blur)="edit('')"> -->
-        <tr style="border: 2px solid black; box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-          [style.background-color]="item.color">
-  
-  
-          <td *ngIf="item._id===EditRowId">
-            <input #id type='hidden' [value]="item._id" style='width:370px'>
-            <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}</td>
-          <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
-          <td><input type="checkbox" (change)="isSelected($event,item)"></td>
-          <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
-  
-          <td *ngIf="multi==true">{{item.orderNumber}}</td>
-          
-          <!-- <td *ngIf="openFormule"><button  (click)="showFormule(item,item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td> -->
-          <td><button style="border-radius: 30px;" [ngClass]="{'lightgreen': item.formuleExist == true,'lightred':item.formuleExist != true}">F</button></td>
-          <td *ngIf="item.licsensNumber!=''">
-            <button class='expendBtn' [style.background-color]="item.colorBtn"
-              (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-            <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
-              {{item.itemNumber}}
-            </a>
-          </td>
-          <td class="noLicense" *ngIf="item.licsensNumber==''">
-            <button class='expendBtn' [style.background-color]="item.colorBtn"
-              (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-            <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
-              {{item.itemNumber}}
-            </a>
-          </td>
-          <td *ngIf="item._id===EditRowId">
-            <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark"
-              style='width:150px ; color:red;' disabled>
-            <input #itemImpRemark type='text' *ngIf="item.itemImpRemark==undefined" [value]=""
-              style='width:150px ; color:red;' disabled>
-          </td>
-          <td *ngIf="item._id!==EditRowId" style='width:150px ; color:red;' (click)="edit(item._id)">
-            {{item.itemImpRemark}}</td>
-  
-          <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'>
-          </td>
-          <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
-          <td *ngIf="item._id!==EditRowId" >{{item.barcodeK}}</td>
-          <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:70px'>
-          </td>
-          <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
-          <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
-          <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
-          <!-- <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px'
+        <td class="noLicense" *ngIf="item.licsensNumber==''">
+          <button class='expendBtn' [style.background-color]="item.colorBtn"
+            (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
+          <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+            {{item.itemNumber}}
+          </a>
+        </td>
+        <td *ngIf="item._id===EditRowId">
+          <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark"
+            style='width:150px ; color:red;' disabled>
+          <input #itemImpRemark type='text' *ngIf="item.itemImpRemark==undefined" [value]=""
+            style='width:150px ; color:red;' disabled>
+        </td>
+        <td *ngIf="item._id!==EditRowId" style='width:150px ; color:red;' (click)="edit(item._id)">
+          {{item.itemImpRemark}}</td>
+
+        <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'>
+        </td>
+        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
+        <td *ngIf="item._id!==EditRowId">{{item.barcodeK}}</td>
+        <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:70px'>
+        </td>
+        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
+        <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
+        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
+        <!-- <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px'
               class='printTd'></td> -->
-          <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td> -->
-          <td *ngIf="item._id!==EditRowId"><img *ngIf="item.printStatus ==='printed'" style="width:15px" src="../../../../assets/images/aprroved.png"/> / <img *ngIf="item.fillingStatus ==='filled'" style="width:15px" src="../../../../assets/images/aprroved.png"/></td>
-          <td *ngIf="item._id===EditRowId"></td>
-          <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' />
-          </td>
-          <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
-          <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
-          <td *ngIf="productionApproved"><button class="btn btn-info" (click)="openItemStatus(item, itemProdStatus)">Set Production Status</button></td>
-          <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px" src="../../../../assets/images/invoice.png"></label></td>
-          <!-- <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
+        <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td> -->
+        <td *ngIf="item._id!==EditRowId"><img *ngIf="item.printStatus ==='printed'" style="width:15px"
+            src="../../../../assets/images/aprroved.png" /> / <img *ngIf="item.fillingStatus ==='filled'"
+            style="width:15px" src="../../../../assets/images/aprroved.png" /></td>
+        <td *ngIf="item._id===EditRowId"></td>
+        <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' />
+        </td>
+        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
+        <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
+        <td *ngIf="productionApproved"><button class="btn btn-info" (click)="openItemStatus(item, itemProdStatus)">Set
+            Production Status</button></td>
+        <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px"
+              src="../../../../assets/images/invoice.png"></label></td>
+        <!-- <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
           <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd'
             style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
             {{item.compiled[0].sum}}</td> -->
-            <td *ngIf="item._id!==EditRowId">
-           
-            <label>Formules</label><input [(ngModel)]="item.formuleCheck" (change)="isChecked($event,item._id)" id="formuleCheckBox" type="checkbox">
-           
-            </td>
-            <!-- <td *ngIf="item._id===EditRowId"><label>Components</label>
+        <td *ngIf="item._id!==EditRowId">
+
+          <label>Formules</label><input [(ngModel)]="item.formuleCheck" (change)="isChecked($event,item._id)"
+            id="formuleCheckBox" type="checkbox">
+
+        </td>
+        <!-- <td *ngIf="item._id===EditRowId"><label>Components</label>
               <select [value]="item.componentCheck" #componentCheck >
               <option value="0">0</option>
               <option value="ordered">הוזמן</option>
@@ -223,100 +233,104 @@
             <br><br>
             
           </td> -->
-          
-          <td></td>
-          <td></td>
-          <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->
-  
-          <td class='printTd'>
-            <i class="ti-trash text-danger m-r-10" *ngIf="item._id!=EditRowId" (click)="deleteItem(item)"
-              style="cursor: pointer;"></i>
-            <i class="ti-check text-success m-r-10" *ngIf="item._id!=EditRowId"
-              (click)="setOrderItemDone(item)" style="cursor: pointer;"></i>
-            <i class="ti-save text-success m-r-10" *ngIf="item._id===EditRowId"
-              (click)="saveEdit()" style="cursor: pointer;"></i>
-          </td>
-  
-        </tr>
-        <tr *ngIf="item._id== EditRowId2nd && expand==true;">
-          <td colspan="5">
-  
-            <table class='detilasTable' width='105%'>
-              <tr>
-                <td></td>
-                <td>
-                  <h5>Batch</h5>
-                </td>
-                <!-- <td>{{item.batch}}</td> -->
-                <td colspan="2"><label *ngIf="!editBatchN" (click)="editBatch(item.batch)"
-                    style="cursor: pointer; margin-right: 10px;">{{item.batch}}</label>
-                  <input *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined"
-                    type='text' style="width:50%" #inputBatch></td>
-                <td><button class='btn btn-success' (click)="setBatch(item, inputBatch.value, item.batch)">set</button>
-                </td>
-                <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)"
-                    style='cursor: pointer;'></i></td>
-                <td></td>
-              </tr>
-              <tr *ngFor="let det of detailsArr">
-                <td></td>
-                <td>
-                  <h5>Set Printing Schedule: </h5>
-                </td>
-                <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button class='btn btn-info'
-                    (click)="setToPrintDetails(content, item, det)">print</button></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>
-                  <h5>Set Filling Schedule: </h5>
-                </td>
-                <td><input #date type='date'></td>
-                <td><input #shift type='text' placeholder="Shift"></td>
-                <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-                <td style="width:100px">
-                  <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
-                  <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>
-                  <input type="radio" name="type" #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
-                  <input type="radio" name="type" #type value='sachet' [(ngModel)]="chosenType">Sachet<br>
-                  <input type="radio" name="type" #type value='laser' [(ngModel)]="chosenType">Laser<br>
-                  <input type="radio" name="type" #type value='stickers' [(ngModel)]="chosenType">Stickers<br>
-                  <input type="radio" name="type" #type value='mkp2' [(ngModel)]="chosenType">Mkp2<br>
-                  <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br>
-                </td>
-                <td><button [disabled]="!setScheduleAllowed  || !item.productionApproved" [style.cursor]="item.productionApproved ? setScheduleAllowed ? 'pointer' : 'not-allowed' : 'not-allowed'" (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>
-                  <h5>Set Barcode Print: </h5>
-                </td>
-                <td><input #mkpProdDate type='date'></td>
-                <td><input #mkpProdRemarks placeholder="PO" type='marks' [value]="item.itemRemarks"></td>
-                <td><input #mkpProdInvoice placeholder="Invoice" type='text'></td>
-                <td>
-                </td>
-                <td><button (click)='setMkpSchedule(item , mkpProdDate.value, mkpProdRemarks.value , mkpProdInvoice.value)'
-                    class='btn btn-success'>Set</button></td>
-              </tr>
-            </table>
-            <br>
-         
-  
-          </td>
-        </tr>
-  
-      </ng-container>
-  
-    </tbody>
-  
-  </table> 
+
+        <td></td>
+        <td></td>
+        <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->
+
+        <td class='printTd'>
+          <i class="ti-trash text-danger m-r-10" *ngIf="item._id!=EditRowId" (click)="deleteItem(item)"
+            style="cursor: pointer;"></i>
+          <i class="ti-check text-success m-r-10" *ngIf="item._id!=EditRowId" (click)="setOrderItemDone(item)"
+            style="cursor: pointer;"></i>
+          <i class="ti-save text-success m-r-10" *ngIf="item._id===EditRowId" (click)="saveEdit()"
+            style="cursor: pointer;"></i>
+        </td>
+
+      </tr>
+      <tr *ngIf="item._id== EditRowId2nd && expand==true;">
+        <td colspan="5">
+
+          <table class='detilasTable' width='105%'>
+            <tr>
+              <td></td>
+              <td>
+                <h5>Batch</h5>
+              </td>
+              <!-- <td>{{item.batch}}</td> -->
+              <td colspan="2"><label *ngIf="!editBatchN" (click)="editBatch(item.batch)"
+                  style="cursor: pointer; margin-right: 10px;">{{item.batch}}</label>
+                <input *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined"
+                  type='text' style="width:50%" #inputBatch>
+              </td>
+              <td><button class='btn btn-success' (click)="setBatch(item, inputBatch.value, item.batch)">set</button>
+              </td>
+              <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)"
+                  style='cursor: pointer;'></i></td>
+              <td></td>
+            </tr>
+            <tr *ngFor="let det of detailsArr">
+              <td></td>
+              <td>
+                <h5>Set Printing Schedule: </h5>
+              </td>
+              <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button class='btn btn-info'
+                  (click)="setToPrintDetails(content, item, det)">print</button></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <h5>Set Filling Schedule: </h5>
+              </td>
+              <td><input #date type='date'></td>
+              <td><input #shift type='text' placeholder="Shift"></td>
+              <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
+              <td style="width:100px">
+                <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
+                <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>
+                <input type="radio" name="type" #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
+                <input type="radio" name="type" #type value='sachet' [(ngModel)]="chosenType">Sachet<br>
+                <input type="radio" name="type" #type value='laser' [(ngModel)]="chosenType">Laser<br>
+                <input type="radio" name="type" #type value='stickers' [(ngModel)]="chosenType">Stickers<br>
+                <input type="radio" name="type" #type value='mkp2' [(ngModel)]="chosenType">Mkp2<br>
+                <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br>
+              </td>
+              <td placement="top" [ngbTooltip]="item.productionApproved ? '' : 'Item Not Approved by PP&C'"><button *ngIf="setScheduleAllowed" [disabled]="!item.productionApproved"
+                  [style.cursor]="item.productionApproved ? 'pointer' : 'not-allowed'"
+                  (click)='setSchedule(item ,type.value)'   class='btn btn-success'>Set</button></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <h5>Set Barcode Print: </h5>
+              </td>
+              <td><input #mkpProdDate type='date'></td>
+              <td><input #mkpProdRemarks placeholder="PO" type='marks' [value]="item.itemRemarks"></td>
+              <td><input #mkpProdInvoice placeholder="Invoice" type='text'></td>
+              <td>
+              </td>
+              <td><button
+                  (click)='setMkpSchedule(item , mkpProdDate.value, mkpProdRemarks.value , mkpProdInvoice.value)'
+                  class='btn btn-success'>Set</button></td>
+            </tr>
+          </table>
+          <br>
+
+
+        </td>
+      </tr>
+
+    </ng-container>
+
+  </tbody>
+
+</table>
 <!-- </mat-tab> -->
- 
+
 <!-- </mat-tab-group> -->
 
 
@@ -442,12 +456,15 @@
   <!-- Modal content -->
   <div dir="ltr" class="modal-content" style='width:650px' id='modelB'>
     <div class="modal-header">
-      <button class="btn-success" [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="modelB" ngxPrint>Print</button>
+      <button class="btn-success"
+        [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="modelB"
+        ngxPrint>Print</button>
       <span class="close" id="closeId2" (click)="packingModal=false;newItem='';">&times;</span>
       <h2 id='div_h3'>{{openOrderPackingModalHeader}}</h2><br>
     </div>
 
-    <div class="modal-body" style="overflow-y:scroll; overflow-x:hidden; height: auto; padding-left: 0px;text-align: center;">
+    <div class="modal-body"
+      style="overflow-y:scroll; overflow-x:hidden; height: auto; padding-left: 0px;text-align: center;">
       <!-- <div clas="modalFullWidth" width="100%">
 
         </div> -->
@@ -594,7 +611,8 @@
           <div *ngFor="let sticker of stickerList" class="cmptListData">
             <label>Number: {{sticker.stickerNumber}}</label> &nbsp;&nbsp;
             <label>Quantity: {{sticker.qnt}}</label> &nbsp;&nbsp;
-            <label [ngClass]="{ minAmount: sticker.qnt > sticker.amount}">Amount: {{sticker.amount}}</label> &nbsp;&nbsp;
+            <label [ngClass]="{ minAmount: sticker.qnt > sticker.amount}">Amount: {{sticker.amount}}</label>
+            &nbsp;&nbsp;
 
           </div>
         </div>
@@ -626,7 +644,7 @@
       <!-- <div clas="modalFullWidth" width="100%">
 
       </div> -->
-     
+
       <div style="width: 100%; float: right ;" class="itemTreesTb">
 
         <table class="table table-bordered" style="width: 98% ; ">
@@ -638,31 +656,56 @@
               <th scope="col">
                 <img src="../../../assets/images/excel.png" alt="excel export"
                   (click)="exportAsXLSX(orderItemsComponents)" style="width: 35px; float: left; cursor: pointer;">
-                </th> <!--0-->
-                <th scope="col"><b>Order Number</b></th><!--1-->
-              <th scope="col"><b>Item Number</b></th><!--2-->
-              <th scope="col"><b>Name</b></th><!--3-->
-              <th scope="col"><b>Bottle</b></th><!--4-->
-              <th scope="col"><b>Bottle Amount</b></th><!--5-->
-              <th scope="col"><b>Cap</b></th><!--6-->
-              <th scope="col"><b>Cap Amount</b></th><!--7-->
-              <th scope="col"><b>Pump</b></th><!--8-->
-              <th scope="col"><b>Pump Amount</b></th><!--9-->
-              <th scope="col"><b>Seal</b></th><!--10-->
-              <th scope="col"><b>Seal Amount</b></th><!--11-->
-              <th scope="col"><b>Box</b></th><!--12-->
-              <th scope="col"><b>Box Amount</b></th><!--13-->
-              <th scope="col"><b>Carton</b></th><!--14-->
-              <th scope="col"><b>Carton Amount</b></th><!--15-->
-              <th scope="col"><b>PcsCaton</b></th><!--16-->
-              <th scope="col"><b>GT</b></th><!--17-->
-              <th scope="col"><b>Quantity</b></th><!--18-->
-              <th scope="col"><b>Weight</b></th><!--19-->
-              <th scope="col"><b>Production Weight</b></th><!--20-->
-              <th scope="col"><b>Sticker</b></th><!--21-->
-              <th scope="col"><b>Sticker Amount</b></th><!--22-->
-              <th scope="col"><b>Plate1</b></th><!--23-->
-              <th scope="col"><b>Quantity in Stock</b></th><!--24-->
+              </th>
+              <!--0-->
+              <th scope="col"><b>Order Number</b></th>
+              <!--1-->
+              <th scope="col"><b>Item Number</b></th>
+              <!--2-->
+              <th scope="col"><b>Name</b></th>
+              <!--3-->
+              <th scope="col"><b>Bottle</b></th>
+              <!--4-->
+              <th scope="col"><b>Bottle Amount</b></th>
+              <!--5-->
+              <th scope="col"><b>Cap</b></th>
+              <!--6-->
+              <th scope="col"><b>Cap Amount</b></th>
+              <!--7-->
+              <th scope="col"><b>Pump</b></th>
+              <!--8-->
+              <th scope="col"><b>Pump Amount</b></th>
+              <!--9-->
+              <th scope="col"><b>Seal</b></th>
+              <!--10-->
+              <th scope="col"><b>Seal Amount</b></th>
+              <!--11-->
+              <th scope="col"><b>Box</b></th>
+              <!--12-->
+              <th scope="col"><b>Box Amount</b></th>
+              <!--13-->
+              <th scope="col"><b>Carton</b></th>
+              <!--14-->
+              <th scope="col"><b>Carton Amount</b></th>
+              <!--15-->
+              <th scope="col"><b>PcsCaton</b></th>
+              <!--16-->
+              <th scope="col"><b>GT</b></th>
+              <!--17-->
+              <th scope="col"><b>Quantity</b></th>
+              <!--18-->
+              <th scope="col"><b>Weight</b></th>
+              <!--19-->
+              <th scope="col"><b>Production Weight</b></th>
+              <!--20-->
+              <th scope="col"><b>Sticker</b></th>
+              <!--21-->
+              <th scope="col"><b>Sticker Amount</b></th>
+              <!--22-->
+              <th scope="col"><b>Plate1</b></th>
+              <!--23-->
+              <th scope="col"><b>Quantity in Stock</b></th>
+              <!--24-->
               <!-- <th scope="col"><b>Box2</b></th> -->
               <!-- <th scope="col"><b>Master Carton</b></th> -->
               <!-- <th scope="col"><b>Plate2</b></th> -->
@@ -673,31 +716,56 @@
           </thead>
           <tbody>
             <tr scope="row" *ngFor="let itemCmpts of orderItemsComponents; let i =index">
-              <td scope="col">{{i+1}}</td><!--0-->
-              <td scope="col">{{itemCmpts.orderNumber}}</td><!--1-->
-              <td scope="col">{{itemCmpts.itemNumber}}</td><!--2-->
-              <td scope="col">{{itemCmpts.itemName}}</td><!--3-->
-              <td scope="col">{{itemCmpts.bottleNumber}}</td><!--4-->
-              <td scope="col">{{itemCmpts.bottleAmount}}</td><!--5-->
-              <td scope="col">{{itemCmpts.capNumber}}</td><!--6-->
-              <td scope="col">{{itemCmpts.capAmount}}</td><!--7-->
-              <td scope="col">{{itemCmpts.pumpNumber}}</td><!--8-->
-              <td scope="col">{{itemCmpts.pumpAmount}}</td><!--9-->
-              <td scope="col">{{itemCmpts.sealNumber}}</td><!--10-->
-              <td scope="col">{{itemCmpts.sealAmount}}</td><!--11-->
-              <td scope="col">{{itemCmpts.boxNumber}}</td><!--12-->
-              <td scope="col">{{itemCmpts.boxAmount}}</td><!--13-->
-              <td scope="col">{{itemCmpts.cartonNumber}}</td><!--14-->
-              <td scope="col">{{itemCmpts.cartonAmount}}</td><!--15-->
-              <td scope="col">{{itemCmpts.PcsCarton}}</td><!--16-->
-              <td scope="col">{{itemCmpts.GT | number}}</td><!--17-->
-              <td scope="col">{{itemCmpts.quantity}}</td><!--18-->
-              <td scope="col">{{itemCmpts.weight}}</td><!--19-->
-              <td scope="col">{{itemCmpts.prodWeight}}</td><!--20-->
-              <td scope="col">{{itemCmpts.stickerNumber}}</td><!--21-->
-              <td scope="col">{{itemCmpts.stickerAmount}}</td><!--22-->
-              <td scope="col">{{itemCmpts.pallet}}</td><!--23-->
-              <td scope="col" style=" background-color:aliceblue; ">{{itemCmpts.currStock}}</td><!--24-->
+              <td scope="col">{{i+1}}</td>
+              <!--0-->
+              <td scope="col">{{itemCmpts.orderNumber}}</td>
+              <!--1-->
+              <td scope="col">{{itemCmpts.itemNumber}}</td>
+              <!--2-->
+              <td scope="col">{{itemCmpts.itemName}}</td>
+              <!--3-->
+              <td scope="col">{{itemCmpts.bottleNumber}}</td>
+              <!--4-->
+              <td scope="col">{{itemCmpts.bottleAmount}}</td>
+              <!--5-->
+              <td scope="col">{{itemCmpts.capNumber}}</td>
+              <!--6-->
+              <td scope="col">{{itemCmpts.capAmount}}</td>
+              <!--7-->
+              <td scope="col">{{itemCmpts.pumpNumber}}</td>
+              <!--8-->
+              <td scope="col">{{itemCmpts.pumpAmount}}</td>
+              <!--9-->
+              <td scope="col">{{itemCmpts.sealNumber}}</td>
+              <!--10-->
+              <td scope="col">{{itemCmpts.sealAmount}}</td>
+              <!--11-->
+              <td scope="col">{{itemCmpts.boxNumber}}</td>
+              <!--12-->
+              <td scope="col">{{itemCmpts.boxAmount}}</td>
+              <!--13-->
+              <td scope="col">{{itemCmpts.cartonNumber}}</td>
+              <!--14-->
+              <td scope="col">{{itemCmpts.cartonAmount}}</td>
+              <!--15-->
+              <td scope="col">{{itemCmpts.PcsCarton}}</td>
+              <!--16-->
+              <td scope="col">{{itemCmpts.GT | number}}</td>
+              <!--17-->
+              <td scope="col">{{itemCmpts.quantity}}</td>
+              <!--18-->
+              <td scope="col">{{itemCmpts.weight}}</td>
+              <!--19-->
+              <td scope="col">{{itemCmpts.prodWeight}}</td>
+              <!--20-->
+              <td scope="col">{{itemCmpts.stickerNumber}}</td>
+              <!--21-->
+              <td scope="col">{{itemCmpts.stickerAmount}}</td>
+              <!--22-->
+              <td scope="col">{{itemCmpts.pallet}}</td>
+              <!--23-->
+              <td scope="col" style=" background-color:aliceblue; ">{{itemCmpts.currStock}}</td>
+              <!--24-->
               <!-- <td scope="col">{{itemCmpts.boxTypeK}}</td> -->
               <!-- <td scope="col">{{itemCmpts.pallet2}}</td> -->
               <!-- <td scope="col">{{itemCmpts.pallet3}}</td> -->
@@ -723,59 +791,66 @@
 
 <ng-template #components let-modal>
 
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Order Amounts</h4>
-      </div>
-      <div class="modal-body">
-        <table class='table'>
-          <thead class='tableHeader'>
-  
-            <tr>
-              <th>Bottle</th>
-              <th>Pump</th>
-              <th>Seal</th>
-              <th>Cap</th>
-              <th>Carton</th>
-              
-            </tr>
-          </thead>
-          <tbody id="table_body">
-            <tr>
-            <td [ngClass]="itemDetails.hasEnoughBottles?'lightgreen':'lightred'" *ngIf="itemDetails.bottleNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Bottle: {{itemDetails.bottleNumber}}</td>
-            <td *ngIf="itemDetails.bottleNumber == '---'" ></td>
-            <td [ngClass]="itemDetails.hasEnoughPumps?'lightgreen':'lightred'" *ngIf="itemDetails.pumpNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Pump: {{itemDetails.pumpNumber}}</td>
-            <td *ngIf="itemDetails.pumpNumber == '---'" ></td>
-            <td [ngClass]="itemDetails.hasEnoughSeals?'lightgreen':'lightred'"  *ngIf="itemDetails.sealNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Seal: {{itemDetails.sealNumber}}</td>
-            <td *ngIf="itemDetails.sealNumber == '---'" ></td>
-            <td [ngClass]="itemDetails.hasEnoughCaps?'lightgreen':'lightred'" *ngIf="itemDetails.capNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Cap: {{itemDetails.capNumber}}</td>
-            <td *ngIf="itemDetails.capNumber == '---'" ></td>
-            <td [ngClass]="itemDetails.hasEnoughCartons?'lightgreen':'lightred'" *ngIf="itemDetails.cartonNumber != '---'">Quantity: {{itemDetails.cartons}} <br> Carton: {{itemDetails.cartonNumber}}</td>
-            <td *ngIf="itemDetails.cartonNumber == '---'" ></td>
-          
-            </tr>
-          </tbody>
-        </table>
-        <br>
-        <table class='table'>
-            <thead class='tableHeader'>
-              <tr>
-                <th>Total Order Amounts</th>
-              </tr>
-            </thead>
-            <tbody id="table_body">
-              <tr>
-
-              </tr>
-            </tbody>
-          </table>
-      </div>
-      <div class="modal-footer">
-      </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Order Amounts</h4>
     </div>
-  
-  </ng-template>
-  
+    <div class="modal-body">
+      <table class='table'>
+        <thead class='tableHeader'>
+
+          <tr>
+            <th>Bottle</th>
+            <th>Pump</th>
+            <th>Seal</th>
+            <th>Cap</th>
+            <th>Carton</th>
+
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          <tr>
+            <td [ngClass]="itemDetails.hasEnoughBottles?'lightgreen':'lightred'"
+              *ngIf="itemDetails.bottleNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Bottle:
+              {{itemDetails.bottleNumber}}</td>
+            <td *ngIf="itemDetails.bottleNumber == '---'"></td>
+            <td [ngClass]="itemDetails.hasEnoughPumps?'lightgreen':'lightred'" *ngIf="itemDetails.pumpNumber != '---'">
+              Quantity: {{itemDetails.orderItemQuantity}} <br> Pump: {{itemDetails.pumpNumber}}</td>
+            <td *ngIf="itemDetails.pumpNumber == '---'"></td>
+            <td [ngClass]="itemDetails.hasEnoughSeals?'lightgreen':'lightred'" *ngIf="itemDetails.sealNumber != '---'">
+              Quantity: {{itemDetails.orderItemQuantity}} <br> Seal: {{itemDetails.sealNumber}}</td>
+            <td *ngIf="itemDetails.sealNumber == '---'"></td>
+            <td [ngClass]="itemDetails.hasEnoughCaps?'lightgreen':'lightred'" *ngIf="itemDetails.capNumber != '---'">
+              Quantity: {{itemDetails.orderItemQuantity}} <br> Cap: {{itemDetails.capNumber}}</td>
+            <td *ngIf="itemDetails.capNumber == '---'"></td>
+            <td [ngClass]="itemDetails.hasEnoughCartons?'lightgreen':'lightred'"
+              *ngIf="itemDetails.cartonNumber != '---'">Quantity: {{itemDetails.cartons}} <br> Carton:
+              {{itemDetails.cartonNumber}}</td>
+            <td *ngIf="itemDetails.cartonNumber == '---'"></td>
+
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <table class='table'>
+        <thead class='tableHeader'>
+          <tr>
+            <th>Total Order Amounts</th>
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          <tr>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+
+</ng-template>
+
 
 <ng-template #contentTwo let-modal>
 
@@ -788,25 +863,26 @@
         <thead class='tableHeader'>
 
           <tr>
-            
+
             <th>מק"ט</th>
             <th>אצווה</th>
             <th>כמות הזמנה</th>
             <th>כמות טופס מילוי</th>
             <th>כמות טופס אריזה</th>
-           
+
             <th></th>
           </tr>
         </thead>
         <tbody id="table_body">
           <tr *ngFor="let item of ordersItems;" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
-            
+
             <td>{{item.itemNumber}}</td>
             <td>{{item.batch}}</td>
             <td>{{item.quantity}}</td>
             <td>{{item.quantityProduced}}</td>
             <td>{{item.totalUnits}}</td>
-            <td><i class="ti-check text-success m-r-10" (click)="setOrderItemDone(item)" style="cursor: pointer;"></i></td>
+            <td><i class="ti-check text-success m-r-10" (click)="setOrderItemDone(item)" style="cursor: pointer;"></i>
+            </td>
 
 
           </tr>
@@ -827,18 +903,18 @@
   <div class="modal-body">
     <div class="row p-3">
       <div class="col-6">
-      <input placeholder="Quantity" [(ngModel)]="newProductionQuantity" class="form-control" type="number">
+        <input placeholder="Quantity" [(ngModel)]="newProductionQuantity" class="form-control" type="number">
       </div>
       <div class="col-6">
-        <input placeholder="Net Weight gr"  [(ngModel)]="newProductionNetWeightGr" class="form-control" type="number">
+        <input placeholder="Net Weight gr" [(ngModel)]="newProductionNetWeightGr" class="form-control" type="number">
       </div>
     </div>
     <div class="row p-3">
       <div class="col-12">
-       <button class="btn btn-success form-control" (click)="sendToProduction()"  >Send To Production</button>   
+        <button class="btn btn-success form-control" (click)="sendToProduction()">Send To Production</button>
       </div>
     </div>
-   
+
   </div>
 
   <div class="modal-footer">
@@ -846,108 +922,110 @@
 </ng-template>
 
 
-<div *ngIf="invoiceModal == true" style="top:100px" class="container w-25 h-50 mx-auto my-auto fixed-top shadow-lg rounded bg-white text-center p-4">
+<div *ngIf="invoiceModal == true" style="top:100px"
+  class="container w-25 h-50 mx-auto my-auto fixed-top shadow-lg rounded bg-white text-center p-4">
   <div class="row">
     <div class="col">
-     <h5>Item: {{currItem.itemNumber}}</h5>
+      <h5>Item: {{currItem.itemNumber}}</h5>
     </div>
     <div class="col">
-    <h5>Order Quantity: {{currItem.quantity}}</h5>
+      <h5>Order Quantity: {{currItem.quantity}}</h5>
     </div>
     <div class="col">
-     <h5>Produced: {{currItem.quantityProduced}}</h5>
+      <h5>Produced: {{currItem.quantityProduced}}</h5>
     </div>
   </div>
- <div class="row">
-   <div class="col">
-     <table class="table table-bordered">
-       <thead class="bg-light">
-         <tr>
-           <th>Invoice</th>
-           <th>Quantity</th>
-         </tr>
-       </thead>
-       <tbody>
-         <tr *ngFor="let bill of currBillingArr">
-           <td>{{bill.billNumber}}</td>
-           <td>{{bill.billQty}}</td>
-         </tr>
-         <tr>
-           <td></td>
-           <td>Sum: {{billQtySum}}</td>
-         </tr>
-       </tbody>
-     </table>
-   </div>
- </div>
- <div class="row">
-   <div class="col">
-     <button (click)="invoiceModal = false" class="btn btn-success form-control">Exit</button>
-   </div>
- </div>
- </div>
+  <div class="row">
+    <div class="col">
+      <table class="table table-bordered">
+        <thead class="bg-light">
+          <tr>
+            <th>Invoice</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bill of currBillingArr">
+            <td>{{bill.billNumber}}</td>
+            <td>{{bill.billQty}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Sum: {{billQtySum}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button (click)="invoiceModal = false" class="btn btn-success form-control">Exit</button>
+    </div>
+  </div>
+</div>
 
 <div *ngIf="showMaterialsForFormules==true" id="myModal3" class="modal3"
-style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:70px;font-size:20px;'>
+  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:70px;font-size:20px;'>
 
-<div class="modal-content" id='modelC'>
-  <div style="display: inline-block;" id="material-header" class="modal-header">
-    <button class="btn btn-success" printSectionId="materialsPrint" [printStyle]="{td : {'border': 'solid 1px black'},tr : {'border': 'solid 1px black'}}" ngxPrint>Print</button>
-    <span class="close" id="closeId3" (click)="showMaterialsForFormules=false">&times;</span>
+  <div class="modal-content" id='modelC'>
+    <div style="display: inline-block;" id="material-header" class="modal-header">
+      <button class="btn btn-success" printSectionId="materialsPrint"
+        [printStyle]="{td : {'border': 'solid 1px black'},tr : {'border': 'solid 1px black'}}" ngxPrint>Print</button>
+      <span class="close" id="closeId3" (click)="showMaterialsForFormules=false">&times;</span>
+
+    </div>
+
+
+    <div class="container" style="overflow: auto;" id="materialsPrint" class="modal-body">
+      <table id="procurementItems" class="table table-striped">
+        <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+          <tr>
+
+            <th>Material Number</th>
+            <th>Material Name</th>
+            <th>KG Production</th>
+            <th>Quantity In Stock</th>
+
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          <tr *ngFor="let material of materialsForFormules">
+
+            <td>{{material.itemNumber}}</td>
+            <td>{{material.itemName}}</td>
+            <td>{{material.kgProduction}}</td>
+            <td>{{material.totalQnt}}</td>
+
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <br>
+      <table>
+        <thead style="box-shadow: 1px 1px 2px 0px black;">
+          <tr>
+            <th>מספר הזמנה</th>
+            <th>שם פריט</th>
+            <th>מספר פריט</th>
+            <th>משקל</th>
+            <!-- <th>כמות לפני אחוזים</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let obj of selectedArr">
+            <td>{{obj.orderNumber}}</td>
+            <td>{{obj.discription}}</td>
+            <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
+            <td *ngIf="!obj.newKG">{{calculateKG(obj.netWeightGr,obj.quantity)}}</td>
+            <td *ngIf="obj.newKG">{{obj.newKG}}</td>
+            <!-- <td>{{obj.calculatedAmount}}</td> -->
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
 
   </div>
-
-
-  <div class="container" style="overflow: auto;" id="materialsPrint" class="modal-body">
-    <table id="procurementItems" class="table table-striped">
-      <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
-        <tr>
-         
-          <th>Material Number</th>
-          <th>Material Name</th> 
-          <th>KG Production</th>
-          <th>Quantity In Stock</th>
-
-        </tr>
-      </thead>
-      <tbody  id="table_body">
-       <tr *ngFor="let material of materialsForFormules">
-      
-         <td>{{material.itemNumber}}</td>
-         <td>{{material.itemName}}</td>
-         <td>{{material.kgProduction}}</td>
-         <td>{{material.totalQnt}}</td>
-
-       </tr>
-      </tbody>
-    </table>
-  <br>
-  <br>
-    <table>
-      <thead style="box-shadow: 1px 1px 2px 0px black;">
-        <tr>
-          <th>מספר הזמנה</th>
-          <th>שם פריט</th>
-          <th>מספר פריט</th>
-          <th>משקל</th>
-          <!-- <th>כמות לפני אחוזים</th> -->
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let obj of selectedArr">
-          <td>{{obj.orderNumber}}</td>
-          <td>{{obj.discription}}</td>
-          <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
-          <td *ngIf="!obj.newKG">{{calculateKG(obj.netWeightGr,obj.quantity)}}</td>
-          <td *ngIf="obj.newKG">{{obj.newKG}}</td>
-          <!-- <td>{{obj.calculatedAmount}}</td> -->
-        </tr>
-      </tbody>
-    </table>
-
-  </div>
-
-</div>
 </div>
 
 <ng-template class="p-6" #itemProdStatus let-modal>
@@ -967,7 +1045,9 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
 
         <div class="m-5">
           <p>Has License?</p><br>
-          <input disabled class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.hasLicense">
+          <input [disabled]="!iAmHaviv" class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.hasLicense">
+          <!-- <img src="../../../../assets/images/refreshData.png" style="width: 30px;cursor: pointer;"
+                  alt="Check License" (click)="checkLicense(productionItemStatus.itemNumber)"> -->
         </div>
         <div class="m-5">
           <h5>Exploded?</h5><br>
@@ -975,13 +1055,14 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
         </div>
         <div class="m-5">
           <h4>Ready for Production?</h4><br>
-          <input [disabled]="!productionItemStatus.exploded || !productionItemStatus.hasLicense" class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.productionApproved">
+          <input [disabled]="!productionItemStatus.exploded || !productionItemStatus.hasLicense" class="form-control"
+            type="checkbox" [(ngModel)]="productionItemStatus.productionApproved">
         </div>
         <div class="m-5">
-          <button (click)="setOrderItemStatus()">Set Status!</button>
+          <button (click)="setOrderItemStatus(); modal.dismiss('Cross click')">Set Status!</button>
         </div>
       </div>
- 
+
     </main>
   </div>
 </ng-template>
@@ -1068,7 +1149,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
 
 
 
- <!-- <mat-tab label="Production Requirements">
+<!-- <mat-tab label="Production Requirements">
     <div class="container-fluid bg-white ">
       <table class="table table-hover table-striped">
         <thead class="text-white bg-info" style="box-shadow: inset 0px 0px 4px 1px black;">
@@ -1088,7 +1169,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
         <tbody>
           <tr  *ngFor="let item of itemRequirements" >
             <button (click)="prodRequirements(item.itemNumber)" class="btn btn-info"><i class="fa fa-plus"></i></button>  -->
-            <!-- <td>{{item.itemNumber}}</td>
+<!-- <td>{{item.itemNumber}}</td>
             <td>{{item.itemName}}</td>
             <td>{{item.quantity}}</td>
             <td style="cursor: pointer;" (click)="getCompDetails(item.bottleNumber)" [ngClass]="{'lightgreen': bottleQuantity > item.quantity,'lightred':item.quantity > bottleQuantity}">{{item.bottleNumber}}</td>
@@ -1103,7 +1184,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
       </table>
       
     </div> -->
-    <!-- <div class="container-fluid bg-white ">
+<!-- <div class="container-fluid bg-white ">
       <div class="row">
         <div class="col-4 text-center">
          <button style="background:green;width:130px" class="btn">In Stock</button>
@@ -1223,8 +1304,8 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
         </div>
       </div>
     </div>  -->
-    
-    <!-- <div *ngIf="compRequirementModal == true" style="top:100px;overflow: scroll;" class="container mx-auto my-auto fixed-top shadowl-lg rounded bg-white text-center p-4">
+
+<!-- <div *ngIf="compRequirementModal == true" style="top:100px;overflow: scroll;" class="container mx-auto my-auto fixed-top shadowl-lg rounded bg-white text-center p-4">
       <div class="row mt-4">
         <div class="col-4"></div>
         <div class="col-4">
@@ -1311,7 +1392,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
 
 
 
-    <!-- <div class="modal-body">
+<!-- <div class="modal-body">
   
       <div id="print-section">
     <table style="width:100%" class='table'>
@@ -1947,7 +2028,7 @@ style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:
 
 
 
-     <!-- <table class='detilasTable' width='105%'>
+<!-- <table class='detilasTable' width='105%'>
               <tr>
                 <td></td>
                 <td></td>

@@ -205,6 +205,7 @@ export class OrderdetailsComponent implements OnInit {
   editBatchN: Boolean = false;
   formDetailsAmounts: Array<any>;
   customerOrderNum: string;
+  iAmHaviv: boolean = false
 
   @ViewChild('weight') weight: ElementRef;
   @ViewChild('itemRemarks') itemRemarks: ElementRef;
@@ -273,6 +274,8 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    this.iAmHaviv = this.authService.loggedInUser.screenPermission == '1'
 
     this.productionApproved = this.authService.loggedInUser.authorization.includes("production")
     this.getUserInfo();
@@ -1212,6 +1215,17 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
+  checkLicense(itemNumber) {
+    this.itemSer.getItemData(itemNumber).subscribe(res=>{
+      if(res[0].licsensNumber != "") {
+        if(new Date(res[0].licsensDate) > new Date())  this.productionItemStatus.hasLicense = true;
+        this.ordersItems.find(item => itemNumber == itemNumber).hasLicense = true
+        this.orderService.setProductionStatus(this.productionItemStatus).subscribe(data=> {
+          console.log(data)
+        })
+      }
+    })
+  }
 
   async setBatch(item, batch, existBatch) {
 

@@ -333,6 +333,9 @@ export class StockComponent implements OnInit {
   currencies: Currencies
   callingForCmptAmounts: boolean = false;
   gettingProducts: boolean;
+  amountsDone: boolean = true
+  alloAmountsLoading: boolean = false
+  loadingText: string;
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -562,22 +565,23 @@ export class StockComponent implements OnInit {
     this.numberSearchInput.nativeElement.focus()
   }
 
-  getItemPurchases(component) {
+  getItemPurchases(component, index) {
     component.showPurch = true
     component.purchaseOrders = []
     this.procuretServ.getPurchasesForComponent(component.componentN).subscribe(purchases => {
       component.purchaseOrders = purchases
+      if(index == this.components.length-1) this.smallLoader = false
     })
 
 
   }
 
   // Not used
-  getAllPurchases() {
-    for (let component of this.components) {
-      this.getItemPurchases(component)
-    }
-  }
+  // getAllPurchases() {
+  //   for (let component of this.components) {
+  //     this.getItemPurchases(component, 0)
+  //   }
+  // }
 
 
   getAllSuppliers() {
@@ -923,21 +927,27 @@ export class StockComponent implements OnInit {
 
 
   getAmountsFromShelfs(componentN?) {
-    this.inventoryService.getComponentsAmounts(componentN).subscribe(res => {
     
-      this.componentsAmount = res;
-      this.components.forEach(cmpt => {
-        let matchedComponent = this.componentsAmount.find(elem => elem._id == cmpt.componentN)
-        if (matchedComponent) {
-          cmpt.amount = matchedComponent.total;
-          if (cmpt.itemType != "material") {
-            cmpt.amount = Math.round(cmpt.amount);
+    this.components.forEach((cmpt, i) => {
+        this.inventoryService.getComponentsAmounts(cmpt.componentN).subscribe(res => {
+          try{
+
+            cmpt.amount = res[0] ? res[0].total : 0;
+            if (cmpt.itemType != "material") {
+              cmpt.amount = Math.round(cmpt.amount);
+            }
+            if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
+            if(i == this.components.length-1) this.loadingText = "מגשש עבור הזמנות פתוחות... עוד רגע ואנחנו שם."
+          } catch(e) {
+            this.smallLoader = false
+            alert(e)
           }
-        }
-        if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
 
       })
+      // this.amountsDone = true
     });
+    
+
   }
 
 
@@ -1354,16 +1364,14 @@ export class StockComponent implements OnInit {
     this.smallLoader = true;
     let query = this.filterParams.value
     query.itemType = this.stockType
+    this.loadingText = "מחפש פריטים (קומפוננטים / חומרי גלם / מוצרים מוגמרים)..."
     this.inventoryService.getFilteredComponents(query).subscribe(filteredComponents => {
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
-      this.smallLoader = false
       if (this.components.length > 0) {
-        this.components.forEach(component => {
-          this.getAmountsFromShelfs(component.componentN);
-
-        })
-        this.components.map(c => this.getItemPurchases(c))
+        this.loadingText = "מחשב כמויות... (זה לוקח הכי הרבה זמן)"
+          this.getAmountsFromShelfs();
+        this.components.map((c, i) => this.getItemPurchases(c, i))
       } else {
         this.toastSrv.error('Item does not exist')
       }
@@ -1541,9 +1549,9 @@ export class StockComponent implements OnInit {
 
     this.openModalHeader = "הקצאות מלאי"
     this.openOrderAmountsModal = true;
-    this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data => {
+    this.orderService.getAllOrdersForComponent(componentN).subscribe(data => {
 
-      this.allocatedOrders = data[0].allAllocatedOrders
+      this.allocatedOrders = data
     });
 
 
@@ -1554,7 +1562,9 @@ export class StockComponent implements OnInit {
 
     this.openModalHeader = "הקצאות מלאי"
     this.openProductAmountModal = true;
+    this.alloAmountsLoading = true
     this.inventoryService.getAllocatedOrdersByNumber(componentN).subscribe(data => {
+      this.alloAmountsLoading = false
 
       this.allocatedProducts = data[0].productAllocation
     });
@@ -2243,7 +2253,7 @@ export class StockComponent implements OnInit {
   procurementRecommendations(filterType) {
     if (filterType == "minimumStock") {
       if (this.stockType != "product") {
-        let recommendList = this.components.filter(cmpt => cmpt.minimumStock >= cmpt.amount);
+        let recommendList = this.components.filter(cmpt => Number(cmpt.minimumStock) >= cmpt.amount);
         this.components = recommendList;
       }
     } else if (filterType == "haveRecommendation") {

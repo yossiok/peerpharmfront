@@ -73,6 +73,13 @@ export class BatchesService {
     ));
   }
 
+  checkIfBatchExist(batchNumber) {
+    let url = this.baseUrl + "batch/checkifexist?batchNumber=" + batchNumber;
+    return this.http.get(url).pipe(map(reponse =>
+      reponse.json()
+    ));
+  }
+
 
   // BATCHES OF MAKE-UP
   getAllMkpBatches():Observable<any>{

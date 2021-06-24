@@ -36,9 +36,9 @@ export class NewBatchComponent implements OnInit {
   })
 
   constructor(
-    private inventorySrv: InventoryService, 
-    private toastSrv: ToastrService, 
-    private itemSrv: ItemsService, 
+    private inventorySrv: InventoryService,
+    private toastSrv: ToastrService,
+    private itemSrv: ItemsService,
     private batchService: BatchesService,
     private authService: AuthService) { }
 
@@ -56,9 +56,9 @@ export class NewBatchComponent implements OnInit {
   fillItemName(ev) {
     var itemNumber = ev.target.value;
     this.itemSrv.getItemData(itemNumber).subscribe(data => {
-      console.log('data: ',data)
+      console.log('data: ', data)
       if (data.length > 0) {
-        this.newBatchForm.controls['itemName'].setValue( data[0].name + ' ' + data[0].subName + ' ' + data[0].discriptionK) 
+        this.newBatchForm.controls['itemName'].setValue(data[0].name + ' ' + data[0].subName + ' ' + data[0].discriptionK)
       } else {
         this.toastSrv.error('פריט לא קיים במערכת')
       }
@@ -96,36 +96,42 @@ export class NewBatchComponent implements OnInit {
     if (this.newBatchForm.controls.item.value == '' || this.newBatchForm.controls.batchNumber.value.length < 5) {
       this.toastSrv.error('You must fill all the fields')
     } else {
-      if(justStickers) {
+      if (justStickers) {
         // just print stickers
         //TODO: CHECK IF BATCH EXIST!!!
-        if (confirm("בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?")){
-              setTimeout(()=>{
+        this.batchService.checkIfBatchExist(this.newBatchForm.get('batchNumber').value.toLowerCase()).subscribe(response => {
+          if (response) {
+            if (confirm("בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?")) {
+              setTimeout(() => {
                 this.printBtn.nativeElement.click();
                 this.newBatchForm.reset()
                 this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
                 this.allStickers = [];
-              },2000)
-        }
-    
+              }, 2000)
+            }
+          }
+          else this.toastSrv.error('Batch not exist.')
+        })
+
+
       }
       // add batch AND REDUCE AMOUNTS!!!
       else {
-        if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")){
+        if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")) {
 
           this.disableButton = true
           this.toastSrv.info("Adding Batch. Please wait...")
           let con = true
           // reduce materials from itemShells
-          this.inventorySrv.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value,this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value, true).subscribe(data => {
+          this.inventorySrv.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value, this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value, true).subscribe(data => {
             this.disableButton = false
-            if(data == 'Formule Not Found') {
+            if (data == 'Formule Not Found') {
               this.toastSrv.error(data)
-              con = confirm("פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?") 
+              con = confirm("פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?")
               this.disableButton = false
-            } 
-            if(data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')
-            if(con) {
+            }
+            if (data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')
+            if (con) {
               // add batch to batches list
               this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
                 if (data.msg = 'succsess') {
@@ -138,7 +144,7 @@ export class NewBatchComponent implements OnInit {
                 }
                 else this.toastSrv.error('Something went wrong.')
               })
-            } 
+            }
           })
         }
       }
