@@ -570,7 +570,7 @@ export class StockComponent implements OnInit {
     component.purchaseOrders = []
     this.procuretServ.getPurchasesForComponent(component.componentN).subscribe(purchases => {
       component.purchaseOrders = purchases
-      if(index == this.components.length-1) this.smallLoader = false
+      if(index == this.components.length-1) this.loadingText = "מחשב הקצאות עבור הפריטים."
     })
 
 
@@ -605,6 +605,17 @@ export class StockComponent implements OnInit {
 
   exportAsXLSX(data) {
     this.excelService.exportAsExcelFile(this.itemShell, 'itemShell');
+  }
+
+  exportItemData(){
+    let componentsForExcel = [...this.components]
+    for(let i = 0; i<componentsForExcel.length; i++) {
+      for(let z=0; z<componentsForExcel[i].allocations.length; z++) {
+        componentsForExcel[i+1] = {...componentsForExcel[i]}
+        componentsForExcel[i+1].alloOrder = componentsForExcel[i].allocations[z+1]
+      }
+      componentsForExcel[i].alloOrder[0] = componentsForExcel[i].allocations[0]
+    }
   }
 
   exportCurrTable() {
@@ -937,9 +948,8 @@ export class StockComponent implements OnInit {
               cmpt.amount = Math.round(cmpt.amount);
             }
             if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
-            if(i == this.components.length-1) this.loadingText = "מגשש עבור הזמנות פתוחות... עוד רגע ואנחנו שם."
+            if(i == this.components.length-1) this.loadingText = "מגשש עבור הזמנות פתוחות... ."
           } catch(e) {
-            this.smallLoader = false
             alert(e)
           }
 
@@ -1372,6 +1382,9 @@ export class StockComponent implements OnInit {
         this.loadingText = "מחשב כמויות... (זה לוקח הכי הרבה זמן)"
           this.getAmountsFromShelfs();
         this.components.map((c, i) => this.getItemPurchases(c, i))
+        this.components.map((c, i) => {
+          this.openAllocatedOrders(c.componentN, i, true).then(result => c.allocations = result)
+        })
       } else {
         this.toastSrv.error('Item does not exist')
       }
@@ -1544,16 +1557,29 @@ export class StockComponent implements OnInit {
     // this.loadComponentItems();
   }
 
-  async openAllocatedOrders(componentN) {
+  async openAllocatedOrders(componentN, index?, forEach?) {
 
-
-    this.openModalHeader = "הקצאות מלאי"
-    this.openOrderAmountsModal = true;
-    this.orderService.getAllOrdersForComponent(componentN).subscribe(data => {
-
-      this.allocatedOrders = data
-    });
-
+    return new Promise((resolve, reject) => {
+      try {
+        this.orderService.getAllOrdersForComponent(componentN).subscribe(data => {
+          if(forEach) {
+            debugger
+            if(index == this.components.length-1) this.smallLoader = false
+            resolve(data)
+          } 
+          else{
+            this.openModalHeader = "הקצאות מלאי"
+            this.openOrderAmountsModal = true;
+            this.allocatedOrders = data
+            resolve('')
+          }
+        });
+      }
+      catch(e) {
+        reject(e)
+      }
+    
+  })
 
 
   }
