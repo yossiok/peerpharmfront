@@ -419,10 +419,10 @@
             {{supplier.suplierNumber}}
           </option>
         </datalist>
-        <input type="text" class="form-control" [(ngModel)]="supplier.manufacturer">
-        <input [(ngModel)]="supplier.alternativeMaterial" class="form-control" type='text'>
-        <input [(ngModel)]="supplier.alterName" class="form-control" type='text'>
-        <input list="groups" [(ngModel)]="supplier.subGroup" class="form-control">
+        <input type="text" class="form-control mt-2" [(ngModel)]="supplier.manufacturer">
+        <input [(ngModel)]="supplier.alternativeMaterial" class="form-control mt-2" type='text'>
+        <input [(ngModel)]="supplier.alterName" class="form-control mt-2" type='text'>
+        <input list="groups" [(ngModel)]="supplier.subGroup" class="form-control mt-2">
         <datalist id="groups">
           <option value="Cube">קובייה</option>
           <option value="barrel">חבית</option>
@@ -444,7 +444,7 @@
       </div>
       <div class="col-3">
         <input [(ngModel)]="supplier.price" type="text" class="form-control">
-        <input list="coins" [(ngModel)]="supplier.coin" class="form-control">
+        <input list="coins" [(ngModel)]="supplier.coin" class="form-control mt-2">
         <datalist id="coins">
           <option value="usd">USD</option>
           <option value="nis">NIS</option>
@@ -452,8 +452,8 @@
           <option value="eur">EUR</option>
           <option value="yen">YEN</option>
         </datalist>
-        <input [(ngModel)]="supplier.shippingPrice" type="number" class="form-control" />
-        <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control">
+        <input [(ngModel)]="supplier.shippingPrice" type="number" class="form-control mt-2" />
+        <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control mt-2">
         <datalist id="coinsLoading">
           <option value="usd">USD</option>
           <option value="nis">NIS</option>
@@ -461,7 +461,7 @@
           <option value="eur">EUR</option>
           <option value="yen">YEN</option>
         </datalist>
-        <input [(ngModel)]="supplier.packageWeight" type="text" class="form-control" />
+        <input [(ngModel)]="supplier.packageWeight" type="text" class="form-control mt-2" />
       </div>
       <div class="col-1"></div>
     </div>

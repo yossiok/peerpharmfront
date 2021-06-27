@@ -17,7 +17,18 @@ export class ItemIndexComponent implements OnInit {
 
   item: any;
 
-  supplier: any;
+  supplier: any = {
+    supplierName: '',
+    price: "",
+    coin: "",
+    coinLoading: "",
+    priceLoading: "",
+    manufacturer: "",
+    alternativeMaterial: "",
+    alterName: "",
+    subGroup: "",
+    packageWeight: "",
+  }
 
   cmptCategoryList: Array<any> = [
     'Sacara', 'Mineralium', 'Arganicare', 'Spa Pharma', 'Olive', 'Vitamin C', 'Quinoa', 'Andrea Milano', 'Dermalosophy',
