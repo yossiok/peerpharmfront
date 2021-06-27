@@ -570,7 +570,7 @@ export class StockComponent implements OnInit {
     component.purchaseOrders = []
     this.procuretServ.getPurchasesForComponent(component.componentN).subscribe(purchases => {
       component.purchaseOrders = purchases
-      if(index == this.components.length-1) this.loadingText = "מחשב הקצאות עבור הפריטים."
+      if(index == this.components.length-1) this.loadingText = "(4/4) מחשב הקצאות..."
     })
 
 
@@ -611,13 +611,14 @@ export class StockComponent implements OnInit {
 
     const sortOrder = [
       'componentN', 'componentName', 'componentType', 'actualMlCapacity', 'componentCategory', 'suplierN',
-      'suplierName', 'alloOrderOrderNumber', 'alloOrderCustomer',
-      'alloOrderOrderDate', 'alloOrderDeliveryDate', 'amount',
+      'suplierName', 'OrderNumber', 'Customer',
+      'OrderDate', 'DeliveryDate', 'amount',
       'alloAmount', 'availableStock'
     ]
 
     let componentsForExcel = []
     let x = 0;
+    let y;
     for(let i = 0; i<this.components.length; i++) {
       componentsForExcel[x] = {...this.components[i]}
       for(let z=0; z<this.components[i].allocations.length; z++) {
@@ -628,8 +629,9 @@ export class StockComponent implements OnInit {
           componentsForExcel[x+z].OrderDate = this.components[i].allocations[z].orderDate
           componentsForExcel[x+z].DeliveryDate = this.components[i].allocations[z].deliveryDate
         }
+        y=z+1
       }
-      x++
+      x+=y
       // componentsForExcel[x+1] = {}
     }
     
@@ -999,7 +1001,7 @@ export class StockComponent implements OnInit {
               cmpt.amount = Math.round(cmpt.amount);
             }
             if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
-            if(i == this.components.length-1) this.loadingText = "מגשש עבור הזמנות פתוחות... ."
+            if(i == this.components.length-1) this.loadingText = "(3/4) מייבא הזמנות רכש..."
           } catch(e) {
             alert(e)
           }
@@ -1425,12 +1427,12 @@ export class StockComponent implements OnInit {
     this.smallLoader = true;
     let query = this.filterParams.value
     query.itemType = this.stockType
-    this.loadingText = "מחפש פריטים (קומפוננטים / חומרי גלם / מוצרים מוגמרים)..."
+    this.loadingText = "(1/4) מייבא פריטים..."
     this.inventoryService.getFilteredComponents(query).subscribe(filteredComponents => {
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
       if (this.components.length > 0) {
-        this.loadingText = "מחשב כמויות... (זה לוקח הכי הרבה זמן)"
+        this.loadingText = "(2/4) מחשב כמויות... "
           this.getAmountsFromShelfs();
         this.components.map((c, i) => this.getItemPurchases(c, i))
         this.components.map((c, i) => {

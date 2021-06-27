@@ -170,8 +170,8 @@
           src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
         <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
           (click)="exportCurrTable()">
-        <!-- <img src="../../../../assets/images/excel.png" alt="export to excel" class="border border-light" style="width: 40px;"
-          (click)="exportItemData()"> -->
+        <img src="../../../../assets/images/excel.png" alt="export to excel" class="border border-light" style="width: 40px;"
+          (click)="exportItemData()">
       </div>
       <div [class.read-only]="checkPermission()" class="export" style="cursor:pointer;" (click)="open(printInventoryValue)">
         <button class="btn btn-primary">Value For Money</button>
@@ -185,6 +185,8 @@
               <th style="width:3%;"></th>
               <th style="width:6%;"><b>מספר פריט</b></th>
               <th style="width:5%;"><b>מק"ט פריט-ספק</b></th>
+              <th style="width:5%;"><b>ספק</b></th>
+              <th style="width:5%;"><b></b></th>
               <th style="width:10%"><b>שם</b></th>
               <th style="width:5%;"><b>סוג</b></th>
               <th style="width:5%;"><b>כמות מוקצת</b></th>
@@ -201,6 +203,8 @@
               <td style="width:6%;" class="compNum" (click)="openData(component.componentN)"> {{component.componentN}}
               </td>
               <td style="width:5%; word-break: normal;">{{component.componentNs}}</td>
+              <td style="width:5%; word-break: normal;">{{component.suplierN}}</td>
+              <td style="width:5%; word-break: normal;">{{component.suplierName}}</td>
               <td style="width:10%;">{{component.componentName}}</td>
               <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
               <td style="width:5%; cursor: pointer;border-right: 2px solid black;"
