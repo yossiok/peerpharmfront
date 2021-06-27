@@ -1179,6 +1179,47 @@
                                 </div>
                             </div>
 
+<!--Addition MAria Request---------------------------------------------------------------------------------------------------->
+                            <div class="row mt-5">
+                                <div class="col-2">
+                                    <label class="labelGeneral">{{ 'Carton' | translate }}
+                                        {{ 'Number' | translate }} 2</label>
+
+                                    <label class="labelGeneral">{{ 'Pcs' | translate }}/{{ 'Carton' | translate
+                                        }}</label>
+                                    <label class="labelGeneral">{{ 'Pallet' | translate }}
+                                        {{ 'Type' | translate }}</label>
+                                    <label class="labelGeneral">{{ 'Pump' | translate }}
+                                        {{ 'Direction' | translate }}</label>
+                                </div>
+                                <div class="col-2">
+
+                                    <input class="form-control" type=t ext id="id_cartonNo"
+                                        (focusout)="loadCartonName(itemShown.cartonNumber2)"
+                                        [(ngModel)]=itemShown.cartonNumber2>
+
+                                    <input class="form-control" type="text" ext id="id_pcsCarton"
+                                        [(ngModel)]=itemShown.PcsCarton2>
+
+                                    <!-- <input type=t ext id="id_Palette" class="form-control"
+                                        [(ngModel)]=itemShown.paletteType2> -->
+                                    <!-- <select id="id_pumpDirection" class="form-control"
+                                        [(ngModel)]=itemShown.pumpDirection2>
+                                        <option value="-">-</option>
+                                        <option value="Right">{{ 'Right' | translate }}</option>
+                                        <option value="Left">{{ 'Left' | translate }}</option>
+                                    </select> -->
+                                </div>
+                                <div class="col-3">
+                                    <input [(ngModel)]="itemShown.cartonName2" class="form-control"
+                                        placeholder="Carton Name 2">
+                                </div>
+                            </div>
+<!--Finish Addition MAria Request--------------------------------------------------------------------------------------------------------------------->
+
+
+                            
+
                             <div class="row mt-5">
                                 <div class="col-1">
 

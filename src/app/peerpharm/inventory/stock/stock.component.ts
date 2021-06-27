@@ -608,14 +608,65 @@ export class StockComponent implements OnInit {
   }
 
   exportItemData(){
-    let componentsForExcel = [...this.components]
-    for(let i = 0; i<componentsForExcel.length; i++) {
-      for(let z=0; z<componentsForExcel[i].allocations.length; z++) {
-        componentsForExcel[i+1] = {...componentsForExcel[i]}
-        componentsForExcel[i+1].alloOrder = componentsForExcel[i].allocations[z+1]
+
+    const sortOrder = [
+      'componentN', 'componentName', 'componentType', 'actualMlCapacity', 'componentCategory', 'suplierN',
+      'suplierName', 'alloOrderOrderNumber', 'alloOrderCustomer',
+      'alloOrderOrderDate', 'alloOrderDeliveryDate', 'amount',
+      'alloAmount', 'availableStock'
+    ]
+
+    let componentsForExcel = []
+    let x = 0;
+    for(let i = 0; i<this.components.length; i++) {
+      componentsForExcel[x] = {...this.components[i]}
+      for(let z=0; z<this.components[i].allocations.length; z++) {
+        if(this.components[i].allocations[z]) {
+          componentsForExcel[x+z] = {...this.components[i]}
+          componentsForExcel[x+z].OrderNumber = this.components[i].allocations[z].orderNumber
+          componentsForExcel[x+z].Customer = this.components[i].allocations[z].costumer
+          componentsForExcel[x+z].OrderDate = this.components[i].allocations[z].orderDate
+          componentsForExcel[x+z].DeliveryDate = this.components[i].allocations[z].deliveryDate
+        }
       }
-      componentsForExcel[i].alloOrder[0] = componentsForExcel[i].allocations[0]
+      x++
+      // componentsForExcel[x+1] = {}
     }
+    
+    componentsForExcel.forEach(component=>{
+      component.availableStock = Number(component.amount) - Number(component.alloAmount)
+      delete component.alternativeSuppliers
+      delete component.allocations
+      delete component.procurementArr
+      delete component.productAllocation
+      delete component.allAllocatedOrders
+      delete component.purchaseOrders
+      delete component.composition
+      delete component.purchaseRecommendations
+      delete component.mixedMaterial
+      delete component.payingCustomersList
+      delete component._id
+      delete component.componentNs
+      delete component.img
+      delete component.lastModified
+      delete component.needPrint
+      delete component.packageType
+      delete component.packageWeight
+      delete component.remarks
+      delete component.amountKasem
+      delete component.amountRH
+      delete component.itemType
+      delete component.__v
+      delete component.showPurch
+      delete component.comaxName
+      delete component.frameQuantity
+      delete component.finalPrice
+      delete component.shippingPrice
+      delete component.procurementSent
+      delete component.procurementAmount
+      delete component.barcode
+    })
+    this.excelService.exportAsExcelFile(componentsForExcel, 'Item Orders Report', sortOrder);
   }
 
   exportCurrTable() {

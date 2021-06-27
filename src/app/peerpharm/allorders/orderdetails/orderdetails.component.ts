@@ -275,7 +275,7 @@ export class OrderdetailsComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.iAmHaviv = this.authService.loggedInUser.screenPermission == '1'
+    this.iAmHaviv = this.authService.loggedInUser.screenPermission == '1' || this.authService.loggedInUser.screenPermission == '2' 
 
     this.productionApproved = this.authService.loggedInUser.authorization.includes("production")
     this.getUserInfo();
