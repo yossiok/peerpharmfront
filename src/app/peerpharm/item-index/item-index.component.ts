@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
@@ -51,7 +52,7 @@ export class ItemIndexComponent implements OnInit {
 
   itemDetailsForm: FormGroup = new FormGroup({
     itemType: new FormControl('all', Validators.required),
-    itemNumber: new FormControl('12185', Validators.required),
+    itemNumber: new FormControl('', Validators.required),
   })
 
   allSuppliers: any;
@@ -59,17 +60,23 @@ export class ItemIndexComponent implements OnInit {
   fetchingOrders: boolean;
   lastOrdersOfItem: any []
   currencies: Currencies;
+  allowUserEditItem: boolean;
+  rowNumber: number = -1
 
   constructor(
     private inventoryService: InventoryService,
     private toastSrv: ToastrService,
     private supplierService: SuppliersService,
     private procuretServ: Procurementservice,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.getAllSuppliers()
     this.getItemData()
+    if (this.authService.loggedInUser.authorization.includes("updateStock")) {
+      this.allowUserEditItem = true;
+    }
   }
 
   getAllSuppliers() {
@@ -231,11 +238,16 @@ export class ItemIndexComponent implements OnInit {
   }
 
   mainSupplier(isMain){
+    debugger
     if(isMain){
       return 'lightgreen'
     } else {
       return ''
     }
+  }
+
+  edit(index) {
+    this.rowNumber = index;
   }
 
   makeAsMainSupplier(index){
