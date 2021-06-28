@@ -163,7 +163,7 @@ export class StockComponent implements OnInit {
   newAllocationOrderNum: string;
   newAllocationAmount: Number;
   itemIdForAllocation: String;
-  EditRowId: any = "";
+  rowNumber: number
   orderItems: any;
   procurementInputEvent: any;
   newPurchaseRecommendation: FormGroup;
@@ -326,7 +326,8 @@ export class StockComponent implements OnInit {
     number: '',
     quantity: '',
     threatment: '',
-    measurement: ''
+    measurement: '',
+    customerOrder: ''
   }
   lastOrdersOfItem = [];
   fetchingOrders: boolean = false
@@ -336,12 +337,13 @@ export class StockComponent implements OnInit {
   amountsDone: boolean = true
   alloAmountsLoading: boolean = false
   loadingText: string;
+  lastCustomerOrders: any;
 
   // currentFileUpload: File; //for img upload creating new component
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
-    this.editSuppliers('');
+    this.rowNumber = -1
   }
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
@@ -476,7 +478,7 @@ export class StockComponent implements OnInit {
 
 
   addStockItemToRecommend() {
-    if (this.recommendStockItem.quantity == '' || this.recommendStockItem.name == '' || this.recommendStockItem.number == '' || this.recommendStockItem.measurement == '') {
+    if (this.recommendStockItem.quantity == '' || this.recommendStockItem.name == '' || this.recommendStockItem.number == '' || this.recommendStockItem.measurement == '' || this.recommendStockItem.customerOrder == '') {
       this.toastSrv.error('אנא מלא את כל הפרטים של הפריט')
     } else {
       let objToPush = { ...this.recommendStockItem }
@@ -486,9 +488,14 @@ export class StockComponent implements OnInit {
       this.recommendStockItem.name = '';
       this.recommendStockItem.number = '';
       this.recommendStockItem.measurement = '';
+      this.recommendStockItem.customerOrder = '';
       this.itemAmountsData = []
     }
 
+  }
+
+  deleteFromRecommendation(i) {
+    this.newPurchaseRecommendation.controls.stockitems.value.splice(i,1)
   }
 
 
@@ -574,6 +581,12 @@ export class StockComponent implements OnInit {
     })
 
 
+  }
+
+  getLastCustomerOrders(){
+    this.orderService.getOpenOrdersLimit(100).subscribe(data=> {
+      this.lastCustomerOrders = data
+    })
   }
 
   // Not used
@@ -832,7 +845,7 @@ export class StockComponent implements OnInit {
           supplier.alterName = updatedSupplier.alterName
           supplier.packageWeight = updatedSupplier.packageWeight
           this.updateSupplier = false;
-          this.editSuppliers('')
+          this.rowNumber = -1
           this.toastSrv.success('ספק עודכן בהצלחה !')
         }
       }
@@ -1937,19 +1950,6 @@ export class StockComponent implements OnInit {
     }
   }
 
-
-  editSuppliers(supplierName) {
-
-    if (supplierName != '') {
-      this.EditRowId = supplierName
-      this.updateSupplier = true;
-    } else {
-      this.EditRowId = ''
-      this.updateSupplier = false;
-    }
-  }
-
-
   editStockItemDetails() {
 
     this.resCmpt;
@@ -2232,41 +2232,10 @@ export class StockComponent implements OnInit {
     ;
   }
   edit(index) {
-    this.EditRowId = index;
+    this.rowNumber = index;
   }
-  saveAllocEdit(cmptId, rowIndex) {
-    //not in use now
-    ;
-    // "suppliedAlloc": this.suppliedAlloc.nativeElement.value,
 
-  }
-  editItemStockAllocationSupplied(cmptId, rowIndex) {
-    ;
-    let oldAllocationsArr = this.resCmpt.allocations;
-    let newSupplied = this.suppliedAlloc.nativeElement.value;
-    oldAllocationsArr[this.EditRowId].supplied = newSupplied;
-    let newAllocationsArr = oldAllocationsArr;
-    let objToUpdate = {
-      _id: this.itemIdForAllocation,
-      allocations: newAllocationsArr,
-    }
-      ;
-    this.inventoryService.updateCompt(objToUpdate).subscribe(res => {
-      if (res._id) {
-        console.log("res updateCompt: " + res);
-        this.EditRowId = '';
-        this.resCmpt.allocations = newAllocationsArr;
-        let itemAllocSum = 0;
-        this.resCmpt.allocations.forEach(alloc => {
-          itemAllocSum = itemAllocSum + alloc.amount;
-          itemAllocSum = itemAllocSum - alloc.supplied;
 
-        });
-        this.resCmpt.allocAmount = itemAllocSum;
-
-      }
-    });
-  }
 
   deleteStockItemValidation(stockItemNumber) {
     let ItemToDelete = this.components.filter(i => i.componentN == stockItemNumber && i.itemType == this.stockType).slice()[0];
@@ -2287,6 +2256,7 @@ export class StockComponent implements OnInit {
       }
     }
   }
+  
   deleteStockItem(ItemToDelete) {
     this.inventoryService.deleteStockItemAndItemShelfs(ItemToDelete.componentN, ItemToDelete.itemType).subscribe(res => {
       if (res.componentN) {

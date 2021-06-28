@@ -12,13 +12,15 @@
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
     <div class="col-1 fixNoaStupidStuff">
-      <button *ngIf="amountsDone" class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7
+      <button *ngIf="amountsDone" class="btn btn-warning form-control rounded-pill"
+        (click)="procurementRecommendations('minimumStock')">F7
         - בדוק המלצה
         לרכש</button>
-        <div *ngIf="!amountsDone" class="smallLoader"></div>
+      <div *ngIf="!amountsDone" class="smallLoader"></div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
-      <button class="btn btn-warning form-control rounded-pill" (click)="newPurchaseRecommendModal = true">F10
+      <button class="btn btn-warning form-control rounded-pill"
+        (click)="newPurchaseRecommendModal = true; getLastCustomerOrders()">F10
         בקשה לרכש חדשה</button>
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
@@ -145,8 +147,7 @@
 
   <div *ngIf="smallLoader == true">
     <h2>{{loadingText}}</h2>
-    <div style="margin-right:auto !important" 
-    class="smallLoader fixNoaStupidStuff mx-auto my-auto"></div>
+    <div style="margin-right:auto !important" class="smallLoader fixNoaStupidStuff mx-auto my-auto"></div>
   </div>
   <div style="width:100%;">
 
@@ -154,7 +155,7 @@
     <!-- ------------------------------------------------------ -->
 
 
-    <div  class="tableContainer" style="width: 100% ; padding:0px; ">
+    <div class="tableContainer" style="width: 100% ; padding:0px; ">
 
       <!-- <input #filterbyNum type="text" placeholder="Search Item Number..." (change)="filterRowsByItemNumber($event)"> -->
       <br>
@@ -170,10 +171,11 @@
           src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
         <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
           (click)="exportCurrTable()">
-        <img src="../../../../assets/images/excel.png" alt="export to excel" class="border border-light" style="width: 40px;"
-          (click)="exportItemData()">
+        <img src="../../../../assets/images/excel.png" alt="export to excel" class="border border-light"
+          style="width: 40px;" (click)="exportItemData()">
       </div>
-      <div [class.read-only]="checkPermission()" class="export" style="cursor:pointer;" (click)="open(printInventoryValue)">
+      <div [class.read-only]="checkPermission()" class="export" style="cursor:pointer;"
+        (click)="open(printInventoryValue)">
         <button class="btn btn-primary">Value For Money</button>
       </div>
 
@@ -277,7 +279,8 @@
         (outPutItemsExpectedData)="getNewExpectedArrivalsData($event)"></app-expected-arrivals>
 
 
-      <table class='table productTable Table table-fixed' style="width:100%" *ngIf="stockType=='product' && !smallLoader">
+      <table class='table productTable Table table-fixed' style="width:100%"
+        *ngIf="stockType=='product' && !smallLoader">
         <thead class='text-white bg-success'>
           <tr>
 
@@ -529,7 +532,7 @@
                   </option>
                 </datalist>
                 <input class="form-control" type='text' [(ngModel)]="resCmpt.componentNs">
-                <input class="form-control" type='text' [(ngModel)]="resCmpt.price">
+                <input class="form-control" type='number' [(ngModel)]="resCmpt.price">
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">מלאי מינימום</label>
@@ -680,15 +683,14 @@
             <div class="row fixNoaStupidStuff text-center">
               <div class="col-6 fixNoaStupidStuff">
                 <button class="btn btn-success form-control" id="newCbtn" (click)="writeNewComponent()"
-                  *ngIf="newItem=='new'">הקם
-                  מוצר</button>
-
+                  *ngIf="newItem=='new'">הקם מוצר
+                </button>
               </div>
               <div class="col-6 fixNoaStupidStuff">
                 <div *ngIf="allowUserEditItem">
                   <button class="btn btn-success form-control" id="updateDataBtn" (click)="editStockItemDetails()"
-                    *ngIf="newItem!='new'">עדכן
-                    מידע</button>
+                    *ngIf="newItem!='new'">עדכן מידע
+                  </button>
                 </div>
               </div>
             </div>
@@ -711,6 +713,7 @@
             </div>
 
             <div dir='rtl' class="row border border-success border-bottom-0 fixNoaStupidStuff text-center">
+              <h5>הוסף ספק</h5>
               <div class="col-1 fixNoaStupidStuff"></div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">ספק</label>
@@ -778,11 +781,14 @@
                 <button (click)="addSupplierToComponent()" class="btn btn-success form-control">הוסף ספק</button>
               </div>
             </div>
+            <div class="row mt-4"></div>
+            <h4>רשימת ספקים לפריט</h4>
             <div dir='rtl' class="row text-center fixNoaStupidStuff">
               <div class="col-12">
-                <table class="table table-striped table-hover">
+                <table class="table table-hover">
                   <thead class="bg-success text-white">
                     <tr>
+                      <th></th>
                       <th></th>
                       <th>ספק</th>
                       <th>יצרן</th>
@@ -794,92 +800,99 @@
                       <th>מחיר העמסה (מטבע קניה)</th>
                       <th>מטבע לפני טעינה</th>
                       <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
-
                     <ng-container *ngFor="let supplier of resCmpt.alternativeSuppliers;let i = index">
+                      <tr [ngClass]="mainSupplier(supplier.isMain)">
 
-                      <tr [ngClass]="mainSupplier(supplier.isMain)" >
-
-                        <td><button (click)="makeAsMainSupplier(i)" class="btn btn-success">ספק ראשי</button></td>
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
-                          {{supplier.supplierName}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-    
+                        <td (click)="edit(i)"><i placement="bottom" ngbTooltip="ערוך פרטי ספק"
+                            class="click fa fa-pencil-alt"></i></td>
+                        <td>
+                          <span *ngIf="supplier.isMain">ספק ראשי!</span>
+                          <button *ngIf="!supplier.isMain" placement="bottom"
+                            ngbTooltip="הגדר את הספק כספק הראשי של הפריט" (click)="makeAsMainSupplier(i)"
+                            class="btn btn-success">הגדר כספק ראשי</button>
+                        </td>
+                        <td>{{supplier.supplierName}}</td>
+                        <!-- <td *ngIf="rowNumber == i">
                           <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
                           <datalist id="suppliers">
                             <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
                               {{supplier.suplierName}}</option>
                           </datalist>
-                        </td>
-  
-                        <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                        </td> -->
+
+                        <!-- <td *ngIf="rowNumber != supplier.supplierName" >
                           {{supplier.supplierName}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
+                        <td *ngIf="rowNumber == supplier.supplierName">
                           <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
                         </td> -->
-  
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                        <td *ngIf="rowNumber != i">
                           {{supplier.manufacturer}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-                          <input type="text" [value]="supplier.manufacturer" class="form-control" #manufacturer>
+                        <td *ngIf="rowNumber == i">
+                          <input type="text" [(ngModel)]="supplier.manufacturer" class="form-control" #manufacturer>
                         </td>
-  
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                        <td *ngIf="rowNumber != i">
                           {{supplier.alterName}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-                          <input type="text" [value]="supplier.alterName" class="form-control" #alterName>
+                        <td *ngIf="rowNumber == i">
+                          <input type="text" [(ngModel)]="supplier.alterName" class="form-control" #alterName>
                         </td>
-  
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                        <td *ngIf="rowNumber != i">
                           {{supplier.alternativeMaterial}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-                          <input type="text" [value]="supplier.alternativeMaterial" class="form-control"
+                        <td *ngIf="rowNumber == i">
+                          <input type="text" [(ngModel)]="supplier.alternativeMaterial" class="form-control"
                             #alternativeMaterial>
                         </td>
-  
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                        <td *ngIf="rowNumber != i">
                           {{supplier.price}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-                          <input type="text" [value]="supplier.price" class="form-control" #price>
+                        <td *ngIf="rowNumber == i">
+                          <input type="text" [(ngModel)]="supplier.price" class="form-control" #price>
                         </td>
-  
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                        <td *ngIf="rowNumber != i">
                           {{supplier.coin}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-                          <input type="text" [value]="supplier.coin" class="form-control" #coin>
+                        <td *ngIf="rowNumber == i">
+                          <input type="text" [(ngModel)]="supplier.coin" class="form-control" #coin>
                         </td>
-  
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                        <td *ngIf="rowNumber != i">
                           {{supplier.packageWeight}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-                          <input type="text" [value]="supplier.packageWeight" class="form-control" #packageWeight>
+                        <td *ngIf="rowNumber == i">
+                          <input type="text" [(ngModel)]="supplier.packageWeight" class="form-control" #packageWeight>
                         </td>
-  
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                        <td *ngIf="rowNumber != i">
                           {{supplier.priceLoading}}</td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-                          <input type="text" [value]="supplier.priceLoading" class="form-control" #priceLoading>
+                        <td *ngIf="rowNumber == i">
+                          <input type="text" [(ngModel)]="supplier.priceLoading" class="form-control" #priceLoading>
                         </td>
-  
-                        <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                        <td *ngIf="rowNumber != i">
                           <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'NIS'}}</span>
                         </td>
-                        <td *ngIf="EditRowId == supplier.supplierName">
-                          <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
+                        <td *ngIf="rowNumber == i">
+                          <input type="text" [(ngModel)]="supplier.coinLoading" class="form-control" #coinLoading>
                         </td>
-                        <td><i (click)="deleteSupplier(i,resCmpt.componentN)" class="fa fa-times text-danger"></i></td>
+                        <td><i placement="bottom" ngbTooltip="מחק מרשימת הספקים"
+                            (click)="deleteSupplier(i,resCmpt.componentN)" class="fa fa-times text-danger"></i></td>
+                        <td><i *ngIf="rowNumber == i" placement="bottom" ngbTooltip="שמור" (click)="rowNumber = -1"
+                            class="fa fa-save"></i></td>
                       </tr>
 
                     </ng-container>
- 
+
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <div *ngIf="updateSupplier == true" class="row text-center fixNoaStupidStuff">
+            <!-- <div *ngIf="updateSupplier == true" class="row text-center fixNoaStupidStuff">
               <div class="col-5 fixNoaStupidStuff">
 
               </div>
@@ -890,25 +903,21 @@
 
               </div>
 
-            </div>
+            </div> -->
 
             <div class="row text-center fixNoaStupidStuff">
+              <div class="col-3 fixNoaStupidStuff"></div>
               <div class="col-3 fixNoaStupidStuff">
-
-              </div>
-              <div class="col-3 fixNoaStupidStuff">
-                <div *ngIf="allowUserEditItem">
+                <span *ngIf="allowUserEditItem">
                   <button class="btn btn-success form-control" id="updateDataBtn" (click)="editStockItemDetails()"
-                    *ngIf="newItem!='new'">עדכן
-                    מידע</button>
-                </div>
+                    *ngIf="newItem!='new'">עדכן מידע
+                  </button>
+                </span>
               </div>
               <div class="col-3 fixNoaStupidStuff">
                 <button class="btn btn-success form-control" id="newCbtn" (click)="clearFields()">Clear</button>
               </div>
-              <div class="col-3 fixNoaStupidStuff">
-
-              </div>
+              <div class="col-3 fixNoaStupidStuff"></div>
             </div>
 
           </div>
@@ -1872,6 +1881,7 @@
             </div>
           </div>
 
+          <h2>הוסף ספק</h2>
           <div dir='rtl' class="row border border-success border-bottom-0 fixNoaStupidStuff text-center">
             <div class="col-1 fixNoaStupidStuff"></div>
             <div class="col-2 fixNoaStupidStuff">
@@ -1947,11 +1957,13 @@
               <button (click)="addSupplierToMaterial()" class="btn btn-success form-control">הוסף ספק</button>
             </div>
           </div>
+          <h2>רשימת ספקים</h2>
           <div dir='rtl' class="row text-center fixNoaStupidStuff">
             <div class="col-12">
-              <table class="table table-striped table-hover">
+              <table class="table table-hover">
                 <thead class="bg-success text-white">
                   <tr>
+                    <th></th>
                     <th></th>
                     <th>ספק</th>
                     <th>יצרן</th>
@@ -1965,56 +1977,62 @@
                     <th>מחיר העמסה</th>
                     <!--  <th>מחיר לפני טעינה</th> -->
                     <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  
+
                   <ng-container *ngFor="let supplier of resMaterial.alternativeSuppliers;let i = index">
 
-                    <tr [ngClass]="mainSupplier(supplier.isMain)" >
+                    <tr [ngClass]="mainSupplier(supplier.isMain)">
 
-                      <td><button (click)="makeAsMainSupplier(i)" class="btn btn-success">ספק ראשי</button></td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                      <td>
+                        <button *ngIf="!supplier.isMain" (click)="makeAsMainSupplier(i)" class="btn btn-success">הגדר כספק ראשי</button>
+                        <span *ngIf="supplier.isMain">ספק ראשי!</span>
+                      </td>
+
+                      <td><i class="fa fa-pencil-alt" placement="bottom" ngbTooltip="ערוך פרטי ספק" (click)="edit(i)"></i></td>
+
+                      <td>
                         {{supplier.supplierName}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-  
+                      <!-- <td *ngIf="rowNumber == i">
+
                         <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
                         <datalist id="suppliers">
                           <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
                             {{supplier.suplierName}}</option>
                         </datalist>
-                      </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+                      </td> -->
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.manufacturer}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.manufacturer" class="form-control" #manufacturer>
+                      <td *ngIf="rowNumber == i">
+                        <input type="text" [(ngModel)]="supplier.manufacturer" class="form-control" #manufacturer>
                       </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.alterName}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.alterName" class="form-control" #alterName>
+                      <td *ngIf="rowNumber == i">
+                        <input type="text" [(ngModel)]="supplier.alterName" class="form-control" #alterName>
                       </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.alternativeMaterial}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.alternativeMaterial" class="form-control"
+                      <td *ngIf="rowNumber == i">
+                        <input type="text" [(ngModel)]="supplier.alternativeMaterial" class="form-control"
                           #alternativeMaterial>
                       </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.price}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.price" class="form-control" #price>
+                      <td *ngIf="rowNumber == i">
+                        <input type="text" [(ngModel)]="supplier.price" class="form-control" #price>
                       </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.coin}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <select [value]="supplier.coin" #coin>
+                      <td *ngIf="rowNumber == i">
+                        <select [(ngModel)]="supplier.coin" #coin>
                           <option value="NIS">NIS</option>
                           <option value="USD">USD</option>
                           <option value="EUR">EUR</option>
@@ -2022,38 +2040,40 @@
                         </select>
                         <!-- <input type="text" > -->
                       </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.packageWeight}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.packageWeight" class="form-control" #packageWeight>
+                      <td *ngIf="rowNumber == i">
+                        <input type="text" [(ngModel)]="supplier.packageWeight" class="form-control" #packageWeight>
                       </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.country}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.country" class="form-control" #country>
+                      <td *ngIf="rowNumber == i">
+                        <input type="text" [(ngModel)]="supplier.country" class="form-control" #country>
                       </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.expectedArrival}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="text" [value]="supplier.expectedArrival" class="form-control" #expectedArrival>
+                      <td *ngIf="rowNumber == i">
+                        <input type="text" [(ngModel)]="supplier.expectedArrival" class="form-control" #expectedArrival>
                       </td>
-  
-                      <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <td *ngIf="rowNumber != i">
                         {{supplier.shippingPrice | currency: 'NIS'}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
-                        <input type="number" [value]="supplier.shippingPrice" class="form-control" #priceLoading>
+                      <td *ngIf="rowNumber == i">
+                        <input type="number" [(ngModel)]="supplier.shippingPrice" class="form-control" #priceLoading>
                       </td>
-  
-                      <!-- <td *ngIf="EditRowId != supplier.supplierName" (click)="editSuppliers(supplier.supplierName)">
+
+                      <!-- <td *ngIf="rowNumber != i">
                         {{supplier.coinLoading}}</td>
-                      <td *ngIf="EditRowId == supplier.supplierName">
+                      <td *ngIf="rowNumber == i">
                         <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
                       </td> -->
-                      <td><i (click)="deleteSupplier(i,resMaterial.componentN)" class="fa fa-times text-danger"></i></td>
-  
+                      <td><i placement="bottom" ngbTooltip="שמירה" class="fa fa-save" (click)="rowNumber = -1" *ngIf="rowNumber == i"></i></td>
+                      <td><i placement="bottom" ngbTooltip="מחק מרשימת הספקים" (click)="deleteSupplier(i,resMaterial.componentN)" class="fa fa-times text-danger"></i>
+                      </td>
+
                     </tr>
 
                   </ng-container>
@@ -2249,6 +2269,10 @@
           </div>
         </div>
       </mat-tab>
+      <mat-tab *ngIf="isSuperAdmin" label="Pricing">
+
+      </mat-tab>
+
 
     </mat-tab-group>
   </div>
@@ -2734,8 +2758,8 @@
   </div>
 
 
-  <div style="margin-right:auto !important" *ngIf="newPurchaseRecommendModal"
-    class="container border border-info fixNoaStupidStuff bg-white shadow-lg rounded mx-auto my-auto text-center fixed-top p-5">
+  <div *ngIf="newPurchaseRecommendModal"
+    class="m-5 border border-info bg-white shadow-lg rounded mx-auto my-auto text-center fixed-top p-5">
     <form [formGroup]="newPurchaseRecommendation" class="modal-inner">
       <div class="row mt-2 fixNoaStupidStuff">
         <div class="col-1 fixNoaStupidStuff"></div>
@@ -2780,7 +2804,7 @@
       </div>
 
       <div class="row mt-1 fixNoaStupidStuff">
-        <div class="col-2 fixNoaStupidStuff">
+        <div class="col-1 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <label class="text-info">Type</label>
           <select formControlName="type" class="form-control rounded-pill" required>
@@ -2790,7 +2814,7 @@
           </select>
         </div>
 
-        <div class="col-2 fixNoaStupidStuff">
+        <div class="col-1 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <label class="text-info">Item Number</label>
           <input (focusout)="getStockItemByNumber($event)" [ngModelOptions]="{standalone: true}"
@@ -2804,14 +2828,14 @@
             class="form-control rounded-pill" type="text" placeholder="StockItem Name" required>
         </div>
 
-        <div class="col-2 fixNoaStupidStuff">
+        <div class="col-1 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <label class="text-info">Amount</label>
           <input [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.quantity"
             class="form-control rounded-pill" type="number" placeholder="amount" (focusout)="itemAmountsData = []"
             required>
         </div>
-        <div class="col-2 fixNoaStupidStuff">
+        <div class="col-1 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <label class="text-info">Measurement</label>
           <select [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.measurement"
@@ -2826,23 +2850,32 @@
             <option value="box">קופסא</option>
           </select>
         </div>
-        <div *ngIf="itemAmountsData && itemAmountsData.length > 0" class="col-12">
-          <table id='amountsTable' class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">כמות</th>
-                <th scope="col">מדף</th>
-              </tr>
-            </thead>
-            <tbody id='amountsInWhTbody'>
-              <tr *ngFor="let shelfAmount of itemAmountsData">
-                <th scope="row">{{shelfAmount.sumShelfAmounts | number}}</th>
-                <th scope="row">{{shelfAmount.ps}}</th>
-                <!-- <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td> -->
-              </tr>
-            </tbody>
-          </table>
+        <div class="col-1">
+          <label class="text-info">Customer Order</label>
+          <select [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.customerOrder"
+            class="form-control rounded-pill" required>
+            <option value="stock">Stock</option>
+            <option *ngFor="let order of lastCustomerOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
+          </select>
         </div>
+      </div>
+
+      <div *ngIf="itemAmountsData && itemAmountsData.length > 0" class="col-12">
+        <table id='amountsTable' class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">כמות</th>
+              <th scope="col">מדף</th>
+            </tr>
+          </thead>
+          <tbody id='amountsInWhTbody'>
+            <tr *ngFor="let shelfAmount of itemAmountsData">
+              <th scope="row">{{shelfAmount.sumShelfAmounts | number}}</th>
+              <th scope="row">{{shelfAmount.ps}}</th>
+              <!-- <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td> -->
+            </tr>
+          </tbody>
+        </table>
       </div>
 
 
@@ -2865,14 +2898,19 @@
                 <th class="text-info">StockItem Name</th>
                 <th class="text-info">Quantity</th>
                 <th class="text-info">Measurement</th>
+                <th class="text-info">Customer Order</th>
+                <th class="text-info"></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let stockitem of this.newPurchaseRecommendation.controls.stockitems.value">
+              <tr *ngFor="let stockitem of this.newPurchaseRecommendation.controls.stockitems.value; let i = index">
                 <td>{{stockitem.number}}</td>
                 <td>{{stockitem.name}}</td>
                 <td>{{stockitem.quantity}}</td>
                 <td>{{stockitem.measurement}}</td>
+                <td>{{stockitem.customerOrder}}</td>
+                <td><i placement="bottom" ngbTooltip="Delete Item" (click)="deleteFromRecommendation(i)"
+                    class="fa fa-times text-danger"></i></td>
               </tr>
             </tbody>
           </table>

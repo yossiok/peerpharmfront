@@ -118,6 +118,11 @@ select:focus,input:focus {
   cursor: pointer;
 }
 
+.close {
+  padding: 10px;
+  font-size: 30px !important;
+}
+
 .close:hover {
   background: rgb(93, 12, 224);
   color: white

@@ -136,6 +136,11 @@ export class OrdersService {
     );
   }
 
+  getOpenOrdersLimit(limit: number): Observable<any> {
+    let url = this.baseUrl + 'order/limit?limit=' + limit;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getOpenOrdersByUser(user): Observable<any> {
     let url = this.baseUrl + 'order?user=' + user;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
