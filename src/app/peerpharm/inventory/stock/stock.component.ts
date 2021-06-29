@@ -2014,6 +2014,23 @@ export class StockComponent implements OnInit {
     let user = this.authService.loggedInUser.userName
     this.inventoryService.updatePriceHistory(componentN, newPrice, user).subscribe(data=> {
       console.log(data)
+      if(type == 'c') {
+
+        this.resCmpt.priceUpdates.push({
+          price: newPrice, 
+          user,
+          date: new Date(),
+          type: 'manual'
+        })
+      }
+      else if(type == 'm') {
+        this.resMaterial.priceUpdates.push({
+          price: newPrice, 
+          user,
+          date: new Date(),
+          type: 'manual'
+        })
+      }
     })
   }
 

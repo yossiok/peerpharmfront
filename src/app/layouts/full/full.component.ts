@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 declare var $: any;
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-full-layout',
@@ -11,8 +12,11 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 })
 export class FullComponent implements OnInit {
   public config: PerfectScrollbarConfigInterface = {};
+  themeColor: string = "r"
+  databaseName: any;
+  testing: boolean = false
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, private utilsService: UtilsService) {}
 
   public isCollapsed = false;
 
@@ -54,6 +58,7 @@ export class FullComponent implements OnInit {
     }
     this.defaultSidebar = this.options.sidebartype;
     this.handleSidebar();
+    this.getTheme()
   }
 
   @HostListener('window:resize', ['$event'])
@@ -86,7 +91,13 @@ export class FullComponent implements OnInit {
   }
 
  
-
+  getTheme(){
+    this.utilsService.getTheme().subscribe(theme => {
+      this.themeColor = theme.database == 'testing' ? 'rgb(30, 240, 81)' : 'rgb(19, 19, 95)'
+      this.databaseName = theme.database == 'testing' ? 'DEV ENVIRONMENT!!!!' : ''
+      this.testing = theme.database == 'testing' ? true : false
+    })
+  }
 
 
   toggleSidebarType() {
