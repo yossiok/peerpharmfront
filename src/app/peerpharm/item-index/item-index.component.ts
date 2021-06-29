@@ -73,7 +73,7 @@ export class ItemIndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllSuppliers()
-    this.getItemData()
+    this.getCurrencies()
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
     }

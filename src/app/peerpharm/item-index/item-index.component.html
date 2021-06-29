@@ -420,7 +420,7 @@
           <tbody>
 
 
-              <tr *ngFor="let supplier of this.item.alternativeSuppliers; let i = index" [ngClass]="mainSupplier(supplier.isMain)">
+              <tr *ngFor="let supplier of item.alternativeSuppliers; let i = index" [ngClass]="mainSupplier(supplier.isMain)">
 
                 <td>
                   <button *ngIf="!supplier.isMain" (click)="makeAsMainSupplier(i)" class="btn btn-success">הגדר כספק ראשי</button>
@@ -429,16 +429,7 @@
 
                 <td><i class="fa fa-pencil-alt" placement="bottom" ngbTooltip="ערוך פרטי ספק" (click)="edit(i)"></i></td>
 
-                <td>
-                  {{supplier.supplierName}}</td>
-                <!-- <td *ngIf="rowNumber == i">
-
-                  <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
-                  <datalist id="suppliers">
-                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-                      {{supplier.suplierName}}</option>
-                  </datalist>
-                </td> -->
+                <td>{{supplier.supplierName}}</td>
 
                 <td *ngIf="rowNumber != i">
                   {{supplier.manufacturer}}</td>
@@ -474,7 +465,6 @@
                     <option value="EUR">EUR</option>
                     <option value="GBP">GBP</option>
                   </select>
-                  <!-- <input type="text" > -->
                 </td>
 
                 <td *ngIf="rowNumber != i">
@@ -499,13 +489,7 @@
                   {{supplier.shippingPrice | currency: 'NIS'}}</td>
                 <td *ngIf="rowNumber == i">
                   <input type="number" [(ngModel)]="supplier.shippingPrice" class="form-control" #priceLoading>
-                </td>
-
-                <!-- <td *ngIf="rowNumber != i">
-                  {{supplier.coinLoading}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
-                </td> -->
+                </td> 
                 <td><i placement="bottom" ngbTooltip="שמירה" class="fa fa-save" (click)="rowNumber = -1" *ngIf="rowNumber == i"></i></td>
                 <td><i placement="bottom" ngbTooltip="מחק מרשימת הספקים" (click)="deleteSupplier(i,item.componentN)" class="fa fa-times text-danger"></i>
                 </td>
@@ -628,7 +612,10 @@
     </div>
 
   </div>
-  <div class="row">
+  <div class="row mt-4">
+    <h2>Purchase History</h2>
+  </div>
+  <div class="row mt-4">
     <label>Number of orders: </label> &nbsp;
     <input type="text" #numOfOrders />
     <div class="col-1"></div>
