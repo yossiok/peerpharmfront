@@ -24,8 +24,81 @@ import { CostumersService } from 'src/app/services/costumers.service';
 import { upperFirst } from 'lodash';
 import { FormsService } from 'src/app/services/forms.service';
 import { Currencies } from '../../procurement/Currencies';
+import * as Braket from 'aws-sdk/clients/braket';
+import { Breakpoints } from '@angular/cdk/layout';
 
+const defaultCmpt = {
+  whoPays: '',
+  payingCustomersList: [],
+  componentN: '',
+  componentName: '',
+  componentNs: '',
+  suplierN: '',
+  suplierName: '',
+  componentType: '',
+  componentCategory: '',
+  img: '',
+  importFrom: '',
+  lastModified: '',
+  minimumStock: '',
+  needPrint: '',
+  packageType: '',
+  packageWeight: '',
+  remarks: '',
+  jumpRemark: '',
+  componentItems: [],
+  input_actualMlCapacity: 0,
+  alternativeComponent: '',
+  comaxName: '',
+  alternativeSuppliers: [],
+  price: '',
+  connectedProducts: []
 
+}
+
+const defaultMaterial = {
+
+  componentN: "",
+  componentName: "",
+  remarks: "",
+  img: "",
+  minimumStock: "",
+  packageWeight: "",
+  itemType: "",
+  barcode: "",
+  actualMlCapacity: "",
+  unitOfMeasure: "",
+  group: "",
+  subGroup2: "",
+  alternativeSuppliers: [],
+  status: "",
+  threatment: "",
+  monthTillExp: "",
+  monthAvgPcs: "",
+  msds: "",
+  coaMaster: "",
+  function: '',
+  measurement: "",
+  notInStock: false,
+  inciName: "",
+  casNumber: "",
+  composition: [],
+  umNumber: "",
+  imerCode: "",
+  imerTreatment: "",
+  allowQtyInStock: "",
+  expiredQty: "",
+  permissionDangerMaterials: "",
+  storageTemp: "",
+  storageDirections: "",
+  frameQuantity: "",
+  frameSupplier: "",
+  location: "",
+  quantityInStock: "",
+  mixedMaterial: [],
+  formuleRemarks: ''
+
+}
 
 @Component({
   selector: 'app-stock',
@@ -82,34 +155,8 @@ export class StockComponent implements OnInit {
   updateSupplier = false;
   check = false;
 
-  resCmpt: any = {
-    whoPays: '',
-    payingCustomersList: [],
-    componentN: '',
-    componentName: '',
-    componentNs: '',
-    suplierN: '',
-    suplierName: '',
-    componentType: '',
-    componentCategory: '',
-    img: '',
-    importFrom: '',
-    lastModified: '',
-    minimumStock: '',
-    needPrint: '',
-    packageType: '',
-    packageWeight: '',
-    remarks: '',
-    jumpRemark: '',
-    componentItems: [],
-    input_actualMlCapacity: 0,
-    alternativeComponent: '',
-    comaxName: '',
-    alternativeSuppliers: [],
-    price: '',
-    connectedProducts: []
+  resCmpt: any = defaultCmpt
 
-  }
   alternativeSupplier: any = {
     name: '',
     material: '',
@@ -274,49 +321,8 @@ export class StockComponent implements OnInit {
     subGroup: "",
     packageWeight: "",
   }
-  resMaterial: any = {
 
-    componentN: "",
-    componentName: "",
-    remarks: "",
-    img: "",
-    minimumStock: "",
-    packageWeight: "",
-    itemType: "",
-    barcode: "",
-    actualMlCapacity: "",
-    unitOfMeasure: "",
-    group: "",
-    subGroup2: "",
-    alternativeSuppliers: [],
-    status: "",
-    threatment: "",
-    monthTillExp: "",
-    monthAvgPcs: "",
-    msds: "",
-    coaMaster: "",
-    function: '',
-    measurement: "",
-    notInStock: false,
-    inciName: "",
-    casNumber: "",
-    composition: [],
-    umNumber: "",
-    imerCode: "",
-    imerTreatment: "",
-    allowQtyInStock: "",
-    expiredQty: "",
-    permissionDangerMaterials: "",
-    storageTemp: "",
-    storageDirections: "",
-    frameQuantity: "",
-    frameSupplier: "",
-    location: "",
-    quantityInStock: "",
-    mixedMaterial: [],
-    formuleRemarks: ''
-
-  }
+  resMaterial: any = defaultMaterial
   itemExpectedArrivals: any;
   closeResult: string;
   filterParams: FormGroup;
@@ -1507,6 +1513,7 @@ export class StockComponent implements OnInit {
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + cmptNumber;
     this.openModal = true;
+    this.resMaterial = defaultMaterial
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     let mainSupplier = this.resCmpt.alternativeSuppliers.find(s=>s.isMain == true);
     // if(mainSupplier){
@@ -1610,7 +1617,7 @@ export class StockComponent implements OnInit {
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + materNum;
     this.openModal = true;
-  
+    this.resCmpt = defaultCmpt
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
     let mainSupplier = this.resMaterial.alternativeSuppliers.find(s=>s.isMain == true);
     // if(mainSupplier){
@@ -1991,11 +1998,23 @@ export class StockComponent implements OnInit {
 
   }
 
-  addToPriceHistory() {
-    let componentN = this.resMaterial.componentN
-    let newPrice = this.resMaterial.manualPrice
+  addToPriceHistory(type) {
+    let componentN
+    let newPrice
+    switch(type) {
+      case 'c':
+        componentN = this.resCmpt.componentN
+        newPrice = this.resCmpt.manualPrice
+        break
+      case 'm':
+        componentN = this.resMaterial.componentN
+        newPrice = this.resMaterial.manualPrice
+        break
+    }
     let user = this.authService.loggedInUser.userName
-    this.inventoryService.updatePriceHistory(componentN, newPrice, user).subscribe()
+    this.inventoryService.updatePriceHistory(componentN, newPrice, user).subscribe(data=> {
+      console.log(data)
+    })
   }
 
   getSupplierPriceHistory(i) {
