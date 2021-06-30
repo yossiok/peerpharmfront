@@ -152,7 +152,7 @@ export class PricesComponent implements OnInit {
         }
 
         //Calculate component pricing
-        if (component.price) componentPricing.price = Number(component.price)
+        if (component.manualPrice) componentPricing.price = Number(component.manualPrice)
         else {
           let suppliers = component.alternativeSuppliers;
           if (!suppliers || suppliers.length == 0) componentPricing.price = NaN

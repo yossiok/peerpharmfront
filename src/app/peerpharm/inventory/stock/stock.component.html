@@ -1020,6 +1020,58 @@
           </div>
         </mat-tab>
 
+        <mat-tab *ngIf="isSuperAdmin" label="Pricing">
+        
+          <span class="close text-success" id="closeId2"
+            (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
+          </span>
+  
+          <div class="fixNoaStupidStuff" dir="rtl">
+            <div class="fixNoaStupidStuff row mt-4">
+              <div class="col-2">
+                <label>מחיר רכש אחרון</label>
+                <input disabled class="form-control" [(ngModel)]="resCmpt.price" type="number">
+              </div>
+            </div>
+            <div class="fixNoaStupidStuff row mt-2">
+              <div class="col-2">
+                <label>מחיר ידני</label>
+                <input disabled class="form-control" [(ngModel)]="resCmpt.manualPrice" type="number"> &#8362;
+                <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
+              </div>
+            </div>
+          </div>
+  
+          <div dir="rtl" class="fixNoaStupidStuff row mt-4">
+            <h2>היסטוריית מחירים</h2>
+          </div>
+          <div dir="rtl" class="row fixNoaStupidStuff mt-2">
+  
+            <div class="col-3"><div class="yellow">עדכון ידני</div></div>
+            <div class="col-3"><div class="cornflowerblue">עדכון מערכת</div></div>
+  
+            <table dir="rtl" class="table table-hover">
+              <thead>
+                <tr>
+                  <th>מחיר</th>
+                  <th>תאריך</th>
+                  <th>סיבת עדכון</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let update of resCmpt.priceUpdates; let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
+                  <td>{{update.price}}</td>
+                  <td>{{update.date | date:'dd/MM/yy'}}</td>
+                  <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
+                  <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
+                </tr>
+              </tbody>
+            </table>
+  
+        </div>
+  
+        </mat-tab>
+
 
       </mat-tab-group>
     </div>
@@ -1742,6 +1794,7 @@
                     <th>שם פריט ספק</th>
                     <th>מספר פריט ספק</th>
                     <th>מחיר</th>
+                    <th></th>
                     <th>מטבע</th>
                     <th>משקל</th>
                     <th>מדינה</th>
@@ -1800,6 +1853,8 @@
                       <td *ngIf="rowNumber == i">
                         <input type="text" [(ngModel)]="supplier.price" class="form-control" #price>
                       </td>
+
+                      <td><button (click)="getSupplierPriceHistory(i)" (click)="open(supplierPriceHistory)">היסטוריית מחירים</button></td>
 
                       <td *ngIf="rowNumber != i">
                         {{supplier.coin}}</td>
@@ -2041,7 +2096,58 @@
           </div>
         </div>
       </mat-tab>
+
       <mat-tab *ngIf="isSuperAdmin" label="Pricing">
+        
+        <span class="close text-success" id="closeId2"
+          (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
+        </span>
+
+        <div class="fixNoaStupidStuff" dir="rtl">
+          <div class="fixNoaStupidStuff row mt-4">
+            <div class="col-2">
+              <label>מחיר רכש אחרון</label>
+              <input disabled class="form-control" [(ngModel)]="resMaterial.price" type="number">
+            </div>
+          </div>
+          <div class="fixNoaStupidStuff row mt-2">
+            <div class="col-2">
+              <label>מחיר ידני</label>
+              <input disabled class="form-control" [(ngModel)]="resMaterial.manualPrice" type="number">
+              <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
+            </div>
+          </div>
+        </div>
+
+        <div dir="rtl" class="fixNoaStupidStuff row mt-4">
+          <h2>היסטוריית מחירים</h2>
+        </div>
+        <div dir="rtl" class="row fixNoaStupidStuff mt-2">
+
+          <div class="col-3"><div class="yellow">עדכון ידני</div></div>
+          <div class="col-3"><div class="cornflowerblue">עדכון מערכת</div></div>
+
+          <table dir="rtl" class="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>מחיר</th>
+                <th>תאריך</th>
+                <th>סיבת עדכון</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let update of resMaterial.priceUpdates; let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
+                <td>{{i+1}}</td>
+                <td>{{update.price}}</td>
+                <td>{{update.date}}</td>
+                <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
+                <td *ngIf="update.type == 'auto'">הזמנת רכש מס' {{update.purchase}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+      </div>
 
       </mat-tab>
 
@@ -2457,6 +2563,111 @@
 
   </div>
 </div>
+
+<ng-template #updateManualPrice let-modal>
+
+  <div dir="rtl" class="fixNoaStupidStuff modal-header">
+    <h4 class="modal-title" id="modal-basic-title">עדכן מחיר ידני לפריט</h4>
+    <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class="fixNoaStupidStuff modal-body">
+
+    <!-- <div class="fixNoaStupidStuff row mt-2">
+      <label>מחיר נוכחי:</label>
+      <p *ngIf="resMaterial.componentN != ''">{{resMaterial.manualPrice}}</p>
+      <p *ngIf="resCmpt.componentN != ''">{{resMaterial.manualPrice}}</p>
+    </div> -->
+
+    <div class="fixNoaStupidStuff row mt-2">
+      <label>מחיר חדש:</label>
+      <input *ngIf="resMaterial.componentN != ''" type="number" [(ngModel)]="resMaterial.manualPrice">
+      <input *ngIf="resCmpt.componentN != ''" type="number" [(ngModel)]="resCmpt.manualPrice">
+    </div>
+
+    <div class="fixNoaStupidStuff row mt-2">
+      <button *ngIf="resMaterial.componentN != ''" (click)="editMaterialItemDetails()" (click)="addToPriceHistory('m')" (click)="modal.dismiss('Cross click')" >שמור</button>
+      <button *ngIf="resCmpt.componentN != ''" (click)="editStockItemDetails()" (click)="modal.dismiss('Cross click')" (click)="addToPriceHistory('c')">שמור</button>
+    </div>
+ 
+
+  </div>
+
+  <div class="modal-footer">
+  </div>
+  
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ng-template #supplierPriceHistory>
+
+
+  <div class="fixNoaStupidStuff modal-header">
+    <h4 class="modal-title" id="modal-basic-title">היסטוריית מחירים עבור ספק ופריט</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class="fixNoaStupidStuff modal-body">
+
+    <table class="table table-hover">
+
+      <thead>
+        <tr>
+          <th>תאריך</th>
+          <th>מס' הזמנת רכש</th>
+          <th>מזמין</th>
+        </tr>
+      </thead>
+        <tbody>
+          <tr *ngFor="let purchase of supPurchases">
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+
+    </table>
+ 
+
+  </div>
+
+  <div class="modal-footer">
+  </div>
+
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <ng-template #printInventoryValue let-modal>
   <div class="modal-header">

@@ -24,8 +24,81 @@ import { CostumersService } from 'src/app/services/costumers.service';
 import { upperFirst } from 'lodash';
 import { FormsService } from 'src/app/services/forms.service';
 import { Currencies } from '../../procurement/Currencies';
+import * as Braket from 'aws-sdk/clients/braket';
+import { Breakpoints } from '@angular/cdk/layout';
 
+const defaultCmpt = {
+  whoPays: '',
+  payingCustomersList: [],
+  componentN: '',
+  componentName: '',
+  componentNs: '',
+  suplierN: '',
+  suplierName: '',
+  componentType: '',
+  componentCategory: '',
+  img: '',
+  importFrom: '',
+  lastModified: '',
+  minimumStock: '',
+  needPrint: '',
+  packageType: '',
+  packageWeight: '',
+  remarks: '',
+  jumpRemark: '',
+  componentItems: [],
+  input_actualMlCapacity: 0,
+  alternativeComponent: '',
+  comaxName: '',
+  alternativeSuppliers: [],
+  price: '',
+  connectedProducts: []
 
+}
+
+const defaultMaterial = {
+
+  componentN: "",
+  componentName: "",
+  remarks: "",
+  img: "",
+  minimumStock: "",
+  packageWeight: "",
+  itemType: "",
+  barcode: "",
+  actualMlCapacity: "",
+  unitOfMeasure: "",
+  group: "",
+  subGroup2: "",
+  alternativeSuppliers: [],
+  status: "",
+  threatment: "",
+  monthTillExp: "",
+  monthAvgPcs: "",
+  msds: "",
+  coaMaster: "",
+  function: '',
+  measurement: "",
+  notInStock: false,
+  inciName: "",
+  casNumber: "",
+  composition: [],
+  umNumber: "",
+  imerCode: "",
+  imerTreatment: "",
+  allowQtyInStock: "",
+  expiredQty: "",
+  permissionDangerMaterials: "",
+  storageTemp: "",
+  storageDirections: "",
+  frameQuantity: "",
+  frameSupplier: "",
+  location: "",
+  quantityInStock: "",
+  mixedMaterial: [],
+  formuleRemarks: ''
+
+}
 
 @Component({
   selector: 'app-stock',
@@ -82,34 +155,8 @@ export class StockComponent implements OnInit {
   updateSupplier = false;
   check = false;
 
-  resCmpt: any = {
-    whoPays: '',
-    payingCustomersList: [],
-    componentN: '',
-    componentName: '',
-    componentNs: '',
-    suplierN: '',
-    suplierName: '',
-    componentType: '',
-    componentCategory: '',
-    img: '',
-    importFrom: '',
-    lastModified: '',
-    minimumStock: '',
-    needPrint: '',
-    packageType: '',
-    packageWeight: '',
-    remarks: '',
-    jumpRemark: '',
-    componentItems: [],
-    input_actualMlCapacity: 0,
-    alternativeComponent: '',
-    comaxName: '',
-    alternativeSuppliers: [],
-    price: '',
-    connectedProducts: []
+  resCmpt: any = defaultCmpt
 
-  }
   alternativeSupplier: any = {
     name: '',
     material: '',
@@ -274,49 +321,8 @@ export class StockComponent implements OnInit {
     subGroup: "",
     packageWeight: "",
   }
-  resMaterial: any = {
 
-    componentN: "",
-    componentName: "",
-    remarks: "",
-    img: "",
-    minimumStock: "",
-    packageWeight: "",
-    itemType: "",
-    barcode: "",
-    actualMlCapacity: "",
-    unitOfMeasure: "",
-    group: "",
-    subGroup2: "",
-    alternativeSuppliers: [],
-    status: "",
-    threatment: "",
-    monthTillExp: "",
-    monthAvgPcs: "",
-    msds: "",
-    coaMaster: "",
-    function: '',
-    measurement: "",
-    notInStock: false,
-    inciName: "",
-    casNumber: "",
-    composition: [],
-    umNumber: "",
-    imerCode: "",
-    imerTreatment: "",
-    allowQtyInStock: "",
-    expiredQty: "",
-    permissionDangerMaterials: "",
-    storageTemp: "",
-    storageDirections: "",
-    frameQuantity: "",
-    frameSupplier: "",
-    location: "",
-    quantityInStock: "",
-    mixedMaterial: [],
-    formuleRemarks: ''
-
-  }
+  resMaterial: any = defaultMaterial
   itemExpectedArrivals: any;
   closeResult: string;
   filterParams: FormGroup;
@@ -338,6 +344,7 @@ export class StockComponent implements OnInit {
   alloAmountsLoading: boolean = false
   loadingText: string;
   lastCustomerOrders: any;
+  supPurchases: any[] = []
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1506,12 +1513,13 @@ export class StockComponent implements OnInit {
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + cmptNumber;
     this.openModal = true;
+    this.resMaterial = defaultMaterial
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     let mainSupplier = this.resCmpt.alternativeSuppliers.find(s=>s.isMain == true);
-    if(mainSupplier){
-      this.resCmpt.suplierN = mainSupplier.supplierName
-      this.resCmpt.price = mainSupplier.price + mainSupplier.coin;
-    }
+    // if(mainSupplier){
+    //   this.resCmpt.suplierN = mainSupplier.supplierName
+    //   this.resCmpt.price = mainSupplier.price + mainSupplier.coin;
+    // }
     this.getLastOrdersItem(10, 'component')
       // this.resCmpt.finalPrice = this.resCmpt.shippingPrice ? Number(this.resCmpt.price) + Number(this.resCmpt.shippingPrice) : this.resCmpt.price
       // this.loadComponentItems();
@@ -1609,13 +1617,13 @@ export class StockComponent implements OnInit {
     this.itemMovements = [];
     this.openModalHeader = "פריט במלאי  " + materNum;
     this.openModal = true;
-  
+    this.resCmpt = defaultCmpt
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
     let mainSupplier = this.resMaterial.alternativeSuppliers.find(s=>s.isMain == true);
-    if(mainSupplier){
-      this.resMaterial.suplierN = mainSupplier.supplierName
-      this.resMaterial.price = mainSupplier.price + mainSupplier.coin;
-    }
+    // if(mainSupplier){
+    //   this.resMaterial.suplierN = mainSupplier.supplierName
+    //   this.resMaterial.price = mainSupplier.price + mainSupplier.coin;
+    // }
     this.getLastOrdersItem(10, 'material')
     // this.resMaterial.finalPrice = this.resMaterial.shippingPrice ? Number(this.resMaterial.price) + Number(this.resMaterial.shippingPrice) : this.resMaterial.price
 
@@ -1988,6 +1996,53 @@ export class StockComponent implements OnInit {
       });
     }
 
+  }
+
+  addToPriceHistory(type) {
+    let componentN
+    let newPrice
+    switch(type) {
+      case 'c':
+        componentN = this.resCmpt.componentN
+        newPrice = this.resCmpt.manualPrice
+        break
+      case 'm':
+        componentN = this.resMaterial.componentN
+        newPrice = this.resMaterial.manualPrice
+        break
+    }
+    let user = this.authService.loggedInUser.userName
+    this.inventoryService.updatePriceHistory(componentN, newPrice, user).subscribe(data=> {
+      console.log(data)
+      if(type == 'c') {
+
+        this.resCmpt.priceUpdates.push({
+          price: newPrice, 
+          user,
+          date: new Date(),
+          type: 'manual'
+        })
+      }
+      else if(type == 'm') {
+        this.resMaterial.priceUpdates.push({
+          price: newPrice, 
+          user,
+          date: new Date(),
+          type: 'manual'
+        })
+      }
+    })
+  }
+
+  getSupplierPriceHistory(i) {
+    debugger
+    //TODO: get supplier NUmber!!!
+    this.procuretServ.getAllOrdersFromSupplier(this.resMaterial.alternativeSuppliers[i].suplierNumber).subscribe(data => {
+      this.supPurchases = data.filter(purchase => purchase.status == 'open')
+      for (let order of data) {
+  
+      }
+    })
   }
 
   deleteComponent(id) {

@@ -48,7 +48,10 @@
       <!-- End Logo -->
       <!-- ============================================================== -->
       <div style="margin-left: 0px; background-color: rgb(19, 19, 95); box-shadow: inset 1px -1px 8px 0px rgb(0, 0, 0);" class="navbar-collapse collapse" id="navbarSupportedContent" [attr.data-navbarbg]="options.navbarbg" [ngbCollapse]="!isCollapsed">
-        <app-navigation style="background-color: rgb(19, 19, 95); box-shadow: inset 1px -1px 8px 0px rgb(0, 0, 0); text-align: center; " (toggleSidebar)="toggleSidebarType()" class="w-100"></app-navigation>
+        <app-navigation [style.background]="themeColor" style="box-shadow: inset 1px -1px 8px 0px rgb(0, 0, 0); text-align: center; " (toggleSidebar)="toggleSidebarType()" class="w-100"></app-navigation>
+        <div [style.background]="themeColor" [style.color]="'black'" *ngIf="testing">
+          <p>{{databaseName}}</p>
+        </div>
       </div>
     </nav>
   </header>

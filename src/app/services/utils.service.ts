@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http'
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilsService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   formatDate(date) {
     var d = new Date(date),
@@ -19,5 +22,10 @@ export class UtilsService {
       day = '0' + day;
 
     return [year, month, day].join('-');
+  }
+
+  getTheme() : Observable<any> {
+    let url = "/devUtils/theme";
+    return <Observable<any>>this.http.get(url)
   }
 }
