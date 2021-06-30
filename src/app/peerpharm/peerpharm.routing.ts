@@ -75,6 +75,7 @@ import { TicketFormComponent } from './ticket-form/ticket-form.component';
 import { PricesComponent } from './prices/Existing/prices.component';
 import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
 import { AllPricingComponent } from './prices/all-pricing/all-pricing.component';
+import { ItemIndexComponent } from './item-index/item-index.component';
 
 
 
@@ -669,6 +670,14 @@ export const PeerPharmRputs: Routes = [
       title: 'Bidding Index'
     },
     component: AllPricingComponent
+  },
+  {
+    path: 'itemindex',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Item Index'
+    },
+    component: ItemIndexComponent
   },
   
 

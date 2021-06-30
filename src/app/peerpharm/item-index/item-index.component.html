@@ -1,0 +1,441 @@
+<!--Item Movements-->
+<div class="row mt-4 text-center">
+  <h3 class="text-center mx-auto">Item Movements</h3>
+</div>
+<form [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
+  <div class="row border border-secondary rounded p-4 w-75 form-group mx-auto">
+    <div class="col-1">
+      <label>
+        item type
+      </label>
+      <select formControlName="itemType" class="form-control">
+        <option value="all">all</option>
+        <option value="component">component</option>
+        <option value="material">material</option>
+        <option value="product">product</option>
+      </select>
+    </div>
+    <div *ngIf="itemMovementForm.value.itemType == 'component'" class="col-2">
+      <label>
+        component type
+      </label>
+      <select formControlName="componentType" class="form-control">
+        <option value="skip">Filter by Items</option>
+        <option value='bottle_Glass'>בקבוק זכוכית</option>
+        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+        <option value='jar_Glass'>צנצנת זכוכית</option>
+        <option value='jar_Plastic'>צנצנת פלסטיק</option>
+        <option value='cap'>פקק</option>
+        <option value='cover'>מכסה</option>
+        <option value='pump'>משאבה</option>
+        <option value='cosmetic_pump'>משאבה קוסמטית</option>
+        <option value='over_cap'>מכסה עילי</option>
+        <option value='tube'>שפורפרת</option>
+        <option value='colons'>קולונים</option>
+        <option value='hair_life'>היירלייפ</option>
+        <option value='compacts'>קומפקטים</option>
+        <option value='personal_package'>אריזות אישיות</option>
+        <option value='master_carton'>קרטוני מאסטר</option>
+        <option value='newsletter'>עלון לצרכן</option>
+        <option value='irosol_valve'>אירוסול- שסתום</option>
+        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+        <option value='cellophane'>צלופן</option>
+        <option value='sticker'>מדבקה</option>
+        <option value='sachet'>סאשט</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label>
+        item numbers
+      </label>
+      <ng-container *ngFor="let item of itemMovementForm.value.itemNumbers; let i = index">
+        <input (change)="setItemNumber(i, $event)" [value]="itemMovementForm.value.itemNumbers[i]" class="form-control"
+          type="text">
+        <button type="button" (click)="itemMovementForm.value.itemNumbers.push('')">+</button>
+        <button *ngIf="i > 0" type="button" (click)="itemMovementForm.value.itemNumbers.pop()">-</button>
+      </ng-container>
+    </div>
+
+    <div class="col-2">
+      <label>from</label>
+      <input formControlName="fromDate" class="form-control" type="date">
+    </div>
+    <div class="col-2">
+      <label>to</label>
+      <input formControlName="toDate" class="form-control" type="date">
+    </div>
+    <div class="col-1">
+      <label>
+        movement type
+      </label>
+      <select formControlName="movementType" class="form-control">
+        <option value="all">all</option>
+        <option value="in">in</option>
+        <option value="out">out</option>
+        <option value="production">production</option>
+        <option value="shelfChange">Shelf Change</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label>
+        amounts
+      </label>
+      <input formControlName="amount" class="form-control" type="number">
+      <select formControlName="amountDir" class="form-control">
+        <option value="higherThan">Higher than</option>
+        <option value="lowerThan">Lower than</option>
+      </select>
+    </div>
+    <div class="col-1">
+      <button type="submit" class="btn btn-info">Go.</button>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-secondary"
+        (click)="itemMovementForm.reset()">Clear</button>
+    </div>
+  </div>
+</form>
+
+<div class="row mt-2">
+</div>
+
+<div *ngIf="itemMovements" class="row mt-4 w-75 mx-auto">
+  <table class="table table-hover">
+    <thead class="text-info text-center">
+      <tr>
+        <th class="click">Date</th>
+        <th class="click">movement type</th>
+        <th class="click">item</th>
+        <th></th>
+        <th class="click">whare house</th>
+        <th class="click">in</th>
+        <th class="click">out</th>
+        <th class="click">production</th>
+        <th class="click">shelf change</th>
+        <th class="click">user</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let movement of itemMovements">
+        <td class="text-center">{{movement.movementDate | date: 'dd/MM/yy'}}</td>
+        <td class="text-center">{{movement.movementType}}</td>
+        <td class="text-center">{{movement.item}}</td>
+        <td class="text-center">{{movement.inventory_doc[0].componentName}}</td>
+        <td class="text-center">{{movement.WH_originName}}</td>
+        <td class="text-center"><span *ngIf="itemMovementForm.value.movementType == 'in'">{{movement.amount}}</span>
+        </td>
+        <td class="text-center"><span *ngIf="itemMovementForm.value.movementType == 'out'">{{movement.amount}}</span>
+        </td>
+        <td class="text-center"><span
+            *ngIf="itemMovementForm.value.movementType == 'production'">{{movement.amount}}</span></td>
+        <td class="text-center"><span
+            *ngIf="itemMovementForm.value.movementType == 'shelfChange'">{{movement.amount}}</span></td>
+        <td class="text-center">{{movement.userName}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+<!-- Item Details -->
+
+<div class="row mt-4 text-center">
+  <h3 class="text-center mx-auto">Item Details</h3>
+</div>
+
+<form [formGroup]="itemDetailsForm" (ngSubmit)="getItemData()">
+  <div class="row border border-success rounded p-4 w-75 form-group mx-auto">
+    <div class="col-1">
+      <label>
+        item type
+      </label>
+      <select formControlName="itemType" class="form-control">
+        <option value="all">all</option>
+        <option value="component">component</option>
+        <option value="material">material</option>
+        <option value="product">product</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label>
+        item number
+      </label>
+      <input type="text" formControlName="itemNumber" class="form-control">
+    </div>
+    <!-- <div class="col-2">
+    <label>
+      item name
+    </label>
+    <input type="text">
+    <select class="form-control">
+      <option *ngFor="let item of items" [value]="item.allName"></option>
+    </select>
+  </div> -->
+    <div class="col-1">
+      <button type="submit" class="btn btn-success">Go.</button>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-secondary"
+      (click)="item = undefined">Clear</button>
+    </div>
+   
+  </div>
+</form>
+
+
+
+<div class="row mt-2"></div>
+
+
+<div *ngIf="item" class="modal-inner bg-success container p-5">
+
+  <div class="border border-white p-2">
+
+    <!--Name-->
+    <div class=" row text-center">
+      <div class="col-1"></div>
+      <div class="col-8">
+        <input class="form-control" type="text" [(ngModel)]="item.componentName">
+      </div>
+      <div class="col-2">
+        <label class="form-control">שם פריט</label>
+      </div>
+      <div class="col-1"></div>
+    </div>
+
+    <!---->
+    <div dir="rtl" class="row text-center ">
+      <div class="col-4 ">
+        <h5 class="text-white">פרטי פריט</h5>
+      </div>
+      <div class="col-4 ">
+        <h5 class="text-white">פרטי ספק</h5>
+      </div>
+      <div class="col-4">
+        <h5 class="text-white">פרטי מלאי</h5>
+      </div>
+    </div>
+
+    <div dir="rtl" class="row text-center">
+      <div class="col-2">
+        <label class="form-control">מספר פריט</label>
+        <label class="form-control">שם קומקס</label>
+        <label class="form-control">פריט חלופי</label>
+        <label class="form-control">מחיר אחרון (שקלים)</label>
+        <label class="form-control">מחיר העמסה (שקלים)</label>
+      </div>
+      <div class="col-2">
+        <input disabled (change)="checkIfItemExist($event)" class="form-control" type='text'
+          [(ngModel)]="item.componentN">
+        <input class="form-control mt-2" type="text" [(ngModel)]="item.comaxName">
+        <input class="form-control mt-2" type="text" [(ngModel)]="item.alternativeComponent">
+        <input class="form-control mt-2" type="text" [(ngModel)]="item.price">
+        <input class="form-control mt-2" type="number" [(ngModel)]="item.shippingPrice">
+      </div>
+      <div class="col-2">
+        <label class="form-control">מספר ספק</label>
+        <label class="form-control">מק"ט ספק</label>
+        <label class="form-control">מחיר ספק</label>
+      </div>
+      <div class="col-2">
+        <input class="form-control" list="suppliers" type='text' (change)="fillSupplierDetails()"
+          [(ngModel)]="item.suplierN">
+        <datalist id="suppliers">
+          <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+            {{supplier.suplierNumber}}
+          </option>
+        </datalist>
+        <input class="form-control mt-2" type='text' [(ngModel)]="item.componentNs">
+        <input class="form-control mt-2" type='text' [(ngModel)]="item.price">
+      </div>
+      <div class="col-2">
+        <label class="form-control">מלאי מינימום</label>
+        <label class="form-control">כמות מינימלית להזמנה</label>
+      </div>
+      <div class="col-2">
+        <input class="form-control" type='number' [(ngModel)]="item.minimumStock">
+        <input class="form-control mt-2" type='number' [(ngModel)]="item.minimumPurchaseAmount">
+      </div>
+    </div>
+
+    <div dir="rtl" class="row text-center">
+      <div class="col-4">
+        <h5 class="text-white">פרטים נוספים</h5>
+      </div>
+      <div class="col-4">
+        <h5 class="text-white">הערות</h5>
+      </div>
+      <div class="col-4">
+        <h5 class="text-white">תמונה</h5>
+      </div>
+    </div>
+
+    <div dir="rtl" class="row text-center">
+      <div class="col-2">
+        <label class="form-control">קטגוריה</label>
+        <label class="form-control">מותג</label>
+        <label class="form-control">משקל/סוג</label>
+        <label class="form-control">יח' מידה</label>
+        <label class="form-control">כמות מל'</label>
+        <label class="form-control">על חשבון</label>
+        <label class="form-control">רשימת לקוחות</label>
+      </div>
+      <div class="col-2">
+        <select class="form-control" [(ngModel)]="item.componentType">
+          <option value='bottle_Glass'>בקבוק זכוכית</option>
+          <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+          <option value='jar_Glass'>צנצנת זכוכית</option>
+          <option value='jar_Plastic'>צנצנת פלסטיק</option>
+          <option value='cap'>פקק</option>
+          <option value='cover'>מכסה</option>
+          <option value='pump'>משאבה</option>
+          <option value='cosmetic_pump'>משאבה קוסמטית</option>
+          <option value='over_cap'>מכסה עילי</option>
+          <option value='tube'>שפורפרת</option>
+          <option value='colons'>קולונים</option>
+          <option value='hair_life'>היירלייפ</option>
+          <option value='compacts'>קומפקטים</option>
+          <option value='personal_package'>אריזות אישיות</option>
+          <option value='master_carton'>קרטוני מאסטר</option>
+          <option value='newsletter'>עלון לצרכן</option>
+          <option value='irosol_valve'>אירוסול- שסתום</option>
+          <option value='irosol_bottle'>איירוסול- בקבוק</option>
+          <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+          <option value='irosol_bottle'>איירוסול- בקבוק</option>
+          <option value='cellophane'>צלופן</option>
+          <option value='sticker'>מדבקה</option>
+          <option value='sachet'>סאשט</option>
+          <option value='godett'>גודט</option>
+          <option value='plate'>גלופה</option>
+          <option value='other'>אחר</option>
+        </select>
+
+        <select class="form-control  mt-2">
+          <option value=""></option>
+          <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
+        </select>
+
+        <select class="form-control mt-2" [(ngModel)]="item.packageType">
+          <option value='paperCarton'>נייר/קרטון</option>
+          <option value='drinkCarton'>קרטוניות משקה</option>
+          <option value='transperentGlass'>זכוכית שקופה</option>
+          <option value='colorGlass'>זכוכית צבעונית</option>
+          <option value='pet'>PET</option>
+          <option value='hdpe'>HDPE</option>
+          <option value='ldpe'>LDPE</option>
+          <option value='pp'>PP</option>
+          <option value='ps'>PS</option>
+          <option value='otherPlastic'>פלסטיק אחר</option>
+          <option value='metal'>מתכת</option>
+          <option value='wood'>עץ</option>
+          <option value='otherMaterial'>חומר אחר</option>
+        </select>
+
+        <select class="form-control mt-2" [(ngModel)]="item.measurement">
+          <option value="kilogram">kilogram</option>
+          <option value="liter">liter</option>
+          <option value="meter">meter</option>
+          <option value="ml">ml</option>
+          <option value="unit">Unit</option>
+          <option value="ton">טון</option>
+          <option value="unit">יחידה</option>
+          <option value="box">קופסא</option>
+        </select>
+
+        <input class="form-control mt-2" type="text" [(ngModel)]="item.actualMlCapacity">
+        <select class="form-control mt-2" [(ngModel)]="item.whoPays">
+          <option value="peerpharm">פארפארם</option>
+          <option value="customers">לקוח/לקוחות</option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label class="form-control">הערה</label>
+        <label class="form-control mt-5">הערה קופצת</label>
+
+      </div>
+      <div class="col-2">
+        <textarea rows="2" cols="20" class="form-control" type='text' [(ngModel)]="item.remarks"></textarea>
+        <textarea rows="2" cols="20" class="form-control mt-4" type='text' [(ngModel)]="item.jumpRemark"></textarea>
+      </div>
+
+      <div class="col-2">
+        <button [disabled]="gettingProducts" [style.cursor]="gettingProducts ? 'not-allowed' : 'pointer'"
+          (click)="getProductsWithItem()">הצג מוצרים שמכילים את הפריט</button>
+      </div>
+
+      <div class="col-2 modal-inner border" *ngIf="item.connectedProducts">
+        <div *ngFor="let product of item.connectedProducts">
+          <h5>{{product.itemNumber}}</h5>
+          <h5>{{product.name}}</h5>
+          <h5>{{product.subName}}</h5>
+          <h5>{{product.discriptionK}}</h5>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row text-center">
+      <div class="col-12">
+        <div *ngIf="allowUserEditItem">
+          <button class="btn btn-success form-control" id="updateDataBtn" (click)="editStockItemDetails()">עדכן מידע</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <h2>Purchase History</h2>
+  </div>
+  <div class="row mt-4">
+  </div>
+  <div>
+    <div class="smallLoader" *ngIf="fetchingOrders"></div>
+    <div *ngIf="lastOrdersOfItem.length > 0" class="row text-center p-2">
+        <h3>Purchase History for Item {{item.number}}</h3>
+        <table class="table table-striped table-hover">
+          <thead class="bg-success text-white">
+            <tr>
+              <th>#</th>
+              <th>Order Number</th>
+              <th>Supplier</th>
+              <th>Status</th>
+              <th>Order Date</th>
+              <th>Arrival Date</th>
+              <th>Arrived Amount</th>
+              <th></th>
+              <th>Ordered Amount</th>
+              <th>Item Price (Foreign)</th>
+              <th>Item Price (NIS)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let lastorderitem of lastOrdersOfItem; let i = index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{lastorderitem.orderNumber}}</td>
+                <td>{{lastorderitem.supplierName}}</td>
+                <td>{{lastorderitem.status}}</td>
+                <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
+                <td><span *ngIf="lastorderitem.arrivalDate">{{lastorderitem.arrivalDate | date:
+                    'dd/MM/yyyy'}}</span></td>
+                <td>{{lastorderitem.arrivedAmount}}</td>
+                <td>/</td>
+                <td>{{lastorderitem.quantity}}</td>
+                <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
+                <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+
+</div>
