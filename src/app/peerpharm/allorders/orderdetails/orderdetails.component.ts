@@ -1624,23 +1624,32 @@ export class OrderdetailsComponent implements OnInit {
 
       this.internalNumArr = []; //just numbers
       this.ordersItems.map(i => this.internalNumArr.push(i.itemNumber.trim()));
+
       //get all orderItem-demands
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe(async res => {
+
+        //res = all items(products) from order
         await res.forEach(async item => {
 
+          debugger
+          // orderItem = orderItem from current order
           let orderItem = this.ordersItems.find(o=>o.itemNumber == item.itemNumber)
-          orderItem ? item.orderNumber = orderItem.orderNumber : item.orderNumber = ''
-          
-          item.weight = this.ordersItems.find(i => i.itemNumber == item.itemNumber).netWeightGr
-          //for each order-item-demand, get all internal items and their quantities 
-          let i = this.ordersItems.filter(x => x.itemNumber == item.itemNumber)[0];
-          item.quantity = parseInt(i.quantity);
-          item.itemName = i.discription;
 
+          //assign order number and weight to orderItem
+          if(orderItem) {
+            item.orderNumber = orderItem.orderNumber 
+            item.weight = orderItem.netWeightGr
+
+          }
+          else item.orderNumber = ''
+          
+          //for each order-item-demand, get all internal components and their quantities 
+          item.quantity = parseInt(orderItem.quantity);
+          item.itemName = orderItem.discription;
+
+          // get current product amount from shelfs
           this.inventoryService.getComponentAmount(item.itemNumber).subscribe(data=>{
-            let i = 0;
-            data.map(chunk => i += chunk.amount)
-            item.currStock = i
+            item.currStock = data[0].amount;
           })
 
           if (item.bottleNumber != '' && item.bottleNumber != '---') {
