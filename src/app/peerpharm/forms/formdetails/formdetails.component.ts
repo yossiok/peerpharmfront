@@ -14,6 +14,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 export class FormdetailsComponent implements OnInit {
   form: any = {};
   disabledValue = true;
+  formQAPalletsData:any[]
   averageNetoWeight = 0;
   loggedInUser: UserInfo;
   netoWeightArr: number[] = new Array();
@@ -23,6 +24,7 @@ export class FormdetailsComponent implements OnInit {
   compileTabBtn:String ="transperent";
   allChecks: Array<any>=[];
   formid="";
+  showQAPalletsModal:boolean = false;
 
   constructor(
     private excelService:ExcelService,
@@ -78,6 +80,37 @@ export class FormdetailsComponent implements OnInit {
       sum += element;
     });
     this.averageNetoWeight = sum / arrlength;
+  }
+
+  loadQAPallets(formId) {
+    debugger;
+    this.formsService.getQAPalletsByFormId(formId).subscribe(QAPallets =>{
+        
+      if(QAPallets){
+        debugger;
+        this.showQAPalletsModal = true;
+
+        for (let i = 0; i < QAPallets.length; i++) {
+
+          let count = 0;
+
+          if(QAPallets[i].palletStatus == 'done') QAPallets[i].palletStatus = 'הועלה על משטח'
+          if(QAPallets[i].palletStatus == 'open') QAPallets[i].palletStatus = 'ממתין למשטח'
+
+          count = QAPallets[i].floorNumber*QAPallets[i].kartonQuantity*QAPallets[i].unitsInKarton
+
+          if(QAPallets[i].lastFloorQuantity > 0) count += QAPallets[i].lastFloorQuantity*QAPallets[i].kartonQuantity*QAPallets[i].unitsInKarton
+
+          if(QAPallets[i].unitsQuantityPartKarton > 0) count += QAPallets[i].unitsQuantityPartKarton
+
+          QAPallets[i].sumAmount = count;
+        }
+
+        this.formQAPalletsData = QAPallets;
+      }
+    })
+
+
   }
 
   // UserDisableAuth() {
