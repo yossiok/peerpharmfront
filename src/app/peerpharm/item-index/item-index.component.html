@@ -88,12 +88,12 @@
         <option value="lowerThan">Lower than</option>
       </select>
     </div>
-    <div class="col-1 mt-2">
+    <div class="col-1">
       <button type="submit" class="btn btn-info">Go.</button>
     </div>
-    <div class="col-1 mt-2">
+    <div class="col-1">
       <button type="button" class="btn btn-secondary"
-        (click)="itemMovementForm.reset(); item = undefined">Clear</button>
+        (click)="itemMovementForm.reset()">Clear</button>
     </div>
   </div>
 </form>
@@ -178,9 +178,14 @@
       <option *ngFor="let item of items" [value]="item.allName"></option>
     </select>
   </div> -->
-    <div class="col-2">
+    <div class="col-1">
       <button type="submit" class="btn btn-success">Go.</button>
     </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-secondary"
+      (click)="item = undefined">Clear</button>
+    </div>
+   
   </div>
 </form>
 
@@ -231,7 +236,6 @@
           [(ngModel)]="item.componentN">
         <input class="form-control mt-2" type="text" [(ngModel)]="item.comaxName">
         <input class="form-control mt-2" type="text" [(ngModel)]="item.alternativeComponent">
-        <!-- <input class="form-control" type="number" [(ngModel)]="item.finalPrice" maxlength="6" max="6"> -->
         <input class="form-control mt-2" type="text" [(ngModel)]="item.price">
         <input class="form-control mt-2" type="number" [(ngModel)]="item.shippingPrice">
       </div>
@@ -318,9 +322,6 @@
           <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
         </select>
 
-
-
-
         <select class="form-control mt-2" [(ngModel)]="item.packageType">
           <option value='paperCarton'>נייר/קרטון</option>
           <option value='drinkCarton'>קרטוניות משקה</option>
@@ -381,9 +382,6 @@
     </div>
 
     <div class="row text-center">
-      <!-- <div class="col-6">
-        <button class="btn btn-success form-control" id="newCbtn" (click)="writeNewComponent()">הקם מוצר</button>
-      </div> -->
       <div class="col-12">
         <div *ngIf="allowUserEditItem">
           <button class="btn btn-success form-control" id="updateDataBtn" (click)="editStockItemDetails()">עדכן מידע</button>
@@ -392,239 +390,14 @@
     </div>
   </div>
 
-  <div class="container modal-inner">
-  
-    <h2 class="float-right">רשימת ספקים</h2>
-    <div dir='rtl' class="row text-center">
-      <div class="col-12">
-        <table class="table table-hover">
-          <thead class="bg-success text-white">
-            <tr>
-              <th></th>
-              <th></th>
-              <th>ספק</th>
-              <th>יצרן</th>
-              <th>שם פריט ספק</th>
-              <th>מספר פריט ספק</th>
-              <th>מחיר</th>
-              <th>מטבע</th>
-              <th>משקל</th>
-              <th>מדינה</th>
-              <th>זמן הגעה משוער</th>
-              <th>מחיר העמסה</th>
-              <!--  <th>מחיר לפני טעינה</th> -->
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-
-
-              <tr *ngFor="let supplier of item.alternativeSuppliers; let i = index" [ngClass]="mainSupplier(supplier.isMain)">
-
-                <td>
-                  <button *ngIf="!supplier.isMain" (click)="makeAsMainSupplier(i)" class="btn btn-success">הגדר כספק ראשי</button>
-                  <span *ngIf="supplier.isMain">ספק ראשי!</span>
-                </td>
-
-                <td><i class="fa fa-pencil-alt" placement="bottom" ngbTooltip="ערוך פרטי ספק" (click)="edit(i)"></i></td>
-
-                <td>{{supplier.supplierName}}</td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.manufacturer}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="text" [(ngModel)]="supplier.manufacturer" class="form-control" #manufacturer>
-                </td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.alterName}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="text" [(ngModel)]="supplier.alterName" class="form-control" #alterName>
-                </td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.alternativeMaterial}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="text" [(ngModel)]="supplier.alternativeMaterial" class="form-control"
-                    #alternativeMaterial>
-                </td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.price}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="text" [(ngModel)]="supplier.price" class="form-control" #price>
-                </td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.coin}}</td>
-                <td *ngIf="rowNumber == i">
-                  <select [(ngModel)]="supplier.coin" #coin>
-                    <option value="NIS">NIS</option>
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                  </select>
-                </td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.packageWeight}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="text" [(ngModel)]="supplier.packageWeight" class="form-control" #packageWeight>
-                </td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.country}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="text" [(ngModel)]="supplier.country" class="form-control" #country>
-                </td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.expectedArrival}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="text" [(ngModel)]="supplier.expectedArrival" class="form-control" #expectedArrival>
-                </td>
-
-                <td *ngIf="rowNumber != i">
-                  {{supplier.shippingPrice | currency: 'NIS'}}</td>
-                <td *ngIf="rowNumber == i">
-                  <input type="number" [(ngModel)]="supplier.shippingPrice" class="form-control" #priceLoading>
-                </td> 
-                <td><i placement="bottom" ngbTooltip="שמירה" class="fa fa-save" (click)="rowNumber = -1" *ngIf="rowNumber == i"></i></td>
-                <td><i placement="bottom" ngbTooltip="מחק מרשימת הספקים" (click)="deleteSupplier(i,item.componentN)" class="fa fa-times text-danger"></i>
-                </td>
-
-              </tr>
-
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <h2 class="float-right">הוסף ספק</h2>
-    <div dir='rtl' class="row border border-success border-bottom-0 text-center">
-      <div class="col-1"></div>
-      <div class="col-2">
-        <label class="form-control">ספק</label>
-        <label class="form-control">יצרן</label>
-        <label class="form-control">מספר פריט ספק</label>
-        <label class="form-control">שם פריט ספק</label>
-        <label class="form-control">סוג אריזה</label>
-
-      </div>
-      <div class="col-3">
-        <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierName">
-        <datalist id="suppliers">
-          <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-            {{supplier.suplierName}}</option>
-        </datalist>
-        <input type="text" class="form-control mt-2" [(ngModel)]="supplier.manufacturer">
-        <input [(ngModel)]="supplier.alternativeMaterial" class="form-control mt-2" type='text'>
-        <input [(ngModel)]="supplier.alterName" class="form-control mt-2" type='text'>
-        <input list="groups" [(ngModel)]="supplier.subGroup" class="form-control mt-2">
-        <datalist id="groups">
-          <option value="Cube">קובייה</option>
-          <option value="barrel">חבית</option>
-          <option value="small barrel">חביונית</option>
-          <option value="packaging/cardboard">אריזות/קרטון</option>
-          <option value="plastic barrel">חבית פלסטיק</option>
-          <option value="jerrican">ג'ריקן</option>
-          <option value="bag">שק</option>
-          <option value="bottle barrel">דלי בקבוק</option>
-        </datalist>
-
-      </div>
-      <div class="col-2">
-        <label class="form-control">מחיר</label>
-        <label class="form-control">מטבע</label>
-        <label class="form-control">מחיר העמסה</label>
-        <label class="form-control">מטבע לאחר טעינה</label>
-        <label class="form-control">משקל יחידה</label>
-        <label class="form-control">יחידת מידה</label>
-      </div>
-      <div class="col-3">
-        <input [(ngModel)]="supplier.price" type="text" class="form-control">
-        <input list="coins" [(ngModel)]="supplier.coin" class="form-control mt-2">
-        <datalist id="coins">
-          <option value="usd">USD</option>
-          <option value="nis">NIS</option>
-          <option value="gbp">GBP</option>
-          <option value="eur">EUR</option>
-          <option value="yen">YEN</option>
-        </datalist>
-        <input [(ngModel)]="supplier.priceLoading" type="text" class="form-control mt-2" />
-        <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control mt-2">
-        <datalist id="coinsLoading">
-          <option value="usd">USD</option>
-          <option value="nis">NIS</option>
-          <option value="gbp">GBP</option>
-          <option value="eur">EUR</option>
-          <option value="yen">YEN</option>
-        </datalist>
-        <input [(ngModel)]="supplier.packageWeight" type="text" class="form-control mt-2" />
-        <input list="measurement" [(ngModel)]="item.unitOfMeasure" class="form-control mt-2">
-        <datalist id="measurement">
-          <option value="kilogram">קילוגרם</option>
-          <option value="pcs">יחידות</option>
-          <option value="liter">ליטר</option>
-        </datalist>
-      </div>
-      <div class="col-1"></div>
-    </div>
-
-    <div dir='rtl' class="row border border-success border-top-0 text-center">
-      <div class="col-12">
-        <button (click)="addSupplierToMaterial()" class="btn btn-success form-control">הוסף ספק</button>
-      </div>
-    </div>
-
-    <div *ngIf="updateSupplier == true" class="row text-center">
-      <div class="col-5">
-
-      </div>
-      <div class="col-2">
-        <button (click)="updateSupplierDetails(true)" class="btn btn-success form-control">שמור</button>
-      </div>
-      <div class="col-5">
-
-      </div>
-
-    </div>
-
-    <div class="row text-center">
-      <div class="col-3">
-
-      </div>
-      <div class="col-3">
-        <div *ngIf="allowUserEditItem">
-          <button class="btn btn-success form-control" id="updateDataBtn" (click)="editMaterialItemDetails()"
-            *ngIf="newItem!='new'">עדכן
-            מידע</button>
-        </div>
-      </div>
-      <div class="col-3">
-        <button class="btn btn-success form-control" id="newCbtn" (click)="clearFields()">Clear</button>
-      </div>
-      <div class="col-3">
-
-      </div>
-    </div>
-
-  </div>
   <div class="row mt-4">
     <h2>Purchase History</h2>
   </div>
   <div class="row mt-4">
-    <label>Number of orders: </label> &nbsp;
-    <input type="text" #numOfOrders />
-    <div class="col-1"></div>
-    <button (click)="getLastOrdersItem(numOfOrders.value, 'component')">Watch History</button>
   </div>
   <div>
     <div class="smallLoader" *ngIf="fetchingOrders"></div>
     <div *ngIf="lastOrdersOfItem.length > 0" class="row text-center p-2">
-      <div style="overflow:scroll;height:500px;width:100%">
         <h3>Purchase History for Item {{item.number}}</h3>
         <table class="table table-striped table-hover">
           <thead class="bg-success text-white">
@@ -661,7 +434,6 @@
             </ng-container>
           </tbody>
         </table>
-      </div>
     </div>
   </div>
 

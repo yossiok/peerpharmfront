@@ -106,7 +106,10 @@ export class ItemIndexComponent implements OnInit {
   getItemData(){
     this.inventoryService.getItemByNumber(this.itemDetailsForm.value.itemNumber).subscribe(item => {
       if(item.msg) this.toastSrv.error(item.msg)
-      else this.item = item
+      else {
+        this.item = item
+        this.getLastOrdersItem(20, this.item.itemType)
+      } 
     })
   }
 
