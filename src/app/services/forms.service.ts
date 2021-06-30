@@ -366,6 +366,11 @@ export class FormsService {
     let url = this.baseUrl + 'formDetails/getAllqaPallets';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getQAPalletsByFormId(formId) {
+    
+    let url = this.baseUrl + 'formDetails?formId='+formId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   findLostPallets(packList) {
     let url = this.baseUrl + 'formDetails/findlostPallets';
