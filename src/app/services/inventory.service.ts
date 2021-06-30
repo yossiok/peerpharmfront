@@ -224,9 +224,9 @@ export class InventoryService {
     return this.http.post(url, { itemShellID, newShellID, newPosition }, this.options).pipe(map(res => res.json()))
   }
 
-  updatePriceHistory(componentN, newPrice, user) : Observable<any> {
+  updatePriceHistory(componentN, newPrice, coin, user) : Observable<any> {
     let url = `${this.baseUrl}material/updateManualPrice`;
-    return this.http.post(url, { componentN, newPrice, user }, this.options).pipe(map(res => res.json()))
+    return this.http.post(url, { componentN, newPrice, coin, user }, this.options).pipe(map(res => res.json()))
   }
 
   addNewMaterial(materialObj): Observable<any> {

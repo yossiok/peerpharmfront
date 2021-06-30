@@ -239,7 +239,7 @@ export const ROUTES: RouteInfo[] = [
 
       {
         path: '/peerpharm/inventory/stock',
-        title: 'Index',
+        title: 'Amounts',
         icon: 'fas fa-address-book',
         class: '',
         extralink: false,
@@ -255,7 +255,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: '/peerpharm/inventory/wharehouse',
-        title: 'Warehouse',
+        title: 'Warehouse Actions',
         icon: 'fas fa-tree',
         class: '',
         extralink: false,
@@ -271,7 +271,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: '/peerpharm/inventory/materialArrival',
-        title: 'Material Arrival',
+        title: 'Material Arrivals',
         icon: 'fas fa-tree',
         class: '',
         extralink: false,

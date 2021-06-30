@@ -161,30 +161,23 @@
       <br>
 
       <div (click)='setType("component")' [ngStyle]="{'background-color': buttonColor,'color':fontColor}" class="navtab"
-        style="cursor:pointer;box-shadow: black 0px -1px 3px inset;">Components</div>
-      <div (click)='setType("product")' [ngStyle]="{'background-color': buttonColor3,'color':fontColor3}" class="navtab"
-        style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Products</div>
-      <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2,'color':fontColor2}"
-        class="navtab" style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Materials</div>
-      <div class="export border border-info p-2" style="cursor:pointer;">
-        <img *ngIf="loadingExcel" style="width:50px"
-          src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
-        <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-          (click)="exportCurrTable()">
-        <img src="../../../../assets/images/excel.png" alt="export to excel" class="border border-light"
-          style="width: 40px;" (click)="exportItemData()">
-      </div>
-      <div [class.read-only]="checkPermission()" class="export" style="cursor:pointer;"
-        (click)="open(printInventoryValue)">
-        <button class="btn btn-primary">Value For Money</button>
-      <div class="export border border-info p-2" style="cursor:pointer;">
-        <p>דו"ח הזמנות לפריט</p>
-        <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
-        (click)="excelForItem()">
-      </div>
-      <!-- <div [class.read-only]="checkPermission()" class="export" style="cursor:pointer;" (click)="open(printInventoryValue)">
-        <button class="btn btn-primary">Value For Money</button>
-      </div> -->
+      style="cursor:pointer;box-shadow: black 0px -1px 3px inset;">Components</div>
+    <div (click)='setType("product")' [ngStyle]="{'background-color': buttonColor3,'color':fontColor3}" class="navtab"
+      style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Products</div>
+    <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2,'color':fontColor2}"
+      class="navtab" style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Materials</div>
+    <div class="export" style="cursor:pointer;">
+      <img *ngIf="loadingExcel" style="width:50px"
+        src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+      <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
+        (click)="exportCurrTable()">
+      <img src="../../../../assets/images/excel.png" alt="export to excel" class="border border-light"
+        style="width: 40px;" (click)="exportItemData()">
+    </div>
+    <div [class.read-only]="checkPermission()" class="export" style="cursor:pointer;"
+      (click)="open(printInventoryValue)">
+      <button class="btn btn-primary">Value For Money</button>
+    </div>
 
       <!-- TABLE START -->
       <div *ngIf="stockType=='component' && !smallLoader" class="tableFixHead">
@@ -1028,15 +1021,15 @@
   
           <div class="fixNoaStupidStuff" dir="rtl">
             <div class="fixNoaStupidStuff row mt-4">
-              <div class="col-2">
-                <label>מחיר רכש אחרון</label>
-                <input disabled class="form-control" [(ngModel)]="resCmpt.price" type="number">
+              <div class="fixNoaStupidStuff col-4">
+                <h5>מחיר רכש אחרון</h5>
+                <p>{{resCmpt.coin}} {{resCmpt.price}}</p>
               </div>
-            </div>
-            <div class="fixNoaStupidStuff row mt-2">
+              <div class="col-4">
+                <h5>מחיר ידני</h5>
+                <p>{{resCmpt.manualCoin}} {{resCmpt.manualPrice}}</p>
+              </div>
               <div class="col-2">
-                <label>מחיר ידני</label>
-                <input disabled class="form-control" [(ngModel)]="resCmpt.manualPrice" type="number"> &#8362;
                 <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
               </div>
             </div>
@@ -1047,6 +1040,7 @@
           </div>
           <div dir="rtl" class="row fixNoaStupidStuff mt-2">
   
+            <div class="col-3"><p>מקרא: </p></div>
             <div class="col-3"><div class="yellow">עדכון ידני</div></div>
             <div class="col-3"><div class="cornflowerblue">עדכון מערכת</div></div>
   
@@ -1060,7 +1054,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let update of resCmpt.priceUpdates; let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-                  <td>{{update.price}}</td>
+                  <td>{{update.coin}} {{update.price}}</td>
                   <td>{{update.date | date:'dd/MM/yy'}}</td>
                   <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                   <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
@@ -2105,15 +2099,15 @@
 
         <div class="fixNoaStupidStuff" dir="rtl">
           <div class="fixNoaStupidStuff row mt-4">
-            <div class="col-2">
-              <label>מחיר רכש אחרון</label>
-              <input disabled class="form-control" [(ngModel)]="resMaterial.price" type="number">
+            <div class="fixNoaStupidStuff col-4">
+              <h5>מחיר רכש אחרון</h5>
+              <p>{{resMaterial.coin}} {{resMaterial.price}}</p>
             </div>
-          </div>
-          <div class="fixNoaStupidStuff row mt-2">
+            <div class="col-4">
+              <h5>מחיר ידני</h5>
+              <p>{{resMaterial.manualCoin}} {{resMaterial.manualPrice}}</p>
+            </div>
             <div class="col-2">
-              <label>מחיר ידני</label>
-              <input disabled class="form-control" [(ngModel)]="resMaterial.manualPrice" type="number">
               <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
             </div>
           </div>
@@ -2130,7 +2124,6 @@
           <table dir="rtl" class="table table-hover">
             <thead>
               <tr>
-                <th>#</th>
                 <th>מחיר</th>
                 <th>תאריך</th>
                 <th>סיבת עדכון</th>
@@ -2138,9 +2131,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let update of resMaterial.priceUpdates; let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-                <td>{{i+1}}</td>
-                <td>{{update.price}}</td>
-                <td>{{update.date}}</td>
+                <td>{{update.coin}} {{update.price}}</td>
+                <td>{{update.date | date: 'dd/MM/yy'}}</td>
                 <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                 <td *ngIf="update.type == 'auto'">הזמנת רכש מס' {{update.purchase}}</td>
               </tr>
@@ -2581,9 +2573,26 @@
     </div> -->
 
     <div class="fixNoaStupidStuff row mt-2">
-      <label>מחיר חדש:</label>
-      <input *ngIf="resMaterial.componentN != ''" type="number" [(ngModel)]="resMaterial.manualPrice">
-      <input *ngIf="resCmpt.componentN != ''" type="number" [(ngModel)]="resCmpt.manualPrice">
+      <div class="fixNoaStupidStuff col-3">
+        <label>מחיר חדש:</label>
+        <input *ngIf="resMaterial.componentN != ''" class="form-control" type="number" [(ngModel)]="resMaterial.manualPrice">
+        <input *ngIf="resCmpt.componentN != ''" class="form-control" type="number" [(ngModel)]="resCmpt.manualPrice">
+      </div>
+      <div class="fixNoaStupidStuff col-3">
+        <label>מטבע:</label>
+        <select *ngIf="resMaterial.componentN != ''" [(ngModel)]="resMaterial.manualCoin" class="form-control">
+          <option value="NIS">NIS</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
+        <select *ngIf="resCmpt.componentN != ''" [(ngModel)]="resCmpt.manualCoin" class="form-control">
+          <option value="NIS">NIS</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </div>
     </div>
 
     <div class="fixNoaStupidStuff row mt-2">

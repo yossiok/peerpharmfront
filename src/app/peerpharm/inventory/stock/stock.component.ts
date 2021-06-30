@@ -2001,18 +2001,21 @@ export class StockComponent implements OnInit {
   addToPriceHistory(type) {
     let componentN
     let newPrice
+    let coin
     switch(type) {
       case 'c':
         componentN = this.resCmpt.componentN
         newPrice = this.resCmpt.manualPrice
+        coin = this.resCmpt.manualCoin
         break
       case 'm':
         componentN = this.resMaterial.componentN
         newPrice = this.resMaterial.manualPrice
+        coin = this.resMaterial.manualCoin
         break
     }
     let user = this.authService.loggedInUser.userName
-    this.inventoryService.updatePriceHistory(componentN, newPrice, user).subscribe(data=> {
+    this.inventoryService.updatePriceHistory(componentN, newPrice, coin, user).subscribe(data=> {
       console.log(data)
       if(type == 'c') {
 
