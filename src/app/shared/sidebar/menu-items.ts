@@ -443,70 +443,70 @@ export const ROUTES: RouteInfo[] = [
     ]
   },
 
-  {
-    path: '',
-    title: ' Suppliers',
-    icon: 'fas fa-address-book',
-    class: 'has-arrow',
-    extralink: false,
-    submenu: [
+  // {
+  //   path: '',
+  //   title: ' Suppliers',
+  //   icon: 'fas fa-address-book',
+  //   class: 'has-arrow',
+  //   extralink: false,
+  //   submenu: [
 
-      {
-        path: '/peerpharm/suppliers/suppliers',
-        title: 'All Suppliers',
-        icon: 'fas fa-address-book',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
-    ]
-  },
+  //     {
+  //       path: '/peerpharm/suppliers/suppliers',
+  //       title: 'All Suppliers',
+  //       icon: 'fas fa-address-book',
+  //       class: '',
+  //       extralink: false,
+  //       submenu: []
+  //     },
+  //   ]
+  // },
 
-  {
-    path: '/peerpharm/costumers/costumers_list',
-    title: 'Customers',
-    icon: 'fas fa-users',
-    class: 'has-arrow',
-    extralink: false,
-    submenu: [
-      {
-        path: '/peerpharm/costumers/costumers_list',
-        title: 'All Customers',
-        icon: 'fas fa-address-book',
-        class: '',
-        extralink: false,
-        submenu: []
-      }
-    ]
-  },
+  // {
+  //   path: '/peerpharm/costumers/costumers_list',
+  //   title: 'Customers',
+  //   icon: 'fas fa-users',
+  //   class: 'has-arrow',
+  //   extralink: false,
+  //   submenu: [
+  //     {
+  //       path: '/peerpharm/costumers/costumers_list',
+  //       title: 'All Customers',
+  //       icon: 'fas fa-address-book',
+  //       class: '',
+  //       extralink: false,
+  //       submenu: []
+  //     }
+  //   ]
+  // },
 
-  {
-    path: '',
-    title: 'Services',
-    icon: 'fas fa-vials',
-    class: 'has-arrow',
-    extralink: false,
-    submenu:
-      [
-        {
-          path: '/peerpharm/services/ordered',
-          title: 'Ordered Services',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
-        {
-          path: '/peerpharm/services/new',
-          title: 'Add Service',
-          icon: 'fas fa-list-ol',
-          class: '',
-          extralink: false,
-          submenu: []
-        },
+  // {
+  //   path: '',
+  //   title: 'Services',
+  //   icon: 'fas fa-vials',
+  //   class: 'has-arrow',
+  //   extralink: false,
+  //   submenu:
+  //     [
+  //       {
+  //         path: '/peerpharm/services/ordered',
+  //         title: 'Ordered Services',
+  //         icon: 'fas fa-list-ol',
+  //         class: '',
+  //         extralink: false,
+  //         submenu: []
+  //       },
+  //       {
+  //         path: '/peerpharm/services/new',
+  //         title: 'Add Service',
+  //         icon: 'fas fa-list-ol',
+  //         class: '',
+  //         extralink: false,
+  //         submenu: []
+  //       },
 
-      ]
-  },
+  //     ]
+  // },
 
   {
     path: '',
@@ -544,7 +544,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '',
-    title: 'Item Index',
+    title: 'Index',
     icon: 'fas fa-book',
     class: 'has-arrow',
     extralink: false,
@@ -552,12 +552,28 @@ export const ROUTES: RouteInfo[] = [
       [
         {
           path: '/peerpharm/itemindex',
-          title: 'Item Index',
+          title: 'Items',
           icon: 'fas fa-list-ol',
           class: '',
           extralink: false,
           submenu: []
         },
+        {
+          path: '/peerpharm/costumers/costumers_list',
+          title: 'Customers',
+          icon: 'fas fa-address-book',
+          class: '',
+          extralink: false,
+          submenu: []
+        },
+        {
+          path: '/peerpharm/suppliers/suppliers',
+          title: 'Suppliers',
+          icon: 'fas fa-address-book',
+          class: '',
+          extralink: false,
+          submenu: []
+        }
       ]
   },
   {
