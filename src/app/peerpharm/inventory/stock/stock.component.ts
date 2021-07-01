@@ -1452,14 +1452,21 @@ export class StockComponent implements OnInit {
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
       if (this.components.length > 0) {
-        this.loadingText = "(2/4) מחשב כמויות... "
+        try{
+
+          this.loadingText = "(2/4) מחשב כמויות... "
           this.getAmountsFromShelfs();
-        this.components.map((c, i) => this.getItemPurchases(c, i))
-        this.components.map((c, i) => {
-          this.openAllocatedOrders(c.componentN, i, true).then(result => c.allocations = result)
-        })
+          this.components.map((c, i) => this.getItemPurchases(c, i))
+          this.components.map((c, i) => {
+            this.openAllocatedOrders(c.componentN, i, true).then(result => c.allocations = result)
+          })
+        } catch(e) {
+          this.smallLoader = false
+          alert(e)
+        }
       } else {
-        this.toastSrv.error('Item does not exist')
+        this.toastSrv.error('לא נמצאו פריטים עבור החיפוש שביצעתם. אנא נסו חיפוש אחר.')
+        this.smallLoader = false;
       }
     })
 

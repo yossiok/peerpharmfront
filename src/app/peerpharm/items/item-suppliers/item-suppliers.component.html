@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="row mt-4">
+        <h2>מצא ספקים עבור מוצר</h2>
+    </div>
+    <div class="row mt-4">
+        <button (click)="addComponent()"><i class="fas fa-plus"></i> הוסף קומפוננט</button>
+    </div>
+    <div>
+        <div *ngFor="let component of components">
+            <h4>בחר קומפוננט לפי מספר</h4>
+            <div class="row mt-2 border border-secondary m-5">
+                <input type="number" [(ngModel)]="component.componentN" class="form-control">
+            </div>
+            <h4>מצא קומפוננט לפי קטגוריות</h4>
+            <div class="row mt-2 border border-secondary m-5">
+                <form [formGroup]="mainForm" (ngSubmit)="findSuppliers()">
+
+                    <div class="gorm-group">
+                        <select class="form-control" formControlName="type">
+                            <option disabled value="0">לפי סוג</option>
+                            <option *ngFor="let type of cmptTypes" [value]="type">{{type}}</option>
+                        </select>
+                    </div>
+                    <div class="form-froup">
+                        <select class="form-control" formControlName="mlCapacity">
+                            <option disabled value="0">לפי נפח בקבוק</option>
+                            <option value="1">0-250</option>
+                            <option value="2">250-500</option>
+                            <option value="3">500-750</option>
+                            <option value="4">750-1,000</option>
+                        </select>
+                    </div>
+                    <div class="form-froup">
+                        <select class="form-control" formControlName="type2">
+                            <option disabled value="0">לפי סוג 2</option>
+                            <option *ngFor="let type of cmptTypes2" [value]="type">{{type}}</option>
+                        </select>
+                    </div>
+                    <div class="form-froup">
+                        <select class="form-control" formControlName="type3">
+                            <option disabled value="0">לפי סוג 3</option>
+                            <option *ngFor="let type of cmptTypes3" [value]="type">{{type}}</option>
+                        </select>
+                    </div>
+                    <div class="form-froup">
+                        <select class="form-control" formControlName="material">
+                            <option disabled value="0">לפי חומר </option>
+                            <option *ngFor="let material of cmptMaterials" [value]="material">{{material}}</option>
+                        </select>
+                    </div>
+                    <div class="form-froup">
+                        <select class="form-control" formControlName="material2">
+                            <option disabled value="0">לפי חומר 2</option>
+                            <option *ngFor="let material of cmptMaterials2" [value]="material">{{material}}</option>
+                        </select>
+                    </div>
+                    <div class="gorm-group">
+                        <select class="form-control" formControlName="packageType">
+                            <option disabled value="0">לפי סוג אריזה</option>
+                            <option *ngFor="let packageType of packageTypes" [value]="packageType">{{packageType}}
+                            </option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <button (click)="findSuppsForComp(component)">מצא ספקים</button>
+        </div>
+
+        <h2>ספקים פוטנציאליים</h2>
+        <div class="row mt-4">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let supplier of potentialSuppliers">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

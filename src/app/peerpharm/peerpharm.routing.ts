@@ -76,6 +76,7 @@ import { PricesComponent } from './prices/Existing/prices.component';
 import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
 import { AllPricingComponent } from './prices/all-pricing/all-pricing.component';
 import { ItemIndexComponent } from './item-index/item-index.component';
+import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
 
 
 
@@ -203,6 +204,14 @@ export const PeerPharmRputs: Routes = [
       title: 'Item Reports'
     },
     component: ItemreportsComponent
+  },
+  {
+    path: 'items/itemsuppliers',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Potential Suppliers'
+    },
+    component: ItemSuppliersComponent
   },
   {
     path: 'items/itemDetails/:itemNumber',

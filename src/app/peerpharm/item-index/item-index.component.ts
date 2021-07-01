@@ -37,6 +37,18 @@ export class ItemIndexComponent implements OnInit {
     'Mika', 'Hyalunol', 'Hemp', 'Kiss', 'Rose', 'Collagen', 'Gaya',
   ]
 
+  cmptTypes: Array<any> = [
+    'bottle_Glass', 'bottle_Plastic',  'jar_Glass', 'jar_Plastic',  'cap',  'cover', 'pump', 'cosmetic_pump',
+    'over_cap', 'tube', 'colons', 'hair_life', 'compacts', 'personal_package', 'master_carton', 'newsletter',
+    'irosol_valve', 'irosol_bottle', 'irosol_hectotor', 'irosol_bottle', 'cellophane', 'sticker', 'sachet', 'godett',
+    'plate', 'other'
+  ]
+  cmptTypes2: Array<any>
+  cmptTypes3: Array<any>
+  cmptMaterials: Array<any>
+  cmptMaterials2: Array<any>
+  
+
   itemMovementForm: FormGroup = new FormGroup({
     itemType: new FormControl('all', Validators.required),
     itemNumbers: new FormControl([''], Validators.required),
@@ -77,6 +89,27 @@ export class ItemIndexComponent implements OnInit {
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
     }
+  }
+
+  getAllTypes() {
+    this.inventoryService.getAllComponentTypes().subscribe(allTypes=>{
+      this.cmptTypes = allTypes
+    })
+    this.inventoryService.getAllComponentTypes2().subscribe(allTypes=>{
+      this.cmptTypes2 = allTypes
+    })
+    this.inventoryService.getAllComponentTypes3().subscribe(allTypes=>{
+      this.cmptTypes3 = allTypes
+    })
+  }
+
+  getAllCmptMaterials(){
+    this.inventoryService.getAllComponentMaterials().subscribe(allMaterials=>{
+      this.cmptMaterials = allMaterials
+    })
+    this.inventoryService.getAllComponentMaterials2().subscribe(allMaterials=>{
+      this.cmptMaterials2 = allMaterials
+    })
   }
 
   getAllSuppliers() {
@@ -277,7 +310,7 @@ export class ItemIndexComponent implements OnInit {
         this.lastOrdersOfItem = orders;
       }
       else this.lastOrdersOfItem = [
-        { orderNumber: 'Sorry.', price: 'There', coin: 'are no', supplierName: 'orders', quantity: 'for this', date: 'item.' }
+        { orderNumber: 'Sorry.', supplierName: 'No', status: 'orders',  arrivedAmount: 'for this', quantity: 'item.' }
       ]
     })
   }

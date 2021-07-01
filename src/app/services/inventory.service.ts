@@ -51,6 +51,35 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getAllComponentTypes() {
+    let url = this.baseUrl + "component/allTypes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAllComponentTypes2() {
+    let url = this.baseUrl + "component/allTypes2";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAllComponentTypes3() {
+    let url = this.baseUrl + "component/allTypes3";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAllComponentMaterials(){
+    let url = this.baseUrl + "component/allCmptMaterials";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAllComponentMaterials2(){
+    let url = this.baseUrl + "component/allCmptMaterials2";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getAllallPackageTypes(){
+    let url = this.baseUrl + "component/allPackageTypes";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   getAllComponents(): Observable<any> {
     let url = this.baseUrl + "component";

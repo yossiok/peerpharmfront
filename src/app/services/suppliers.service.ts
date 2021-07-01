@@ -67,5 +67,14 @@ export class SuppliersService {
     return this.http.post(url, JSON.stringify(supplierObj), this.options).pipe(map(res => res.json()))
   }
 
+  getsuppliersForItem(componentN) {
+    let url = this.baseUrl + "supplier/suppliersForItem?componentN="+componentN;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getSuppliersByComponentType(componentType) {
+    
+  }
+
 
 }

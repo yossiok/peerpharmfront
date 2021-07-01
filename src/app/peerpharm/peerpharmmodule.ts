@@ -154,6 +154,7 @@ import { TicketFormComponent } from './ticket-form/ticket-form.component';
 import { EditServiceComponent } from './out-services/edit-service/edit-out-service.component';
 import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
 import { ItemIndexComponent } from './item-index/item-index.component';
+import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
 
 
 
@@ -299,7 +300,8 @@ import { ItemIndexComponent } from './item-index/item-index.component';
     PricesComponent,
     AllPricingComponent,
     NewPricingComponent,
-    ItemIndexComponent
+    ItemIndexComponent,
+    ItemSuppliersComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   
