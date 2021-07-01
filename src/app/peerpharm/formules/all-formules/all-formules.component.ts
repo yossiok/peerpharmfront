@@ -565,7 +565,7 @@ export class AllFormulesComponent implements OnInit {
           if (material.price == null || material.price == undefined) {
             material.price = 'צריך לעדכן מחיר ספק'
           } else {
-            if (material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה' && material.price != 'Material Not Found!') {
+            if (material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה' && material.price != 'Material Not Found!' && material.price != 'Something went wrong please check') {
               material.price = this.formatNumber(material.price)
             }
 
