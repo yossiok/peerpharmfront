@@ -136,6 +136,12 @@ export class ItemIndexComponent implements OnInit {
     })
   }
 
+  resetMovements() {
+    this.itemMovementForm.reset(); 
+    this.itemMovements = undefined
+    this.itemMovementForm.controls.itemNumbers.setValue([''])
+  }
+
   getItemData(){
     this.inventoryService.getItemByNumber(this.itemDetailsForm.value.itemNumber).subscribe(item => {
       if(item.msg) this.toastSrv.error(item.msg)

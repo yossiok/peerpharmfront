@@ -92,7 +92,7 @@
       <button type="submit" class="btn btn-info">Go.</button>
     </div>
     <div class="col-1">
-      <button type="button" class="btn btn-secondary" (click)="itemMovementForm.reset()">Clear</button>
+      <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
     </div>
   </div>
 </form>
@@ -192,7 +192,7 @@
 <div class="row mt-2"></div>
 
 
-<div *ngIf="item" class="modal-inner bg-success container p-5">
+<div *ngIf="item" class="modal-inner bg-success p-5">
 
   <div class="border border-white p-2">
 
@@ -280,9 +280,9 @@
       <div class="col-2">
         <label class="form-control">קטגוריה</label>
         <label class="form-control">קטגוריה 2</label>
+        <label class="form-control">קטגוריה 3</label>
         <label class="form-control">חומר</label>
         <label class="form-control">חומר 2</label>
-        <label class="form-control">חומר 3</label>
         <label class="form-control">מותג</label>
         <label class="form-control">משקל/סוג</label>
         <label class="form-control">יח' מידה</label>
@@ -297,27 +297,27 @@
           <option *ngFor="let cmptType of cmptTypes2">{{cmptType}}</option>
         </select>
 
-        <select class="form-control mt-2">
+        <select class="form-control mt-2" [(ngModel)]="item.componentType2">
           <option value=""></option>
           <option *ngFor="let cmptType of cmptTypes2">{{cmptType}}</option>
         </select>
 
-        <select class="form-control mt-2">
+        <select class="form-control mt-2" [(ngModel)]="item.componentType3">
           <option value=""></option>
           <option *ngFor="let cmptType of cmptTypes3">{{cmptType}}</option>
         </select>
 
-        <select class="form-control mt-2">
+        <select class="form-control mt-2" [(ngModel)]="item.componentMaterial">
           <option value=""></option>
           <option *ngFor="let cmptMaterial of cmptMaterials">{{cmptMaterial}}</option>
         </select>
 
-        <select class="form-control mt-2">
+        <select class="form-control mt-2" [(ngModel)]="item.componentMaterial2">
           <option value=""></option>
           <option *ngFor="let cmptMaterial of cmptMaterials2">{{cmptMaterial}}</option>
         </select>
 
-        <select class="form-control mt-2">
+        <select class="form-control mt-2" [(ngModel)]="item.componentCategory">
           <option value=""></option>
           <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
         </select>

@@ -119,14 +119,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: []
       },
-      {
-        path: '/peerpharm/items/itemsuppliers',
-        title: 'Potential Suppliers',
-        icon: 'fas fa-tree',
-        class: '',
-        extralink: false,
-        submenu: []
-      },
+      // {
+      //   path: '/peerpharm/items/itemsuppliers',
+      //   title: 'Potential Suppliers',
+      //   icon: 'fas fa-tree',
+      //   class: '',
+      //   extralink: false,
+      //   submenu: []
+      // },
 
 
 
