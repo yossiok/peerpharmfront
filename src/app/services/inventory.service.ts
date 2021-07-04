@@ -81,6 +81,11 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getAllallCategories(){
+    let url = this.baseUrl + "component/allCategories";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getAllComponents(): Observable<any> {
     let url = this.baseUrl + "component";
     return this.http.get(url).pipe(map(reponse => reponse.json()));

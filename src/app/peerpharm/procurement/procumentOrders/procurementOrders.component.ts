@@ -472,41 +472,6 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
 
-
-  // filterByCategory(ev) {
-  //   var category = ev.target.value;
-  //   this.procurementData = this.procurementDataCopy.filter(order => {
-  //     for (let item of order.stockitems) {
-  //       if (item.componentType == category) return true
-  //     }
-  //   })
-
-  // }
-
-  // filterByItemType(ev) {
-  //   var type = ev.target.value;
-  //   if (type == 'all') this.procurementData = this.procurementDataCopy.filter(p => p.status == 'open' || p.status == 'הזמנה פתוחה')
-  //   else this.procurementData = this.procurementDataCopy.filter(order => order.orderType == type)
-
-  // }
-
-  // filterByStatus(ev) {
-  //   var status = ev.target.value;
-  //   if (status == 'open') this.procurementData = this.procurementDataCopy.filter(p => p.status == status || p.status == 'supplied')
-  //   else if (status != 'allOrders') this.procurementData = this.procurementDataCopy.filter(p => p.status == status)
-  //   else this.procurementData = this.procurementDataCopy.filter(purchase => purchase.status != 'canceled');
-
-  // }
-
-  // filterByUserName(ev) {
-  //   var userName = ev.target.value;
-  //   if (userName == 'all') this.procurementData = this.procurementDataCopy
-  //   this.procurementData = this.procurementDataCopy.filter(p => p.user == userName)
-  // }
-
-
-
-
   hebStat(engStat) {
     switch (engStat) {
       case 'approvedBySupplier': return 'approved'
@@ -514,6 +479,7 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'open': return 'open'
       case 'closed': return 'closed'
       case 'supplied': return 'delivered'
+      case 'canceled': return 'canceled'
     }
   }
 
@@ -524,6 +490,7 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'waitingForApproval': return 'orange'
       case 'approvedBySupplier': return 'lightgreen'
       case 'supplied': return '#09d5e8'
+      case 'canceled': return '#9198a3'
     }
   }
 

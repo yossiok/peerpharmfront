@@ -472,11 +472,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   deleteCusomerOrderNumber(i,j){
-    this.newPurchase.value.stockitems[i].customerOrders.splice(j,1)
+    this.newPurchase.value.stockitems[i].customerOrders.pop()
   }
 
-  addOrderToPurchase(i, e) {
-    this.newPurchase.value.stockitems[i].customerOrders.push(e.target.value)
+  addOrderToPurchase(i, orderNumber) {
+    if(!this.newPurchase.value.stockitems) this.newPurchase.controls.stockitems.setValue([])
+    if(!this.newPurchase.value.stockitems[i].customerOrders) this.newPurchase.value.stockitems[i].customerOrders = []
+    this.newPurchase.value.stockitems[i].customerOrders.push(orderNumber.value)
   }
 
 
