@@ -20,5 +20,6 @@ export class UserInfo
     authorization:string[];
     screenPermission:string;
     passExp:Date;
+    loginAlerts: any[]
 
 }

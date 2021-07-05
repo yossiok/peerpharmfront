@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 declare var $: any;
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { AuthService } from 'src/app/services/auth.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { UsersService } from 'src/app/services/users.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
@@ -17,7 +19,13 @@ export class FullComponent implements OnInit {
   databaseName: any;
   testing: boolean = false
 
-  constructor(public router: Router, private utilsService: UtilsService, private usersService: UsersService) {}
+  constructor(
+    public router: Router, 
+    private utilsService: UtilsService, 
+    private usersService: UsersService,
+    private authService: AuthService,
+    private notifications: NotificationService
+  ) {}
 
   public isCollapsed = false;
 
@@ -60,6 +68,7 @@ export class FullComponent implements OnInit {
     this.defaultSidebar = this.options.sidebartype;
     this.handleSidebar();
     this.getTheme()
+    this.showUserAlerts()
   }
 
   @HostListener('window:resize', ['$event'])
@@ -98,6 +107,20 @@ export class FullComponent implements OnInit {
       this.databaseName = theme.database == 'testing' ? 'DEV ENVIRONMENT!!!!' : ''
       this.testing = theme.database == 'testing' ? true : false
     })
+  }
+
+  showUserAlerts() {
+    setTimeout(()=>{
+
+      let userAlerts = this.authService.loggedInUser.loginAlerts
+      for(let alert of userAlerts) {
+        let titleObj = alert.titleObj
+        let msg = alert.msg
+        this.notifications.sendGlobalMessage(msg, titleObj).subscribe(ok=>{
+          console.log(ok)
+        })
+      }
+    },5000)
   }
 
 

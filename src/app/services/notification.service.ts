@@ -49,6 +49,20 @@ export class NotificationService {
     this.socket.emit("message", JSON.stringify(msg));
   }
 
+      // let titleObj = {};
+      //   titleObj.index = 60;
+      //   titleObj.title = "Password about to expire";
+      //   titleObj.users = req.user._doc.username;
+      //   titleObj.force = false;
+
+      //   let msg = "תוקף סיסמתך יפוג בעוד מספר ימים. אנא החלף סיסמא"
+
+      //   let userAlert = { titleObj, msg }
+
+  sendGlobalMessage(msg, titleObj) {
+    return this.http.get(`/notification/sendglobalmessage?title=${JSON.stringify(titleObj)}&msg=${msg}`)
+  }
+
   joinNotes(sendUsers: any[]): any {
     this.socket.emit("notes", sendUsers);
   }

@@ -483,7 +483,7 @@
 
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
-                <input class="form-control" type="number" [(ngModel)]="resCmpt.finalPrice" maxlength="6" max="6">
+                <input class="form-control" type="number" disabled [(ngModel)]="resCmpt.price" maxlength="6" max="6">
                 <!-- <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
                 <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice"> -->
 
@@ -502,7 +502,7 @@
                   </option>
                 </datalist>
                 <input class="form-control" type='text' [(ngModel)]="resCmpt.componentNs">
-                <input class="form-control" type='number' [(ngModel)]="resCmpt.price">
+                <input class="form-control" type='number' disabled [(ngModel)]="resCmpt.price">
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">מלאי מינימום</label>
@@ -1466,7 +1466,7 @@
             </div> -->
             <div class="col-2 fixNoaStupidStuff"><label class="form-control">Last Price (NIS)</label></div>
             <div class="col-2 fixNoaStupidStuff">
-              <input type="number" class="form-control" [(ngModel)]="resMaterial.finalPrice">
+              <input type="number" class="form-control" disabled [(ngModel)]="resMaterial.price">
             </div>
           </div>
 
