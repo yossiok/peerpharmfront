@@ -1443,6 +1443,7 @@
 
                         <div class="container-fluid">
 
+                            <!--Main Component Div-->
                             <div class="row pictureDivider">
 
                                 <div class="col-2">
@@ -1458,18 +1459,22 @@
                                 </div>
 
                                 <div class="col-3" style="margin-left:-45px;">
+                                    <!--Component Type-->
                                     <input [(ngModel)]="itemShown.componentType" placeholder="Type"
                                         style="width:120px !important;" class="productionInput">
                                 </div>
 
                                 <div class="col-3" style="margin-left:-117px;">
+                                    <!--Component Number-->
                                     <input placeholder="Number" (change)="fillBottle(itemShown.bottleNumber)"
-                                        type="text" id="id_bottleNo"
+                                        type="number" id="id_bottleNo"
                                         (focusout)="loadPackagDetails(itemShown.bottleNumber, 'bottle')"
                                         [(ngModel)]=itemShown.bottleNumber>
+                                        <input class="small-input" type="number">
                                 </div>
-
-                                <div class="col-4">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-3">
                                     <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
