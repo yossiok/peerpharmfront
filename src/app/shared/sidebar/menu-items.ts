@@ -247,7 +247,7 @@ export const ROUTES: RouteInfo[] = [
 
       {
         path: '/peerpharm/inventory/stock',
-        title: 'Amounts',
+        title: 'inventory',
         icon: 'fas fa-address-book',
         class: '',
         extralink: false,
