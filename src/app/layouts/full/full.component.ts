@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 declare var $: any;
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { UsersService } from 'src/app/services/users.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class FullComponent implements OnInit {
   databaseName: any;
   testing: boolean = false
 
-  constructor(public router: Router, private utilsService: UtilsService) {}
+  constructor(public router: Router, private utilsService: UtilsService, private usersService: UsersService) {}
 
   public isCollapsed = false;
 

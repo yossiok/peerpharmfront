@@ -112,6 +112,11 @@ export class UsersService  {
 
   }
 
+  getUserMessages() {
+    let url = this.baseUrl2 + "users/userNames";
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   
   
  

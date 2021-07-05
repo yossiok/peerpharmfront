@@ -1711,10 +1711,18 @@
 
             </div>
             <div class="col-3 fixNoaStupidStuff">
+
+              <!-- <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierName">
+              <datalist id="suppliers">
+                <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+                  {{supplier.suplierNumber}}
+                </option>
+              </datalist> -->
+
               <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierName">
               <datalist id="suppliers">
                 <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-                  {{supplier.suplierName}}</option>
+                  {{supplier.suplierNumber}}</option>
               </datalist>
               <input type="text" class="form-control" [(ngModel)]="supplier.manufacturer">
               <input [(ngModel)]="supplier.alternativeMaterial" class="form-control" type='text'>

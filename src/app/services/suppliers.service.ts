@@ -76,5 +76,10 @@ export class SuppliersService {
     
   }
 
+  getSuppliersByCategories(categories) {
+    let url = this.baseUrl + "supplier/suppliersByMultipleCmptFields";
+    return this.http.post(url, JSON.stringify(categories), this.options).pipe(map(res => res.json()))
+  }
+
 
 }

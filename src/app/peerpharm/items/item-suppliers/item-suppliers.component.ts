@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 
@@ -17,26 +18,32 @@ export class ItemSuppliersComponent implements OnInit {
   packageTypes: Array<any>
   cmptMaterials: Array<any>
   cmptMaterials2: Array<any>
+  cmptCategoryList: Array<any>
   potentialSuppliers: Array<any>
 
   mainForm: FormGroup = new FormGroup({
-    type: new FormControl(''),
-    mlCapacity: new FormControl(''),
-    type2: new FormControl(''),
-    type3: new FormControl(''),
-    material: new FormControl(''),
-    material2: new FormControl(''),
-    packageType: new FormControl('')
+    componentType: new FormControl(null),
+    mlCapacityMin: new FormControl(null),
+    mlCapacityMax: new FormControl(null),
+    componentCategory: new FormControl(null),
+    componentType2: new FormControl(null),
+    componentType3: new FormControl(null),
+    material: new FormControl(null),
+    material2: new FormControl(null),
+    packageType: new FormControl(null)
   })
 
   constructor(
     private inventoryService: InventoryService,
-    private suppliersService: SuppliersService
+    private suppliersService: SuppliersService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.getAllTypes()
     this.getAllCmptMaterials()
+    this.getAllallCategories()
+    this.getAllallPackageTypes()
   }
 
   getAllTypes() {
@@ -66,6 +73,12 @@ export class ItemSuppliersComponent implements OnInit {
     })
   }
 
+  getAllallCategories(){
+    this.inventoryService.getAllallCategories().subscribe(categories=>{
+      this.cmptCategoryList = categories
+    })
+  }
+
   addComponent() {
     this.components.push({ componentN: ''})
   }
@@ -77,8 +90,12 @@ export class ItemSuppliersComponent implements OnInit {
     })
   }
 
-  findSuppliers(){
-
+  findSuppliersByCategories(){
+    
+    this.suppliersService.getSuppliersByCategories(this.mainForm.value).subscribe(data=> {
+      if(data.length > 0) this.potentialSuppliers = data
+      else this.toastr.info('לא נמצא ספק התואם את המאפיינים')
+    })
   }
 
 }

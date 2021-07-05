@@ -65,6 +65,7 @@
               <option value="waitingForApproval">waiting approval</option>
               <option value="open">open</option>
               <option value="supplied">delivered</option>
+              <option value="canceled">canceled</option>
               <option [style.background]="'red'" value="closed">Close Order</option>
             </select>
           </div>
@@ -121,15 +122,30 @@
                   </td>
                   <!-- <td *ngIf="editItem && itemIndex == i && stockitem.isStock">Stock</td> -->
                   <td *ngIf="editItem && itemIndex == i">
-                    <ng-container *ngFor="let order of stockitem.customerOrders; let j = index">
+                    <!-- <ng-container *ngFor="let order of stockitem.customerOrders; let j = index">
                       <input  type="text" (change)="changeOrder(i, order, j)" [ngModelOptions]="{standalone: true}" [(ngModel)]="order"
                       [style.width]="'77px'">
                       <button placement="bottom" ngbTooltip="Delete this order" (click)="deleteCusomerOrderNumber(i,j)">X</button>
                     </ng-container>
                     <br>
                     <button placement="bottom" ngbTooltip="Add customer order" (click)="wow = true">+</button>
-                    <input *ngIf="wow" type="text" (change)="addOrderToPurchase(i, $event)">
+                    <input *ngIf="wow" type="text" (change)="addOrderToPurchase(i, $event)"> -->
+
+                    Orders: <span *ngFor="let order of newPurchase.value.stockitems[i].customerOrders">{{order}},&nbsp;</span> <br>
+                    <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber2>
+                    <button ngbTooltip="Add Order" type="button" (click)="addOrderToPurchase(i, customerOrderNumber2)"><i class="fas fa-plus"></i></button>
+                    <button ngbTooltip="Erase Last" type="button" (click)="deleteCusomerOrderNumber(i,j)"><i class="fa fa-times text-danger"></i></button>
+
+
                   </td>
+
+
+                  <!--test-->
+                  <!-- <div *ngIf="!itemForm.get('isStock').value">
+                    <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber>
+                    <button type="button" (click)="addCusomerOrderNumberToItem(customerOrderNumber)"><i class="fas fa-plus"></i></button>
+                    Orders: <span *ngFor="let order of itemForm.get('customerOrders').value">{{order}},&nbsp;</span>
+                </div> -->
 
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem && itemIndex == i">
@@ -414,7 +430,7 @@
         <div class="row mt-2">
           <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4">*</span>
-            <input formControlName="supplierName" name="supplierName" (change)="fillSupplierDetails($event)"
+            <input autocomplete="off" formControlName="supplierName" name="supplierName" (change)="fillSupplierDetails($event)"
               list="suppliers" type="text" class="form-control" placeholder="Supplier Name" required>
             <datalist id="suppliers">
               <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierName">{{supplier.suplierNumber}}
