@@ -402,10 +402,11 @@ export class StockComponent implements OnInit {
     private fb: FormBuilder,) {
 
     this.editVersionForm = new FormGroup({
-    date: new FormControl(new Date(this.today), Validators.required),
-    versionNumber: new FormControl(null, Validators.required),
-    description: new FormControl('', Validators.required),
-    image: new FormControl(null, Validators.required),
+      date: new FormControl(new Date(this.today), Validators.required),
+      versionNumber: new FormControl(null, Validators.required),
+      description: new FormControl('', Validators.required),
+      image: new FormControl(null, Validators.required),
+      user: new FormControl(null, Validators.required),
   })
 
     this.filterParams = fb.group({
@@ -789,7 +790,6 @@ export class StockComponent implements OnInit {
   }
 
   updateSupplierDetails(component?) {
-    debugger
     var obj;
     if (component) {
       obj = {
@@ -1530,6 +1530,8 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resMaterial = defaultMaterial
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    this.editVersionForm.controls.versionNumber.setValue(this.resCmpt.versionNumber+1)
+    if(isNaN(this.editVersionForm.controls.versionNumber.value)) this.editVersionForm.controls.versionNumber.setValue(5)
     let mainSupplier = this.resCmpt.alternativeSuppliers.find(s=>s.isMain == true);
     // if(mainSupplier){
     //   this.resCmpt.suplierN = mainSupplier.supplierName
@@ -1652,7 +1654,6 @@ export class StockComponent implements OnInit {
       try {
         this.orderService.getAllOrdersForComponent(componentN).subscribe(data => {
           if(forEach) {
-            debugger
             if(index == this.components.length-1) this.smallLoader = false
             resolve(data)
           } 
@@ -2053,7 +2054,6 @@ export class StockComponent implements OnInit {
   }
 
   getSupplierPriceHistory(i) {
-    debugger
     //TODO: get supplier NUmber!!!
     this.procuretServ.getAllOrdersFromSupplier(this.resMaterial.alternativeSuppliers[i].suplierNumber).subscribe(data => {
       this.supPurchases = data.filter(purchase => purchase.status == 'open')
@@ -2175,10 +2175,20 @@ export class StockComponent implements OnInit {
         // this.tempHiddenImgSrc=data.partialText;
         this.resCmpt.img = data.partialText;
         console.log(" this.resCmpt.img " + this.resCmpt.img);
+        this.editVersionForm.controls.image.setValue(this.resCmpt.img)
       }
 
     })
   }
+
+  updateComponentVersion(){
+    this.editVersionForm.controls.user.setValue(this.authService.loggedInUser.userName)
+    this.resCmpt.versionNumber = this.editVersionForm.get('versionNumber').value
+    this.resCmpt.versionHistory.push(this.editVersionForm.value)
+    this.editStockItemDetails()
+    this.editVersionForm.reset()
+  }
+
   async getCmptAmounts(cmptN, cmptId) {
     ;
     this.callingForCmptAmounts = true;
@@ -2490,7 +2500,6 @@ export class StockComponent implements OnInit {
   }
 
   makeAsMainSupplier(index){
-    debugger;
     let id;
     if(this.stockType == 'component') id = this.resCmpt._id;
     if(this.stockType == 'material') id = this.resMaterial._id;
