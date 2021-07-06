@@ -147,8 +147,10 @@ export class ItemdetaisComponent implements OnInit {
     status: '',
     department: '',
     stickerNumber: '',
+    stickerVersion: null,
     stickerTypeK: '',
     boxNumber: '',
+    boxVersion: null,
     boxTypeK: '',
     barcodeK: '',
     StickerLanguageK: '',
@@ -242,6 +244,8 @@ export class ItemdetaisComponent implements OnInit {
     capNumber: '',
     pumpNumber: '',
     sealNumber: '',
+
+    bottleVersion: null,
 
     bottleTube: '',
     capTube: '',
@@ -532,6 +536,7 @@ export class ItemdetaisComponent implements OnInit {
       this.invtSer.getCmptByNumber(bottleNumber, "component").subscribe(data => {
         this.itemShown.bottleTube = data[0].componentName
         this.itemShown.bottleImage = data[0].img
+        this.itemShown.bottleVersion = data[0].versionNumber
         this.itemShown.componentType = data[0].componentType
       })
     } else if (bottleNumber == "---") {
@@ -784,6 +789,7 @@ export class ItemdetaisComponent implements OnInit {
             ;
 
             this.itemShown.stickerImage = data[0].img
+            this.itemShown.stickerVersion = data[0].versionNumber
             this.itemsService.updateStickerImage(this.itemShown).subscribe(data => {
               if (data) {
                 console.log('sticker image updated');
@@ -800,10 +806,8 @@ export class ItemdetaisComponent implements OnInit {
       case 'box':
         if (compNumber != "") {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
-            data
-
             this.itemShown.boxImage = data[0].img
-
+            this.itemShown.boxVersion = data[0].versionNumber
           })
 
         } else {

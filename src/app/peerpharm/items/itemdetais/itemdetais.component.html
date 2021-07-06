@@ -91,14 +91,21 @@
                 <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
             </div>
             <div>
+                <!--Sticker Number-->
                 <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_stickerNumber"
                     [(ngModel)]=itemShown.stickerNumber
                     onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+                <!--Sticker Version-->
+                <input type="number" class="small-input" disabled [(ngModel)]=itemShown.stickerVersion>
+                <!--Sticker Type-->
                 <input type="text" style='width: 150px' id="id_stickerType" [(ngModel)]=itemShown.stickerTypeK>
             </div>
             <div>
+                <!--Box Number-->
                 <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.boxNumber
                     id="id_boxNumber" onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
+                <input type="number" class="small-input" disabled [(ngModel)]=itemShown.boxVersion>
+                <!--Box Type-->
                 <input type="text" style='width: 150px' [(ngModel)]=itemShown.boxTypeK id="id_boxType">
             </div>
             <div>
@@ -749,6 +756,7 @@
                                             [(ngModel)]="itemShown.bottleNumber"
                                             (change)="searchCompNumber($event,'productionInput')" type="text"
                                             class="productionInput">
+                                        <input type="number" class="small-input" disabled [(ngModel)]="itemShown.bottleVersion">
                                     </div>
                                     <div *ngIf="production==false">
                                         <p style="opacity: 0">---</p>
@@ -1470,7 +1478,9 @@
                                         type="number" id="id_bottleNo"
                                         (focusout)="loadPackagDetails(itemShown.bottleNumber, 'bottle')"
                                         [(ngModel)]=itemShown.bottleNumber>
-                                        <input class="small-input" type="number">
+
+                                    <!--Version Number-->
+                                    <input class="small-input" type="number" disabled [(ngModel)]=itemShown.bottleVersion>
                                 </div>
                                 <div class="col-1">
                                 </div>
@@ -1683,6 +1693,7 @@
                                     </div>
                                     <div style="display: inline-table;">
                                         <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
+                                        <input type="number" class="small-input" disabled [(ngModel)]="itemShown.stickerVersion">
                                         <br>
                                         <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
                                     </div>
@@ -1702,8 +1713,9 @@
                                 <div class="col-2">
                                     <label class="form-control">Sticker</label>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 d-flex">
                                     <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
+                                    <input type="number" style="height: 35px" disabled [(ngModel)]=itemShown.stickerVersion class="small-input">
                                 </div>
                                 <div class="col-2">
                                     <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
@@ -1715,8 +1727,9 @@
                                 <div class="col-2">
                                     <label class="form-control">Box</label>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 d-flex">
                                     <input [(ngModel)]="itemShown.boxNumber" type="text" class="form-control">
+                                    <input type="number" class="small-input" style="height: 35px" disabled [(ngModel)]="itemShown.boxVersion">
                                 </div>
                                 <div class="col-2">
                                     <img class="w-50 imageClass" [src]="itemShown.boxImage" alt="Box">

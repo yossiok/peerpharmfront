@@ -293,6 +293,8 @@ export class StockComponent implements OnInit {
   @ViewChild('materialToSearch') materialToSearch: ElementRef;
 
 
+  //Update version For Component
+  editVersionForm: FormGroup 
 
 
   // material array // 
@@ -399,6 +401,12 @@ export class StockComponent implements OnInit {
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder,) {
 
+    this.editVersionForm = new FormGroup({
+    date: new FormControl(new Date(this.today), Validators.required),
+    versionNumber: new FormControl(null, Validators.required),
+    description: new FormControl('', Validators.required),
+    image: new FormControl(null, Validators.required),
+  })
 
     this.filterParams = fb.group({
       componentN: new FormControl('', Validators.pattern('^[a-zA-Z]+$')),
