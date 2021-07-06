@@ -138,6 +138,11 @@ export class Procurementservice {
     return this.http.get(url).pipe(map(res=>res.json()));
   }
 
+  getPurchasesForMulti(allNumbers) {
+    let url = this.baseUrl + 'procurementOrderController/purchasesForMultiItems'
+    return this.http.post(url, {numbers: allNumbers}, this.options).pipe(map(res=>res.json()));   
+  }
+
   getRecommendById(recommendId): Observable<any> {
     let url = this.baseUrl + 'procurementOrderController?getRecommendById='+recommendId;
     return this.http.get(url).pipe( map(reponse => reponse.json()));

@@ -227,7 +227,7 @@
               <td>
                 <!-- <button class="btn btn-success" *ngIf="!component.showPurch" (click)="getItemPurchases(component)">טען
                   הזמנות פתוחות</button> -->
-                <div *ngIf="component.showPurch">
+                <div>
                   <img src="../../../../assets/images/refreshData.png" class="float-right small" alt="get user name"
                     (click)="getItemPurchases(component)">
                   <span *ngIf="component.purchaseOrders.length == 0">אין הזמנות פתוחות לפריט</span>

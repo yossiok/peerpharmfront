@@ -580,15 +580,21 @@ export class StockComponent implements OnInit {
     this.numberSearchInput.nativeElement.focus()
   }
 
-  getItemPurchases(component, index) {
-    component.showPurch = true
-    component.purchaseOrders = []
-    this.procuretServ.getPurchasesForComponent(component.componentN).subscribe(purchases => {
-      component.purchaseOrders = purchases
-      if(index == this.components.length-1) this.loadingText = "(4/4) מחשב הקצאות..."
+  getItemPurchases() {
+    let numbers = this.components.map(c=> c.componentN)
+    this.procuretServ.getPurchasesForMulti(numbers).subscribe(purchases => {
+      for(let component of this.components) {
+        for(let purchase of purchases) {
+          for (let item of purchase.stockitems) {
+            if(item.number == component.componentN) {
+              component.purchaseOrders? component.purchaseOrders.push(purchase) : component.purchaseOrders = [purchase]
+            }
+          }
+        }
+      }
+      console.log('BABABAB BBABAB bABABAA',this.components)
+      this.loadingText = "(4/4) מחשב הקצאות..."
     })
-
-
   }
 
   getLastCustomerOrders(){
@@ -782,7 +788,6 @@ export class StockComponent implements OnInit {
   }
 
   updateSupplierDetails(component?) {
-    debugger
     var obj;
     if (component) {
       obj = {
@@ -1457,7 +1462,7 @@ export class StockComponent implements OnInit {
 
           this.loadingText = "(2/4) מחשב כמויות... "
           this.getAmountsFromShelfs();
-          this.components.map((c, i) => this.getItemPurchases(c, i))
+          this.getItemPurchases()
           this.components.map((c, i) => {
             this.openAllocatedOrders(c.componentN, i, true).then(result => c.allocations = result)
           })
@@ -1645,7 +1650,6 @@ export class StockComponent implements OnInit {
       try {
         this.orderService.getAllOrdersForComponent(componentN).subscribe(data => {
           if(forEach) {
-            debugger
             if(index == this.components.length-1) this.smallLoader = false
             resolve(data)
           } 
@@ -2050,7 +2054,6 @@ export class StockComponent implements OnInit {
   }
 
   getSupplierPriceHistory(i) {
-    debugger
     //TODO: get supplier NUmber!!!
     this.procuretServ.getAllOrdersFromSupplier(this.resMaterial.alternativeSuppliers[i].suplierNumber).subscribe(data => {
       this.supPurchases = data.filter(purchase => purchase.status == 'open')
@@ -2487,7 +2490,6 @@ export class StockComponent implements OnInit {
   }
 
   makeAsMainSupplier(index){
-    debugger;
     let id;
     if(this.stockType == 'component') id = this.resCmpt._id;
     if(this.stockType == 'material') id = this.resMaterial._id;
