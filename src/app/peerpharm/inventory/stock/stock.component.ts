@@ -345,6 +345,7 @@ export class StockComponent implements OnInit {
   loadingText: string;
   lastCustomerOrders: any;
   supPurchases: any[] = []
+  allowPriceUpdate: boolean = false
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1985,9 +1986,6 @@ export class StockComponent implements OnInit {
 
   editMaterialItemDetails() {
 
-    this.resMaterial;
-
-
     if (confirm("לעדכן פריט?")) {
 
       this.inventoryService.updateMaterial(this.resMaterial).subscribe(res => {
@@ -2028,20 +2026,27 @@ export class StockComponent implements OnInit {
 
         this.resCmpt.priceUpdates.push({
           price: newPrice, 
-          user,
+          coin, user,
           date: new Date(),
           type: 'manual'
         })
       }
       else if(type == 'm') {
         this.resMaterial.priceUpdates.push({
-          price: newPrice, 
-          user,
+          price: newPrice,
+          coin, user,
           date: new Date(),
           type: 'manual'
         })
       }
     })
+    this.allowPriceUpdate = false
+  }
+
+  checkUpdatePriceValidity(type) {
+    this.allowPriceUpdate = false
+    if(type == 'c') this.allowPriceUpdate =  this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != ''
+    if(type == 'm') this.allowPriceUpdate =  this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != ''
   }
 
   getSupplierPriceHistory(i) {
