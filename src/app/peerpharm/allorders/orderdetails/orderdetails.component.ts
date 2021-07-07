@@ -830,6 +830,18 @@ export class OrderdetailsComponent implements OnInit {
     document.title = "Order " + this.number;
     this.orderService.getOrderItemsByNumber(orderNum).subscribe(orderItems => {
       orderItems.map(item => {
+        //SHAGAZULU
+        //check License
+        if(item.licsensNumber != "" && new Date(item.licsensDate) > new Date()) item.hasLicense = true
+
+        const today = new Date()
+        const diffTime = (new Date(item.licsensDate).getTime() - today.getTime()) 
+        const diffSeconds = diffTime / 1000 
+        const diffMinutes = diffSeconds / 60 
+        const diffHours = diffMinutes / 60 
+        const diffDays = diffHours / 24
+        item.licenseExpirationClose = diffDays < 30
+
         this.totalOrderQty += Number(item.quantity)
         if (item.fillingStatus != null) {
           if (item.status != 'done') {

@@ -64,7 +64,6 @@
         (click)="openCmptDemandsModal()" >
 </div> -->
 
-
 <input matInput placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
 <select (change)="filterOrderItems($event)" class="form-control">
   <option value="all">All</option>
@@ -160,14 +159,15 @@
         </td>
         <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
         <td><input type="checkbox" (change)="isSelected($event,item)"></td>
-        <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)"><b>{{i+1}}</b></td> -->
 
         <td *ngIf="multi==true">{{item.orderNumber}}</td>
 
-        <!-- <td *ngIf="openFormule"><button  (click)="showFormule(item,item.itemNumber,formuleByItem)" class="formuleBtn">F</button></td> -->
+        <!--Formule exist?-->
         <td><button style="border-radius: 30px;"
             [ngClass]="{'lightgreen': item.formuleExist == true,'lightred':item.formuleExist != true}">F</button></td>
-        <td *ngIf="item.licsensNumber!=''">
+
+        <!--License exist & updated?-->
+        <td *ngIf="item.licsensNumber!='' && !item.licenseExpirationClose">
           <button class='expendBtn' [style.background-color]="item.colorBtn"
             (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
           <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
@@ -181,6 +181,15 @@
             {{item.itemNumber}}
           </a>
         </td>
+        <td class="licenseExpirationClose" *ngIf="item.licsensNumber!='' && item.licenseExpirationClose">
+          <button class='expendBtn' [style.background-color]="item.colorBtn"
+            (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
+          <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+            {{item.itemNumber}}
+          </a>
+        </td>
+
+        <!--Remarks-->
         <td *ngIf="item._id===EditRowId">
           <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark"
             style='width:150px ; color:red;' disabled>
@@ -190,28 +199,42 @@
         <td *ngIf="item._id!==EditRowId" style='width:150px ; color:red;' (click)="edit(item._id)">
           {{item.itemImpRemark}}</td>
 
+        <!--Description-->
         <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription" style='width:370px'>
         </td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
+
+        <!--Barcode, weight-->
         <td *ngIf="item._id!==EditRowId">{{item.barcodeK}}</td>
         <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:70px'>
         </td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
+
+        <!--Quantity-->
         <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
-        <!-- <td *ngIf="item._id===EditRowId"><input #weight type='text' [value]=item.qtyKg style='width:70px'
-              class='printTd'></td> -->
-        <!-- <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.qtyKg}}</td> -->
+
+        <!--Printing / Filling status-->
         <td *ngIf="item._id!==EditRowId"><img *ngIf="item.printStatus ==='printed'" style="width:15px"
             src="../../../../assets/images/aprroved.png" /> / <img *ngIf="item.fillingStatus ==='filled'"
             style="width:15px" src="../../../../assets/images/aprroved.png" /></td>
+
+        <!--?-->
         <td *ngIf="item._id===EditRowId"></td>
+
+        <!--Remarks-->
         <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' />
         </td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
+
+        <!--Filling again?-->
         <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
+
+        <!--Set production status-->
         <td *ngIf="productionApproved"><button class="btn btn-info" (click)="openItemStatus(item, itemProdStatus)">Set
             Production Status</button></td>
+
+        <!--Invoice + amounts-->
         <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px"
               src="../../../../assets/images/invoice.png"></label></td>
         <!-- <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
