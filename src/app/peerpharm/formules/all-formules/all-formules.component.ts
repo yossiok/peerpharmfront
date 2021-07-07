@@ -522,11 +522,12 @@ export class AllFormulesComponent implements OnInit {
   }
 
   filterByFormule($event) {
-    debugger
-    let formuleN = $event.target.value
-    this.allFormules = formuleN == "" ? this.allFormulesCopy : this.allFormulesCopy
+    if($event.target.value.length > 1 || $event.target.value.length == 0) {
+      let formuleN = $event.target.value
+      this.allFormules = formuleN == "" ? this.allFormulesCopy : this.allFormulesCopy
       .filter(formule => formule.formuleNumber.toLowerCase().includes(formuleN))
       .sort((a, b) => a.formuleNumber.length - b.formuleNumber.length)
+    }
   }
 
   filterByName($event) {
