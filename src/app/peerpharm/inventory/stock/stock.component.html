@@ -12,11 +12,10 @@
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
     <div class="col-1 fixNoaStupidStuff">
-      <button *ngIf="amountsDone" class="btn btn-warning form-control rounded-pill"
+      <button class="btn btn-warning form-control rounded-pill"
         (click)="procurementRecommendations('minimumStock')">F7
         - בדוק המלצה
         לרכש</button>
-      <div *ngIf="!amountsDone" class="smallLoader"></div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-warning form-control rounded-pill"

@@ -334,6 +334,12 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell?amounts=yes&itemNumber="+itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getAmountsForMulti(allNumbers): Observable<any> {
+    let url = this.baseUrl + "itemshell/amountsForMulti";
+    return this.http.post(url, JSON.stringify({numbers: allNumbers}), this.options).pipe(map(res => res.json()))
+  }
+
   getComponentAmount(componentN): Observable<any> {
     let url = this.baseUrl + "itemShell?getComponentAmount=" + componentN;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

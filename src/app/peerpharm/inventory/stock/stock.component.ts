@@ -340,7 +340,6 @@ export class StockComponent implements OnInit {
   currencies: Currencies
   callingForCmptAmounts: boolean = false;
   gettingProducts: boolean;
-  amountsDone: boolean = true
   alloAmountsLoading: boolean = false
   loadingText: string;
   lastCustomerOrders: any;
@@ -1016,27 +1015,20 @@ export class StockComponent implements OnInit {
 
 
 
-  getAmountsFromShelfs(componentN?) {
-    
-    this.components.forEach((cmpt, i) => {
-        this.inventoryService.getComponentsAmounts(cmpt.componentN).subscribe(res => {
-          try{
-
-            cmpt.amount = res[0] ? res[0].total : 0;
-            if (cmpt.itemType != "material") {
-              cmpt.amount = Math.round(cmpt.amount);
-            }
-            if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
-            if(i == this.components.length-1) this.loadingText = "(3/4) מייבא הזמנות רכש..."
-          } catch(e) {
-            alert(e)
+  getAmountsFromShelfs() {
+    let allNumbers = this.components.map(component => component.componentN)
+    this.inventoryService.getAmountsForMulti(allNumbers).subscribe(itemsAmounts=>{
+       for(let component of this.components) {
+         let itemWithTotal = itemsAmounts.find(item => item._id == component.componentN)
+         if(itemWithTotal) {
+           let amount = itemWithTotal.total
+           let roundedAmount = Math.round(amount)
+           component.amount = roundedAmount ? roundedAmount : 0
           }
-
-      })
-      // this.amountsDone = true
-    });
-    
-
+          else component.amount = 0
+        } 
+        this.loadingText = "(3/4) מייבא הזמנות רכש..."
+    })
   }
 
 
