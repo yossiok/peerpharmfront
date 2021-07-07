@@ -591,8 +591,8 @@ export class StockComponent implements OnInit {
           }
         }
       }
-      console.log('BABABAB BBABAB bABABAA',this.components)
-      this.loadingText = "(4/4) מחשב הקצאות..."
+      this.smallLoader = false
+      this.toastSrv.warning('שים לב, לא כל הנתונים נטענו. טוען הקצאות..')
     })
   }
 
@@ -1446,6 +1446,14 @@ export class StockComponent implements OnInit {
     let query = this.filterParams.value
     query.itemType = this.stockType
     this.loadingText = "(1/4) מייבא פריטים..."
+
+    setTimeout(()=> {
+      if(this.smallLoader) {
+        this.smallLoader = false
+        this.toastSrv.error('משהו השתבש.')
+      }
+    }, 1000*15) // stop the loader if no answer
+
     this.inventoryService.getFilteredComponents(query).subscribe(filteredComponents => {
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
@@ -1455,9 +1463,7 @@ export class StockComponent implements OnInit {
           this.loadingText = "(2/4) מחשב כמויות... "
           this.getAmountsFromShelfs();
           this.getItemPurchases()
-          this.components.map((c, i) => {
-            this.openAllocatedOrders(c.componentN, i, true).then(result => c.allocations = result)
-          })
+          this.getAllocations()
         } catch(e) {
           this.smallLoader = false
           alert(e)
@@ -1636,31 +1642,43 @@ export class StockComponent implements OnInit {
     // this.loadComponentItems();
   }
 
-  async openAllocatedOrders(componentN, index?, forEach?) {
 
-    return new Promise((resolve, reject) => {
-      try {
-        this.orderService.getAllOrdersForComponent(componentN).subscribe(data => {
-          if(forEach) {
-            if(index == this.components.length-1) this.smallLoader = false
-            resolve(data)
-          } 
-          else{
-            this.openModalHeader = "הקצאות מלאי"
+
+
+
+/**
+ async openAllocatedOrders(componentN, index?, forEach?) {
+ * 
+ *   this.openModalHeader = "הקצאות מלאי"
             this.openOrderAmountsModal = true;
             this.allocatedOrders = data
-            resolve('')
-          }
-        });
-      }
-      catch(e) {
-        reject(e)
-      }
-    
-  })
+ * 
+ * 
+ */
 
 
+  openAllocatedOrders(component) {
+    this.openModalHeader = "הקצאות מלאי"
+    this.openOrderAmountsModal = true;
+    this.allocatedOrders =  component.openOrders
   }
+
+
+
+  getAllocations() {
+    let allNumbers = this.components.map(c=> c.componentN)
+    this.orderService.getAllOrdersForComponents(allNumbers).subscribe(allComponentsOrders => {
+      console.log(allComponentsOrders)
+      for(let component of this.components) {
+        let ordersObject = allComponentsOrders.find(co => co.componentN == component.componentN)
+        component.openOrders = ordersObject.openOrders
+      }
+      this.toastSrv.success('כל הנתונים נטענו.')
+    })
+  }
+
+
+  
   async openAllocatedProducts(componentN) {
 
 

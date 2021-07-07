@@ -304,9 +304,9 @@ export class OrdersService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getAllOrdersForComponent(componentN): Observable<any> {
-    let url = this.baseUrl + 'orderitem/ordersForComponent?componentN=' + componentN;
-    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  getAllOrdersForComponents(componentNumbers): Observable<any> {
+    let url = this.baseUrl + 'orderitem/ordersForComponent';
+    return this.http.post(url, JSON.stringify({componentNumbers}), this.options).pipe(map(res => res.json()))
   }
 
 
