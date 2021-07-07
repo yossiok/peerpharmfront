@@ -12,11 +12,13 @@ data:Array<any>;
 
   ngOnInit() {
     
-    this.itemsService.getAllItems().subscribe((items) => {
-      this.data=items;
+    // this.itemsService.getAllItems().subscribe((items) => {
+    //   this.data=items;
       
       
-    } );  }
+    // } ); 
+  
+  }
 
 
 

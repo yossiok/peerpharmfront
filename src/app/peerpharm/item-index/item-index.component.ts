@@ -15,6 +15,7 @@ import { Currencies } from '../procurement/Currencies';
 export class ItemIndexComponent implements OnInit {
 
   itemMovements: any[];
+  itemMovementsCopy: any[];
 
   item: any;
 
@@ -74,6 +75,7 @@ export class ItemIndexComponent implements OnInit {
   currencies: Currencies;
   allowUserEditItem: boolean;
   rowNumber: number = -1
+  counter: number = 0
 
   constructor(
     private inventoryService: InventoryService,
@@ -133,6 +135,7 @@ export class ItemIndexComponent implements OnInit {
     this.inventoryService.getComplexItemMovements(this.itemMovementForm.value).subscribe(data => {
       console.log(data)
       this.itemMovements = data
+      this.itemMovementsCopy = data
     })
   }
 
@@ -150,6 +153,23 @@ export class ItemIndexComponent implements OnInit {
         this.getLastOrdersItem(20, this.item.itemType)
       } 
     })
+  }
+
+  sortBy(array, by){
+    if(by.includes('Date')) {
+      this[array].map(element => {
+        element.formatedDate = new Date(element[by])
+        return element;
+      })
+      by = 'formatedDate'
+    }
+    if (this.counter % 2 == 0) this[array].sort((a, b) => (a[by]) - (b[by]))
+    else this[array].sort((a, b) => (b[by]) - (a[by]))
+    this.counter++
+  }
+
+  filter(key, value) {
+    this.itemMovements = this.itemMovementsCopy.filter(movement => movement[key] == value)
   }
 
   checkIfItemExist(ev) {

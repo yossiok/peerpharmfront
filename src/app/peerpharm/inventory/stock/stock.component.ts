@@ -342,11 +342,11 @@ export class StockComponent implements OnInit {
   currencies: Currencies
   callingForCmptAmounts: boolean = false;
   gettingProducts: boolean;
-  amountsDone: boolean = true
   alloAmountsLoading: boolean = false
   loadingText: string;
   lastCustomerOrders: any;
   supPurchases: any[] = []
+  allowPriceUpdate: boolean = false
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -588,15 +588,21 @@ export class StockComponent implements OnInit {
     this.numberSearchInput.nativeElement.focus()
   }
 
-  getItemPurchases(component, index) {
-    component.showPurch = true
-    component.purchaseOrders = []
-    this.procuretServ.getPurchasesForComponent(component.componentN).subscribe(purchases => {
-      component.purchaseOrders = purchases
-      if(index == this.components.length-1) this.loadingText = "(4/4) מחשב הקצאות..."
+  getItemPurchases() {
+    let numbers = this.components.map(c=> c.componentN)
+    this.procuretServ.getPurchasesForMulti(numbers).subscribe(purchases => {
+      for(let component of this.components) {
+        for(let purchase of purchases) {
+          for (let item of purchase.stockitems) {
+            if(item.number == component.componentN) {
+              component.purchaseOrders? component.purchaseOrders.push(purchase) : component.purchaseOrders = [purchase]
+            }
+          }
+        }
+      }
+      this.smallLoader = false
+      this.toastSrv.warning('שים לב, לא כל הנתונים נטענו. טוען הקצאות..')
     })
-
-
   }
 
   getLastCustomerOrders(){
@@ -1018,27 +1024,20 @@ export class StockComponent implements OnInit {
 
 
 
-  getAmountsFromShelfs(componentN?) {
-    
-    this.components.forEach((cmpt, i) => {
-        this.inventoryService.getComponentsAmounts(cmpt.componentN).subscribe(res => {
-          try{
-
-            cmpt.amount = res[0] ? res[0].total : 0;
-            if (cmpt.itemType != "material") {
-              cmpt.amount = Math.round(cmpt.amount);
-            }
-            if (cmpt.actualMlCapacity == 'undefined') cmpt.actualMlCapacity = 0;
-            if(i == this.components.length-1) this.loadingText = "(3/4) מייבא הזמנות רכש..."
-          } catch(e) {
-            alert(e)
+  getAmountsFromShelfs() {
+    let allNumbers = this.components.map(component => component.componentN)
+    this.inventoryService.getAmountsForMulti(allNumbers).subscribe(itemsAmounts=>{
+       for(let component of this.components) {
+         let itemWithTotal = itemsAmounts.find(item => item._id == component.componentN)
+         if(itemWithTotal) {
+           let amount = itemWithTotal.total
+           let roundedAmount = Math.round(amount)
+           component.amount = roundedAmount ? roundedAmount : 0
           }
-
-      })
-      // this.amountsDone = true
-    });
-    
-
+          else component.amount = 0
+        } 
+        this.loadingText = "(3/4) מייבא הזמנות רכש..."
+    })
   }
 
 
@@ -1456,6 +1455,14 @@ export class StockComponent implements OnInit {
     let query = this.filterParams.value
     query.itemType = this.stockType
     this.loadingText = "(1/4) מייבא פריטים..."
+
+    setTimeout(()=> {
+      if(this.smallLoader) {
+        this.smallLoader = false
+        this.toastSrv.error('משהו השתבש.')
+      }
+    }, 1000*15) // stop the loader if no answer
+
     this.inventoryService.getFilteredComponents(query).subscribe(filteredComponents => {
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
@@ -1464,10 +1471,8 @@ export class StockComponent implements OnInit {
 
           this.loadingText = "(2/4) מחשב כמויות... "
           this.getAmountsFromShelfs();
-          this.components.map((c, i) => this.getItemPurchases(c, i))
-          this.components.map((c, i) => {
-            this.openAllocatedOrders(c.componentN, i, true).then(result => c.allocations = result)
-          })
+          this.getItemPurchases()
+          this.getAllocations()
         } catch(e) {
           this.smallLoader = false
           alert(e)
@@ -1648,31 +1653,43 @@ export class StockComponent implements OnInit {
     // this.loadComponentItems();
   }
 
-  async openAllocatedOrders(componentN, index?, forEach?) {
 
-    return new Promise((resolve, reject) => {
-      try {
-        this.orderService.getAllOrdersForComponent(componentN).subscribe(data => {
-          if(forEach) {
-            if(index == this.components.length-1) this.smallLoader = false
-            resolve(data)
-          } 
-          else{
-            this.openModalHeader = "הקצאות מלאי"
+
+
+
+/**
+ async openAllocatedOrders(componentN, index?, forEach?) {
+ * 
+ *   this.openModalHeader = "הקצאות מלאי"
             this.openOrderAmountsModal = true;
             this.allocatedOrders = data
-            resolve('')
-          }
-        });
-      }
-      catch(e) {
-        reject(e)
-      }
-    
-  })
+ * 
+ * 
+ */
 
 
+  openAllocatedOrders(component) {
+    this.openModalHeader = "הקצאות מלאי"
+    this.openOrderAmountsModal = true;
+    this.allocatedOrders =  component.openOrders
   }
+
+
+
+  getAllocations() {
+    let allNumbers = this.components.map(c=> c.componentN)
+    this.orderService.getAllOrdersForComponents(allNumbers).subscribe(allComponentsOrders => {
+      console.log(allComponentsOrders)
+      for(let component of this.components) {
+        let ordersObject = allComponentsOrders.find(co => co.componentN == component.componentN)
+        component.openOrders = ordersObject.openOrders
+      }
+      this.toastSrv.success('כל הנתונים נטענו.')
+    })
+  }
+
+
+  
   async openAllocatedProducts(componentN) {
 
 
@@ -1994,9 +2011,6 @@ export class StockComponent implements OnInit {
 
   editMaterialItemDetails() {
 
-    this.resMaterial;
-
-
     if (confirm("לעדכן פריט?")) {
 
       this.inventoryService.updateMaterial(this.resMaterial).subscribe(res => {
@@ -2037,20 +2051,27 @@ export class StockComponent implements OnInit {
 
         this.resCmpt.priceUpdates.push({
           price: newPrice, 
-          user,
+          coin, user,
           date: new Date(),
           type: 'manual'
         })
       }
       else if(type == 'm') {
         this.resMaterial.priceUpdates.push({
-          price: newPrice, 
-          user,
+          price: newPrice,
+          coin, user,
           date: new Date(),
           type: 'manual'
         })
       }
     })
+    this.allowPriceUpdate = false
+  }
+
+  checkUpdatePriceValidity(type) {
+    this.allowPriceUpdate = false
+    if(type == 'c') this.allowPriceUpdate =  this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != ''
+    if(type == 'm') this.allowPriceUpdate =  this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != ''
   }
 
   getSupplierPriceHistory(i) {

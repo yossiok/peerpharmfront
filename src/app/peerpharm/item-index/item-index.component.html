@@ -1,146 +1,3 @@
-<!--Item Movements-->
-<div class="row mt-4 text-center">
-  <h3 class="text-center mx-auto">Item Movements</h3>
-</div>
-<form [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
-  <div class="row border border-secondary rounded p-4 w-75 form-group mx-auto">
-    <div class="col-1">
-      <label>
-        item type
-      </label>
-      <select formControlName="itemType" class="form-control">
-        <option value="all">all</option>
-        <option value="component">component</option>
-        <option value="material">material</option>
-        <option value="product">product</option>
-      </select>
-    </div>
-    <div *ngIf="itemMovementForm.value.itemType == 'component'" class="col-2">
-      <label>
-        component type
-      </label>
-      <select formControlName="componentType" class="form-control">
-        <option value="skip">Filter by Items</option>
-        <option value='bottle_Glass'>בקבוק זכוכית</option>
-        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-        <option value='jar_Glass'>צנצנת זכוכית</option>
-        <option value='jar_Plastic'>צנצנת פלסטיק</option>
-        <option value='cap'>פקק</option>
-        <option value='cover'>מכסה</option>
-        <option value='pump'>משאבה</option>
-        <option value='cosmetic_pump'>משאבה קוסמטית</option>
-        <option value='over_cap'>מכסה עילי</option>
-        <option value='tube'>שפורפרת</option>
-        <option value='colons'>קולונים</option>
-        <option value='hair_life'>היירלייפ</option>
-        <option value='compacts'>קומפקטים</option>
-        <option value='personal_package'>אריזות אישיות</option>
-        <option value='master_carton'>קרטוני מאסטר</option>
-        <option value='newsletter'>עלון לצרכן</option>
-        <option value='irosol_valve'>אירוסול- שסתום</option>
-        <option value='irosol_bottle'>איירוסול- בקבוק</option>
-        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-        <option value='irosol_bottle'>איירוסול- בקבוק</option>
-        <option value='cellophane'>צלופן</option>
-        <option value='sticker'>מדבקה</option>
-        <option value='sachet'>סאשט</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label>
-        item numbers
-      </label>
-      <ng-container *ngFor="let item of itemMovementForm.value.itemNumbers; let i = index">
-        <input (change)="setItemNumber(i, $event)" [value]="itemMovementForm.value.itemNumbers[i]" class="form-control"
-          type="text">
-        <button type="button" (click)="itemMovementForm.value.itemNumbers.push('')">+</button>
-        <button *ngIf="i > 0" type="button" (click)="itemMovementForm.value.itemNumbers.pop()">-</button>
-      </ng-container>
-    </div>
-
-    <div class="col-2">
-      <label>from</label>
-      <input formControlName="fromDate" class="form-control" type="date">
-    </div>
-    <div class="col-2">
-      <label>to</label>
-      <input formControlName="toDate" class="form-control" type="date">
-    </div>
-    <div class="col-1">
-      <label>
-        movement type
-      </label>
-      <select formControlName="movementType" class="form-control">
-        <option value="all">all</option>
-        <option value="in">in</option>
-        <option value="out">out</option>
-        <option value="production">production</option>
-        <option value="shelfChange">Shelf Change</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label>
-        amounts
-      </label>
-      <input formControlName="amount" class="form-control" type="number">
-      <select formControlName="amountDir" class="form-control">
-        <option value="higherThan">Higher than</option>
-        <option value="lowerThan">Lower than</option>
-      </select>
-    </div>
-    <div class="col-1">
-      <button type="submit" class="btn btn-info">Go.</button>
-    </div>
-    <div class="col-1">
-      <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
-    </div>
-  </div>
-</form>
-
-<div class="row mt-2">
-</div>
-
-<div *ngIf="itemMovements" class="row mt-4 w-75 mx-auto">
-  <table class="table table-hover">
-    <thead class="text-info text-center">
-      <tr>
-        <th class="click">Date</th>
-        <th class="click">movement type</th>
-        <th class="click">item</th>
-        <th></th>
-        <th class="click">whare house</th>
-        <th class="click">in</th>
-        <th class="click">out</th>
-        <th class="click">production</th>
-        <th class="click">shelf change</th>
-        <th class="click">user</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let movement of itemMovements">
-        <td class="text-center">{{movement.movementDate | date: 'dd/MM/yy'}}</td>
-        <td class="text-center">{{movement.movementType}}</td>
-        <td class="text-center">{{movement.item}}</td>
-        <td class="text-center">{{movement.inventory_doc[0].componentName}}</td>
-        <td class="text-center">{{movement.WH_originName}}</td>
-        <td class="text-center"><span *ngIf="itemMovementForm.value.movementType == 'in'">{{movement.amount}}</span>
-        </td>
-        <td class="text-center"><span *ngIf="itemMovementForm.value.movementType == 'out'">{{movement.amount}}</span>
-        </td>
-        <td class="text-center"><span
-            *ngIf="itemMovementForm.value.movementType == 'production'">{{movement.amount}}</span></td>
-        <td class="text-center"><span
-            *ngIf="itemMovementForm.value.movementType == 'shelfChange'">{{movement.amount}}</span></td>
-        <td class="text-center">{{movement.userName}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-
-
-
 
 
 <!-- Item Details -->
@@ -443,3 +300,166 @@
 
 
 </div>
+
+
+
+
+
+
+<!--Item Movements-->
+<div class="row mt-4 text-center">
+  <h3 class="text-center mx-auto">Item Movements</h3>
+</div>
+<form [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
+  <div class="row border border-secondary rounded p-4 w-75 form-group mx-auto">
+    <div class="col-1">
+      <label>
+        item type
+      </label>
+      <select formControlName="itemType" class="form-control">
+        <option value="all">all</option>
+        <option value="component">component</option>
+        <option value="material">material</option>
+        <option value="product">product</option>
+      </select>
+    </div>
+    <div *ngIf="itemMovementForm.value.itemType == 'component'" class="col-2">
+      <label>
+        component type
+      </label>
+      <select formControlName="componentType" class="form-control">
+        <option value="skip">Filter by Items</option>
+        <option value='bottle_Glass'>בקבוק זכוכית</option>
+        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+        <option value='jar_Glass'>צנצנת זכוכית</option>
+        <option value='jar_Plastic'>צנצנת פלסטיק</option>
+        <option value='cap'>פקק</option>
+        <option value='cover'>מכסה</option>
+        <option value='pump'>משאבה</option>
+        <option value='cosmetic_pump'>משאבה קוסמטית</option>
+        <option value='over_cap'>מכסה עילי</option>
+        <option value='tube'>שפורפרת</option>
+        <option value='colons'>קולונים</option>
+        <option value='hair_life'>היירלייפ</option>
+        <option value='compacts'>קומפקטים</option>
+        <option value='personal_package'>אריזות אישיות</option>
+        <option value='master_carton'>קרטוני מאסטר</option>
+        <option value='newsletter'>עלון לצרכן</option>
+        <option value='irosol_valve'>אירוסול- שסתום</option>
+        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+        <option value='cellophane'>צלופן</option>
+        <option value='sticker'>מדבקה</option>
+        <option value='sachet'>סאשט</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label>
+        item numbers
+      </label>
+      <ng-container *ngFor="let item of itemMovementForm.value.itemNumbers; let i = index">
+        <input (change)="setItemNumber(i, $event)" [value]="itemMovementForm.value.itemNumbers[i]" class="form-control"
+          type="text">
+        <button type="button" (click)="itemMovementForm.value.itemNumbers.push('')">+</button>
+        <button *ngIf="i > 0" type="button" (click)="itemMovementForm.value.itemNumbers.pop()">-</button>
+      </ng-container>
+    </div>
+
+    <div class="col-2">
+      <label>from</label>
+      <input formControlName="fromDate" class="form-control" type="date">
+    </div>
+    <div class="col-2">
+      <label>to</label>
+      <input formControlName="toDate" class="form-control" type="date">
+    </div>
+    <div class="col-1">
+      <label>
+        movement type
+      </label>
+      <select formControlName="movementType" class="form-control">
+        <option value="all">all</option>
+        <option value="in">in</option>
+        <option value="out">out</option>
+        <option value="production">production</option>
+        <option value="shelfChange">Shelf Change</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label>
+        amounts
+      </label>
+      <input formControlName="amount" class="form-control" type="number">
+      <select formControlName="amountDir" class="form-control">
+        <option value="higherThan">Higher than</option>
+        <option value="lowerThan">Lower than</option>
+      </select>
+    </div>
+    <div class="col-1">
+      <button type="submit" class="btn btn-info">Go.</button>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
+    </div>
+  </div>
+</form>
+
+<div class="row mt-2">
+</div>
+
+<div *ngIf="itemMovements" class="row mt-4 w-75 mx-auto">
+  <table class="table table-hover">
+    <thead class="text-info text-center">
+      <tr>
+        <th class="click text-center" (click)="sortBy('itemMovements', 'movementDate')">Date</th>
+        <th class="click text-center" (click)="sortBy('itemMovements', 'movementType')">movement type</th>
+        <th class="click text-center" (click)="sortBy('itemMovements', 'item')">item</th>
+        <th></th>
+        <th class="click text-center" (click)="sortBy('itemMovements', 'WH_originName')">whare house</th>
+        <th class="click text-center" (click)="sortBy('itemMovements', 'amount')">in</th>
+        <th class="click text-center" (click)="sortBy('itemMovements', 'amount')">out</th>
+        <th class="click text-center" (click)="sortBy('itemMovements', 'amount')">production</th>
+        <th class="click text-center" (click)="sortBy('itemMovements', 'amount')">shelf change</th>
+        <th class="text-center" >user</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let movement of itemMovements">
+        <td class="click click-td text-center" (click)="filter('movementDate', movement.movementDate)">
+          {{movement.movementDate | date: 'dd/MM/yy'}}
+        </td>
+        <td class="click click-td text-center" (click)="filter('movementType', movement.movementType)">
+          {{movement.movementType}}
+        </td>
+        <td class="click click-td text-center" (click)="filter('item', movement.item)">
+          {{movement.item}}
+        </td>
+        <td class="click click-td text-center">{{movement.inventory_doc[0].componentName}}</td>
+        <td class="click click-td text-center" (click)="filter('WH_originName', movement.WH_originName)">
+          {{movement.WH_originName}}
+        </td>
+        <td class="click click-td text-center" (click)="filter('amount', movement.amount)">
+          <span *ngIf="movement.movementType == 'in'">{{movement.amount}}</span>
+        </td>
+        <td class="click click-td text-center" (click)="filter('amount', movement.amount)">
+          <span *ngIf="movement.movementType == 'out'">{{movement.amount}}</span>
+        </td>
+        <td class="click click-td text-center" (click)="filter('amount', movement.amount)">
+          <span *ngIf="movement.movementType == 'production'">{{movement.amount}}</span>
+        </td>
+        <td class="click click-td text-center" (click)="filter('amount', movement.amount)">
+          <span *ngIf="movement.movementType == 'shelfChange'">{{movement.amount}}</span>
+        </td>
+        <td class="click click-td text-center" (click)="filter('userName', movement.userName)">
+          {{movement.userName}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+

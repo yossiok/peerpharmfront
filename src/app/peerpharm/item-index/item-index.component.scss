@@ -1,6 +1,16 @@
 .click {
     cursor: pointer;
 }
+  
+  .click:hover {
+    background-color: rgb(12, 75, 211);
+    color: white
+  }
+
+  .click-td:hover {
+    background-color: black;
+    color: white
+  }
 
 .modal-inner {
     max-height: 600px;

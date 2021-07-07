@@ -90,14 +90,14 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: '',
-    title: ' Items',
+    title: 'Products',
     icon: ' fas fa-sitemap',
     class: 'has-arrow',
     extralink: false,
     submenu: [
       {
         path: '/peerpharm/items/itemslist',
-        title: 'Item List',
+        title: 'Product List',
         icon: 'fas fa-list-ol',
         class: '',
         extralink: false,
@@ -105,7 +105,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: '/peerpharm/items/itemDetails',
-        title: 'Item Tree',
+        title: 'Product Tree',
         icon: 'fas fa-tree',
         class: '',
         extralink: false,
@@ -113,7 +113,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: '/peerpharm/items/itemreports',
-        title: 'Items Reports',
+        title: 'Product Reports',
         icon: 'fas fa-tree',
         class: '',
         extralink: false,
@@ -247,7 +247,7 @@ export const ROUTES: RouteInfo[] = [
 
       {
         path: '/peerpharm/inventory/stock',
-        title: 'Amounts',
+        title: 'inventory',
         icon: 'fas fa-address-book',
         class: '',
         extralink: false,

@@ -12,11 +12,10 @@
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
     <div class="col-1 fixNoaStupidStuff">
-      <button *ngIf="amountsDone" class="btn btn-warning form-control rounded-pill"
+      <button class="btn btn-warning form-control rounded-pill"
         (click)="procurementRecommendations('minimumStock')">F7
         - בדוק המלצה
         לרכש</button>
-      <div *ngIf="!amountsDone" class="smallLoader"></div>
     </div>
     <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-warning form-control rounded-pill"
@@ -209,11 +208,15 @@
               <td style="width:5%; word-break: normal;">{{component.suplierName}}</td>
               <td style="width:10%;">{{component.componentName}}</td>
               <td style="width:5%; word-break: normal;">{{component.componentType}}</td>
-              <td style="width:5%; cursor: pointer;border-right: 2px solid black;"
-                (click)="openAllocatedOrders(component.componentN)" [ngClass]="calcIfLowThenMin(component)">
+              <td *ngIf="component.openOrders" style="width:5%; cursor: pointer;border-right: 2px solid black;"
+                (click)="openAllocatedOrders(component)" [ngClass]="calcIfLowThenMin(component)">
                 {{component.alloAmount}}
                 <img src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
                   style="width: 40px; margin-left: 15px; cursor: pointer; float: right;">
+              </td>
+              <td *ngIf="!component.openOrders">
+                <p>טוען הקצאות..</p>
+                <div class="smallLoader"></div>
               </td>
               <td style="width:5%;cursor: pointer;" (click)="getCmptAmounts(component.componentN, component._id)">
                 {{component.amount }}
@@ -227,7 +230,7 @@
               <td>
                 <!-- <button class="btn btn-success" *ngIf="!component.showPurch" (click)="getItemPurchases(component)">טען
                   הזמנות פתוחות</button> -->
-                <div *ngIf="component.showPurch">
+                <div>
                   <img src="../../../../assets/images/refreshData.png" class="float-right small" alt="get user name"
                     (click)="getItemPurchases(component)">
                   <span *ngIf="component.purchaseOrders.length == 0">אין הזמנות פתוחות לפריט</span>
@@ -1031,11 +1034,11 @@
             <div class="fixNoaStupidStuff row mt-4">
               <div class="fixNoaStupidStuff col-4">
                 <h5>מחיר רכש אחרון</h5>
-                <p>{{resCmpt.coin}} {{resCmpt.price}}</p>
+                <p>{{resCmpt.price}} {{resCmpt.coin}} </p>
               </div>
               <div class="col-4">
                 <h5>מחיר ידני</h5>
-                <p>{{resCmpt.manualCoin}} {{resCmpt.manualPrice}}</p>
+                <p>{{resCmpt.manualPrice}} {{resCmpt.manualCoin}} </p>
               </div>
               <div class="col-2">
                 <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
@@ -1048,7 +1051,7 @@
           </div>
           <div dir="rtl" class="row fixNoaStupidStuff mt-2">
   
-            <div class="col-3"><p>מקרא: </p></div>
+            <div class="col-3"><p>סוגי עדכונים: </p></div>
             <div class="col-3"><div class="yellow">עדכון ידני</div></div>
             <div class="col-3"><div class="cornflowerblue">עדכון מערכת</div></div>
   
@@ -1061,8 +1064,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let update of resCmpt.priceUpdates; let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-                  <td>{{update.coin}} {{update.price}}</td>
+                <tr *ngFor="let update of resCmpt.priceUpdates; let i=index" >
+                  <td [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
+                    {{update.price}} {{update.coin}} 
+                  </td>
                   <td>{{update.date | date:'dd/MM/yy'}}</td>
                   <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                   <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
@@ -2155,11 +2160,11 @@
           <div class="fixNoaStupidStuff row mt-4">
             <div class="fixNoaStupidStuff col-4">
               <h5>מחיר רכש אחרון</h5>
-              <p>{{resMaterial.coin}} {{resMaterial.price}}</p>
+              <p>{{resMaterial.price}} {{resMaterial.coin}} </p>
             </div>
             <div class="col-4">
               <h5>מחיר ידני</h5>
-              <p>{{resMaterial.manualCoin}} {{resMaterial.manualPrice}}</p>
+              <p>{{resMaterial.manualPrice}} {{resMaterial.manualCoin}} </p>
             </div>
             <div class="col-2">
               <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
@@ -2185,7 +2190,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let update of resMaterial.priceUpdates; let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-                <td>{{update.coin}} {{update.price}}</td>
+                <td>{{update.price}} {{update.coin}} </td>
                 <td>{{update.date | date: 'dd/MM/yy'}}</td>
                 <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                 <td *ngIf="update.type == 'auto'">הזמנת רכש מס' {{update.purchase}}</td>
@@ -2218,7 +2223,8 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Orders</th>
+              <th scope="col">Order Number</th>
+              <th scope="col">Order Stage</th>
               <th scope="col">Allocated Amount</th>
               <th scope="col">Order Date</th>
               <th scope="col">Delivery Date</th>
@@ -2229,6 +2235,7 @@
             <tr *ngFor="let order of allocatedOrders;let i=index">
               <td>{{i+1}}</td>
               <td>{{order.orderNumber}}</td>
+              <td>{{order.stage}}</td>
               <td>{{order.allocatedAmount}}</td>
               <td>{{order.orderDate}}</td>
               <td>{{order.deliveryDate}}</td>
@@ -2621,18 +2628,22 @@
     <div class="fixNoaStupidStuff row mt-2">
       <div class="fixNoaStupidStuff col-3">
         <label>מחיר חדש:</label>
-        <input *ngIf="resMaterial.componentN != ''" class="form-control" type="number" [(ngModel)]="resMaterial.manualPrice">
-        <input *ngIf="resCmpt.componentN != ''" class="form-control" type="number" [(ngModel)]="resCmpt.manualPrice">
+        <input *ngIf="resMaterial.componentN != ''" (change)="checkUpdatePriceValidity('m')" 
+          class="form-control" type="number" [(ngModel)]="resMaterial.manualPrice">
+        <input *ngIf="resCmpt.componentN != ''" (change)="checkUpdatePriceValidity('c')" 
+          class="form-control" type="number" [(ngModel)]="resCmpt.manualPrice">
       </div>
       <div class="fixNoaStupidStuff col-3">
         <label>מטבע:</label>
-        <select *ngIf="resMaterial.componentN != ''" [(ngModel)]="resMaterial.manualCoin" class="form-control">
+        <select *ngIf="resMaterial.componentN != ''" [(ngModel)]="resMaterial.manualCoin" 
+          class="form-control" (change)="checkUpdatePriceValidity('m')">
           <option value="NIS">NIS</option>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
           <option value="GBP">GBP</option>
         </select>
-        <select *ngIf="resCmpt.componentN != ''" [(ngModel)]="resCmpt.manualCoin" class="form-control">
+        <select *ngIf="resCmpt.componentN != ''" [(ngModel)]="resCmpt.manualCoin" 
+        (change)="checkUpdatePriceValidity('c')" class="form-control">
           <option value="NIS">NIS</option>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
@@ -2641,8 +2652,20 @@
       </div>
     </div>
     <div class="fixNoaStupidStuff row mt-2">
-      <button *ngIf="resMaterial.componentN != ''" (click)="editMaterialItemDetails()" (click)="addToPriceHistory('m')" (click)="modal.dismiss('Cross click')" >שמור</button>
-      <button *ngIf="resCmpt.componentN != ''" (click)="editStockItemDetails()" (click)="modal.dismiss('Cross click')" (click)="addToPriceHistory('c')">שמור</button>
+      <button 
+        *ngIf="resMaterial.componentN != ''" (click)="editMaterialItemDetails()" 
+        (click)="addToPriceHistory('m')" (click)="modal.dismiss('Cross click')"
+        [disabled]="!allowPriceUpdate" ngbTooltip="יש לעדכן מטבע"
+        [style.cursor]="allowPriceUpdate ? 'pointer' : 'not-allowed'">
+        שמור
+      </button>
+      <button 
+        *ngIf="resCmpt.componentN != ''" (click)="editStockItemDetails()" 
+        (click)="modal.dismiss('Cross click')" (click)="addToPriceHistory('c')"
+        [disabled]="!allowPriceUpdate" ngbTooltip="יש לעדכן מטבע"
+        [style.cursor]="allowPriceUpdate ? 'pointer' : 'not-allowed'">
+        שמור
+      </button>
     </div>
   </div>
   <div class="modal-footer">
