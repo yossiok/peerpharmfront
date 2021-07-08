@@ -17,6 +17,7 @@ import { ExcelService } from 'src/app/services/excel.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PlateService } from 'src/app/services/plate.service';
 import { log } from 'console';
+import { Procurementservice } from 'src/app/services/procurement.service';
 
 
 
@@ -243,6 +244,19 @@ export class ItemdetaisComponent implements OnInit {
     pumpNumber: '',
     sealNumber: '',
 
+    bottleAmount: 0,
+    bottlePurchases: [],
+    bottleAllocations: 0,
+    capAmount: 0,
+    capPurchases: [],
+    capAllocations: 0,
+    pumpAmount: 0,
+    pumpPurchases: [],
+    pumpAllocations: 0,
+    sealAmount: 0,
+    sealPurchases: [],
+    sealAllocations: 0,
+
     bottleTube: '',
     capTube: '',
     pumpTube: '',
@@ -346,8 +360,13 @@ export class ItemdetaisComponent implements OnInit {
 
   }
 
-  constructor(private plateService: PlateService, private translate: TranslateService, private excelService: ExcelService, private orderService: OrdersService, private batchService: BatchesService, private modalService: NgbModal, private costumersService: CostumersService, private route: ActivatedRoute, private itemsService: ItemsService, private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
-    private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService) {
+  constructor(
+    private plateService: PlateService, private translate: TranslateService, private excelService: ExcelService, 
+    private orderService: OrdersService, private batchService: BatchesService, private modalService: NgbModal, 
+    private costumersService: CostumersService, private route: ActivatedRoute, private itemsService: ItemsService, 
+    private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
+    private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService,
+    private purchaseService: Procurementservice) {
 
 
 
@@ -533,6 +552,14 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.bottleTube = data[0].componentName
         this.itemShown.bottleImage = data[0].img
         this.itemShown.componentType = data[0].componentType
+        this.itemShown.bottleAllocations = data[0].alloAmount
+        this.invtSer.getComponentAmount(bottleNumber).subscribe(bottleAmount => {
+          this.itemShown.bottleAmount = bottleAmount[0].total
+        })
+        this.purchaseService.getPurchasesForComponent(bottleNumber).subscribe(data=>{
+          this.itemShown.bottlePurchases = data
+        })
+
       })
     } else if (bottleNumber == "---") {
       this.itemShown.bottleTube = ""
@@ -548,6 +575,14 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.capTube = data[0].componentName
         this.itemShown.capImage = data[0].img
         this.itemShown.componentTwoType = data[0].componentType
+        this.itemShown.capAllocations = data[0].alloAmount
+        this.invtSer.getComponentAmount(capNumber).subscribe(capAmount => {
+          this.itemShown.capAmount = capAmount[0].total
+        })
+        this.purchaseService.getPurchasesForComponent(capNumber).subscribe(data=>{
+          this.itemShown.capPurchases = data
+        })
+
       })
     } else if (capNumber == "---") {
       this.itemShown.capTube = ""
@@ -556,9 +591,6 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillPump(pumpNumber) {
-
-    ;
-
     pumpNumber = this.itemShown.pumpNumber
     if (pumpNumber != "---" && pumpNumber != "") {
       ;
@@ -566,6 +598,13 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.pumpTube = data[0].componentName
         this.itemShown.pumpImage = data[0].img
         this.itemShown.componentThreeType = data[0].componentType
+        this.itemShown.pumpAllocations = data[0].alloAmount
+        this.invtSer.getComponentAmount(pumpNumber).subscribe(pumpAmount => {
+          this.itemShown.pumpAmount = pumpAmount[0].total
+        })
+        this.purchaseService.getPurchasesForComponent(pumpNumber).subscribe(data=>{
+          this.itemShown.pumpPurchases = data
+        })
       })
     } else if (pumpNumber == "---") {
       this.itemShown.pumpTube = ""
@@ -574,13 +613,19 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillSeal(sealNumber) {
-
     sealNumber = this.itemShown.sealNumber
     if (sealNumber != "---" && sealNumber != "") {
       this.invtSer.getCmptByNumber(sealNumber, "component").subscribe(data => {
         this.itemShown.sealTube = data[0].componentName
         this.item.sealImage = data[0].img
         this.itemShown.componentFourType = data[0].componentType
+        this.itemShown.sealAllocations = data[0].alloAmount
+        this.invtSer.getComponentAmount(sealNumber).subscribe(sealAmount => {
+          this.itemShown.sealAmount = sealAmount[0].total
+        })
+        this.purchaseService.getPurchasesForComponent(sealNumber).subscribe(data=>{
+          this.itemShown.sealPurchases = data
+        })
       })
     } else if (sealNumber == "---") {
       this.itemShown.sealTube = ""

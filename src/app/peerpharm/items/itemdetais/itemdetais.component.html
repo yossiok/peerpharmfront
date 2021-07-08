@@ -35,7 +35,8 @@
     <div class="row">
         <div class="col-1">
             <div style="margin:3px;">
-                <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Product' | translate }} {{ 'Number' | translate}}</label>
+                <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Product' | translate }} {{ 'Number' |
+                    translate}}</label>
             </div>
             <div style="margin:3px;">
                 <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Barcode' | translate }}</label>
@@ -116,8 +117,8 @@
                     id="id_discrip" style="width:480px">
             </div>
             <div>
-                <select [ngClass]="itemBackgroundByStatus()" [(ngModel)]=itemShown.group
-                    id="id_type" style="width:480px">
+                <select [ngClass]="itemBackgroundByStatus()" [(ngModel)]=itemShown.group id="id_type"
+                    style="width:480px">
                     <option value="תמרוק בארץ">תמרוק בארץ</option>
                     <option value='אמ"ר'>א.מ.ר</option>
                     <option value="OTC">OTC</option>
@@ -1179,7 +1180,7 @@
                                 </div>
                             </div>
 
-<!--Addition MAria Request---------------------------------------------------------------------------------------------------->
+                            <!--Addition MAria Request---------------------------------------------------------------------------------------------------->
                             <div class="row mt-5">
                                 <div class="col-2">
                                     <label class="labelGeneral">{{ 'Carton' | translate }}
@@ -1215,10 +1216,10 @@
                                         placeholder="Carton Name 2">
                                 </div>
                             </div>
-<!--Finish Addition MAria Request--------------------------------------------------------------------------------------------------------------------->
+                            <!--Finish Addition MAria Request--------------------------------------------------------------------------------------------------------------------->
 
 
-                            
+
 
                             <div class="row mt-5">
                                 <div class="col-1">
@@ -1469,7 +1470,7 @@
                                         [(ngModel)]=itemShown.bottleNumber>
                                 </div>
 
-                                <div class="col-4">
+                                <div class="col-2">
                                     <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
@@ -1480,6 +1481,28 @@
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('bottle')"
                                         *ngIf='bottleFile'>>></button>
                                     <img id="id_img1" [src]=itemShown.bottleImage>
+                                </div>
+                                <div class="col-3 stock-bg">
+                                    <h4>Stock details</h4>
+                                    <label>Stock Amount: {{itemShown.bottleAmount}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.bottleAllocations}}</label><br>
+                                    <label>Ordered Amounts: </label>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+                                                <th>Order Date</th>
+                                                <th>Arrival Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let purchase of itemShown.bottlePurchases">
+                                                <td>{{purchase.orderNumber}}</td>
+                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
 
                             </div>
@@ -1533,7 +1556,7 @@
 
                             <!-- Upload component pictures 2 + 3 -->
                             <div style='padding-left:30px' class="row">
-                                <div class="col-6">
+                                <div class="col-2">
                                     <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
@@ -1545,7 +1568,29 @@
                                         *ngIf='capFile'>>></button>
                                     <img id="id_img2" [src]=itemShown.capImage>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-3 stock-bg">
+                                    <h4>Stock details</h4>
+                                    <label>Stock Amount: {{itemShown.capAmount}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.capAllocations}}</label><br>
+                                    <label>Ordered Amounts: </label>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+                                                <th>Order Date</th>
+                                                <th>Arrival Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let purchase of itemShown.capPurchases">
+                                                <td>{{purchase.orderNumber}}</td>
+                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-2">
                                     <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
@@ -1556,6 +1601,28 @@
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('pump')"
                                         *ngIf='pumpFile'>>></button>
                                     <img id="id_img3" [src]=itemShown.pumpImage>
+                                </div>
+                                <div class="col-3 stock-bg">
+                                    <h4>Stock details</h4>
+                                    <label>Stock Amount: {{itemShown.pumpAmount}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.pumpAllocations}}</label><br>
+                                    <label>Ordered Amounts: </label>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+                                                <th>Order Date</th>
+                                                <th>Arrival Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let purchase of itemShown.pumpPurchases">
+                                                <td>{{purchase.orderNumber}}</td>
+                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
@@ -1594,7 +1661,7 @@
                             </div>
                             <div style='padding-left:30px' class="row">
 
-                                <div class="col-6">
+                                <div class="col-2">
                                     <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
@@ -1605,6 +1672,28 @@
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra1')"
                                         *ngIf='extra1File'>>></button>
                                     <img id="id_img6" [src]=itemShown.extraImage1>
+                                </div>
+                                <div class="col-3 stock-bg">
+                                    <h4>Stock details</h4>
+                                    <label>Stock Amount: {{itemShown.sealAmount}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.sealAllocations}}</label><br>
+                                    <label>Ordered Amounts: </label>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+                                                <th>Order Date</th>
+                                                <th>Arrival Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let purchase of itemShown.sealPurchases">
+                                                <td>{{purchase.orderNumber}}</td>
+                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
 
                                 <div class="col-6">
@@ -1996,7 +2085,7 @@
                 src="/assets/images/ordered.png">
             <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX()"
                 style="width: 50px;margin:5px;cursor: pointer;">
-            <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;"צפש
+            <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;" צפש
                 src="../../../../assets/images/price.png">
             <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
         </div>
