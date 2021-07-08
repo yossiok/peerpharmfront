@@ -849,6 +849,10 @@ export class OrderdetailsComponent implements OnInit {
         const diffDays = diffHours / 24
         item.licenseExpirationClose = diffDays < 30
 
+        //set remained amount (total amount - amount that has allready been supplied)
+        let quantitySupplied = item.billing.map(b=>b.billQty).reduce((a, b) => a + b, 0)
+        item.quantityRemained = Number(item.quantity) - quantitySupplied
+
         this.totalOrderQty += Number(item.quantity)
         if (item.fillingStatus != null) {
           if (item.status != 'done') {

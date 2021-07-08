@@ -55,15 +55,8 @@
     </select>
   </div>
 </div>
-<img src="assets/images/load_data2.gif" *ngIf="loadData==true"><br>
-<!-- <div *ngIf="loadData==false">
-  <p>Showing {{ordersItems.length}} items</p>
-</div> -->
 
-<!-- <div *ngIf="!multi && ordersItems.length!=0">
-  <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg"
-        (click)="openCmptDemandsModal()" >
-</div> -->
+<img src="assets/images/load_data2.gif" *ngIf="loadData==true"><br>
 
 <div *ngIf="!showingAllOrders">
   <p>License Status:</p>
@@ -81,8 +74,6 @@
 
 <div *ngIf="orderExplodeLoader" class="loading">Loading&#8230;</div>
 
-<!-- <mat-tab-group> -->
-<!-- <mat-tab label="Order Items">  -->
 <table style="border: 1px solid black;" class='table' *ngIf="loadData==false">
   <thead class='bg-info tableHeader text-white' (click)="edit('')">
     <tr>
@@ -98,12 +89,11 @@
       <th class="header">Barcode </th>
       <th class="header">neto Weight(Gr) </th>
       <th class="header">Quantity </th>
+      <th class="header">Remained </th>
       <th class="header">Printing/Filling </th>
-      <!-- <th class='printTd header'>Weight</th> -->
       <th class="header">Remarks </th>
       <th class='printTd header'>Status</th>
       <th *ngIf="productionApproved" class='printTd header'>Production Status</th>
-      <!-- <th class='printTd header' *ngIf="!showingAllOrders && !multi">Compile</th> -->
       <th class='printTd header'>Billing</th>
       <th class="header">C & F</th>
       <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
@@ -130,7 +120,6 @@
           [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
       <td><input style="box-shadow:1px 1px 2px black; color: red;" class="form-control form-control-sm"
           placeholder="Item Important Remark" [(ngModel)]="itemData.itemImpRemark" disabled>
-        <!-- <img src="../../../../assets/images/alert3.gif" width="30px" alt="see important remarks from item tree"> -->
       </td>
       <td><input style="box-shadow:1px 1px 2px black; width:350px;" class="form-control form-control-sm"
           placeholder="Description" [(ngModel)]="itemData.discription"></td>
@@ -156,7 +145,6 @@
     </tr>
 
     <ng-container *ngFor="let item of ordersItems; let i = index">
-      <!-- <tr [style.background-color]="item.color"  (click)="edit(item._id)" (blur)="edit('')"> -->
       <tr style="border: 2px solid black; box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
         [style.background-color]="item.color">
 
@@ -221,6 +209,9 @@
         <!--Quantity-->
         <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
+        <!--Remained Quantity-->
+        <td *ngIf="item._id===EditRowId"></td>
+        <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantityRemained}}</td>
 
         <!--Printing / Filling status-->
         <td *ngIf="item._id!==EditRowId"><img *ngIf="item.printStatus ==='printed'" style="width:15px"
@@ -244,29 +235,15 @@
         <!--Invoice + amounts-->
         <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px"
               src="../../../../assets/images/invoice.png"></label></td>
-        <!-- <td *ngIf="item.compiled && item.compiled.length==0 && !showingAllOrders && !multi" class='printTd'> </td>
-          <td *ngIf="item.compiled && item.compiled.length>0 && !showingAllOrders && !multi" class='printTd'
-            style="cursor: pointer;" (click)="openPackingModal(item.itemNumber, item.orderNumber,i)">
-            {{item.compiled[0].sum}}</td> -->
         <td *ngIf="item._id!==EditRowId">
 
           <label>Formules</label><input [(ngModel)]="item.formuleCheck" (change)="isChecked($event,item._id)"
             id="formuleCheckBox" type="checkbox">
 
         </td>
-        <!-- <td *ngIf="item._id===EditRowId"><label>Components</label>
-              <select [value]="item.componentCheck" #componentCheck >
-              <option value="0">0</option>
-              <option value="ordered">הוזמן</option>
-              <option value="inStock">במלאי</option>
-            </select>
-            <br><br>
-            
-          </td> -->
 
         <td></td>
         <td></td>
-        <!--<td><img  *ngIf="item._id!=EditRowId" src='/assets/images/deleteBtn.png' style='width:40px; cursor: pointer'  (click)="deleteItem(item)"><img  *ngIf="item._id===EditRowId" src='/assets/images/aprroved.png' style='width:30px; cursor: pointer' (click)="saveEdit()"></td>-->
 
         <td class='printTd'>
           <i class="ti-trash text-danger m-r-10" *ngIf="item._id!=EditRowId" (click)="deleteItem(item)"
