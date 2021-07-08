@@ -554,7 +554,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.componentType = data[0].componentType
         this.itemShown.bottleAllocations = data[0].alloAmount
         this.invtSer.getComponentAmount(bottleNumber).subscribe(bottleAmount => {
-          this.itemShown.bottleAmount = bottleAmount[0].total
+          this.itemShown.bottleAmount = bottleAmount[0] ? bottleAmount[0].amount : 0
         })
         this.purchaseService.getPurchasesForComponent(bottleNumber).subscribe(data=>{
           this.itemShown.bottlePurchases = data
@@ -577,7 +577,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.componentTwoType = data[0].componentType
         this.itemShown.capAllocations = data[0].alloAmount
         this.invtSer.getComponentAmount(capNumber).subscribe(capAmount => {
-          this.itemShown.capAmount = capAmount[0].total
+          this.itemShown.capAmount = capAmount[0]? capAmount[0].amount : 0
         })
         this.purchaseService.getPurchasesForComponent(capNumber).subscribe(data=>{
           this.itemShown.capPurchases = data
@@ -600,7 +600,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.componentThreeType = data[0].componentType
         this.itemShown.pumpAllocations = data[0].alloAmount
         this.invtSer.getComponentAmount(pumpNumber).subscribe(pumpAmount => {
-          this.itemShown.pumpAmount = pumpAmount[0].total
+          this.itemShown.pumpAmount = pumpAmount[0] ? pumpAmount[0].amount : 0
         })
         this.purchaseService.getPurchasesForComponent(pumpNumber).subscribe(data=>{
           this.itemShown.pumpPurchases = data
@@ -621,7 +621,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.componentFourType = data[0].componentType
         this.itemShown.sealAllocations = data[0].alloAmount
         this.invtSer.getComponentAmount(sealNumber).subscribe(sealAmount => {
-          this.itemShown.sealAmount = sealAmount[0].total
+          this.itemShown.sealAmount = sealAmount[0] ? sealAmount[0].amount : 0
         })
         this.purchaseService.getPurchasesForComponent(sealNumber).subscribe(data=>{
           this.itemShown.sealPurchases = data

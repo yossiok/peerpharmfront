@@ -43,7 +43,10 @@
             </div>
 
             <div style="margin:3px">
-                <label [ngClass]="checkItemStatus()" style="font-weight:bold">{{ 'Sticker' | translate }}</label>
+                <label [ngClass]="checkItemStatus()" style="font-weight:bold">{{ 'Sticker' | translate }} 1</label>
+            </div>
+            <div style="margin:3px">
+                <label [ngClass]="checkItemStatus()" style="font-weight:bold">{{ 'Sticker' | translate }} 2</label>
             </div>
             <div style="margin:3px">
                 <label [ngClass]="checkItemStatus()" style="font-weight:bold">{{ 'Box' | translate }}</label>
@@ -93,9 +96,15 @@
             </div>
             <div>
                 <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_stickerNumber"
-                    [(ngModel)]=itemShown.stickerNumber
+                    [(ngModel)]=itemShown.stickerNumber placeholder="Sticker Number"
                     onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
-                <input type="text" style='width: 150px' id="id_stickerType" [(ngModel)]=itemShown.stickerTypeK>
+                <input type="text" style='width: 150px' id="id_stickerType" placeholder="Sticker Type" [(ngModel)]=itemShown.stickerTypeK>
+            </div>
+            <div>
+                <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_stickerNumber2"
+                    [(ngModel)]=itemShown.stickerNumber2 placeholder="Sticker 2 Number"
+                    onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+                <input type="text" placeholder="Sticker 2 Type" style='width: 150px' id="id_stickerType" [(ngModel)]=itemShown.stickerTypeK2>
             </div>
             <div>
                 <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.boxNumber
