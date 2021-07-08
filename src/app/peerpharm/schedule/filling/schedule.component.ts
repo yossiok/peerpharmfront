@@ -764,36 +764,64 @@ export class ScheduleComponent implements OnInit {
     this.showPrintBtn = false;
     this.openingPrintModal = true;
     this.newBatchChange = false;
+
+    //In case something goes wrong, enable clicking agaib
+    setTimeout(()=> {
+      if(this.openingPrintModal) {
+        this.toastSrv.error('I am sorry, but something went wrong. Please try again.')
+        this.openingPrintModal = false
+      }
+    }, 5000)
     this.itemSer.getItemData(line.item).subscribe(data => {
       line.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs";
       line.barcodeK = data[0].barcodeK;
       line.volumeK = data[0].volumeKey + ' ml';
       line.netoW = data[0].netWeightK;
       line.grossW = data[0].grossUnitWeightK;
-
-      this.batchService.getBatchData(line.batch).subscribe(data => {
-        if (data.length > 0 && data[0].expration) line.exp = data[0].expration.slice(0, 11);
-
-        this.printScheduleFillingForm.patchValue(line)
-
-        this.modalService
-          .open(content, { ariaLabelledBy: 'modal-basic-title' })
-          .result.then(
-            result => {
-              if (result === 'Saved') {
-                console.log(result);
-                this.onSubmit();
+      
+      if(line.batch != "") {
+        this.batchService.getBatchData(line.batch).subscribe(data => {
+          if (data.length > 0 && data[0].expration) line.exp = data[0].expration.slice(0, 11);
+          this.printScheduleFillingForm.patchValue(line)
+          this.modalService
+            .open(content, { ariaLabelledBy: 'modal-basic-title' })
+            .result.then(
+              result => {
+                if (result === 'Saved') {
+                  this.onSubmit();
+                }
+                this.closeResult = `Closed with: ${result}`;
+              },
+              reason => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
               }
-              this.closeResult = `Closed with: ${result}`;
-              console.log(this.closeResult);
-            },
-            reason => {
-              this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-            }
-          );
-        this.showPrintBtn = true;
-        this.openingPrintModal = false;
-      })
+            );
+          this.showPrintBtn = true;
+          this.openingPrintModal = false;
+        })
+      }
+      else {
+        this.toastSrv.info('No batch.')
+        line.exp = ""
+        this.printScheduleFillingForm.patchValue(line)
+  
+          this.modalService
+            .open(content, { ariaLabelledBy: 'modal-basic-title' })
+            .result.then(
+              result => {
+                if (result === 'Saved') {
+                  this.onSubmit();
+                }
+                this.closeResult = `Closed with: ${result}`;
+              },
+              reason => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+              }
+            );
+          this.showPrintBtn = true;
+          this.openingPrintModal = false;
+      }
+
 
     })
 
