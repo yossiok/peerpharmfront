@@ -231,8 +231,7 @@
         <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
 
         <!--Set production status-->
-        <td *ngIf="productionApproved"><button class="btn btn-info" (click)="openItemStatus(item, itemProdStatus)">Set
-            Production Status</button></td>
+        <td *ngIf="productionApproved"><button class="btn btn-info" (click)="openItemStatus(item, itemProdStatus)">PP&C</button></td>
 
         <!--Invoice + amounts-->
         <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px"

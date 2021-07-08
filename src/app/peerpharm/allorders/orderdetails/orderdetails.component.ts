@@ -22,6 +22,8 @@ import { FormulesService } from 'src/app/services/formules.service';
 import { UserInfo } from '../../taskboard/models/UserInfo';
 import { FormsService } from 'src/app/services/forms.service';
 import { BatchesService } from 'src/app/services/batches.service';
+import { isValid } from 'date-fns';
+import { NotificationService } from 'src/app/services/notification.service';
 var _ = require('lodash');
 
 
@@ -228,14 +230,18 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('marks') marks: ElementRef;
   productionItemStatus: any;
   productionItemStatusIndex: any;
+  tempItem: any;
   // @ViewChild('type') type:ElementRef;
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
     this.edit('');
   }
-  constructor(private formService: FormsService, private batchService: BatchesService, private inventoryService: InventoryService, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
+  constructor(
+    private formService: FormsService, private batchService: BatchesService, private inventoryService: InventoryService, 
+    private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
     private scheduleService: ScheduleService, private location: Location, private plateSer: PlateService, private toastSrv: ToastrService,
-    private costumerSrevice: CostumersService, private excelService: ExcelService, private authService: AuthService) { }
+    private costumerSrevice: CostumersService, private excelService: ExcelService, private authService: AuthService,
+    private notificationService: NotificationService) { }
 
 
   exportAsXLSXOrders(data) {
@@ -830,10 +836,11 @@ export class OrderdetailsComponent implements OnInit {
     document.title = "Order " + this.number;
     this.orderService.getOrderItemsByNumber(orderNum).subscribe(orderItems => {
       orderItems.map(item => {
-        //SHAGAZULU
+
         //check License
         if(item.licsensNumber != "" && new Date(item.licsensDate) > new Date()) item.hasLicense = true
 
+        // Check license date
         const today = new Date()
         const diffTime = (new Date(item.licsensDate).getTime() - today.getTime()) 
         const diffSeconds = diffTime / 1000 
@@ -1166,9 +1173,9 @@ export class OrderdetailsComponent implements OnInit {
             this.orderService.getCostumerByOrder(item.orderNumber).subscribe(async res => {
               this.costumer = res.costumer
               await this.itemSer.getItemData(item.itemNumber).subscribe(res => {
+                this.tempItem = res // for later usage
 
                 // whats the use of packageP ??? its also in server side router.post('/addSchedule'....
-                debugger
                 if (res[0]._id) {
                   packageP = res[0].bottleTube + " " + res[0].capTube + " " + res[0].pumpTube + " " + res[0].sealTube + " " + res[0].extraText1 + " " + res[0].extraText2;
                   impremark = res[0].impRemarks;
@@ -1204,7 +1211,48 @@ export class OrderdetailsComponent implements OnInit {
                 this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
                   console.log(res)
                   if(res.msg == 'Failed') this.toastSrv.error('Schedule not saved! Please check all fields.')
-                  else this.toastSrv.success('Schedule Saved.')
+                  else {
+                    this.toastSrv.success('Schedule Saved.')
+                    
+                    try {
+                      
+                    // Send message to Shlomo if item has no license
+                    if(this.tempItem[0].licsensNumber == '') {
+                      //Send message to Shlomo
+                      this.notificationService.sendGlobalMessage(
+                        `שלמה, נכנס ללו"ז מוצר ללא רשיון. מק"ט ${this.tempItem[0].itemNumber}`, 
+                        {
+                          title: "מוצר ללא רשיון בייצור",
+                          index: 60,
+                          users: "shlomo,sima", 
+                          force: false
+                        }
+                      ).subscribe(data => console.log(data))
+                    }
+                    else if(isValid(this.tempItem[0].licsensDate)) {
+                      const today = new Date()
+                      const diffTime = (new Date(this.tempItem[0].licsensDate).getTime() - today.getTime()) 
+                      const diffSeconds = diffTime / 1000 
+                      const diffMinutes = diffSeconds / 60 
+                      const diffHours = diffMinutes / 60 
+                      const diffDays = diffHours / 24
+                      if(diffDays < 30) {
+                        //send message to Shlomo
+                        this.notificationService.sendGlobalMessage(
+                          `שלמה, נכנס ללו"ז מוצר שהרשיון שלו עומד לפוג. מק"ט ${this.tempItem[0].itemNumber}. מועד פקיעת תוקף: ${this.tempItem.licsensDate}`, 
+                          {
+                            title: "מוצר שתוקפו עומד לפוג נכנס לייצור",
+                            index: 60,
+                            users: "shlomo,sima", 
+                            force: false
+                          }
+                        ).subscribe(data => console.log(data))
+                      }
+                    }
+                  } catch (e) {
+                    alert(e)
+                  }
+                  } 
                 });
                 let dateSced = this.date.nativeElement.value;
                 dateSced = moment(dateSced).format("DD/MM/YYYY");
