@@ -1,10 +1,11 @@
 <div *ngIf="!showingAllOrders">
-  <div style='background-color: aquamarine;display:inline-table'>לוקט</div>&nbsp;
-  <div style='background-color: #CE90FF; display:inline-table'>מולא</div>&nbsp;
-  <div style='background-color: #ffff00; display:inline-table'>נמצא בתהליך</div>&nbsp;
-  <div style='background-color: #FFC058; display:inline-table'>נארז</div>&nbsp;
-  <div style='background-color: red; display:inline-table'>בעיה</div>&nbsp;
-  <div style='background-color: lightblue; display:inline-table'>הודפס</div>&nbsp;
+  <p>Schdule Status:</p>
+  <div class="p-2 h3" style='background-color: aquamarine;display:inline-table'>לוקט</div>&nbsp;
+  <div class="p-2 h3" style='background-color: #CE90FF; display:inline-table'>מולא</div>&nbsp;
+  <div class="p-2 h3" style='background-color: #ffff00; display:inline-table'>נמצא בתהליך</div>&nbsp;
+  <div class="p-2 h3" style='background-color: #FFC058; display:inline-table'>נארז</div>&nbsp;
+  <div class="p-2 h3" style='background-color: red; display:inline-table'>בעיה</div>&nbsp;
+  <div class="p-2 h3" style='background-color: lightblue; display:inline-table'>הודפס</div>&nbsp;
 </div>
 
 <div class='orderHeader' *ngIf="!showingAllOrders">
@@ -63,6 +64,13 @@
   <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg"
         (click)="openCmptDemandsModal()" >
 </div> -->
+
+<div *ngIf="!showingAllOrders">
+  <p>License Status:</p>
+  <span class="license h3 p-2">יש רשיון</span>&nbsp;
+  <span class="licenseExpirationClose h3 p-2">תוקף הרשיון יפוג בקרוב</span>&nbsp;
+  <span class="noLicense h3 p-2">אין רשיון!</span>&nbsp;
+</div>
 
 <input matInput placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
 <select (change)="filterOrderItems($event)" class="form-control">
@@ -167,7 +175,7 @@
             [ngClass]="{'lightgreen': item.formuleExist == true,'lightred':item.formuleExist != true}">F</button></td>
 
         <!--License exist & updated?-->
-        <td *ngIf="item.licsensNumber!='' && !item.licenseExpirationClose">
+        <td class="license" *ngIf="item.licsensNumber!='' && !item.licenseExpirationClose">
           <button class='expendBtn' [style.background-color]="item.colorBtn"
             (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
           <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
