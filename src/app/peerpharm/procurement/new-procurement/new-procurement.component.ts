@@ -129,7 +129,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierCountry: [""],
       supplierEmail: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }, Validators.required],
+      arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }],
       stockitems: [[], Validators.required],
       orderNumber: [''],
       userEmail: [''],
@@ -641,10 +641,21 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
   sendNewProc(action) {
+  
     this.sendingPurchase = true;
     if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
+
+          // Ensure that send button won't be blocked
+          setTimeout(()=>{
+            if(this.sendingPurchase) {
+              this.sendingPurchase = false
+              this.disabled = false
+              this.toastr.error('Something went wrong. Try again.')
+            } 
+          }, 1000*10)
+
           this.newPurchase.controls['user'].setValue(this.authService.loggedInUser.userName)
           this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
 
@@ -674,6 +685,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     if (action == 'update') {
       if (confirm('האם לעדכן הזמנה זו ?')) {
+
+        // Ensure that send button won't be blocked
+        setTimeout(()=>{
+          if(this.sendingPurchase) {
+            this.sendingPurchase = false
+            this.toastr.error('Something went wrong. Try again.')
+          } 
+        }, 1000*10)
         
         // set order arrival date as the latest item arrival date
         let latestArrivalItem = this.newPurchase.value.stockitems.reduce((latestItem, item)=> {

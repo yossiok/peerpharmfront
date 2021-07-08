@@ -11,10 +11,13 @@ select:focus,input:focus,textarea:focus {
     box-shadow: 0 0 5px #7460ee;
   
 }
+.close {
+  font-size: 3.3125rem
+}
 
 .close:hover {
   background: rgb(93, 12, 224);
-  color: white
+  color: rgb(219, 131, 30)
 }
 
 
