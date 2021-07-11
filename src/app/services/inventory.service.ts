@@ -416,6 +416,12 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getShelfListForItemInWhareHouse2(itemNumber, whareHouse) {
+    let url = this.baseUrl + "itemShell/shelfListForItemInWhareHouse?itemNumber=" + itemNumber + "&whareHouse=" + whareHouse;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+
 
   getItemMovements(itemNumber) {
     let url = this.baseUrl + "itemmovement?id=" + itemNumber;
