@@ -7,9 +7,9 @@
 
             <div class="col-1">
                 <label>מחסן</label>
-                <select class="form-control" formControlName="whareHouse">
+                <select class="form-control" formControlName="whareHouseID" (change)="setWH()">
                     <option disabled value="">בחר מחסן</option>
-                    <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse.name">{{whareHouse.name}}
+                    <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
                     </option>
                 </select>
             </div>
@@ -18,7 +18,7 @@
                 <label>
                     פריט (לפי מספר)
                 </label>
-                <input type="number" formControlName="itemNumber" (change)="getShelfs()" class="form-control">
+                <input type="number" formControlName="item" (change)="getShelfs()" class="form-control">
             </div>
             <div class="col-1">
                 <label class="d-block">
@@ -33,7 +33,7 @@
             </div>
             <div class="col-1">
                 <label>מדף</label>
-                <select class="form-control" formControlName="shellId">
+                <select class="form-control" formControlName="shell_id_in_whareHouse">
                     <option disabled value="">בחר מדף</option>
                     <option *ngFor="let shellNum of shellNums" [value]="shellNum._id">{{shellNum.position}}
                     </option>

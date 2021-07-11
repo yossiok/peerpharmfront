@@ -18,11 +18,15 @@ export class InvImportsComponent implements OnInit {
   newItemShell: boolean = false
 
   componentArrival: FormGroup = new FormGroup({
-    itemNumber: new FormControl(null, Validators.required),
-    amount: new FormControl(0, Validators.required),
-    shellId: new FormControl(null, Validators.required),
-    whareHouse: new FormControl(null, Validators.required),
+    itemType: new FormControl('component', Validators.required),
+    item: new FormControl(null, Validators.required),
+    amount: new FormControl(500, Validators.required),
+    shell_id_in_whareHouse: new FormControl(null, Validators.required),
+    position: new FormControl('', Validators.required),
+    whareHouseID: new FormControl(null, Validators.required),
+    whareHouse: new FormControl('', Validators.required),
   })
+
 
   constructor(
     private inventoryService: InventoryService,
@@ -38,15 +42,19 @@ export class InvImportsComponent implements OnInit {
         this.allWhareHouses = whs
       })
     }
+
+    setWH() {
+
+    }
     
     getShelfs() {
-      if (!this.componentArrival.value.whareHouse) this.toastr.error('אנא בחר מחסן.')
-      else if(!this.componentArrival.value.itemNumber) this.toastr.error('אנא הזן מספר פריט.')
-      else this.inventoryService.getShelfListForItemInWhareHouse2(this.componentArrival.value.itemNumber, this.componentArrival.value.whareHouse)
+      if (!this.componentArrival.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')
+      else if(!this.componentArrival.value.item) this.toastr.error('אנא הזן מספר פריט.')
+      else this.inventoryService.getShelfListForItemInWhareHouse2(this.componentArrival.value.item, this.componentArrival.value.whareHouse._id)
             .subscribe(res => {
               if(res.msg) this.toastr.error('בעיה בהזנת הנתונים.')
               else if (res.length == 0) {
-                let noShellsForItem = confirm('הפריט לא קיים במחסן זה. לפתוח מדף חדש?')
+                let noShellsForItem = confirm('הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?')
                 if(noShellsForItem) this.newItemShell = true
                 this.getAllShellsOfWhareHouse()
               } 
@@ -55,7 +63,9 @@ export class InvImportsComponent implements OnInit {
     }
 
     getAllShellsOfWhareHouse() {
-      this.inventoryService.shelfListByWH()
+      this.inventoryService.getWhareHouseShelfList(this.componentArrival.value.whareHouseID).subscribe(res=> {
+        this.shellNums = res
+      })
     }
 
     // Get names of all items for search
@@ -63,13 +73,30 @@ export class InvImportsComponent implements OnInit {
       if (event.value.length > 2) {
         this.inventoryService.getNamesByRegex(event.value).subscribe(names => {
           this.itemNames = names
-          this.componentArrival.controls.itemNumber.setValue(names[0].componentN)
+          this.componentArrival.controls.item.setValue(names[0].componentN)
         })
       }
     }
   
     setItemDetailsNumber(event) {
-      this.componentArrival.controls.itemNumber.setValue(event.target.value)
+      this.componentArrival.controls.item.setValue(event.target.value)
+    }
+
+    addToStock() {
+      // set whareHouse name and shelf position
+      let whareHouse = this.allWhareHouses.find(wh => wh._id == this.componentArrival.value.whareHouseID)
+      this.componentArrival.controls.whareHouse.setValue(whareHouse.name)
+      let shellDoc = this.shellNums.find(shell => shell._id == this.componentArrival.value.shell_id_in_whareHouse)
+      this.componentArrival.controls.position.setValue(shellDoc.position)
+
+      if (this.newItemShell) {
+        // create new itemShell
+        console.log(this.componentArrival.value)
+      }
+      else {
+        // add amount to an existing itemShell
+        console.log(this.componentArrival.value)
+      }
     }
 
   
