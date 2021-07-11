@@ -1209,8 +1209,8 @@ export class StockComponent implements OnInit {
 
       if (shelfRes.ShelfId) {
         if (shelfRes.stock.length > 0) {
-          let temp = shelfRes.stock.map(shl => shl.item == this.resCmpt.componentN);
-          this.originShelfQntBefore = temp[0].amount;
+          let temp = shelfRes.stock.find(shl => shl.item == this.resCmpt.componentN);
+          this.originShelfQntBefore = temp.amount;
 
         }
         shelfExsit = true;
