@@ -143,6 +143,17 @@ export class InventoryService {
     let url = this.baseUrl + "component?itemType=" + itemType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getNamesByRegex(fewLetters): Observable<any> {
+    let url = this.baseUrl + "component/regexname?fewLetters=" + fewLetters;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getComponentNumberByName(componentName) {
+    let url = this.baseUrl + "component/numberByName?componentName=" + componentName;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getCompStatus(compNumber): Observable<any> {
     let url = this.baseUrl + "component?compStatus=" + compNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

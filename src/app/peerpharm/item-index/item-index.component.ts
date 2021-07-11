@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
@@ -14,10 +14,24 @@ import { Currencies } from '../procurement/Currencies';
 })
 export class ItemIndexComponent implements OnInit {
 
+  @ViewChild('nameSelect') nameSelect: ElementRef
+
+  item: any;
+  itemNames: any[]
+  items: any[]
+
   itemMovements: any[];
   itemMovementsCopy: any[];
 
-  item: any;
+  allSuppliers: any;
+  gettingProducts: boolean;
+  fetchingOrders: boolean;
+  lastOrdersOfItem: any []
+  currencies: Currencies;
+  allowUserEditItem: boolean;
+  rowNumber: number = -1
+  counter: number = 0
+
 
   supplier: any = {
     supplierName: '',
@@ -68,14 +82,7 @@ export class ItemIndexComponent implements OnInit {
     itemNumber: new FormControl('', Validators.required),
   })
 
-  allSuppliers: any;
-  gettingProducts: boolean;
-  fetchingOrders: boolean;
-  lastOrdersOfItem: any []
-  currencies: Currencies;
-  allowUserEditItem: boolean;
-  rowNumber: number = -1
-  counter: number = 0
+
 
   constructor(
     private inventoryService: InventoryService,
@@ -134,6 +141,7 @@ export class ItemIndexComponent implements OnInit {
   fetchMovements() {
     this.inventoryService.getComplexItemMovements(this.itemMovementForm.value).subscribe(data => {
       console.log(data)
+      this.item = undefined
       this.itemMovements = data
       this.itemMovementsCopy = data
     })
@@ -146,6 +154,7 @@ export class ItemIndexComponent implements OnInit {
   }
 
   getItemData(){
+    this.itemMovements = []
     this.inventoryService.getItemByNumber(this.itemDetailsForm.value.itemNumber).subscribe(item => {
       if(item.msg) this.toastSrv.error(item.msg)
       else {
@@ -155,7 +164,23 @@ export class ItemIndexComponent implements OnInit {
     })
   }
 
-  sortBy(array, by){
+  // Get names of all items for search
+  getNames(event) {
+    debugger
+    if(event.value.length > 2) {
+      this.inventoryService.getNamesByRegex(event.value).subscribe(names => {
+        this.itemNames = names
+        this.itemDetailsForm.controls.itemNumber.setValue(names[0].componentN)
+      })
+    }
+  }
+
+  setItemDetailsNumber(event) {
+    this.itemDetailsForm.controls.itemNumber.setValue(event.target.value)
+  }
+
+
+  sortBy(array, by) {
     if(by.includes('Date')) {
       this[array].map(element => {
         element.formatedDate = new Date(element[by])
