@@ -99,13 +99,13 @@
             <main>
                 <h2>תעודת קליטה מס' {{certificateReception}}</h2>
                 <p class='originDestWh'>
-                    <span><u>ממחסן:</u></span>&nbsp;&nbsp;
+                    <!-- <span><u>ממחסן:</u></span>&nbsp;&nbsp;
                     <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-קאסם</span>&nbsp;&nbsp;
                     <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-ראש העין</span>&nbsp;&nbsp;
                     <span><u>למחסן:</u></span>&nbsp;&nbsp;
                     <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-קאסם</span>&nbsp;&nbsp;&nbsp;
                     <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-ראש העין</span>&nbsp;&nbsp;&nbsp;
-                    <span></span>
+                    <span></span> -->
                     <span><u>תאריך:</u></span>&nbsp;&nbsp;
                     <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
 
@@ -116,20 +116,22 @@
                         <tr>
                             <th>#</th>
                             <th>מספר פריט</th>
+                            <th>מחסן</th>
                             <th>מיקום</th>
                             <th>כמות</th>
                             <th class='itemNamePrint'>שם פריט</th>
                             <th>פריט מק"ט ספק</th>
 
                         </tr>
-                        <ng-container *ngFor="let reqItem of listToPrint; let i =index">
+                        <ng-container *ngFor="let arrival of allArrivals; let i =index">
                             <tr>
                                 <td class="cellPadding">{{i+1}}</td>
-                                <td>{{reqItem.item}}</td>
-                                <td>{{reqItem.position}}</td>
-                                <td>{{reqItem.amount}}</td>
-                                <td class='itemNamePrint'>{{reqItem.itemName}}</td>
-                                <td>{{reqItem.supplierItemNumber}}</td>
+                                <td>{{arrival.item}}</td>
+                                <td>{{arrival.whareHouse}}</td>
+                                <td>{{arrival.position}}</td>
+                                <td>{{arrival.amount}}</td>
+                                <td>{{arrival.itemName}}</td>
+                                <td>{{arrival.suplierN}}</td>
 
                             </tr>
                         </ng-container>

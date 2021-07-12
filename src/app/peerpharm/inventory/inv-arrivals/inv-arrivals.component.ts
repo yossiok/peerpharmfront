@@ -11,12 +11,14 @@ import { InventoryService } from 'src/app/services/inventory.service';
 export class InvArrivalsComponent implements OnInit {
 
   @ViewChild('nameSelect') nameSelect: ElementRef
+  @ViewChild('printBtn2') printBtn2: ElementRef
 
   itemNames: any[];
   allWhareHouses: any[];
   shellNums: any[];
   certificateReception: number;
   allArrivals: any[] = []
+  today = new Date()
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
@@ -45,10 +47,6 @@ export class InvArrivalsComponent implements OnInit {
     })
   }
 
-  setWH() {
-
-  }
-
   getShelfs() {
     if (!this.componentArrival.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')
     else if (!this.componentArrival.value.item) this.toastr.error('אנא הזן מספר פריט.')
@@ -62,16 +60,22 @@ export class InvArrivalsComponent implements OnInit {
             this.getAllShellsOfWhareHouse()
           }
         }
-        else this.shellNums = res
+        else {
+          this.shellNums = res
+          //stupid bug:
+          this.componentArrival.controls.shell_id_in_whareHouse.setValue(this.shellNums[0].shell_id_in_whareHouse)
+        }
       })
   }
 
   getAllShellsOfWhareHouse() {
     this.inventoryService.getWhareHouseShelfList(this.componentArrival.value.whareHouseID).subscribe(res => {
       this.shellNums = res.map(shell => {
-          shell.shell_id_in_whareHouse = shell._id
+        shell.shell_id_in_whareHouse = shell._id
         return shell
       })
+      //stupid bug:
+      this.componentArrival.controls.shell_id_in_whareHouse.setValue(this.shellNums[0].shell_id_in_whareHouse)
     })
   }
 
@@ -99,12 +103,26 @@ export class InvArrivalsComponent implements OnInit {
     //push arrival to allArrivals
     this.allArrivals.push(this.componentArrival.value)
     this.componentArrival.reset()
+    this.componentArrival.controls.isNewItemShell.setValue(false)
+    this.componentArrival.controls.itemType.setValue('component')
   }
 
   addToStock() {
     this.inventoryService.addComponentsToStock(this.allArrivals).subscribe(
       data => {
-        this.certificateReception = data.savedMovement.warehouseReception
+        if (data.msg) this.toastr.error('אנא פנה לתמיכה.', 'היתה בעיה')
+        else {
+          //set certificate data 
+          this.certificateReception = data.allResults[0].savedMovement.warehouseReception
+          for (let arrival of this.allArrivals) {
+            arrival.suplierN = data.allResults.find(a => a.item == arrival.item).suplierN
+            arrival.itemName = data.allResults.find(a => a.item == arrival.item).componentName
+          }
+          this.toastr.info('nnnnnnmc tjh?')
+          setTimeout(()=> {
+            this.printBtn2.nativeElement.click()
+          }, 500)
+        }
       }
     )
   }
