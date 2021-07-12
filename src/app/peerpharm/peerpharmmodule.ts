@@ -155,7 +155,7 @@ import { EditServiceComponent } from './out-services/edit-service/edit-out-servi
 import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
 import { ItemIndexComponent } from './item-index/item-index.component';
 import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
-import { InvImportsComponent } from './inventory/inv-imports/inv-imports.component';
+import { InvArrivalsComponent } from './inventory/inv-arrivals/inv-arrivals.component';
 
 
 
@@ -303,7 +303,7 @@ import { InvImportsComponent } from './inventory/inv-imports/inv-imports.compone
     NewPricingComponent,
     ItemIndexComponent,
     ItemSuppliersComponent,
-    InvImportsComponent
+    InvArrivalsComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   

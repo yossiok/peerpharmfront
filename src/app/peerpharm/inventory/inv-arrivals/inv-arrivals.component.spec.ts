@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InvImportsComponent } from './inv-imports.component';
+import { InvArrivalsComponent } from './inv-arrivals.component';
 
-describe('InvImportsComponent', () => {
-  let component: InvImportsComponent;
-  let fixture: ComponentFixture<InvImportsComponent>;
+describe('InvArrivalsComponent', () => {
+  let component: InvArrivalsComponent;
+  let fixture: ComponentFixture<InvArrivalsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InvImportsComponent ]
+      declarations: [ InvArrivalsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InvImportsComponent);
+    fixture = TestBed.createComponent(InvArrivalsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

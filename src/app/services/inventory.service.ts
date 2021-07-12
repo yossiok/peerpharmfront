@@ -421,6 +421,10 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  addComponentsToStock(allArrivals) {
+    let url = this.baseUrl + "itemShell/addComponentsToStock";
+    return this.http.post(url, JSON.stringify({allArrivals}), this.options).pipe(map(res => res.json()));
+  }
 
 
   getItemMovements(itemNumber) {
