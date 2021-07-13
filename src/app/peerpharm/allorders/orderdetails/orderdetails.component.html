@@ -100,7 +100,8 @@
         <!-- <button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button> -->
       </th>
       <th>
-        <img *ngIf="userName == 'uri' || userName == 'sima' || userName == 'martha'" 
+        <img  *ngIf="userName == 'uri' || userName == 'sima' || userName == 'martha'" 
+              ngbTooltip="פיצוץ חומרים"
               (click)="loadMaterialsForFormule()"
               class="showCmptBtn" 
               src="../../../../assets/images/what-happens-when-we-mix-liquids.jpg" 
@@ -109,6 +110,7 @@
 
       <th>
         <img class="showCmptBtn" 
+              ngbTooltip="פיצוץ קומפוננטים"
               src="../../../../assets/images/partsAssembly2.jpg" 
               (click)="openCmptDemandsModal()">
       </th>

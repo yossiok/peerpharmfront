@@ -126,6 +126,7 @@ export class InvArrivalsComponent implements OnInit {
           }
           this.sending = false
           this.toastr.success('שינויים נשמרו בהצלחה', 'נשמר')
+          this.allArrivals = []
           setTimeout(()=> {
             this.printBtn2.nativeElement.click()
           }, 500)

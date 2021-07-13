@@ -745,33 +745,29 @@ export class OrderdetailsComponent implements OnInit {
 
 
   loadMaterialsForFormule() {
-    this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
-      this.calculateMaterials(materials)
-    })
+    if(this.selectedArr.length == 0) this.toastSrv.error('Please select Order Items')
+    else {
+      this.toastSrv.info('This might take a few seconds...')
+      this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
+        this.calculateMaterials(materials)
+      })
+    }
   }
 
   calculateMaterials(materials) {
     this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals => {
-
-      var count = 0;
       for (let i = 0; i < materials.length; i++) {
         for (let j = 0; j < arrivals.length; j++) {
           if (arrivals[j].internalNumber == materials[i].itemNumber) {
             materials[i].kgProduction = this.formatNumber(Number(materials[i].kgProduction));
             materials[i].measureType = arrivals[i].mesureType
-
             if (materials[i].totalQnt) {
               materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
-
-
             } else {
               if (arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt))
                 materials[i].totalQnt = parseInt(arrivals[j].totalQnt)
             }
-
-
           }
-
         }
         this.materialsForFormules = materials;
         this.showMaterialsForFormules = true;
