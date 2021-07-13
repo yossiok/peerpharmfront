@@ -12,6 +12,7 @@ export class InvArrivalsComponent implements OnInit {
 
   @ViewChild('nameSelect') nameSelect: ElementRef
   @ViewChild('printBtn2') printBtn2: ElementRef
+  @ViewChild('first') first: ElementRef
 
   itemNames: any[];
   allWhareHouses: any[];
@@ -19,6 +20,7 @@ export class InvArrivalsComponent implements OnInit {
   certificateReception: number;
   allArrivals: any[] = []
   today = new Date()
+  sending: boolean = false
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
@@ -38,6 +40,7 @@ export class InvArrivalsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    setTimeout(()=>this.first.nativeElement.focus(),500) 
     this.getWhs()
   }
 
@@ -105,9 +108,12 @@ export class InvArrivalsComponent implements OnInit {
     this.componentArrival.reset()
     this.componentArrival.controls.isNewItemShell.setValue(false)
     this.componentArrival.controls.itemType.setValue('component')
+    this.first.nativeElement.focus()
   }
 
   addToStock() {
+    this.sending = true
+    setTimeout(()=> this.sending = false, 7000) //if something goes wrong
     this.inventoryService.addComponentsToStock(this.allArrivals).subscribe(
       data => {
         if (data.msg) this.toastr.error('אנא פנה לתמיכה.', 'היתה בעיה')
@@ -118,13 +124,28 @@ export class InvArrivalsComponent implements OnInit {
             arrival.suplierN = data.allResults.find(a => a.item == arrival.item).suplierN
             arrival.itemName = data.allResults.find(a => a.item == arrival.item).componentName
           }
-          this.toastr.info('nnnnnnmc tjh?')
+          this.sending = false
+          this.toastr.success('שינויים נשמרו בהצלחה', 'נשמר')
           setTimeout(()=> {
             this.printBtn2.nativeElement.click()
           }, 500)
         }
       }
-    )
+      )
+    }
+
+    removeFromArrivals(i) {
+      this.allArrivals.splice(i, 1)
+    }
+    
+    justPrint() {
+      setTimeout(()=> {
+        this.printBtn2.nativeElement.click()
+      }, 500)
+  }
+
+  clearArrivals() {
+    this.allArrivals = []
   }
 
 

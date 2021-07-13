@@ -7,7 +7,7 @@
 
             <div class="col-1">
                 <label>מחסן</label>
-                <select class="form-control" formControlName="whareHouseID" (change)="setWH()">
+                <select class="form-control" formControlName="whareHouseID" #first (change)="setWH()">
                     <option disabled value="">בחר מחסן</option>
                     <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
                     </option>
@@ -44,12 +44,12 @@
                 <label>כמות</label>
                 <input type="number" formControlName="amount" class="form-control">
             </div>
-            <div class="col-1">
+            <div class="col-1 d-flex flex-column justify-content-around">
                 <button type="submit" [disabled]="!componentArrival.valid" 
                     [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הכנס</button>
+                <button type="button" class="btn btn-secondary" (click)="componentArrival.reset()">נקה נתונים</button>
             </div>
             <div class="col-1">
-                <button type="button" class="btn btn-secondary" (click)="componentArrival.reset()">נקה נתונים</button>
             </div>
         </div>
     </form>
@@ -79,8 +79,14 @@
         </table>
     </div>
 
-    <div class="row mt-2">
-        <button class="btn btn-success" (click)="addToStock()">הוסף למלאי (שלח שינויים) <i class="fa fa-check"></i></button>
+    <div class="row mt-2 d-flex flex-row justify-content-around w-50">
+        <button *ngIf="!sending" class="btn btn-info" (click)="addToStock()" 
+            [disabled]="allArrivals.length == 0" [style.cursor]="allArrivals.length == 0 ? 'not-allowed' : 'pointer'">
+            הוסף למלאי (שלח שינויים) <i class="fa fa-check"></i>
+        </button>
+        <div class="smallerLoader" *ngIf="sending"></div>
+        <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button>
+        <button class="btn btn-warning" (click)="clearArrivals()">נקה טבלה <i class="fas fa-trash-alt"></i></button>
     </div>
 
     <!-- תעודת קליטה -->
