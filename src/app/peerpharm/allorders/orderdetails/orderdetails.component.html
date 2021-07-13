@@ -96,12 +96,21 @@
       <th *ngIf="productionApproved" class='printTd header'>Production Status</th>
       <th class='printTd header'>Billing</th>
       <th class="header">C & F</th>
-      <th><button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button></th>
-      <th><button *ngIf="userName == 'akiva' || userName == 'sima' || userName == 'martha'" style="color:black;"
-          class="btn btn-success" (click)="loadMaterialsForFormule()">Formule</button></th>
+      <th>
+        <!-- <button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button> -->
+      </th>
+      <th>
+        <img *ngIf="userName == 'uri' || userName == 'sima' || userName == 'martha'" 
+              (click)="loadMaterialsForFormule()"
+              class="showCmptBtn" 
+              src="../../../../assets/images/what-happens-when-we-mix-liquids.jpg" 
+              alt="">
+      </th>
 
       <th>
-        <img class="showCmptBtn" src="../../../../assets/images/partsAssembly2.jpg" (click)="openCmptDemandsModal()">
+        <img class="showCmptBtn" 
+              src="../../../../assets/images/partsAssembly2.jpg" 
+              (click)="openCmptDemandsModal()">
       </th>
 
     </tr>
@@ -230,7 +239,8 @@
         <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td>
 
         <!--Set production status-->
-        <td *ngIf="productionApproved"><button class="btn btn-info" (click)="openItemStatus(item, itemProdStatus)">PP&C</button></td>
+        <td *ngIf="productionApproved"><button class="btn btn-info"
+            (click)="openItemStatus(item, itemProdStatus)">PP&C</button></td>
 
         <!--Invoice + amounts-->
         <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px"
@@ -306,9 +316,10 @@
                 <input type="radio" name="type" #type value='mkp2' [(ngModel)]="chosenType">Mkp2<br>
                 <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br>
               </td>
-              <td placement="top" [ngbTooltip]="item.productionApproved ? '' : 'Item Not Approved by PP&C'"><button *ngIf="setScheduleAllowed" [disabled]="!item.productionApproved"
+              <td placement="top" [ngbTooltip]="item.productionApproved ? '' : 'Item Not Approved by PP&C'"><button
+                  *ngIf="setScheduleAllowed" [disabled]="!item.productionApproved"
                   [style.cursor]="item.productionApproved ? 'pointer' : 'not-allowed'"
-                  (click)='setSchedule(item ,type.value)'   class='btn btn-success'>Set</button></td>
+                  (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
             </tr>
             <tr>
               <td></td>
@@ -1052,9 +1063,10 @@
 
         <div class="m-5">
           <p>Has License?</p><br>
-          <input [disabled]="!iAmHaviv" class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.hasLicense">
-          <img src="../../../../assets/images/refreshData.png" style="width: 30px;cursor: pointer;"
-                  alt="Check License" (click)="checkLicense(productionItemStatus.itemNumber)">
+          <input [disabled]="!iAmHaviv" class="form-control" type="checkbox"
+            [(ngModel)]="productionItemStatus.hasLicense">
+          <img src="../../../../assets/images/refreshData.png" style="width: 30px;cursor: pointer;" alt="Check License"
+            (click)="checkLicense(productionItemStatus.itemNumber)">
         </div>
         <div class="m-5">
           <h5>Exploded?</h5><br>

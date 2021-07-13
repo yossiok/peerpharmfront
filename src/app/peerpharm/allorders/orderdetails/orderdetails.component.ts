@@ -281,6 +281,8 @@ export class OrderdetailsComponent implements OnInit {
 
   async ngOnInit() {
 
+    // this.getAllFormsDetails()
+
     this.iAmHaviv = this.authService.loggedInUser.screenPermission == '1' || this.authService.loggedInUser.screenPermission == '2'
 
     this.productionApproved = this.authService.loggedInUser.authorization.includes("production")
@@ -381,7 +383,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   getAllFormsDetails() {
-    this.formService.getAllForms().subscribe(data => {
+    this.formService.getAllForms('2021').subscribe(data => {
       this.allForms = data;
 
     });
@@ -743,8 +745,6 @@ export class OrderdetailsComponent implements OnInit {
 
 
   loadMaterialsForFormule() {
-    this.selectedArr
-
     this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
       this.calculateMaterials(materials)
     })
