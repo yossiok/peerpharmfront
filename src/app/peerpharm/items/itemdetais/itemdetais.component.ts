@@ -246,15 +246,19 @@ export class ItemdetaisComponent implements OnInit {
 
     bottleAmount: 0,
     bottlePurchases: [],
+    bottleOrderedAmount: 0,
     bottleAllocations: 0,
     capAmount: 0,
     capPurchases: [],
+    capOrderedAmount: 0,
     capAllocations: 0,
     pumpAmount: 0,
     pumpPurchases: [],
+    pumpOrderedAmount: 0,
     pumpAllocations: 0,
     sealAmount: 0,
     sealPurchases: [],
+    sealOrderedAmount: 0,
     sealAllocations: 0,
 
     bottleTube: '',
@@ -558,6 +562,12 @@ export class ItemdetaisComponent implements OnInit {
         })
         this.purchaseService.getPurchasesForComponent(bottleNumber).subscribe(data=>{
           this.itemShown.bottlePurchases = data
+          this.itemShown.bottleOrderedAmount = 0
+          data.forEach(purchOrder=> {
+            let addAmount = purchOrder.stockitems.find(item=>item.number == bottleNumber).quantity
+            purchOrder.itemAmount = addAmount
+            this.itemShown.bottleOrderedAmount += Number(addAmount)
+          })
         })
 
       })
@@ -581,6 +591,12 @@ export class ItemdetaisComponent implements OnInit {
         })
         this.purchaseService.getPurchasesForComponent(capNumber).subscribe(data=>{
           this.itemShown.capPurchases = data
+          this.itemShown.capOrderedAmount = 0
+          data.forEach(purchOrder=> {
+            let addAmount = purchOrder.stockitems.find(item=>item.number == capNumber).quantity
+            purchOrder.itemAmount = addAmount
+            this.itemShown.capOrderedAmount += Number(addAmount)
+          })
         })
 
       })
@@ -604,6 +620,12 @@ export class ItemdetaisComponent implements OnInit {
         })
         this.purchaseService.getPurchasesForComponent(pumpNumber).subscribe(data=>{
           this.itemShown.pumpPurchases = data
+          this.itemShown.pumpOrderedAmount = 0
+          data.forEach(purchOrder=> {
+            let addAmount = purchOrder.stockitems.find(item=>item.number == pumpNumber).quantity
+            purchOrder.itemAmount = addAmount
+            this.itemShown.pumpOrderedAmount += Number(addAmount)
+          })
         })
       })
     } else if (pumpNumber == "---") {
@@ -625,6 +647,12 @@ export class ItemdetaisComponent implements OnInit {
         })
         this.purchaseService.getPurchasesForComponent(sealNumber).subscribe(data=>{
           this.itemShown.sealPurchases = data
+          this.itemShown.sealOrderedAmount = 0
+          data.forEach(purchOrder=> {
+            let addAmount = purchOrder.stockitems.find(item=>item.number == sealNumber).quantity
+            purchOrder.itemAmount = addAmount
+            this.itemShown.sealOrderedAmount += Number(addAmount)
+          })
         })
       })
     } else if (sealNumber == "---") {

@@ -1491,17 +1491,18 @@
                                         *ngIf='bottleFile'>>></button>
                                     <img id="id_img1" [src]=itemShown.bottleImage>
                                 </div>
-                                <div class="col-3 stock-bg">
+                                <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.bottleAmount}}</label><br>
                                     <label>Allocated Amount: {{itemShown.bottleAllocations}}</label><br>
-                                    <label>Ordered Amounts: </label>
+                                    <label>Ordered Amounts: {{itemShown.bottleOrderedAmount}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Order Date</th>
-                                                <th>Arrival Date</th>
+                                                <th>Created</th>
+                                                <th>Arrival</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1509,6 +1510,7 @@
                                                 <td>{{purchase.orderNumber}}</td>
                                                 <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
                                                 <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.itemAmount}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1577,17 +1579,18 @@
                                         *ngIf='capFile'>>></button>
                                     <img id="id_img2" [src]=itemShown.capImage>
                                 </div>
-                                <div class="col-3 stock-bg">
+                                <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.capAmount}}</label><br>
                                     <label>Allocated Amount: {{itemShown.capAllocations}}</label><br>
-                                    <label>Ordered Amounts: </label>
+                                    <label>Ordered Amounts: {{itemShown.capOrderedAmount}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Order Date</th>
-                                                <th>Arrival Date</th>
+                                                <th>Created</th>
+                                                <th>Arrival</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1595,6 +1598,7 @@
                                                 <td>{{purchase.orderNumber}}</td>
                                                 <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
                                                 <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.itemAmount}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1611,17 +1615,18 @@
                                         *ngIf='pumpFile'>>></button>
                                     <img id="id_img3" [src]=itemShown.pumpImage>
                                 </div>
-                                <div class="col-3 stock-bg">
+                                <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.pumpAmount}}</label><br>
                                     <label>Allocated Amount: {{itemShown.pumpAllocations}}</label><br>
-                                    <label>Ordered Amounts: </label>
+                                    <label>Ordered Amounts: {{itemShown.pumpOrderedAmount}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Order Date</th>
-                                                <th>Arrival Date</th>
+                                                <th>Created</th>
+                                                <th>Arrival</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1629,6 +1634,7 @@
                                                 <td>{{purchase.orderNumber}}</td>
                                                 <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
                                                 <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.itemAmount}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1682,17 +1688,18 @@
                                         *ngIf='extra1File'>>></button>
                                     <img id="id_img6" [src]=itemShown.extraImage1>
                                 </div>
-                                <div class="col-3 stock-bg">
+                                <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.sealAmount}}</label><br>
                                     <label>Allocated Amount: {{itemShown.sealAllocations}}</label><br>
-                                    <label>Ordered Amounts: </label>
+                                    <label>Ordered Amounts: {{itemShown.sealOrderedAmount}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Order Date</th>
-                                                <th>Arrival Date</th>
+                                                <th>Created</th>
+                                                <th>Arrival</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1700,6 +1707,7 @@
                                                 <td>{{purchase.orderNumber}}</td>
                                                 <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
                                                 <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.itemAmount}}</td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -7,7 +7,7 @@
 
             <div class="col-1">
                 <label>מחסן</label>
-                <select class="form-control" formControlName="whareHouseID" #first (change)="setWH()">
+                <select class="form-control" formControlName="whareHouseID" #first>
                     <option disabled value="">בחר מחסן</option>
                     <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
                     </option>
