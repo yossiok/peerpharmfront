@@ -3,10 +3,10 @@
 <!-- Item Details Form-->
 
 <div class="row mt-4 text-center">
-  <h3 class="text-center mx-auto">Item Details</h3>
+  <h3 [ngClass]="setColors('title1')" (click)="showDetailsForm = !showIDetailsForm" class="text-center mx-auto p-2">Item Details</h3>
 </div>
 
-<form [formGroup]="itemDetailsForm" (ngSubmit)="getItemData()">
+<form *ngIf="showDetailsForm" [formGroup]="itemDetailsForm" (ngSubmit)="getItemData()">
   <div class="row border border-success rounded p-4 w-50 form-group mx-auto">
     <div class="col-2">
       <label>
@@ -38,9 +38,9 @@
 
 <!--Item Movements Form-->
 <div class="row mt-4 text-center">
-  <h3 class="text-center mx-auto">Item Movements</h3>
+  <h3 [ngClass]="setColors('title2')" (click)="showMovementsForm = !showMovementsForm" class="text-center mx-auto p-2">Item Movements</h3>
 </div>
-<form [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
+<form *ngIf="showMovementsForm" [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
   <div class="row border border-secondary rounded p-4 w-75 form-group mx-auto">
     <div class="col-1">
       <label>
@@ -133,6 +133,49 @@
       <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
     </div>
   </div>
+</form>
+
+
+<!--Sold Products-->
+<div class="row mt-4 text-center">
+  <h3 [ngClass]="setColors('title3')" (click)="showSalesForm = !showSalesForm" class="text-center mx-auto p-2">Sales</h3>
+</div>
+
+<form *ngIf="showSalesForm" [formGroup]="productsSoldForm" (ngSubmit)="fetchProducts">
+  <div class="row border border-warning rounded p-4 w-75 form-group mx-auto">
+  <h4 class="text-warning">Coming soon...</h4>
+
+    <!-- <div class="col-2">
+      <label>Product Number</label>
+      <input formControlName="productNumber" class="form-control" type="number">
+    </div>
+    <div class="col-2">
+      <label>from</label>
+      <input formControlName="fromDate" class="form-control" type="date">
+    </div>
+    <div class="col-2">
+      <label>to</label>
+      <input formControlName="toDate" class="form-control" type="date">
+    </div>
+    <div class="col-2">
+      <label>
+        amounts
+      </label>
+      <input formControlName="amount" class="form-control" type="number">
+      <select formControlName="amountDir" class="form-control">
+        <option value="higherThan">Higher than</option>
+        <option value="lowerThan">Lower than</option>
+      </select>
+    </div>
+    <div class="col-1">
+      <button type="submit" class="btn btn-warning">Go.</button>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
+    </div> -->
+  </div>
+
+
 </form>
 
 

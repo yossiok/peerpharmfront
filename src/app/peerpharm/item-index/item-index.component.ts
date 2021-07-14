@@ -24,13 +24,13 @@ export class ItemIndexComponent implements OnInit {
   itemMovementsCopy: any[];
 
   allSuppliers: any;
-  gettingProducts: boolean;
-  fetchingOrders: boolean;
   lastOrdersOfItem: any[]
   currencies: Currencies;
-  allowUserEditItem: boolean;
   rowNumber: number = -1
   counter: number = 0
+  gettingProducts: boolean;
+  fetchingOrders: boolean;
+  allowUserEditItem: boolean;
 
 
   supplier: any = {
@@ -82,7 +82,14 @@ export class ItemIndexComponent implements OnInit {
     itemNumber: new FormControl('', Validators.required),
   })
 
-
+  productsSoldForm: FormGroup = new FormGroup({
+    productNumber: new FormControl(''),
+    fromDate: new FormControl(new Date()),
+    toDate: new FormControl(null),
+    movementType: new FormControl('in', Validators.required),
+    amount: new FormControl(null),
+    amountDir: new FormControl('higherThan')
+  })
 
   constructor(
     private inventoryService: InventoryService,
@@ -97,6 +104,14 @@ export class ItemIndexComponent implements OnInit {
     this.getCurrencies()
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
+    }
+  }
+
+  setColors(title) {
+    switch(title) {
+      case 'title1': return 'title1'
+      case 'title2': return 'title2'
+      case 'title3': return 'title3'
     }
   }
 
@@ -197,7 +212,6 @@ export class ItemIndexComponent implements OnInit {
   }
 
   checkIfItemExist(ev) {
-
     var itemNumber = ev.target.value;
     if (itemNumber != '') {
       this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
@@ -213,12 +227,10 @@ export class ItemIndexComponent implements OnInit {
   fillSupplierDetails() {
     if (this.item.suplierN != '') {
       this.supplierService.getSuppliersByNumber(this.item.suplierN).subscribe(data => {
-
         if (data) {
           this.item.suplierName = data[0].suplierName;
         }
       })
-
     }
   }
 
@@ -231,7 +243,6 @@ export class ItemIndexComponent implements OnInit {
   }
 
   writeNewComponent() {
-
     if (this.item.componentN != "") {
       // this.item.itemType = this.stockType;
       console.log(this.item);
@@ -241,15 +252,9 @@ export class ItemIndexComponent implements OnInit {
           this.toastSrv.error('פריט קיים במלאי')
         } else if (res.componentN) {
           this.toastSrv.success("New stock item created");
-
           this.resetResCmptData();
-
-
         }
-        // this.newItem = '';
-
       });
-
     } else {
       this.toastSrv.error("Can't create new stock item without number")
     }
@@ -257,7 +262,6 @@ export class ItemIndexComponent implements OnInit {
 
 
   resetResCmptData() {
-
     this.item = {
       whoPays: '',
       payingCustomersList: [],
@@ -279,14 +283,11 @@ export class ItemIndexComponent implements OnInit {
       componentItems: [],
       input_actualMlCapacity: 0,
     }
-
   }
 
   editStockItemDetails() {
-
     this.item;
     if (confirm("לעדכן פריט?")) {
-
       this.inventoryService.updateCompt(this.item).subscribe(res => {
         if (res._id) {
           // this.getAllMaterialLocations()
@@ -300,11 +301,9 @@ export class ItemIndexComponent implements OnInit {
   }
 
   addSupplierToComponent() {
-
     if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
       this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
     } else {
-
       this.item.alternativeSuppliers.push(this.supplier)
       this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
       this.supplier = {
@@ -319,12 +318,11 @@ export class ItemIndexComponent implements OnInit {
         subGroup: "",
         packageWeight: "",
       }
-
     }
   }
 
   mainSupplier(isMain) {
-    debugger
+    
     if (isMain) {
       return 'lightgreen'
     } else {
@@ -337,7 +335,6 @@ export class ItemIndexComponent implements OnInit {
   }
 
   makeAsMainSupplier(index) {
-    debugger;
     let id = this.item._id;
     this.inventoryService.setAsMainSupplier(index, id).subscribe(data => {
       if (data) {

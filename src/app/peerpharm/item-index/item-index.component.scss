@@ -12,11 +12,37 @@
     color: white
   }
 
+  .title1:hover {
+    background-color: rgb(73, 158, 91);
+    color: white;
+  }
+
+  .title2:hover {
+    background-color: rgb(21, 51, 223);
+    color: white;
+  }
+
+  .title3:hover {
+    background-color: rgb(226, 188, 21);
+    color: rgb(14, 13, 13);
+  }
+
 .modal-inner {
     max-height: 600px;
     overflow-y: auto;
 }
 
-.modal-inner .form-control {
-    // height: 10% 
+// Hide arrows from input type number  :
+/*********************************************** ********************/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/*******************************************************************/

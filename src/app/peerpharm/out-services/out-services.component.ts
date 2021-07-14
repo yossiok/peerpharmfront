@@ -46,13 +46,13 @@ export class OutServicesComponent implements OnInit {
 
   getAllServices(): void {
     this.outServiceService.getAllServices().subscribe(services => {
-      debugger
+      
       this.services = services
     })
   }
 
   openService(service) {
-    debugger
+    
     this.service = service
     this.orderDetailsModal = true
     console.log(service)

@@ -480,6 +480,7 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'closed': return 'closed'
       case 'supplied': return 'delivered'
       case 'canceled': return 'canceled'
+      case 'sentBySupplier': return 'sent by supplier'
     }
   }
 
@@ -491,6 +492,7 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'approvedBySupplier': return 'lightgreen'
       case 'supplied': return '#09d5e8'
       case 'canceled': return '#9198a3'
+      case 'sentBySupplier': return '#17e610'
     }
   }
 
@@ -1283,4 +1285,4 @@ this.purchaseRecommendationsCopy = this.purchaseRecommendationsCopy.concat(purch
 })
 this.purchaseRecommendations = this.purchaseRecommendations.filter(recommendedItem => recommendedItem != null );
 
-debugger;*/
+;*/

@@ -83,11 +83,11 @@ export class FormdetailsComponent implements OnInit {
   }
 
   loadQAPallets(formId) {
-    debugger;
+    ;
     this.formsService.getQAPalletsByFormId(formId).subscribe(QAPallets =>{
         
       if(QAPallets){
-        debugger;
+        ;
         this.showQAPalletsModal = true;
 
         for (let i = 0; i < QAPallets.length; i++) {

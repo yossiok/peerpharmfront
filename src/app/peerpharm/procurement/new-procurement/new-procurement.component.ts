@@ -423,7 +423,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   addCusomerOrderNumberToItem(e, i) {
-    debugger
+    
     if(!this.itemForm.controls.customerOrders.value) this.itemForm.controls.customerOrders.setValue([])
     this.itemForm.controls.customerOrders.value.push(e.value)
     e.value = ''

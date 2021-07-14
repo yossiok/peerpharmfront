@@ -45,7 +45,7 @@ export class UnfinishedProductsComponent implements OnInit {
   
   closeForm(ev,form)
     {
-      debugger;
+      ;
       if(confirm('האם אתה בטוח שברצונך לאשר את הטופס?'))
       {
         this.formsService.closeForm(form._id).subscribe(data=>
@@ -59,7 +59,7 @@ export class UnfinishedProductsComponent implements OnInit {
 
     closeFormPallets(ev, form)
     {
-      debugger;
+      ;
       if(confirm('האם אתה בטוח שברצונך לאשר את משטחי הטופס ? ?'))
       {
         this.formsService.closeFormPallets(form.formDetailsId).subscribe(data=>

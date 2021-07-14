@@ -1,3 +1,5 @@
+<div></div>
+
 <div class="d-flex flex-row justify-content-center">
 
     <div class="mt-8 mr-5">
@@ -36,6 +38,7 @@
                                     <th>Price</th>
                                     <th>Shipping</th>
                                     <th>Last Supplier</th>
+                                    <th>Stock Amount</th>
                                 </tr>
                             </thead>
                             <tbody class="table table-bordered">
@@ -49,6 +52,7 @@
                                     <td><span
                                             *ngIf="component.lastOrders && component.lastOrders[0]">{{component.lastOrders[0].supplierName}}</span>
                                     </td>
+                                    <td>{{component.stockAmount}}</td>
                                 </tr>
                                 <tr *ngIf="allowed">
                                     <td>FormulePrice:</td>
@@ -68,42 +72,7 @@
 
                     <div class="col-3"></div>
 
-                    <div class="col-4" *ngIf="selectedComponent && showOrders">
-                        <button class="btn bg-danger text-white" (click)="showOrders = false">Show Remarks</button>
-                        <h3>Purchases for item {{selectedComponent.componentNumber}}</h3>
-                        <button class="btn btn-warning"
-                            (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
-                            Status</button>
-                        <img class="image m-2" [src]="selectedComponent.imgUrl" alt="Component image missing..">
-                        <h5 class="bg-dark text-warning p-2">Status = {{selectedStatus}}</h5>
-                        <table class="bg-warning text-dark">
-                            <thead class="text-center">
-                                <tr>
-                                    <th>Order Number</th>
-                                    <th>Status</th>
-                                    <th>Created at..</th>
-                                    <th>Arrival Date</th>
-                                    <th>quantity Ordered</th>
-                                    <th>Price</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody class="table table-bordered">
-                                <ng-container *ngFor="let order of selectedComponent.lastOrders">
-                                    <tr
-                                        *ngIf="(order.status != 'closed' && selectedStatus != 'closed') || (order.status == 'closed' && selectedStatus == 'closed')">
-                                        <td>{{order.orderNumber}}</td>
-                                        <td>{{order.status}}</td>
-                                        <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
-                                        <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
-                                        <td>{{order.quantity}}</td>
-                                        <td>{{order.price}}</td>
-                                        <td>{{order.coin}}</td>
-                                    </tr>
-                                </ng-container>
-                            </tbody>
-                        </table>
-                    </div>
+
                     <div class="col-1"></div>
                 </div>
 
@@ -135,7 +104,7 @@
 
     </div>
 
-    <div *ngIf="!showOrders" class="float-left small p-5 mr-5">
+    <div class="float-left small p-5 mr-5">
         <h3>Important Remarks:</h3>
         <h4 class="bg-danger text-white p-5">
             1. {{item.proRemarks}}
@@ -145,4 +114,49 @@
         </h4>
     </div>
 
+</div>
+
+<div class="fixed-top mt-10 p-2 w-50 mx-auto bg-warning" *ngIf="selectedComponent && showOrders">
+    <i class="fa fa-times float-right h3 click p-2" (click)="showOrders = false"></i>
+    <h3 class="text-center">Purchases for item {{selectedComponent.componentNumber}}</h3>
+    <div class="row">
+        <div class="col-3">
+            <button class="btn btn-warning" (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
+                Status</button>
+                <p class="bg-dark text-warning p-2">Status = {{selectedStatus}}</p>
+        </div>
+        <div class="col-6">
+            <table class="bg-warning text-dark">
+                <thead class="text-center">
+                    <tr>
+                        <th>Order Number</th>
+                        <th>Status</th>
+                        <th>Created at..</th>
+                        <th>Arrival Date</th>
+                        <th>quantity Ordered</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="table table-bordered">
+                    <ng-container *ngFor="let order of selectedComponent.lastOrders">
+                        <tr
+                            *ngIf="(order.status != 'closed' && selectedStatus != 'closed') || (order.status == 'closed' && selectedStatus == 'closed')">
+                            <td>{{order.orderNumber}}</td>
+                            <td>{{order.status}}</td>
+                            <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
+                            <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
+                            <td>{{order.quantity}}</td>
+                            <td>{{order.price}}</td>
+                            <td>{{order.coin}}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-3">
+            <img class="image m-2" [src]="selectedComponent.imgUrl" alt="Component image missing..">
+
+        </div>
+    </div>
 </div>

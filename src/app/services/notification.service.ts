@@ -67,9 +67,13 @@ export class NotificationService {
     this.socket.emit("notes", sendUsers);
   }
 
-addUserAlert(message, titleBody): Observable<any> {
-  let userAlert = { titleBody, message }
-  return this.http.post('/notification/addUserAlert', userAlert, this.options)
+addUserAlert(message, titleObj, userName): Observable<any> {
+  let userAlert = { titleObj, message }
+  return this.http.post('/notification/addUserAlert?userName='+userName, userAlert, this.options)
+}
+
+deleteUserAlerts(userName) {
+  return this.http.get('/notification/deleteUserALerts?userName='+userName)
 }
 
   addNotification(

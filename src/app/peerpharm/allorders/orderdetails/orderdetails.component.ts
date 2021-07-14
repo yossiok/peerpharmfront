@@ -549,15 +549,16 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   openItemStatus(orderItem, content) {
-    this.productionItemStatus = orderItem
+    
+    this.productionItemStatus = {...orderItem}
+    delete this.productionItemStatus._id
     this.modalService.open(content)
     // this.productionItemStatusIndex = index
   }
 
   setOrderItemStatus() {
     this.orderService.setProductionStatus(this.productionItemStatus).subscribe(response => {
-      console.log(response)
-      // this.ordersItems[this.productionItemStatusIndex] = {...this.productionItemStatus}
+      if(response.n == 1) this.toastSrv.success('Status changed successfully.', 'Status Change')
     })
   }
 
@@ -747,7 +748,8 @@ export class OrderdetailsComponent implements OnInit {
   loadMaterialsForFormule() {
     if(this.selectedArr.length == 0) this.toastSrv.error('Please select Order Items')
     else {
-      this.toastSrv.info('This might take a few seconds...')
+      this.toastSrv.info('This might take a few seconds...', 'Please Wait')
+      this.loadData = true
       this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
         this.calculateMaterials(materials)
       })
@@ -769,10 +771,21 @@ export class OrderdetailsComponent implements OnInit {
             }
           }
         }
-        this.materialsForFormules = materials;
-        this.showMaterialsForFormules = true;
       }
+      this.materialsForFormules = materials;
+      this.showMaterialsForFormules = true;
+      this.loadData = false
     })
+  }
+
+  materialsToExcel() {
+    let matsForEx = this.materialsForFormules.map(m => {
+      delete m.materialArrivals
+      delete m.measureType
+      delete m.phaseRemarks
+      delete m.itemRemarks
+    })
+    this.excelService.exportAsExcelFile(matsForEx, 'Materials Explosion '+this.number+" "+new Date())
   }
 
   formatNumber(number) {
@@ -1220,15 +1233,16 @@ export class OrderdetailsComponent implements OnInit {
                       if (this.tempItem[0].licsensNumber == '') {
                         //Send message to Shlomo
                         let message = `שלמה, נכנס ללו"ז מוצר ללא רשיון. מק"ט ${this.tempItem[0].itemNumber}`
-                        let titleBody = {
+                        let titleObj = {
                           title: "מוצר ללא רשיון בייצור",
                           index: 60,
                           users: "shlomo,sima",
                           force: false
                         }
-                        this.notificationService.sendGlobalMessage(message, titleBody).subscribe(data => console.log(data))
+                        
+                        this.notificationService.sendGlobalMessage(message, titleObj).subscribe(data => console.log(data))
                         //also save alert in Shlomo's user alerts
-                        this.notificationService.addUserAlert(message, titleBody).subscribe(data => {
+                        this.notificationService.addUserAlert(message, titleObj, 'shlomo').subscribe(data => {
                           console.log(data)
                         })
 
@@ -1245,15 +1259,15 @@ export class OrderdetailsComponent implements OnInit {
 
                           //Send message to Shlomo
                           let message = `שלמה, נכנס ללו"ז מוצר שהרשיון שלו עומד לפוג. מק"ט ${this.tempItem[0].itemNumber}. מועד פקיעת תוקף: ${this.tempItem.licsensDate}`
-                          let titleBody = {
+                          let titleObj = {
                             title: "מוצר שתוקפו עומד לפוג נכנס לייצור",
                             index: 60,
                             users: "shlomo,sima",
                             force: false
                           }
-                          this.notificationService.sendGlobalMessage(message, titleBody).subscribe(data => console.log(data))
+                          this.notificationService.sendGlobalMessage(message, titleObj).subscribe(data => console.log(data))
                           //also save alert in Shlomo's user alerts
-                          this.notificationService.addUserAlert(message, titleBody).subscribe(data => {
+                          this.notificationService.addUserAlert(message, titleObj, 'shlomo').subscribe(data => {
                             console.log(data)
                           })
 
@@ -1701,7 +1715,7 @@ export class OrderdetailsComponent implements OnInit {
         //res = all items(products) from order
         await res.forEach(async item => {
 
-          debugger
+          
           // orderItem = orderItem from current order
           let orderItem = this.ordersItems.find(o => o.itemNumber == item.itemNumber)
 

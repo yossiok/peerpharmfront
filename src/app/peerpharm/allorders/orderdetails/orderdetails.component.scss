@@ -81,6 +81,16 @@ input[type=checkbox]
   width:50px;
 }
 
+.smallerLoader {
+  border: 6px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
 .lightgreen { 
   background:lightgreen;
 }
@@ -156,6 +166,10 @@ i{
       font-size: 18px;
       color: black;
       margin-left: 30px;
+  }
+
+  .click {
+    cursor: pointer
   }
 
   .orderHeader{
@@ -301,9 +315,16 @@ background-color: white;
 }
 .close
 {
-    font-size: 2.3125rem;
-    margin-left: 0px;
+  padding: 5px;
+  font-size: 2.3125rem;
+  margin-left: 0px;
 }
+
+.clise:hover {
+  background-color: rgb(87, 102, 87);
+  color: white;
+}
+
 .tableHeader { 
   box-shadow: 1px 1px 3px 1px black !important;
     background: rgb(69, 69, 202);

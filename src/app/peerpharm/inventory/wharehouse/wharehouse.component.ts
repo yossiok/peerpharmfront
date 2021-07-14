@@ -130,7 +130,7 @@ export class WharehouseComponent implements OnInit {
         }
       });
       this.whareHouses = displayAllowedWH;
-      debugger
+      
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
 
@@ -150,7 +150,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   dirSet(action, direction) {
-debugger
+
     if (direction != "production") this.multiInputLines = false;
     this.inventoryUpdateList = [] //reseting list before direction change
     this.multiLinesArr = []
@@ -607,7 +607,7 @@ debugger
 
   async checkLineValidation(itemLine, index, ev: any, lineqnt) {
     let stockType;
-    debugger
+    
     if (
       this.curentWhareHouseName == "Rosh HaAyin" ||
       this.curentWhareHouseName == "Kasem" ||
@@ -716,7 +716,7 @@ debugger
 
 
   addObjToList(itemLine, itemRes, shelfRes, originShelfQntBefore, destShelfQntBefore) {
-    debugger;
+    ;
     if (!(this.inventoryUpdateList.length == 1 && this.dir == "shelfChange")) {
 
       let itemNumExistInList = false;

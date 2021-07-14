@@ -118,6 +118,9 @@ export class FullComponent implements OnInit {
         let msg = alert.msg
         this.notifications.sendGlobalMessage(msg, titleObj).subscribe(ok=>{
           console.log(ok)
+          this.notifications.deleteUserAlerts(this.authService.loggedInUser.userName).subscribe(res=>{
+            console.log(res)
+          })
         })
       }
     },5000)

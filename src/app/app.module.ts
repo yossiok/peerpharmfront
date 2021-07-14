@@ -97,7 +97,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     }),
     CommonModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut:10000,
+      titleClass: 'h4',
+      preventDuplicates: true
+    }),
     HttpClientModule,
     FormsModule,
     NgbModule,

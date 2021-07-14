@@ -56,7 +56,7 @@
   </div>
 </div>
 
-<img src="assets/images/load_data2.gif" *ngIf="loadData==true"><br>
+<!-- <img src="assets/images/load_data2.gif" *ngIf="loadData==true"><br> -->
 
 <div *ngIf="!showingAllOrders">
   <p>License Status:</p>
@@ -74,7 +74,7 @@
 
 <div *ngIf="orderExplodeLoader" class="loading">Loading&#8230;</div>
 
-<table style="border: 1px solid black;" class='table' *ngIf="loadData==false">
+<table style="border: 1px solid black;" class='table'>
   <thead class='bg-info tableHeader text-white' (click)="edit('')">
     <tr>
       <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()"
@@ -99,13 +99,16 @@
       <th>
         <!-- <button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button> -->
       </th>
-      <th>
+      <th *ngIf="!loadData">
         <img  *ngIf="userName == 'uri' || userName == 'sima' || userName == 'martha'" 
               ngbTooltip="פיצוץ חומרים"
               (click)="loadMaterialsForFormule()"
               class="showCmptBtn" 
               src="../../../../assets/images/what-happens-when-we-mix-liquids.jpg" 
               alt="">
+      </th>
+      <th *ngIf="loadData">
+        <div class="smallerLoader"></div>
       </th>
 
       <th>
@@ -984,19 +987,28 @@
   </div>
 </div>
 
-<div *ngIf="showMaterialsForFormules==true" id="myModal3" class="modal3"
-  style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:150px;top:70px;font-size:20px;'>
+<div *ngIf="showMaterialsForFormules==true" id="myModal3" class="modal3 w-25 rounded"
+  style='border:1px; border-radius:5px; z-index: 1; position: fixed; left:1150px;top:70px;font-size:20px;'>
 
-  <div class="modal-content" id='modelC'>
+  <div class="modal-content w-100" id='modelC'>
+
     <div style="display: inline-block;" id="material-header" class="modal-header">
-      <button class="btn btn-success" printSectionId="materialsPrint"
-        [printStyle]="{td : {'border': 'solid 1px black'},tr : {'border': 'solid 1px black'}}" ngxPrint>Print</button>
-      <span class="close" id="closeId3" (click)="showMaterialsForFormules=false">&times;</span>
 
+      <div class="row">
+        <div class="col-4">
+          <button class="btn btn-success" printSectionId="materialsPrint"
+            [printStyle]="{td : {'border': 'solid 1px black'},tr : {'border': 'solid 1px black'}}" ngxPrint>Print</button>
+        </div>
+        <div class="col-4">
+          <img style="width: 50px; height: 50px;" (click)="materialsToExcel()" src="../../../../assets/images/excel.png" alt="">
+        </div>
+        <div class="col-4">
+          <span class="click close" id="closeId3" (click)="showMaterialsForFormules=false">&times;</span>
+        </div>
+      </div>
     </div>
 
-
-    <div class="container" style="overflow: auto;" id="materialsPrint" class="modal-body">
+    <div class="container w-50" style="overflow: auto;" id="materialsPrint" class="modal-body">
       <table id="procurementItems" class="table table-striped">
         <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
           <tr>
