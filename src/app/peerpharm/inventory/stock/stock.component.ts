@@ -293,6 +293,8 @@ export class StockComponent implements OnInit {
   @ViewChild('materialToSearch') materialToSearch: ElementRef;
 
 
+  //Update version For Component
+  editVersionForm: FormGroup 
 
 
   // material array // 
@@ -399,6 +401,13 @@ export class StockComponent implements OnInit {
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder,) {
 
+    this.editVersionForm = new FormGroup({
+      date: new FormControl(new Date(this.today), Validators.required),
+      versionNumber: new FormControl(null, Validators.required),
+      description: new FormControl('', Validators.required),
+      image: new FormControl(null, Validators.required),
+      user: new FormControl(null, Validators.required),
+  })
 
     this.filterParams = fb.group({
       componentN: new FormControl('', Validators.pattern('^[a-zA-Z]+$')),
@@ -1526,6 +1535,8 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resMaterial = defaultMaterial
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    this.editVersionForm.controls.versionNumber.setValue(this.resCmpt.versionNumber+1)
+    if(isNaN(this.editVersionForm.controls.versionNumber.value)) this.editVersionForm.controls.versionNumber.setValue(5)
     let mainSupplier = this.resCmpt.alternativeSuppliers.find(s=>s.isMain == true);
     // if(mainSupplier){
     //   this.resCmpt.suplierN = mainSupplier.supplierName
@@ -2185,10 +2196,20 @@ export class StockComponent implements OnInit {
         // this.tempHiddenImgSrc=data.partialText;
         this.resCmpt.img = data.partialText;
         console.log(" this.resCmpt.img " + this.resCmpt.img);
+        this.editVersionForm.controls.image.setValue(this.resCmpt.img)
       }
 
     })
   }
+
+  updateComponentVersion(){
+    this.editVersionForm.controls.user.setValue(this.authService.loggedInUser.userName)
+    this.resCmpt.versionNumber = this.editVersionForm.get('versionNumber').value
+    this.resCmpt.versionHistory.push(this.editVersionForm.value)
+    this.editStockItemDetails()
+    this.editVersionForm.reset()
+  }
+
   async getCmptAmounts(cmptN, cmptId) {
     ;
     this.callingForCmptAmounts = true;

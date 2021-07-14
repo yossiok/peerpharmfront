@@ -464,7 +464,10 @@
               <div class="col-4 fixNoaStupidStuff">
                 <h5 class="text-success">פרטי פריט</h5>
               </div>
-              <div class="col-4 fixNoaStupidStuff">
+              <div class="col-1 fixNoaStupidStuff">
+                <h5 class="text-success">מהדורה</h5>
+              </div>
+              <div class="col-3 fixNoaStupidStuff">
                 <h5 class="text-success">פרטי ספק</h5>
               </div>
               <div class="col-4 fixNoaStupidStuff">
@@ -483,13 +486,16 @@
               <div class="col-2 fixNoaStupidStuff">
                 <input (change)="checkIfItemExist($event)" class="form-control" type='text'
                   [(ngModel)]="resCmpt.componentN">
-
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
                 <input class="form-control" type="number" disabled [(ngModel)]="resCmpt.price" maxlength="6" max="6">
                 <!-- <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
                 <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice"> -->
 
+              </div>
+              <div class="col-1 fixNoaStupidStuff">
+                <input type="number" disabled class="small-input form-control d-inline " [(ngModel)]="resCmpt.versionNumber">
+                <i class="fas fa-plus mr-2 text-success" ngbTooltip="שדרג מהדורה" (click)="open(editVersionDetails)"></i>
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">מספר ספק</label>
@@ -509,17 +515,19 @@
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">מלאי מינימום</label>
-              </div>
-              <div class="col-2 fixNoaStupidStuff">
-                <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumStock">
-              </div>
-              <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">כמות מינימלית להזמנה</label>
               </div>
-              <div class="col-2 fixNoaStupidStuff">
+              <div class="col-1 fixNoaStupidStuff">
+                <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumStock">
                 <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumPurchaseAmount">
               </div>
             </div>
+            <!-- <div dir="rtl" class="row text-center fixNoaStupidStuff">
+              <div class="col-2 fixNoaStupidStuff">
+              </div>
+              <div class="col-2 fixNoaStupidStuff">
+              </div>
+            </div> -->
 
             <div dir="rtl" class="row text-center fixNoaStupidStuff">
               <div class="col-4 fixNoaStupidStuff">
@@ -1063,6 +1071,44 @@
                   <td>{{update.date | date:'dd/MM/yy'}}</td>
                   <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                   <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
+                </tr>
+              </tbody>
+            </table>
+  
+        </div>
+  
+        </mat-tab>
+
+        <mat-tab label="Version History">
+        
+          <span class="close text-success" id="closeId2"
+            (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
+          </span>
+  
+          <div dir="rtl" class="fixNoaStupidStuff row mt-4">
+            <h2>היסטוריית מהדורות לפריט {{resCmpt.componentN}}</h2>
+          </div>
+          <div dir="rtl" class="row fixNoaStupidStuff mt-2">
+  
+            <table dir="rtl" class="table table-hover">
+              <thead>
+                <tr>
+                  <th>מס' מהדורה</th>
+                  <th>תאריך העדכון</th>
+                  <th>בוצע ע"י..</th>
+                  <th>סיבת העדכון</th>
+                  <th>תמונה</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let version of resCmpt.versionHistory">
+                  <td>{{version.versionNumber}}</td>
+                  <td>{{version.date | date:'dd/MM/yy'}}</td>
+                  <td>{{version.user}}</td>
+                  <td>{{version.description}}</td>
+                  <td>
+                    <img [src]="version.image" alt="Image not updated..">
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -2582,7 +2628,6 @@
 </div>
 
 <ng-template #updateManualPrice let-modal>
-
   <div dir="rtl" class="fixNoaStupidStuff modal-header">
     <h4 class="modal-title" id="modal-basic-title">עדכן מחיר ידני לפריט</h4>
     <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -2616,7 +2661,6 @@
         </select>
       </div>
     </div>
-
     <div class="fixNoaStupidStuff row mt-2">
       <button 
         *ngIf="resMaterial.componentN != ''" (click)="editMaterialItemDetails()" 
@@ -2633,6 +2677,55 @@
         שמור
       </button>
     </div>
+  </div>
+  <div class="modal-footer">
+  </div>
+</ng-template>
+
+<ng-template #editVersionDetails let-modal>
+
+  <div dir="rtl" class="fixNoaStupidStuff modal-header">
+    <h4 class="modal-title" id="modal-basic-title">שדרוג מהדורה לפריט {{resCmpt.componentN}}</h4>
+    <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class="fixNoaStupidStuff modal-body">
+
+    <form [formGroup]="editVersionForm" (ngSubmit)="updateComponentVersion()">
+      <div class="fixNoaStupidStuff row mt-2">
+        <div class="form-group">
+          <label>תאריך</label>
+          <input class="form-control" type="date" value="{{ today | date:'yyyy-MM-dd' }}" disabled formControlName="date">
+        </div>
+        <div class="form-group">
+          <label>מספר מהדורה</label>
+          <input class="form-control" disabled type="number" formControlName="versionNumber">
+        </div>
+        <br>
+        <div class="row form-group">
+          <label>תאור השינוי </label>
+          <p>(מדוע משדרגים את המהדורה?)</p>
+          <textarea class="form-control" formControlName="description" cols="30" rows="10"></textarea>
+        </div>
+        <div class="form-group">
+          <label>העלה תמונה עדכנית</label>
+          <img *ngIf="resCmpt.img!=''" [src]="resCmpt.img" style="max-height: 250px;"
+                  class="hoverImg w-25 h-100 border border-success" alt="Item main image please wait ...">
+          <p *ngIf="resCmpt.img==''"><b> -No Image- </b></p>
+          <input class="form-control" type='file' id="input_itemImgID" (change)='uploadImg($event)'
+            style='display:block'>
+          <!-- <input class="form-control" type="file"> -->
+        </div>
+      </div>
+      
+      <div class="fixNoaStupidStuff row mt-2">
+        <button type="submit" class="btn btn-primary" 
+        (click)="modal.dismiss('Cross click')">
+        שדרג מהדורה
+      </button>
+    </div>
+  </form>
  
 
   </div>
