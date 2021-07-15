@@ -403,9 +403,12 @@ export class ProcurementOrdersComponent implements OnInit {
     
 
     if (status) {
+      // if status is open, get all open or delivered orders
       if (status == 'open') this.procurementData = this.procurementData.filter(p => p.status == status || p.status == 'supplied')
-      else if (status != 'allOrders') this.procurementData = this.procurementData.filter(p => p.status == status)
-      else this.procurementData = this.procurementData.filter(purchase => purchase.status != 'canceled');
+      //if status is something else, get all orders by status
+      else if (status != 'allOrders' || status == 'canceled' || status == 'closed') this.procurementData = this.procurementData.filter(p => p.status == status)
+      // if status is 'allOrders', get all orders that are'nt closed or cancelled
+      else this.procurementData = this.procurementData.filter(purchase => purchase.status != 'canceled' && purchase.status != 'closed');
     }
 
     if (category) {
@@ -651,7 +654,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.totalPriceWithTaxes = numFour
 
     if (this.printSum) {
-      if (coin == 'nis' || coin == 'NIS') {
+      if (coin == 'nis' || coin == 'NIS' || coin == 'ILS') {
         this.currCoin = this.nisSymbol
       }
       if (coin == 'eur' || coin == 'EUR') {

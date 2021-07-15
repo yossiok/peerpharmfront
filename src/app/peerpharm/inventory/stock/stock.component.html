@@ -737,20 +737,20 @@
                 <input [(ngModel)]="supplier.price" type="text" class="form-control">
                 <input list="coins" [(ngModel)]="supplier.coin" class="form-control">
                 <datalist id="coins">
-                  <option value="usd">USD</option>
-                  <option value="nis">NIS</option>
-                  <option value="gbp">GBP</option>
-                  <option value="eur">EUR</option>
-                  <option value="yen">YEN</option>
+                  <option value="USD">USD</option>
+                  <option value="ILS">ILS</option>
+                  <option value="GBP">GBP</option>
+                  <option value="EUR">EUR</option>
+                  <option value="JPY">JPY</option>
                 </datalist>
                 <input [(ngModel)]="supplier.shippingPrice" type="number" class="form-control" />
                 <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control">
                 <datalist id="coinsLoading">
-                  <option value="usd">USD</option>
-                  <option value="nis">NIS</option>
-                  <option value="gbp">GBP</option>
-                  <option value="eur">EUR</option>
-                  <option value="yen">YEN</option>
+                  <option value="USD">USD</option>
+                  <option value="ILS">ILS</option>
+                  <option value="GBP">GBP</option>
+                  <option value="EUR">EUR</option>
+                  <option value="JPY">JPY</option>
                 </datalist>
                 <input [(ngModel)]="supplier.packageWeight" type="text" class="form-control" />
               </div>
@@ -855,7 +855,7 @@
                         </td>
 
                         <td *ngIf="rowNumber != i">
-                          <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'NIS'}}</span>
+                          <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'ILS'}}</span>
                         </td>
                         <td *ngIf="rowNumber == i">
                           <input type="text" [(ngModel)]="supplier.coinLoading" class="form-control" #coinLoading>
@@ -1014,7 +1014,7 @@
                         <td>/</td>
                         <td>{{lastorderitem.quantity}}</td>
                         <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
-                        <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
+                        <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
                       </tr>
                     </ng-container>
                   </tbody>
@@ -1034,11 +1034,11 @@
             <div class="fixNoaStupidStuff row mt-4">
               <div class="fixNoaStupidStuff col-4">
                 <h5>מחיר רכש אחרון</h5>
-                <p>{{resCmpt.price}} {{resCmpt.coin}} </p>
+                <p>{{resCmpt.price | currency: resCmpt.coin}}</p>
               </div>
               <div class="col-4">
                 <h5>מחיר ידני</h5>
-                <p>{{resCmpt.manualPrice}} {{resCmpt.manualCoin}} </p>
+                <p>{{resCmpt.manualPrice | currency: resCmpt.manualCoin}}</p>
               </div>
               <div class="col-2">
                 <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
@@ -1058,17 +1058,17 @@
             <table dir="rtl" class="table table-hover">
               <thead>
                 <tr>
-                  <th>מחיר</th>
+                  <th>#</th>
                   <th>תאריך</th>
+                  <th>מחיר</th>
                   <th>סיבת עדכון</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let update of resCmpt.priceUpdates; let i=index" >
-                  <td [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-                    {{update.price}} {{update.coin}} 
-                  </td>
+                <tr *ngFor="let update of resCmpt.priceUpdates.reverse(); let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'" >
+                  <td>{{i+1}}</td>
                   <td>{{update.date | date:'dd/MM/yy'}}</td>
+                  <td>{{update.price | currency: update.coin}}</td>
                   <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                   <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
                 </tr>
@@ -1803,20 +1803,20 @@
               <input [(ngModel)]="supplier.price" type="text" class="form-control">
               <input list="coins" [(ngModel)]="supplier.coin" class="form-control">
               <datalist id="coins">
-                <option value="usd">USD</option>
-                <option value="nis">NIS</option>
-                <option value="gbp">GBP</option>
-                <option value="eur">EUR</option>
-                <option value="yen">YEN</option>
+                <option value="USD">USD</option>
+                <option value="ILS">ILS</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
               </datalist>
               <input [(ngModel)]="supplier.priceLoading" type="text" class="form-control" />
               <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control">
               <datalist id="coinsLoading">
                 <option value="usd">USD</option>
-                <option value="nis">NIS</option>
-                <option value="gbp">GBP</option>
-                <option value="eur">EUR</option>
-                <option value="yen">YEN</option>
+                <option value="ILS">ILS</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
               </datalist>
               <input [(ngModel)]="supplier.packageWeight" type="text" class="form-control" />
               <input list="measurement" [(ngModel)]="resMaterial.unitOfMeasure" class="form-control">
@@ -1913,10 +1913,11 @@
                         {{supplier.coin}}</td>
                       <td *ngIf="rowNumber == i">
                         <select [(ngModel)]="supplier.coin" #coin>
-                          <option value="NIS">NIS</option>
+                          <option value="ILS">ILS</option>
                           <option value="USD">USD</option>
                           <option value="EUR">EUR</option>
                           <option value="GBP">GBP</option>
+                          <option value="JPY">JPY</option>
                         </select>
                         <!-- <input type="text" > -->
                       </td>
@@ -1940,7 +1941,7 @@
                       </td>
 
                       <td *ngIf="rowNumber != i">
-                        {{supplier.shippingPrice | currency: 'NIS'}}</td>
+                        {{supplier.shippingPrice | currency: 'ILS'}}</td>
                       <td *ngIf="rowNumber == i">
                         <input type="number" [(ngModel)]="supplier.shippingPrice" class="form-control" #priceLoading>
                       </td>
@@ -2012,11 +2013,11 @@
           <div class="fixNoaStupidStuff row mt-4">
             <div class="fixNoaStupidStuff col-4">
               <h5>מחיר רכש אחרון</h5>
-              <p>{{resMaterial.price}} {{resMaterial.coin}} </p>
+              <p>{{resMaterial.price | currency: resMaterial.coin}}</p>
             </div>
             <div class="col-4">
               <h5>מחיר ידני</h5>
-              <p>{{resMaterial.manualPrice}} {{resMaterial.manualCoin}} </p>
+              <p>{{resMaterial.manualPrice | currency: resMaterial.manualCoin}}</p>
             </div>
             <div class="col-2">
               <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
@@ -2035,15 +2036,17 @@
           <table dir="rtl" class="table table-hover">
             <thead>
               <tr>
-                <th>מחיר</th>
+                <th>#</th>
                 <th>תאריך</th>
+                <th>מחיר</th>
                 <th>סיבת עדכון</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let update of resMaterial.priceUpdates; let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-                <td>{{update.price}} {{update.coin}} </td>
+              <tr *ngFor="let update of resMaterial.priceUpdates.reverse(); let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
+                <td>{{i+1}}</td>
                 <td>{{update.date | date: 'dd/MM/yy'}}</td>
+                <td>{{update.price | currency: update.coin}}</td>
                 <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                 <td *ngIf="update.type == 'auto'">הזמנת רכש מס' {{update.purchase}}</td>
               </tr>
@@ -2153,7 +2156,7 @@
                       <td>/</td>
                       <td>{{lastorderitem.quantity}}</td>
                       <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
-                      <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
+                      <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
                     </tr>
                   </ng-container>
                 </tbody>
@@ -2636,25 +2639,36 @@
   </div>
   <div dir="rtl" class="fixNoaStupidStuff modal-body">
     <div class="fixNoaStupidStuff row mt-2">
+      <div class="col-3">
+        <label>מחיר נוכחי:</label>
+        <p *ngIf="resMaterial.componentN != ''" class="form-control"> {{resMaterial.manualPrice | currency: resMaterial.manualCoin}}</p>
+        <p *ngIf="resCmpt.componentN != ''" class="form-control"> {{resCmpt.manualPrice | currency: resCmpt.manualCoin}}</p>
+        <label>מחיר רכש אחרון:</label>
+        <p *ngIf="resMaterial.componentN != ''" class="form-control">{{resMaterial.price | currency: resMaterial.coin}}</p>
+        <p *ngIf="resCmpt.componentN != ''" class="form-control">{{resCmpt.price | currency: resCmpt.manualCoin}}</p>
+      </div>
+    </div>
+
+    <div class="fixNoaStupidStuff row mt-2">
       <div class="fixNoaStupidStuff col-3">
         <label>מחיר חדש:</label>
-        <input *ngIf="resMaterial.componentN != ''" (change)="checkUpdatePriceValidity('m')" 
+        <input *ngIf="resMaterial.componentN != ''" (keyup)="checkUpdatePriceValidity('m')" 
           class="form-control" type="number" [(ngModel)]="resMaterial.manualPrice">
-        <input *ngIf="resCmpt.componentN != ''" (change)="checkUpdatePriceValidity('c')" 
+        <input *ngIf="resCmpt.componentN != ''" (keyup)="checkUpdatePriceValidity('c')" 
           class="form-control" type="number" [(ngModel)]="resCmpt.manualPrice">
       </div>
       <div class="fixNoaStupidStuff col-3">
         <label>מטבע:</label>
         <select *ngIf="resMaterial.componentN != ''" [(ngModel)]="resMaterial.manualCoin" 
           class="form-control" (change)="checkUpdatePriceValidity('m')">
-          <option value="NIS">NIS</option>
+          <option value="ILS">ILS</option>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
           <option value="GBP">GBP</option>
         </select>
         <select *ngIf="resCmpt.componentN != ''" [(ngModel)]="resCmpt.manualCoin" 
         (change)="checkUpdatePriceValidity('c')" class="form-control">
-          <option value="NIS">NIS</option>
+          <option value="ILS">ILS</option>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
           <option value="GBP">GBP</option>

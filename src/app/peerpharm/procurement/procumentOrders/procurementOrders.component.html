@@ -813,11 +813,14 @@
     <div class="col-md-4 form-group">
       <label>EUR &#x20AC;</label>
       <input class="form-control" type="number" [(ngModel)]="currencies.EUR">
-
     </div>
     <div class="col-md-4 form-group">
       <label>GBP &#xa3;</label>
       <input class="form-control" type="number" [(ngModel)]="currencies.GBP">
+    </div>
+    <div class="col-md-4 form-group">
+      <label>JPY </label>
+      <input class="form-control" type="number" [(ngModel)]="currencies.JPY">
     </div>
     <button (click)="setCurrencies(); modal.dismiss('Cross click')">שמור שינויים</button>
   </div>

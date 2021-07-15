@@ -2070,8 +2070,8 @@ export class StockComponent implements OnInit {
 
   checkUpdatePriceValidity(type) {
     this.allowPriceUpdate = false
-    if(type == 'c') this.allowPriceUpdate =  this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != ''
-    if(type == 'm') this.allowPriceUpdate =  this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != ''
+    if(type == 'c') this.allowPriceUpdate =  this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != undefined
+    if(type == 'm') this.allowPriceUpdate =  this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != undefined
   }
 
   getSupplierPriceHistory(i) {
