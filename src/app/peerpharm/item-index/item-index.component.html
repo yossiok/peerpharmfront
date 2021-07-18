@@ -3,7 +3,7 @@
 <!-- Item Details Form-->
 
 <div class="row mt-4 text-center">
-  <h3 [ngClass]="setColors('title1')" (click)="showDetailsForm = !showIDetailsForm" class="text-center mx-auto p-2">Item Details</h3>
+  <h3 [ngClass]="setColors('title1')" (click)="showDetailsForm = !showDetailsForm" class="text-center mx-auto p-2">Item Details</h3>
 </div>
 
 <form *ngIf="showDetailsForm" [formGroup]="itemDetailsForm" (ngSubmit)="getItemData()">

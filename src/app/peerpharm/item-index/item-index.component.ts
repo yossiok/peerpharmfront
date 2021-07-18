@@ -31,7 +31,9 @@ export class ItemIndexComponent implements OnInit {
   gettingProducts: boolean;
   fetchingOrders: boolean;
   allowUserEditItem: boolean;
-
+  showDetailsForm: boolean = false
+  showMovementsForm: boolean = false
+  showSalesForm: boolean = false
 
   supplier: any = {
     supplierName: '',

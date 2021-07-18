@@ -244,7 +244,7 @@ export class OrderdetailsComponent implements OnInit {
     private notificationService: NotificationService) { }
 
 
-  exportAsXLSXOrders(data) {
+  exportAsXLSXOrders() {
 
     this.excelService.exportAsExcelFile(this.ordersItems, 'data');
   }
