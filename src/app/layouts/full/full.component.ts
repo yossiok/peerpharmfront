@@ -115,7 +115,7 @@ export class FullComponent implements OnInit {
       let userAlerts = this.authService.loggedInUser.loginAlerts
       for(let alert of userAlerts) {
         let titleObj = alert.titleObj
-        let msg = alert.msg
+        let msg = alert.messsage
         this.notifications.sendGlobalMessage(msg, titleObj).subscribe(ok=>{
           console.log(ok)
           this.notifications.deleteUserAlerts(this.authService.loggedInUser.userName).subscribe(res=>{

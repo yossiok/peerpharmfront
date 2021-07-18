@@ -80,7 +80,7 @@ export class NewPricingComponent implements OnInit {
       if (!suppliers) componentPricing.price = 'Update Price'
       for (let i = 0; i < suppliers.length; i++) {
         if (suppliers[i].price != '' && suppliers[i].price != null && suppliers[i].price != undefined) {
-          componentPricing.price = suppliers[0].price
+          componentPricing.price = suppliers[i].price
           i = suppliers.length
         } else {
           componentPricing.price = 'Update Price'
