@@ -28,6 +28,7 @@ export class NewPricingComponent implements OnInit {
   newCustomer: boolean = false
   manualComponent: boolean = false
   currencies: Currencies;
+  currentTab: number = 0;
 
   newPricingForm: FormGroup = new FormGroup({
     productPrice: new FormControl('', Validators.required),
@@ -87,6 +88,15 @@ export class NewPricingComponent implements OnInit {
     })
   }
 
+  upgradeTab() {
+    this.currentTab++
+    
+  }
+  
+  downGradeTab() {
+    this.currentTab--
+  }
+
   // getItemData(itemNumber) {
   //   if (itemNumber == 0 || itemNumber.value == '' || !itemNumber) this.toastr.error('Enter a valid product number')
   //   else {
@@ -103,7 +113,15 @@ export class NewPricingComponent implements OnInit {
 
 
   calculatePPK() {
+    this.loading = true
+    setTimeout(()=> {
+      if(this.loading) {
+        this.loading = false
+        this.toastr.error('Something went wrong')
+      }
+    }, 10000)
     this.formuleService.getFormulePriceByNumber(this.newPricingForm.value.formuleNumber).subscribe(response => {
+      this.loading = false
       if (response.msg) this.toastr.error(response.msg)
       else this.newPricingForm.controls.PPK.setValue(response.formulePrice)
     })
