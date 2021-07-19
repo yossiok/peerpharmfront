@@ -1,39 +1,29 @@
 
 
-<!-- Item Details -->
+<!-- Item Details Form-->
 
 <div class="row mt-4 text-center">
-  <h3 class="text-center mx-auto">Item Details</h3>
+  <h3 [ngClass]="setColors('title1')" (click)="showDetailsForm = !showDetailsForm" class="text-center mx-auto p-2">Item Details</h3>
 </div>
 
-<form [formGroup]="itemDetailsForm" (ngSubmit)="getItemData()">
-  <div class="row border border-success rounded p-4 w-75 form-group mx-auto">
-    <div class="col-1">
-      <label>
-        item type
-      </label>
-      <select formControlName="itemType" class="form-control">
-        <option value="all">all</option>
-        <option value="component">component</option>
-        <option value="material">material</option>
-        <option value="product">product</option>
-      </select>
-    </div>
+<form *ngIf="showDetailsForm" [formGroup]="itemDetailsForm" (ngSubmit)="getItemData()">
+  <div class="row border border-success rounded p-4 w-50 form-group mx-auto">
     <div class="col-2">
       <label>
-        item number
+        Enter number,
       </label>
       <input type="text" formControlName="itemNumber" class="form-control">
     </div>
-    <!-- <div class="col-2">
-    <label>
-      item name
+    <div class="col-2">
+    <label class="d-block">
+      or find by name.
     </label>
-    <input type="text">
-    <select class="form-control">
-      <option *ngFor="let item of items" [value]="item.allName"></option>
+    <input class="d-inline form-control" type="text" #name>
+    <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
+    <select class="form-control" #nameSelect (change)="setItemDetailsNumber($event)">
+      <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}</option>
     </select>
-  </div> -->
+  </div>
     <div class="col-1">
       <button type="submit" class="btn btn-success">Go.</button>
     </div>
@@ -46,9 +36,154 @@
 
 
 
+<!--Item Movements Form-->
+<div class="row mt-4 text-center">
+  <h3 [ngClass]="setColors('title2')" (click)="showMovementsForm = !showMovementsForm" class="text-center mx-auto p-2">Item Movements</h3>
+</div>
+<form *ngIf="showMovementsForm" [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
+  <div class="row border border-secondary rounded p-4 w-75 form-group mx-auto">
+    <div class="col-1">
+      <label>
+        item type
+      </label>
+      <select formControlName="itemType" class="form-control">
+        <option value="all">all</option>
+        <option value="component">component</option>
+        <option value="material">material</option>
+        <option value="product">product</option>
+      </select>
+    </div>
+    <div *ngIf="itemMovementForm.value.itemType == 'component'" class="col-2">
+      <label>
+        component type
+      </label>
+      <select formControlName="componentType" class="form-control">
+        <option value="skip">Filter by Items</option>
+        <option value='bottle_Glass'>בקבוק זכוכית</option>
+        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
+        <option value='jar_Glass'>צנצנת זכוכית</option>
+        <option value='jar_Plastic'>צנצנת פלסטיק</option>
+        <option value='cap'>פקק</option>
+        <option value='cover'>מכסה</option>
+        <option value='pump'>משאבה</option>
+        <option value='cosmetic_pump'>משאבה קוסמטית</option>
+        <option value='over_cap'>מכסה עילי</option>
+        <option value='tube'>שפורפרת</option>
+        <option value='colons'>קולונים</option>
+        <option value='hair_life'>היירלייפ</option>
+        <option value='compacts'>קומפקטים</option>
+        <option value='personal_package'>אריזות אישיות</option>
+        <option value='master_carton'>קרטוני מאסטר</option>
+        <option value='newsletter'>עלון לצרכן</option>
+        <option value='irosol_valve'>אירוסול- שסתום</option>
+        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
+        <option value='irosol_bottle'>איירוסול- בקבוק</option>
+        <option value='cellophane'>צלופן</option>
+        <option value='sticker'>מדבקה</option>
+        <option value='sachet'>סאשט</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label>
+        item numbers
+      </label>
+      <ng-container *ngFor="let item of itemMovementForm.value.itemNumbers; let i = index">
+        <input (change)="setItemNumber(i, $event)" [value]="itemMovementForm.value.itemNumbers[i]" class="form-control"
+          type="text">
+        <button type="button" (click)="itemMovementForm.value.itemNumbers.push('')">+</button>
+        <button *ngIf="i > 0" type="button" (click)="itemMovementForm.value.itemNumbers.pop()">-</button>
+      </ng-container>
+    </div>
+
+    <div class="col-2">
+      <label>from</label>
+      <input formControlName="fromDate" class="form-control" type="date">
+    </div>
+    <div class="col-2">
+      <label>to</label>
+      <input formControlName="toDate" class="form-control" type="date">
+    </div>
+    <div class="col-1">
+      <label>
+        movement type
+      </label>
+      <select formControlName="movementType" class="form-control">
+        <option value="all">all</option>
+        <option value="in">in</option>
+        <option value="out">out</option>
+        <option value="production">production</option>
+        <option value="shelfChange">Shelf Change</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label>
+        amounts
+      </label>
+      <input formControlName="amount" class="form-control" type="number">
+      <select formControlName="amountDir" class="form-control">
+        <option value="higherThan">Higher than</option>
+        <option value="lowerThan">Lower than</option>
+      </select>
+    </div>
+    <div class="col-1">
+      <button type="submit" class="btn btn-info">Go.</button>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
+    </div>
+  </div>
+</form>
+
+
+<!--Sold Products-->
+<div class="row mt-4 text-center">
+  <h3 [ngClass]="setColors('title3')" (click)="showSalesForm = !showSalesForm" class="text-center mx-auto p-2">Sales</h3>
+</div>
+
+<form *ngIf="showSalesForm" [formGroup]="productsSoldForm" (ngSubmit)="fetchProducts">
+  <div class="row border border-warning rounded p-4 w-75 form-group mx-auto">
+  <h4 class="text-warning">Coming soon...</h4>
+
+    <!-- <div class="col-2">
+      <label>Product Number</label>
+      <input formControlName="productNumber" class="form-control" type="number">
+    </div>
+    <div class="col-2">
+      <label>from</label>
+      <input formControlName="fromDate" class="form-control" type="date">
+    </div>
+    <div class="col-2">
+      <label>to</label>
+      <input formControlName="toDate" class="form-control" type="date">
+    </div>
+    <div class="col-2">
+      <label>
+        amounts
+      </label>
+      <input formControlName="amount" class="form-control" type="number">
+      <select formControlName="amountDir" class="form-control">
+        <option value="higherThan">Higher than</option>
+        <option value="lowerThan">Lower than</option>
+      </select>
+    </div>
+    <div class="col-1">
+      <button type="submit" class="btn btn-warning">Go.</button>
+    </div>
+    <div class="col-1">
+      <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
+    </div> -->
+  </div>
+
+
+</form>
+
+
+
 <div class="row mt-2"></div>
 
 
+<!--Item Details-->
 <div *ngIf="item" class="modal-inner bg-success p-5">
 
   <div class="border border-white p-2">
@@ -290,7 +425,7 @@
               <td>/</td>
               <td>{{lastorderitem.quantity}}</td>
               <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
-              <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
+              <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
             </tr>
           </ng-container>
         </tbody>
@@ -306,108 +441,10 @@
 
 
 
-<!--Item Movements-->
-<div class="row mt-4 text-center">
-  <h3 class="text-center mx-auto">Item Movements</h3>
-</div>
-<form [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
-  <div class="row border border-secondary rounded p-4 w-75 form-group mx-auto">
-    <div class="col-1">
-      <label>
-        item type
-      </label>
-      <select formControlName="itemType" class="form-control">
-        <option value="all">all</option>
-        <option value="component">component</option>
-        <option value="material">material</option>
-        <option value="product">product</option>
-      </select>
-    </div>
-    <div *ngIf="itemMovementForm.value.itemType == 'component'" class="col-2">
-      <label>
-        component type
-      </label>
-      <select formControlName="componentType" class="form-control">
-        <option value="skip">Filter by Items</option>
-        <option value='bottle_Glass'>בקבוק זכוכית</option>
-        <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-        <option value='jar_Glass'>צנצנת זכוכית</option>
-        <option value='jar_Plastic'>צנצנת פלסטיק</option>
-        <option value='cap'>פקק</option>
-        <option value='cover'>מכסה</option>
-        <option value='pump'>משאבה</option>
-        <option value='cosmetic_pump'>משאבה קוסמטית</option>
-        <option value='over_cap'>מכסה עילי</option>
-        <option value='tube'>שפורפרת</option>
-        <option value='colons'>קולונים</option>
-        <option value='hair_life'>היירלייפ</option>
-        <option value='compacts'>קומפקטים</option>
-        <option value='personal_package'>אריזות אישיות</option>
-        <option value='master_carton'>קרטוני מאסטר</option>
-        <option value='newsletter'>עלון לצרכן</option>
-        <option value='irosol_valve'>אירוסול- שסתום</option>
-        <option value='irosol_bottle'>איירוסול- בקבוק</option>
-        <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-        <option value='irosol_bottle'>איירוסול- בקבוק</option>
-        <option value='cellophane'>צלופן</option>
-        <option value='sticker'>מדבקה</option>
-        <option value='sachet'>סאשט</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label>
-        item numbers
-      </label>
-      <ng-container *ngFor="let item of itemMovementForm.value.itemNumbers; let i = index">
-        <input (change)="setItemNumber(i, $event)" [value]="itemMovementForm.value.itemNumbers[i]" class="form-control"
-          type="text">
-        <button type="button" (click)="itemMovementForm.value.itemNumbers.push('')">+</button>
-        <button *ngIf="i > 0" type="button" (click)="itemMovementForm.value.itemNumbers.pop()">-</button>
-      </ng-container>
-    </div>
-
-    <div class="col-2">
-      <label>from</label>
-      <input formControlName="fromDate" class="form-control" type="date">
-    </div>
-    <div class="col-2">
-      <label>to</label>
-      <input formControlName="toDate" class="form-control" type="date">
-    </div>
-    <div class="col-1">
-      <label>
-        movement type
-      </label>
-      <select formControlName="movementType" class="form-control">
-        <option value="all">all</option>
-        <option value="in">in</option>
-        <option value="out">out</option>
-        <option value="production">production</option>
-        <option value="shelfChange">Shelf Change</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label>
-        amounts
-      </label>
-      <input formControlName="amount" class="form-control" type="number">
-      <select formControlName="amountDir" class="form-control">
-        <option value="higherThan">Higher than</option>
-        <option value="lowerThan">Lower than</option>
-      </select>
-    </div>
-    <div class="col-1">
-      <button type="submit" class="btn btn-info">Go.</button>
-    </div>
-    <div class="col-1">
-      <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
-    </div>
-  </div>
-</form>
-
 <div class="row mt-2">
 </div>
 
+<!--Item Movements-->
 <div *ngIf="itemMovements" class="row mt-4 w-75 mx-auto">
   <table class="table table-hover">
     <thead class="text-info text-center">

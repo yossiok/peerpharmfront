@@ -77,7 +77,7 @@ export class OrdersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    debugger
+    
     if(this.authService.loggedInUser.screenPermission == '5') {
       // document.getElementById
       var allDivs = document.getElementsByClassName("container-fluid text-center bg-white")

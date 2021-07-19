@@ -27,6 +27,7 @@ export class WeightProductionComponent implements OnInit {
   @ViewChild('printFormuleBtn') printFormuleBtn: ElementRef;
   @ViewChild('reduceMaterialAmount') reduceMaterialAmount: ElementRef;
   @ViewChild('formuleNumberElement') formuleNumberElement: ElementRef;
+  @ViewChild('formuleNumber') formuleNumber: ElementRef;
 
   // currentFormule: any;
   // currentFormule2: any;
@@ -86,7 +87,9 @@ export class WeightProductionComponent implements OnInit {
     private modalService: NgbModal,
     private itemService: ItemsService) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    setTimeout(()=> this.formuleNumber.nativeElement.focus(), 500)
+  }
 
   addFormule() {
     this.formules.push({

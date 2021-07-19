@@ -6,6 +6,7 @@ import { FormulesService } from 'src/app/services/formules.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
+import { Currencies } from '../../procurement/Currencies';
 
 @Component({
   selector: 'app-prices',
@@ -33,6 +34,7 @@ export class PricesComponent implements OnInit {
   allowed: boolean = false;
   allComponents: any;
   waitingText: string = "Getting item data..."
+  currencies: Currencies
 
   constructor(
     private itemService: ItemsService,
@@ -48,15 +50,21 @@ export class PricesComponent implements OnInit {
   // GOOD LUCK!
 
   ngOnInit(): void {
-    setTimeout(() => this.productNumber.nativeElement.focus(), 1000)
+    setTimeout(() => this.productNumber.nativeElement.focus(), 500)
     this.allowed = this.authService.loggedInUser.authorization.includes("formulePrice")
+    this.getCurrencies()
   }
 
 
+  getCurrencies() {
+    this.procuremetnService.getCurrencies().subscribe(currencies => {
+      this.currencies = currencies
+    })
+  }
 
   // Get item data for item 
   getItemData(itemNumber) {
-    if(itemNumber == 0 || itemNumber.value == '' || !itemNumber) this.toastr.error('Enter a valid product number')
+    if (itemNumber == 0 || itemNumber.value == '' || !itemNumber) this.toastr.error('Enter a valid product number')
     else {
       this.calculating = true;
       this.itemService.getItemData(itemNumber.value).subscribe(data => {
@@ -79,7 +87,7 @@ export class PricesComponent implements OnInit {
       this.allComponents = allComponents
       this.waitingText = "Getting components purchase data..."
       this.waitingText = "Getting Formule data..."
-      this.getFormulePrice().then(formulePrice=> {
+      this.getFormulePrice().then(formulePrice => {
         this.waitingText = "Calculating product price..."
         this.calculateProductPricing().then(result => {
           this.totalItemPrice = this.item.formulePrice ? (result.itemPrice + this.item.formulePrice) : result.itemPrice
@@ -88,6 +96,7 @@ export class PricesComponent implements OnInit {
           this.loadingCustomers = true
           this.getCustomersForItem(this.item.itemNumber)
           this.getSuppliersForComponents()
+          this.getStockAmounts()
         })
       })
     })
@@ -103,22 +112,19 @@ export class PricesComponent implements OnInit {
       })
     })
   }
-  
-  
+
+
   // Calculate product price by components 
   async calculateProductPricing() {
-
     return new Promise<any>((resolve, reject) => {
       try {
         let itemPrice = 0
         let shippingPrice = 0
         this.itemComponents = []
         this.totalItemPrice = 0
-
         // For each component, create a componentPricing object
         this.createComponentsPrice(this.allComponents).then(itemComponents => {
           this.itemComponents = itemComponents
-
           // Calculate total item price
           for (let component of this.itemComponents) {
             if (typeof (component.price) == typeof (0)) itemPrice += Number(component.price)
@@ -129,16 +135,17 @@ export class PricesComponent implements OnInit {
             }
           }
           resolve({ itemPrice, shippingPrice })
+        }).catch(e => {
+          this.toastr.error(e, `יש לעדכן מטבע`)
+          this.calculating = false
         })
       }
       catch (e) { reject(e) }
     })
-
   }
 
 
   createComponentsPrice(components) {
-
     return new Promise<any>((resolve, reject) => {
       let itemComponents = []
       for (let component of components) {
@@ -149,34 +156,51 @@ export class PricesComponent implements OnInit {
           componentName: component.componentName,
           imgUrl: ''
         }
-
+        let coin
         //Calculate component pricing
-        if (component.manualPrice) componentPricing.price = Number(component.manualPrice)
-        else if(component.price) componentPricing.price = Number(component.price)
+        if (component.manualPrice) {
+          componentPricing.price = Number(component.manualPrice)
+          coin = component.manualCoin
+        }
+        else if (component.price) {
+          componentPricing.price = Number(component.price)
+          coin = component.coin
+        }
         else {
           let suppliers = component.alternativeSuppliers;
           if (!suppliers || suppliers.length == 0) componentPricing.price = NaN
-          for (let i = 0; i < suppliers.length; i++) {
-            if (suppliers[i].price != '' && suppliers[i].price != null && suppliers[i].price != undefined) {
-              componentPricing.price = Number(suppliers[0].price)
-              i = suppliers.length
-            } else {
-              componentPricing.price = NaN
+          else {
+            for (let i = 0; i < suppliers.length; i++) {
+              if (suppliers[i].price != '' && suppliers[i].price != null && suppliers[i].price != undefined) {
+                componentPricing.price = Number(suppliers[i].price)
+                coin = suppliers[i].coin
+                i = suppliers.length
+              } else {
+                componentPricing.price = NaN
+              }
             }
           }
         }
-
-        if (component.componentType == "master_carton") componentPricing.price = componentPricing.price / Number(this.item.PcsCarton)
+        if(!coin) reject(`Item ${component.componentN}`)
+        if(!isNaN(componentPricing.price)) {
+          componentPricing.price = componentPricing.price * this.currencies[0][coin.toUpperCase()]
+          if (component.componentType == "master_carton") componentPricing.price = componentPricing.price / Number(this.item.PcsCarton)
+        }
         componentPricing.shippingPrice = component.shippingPrice ? component.shippingPrice : 'No shipping Price'
         componentPricing.imgUrl = component.img
-
         itemComponents.push(componentPricing)
-
       }
       resolve(itemComponents)
-
     })
+  }
 
+  getStockAmounts() {
+    let allNumbers = this.itemComponents.map(ic => ic.componentNumber)
+    this.invtSer.getAmountsForMulti(allNumbers).subscribe(totalsPerItem => {
+      this.itemComponents.map(ic => {
+        ic.stockAmount = totalsPerItem.find(item => item._id == ic.componentNumber).total
+      })
+    })
   }
 
   changeView(component) {

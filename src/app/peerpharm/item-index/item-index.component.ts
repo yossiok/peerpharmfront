@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
@@ -14,10 +14,26 @@ import { Currencies } from '../procurement/Currencies';
 })
 export class ItemIndexComponent implements OnInit {
 
+  @ViewChild('nameSelect') nameSelect: ElementRef
+
+  item: any;
+  itemNames: any[]
+  items: any[]
+
   itemMovements: any[];
   itemMovementsCopy: any[];
 
-  item: any;
+  allSuppliers: any;
+  lastOrdersOfItem: any[]
+  currencies: Currencies;
+  rowNumber: number = -1
+  counter: number = 0
+  gettingProducts: boolean;
+  fetchingOrders: boolean;
+  allowUserEditItem: boolean;
+  showDetailsForm: boolean = false
+  showMovementsForm: boolean = false
+  showSalesForm: boolean = false
 
   supplier: any = {
     supplierName: '',
@@ -39,7 +55,7 @@ export class ItemIndexComponent implements OnInit {
   ]
 
   cmptTypes: Array<any> = [
-    'bottle_Glass', 'bottle_Plastic',  'jar_Glass', 'jar_Plastic',  'cap',  'cover', 'pump', 'cosmetic_pump',
+    'bottle_Glass', 'bottle_Plastic', 'jar_Glass', 'jar_Plastic', 'cap', 'cover', 'pump', 'cosmetic_pump',
     'over_cap', 'tube', 'colons', 'hair_life', 'compacts', 'personal_package', 'master_carton', 'newsletter',
     'irosol_valve', 'irosol_bottle', 'irosol_hectotor', 'irosol_bottle', 'cellophane', 'sticker', 'sachet', 'godett',
     'plate', 'other'
@@ -48,7 +64,7 @@ export class ItemIndexComponent implements OnInit {
   cmptTypes3: Array<any>
   cmptMaterials: Array<any>
   cmptMaterials2: Array<any>
-  
+
 
   itemMovementForm: FormGroup = new FormGroup({
     itemType: new FormControl('all', Validators.required),
@@ -68,14 +84,14 @@ export class ItemIndexComponent implements OnInit {
     itemNumber: new FormControl('', Validators.required),
   })
 
-  allSuppliers: any;
-  gettingProducts: boolean;
-  fetchingOrders: boolean;
-  lastOrdersOfItem: any []
-  currencies: Currencies;
-  allowUserEditItem: boolean;
-  rowNumber: number = -1
-  counter: number = 0
+  productsSoldForm: FormGroup = new FormGroup({
+    productNumber: new FormControl(''),
+    fromDate: new FormControl(new Date()),
+    toDate: new FormControl(null),
+    movementType: new FormControl('in', Validators.required),
+    amount: new FormControl(null),
+    amountDir: new FormControl('higherThan')
+  })
 
   constructor(
     private inventoryService: InventoryService,
@@ -93,23 +109,31 @@ export class ItemIndexComponent implements OnInit {
     }
   }
 
+  setColors(title) {
+    switch(title) {
+      case 'title1': return 'title1'
+      case 'title2': return 'title2'
+      case 'title3': return 'title3'
+    }
+  }
+
   getAllTypes() {
-    this.inventoryService.getAllComponentTypes().subscribe(allTypes=>{
+    this.inventoryService.getAllComponentTypes().subscribe(allTypes => {
       this.cmptTypes = allTypes
     })
-    this.inventoryService.getAllComponentTypes2().subscribe(allTypes=>{
+    this.inventoryService.getAllComponentTypes2().subscribe(allTypes => {
       this.cmptTypes2 = allTypes
     })
-    this.inventoryService.getAllComponentTypes3().subscribe(allTypes=>{
+    this.inventoryService.getAllComponentTypes3().subscribe(allTypes => {
       this.cmptTypes3 = allTypes
     })
   }
 
-  getAllCmptMaterials(){
-    this.inventoryService.getAllComponentMaterials().subscribe(allMaterials=>{
+  getAllCmptMaterials() {
+    this.inventoryService.getAllComponentMaterials().subscribe(allMaterials => {
       this.cmptMaterials = allMaterials
     })
-    this.inventoryService.getAllComponentMaterials2().subscribe(allMaterials=>{
+    this.inventoryService.getAllComponentMaterials2().subscribe(allMaterials => {
       this.cmptMaterials2 = allMaterials
     })
   }
@@ -134,29 +158,46 @@ export class ItemIndexComponent implements OnInit {
   fetchMovements() {
     this.inventoryService.getComplexItemMovements(this.itemMovementForm.value).subscribe(data => {
       console.log(data)
+      this.item = undefined
       this.itemMovements = data
       this.itemMovementsCopy = data
     })
   }
 
   resetMovements() {
-    this.itemMovementForm.reset(); 
+    this.itemMovementForm.reset();
     this.itemMovements = undefined
     this.itemMovementForm.controls.itemNumbers.setValue([''])
   }
 
-  getItemData(){
+  getItemData() {
+    this.itemMovements = []
     this.inventoryService.getItemByNumber(this.itemDetailsForm.value.itemNumber).subscribe(item => {
-      if(item.msg) this.toastSrv.error(item.msg)
+      if (item.msg) this.toastSrv.error(item.msg)
       else {
         this.item = item
         this.getLastOrdersItem(20, this.item.itemType)
-      } 
+      }
     })
   }
 
-  sortBy(array, by){
-    if(by.includes('Date')) {
+  // Get names of all items for search
+  getNames(event) {
+    if (event.value.length > 2) {
+      this.inventoryService.getNamesByRegex(event.value).subscribe(names => {
+        this.itemNames = names
+        this.itemDetailsForm.controls.itemNumber.setValue(names[0].componentN)
+      })
+    }
+  }
+
+  setItemDetailsNumber(event) {
+    this.itemDetailsForm.controls.itemNumber.setValue(event.target.value)
+  }
+
+
+  sortBy(array, by) {
+    if (by.includes('Date')) {
       this[array].map(element => {
         element.formatedDate = new Date(element[by])
         return element;
@@ -173,7 +214,6 @@ export class ItemIndexComponent implements OnInit {
   }
 
   checkIfItemExist(ev) {
-
     var itemNumber = ev.target.value;
     if (itemNumber != '') {
       this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
@@ -189,12 +229,10 @@ export class ItemIndexComponent implements OnInit {
   fillSupplierDetails() {
     if (this.item.suplierN != '') {
       this.supplierService.getSuppliersByNumber(this.item.suplierN).subscribe(data => {
-
         if (data) {
           this.item.suplierName = data[0].suplierName;
         }
       })
-
     }
   }
 
@@ -207,7 +245,6 @@ export class ItemIndexComponent implements OnInit {
   }
 
   writeNewComponent() {
-
     if (this.item.componentN != "") {
       // this.item.itemType = this.stockType;
       console.log(this.item);
@@ -217,23 +254,16 @@ export class ItemIndexComponent implements OnInit {
           this.toastSrv.error('פריט קיים במלאי')
         } else if (res.componentN) {
           this.toastSrv.success("New stock item created");
-
           this.resetResCmptData();
-
-
         }
-        // this.newItem = '';
-
       });
-
     } else {
       this.toastSrv.error("Can't create new stock item without number")
     }
   }
 
-  
-  resetResCmptData() {
 
+  resetResCmptData() {
     this.item = {
       whoPays: '',
       payingCustomersList: [],
@@ -255,14 +285,11 @@ export class ItemIndexComponent implements OnInit {
       componentItems: [],
       input_actualMlCapacity: 0,
     }
-
   }
 
   editStockItemDetails() {
-
     this.item;
     if (confirm("לעדכן פריט?")) {
-
       this.inventoryService.updateCompt(this.item).subscribe(res => {
         if (res._id) {
           // this.getAllMaterialLocations()
@@ -276,11 +303,9 @@ export class ItemIndexComponent implements OnInit {
   }
 
   addSupplierToComponent() {
-
-    if(this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == ''){
+    if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
       this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
     } else {
-
       this.item.alternativeSuppliers.push(this.supplier)
       this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
       this.supplier = {
@@ -295,13 +320,12 @@ export class ItemIndexComponent implements OnInit {
         subGroup: "",
         packageWeight: "",
       }
-
     }
   }
 
-  mainSupplier(isMain){
-    debugger
-    if(isMain){
+  mainSupplier(isMain) {
+    
+    if (isMain) {
       return 'lightgreen'
     } else {
       return ''
@@ -312,11 +336,10 @@ export class ItemIndexComponent implements OnInit {
     this.rowNumber = index;
   }
 
-  makeAsMainSupplier(index){
-    debugger;
+  makeAsMainSupplier(index) {
     let id = this.item._id;
-    this.inventoryService.setAsMainSupplier(index,id).subscribe(data => {
-      if(data){
+    this.inventoryService.setAsMainSupplier(index, id).subscribe(data => {
+      if (data) {
         this.item.alternativeSuppliers = data.alternativeSuppliers;
         this.toastSrv.success('ספק ראשי עודכן בהצלחה!')
       }
@@ -336,7 +359,7 @@ export class ItemIndexComponent implements OnInit {
         this.lastOrdersOfItem = orders;
       }
       else this.lastOrdersOfItem = [
-        { orderNumber: 'Sorry.', supplierName: 'No', status: 'orders',  arrivedAmount: 'for this', quantity: 'item.' }
+        { orderNumber: 'Sorry.', supplierName: 'No', status: 'orders', arrivedAmount: 'for this', quantity: 'item.' }
       ]
     })
   }

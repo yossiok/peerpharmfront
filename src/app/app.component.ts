@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
         }
         if (this.currentMsgIndex < titleObj.index) {
           if (titleObj.users == "all") {
-            debugger;
+            ;
             this.currentMsgIndex = titleObj.index;
             this.alertTitle = titleObj.title;
             this.alertBody = body;

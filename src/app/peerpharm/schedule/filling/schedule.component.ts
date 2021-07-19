@@ -299,7 +299,7 @@ export class ScheduleComponent implements OnInit {
         if (sced.batch && sced.batch != "") {
           let batches = sced.batch.split('+')
           if (batches.length > 1) {
-            debugger
+            
             sced.batchSpecStatus = 999
           }
           else {
@@ -520,7 +520,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#B8ECF1';
 
-        debugger;
+        ;
         this.scheduleData = this.unPackedSchedules
         this.scheduleData.map(line => {
           line.date2 = moment(line.date).format('DD/MM/YY');
@@ -579,7 +579,7 @@ export class ScheduleComponent implements OnInit {
 
   getAllUnpackedSchedules() {
     this.scheduleService.getUnpackedSchedules().subscribe(async data => {
-      debugger;
+      ;
       await data.forEach(element => {
         element.mkp = 'unpacked'
       });

@@ -1,0 +1,192 @@
+<div dir="rtl">
+
+
+    <form [formGroup]="componentArrival" (ngSubmit)="addToArrivals()">
+        <h3>הכנסה למלאי</h3>
+        <div class="row mt-4">
+
+            <div class="col-1">
+                <label>מחסן</label>
+                <select class="form-control" formControlName="whareHouseID" #first>
+                    <option disabled value="">בחר מחסן</option>
+                    <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-1">
+                <label>
+                    פריט (לפי מספר)
+                </label>
+                <input type="number" formControlName="item" (change)="getShelfs()" class="form-control">
+            </div>
+            <div class="col-1">
+                <label class="d-block">
+                    (לפי שם) פריט
+                </label>
+                <input class="d-inline form-control" type="text" #name>
+                <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
+                <select class="form-control" (change)="setItemDetailsNumber($event)">
+                    <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-1">
+                <label>מדף</label>
+                <select class="form-control" formControlName="shell_id_in_whareHouse">
+                    <option disabled value="">בחר מדף</option>
+                    <option *ngFor="let shellNum of shellNums" [value]="shellNum.shell_id_in_whareHouse">
+                        {{shellNum.position}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-1">
+                <label>כמות</label>
+                <input type="number" formControlName="amount" class="form-control">
+            </div>
+            <div class="col-1 d-flex flex-column justify-content-around">
+                <button type="submit" [disabled]="!componentArrival.valid" 
+                    [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הכנס</button>
+                <button type="button" class="btn btn-secondary" (click)="componentArrival.reset()">נקה נתונים</button>
+            </div>
+            <div class="col-1">
+            </div>
+        </div>
+    </form>
+
+    <!-- All Arrivals -->
+    <div class="row mt-4 w-50">
+        <table class="table table-hover">
+            <thead class="bg-info text-white">
+                <tr>
+                    <th class="text-center">פריט</th>
+                    <th class="text-center">כמות</th>
+                    <th class="text-center">נכנס למחסן..</th>
+                    <th class="text-center">למדף..</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let arrival of allArrivals; let i = index">
+                    <td class="text-center">{{arrival.item}}</td>
+                    <td class="text-center">{{arrival.amount}}</td>
+                    <td class="text-center">{{arrival.whareHouse}}</td>
+                    <td class="text-center">{{arrival.position}}</td>
+                    <td class="text-center"><i (click)="removeFromArrivals(i)" class="fa fa-times text-danger"></i></td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="row mt-2 d-flex flex-row justify-content-around w-50">
+        <button *ngIf="!sending" class="btn btn-info" (click)="addToStock()" 
+            [disabled]="allArrivals.length == 0" [style.cursor]="allArrivals.length == 0 ? 'not-allowed' : 'pointer'">
+            הוסף למלאי (שלח שינויים) <i class="fa fa-check"></i>
+        </button>
+        <div class="smallerLoader" *ngIf="sending"></div>
+        <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button>
+        <button class="btn btn-warning" (click)="clearArrivals()">נקה טבלה <i class="fas fa-trash-alt"></i></button>
+    </div>
+
+    <!-- תעודת קליטה -->
+    <div class="row mt-4">
+        <div id="print-section2" style="direction: rtl; text-align: right; display: none; ">
+            <header>
+                <h1>פאר פארם בע"מ</h1>
+                <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
+                <p>
+                    <span>טלפון 03-9024055</span>&nbsp;&nbsp;
+                    <span>פקס 03-9024015</span>&nbsp;&nbsp;
+                    <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
+                    <span>ח.פ: 511899023</span>
+                </p>
+            </header>
+            <main>
+                <h2>תעודת קליטה מס' {{certificateReception}}</h2>
+                <p class='originDestWh'>
+                    <!-- <span><u>ממחסן:</u></span>&nbsp;&nbsp;
+                    <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-קאסם</span>&nbsp;&nbsp;
+                    <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-ראש העין</span>&nbsp;&nbsp;
+                    <span><u>למחסן:</u></span>&nbsp;&nbsp;
+                    <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-קאסם</span>&nbsp;&nbsp;&nbsp;
+                    <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-ראש העין</span>&nbsp;&nbsp;&nbsp;
+                    <span></span> -->
+                    <span><u>תאריך:</u></span>&nbsp;&nbsp;
+                    <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
+
+                </p>
+                <br>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>#</th>
+                            <th>מספר פריט</th>
+                            <th>מחסן</th>
+                            <th>מיקום</th>
+                            <th>כמות</th>
+                            <th class='itemNamePrint'>שם פריט</th>
+                            <th>פריט מק"ט ספק</th>
+
+                        </tr>
+                        <ng-container *ngFor="let arrival of allArrivals; let i =index">
+                            <tr>
+                                <td class="cellPadding">{{i+1}}</td>
+                                <td>{{arrival.item}}</td>
+                                <td>{{arrival.whareHouse}}</td>
+                                <td>{{arrival.position}}</td>
+                                <td>{{arrival.amount}}</td>
+                                <td>{{arrival.itemName}}</td>
+                                <td>{{arrival.suplierN}}</td>
+
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </main>
+            <div class="signatures">
+                <p>
+                    <span>שם המקבל:</span>&nbsp;&nbsp;
+                    <span>
+                        <u>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </u>
+                    </span>&nbsp;&nbsp;
+                    <span>חתימה:</span>&nbsp;&nbsp;
+                    <span>
+                        <u>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </u>
+                    </span>&nbsp;&nbsp;
+                    <span>תאריך:</span>&nbsp;&nbsp;
+                    <span>
+                        <u>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </u>
+                    </span>&nbsp;&nbsp;
+                </p>
+            </div>
+            <footer>
+            </footer>
+        </div>
+        <button style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
+      header : {'border-bottom': 'solid 1px'},
+      main : {'border-bottom': 'solid 1px' },
+      table :{ 'text-align': 'right' },
+      footer : { 'position': 'absolute' , 'width': '100%' },
+      h2 : {'text-align': 'center'},
+      '.originDestWh':{'text-align':'right'},
+      th : {'width': '16%' },
+      td : {'width': '16%' },
+      '.itemNamePrint' : {'width': '35%'},
+      '.signatures' : { 'margin' : '50px'},
+      '.cellPadding' : { 'padding' : '15px 0px'}
+      }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>print</button>
+        <!-- <button (click)="printStockTransferCertificate()">click</button> -->
+
+    </div>
+
+</div>

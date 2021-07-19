@@ -96,7 +96,12 @@ const defaultMaterial = {
   location: "",
   quantityInStock: "",
   mixedMaterial: [],
-  formuleRemarks: ''
+  formuleRemarks: '',
+  manualPrice: 0,
+  manualCoin: 'ILS',
+  price: 0,
+  coin: 'ILS',
+  priceUpdates: []
 
 }
 
@@ -293,6 +298,8 @@ export class StockComponent implements OnInit {
   @ViewChild('materialToSearch') materialToSearch: ElementRef;
 
 
+  //Update version For Component
+  editVersionForm: FormGroup 
 
 
   // material array // 
@@ -399,6 +406,13 @@ export class StockComponent implements OnInit {
     private authService: AuthService, private toastSrv: ToastrService, private batchService: BatchesService, private itemService: ItemsService,
     private fb: FormBuilder,) {
 
+    this.editVersionForm = new FormGroup({
+      date: new FormControl(new Date(this.today), Validators.required),
+      versionNumber: new FormControl(null, Validators.required),
+      description: new FormControl('', Validators.required),
+      image: new FormControl(null, Validators.required),
+      user: new FormControl(null, Validators.required),
+  })
 
     this.filterParams = fb.group({
       componentN: new FormControl('', Validators.pattern('^[a-zA-Z]+$')),
@@ -1209,8 +1223,9 @@ export class StockComponent implements OnInit {
 
       if (shelfRes.ShelfId) {
         if (shelfRes.stock.length > 0) {
-          let temp = shelfRes.stock.map(shl => shl.item == this.resCmpt.componentN);
-          this.originShelfQntBefore = temp[0].amount;
+          let temp = shelfRes.stock.find(shl => shl.item == this.resCmpt.componentN);
+          if(temp) this.originShelfQntBefore = temp.amount;
+          else this.originShelfQntBefore = 0;
 
         }
         shelfExsit = true;
@@ -1526,6 +1541,8 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resMaterial = defaultMaterial
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
+    this.editVersionForm.controls.versionNumber.setValue(this.resCmpt.versionNumber+1)
+    if(isNaN(this.editVersionForm.controls.versionNumber.value)) this.editVersionForm.controls.versionNumber.setValue(5)
     let mainSupplier = this.resCmpt.alternativeSuppliers.find(s=>s.isMain == true);
     // if(mainSupplier){
     //   this.resCmpt.suplierN = mainSupplier.supplierName
@@ -1796,6 +1813,11 @@ export class StockComponent implements OnInit {
       remarks: '',
       itemType: '',
       actualMlCapacity: 0,
+      price: 0,
+      manualPrice: 0,
+      coin: 'ILS',
+      manualCoin: 'ILS',
+      priceUpdates: []
     }
 
     this.openModalHeader = "יצירת פריט חדש";
@@ -2059,8 +2081,8 @@ export class StockComponent implements OnInit {
 
   checkUpdatePriceValidity(type) {
     this.allowPriceUpdate = false
-    if(type == 'c') this.allowPriceUpdate =  this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != ''
-    if(type == 'm') this.allowPriceUpdate =  this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != ''
+    if(type == 'c') this.allowPriceUpdate =  this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != undefined
+    if(type == 'm') this.allowPriceUpdate =  this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != undefined
   }
 
   getSupplierPriceHistory(i) {
@@ -2185,10 +2207,20 @@ export class StockComponent implements OnInit {
         // this.tempHiddenImgSrc=data.partialText;
         this.resCmpt.img = data.partialText;
         console.log(" this.resCmpt.img " + this.resCmpt.img);
+        this.editVersionForm.controls.image.setValue(this.resCmpt.img)
       }
 
     })
   }
+
+  updateComponentVersion(){
+    this.editVersionForm.controls.user.setValue(this.authService.loggedInUser.userName)
+    this.resCmpt.versionNumber = this.editVersionForm.get('versionNumber').value
+    this.resCmpt.versionHistory.push(this.editVersionForm.value)
+    this.editStockItemDetails()
+    this.editVersionForm.reset()
+  }
+
   async getCmptAmounts(cmptN, cmptId) {
     ;
     this.callingForCmptAmounts = true;

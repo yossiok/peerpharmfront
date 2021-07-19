@@ -95,20 +95,33 @@
                 <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
             </div>
             <div>
+                <!--Sticker 1-->
+                <!--componentN-->
                 <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_stickerNumber"
                     [(ngModel)]=itemShown.stickerNumber placeholder="Sticker Number"
                     onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+                <!--version-->
+                <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]=itemShown.stickerVersion>
+                <!--type-->
                 <input type="text" style='width: 150px' id="id_stickerType" placeholder="Sticker Type" [(ngModel)]=itemShown.stickerTypeK>
             </div>
             <div>
-                <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_stickerNumber2"
-                    [(ngModel)]=itemShown.stickerNumber2 placeholder="Sticker 2 Number"
+                <!--Sticker 2-->
+                <!--componentN-->
+                <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_sticker2Number"
+                    [(ngModel)]=itemShown.sticker2Number placeholder="Sticker 2 Number"
                     onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
-                <input type="text" placeholder="Sticker 2 Type" style='width: 150px' id="id_stickerType" [(ngModel)]=itemShown.stickerTypeK2>
+                <!--Version-->
+                <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]=itemShown.sticker2Version>
+                <!--Sticker Type-->
+                <input type="text" placeholder="Sticker 2 Type" style='width: 150px' id="id_sticker2Type" [(ngModel)]=itemShown.sticker2TypeK>
             </div>
             <div>
+                <!--Box Number-->
                 <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.boxNumber
                     id="id_boxNumber" onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
+                <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]=itemShown.boxVersion>
+                <!--Box Type-->
                 <input type="text" style='width: 150px' [(ngModel)]=itemShown.boxTypeK id="id_boxType">
             </div>
             <div>
@@ -759,6 +772,7 @@
                                             [(ngModel)]="itemShown.bottleNumber"
                                             (change)="searchCompNumber($event,'productionInput')" type="text"
                                             class="productionInput">
+                                        <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]="itemShown.bottleVersion">
                                     </div>
                                     <div *ngIf="production==false">
                                         <p style="opacity: 0">---</p>
@@ -1453,6 +1467,7 @@
 
                         <div class="container-fluid">
 
+                            <!--Main Component Div-->
                             <div class="row pictureDivider">
 
                                 <div class="col-2">
@@ -1468,18 +1483,22 @@
                                 </div>
 
                                 <div class="col-3" style="margin-left:-45px;">
+                                    <!--Component Type-->
                                     <input [(ngModel)]="itemShown.componentType" placeholder="Type"
                                         style="width:120px !important;" class="productionInput">
                                 </div>
 
                                 <div class="col-3" style="margin-left:-117px;">
+                                    <!--Component Number-->
                                     <input placeholder="Number" (change)="fillBottle(itemShown.bottleNumber)"
-                                        type="text" id="id_bottleNo"
+                                        type="number" id="id_bottleNo"
                                         (focusout)="loadPackagDetails(itemShown.bottleNumber, 'bottle')"
                                         [(ngModel)]=itemShown.bottleNumber>
-                                </div>
 
-                                <div class="col-2">
+                                    <!--Version Number-->
+                                    <input class="small-input" type="number" placeholder="v." disabled [(ngModel)]=itemShown.bottleVersion>
+                                </div>
+                                <div class="col-3">
                                     <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
@@ -1491,17 +1510,18 @@
                                         *ngIf='bottleFile'>>></button>
                                     <img id="id_img1" [src]=itemShown.bottleImage>
                                 </div>
-                                <div class="col-3 stock-bg">
+                                <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.bottleAmount}}</label><br>
                                     <label>Allocated Amount: {{itemShown.bottleAllocations}}</label><br>
-                                    <label>Ordered Amounts: </label>
+                                    <label>Ordered Amounts: {{itemShown.bottleOrderedAmount}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Order Date</th>
-                                                <th>Arrival Date</th>
+                                                <th>Created</th>
+                                                <th>Arrival</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1509,6 +1529,7 @@
                                                 <td>{{purchase.orderNumber}}</td>
                                                 <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
                                                 <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.itemAmount}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1577,17 +1598,18 @@
                                         *ngIf='capFile'>>></button>
                                     <img id="id_img2" [src]=itemShown.capImage>
                                 </div>
-                                <div class="col-3 stock-bg">
+                                <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.capAmount}}</label><br>
                                     <label>Allocated Amount: {{itemShown.capAllocations}}</label><br>
-                                    <label>Ordered Amounts: </label>
+                                    <label>Ordered Amounts: {{itemShown.capOrderedAmount}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Order Date</th>
-                                                <th>Arrival Date</th>
+                                                <th>Created</th>
+                                                <th>Arrival</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1595,6 +1617,7 @@
                                                 <td>{{purchase.orderNumber}}</td>
                                                 <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
                                                 <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.itemAmount}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1611,17 +1634,18 @@
                                         *ngIf='pumpFile'>>></button>
                                     <img id="id_img3" [src]=itemShown.pumpImage>
                                 </div>
-                                <div class="col-3 stock-bg">
+                                <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.pumpAmount}}</label><br>
                                     <label>Allocated Amount: {{itemShown.pumpAllocations}}</label><br>
-                                    <label>Ordered Amounts: </label>
+                                    <label>Ordered Amounts: {{itemShown.pumpOrderedAmount}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Order Date</th>
-                                                <th>Arrival Date</th>
+                                                <th>Created</th>
+                                                <th>Arrival</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1629,6 +1653,7 @@
                                                 <td>{{purchase.orderNumber}}</td>
                                                 <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
                                                 <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.itemAmount}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1682,17 +1707,18 @@
                                         *ngIf='extra1File'>>></button>
                                     <img id="id_img6" [src]=itemShown.extraImage1>
                                 </div>
-                                <div class="col-3 stock-bg">
+                                <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.sealAmount}}</label><br>
                                     <label>Allocated Amount: {{itemShown.sealAllocations}}</label><br>
-                                    <label>Ordered Amounts: </label>
+                                    <label>Ordered Amounts: {{itemShown.sealOrderedAmount}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Order Date</th>
-                                                <th>Arrival Date</th>
+                                                <th>Created</th>
+                                                <th>Arrival</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1700,6 +1726,7 @@
                                                 <td>{{purchase.orderNumber}}</td>
                                                 <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
                                                 <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.itemAmount}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1776,6 +1803,7 @@
                                     </div>
                                     <div style="display: inline-table;">
                                         <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
+                                        <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]="itemShown.stickerVersion">
                                         <br>
                                         <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
                                     </div>
@@ -1795,8 +1823,9 @@
                                 <div class="col-2">
                                     <label class="form-control">Sticker</label>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 d-flex">
                                     <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
+                                    <input type="number" style="height: 35px" disabled placeholder="v." [(ngModel)]=itemShown.stickerVersion class="small-input">
                                 </div>
                                 <div class="col-2">
                                     <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
@@ -1808,8 +1837,9 @@
                                 <div class="col-2">
                                     <label class="form-control">Box</label>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 d-flex">
                                     <input [(ngModel)]="itemShown.boxNumber" type="text" class="form-control">
+                                    <input type="number" class="small-input" style="height: 35px" placeholder="v." disabled [(ngModel)]="itemShown.boxVersion">
                                 </div>
                                 <div class="col-2">
                                     <img class="w-50 imageClass" [src]="itemShown.boxImage" alt="Box">

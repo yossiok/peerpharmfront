@@ -91,17 +91,17 @@
   <div *ngIf="!hasMoreItemsToload" class="row mt-4">
     <div class="col-2">
       <label>Batch Number:</label>
-      <input placeholder="Search batch by batch number" (change)="filterBatches($event,'batchNumber')"
+      <input placeholder="Search batch by batch number" (keyup)="filterBatches($event,'batchNumber')"
         class="form-control">
     </div>
     <div class="col-2">
       <label>Item Number:</label>
-      <input placeholder="Search batch by item number" (change)="filterBatches($event,'itemNumber')"
+      <input placeholder="Search batch by item number" (keyup)="filterBatches($event,'itemNumber')"
         class="form-control">
     </div>
     <div class="col-2">
       <label>Item Name:</label>
-      <input placeholder="Search by item name" (change)="filterBatches($event,'itemName')" class="form-control" />
+      <input placeholder="Search by item name" (keyup)="filterBatches($event,'itemName')" class="form-control" />
     </div>
     <div class="col-2">
       <button class="btn btn-secondary" (click)="resetFilters()">Reset Filters</button>

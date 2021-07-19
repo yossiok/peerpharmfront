@@ -143,6 +143,17 @@ export class InventoryService {
     let url = this.baseUrl + "component?itemType=" + itemType;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getNamesByRegex(fewLetters): Observable<any> {
+    let url = this.baseUrl + "component/regexname?fewLetters=" + fewLetters;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getComponentNumberByName(componentName) {
+    let url = this.baseUrl + "component/numberByName?componentName=" + componentName;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getCompStatus(compNumber): Observable<any> {
     let url = this.baseUrl + "component?compStatus=" + compNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -280,7 +291,7 @@ export class InventoryService {
     return this.http.post(url, JSON.stringify({ id, location }), this.options).pipe(map(res => res.json()))
   }
   updateSupplier(obj): Observable<any> {
-    debugger;
+    ;
     let url = this.baseUrl + "material/updateSupplier";
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res => res.json()))
   }
@@ -403,6 +414,16 @@ export class InventoryService {
   getShelfListForItemInWhareHouse(itemNumber, whareHouseId) {
     let url = this.baseUrl + "itemShell?itemNumber=" + itemNumber + "&whareHouseId=" + whareHouseId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getShelfListForItemInWhareHouse2(itemNumber, whareHouse) {
+    let url = this.baseUrl + "itemShell/shelfListForItemInWhareHouse?itemNumber=" + itemNumber + "&whareHouse=" + whareHouse;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  addComponentsToStock(allArrivals) {
+    let url = this.baseUrl + "itemShell/addComponentsToStock";
+    return this.http.post(url, JSON.stringify({allArrivals}), this.options).pipe(map(res => res.json()));
   }
 
 

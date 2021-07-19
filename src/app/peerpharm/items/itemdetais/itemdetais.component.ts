@@ -148,8 +148,13 @@ export class ItemdetaisComponent implements OnInit {
     status: '',
     department: '',
     stickerNumber: '',
+    stickerVersion: null,
     stickerTypeK: '',
+    sticker2Number: '',
+    sticker2Version: null,
+    sticker2TypeK: '',
     boxNumber: '',
+    boxVersion: null,
     boxTypeK: '',
     barcodeK: '',
     StickerLanguageK: '',
@@ -246,16 +251,21 @@ export class ItemdetaisComponent implements OnInit {
 
     bottleAmount: 0,
     bottlePurchases: [],
+    bottleOrderedAmount: 0,
     bottleAllocations: 0,
     capAmount: 0,
     capPurchases: [],
+    capOrderedAmount: 0,
     capAllocations: 0,
     pumpAmount: 0,
     pumpPurchases: [],
+    pumpOrderedAmount: 0,
     pumpAllocations: 0,
     sealAmount: 0,
     sealPurchases: [],
+    sealOrderedAmount: 0,
     sealAllocations: 0,
+    bottleVersion: null,
 
     bottleTube: '',
     capTube: '',
@@ -551,6 +561,7 @@ export class ItemdetaisComponent implements OnInit {
       this.invtSer.getCmptByNumber(bottleNumber, "component").subscribe(data => {
         this.itemShown.bottleTube = data[0].componentName
         this.itemShown.bottleImage = data[0].img
+        this.itemShown.bottleVersion = data[0].versionNumber
         this.itemShown.componentType = data[0].componentType
         this.itemShown.bottleAllocations = data[0].alloAmount
         this.invtSer.getComponentAmount(bottleNumber).subscribe(bottleAmount => {
@@ -558,6 +569,12 @@ export class ItemdetaisComponent implements OnInit {
         })
         this.purchaseService.getPurchasesForComponent(bottleNumber).subscribe(data=>{
           this.itemShown.bottlePurchases = data
+          this.itemShown.bottleOrderedAmount = 0
+          data.forEach(purchOrder=> {
+            let addAmount = purchOrder.stockitems.find(item=>item.number == bottleNumber).quantity
+            purchOrder.itemAmount = addAmount
+            this.itemShown.bottleOrderedAmount += Number(addAmount)
+          })
         })
 
       })
@@ -581,6 +598,12 @@ export class ItemdetaisComponent implements OnInit {
         })
         this.purchaseService.getPurchasesForComponent(capNumber).subscribe(data=>{
           this.itemShown.capPurchases = data
+          this.itemShown.capOrderedAmount = 0
+          data.forEach(purchOrder=> {
+            let addAmount = purchOrder.stockitems.find(item=>item.number == capNumber).quantity
+            purchOrder.itemAmount = addAmount
+            this.itemShown.capOrderedAmount += Number(addAmount)
+          })
         })
 
       })
@@ -604,6 +627,12 @@ export class ItemdetaisComponent implements OnInit {
         })
         this.purchaseService.getPurchasesForComponent(pumpNumber).subscribe(data=>{
           this.itemShown.pumpPurchases = data
+          this.itemShown.pumpOrderedAmount = 0
+          data.forEach(purchOrder=> {
+            let addAmount = purchOrder.stockitems.find(item=>item.number == pumpNumber).quantity
+            purchOrder.itemAmount = addAmount
+            this.itemShown.pumpOrderedAmount += Number(addAmount)
+          })
         })
       })
     } else if (pumpNumber == "---") {
@@ -625,6 +654,12 @@ export class ItemdetaisComponent implements OnInit {
         })
         this.purchaseService.getPurchasesForComponent(sealNumber).subscribe(data=>{
           this.itemShown.sealPurchases = data
+          this.itemShown.sealOrderedAmount = 0
+          data.forEach(purchOrder=> {
+            let addAmount = purchOrder.stockitems.find(item=>item.number == sealNumber).quantity
+            purchOrder.itemAmount = addAmount
+            this.itemShown.sealOrderedAmount += Number(addAmount)
+          })
         })
       })
     } else if (sealNumber == "---") {
@@ -829,6 +864,7 @@ export class ItemdetaisComponent implements OnInit {
             ;
 
             this.itemShown.stickerImage = data[0].img
+            this.itemShown.stickerVersion = data[0].versionNumber
             this.itemsService.updateStickerImage(this.itemShown).subscribe(data => {
               if (data) {
                 console.log('sticker image updated');
@@ -845,10 +881,8 @@ export class ItemdetaisComponent implements OnInit {
       case 'box':
         if (compNumber != "") {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
-            data
-
             this.itemShown.boxImage = data[0].img
-
+            this.itemShown.boxVersion = data[0].versionNumber
           })
 
         } else {

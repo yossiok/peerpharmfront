@@ -237,14 +237,14 @@ export class OrderdetailsComponent implements OnInit {
     this.edit('');
   }
   constructor(
-    private formService: FormsService, private batchService: BatchesService, private inventoryService: InventoryService, 
+    private formService: FormsService, private batchService: BatchesService, private inventoryService: InventoryService,
     private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private orderService: OrdersService, private itemSer: ItemsService,
     private scheduleService: ScheduleService, private location: Location, private plateSer: PlateService, private toastSrv: ToastrService,
     private costumerSrevice: CostumersService, private excelService: ExcelService, private authService: AuthService,
     private notificationService: NotificationService) { }
 
 
-  exportAsXLSXOrders(data) {
+  exportAsXLSXOrders() {
 
     this.excelService.exportAsExcelFile(this.ordersItems, 'data');
   }
@@ -274,14 +274,16 @@ export class OrderdetailsComponent implements OnInit {
       return orderItem
     })
 
-    let orderItemsExplosionToExcel = orderItemsExplosion.map(o => Object.assign({}, ...Object.keys(o).sort((a, b) => sortOrder[a] - sortOrder[b]).map(x => { return { [x]: o[x]}})))
+    let orderItemsExplosionToExcel = orderItemsExplosion.map(o => Object.assign({}, ...Object.keys(o).sort((a, b) => sortOrder[a] - sortOrder[b]).map(x => { return { [x]: o[x] } })))
 
     this.excelService.exportAsExcelFile(orderItemsExplosionToExcel, 'Order ' + this.number + ' Explode', sortOrder);
   }
 
   async ngOnInit() {
 
-    this.iAmHaviv = this.authService.loggedInUser.screenPermission == '1' || this.authService.loggedInUser.screenPermission == '2' 
+    // this.getAllFormsDetails()
+
+    this.iAmHaviv = this.authService.loggedInUser.screenPermission == '1' || this.authService.loggedInUser.screenPermission == '2'
 
     this.productionApproved = this.authService.loggedInUser.authorization.includes("production")
     this.getUserInfo();
@@ -381,7 +383,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   getAllFormsDetails() {
-    this.formService.getAllForms().subscribe(data => {
+    this.formService.getAllForms('2021').subscribe(data => {
       this.allForms = data;
 
     });
@@ -547,15 +549,16 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   openItemStatus(orderItem, content) {
-    this.productionItemStatus = orderItem
+    
+    this.productionItemStatus = {...orderItem}
+    delete this.productionItemStatus._id
     this.modalService.open(content)
     // this.productionItemStatusIndex = index
   }
 
-  setOrderItemStatus(){
-    this.orderService.setProductionStatus(this.productionItemStatus).subscribe(response=>{
-      console.log(response)
-      // this.ordersItems[this.productionItemStatusIndex] = {...this.productionItemStatus}
+  setOrderItemStatus() {
+    this.orderService.setProductionStatus(this.productionItemStatus).subscribe(response => {
+      if(response.n == 1) this.toastSrv.success('Status changed successfully.', 'Status Change')
     })
   }
 
@@ -743,40 +746,46 @@ export class OrderdetailsComponent implements OnInit {
 
 
   loadMaterialsForFormule() {
-    this.selectedArr
-
-    this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
-      this.calculateMaterials(materials)
-    })
+    if(this.selectedArr.length == 0) this.toastSrv.error('Please select Order Items')
+    else {
+      this.toastSrv.info('This might take a few seconds...', 'Please Wait')
+      this.loadData = true
+      this.inventoryService.getMaterialsForFormules(this.selectedArr).subscribe(materials => {
+        this.calculateMaterials(materials)
+      })
+    }
   }
 
   calculateMaterials(materials) {
     this.inventoryService.getAllMaterialsArrivals().subscribe(arrivals => {
-
-      var count = 0;
       for (let i = 0; i < materials.length; i++) {
         for (let j = 0; j < arrivals.length; j++) {
           if (arrivals[j].internalNumber == materials[i].itemNumber) {
             materials[i].kgProduction = this.formatNumber(Number(materials[i].kgProduction));
             materials[i].measureType = arrivals[i].mesureType
-
             if (materials[i].totalQnt) {
               materials[i].totalQnt = Number(materials[i].totalQnt) + arrivals[j].totalQnt
-
-
             } else {
               if (arrivals[j].totalQnt != '' || arrivals[j].totalQnt != undefined || arrivals[j].totalQnt != null || !isNaN(arrivals[j].totalQnt))
                 materials[i].totalQnt = parseInt(arrivals[j].totalQnt)
             }
-
-
           }
-
         }
-        this.materialsForFormules = materials;
-        this.showMaterialsForFormules = true;
       }
+      this.materialsForFormules = materials;
+      this.showMaterialsForFormules = true;
+      this.loadData = false
     })
+  }
+
+  materialsToExcel() {
+    let matsForEx = this.materialsForFormules.map(m => {
+      delete m.materialArrivals
+      delete m.measureType
+      delete m.phaseRemarks
+      delete m.itemRemarks
+    })
+    this.excelService.exportAsExcelFile(matsForEx, 'Materials Explosion '+this.number+" "+new Date())
   }
 
   formatNumber(number) {
@@ -838,19 +847,19 @@ export class OrderdetailsComponent implements OnInit {
       orderItems.map(item => {
 
         //check License
-        if(item.licsensNumber != "" && new Date(item.licsensDate) > new Date()) item.hasLicense = true
+        if (item.licsensNumber != "" && new Date(item.licsensDate) > new Date()) item.hasLicense = true
 
         // Check license date
         const today = new Date()
-        const diffTime = (new Date(item.licsensDate).getTime() - today.getTime()) 
-        const diffSeconds = diffTime / 1000 
-        const diffMinutes = diffSeconds / 60 
-        const diffHours = diffMinutes / 60 
+        const diffTime = (new Date(item.licsensDate).getTime() - today.getTime())
+        const diffSeconds = diffTime / 1000
+        const diffMinutes = diffSeconds / 60
+        const diffHours = diffMinutes / 60
         const diffDays = diffHours / 24
         item.licenseExpirationClose = diffDays < 30
 
         //set remained amount (total amount - amount that has allready been supplied)
-        let quantitySupplied = item.billing.map(b=>b.billQty).reduce((a, b) => a + b, 0)
+        let quantitySupplied = item.billing.map(b => b.billQty).reduce((a, b) => a + b, 0)
         item.quantityRemained = Number(item.quantity) - quantitySupplied
 
         this.totalOrderQty += Number(item.quantity)
@@ -1172,7 +1181,7 @@ export class OrderdetailsComponent implements OnInit {
           let status = res.status;
           if (status == 2 || status == 0) this.toastSrv.error('Batch Specifications Declined by Q.A')
           else {
-             item.batchSpecStatus = status
+            item.batchSpecStatus = status
             // get customer + item data
             this.orderService.getCostumerByOrder(item.orderNumber).subscribe(async res => {
               this.costumer = res.costumer
@@ -1214,49 +1223,60 @@ export class OrderdetailsComponent implements OnInit {
 
                 this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
                   console.log(res)
-                  if(res.msg == 'Failed') this.toastSrv.error('Schedule not saved! Please check all fields.')
+                  if (res.msg == 'Failed') this.toastSrv.error('Schedule not saved! Please check all fields.')
                   else {
                     this.toastSrv.success('Schedule Saved.')
-                    
+
                     try {
-                      
-                    // Send message to Shlomo if item has no license
-                    if(this.tempItem[0].licsensNumber == '') {
-                      //Send message to Shlomo
-                      this.notificationService.sendGlobalMessage(
-                        `שלמה, נכנס ללו"ז מוצר ללא רשיון. מק"ט ${this.tempItem[0].itemNumber}`, 
-                        {
+
+                      // Send message to Shlomo if item has no license
+                      if (this.tempItem[0].licsensNumber == '') {
+                        //Send message to Shlomo
+                        let message = `שלמה, נכנס ללו"ז מוצר ללא רשיון. מק"ט ${this.tempItem[0].itemNumber}`
+                        let titleObj = {
                           title: "מוצר ללא רשיון בייצור",
                           index: 60,
-                          users: "shlomo,sima", 
+                          users: "shlomo,sima",
                           force: false
                         }
-                      ).subscribe(data => console.log(data))
-                    }
-                    else if(isValid(this.tempItem[0].licsensDate)) {
-                      const today = new Date()
-                      const diffTime = (new Date(this.tempItem[0].licsensDate).getTime() - today.getTime()) 
-                      const diffSeconds = diffTime / 1000 
-                      const diffMinutes = diffSeconds / 60 
-                      const diffHours = diffMinutes / 60 
-                      const diffDays = diffHours / 24
-                      if(diffDays < 30) {
-                        //send message to Shlomo
-                        this.notificationService.sendGlobalMessage(
-                          `שלמה, נכנס ללו"ז מוצר שהרשיון שלו עומד לפוג. מק"ט ${this.tempItem[0].itemNumber}. מועד פקיעת תוקף: ${this.tempItem.licsensDate}`, 
-                          {
+                        
+                        this.notificationService.sendGlobalMessage(message, titleObj).subscribe(data => console.log(data))
+                        //also save alert in Shlomo's user alerts
+                        this.notificationService.addUserAlert(message, titleObj, 'shlomo').subscribe(data => {
+                          console.log(data)
+                        })
+
+                      }
+                      else if (isValid(this.tempItem[0].licsensDate)) {
+                        // check license expiration date
+                        const today = new Date()
+                        const diffTime = (new Date(this.tempItem[0].licsensDate).getTime() - today.getTime())
+                        const diffSeconds = diffTime / 1000
+                        const diffMinutes = diffSeconds / 60
+                        const diffHours = diffMinutes / 60
+                        const diffDays = diffHours / 24
+                        if (diffDays < 30) {
+
+                          //Send message to Shlomo
+                          let message = `שלמה, נכנס ללו"ז מוצר שהרשיון שלו עומד לפוג. מק"ט ${this.tempItem[0].itemNumber}. מועד פקיעת תוקף: ${this.tempItem.licsensDate}`
+                          let titleObj = {
                             title: "מוצר שתוקפו עומד לפוג נכנס לייצור",
                             index: 60,
-                            users: "shlomo,sima", 
+                            users: "shlomo,sima",
                             force: false
                           }
-                        ).subscribe(data => console.log(data))
+                          this.notificationService.sendGlobalMessage(message, titleObj).subscribe(data => console.log(data))
+                          //also save alert in Shlomo's user alerts
+                          this.notificationService.addUserAlert(message, titleObj, 'shlomo').subscribe(data => {
+                            console.log(data)
+                          })
+
+                        }
                       }
+                    } catch (e) {
+                      alert(e)
                     }
-                  } catch (e) {
-                    alert(e)
                   }
-                  } 
                 });
                 let dateSced = this.date.nativeElement.value;
                 dateSced = moment(dateSced).format("DD/MM/YYYY");
@@ -1280,11 +1300,11 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   checkLicense(itemNumber) {
-    this.itemSer.getItemData(itemNumber).subscribe(res=>{
-      if(res[0].licsensNumber != "") {
-        if(new Date(res[0].licsensDate) > new Date())  this.productionItemStatus.hasLicense = true;
+    this.itemSer.getItemData(itemNumber).subscribe(res => {
+      if (res[0].licsensNumber != "") {
+        if (new Date(res[0].licsensDate) > new Date()) this.productionItemStatus.hasLicense = true;
         this.ordersItems.find(item => itemNumber == itemNumber).hasLicense = true
-        this.orderService.setProductionStatus(this.productionItemStatus).subscribe(data=> {
+        this.orderService.setProductionStatus(this.productionItemStatus).subscribe(data => {
           console.log(data)
         })
       }
@@ -1572,7 +1592,7 @@ export class OrderdetailsComponent implements OnInit {
         if (this.authService.loggedInUser.authorization.includes("showFormule")) {
           this.openFormule = true;
         }
-   
+
       }
 
     });
@@ -1695,24 +1715,24 @@ export class OrderdetailsComponent implements OnInit {
         //res = all items(products) from order
         await res.forEach(async item => {
 
-          debugger
+          
           // orderItem = orderItem from current order
-          let orderItem = this.ordersItems.find(o=>o.itemNumber == item.itemNumber)
+          let orderItem = this.ordersItems.find(o => o.itemNumber == item.itemNumber)
 
           //assign order number and weight to orderItem
-          if(orderItem) {
-            item.orderNumber = orderItem.orderNumber 
+          if (orderItem) {
+            item.orderNumber = orderItem.orderNumber
             item.weight = orderItem.netWeightGr
 
           }
           else item.orderNumber = ''
-          
+
           //for each order-item-demand, get all internal components and their quantities 
           item.quantity = parseInt(orderItem.quantity);
           item.itemName = orderItem.discription;
 
           // get current product amount from shelfs
-          this.inventoryService.getComponentAmount(item.itemNumber).subscribe(data=>{
+          this.inventoryService.getComponentAmount(item.itemNumber).subscribe(data => {
             item.currStock = data[0].amount;
           })
 
@@ -1772,7 +1792,7 @@ export class OrderdetailsComponent implements OnInit {
 
           if (item.sealNumber != '' && item.sealNumber != '---') {
             let newCmpt = true;
-            if (this.sealList.map(el =>  el.sealNumber).includes(item.sealNumber)) {
+            if (this.sealList.map(el => el.sealNumber).includes(item.sealNumber)) {
               this.sealList.map(i => {
                 if (i.sealNumber == item.sealNumber) {
                   newCmpt = false;
@@ -1789,7 +1809,7 @@ export class OrderdetailsComponent implements OnInit {
 
           if (item.stickerNumber != '' && item.stickerNumber != '---') {
             let newCmpt = true;
-            if (this.stickerList.map(el =>  el.stickerNumber).includes(item.stickerNumber)) {
+            if (this.stickerList.map(el => el.stickerNumber).includes(item.stickerNumber)) {
               this.stickerList.map(i => {
                 if (i.stickerNumber == item.stickerNumber) {
                   newCmpt = false;

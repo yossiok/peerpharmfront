@@ -81,6 +81,16 @@ input[type=checkbox]
   width:50px;
 }
 
+.smallerLoader {
+  border: 6px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
 .lightgreen { 
   background:lightgreen;
 }
@@ -158,6 +168,10 @@ i{
       margin-left: 30px;
   }
 
+  .click {
+    cursor: pointer
+  }
+
   .orderHeader{
     background-color: antiquewhite;
     border-top-left-radius: 10px;
@@ -214,6 +228,7 @@ background: repeating-linear-gradient(
 
 .showCmptBtn{
   width: 70px;
+  height: 73px;
   border: 4px outset darkseagreen;
   border-radius: 50px;
   padding: 5px;
@@ -300,9 +315,16 @@ background-color: white;
 }
 .close
 {
-    font-size: 2.3125rem;
-    margin-left: 0px;
+  padding: 5px;
+  font-size: 2.3125rem;
+  margin-left: 0px;
 }
+
+.clise:hover {
+  background-color: rgb(87, 102, 87);
+  color: white;
+}
+
 .tableHeader { 
   box-shadow: 1px 1px 3px 1px black !important;
     background: rgb(69, 69, 202);
@@ -393,6 +415,23 @@ tr {
   -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
 box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
 }
+
+
+
+// Hide arrows from input type number  :
+/*********************************************** ********************/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/*******************************************************************/
 
 /* Animation */
 

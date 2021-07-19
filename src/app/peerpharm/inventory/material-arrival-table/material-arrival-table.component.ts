@@ -126,7 +126,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   }
 
   printBarcode(id) {
-    debugger;
+    ;
     this.bcValue = [];
     this.materialNum = "";
     this.materialName = "";
@@ -138,7 +138,7 @@ export class MaterialArrivalTableComponent implements OnInit {
 
     this.materialsArrivals.filter((m, key) => {
       if (m._id == id) {
-        debugger
+        
         this.bcValue = [m.reqNum];
         this.materialNum = m.internalNumber;
         this.materialName = m.materialName;

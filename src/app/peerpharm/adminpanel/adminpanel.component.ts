@@ -32,7 +32,7 @@ export class AdminpanelComponent implements OnInit {
     await this.getAllWhareHouses()
     this.userService.getAllScreens().subscribe(data=>
       {
-        debugger
+        
         this.routes = [...data]; 
       });
       this.getAllUsers();

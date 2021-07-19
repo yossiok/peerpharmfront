@@ -66,6 +66,7 @@
               <option selected="true" disabled="disabled">Choose Status</option>
               <option value="approvedBySupplier">approved</option>
               <option value="waitingForApproval">waiting approval</option>
+              <option value="sentBySupplier">sent by supplier</option>
               <option value="open">open</option>
               <option value="supplied">delivered</option>
               <option value="canceled">canceled</option>
@@ -186,7 +187,7 @@
                     <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" [style.width]="'77px'"
                       required>
                       <option value="" disabled>Coin</option>
-                      <option value="NIS">NIS</option>
+                      <option value="ILS">ILS</option>
                       <option value="usd">USD</option>
                       <option value="eur">EUR</option>
                       <option value="gbp">GBP</option>
@@ -296,7 +297,7 @@
                   <label>Coin</label>
                   <select formControlName="coin" class="form-control" required>
                     <option value="" disabled>Coin</option>
-                    <option value="NIS">NIS</option>
+                    <option value="ILS">ILS</option>
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
                     <option value="GBP">GBP</option>
@@ -523,7 +524,7 @@
                   <label>Coin</label>
                   <select formControlName="coin" class="form-control" required>
                     <option value="" disabled>Coin</option>
-                    <option value="NIS">NIS</option>
+                    <option value="ILS">ILS</option>
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
                     <option value="GBP">GBP</option>

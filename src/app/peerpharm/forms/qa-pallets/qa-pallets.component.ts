@@ -251,7 +251,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   addLineToPallet(line) {
-    debugger
+    
     this.showAllClosedPallets = true;
 
     line.fullKartons = Number(line.floorNumber) * Number(line.kartonQuantity) + Number(line.lastFloorQuantity)

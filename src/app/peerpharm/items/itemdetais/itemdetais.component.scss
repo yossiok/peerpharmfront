@@ -13,8 +13,27 @@
     padding-left: 4px;
 }
 
+// Hide arrows from input type number  :
+/*********************************************** ********************/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/*******************************************************************/
+
 .read-only {
     pointer-events: none;
+  }
+
+  .small-input {
+      width: 40px;
   }
 
 img{
@@ -56,7 +75,7 @@ input:focus {
     }
 .treeTabContainer { 
         background: rgb(249, 239, 212);
-        margin-left: 80px;
+        margin-left: 17px;
     }
 .productionLabel { 
     margin:8px;

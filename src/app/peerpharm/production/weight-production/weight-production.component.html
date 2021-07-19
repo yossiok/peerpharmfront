@@ -18,12 +18,12 @@
 
 
 
-<div *ngIf="showHeader" class="container bg-white text-center p-4 rounded shadow">
+<div *ngIf="showHeader" class="container bg-white text-center p-4 rounded-pill shadow">
 
   <div class="row mt-5" *ngFor="let formule of formules; let i = index">
     <div class="col-2">
-      <input id="formuleNumber" [(ngModel)]="formule.formuleNumber" (change)="checkFormule(formule)" placeholder="Formule Number"
-        class="form-control rounded-pill">
+      <input id="formuleNumber" #formuleNumber [(ngModel)]="formule.formuleNumber" (change)="checkFormule(formule)" 
+        placeholder="Formule Number" class="form-control rounded-pill">
     </div>
     <div class="col-2">
       <input [(ngModel)]="formule.formuleOrder" [disabled]="!formule.exist" placeholder="Order Number" class="form-control rounded-pill">
@@ -32,7 +32,7 @@
       <input [(ngModel)]="formule.formuleWeight" [disabled]="!formule.exist" placeholder="Weight" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <button [disabled]="!formule.exist" class="btn btn-warning rounded-pill mx-auto" (click)="addFormule()">
+      <button [disabled]="!formule.exist"  class="btn btn-warning rounded-pill mx-auto" (click)="addFormule()">
         Add Process</button>
     </div>
     <div *ngIf="i != 0" class="col-2">
@@ -72,8 +72,15 @@
   <div class="row mt-3 d-flex flex-row">
     <div *ngFor="let formule of formules" class="col-3">
       <div>
-        <div>
-          <button class="btn btn-success" (click)="chooseFormule(formule)"><i class="fa fa-check" aria-hidden="true"></i></button>
+        <div class="d-flex flex-row justify-content-between">
+          
+          <div>
+            <i *ngIf="formule.data.approval == 1" class="fa fa-check bg-success text-white p-2" aria-hidden="true"> Approved</i>
+            <i *ngIf="formule.data.approval != 1" class="fa fa-times bg-danger text-white p-2" aria-hidden="true"> Not Approved</i>
+          </div>
+          <div>
+            <button class="btn btn-primary" (click)="chooseFormule(formule)"><span *ngIf="formules.length > 1"></span> Choose this formule</button>
+          </div>
         </div>
         <h5>
           Formule <span class="header-detail ml-2">{{formule.data.formuleNumber}}</span>

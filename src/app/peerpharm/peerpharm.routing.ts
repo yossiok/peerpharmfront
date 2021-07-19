@@ -77,6 +77,7 @@ import { NewPricingComponent } from './prices/new-pricing/new-pricing.component'
 import { AllPricingComponent } from './prices/all-pricing/all-pricing.component';
 import { ItemIndexComponent } from './item-index/item-index.component';
 import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
+import { InvArrivalsComponent } from './inventory/inv-arrivals/inv-arrivals.component';
 
 
 
@@ -261,6 +262,14 @@ export const PeerPharmRputs: Routes = [
       title: 'Material Arrival'
     },
     component: MaterialArrivalComponent
+  },
+  {
+    path: 'inventory/arrivals',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Component Arrivals'
+    },
+    component: InvArrivalsComponent
   },
   {
     path: 'inventory/storages',

@@ -522,11 +522,11 @@ export class AllFormulesComponent implements OnInit {
   }
 
   filterByFormule($event) {
-    if($event.target.value.length > 1 || $event.target.value.length == 0) {
+    if ($event.target.value.length > 1 || $event.target.value.length == 0) {
       let formuleN = $event.target.value
       this.allFormules = formuleN == "" ? this.allFormulesCopy : this.allFormulesCopy
-      .filter(formule => formule.formuleNumber.toLowerCase().includes(formuleN))
-      .sort((a, b) => a.formuleNumber.length - b.formuleNumber.length)
+        .filter(formule => formule.formuleNumber.toLowerCase().includes(formuleN))
+        .sort((a, b) => a.formuleNumber.length - b.formuleNumber.length)
     }
   }
 
@@ -554,12 +554,16 @@ export class AllFormulesComponent implements OnInit {
 
 
   getFormulePrice(formule) {
-    ;
     this.spinnerLoader = true;
+    setTimeout(() => {
+      if (this.spinnerLoader) {
+        this.spinnerLoader = false
+        this.toastSrv.error('Something went wrong.', 'Error')
+      }
+    }, 1000 * 15)
     this.currentFormule = formule
     var count = 0;
     this.formuleService.getFormulePrice(formule._id).subscribe(data => {
-      ;
       if (data) {
         this.spinnerLoader = false;
         data.forEach(material => {
@@ -569,32 +573,11 @@ export class AllFormulesComponent implements OnInit {
             if (material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה' && material.price != 'Material Not Found!' && material.price != 'Something went wrong please check') {
               material.price = this.formatNumber(material.price)
             }
-
           }
-
-          // if (material.coin == 'eur' || material.coin == 'euro') {
-          //   if(material.price != 'צריך לעדכן מחיר ספק'){
-          //     material.price = this.formatNumber(material.price * this.currencies[0].EUR)
-          //   }
-
-          // }
-          // if (material.coin == 'usd') {
-          //   if(material.price != 'צריך לעדכן מחיר ספק'){
-          //     material.price = this.formatNumber(material.price * this.currencies[0].USD)
-          //   }
-
-          // }
-          // if (material.coin == 'gbp') {
-          //   if(material.price != 'צריך לעדכן מחיר ספק'){
-          //     material.price = this.formatNumber(material.price * this.currencies[0].GBP)
-          //   }
-
-          // }
           if (material.price != 'צריך לעדכן מחיר ספק' && material.price != 'מטבע לא עודכן ברכישה האחרונה' && material.price != 'Material Not Found!') {
             count += Number(material.price)
           }
         })
-
         this.sumFormulePrice = Number(this.formatNumber(count));
         this.formuleMaterialPrices = data;
         this.formulePriceModal = true;

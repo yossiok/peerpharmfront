@@ -56,7 +56,7 @@ export class EditServiceComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    debugger
+    
     this.getAllSuppliers();
     this.addOutservice.patchValue(this.service)
   }

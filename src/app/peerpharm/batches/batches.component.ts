@@ -404,23 +404,28 @@ export class BatchesComponent implements OnInit {
 
   filterBatches(ev, filterBy) {
 
-    if (filterBy == 'itemName') {
-      let name = ev.target.value
-      this.batches = this.batchesCopy.filter(batch => batch.itemName.toLowerCase().includes(name.toLowerCase()))
+    if(ev.target.value == '' || ev.target.value == undefined) {
+      this.batches = this.batchesCopy
     }
 
-    if (filterBy == 'itemNumber') {
-      let number = ev.target.value
-      this.batches = this.batchesCopy.filter(batch => batch.item == number)
+    else if(ev.target.value.length > 2) {
+      
+      if (filterBy == 'itemName') {
+        let name = ev.target.value
+        this.batches = this.batchesCopy.filter(batch => batch.itemName.toLowerCase().includes(name.toLowerCase()))
+      }
+      
+      if (filterBy == 'itemNumber') {
+        let number = ev.target.value
+        this.batches = this.batchesCopy.filter(batch => batch.item? batch.item.includes(number) : false)
+      }
+      
+      if (filterBy == 'batchNumber') {
+        let number = ev.target.value
+        this.batches = this.batchesCopy.filter(batch => batch.batchNumber.toLowerCase().includes(number.toLowerCase()))
+      }
+      
     }
-
-    if (filterBy == 'batchNumber') {
-      let number = ev.target.value
-      this.batches = this.batchesCopy.filter(batch => batch.batchNumber.toLowerCase().includes(number.toLowerCase()))
-    }
-
-    ev.target.value = ''
-
   }
 
   resetFilters(){

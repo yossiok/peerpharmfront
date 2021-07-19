@@ -281,7 +281,7 @@ export class NeworderComponent implements OnInit {
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK
         );
         this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
-       debugger
+       
         //check license
         if(res[0].licsensNumber != "") {
           if(new Date(res[0].licsensDate) > new Date())  this.orderItemForm.controls.hasLicense.setValue(true);

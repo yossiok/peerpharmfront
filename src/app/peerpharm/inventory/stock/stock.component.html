@@ -464,7 +464,10 @@
               <div class="col-4 fixNoaStupidStuff">
                 <h5 class="text-success">פרטי פריט</h5>
               </div>
-              <div class="col-4 fixNoaStupidStuff">
+              <div class="col-1 fixNoaStupidStuff">
+                <h5 class="text-success">מהדורה</h5>
+              </div>
+              <div class="col-3 fixNoaStupidStuff">
                 <h5 class="text-success">פרטי ספק</h5>
               </div>
               <div class="col-4 fixNoaStupidStuff">
@@ -483,13 +486,16 @@
               <div class="col-2 fixNoaStupidStuff">
                 <input (change)="checkIfItemExist($event)" class="form-control" type='text'
                   [(ngModel)]="resCmpt.componentN">
-
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
                 <input class="form-control" type="number" disabled [(ngModel)]="resCmpt.price" maxlength="6" max="6">
                 <!-- <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
                 <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice"> -->
 
+              </div>
+              <div class="col-1 fixNoaStupidStuff">
+                <input type="number" disabled class="small-input form-control d-inline " [(ngModel)]="resCmpt.versionNumber">
+                <i class="fas fa-plus mr-2 text-success" ngbTooltip="שדרג מהדורה" (click)="open(editVersionDetails)"></i>
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">מספר ספק</label>
@@ -509,17 +515,19 @@
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">מלאי מינימום</label>
-              </div>
-              <div class="col-2 fixNoaStupidStuff">
-                <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumStock">
-              </div>
-              <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">כמות מינימלית להזמנה</label>
               </div>
-              <div class="col-2 fixNoaStupidStuff">
+              <div class="col-1 fixNoaStupidStuff">
+                <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumStock">
                 <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumPurchaseAmount">
               </div>
             </div>
+            <!-- <div dir="rtl" class="row text-center fixNoaStupidStuff">
+              <div class="col-2 fixNoaStupidStuff">
+              </div>
+              <div class="col-2 fixNoaStupidStuff">
+              </div>
+            </div> -->
 
             <div dir="rtl" class="row text-center fixNoaStupidStuff">
               <div class="col-4 fixNoaStupidStuff">
@@ -729,20 +737,20 @@
                 <input [(ngModel)]="supplier.price" type="text" class="form-control">
                 <input list="coins" [(ngModel)]="supplier.coin" class="form-control">
                 <datalist id="coins">
-                  <option value="usd">USD</option>
-                  <option value="nis">NIS</option>
-                  <option value="gbp">GBP</option>
-                  <option value="eur">EUR</option>
-                  <option value="yen">YEN</option>
+                  <option value="USD">USD</option>
+                  <option value="ILS">ILS</option>
+                  <option value="GBP">GBP</option>
+                  <option value="EUR">EUR</option>
+                  <option value="JPY">JPY</option>
                 </datalist>
                 <input [(ngModel)]="supplier.shippingPrice" type="number" class="form-control" />
                 <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control">
                 <datalist id="coinsLoading">
-                  <option value="usd">USD</option>
-                  <option value="nis">NIS</option>
-                  <option value="gbp">GBP</option>
-                  <option value="eur">EUR</option>
-                  <option value="yen">YEN</option>
+                  <option value="USD">USD</option>
+                  <option value="ILS">ILS</option>
+                  <option value="GBP">GBP</option>
+                  <option value="EUR">EUR</option>
+                  <option value="JPY">JPY</option>
                 </datalist>
                 <input [(ngModel)]="supplier.packageWeight" type="text" class="form-control" />
               </div>
@@ -847,7 +855,7 @@
                         </td>
 
                         <td *ngIf="rowNumber != i">
-                          <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'NIS'}}</span>
+                          <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'ILS'}}</span>
                         </td>
                         <td *ngIf="rowNumber == i">
                           <input type="text" [(ngModel)]="supplier.coinLoading" class="form-control" #coinLoading>
@@ -1006,7 +1014,7 @@
                         <td>/</td>
                         <td>{{lastorderitem.quantity}}</td>
                         <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
-                        <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
+                        <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
                       </tr>
                     </ng-container>
                   </tbody>
@@ -1026,11 +1034,11 @@
             <div class="fixNoaStupidStuff row mt-4">
               <div class="fixNoaStupidStuff col-4">
                 <h5>מחיר רכש אחרון</h5>
-                <p>{{resCmpt.price}} {{resCmpt.coin}} </p>
+                <p>{{resCmpt.price | currency: resCmpt.coin}}</p>
               </div>
               <div class="col-4">
                 <h5>מחיר ידני</h5>
-                <p>{{resCmpt.manualPrice}} {{resCmpt.manualCoin}} </p>
+                <p>{{resCmpt.manualPrice | currency: resCmpt.manualCoin}}</p>
               </div>
               <div class="col-2">
                 <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
@@ -1050,19 +1058,57 @@
             <table dir="rtl" class="table table-hover">
               <thead>
                 <tr>
-                  <th>מחיר</th>
+                  <th>#</th>
                   <th>תאריך</th>
+                  <th>מחיר</th>
                   <th>סיבת עדכון</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let update of resCmpt.priceUpdates; let i=index" >
-                  <td [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-                    {{update.price}} {{update.coin}} 
-                  </td>
+                <tr *ngFor="let update of resCmpt.priceUpdates.reverse(); let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'" >
+                  <td>{{i+1}}</td>
                   <td>{{update.date | date:'dd/MM/yy'}}</td>
+                  <td>{{update.price | currency: update.coin}}</td>
                   <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                   <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
+                </tr>
+              </tbody>
+            </table>
+  
+        </div>
+  
+        </mat-tab>
+
+        <mat-tab label="Version History">
+        
+          <span class="close text-success" id="closeId2"
+            (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
+          </span>
+  
+          <div dir="rtl" class="fixNoaStupidStuff row mt-4">
+            <h2>היסטוריית מהדורות לפריט {{resCmpt.componentN}}</h2>
+          </div>
+          <div dir="rtl" class="row fixNoaStupidStuff mt-2">
+  
+            <table dir="rtl" class="table table-hover">
+              <thead>
+                <tr>
+                  <th>מס' מהדורה</th>
+                  <th>תאריך העדכון</th>
+                  <th>בוצע ע"י..</th>
+                  <th>סיבת העדכון</th>
+                  <th>תמונה</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let version of resCmpt.versionHistory">
+                  <td>{{version.versionNumber}}</td>
+                  <td>{{version.date | date:'dd/MM/yy'}}</td>
+                  <td>{{version.user}}</td>
+                  <td>{{version.description}}</td>
+                  <td>
+                    <img [src]="version.image" alt="Image not updated..">
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -1280,10 +1326,10 @@
           <div class="row fixNoaStupidStuff justify-content-end">
             <div class="col-12 fixNoaStupidStuff">
               <ul class="nav nav-tabs justify-content-end">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                   <a class="nav-link" style="cursor:pointer;" (click)="dirSet('withdrawForPallet')"
                     [ngStyle]="{'background-color': amountForPalletBtnColor}">הוצאת סחורה למשטח</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                   <a class="nav-link" style="cursor:pointer;" (click)="dirSet('shelfChange')"
                     [ngStyle]="{'background-color': sehlfChangeNavBtnColor}">העברת סחורה למדף אחר</a>
@@ -1317,7 +1363,7 @@
 
 
           </div>
-          <div class="row fixNoaStupidStuff justify-content-end" *ngIf="amountChangeDir=='withdrawForPallet'">
+          <!-- <div class="row fixNoaStupidStuff justify-content-end" *ngIf="amountChangeDir=='withdrawForPallet'">
 
             <div class="col-2 fixNoaStupidStuff"></div>
             <div class="col-2 fixNoaStupidStuff">
@@ -1359,7 +1405,7 @@
             </div>
 
 
-          </div>
+          </div> -->
 
           <div class="fixNoaStupidStuff row justify-content-end" *ngIf="amountChangeDir==''">
             <div class="col-2 fixNoaStupidStuff">
@@ -1757,20 +1803,20 @@
               <input [(ngModel)]="supplier.price" type="text" class="form-control">
               <input list="coins" [(ngModel)]="supplier.coin" class="form-control">
               <datalist id="coins">
-                <option value="usd">USD</option>
-                <option value="nis">NIS</option>
-                <option value="gbp">GBP</option>
-                <option value="eur">EUR</option>
-                <option value="yen">YEN</option>
+                <option value="USD">USD</option>
+                <option value="ILS">ILS</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
               </datalist>
               <input [(ngModel)]="supplier.priceLoading" type="text" class="form-control" />
               <input list="coinsLoading" [(ngModel)]="supplier.coinLoading" class="form-control">
               <datalist id="coinsLoading">
                 <option value="usd">USD</option>
-                <option value="nis">NIS</option>
-                <option value="gbp">GBP</option>
-                <option value="eur">EUR</option>
-                <option value="yen">YEN</option>
+                <option value="ILS">ILS</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="JPY">JPY</option>
               </datalist>
               <input [(ngModel)]="supplier.packageWeight" type="text" class="form-control" />
               <input list="measurement" [(ngModel)]="resMaterial.unitOfMeasure" class="form-control">
@@ -1867,10 +1913,11 @@
                         {{supplier.coin}}</td>
                       <td *ngIf="rowNumber == i">
                         <select [(ngModel)]="supplier.coin" #coin>
-                          <option value="NIS">NIS</option>
+                          <option value="ILS">ILS</option>
                           <option value="USD">USD</option>
                           <option value="EUR">EUR</option>
                           <option value="GBP">GBP</option>
+                          <option value="JPY">JPY</option>
                         </select>
                         <!-- <input type="text" > -->
                       </td>
@@ -1894,7 +1941,7 @@
                       </td>
 
                       <td *ngIf="rowNumber != i">
-                        {{supplier.shippingPrice | currency: 'NIS'}}</td>
+                        {{supplier.shippingPrice | currency: 'ILS'}}</td>
                       <td *ngIf="rowNumber == i">
                         <input type="number" [(ngModel)]="supplier.shippingPrice" class="form-control" #priceLoading>
                       </td>
@@ -1951,52 +1998,67 @@
 
         </div>
       </mat-tab>
-      <mat-tab label="Purchase Details">
-        <div class="row fixNoaStupidStuff text-center modal-inner">
-          <div class="col-1 fixNoaStupidStuff ">
 
-          </div>
-          <div class="col-10 fixNoaStupidStuff ">
-            <h4 class="text-success">רכש</h4>
-          </div>
-          <div class="col-1 fixNoaStupidStuff ">
-            <span class="close text-success" id="closeId2"
-              (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
-          </div>
-        </div>
-        <div class="row fixNoaStupidStuff text-center">
-          <div class="col-12 fixNoaStupidStuff">
-            <table class="table table-hover table-striped">
-              <thead class="bg-success text-white">
-                <tr>
-                  <th>Order Number</th>
-                  <th>Order Amount</th>
-                  <th>Arrival Details</th>
 
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container>
-                  <tr *ngFor="let material of materialPurchases">
-                    <td>{{material.orderNumber}}</td>
-                    <td>{{material.supplierAmount}}</td>
 
-                    <td>
-                      <table *ngIf="material.arrivals">
-                        <tr *ngFor="let arrival of material.arrivals">
-                          <td>Date: {{arrival.arrivalDate | date: 'dd/MM/yyyy'}}</td>
-                          <td>Amount: {{arrival.arrivedAmount}}</td>
-                        </tr>
-                      </table>
-                    </td>
 
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
+      
+      <mat-tab *ngIf="isSuperAdmin" label="Pricing">
+        
+        <span class="close text-success" id="closeId2"
+          (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
+        </span>
+
+        <div class="fixNoaStupidStuff" dir="rtl">
+          <div class="fixNoaStupidStuff row mt-4">
+            <div class="fixNoaStupidStuff col-4">
+              <h5>מחיר רכש אחרון</h5>
+              <p>{{resMaterial.price | currency: resMaterial.coin}}</p>
+            </div>
+            <div class="col-4">
+              <h5>מחיר ידני</h5>
+              <p>{{resMaterial.manualPrice | currency: resMaterial.manualCoin}}</p>
+            </div>
+            <div class="col-2">
+              <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
+            </div>
           </div>
         </div>
+
+        <div dir="rtl" class="fixNoaStupidStuff row mt-4">
+          <h2>היסטוריית מחירים</h2>
+        </div>
+        <div dir="rtl" class="row fixNoaStupidStuff mt-2">
+
+          <div class="col-3"><div class="yellow">עדכון ידני</div></div>
+          <div class="col-3"><div class="cornflowerblue">עדכון מערכת</div></div>
+
+          <table dir="rtl" class="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>תאריך</th>
+                <th>מחיר</th>
+                <th>סיבת עדכון</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let update of resMaterial.priceUpdates.reverse(); let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
+                <td>{{i+1}}</td>
+                <td>{{update.date | date: 'dd/MM/yy'}}</td>
+                <td>{{update.price | currency: update.coin}}</td>
+                <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
+                <td *ngIf="update.type == 'auto'">הזמנת רכש מס' {{update.purchase}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+      </div>
+
       </mat-tab>
+
+
+
 
       <mat-tab label="Material Arrivals">
         <div class="container-fluid text-center modal-inner">
@@ -2094,7 +2156,7 @@
                       <td>/</td>
                       <td>{{lastorderitem.quantity}}</td>
                       <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
-                      <td>{{lastorderitem.localPrice | currency: 'NIS'}}</td>
+                      <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
                     </tr>
                   </ng-container>
                 </tbody>
@@ -2104,57 +2166,54 @@
         </div>
       </mat-tab>
 
-      <mat-tab *ngIf="isSuperAdmin" label="Pricing">
-        
-        <span class="close text-success" id="closeId2"
-          (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
-        </span>
+      
+      <mat-tab label="Purchase Details">
+        <div class="row fixNoaStupidStuff text-center modal-inner">
+          <div class="col-1 fixNoaStupidStuff ">
 
-        <div class="fixNoaStupidStuff" dir="rtl">
-          <div class="fixNoaStupidStuff row mt-4">
-            <div class="fixNoaStupidStuff col-4">
-              <h5>מחיר רכש אחרון</h5>
-              <p>{{resMaterial.price}} {{resMaterial.coin}} </p>
-            </div>
-            <div class="col-4">
-              <h5>מחיר ידני</h5>
-              <p>{{resMaterial.manualPrice}} {{resMaterial.manualCoin}} </p>
-            </div>
-            <div class="col-2">
-              <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
-            </div>
+          </div>
+          <div class="col-10 fixNoaStupidStuff ">
+            <h4 class="text-success">רכש</h4>
+          </div>
+          <div class="col-1 fixNoaStupidStuff ">
+            <span class="close text-success" id="closeId2"
+              (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
           </div>
         </div>
+        <div class="row fixNoaStupidStuff text-center">
+          <div class="col-12 fixNoaStupidStuff">
+            <table class="table table-hover table-striped">
+              <thead class="bg-success text-white">
+                <tr>
+                  <th>Order Number</th>
+                  <th>Order Amount</th>
+                  <th>Arrival Details</th>
 
-        <div dir="rtl" class="fixNoaStupidStuff row mt-4">
-          <h2>היסטוריית מחירים</h2>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container>
+                  <tr *ngFor="let material of materialPurchases">
+                    <td>{{material.orderNumber}}</td>
+                    <td>{{material.supplierAmount}}</td>
+
+                    <td>
+                      <table *ngIf="material.arrivals">
+                        <tr *ngFor="let arrival of material.arrivals">
+                          <td>Date: {{arrival.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+                          <td>Amount: {{arrival.arrivedAmount}}</td>
+                        </tr>
+                      </table>
+                    </td>
+
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div dir="rtl" class="row fixNoaStupidStuff mt-2">
-
-          <div class="col-3"><div class="yellow">עדכון ידני</div></div>
-          <div class="col-3"><div class="cornflowerblue">עדכון מערכת</div></div>
-
-          <table dir="rtl" class="table table-hover">
-            <thead>
-              <tr>
-                <th>מחיר</th>
-                <th>תאריך</th>
-                <th>סיבת עדכון</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let update of resMaterial.priceUpdates; let i=index" [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-                <td>{{update.price}} {{update.coin}} </td>
-                <td>{{update.date | date: 'dd/MM/yy'}}</td>
-                <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
-                <td *ngIf="update.type == 'auto'">הזמנת רכש מס' {{update.purchase}}</td>
-              </tr>
-            </tbody>
-          </table>
-
-      </div>
-
       </mat-tab>
+
 
 
     </mat-tab-group>
@@ -2572,7 +2631,6 @@
 </div>
 
 <ng-template #updateManualPrice let-modal>
-
   <div dir="rtl" class="fixNoaStupidStuff modal-header">
     <h4 class="modal-title" id="modal-basic-title">עדכן מחיר ידני לפריט</h4>
     <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -2581,32 +2639,42 @@
   </div>
   <div dir="rtl" class="fixNoaStupidStuff modal-body">
     <div class="fixNoaStupidStuff row mt-2">
+      <div class="col-3">
+        <label>מחיר נוכחי:</label>
+        <p *ngIf="resMaterial.componentN != ''" class="form-control"> {{resMaterial.manualPrice | currency: resMaterial.manualCoin}}</p>
+        <p *ngIf="resCmpt.componentN != ''" class="form-control"> {{resCmpt.manualPrice | currency: resCmpt.manualCoin}}</p>
+        <label>מחיר רכש אחרון:</label>
+        <p *ngIf="resMaterial.componentN != ''" class="form-control">{{resMaterial.price | currency: resMaterial.coin}}</p>
+        <p *ngIf="resCmpt.componentN != ''" class="form-control">{{resCmpt.price | currency: resCmpt.manualCoin}}</p>
+      </div>
+    </div>
+
+    <div class="fixNoaStupidStuff row mt-2">
       <div class="fixNoaStupidStuff col-3">
         <label>מחיר חדש:</label>
-        <input *ngIf="resMaterial.componentN != ''" (change)="checkUpdatePriceValidity('m')" 
+        <input *ngIf="resMaterial.componentN != ''" (keyup)="checkUpdatePriceValidity('m')" 
           class="form-control" type="number" [(ngModel)]="resMaterial.manualPrice">
-        <input *ngIf="resCmpt.componentN != ''" (change)="checkUpdatePriceValidity('c')" 
+        <input *ngIf="resCmpt.componentN != ''" (keyup)="checkUpdatePriceValidity('c')" 
           class="form-control" type="number" [(ngModel)]="resCmpt.manualPrice">
       </div>
       <div class="fixNoaStupidStuff col-3">
         <label>מטבע:</label>
         <select *ngIf="resMaterial.componentN != ''" [(ngModel)]="resMaterial.manualCoin" 
           class="form-control" (change)="checkUpdatePriceValidity('m')">
-          <option value="NIS">NIS</option>
+          <option value="ILS">ILS</option>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
           <option value="GBP">GBP</option>
         </select>
         <select *ngIf="resCmpt.componentN != ''" [(ngModel)]="resCmpt.manualCoin" 
         (change)="checkUpdatePriceValidity('c')" class="form-control">
-          <option value="NIS">NIS</option>
+          <option value="ILS">ILS</option>
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
           <option value="GBP">GBP</option>
         </select>
       </div>
     </div>
-
     <div class="fixNoaStupidStuff row mt-2">
       <button 
         *ngIf="resMaterial.componentN != ''" (click)="editMaterialItemDetails()" 
@@ -2623,6 +2691,55 @@
         שמור
       </button>
     </div>
+  </div>
+  <div class="modal-footer">
+  </div>
+</ng-template>
+
+<ng-template #editVersionDetails let-modal>
+
+  <div dir="rtl" class="fixNoaStupidStuff modal-header">
+    <h4 class="modal-title" id="modal-basic-title">שדרוג מהדורה לפריט {{resCmpt.componentN}}</h4>
+    <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class="fixNoaStupidStuff modal-body">
+
+    <form [formGroup]="editVersionForm" (ngSubmit)="updateComponentVersion()">
+      <div class="fixNoaStupidStuff row mt-2">
+        <div class="form-group">
+          <label>תאריך</label>
+          <input class="form-control" type="date" value="{{ today | date:'yyyy-MM-dd' }}" disabled formControlName="date">
+        </div>
+        <div class="form-group">
+          <label>מספר מהדורה</label>
+          <input class="form-control" disabled type="number" formControlName="versionNumber">
+        </div>
+        <br>
+        <div class="row form-group">
+          <label>תאור השינוי </label>
+          <p>(מדוע משדרגים את המהדורה?)</p>
+          <textarea class="form-control" formControlName="description" cols="30" rows="10"></textarea>
+        </div>
+        <div class="form-group">
+          <label>העלה תמונה עדכנית</label>
+          <img *ngIf="resCmpt.img!=''" [src]="resCmpt.img" style="max-height: 250px;"
+                  class="hoverImg w-25 h-100 border border-success" alt="Item main image please wait ...">
+          <p *ngIf="resCmpt.img==''"><b> -No Image- </b></p>
+          <input class="form-control" type='file' id="input_itemImgID" (change)='uploadImg($event)'
+            style='display:block'>
+          <!-- <input class="form-control" type="file"> -->
+        </div>
+      </div>
+      
+      <div class="fixNoaStupidStuff row mt-2">
+        <button type="submit" class="btn btn-primary" 
+        (click)="modal.dismiss('Cross click')">
+        שדרג מהדורה
+      </button>
+    </div>
+  </form>
  
 
   </div>
