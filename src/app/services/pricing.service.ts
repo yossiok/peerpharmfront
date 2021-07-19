@@ -22,5 +22,9 @@ export class PricingService {
   deletePricing(pricingNumber): Observable<any> {
     return <Observable<any>>this.http.get(`${this.url}/delete?pricingNumber=${pricingNumber}`)
   }
+
+  getLastPricing(): Observable<any> {
+    return <Observable<any>>this.http.get(`${this.url}/getLast`)
+  }
   
 }

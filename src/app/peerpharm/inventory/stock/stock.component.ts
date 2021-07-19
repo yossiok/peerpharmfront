@@ -96,7 +96,12 @@ const defaultMaterial = {
   location: "",
   quantityInStock: "",
   mixedMaterial: [],
-  formuleRemarks: ''
+  formuleRemarks: '',
+  manualPrice: 0,
+  manualCoin: 'ILS',
+  price: 0,
+  coin: 'ILS',
+  priceUpdates: []
 
 }
 
@@ -1808,6 +1813,11 @@ export class StockComponent implements OnInit {
       remarks: '',
       itemType: '',
       actualMlCapacity: 0,
+      price: 0,
+      manualPrice: 0,
+      coin: 'ILS',
+      manualCoin: 'ILS',
+      priceUpdates: []
     }
 
     this.openModalHeader = "יצירת פריט חדש";

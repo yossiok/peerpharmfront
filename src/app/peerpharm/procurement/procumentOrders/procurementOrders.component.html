@@ -456,9 +456,9 @@
               <td>{{item.remarks}}</td>
               <td>{{item.quantity}}</td>
 
-              <td>{{item.price}} {{item.coin}}</td>
+              <td>{{item.price | currency:item.coin}}</td>
               <td>{{item.itemPrice | currency:item.coin}}</td>
-              <td>{{item.localTotal | number}}{{nisSymbol}}</td>
+              <td><span *ngIf="item.localTotal">{{item.localTotal | number}}{{nisSymbol}}</span></td>
 
             </tr>
             <tr *ngIf="country == true">
