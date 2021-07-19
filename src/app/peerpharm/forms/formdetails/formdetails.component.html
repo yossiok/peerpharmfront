@@ -18,7 +18,7 @@
     <h4 class="card-title">Quality Control</h4>
     <div *ngIf="tabView == 'fillingForm'">
 
-        <table dir="rtl" style="display: inline-table">
+        <table dir="rtl" style="display: inline-table;font-size: 17px;font-weight: bold;">
             <thead>
               <tr>
                 <td colspan="4"  [translate]="'Quality Control Form'" class="subHeader">Filling Form</td>
@@ -33,6 +33,7 @@
                     [(ngModel)]="form.orderNumber"
                     style="width:100px"
                     [disabled]="disabledValue"
+                    class="form-control"
                   />
                 </td>
                 <td>כמות מוזמנת</td>
@@ -40,9 +41,10 @@
                   <input
                     id="div_orderQuantity"
                     [(ngModel)]="form.orderQuantity"
-                    class="inputDiv"
+                    class="inputDiv form-control"
                     style="width:100px"
                     [disabled]="disabledValue"
+                   
                   />
                 </td>
             </tr>
@@ -55,6 +57,7 @@
                   id="div_productName"
                   style="width:571px"
                   [disabled]="disabledValue"
+                  class="form-control"
                 />
               </td>
             </tr>
@@ -66,6 +69,7 @@
                   [(ngModel)]="form.costumerName"
                   style="width:100px"
                   [disabled]="disabledValue"
+                  class="form-control"
                 />
               </td>
               <td>מק"ט</td>
@@ -73,9 +77,10 @@
                 <input
                   id="div_itemN"
                   [(ngModel)]="form.itemN"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
+                  
                 />
               </td>
             </tr>
@@ -88,6 +93,7 @@
                   id="div_batchN"
                   style="width:100px"
                   [disabled]="disabledValue"
+                  class="form-control"
                 />
               </td>
               <td>כמות חביות</td>
@@ -95,9 +101,10 @@
                 <input
                   id="div_drumsAmount"
                   [(ngModel)]="form.drumsAmount"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
+                  
                 />
               </td>
             </tr>
@@ -107,14 +114,14 @@
                 <input
                   id="div_productionDate"
                   [(ngModel)]="form.productaionDate"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
                 <input
                   id="div_productionDate"
                   [(ngModel)]="form.productionEndDate"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -124,7 +131,7 @@
                 <input
                   id="div_expirationDate"
                   [(ngModel)]="form.expirationDate"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -136,7 +143,7 @@
                 <input
                   id="div_fillDate"
                   [(ngModel)]="form.fillingDate"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -146,7 +153,7 @@
                 <input
                   id="div_fillingBy"
                   [(ngModel)]="form.filledBy"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -158,7 +165,7 @@
                 <input
                   id="div_fillingStart"
                   [(ngModel)]="form.fillStartTime"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -168,7 +175,7 @@
                 <input
                   id="div_endTimeWork"
                   [(ngModel)]="form.endTimeWork"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -180,7 +187,7 @@
                 <input
                   id="div_weightRange"
                   [(ngModel)]="form.weightRange"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -190,7 +197,7 @@
                 <input
                   id="div_netoWeight"
                   [(ngModel)]="form.netWeight"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -202,7 +209,7 @@
                 <input
                   id="div_lableldBy"
                   [(ngModel)]="form.labeledBy"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -212,7 +219,7 @@
                 <input
                   id="div_packegeBy"
                   [(ngModel)]="form.packageBy"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                 />
@@ -226,33 +233,33 @@
             <tr>
               <td>בדיקה סנטורית של המוצר</td>
               <td>
-                <input type="checkbox" id="sentoric" [disabled]="disabledValue" [(ngModel)]="form.visualIndentCheck"/>
+                <input style="width:6%" class="form-control" type="checkbox" id="sentoric" [disabled]="disabledValue" [(ngModel)]="form.visualIndentCheck"/>
               </td>
               <td>זיהוי וניקוי מיכלים</td>
               <td>
-                <input type="checkbox" id="cleanContainer" [disabled]="disabledValue" [(ngModel)]="form.containeMatchAndClean"/>
+                <input style="width:14%" class="form-control" type="checkbox" id="cleanContainer" [disabled]="disabledValue" [(ngModel)]="form.containeMatchAndClean"/>
               </td>
             </tr>
             <tr>
               <td>זיהוי תוויות</td>
               <td>
-                <input type="checkbox" id="label" [disabled]="disabledValue" [(ngModel)]="form.presentOfTheLabels"/>
+                <input style="width:6%" class="form-control" type="checkbox" id="label" [disabled]="disabledValue" [(ngModel)]="form.presentOfTheLabels"/>
               </td>
               <td>זיהוי קרטון<br />מכסה/משאבה</td>
               <td>
-                <input type="checkbox" id="ccc" [disabled]="disabledValue" [(ngModel)]="form.presentOfPackageComponent"/>
+                <input style="width:14%" class="form-control" type="checkbox" id="ccc" [disabled]="disabledValue" [(ngModel)]="form.presentOfPackageComponent"/>
               </td>
             </tr>
             <tr>
               <td>אישור כיוון ונקיון מכונה</td>
               <td>
-                <input type="checkbox" id="cleanMachine" [disabled]="disabledValue" [(ngModel)]="form.confSetupeClean"/>
+                <input style="width:6%" class="form-control" type="checkbox" id="cleanMachine" [disabled]="disabledValue" [(ngModel)]="form.confSetupeClean"/>
               </td>
               <td>חתימת מנהל מאשר</td>
               <td>
                 <input
                   id="div_mangaerSign"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                   [value]="form.directorFrontSignature"
@@ -473,8 +480,8 @@
                   type="text"
                   id="div_qty"
                   [(ngModel)]="form.quantity_Produced"
-                  style="width:100px"
-                  [disabled]="disabledValue"
+                  disabled
+                 
                 />
                 <!-- <button onClick="update()">עדכן</button> -->
                 <button (click)="loadQAPallets(form._id)" class="btn btn-light">משטחים</button>
@@ -484,7 +491,7 @@
               <td>
                 <input
                   id="div_cleanFinal"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:100px"
                   [disabled]="disabledValue"
                   [(ngModel)]="form.cleanFillMachineSignature"
@@ -494,13 +501,13 @@
             <tr>
                 <td>ייצור מלא</td>
                 <td>
-                  <input *ngIf="form.batchStatus =='full'" style="width:100px" type="checkbox"  [disabled]="disabledValue" [checked]='true'/>
-                  <input *ngIf="form.batchStatus !='full'" style="width:100px" type="checkbox"  [disabled]="disabledValue" [checked]='false'/>
+                  <input class="form-control" *ngIf="form.batchStatus =='full'" style="width:6%" type="checkbox"  [disabled]="disabledValue" [checked]='true'/>
+                  <input class="form-control" *ngIf="form.batchStatus !='full'" style="width:6%" type="checkbox"  [disabled]="disabledValue" [checked]='false'/>
                 </td>
                 <td>ייצור חלקי</td>
                 <td>
-                    <input *ngIf="form.batchStatus =='part'"  style="width:100px" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='true'/>
-                    <input *ngIf="form.batchStatus !='part'"  style="width:100px" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='false'/>
+                    <input class="form-control" *ngIf="form.batchStatus =='part'"  style="width:14%" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='true'/>
+                    <input class="form-control" *ngIf="form.batchStatus !='part'"  style="width:14%" type="checkbox" id="ccc" [disabled]="disabledValue" [checked]='false'/>
                 </td>
             </tr>
             <tr *ngIf="form.leftBatchWeight !=''">
@@ -509,11 +516,11 @@
             <tr *ngIf="form.leftBatchWeight !=''">
                 <td>אצווה</td>
                 <td>
-                  <input type="text"  [disabled]="disabledValue" [(ngModel)]="form.leftBatchNumber" style="width:100px" />
+                  <input class="form-control" type="text"  [disabled]="disabledValue" [(ngModel)]="form.leftBatchNumber" style="width:100px" />
                 </td>
                 <td>כמות שנשארה</td>
                 <td>
-                  <input type="text"  [disabled]="disabledValue" [(ngModel)]="form.leftBatchWeight" style="width:100px" />
+                  <input class="form-control" type="text"  [disabled]="disabledValue" [(ngModel)]="form.leftBatchWeight" style="width:100px" />
                 </td>
             </tr>
         
@@ -523,8 +530,9 @@
                     <input
                       type="checkbox"
                       [checked]='form.itemHasLicense'
-                      style="width:100px"
+                      style="width:6%"
                       [disabled]="disabledValue"
+                      class="form-control"
                     />
                   </td>
                   <td>אריזה אישית</td>
@@ -532,8 +540,8 @@
                     <input
                       type="checkbox"
                       [(ngModel)]="form.personalPackage"
-                      class="inputDiv"
-                      style="width:100px"
+                      class="inputDiv form-control"
+                      style="width:14%"
                       [disabled]="disabledValue"
                     />
                   </td>
@@ -544,7 +552,7 @@
               <td colspan="3" style="border-bottom:0px solid;">
                 <input
                   id="div_qualityRemarks"
-                  class="inputDiv"
+                  class="inputDiv form-control"
                   style="width:571px"
                   [disabled]="disabledValue"
                   [(ngModel)]="form.frontRemarks"
