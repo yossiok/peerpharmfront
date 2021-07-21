@@ -11,20 +11,20 @@
 
                     <div class="form-group row">
                         <label for="lname"
-                               class="col-sm-4 text-right control-label col-form-label"><strong>Costumer</strong></label>
+                            class="col-sm-4 text-right control-label col-form-label"><strong>Costumer</strong></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
                             <input type='hidden' formControlName="costumerInternalId">
                         </div>
                         <button style="box-shadow: 2px 2px 2px black;" (click)="openSearch(content);  submited=false;"
-                                class='btn btn-info'><strong>List</strong></button>
+                            class='btn btn-info'><strong>List</strong></button>
                     </div>
                     <div class="form-group row">
                         <label for="email1" class="col-sm-4 text-right control-label col-form-label"><strong>Date Of
                                 Order</strong></label>
                         <div class="col-sm-4">
                             <input type="date" class="form-control" placeholder="Date of order"
-                                   formControlName="orderdate">
+                                formControlName="orderdate">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -32,7 +32,7 @@
                                 Date</strong></label>
                         <div class="col-sm-4">
                             <input type="date" class="form-control" placeholder="Delivery date"
-                                   formControlName="delivery">
+                                formControlName="delivery">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -40,12 +40,12 @@
                                 Order</strong></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Customer Order Number"
-                                   formControlName="customerOrderNum">
+                                formControlName="customerOrderNum">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="cono1"
-                               class="col-sm-4 text-right control-label col-form-label"><strong>Remarks</strong></label>
+                            class="col-sm-4 text-right control-label col-form-label"><strong>Remarks</strong></label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
                         </div>
@@ -67,14 +67,14 @@
                     <div class="col-sm-3">
                         <label for="user">Username</label>
                         <input type="text" class="form-control is-valid" placeholder="user name" formControlName="user"
-                               required disabled>
+                            required disabled>
                     </div>
                     <div class="card-body" *ngIf="newOrderAllowed">
                         <div class="form-group m-b-0 text-right">
                             <button style="box-shadow: 2px 2px 2px black;" type="submit"
-                                    class="btn btn-info waves-effect waves-light">Save</button>
+                                class="btn btn-info waves-effect waves-light">Save</button>
                             <button style="box-shadow: 2px 2px 2px black;" type="button" (click)="closed.emit()"
-                                    class="btn btn-dark waves-effect waves-light">Cancel</button>
+                                class="btn btn-dark waves-effect waves-light">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
         <div class="col-2">
             <label for="">Shipping Method</label>
             <select required style="box-shadow: 1px 1px 1px;" [ngModelOptions]="{standalone: true}"
-                    [(ngModel)]="shippingDetails.shippingWay" class="form-control">
+                [(ngModel)]="shippingDetails.shippingWay" class="form-control">
                 <option value="land">יבשה</option>
                 <option value="flight">אוויר</option>
                 <option value="sea">ים</option>
@@ -128,7 +128,7 @@
         <div class="col-2">
             <label for="">Shipping Quantity</label>
             <input [ngModelOptions]="{standalone: true}" [(ngModel)]="shippingDetails.shippingQuantity"
-                   class="form-control">
+                class="form-control">
         </div>
         <div class="col-2">
             <button type="button" class="btn btn-primary mt-2" (click)="addShipping()">Add Shipping</button>
@@ -141,7 +141,7 @@
             class="list-group-item w-25 d-flex justify-content-between align-items-center">
             <span *ngIf="shippingMethod != []">{{shipping.shippingWay}}</span>
             <span *ngIf="shippingMethod != []"
-                  class="badge badge-primary badge-pill">{{shipping.shippingQuantity}}</span>
+                class="badge badge-primary badge-pill">{{shipping.shippingQuantity}}</span>
         </li>
     </ul>
 
@@ -164,16 +164,16 @@
                         <tr>
                             <td></td>
                             <td><input formControlName="itemN" class="form-control" #itemN
-                                       (focusout)="searchItem(itemN.value)"></td>
+                                    (focusout)="searchItem(itemN.value)"></td>
                             <td><input formControlName="discription" class="form-control" style='width:370px'></td>
                             <td><input formControlName="netWeightK" class="form-control"></td>
-                            <td><input formControlName="quantity" class="form-control" (focusout)="checkAmounts()"></td>
+                            <td><input formControlName="quantity" class="form-control"></td>
                             <td><input formControlName="qtyKg" class="form-control"></td>
                             <td><input formControlName="remarks" class="form-control"></td>
 
                             <td><button [disabled]="!orderItemForm.valid" type="submit"
-                                        [style.cursor]="orderItemForm.valid ? 'pointer' : 'not-allowed'"
-                                        class="btn btn-info waves-effect waves-light">Add
+                                    [style.cursor]="orderItemForm.valid ? 'pointer' : 'not-allowed'"
+                                    class="btn btn-info waves-effect waves-light">Add
                                 </button></td>
                         </tr>
                     </thead>
@@ -220,7 +220,7 @@
 
 
 
-<ng-template dir="rtl" #amounts let-c="close" let-d="dismiss">
+<!-- <ng-template dir="rtl" #amounts let-c="close" let-d="dismiss">
     <div class="p-2" dir="rtl" *ngIf="waitForAmounts">
         <h1 class="red">בודק כמויות. אנא המתן</h1>
         <div class="bigLoader"></div>
@@ -242,6 +242,33 @@
             המשך
         </button>
     </div>
+</ng-template> -->
+
+<ng-template #problematics let-c="close">
+
+    <h2 class="m-5 text-info">Details for items in product {{orderItemForm.value.itemN}}</h2>
+    <div class="p-5 w-100 h-100">
+        <p class="text-success h3" *ngIf="formuleExist">Formule Exist!</p>
+        <p class="text-danger h3" *ngIf="!formuleExist">Formule Not Exist!</p>
+
+        <h3 class="mt-4">Problematic Materials and Components:</h3>
+
+        <div class="row mt-4">
+            <h4>Problematic Components:</h4>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let component of problematicComponents">{{component.componentN}} - {{component.componentName}}</li>
+            </ul>
+        </div>
+
+        <div class="row mt-4">
+            <h4>Problematic Materials:</h4>
+            <ul class="list-group spc">
+                <li class="list-group-item" *ngFor="let material of problematicMaterials">{{material.componentN}} - {{material.componentName}}</li>
+            </ul>
+        </div>
+
+        <button (click)="c('Cross click')" class="mt-4 btn btn-info">קראתי ואני מאשרת</button>
+    </div>
 </ng-template>
 
 <ng-template #content let-c="close" let-d="dismiss">
@@ -257,7 +284,7 @@
         <div class="form-group">
             <div class="input-group">
                 <input class="form-control mb-8" #costumerSearch placeholder="Search Costumer"
-                       (keyup)="searchCostumer(costumerSearch.value)">
+                    (keyup)="searchCostumer(costumerSearch.value)">
             </div>
         </div>
     </div>

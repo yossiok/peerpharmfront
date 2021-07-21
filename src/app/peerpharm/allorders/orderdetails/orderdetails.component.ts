@@ -551,7 +551,7 @@ export class OrderdetailsComponent implements OnInit {
   openItemStatus(orderItem, content) {
     
     this.productionItemStatus = {...orderItem}
-    delete this.productionItemStatus._id
+    // delete this.productionItemStatus._id
     this.modalService.open(content)
     // this.productionItemStatusIndex = index
   }

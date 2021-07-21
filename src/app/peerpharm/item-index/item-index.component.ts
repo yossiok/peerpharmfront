@@ -15,6 +15,7 @@ import { Currencies } from '../procurement/Currencies';
 export class ItemIndexComponent implements OnInit {
 
   @ViewChild('nameSelect') nameSelect: ElementRef
+  @ViewChild('itemNumber') itemNumber: ElementRef
 
   item: any;
   itemNames: any[]
@@ -31,7 +32,7 @@ export class ItemIndexComponent implements OnInit {
   gettingProducts: boolean;
   fetchingOrders: boolean;
   allowUserEditItem: boolean;
-  showDetailsForm: boolean = false
+  showDetailsForm: boolean = true
   showMovementsForm: boolean = false
   showSalesForm: boolean = false
 
@@ -107,6 +108,7 @@ export class ItemIndexComponent implements OnInit {
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
     }
+    setTimeout(()=>this.itemNumber.nativeElement.focus(),500)
   }
 
   setColors(title) {
