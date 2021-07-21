@@ -41,6 +41,12 @@ export class NewPricingComponent implements OnInit {
     PPK: new FormControl(null), //Price Per KILO
     ML: new FormControl(null), //desired mililiters
     PPML: new FormControl(null), //Price for ml amount
+    processingFee: new FormControl(null), 
+    oneTimeExp: new FormControl(null), 
+    deliveryConds: new FormControl(null), 
+    deliveryFee: new FormControl(null), 
+    diffExp: new FormControl(null), 
+    remarks: new FormControl(''), 
   })
 
   lop = 'dsds'
@@ -53,6 +59,7 @@ export class NewPricingComponent implements OnInit {
     componentNumber: '',
     componentName: '',
   }
+  componentsPrice: number = 0
 
   constructor(
     private invtSer: InventoryService,
@@ -132,9 +139,18 @@ export class NewPricingComponent implements OnInit {
   }
 
   addComponent() {
-    this.itemComponents.push(this.newComponent)
+    let c = {...this.newComponent}
+    this.itemComponents.push(c)
+    this.componentsPrice += this.newComponent.price
     this.totalItemPrice += this.newComponent.price
     this.newComponent.shippingPrice != 'No Shipping.' ? this.totalShippingPrice += this.newComponent.shippingPrice : null
+    this.newComponent = {
+      price: '',
+      shippingPrice: '',
+      componentNumber: '',
+      componentName: '',
+    }
+    this.calculateFinalPrice()
   }
 
   // formuleCalculate(data, formuleWeight) {
@@ -151,7 +167,7 @@ export class NewPricingComponent implements OnInit {
 
     let itemNumber = event.target.value
     this.invtSer.getCmptByitemNumber(itemNumber).subscribe(data => {
-      if (data) {
+      if (data.length > 0) {
         this.newComponent = { ...data[0] }
         
         if (this.newComponent.price) {
@@ -189,6 +205,10 @@ export class NewPricingComponent implements OnInit {
       // }
       // this.itemComponents.push(this.newComponent)
     })
+  }
+
+  calculateFinalPrice() {
+    let finalPrice = 0
   }
 
   savePricing() {
