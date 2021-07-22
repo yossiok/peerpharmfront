@@ -24,6 +24,7 @@ export class NewPricingComponent implements OnInit {
   loading: boolean = false;
   chooseExisting: boolean = false;
   newCustomer: boolean = false
+  formSubmitted: boolean = false
   currencies: Currencies;
   currentTab: number = 0;
 

@@ -9,70 +9,75 @@
 <div class="d-flex flex-row justify-content-around">
 
 
-    <div id="bidding" class="bidding-status p-5 h-50 rounded mt-5">
+    <div class="bidding-status p-5 h-50 rounded mt-5">
 
         <div *ngIf="formSubmitted" class="mt-4 d-flex flex-row justify-content-between">
             <button class="btn btn-info text -white" (click)="savePricing()">
                 <i class="fa fa-save"></i> Save Bidding
             </button>
-            <button class="btn btn-success"  [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="bidding"
-            ngxPrint>
+            <button class="btn btn-success"
+                [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}"
+                printSectionId="bidding" ngxPrint>
                 Print
                 <i class="fas fa-print"></i>
             </button>
         </div>
 
-        <h2>Bidding Details</h2>
-        <div class="row mt-4">
-            <label>Date: &nbsp;</label>
-            <span class="text-info"> {{newPricingForm.value.date | date: 'dd/MM/yyyy'}}</span>
-        </div>
-        <div class="row mt-2">
-            <label>Customer: </label>
-            <h4 class="text-info">{{newPricingForm.value.customer}}</h4>
-        </div>
-        <div class="row mt-2">
-            <label>Product Name: {{newPricingForm.value.productName}}</label>
-        </div>
-        <div class="row mt-2">
-            <label>bulk:</label>
-            <h4 class="text-info"> {{newPricingForm.value.PPML | currency: 'ILS'}}</h4>
-        </div>
-
-        <div class="row mt-2">
-            <h3>Components:</h3>
-            <ul>
-                <li *ngFor="let component of newPricingForm.value.itemComponents">
-                    {{component.componentName}} - {{component.finalPrice | currency: 'ILS'}}
-                </li>
-            </ul>
-        </div>
-
-
-        <div class="row mt-2">
-            <label>Processing Fee: {{newPricingForm.value.processingFee | currency: 'ILS'}}</label>
-        </div>
-        <div class="row mt-2">
-            <label>One Time Expenses: {{newPricingForm.value.oneTimeExp | currency: 'ILS'}}</label>
-        </div>
-        <div class="row mt-2">
-            <label>Delivery Conditions: {{newPricingForm.value.deliveryConds | currency: 'ILS'}}</label>
-        </div>
-        <div class="row mt-2">
-            <label>Delivery Fee: {{newPricingForm.value.deliveryFee | currency: 'ILS'}}</label>
-        </div>
-        <div class="row mt-2">
-            <label>Different Expenses: {{newPricingForm.value.diffExp | currency: 'ILS'}}</label>
-        </div>
-        <div class="row mt-2">
-            <label>Remarks:</label>
-            <h5>{{newPricingForm.value.remarks}}</h5>
-        </div>
-
-        <div class="mt-4">
-            <label>Total Product Price: {{newPricingForm.value.productPrice | currency: 'ILS'}}</label>
-        </div>
+        <div id="bidding">
         
+
+            <h2>Bidding Details</h2>
+            <div class="row mt-4">
+                <label>Date: &nbsp;</label>
+                <span class="text-info"> {{newPricingForm.value.date | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="row mt-2">
+                <label>Customer: </label>
+                <h4 class="text-info">{{newPricingForm.value.customer}}</h4>
+            </div>
+            <div class="row mt-2">
+                <label>Product Name: {{newPricingForm.value.productName}}</label>
+            </div>
+            <div class="row mt-2">
+                <label>bulk:</label>
+                <h4 class="text-info"> {{newPricingForm.value.PPML | currency: 'ILS'}}</h4>
+            </div>
+
+            <div class="row mt-2">
+                <h3>Components:</h3>
+                <ul>
+                    <li *ngFor="let component of newPricingForm.value.itemComponents">
+                        {{component.componentName}} - {{component.finalPrice | currency: 'ILS'}}
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="row mt-2">
+                <label>Processing Fee: {{newPricingForm.value.processingFee | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2">
+                <label>One Time Expenses: {{newPricingForm.value.oneTimeExp | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2">
+                <label>Delivery Conditions: {{newPricingForm.value.deliveryConds | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2">
+                <label>Delivery Fee: {{newPricingForm.value.deliveryFee | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2">
+                <label>Different Expenses: {{newPricingForm.value.diffExp | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2">
+                <label>Remarks:</label>
+                <h5>{{newPricingForm.value.remarks}}</h5>
+            </div>
+
+            <div class="mt-4">
+                <label>Total Product Price: {{newPricingForm.value.productPrice | currency: 'ILS'}}</label>
+            </div>
+        </div>
+
     </div>
     <div *ngIf="!formSubmitted" class="p-5 w-75">
         <form [formGroup]="newPricingForm" (ngSubmit)="savePricing()">
@@ -105,7 +110,8 @@
                             <input type="number" class="form-control w-25" formControlName="formuleNumber">
                             <button type="button" class="btn btn-warning" (click)="calculatePPK()">Calculate
                                 Price per Kilo</button>
-                            <p *ngIf="newPricingForm.value.PPK">price per kilo: {{newPricingForm.value.PPK | currency: 'ILS'}}</p>
+                            <p *ngIf="newPricingForm.value.PPK">price per kilo: {{newPricingForm.value.PPK | currency:
+                                'ILS'}}</p>
                             <div class="smallerLoader" *ngIf="loading"></div>
                         </div>
                         <div class="form-group">
@@ -114,7 +120,8 @@
                             <button type="button" (click)="calculateForML()" class="btn btn-warning">
                                 Calculate Price For Netto Weight
                             </button>
-                            <p *ngIf="newPricingForm.value.PPML">formule price: {{newPricingForm.value.PPML | currency: 'ILS'}}</p>
+                            <p *ngIf="newPricingForm.value.PPML">formule price: {{newPricingForm.value.PPML | currency:
+                                'ILS'}}</p>
                         </div>
                         <button type="button" class="m-2 btn btn-secondary" (click)="downGradeTab()">Previous</button>
                         <button type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
@@ -126,13 +133,14 @@
                         <h2>3. Components: </h2>
                         <label class="mt-2">Enter Component Number or Edit details yourself</label><br>
 
-                        <input class="m-2" type="number" placeholder="component Number" (change)="getCmptDetails($event)"
-                            [ngModelOptions]="{standalone: true}" [(ngModel)]="newComponent.componentN">
-                        <input class="m-2"  type="text" placeholder="component Name" [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="newComponent.componentName">
-                        <input class="m-2"  type="number" placeholder="price" [ngModelOptions]="{standalone: true}"
+                        <input class="m-2" type="number" placeholder="component Number"
+                            (change)="getCmptDetails($event)" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="newComponent.componentN">
+                        <input class="m-2" type="text" placeholder="component Name"
+                            [ngModelOptions]="{standalone: true}" [(ngModel)]="newComponent.componentName">
+                        <input class="m-2" type="number" placeholder="price" [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="newComponent.price">
-                        <input class="m-2"  type="number" placeholder="shipping" [ngModelOptions]="{standalone: true}"
+                        <input class="m-2" type="number" placeholder="shipping" [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="newComponent.shippingPrice">
                         <button class="btn btn-success" type="button" (click)="addComponent()">Add Component</button>
                         <div class="row mt-4">
@@ -150,25 +158,26 @@
                                         <tr *ngFor="let component of newPricingForm.value.itemComponents">
                                             <td>
                                                 <input type="number" [ngModelOptions]="{standalone: true}"
-                                                [(ngModel)]="component.componentN">
+                                                    [(ngModel)]="component.componentN">
                                             </td>
                                             <td>
                                                 <input type="text" [ngModelOptions]="{standalone: true}"
-                                                [(ngModel)]="component.componentName">
+                                                    [(ngModel)]="component.componentName">
                                             </td>
                                             <td>
                                                 <input type="number" [ngModelOptions]="{standalone: true}"
-                                                [(ngModel)]="component.price">
+                                                    [(ngModel)]="component.price">
                                             </td>
                                             <td>
                                                 <input type="number" [ngModelOptions]="{standalone: true}"
-                                                [(ngModel)]="component.shippingPrice">
+                                                    [(ngModel)]="component.shippingPrice">
                                             </td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td></td>
-                                            <td colspan="2">Total Components + Shipping Price: {{newPricingForm.value.componentsPrice | currency: 'ILS'}}</td>
+                                            <td colspan="2">Total Components + Shipping Price:
+                                                {{newPricingForm.value.componentsPrice | currency: 'ILS'}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -213,7 +222,8 @@
                         <div class="mt-2">
                             <button type="button" class="m-2 btn btn-secondary"
                                 (click)="downGradeTab()">Previous</button>
-                            <button type="submit" class="m-2 btn btn-success" (click)="formSubmitted = true">Done!</button>
+                            <button type="submit" class="m-2 btn btn-success"
+                                (click)="formSubmitted = true">Done!</button>
                         </div>
                     </div>
                 </mat-tab>
