@@ -9,7 +9,18 @@
 <div class="d-flex flex-row justify-content-around">
 
 
-    <div class="bidding-status p-5 h-50 rounded mt-5">
+    <div id="bidding" class="bidding-status p-5 h-50 rounded mt-5">
+
+        <div *ngIf="formSubmitted" class="mt-4 d-flex flex-row justify-content-between">
+            <button class="btn btn-info text -white" (click)="savePricing()">
+                <i class="fa fa-save"></i> Save Bidding
+            </button>
+            <button class="btn btn-success"  [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="bidding"
+            ngxPrint>
+                Print
+                <i class="fas fa-print"></i>
+            </button>
+        </div>
 
         <h2>Bidding Details</h2>
         <div class="row mt-4">
@@ -31,8 +42,8 @@
         <div class="row mt-2">
             <h3>Components:</h3>
             <ul>
-                <li *ngFor="let component of itemComponents">
-                    {{component.componentName}} - {{component.price | currency: 'ILS'}}
+                <li *ngFor="let component of newPricingForm.value.itemComponents">
+                    {{component.componentName}} - {{component.finalPrice | currency: 'ILS'}}
                 </li>
             </ul>
         </div>
@@ -59,10 +70,11 @@
         </div>
 
         <div class="mt-4">
-            <label>Total Product Price: {{newPricingForm.value.productPrice}}</label>
+            <label>Total Product Price: {{newPricingForm.value.productPrice | currency: 'ILS'}}</label>
         </div>
+        
     </div>
-    <div *ngIf="false" class="p-5 w-75">
+    <div *ngIf="!formSubmitted" class="p-5 w-75">
         <form [formGroup]="newPricingForm" (ngSubmit)="savePricing()">
             <mat-tab-group [selectedIndex]="currentTab">
 
@@ -92,15 +104,17 @@
                             <label>Enter Formule Number</label>
                             <input type="number" class="form-control w-25" formControlName="formuleNumber">
                             <button type="button" class="btn btn-warning" (click)="calculatePPK()">Calculate
-                                PPK</button>
+                                Price per Kilo</button>
+                            <p *ngIf="newPricingForm.value.PPK">price per kilo: {{newPricingForm.value.PPK | currency: 'ILS'}}</p>
                             <div class="smallerLoader" *ngIf="loading"></div>
                         </div>
                         <div class="form-group">
                             <label>Enter Netto Weight in Gr.</label>
-                            <input type="number" class="form-control w-25" formControlName="ML">
+                            <input type="number" placeholder="gr / ml" class="form-control w-25" formControlName="ML">
                             <button type="button" (click)="calculateForML()" class="btn btn-warning">
                                 Calculate Price For Netto Weight
                             </button>
+                            <p *ngIf="newPricingForm.value.PPML">formule price: {{newPricingForm.value.PPML | currency: 'ILS'}}</p>
                         </div>
                         <button type="button" class="m-2 btn btn-secondary" (click)="downGradeTab()">Previous</button>
                         <button type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
@@ -112,16 +126,15 @@
                         <h2>3. Components: </h2>
                         <label class="mt-2">Enter Component Number or Edit details yourself</label><br>
 
-                        <input type="text" placeholder="component Number" (change)="getCmptDetails($event)"
+                        <input class="m-2" type="number" placeholder="component Number" (change)="getCmptDetails($event)"
                             [ngModelOptions]="{standalone: true}" [(ngModel)]="newComponent.componentN">
-                        <input type="text" placeholder="component Name" [ngModelOptions]="{standalone: true}"
+                        <input class="m-2"  type="text" placeholder="component Name" [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="newComponent.componentName">
-                        <input type="number" placeholder="price" [ngModelOptions]="{standalone: true}"
+                        <input class="m-2"  type="number" placeholder="price" [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="newComponent.price">
-                        <input type="number" placeholder="shipping" [ngModelOptions]="{standalone: true}"
+                        <input class="m-2"  type="number" placeholder="shipping" [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="newComponent.shippingPrice">
                         <button class="btn btn-success" type="button" (click)="addComponent()">Add Component</button>
-                        <span class="float-right">Total Components Price: {{componentsPrice}}</span>
                         <div class="row mt-4">
                             <div class="col-12">
                                 <table class="table table-bordered">
@@ -134,17 +147,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let component of itemComponents">
-                                            <td>{{component.componentN}}</td>
-                                            <td>{{component.componentName}}</td>
-                                            <td>{{component.price}}</td>
-                                            <td>{{component.shippingPrice}}</td>
+                                        <tr *ngFor="let component of newPricingForm.value.itemComponents">
+                                            <td>
+                                                <input type="number" [ngModelOptions]="{standalone: true}"
+                                                [(ngModel)]="component.componentN">
+                                            </td>
+                                            <td>
+                                                <input type="text" [ngModelOptions]="{standalone: true}"
+                                                [(ngModel)]="component.componentName">
+                                            </td>
+                                            <td>
+                                                <input type="number" [ngModelOptions]="{standalone: true}"
+                                                [(ngModel)]="component.price">
+                                            </td>
+                                            <td>
+                                                <input type="number" [ngModelOptions]="{standalone: true}"
+                                                [(ngModel)]="component.shippingPrice">
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td></td>
-                                            <td>Total Components Price: {{componentsPrice}}</td>
-                                            <td>Total Shipping: {{totalShippingPrice}}</td>
+                                            <td colspan="2">Total Components + Shipping Price: {{newPricingForm.value.componentsPrice | currency: 'ILS'}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -185,6 +209,11 @@
                         </div>
                         <div class="form-group">
                             <textarea cols="30" rows="5" placeholder="remarks" formControlName="remarks"></textarea>
+                        </div>
+                        <div class="mt-2">
+                            <button type="button" class="m-2 btn btn-secondary"
+                                (click)="downGradeTab()">Previous</button>
+                            <button type="submit" class="m-2 btn btn-success" (click)="formSubmitted = true">Done!</button>
                         </div>
                     </div>
                 </mat-tab>
