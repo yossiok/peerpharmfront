@@ -93,6 +93,10 @@ export class NeworderComponent implements OnInit {
       hasLicense: [false, Validators.required],
       exploded: [false, Validators.required],
       productionApproved: [false, Validators.required],
+      problematic: [false, Validators.required],
+      formuleExist: [false, Validators.required],
+      problematicMaterials: [[], Validators.required],
+      problematicComponents: [[], Validators.required],
     });
   }
 
@@ -231,6 +235,10 @@ export class NeworderComponent implements OnInit {
           hasLicense: post.hasLicense,
           exploded: post.exploded,
           productionApproved: post.productionApproved,
+          problematic: post.problematic,
+          formuleExist: post.formuleExist,
+          problematicComponents: post.problematicComponents,
+          problematicMaterials: post.problematicMaterials,
           shippingMethod: this.shippingMethod,
           batch: "",
           price: "",
@@ -295,11 +303,18 @@ export class NeworderComponent implements OnInit {
           if(new Date(res[0].licsensDate) > new Date())  this.orderItemForm.controls.hasLicense.setValue(true);
         }
 
+        //check for problematic ingredients
         this.itemsService.checkForProblematicItems(itemNumber).subscribe(data => {
           this.problematicMaterials = data.problematicMaterials
           this.problematicComponents = data.problematicComponents
           this.formuleExist = data.formuleFound
           this.modalService.open(this.problematics)
+          if(!data.formuleFound || data.problematicMaterials.length > 0 || data.problematicComponents.length > 0) {
+            this.orderItemForm.controls.problematic.setValue(true)
+            this.orderItemForm.controls.formuleExist.setValue(data.formuleFound)
+            this.orderItemForm.controls.problematicMaterials.setValue(data.problematicMaterials)
+            this.orderItemForm.controls.problematicComponents.setValue(data.problematicComponents)
+          }
         })
         
         this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe((data) => {

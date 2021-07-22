@@ -351,13 +351,23 @@
       <div class="col-2">
         <label class="form-control">הערה</label>
         <label class="form-control mt-5">הערה קופצת</label>
-        <h3 class="mt-4"> חומר בעייתי</h3>
-        <input type="checkbox" class="problematic" [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
+      
+        <label class="form-control mt-4"> חומר בעייתי?</label>
+        <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit" [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
+        <label class="form-control mt-4">בעייתיות:</label>
+        <select class="form-control" [(ngModel)]="item.problem">
+          <option value="פג תוקף קצר">פג תוקף קצר</option>
+          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
+          <option value="כמויות מינימום">כמויות מינימום</option>
+          <option value="אחר">אחר</option>
+        </select>
+        
 
       </div>
       <div class="col-2">
         <textarea rows="2" cols="20" class="form-control" type='text' [(ngModel)]="item.remarks"></textarea>
         <textarea rows="2" cols="20" class="form-control mt-4" type='text' [(ngModel)]="item.jumpRemark"></textarea>
+      
       </div>
 
     </div>

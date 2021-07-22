@@ -1614,6 +1614,23 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
+  //Report of all problematic items
+  exportProblems() {
+    let problematicItems = this.ordersItems.filter(item => item.problematic)
+    let unwinded = []
+    for ( let item of problematicItems) {
+      unwinded.push(item)
+      for(let c of item.problematicComponents){
+        unwinded.push(c)
+      }
+      for(let m of item.problematicMaterials){
+        unwinded.push(m)
+      }
+    }
+    let sort = ['orderNumber', 'itemNumber', 'formuleExist', 'componentN', 'componentName']
+    this.excelService.exportAsExcelFile(unwinded, 'דו"ח פריטים בעייתיים', sort)
+  }
+
 
 
 

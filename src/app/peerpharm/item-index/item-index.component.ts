@@ -35,6 +35,7 @@ export class ItemIndexComponent implements OnInit {
   showDetailsForm: boolean = true
   showMovementsForm: boolean = false
   showSalesForm: boolean = false
+  allowedProblematicEdit: boolean = false
 
   supplier: any = {
     supplierName: '',
@@ -103,6 +104,7 @@ export class ItemIndexComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.allowedProblematicEdit = this.authService.loggedInUser.userName == 'haviv' || this.authService.loggedInUser.userName == 'martha' || this.authService.loggedInUser.userName == 'sima'
     this.getAllSuppliers()
     this.getCurrencies()
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {

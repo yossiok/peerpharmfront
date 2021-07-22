@@ -362,6 +362,7 @@
           <th style="width:5%;"></th>
           <th style="width:10%;"><b>מספר פריט</b></th>
           <th style="width:15%;"><b>שם פריט</b></th>
+          <th style="width:15%;"><b>בעייתי?</b></th>
           <th style="width:9%;"><b>כמות מוקצת</b></th>
           <th style="width:9%;"><b>כמות</b></th>
           <th>צפי הגעה המלצות רכש</th>
@@ -382,6 +383,11 @@
 
           <td [ngClass]="dangerColor(material.threatment)" style="width:15%">
             <div style="float:none;">{{material.componentName}}</div>
+          </td>
+          <td>
+            <span *ngIf="material.isProblematic">
+              <img class="reportImg" src="../../../../assets/images/alert3.gif" alt="">
+            </span>
           </td>
 
           <td style="border-right: 2px solid black;"></td>
