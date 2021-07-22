@@ -1712,18 +1712,19 @@ export class OrderdetailsComponent implements OnInit {
       //get all orderItem-demands
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe(async res => {
 
+        let temp = [...this.ordersItems]
         //res = all items(products) from order
         await res.forEach(async item => {
-
-          
+    
           // orderItem = orderItem from current order
-          let orderItem = this.ordersItems.find(o => o.itemNumber == item.itemNumber)
+          let orderItem = temp.find(o => o.itemNumber == item.itemNumber)
+          let orderItemIndex = temp.findIndex(o => o.itemNumber == item.itemNumber)
+          temp.splice(orderItemIndex, 1)
 
           //assign order number and weight to orderItem
           if (orderItem) {
             item.orderNumber = orderItem.orderNumber
             item.weight = orderItem.netWeightGr
-
           }
           else item.orderNumber = ''
 
