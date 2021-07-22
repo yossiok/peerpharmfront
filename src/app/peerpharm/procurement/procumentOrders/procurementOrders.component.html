@@ -348,7 +348,7 @@
   <div id="billing-section">
     <div class="modal-content" id='modelC'>
       <div style="display: inline-block;" id="material-header" class="modal-header">
-
+        country
         <div class="row">
           <div class="col-5">
             <img src="../../../../assets/images/logo.png">
@@ -433,7 +433,7 @@
           <thead>
             <tr>
               <th>#</th>
-              <th *ngIf="showImage == true">Image</th>
+              <th *ngIf="showImage">Image</th>
               <th>Item</th>
               <th>SupplierN</th>
               <th>Item Name</th>
@@ -449,15 +449,15 @@
           <tbody>
             <tr *ngFor="let item of currentItems;let i = index;">
               <td>{{i+1}}</td>
-              <td *ngIf="showImage == true"><img style="width:50px;" alt="Item Image" [src]="item.img"></td>
+              <td *ngIf="showImage"><img style="width:50px;" alt="Item Image" [src]="item.img"></td>
               <td>{{item.number}}</td>
               <td>{{item.componentNs}}</td>
               <td>{{item.name}}</td>
               <td>{{item.remarks}}</td>
               <td>{{item.quantity}}</td>
 
-              <td>{{item.price | currency:item.coin}}</td>
-              <td>{{item.itemPrice | currency:item.coin}}</td>
+              <td>{{item.price | number | currency:item.coin}}</td>
+              <td>{{item.totalPrice | number | currency:item.coin}}</td>
               <td><span *ngIf="item.localTotal">{{item.localTotal | number}}{{nisSymbol}}</span></td>
 
             </tr>
@@ -468,7 +468,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td><b>{{totalAmount}}</b></td>
+              <td><b>{{totalOrderQnt}}</b></td>
               <td></td>
               <td><b *ngIf="printSum">{{totalPrice}}{{currCoin}}</b></td>
               <td><b>{{totalPriceNis | number}}{{nisSymbol}}</b></td>
@@ -481,10 +481,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><b>{{totalAmount}}</b></td>
+                <td><b>{{totalOrderQnt}}</b></td>
                 <td></td>
                 <td dir="rtl"><b *ngIf="printSum">{{totalPrice | number}}{{currCoin}}</b></td>
-                <td><b>{{totalPriceNis | number}}{{nisSymbol}}</b></td>
+                <td><b>{{totalPriceNis | number | currency: 'ILS'}}{{nisSymbol}}</b></td>
               </tr>
             </ng-container>
           </tbody>

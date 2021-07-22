@@ -75,7 +75,7 @@ export class ProcurementOrdersComponent implements OnInit {
   currStatus: any;
   currOrderNumber: any;
   infoToStatus: any;
-  totalAmount: number = 0
+  totalOrderQnt: number = 0
   priceTaxes: any;
   totalPrice: number = 0
   totalPriceWithTaxes: any;
@@ -589,35 +589,36 @@ export class ProcurementOrdersComponent implements OnInit {
 
     }
   }
+
+
+
   printOrder(line) {
+
+    //Reset details
     this.showImage = false;
-    var supplierNumber = line.supplierNumber
-    this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
-      ;
-      this.currentSupplier = data[0]
-      if (this.currentSupplier.import == 'outOfIsrael') {
-        this.country = true;
-
-      } else if (this.currentSupplier.import != 'outOfIsrael' && (line.stockitems[0].coin).toLowerCase() != 'nis') {
-        this.country = true;
-
-      } else {
-        this.country = false;
-      }
-    })
-
     this.currentOrder = line;
     this.currentItems = [...line.stockitems]
-    // var total = 0;
-    // var totalP = 0;
-    // var totalN = 0;
-
     var coin = "";
-
-    this.totalAmount = 0
+    this.totalOrderQnt = 0
     this.totalPriceNis = 0
     this.totalPrice = 0
     this.printSum = false
+
+    //Get supplier details
+    var supplierNumber = line.supplierNumber
+    this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
+      this.currentSupplier = data[0]
+      if (line.stockitems[0].coin.toLowerCase() != 'ils') {
+        // FONT A
+        this.country = true;
+      } 
+      else{
+        //FONT B
+      }
+    })
+    
+   
+
     for (let i = 0; i < this.currentItems.length; i++) {
       if (i == 0) {
         coin = this.currentItems[i].coin
@@ -628,11 +629,11 @@ export class ProcurementOrdersComponent implements OnInit {
         else this.printSum = false
       }
       this.currentItems[i].coin = this.currentItems[i].coin.toUpperCase()
-      this.currentItems[i].itemPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
-      this.currentItems[i].localTotal = this.currentItems[i].itemPrice * this.currencies[this.currentItems[i].coin.toUpperCase()]
-      this.totalAmount = this.totalAmount + Number(this.currentItems[i].quantity)
+      this.currentItems[i].totalPrice = Number(this.currentItems[i].quantity) * Number(this.currentItems[i].price)
+      this.currentItems[i].localTotal = this.currentItems[i].totalPrice * this.currencies[this.currentItems[i].coin.toUpperCase()]
+      this.totalOrderQnt = this.totalOrderQnt + Number(this.currentItems[i].quantity)
       this.totalPriceNis = this.totalPriceNis + Number(this.currentItems[i].localTotal)
-      this.totalPrice = this.totalPrice + Number(this.currentItems[i].itemPrice)
+      this.totalPrice = this.totalPrice + Number(this.currentItems[i].totalPrice)
 
 
       if (line.orderType == 'component') {
@@ -645,10 +646,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
     this.importantRemarks = line.remarks
 
-    // var num = this.formatNumber(total)
-    // var numTwo = this.formatNumber(totalP)
     this.priceTaxes = this.totalPrice * 17 / 100
-    // var numFour = this.formatNumber(totalN);
     var combined = ((this.totalPrice * 17 / 100) + this.totalPrice)
     var numFour = this.formatNumber(combined)
     this.totalPriceWithTaxes = numFour
