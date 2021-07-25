@@ -206,7 +206,7 @@ export class WeightProductionComponent implements OnInit {
       else {
         for (let j = 0; j < this.formules[i].data.phases.length; j++) {
           for (let k = 0; k < this.formules[i].data.phases[j].items.length; k++) {
-            if (this.formules[i].data.phases[j].items[k].percentage != this.formules[i + 1].data.phases[j].items[k].percentage) {
+            if (Number(this.formules[i].data.phases[j].items[k].percentage) != Number(this.formules[i + 1].data.phases[j].items[k].percentage)) {
               this.formules[i].data.phases[j].items[k].color = 'orange'
               this.formules[i + 1].data.phases[j].items[k].color = 'orange'
             }
