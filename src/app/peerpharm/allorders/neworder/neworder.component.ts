@@ -95,8 +95,8 @@ export class NeworderComponent implements OnInit {
       productionApproved: [false, Validators.required],
       problematic: [false, Validators.required],
       formuleExist: [false, Validators.required],
-      problematicMaterials: [[], Validators.required],
-      problematicComponents: [[], Validators.required],
+      problematicMaterials: [[]],
+      problematicComponents: [[]],
     });
   }
 
