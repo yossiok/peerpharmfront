@@ -411,7 +411,7 @@ export class ProcurementOrdersComponent implements OnInit {
       else this.procurementData = this.procurementData.filter(purchase => purchase.status != 'canceled' && purchase.status != 'closed');
     }
 
-    if (category) {
+    if (category && category != "") {
       this.procurementData = this.procurementData.filter(order => {
         for (let item of order.stockitems) {
           if (item.componentType == category) return true
