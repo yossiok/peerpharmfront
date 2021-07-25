@@ -143,9 +143,9 @@
 
 <form *ngIf="showSalesForm" [formGroup]="productsSoldForm" (ngSubmit)="fetchProducts">
   <div class="row border border-warning rounded p-4 w-75 form-group mx-auto">
-  <h4 class="text-warning">Coming soon...</h4>
+  <!-- <h4 class="text-warning">Coming soon...</h4> -->
 
-    <!-- <div class="col-2">
+    <div class="col-2">
       <label>Product Number</label>
       <input formControlName="productNumber" class="form-control" type="number">
     </div>
@@ -172,7 +172,7 @@
     </div>
     <div class="col-1">
       <button type="button" class="btn btn-secondary" (click)="resetMovements()">Clear</button>
-    </div> -->
+    </div>
   </div>
 
 
